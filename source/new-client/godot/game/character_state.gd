@@ -917,6 +917,22 @@ func sell(slot: int, merchant: String) -> bool:
 	return true
 
 
+## APPRAISE in the merchant window: what the merchant would pay for the item in a slot, said in chat (the old server's
+## GameMerchant.OnPlayerAppraise: "{merchant} offers you {price} for {item}." / "... isn't interested in ...").
+func appraise(slot: int, merchant: String) -> int:
+	var e := entry(slot)
+	if e.is_empty():
+		return 0
+	var it := ItemDb.item(String(e.id))
+	var pack := maxi(1, int(it.get("packsize", 1)))
+	var value := int(it.get("price", 0)) * int(e.get("count", 1)) / pack * SELL_RATIO / 100
+	if int(it.get("isdropable", 1)) == 0 or value <= 0:
+		message.emit("%s isn't interested in %s." % [merchant, String(it.get("name", "that"))], "merchant")
+		return 0
+	message.emit("%s offers you %s for %s." % [merchant, money_string(value), String(it.get("name", "item"))], "merchant")
+	return value
+
+
 func money_text() -> String:
 	var parts := []
 	for k in ["mithril", "platinum", "gold", "silver", "copper"]:

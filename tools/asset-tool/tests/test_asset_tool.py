@@ -19,6 +19,7 @@ LIVE_HOME=tool.HOME
 LIVE_CLIENT=tool.CLIENT
 
 
+@unittest.skipUnless((LIVE_CLIENT / 'gamedata.mpk').exists(), 'needs the game client in runtime/client-opendaoc/app')
 class WorkflowTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

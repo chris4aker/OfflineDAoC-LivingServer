@@ -1,0 +1,153 @@
+{
+ "id": "earl-zhalzhak",
+ "name": "Earl Zh'alzhak",
+ "npcNames": [
+  "Earl Zh'alzhak"
+ ],
+ "aliases": [
+  "zhalzhak",
+  "zh'alzhak"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord, whose walls bore him"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "counts his brood as the host"
+  },
+  {
+   "id": "marquis-chaosmar",
+   "relation": "shares the west end of the hall"
+  },
+  {
+   "id": "duke-alloc",
+   "relation": "shares the west end of the hall"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "charged his brood a toll"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "wrote the brood onto his line"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Zh'alzhak is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands at the west end of High Lord Baln's hall, about 700 units from Marquis Chaosmar.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's Darkness Falls map key and bestiary do not list Earl Zh'alzhak; he is in the world data only.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Zh'alzhak is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Zh'alzhak uses model 2049 at size 200, the largest of the earls.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "High Lord Baln's script brings out minions in his fight every 20 to 35 seconds.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
+  },
+  {
+   "text": "No demonology source found for the name Zh'alzhak.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "High Lord Baln's hall breeds. Its walls in the south of the hollow have always put out more followers than the hall can feed, fanatics who come out of the rock already shouting, and the Field Marshal's first work in the Uncounted Age was standing them in rows. The first thing that ever came out of those walls is still there. The court calls it Earl Zh'alzhak, which is not a name but the sound the rock made, and it is the largest earl on the Roll.\n\nWhen the First Roll was cut, the Chancellor had a difficulty with Baln's hall that he had with no other. The bargain of the Feast protects only demons who hold a line, and the brood of the south came out of the walls faster than Earl Vone could cut them. A demon with no line could be eaten by anyone, and the brood was eating itself. Adremal settled it the way he settles everything, with a line. He wrote Zh'alzhak as Earl of the Brood, under High Lord Baln, and wrote below it that every demon born of the southern walls holds its place through the earl. The whole brood of Baln's hall stands on the Roll on one line. If Zh'alzhak were ever struck off, the Inquisitors say, every fanatic of the south would fall with him, and the Master would have the largest meal since the Feast.\n\nThe brood knows it. They keep the earl at the west end of the hall, near Duke Alloc's standard and Marquis Chaosmar's seat, and they do not let him wander. Zh'alzhak understands very little of this. He speaks the tongue of the walls, which only Baln and the brood hear, and the court says he spends his time with his hands pressed flat to the rock, waiting for the next of his kind to come through, as a midwife waits at a door.\n\nIn the Seventh Roll, the season the Queen left her chair, the walls put out more of the brood in one dark than in the three Rolls before it, and Zh'alzhak led them north out of the hall to look for room. They reached the Gate, and Gatekeeper Dommel charged every one of them a toll none could pay. The Marshal fetched them home in rows. Nebir counts the brood as his host; the earl counts it as his children; Baln, the court says, counts it as himself. None of the three has ever asked the others.",
+ "legend": "Zh'alzhak is the huge earl (size 200) at the west end of Baln's hall, with Marquis Chaosmar about seven hundred units away and Dukes Alloc and Aypol close behind. Level 71, no script. He stands close enough to Chaosmar to come with him if you are careless, so kill Chaosmar first or drag the earl east toward the middle of the hall. Kill him before you start on Baln: the high lord's own fight brings minions every half minute or so, and you do not want the earl in it as well. Players say he is the first demon that ever came out of the walls of Baln's hall and that Baln's minions are his children. Midgard players call him the midwife and think it is very funny. It stops being funny when he and Chaosmar both come at once.",
+ "yells": {
+  "aggro": [
+   "Khh... zh'al... zhak.",
+   "The wall opens. You came out wrong.",
+   "Children! Stand in rows!"
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The wall... the wall will make more."
+   }
+  ],
+  "death": [
+   "Zh... the wall... is quiet...",
+   "Who holds them now... who holds the line..."
+  ],
+  "slay": [
+   "Back into the wall.",
+   "Rows. Stand in rows.",
+   "Zh'alzhak."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The walls here are warm, and something moves in them.",
+   "A huge shape kneels with its hands flat on the rock."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The rock groans. The brood stirs in the walls."
+   }
+  ],
+  "realmFirstKill": "Earl Zh'alzhak has fallen. The walls of the south are still."
+ },
+ "botLines": {
+  "briefing": [
+   "zhalzhak is the huge one at the west end of balns hall. [chaosmar first|kill chaosmar first]",
+   "pull zhalzhak east, away from chaosmar. [one at a time|single pulls]",
+   "kill zhalzhak before baln. [baln pops minions|dont want him in the baln fight]",
+   "71 no tricks, just big. [watch your angle|hes huge]"
+  ],
+  "aftermathWin": [
+   "zhalzhak down. [the midwife is dead lol|big one down]",
+   "earl zhalzhak dead. [alloc next|on to alloc]",
+   "zhalzhak done, [chaosmar stayed put|clean split]",
+   "the big earl is down. [now baln|rebuff for baln]"
+  ],
+  "aftermathLoss": [
+   "zhalzhak and chaosmar at once. [wipe|told you chaosmar first]",
+   "pulled zhalzhak into baln. [minions everywhere|gg]",
+   "zhalzhak got us. [regroup|rez]",
+   "lost the pull at the west wall. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl zhalzhak was the first demon to come out of the walls of balns hall",
+   "zhalzhak isnt a name its the sound the rock made. [so the lore guys say|apparently]",
+   "[someone said|my guildie says] all of balns minions are on the demon roll through zhalzhak",
+   "the zhalzhak and chaosmar pull wipes people every night. [chaosmar first|split them]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "zhalzhak",
+  "text": "Earl Zh'alzhak, the first of the brood of High Lord [Baln]'s walls and the largest earl on the Roll. The Chancellor wrote the whole brood of the south onto his one line, so every fanatic of the hall holds its place through him."
+ },
+ "bookPage": "From a Midgard skald's verse, The Midwife of the Wall, put into plain speech: In the south hall the walls are warm as a byre in winter, and they sweat, and in the west corner kneels a thing as big as a longhouse with its two hands flat on the rock. We watched it for as long as we dared. The rock bulged under its hands and split along a seam, and something came out shouting, small and wet and already armed, and the great one took it up and set it down in a row with the others, very gently. Then it put its hands back on the wall. It did not look at us at all.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} brought down Earl Zh'alzhak, eldest of Baln's brood, in {minutes} minutes.",
+  "loss": "Earl Zh'alzhak and the brood of the south threw back {realm}'s raid under {raidLeader}."
+ }
+}

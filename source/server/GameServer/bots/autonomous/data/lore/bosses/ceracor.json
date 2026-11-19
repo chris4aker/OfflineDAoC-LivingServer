@@ -1,0 +1,85 @@
+{
+  "id": "ceracor",
+  "name": "Ceracor",
+  "npcNames": [
+    "Ceracor"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ceracor: level 42, a magma-bodied stone shape (model 125, shared with the magmatasms and maghemoths), size 125, at about 34,180/28,250 (z 15,548) in the north-east among sixteen earth golems (39) and arachnites within 900; Pericolias is under 1,000 away; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift (Kinney, Ascatinius in Connla): kill the befuddled rock golem on the golem teleporters to reach Hervelina; 'Kill Driff Tinel.' (his blood to Hervelina); 'Kill Ceracor.' (a piece of rock golem); 'Kill Pericolias the Dreaded.' (his fang); 'Find the alchemy book in Hursk the Alchemist's room.' and read it; kill the Dreaded Ursine to reach the forge; use the forge to obtain the Faqist.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "In Treibh Caillte the stone woke up, the druids say, and some of it stayed awake. The earth golems of the north-east are that waking: rock that stood up out of the walls one day and has been standing ever since, patient as rock is, while the spiders spin between them. Ceracor is the stone that woke hot.\n\nHe stands among the golems like a bull among a herd, larger than any of them and never still, and the rock of his body glows in its cracks as a hearth glows under its ash. Hervelina says the first smiths of the ursine quarried their forge's hearth from the same seam he woke out of, before the tribe split, and that this is why the forge below her ledge is still warm when no ursine has fed it in a lifetime: the hearth and Ceracor are one stone, and it remembers.\n\nThe alchemists of Connla call what they want from him a piece of rock golem, which Hervelina says is like calling the sun a lamp. A piece of him carried down to the forge and laid on its hearth is the one part of the Faqist that cannot be bought or made, because it is the forge's own stone come home. The golems around him have the patience of rock. They do not seem to notice what is taken from him, and he does not seem to miss it.",
+  "legend": "Ceracor (42) is a big magma-bodied stone creature in the north-east of Treibh Caillte (about 34.2k/28.2k), in a crowd of earth golems (39, sixteen of them close) and arachnites; Pericolias (43) is under 1,000 away. Immortal Gift: kill him for a piece of rock golem and take it to Hervelina. Clear the golems first. A group of low to mid 40s. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "(the hot stone turns, glowing in its cracks)",
+      "(the earth golems stand aside)"
+    ],
+    "phases": [],
+    "death": [
+      "(Ceracor's glow sinks, like a hearth at night)"
+    ],
+    "slay": [
+      "(the stone settles, warmer than before)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Stone men stand round a stone that glows."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ceracor, the stone that woke hot, is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "ceracor is 42 in the north east, earth golems everywhere round him",
+      "immortal gift: piece of rock golem for hervelina. pericolias is close"
+    ],
+    "aftermathWin": [
+      "ceracor down. [rock for hervelina|grats]",
+      "so many golems. [took ages|lol]"
+    ],
+    "aftermathLoss": [
+      "golems joined. [rip|ouch]",
+      "pericolias joined. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] ceracor and the forge hearth are cut from the same stone",
+      "the earth golems in treibh dont even notice when ceracor dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ceracor",
+    "text": "The stone that woke hot in Treibh Caillte's north-east, glowing among the earth golems. Hervelina says the first smiths' forge hearth was cut from the seam he woke out of; a piece of him goes into the Faqist."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ceracor in Treibh Caillte in {minutes} minutes.",
+    "loss": "Ceracor turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "pericolias-the-dreaded",
+      "relation": "the spider whose brood spins between his golems"
+    },
+    {
+      "id": "dreaded-ursine",
+      "relation": "the forge a piece of him goes to"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "blacktooth",
+  "name": "Blacktooth",
+  "npcNames": [
+    "Blacktooth"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Blacktooth: NPC template 60158474, level 45, the warg model (as the shadowhunter she-wolves), faction shadow hunters, aggro 200 (range 500), no spells, respawn 600 s, on the north-eastern heights at 556065, 321834.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Blacktooth's broken tooth and the shepherds' count of her are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The shadow hunters are the wargs of the north-eastern heights, and the shepherds of Snowdonia give them that name because they are never seen in daylight on open ground: they run in the shadow of the crags, along the edge of the light, and come out of it all at once. Blacktooth leads them, and she is older than any shepherd now living.\n\nHer name is a shepherd's joke. One of her fangs is black and broken off short, and the old men of the fortress say it broke on the harness of a knight of Castle Myrddin in the first winter of the war, and that the knight's harness is still on the heights where he fell, with the rest of the tooth in it. She has hunted the heights since with one fang short and has not missed it.\n\nShe runs with the shadow hunters and does not stand alone on the heights for long, and when she comes the pack comes out of the shadow round her. The Eye of Arawn keeps the same heights and she does not hunt near him. The shepherds say even a warg knows better than to be looked at by that.",
+  "legend": "Blacktooth, level 45 warg, shadow hunters faction, on the north-eastern heights of Snowdonia near the Eye of Arawn's ground. Any shadow hunter wargs nearby are her faction and will come in with her, so look around before you pull. Plain melee, no spells, fast like any warg: do not try to run from her. Respawn ten minutes, and the pack respawns on its own timer, so do not linger on the heights.",
+  "yells": {
+    "aggro": [
+      "The pack is hungry.",
+      "Out of the shadow, all of you."
+    ],
+    "phases": [],
+    "death": [
+      "The pack... runs on..."
+    ],
+    "slay": [
+      "Meat.",
+      "The heights are hers again."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Shadow on the crag edge. Blacktooth's pack."
+    ],
+    "phases": [],
+    "realmFirstKill": "Blacktooth has fallen. The shadow hunters scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "blacktooth, 45 warg on the ne heights. check for her pack before you pull",
+      "dont run from blacktooth, wargs are faster than you"
+    ],
+    "aftermathWin": [
+      "blacktooth down. one fang short of a full set",
+      "got blacktooth. the heights are quiet"
+    ],
+    "aftermathLoss": [
+      "her pack came out of the shadows behind us"
+    ],
+    "rumour": [
+      "[heard|someone said] blacktooth's broken fang is still stuck in a dead knight's armour up there",
+      "heard blacktooth wont hunt near the eye of arawn"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "blacktooth",
+    "text": "Leader of the shadow hunters, the wargs of [snowdonia]'s north-eastern heights, one fang black and broken on a Castle Myrddin knight's harness in the first winter of the war."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down Blacktooth on the Snowdonia heights in {minutes} minutes.",
+    "loss": "Blacktooth's pack came out of the shadow, and {raidLeader} of {realm} fled the heights."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

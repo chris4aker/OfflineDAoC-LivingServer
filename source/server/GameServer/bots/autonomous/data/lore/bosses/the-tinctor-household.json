@@ -1,0 +1,99 @@
+{
+  "id": "the-tinctor-household",
+  "name": "Tinctor household",
+  "npcNames": [
+    "Botulf Tinctor",
+    "Eanfled Tinctor",
+    "Ealhhild Tinctor",
+    "Cenfus Tinctor",
+    "Cenwahl Tinctor"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "botulf tinctor",
+    "eanfled tinctor",
+    "ealhhild tinctor",
+    "cenfus tinctor",
+    "cenwahl tinctor"
+  ],
+  "facts": [
+    {
+      "text": "The Tinctor household: Botulf (46), Eanfled (45), Ealhhild (44), Cenfus (43) and Cenwahl (43) Tinctor, ghosts, no faction, no spells, respawn 80 s, in the dyers' hamlet (~429.1-429.5k, 392.7-393.1k).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tinctor is Latin for a dyer; the red dye, the madder and each member's habit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Tinctors dyed red. Tinctor is the readers' Latin for a dyer, and the Dyers never let them forget it.\n\nBotulf Tinctor, the head of the house, took the Latin name from a reader he did work for, and has been defending it ever since.\n\nEanfled Tinctor gathered the madder for the red and still kneels in the dead field digging for roots.\n\nEalhhild Tinctor kept the house and the peace inside it, and asks every visitor whether they have come from the Dyers.\n\nCenfus Tinctor and Cenwahl Tinctor, the brothers, carried the dyed cloth to the Parmenters and fought each other over who carried more, and still stand a step apart, arms full of nothing, arguing.",
+  "legend": "The Tinctor household: Botulf (46), Eanfled (45), Ealhhild (44), Cenfus (43) and Cenwahl (43) Tinctor, ghosts south-west of the Dyers in the dyers' hamlet. They aggro on sight and stand close together; Cenfus and Cenwahl are nearly on top of each other. Pull from the edge, plain melee, no spells, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "yells": {
+    "aggro": [
+      "Tinctor is the older name!",
+      "Did the Dyers send you?"
+    ],
+    "phases": [],
+    "death": [
+      "Red... still red..."
+    ],
+    "slay": [
+      "Dyed red.",
+      "Tell the Dyers that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Botulf Tinctor, at the door of the house.",
+      "Eanfled Tinctor is still at home.",
+      "Ealhhild Tinctor is still at home.",
+      "Cenfus Tinctor is still at home.",
+      "Cenwahl Tinctor is still at home."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Tinctor house falls quiet. The stream does not run red."
+  },
+  "botLines": {
+    "briefing": [
+      "tinctor house in the dyers hamlet, five of them, cenfus and cenwahl stand together",
+      "pull singles, dont drag the dyers in"
+    ],
+    "aftermathWin": [
+      "cleared the tinctors",
+      "botulf down. the latin name didnt help him"
+    ],
+    "aftermathLoss": [
+      "the tinctor brothers came together, as always"
+    ],
+    "rumour": [
+      "[heard|someone said] botulf tinctor took the latin name from a reader",
+      "heard eanfled tinctor still digs for madder roots in the dead field",
+      "[heard|someone said] ealhhild tinctor asks everyone if the dyers sent them",
+      "heard cenfus and cenwahl tinctor are still arguing over who carried more cloth"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tinctor",
+    "text": "The Tinctors dyed red in the dyers' hamlet of the [dales of devwy]: Botulf with the Latin name, Eanfled with the madder, Ealhhild at the hearth, and the quarrelling brothers Cenfus and Cenwahl. The [dyer] family never forgave the name."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} gave the Tinctor household their rest for a while, in {minutes} minutes.",
+    "loss": "The Tinctor household kept house; {raidLeader} of {realm} was shown the door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "the-dyer-household",
+      "relation": "the quarrel over the stream"
+    }
+  ],
+  "tier": "minor"
+}

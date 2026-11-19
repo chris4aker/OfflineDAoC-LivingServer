@@ -1,0 +1,111 @@
+{
+  "id": "fester",
+  "name": "Fester",
+  "catalogKey": "albion-named-mobs-classic-zones/fester",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 64, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs"
+    },
+    {
+      "text": "35% of its hits give an undiseased target a 120 s disease. Fester's Venom: 80 matter every 4 s for 20 s to everyone within 600 of its target ('An acidic cloud surrounds you!'), 3 s cast, recast 20-30 s, cast when its target is not poisoned.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs"
+    },
+    {
+      "text": "It walks home at full health when nobody is left on its aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Fester as the rot of the banks when the cattle went, the black reeds and the mire's custom are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Where the lake drains away west of the hills into a mire, the reeds are black and the air is sour, and Fester lives in it. The old men of Barfog say it was a sickness before it was a creature. When the lady of the lake called her white cattle home, nothing clean grazed the banks any more, and the banks began to rot: first the grass, then the reeds, then the water that ran out of the lake to the west. The rot gathered in the mire. Somewhere, sometime in the years after, it learned to walk.\n\nIt is a sickness still, the hill folk say, only one with legs. Whoever it strikes takes the sickness away with him in his blood, a slow sickness that makes every wound close late and every hand that tries to close it work twice as hard. And when it is angry it breathes, and the breath is a sour cloud that clings and burns, and does not stay on the one it breathes at but spreads to everyone standing near him, so that a knot of men round one sick man all burn together. The bwgan of the western ridge, who have to live near the mire, will not gather in threes or fours when Fester is about; they stand apart, each alone, and the old men of Barfog say the bwgan are not as stupid as they look.\n\nIt cannot be charmed or held. The druids who used to come up from the south to bless the lake tried once to bind it, the village remembers, and their binding slid off it as water slides off the black reeds.\n\nTwr ap Alsig has a theory that Fester will stop when the cattle come back, because the cattle were what kept the banks clean. The old men say the cattle are not coming back, and that if they did, the first thing they would eat is the mire.",
+  "legend": "Fester, level 64, 30k, in the black-reed mire west of the lake. Two problems. First, 35% of its hits give the target a 2 minute disease, which cuts healing, so cure disease on the tank every time. Second, Fester's Venom is an acid DoT, 80 every 4 seconds for 20 seconds, that hits everyone within 600 of its target, so everyone who does not need to be near the tank spreads well away from the tank. It recasts every 20 to 30 seconds. It cannot be mezzed or stunned, and has no adds. A wipe resets it to full; it respawns about an hour after death.",
+  "yells": {
+    "aggro": [
+      "The black reeds part. Something sour rises.",
+      "A wet breath, and the air turns.",
+      "The mire stands up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fester breathes, and the cloud spreads."
+      }
+    ],
+    "death": [
+      "The mire sinks back into itself.",
+      "The sour air begins to clear."
+    ],
+    "slay": [
+      "Rotted.",
+      "The black reeds take another.",
+      "Sickness spreads."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air is sour. The reeds are black.",
+      "Even the bwgan stand apart here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fester's sour cloud thickens!"
+      }
+    ],
+    "realmFirstKill": "Fester is cleansed from the mire."
+  },
+  "botLines": {
+    "briefing": [
+      "fester, 64, 30k. its hits disease the tank for 2 min, cure disease every time",
+      "its acid dot hits everyone within 600 of the tank, 80 a tick for 20 sec. spread off the tank",
+      "dot recasts every 20-30 sec. no adds",
+      "cant mez or stun it"
+    ],
+    "aftermathWin": [
+      "fester down. someone burn the mire",
+      "cure disease saved that",
+      "spread out and the dot only hit the tank. nice",
+      "the air smells better already"
+    ],
+    "aftermathLoss": [
+      "nobody had cure disease. the heals did nothing",
+      "we all stood behind the tank and the cloud got everyone",
+      "the dot ticked down the cloth one by one",
+      "tank stayed diseased the whole fight"
+    ],
+    "rumour": [
+      "heard fester was a sickness in the lake before it was a monster",
+      "[someone said|heard] fester's cloud eats through you",
+      "heard the bwgan near the mire never stand together",
+      "[heard|someone said] druids tried to bind fester once and it slid off"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fester",
+    "text": "The rot that set into Llyn Barfog's banks when the white cattle went home, gathered in the black-reed mire to the west, and learned to walk. Its sickness slows every wound's closing, and its sour breath spreads to everyone near the one it breathes on."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of the mire. When I was a boy the water that ran west out of the lake was clear, and we took eels from it. Then it went brown, then the reeds went black, then the eels went, and then Fester stood up out of it. The bwgan who live on the western ridge stand apart from each other when it is about, every one alone, never in threes or fours. I used to laugh at them. A company from Camelot went down to the mire last spring and stood together round their sick man, close, the way friends do. They came home coughing, all of them, and the sick man first. I do not laugh at the bwgan now.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} cleansed Fester from the Barfog mire in {minutes} minutes.",
+    "loss": "Fester spread through {raidLeader}'s company of {realm}, and the mire kept its sickness."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "mouth",
+      "relation": "the other hunger of the hills"
+    }
+  ]
+}

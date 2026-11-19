@@ -40,13 +40,15 @@ public static class ClientSessionDiagnostics
         }
     }
 
-    public static void Start(Process client, string clientDirectory, string logsDirectory)
+    // remoteServerAddress: a friend's server (Join Friend); null watches the local server on loopback.
+    public static void Start(Process client, string clientDirectory, string logsDirectory, System.Net.IPAddress? remoteServerAddress = null)
     {
-        _ = MonitorAsync(client, clientDirectory, logsDirectory);
+        _ = MonitorAsync(client, clientDirectory, logsDirectory, remoteServerAddress);
     }
 
-    private static async Task MonitorAsync(Process bootstrapClient, string clientDirectory, string logsDirectory)
+    private static async Task MonitorAsync(Process bootstrapClient, string clientDirectory, string logsDirectory, System.Net.IPAddress? remoteServerAddress)
     {
+        string connectionField = remoteServerAddress == null ? "loopback10300" : "remote10300";
         DateTime startedUtc = DateTime.UtcNow;
         Process trackedClient = bootstrapClient;
         int bootstrapProcessId = SafeProcessId(bootstrapClient);
@@ -99,11 +101,11 @@ public static class ClientSessionDiagnostics
                 if (SafeHasExited(trackedClient))
                     break;
 
-                string connectionState = LoopbackServerConnectionState();
+                string connectionState = ServerConnectionState(remoteServerAddress);
                 if (!string.Equals(previousConnectionState, connectionState, StringComparison.Ordinal))
                 {
                     Write(logsDirectory,
-                        $"CLIENT_TCP_CHANGE pid={processId} utc={DateTime.UtcNow:O} loopback10300={connectionState}");
+                        $"CLIENT_TCP_CHANGE pid={processId} utc={DateTime.UtcNow:O} {connectionField}={connectionState}");
                     previousConnectionState = connectionState;
                 }
 
@@ -114,7 +116,7 @@ public static class ClientSessionDiagnostics
                 Write(logsDirectory,
                     $"CLIENT_SAMPLE pid={processId} utc={DateTime.UtcNow:O} runtimeSeconds={(long)(DateTime.UtcNow - startedUtc).TotalSeconds} " +
                     $"idleSeconds={IdleSeconds()} responding={SafeResponding(trackedClient)} metrics={Quote(SafeProcessMetrics(trackedClient))} " +
-                    $"loopback10300={connectionState}");
+                    $"{connectionField}={connectionState}");
             }
 
             int exitCode = SafeExitCode(trackedClient);
@@ -123,7 +125,7 @@ public static class ClientSessionDiagnostics
                 $"CLIENT_SESSION_END pid={processId} utc={DateTime.UtcNow:O} runtimeSeconds={(long)(DateTime.UtcNow - startedUtc).TotalSeconds} " +
                 $"idleSeconds={IdleSeconds()} exitCode={exitCode} exitHex=0x{unchecked((uint)exitCode):X8} " +
                 $"classification={ClassifyExitCode(exitCode)} trackedGame={trackingGameProcess} " +
-                $"loopback10300={LoopbackServerConnectionState()} dump={Quote(dump)}");
+                $"{connectionField}={ServerConnectionState(remoteServerAddress)} dump={Quote(dump)}");
         }
         catch (Exception exception)
         {
@@ -258,15 +260,15 @@ public static class ClientSessionDiagnostics
         }
     }
 
-    private static string LoopbackServerConnectionState()
+    private static string ServerConnectionState(System.Net.IPAddress? remoteServerAddress)
     {
         try
         {
             TcpConnectionInformation[] matches = IPGlobalProperties.GetIPGlobalProperties()
                 .GetActiveTcpConnections()
-                .Where(connection => connection.RemoteEndPoint.Port == 10300 &&
-                    (connection.RemoteEndPoint.Address.Equals(System.Net.IPAddress.Loopback) ||
-                     connection.RemoteEndPoint.Address.Equals(System.Net.IPAddress.IPv6Loopback)))
+                .Where(connection => connection.RemoteEndPoint.Port == 10300 && (remoteServerAddress == null
+                    ? System.Net.IPAddress.IsLoopback(connection.RemoteEndPoint.Address)
+                    : connection.RemoteEndPoint.Address.Equals(remoteServerAddress)))
                 .ToArray();
             return matches.Length == 0 ? "absent" : string.Join(',', matches.Select(match => match.State).Distinct());
         }

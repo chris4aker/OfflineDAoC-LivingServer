@@ -1,0 +1,80 @@
+{
+  "id": "unne",
+  "name": "Unne",
+  "npcNames": [
+    "Unne"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "cronk",
+      "relation": "her chief; she fights when he does"
+    },
+    {
+      "id": "trude",
+      "relation": "at the same fire"
+    },
+    {
+      "id": "uppsala",
+      "relation": "at the same fire"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Unne is a level-41 tradklan (faction Tradklan Tribe; PackageID CronkBaf) at Cronk's fire in Faraheim (369,954/336,689) beside Trude and Uppsala, among medicine men, darters and tribesmen (52-56); when Cronk has aggro, every CronkBaf within 2,500 joins him.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs"
+    },
+    {
+      "text": "Unne as the tree-clan's youngest at the fire is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Unne is the youngest who sits at Cronk's fire. The tree-clan of Faraheim keeps the right of fire, the law that the chief alone holds the clan's flame, and round Cronk sit those he has chosen: Trude the hand that chose, Uppsala whom three accounts explain three ways, and Unne, who is the lowest in years and the last to be given a place, and who tends the fire while the others talk.\n\nThe tree-clan says Unne was given the place because she was the only one at the fire who never asked for it. Solvi of Hagall, who traps near the tradklan's trunks, says she carries the clan's coal from the fire to the clay pot when Cronk sleeps, and that if the right of fire ever passes from Cronk without bloodshed, it will pass through Unne's hands. When strangers come to the fire she fights beside the others, and when Cronk rises, the whole fire rises with him.",
+  "legend": "Unne is a level 41 tradklan at Cronk's fire in Faraheim, next to Trude and Uppsala, and she's in Cronk's pack: if Cronk gets aggro, every CronkBaf member within 2,500 joins, Unne included, so treat her as part of Cronk's fight. She's far lower than the medicine men and darters round her (52-56). Unne is in the CronkBaf pack: if Cronk is pulled, every CronkBaf member within range comes too, Unne included.",
+  "yells": {
+    "aggro": [
+      "The fire! Guard the fire!",
+      "(She snatches a burning branch.)"
+    ],
+    "death": [
+      "Keep... the coal..."
+    ],
+    "slay": [
+      "The fire stays lit."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Cronk's fire. The youngest tends it."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "unne is the 41 tradklan at cronks fire, in cronks pack",
+      "if cronk aggros she comes"
+    ],
+    "aftermathWin": [
+      "unne down",
+      "pulled cronk too, as expected"
+    ],
+    "rumour": [
+      "unne carries the tradklan coal to the clay pot when cronk sleeps",
+      "unne got her place at the fire because she never asked for it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Unne",
+    "text": "The youngest at Cronk's fire, given her place because she never asked, who carries the coal to the clay pot when the chief sleeps. See [tree-clan]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Unne's fire-tending in Faraheim in {minutes} minutes."
+  }
+}

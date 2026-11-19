@@ -1,0 +1,71 @@
+{
+  "id": "high-lord-athulf",
+  "name": "High Lord Athulf",
+  "npcNames": [
+    "High Lord Athulf"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "High Lord Athulf is a level-44 werewolf lord (faction Varulv; the high lords' model, large) in his wing of Varulvhamn (32,346/27,384) among frukta wargs (39-42), werewolf advisors and elite guards; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Werewolf Bane' sends players to kill three werewolf lords for their essences before the king.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table, 'Werewolf Bane' (0.37b world data)"
+    },
+    {
+      "text": "Athulf as the high lord who wants war is Living Server lore (Varulvhamn's 'high lords').",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Athulf wants war. Of the three high lords under the king, each holding a wing of the haven, he is the one who says the werewolves should have taken the dragon's offer, or Midgard's, or anyone's, so long as it meant going up out of the haven and taking something. He keeps the wargs, the frukta wargs that hunt in packs of their own, and his wing smells of them. His advisors advise him to wait. He keeps them for that, the wolfaur say, so that he has someone to refuse every morning.\n\nThe king's three natures listen to Athulf, and the wolf in the king agrees with him, the court says, and the man does not, and the thing between has not decided. Midgard's gothi send the young for his essence first, because if any lord of the haven is going to bring the werewolves up out of Varulvhamn against the realm, it is Athulf. He meets them in his wing with the wargs at his heels, glad of it.",
+  "legend": "High Lord Athulf is a level 44 Varulv high lord in his wing of Varulvhamn, with frukta wargs (39-42), werewolf advisors and elite guards round him. One of the three lords for Werewolf Bane's essences. Varulv faction, and the room is packed with his wing. Bring a full group. Clear the wargs at the edges first; the advisors stand thick round him.",
+  "yells": {
+    "aggro": [
+      "At last. Someone who wants to fight.",
+      "Wargs! Up!"
+    ],
+    "death": [
+      "The war... will come... without me..."
+    ],
+    "slay": [
+      "That is how the werewolves should meet Midgard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Warg-stink in the corridor. The high lord who wants war."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "athulf is the 44 high lord with the frukta wargs, werewolf bane essence",
+      "varulv faction, his wing joins"
+    ],
+    "aftermathWin": [
+      "athulf down, essence one",
+      "the wargs were the worst of it"
+    ],
+    "rumour": [
+      "athulf wants the werewolves up out of the haven and at war",
+      "athulf keeps advisors so he has someone to refuse every morning"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "High Lord Athulf",
+    "text": "The high lord of Varulvhamn who wants war, keeper of the frukta wargs, who keeps his advisors so that he has someone to refuse. See [high lords]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took High Lord Athulf's essence in Varulvhamn in {minutes} minutes."
+  }
+}

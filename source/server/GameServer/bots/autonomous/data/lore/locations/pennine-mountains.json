@@ -1,0 +1,258 @@
+{
+  "id": "pennine-mountains",
+  "name": "Pennine Mountains",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    14
+  ],
+  "aliases": [
+    "the pennines",
+    "the tops"
+  ],
+  "summary": "Albion's high frontier: four caers that change hands, the fair folk and the giants of the crags, the Isolationists, and the great drake of the tops.",
+  "facts": [
+    {
+      "text": "The Pennine Mountains are zone 14 of region 1, a frontier zone of the old frontiers, with four Albion keeps: Caer Berkstead, Caer Erasleigh, Caer Boldiam and Caer Sursbrooke.",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "About 430 monsters live there, among them boggarts, gnarled and knotted fellwood, cliff crawlers, ravenclan giants, Tylwyth Teg huntresses, angry bwca, isolationist mercenaries, cockatrices, Ellyll guards, western basilisks, great and young brown drakes, padfoot, cyhraeth and gytrash.",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Its named: Draco Magnificens (61), Ellyll Seer (59, faction Ellyllon), Belgrik (51, Ravenclan), Isolationist Courier, Treefall (Grimwood), Tylwyth Teg Ranger, Saffron, Delfina (forest poachers), Angau (a ghost) and Ash.",
+      "provenance": "game",
+      "source": "world data: Zones/Keep/Mob tables, region 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The realm holding the most frontier keeps finds its Darkness Falls door open.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Passage of Conflict replaced three older dungeons that led to the Summoner's Hall from the old frontier zones; that Albion's (the Hall of the Corrupt) was entered from the Pennine Mountains is inferred, to verify.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Albion bot chat already says there is a thing called Draco Magnificens in the Pennines that few have seen.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Real-world: the Pennines are the upland chain called the backbone of England. In Welsh folklore the Tylwyth Teg are the fair folk, ellyllon are elves, the bwca a household brownie, and the cyhraeth a wailing spirit whose cry foretells death; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Tylwyth_Teg"
+    },
+    {
+      "text": "The sleeping beast under the tops, 'a caer on the tops is lent, not owned', Corporal Dilys and the Rider's Book of the Tops, the neighbours, Treefall across the road and the drake as Golestandt's disputed heir are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The spine of the land. The Pennines run up the middle of Albion like the backbone of a beast lying on its belly, and the hill-folk of the north say that is exactly what they are. Long before Rome, the oldest of their tales go, a great creature lay down across the island to sleep and did not get up, and its back became the tops, and the high passes are the gaps between its bones. Whatever the truth of it, the tops were never easy country. The Romans drove a road over them and kept a few cold forts along it and complained in every letter home. After Rome the hill-folk had the passes to themselves, with the things that had always been there: the Tylwyth Teg, the fair folk, who hunt the high woods and do not like to be seen; the ellyllon, smaller and stranger, who keep a village of their own in a hollow of the western hills and a seer to tell them what is coming; the boggarts and the bwca of the farmsteads, who were household spirits once and turned ugly when the households left; and on the crags, the giants of the Ravenclan, who were there before any of them.\n\nThe frontier. When Arthur fell at Camlann and the three realms went to war, the border of Albion ran through Forest Sauvage and over these hills, and the Pennines stopped being a hard place to live and became a hard place to hold. Albion built four caers on the tops to bar the passes: Berkstead and Sursbrooke on the western side above the dales, Erasleigh and Boldiam to the east toward the wall. Every one of them has changed hands more often than any steward in Camelot can say, and the riders of Castle Sauvage who patrol between them have a saying about it: a caer on the tops is lent, not owned. Below the hills, in the same years, Albion set a watch on the old road down to the Summoners' Hall, and the watch died at its posts and is still there, and the dalesmen of Long Dale who carried its bread will not speak of it after dark.\n\nWhat lives there now. The war emptied the farms, and the hills filled up behind it. The fellwood of the Grimwood, trees that walk, came down out of the high woods into the cleared ground, and one of them, a great oak the riders call Treefall, has stood across the eastern road for longer than the caers have stood. Isolationists of Albion, men and women of the realm who will not have the realm, keep camps in the western folds and pay no tithe to Camelot or anyone; poachers and renegades follow them. Basilisks and cockatrices nest in the stony ground, worms burrow the bogs, and hounds that are not hounds, the padfoot and the gytrash, run the night roads. The cyhraeth, whose wailing foretells a death, is heard in the passes oftener than anywhere in Albion. And on the high tops above the eastern caers, the brown drakes hunt, and the greatest of them, a drake the size of a hall that the riders call Draco Magnificens, keeps the passes as his own.\n\nWhy it matters to Albion. Whoever holds the Pennines holds the north road and the frontier, and the frontier is the key to more than the hills: the realm that holds the most keeps finds the door of the demon court under Camelot Hills open, and the Pennine caers are four of them. The old powers matter too. The Church of Camelot counts the fair folk and the ellyllon as heathen and the Ravenclan as beasts; the riders of Castle Sauvage, who have to live beside them, count them as neighbours, some good and some bad. And the drake on the tops is the strangest question in the north. The riders say he is a shard of the stone dragon of Dartmoor that took wing; the Camelot loremasters say he is only the greatest of the hill drakes; and the drovers of the Cornish road, three hundred miles to the south, say that on the nights the drake flies south, she wakes.",
+  "legend": "The Pennines are frontier. Four Albion keeps sit on the tops, Caer Berkstead, Caer Sursbrooke, Caer Erasleigh and Caer Boldiam, and they change hands with the realm war; whoever holds the most keeps opens their own Darkness Falls door, so the old hands always ask who has the Pennine caers before they plan a night below. Between the keeps the zone is ugly for levelling but good for the brave: boggarts and fellwood in the forty-fives, ravenclan giants at fifty, hoary worms and great brown drakes in the fifties. Stay off the high tops above Erasleigh unless you mean it, because Draco Magnificens lives there, a level 61 epic drake that hits like a cart and comes back fast. The Isolationist camps in the west kill Albion on sight; they are Albion's own deserters and they have long memories. Riders of Castle Sauvage say a caer on the tops is lent, not owned. The cyhraeth's wail in the passes means a death before morning, the hill-folk swear, and nobody laughs at it twice. The Hall of the Corrupt, the watch that died at its posts, is reached from these hills.",
+  "atmosphere": {
+    "firstEntry": [
+      "The wind on the tops never drops.",
+      "Four caers bar the passes. Whose are they today?",
+      "Ravens on the crags. Giants under them.",
+      "Something huge crosses the sun, and is gone.",
+      "A wail in a far pass. The riders look away."
+    ],
+    "areas": [
+      {
+        "name": "Caer Berkstead",
+        "x": 584618,
+        "y": 390674,
+        "z": 5848,
+        "radius": 1200,
+        "lines": [
+          "Caer Berkstead. The western pass is barred here.",
+          "A caer on the tops is lent, not owned."
+        ]
+      },
+      {
+        "name": "Caer Sursbrooke",
+        "x": 582364,
+        "y": 365512,
+        "z": 5848,
+        "radius": 1200,
+        "lines": [
+          "Caer Sursbrooke watches the southern dales.",
+          "The wind on these walls has changed sides often."
+        ]
+      },
+      {
+        "name": "Caer Erasleigh",
+        "x": 621137,
+        "y": 370619,
+        "z": 6136,
+        "radius": 1200,
+        "lines": [
+          "Caer Erasleigh. Above it, the drake's tops.",
+          "The garrison looks up more than it looks out."
+        ]
+      },
+      {
+        "name": "Caer Boldiam",
+        "x": 623650,
+        "y": 406481,
+        "z": 6520,
+        "radius": 1200,
+        "lines": [
+          "Caer Boldiam, nearest the wall.",
+          "The north road runs under these towers."
+        ]
+      },
+      {
+        "name": "the drake's tops",
+        "x": 605913,
+        "y": 381264,
+        "z": 4408,
+        "radius": 1500,
+        "lines": [
+          "Scorched heather. Something huge has lain here.",
+          "The tops are quiet. Too quiet for drakes.",
+          "A shadow the size of a hall crosses the ground."
+        ]
+      },
+      {
+        "name": "the ellyll hollow",
+        "x": 571971,
+        "y": 401903,
+        "z": 2441,
+        "radius": 1500,
+        "lines": [
+          "Small doors in the hillside. Small eyes behind them.",
+          "The ellyllon keep a seer. She already knows you."
+        ]
+      },
+      {
+        "name": "the ravenclan crags",
+        "x": 576705,
+        "y": 396676,
+        "z": 8998,
+        "radius": 1500,
+        "lines": [
+          "Giants on the crags. They were here first.",
+          "Ravens circle the high stones, waiting."
+        ]
+      },
+      {
+        "name": "the isolationist folds",
+        "x": 578748,
+        "y": 381756,
+        "z": 6569,
+        "radius": 1200,
+        "lines": [
+          "Albion's own, who will not have Albion.",
+          "A camp with no banner and a long memory."
+        ]
+      },
+      {
+        "name": "Treefall's road",
+        "x": 607824,
+        "y": 410633,
+        "z": 2996,
+        "radius": 1200,
+        "lines": [
+          "An oak stands across the road. It was not planted.",
+          "The fellwood came down when the farms emptied."
+        ]
+      },
+      {
+        "name": "the wailing pass",
+        "x": 570248,
+        "y": 357256,
+        "z": 6140,
+        "radius": 900,
+        "lines": [
+          "A wail in the pass. Someone will die tonight.",
+          "The cyhraeth cries here oftener than anywhere."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the pennines are frontier. four caers on the tops and they change hands every week",
+      "riders of castle sauvage say a caer on the tops is lent not owned",
+      "the isolationists in the pennines are albion deserters. they hate us more than mids do",
+      "theres a whole ellyll village in a hollow in the pennines. they have a seer",
+      "ravenclan giants on the crags above the western caers. they throw rocks at everything",
+      "the boggarts in the pennines used to be house spirits before the farms emptied, [heard|they say]",
+      "treefall is a walking oak that stopped on the east road and never moved again",
+      "cyhraeth wails in the pennine passes. somebody dies before morning",
+      "padfoot follows you for miles and never gets closer. the gytrash does",
+      "great brown drakes in the pennines, mid fifties. and something bigger on the tops",
+      "the hall of the corrupt is down under the pennines, [heard|they say]. the old watch",
+      "hold the pennine caers and our df door opens. thats why the zergs fight up there"
+    ],
+    "rumour": [
+      "there's a thing called draco magnificens in the pennines, they say. never seen it",
+      "[heard|someone said] draco magnificens is golestandt's heir. a bit of her bed that grew wings",
+      "heard the drake on the tops flies south some nights and golestandt wakes up",
+      "[heard|someone said] the ellyll seer already knows your name when you walk in",
+      "heard three noobs tied their horses to treefall. they found the horses",
+      "[heard|someone said] the isolationists pay no tithe to camelot or anyone",
+      "heard the cyhraeth wailed twice for the same rider and he still rides",
+      "[heard|someone said] belgrik is the ravenclan giant chief up on the crags"
+    ],
+    "tell": [
+      "pennines? frontier zone north of forest sauvage. four of our keeps, giants, drakes, isolationists",
+      "is it hard? the keeps are rvr. the mobs are 40s to 50s and the drake on the tops is 61, so yes",
+      "where? north up the frontier from castle sauvage, between the forest and hadrian's wall",
+      "whats on the tops? brown drakes and draco magnificens. leave him alone unless you brought friends",
+      "good xp? boggarts and fellwood in the 40s, ravenclan and worms at 50, if the zerg leaves you alone",
+      "the hall of the corrupt is reached from there, the dead watch"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Pennines? The spine of Albion, and its frontier. Four [caers] on the tops that change hands with the war, the [riders] of Castle Sauvage between them, the [neighbours] who were there first, the [night roads], the dead [watch] below, and on the high tops, the [drake].",
+    "topics": {
+      "caers": "Four caers bar the passes of the tops: Berkstead and Sursbrooke in the west, Erasleigh and Boldiam toward the wall. Each has changed hands more often than Camelot can count. The riders say a caer on the tops is lent, not owned. See [riders].",
+      "riders": "The frontier riders of Castle Sauvage patrol between the caers and keep a book of the tops, passed from corporal to corporal. They count the [neighbours] as neighbours, which the Church does not like.",
+      "neighbours": "The fair folk hunt the high woods; the [ellyllon] keep a hollow village and a seer; the [ravenclan] hold the crags; the [isolationists] hold the western folds. The riders know them all by sight.",
+      "ellyllon": "Smaller and stranger than the fair folk, with small doors in the turf of a western hollow and a seer who looks at you as if you were late. The Church calls them heathen. The riders call them early.",
+      "ravenclan": "Giants on the crags above the western caers, older than any wall, with ravens circling their stones. They throw rocks at anything that climbs, and their chief is called Belgrik.",
+      "isolationists": "Albion's own folk who will not have Albion: deserters and refusers in camps with no banner, who pay no tithe and kill the realm's riders for the colour of their cloaks.",
+      "night roads": "Padfoot and gytrash, hounds that are not hounds, run the Pennine roads at night, and the boggarts of the empty farms hate whoever passes. Worst is the [cyhraeth].",
+      "cyhraeth": "A wail with no throat, heard in the passes. Someone dies before morning. The hill-folk swear it, and the riders have stopped laughing at it.",
+      "treefall": "A walking oak of the Grimwood that stopped across the eastern road when the farms emptied and has stood there since. Ride round it, wide. Never tie a horse to it.",
+      "watch": "Below these hills the old road runs down toward the Summoners' Hall, where Albion's watch died at its posts and is still keeping watch in the Hall of the Corrupt. The dalesmen of Long Dale carried its bread.",
+      "drake": "The greatest of the brown drakes of the tops, the size of a hall. See [draco magnificens]."
+    }
+  },
+  "book": {
+    "title": "The Rider's Book of the Tops",
+    "pages": [
+      "The Rider's Book of the Tops, kept by Dilys, corporal of the frontier riders of Castle Sauvage, for whoever rides the Pennines after her. The first thing to know is that a caer on the tops is lent, not owned. I have ridden past Berkstead under our banner in the morning and under Midgard's at dusk. Do not grieve for a caer. Count the walls when you pass them and write down whose they are, and leave the grieving to the stewards in Camelot, who have the time for it. The second thing is that the hills were not empty before we came, and are not empty now.",
+      "Of the neighbours. The fair folk hunt the high woods. They will not speak to a rider, and a wise rider does not follow them when they turn aside. The ellyllon keep a village in a hollow of the western hills, small doors in the turf, and a seer who looks at you as though you were late. The giants of the Ravenclan hold the crags and throw stones at anything that climbs. The Isolationists are worse than all of them, because they are ours: Albion's own folk who left the realm, and they kill Castle Sauvage's riders for the colour of our cloaks.",
+      "Of the night roads. The padfoot follows a rider for miles and never comes closer. The gytrash comes closer. The boggarts were house-spirits of the farms before the war, and when the households went they stayed and went bad, and they hate a rider more than anything because a rider is always passing through. The worst of the night is the cyhraeth. You hear it in the passes, a wail with no throat, and someone dies before morning. Not always you. Twice it has been the man beside me. I do not ride that pass after dark any more, and my riders do not ask why.",
+      "Of the oak across the eastern road. When the farms emptied, the walking trees of the Grimwood came down out of the high woods into the cleared fields, and one of them stopped on the road and has not moved since, an oak older than any caer. We call it Treefall. It is not dead and it is not asleep. Ride round it, wide, and do not tie a horse to it, whatever the new men say. There were three new men once who tied their horses to it and went to drink at Boldiam. We found the horses in the morning, in the road, standing very still, and the oak a little nearer the caer than it had been. We did not find the men.",
+      "Of the drake. Above Erasleigh, on the high tops, there is a drake the size of a hall. The Camelot loremasters call him only the greatest of the brown drakes. My grandmother, who rode before me, said he was a stone of the dragon's bed in Dartmoor that grew wings, and that he flies south on certain nights to see whether his mother is awake. I have seen him once, far off, lying on the heather like a fallen tower, and the brown drakes on the next top lying low as dogs lie low when their master is in a temper. I turned my horse. You will turn yours. Whatever he is, he is not ours to count."
+    ]
+  },
+  "bosses": [
+    "draco-magnificens",
+    "ellyll-seer",
+    "belgrik",
+    "isolationist-courier",
+    "treefall",
+    "tylwyth-teg-ranger",
+    "saffron",
+    "delfina",
+    "angau"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers",
+    "pennine-watch"
+  ]
+}

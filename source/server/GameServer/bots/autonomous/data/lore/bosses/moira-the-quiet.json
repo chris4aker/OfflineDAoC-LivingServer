@@ -1,0 +1,73 @@
+{
+  "id": "moira-the-quiet",
+  "name": "Moira the Quiet",
+  "npcNames": [
+    "Moira the Quiet"
+  ],
+  "locationId": "yggdra-forest",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies",
+    "hibernian-invaders"
+  ],
+  "related": [
+    {
+      "id": "ald-the-bruce",
+      "relation": "the Albion captain she killed in the dark"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Moira the Quiet is a level-44 ghost (ghost flag) of a Hibernian (the Sentinels' model) in Yggdra Forest (668,204/677,987) near Ald the Bruce, Soulsong and Fionnuala; no faction, alone.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her part in the night at Arvakr's road is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Moira was a sentinel of Hibernia who led a company into Yggdra after the horn, and she was called the Quiet because she never gave an order aloud: her company watched her hands. That was why the night went as it did. When her company met Albion's on the frontier road in the dark, nobody heard either side coming, and by the time Ald the Bruce shouted his challenge, Moira's hands had already moved.\n\nShe stands a little apart from Ald now, alone, without her company, and the Arvakr huscarls say that is because her company never rose. Only she did. Fionnuala, the Hibernian informer Midgard's rogues deal with, keeps her post near Moira, and the huscarls say she goes to the ghost at night and talks to her, and Moira does not answer, because she never did. Moira fights all who come near, without a word, and her hands still move before anyone sees.",
+  "legend": "Moira the Quiet is a level 44 Hibernian ghost in north Yggdra, near Ald the Bruce and Soulsong. She stands alone (her company never rose), so she's the easiest of the three to pull. No faction, no spells. Fionnuala, the informer for the rogue epic War Concluded, is close by; don't attack her if you still need her. The ghosts don't respawn instantly, so finish the three before moving on.",
+  "yells": {
+    "aggro": [
+      "(She says nothing. Her hands move.)",
+      "(A silent signal to a company that is not there.)"
+    ],
+    "death": [
+      "(Silence, as always.)"
+    ],
+    "slay": [
+      "(Not a word.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Hibernian ghost stands apart. She gives no orders aloud."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "moira the quiet is a 44 hib ghost in north yggdra, alone, easiest of the three",
+      "fionnuala is near her, leave fionnuala alone if you need her for the epic"
+    ],
+    "aftermathWin": [
+      "moira down",
+      "never said a word"
+    ],
+    "rumour": [
+      "moira the quiets company watched her hands, she never gave an order aloud",
+      "fionnuala talks to moiras ghost at night"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Moira the Quiet",
+    "text": "The ghost of a Hibernian sentinel who gave her orders with her hands and killed Ald the Bruce in the dark on the frontier road. Her company never rose. See [Arvakr]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} quieted Moira the Quiet for good in Yggdra in {minutes} minutes."
+  }
+}

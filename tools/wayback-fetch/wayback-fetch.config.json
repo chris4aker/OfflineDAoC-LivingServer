@@ -1,0 +1,15 @@
+{
+    "note": "Politeness settings. Keep delaySeconds at 3 or more for the real archive (the script never goes below 1).",
+    "delaySeconds": 3,
+    "dailyRequestCap": 1500,
+    "maxRetries": 5,
+    "backoffBaseSeconds": 10,
+    "backoffMaxSeconds": 600,
+    "maxRetryAfterSeconds": 900,
+    "timeoutSeconds": 120,
+    "maxBytes": 10485760,
+    "userAgent": "wayback-fetch/1.0 (personal archival research; one request at a time)",
+    "cdxPageSize": 500,
+    "cdxMaxPages": 5,
+    "maxRedirects": 3
+}

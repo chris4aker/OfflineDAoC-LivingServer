@@ -1,0 +1,81 @@
+{
+  "id": "treefall",
+  "name": "Treefall",
+  "npcNames": [
+    "Treefall"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Treefall: NPC template 60167247, level 46 (template 49), faction Grimwood, aggro 200 (range 500), no spells, respawn 300 s, across the eastern road of the southern Pennines at 607824, 410633 with nine gnarled fellwoods (45) round it; its model is the one the undead druids and filidh wear.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Symbol of the Broken (Master Gerol): find Treefall in the southern Pennine Mountains and retrieve his remains, deliver the bark to Caelin Finan at Castle Sauvage, then tell the Academy of Morgana's interest in raising up demons.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Treefall as a druid of the Grimwood who stood so long he took root, and the bark that carries Morgana's mark, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The riders of the tops say Treefall is a walking oak of the Grimwood that stopped across the eastern road when the farms emptied and has stood there since. The druids of Castle Sauvage say that is half the truth. Treefall was a druid first, they say, a keeper of the Grimwood who stood in the road one autumn to bar it against the men coming to cut his trees, and stood so long, and so stubbornly, that the wood took him at his word and rooted him there. There is a face in the bark, if one looks at it from the right side, and it is a man's.\n\nThe gnarled fellwoods of the Grimwood stand round him as a congregation stands round a priest, and the riders ride round them all, wide, and never tie a horse to anything in that wood. Treefall does not move from the road. Those who come too close, it moves toward.\n\nMaster Gerol of the Academy has learned something from Treefall's bark that frightens him: there is a mark grown into it that Caelin Finan of Castle Sauvage knows, and it is Morgana's, and it means she has been asking the old keepers of the wood how the things that sleep under it might be woken. Gerol wants the bark. The Grimwood, which has never given anything up willingly, is not likely to agree.",
+  "legend": "Treefall, level 46, stands across the eastern road of the southern Pennines with about nine gnarled fellwoods (45) around him, all Grimwood faction: they come with him. Clear the fellwoods from the edge, then Treefall. Plain melee, no spells, hits like a tree. Kill him and take his remains (the bark) for Symbol of the Broken to Caelin Finan in Castle Sauvage. Respawn five minutes.",
+  "yells": {
+    "aggro": [
+      "The road is shut.",
+      "Grimwood! Wake!"
+    ],
+    "phases": [],
+    "death": [
+      "Root... and fall..."
+    ],
+    "slay": [
+      "Mulch.",
+      "The wood keeps what falls in it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An oak across the road. It has a face."
+    ],
+    "phases": [],
+    "realmFirstKill": "Treefall has fallen. The eastern road is open."
+  },
+  "botLines": {
+    "briefing": [
+      "treefall on the east road, nine fellwoods round him, all same faction",
+      "pull the fellwoods off first, then the tree"
+    ],
+    "aftermathWin": [
+      "treefall down. got the bark for caelin",
+      "the eastern road is open for once"
+    ],
+    "aftermathLoss": [
+      "the whole grimwood woke up at once"
+    ],
+    "rumour": [
+      "[heard|someone said] treefall was a druid who stood in the road so long he turned into a tree",
+      "heard there's a morgana mark grown into treefall's bark"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "treefall",
+    "text": "The walking oak across the eastern road of the Pennines, which the druids of Castle Sauvage say was a keeper of the Grimwood rooted where he stood. Master Gerol found Morgana's mark in his bark."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} felled Treefall on the Pennine road in {minutes} minutes.",
+    "loss": "The Grimwood woke round Treefall and drove {raidLeader}'s company of {realm} off the road."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers",
+    "morgana"
+  ],
+  "tier": "minor"
+}

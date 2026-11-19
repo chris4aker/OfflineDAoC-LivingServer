@@ -16,7 +16,7 @@ namespace DOL.GS;
 /// <summary>
 /// The Living Server (docs/LIVING-SERVER.md): autonomous gamebots remember you, congratulate dings,
 /// celebrate server firsts, ask for and give rezzes, raise frontier alarms and keep nemeses. Every
-/// part has its own server setting (category "bots"), all off by default, and only autonomous
+/// part has its own server setting (category "bots"), all on by default since 1.2, and only autonomous
 /// gamebots speak; companion bots and real players are never changed. Lines come from the voices
 /// corpus (living_server.lines and memory.lines) and are only said where a real player can hear.
 /// </summary>
@@ -70,6 +70,8 @@ public static partial class AutonomousLivingServer
         // Rows of characters that were deleted are forgotten too (audit 2026-10-17). Once, at start-up.
         if (MemoryOn && Memories.Count > 0 || NemesisOn && Nemeses.Count > 0)
             Load("rows of deleted characters", PruneDeletedCharacters);
+        // A seam (Crafting 2.0 WP0): the economy packages' stores load here (none registered by default).
+        DOL.GS.CraftingEconomy.EconomyLifecycle.LoadAll(Load);
         GameEventMgr.AddHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.AddHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
@@ -133,6 +135,7 @@ public static partial class AutonomousLivingServer
         Memories.Flush(wait);
         Nemeses.Flush(wait);
         Firsts.Flush(wait);
+        DOL.GS.CraftingEconomy.EconomyLifecycle.FlushAll(wait);
     }
 
     #region Pruning (start-up and the flush timer, never the game loop; deletes go through the batched writer)
@@ -210,8 +213,16 @@ public static partial class AutonomousLivingServer
             AutonomousBotSchedule.Pulse(now);
             if (MemoryOn)
                 MemoryPulse(now);
+            // Bot-led groups: a gamebot leader may invite the player (bot_group_invite_player; /lfg asks anyway).
+            BotLedGroups.Pulse(now);
             EngagePulse(now);
             AutonomousLivingWorld.Pulse(now);
+            // Tales: the realm's storyteller, the rumour after it, fireside tales in a resting group.
+            AutonomousTales.Pulse(now);
+            // The play test's sweep (/epictest sweep): nothing unless a GM started one.
+            EpicPlaytestSweep.Pulse(now);
+            // The economy packages' stores (Crafting 2.0 WP0 seam; none registered by default).
+            DOL.GS.CraftingEconomy.EconomyLifecycle.PulseAll(now);
         }
         catch (Exception exception)
         {
@@ -223,14 +234,31 @@ public static partial class AutonomousLivingServer
 
     #region Speaking
 
+    // A No Lifer's buffbot is a parked second character: it never joins the realm's chatter (NoLiferBuffBots has its few lines).
+    // A hired companion is a speaker like any gamebot (owner 2026-11-18 09:14: "Companions should have all the same chat
+    // framework and structure as any bot you interact or group with"): grats, memory, group talk, rez thanks, tells. One whose
+    // player set its Speech to Formal keeps to its True 1.65 companion lines (CompanionChat165), so it has one voice too.
     internal static bool IsSpeaker(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-        bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
+        !CompanionChat165.IsFormal(bot) && !bot.IsNoLiferBuffBot && bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
 
     internal static bool CanTalk(GameBot bot) => IsSpeaker(bot) && bot.IsAlive && !bot.InCombat && !bot.IsCasting;
 
     internal static bool PlayerHears(GameBot bot) => bot?.CurrentRegion != null &&
         ClientService.Instance.GetPlayersOfRegion(bot.CurrentRegion).Any(player =>
             player.ObjectState == GameObject.eObjectState.Active && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE));
+
+    /// <summary>Whether the bot is in an RvR party (on its way to or in the frontier fight), not standing about in town.</summary>
+    internal static bool InRvrParty(GameBot bot)
+    {
+        try
+        {
+            return bot?.Group != null && AutonomousObjectiveAssignments.KindFor(bot) == eAutonomousObjectiveKind.RvR;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 
     internal static bool GroupHasPlayer(Group group) =>
         group != null && group.GetMembersInTheGroup().Any(member => member is GamePlayer);
@@ -248,25 +276,28 @@ public static partial class AutonomousLivingServer
             text = AutonomousRoleplayers.Voice(bot, text);   // /say goes through GameBot.Say, /faction through BroadcastFaction
         switch (channel)
         {
+            // PC check 2026-11-19 (build 5154cae): true only when the line went out. A /say with no player in range said nothing
+            // and returned true, so LORE_PLACED was logged for a line nobody heard.
             case Channel.Say:
-                if (PlayerHears(bot))
-                    bot.Say(text);
-                break;
+                if (!PlayerHears(bot))
+                    return false;
+                bot.Say(text);
+                return true;
             case Channel.Group:
-                if (GroupHasPlayer(bot.Group))
-                {
-                    bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-                    BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
-                }
-                break;
+                if (!GroupHasPlayer(bot.Group))
+                    return false;
+                bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                BotChatTranscript.Bot("group", bot.Name, bot.Realm, text, who: bot);
+                return true;
             case Channel.Faction:
                 return RealmHasPlayer(bot.Realm) && AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
             case Channel.Guild:
-                if (bot.Guild != null && AutonomousBotGuildSocial.HasListener(bot.Guild))
-                    AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
-                break;
+                if (bot.Guild == null || !AutonomousBotGuildSocial.HasListener(bot.Guild))
+                    return false;
+                AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
+                return true;
         }
-        return true;
+        return false;
     }
 
     /// <summary>Runs an action on the bot's (or player's) timer after a delay, if it is still in the game and the condition still holds then.</summary>
@@ -300,7 +331,7 @@ public static partial class AutonomousLivingServer
     public static string RaceWord(int race)
     {
         if (race is >= 19 and <= 21)
-            return "minotaur";
+            return "minotaur";   // chat-check: allow minotaur (races 19-21 never exist on the 1.65 client)
         eRace value = (eRace)race;
         if (value == eRace.Unknown || !Enum.IsDefined(value))
             return string.Empty;
@@ -381,8 +412,9 @@ public static partial class AutonomousLivingServer
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot) || player?.Client == null)
             return;
         text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
+        text = ChatPromises.BeforeSend(bot.Name, bot.Realm, text);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
-        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
+        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
         // The talking update: the player's next tell to this bot continues this exchange.
         AutonomousChatThreads.Log.Record(AutonomousChatThreads.Tell(player.Name, bot.Name), bot.DatabaseID, bot.Name, text, invites,
             GameLoop.GameLoopTime);

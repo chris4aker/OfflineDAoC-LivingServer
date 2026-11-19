@@ -1,0 +1,148 @@
+{
+  "id": "prince-abdin",
+  "name": "Prince Abdin",
+  "catalogKey": "darkness-falls/princeabdin",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 78, 100,000 health, a prince of Darkness Falls; no scripted mechanic beyond his reset.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs"
+    },
+    {
+      "text": "Darkness Falls' bestiary lists its princes among the court.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+    },
+    {
+      "text": "Prince Abdin: NPC template 60165029 (level 78, tether 4,500), 100,000 health, GetResist 40 melee / 70 other, parry 70, CC immune, melee range 450; no other scripted mechanic; resets after 8 s out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs"
+    },
+    {
+      "text": "In the quest 'Breaking the Blade' Mystemas sends players to kill Director Kobil and then Prince Abdin.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Which lord knelt second at the Feast, the chapter-house saying, the deep earth that drinks sorcery, the lost wager on Albion and Dame Elen of Caerwent are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Eleven lords knelt at the Feast of Thrones, and the court still argues which knelt second. Prince Abdin says he did, the moment Adremal had finished speaking; Ba'alorien's Inquisitors say he knelt last. When the Master gave the Blood their quarters, Abdin took the north-west, where the hollow runs deepest into the earth, and asked only for a sworn order: the Chthonic Knights, his Blade, who take souls whole and keep them. He is the eldest of the Blood and keeps no tricks; the skalds say the eldest prince has one hand and uses it.\n\nHe fights as a duellist, face to face, and his knights copy his guard: a blade that comes from the front is met and turned until its wielder tires. Over the chapter-house door is cut their boast, read to Brother Odran by an imp for a candle: a Chthonic Knight is struck only from behind, and only once. The companies have taken it as advice. And the deep earth has its own way with sorcery: spells sink into the prince like rain, while an honest blade past his guard tells every time.\n\nAbove the Gate, Director Kobil drills the prince's Army of Shadows, a host on no Roll that can never be struck off or eaten. Mystemas sends mortals to break the Director and then the prince. The Church calls the army a knife for the Master's throne; the skalds, a prince's pride with legs; the druids, the souls his knights kept whole, learning to march.\n\nAbdin once staked his chapter's tithe that Albion's door would stay shut, and lost it in a fortnight. Dame Elen of Caerwent, who believed the chapter-house saying, held him face to face with her shield while her knights circled to his back like a turning wheel, and he fell facing her. Midgard and Hibernia each claim him first. He has not wagered on Albion since.",
+  "legend": "Prince Abdin is level 78 with 100,000 health, CC immune, and 40% melee / 70% everything-else reduction, so spells do a third of what melee does on him. He has no tricks at all: no adds, no pet-eating, no heal. What he does have is parry 70 and a 450 melee reach. Melee from his front gets turned most of the time; melee from behind cannot be parried. So one tank holds him face on and every other melee goes to his back, the way Dame Elen's knights did. Casters help most on his Chthonic Knights in the chapter house nearby. Drop out of the fight for 8 seconds past his reach and he walks home at full health. He is one of the four Blood (with Asmoien, Ba'alorien and Nahemah) who must all be dead before Beliathan can rise, and Mystemas's Breaking the Blade quest sends you to Director Kobil first, then to him.",
+  "yells": {
+    "aggro": [
+      "Kneel, mortal. I will make it quick.",
+      "Face me. A prince is struck from the front.",
+      "The Blade is drawn. Kneel or be kept."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I call no one. A prince stands alone."
+      }
+    ],
+    "death": [
+      "A prince... of the court... falls...",
+      "Struck... from behind...",
+      "Keep me whole, my knights... keep me..."
+    ],
+    "slay": [
+      "You should have knelt.",
+      "Kept.",
+      "Whole, and mine.",
+      "You should have knelt sooner."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A prince's hall. He expects you to kneel.",
+      "Steel rings on steel below: the chapter is at drill."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Prince Abdin fights on alone. He calls no one."
+      }
+    ],
+    "realmFirstKill": "Prince Abdin has fallen. The court loses a wager."
+  },
+  "botLines": {
+    "briefing": [
+      "abdin is 100k, parry 70, 40% melee and 70% magic reduction. melee wins",
+      "one tank face on, every other melee goes behind him. he cant parry what he cant see",
+      "casters on the chapter knights, not on abdin",
+      "no adds, no tricks. dont drop out of the fight or he resets full",
+      "he is one of the four royals for beliathan"
+    ],
+    "aftermathWin": [
+      "abdin down. one prince of four",
+      "he wanted us to kneel. no thanks",
+      "kept his back full all fight. nice wheel",
+      "the eldest prince is down",
+      "mystemas will be pleased. or something"
+    ],
+    "aftermathLoss": [
+      "we lost to the one prince with no tricks",
+      "melee stood in front and he parried everything",
+      "casters wasted mana on him, 70% reduction",
+      "we let the fight go quiet and he walked home full"
+    ],
+    "rumour": [
+      "prince abdin, prince asmoien, prince ba'alorien. say them three times and see who shows up",
+      "[heard|someone said] abdin bets on which realm comes down next",
+      "heard abdin lost a huge bet that albion's door would stay shut",
+      "[heard|someone said] the chthonic knights say they are struck only from behind"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "abdin",
+    "text": "The eldest of the Blood of [Darkness Falls], who took the deepest quarter and the Chthonic Knights as his Blade. He keeps no tricks; he turns every blade from the front, and spells sink into him like rain. His knights say they are struck only from behind. Kobil raises his Army of Shadows. See [beliathan]."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Dame Elen of Caerwent. The prince of the north-west fights face to face and turns every blade that comes at him from the front; his knights' saying, over their door, is that a Chthonic Knight is struck only from behind, and only once. I believed it. I held him with my shield, and sent my knights round to his back, and when he turned they turned with him like a wheel. My mages I kept for his knights; spells soak into him like rain into a field. He never cried out or called for help. He fell facing me.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} refused to kneel and felled Prince Abdin in {minutes} minutes.",
+    "loss": "Prince Abdin made {realm}'s raid kneel; {raidLeader} fell back to the door."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "chthonic-chapter"
+  ],
+  "related": [
+    {
+      "id": "prince-asmoien",
+      "relation": "the feud of the Blade and the Hook"
+    },
+    {
+      "id": "beliathan",
+      "relation": "one of the four Blood whose lives keep the worm down"
+    },
+    {
+      "id": "legion",
+      "relation": "knelt to the Master at the Feast of Thrones"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Second to Kneel",
+      "text": "Eleven lords knelt at the Feast of Thrones, and the court has argued ever since about which of them knelt second. Prince Abdin says it was he.\n\nAdremal knelt first, and nobody disputes it; it is written on the First Roll in his own hand. After that the Roll lists the Blood in the order of their quarters, not of their kneeling, and the chroniclers of the court have filled the gap with quarrels. Abdin's account is that he knelt the moment Adremal had finished speaking, because a lord who understands a bargain does not wait to see whether it is a good one. Ba'alorien's Inquisitors say Abdin knelt last of the eleven, when there was nobody left standing to be eaten but him. The imps, asked, say both, and charge for it.\n\nWhat is not disputed is what he asked for. When the Master gave the Blood their quarters, Abdin chose the north-west, where the hollow runs deepest into the earth, and asked for no wealth and no household, only for a sworn order of his own: knights who would take the souls of the fallen whole and keep them, as a lord keeps hostages. The First Roll calls them the Chthonic Knights, the knights of the deep earth, and Abdin calls them his Blade. He is the eldest of the Blood, the court says, and the only one who has never asked the Master for anything since.\n\nHe holds that a prince is a prince because he is stronger than what stands under him, and that is all. He keeps no tricks. He scorns his brothers' appetites and his sister's storms, and he has said on the Roll, in a line the Chancellor let stand, that the Blood would have fewer enemies if they had fewer habits. The Midgard skalds, who admire very few things in the hollow, admire that, and say it in a verse: the eldest prince has one hand and uses it."
+    },
+    {
+      "title": "The Guard of the Chapter House",
+      "text": "The Chthonic Knights learn their craft from their prince, and their prince learned it from nobody.\n\nAbdin fights as a duellist fights, face to face, and the knights of his chapter house are taught to fight as he does. Their first lesson is the guard: a blade that comes at a Chthonic Knight from the front is met and turned, again and again, until the one who swung it is too tired to swing. The knights practise it in pairs in the chapter house below the prince's hall, and the clatter of it carries up the passages to the Gate, so that the watch at the crossing can tell from the sound whether the chapter is at drill. Abdin's own guard is the one his knights copy, and the imps say no blade has ever reached him from in front that he did not first allow to.\n\nThe knights have a saying about their prince, cut over the door of the chapter house in the court's script, and Brother Odran of Camelot Hills had it read to him by an imp for the price of a candle. A Chthonic Knight is struck only from behind, and only once. The knights mean it as a boast: that they never turn their backs. The companies of the realms have taken it as advice.\n\nThe deep earth has its own way with sorcery. The druids of Hibernia say that the north-west of the hollow lies so far under the roots of the world that a spell thrown there sinks into the ground like rain, and the Albion priests who have gone down with the companies say the same of the prince: their fire and frost went into him and seemed to soak away, while an honest blade that found its way past his guard told every time. Abdin despises magic as a prince despises a servant's trick. The earth he chose despises it with him."
+    },
+    {
+      "title": "The Army of Shadows",
+      "text": "Abdin has asked the Master for nothing since the Feast. He is building something instead, and the whole hollow knows it.\n\nAbove the Gate, in chambers that the court reaches by its own ways, Director Kobil keeps to his rooms and teaches an army to march. It is the prince's Army of Shadows: a host of shadows that holds no line on any Roll, and so can never be struck off, counted or eaten. The court says the army will come down to the Gate when it is finished, and that when it does, the Roll will have a prince on it who answers to no bargain. The Chancellor's clerks have written nothing about this. The imps say that is the most frightening thing about it.\n\nMystemas, demoted to the bottom of the Tenth Roll and standing among the imps in the Albion hall, sends mortals against it. He tells them to break the Director first, in his chambers, and then the prince, and calls it breaking the Blade; Hibernia's companies, who hear the same errand from their own side of the hollow, call it the war against the Army of Shadows. Mystemas says he does it as a kindness. Brother Odran, who heard him say it, wrote in the Door-Book that the imp's kindness had a prince's name on it, and that he would not have trusted it with a candle-end.\n\nThe three realms disagree about what the army is for. The Church of Camelot says Abdin means to take the Master's throne and that the army is the knife. The Midgard skalds say a prince who will not ask must take, and that the army is only a prince's pride with legs. The druids say the shadows are the souls his knights have kept whole, that the prince is teaching his hostages to march, and that it would be a mercy to break them before they learn."
+    },
+    {
+      "title": "The Wager on Albion",
+      "text": "The Blood keep wagers on which realm will come down next, and Prince Abdin once lost heavily on Albion.\n\nThe imps tell it gladly. The doors answer to the frontier keeps, and in the season of the wager Albion held so few of them that Abdin staked his chapter's whole tithe of seals that Albion's door would stay shut until the Eleventh Roll. Albion took the frontier back in a fortnight. Its door opened. The first Albion company to come down that season came straight to the north-west, under Dame Elen of Caerwent, a knight of the Church who had read Odran's copy of the chapter-house saying and believed it.\n\nHer account is in the Door-Book. She held the prince face to face with her own shield, because someone had to, and she sent the rest of her knights round him to his back. She kept her mages for his knights, not for him. When the prince turned to meet a blow, her knights moved round him as a wheel turns, so that his back was never empty; she wrote that it took most of a night, and that he never once complained or cried out or called his knights, because a prince who calls for help has admitted something. He fell at last facing her, with Elen's men behind him. His knights did not avenge him. A Chthonic Knight, Odran noted, is struck only once.\n\nMidgard's companies say their first band killed the eldest prince the season before Elen, and Hibernia's bards have a lament for a druid company that killed him and did not come home; each capital keeps its own count. The imps say Abdin has hated Albion since that season, not for killing him, which is the business of mortals, but for opening its door when he had wagered that it could not. He was back in his hall by the next Roll. He has not wagered on Albion since."
+    }
+  ]
+}

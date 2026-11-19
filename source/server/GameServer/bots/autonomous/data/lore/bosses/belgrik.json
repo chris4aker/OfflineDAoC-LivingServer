@@ -1,0 +1,126 @@
+{
+  "id": "belgrik",
+  "name": "Belgrik",
+  "npcNames": [
+    "Belgrik"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "aliases": [
+    "the ravenclan chief",
+    "chief of the ravenclan"
+  ],
+  "facts": [
+    {
+      "text": "Belgrik: template 60158349, level 51, the ravenclan giants' model at size 138, on the crags of the western Pennines at 576705, 396676; aggro level 200 within 500, faction Ravenclan, strength 92 and dexterity 102, no spells or styles, respawn 300 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The nearest ravenclan giants (50-56) stand 1,321 and 1,553 away.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls aggressive friends within 450, plus 150 for each attacker beyond the first, up to eight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight)"
+    },
+    {
+      "text": "Lord of Deceit: after the isolationist courier's documents, Lieutenant Kuebler of Castle Sauvage speaks of the Ravenclan giants' book of lore; slay the Ravenclan giant Belgrik, take the Book of Lore to Captain Rhodri.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Ravenclan's ledger of payments cut in slate, the ravens as their counters, the toll of the crag path, Sir Tillian's tally of three summers and Kuebler's clerk Anwen are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The giants of the Ravenclan held the Pennine crags before any wall was built in Albion, and they have never thought of the tops as anybody's but theirs. Ravens wheel over their stones by day and roost on them at night, and the giants say the birds are their counters: every raven that comes back to the crag at dusk has seen something, and tells it, and the chief writes it down. The chief now is Belgrik. He is not the oldest of the clan, nor the tallest, but he is the one who keeps the book, and among the Ravenclan that is the same as being chief.\n\nThe Book of Lore is not a book as Camelot means it. It is a pile of slates, bound between two boards with hide, and cut with marks that the Academy has never read. Lieutenant Kuebler of Castle Sauvage knows what is in it anyway, because he has asked the right people. It is a ledger. The Ravenclan forget nothing that was paid them. Every traveller who wanted the crag path, every Roman surveyor, every drover, every rider of the frontier who did not want a stone dropped on him, paid a toll in salt or iron or meat, and the chief cut a mark for it. The giants keep the marks as the Church keeps its baptisms, and read them aloud at midwinter, the whole tally from the first.\n\nThat is why the frontier wants it. In the years when the deceit ran through the Isolationists' camps in the western folds, their couriers went over the crag path with letters for someone in the realm, and they paid Belgrik's toll each time, and Belgrik cut each payment into his slates with the courier's mark beside it. The courier's documents told Captain Rhodri what was sent. The Book of Lore tells him how often, and how long it had been going on, and the ellyll seer's journal, the riders say, tells him who.\n\nBelgrik does not wait to be asked. Any traveller who comes up the crag path without paying, he comes down it at, swinging, and he is quick for a giant and hits like a falling wall. His clan stands back on its own stones and lets the chief settle his own toll; it is only when a whole war-band comes up the path that the other giants climb down to help. Sir Tillian of Castle Sauvage has a tally of his own, of the young he has sent up for the book, and he reads it at midwinter too.",
+  "legend": "Belgrik is a level 51 Ravenclan giant chief on the crags of the western Pennines. He is aggressive from about 500 away, quick and hard-hitting for a giant (high strength and dexterity in the data), but has no spells and no styles: a straight melee fight. The other ravenclan giants stand 1,300 to 1,550 away, so a single group fights Belgrik alone, while a big zerg widens the bring-a-friend call and can pull more giants off their stones. A group of fifties with a solid tank is right. He carries the Book of Lore for Lord of Deceit (Lieutenant Kuebler sends you, Captain Rhodri in Snowdonia Fortress takes it). Respawn about five minutes. He stands high on the crags, well above the valley floor, so plan the climb and keep the group together on the way up.",
+  "yells": {
+    "aggro": [
+      "You did not pay.",
+      "Up my path? Then you pay with you.",
+      "The ravens saw you. I cut your mark."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Ravens! Count this! Count them all!"
+      }
+    ],
+    "death": [
+      "Cut... my mark... in the slate...",
+      "The book... the ravens will remember..."
+    ],
+    "slay": [
+      "Paid.",
+      "Another mark in the slate.",
+      "The toll is taken."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ravens wheel over the crag. They are watching you.",
+      "A giant's slates lie stacked by the path."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The ravens of the crag rise, screaming."
+      }
+    ],
+    "realmFirstKill": "Belgrik has fallen. The Ravenclan's ledger is open."
+  },
+  "botLines": {
+    "briefing": [
+      "belgrik, 51 ravenclan chief on the crags west pennines. aggros from 500, hits like a truck, no spells",
+      "other giants are 1300-1500 away. one group and they stay put, a zerg drags them in",
+      "solid tank, keep heals on him, everyone else melee or nuke. its just a big giant",
+      "book of lore for lord of deceit. he's back in about 5 min"
+    ],
+    "aftermathWin": [
+      "book of lore, got it. rhodri can read the slates",
+      "chief down and the clan never moved",
+      "one group like i said",
+      "ravens are still screaming, lets go"
+    ],
+    "aftermathLoss": [
+      "zerg came up the path and the whole crag joined",
+      "tank wasnt ready, he hits way over 51",
+      "strung out on the climb and he ate the stragglers one at a time",
+      "we had the book and died on the climb down"
+    ],
+    "rumour": [
+      "[heard|someone said] the ravenclan keep a ledger of every toll paid on the crag path",
+      "heard belgrik's book of lore is slates tied with hide, and the ravens tell him what to write",
+      "[heard|someone said] the isolationist couriers paid belgrik's toll every time they crossed",
+      "heard the giants read the whole ledger out at midwinter"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "belgrik",
+    "text": "Chief of the [ravenclan] giants on the western crags of the [pennine mountains], because he keeps the clan's Book of Lore: slates bound in hide, a ledger of every toll paid on the crag path since before the walls, counted by the ravens. The Isolationists' couriers paid his toll for years, and the ledger shows how often; the [ellyll seer]'s journal, the riders say, shows who. He settles his own toll; his clan only comes down for a war-band."
+  },
+  "bookPage": "From the papers of Lieutenant Kuebler of Castle Sauvage, in the hand of his clerk Anwen. The lieutenant asked the drovers of the north road what the giants want for the crag path. Salt, they said, or iron, or meat, and the chief cuts a mark for it on a slate, and once a year the whole clan sits down and he reads the marks out, from the first. The lieutenant asked whether the Isolationists' couriers paid. The drovers laughed. Every time, they said, and the chief cut every time, with the courier's sign. The lieutenant wrote to Captain Rhodri that night that the realm need not find out how long it had been going on. A giant has been counting.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took Belgrik's Book of Lore from the Ravenclan crag in {minutes} minutes.",
+    "loss": "Belgrik cut another mark in the slate: {raidLeader}'s company of {realm}, paid in full."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "ellyll-seer",
+      "relation": "the seer's journal names who the couriers wrote to; Belgrik's ledger shows how often"
+    },
+    {
+      "id": "pennine-mountains",
+      "relation": "the Ravenclan crags above the western caers"
+    }
+  ]
+}

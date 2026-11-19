@@ -1,0 +1,135 @@
+{
+  "id": "captain-bardalph",
+  "name": "Captain Bardalph",
+  "catalogKey": "hall-of-the-corrupt/captainbardalph",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Bardalph's blows bleed for 65 every 3 seconds for 30 seconds; tether 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bardalph is female in her script (Gender = Female; model 55), a ghost with 50% evade, after-evade and taunt styles, a thrusting main weapon and an off-hand dagger, tether 1,500, 30,000 health, and the captains' 35% Bleed (65 body every 3 s for 30 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs"
+    },
+    {
+      "text": "Bardalph's Swanton Keep origin, the twenty-second mark, the three questions, her letter to the Constable through her brother Gwion of Prydwen Keep and the dagger kept at Swanton are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Captain Bardalph was the gate-warden's daughter of Swanton Keep in the Black Mountains, sent north with a short letter from her castellan: quick, rude, always right, and welcome back when the Pennines had finished with her. In Lord Gildas's second year she cut the twenty-second mark on the outer gate's post-stone, the post that met everything first and had lost a keeper a year, and no one ever cut another. For eighteen years she asked every stranger the Swanton gatehouse's three questions (who sent you, what do you carry, who will answer for you), which the dalesmen of Long Dale still call Bardalph's questions.\n\nShe was the only officer never marked in Atwell's practice yard. She fought with a thrusting blade and a dagger and no shield, went where the blow was not and put the point in when a man had swung himself out, and she called a wandering eye back to her blade with a feint and a word; the sergeants said 'as easy as hitting Bardalph' of any work that will not be hurried.\n\nWhen she was overruled at table over the wizard, she would not go behind Gildas with his clerk, and sent a sealed letter by Hob the carrier to her brother Gwion at Prydwen Keep, who carried it to the Constable. It asked for a second wizard to watch the first, or a priest. It lies at the bottom of the drawer of Aidon's letters in Camelot, opened only after Sir Hamon's riders came home.\n\nOn the last night she said that she had told them so, the last words written by a living hand in the hall. She keeps her stone below Captain Heathyr's door, the patient one, whose cuts run on after the blow like all the captains'. The Midgard war-bands call her the gate-wife. Swanton still keeps her dagger on the peg by the gate, and takes it down for a night whenever word comes that she has fallen.",
+  "legend": "Bardalph is a ghost captain, level 65, 30,000 health, with a thrusting blade and a dagger. She evades about half of all melee swings, so her fight runs long: keep the melee on her anyway and let the casters carry it, because magic is not evaded. Her taunt style drags the tank's attention back to her, which is fine; it is the off-tanks who drift. About one hit in three she bleeds the target, 65 body every three seconds for thirty seconds, like every captain; cure poison clears it. She cannot be mezzed or stunned. Her tether is 1,500: drawn further she takes no damage and heals to full, and half a minute without a fight puts her back to full too. Captain Heathyr's door is only about 870 away, so fight Bardalph on her own stone and do not drift up toward the door. The bards' joke at the muster: answer her three questions. She does not ask them.",
+  "yells": {
+    "aggro": [
+      "Who sent you? What do you carry?",
+      "Who will answer for you? No one.",
+      "The outer gate is held. Turn back."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I told you. I told all of you."
+      }
+    ],
+    "death": [
+      "Told you... all...",
+      "I was right... much good it did..."
+    ],
+    "slay": [
+      "No one answered for you.",
+      "Back down the road.",
+      "Too slow.",
+      "You swung at where I was."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A spear-head mark, cut very deep, on the gate stone.",
+      "A captain waits at the outer gate, blade low."
+    ],
+    "phases": [],
+    "realmFirstKill": "Captain Bardalph is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "bardalph evades half the melee swings. casters carry this one",
+      "she bleeds like the other captains, cure poison clears it",
+      "tether 1500, fight her on her stone, off it shes immune and heals full",
+      "heathyr's door is close, dont drift up toward it",
+      "cc immune, dont bother mezzing"
+    ],
+    "aftermathWin": [
+      "bardalph down. the gate-wife is quiet",
+      "captain bardalph down, took forever with her evades",
+      "outer gate clear",
+      "she told us so. didnt help her"
+    ],
+    "aftermathLoss": [
+      "someone dragged her off her post again. immune out there",
+      "drifted up to heathyr's door and got both",
+      "the melee whiffed all fight and the heals ran out",
+      "the tank ran dry on the bleeds"
+    ],
+    "rumour": [
+      "heard bardalph warned them about the wizard and nobody listened",
+      "[someone said|heard] bardalph sent a letter to camelot about the wizard. it was never opened in time",
+      "the long dale folks still ask bardalph's three questions after dark, [heard|they say]",
+      "heard swanton keep still has a dagger on a peg for bardalph"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bardalph",
+    "text": "Captain Bardalph was the gate-warden's daughter of [Swanton Keep], keeper of the outer gate of the Pennine watch for eighteen years, and the only officer [Atwell] never marked in the practice yard. She warned against the [wizard] at table and by letter to the Constable, through her brother Gwion at [Prydwen Keep]. Ask the dalesmen about [Bardalph's questions]."
+  },
+  "bookPage": "To my brother Gwion, sergeant, at Prydwen Keep. Carry this to the Constable yourself and tell him it comes from the outer gate. The wizard has asked my lord to double the watch because he expects visitors. A gate does not ask for visitors. A gate asks who sent them, and what they carry, and who will answer for them, and the wizard has answered none of the three. My lord trusts him because the realm sent him. I do not ask the Constable to overrule my lord. I ask him to send a second wizard to watch the first, or if he has none to spare, a priest. Tell our father the gate is held. Do not tell him I am frightened, because I am not, yet. Bardalph.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Captain Bardalph from the Pennine watch in {minutes} minutes.",
+    "loss": "Captain Bardalph held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "the wizard she warned against"
+    },
+    {
+      "id": "captain-heathyr",
+      "relation": "keeps the door above her gate"
+    },
+    {
+      "id": "captain-atwell",
+      "relation": "the only officer his practice never marked"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Twenty-Second Mark",
+      "text": "The post-stone at the outer gate of the Pennine watch carries twenty-two marks, more than any other stone in the hall, and the last of them is a small spear-head cut very deep, which belongs to Captain Bardalph.\n\nThe outer gate had so many keepers because it met everything first. In the early years of the watch, before Lord Gildas, the things that came up the Summoners' road came to the outer gate before anywhere else, and the men who kept it died or were carried south or asked to be relieved, and their marks went on the stone one after another, the Camelot clerks' rolls say, at the rate of about one a year. Then Bardalph cut hers, in Gildas's second year, and no one ever cut another.\n\nShe came from Swanton Keep in the Black Mountains, the daughter of its gate-warden, and she had grown up in the gatehouse among men who asked strangers their business for a living. She was sent north with a recommendation from the castellan that the Constable's office kept, and which is unusual among the papers of the watch for being short. It says that she was quick, that she was rude, and that she was always right, and that the castellan would be glad to have her back when the Pennines had finished with her.\n\nThe Pennines never finished with her. She held the outer gate for eighteen years. In that time she turned back pedlars, a bishop, two Midgard envoys who had lost their way under the hills, and once, the clerks' rolls say, a thing that came up the road in the shape of a carrier and did not know the carrier's name. She asked every stranger the same three questions, the questions of the Swanton gatehouse: who sent you, what do you carry, and who will answer for you. The dalesmen of Long Dale still ask them of anyone who comes up their road after dark, in that order, and they still call them Bardalph's questions."
+    },
+    {
+      "title": "Never Where the Blow Fell",
+      "text": "In twenty years of Captain Atwell's practice yard, the only officer of the watch who never once came away with one of his kisses on her arm was Captain Bardalph.\n\nShe was not strong. She fought with a long thrusting blade in one hand and a gatehouse dagger in the other, light armour, no shield, and the dalesmen said that she fought the way a swallow drinks, touching the water and gone. Atwell's hook came at where she had been. Lieutenant Saxe, who watched the yard once from his corridor door and never again, said that it was not quickness so much as patience: she let a man swing, and swing again, and went where the blow was not, and when he had swung himself out of breath she put the point in. The sergeants made a saying of it that the companies of Camelot Hills use still for any work that will not be hurried: as easy as hitting Bardalph.\n\nShe was also the one officer who would not let a man ignore her. Bardalph at the yard had a gatehouse habit of calling a man's eye back to her blade whenever it wandered to someone else, with a feint and a word, so that he fought her whether he meant to or not. Lady Darra wrote to the prioress at Caer Ulfwych that the captain treated every visitor to the outer gate the same way, and that a bishop had once complained of it.\n\nShe kept to her gate. Of all the captains she held the narrowest post, a single stretch of the road between the gate and its stone, and she would not leave it for the yard or the table unless the inner gate's bell had rung. The clerk Tobias records her saying that the outer gate was the one place in the hall where a keeper could see both ways, and that she did not intend to waste it."
+    },
+    {
+      "title": "The Letter to Prydwen",
+      "text": "Every account of the Pennine watch tells how Captain Bardalph objected at table when the wizard asked for the watch to be doubled, and how she was overruled. Fewer tell what she did afterwards.\n\nShe wrote a letter of her own. She did not give it to Tobias, whose reports went to the Constable under Lord Gildas's seal, because she would not go behind her lord's back with his own clerk. She gave it to Hob the carrier, sealed with the Swanton gatehouse seal, and paid him a shilling to carry it to her brother Gwion, who was a sergeant of the Prydwen Keep garrison in Camelot Hills. The letter reached Gwion. It asked him to take it to the Constable in person and say that it came from the outer gate.\n\nGwion did. The Constable's office filed it. It is in Camelot today, in the drawer that holds the wizard Aidon's calm letters, at the bottom, beneath them; the clerks who filed it put it there because it concerned the wizard. It is one sheet. It says that the wizard has asked for visitors, that a gate does not ask for visitors, and that if the Constable will not send a second wizard to watch the first, he should send a priest. It was opened in the spring, after Sir Hamon Brede's riders came home.\n\nThe Church says the letter proves that the realm was warned. The Academy says it proves only that one captain did not like one wizard, which was common. Gwion's account survives in the Prydwen roll, under the year: that he carried the letter, that he waited a day outside the Constable's door, and that the Constable's steward told him a captain of the outer gate should keep to her gate. Gwion wrote under it, in a different ink, that she had."
+    },
+    {
+      "title": "I Told You So",
+      "text": "On the last night, the clerk Tobias wrote, Captain Heathyr at the door said that she could not feel her hands, and Captain Bardalph said that she had told them so. It is the last thing anyone in the hall said that was written down by a living hand.\n\nThe bards of Camelot have made a song of it, and it is sung at Prydwen Keep on the night the garrison changes, in Gwion's honour as much as hers. It has a refrain of three words. The Midgard war-bands who come up the Scribes' Stair from below have their own name for her, the gate-wife, and their own story: that she asks them the three questions of the Swanton gatehouse and fights them only when they cannot answer the third, because no one will answer for a stranger on the Summoners' road. The Albion companies say she asks nothing at all.\n\nShe is at her stone still, below the door that Captain Heathyr keeps, close enough that the two of them could call to each other if either would. The companies who have faced her describe a captain who is hard to land a blow on, who moves aside from the swing and comes back with the point, who calls a man's eye back to her blade whenever it strays, and whose cuts run on after the blow as all the captains' cuts do now. They say she is the patient one. The ones who lose to her are the ones who were not.\n\nSwanton Keep still keeps a peg for her. The castellan's letter promised that Swanton would be glad to have her back when the Pennines had finished with her, and the gatehouse of Swanton has never taken the promise down: a dagger hangs there on the peg nearest the gate, the gate-warden's dagger she left behind when she went north, cleaned every spring. When a company brings word that she has fallen at the outer gate, the Swanton gate-warden takes it down for a night, asks the three questions of the empty road, and hangs it up again."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "kelsanor",
+  "name": "Kelsanor",
+  "npcNames": [
+    "Kelsanor"
+  ],
+  "locationId": "avalon-isle",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Kelsanor: NPC template 60162840, level 42, ghost, no faction, aggro 200 (range 500), no spells and no script, respawn 80 s, in the ruins east of Wearyall past the lone tree at 453734, 491057, with fifteen dread disciples (38) around him.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Voices of the Dead (Marden, Karayan of Wearyall): kill Kelsanor and take his essence to Karayan. The quest text says 'At low health he warps attackers away'; no script or spell does this on this server.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Kelsanor as a reader who swallowed the voices of the college dead, and the throwing that stopped, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before the burning there was a hall of disputation in the eastern part of the isle, where the colleges of Avalon sent their readers to argue, and a reader called Kelsanor kept it: a small, sharp man who could hold every side of an argument in his head at once and speak each in its own voice. On the night of the burning the readers who argued there died in it, and Kelsanor, the Inconnu of Wearyall say, did what he had always done. He kept every voice.\n\nHe is in the ruins still, past the lone tree on the hill, and he speaks in many voices, all of them the dead readers', all arguing, and Marden in Wearyall village hears them in his sleep and cannot make them stop. The dread disciples who stand round him are what came to listen and could not leave. Karayan, who has dealings with Arawn's people, says the lord of the dead wants those voices, and wants Kelsanor's essence brought to him so that they can be let go.\n\nThe old folk of the village say that once, when he was hurt, Kelsanor would throw the one who hurt him clean out of his sight, as a reader throws an opponent out of the argument. Nobody now living has seen him do it. The voices have grown louder instead.",
+  "legend": "Kelsanor, level 42 ghost, in the ruins east past the lone tree on the hill east of Wearyall, with about fifteen dread disciples (38) around him. Clear the disciples first; they are close and aggressive. The Voices of the Dead quest text says he warps you away at low health: on this server he does not, he is plain melee with no spells. Take his essence to Karayan. Respawn is fast (80 seconds), so loot and go.",
+  "yells": {
+    "aggro": [
+      "Objection. All of us object.",
+      "Speak, then. We will all answer."
+    ],
+    "phases": [],
+    "death": [
+      "The voices... let them go..."
+    ],
+    "slay": [
+      "Out of the argument.",
+      "Another voice for the hall."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Many voices, one ghost, all arguing."
+    ],
+    "phases": [],
+    "realmFirstKill": "Kelsanor has fallen. The voices are let go."
+  },
+  "botLines": {
+    "briefing": [
+      "kelsanor past the lone tree east of wearyall, fifteen disciples round him, clear them",
+      "quest says he ports you away at low health, he doesnt here, just kill him"
+    ],
+    "aftermathWin": [
+      "got kelsanor's essence for karayan",
+      "kelsanor down. marden can sleep tonight"
+    ],
+    "aftermathLoss": [
+      "the disciples came while we were on him"
+    ],
+    "rumour": [
+      "[heard|someone said] kelsanor used to throw people out of his sight. nobody's seen it lately",
+      "heard kelsanor talks in the voices of the readers who burned"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "kelsanor",
+    "text": "A reader of the old hall of disputation on [avalon isle] who kept every voice of the readers who died there, and speaks in all of them. Karayan says Arawn wants them let go."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} silenced the voices of Kelsanor east of Wearyall in {minutes} minutes.",
+    "loss": "Kelsanor argued on in many voices; {raidLeader} of {realm} left the ruins."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "morgana"
+  ],
+  "tier": "minor"
+}

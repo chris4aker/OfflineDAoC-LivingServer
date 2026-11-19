@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.ServerProperties;
@@ -35,8 +34,8 @@ public static class AutonomousBotPersonality
     /// <summary>Type shares in percent, in enum order (sum 100).</summary>
     public static readonly int[] TypeSharePercent = [28, 20, 20, 16, 12, 4];
 
-    public const int ZoneMemoryCapacity = 32;
-    public static readonly TimeSpan ZoneFreshAfter = TimeSpan.FromHours(6);
+    public const int ZoneMemoryCapacity = BotPlaceKnowledge.RecentZoneCapacity;
+    public static readonly TimeSpan ZoneFreshAfter = BotPlaceKnowledge.RecentZoneFreshAfter;
 
     public static bool Enabled => Properties.BOT_PERSONALITIES_ENABLED;
 
@@ -54,7 +53,15 @@ public static class AutonomousBotPersonality
         }
     }
 
-    public static BotPersonalityType TypeFor(long botId)
+    /// <summary>
+    /// A bot's type. Crafting 2.0 WP4: a stored type wins (offline_bot_types, BotCrafterTypes), so changing the shares
+    /// never re-types a bot; with bot_crafters on, a bot created after the stored types began is typed by the share
+    /// table at its creation (7% Crafters); everyone else keeps <see cref="LegacyTypeFor"/>, exactly as before.
+    /// </summary>
+    public static BotPersonalityType TypeFor(long botId) => BotCrafterTypes.Resolve(botId, LegacyTypeFor(botId));
+
+    /// <summary>The type every bot had before Crafting 2.0: a fixed bucket of its id's hash on <see cref="TypeSharePercent"/>.</summary>
+    public static BotPersonalityType LegacyTypeFor(long botId)
     {
         int roll = (int)(Mix(botId, 1) % 100);
         for (int index = 0; index < TypeSharePercent.Length; index++)
@@ -183,9 +190,11 @@ public static class AutonomousBotPersonality
     /// takes which: RvR goes to the bots that want it most relative to their other choices, then battlegrounds,
     /// then groups versus solo. Still random (a weighted draw), never a fixed ranking. Types are null for bots
     /// without a personality (weight 1). Bots beyond the open slots get null (the caller's usual over-quota rule).
+    /// Bots as people WP6 (owner decision 10): <paramref name="rvrLean"/> (null = none) multiplies a bot's RvR weight, so a
+    /// bot chasing realm rank 5 is likelier to take one of the RvR slots; the number of slots is unchanged.
     /// </summary>
     public static eAutonomousObjectiveKind?[] PlanGoals(BotPersonalityType?[] types, bool[] canBattleground, int solo, int group,
-        int rvr, int battleground, Random random)
+        int rvr, int battleground, Random random, double[] rvrLean = null)
     {
         int count = types.Length;
         var plan = new eAutonomousObjectiveKind?[count];
@@ -227,7 +236,8 @@ public static class AutonomousBotPersonality
         Take(eAutonomousObjectiveKind.Battleground, open[3], i => canBattleground[i],
             i => Relative(i, eAutonomousObjectiveKind.Battleground, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve));
         Take(eAutonomousObjectiveKind.RvR, open[2], _ => true,
-            i => Relative(i, eAutonomousObjectiveKind.RvR, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve));
+            i => Relative(i, eAutonomousObjectiveKind.RvR, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve) *
+                 (rvrLean != null && i < rvrLean.Length && rvrLean[i] > 0 ? rvrLean[i] : 1.0));
         Take(eAutonomousObjectiveKind.GroupPve, open[1], _ => true,
             i => Relative(i, eAutonomousObjectiveKind.GroupPve, eAutonomousObjectiveKind.SoloPve));
         Take(eAutonomousObjectiveKind.SoloPve, open[0], _ => true, _ => 1.0);
@@ -284,8 +294,14 @@ public static class AutonomousBotPersonality
 
     #region Live hooks (each returns today's behavior when personalities are off)
 
-    public static bool RollTownBreak(GameBot bot, double roll) =>
-        Applies(bot) ? roll >= 0 && roll < TownBreakChance(For(bot)) : AutonomousTownDowntime.RollAtTaskBoundary(roll);
+    /// <summary>A town break at a task boundary. Bots as people WP6 (owner decision 10): a bot within 2 levels of 50 on its
+    /// ding to 50 takes 40-60% of its breaks (BotMilestones.TownBreakFactor); 1 for every other bot.</summary>
+    public static bool RollTownBreak(GameBot bot, double roll)
+    {
+        double factor = BotMilestoneLife.TownBreakFactor(bot);
+        return Applies(bot) ? roll >= 0 && roll < TownBreakChance(For(bot)) * factor
+            : factor >= 1.0 ? AutonomousTownDowntime.RollAtTaskBoundary(roll) : AutonomousTownDowntime.RollAtTaskBoundary(roll / factor);
+    }
 
     public static TimeSpan? ScaleTownBreak(GameBot bot, TimeSpan? duration, TimeSpan remaining)
     {
@@ -337,48 +353,27 @@ public static class AutonomousBotPersonality
 
     #endregion
 
-    #region Zone memory (in memory; "lately" means since the server started, at most 32 zones)
+    #region Zone memory (moved to BotPlaceKnowledge, Bots as people WP3; unchanged: in memory, 6 hours, at most 32 zones)
 
-    private static readonly ConcurrentDictionary<long, ZoneMemory> Memories = new();
-
-    private sealed class ZoneMemory
-    {
-        private readonly Dictionary<string, DateTime> _visits = new(StringComparer.OrdinalIgnoreCase);
-
-        public void Visit(string zone, DateTime now)
-        {
-            lock (_visits)
-            {
-                _visits[zone] = now;
-                if (_visits.Count > ZoneMemoryCapacity)
-                    _visits.Remove(_visits.OrderBy(pair => pair.Value).First().Key);
-            }
-        }
-
-        public bool IsFresh(string zone, DateTime now)
-        {
-            lock (_visits)
-                return !_visits.TryGetValue(zone, out DateTime last) || now - last >= ZoneFreshAfter;
-        }
-    }
-
+    // Owner decision 9: camp choice does not read the saved places in 1.2, so the Explorers' taste keeps its "lately" list.
     public static void RememberZone(GameBot bot, string zone)
     {
         if (!Applies(bot) || string.IsNullOrWhiteSpace(zone))
             return;
-        Memories.GetOrAdd(bot.DatabaseID, _ => new ZoneMemory()).Visit(zone, DateTime.UtcNow);
+        BotPlaceKnowledge.RememberRecentZone(bot.DatabaseID, zone, DateTime.UtcNow);
     }
 
-    public static bool IsZoneFresh(long botId, string zone, DateTime now) =>
-        string.IsNullOrWhiteSpace(zone) || !Memories.TryGetValue(botId, out ZoneMemory memory) || memory.IsFresh(zone, now);
+    public static bool IsZoneFresh(long botId, string zone, DateTime now) => BotPlaceKnowledge.IsRecentZoneFresh(botId, zone, now);
 
     /// <summary>Tests only: a memory with fixed times.</summary>
-    public static void RememberZoneAt(long botId, string zone, DateTime when) =>
-        Memories.GetOrAdd(botId, _ => new ZoneMemory()).Visit(zone, when);
+    public static void RememberZoneAt(long botId, string zone, DateTime when) => BotPlaceKnowledge.RememberRecentZone(botId, zone, when);
 
     #endregion
 
+    /// <summary>The personality's name as players read it ("No Lifer", not the enum's "NoLifer"; chat audit TEXT-036).</summary>
+    public static string DisplayName(BotPersonalityType type) => type == BotPersonalityType.NoLifer ? "No Lifer" : type.ToString();
+
     public static string Describe(BotPersonality personality) =>
-        $"{personality.Type} (curiosity {personality.Traits.Curiosity}, risk {personality.Traits.Risk}, " +
+        $"{DisplayName(personality.Type)} (curiosity {personality.Traits.Curiosity}, risk {personality.Traits.Risk}, " +
         $"sociability {personality.Traits.Sociability}, patience {personality.Traits.Patience}, chattiness {personality.Traits.Chattiness})";
 }

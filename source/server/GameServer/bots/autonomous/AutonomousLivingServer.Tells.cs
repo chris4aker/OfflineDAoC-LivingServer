@@ -29,8 +29,44 @@ public static partial class AutonomousLivingServer
 
     private static readonly Dictionary<string, long> NextTellTo = new(StringComparer.OrdinalIgnoreCase);
     private static readonly Dictionary<(long BotId, string Player), long> LastTellPair = new();
+    // When a bot last started a tell with the player, or a bot leader sent an unasked invite (bot-led groups share the budget).
+    private static readonly Dictionary<string, long> LastStartedTell = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>How long since a bot last started a tell with the player (or a leader's unasked invite); MaxValue when none yet.</summary>
+    public static long SinceLastBotTell(GamePlayer player, long now)
+    {
+        lock (NextTellTo)
+            return player != null && LastStartedTell.TryGetValue(player.Name, out long at) ? now - at : long.MaxValue;
+    }
+
+    /// <summary>
+    /// A bot leader's invite counts as that period's bot tell (docs/BOT-LED-GROUPS.md): the next bot-started tell waits its
+    /// full gap from now, so tells and invites never stack.
+    /// </summary>
+    public static void CountInviteAsTell(GamePlayer player, long now)
+    {
+        if (player == null)
+            return;
+        lock (NextTellTo)
+        {
+            LastStartedTell[player.Name] = now;
+            long next = now + NextTellGap(false, Random.Shared);
+            if (!NextTellTo.TryGetValue(player.Name, out long planned) || planned < next)
+                NextTellTo[player.Name] = next;
+        }
+    }
 
     public static bool TellsOn => AutonomousBotVoices.Enabled && Properties.BOT_VOICES_TELLS;
+
+    /// <summary>
+    /// Crafting 2.0 WP8: a real player's tell about trade with an autonomous gamebot ("what do you make?", "wtb a studded
+    /// helm", "can you make a chain set lvl 20", "deal", "80s?", "ready?") is answered by the crafter commerce
+    /// (CraftingEconomy.CrafterCommerce) from the bot's real skill, stock and orders; a bot that does not craft names one
+    /// that does. Needs bot_crafters and bot_crafter_commerce (both off), not bot voices: commerce answers even with voices
+    /// off, in fixed words. False leaves the tell to the ordinary reply. Never a /bot companion.
+    /// </summary>
+    public static bool OnCommerceTell(GamePlayer player, GameBot bot, string message) =>
+        CraftingEconomy.CrafterCommerce.OnPlayerTell(player, bot, message);
 
     /// <summary>When the next bot tell to a player may come: a few minutes after they log in, then 25-45 minutes apart.</summary>
     public static long NextTellGap(bool first, Random random) => first
@@ -133,6 +169,8 @@ public static partial class AutonomousLivingServer
                 continue;
             lock (LastTellPair)
                 LastTellPair[(bot.DatabaseID, player.Name)] = now;
+            lock (NextTellTo)
+                LastStartedTell[player.Name] = now;
             // 1.1.3: half the duo offers come with a real invitation (a yes/no box; "yes" really groups the bot).
             if (topic == "group_offer" && player.Group == null && Random.Shared.NextDouble() < RealInviteShare)
             {
@@ -252,6 +290,9 @@ public static partial class AutonomousLivingServer
     public static void OnPlayerLfg(GamePlayer player, string message)
     {
         AutonomousBeggars.OnPlayerAsked(player, message, "lfg");
+        // Bot-led groups: a gamebot leader with room answers and invites the player within 15 seconds; then no duo offers.
+        if (BotLedGroups.OnPlayerAsked(player))
+            return;
         if (!TellsOn || player?.Client == null || player.Group != null)
             return;
         long now = GameLoop.GameLoopTime;
@@ -272,9 +313,12 @@ public static partial class AutonomousLivingServer
             .Take(4).ToArray();
         int offers = Random.Shared.NextDouble() < 0.3 ? 2 : 1;
         int delay = 6_000;
-        foreach (GameBot bot in bots)
+        int made = 0;
+        for (int index = 0; index < bots.Length; index++)
         {
-            if (offers == 0 || Random.Shared.NextDouble() >= 0.75)
+            GameBot bot = bots[index];
+            // The last candidate offers whatever the roll when nobody has yet (c81eb5d: /lfg must not meet silence).
+            if (offers == 0 || Random.Shared.NextDouble() >= 0.75 && (made > 0 || index < bots.Length - 1))
                 continue;
             bool sameZone = bot.CurrentZone == player.CurrentZone;
             bool close = BotGroupInvite.CloseEnoughToInviteByName(player, bot);
@@ -293,7 +337,42 @@ public static partial class AutonomousLivingServer
             Later(bot, delay, () => CanTalk(bot) && bot.Group == null && player.ObjectState == GameObject.eObjectState.Active && player.Group == null,
                 () => Tell(bot, player, text, invites));
             offers--;
+            made++;
         }
+        if (LfgNeedsNoneNearReply(made, bots.Length))
+            SendNoneNearLevel(player, message, now);
+    }
+
+    /// <summary>
+    /// Whether a /lfg ask gets the honest "nobody around your level" tell: no party invite and no duo offer went out, and no solo
+    /// bot near the player's level exists (an offer that only lost its roll is not "nobody"). PC check 2026-11-19, build c81eb5d:
+    /// "lfg 22, any group" met silence. Pure.
+    /// </summary>
+    public static bool LfgNeedsNoneNearReply(int offersMade, int duoCandidates) => offersMade == 0 && duoCandidates == 0;
+
+    /// <summary>One bot of the realm says by tell that nobody is about the player's level (AutonomousBotChatCoordinator.NoneNearLevelReply).</summary>
+    private static void SendNoneNearLevel(GamePlayer player, string message, long now)
+    {
+        GameBot speaker = AutonomousBotRegistry.Snapshot()
+            .Where(bot => bot.Realm == player.Realm && CanTalk(bot) && !bot.IsOnStableMasterRoute)
+            .Where(bot =>
+            {
+                lock (LastTellPair)
+                    return !LastTellPair.TryGetValue((bot.DatabaseID, player.Name), out long told) || now - told >= TellPairCooldownMs;
+            })
+            .OrderByDescending(bot => bot.CurrentRegion == player.CurrentRegion)
+            .ThenBy(bot => Math.Abs(bot.Level - player.Level))
+            .ThenBy(_ => Random.Shared.Next())
+            .FirstOrDefault();
+        if (speaker == null)
+            return;
+        lock (LastTellPair)
+            LastTellPair[(speaker.DatabaseID, player.Name)] = now;
+        int level = AutonomousChatLiveAnswers.LevelAsked(message, player.Level);
+        string text = AutonomousBotVoices.StyleFor(speaker,
+            AutonomousBotChatCoordinator.NoneNearLevelReply(level, AutonomousChatShortTalk.NeededRole(message), Random.Shared));
+        Later(speaker, 5_000 + Random.Shared.Next(5_000), () => CanTalk(speaker) && player.ObjectState == GameObject.eObjectState.Active && player.Group == null,
+            () => Tell(speaker, player, text));
     }
 
     /// <summary>The bots that could start a tell with this player now and what about, best first (a little shuffled).</summary>

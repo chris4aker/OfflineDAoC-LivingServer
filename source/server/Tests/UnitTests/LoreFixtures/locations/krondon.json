@@ -1,0 +1,44 @@
+{
+  "id": "krondon",
+  "name": "Krondon",
+  "realm": "Albion",
+  "regions": [61],
+  "aliases": ["the hall under the hill"],
+  "summary": "An old hall under the hills of the Shrouded Isles, held by thrawn ogres and their warrior queen.",
+  "facts": [
+    {"text": "Krondon is one of the Avalon dungeons of the Shrouded Isles, whose setting is Morgana's war on Avalon.", "provenance": "mythic", "source": "GameBanshee Shrouded Isles previews (GB_SI, GB_RT in the lore inventory)"},
+    {"text": "Its names are Old English: the hygegeomor, the modsefa, the losian, thrawn ogres and an abrecan mage live there.", "provenance": "game", "source": "camp catalog, source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"},
+    {"text": "Krondon raids took fifty or more players.", "provenance": "legend", "source": "docs/RAID-SIZES.md (Freddyshouse, Feb 2003)"},
+    {"text": "The ogres serve a warrior queen.", "provenance": "original", "source": ""}
+  ],
+  "story": "Long before Camelot, the people of the isles kept their halls under the hills and their words in an older tongue, and Krondon was the greatest of those halls. It was not built for kings. It was built for keepers: of grain, of law, of weather. Each keeper had a chamber and a craft, and the craft was cut into the stone above the door in letters that ran like water. When Morgana's war broke on Avalon, the hall fell to the thrawn ogres, who came up out of the deep cuts with their warrior queen and found the doors open. They did not read the letters. They broke the tables for firewood and hung their meat where the keepers had hung their charters, and the old words fell silent with the people who had spoken them. Some of the keepers did not leave. They made their own bargains with the queen, a craft for a chamber, and they are down there still among the ogres, older and stranger than anything that holds the hall now. The deepest of them keeps the weather.",
+  "legend": "Albion raid leaders called Krondon a fifty-man dungeon and meant it. The ogres hit hard and come in packs, and the deeper rooms belong to the old keepers, who play by rules of their own. Read the walls if you can, people said: the names over the doors tell you what is inside. Nobody could, so everybody learned it the hard way.",
+  "atmosphere": {
+    "firstEntry": ["Old words are carved here. The ogres cannot read them."],
+    "areas": [
+      {"name": "the storm-keeper's chamber", "region": 61, "x": 51941, "y": 20068, "z": 17174, "radius": 900, "lines": ["Four lights burn in the corners. The air is held still."]}
+    ]
+  },
+  "botLines": {
+    "lore": ["krondon names are [old english|older than camelot]. hyrde means shepherd, [my guildie says|so the scholars say]. shepherd of what is the question"],
+    "rumour": ["[heard|someone in my guild swore] the ogres in krondon answer to a warrior queen down in the deep end"],
+    "tell": ["krondon? ogres, lots of them, and some old keepers deeper in. [bring 50|take a full raid], not a group"]
+  },
+  "loremaster": {
+    "intro": "Krondon? A hall older than Camelot, and the [names] down there are older still. The ogres hold it now, under their [warrior queen], but the worst of it is the [storm-keeper].",
+    "topics": {
+      "names": "The words over its doors are in the old tongue of the isles. Hyrde is a keeper, a shepherd. Ask yourself what each one kept.",
+      "warrior queen": "The ogres came up out of the deep cuts behind a queen of their own. She took the hall and let the old keepers stay, for a price."
+    }
+  },
+  "book": {
+    "title": "Of the Hall under the Hill",
+    "pages": [
+      "The keepers of Krondon did not count wealth in gold but in weather. A hall with a good storm-shepherd kept its shore, and the Hyrde of Krondon was the best of them. I have read that he took the four winds out of the sky and set them in the corners of his chamber, that he might hold a storm still as a man holds a hound. If that is so, the winds are there yet. Sailors out of Caldey will not speak his name at sea.",
+      "When the ogres came, they did not take Krondon by siege. The doors were open, as they had always been, for the keepers feared no one. The queen walked in at the head of her people and sat in the hall of law, and no keeper rose to stop her. Some say they had already made their bargains. Some say they simply did not think an ogre worth the trouble, until it was too late to think anything else."
+    ]
+  },
+  "bosses": ["scurceol-hyrde"],
+  "era": "albion-old-halls",
+  "factions": ["krondon-keepers"]
+}

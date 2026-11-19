@@ -1,0 +1,146 @@
+{
+  "id": "red-lady",
+  "name": "Red Lady",
+  "catalogKey": "marfach-caverns/redlady",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health. Every 20-30 seconds she calls summoned innocents (up to nine alive); they cast disease.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "She cannot be hurt outside her tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Soul Drain: 3 s cast, recast 25-35 s, a damage-over-time of 100 matter every 3 s for 30 s on her target and everyone within 350 of that target. Summoned innocents: level 34-38, 1,000 health, no experience; each hit has a 5% chance to cast Disease (radius 100, 2 minutes). Her death removes every innocent.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs (integration/1.2)"
+    },
+    {
+      "text": "Living Server lore: the keen nobody paid for; the red cloth of a dead child's mourners; she nursed the nine hostage-children through the coughing sickness and buried them on the hill above the dún; the herb-wives' custom of drawing the sickness out before mending; Lassar of Ardagh; 'they are already dead'; nine names at the window.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Red Lady was the middle of the three keeners who sang Caimheul on. She followed the war-bands rather than the chieftains and sang, unpaid, for the herders, children, old folk and hostages who died in the hill wars, in a red cloak that showed across a battlefield, and she kept every name.\n\nIn the winter Tuathal Garbh broke the peace, a coughing sickness came into the hostage-house below Caimheul's dún. She nursed the nine children of the lakes there unasked, then sang for each of them, and buried them on the hill above the dún with names in the lake tongue. The sickness got into wounds, so that a mender's work went only part of the way, and the herb-wives of Breifine still draw the sickness out of a house before they tend any wound in it. In the spring a boy whose sister was one of the nine killed the chieftain from the reeds.\n\nOn the fourth night she looked back toward the hill where the nine lay, and the first dead to come back under Breifine were hers. They come at her call still, a houseful at a time and never more than a houseful about her, small and bewildered in old clothes. They are weak, but they go for anyone near her and carry the coughing sickness out of her room. Her own keen settles on the one she sings at and on anyone standing beside that one, and goes on long after the singing; the keeners' daughters say never stand beside a man the Red Lady is singing to. When she falls, the little ones lie down together.\n\nLassar of Ardagh, a druid, would not let her company strike the little ones, and came out sick and carrying her dead. Nóra's mother went to Ardagh and told her: they are already dead; it is not cruelty to let them lie down. A later company went down with a herb-wife of Breifine in each of its bands, laid the little ones down with a word for each, kept apart from the one she sang to, and ended her song. When she falls, the old families say nine names in the lake tongue at the window, and let them go.",
+  "legend": "Every 20-30 seconds she calls a batch of summoned innocents, up to nine around her at once. They are weak (about 1,000 health; a couple of hits or one good AoE) but every hit they land can give disease, which halves the heals you take and stops regeneration: AoE them as they arrive and cure disease before you heal anyone. Her Soul Drain (3-second cast, every 25-35 seconds) is a 30-second DoT on her target and on everyone within 350 of that target, so only the tank stands on the tank and everyone else spreads off him. Fight her in her room: off her tether she takes no damage and walks home at full health, and a wipe resets her and clears the innocents. No CC on her. When she dies every innocent dies with her, so on the last burn ignore the stragglers. Some say it is cruel to kill the innocents. They are already dead. Superstition: never whistle a lullaby in her room. She takes it for an answer.",
+  "yells": {
+    "aggro": [
+      "Little ones, come home. Someone is here.",
+      "Who will sing for you, when you are gone? I will.",
+      "I know every name. I will learn yours."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Come back, come back, all of you."
+      }
+    ],
+    "death": [
+      "Go on, little ones... go on now...",
+      "Sister... I let them go..."
+    ],
+    "slay": [
+      "Another for my keen.",
+      "Hush now. Come home.",
+      "No one paid for you either."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small figures stand in a ring, swaying.",
+      "A woman in red is singing a lullaby.",
+      "Someone coughs, small and far away, in the dark."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "The Red Lady keens. The innocent return."
+      }
+    ],
+    "realmFirstKill": "The Red Lady's keen is ended. The innocent rest."
+  },
+  "botLines": {
+    "briefing": [
+      "red lady calls innocents every 20-30 sec, up to 9. [aoe them as they come|kill them fast], they spread disease",
+      "cure disease before you heal. diseased people only get [half heals|half the heal]",
+      "her soul drain hits her target and everyone within 350 of him. [only the tank near the tank|spread off the tank]",
+      "fight her in her room. off it she's immune and [walks home full|resets]",
+      "the innocents all die when she does. [dont chase stragglers at the end|burn her at the end]"
+    ],
+    "aftermathWin": [
+      "red lady down. [the little ones just lay down|they all lay down at once]",
+      "nobody diseased at the end. [good cures|grats druids]",
+      "nobody stood next to the tank for the drain. [clean|textbook]",
+      "nine names at the window in breifine tonight, [they say|old custom]"
+    ],
+    "aftermathLoss": [
+      "too many innocents up and everyone diseased. [aoe them|cure faster]",
+      "half the heals wasted on diseased people. [cure first|cure then heal]",
+      "the whole melee stood on the tank and ate the drain. [spread|move off him]",
+      "ignored the little ones because it felt bad. [they are already dead|kill them]"
+    ],
+    "rumour": [
+      "[heard|someone said] the innocents in marfach are the dead from the chieftain's old wars",
+      "[heard|someone said] the red lady was the keener nobody paid. she sang for the poor dead",
+      "[word is|heard] the innocents carry the coughing sickness from caimheul's hostage house",
+      "the old families in breifine say nine names at the window when she falls, they say",
+      "[heard|someone said] the innocents in marfach wear clothes a hundred years out of date"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Red Lady",
+    "text": "The middle keener, who sang for the dead nobody paid to mourn and nursed the nine hostage-children of the lakes through the coughing sickness. They come back to her a houseful at a time and carry the sickness out of her room; the herb-wives draw it out of anyone they touch before mending them. Never stand beside the one she is singing to."
+  },
+  "bookPage": "From Nóra's book: the Red Lady was my mother's favourite of the three, which my mother said was a terrible thing to admit. She sang for the ones nobody paid to mourn, the herders and the children and the old who die in a chieftain's wars without a name, and she nursed the nine children of the lakes in the hostage-house the winter the coughing sickness came. When the song changed, they came back to her first, sick and frightened, and she cannot bear to send them away. My mother went to Ardagh to say this to a druid who could not bring herself to lay them down, and I write it here as she said it: they are already dead. It is not cruelty to let them lie down.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Red Lady in {minutes} minutes. The innocent lay down at last.",
+    "loss": "{realm} lost {raidLeader}'s raid to the Red Lady and her innocents in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "black-lady",
+      "relation": "her eldest sister keener"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "her sister keener"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the chieftain they sang back"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the power below that changed their song"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keen Nobody Paid For",
+      "text": "The middle of the three was the one the hill country calls the Red Lady, and she wore red because of what she sang for. A keener was paid by the family of the dead, and the great families paid best, so the trade followed the chieftains. The middle sister followed the war-bands instead. After a battle in the Breifine valleys, when the chieftains' dead had been carried home to be keened properly, she walked out onto the ground behind them and sang for the rest: the herders caught between the war-bands, the children in the burned booleys, the old who had not been able to run, the hostages who died in other men's houses. Nobody paid her. She was proud of it, the keeners' daughters say; it was the one keen in the hills that was never for sale.\n\nShe wore red for them because the custom of the old families gave a dead child's mourners a red cloth, for the blood that had not had time to grow old. Nóra's family say the middle sister took that cloth for her own and never wore anything else. The druids of Lough Gur say it was simpler than that: a red cloak shows from a long way off across a battlefield, and the wounded who were not yet dead would know someone was coming.\n\nShe sang the dead by name where she could, and where she could not she gave them names, and she kept the names. Nóra's mother said the middle sister could sing for an hour without repeating one, and that every one was a child of the hills nobody else remembered. That was the trouble with her, Nóra's mother said, and the thing the voice from below would find: a keener is supposed to let the names go with the dead, and the middle sister never let a single one go.\n\nWhen Caimheul died, the great family paid the eldest, as they always did, and the eldest brought her two sisters, as the great houses always hired three. The middle sister went because she owed the eldest everything she knew. She did not go for the chieftain. The keen of Caimheul gives her one verse, and it is not about him."
+    },
+    {
+      "title": "The Hostage-House",
+      "text": "The verse is for the nine. In the seventh year of the peace with the lake country, when Tuathal Garbh broke it and raided the Breifine valleys at the harvest, a coughing sickness came into the hostage-house below Caimheul's dún, where the children of the lakes were kept to hold their fathers to the peace. The middle sister heard of it and went to the hostage-house unasked. She nursed the nine through that winter, and when nursing failed she sang for them, one after another, before the spring.\n\nThe herb-women of the dún had tried everything they had, and the hill country remembers the sickness by what it did to their work. It got into wounds. A child of the lakes who cut her hand on a reed basket that winter could not get it to close; poultices that would have mended a soldier in three days barely took, and the cough took the strength out of the children even while they slept. The herb-wives of Breifine keep a custom from that winter still: before they tend any wound in a house where the coughing sickness has been, they draw the sickness out first, with smoke and with the druids' word for it, because they learned that on a sick body a mender's work goes only part of the way.\n\nThe middle sister was the only one who sang for the nine. Tuathal's people did not come for the bodies until the peace was made again, and Caimheul's people would not keen hostages. So she did it, in red, in the hostage-house, with the door open on the winter, and then she buried them herself on the hill above the dún and gave each a name in the lake tongue she had learned from them over that winter. The keen of Caimheul says that was the year she stopped speaking to the chieftain. It says nothing of what she thought of him.\n\nIn the spring Caimheul went to the reed-flats and did not come back, and a boy whose sister had been one of the nine was the one who killed him. The keeners' daughters say the middle sister sang at the chieftain's bier with her eyes on the hill where the nine lay."
+    },
+    {
+      "title": "Come Home, Little Ones",
+      "text": "On the fourth night, when the voice from below asked why any of them should ever stop, it did not need to ask the middle sister twice. She had kept every name. When the eldest looked back over her shoulder at the grave, the middle sister looked back over hers toward the hill above the dún, and the first of the dead to come back under Breifine were not the chieftain's. They were hers.\n\nThey come still. Whenever she is threatened she calls them, and they come up out of the floor of her room in a crowd, a houseful at a time, small and grey and bewildered in the clothes of a hundred years ago, and stand about her swaying. If they are laid down she calls more after a little while, and they come again, but her room has never held more than a houseful of them at once. They are not strong. A grown man can lay one down with a blow or two, and they do not get up. But they go for anyone near her, and they have the coughing sickness of the hostage-house in them still, and anyone they touch carries it out of her room.\n\nHer own keen has changed too. It settles on the one she sings at, a slow drawing-out that goes on a long while after the singing has stopped, and in the same breath it settles on anyone standing close beside that one, because a keen for the innocent was never sung over one alone; she sang it over whole families lying together. The keeners' daughters of Breifine put it plainly: never stand beside a man the Red Lady is singing to. It comes round again whenever she has the breath for it.\n\nWhen she falls, they all lie down at once. Those who have seen it say it is the gentlest thing in Marfach: the little ones simply stop where they are, and sit, and lie down on the floor of her room like children when the singing in the next room stops, and they are not there in the morning."
+    },
+    {
+      "title": "Already Dead",
+      "text": "The first company of the realm to reach her room was led by a druid of Ardagh in the Silvermine country named Lassar, a mender herself and a herb-wife's daughter, and Lassar would not let her company strike the little ones. They were children, she said, whatever else they were. Her company fought the Red Lady through the crowd as men wade through a flock of sheep, and the little ones clung to them and coughed on them, and every wound Lassar closed that night closed slowly and only part of the way. The company came out of the room sick to the bone and carrying three of their dead, and Lassar did not go down again.\n\nIt was Nóra's mother, the keener who told the realm to end the Black Lady's song, who settled it. She went to Ardagh to see Lassar that summer, and the herb-wives of Ardagh still tell what she said, because Lassar cut it into the lintel of her door: they are already dead; it is not cruelty to let them lie down. Nóra's mother said more, which Lassar did not cut. She said the middle sister would have been the first to tell them so, before the voice, and that it was a sin against the keener as well as the children to leave them standing.\n\nThe company that ended the Red Lady's song, in a later season, went down with a herb-wife of Breifine in each of its bands to draw the sickness out of anyone the little ones had touched, and they laid the little ones down as they came, gently, the old way, with a word for each. They kept apart from the one she was singing to. When she fell, every one of the little ones lay down together, and the herb-wife who was nearest said afterwards that she heard the middle sister say one thing, in the lake tongue, and that it was a name.\n\nWhat the Red Lady wants is her names. The keeners' daughters believe that is all she has ever wanted: that nobody she sang for should be forgotten. The druids of Tir na Nog say the voice below wants the same thing for its own reasons, because a dead child who is remembered can be called. When word comes over the hills that the Red Lady has fallen, the old families of Breifine say nine names in the lake tongue at the window, the nine from the hill above the dún, and then they let them go."
+    }
+  ]
+}

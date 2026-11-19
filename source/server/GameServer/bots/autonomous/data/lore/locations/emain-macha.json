@@ -1,0 +1,239 @@
+{
+  "id": "emain-macha",
+  "name": "Emain Macha",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    214
+  ],
+  "summary": "The far frontier where the three realms meet: Dun Crauchon, the enemy portal keeps, the grannies and loghery men, the goborchend, and Macha's old curse.",
+  "facts": [
+    {
+      "text": "Zone 214 (region 200, x 417,792-483,328, y 286,720-352,256): 259 monsters. Keeps: Dun Crauchon (keep 100, level 4, 425,877/318,720), the Albion Portal Keep (keep 24, 475,844/343,696; Knight Commanders, Master Wizards, Master Elementalists) and the Midgard Portal Keep (keep 25, 474,129/295,207; Viking Huscarls, Masters of Runes, Gothi of Odin).",
+      "provenance": "game",
+      "source": "world data Keep table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: grogans (46-51), amadan touched, cliff beetles, luch hunters, grannies (48-50), rage wolves, loghery men (Cluracan, 46-50), juvenile megafelids, mindworms (58-65), torcan and torc, bean sidhe (Banshees), goborchend (wounders, piercers; Children of Cernunnos), hillock changelings, alp luachra, giant lusus, graugach, fachan; Eresidae (48) on a high ridge (Strange Powers, a Midgard quest).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Strange Powers' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Emain Macha (Navan Fort) was the royal seat of Ulster; the tale says Macha, made to race the king's horses while with child, won, gave birth at the finish and cursed the men of Ulster to weakness in their hour of need.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Navan_Fort"
+    },
+    {
+      "text": "In Irish folklore the fachan is a one-eyed, one-armed, one-legged creature; the loghery man is an Ulster name for the leprechaun.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fachan"
+    },
+    {
+      "text": "Region 200 holds Hibernia's frontier keeps; Emain Macha is a frontier zone of keeps and frontier warbands that the bots path through.",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md section 1 (world data)"
+    },
+    {
+      "text": "Living Server lore: the race and the curse told as the frontier's oldest story; Dun Crauchon as the realm's last keep before the enemy's gates; the portal keeps; the grannies; the loghery men; the goborchend; Gormán's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Master Guardian (realm 3, level 255) spawns stand in regions 1, 100 and 165 with Master Eldritch, none in region 200; Chieftain Hurbury (realm 3, level 63) stands in region 1 (Snowdonia) at about 545,600/337,000.",
+      "provenance": "game",
+      "source": "world data Mob table (read 2026-11-06)"
+    }
+  ],
+  "story": "Emain Macha is where the three realms meet. It is the far end of Hibernia's frontier, a high, broken country of ridges and gullies at the eastern edge of the hills, and on its far side, in the realm's own land, stand the keeps the other realms hold as their doors: the Albion portal keep in the south-east, with knight commanders and wizards on its walls, and the Midgard portal keep in the north-east, with huscarls and rune-masters and gothi. Between them and the rest of Hibernia stands Dun Crauchon, the realm's last keep before the enemy's gates.\n\nThe country takes its name from an old royal seat, and from a woman. In the songs, Macha was made to race the king's horses while she was heavy with child, because her husband had boasted she could; she won, and gave birth at the finish, and as she lay there she cursed the men of the kingdom to be as weak as a woman in labour in their hour of greatest need. The frontier soldiers of Dun Crauchon tell the story differently: they say Macha cursed the field itself, so that whoever holds Emain Macha is never as strong as they think they are, and that this is why it changes hands so often.\n\nThe country's own people are strange. The grannies of the eastern ridges are old women of a kind nobody in the realm can name, who keep together in bands and are not kind; the frontier soldiers do not stop to ask whose grandmothers they are. The loghery men, the northern cousins of the meadow thieves, keep the same ground and are larger and much less funny. The grogans, hairy and strong and bad-tempered, hold the western gullies near Dun Crauchon. The bean sidhe keen on the north-eastern slopes, and the soldiers of Dun Crauchon count the keens and say each one is for someone in the keep.\n\nIn the north-west the goborchend walk, the goat-headed ones, who also walk the south of the Cursed Forest, and the druids say the old books give such heads to the Fomorians' kin. The mindworms and the giant lusus keep the deep gullies with them. In the middle country the fachan hop on their one leg and look with their one eye, and the amadan touched wander in from somewhere, laughing, and the rage wolves hunt the luch hunters.\n\nDun Crauchon was built to be the realm's first answer. Every hosting that rides east from Druim Ligen comes to it before it goes on toward the portal keeps, and every hosting that comes back comes through its gate, and the rangers of the keep stand on the wall and count them. On a high ridge north of the keep stands a creature the men of Midgard send their own young to kill, for reasons the rangers of Crauchon have never been told.\n\nWhy does it matter? Because this is the realm's edge, where the war is closest. The chieftains of the inner duns fight for relics; the garrison of Dun Crauchon fights for the gate. The soldiers say the field is cursed, and that the only way to hold it is to remember you are weaker than you think, and hold it anyway.",
+  "legend": "Emain Macha is the eastern frontier, where Albion's and Midgard's portal keeps stand (south-east and north-east) and Hibernia's Dun Crauchon guards the way in. Enemy warbands come through here first, so this is where the frontier fighting starts. PvE: grogans (46-51) by Dun Crauchon, grannies (48-50) and loghery men (46-50) on the eastern ridges, bean sidhe in the north-east, goborchend (46-57), mindworms (58-65) and giant lusus in the north-west gullies, fachan, amadan touched, cliff beetles, luch hunters. Eresidae (48) on the ridge north of Dun Crauchon is a Midgard quest target. Don't wander near the portal keeps: their guards are very high level. Frontier saying: whoever holds Emain Macha is weaker than they think, Macha saw to that, so never brag on the wall of Dun Crauchon.",
+  "atmosphere": {
+    "firstEntry": [
+      "Emain Macha. Where the three realms meet.",
+      "Enemy gates on the far ridges.",
+      "Dun Crauchon stands in the way.",
+      "Old women in bands on the ridges.",
+      "Macha cursed this field."
+    ],
+    "areas": [
+      {
+        "name": "Dun Crauchon",
+        "x": 425880,
+        "y": 318720,
+        "z": 4780,
+        "radius": 2500,
+        "lines": [
+          "Dun Crauchon, the last keep before the gates.",
+          "Rangers count the hostings in.",
+          "Every hosting passes this gate."
+        ]
+      },
+      {
+        "name": "the Albion gate",
+        "x": 475840,
+        "y": 343700,
+        "z": 4080,
+        "radius": 3000,
+        "lines": [
+          "Albion's portal keep. Knights on the walls.",
+          "Do not go closer."
+        ]
+      },
+      {
+        "name": "the Midgard gate",
+        "x": 474130,
+        "y": 295210,
+        "z": 3870,
+        "radius": 3000,
+        "lines": [
+          "Midgard's portal keep. Huscarls and runes.",
+          "Do not go closer."
+        ]
+      },
+      {
+        "name": "the granny ridges",
+        "x": 450100,
+        "y": 333830,
+        "z": 4280,
+        "radius": 4000,
+        "lines": [
+          "Old women in bands on the ridges.",
+          "Nobody asks whose grandmothers they are."
+        ]
+      },
+      {
+        "name": "the grogan gullies",
+        "x": 439350,
+        "y": 308830,
+        "z": 4000,
+        "radius": 4000,
+        "lines": [
+          "Grogans, hairy and bad-tempered.",
+          "The western gullies are theirs."
+        ]
+      },
+      {
+        "name": "the banshee slopes",
+        "x": 474460,
+        "y": 309390,
+        "z": 2790,
+        "radius": 3000,
+        "lines": [
+          "Banshees keen on the slopes.",
+          "Crauchon counts the keens."
+        ]
+      },
+      {
+        "name": "the deep gullies",
+        "x": 432000,
+        "y": 295000,
+        "z": 4000,
+        "radius": 4500,
+        "lines": [
+          "Goat-headed things in the deep gullies.",
+          "Mindworms. Keep your thoughts close."
+        ]
+      },
+      {
+        "name": "Eresidae's ridge",
+        "x": 425940,
+        "y": 291020,
+        "z": 8390,
+        "radius": 1200,
+        "lines": [
+          "A creature on a high ridge.",
+          "Midgard sends its young here. Why?"
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "emain macha is where the three realms meet. alb and mid portal keeps are on the far ridges",
+      "dun crauchon is hibernia's last keep before the enemy gates. [every hosting passes it|rangers count]",
+      "macha raced the king's horses while pregnant and cursed the men of the kingdom, the songs say",
+      "crauchon soldiers say macha cursed the field: whoever holds emain macha is weaker than they think",
+      "the grannies on the east ridges come in bands. [48-50|dont ask whose grans]",
+      "loghery men are the northern cousins of the leprechauns. bigger and less funny",
+      "the grogans in the west gullies are hairy and bad tempered. [46-51|by crauchon]",
+      "the bean sidhe keen on the north east slopes. crauchon says each keen is for someone in the keep",
+      "the goborchend walk here and in the cursed forest. goat headed fomorian kin",
+      "fachan hop on one leg and look with one eye. [weird|emain]",
+      "midgard sends its young to kill eresidae on the ridge north of crauchon. [strange powers|why]",
+      "the hostings ride from druim ligen to dun crauchon before they go east",
+      "dont go near the portal keeps. the guards are way too high"
+    ],
+    "rumour": [
+      "[heard|someone said] the mids came through their portal keep [an hour ago|just now]. warband at crauchon",
+      "the alb portal keep gates opened last night. [incoming|here we go]",
+      "[word is|heard] the bean sidhe keened three times over crauchon. [three dead|omen]",
+      "the grannies on the ridge took down a whole group. [lol|48-50 bands]",
+      "[heard|someone said] the mindworms in the north west gullies are 58-65. [ouch|stay out]",
+      "someone tried to solo a fachan. [it hops|lol]",
+      "[word is|heard] dun crauchon changed hands again. [macha's curse|told you]",
+      "there were mid lowbies on eresidae's ridge. [strange powers|leave them]",
+      "[heard|someone said] the master guardians at our portal keeps havent come home in years",
+      "[heard|someone said] chieftain hurbury holds a camp in snowdonia and never asks for help"
+    ],
+    "tell": [
+      "emain macha is the east frontier. dun crauchon is ours, the alb and mid portal keeps are theirs",
+      "where is dun crauchon? west side of emain macha, guarding the way in",
+      "is emain macha dangerous? its where enemy warbands come in first. yes",
+      "whats in emain macha? dun crauchon, the portal keeps, grogans, grannies, loghery men, banshees, goborchend",
+      "where are the portal keeps? albion south east, midgard north east of emain macha",
+      "how do i get to emain macha? from druim ligen with the hostings, through breifine",
+      "master guardians guard hibernia's portal keeps on the far side of the frontier. you wont see them in emain"
+    ]
+  },
+  "loremaster": {
+    "intro": "Emain Macha, where the three realms meet. [Dun Crauchon] stands before the enemy [gates]. [Macha]'s curse lies on the field. The country belongs to the [grannies], the [grogans] and the [goborchend].",
+    "topics": {
+      "Dun Crauchon": "Hibernia's last keep before the enemy's gates. Every hosting that rides east comes to it first, and its rangers count them back through the gate.",
+      "gates": "The portal keeps of the other realms: Albion's in the south-east, with knight commanders and wizards, and Midgard's in the north-east, with huscarls, rune-masters and gothi. Their warbands come through them.",
+      "Macha": "The woman of the songs made to race the king's horses while with child. She won, gave birth, and cursed the kingdom's men. The soldiers of [Dun Crauchon] say she cursed the field: whoever holds it is weaker than they think.",
+      "grannies": "Old women of the eastern ridges who keep together in bands and are not kind. The loghery men, the northern cousins of the meadow thieves, share their ground.",
+      "grogans": "Hairy, strong, bad-tempered things of the western gullies near [Dun Crauchon].",
+      "goborchend": "The goat-headed ones of the north-west gullies, who also walk the south of the Cursed Forest. The druids say the old books give such heads to the Fomorians' kin. Mindworms and giant lusus keep the gullies with them.",
+      "bean sidhe": "The banshees of the north-eastern slopes. The soldiers of [Dun Crauchon] count their keens and say each one is for someone in the keep.",
+      "Gormán": "A ranger of [Dun Crauchon] who keeps the count of hostings on the wall, and who wrote down what the frontier soldiers say about the field.",
+      "Master Guardian": "The Master Guardians are the realm's own keepers of the portal keeps: Hibernians of the fighting paths who hold the gates the realm keeps on the far side of the frontier, in Albion's country and in Midgard's and on the isles, with the Master Eldritch beside them on the walls. They are not met on this side of the gates. Gormán the ranger says that is the point of them: a door is only kept from the far side, and the Master Guardians have not come home in his lifetime.",
+      "Chieftain Hurbury": "Chieftain Hurbury is a Hibernian chieftain who holds a post in Snowdonia, deep in Albion's country, and has held it longer than anyone in Breifine can remember. Gormán the ranger says he went over the frontier in one of the old hostings and simply never came back, and that his camp is the realm's furthest hearth. The Albion knights who ride past it have stopped trying to move him. He sends word home at every change of the keeps, and never asks for help."
+    }
+  },
+  "book": {
+    "title": "The Count at the Gate, by Gormán, ranger of Dun Crauchon",
+    "pages": [
+      "I stand on the wall of Dun Crauchon and count. That is my whole duty, and my captain says it is the most important one in the keep, which is what captains say about the duties nobody wants. Every hosting that rides east from Druim Ligen comes past our gate on its way to the far ridges, and every hosting that comes back comes through it again, and I count them both times. The difference I write on the inside of the gate in chalk, and the rain takes it off.",
+      "On the far ridges stand the other realms' doors. Albion's keep is in the south-east and has knights on it and men in robes who throw fire; Midgard's is in the north-east and has big men with axes and priests of a one-eyed god. Their warbands come through those doors into our country, and the first thing they see is Dun Crauchon. We are the realm's first answer. We are often a short answer. The keep changes hands more than any keep on the frontier, and every realm that takes it scratches its own mark into the gate-post under the others.",
+      "The soldiers say that is Macha's doing. In the old song she raced the king's horses with a child in her and won, and cursed the kingdom's men to weakness in their worst hour. The soldiers say she cursed the field instead, so that whoever holds Emain Macha is never as strong as they think they are. I have watched three realms hold this keep. Every one of them thought it was strong. Every one of them was wrong. We hold it again now. I am trying not to think it.",
+      "The country's own people are no help to anyone. Old women in bands on the eastern ridges, whom nobody calls by any name but granny. Loghery men, larger than the meadow thieves and not funny. Grogans in the gullies, goat-headed things in the deep gullies, banshees on the slopes who keen at night; we count the keens too, and each one, the soldiers say, is for someone in the keep. I write those down as well. My captain says I count too much. I say somebody on this frontier ought to know the number."
+    ]
+  },
+  "bosses": [
+    "eresidae"
+  ],
+  "era": "hib-the-realm-war",
+  "factions": [
+    "frontier-guard",
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "breifine",
+      "relation": "the frontier to the west"
+    },
+    {
+      "id": "cursed-forest",
+      "relation": "where the goborchend also walk"
+    },
+    {
+      "id": "connacht",
+      "relation": "Druim Ligen, where the hostings muster"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+ "id": "ambassador-mannam",
+ "name": "Ambassador Mannam",
+ "npcNames": [
+  "Ambassador Mannam"
+ ],
+ "aliases": [
+  "mannam",
+  "the ambassador"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "nahemahs-bower"
+ ],
+ "related": [
+  {
+   "id": "princess-nahemah",
+   "relation": "his princess"
+  },
+  {
+   "id": "caisha",
+   "relation": "whose face he wears"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "his letters carry the prince's plans"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "seals his reports"
+  },
+  {
+   "id": "duke-satori",
+   "relation": "carried the word that cost Mystemas the embassy"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Ambassador Mannam is a level 65 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in Princess Nahemah's bower in the far west, about 590 units from the princess.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In 'Strange Bedfellows' Mystemas says the Master sent an ambassador to convince Albion's king that the other realms were a greater threat than Darkness Falls; Albion's step reads 'Kill Ambassador Mannam for the Prince's plans', Hibernia's ends with diplomatic documents, and Albion and Midgard return a soul stone to Mystemas.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Mystemas says the Master made him an imp for acting before he knew the Master already had a plan.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Prima's Darkness Falls bestiary lists Ambassador Mannam.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), Darkness Falls bestiary table"
+  },
+  {
+   "text": "De Plancy's infernal court sends an ambassador to each kingdom: Mammon to England. Mannam reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "Ambassador Mannam uses model 637, the dukes' model, at size 120.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Ambassador Mannam is the only demon of the court whose work is done above the world, and the court has never decided whether that makes him the most useful peer on the Roll or the least trustworthy. He belongs to Princess Nahemah's bower in the far west, the quarter of the hollow where faces are made. The princess's household has always dealt in wanting: the succubi and lilispawn of the bower learn what a mortal desires and wear it. In the Uncounted Age Mannam was the best of them at a harder craft, which is wearing what a mortal trusts.\n\nHis line was cut out of another demon's fall. Mystemas, then one of the strongest in the Master's army, had told the princes that when the Master moved against the realms above he would be the one to go up, and he had begun to choose the war-band he would take. Duke Satori heard him explain it and carried it to the door, and the Master, who had already decided to send not a war-band but a voice, made Mystemas small. The embassy went to the bower. Adremal wrote Mannam's line as Ambassador of the Court, under the Princess, sent to the throne of Albion, and the court has noticed that Mystemas has wanted two deaths ever since and names them in the same breath.\n\nMannam went up when the Albion door opened. He needed a face that Camelot would let into a king's hall, and the bower had one ready, kept fresh in the well of the princess's own room, where nothing kept ever ages. He carried it up the stair folded in a small dark stone at his belt, and wore it at court. What he said there the hollow knows from his own reports, which the Chancellor seals: that Midgard's jarls and Hibernia's druids were the true danger to the realm, that the hollow under Camelot Hills was a curiosity, and that a wise king spent his knights on the frontier and not on the stair. Adremal records that the reports were received at the throne with interest. Albion's Church, which has since learned whose face it was, preaches that they were received with more than interest.\n\nHe carries more than the princess's errand. Prince Abdin uses the embassy as he uses everything, and the letters Mannam takes up and down the stair carry the prince's plans as well, under the Chancellor's seal, so that no one can open them without the Chancellor knowing. Albion's clerics say they have read some. They will not say what was in them, except that it concerned the Director above the Gate and an army that cannot be counted.\n\nHe is below more often than Camelot knows, standing a few strides from his princess's door with the face folded away, and the bower says he is never far from her when he is home. The imps who watch the Albion stair say he goes up rarely now and comes down quickly, and that each time he comes down, the face in the stone has aged a little, which nothing kept in the princess's well should do.",
+ "legend": "Mannam stands in Princess Nahemah's bower in the far west, less than six hundred units from the princess herself, with the well in her room close by. Level 65, no script. He is a kill in every realm's Strange Bedfellows quest: Mystemas sends you after Nahemah and Mannam, and Albion and Midgard bring back a soul stone, Hibernia the diplomatic papers. Pull him away from the princess; you do not want her maelstrom while you are on him. He and Caisha both come back in about three minutes, so do the quest kills and move on. Players call him the ambassador or the diplomat and swear he really did talk Albion's king out of guarding the Darkness Falls door. Albion players do not find that funny. Hibernians think it explains a great deal about Albion, and Midgard just wants to know what he said about them.",
+ "yells": {
+  "aggro": [
+   "You have come a long way to interrupt a diplomat.",
+   "I have spoken to your betters. They listened.",
+   "Kneel, and I will remember you kindly at court."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "This is not how embassies end. I have papers."
+   }
+  ],
+  "death": [
+   "Tell the king... I was sincere...",
+   "The face... keep the face out of the water..."
+  ],
+  "slay": [
+   "Your king will hear of this. From me.",
+   "Credentials revoked.",
+   "Diplomacy has failed. How sad."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Perfumed letters lie sealed on a table, unopened.",
+   "A courtier's smooth voice carries from the bower."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The ambassador clutches a small dark stone at his belt."
+   }
+  ],
+  "realmFirstKill": "Ambassador Mannam has fallen. The embassy is closed."
+ },
+ "botLines": {
+  "briefing": [
+   "mannam is right by nahemah. [pull him away|split them]",
+   "65 no tricks, strange bedfellows target. [albs and mids get the stone|grab the soul stone]",
+   "dont fight mannam in her maelstrom. [away from the princess|pull back east]",
+   "mannam then nahemah, or nahemah then mannam. [ask your quest giver lol|either works]"
+  ],
+  "aftermathWin": [
+   "mannam down. [embassy closed|no more diplomacy]",
+   "ambassador mannam dead. [stone dropped|got the stone]",
+   "mannam done. [mystemas will be happy|back to the imp]",
+   "the diplomat is dead. [camelot can relax|albion is safe now lol]"
+  ],
+  "aftermathLoss": [
+   "pulled nahemah with mannam. [maelstrom wipe|wipe]",
+   "mannam got us. [regroup|rez]",
+   "lost the split in the bower. [slower|one at a time]",
+   "mannam and the princess together. [too much|told you split]"
+  ],
+  "rumour": [
+   "[heard|word is] ambassador mannam talked albions king out of guarding the df door",
+   "mannam wears a borrowed face at camelot. [creepy|the church says so]",
+   "[someone said|my guildie says] mannam carries prince abdin's plans in his letters",
+   "mystemas wants mannam dead because mannam got his job. [lol|imp grudge]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "mannam",
+  "text": "The court's ambassador, of Princess [Nahemah]'s bower, sent to the throne of Albion with a borrowed face to argue that Midgard and Hibernia were the true danger. His embassy was the post [Mystemas] wanted; his letters carry Prince [Abdin]'s plans; the face he wears is [Caisha]'s."
+ },
+ "bookPage": "From a sermon preached in the chapter house at Camelot after the embassy was found out, copied by a novice: There came to the king's hall a courtier no one could afterwards name, with a fair face and a soft voice and letters under a seal no clerk of the realm knew, and he spoke to the king of the north and the west, of jarls and druids and the danger in them, and of the hole under the Hills as a thing of no account. He was heard. I say no more of that. I say only this: a face may be borrowed, and the one he wore belonged to a woman of this realm, and she has not had it back.",
+ "bookPages": [
+  "From a sermon preached in the chapter house at Camelot after the embassy was found out, copied by a novice: There came to the king's hall a courtier no one could afterwards name, with a fair face and a soft voice and letters under a seal no clerk of the realm knew, and he spoke to the king of the north and the west, of jarls and druids and the danger in them, and of the hole under the Hills as a thing of no account. He was heard. I say no more of that. I say only this: a face may be borrowed, and the one he wore belonged to a woman of this realm, and she has not had it back.",
+  "The sermon goes on: I am told by those who have been below that the face is kept in water in a demon princess's room, so that it will not age, and that the courtier carried it up our stair in a stone, and wore it, and folded it away again when he went home. I am told also that the face has begun to age at last. I do not know what that means. I pray it means that what the water holds is wearing out, and will be free. I fear it means only that the courtier has worn it too often in the sun."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} closed Ambassador Mannam's embassy in {minutes} minutes.",
+  "loss": "Ambassador Mannam turned {realm}'s raid under {raidLeader} back with fine words and a hard hand."
+ }
+}

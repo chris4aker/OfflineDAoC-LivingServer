@@ -63,6 +63,7 @@ public static class AutonomousRvrRally
 
     public static bool HasRoute(Region region, IPathfindingMgr nav, eRealm realm, Vector3 start, Vector3 goal)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.RouteRvrRally); // AI_PROFILE: measures only
         Zone from = region?.GetZone((int)start.X, (int)start.Y);
         Zone to = region?.GetZone((int)goal.X, (int)goal.Y);
         if (from == null || to == null || !AutonomousRealmBoundary.Allows(realm, region.ID, to.ID)) return false;

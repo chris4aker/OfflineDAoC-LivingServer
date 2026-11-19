@@ -13,7 +13,10 @@ var texture_set := "x4plus"
 var env_strength := 1.0          # how strong the environment-map reflections are (zone_loader: Tuscaran Glacier)
 var use_material_light := false     # pregame scenes: keep the material's ambient darkness (spec mat_light), as the client
 var _folders := {}                  # texture set name -> folder with <name>.png
-var _shaders := {}                  # variant key -> Shader
+# variant key -> Shader, shared by every zone, scene and effect: one compile a variant a session (owner 2026-10-28:
+# each zone's own copy compiled them all again - 40 ms frames once materials were made on the main thread, GpuJobs)
+static var _shaders := {}
+static var _shaders_mutex := Mutex.new()           # (zone workers build at once)
 var _materials := {}                # spec json -> ShaderMaterial
 var _textures := {}                 # "set/name" -> Texture2D
 
@@ -27,10 +30,19 @@ static var WEB := RegEx.create_from_string("(?i)spiderweb|cob_crnr|cobweb")
 
 
 ## Material for one spec (a Dictionary from extras.nif_materials); identical specs share one material.
+## main_only: built on the main thread when asked from a worker (GpuJobs) - a ShaderMaterial's parameters set on a
+## worker make its render-server material there, the race GpuJobs exists for (2026-10-30: the login freeze -
+## "Parameter 'material' is null" x4, then the main thread stalled with effect-prefetch workers waiting on it, or a
+## crash; NifScene sets it for effects, which are packed on workers ahead of time).
+var main_only := false
+
+
 func material(spec: Dictionary) -> ShaderMaterial:
 	var key := JSON.stringify(spec, "", true)
 	if _materials.has(key):
 		return _materials[key]
+	if main_only and not GpuJobs.on_main_thread():
+		return GpuJobs.run(func(): return material(spec), "effect material") as ShaderMaterial
 	var mat := ShaderMaterial.new()
 	var alpha := String(spec.get("alpha", "opaque"))
 	# spider webs (nspiderweb, cob_crnr): soft alpha the client blended - as a cut-out at their near-zero test
@@ -135,8 +147,11 @@ func texture(tex_name: String) -> Texture2D:
 ## INVSRCALPHA, spec dest_keep) x (colour + 1 - alpha) - a multiply blend; black leaves what's behind as it was.
 func _shader(alpha: String, double_sided: bool, unlit := false, split := false, ambient_only := false, invdest := false) -> Shader:
 	var key := "%s/%s/%s/%s/%s/%s" % [alpha, double_sided, unlit, split, ambient_only, invdest]
-	if _shaders.has(key):
-		return _shaders[key]
+	_shaders_mutex.lock()
+	var have: Shader = _shaders.get(key)
+	_shaders_mutex.unlock()
+	if have:
+		return have
 	var modes := ["cull_disabled" if double_sided else "cull_back"]
 	unlit = unlit and alpha != "add" and alpha != "destcolor"   # spec "unlit": the client's emissive-only lighting mode
 	if unlit and alpha != "screen":
@@ -201,7 +216,12 @@ void light() {
 	ALBEDO /= m;")
 	var shader := Shader.new()
 	shader.code = code
-	_shaders[key] = shader
+	_shaders_mutex.lock()
+	if _shaders.has(key):                               # (another worker made it meanwhile: share that one)
+		shader = _shaders[key]
+	else:
+		_shaders[key] = shader
+	_shaders_mutex.unlock()
 	return shader
 
 

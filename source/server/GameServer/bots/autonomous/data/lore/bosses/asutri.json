@@ -1,0 +1,112 @@
+{
+  "id": "asutri",
+  "name": "Asutri",
+  "npcNames": [
+    "Asutri"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "iarn-dwarves"
+  ],
+  "related": [
+    {
+      "id": "alivor",
+      "relation": "the elder of the Remnants' watch at the post"
+    },
+    {
+      "id": "mortufoghus",
+      "relation": "the mammoth whose round she has charted"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Asutri is a level-50 iarn dwarf at the Remnants' post in south-western Modernagrav (436695, 381101), about 1,400 units from Hermione the stablemaster and 1,500 from the post's griffon, and about 4,100 from Alivor.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her template puts her in The Remnants faction and makes her aggressive (200 at range 500).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60158124)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Alivor keeps the post's watch on the road toward the bones. Asutri keeps it at the post itself, by the griffon and the stablemaster, and the dwarves say she is the one who decides who flies.\n\nShe came to the post from the slate-house in Faraheim, where she was a slate-keeper's apprentice, after the winter Midgard's explorers first came through the gap with the dwarves' own. She brought a slate with her that she has kept adding to ever since, and it is not a slate of names. It is a chart. Mortufoghus, the mammoth of the old ice, walks between the dig and the bones round and round, as if the bones were her calf and every digger a wolf, and Asutri has charted the round: where it bends, how near it comes to the dig, how it widens when the calling at the dig goes on too long. The dwarves at the post say her chart is the reason the post has never once been surprised.\n\nShe also keeps the other reckoning, the one the slate-house keeps of every stranger who has done the Remnants good or harm. A stranger who comes to the post and is known for good is given the griffon. A stranger who is not known, or known for harm, is turned back, and if he will not turn, the post turns him. Asutri does not argue with strangers. She says arguing is for the slate-house, and the post is not the slate-house; the post is where the slate-house's arguments end.\n\nOrri of Hagall wrote that Asutri once refused the griffon to a Midgard jarl's son who had come to see the bones, and that the jarl's son drew his sword on her, and that Hermione the stablemaster, who does not fight, put herself between them and said the griffon would not carry a man who had drawn on the post in any case, so there was no point. The jarl's son walked back to the gap. Asutri marked his name on the other slate, the one that does not forget.",
+  "legend": "Asutri is a level 50 iarn dwarf at the Remnants' post in south-western Modernagrav, near Hermione the stablemaster and the griffon. Remnants faction and aggressive, like Alivor: low Remnants standing means she attacks on sight, and dwarves nearby can join. No special abilities, not CC-immune. Killing her shifts your faction standing the usual way, and she stands right by the post's flight master, so a lot of people simply leave her alone and raise Remnants faction instead. Alivor stands about 4,100 away on the road toward the bones. If you need the griffon later, don't kill the post's dwarves now.",
+  "yells": {
+    "aggro": [
+      "Not known to the slate-house. Not welcome.",
+      "The post turns you back.",
+      "No griffon for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "This is where the arguments end."
+      }
+    ],
+    "death": [
+      "The chart... finish the chart...",
+      "Mark me... on the other slate..."
+    ],
+    "slay": [
+      "Turned.",
+      "Marked.",
+      "The post holds."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dwarf with a slate watches the mammoth's round.",
+      "The post itself. Strangers are weighed here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Asutri does not let go of her slate."
+      }
+    ],
+    "realmFirstKill": "Asutri of the post falls. Her chart is unfinished."
+  },
+  "botLines": {
+    "briefing": [
+      "asutri is remnants, aggro if your faction is low",
+      "shes right by the griffon post, think about faction",
+      "50, easy, no tricks",
+      "alivor is 4000 off, they dont pull together"
+    ],
+    "aftermathWin": [
+      "asutri down, faction hit though",
+      "easy",
+      "hermione didnt flinch",
+      "the post is unguarded"
+    ],
+    "aftermathLoss": [
+      "a dwarf joined",
+      "didnt know the remnants were hostile",
+      "tracker from alivors side wandered in",
+      "bad idea"
+    ],
+    "rumour": [
+      "asutri has charted mortufoghus round for years",
+      "asutri decides who flies the griffon",
+      "asutri refused the griffon to a jarls son who drew on her",
+      "the post has never been surprised because of asutris chart"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Asutri",
+    "text": "The dwarf who keeps the Remnants' [post] itself and decides who flies. She has charted [Mortufoghus]'s round for years. Hermione the stablemaster once stood between her and a jarl's son. See [Alivor]."
+  },
+  "bookPage": "From the slates of Orri of Hagall: Asutri showed me her chart once, by the griffon's pen. The mammoth's round is a loop drawn on the slate over and over, a hundred loops, each scratched a little differently, so that the whole slate is grey with them. In the middle is a mark for the bones. She pointed to where the loops pulled toward the dig and said: there, that is when they call too long. Then she pointed to one loop that went wide, out past the dig, almost to the post, and said nothing, and put the slate away.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Asutri's post in Modernagrav in {minutes} minutes.",
+    "loss": "Asutri turned {raidLeader}'s party from {realm} back from the post after {minutes} minutes."
+  }
+}

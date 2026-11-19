@@ -20,14 +20,14 @@ namespace DOL.GS.DailyQuest.Albion
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Caledonia Conquerer";
-		private const int minimumLevel = 34;
-		private const int maximumLevel = 39;
+		private const string questTitle = "Seize the Keep in Caledonia";
+		private const int minimumLevel = 30;
+		private const int maximumLevel = 35;
 
 		// Capture Goal
 		private const int MAX_CAPTURED = 1;
 		
-		private static GameNPC PazzAlb = null; // Start NPC
+		private static GameNPC CaptainAlb = null; // Start NPC
 
 		private int _isCaptured = 0;
 
@@ -65,42 +65,8 @@ namespace DOL.GS.DailyQuest.Albion
 			
 
 			#region defineNPCs
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Albion);
 
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 250, 37283, 51881))
-					{
-						PazzAlb = npc;
-						break;
-					}
-				}
-
-			if (PazzAlb == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find PazzAlb, creating it ...");
-				PazzAlb = new GameNPC();
-				PazzAlb.Model = 26;
-				PazzAlb.Name = "Pazz";
-				PazzAlb.GuildName = "Bone Collector";
-				PazzAlb.Realm = eRealm.Albion;
-				//Druim Ligen Location
-				PazzAlb.CurrentRegionID = 250;
-				PazzAlb.Size = 40;
-				PazzAlb.Level = 59;
-				PazzAlb.X = 37283;
-				PazzAlb.Y = 51881;
-				PazzAlb.Z = 3944;
-				PazzAlb.Heading = 4090;
-				PazzAlb.Flags |= GameNPC.eFlags.PEACE;
-				PazzAlb.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					PazzAlb.SaveIntoDatabase();
-				}
-			}
+			CaptainAlb = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Albion, 250); // Captain Aldwyn, the Caledonia portal keep
 
 			#endregion
 
@@ -113,11 +79,11 @@ namespace DOL.GS.DailyQuest.Albion
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(PazzAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToHaszan));
-			GameEventMgr.AddHandler(PazzAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToHaszan));
+			GameEventMgr.AddHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Haszan the possibility to give this quest to players */
-			PazzAlb.AddQuestToGive(typeof (CaleKeepCaptureAlb));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainAlb.AddQuestToGive(typeof (CaleKeepCaptureAlb));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -127,27 +93,27 @@ namespace DOL.GS.DailyQuest.Albion
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (PazzAlb == null)
+			if (CaptainAlb == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(PazzAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToHaszan));
-			GameEventMgr.RemoveHandler(PazzAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToHaszan));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Haszan the possibility to give this quest to players */
-			PazzAlb.RemoveQuestToGive(typeof (CaleKeepCaptureAlb));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainAlb.RemoveQuestToGive(typeof (CaleKeepCaptureAlb));
 		}
 
-		private static void TalkToHaszan(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(PazzAlb.CanGiveQuest(typeof (CaleKeepCaptureAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (CaleKeepCaptureAlb), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -160,17 +126,17 @@ namespace DOL.GS.DailyQuest.Albion
 					switch (quest.Step)
 					{
 						case 1:
-							PazzAlb.SayTo(player, "Find an enemy occupied keep and capture it. If you succeed come back for your reward.");
+							CaptainAlb.SayTo(player, "Find a keep held by the enemy and capture it. Come back to me when it is done.");
 							break;
 						case 2:
-							PazzAlb.SayTo(player, "Hello " + player.Name + ", did you [capture] a keep?");
+							CaptainAlb.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					PazzAlb.SayTo(player, "Look "+ player.Name +", I'll cut to the chase. " +
-					                      "We need the central keep back because I left some... contraband in the basement that I'd really like to reclaim before its found by the guards. Can you [help a skeleton] out?");
+					CaptainAlb.SayTo(player, player.Name + ", the keep at the heart of Caledonia is the prize of this field, and while the enemy holds it, the field is theirs. " +
+					                      "Take it for Albion and I will see you rewarded. Will you [take the keep]?");
 				}
 			}
 				// The player whispered to the NPC
@@ -181,8 +147,8 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "help a skeleton":
-							player.Out.SendQuestSubscribeCommand(PazzAlb, QuestMgr.GetIDForQuestType(typeof(CaleKeepCaptureAlb)), "Will you help Pazz with "+questTitle+"");
+						case "take the keep":
+							player.Out.SendQuestSubscribeCommand(CaptainAlb, QuestMgr.GetIDForQuestType(typeof(CaleKeepCaptureAlb)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -190,10 +156,10 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "capture":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Thank you for your contribution!", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well done! The keep is ours, and Albion holds the field. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -259,7 +225,7 @@ namespace DOL.GS.DailyQuest.Albion
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(PazzAlb.CanGiveQuest(typeof (CaleKeepCaptureAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (CaleKeepCaptureAlb), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (CaleKeepCaptureAlb)) != null)
@@ -267,15 +233,15 @@ namespace DOL.GS.DailyQuest.Albion
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me out.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!PazzAlb.GiveQuest(typeof (CaleKeepCaptureAlb), player, 1))
+				if (!CaptainAlb.GiveQuest(typeof (CaleKeepCaptureAlb), player, 1))
 					return;
 
-				PazzAlb.SayTo(player, "Thank you "+player.Name+", be an enrichment for our realm!");
+				CaptainAlb.SayTo(player, "Thank you, " + player.Name + ". You are a true soldier of Albion!");
 
 			}
 		}
@@ -294,9 +260,9 @@ namespace DOL.GS.DailyQuest.Albion
 				switch (Step)
 				{
 					case 1:
-						return "Go to the battlefield and conquer a keep. \nCaptured: Keep ("+ _isCaptured +" | 1)";
+						return "Go to the battlefield and capture a keep. \nKeeps Captured: ("+ _isCaptured +" | 1)";
 					case 2:
-						return "Return to Pazz in Caledonia Portal Keep for your reward.";
+						return "Return to Captain Aldwyn in the Caledonia portal keep for your reward.";
 				}
 				return base.Description;
 			}
@@ -314,12 +280,12 @@ namespace DOL.GS.DailyQuest.Albion
 
 			if (Step != 1 || e != GamePlayerEvent.CapturedKeepsChanged) return;
 			_isCaptured = 1;
-			player.Out.SendMessage("[Daily] Captured Keep: ("+_isCaptured+" | "+MAX_CAPTURED+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Keep Captured: ("+_isCaptured+" | "+MAX_CAPTURED+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (_isCaptured >= MAX_CAPTURED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 

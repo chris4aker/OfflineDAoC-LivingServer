@@ -20,6 +20,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import chat_rules  # noqa: E402  (the 1.2 chat audit checks: failures for STRICT_OWNERS, warnings elsewhere)
+
 ROOT = Path(__file__).resolve().parents[2]
 CHAT = ROOT / 'source/server/GameServer/bots/autonomous/data/chat'
 OUT = CHAT / 'corpus.json'
@@ -45,7 +48,13 @@ KINDS = {'ambient', 'reply', 'lfg', 'trade', 'rvr', 'greet', 'thanks', 'grudge',
          # True rumours (AutonomousRumours): a real rare spawn or an undefended keep, and reactions
          'rumour', 'rumour_reply',
          # Bonds (AutonomousBotBonds): a bot tells /faction about a friend, a reunion or a no-show, others react
-         'bond', 'bond_reply'}
+         'bond', 'bond_reply',
+         # Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md, WP0): a crafter's own lines and its answers to "can you make X"
+         'craft', 'craft_reply',
+         # The full bot trade (WP8, BotTrades): what any gamebot says to a player in a trade window
+         'trade_reply',
+         # Bots as people WP6 (BotMilestoneLife): a gamebot's own milestone, as it gets close and when it gets there
+         'milestone'}
 # Lines that start a conversation; each says what kind of answer it invites (@invites, or inferred below).
 OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild', 'news', 'tell'}
 # Kinds whose lines speak about the speaker's own here and now, so a place they name must be true (or @about).
@@ -58,7 +67,8 @@ INVITES = {'none', 'chat', 'joke', 'boast', 'complaint', 'news', 'lfg', 'trade',
 # answer when a player asks "why?", "really?", "how?", "what?" or "where?" right after the bot's own line.
 # "player_<shape>" (the talking update audit): replies to a kind of player statement the reply path reads (good news,
 # an offer of help or items, a request to wait).
-INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news(_[a-z0-9]+)*|lfg|trade|ask(_[a-z0-9]+)*|followup_[a-z]+|player_[a-z_]+|debate_[a-z]+)')
+# "milestone_<arc>" (Bots as people WP6): the realm's cheer when a gamebot reaches realm rank 5 or wins a dragon trophy.
+INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news(_[a-z0-9]+)*|lfg|trade|ask(_[a-z0-9]+)*|followup_[a-z]+|player_[a-z_]+|debate_[a-z]+|milestone_[a-z0-9]+)')
 TYPES = {'Leveler', 'Crafter', 'Socialite', 'Explorer', 'Daredevil', 'NoLifer'}
 REALMS = {'alb', 'mid', 'hib'}
 CLASSES = {
@@ -77,6 +87,8 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'will_rez',   # will_rez: set only when answering a rez ask the bot will really come to
          'player_rezzed_me',   # gossip: the player really rezzed this bot (bot memory)
          'player_leveling',    # tells: the player is under the level cap (lines about levelling; in-game check 2026-10-27)
+         'bot_leads',          # bot-led groups: a gamebot leads the party the player is in (the player follows)
+         'lead_call',          # bot-led groups: the leader's own calls (BotLedGroups.Announce passes it; no bot has it alone)
          # The talking update: what is true in the world right now (AutonomousChatNews and the RvR event layer).
          'df_ours',            # the bot's realm holds Darkness Falls
          'defending',          # one of the realm's keeps is under siege now ({keep} is that keep)
@@ -94,7 +106,24 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'newbie', 'veteran',  # level 1-14, level 40+ (voices.json experience tiers)
          # Holiday chatter (AutonomousHolidays): the days around a holiday, and the day itself
          'holiday', 'holiday_today', 'holiday_halloween', 'holiday_thanksgiving', 'holiday_christmas', 'holiday_newyear',
-         'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer'}
+         'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer',
+         'holiday_before', 'holiday_after',   # the window's days before the holiday's own day, and after it
+         # Events (chat audit 2026-11-18): a named kill yellow or harder (deeds), a keep taken back (news), the player
+         # grouped with this bot (memory greetings)
+         'hard_kill', 'retaken', 'player_grouped',
+         # Crafting 2.0 (WP0 registers them; WP4-WP8 set them): what is true of a crafter gamebot right now
+         'has_craft_stock',    # it holds crafted stock to sell ({stock}, {price})
+         'at_station',         # it stands at a forge, lathe or alchemy table
+         'crafter_title_up',   # its crafting title rose in the last hour ({title}, {skill})
+         'crafter_legendary',  # it is Legendary (1000) in its order
+         'has_open_order',     # it has posted an order it is waiting on ({order}, {budget})
+         'took_order',         # it is making an order for someone ({order}, {customer})
+         'wants_gear',         # its gear check found a gap it is shopping for ({item}, {budget})
+         'exploded_recent',    # a spellcraft explosion of its own in the last hour
+         # 1.2 chat audit (TEXT-020): an alarm's head count, under 8, 8 or more, 16 or more (AutonomousLivingServer.AlarmFlags)
+         'few', 'many', 'zerg',
+         # The season on the PC's calendar, northern hemisphere (AutonomousBotVoiceCorpus.SeasonFlag; owner decision 12)
+         'winter', 'spring', 'summer', 'autumn'}
 # Places a line may claim the speaker is at, heading to, or either (@needs at:<place>, going:<place>, near:<place>).
 PLACE_NEED_RE = re.compile(r'(at|going|near):(.+)')
 
@@ -119,12 +148,20 @@ def places_in(text):
             t = pattern.sub(' ', t)
     return found
 TIME_FLAGS = {'day', 'evening', 'night'}
+# A live scene (owner, 2026-11-18: "if they are the best scenes then let's double the number written") needs a realm news
+# flag and plays only while it is true: AutonomousChatNews.For sets these for the whole realm, with the keep, relic and
+# enemy of the news as the scene's {keep}, {relic} and {enemy} (AutonomousBotDebates.LiveSlots).
+SCENE_NEWS_FLAGS = {'defending', 'attacking', 'keep_news', 'keep_lost_recent', 'keep_won_recent', 'relic_lost_recent',
+                    'relic_won_recent', 'raid_won_recent', 'raid_wiped_recent', 'df_changed_recent', 'df_ours'}
+SCENE_FLAGS = TIME_FLAGS | SCENE_NEWS_FLAGS
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
            'trading', 'help', 'farewell', 'ignoreoutofworld',
            # 0.36-se.4: short chat players type
            'thanks', 'congrats', 'ding', 'laugh', 'away', 'back', 'rez', 'alarm', 'classtalk', 'botcheck',
            # Beta 1.1.2: an in-character line from the player
-           'roleplay'}
+           'roleplay',
+           # Crafting 2.0 (WP0): wtb/wts, "can you make", "lf sc", price questions to a crafter
+           'crafting'}
 MOODS = {'friendly', 'neutral', 'cool', 'rival'}
 SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'count', 'camp', 'dungeon',
          'capital', 'enemy', 'keep', 'frontier', 'player', 'player_class', 'place', 'q',
@@ -139,21 +176,38 @@ SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'cou
          # Deeds: the player's earned nickname; storylines: the two protagonists; spammers: the fake site
          'nickname', 'name_a', 'name_b', 'site',
          # Bonds: the other gamebot and its class
-         'other', 'other_class'}
+         'other', 'other_class',
+         # Crafting 2.0 (WP0): a crafter's real stock, price, title, order, skill, quality, customer, recipe and a budget
+         'stock', 'price', 'title', 'order', 'skill', 'quality', 'customer', 'recipe', 'budget',
+         # WP8: when a commissioned piece will be ready ("about 40 min") and how it is paid ("pay when i hand it over")
+         'when', 'terms',
+         # 1.2 chat audit (TEXT-018): {enemy} is the people ("hibs"), {enemy_mod} the word before a noun ("hib stealther"),
+         # {enemy_realm} the realm's name ("Hibernia")
+         'enemy_mod', 'enemy_realm'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 
-# Out of era (Trials of Atlantis, New Frontiers, Catacombs), the custom class, real-world names, profanity.
-BANNED = [
-    r'atlantis', r'\btoa\b', r'artifact', r'master ?levels?', r'\bml\d*\b', r'champion levels?', r'\bcl\d*\b',
-    r'catacombs', r'labyrinth', r'new frontiers?', r'\btowers?\b', r'oceanus', r'stygia', r'aerus', r'volcanus',
-    r'mauler', r'vampiir', r'bainshee', r'heretic', r'valkyr', r'warlock', r'frostalf', r'\bshar\b', r'deifrang',
-    r'minotaur', r'sluagh', r'mythic', r'\bign\b', r'\bvault\b', r'allakhazam', r'everquest', r'world of warcraft',
-    r'\bfuck', r'\bshit', r'\bbitch', r'\bdamn', r'\bass\b', r'\bcrap\b', r'\bhell\b',
-    # Later internet phrases (audit 2026-10-18)
-    r'change my mind', r'fight me', r'\bvibes?\b', r'love language', r'no thoughts', r'\blifestyle\b', r'\bsalty\b',
-    r'\bthe meta\b', r'i felt that', r'\bpog', r'\bbased\b', r'\bno cap\b', r'\bgg ez\b', r'\bsus\b', r'\bmain character\b',
-]
+# The banned list lives in banned.txt with its reasons (1.2 chat audit, DESIGN-045 a). BANNED (level "ban") fails every file;
+# "audit" entries fail the files of STRICT_OWNERS and warn elsewhere; "unsure" entries only warn.
+BANNED_FILE = Path(__file__).resolve().parent / 'banned.txt'
+
+
+def load_banned(path=BANNED_FILE):
+    entries = []
+    for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        line = raw.strip()
+        if not line or line.startswith('#'):
+            continue
+        parts = [p.strip() for p in line.split(' | ', 3)]
+        if len(parts) < 3 or parts[1] not in ('ban', 'audit', 'unsure'):
+            raise SystemExit(f'{path.name}:{number}: expected "id | ban|audit|unsure | regex | why": {raw}')
+        entries.append(dict(id=parts[0], level=parts[1], regex=re.compile(parts[2], re.IGNORECASE),
+                            pattern=parts[2], why=parts[3] if len(parts) > 3 else ''))
+    return entries
+
+
+BANNED_ENTRIES = load_banned()
+BANNED = [e['pattern'] for e in BANNED_ENTRIES if e['level'] == 'ban']
 # A line that assumes a time of day needs a time flag (in game a noon session heard "late night crew checking in").
 # "tonight" and "all night" need none: by day the server says "today" and "all day" (AutonomousBotVoiceCorpus.ForTimeOfDay).
 TIME_WORDS_RE = re.compile(r"\b(late night|so late|up late|off to bed|to bed|bedtime|in the morning|"
@@ -162,6 +216,29 @@ TIME_WORDS_RE = re.compile(r"\b(late night|so late|up late|off to bed|to bed|bed
 PLURAL_MONSTER_RE = re.compile(r'\{count\} \{monster\}|\{monster\} (are|were|keep|give|drop|hit)\b')
 BANNED_RE = re.compile('|'.join(BANNED), re.IGNORECASE)
 SLOT_RE = re.compile(r'\{([^{}]*)\}')
+# Trials of Atlantis and Catacombs exist only as rumours (owner, 2026-11-15). The one exception to BANNED: a line tagged as
+# such a rumour (@topic rumour_atlantis or rumour_below, any kind, a debate scene's topic too) may name "atlantis" or
+# "catacombs". Every other banned word (artifacts, master levels, ml, the classes, the races) stays banned there, and no
+# rumour line may claim the speaker has been there or is going.
+ERA_RUMOUR_TOPICS = {'rumour_atlantis', 'rumour_below'}
+ERA_RUMOUR_WORDS_RE = re.compile(r'\b(atlantis|catacombs)\b', re.IGNORECASE)
+ERA_RUMOUR_CLAIM_RE = re.compile(
+    r"\b(i|we|me and|my (group|guild))( have| has|'ve|ve|'m|m| am| are)? (been|went|go|going|gone|sailed|sail|swam|got|get|"
+    r"rowed|row|dove|dived|headed|heading) (to|into|down|under|out to|in) (atlantis|the catacombs|catacombs|the sunken|the drowned)|"
+    r"\bbeen to (atlantis|the catacombs)\b|\b(lets|let's|wanna|want to|who wants to) (go|sail|row|head)\b", re.IGNORECASE)
+
+
+def banned_word(text, topic=''):
+    """The out-of-era or banned word in a line as said, or None. A rumour line (ERA_RUMOUR_TOPICS) may name atlantis and
+    catacombs, nothing else banned; it must not claim a trip there either. Pure."""
+    said = SLOT_RE.sub('', text)
+    if topic in ERA_RUMOUR_TOPICS:
+        claim = ERA_RUMOUR_CLAIM_RE.search(said)
+        if claim:
+            return claim.group(0)
+        said = ERA_RUMOUR_WORDS_RE.sub(' ', said)
+    hit = BANNED_RE.search(said)
+    return hit.group(0) if hit else None
 
 
 class Problem(Exception):
@@ -206,9 +283,9 @@ def check_text(text, tags, where, problems):
             problems.append(f'{where}: memory slot {{{slot}}} needs @needs knows_player or a memory kind')
     if text.count('{') != text.count('}'):
         problems.append(f'{where}: unbalanced braces')
-    hit = BANNED_RE.search(SLOT_RE.sub('', text))
+    hit = banned_word(text, str(tags.get('topic') or ''))
     if hit:
-        problems.append(f'{where}: out-of-era or banned word "{hit.group(0)}": {text}')
+        problems.append(f'{where}: out-of-era or banned word "{hit}": {text}')
     if PLURAL_MONSTER_RE.search(text):
         problems.append(f'{where}: {{monster}} is one monster; write {{monsters}} for the plural: {text}')
     needs = set(tags.get('needs', []))
@@ -230,6 +307,27 @@ def check_text(text, tags, where, problems):
             'outdoors', 'in_dungeon', 'in_capital', 'in_rvr', 'at_camp', 'traveling', 'in_town', 'in_battleground', 'in_frontier'}:
         problems.append(f'{where}: {{zone}} needs a place flag (outdoors, at_camp, in_dungeon...) so it is not said '
                         f'from a city or a dungeon by mistake: {text}')
+    if AUDIT is not None:
+        audit_text(text, tags, where, needs)
+
+
+# The 1.2 chat audit checks (chat_rules.py); set by main, None when the module is imported (check_runtime_names, tests).
+AUDIT = None
+
+
+def audit_text(text, tags, where, needs):
+    chat_rules.banned_audit(text, tags, where, AUDIT, BANNED_ENTRIES)
+    chat_rules.length_audit(text, tags, where, AUDIT)
+    chat_rules.class_audit(text, tags, where, AUDIT)
+    chat_rules.promise_audit(text, tags, where, AUDIT)
+    chat_rules.enemy_audit(text, tags, where, AUDIT)
+    chat_rules.keep_audit(text, tags, where, AUDIT, CLAIM_KINDS)
+    chat_rules.slot_place_audit(text, tags, where, AUDIT, OPENER_KINDS)
+    chat_rules.time_audit(text, needs, where, AUDIT)
+    if tags['kind'] == 'debate':
+        chat_rules.beat_audit(text, where, AUDIT)
+    elif '{q}' in text:
+        chat_rules.q_audit(text, where, AUDIT)
 
 
 def check_tags(tags, where, problems):
@@ -270,7 +368,7 @@ def check_tags(tags, where, problems):
 
 def fresh_tags():
     return dict(kind='ambient', topic='general', who=[], realm='*', **{'class': []}, levels=[1, 50], needs=[],
-                intent='', mood='', weight=1.0, invites='', answers=[], about=False)
+                intent='', mood='', weight=1.0, invites='', answers=[], about=False, allow=[])
 
 
 DOING_RE = re.compile(r"\bwhat (is|are|r) (every(one|body)|you|u|yall|you (all|guys)|u guys)( all)? (up to|doing)\b|"
@@ -281,6 +379,9 @@ LATER_RE = re.compile(r"\b(tonight|later|tomorrow|this weekend|after)\b")
 NOT_A_CHOICE_RE = re.compile(
     r"\bor (something|anything|what|so|not|is it just me|is that just me|just me|is it me|am i|is that a myth|is that true|just a|no|nah|"
     r"is it|is that|a bot|bot|an npc|a waste|waste|real|human|a person|a real)\b|\b(real|human) or\b")
+
+
+AMOUNT_OR_RE = re.compile(r"\bor (two|so|three|more|less|better|four|five)\b")
 
 
 def infer_invites(text, kind):
@@ -299,14 +400,17 @@ def infer_invites(text, kind):
         # Not a choice: "or just me", "or not", "or is it a myth", "real or scripted" (the same list as
         # AutonomousChatShortTalk.IsEitherOr; in-game check 2026-10-27: "anyone else waiting on a group or just me?" drew
         # "whichever is more fun").
-        if re.search(r"\bor\b", t) and not NOT_A_CHOICE_RE.search(t):
+        # 1.2 chat audit (CORPUS-C-005): "a ring or two", "20 or so", "50 or better" are amounts, not a choice.
+        if re.search(r"\bor\b", t) and not NOT_A_CHOICE_RE.search(t) and not AMOUNT_OR_RE.search(t):
             return 'ask_choice'
         # "where to next?": where the group goes, answered "your call" or "somewhere with more xp", not directions.
         if re.search(r"\bwhere (to next|now|next|are we (heading|going|off to)|should we (go|head)|we (going|heading))\b", t):
             return 'ask_next'
         if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
             return 'ask_where'
-        if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
+        # CORPUS-C-005: "who is our best weaponcrafter?", "what is the best camp?" ask who or what, not an opinion of the asker's.
+        if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t) \
+                and not re.match(r"(who|what|whats|which|where|how)\b", t):
             return 'ask_opinion'
         # "tell me your best death story": a story, not "pretty sure yes" (live test 2026-10-18).
         if re.search(r"\b(tell me|whats|what is) your (best|worst|favorite|funniest|dumbest)\b|\bbest thing that happened\b", t):
@@ -326,8 +430,12 @@ def infer_invites(text, kind):
         if re.search(r"\b(still ours|still holding|ours right now|did we lose|how much do (merchants|vendors) pay)\b", t):
             return 'ask_know'
         # "anyone know if x is ours?": a question about the world, answered "no idea" or "last i saw" (live test 2026-10-18).
-        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (know|knows|seen|heard)\b", t):
+        # CORPUS-C-005: only "know if/whether/who", "seen" and "heard": "anyone know a good camp?" asks for advice, not yes or no.
+        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (knows? (if|whether|who)|seen|heard)\b", t):
             return 'ask_know'
+        # "anyone know a good camp around 20?": advice (CORPUS-C-005), not "last i saw, yes".
+        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) knows? (a|an|any|some|where|how|what|which|good|the best)\b", t):
+            return 'ask_advice'
         # "anyone else up at this hour?": company, answered "same here", not "sorry, busy".
         if re.search(r"\b(anyone|anybody|any1) else\b", t):
             return 'chat'
@@ -347,6 +455,8 @@ def parse_file(path, problems):
     lines, scenes = [], []
     tags = fresh_tags()
     scene = None
+    # CORPUS-A-003/004: an @invites or @who set before a @class change and still in force on the next line.
+    carried, used = {}, set()
     for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
         where = f'{path.name}:{number}'
         text = raw.strip()
@@ -357,10 +467,11 @@ def parse_file(path, problems):
             value = value.split(' #', 1)[0].strip()
             if key == 'scene':
                 scene = dict(id=value, topic=tags['topic'], realm=tags['realm'], levels=tags['levels'], roles={},
-                             beats=[], where=where, needs=[n for n in tags['needs'] if n.lstrip('!') in TIME_FLAGS])
-                bad = [n for n in tags['needs'] if n.lstrip('!') not in TIME_FLAGS]
+                             beats=[], where=where, needs=[n for n in tags['needs'] if n.lstrip('!') in SCENE_FLAGS])
+                bad = [n for n in tags['needs'] if n.lstrip('!') not in SCENE_FLAGS]
                 if bad:
-                    problems.append(f'{where}: a scene can only need a time of day (day, evening, night), not {bad}')
+                    problems.append(f'{where}: a scene can only need a time of day or a realm news flag '
+                                    f'({", ".join(sorted(SCENE_FLAGS))}), not {bad}')
                 scenes.append(scene)
             elif key == 'role':
                 if scene is None:
@@ -396,6 +507,17 @@ def parse_file(path, problems):
             else:
                 scene = None
                 try:
+                    if key in ('invites', 'who', 'kind'):
+                        carried.pop('invites' if key != 'who' else 'who', None)
+                        used.discard('invites' if key != 'who' else 'who')
+                        if key == 'kind':
+                            carried.clear()
+                    if key == 'class':
+                        # Only a tag that already applied to a line above is carried by mistake; one set right before
+                        # the @class is meant for its lines.
+                        for k in ('invites', 'who'):
+                            if tags[k] and k in used:
+                                carried[k] = where
                     if key == 'kind':
                         tags = fresh_tags() | dict(kind=value)
                     elif key == 'topic':
@@ -420,6 +542,12 @@ def parse_file(path, problems):
                         tags['invites'] = value
                     elif key == 'answers':
                         tags['answers'] = split_list(value)
+                    elif key == 'allow':
+                        # "@allow <id>": the lines below may use that banned.txt entry (until the next @kind).
+                        tags['allow'] = split_list(value)
+                        unknown = [a for a in tags['allow'] if a not in {e['id'] for e in BANNED_ENTRIES}]
+                        if unknown:
+                            problems.append(f'{where}: @allow names no banned.txt entry: {", ".join(unknown)}')
                     elif key == 'about':
                         # "@about place": the following lines name places without claiming to be there; "@about" ends it.
                         if value not in ('', 'place'):
@@ -447,13 +575,21 @@ def parse_file(path, problems):
             if any(not v for v in variants):
                 problems.append(f'{where}: empty alternative')
             for v in variants:
-                check_text(v, dict(kind='debate', needs=scene['needs'], realm=scene['realm'], topic=scene.get('topic') or ''), where, problems)
+                check_text(v, dict(kind='debate', needs=scene['needs'], realm=scene['realm'], topic=scene.get('topic') or '',
+                                   allow=tags.get('allow') or []), where, problems)
                 if re.match(r'\??[A-H]:\s', v):
                     problems.append(f'{where}: an alternative starts with a role marker: {v}')
             scene['beats'].append(dict(role=role, text=variants[0], variants=variants, optional=bool(optional),
                                        where=where))
             continue
         check_tags(tags, where, problems)
+        if AUDIT is not None:
+            for k, set_at in list(carried.items()):
+                AUDIT(where, f'@{k} {tags[k] if k == "invites" else ",".join(tags[k])} set before the @class change above '
+                             f'({set_at}) still applies here; reset it with a bare "@{k}" (or "@who *") under the @class')
+                carried.pop(k)
+            chat_rules.agreement_audit(text, where, AUDIT)
+        used.update(('invites', 'who'))
         if '[' in text and not CHOICE_RE.search(text):
             problems.append(f'{where}: "[" without a "|" choice: {text}')
         family = expand(text)
@@ -461,6 +597,7 @@ def parse_file(path, problems):
         for said in family:
             check_text(said, tags, where, problems)
             line = dict(tags, text=said, where=where, **{'class': list(tags['class'])})
+            line.pop('allow', None)
             # Kept only when set and the line names a place, so a test can tell talk about a place from a claim to be there.
             if not (line.pop('about') and places_in(said)):
                 pass
@@ -477,6 +614,8 @@ def parse_file(path, problems):
                 # A plain "ask" tag takes a more specific question type when the words show one ("how is everyone?").
                 if line['invites'] == 'ask' and infer_invites(said, tags['kind']).startswith('ask_'):
                     line['invites'] = infer_invites(said, tags['kind'])
+                if AUDIT is not None and not tags['invites']:
+                    chat_rules.invite_audit(said, line['invites'], where, AUDIT, places_in)
             else:
                 line.pop('invites')
             if not line['answers']:
@@ -538,12 +677,68 @@ def norm(text):
     return re.sub(r'[^a-z0-9{}]+', ' ', text.lower()).strip()
 
 
+LORE = ROOT / 'source/server/GameServer/bots/autonomous/data/lore'
+LORE_REALMS = {'Albion': 'alb', 'Midgard': 'mid', 'Hibernia': 'hib', 'Neutral': '*'}
+
+
+def check_lore(problems):
+    """Living Server 1.2: the lore bible's bot lines (data/lore, docs/LORE.md) go through the same era, slot and place
+    checks as the corpus. The server adds them at run time (LoreChat.CorpusLines), as ambient lore about a place, so they
+    are checked with those tags and the location's realm. The schema itself is UT_LoreBible's."""
+    if not LORE.exists():
+        return 0
+    realms = {}
+    files = sorted(LORE.glob('locations/*.json')) + sorted(LORE.glob('bosses/*.json'))
+    loaded = []
+    for path in files:
+        try:
+            data = json.loads(path.read_text(encoding='utf-8'))
+        except ValueError as error:
+            problems.append(f'{path.relative_to(ROOT)}: not valid JSON ({error})')
+            continue
+        loaded.append((path, data))
+        if path.parent.name == 'locations':
+            realms[data.get('id')] = data.get('realm')
+    count = 0
+    for path, data in loaded:
+        realm = realms.get(data.get('locationId'), data.get('realm')) if path.parent.name == 'bosses' else data.get('realm')
+        # The shared lines, then each realm's take (realmTakes: Summoner's Hall told the Albion way) as that realm's lines.
+        groups = [('botLines', realm, data.get('botLines') or {})]
+        for key, take in (data.get('realmTakes') or {}).items():
+            if isinstance(take, dict):
+                groups.append((f'realmTakes.{key}.botLines', key.capitalize(), take.get('botLines') or {}))
+        for prefix, group_realm, bot_lines in groups:
+            tags = fresh_tags()
+            tags.update(kind='ambient', topic='lore', realm=LORE_REALMS.get(group_realm, '*'), about=True)
+            for field, lines in bot_lines.items():
+                for i, template in enumerate(lines or []):
+                    where = f'{path.relative_to(ROOT)} {prefix}.{field}[{i}]'
+                    if not CHOICE_RE.search(template) and ('[' in template or ']' in template):
+                        problems.append(f'{where}: "[" without a "|" choice: {template}')
+                        continue
+                    for said in expand(template):
+                        found = []
+                        check_text(said, tags, where, found)
+                        # A Neutral place's lore is told in every realm, about every realm ("albion got avalon, midgard got
+                        # aegir"): naming another realm's place there is the point, not a slip (Hibernia writer, PR #91).
+                        if group_realm == 'Neutral' or realm == 'Neutral':
+                            found = [p for p in found if not re.search(r' in a line for realm [a-z*]+: ', p)]
+                        problems += found
+                        count += 1
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--verify', action='store_true', help='fail if the committed corpus.json differs from the sources')
+    parser.add_argument('--warnings', action='store_true', help='list every 1.2 chat audit warning, by owner')
+    parser.add_argument('--write-vocabulary', action='store_true',
+                        help='after reviewing the new words a check reported, write them all to vocabulary.txt')
     args = parser.parse_args()
     problems, lines, scenes = [], [], []
+    global AUDIT
+    AUDIT = chat_rules.Audit(problems)
     files = sorted(CHAT.glob('*.lines'))
     if not files:
         raise SystemExit('No .lines files found in ' + str(CHAT))
@@ -551,6 +746,16 @@ def main():
         l, s = parse_file(path, problems)
         lines += l
         scenes += s
+    # 1.2 chat audit: near-copies, the vocabulary, the style round trip and the flags (chat_rules.py).
+    chat_rules.scene_duplicates_audit(scenes, AUDIT)
+    chat_rules.duplicates_audit(lines, AUDIT)
+    items = [(x['where'], x['text']) for x in lines] + [(b['where'], v) for sc in scenes for b in sc['beats']
+                                                         for v in b.get('variants', []) if 'where' in b]
+    if args.write_vocabulary:
+        print(f'vocabulary.txt: {chat_rules.write_vocabulary(items)} words')
+    chat_rules.vocabulary_audit(items, AUDIT, chat_rules.load_vocabulary())
+    chat_rules.style_audit(lines, AUDIT)
+    chat_rules.flags_audit({n.lstrip('!') for x in lines for n in x['needs'] if not PLACE_NEED_RE.fullmatch(n.lstrip('!'))}, problems)
     # A sentence may appear in only one scene, or every thread starts sounding the same.
     beat_seen = {}
     for sc in scenes:
@@ -606,6 +811,9 @@ def main():
                 if have < need:
                     problems.append(f'coverage: {kind} for {realm} {lo}-{hi} has {have}, needs {need}')
 
+    lore_lines = check_lore(problems)
+    AUDIT.report(args.warnings)
+
     if problems:
         print(f'{len(problems)} problem(s):')
         for p in problems:
@@ -624,6 +832,7 @@ def main():
     print('by kind: ' + ', '.join(f'{k} {n}' for k, n in sorted(by_kind.items())))
     print('openers invite: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(
         x['invites'] for x in lines if 'invites' in x).items())))
+    print(f'lore bible bot lines checked: {lore_lines}')
     print('by realm: ' + ', '.join(f'{k} {n}' for k, n in sorted(collections.Counter(x["realm"] for x in lines).items())))
     print('by type (lines that name types): ' + ', '.join(
         f'{t} {sum(1 for x in lines if t in x["who"])}' for t in sorted(TYPES)))

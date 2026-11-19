@@ -1,0 +1,66 @@
+{
+  "id": "vixitr",
+  "name": "Vixitr",
+  "npcNames": [
+    "Vixitr"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "arachites"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Vixitr is a level-41 arachite (faction Arachite) in Spindelhalla (31,134/35,049) by the temple, among arachite prelates, vakt and a grymherre, fell cats and ekyps gunstlings; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Vixitr as the prelates' doorkeeper is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Vixitr keeps the temple door. Where the arachite prelates pray toward the deep, at the bottom of the spiders' hall, the arachites set a doorkeeper of their own kind, and the doorkeeper is Vixitr, an arachite of the vakt who was raised to the prelates' door for listening too well. The thralls' frames say Vixitr is the one arachite who has heard what the prelates pray to answer, and that it made the doorkeeper patient.\n\nThe prelates kneel behind the door, the vakt and the grymherre stand before it, and Vixitr stands in it. Nothing goes into the temple that Vixitr has not weighed. The frames call the doorkeeper 'the scale'; Odell's copy has a note in the margin that a scale weighs both sides, and that the thralls should remember it. The fell cats that prowl that hall belong to no one. Vixitr lets them pass. Strangers, never. The temple has never once been entered by a stranger Vixitr let in.",
+  "legend": "Vixitr is a level 41 arachite (Arachite faction) at the temple in Spindelhalla, among arachite prelates (39-43), vakt, a grymherre, fell cats and ekyps gunstlings (45-47). She's on Arachite faction with the prelates all round her. It's a crowded room; clear the edges first and pull Vixitr out of the doorway. Fell cats wander that hall too, and the ekyps gunstlings hit hard for their level.",
+  "yells": {
+    "aggro": [
+      "(The doorkeeper weighs you, and finds you wanting.)",
+      "The prelates pray. You will not interrupt."
+    ],
+    "death": [
+      "(The scale tips.)"
+    ],
+    "slay": [
+      "(Weighed.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The temple door. An arachite stands in it, weighing."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "vixitr is the 41 arachite doorkeeper at the spindelhalla temple",
+      "arachite faction, the prelates and vakt will help"
+    ],
+    "aftermathWin": [
+      "vixitr down",
+      "the temple door is open, for now"
+    ],
+    "rumour": [
+      "vixitr has heard what the prelates pray to answer",
+      "the thralls call vixitr the scale"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vixitr",
+    "text": "The arachite doorkeeper of the temple where the prelates pray toward the deep, called 'the scale' by the thralls, who has heard what answers. See [temple]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} tipped Vixitr's scale at Spindelhalla's temple in {minutes} minutes."
+  }
+}

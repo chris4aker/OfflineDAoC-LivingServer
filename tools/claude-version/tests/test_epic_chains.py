@@ -151,9 +151,12 @@ class EpicChainsTests(unittest.TestCase):
 
     def test_a_second_apply_is_refused_and_rollback_restores_everything(self):
         before = self.snapshot()
+        note = self.db.parent.parent / 'server' / tool.NOTE
         self.run_tool('--apply')
+        self.assertTrue(note.exists(), 'apply notes the world for ROLLBACK.cmd')
         self.assertIn('Already applied', self.run_tool('--apply'))
         self.assertIn('Put back', self.run_tool('rollback', '--apply'))
+        self.assertFalse(note.exists(), 'rollback removes the note')
         self.assertEqual(self.drop_times(self.snapshot()), self.drop_times(before))
         with contextlib.closing(sqlite3.connect(self.db)) as con:
             self.assertFalse(tool.has_table(con, tool.LEDGER))

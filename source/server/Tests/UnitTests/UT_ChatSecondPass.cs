@@ -194,7 +194,8 @@ public class UT_ChatSecondPass
             Assert.That(At("fake inc dont bother")?.Text, Is.AnyOf("k", "kk", "ok", "k ty"));
             Assert.That(At("INC INC INC", "group")?.Text, Is.AnyOf("where", "where?", "which way", "where?!"), "terse in a group");
             Assert.That(At("loot the named", "group")?.Route, Is.EqualTo("context loot"));
-            Assert.That(At("free rps at mmg, mids are afk")?.Text, Does.Contain("omw").Or.Contain("way").Or.Contain("coming"));
+            // 1.2 chat audit (DESIGN-006): free rps draw a reaction, not "omw", unless the promise gate sends the bot.
+            Assert.That(At("free rps at mmg, mids are afk")?.Text, Does.Not.Contain("omw").And.Not.Contain("coming"));
             Assert.That(At("want a res?", "group")?.Text, Does.Contain("good").Or.Contain("ok").Or.Contain("ty"), "an offer to the bot gets a polite no");
         }
     }

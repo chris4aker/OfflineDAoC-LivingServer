@@ -48,6 +48,7 @@ namespace DOL.GS
         /// </summary>
         private bool GuardOpenWorldTravel(GameBot bot, Vector3 destination)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ControllerRouteThreats); // AI_PROFILE: measures only
             if (!AutonomousRouteThreatPolicy.Enabled || bot.Brain is not BotBrain brain ||
                 bot.CurrentZone == null || bot.CurrentZone.IsDungeon || bot.CurrentRegion?.IsDungeon == true ||
                 bot.IsOnStableMasterRoute || bot.IsPlayerLedGroup || brain.HasAggro || bot.InCombat || bot.IsAttacking ||
@@ -309,7 +310,7 @@ namespace DOL.GS
         /// A reachable sidestep beside the monster that stays out of every nearby monster's aggro
         /// range; the shorter way of the two sides wins.
         /// </summary>
-        private static Vector3? FindRouteThreatDetour(IPathfindingMgr nav, Zone zone, ReadOnlySpan<Vector3> corridor,
+        internal static Vector3? FindRouteThreatDetour(IPathfindingMgr nav, Zone zone, ReadOnlySpan<Vector3> corridor,
             GameNPC blocker, int aggroRange, int margin, Vector3 destination, GameNPC[] threats)
         {
             Vector3 start = corridor[0];

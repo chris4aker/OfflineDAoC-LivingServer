@@ -1,0 +1,66 @@
+{
+  "id": "hako",
+  "name": "Hako",
+  "npcNames": [
+    "Hako"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Hako is a level-38 young rime giant (faction Hrimthursa; the giants' model, small) on Delling's north-eastern rim (389,465/273,070, z 9,330) with two hrimthursa warriors (45-49) and a guard; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Hako as the youngest of the rim's watch is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Hako is the youngest giant on Delling's rim, younger than Anicho, and smaller, and the two hrimthursa warriors who stand over him are not his guards but his teachers. The rime giants send their youngest to the outer watch with seasoned warriors to show them how a giant stands a winter, and Hako has been shown, the cast-out sculptor says, and has been taught to stand very still and look very fierce.\n\nDellingstad's children, who are not supposed to climb the rim, say Hako waves. The town's crossbowmen say that is nonsense. The sculptor says it is not, and that Hako has a carving of the town's walls he made himself with a thumbnail on a slab of ice, and that the warriors broke it. He fights strangers with his teachers beside him, as he has been shown. The warriors pretend not to notice. The sculptor says that is how giants are kind.",
+  "legend": "Hako is a level 38 young hrimthursa on Delling's north-east rim, but the two hrimthursa warriors (45-49) and the guard with him are the real fight. Hrimthursa faction. High up on the rim. The hrimthursa warriors beside him are 45-49, much higher than he is. The rim is a long climb from Dellingstad, so plan the trip. Kill order is the warriors first if you can survive them, because Hako himself is no threat; a group in the high 40s is right for this one.",
+  "yells": {
+    "aggro": [
+      "(The young giant stands very still and looks very fierce.)",
+      "Teachers! Look!"
+    ],
+    "death": [
+      "I stood... very still..."
+    ],
+    "slay": [
+      "Did you see? Did you see?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young giant with two old warriors, standing very still."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "hako is a 38 young giant on the north east rim, but his two warriors are 45 to 49",
+      "hrimthursa faction"
+    ],
+    "aftermathWin": [
+      "hako down, and his teachers",
+      "the warriors were the hard part"
+    ],
+    "rumour": [
+      "hako waves at the dellingstad kids, they say",
+      "hako carved the town walls on a slab of ice and the warriors broke it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hako",
+    "text": "The youngest rime giant on Delling's rim, watched by two warriors who teach him how a giant stands a winter. Dellingstad's children say he waves. See [giants' watch]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended young Hako's watch on Delling's rim in {minutes} minutes."
+  }
+}

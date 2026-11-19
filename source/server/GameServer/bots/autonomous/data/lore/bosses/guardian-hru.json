@@ -1,0 +1,81 @@
+{
+  "id": "guardian-hru",
+  "name": "Guardian Hru",
+  "npcNames": [
+    "Guardian Hru"
+  ],
+  "locationId": "valley-of-bri-leith",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Guardian Hru: level 40, model 2110 (shared with Niy the Overseer), at about 442,200/517,600 on the empyrean heights of Bri Leith among empyrean guardians (34-41); respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Hru as the doorward of the mound's eastern door.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The empyreans of Bri Leith keep the doors of a mound whose lord went in when the Veil came down and has not come out, and Guardian Hru keeps the eastern door. The Caille folk say Hru is the only one of the empyreans who speaks, and that it says one thing to everyone who climbs the heights: the lord is not receiving. It has said it, the Old Hermit of the meadow says, to the realm's young and to the siabra and to the fair folk themselves, for longer than the hermit has been alive.\n\nIt does not let anyone argue. The empyrean guardians below it stand in rows on the slope, and when someone comes past them Hru steps out of its place by the door and says its one sentence, and then it fights. The Caille folk say the worst of it is that Hru has never been told the lord is not coming back, and that nobody has the right to tell it.",
+  "legend": "Guardian Hru (40) is a named empyrean on the eastern heights of Bri Leith (about 442k/518k), above rows of empyrean guardians (34-41) and overseers (37-41) that are social. Clear the slope or come round the back. A group of 40ish handles Hru. Plain spawn, 80-second respawn. Niy the Overseer (40) is further north on the heights. Come up the north side of the heights to avoid the rows.",
+  "yells": {
+    "aggro": [
+      "The lord is not receiving.",
+      "(the bright guardian steps from its place)"
+    ],
+    "phases": [],
+    "death": [
+      "The door... is still kept..."
+    ],
+    "slay": [
+      "The lord is not receiving."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A bright doorward on the eastern heights."
+    ],
+    "phases": [],
+    "realmFirstKill": "Guardian Hru no longer keeps the eastern door."
+  },
+  "botLines": {
+    "briefing": [
+      "guardian hru is a 40 empyrean on bri leith's east heights",
+      "empyrean guardians below are social, clear first"
+    ],
+    "aftermathWin": [
+      "hru down. [the door's open|lol no]",
+      "cleared the slope. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "empyrean rows joined. [rip|ouch]",
+      "pulled the overseers too. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] guardian hru only ever says one thing: the lord is not receiving",
+      "nobody has told hru the lord of the mound isnt coming back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Guardian Hru",
+    "text": "The doorward of the mound's eastern door on Bri Leith's heights, the one empyrean that speaks. It says only that the lord is not receiving."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Guardian Hru in the Valley of Bri Leith in {minutes} minutes.",
+    "loss": "Guardian Hru turned back {realm}'s band under {raidLeader} in the Valley of Bri Leith after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "niy-the-overseer",
+      "relation": "who keeps the higher door"
+    }
+  ]
+}

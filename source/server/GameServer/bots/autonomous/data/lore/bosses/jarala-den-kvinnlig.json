@@ -1,0 +1,122 @@
+{
+  "id": "jarala-den-kvinnlig",
+  "name": "Jarala den Kvinnlig",
+  "npcNames": [
+    "Jarala den Kvinnlig"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "olen-den-bartender",
+      "relation": "the bartender at whose bar she stands and does not drink"
+    },
+    {
+      "id": "dagar",
+      "relation": "the counter of days, whose belief in the Mother she does not share"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Jarala den Kvinnlig is a level-60 morvalt of the butchers' model in the hall of counsel (36717, 42845), about 190 units from Olen den Bartender, among the drunken watch.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her spawn has class GameEpicDungeonNPC (a GameEpicNPC): immune to confusion and nearsight while alive, 10,000 + 125 x level health, 1.5x damage factor.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); source/server/GameServer/gameobjects/GameEpicDungeonNPC.cs"
+    },
+    {
+      "text": "She has no NPC template; her spawn row is aggressive (aggro 200) with no faction, so she brings no friends.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish kvinnlig means 'female, womanly'.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    },
+    {
+      "text": "Trollheim's bestiary names Jarala den Kvinnlig.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=67"
+    }
+  ],
+  "story": "Jarala den Kvinnlig, the woman, is the only morvalt the Valkyn guides speak of with anything like respect, because she fights in the front rank and has never been seen to run. The morvalt have few names and fewer women with names, and the Valkyn say the name was not given to her. She took it, the way the morvalt take everything, by standing in front of the others until they stopped arguing.\n\nShe was a butcher once, of the slaktare who keep the Fathers' kitchens, and she still carries a butcher's blade. When the gates broke and the morvalt poured through the upper city she was in the first rush, and the Valkyn who fought on the other side of that day, the few who came out, remembered one morvalt who did not stop to plunder the granaries or drink from the jars or break the weapons on the walls. She went straight through the city to the bridge, and stood on it, alone, until the last Father on the Uppat side had gone down the stair. Then she turned round and walked back. The Valkyn have never agreed on what that meant. Some say she was making sure. Others say she was letting them go.\n\nNow she stands at the end of Olen's bar in the hall of counsel, among the drunken watch, and does not drink. Olen pours for everyone else and leaves her be. She is hard to wear down, harder than any morvalt her size has a right to be, and no shaman's fog has ever clouded her eyes; the Valkyn say she has seen too much clearly to be blinded now. When the hall is threatened she is first through the door, as she was first through the gates, and she does not call the watch. She does not need to. They follow her or they do not.\n\nShe does not believe in the Mother. Dagar counts the days to the Mother's waking and the crazed ones on Modernagrav dig for her, and Jarala, the Valkyn say, has said aloud in the hall of counsel that the morvalt have the only mother they will ever get, which is the city they stole. Nobody has argued with her.",
+  "legend": "Jarala den Kvinnlig stands right next to Olen den Bartender in Trollheim's hall of counsel, level 60. She's GameEpicDungeonNPC, which means epic-NPC stats: about 17,500 health, 1.5x damage, immune to confusion and nearsight. No faction, so she doesn't bring friends, but she's aggressive and so is everything in that bar. If you pull Olen she usually comes with him; plan for both. She's the easier of the two: tank her away from Olen, burn her down, then deal with him. No special abilities beyond the epic stats. If you only want one of the pair, you can't really have it: they stand 190 apart, so budget for both.",
+  "yells": {
+    "aggro": [
+      "First through the door. Always.",
+      "Run? I never learned the word.",
+      "The city is ours. I watched it change hands."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Still standing. Still in front."
+      }
+    ],
+    "death": [
+      "I stood... on the bridge...",
+      "Let them... go..."
+    ],
+    "slay": [
+      "Butchered.",
+      "Front rank. Your last.",
+      "Nobody runs from Jarala."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "One morvalt at the bar does not drink.",
+      "A butcher's blade, kept clean. Jarala watches the door."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jarala does not give a step."
+      }
+    ],
+    "realmFirstKill": "Jarala den Kvinnlig falls, facing forward."
+  },
+  "botLines": {
+    "briefing": [
+      "jarala is next to olen, epic npc stats, 17k hp",
+      "no faction but she comes with olen",
+      "tank her off olen and burn her first",
+      "no confuse or ns on her"
+    ],
+    "aftermathWin": [
+      "jarala down first, then olen, textbook",
+      "she never moved back an inch",
+      "split them, worked",
+      "respect to the morvalt woman"
+    ],
+    "aftermathLoss": [
+      "olen and jarala together, nope",
+      "she hits like a truck",
+      "tried to confuse her, immune",
+      "too many drunks joined"
+    ],
+    "rumour": [
+      "jarala stood alone on the bridge till the last father went down the stair",
+      "she doesnt drink at olens bar",
+      "jarala says the morvalt's only mother is the city they stole",
+      "the valkyn respect jarala, nobody else"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Jarala den Kvinnlig",
+    "text": "The morvalt woman who stood alone on the bridge until the last Father went down, and stands now at [Olen den Bartender]'s bar without drinking. The Valkyn respect her. See [morvalt]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the Valkyn guide I carried for had a grandmother who saw the gates break, and she told me what her grandmother said about the morvalt woman on the bridge. That she stood with her blade down, and the Fathers going past her down the stair, and that she looked at each one as it went, the way a ferryman looks at his passengers. That none of them looked back at her. That one of the last was carrying a child, and Jarala stepped aside to let her by, which the grandmother could not forgive, though she could not have said why.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Jarala den Kvinnlig in Trollheim's hall of counsel in {minutes} minutes.",
+    "loss": "Jarala den Kvinnlig stood in front and threw back {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

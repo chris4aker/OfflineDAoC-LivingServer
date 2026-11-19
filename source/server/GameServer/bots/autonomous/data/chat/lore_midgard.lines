@@ -231,7 +231,7 @@ they tell new groups about the wretch of winter in raumarik to scare them. it wo
 @role C type=NoLifer,Leveler levels=35-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there? | {q} a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to
+A: {q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there? | a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to
 ?D: wait, asgard like where the gods live? i thought odin's gate was just the frontier zone with the huge giant in it | asgard as in the gods' home? i only know odin's gate as the snowy frontier zone with the big giant
 B: in the old tale asgard sits above midgard and the only road up is bifrost, a burning rainbow bridge. a bridge ends at a gate | the old tale is clear: you reach asgard over bifrost, the rainbow bridge, and someone keeps the far end. that is your gate
 C: i've crossed odin's gate end to end on keep raids since the keeps were new. isalf, icestriders, wyverns, snow. no rainbow | ive run that zone more times than i can count. isalf camps, icestriders, a frore lich or two. if there's a bridge it hides well
@@ -271,7 +271,7 @@ B: count them. last time there were nine. heimdall had nine mothers | count the 
 @role C type=NoLifer levels=30-50
 @role D type=* levels=5-25
 @role E type=Crafter,Socialite
-A: {q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try | {q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first
+A: {q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try | {q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first?
 D: who are the troll fathers? i play a troll and nobody ever told me | troll fathers? like trolls' grandparents? my race text never said
 C: the old ones of aegir. they came before trolls and kobolds both, built trollheim, and tamed morvalt until the morvalt took it from them | precursors. trolls and kobolds both come down from them. their city is trollheim, out on aegir, and the morvalt overran it
 B: and that's the point. the troll race text says they came out of the mountains to help us. mountains, not over the sea from an island | the race text says trolls came down out of the mountains to aid the norse. not across the water. so which of our mountains
@@ -303,7 +303,7 @@ A: if a rock waves back, send me a tell | if one of them waves, i want to know f
 @role C type=NoLifer,Leveler levels=35-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other | {q} raid chat fought for an hour over this: is our dragon a he or a she
+A: {q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other | {q} raid chat fought for an hour over this: is our dragon a he or a she?
 C: every raid leader i ever followed into malmohus called the dragon he. he's turning, he's breathing, get out of his face | he. every raid i stood in, the leader said he. nobody argues grammar while on fire
 B: the malmohus lore calls her a daughter of the fenris wolf. daughter. that's not a guess, it's what the old scouts wrote | the scouts' report on malmohus calls her fenris's daughter, plain as that
 D: wait, whats the fenris wolf? | who is fenris? i keep hearing the name
@@ -335,7 +335,7 @@ C: write it in the guild notes: whoever lives longest at the next raid gets to n
 @role C type=Leveler,Crafter levels=35-50
 @role D type=* levels=15-30
 @role E class=Runemaster,Spiritmaster,Healer,Shaman
-A: {q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel | {q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that
+A: {q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel | {q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that?
 B: the story's as old as the dragon raids. in the first months a guild swore her breath was weak the week someone dropped the giant | i remember when it started. first winter of dragon raids. a guild said the breath went soft right after the giant fell, and it stuck
 C: the giant stands in odin's gate, up in the frontier. malmohus is down in the old lands. what carries the fire across, a courier? | one is on the frontier and the other is at the far end of the realm. neither is in earshot of the other
 D: why would a giant and a dragon even be connected? | sorry, why would they share anything? one is ice and the other is a wolf with wings
@@ -429,7 +429,7 @@ C: come by bjarken some time. the valkyn at the gate nod at bonedancers. stand n
 @role C type=Leveler,NoLifer levels=40-50
 @role D type=* levels=5-25
 @role E class=Shaman,Healer,Skald
-A: {q} what do you think the morvalt are really digging up on modernagrav? they call it the mother | {q} the mother on modernagrav. old bones, or something thats going to wake up
+A: {q} what do you think the morvalt are really digging up on modernagrav? they call it the mother | {q} the mother on modernagrav. old bones, or something thats going to wake up?
 D: modernagrav? i've never heard of it | is modernagrav on aegir? i only know aegir's landing
 C: the little island off aegir that turned up not long ago. long forgotten, the heralds said. full of morvalt with shovels | one of the forgotten islands that were found not long ago, off the shore of aegir. the morvalt got there first and started digging
 B: they dig round a skeleton half buried in the hill, ribs as long as a longhouse. they call it the mother and talk about the day she wakes | a giant's bones lie half sunk in the ground there and the morvalt work around them day and night. the mother, they call her
@@ -460,7 +460,7 @@ C: and if it moos, run. and i get your horse | if anything moos at you, leave. a
 @role C class=Shaman,Bonedancer,Runemaster
 @role D type=Explorer
 @role E type=* levels=5-25
-A: {q} what's the oldest thing in midgard? not the oldest player, the oldest thing | {q} tavern argument: who or what was in midgard first
+A: {q} what's the oldest thing in midgard? not the oldest player, the oldest thing | {q} tavern argument: who or what was in midgard first?
 B: the dwarves. oldest race, devoted to the elder gods. it's in the race text and every dwarf will read it to you | dwarves. the race text says it outright: oldest race in midgard, devoted to the elder gods
 C: older than the dwarves are the giants. ymir was first of all, before gods and men | the giants were here before the dwarves. ymir came before anything that has a name
 B: any dwarf will tell you they were digging before the gods learned to talk | ask a dwarf. they were mining before the giants had names
@@ -524,7 +524,7 @@ B: bring a raid. the elders hit hard | bring forty friends. the council doesnt l
 @role C type=Crafter,Leveler
 @role D type=Daredevil,Explorer
 @role E type=* levels=5-25
-A: {q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn | {q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third
+A: {q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn | {q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third?
 E: what do the relics even do? i just see people running them around | sorry, whats a relic for? i see the raids but never understood
 B: while they sit in their temples, thor's hammer makes our fighters hit harder and the horn our spells. lose one and everyone feels it | the hammer strengthens our melee, the horn our casters. as long as they're home in mjollner faste and grallarhorn faste
 B: and an old skald sang me of a third, odin's spear gungnir, lost in the ice when the giants came south. never found | the skalds have a third one, gungnir, odin's spear. lost when the frost came down, the old songs say
@@ -555,7 +555,7 @@ B: if you find it, send me a tell before anyone else. i want to carry it to the 
 @role B type=NoLifer,Explorer levels=30-50
 @role C type=* levels=5-25
 @role D type=Socialite,Daredevil
-A: {q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once | {q} here's a story for you: why skona's werewolves stay clear of malmohus
+A: {q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once | here's a story for you: why skona's werewolves stay clear of malmohus
 B: the scouts wrote the first part plainly: werewolves avoid the place and the svartalfar spy on it from the edges. the why is the old part | the malmohus report says the werewolves won't go in. what it doesn't say is why
 C: werewolves? like the ones in skona ravine? | skona has werewolves? i've only been to the edge of it
 B: a whole people of them. captains, warders, couriers, a werewolf shaman. their king hresvelgr sits in varulvhamn | a nation of them. lieutenants, guards, a shaman. and king hresvelgr in varulvhamn rules them all
@@ -577,7 +577,7 @@ D: feel sorry all you like, they still drop coin | i'll still kill them. pity do
 @role B type=* levels=5-25
 @role C type=NoLifer,Leveler levels=35-50
 @role D type=Socialite,Crafter
-A: {q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter | {q} gather round, i'll tell the one about the wolf's daughter in malmohus
+A: {q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter | gather round, i'll tell the one about the wolf's daughter in malmohus
 B: the dragon has a story? i thought she was just a raid boss | the dragon? isnt she just a dragon?
 A: first the father. fenris grew till only tyr dared feed him. the gods made two chains, leyding and dromi, and he snapped both | first the father. only tyr was brave enough to feed fenris. the gods made two chains for him, and the wolf broke them like straw
 A: so the dwarves made gleipnir from a cat's footstep, a woman's beard, a mountain's roots, a bear's sinews, a fish's breath and a bird's spit | the third chain was dwarf work: footfall of a cat, beard of a woman, roots of a mountain, breath of a fish, spit of a bird
@@ -592,6 +592,7 @@ A: the last part: she bred the drakulvs to be the pack her father never had. whe
 D: there are drakulv missionaries and disciples in there. a pack doesn't need missionaries. an army does | they have missionaries. who sends missionaries unless they want converts
 B: so every drakulv killed keeps the wolf chained a little longer? | wait, so killing drakulvs keeps fenris bound?
 A: that's how gran told it. it's why she sent every one of us to malmohus once we were old enough | thats what gran said, and she was never wrong about wolves
+C: gran's tale, mind. ask one of the realm's storytellers for the skalds' one | thats the winter version. the storytellers in faction tell it the skalds' way
 
 @topic lore_tale_troll_fathers
 @levels 5-50
@@ -599,7 +600,7 @@ A: that's how gran told it. it's why she sent every one of us to malmohus once w
 @role B type=* levels=5-25
 @role C type=NoLifer levels=35-50
 @role D class=Bonedancer,Warrior,Shaman,Thane
-A: {q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does | {q} let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales
+A: {q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does | let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales
 B: troll fathers? are they real trolls? | real trolls, or old stories?
 A: real enough. the old ones of aegir, before trolls and kobolds. both peoples come down from them. they dug trollheim deep into the rock | the first people of aegir. trolls and kobolds both descend from them, and they built trollheim down into the island
 C: that much is the known part. after that, everyone tells it a different way | the first bit is solid. past that every troll has his own version
@@ -609,7 +610,7 @@ A: then the valkyn turned, every telling agrees. but my troll swore they never l
 C: that's a troll being kind. a morvalt schamen would tell you it was the plan all along | a kind telling. ask a crazed morvalt and it was all his idea
 A: either way the wild morvalt came through open doors and took the city. the fathers went deeper, and some say they still live below nosdoden | whatever the cause, the morvalt poured in. the fathers fled down, and some say they're still under nosdoden's hall
 ?B: who's nosdoden? | is nosdoden a boss?
-C: a dragon gone wrong at the bottom of trollheim. every adventurer he kills leaves an apparition of him until they're rezzed | a twisted dragon in the deepest hall. kill a man and an apparition of nosdoden stays until someone rezzes him
+C: a dragon gone wrong at the bottom of trollheim. everyone he kills gets up as a spirit and fights for him until they're rezzed | a twisted dragon in the deepest hall. kill a man and his spirit fights for nosdoden until someone rezzes him
 ~ 15
 D: and the valkyn came to us, swore by bodgar and guard our towns on aegir now. same job they had for the fathers, new masters | funny how it ends. the valkyn stand at gates again, ours this time
 A: that's the bit the troll liked least. he poured his ale on the floor, said 'gates', and walked out | when he got to that part the troll tipped his ale out on the boards and never finished the sentence
@@ -621,7 +622,7 @@ B: now i want to see trollheim. from very far away | i want to see those gates s
 @role B type=* levels=5-25
 @role C type=Explorer
 @role D type=NoLifer,Daredevil levels=40-50
-A: {q} here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him | {q} i'll tell the ice queen's story the way a skald sang it to me
+A: here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him | i'll tell the ice queen's story the way a skald sang it to me
 B: ice queen? is she the boss of tuscaran? | whose queen? the frost giants'?
 A: she rules the hrimthursa, the rime giants of the glacier. in the old tale they come from bergelmir, who outlived the flood when ymir died | the hrimthursa are the rime giants, children of bergelmir, who rode out the flood of ymir's blood when the gods killed him
 A: the skald says kula was the coldest of bergelmir's line. her brothers marched south for green land. she stayed and wanted winter for good | in his song kula was the youngest and coldest. the others wanted the green lands. she wanted the north forever
@@ -636,6 +637,7 @@ C: the rumour is one cell holds a troll father. i went as deep as i dared and ne
 B: why keep them all alive? | why keep prisoners at all?
 A: for fimbulwinter. when the three winters come she opens the cells and takes every prisoner south in chains | the skald says she waits for the fimbulwinter. when the long winter comes, the cells open and she marches south with them
 C: he says the dragon's skull sits behind her throne. i want to see that before i quit | one day i'll reach the throne room and see if the skull is really behind her chair
+A: that is the skald's song as i half remember it. ask one of the realm's storytellers for the real one | near enough. the storytellers in faction sing it better than i do
 
 @topic lore_tale_fenrirs_folly
 @levels 5-50
@@ -643,7 +645,7 @@ C: he says the dragon's skull sits behind her throne. i want to see that before 
 @role B type=Socialite levels=20-50
 @role C type=* levels=5-25
 @role D type=NoLifer,Leveler levels=30-50
-A: {q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it | {q} silvertone told me fenrir's folly again. here's how it went, near as i remember
+A: {q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it | silvertone told me fenrir's folly again. here's how it went, near as i remember
 C: who's silvertone? | silvertone? is that a merchant?
 B: an old fellow in vasudheim with a tale for every ale. fenrir's folly is his big one | a storyteller in vasudheim. buy him a drink and you get the tale whether you want it or not
 A: he starts with himself young and greedy, hunting far north, following a wolf track as wide as a cart | the way he tells it he was young and stupid, chasing a wolf track as big as a cart across the snow
@@ -672,7 +674,7 @@ D: bring coin. the good ending comes after the third ale | bring coin. the best 
 [some swear|my old guild swore] [killing|beating] the glacier giant [takes|steals] the dragon's [fire|breath]. [i swear|i think] they [were drunk|had too much mead]
 [fire giants|the fire giants] in muspelheim, [jotuns|the jotuns] in vanern. [midgard|this realm] [is built|sits] on [giants' bones|the bones of giants]
 [the arachites|those spider folk] in spindelhalla [keep|work] svartalf [slaves|thralls] [to farm|farming] [their spiders|silk], [and|so] [mind|watch] [the|those] webs
-[nosdoden|the beast of trollheim] [makes|leaves] a copy of himself for [every|each] [warrior|fighter] he kills. [rez|bring back] your dead [fast|quick]
+[nosdoden|the beast of trollheim] [raises|keeps] the spirit of [every|each] [warrior|fighter] he kills. [rez|bring back] your dead [fast|quick]
 [queen kula|the ice queen] [built|raised] [her|the] citadel [on|over] [a dead dragon's bones|the bones of a dragon]. [ask|wonder] what [killed|could kill] [that one|the first dragon]
 [iarnvidiur|the giantess in the iarnwood] [breeds|raises] two headed wolves, [and|so] [the iarnwood|those woods] [are|is] [no place|the wrong place] for [a lowbie|a kobold]
 [the morvalt|those morvalt] dig on modernagrav for [the mother|something they call the mother]. if [she|it] wakes, [trollheim|midgard] wont be the only thing that falls

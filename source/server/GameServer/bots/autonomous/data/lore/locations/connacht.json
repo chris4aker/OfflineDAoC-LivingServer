@@ -1,0 +1,463 @@
+{
+  "id": "connacht",
+  "name": "Connacht",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    207
+  ],
+  "summary": "The realm's front country below Tir na Nog's south gate: Ardee at the ford, Basar, the fort of Druim Ligen, the Muire tomb and the Amadan's hills.",
+  "facts": [
+    {
+      "text": "Ardee is in Irish Baile Átha Fhirdia, 'the town of Ferdia's ford': in the Táin Bó Cúailnge Cú Chulainn fought his foster-brother Ferdia at a ford for days and killed him there.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Ardee"
+    },
+    {
+      "text": "In Irish folklore the Amadán Dubh ('the dark fool') is a fairy whose touch brings madness or a stroke; the alp-luachra is a newt-like creature said to creep into a sleeper's mouth and eat what he eats.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Amad%C3%A1n"
+    },
+    {
+      "text": "Findias is one of the four cities of the Tuatha Dé Danann in the Lebor Gabála Érenn, from which Nuada's sword came.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Findias"
+    },
+    {
+      "text": "Zone 207 (region 200, x 286,720-352,256, y 417,792-483,328): 1,097 monsters, 132 bot camp goals. Zone points in it: the gate to Tir na Nog (311,643/474,288), the Muire Tomb entrance (322,927/458,013), the Darkness Falls entrance (325,269/433,985) and the housing entrance (297,816/479,928); Druim Ligen (334,342/419,994) is a teleport point.",
+      "provenance": "game",
+      "source": "world data ZonePoint table (read 2026-11-06); world data Teleport table (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Ardee holds Larylle, Tethra, Tira, Keara, Eoghan, Nyderra, Evan and trainers; Basar holds Cristin and Eruven; Maeve the Crone has a hut past Ardee and every trainer's first errand (Information is the Key) is to her; Gogarty Muire gives Rest in Peace; Druim Ligen is garrisoned by Master Rangers, Master Enchanters, Champions and Keep Sentinels with a siege merchant (Zrim); the Elder Tidal Sheerie stands near it.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: wind ghouls (7-8) in the ruins northwest of Ardee, streaming wisps (21-26), young irewoods and irewood saplings (21-28) in the west, cluricauns (22-23) and the Enchantress of their village, phantom wickermen (28-30) with Withe near Druim Ligen, six Voices of the Azure (27) with azure idolaters in the northwest, and in the northeast amadan touched (29-35), pookhas (33-35), alp luachra (29-33) and merucha (30-33) around Amadan Dubh (42), Amadan and Touched (39).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Destructive Forces: 'Find the abandoned camp in the forgotten grove by day and slay the wind ghoul Windaille', 'Slay Bas after Fearg falls', give Bas' gem to Cathbad in Howth.",
+      "provenance": "game",
+      "source": "DataQuest 'Destructive Forces' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Ardee as the town of the ford and the rangers' muster; the Connacht barracks; Larylle's book; the Amadan's country; the wickermen of Druim Ligen; House Findias.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Connacht: Dorbal (34, the amadan touched body), Famine (32, the alp luachra body, among pookhas), Withe (29, ghostly, among phantom wickermen), Sraoi (25, a streaming wisp; Sraoi's Heart), Pikebane (22, a fishing bear cub), Orik (17, a sheerie), Rathil O'Carolan (17, the elfshot madman body), Chieftain Ultan (15) and a Follower of Ultan (14) by House Findias, Daewain (15, a toad; Daewain.cs: unseen until a player is within 800, then 'croaks softly as he rests in the shade under the bridge'; not aggressive; calls a 'DaewainBaf' package no spawn carries), Juliy the Jester (15, a leprechaun), Bas (7, Order of the Azure; Destructive Forces, Cad Goddeau C and D), Lucan (6, a hostile ghost here; the quest's Lucan is a peaceful spawn in the Shannon Estuary), Windaille (6, a wind ghoul; Destructive Forces), Irewood Seedling (5, not aggressive); named group: six Voices of the Azure (27).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Connacht is the first country every young Hibernian walks. The south gate of Tir na Nog opens onto it, and the road runs down from the gate past the guard post to Ardee, and from Ardee the realm goes everywhere else. It is the front room of Hibernia, the old people say: the room where guests are received, where the good chairs are, and where the family keeps the things it does not want guests to see behind a curtain at the back.\n\nArdee is the town of the ford. The songs say a champion of the old hero-tales fought his own foster-brother there for days in the river, and killed him on the last, and wept over him, and the town was named for the dead man rather than the living one. The people of Ardee have kept the habit of the ford ever since. Their quarrels go to single combat at the river's edge, their rangers swear at the water before they go out, and the town is the muster of every company that leaves Connacht for somewhere worse: Fiadh, who found the pass to Sheeroe, was of Ardee; so was Dubthach, who held the four doors; so was Sinech ni Riain, who walked into the Summoner's Hall. The barracks of Connacht keep their names on the wall and Tadhg Rua's hammer over the door, and the soldiers there have a saying for everything, the best known being that a door held is a courtier kept waiting.\n\nBehind the curtain are the things Connacht does not show guests. Northwest of Ardee, past the standing stones, is the tomb of the house of Muire, and Gogarty Muire, the last of the name, farms within sight of it and sends the young down with his grandfather's journal. Further north the wind ghouls haunt the ruins of a village nobody rebuilt, and in a forgotten grove beyond them there is an abandoned camp where the Order of the Azure once kept a school for its young, and one of its pupils, Bas, did not leave when the camp was given up, nor did the wind ghoul Windaille that came to haunt its ashes. The Order itself still preaches in the northwest: six Voices of the Azure with their idolaters about them, painted blue, calling the open sky to look at Connacht, and the farmers there leave them alone and keep their own counsel about the Glimmer.\n\nThe north is the frontier's door. Druim Ligen stands at the top of the country, a fort with the realm's master rangers and master enchanters on its walls, a siege-wright's yard, and the channelers' fire, and every hosting that rides for the hills of Emain Macha or Breifine musters inside it first. Below its walls the wickermen walk: tall shapes of plaited withy and dry grass that the Druim Ligen garrison says were burned once, in a harvest custom older than the fort, and got up out of the ashes and did not lie down again. Not far from them a stair goes down into the earth, toward the place the three realms call Darkness Falls, and the garrison keeps a watch on that too. Near the fort the Elder Tidal Sheerie keeps a counsel of its own people.\n\nThe northeast is the Amadan's. In the hill-tales the dark fool's touch brings madness, and the hills there are full of the touched: men and women who walked into the Amadan's country and came out laughing at nothing, and now walk it in bands, fighting anyone who is not laughing too. The pookhas run there, and the alp luachra, the small cold things that wait for a sleeper's open mouth. Amadan Dubh himself has a hill of his own, with the one the realm calls only Touched beside him, and the fool's fool, Amadan, on the next rise.\n\nThe west is older and stranger. Irewoods grow there, young and old, and the cluricauns keep a village in the trees with an Enchantress who trades in soul gems. Beyond them a speaker of House Findias keeps a lodge with two attendants, and House Findias, if the bards are right, takes its name from one of the four cities the old gods came from. Nobody in Ardee has been told why it is in Connacht. Chieftain Ultan and his followers camp near it, and say they are guarding it; the speaker says nothing.\n\nThis is why Connacht matters: it is where the realm learns to be a realm. The young walk out of Tir na Nog, do their first errands for Maeve the Crone past Ardee, go down into the Muire tomb, come up sorry for someone, and walk north to Druim Ligen older. The ford is still there, and the rangers still swear at it.",
+  "legend": "Connacht is the newbie zone below Tir na Nog's south gate, levels 1 to the 30s. Ardee is the hub (bind, trainers, Larylle's and Tethra's quests); Basar is the small stop on the road north; Maeve the Crone's hut is just past Ardee and every trainer sends you to her first. Muire Tomb is northwest of Ardee (10-28). Wind ghouls in the ruins northwest of Ardee are 7-8; streaming wisps and irewoods in the west are 20s; the cluricaun village (22-23) has the Enchantress for Morven's Return. Mind the northeast: the Amadan's hills are 29-35 touched, pookhas and alp luachra, with Amadan Dubh (42), Amadan and Touched (39) on their hills, so lowbies should stay south of Basar. The Voices of the Azure (27) preach in the northwest. Druim Ligen is the frontier fort at the top of the zone (teleport point, siege merchant); the Darkness Falls entrance is not far from it, and the housing gate is west of the Tir na Nog road. Superstition: Ardee folk swear at the river before a long trip. Bot chat says it is bad luck to cross the Ardee ford twice in one day without stopping.",
+  "atmosphere": {
+    "firstEntry": [
+      "Connacht. The front room of the realm.",
+      "The road runs down to the ford at Ardee.",
+      "Farm smoke, rangers and river mist.",
+      "Everyone walks Connacht first.",
+      "North, the frontier waits behind Druim Ligen."
+    ],
+    "areas": [
+      {
+        "name": "Ardee",
+        "x": 341200,
+        "y": 468600,
+        "z": 5400,
+        "radius": 2500,
+        "lines": [
+          "Ardee, the town of the ford.",
+          "Rangers swear at the river before they go out.",
+          "Names on the barracks wall, and a hammer.",
+          "The Irewood Seedling grows in the path. Step round."
+        ]
+      },
+      {
+        "name": "the Tir na Nog road",
+        "x": 312500,
+        "y": 472500,
+        "z": 5220,
+        "radius": 2500,
+        "lines": [
+          "The capital's south gate, behind you.",
+          "A guard post, a bard and the long road east."
+        ]
+      },
+      {
+        "name": "Basar",
+        "x": 338200,
+        "y": 445000,
+        "z": 5060,
+        "radius": 1800,
+        "lines": [
+          "Basar: a crossroads and a cup of something.",
+          "The last quiet stop before the north."
+        ]
+      },
+      {
+        "name": "Maeve's hut",
+        "x": 344450,
+        "y": 462240,
+        "z": 4890,
+        "radius": 600,
+        "lines": [
+          "Maeve the Crone. Everyone's first errand.",
+          "Rat tails on a string by the door."
+        ]
+      },
+      {
+        "name": "the Muire stones",
+        "x": 322900,
+        "y": 458000,
+        "z": 6670,
+        "radius": 1500,
+        "lines": [
+          "Standing stones, and a tomb door beyond.",
+          "Gogarty Muire's fields are very quiet."
+        ]
+      },
+      {
+        "name": "the wind-ghoul ruins",
+        "x": 320900,
+        "y": 460800,
+        "z": 5730,
+        "radius": 2500,
+        "lines": [
+          "A village nobody rebuilt. Wind in the doorways.",
+          "The wind ghouls do not like visitors."
+        ]
+      },
+      {
+        "name": "the forgotten grove",
+        "x": 320800,
+        "y": 438700,
+        "z": 5690,
+        "radius": 1200,
+        "lines": [
+          "An abandoned camp, painted blue once.",
+          "A pupil of the Order never left.",
+          "Bas is still at his lesson, alone.",
+          "Windaille, a wind ghoul, keeps Bas company."
+        ]
+      },
+      {
+        "name": "the Voices' ground",
+        "x": 314300,
+        "y": 425400,
+        "z": 5190,
+        "radius": 2000,
+        "lines": [
+          "Blue-painted preachers call the open sky.",
+          "The Voices of the Azure do not want company.",
+          "A Voice of the Azure preaches to the open sky."
+        ]
+      },
+      {
+        "name": "Druim Ligen",
+        "x": 334300,
+        "y": 420500,
+        "z": 5100,
+        "radius": 2500,
+        "lines": [
+          "Druim Ligen. The frontier's door.",
+          "Master rangers on every wall.",
+          "Hostings muster here before the hills."
+        ]
+      },
+      {
+        "name": "the wickermen",
+        "x": 318200,
+        "y": 423900,
+        "z": 5440,
+        "radius": 1800,
+        "lines": [
+          "Plaited shapes walk below the fort.",
+          "Burned once. They got up again.",
+          "Withe walks the fields of the man who wove him."
+        ]
+      },
+      {
+        "name": "the Amadan's hills",
+        "x": 343500,
+        "y": 434000,
+        "z": 5900,
+        "radius": 5000,
+        "lines": [
+          "The touched laugh at nothing here.",
+          "Do not sleep with your mouth open.",
+          "The dark fool's hills. Turn back.",
+          "Famine creeps in the grass. Keep your mouth shut."
+        ]
+      },
+      {
+        "name": "the irewoods",
+        "x": 296100,
+        "y": 449100,
+        "z": 6120,
+        "radius": 2500,
+        "lines": [
+          "Irewoods, young and old, in the west.",
+          "Cluricaun lanterns in the trees."
+        ]
+      },
+      {
+        "name": "House Findias",
+        "x": 295700,
+        "y": 427400,
+        "z": 4730,
+        "radius": 1000,
+        "lines": [
+          "A lodge of House Findias. Nobody says why.",
+          "Chieftain Ultan's fires nearby."
+        ]
+      },
+      {
+        "name": "Dorbal's path",
+        "x": 346220,
+        "y": 425192,
+        "z": 5738,
+        "radius": 1200,
+        "lines": [
+          "Dorbal laughs on the path. Do not answer.",
+          "The first of the touched, still laughing."
+        ]
+      },
+      {
+        "name": "south of the Basar bridge",
+        "x": 332220,
+        "y": 450992,
+        "z": 5076,
+        "radius": 1200,
+        "lines": [
+          "Sraoi streams along the water, a thread of light.",
+          "A wisp's light is its heart."
+        ]
+      },
+      {
+        "name": "Pikebane's stream",
+        "x": 343878,
+        "y": 440116,
+        "z": 6143,
+        "radius": 1200,
+        "lines": [
+          "Pikebane fishes. There are no pike left.",
+          "Fishing bears on the stones, watching the water."
+        ]
+      },
+      {
+        "name": "Orik's ground",
+        "x": 287376,
+        "y": 470759,
+        "z": 5200,
+        "radius": 1200,
+        "lines": [
+          "Orik the sheerie, growing, slowly.",
+          "Moss on everything here, even the air."
+        ]
+      },
+      {
+        "name": "Rathil's road",
+        "x": 304111,
+        "y": 431682,
+        "z": 5352,
+        "radius": 1200,
+        "lines": [
+          "Rathil O'Carolan hums the first bars of a tune.",
+          "A fairy ring in the grass. Walk round."
+        ]
+      },
+      {
+        "name": "Ultan's camp",
+        "x": 298683,
+        "y": 422995,
+        "z": 4720,
+        "radius": 1000,
+        "lines": [
+          "Chieftain Ultan guards the lodge, he says.",
+          "The Follower of Ultan, one step behind."
+        ]
+      },
+      {
+        "name": "under the Basar bridge",
+        "x": 334905,
+        "y": 447469,
+        "z": 4675,
+        "radius": 800,
+        "lines": [
+          "Daewain croaks softly in the shade below.",
+          "A toad under the bridge. Say good morning."
+        ]
+      },
+      {
+        "name": "Juliy's hill",
+        "x": 335366,
+        "y": 435751,
+        "z": 4967,
+        "radius": 1000,
+        "lines": [
+          "Juliy the Jester capers for nobody.",
+          "Bells on the wind. Laugh, or else."
+        ]
+      },
+      {
+        "name": "Lucan's other road",
+        "x": 326854,
+        "y": 459336,
+        "z": 6608,
+        "radius": 1200,
+        "lines": [
+          "Lucan walks here, the half that would not rest.",
+          "A ghost, far from his willows."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "ardee is the town of the ford. some hero killed his foster brother there [in the old tales|for days]",
+      "every trainer in tnn sends you to maeve the crone first. [rat tails|everyone does it]",
+      "the connacht barracks has tadhg rua's hammer over the door. [the olcasar guy|old story]",
+      "fiadh, dubthach, sinech ni riain: all ardee rangers. [ardee breeds them|the ford town]",
+      "druim ligen is where every hosting musters before the frontier. [master rangers on the walls|big fort]",
+      "the wickermen by druim ligen were burned in some harvest thing and got up again. [creepy|garrison says]",
+      "the voices of the azure preach in north west connacht. [blue paint|sheeroe crusaders]",
+      "the amadan dubh is the dark fool. his touch drives you mad. [the touched|stay away]",
+      "alp luachra crawl in your mouth if you sleep in the amadan's hills. [granny tale|maybe]",
+      "house findias is named after one of the cities the old gods came from, the bards say",
+      "gogarty muire farms right by the tomb. [poor guy|he sends you in]",
+      "bas never left the old azure camp in the forgotten grove. [windaille the wind ghoul haunts it|by day]",
+      "the cluricauns in the west have an enchantress who trades soul gems"
+    ],
+    "rumour": [
+      "[heard|someone said] its bad luck to cross the ardee ford twice in a day without stopping",
+      "the touched in the north east have been coming further south [lately|this week]. stay below basar",
+      "[word is|heard] chieftain ultan is guarding house findias. the speaker wont say from what",
+      "someone saw a wickerman walk right up to the druim ligen gate [last night|again]",
+      "[heard|someone said] the elder tidal sheerie knows more about the azure than it says",
+      "maeve the crone wants rat tails again. [always|lol]",
+      "[word is|heard] the darkness falls stair near druim ligen was open all night",
+      "larylle in ardee has a list of errands as long as the river. [13 of them|busy woman]",
+      "[heard|someone said] dorbal was the first herder the amadan ever touched. dont laugh back",
+      "[heard|someone said] famine is the alp luachra that ate a whole family out from the inside",
+      "[heard|someone said] withe was the first wickerman. the farmer who made him was never found",
+      "[heard|someone said] labhaoise wants sraoi's heart. a wisp's light is its heart",
+      "[heard|someone said] pikebane the bear ate every pike in the basar river in one summer",
+      "[heard|someone said] orik the sheerie ate moss off a standing stone and wont stop growing",
+      "[heard|someone said] rathil o'carolan got elfshot crossing a fairy ring and cant finish a tune since",
+      "[heard|someone said] chieftain ultan says he guards house findias. his follower decides where they go",
+      "[heard|someone said] the follower of ultan never says a word. ultan does all the talking",
+      "[heard|someone said] daewain the toad only shows when somebody walks onto the bridge south-west of basar",
+      "[heard|someone said] juliy the jester came to make the amadan laugh. it worked. too well",
+      "[heard|someone said] bas stayed at the azure school after they left because he hadnt finished his lesson",
+      "[heard|someone said] the lucan by the muire stones is the bit of lucan that didnt want to rest",
+      "[heard|someone said] windaille the wind ghoul wandered into the azure school and never left",
+      "[heard|someone said] the ardee rangers kids water the irewood seedling on their first day",
+      "[heard|someone said] every voice of the azure preaches at the sky because thats where cuuldurach came through"
+    ],
+    "tell": [
+      "connacht is the newbie zone below tnn's south gate. ardee is the town, 1 to 30s",
+      "where is ardee? down the road from the tnn south gate, at the river ford",
+      "is connacht safe? south and middle yes. north east is the amadan's hills, 30s and nasty",
+      "whats in connacht? muire tomb, wind ghouls, irewoods, the azure voices, druim ligen, the df stair",
+      "where is druim ligen? top of connacht. frontier fort, teleport point, hostings muster there",
+      "where is muire tomb? north west of ardee past the standing stones",
+      "dorbal is a 34 touched up north east of connacht below druim ligen. long respawn",
+      "famine is a 32 alp luachra in the amadan's hills with the pookhas. sleep with your mouth shut lol",
+      "withe is a 29 named wickerman below druim ligen with the phantom wickermen. long respawn",
+      "sraoi is a 25 streaming wisp south of the basar bridge. sraoi's heart quest says night but its always there",
+      "pikebane is a 22 fishing bear cub north of basar with the fishing bears",
+      "orik is a 17 big sheerie way out in the west of connacht past the irewoods",
+      "rathil o'carolan is a 17 elfshot madman south-east of house findias in west connacht",
+      "chieftain ultan 15 and the follower of ultan 14 camp by house findias in west connacht",
+      "follower of ultan is a 14 siog right next to chieftain ultan by house findias",
+      "daewain is a 15 toad under the bridge south-west of basar. he only appears when a player is close and he wont attack",
+      "juliy the jester is a 15 leprechaun capering south of the amadan's hills in connacht",
+      "bas is a 7 azure pupil in the forgotten grove with windaille. destructive forces, and his jewel goes to the old hermit",
+      "theres a hostile lucan ghost west of the muire stones in connacht. the quest lucan is the peaceful one in shannon",
+      "windaille is a 6 wind ghoul in the forgotten grove next to bas. destructive forces",
+      "irewood seedling is a 5 by ardee. it doesnt attack, the town lets it grow",
+      "six voice of the azure mobs, 27, preach in north west connacht below druim ligen with azure idolaters"
+    ]
+  },
+  "loremaster": {
+    "intro": "Connacht, the front room of the realm. [Ardee] keeps the ford, [Basar] the crossroads and [Druim Ligen] the frontier's door. Behind the curtain: the [Muire] tomb, the [Azure] preachers, the [wickermen] and the [Amadan]'s hills. Every trainer sends the young to [Maeve] first.",
+    "topics": {
+      "Ardee": "The town of the ford, named for a man killed in the river in the hero-tales by his own foster-brother. Its rangers swear at the water before they go out. The Connacht [barracks] are there, and [Larylle].",
+      "barracks": "The Connacht barracks in Ardee: names of the dead on the wall, Tadhg Rua's hammer over the door, and a saying for everything. A door held is a courtier kept waiting.",
+      "Larylle": "Keeper of the main house in Ardee, upstairs, with a list of errands as long as the river. She writes down the town's book, and sends the young as far as the cliff dwellers for a necklace's sake.",
+      "Basar": "A crossroads hamlet on the road north from Ardee, where Cristin keeps the armour and Eruven pays for a badger's head. The last quiet stop before the [Amadan]'s country.",
+      "Maeve": "Maeve the Crone, in her hut past [Ardee]. Every trainer in Tir na Nog sends the young to her first, for rat tails and a lesson in being sent. She also hides a stolen crown, if the Creeper's tale is true.",
+      "Muire": "The tomb of the house of Muire, northwest of [Ardee] past the standing stones. Gogarty Muire, the last of the name, farms within sight of it and sends the young down to lay his family to rest by name.",
+      "Azure": "The Order of the Azure, blue-painted firbolg kin who crusade against the Glimmer on Sheeroe. Six Voices of the Azure preach in northwest Connacht with their idolaters. Their old school-camp in the forgotten grove still holds Bas, a pupil who never left, and the wind ghoul Windaille that haunts it.",
+      "Druim Ligen": "The fort at the top of Connacht, the frontier's door: master rangers and master enchanters on the walls, a siege-wright's yard, the channelers' fire. Gormflaith of Druim Ligen, who found the Glimmer Prince heals when left, learned her trade on its walls. The [wickermen] walk below it.",
+      "wickermen": "Plaited shapes of withy and dry grass below [Druim Ligen]. The garrison says they were burned once in a harvest custom older than the fort and got up out of the ashes. One of them, Withe, the garrison names.",
+      "Amadan": "The dark fool of the hill-tales, whose touch brings madness. His hills in northeast Connacht are full of the touched, pookhas and alp luachra. Amadan Dubh keeps the highest hill; Touched and Amadan the next ones.",
+      "Findias": "A lodge of House Findias in western Connacht, kept by a speaker and two attendants. The bards say Findias was one of the four cities the old gods came from. Chieftain Ultan camps near it and says he guards it.",
+      "Elder Tidal Sheerie": "An old one of the tidal sheeries, who keeps a counsel near [Druim Ligen]. The garrison brings it questions about the coast; it answers about a quarter of them.",
+      "Dorbal": "Dorbal was the first of the touched, the Druim Ligen garrison says, or the first that anyone counted. He was a herder of the north-east hills who went up after a strayed heifer in the dark of the moon and met the dark fool on the path, and the fool laid a finger on him, and he came down laughing. He has the look of the touched who came after him, and he leads them, in so far as the touched are led. The garrison says not to answer when he laughs.",
+      "Famine": "The alp luachra of the Amadan's hills are the little creeping things of the old tales that crawl into a sleeper's open mouth and live in his belly and eat everything he eats, so that he wastes while he feasts. Famine is the one the hill folk named, the eldest of them, who has eaten his way through more than one family of the north-east, and lives among the pookhas now. That is why the hill folk sleep with their mouths shut, and why they say so to strangers.",
+      "Withe": "Below [Druim Ligen] the wickermen walk, plaited shapes of withy and dry grass that were burned once in a harvest custom older than the fort and got up out of the ashes. Withe is the one the garrison names. He is the shape of a man, ghostly as the rest, and the garrison says he was the first one plaited, by a farmer who wanted a good harvest and put too much of himself into the weaving. The farmer was never found. Withe walks the farmer's fields.",
+      "Sraoi": "Sraoi is a streaming wisp of the river south of the Basar bridge, a thread of light that runs along the water at dusk and does not stop where the water stops. Labhaoise of Tir na Nog, who needs four things for a working she will not name, wants the last of them from Sraoi, and the Basar folk say the light of a wisp is the heart of it, and that Labhaoise knows that very well. The quest-givers say it streams by night.",
+      "Pikebane": "Pikebane is a fishing bear of the streams north of [Basar], a young one, and the best fisher of them all, which the older fishing bears hold against him. He took every pike out of the Basar water in one summer, the Basar folk say, so that the river ran thin and the herons left, and the fishers of Basar have been waiting ever since for the pike to come back and for Pikebane to grow old. Neither has happened yet.",
+      "Orik": "Orik is a sheerie of the far west of Connacht, out past the irewoods where the land runs down toward the Tir na Nog road's last turning, and he is larger than a sheerie ought to be. The irewood folk say he ate the moss off a standing stone that was not his to eat and has grown ever since, slowly, the way stone moss grows. He minds his own business, which is growing, and resents anyone who interrupts it.",
+      "Rathil O'Carolan": "Rathil O'Carolan carries a harper's name and has the look of the elfshot madmen, the ones the good folk struck with their little arrows for crossing a fairy path. He was a harper's son, the House Findias speaker says, on his way to learn the harp at the lodge, and took the short way across a fairy ring, and has not been able to finish a tune since. He walks the land south of the lodge humming the first bars of everything.",
+      "Chieftain Ultan and the Follower of Ultan": "Chieftain Ultan is a siog of the west, a small one, no kin of Ultan the rain-keeper of Tir na Nog, and he camps with his Follower near the lodge of House Findias and says he is guarding it. The speaker of the lodge says nothing, which Ultan takes for thanks. The Follower of Ultan says even less, and walks a step behind his chieftain wherever he goes, and the Connacht folk say the Follower is the one who decides where that is.",
+      "Daewain": "Under the bridge on the road north of [Basar] lives Daewain, a toad, who rests in the shade there and is not seen unless somebody comes onto the bridge; then he croaks, softly, and there he is, as if he had been there all along. He harms nobody. When he is harmed he croaks for his kin, the Basar children say, and his kin do not come, and he is a long while coming back. The children are told to say good morning to him and walk on.",
+      "Juliy the Jester": "Juliy is a leprechaun who wanted to be a jester to the dark fool. He came north to the Amadan's hills with bells on his cap and a bag of tricks, the Basar folk say, to make the Amadan laugh, and the Amadan laughed, and touched him. Juliy has not stopped capering since. He capers on the hills south of the touched, alone, for an audience that went home long ago, and he attacks anyone who does not laugh.",
+      "Bas": "Bas was a pupil of the Order of the Azure, the blue-painted crusaders of Sheeroe, at the school-camp they kept in the forgotten grove before they left it. When the Order went north, Bas stayed, because he had not finished his lesson. He is large for a pupil and older than any pupil should be, and he keeps a gem, a jewel of the Order, that Cathbad of Howth wants, and that the Old Hermit of Bri Leith wants more. Windaille the wind ghoul keeps him company.",
+      "Lucan": "There are two of Lucan. The one the trainers of Tir na Nog know is across the estuary, the gentle ghost who guards Ciar's dead willow grove and asked the young to let him rest. The other walks here, west of the Muire stones, a ghost of the same name and none of the same patience, and the Ardee folk say it is the part of Lucan that did not want to rest, and came north to get away from the willows.",
+      "Windaille": "Windaille is the wind ghoul of the forgotten grove, one of the dead of the ruined village that nobody rebuilt, who wandered south into the Order's old school-camp and stayed beside the pupil Bas. The trainers of Tir na Nog send the young to the grove after him by day, when the wind ghouls are slowest, they say. He is not slow. He keeps Bas company, and Bas, who is still at his lesson, does not seem to mind.",
+      "Irewood Seedling": "Just outside [Ardee], where the rangers swear at the river, an irewood seedling has come up in the path, and the town has decided to let it. It is a young tree of the irewoods that walks a little, the way they do, and does not attack anyone, and the rangers' children water it on the first morning of their training. The rangers say a ranger who steps on it will miss the first shot of every hunt for a year.",
+      "Voice of the Azure": "The Voices of the Azure are the preachers of the Order of the Azure, the blue-painted firbolg kin who crusade against the Glimmer on Sheeroe, and six of them preach in the north-west of Connacht below the fort, with their idolaters about them. They preach to the open sky, the garrison says, because the sky is where the Glimmer King came through, and they want it to hear them. They do not want company. They want an audience, which is not the same."
+    }
+  },
+  "book": {
+    "title": "The Book of the Ford: Ardee and the Front Country, kept by Larylle of Ardee",
+    "pages": [
+      "I keep the book of the main house in Ardee, upstairs, where the floor is level and the window looks at the river. My mother kept it before me and her father before her, and the first page is a list of everyone who ever crossed the ford to fight someone on the other side, with the outcome. It is a long list. The town is named for a man who lost, and we have never thought that odd. A ford is where you find out who you are, my grandfather wrote, and the river does not care which of you it keeps.",
+      "The rangers of Ardee swear at the water before they go out, every one, and I write down where they went. Fiadh to the hills that were not there the summer before. Dubthach to Sheeroe, with a hundred and twenty behind him. Sinech ni Riain north to Druim Ligen and then down, under the frontier, to a hall none of them had a word for. Most of them came back across the ford. The barracks keeps the names of the ones who did not, and Tadhg Rua's hammer hangs over the door because he would not stop talking about it.",
+      "We do not speak much of the Muire tomb, though it is close enough to see from the north road. Gogarty Muire comes in on market days, buys what he needs and goes home before dark, and the young he sends down the hill come to me afterwards and want it written down that they laid someone to rest. I write it down. Some of them have been down three times. The house of Muire does not stay laid, any more than the wind ghouls in the old village leave the doorways, or the Order's last pupil leave his camp.",
+      "North of Basar the country changes. The Amadan's hills are no place for anyone not ready to laugh at nothing for the rest of their life, and the touched walk them in bands. North of that is Druim Ligen, and the wickermen under its walls, and the frontier beyond. I have never been past the fort and do not intend to. Somebody has to keep the book at the ford. When the hostings come back from the hills, they cross the river, and I count them in, and the ones I do not count I write on the barracks list in my own hand, so that the ford knows who it kept."
+    ]
+  },
+  "bosses": [
+    "amadan-dubh",
+    "amadan",
+    "touched"
+  ],
+  "era": "hib-the-old-families",
+  "factions": [
+    "order-of-the-azure",
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "tir-na-nog",
+      "relation": "whose south gate opens onto it"
+    },
+    {
+      "id": "muire-tomb",
+      "relation": "the tomb northwest of Ardee"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "sheeroe-hills",
+      "relation": "where Ardee's rangers found the pass"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "the lake country west of the capital"
+    }
+  ]
+}

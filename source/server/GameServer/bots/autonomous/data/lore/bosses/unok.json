@@ -1,0 +1,102 @@
+{
+  "id": "unok",
+  "name": "Unok",
+  "npcNames": [
+    "Unok"
+  ],
+  "locationId": "iarnwood",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "facts": [
+    {
+      "text": "Unok is a level-55 redcap in the south-west of the Iarnwood (402672, 450178), beside a redcap cannibal; the wood's redcaps are on the Blood Reavers faction, though Unok carries no faction in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Unok as the redcaps' pot-keeper and the 'Servants' bargain' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The redcaps of the Iarnwood are small, quick and hungry, and they dip their caps in the blood of what they kill, which is why the caps are red. The Blood Reavers they run with are worse, but the redcaps are more numerous, and the dwarves of Tarek's encampment fear them more for it. In the middle country they hunt in bands. In the far south-west, where the wood runs down toward the old one's hollow, there is one who does not hunt at all.\n\nUnok keeps the pot. Every redcap band in the wood brings him a share of what it kills, and he boils it in an iron pot as old as the redcaps' memory, and gives back to each band a cupful of the broth to dip their caps in, so that the red stays fresh. A redcap whose cap goes brown is no longer a redcap, the dwarves say, and dies of shame; so every band keeps faith with Unok, and Unok keeps the pot, and the pot is never empty.\n\nThe dwarves say something worse about him, which is that he made a bargain with the old one's Servants long ago: the redcaps keep away from her hollow and from her wolves, and in return the Servants bring Unok what the redcaps cannot catch. That, the dwarves say, is where the encampment's lost children went, some winters, and why Unok's corner of the wood smells the way it does. The redcaps deny it. Unok does not bother.\n\nHe is bigger than the other redcaps, from the broth, and slower, and he fights from beside his pot with a ladle-handle as long as a spear, and a cannibal of his own kind stands at his shoulder to keep the fire. He has no craft beyond that. He does not need one. Every redcap in the Iarnwood would come to avenge him, the dwarves say, if they ever found out in time.",
+  "legend": "Unok is a big redcap in the far south-west of the Iarnwood, level 55, with a redcap cannibal standing right beside him, so expect two. He's a plain spawn: no special abilities, not CC-immune, so mez the cannibal and kill Unok, or the other way round. Nothing else in the world data stands close enough to join, despite what the dwarves say about every redcap in the wood coming for him. He's a decent named for a group at level, and he's close to the lair side of the wood, so watch for the etvarg and the Servants wandering through.",
+  "yells": {
+    "aggro": [
+      "Fresh! Fresh for the pot!",
+      "Your cap would go very red.",
+      "Keep the fire, cousin! We have meat!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The pot! Nobody touches the pot!"
+      }
+    ],
+    "death": [
+      "Who will... keep the pot...",
+      "The caps... will go brown..."
+    ],
+    "slay": [
+      "Into the pot.",
+      "Dip your caps, cousins. Dip deep.",
+      "Good broth. Very good broth."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An iron pot simmers. The smell is not soup.",
+      "A cannibal redcap feeds the fire."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Unok staggers against his pot. It does not spill."
+      }
+    ],
+    "realmFirstKill": "Unok is dead. The redcaps' pot goes cold."
+  },
+  "botLines": {
+    "briefing": [
+      "unok plus the redcap cannibal next to him",
+      "plain mob, mez the cannibal",
+      "watch for etvarg wandering in",
+      "far south west of the iarnwood"
+    ],
+    "aftermathWin": [
+      "unok down, the pot went cold",
+      "mezzed the cannibal, easy",
+      "every redcap in the wood is going to be mad",
+      "kicked the pot over. felt good"
+    ],
+    "aftermathLoss": [
+      "both of them at once was too much",
+      "etvarg pack walked in",
+      "he hits harder than a redcap should",
+      "cannibal ate the healer"
+    ],
+    "rumour": [
+      "unok keeps the pot the redcaps dip their caps in",
+      "a redcap whose cap goes brown dies of shame",
+      "the dwarves say unok made a deal with the servants",
+      "every redcap band brings unok a share"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Unok",
+    "text": "The pot-keeper of the Iarnwood's [redcaps], who boils every band's share and gives back the broth that keeps their caps red. The dwarves say he made a bargain with the old one's Servants. See [stockade]."
+  },
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: the dwarves will not let a bark company go into the far south-west, toward the hollow, and the reason they give is not the old one but the pot. They say a redcap who keeps a pot lives there, and that every band of them in the wood brings him a share, and that the smell carries a long way on a still day. I smelled it once. I will not describe it. The dwarf with me said it was the reason the encampment counts its children every evening.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Unok's fire in the Iarnwood in {minutes} minutes.",
+    "loss": "Unok added {raidLeader}'s party from {realm} to the pot after {minutes} minutes."
+  }
+}

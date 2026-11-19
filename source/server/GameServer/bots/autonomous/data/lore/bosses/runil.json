@@ -1,0 +1,107 @@
+{
+  "id": "runil",
+  "name": "Runil",
+  "catalogKey": "midgard-named-mobs-classic-zones/runil",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "kelic",
+      "relation": "the cursed clansman he helped carry to the snowline"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Runil is an undead named with 6,000 health in eastern Raumarik who brings his pack with him; the catalog treats him as a monster on the way, not an epic.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam places him near 54k, 19k with three clan deserters, and ties him to the mystic quest 'Saving the Clan' (level 43).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/3547"
+    },
+    {
+      "text": "Runil is a plain GameNPC in this world (not CC-immune): 6,000 health, 20% resist to everything, aggro range 1,000. His script calls a RunilBaf pack within 1,500, but no spawn in this world data carries that package, so he stands alone; the world data has him at level 59 in the east of Raumarik, among winter and white wolves.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Runil.cs"
+    }
+  ],
+  "story": "Runil was one of the deserters who carried Kelic north. He had run from the clan's last war, at the ford where the Albion men came across, and the elders gave him the choice the clan gives deserters: exile, or a task no honest man would take. He took the task. He helped carry the cursed man into Raumarik, and held his arms at the snowline while Jango did the killing, and was the first to turn for home.\n\nHe did not get home. The Galplen tellers say the curse went with him, as curses go with anyone who carries them, and that by the time he had walked a day east of the snowline his legs would not carry him further. The cold took him where he stood. The others went on without him, and nobody in Galplen knows what became of them; the clan does not say, and Jango, the story goes, never came back to be asked.\n\nRunil stands there still, dead, alone, facing the way he meant to go. The wolves of the east circle him and do not come close; Galplen says even wolves know a man who has already been punished. He is not strong as the dead of Raumarik go. He was an ordinary man, and he is an ordinary dead man, and the things that hold the great dead of Raumarik do not hold him; a charm will make him sleep, and a rope will hold him, as it would have held him living. He will fight everyone who comes near, because he thinks they have come from the clan to finish him, and he would rather they did not.\n\nThe young mystics of Midgard meet him on the road to Kelic, and some of them, the mystics' halls say, come back quieter than they went. A cursed man is a terrible thing to meet. A man who only carried a curse, and was ruined by it all the same, is sometimes worse.",
+  "legend": "Runil is the undead deserter in the east of Raumarik, about level 59 in this world, 6,000 health: small for a Raumarik named. The old Allakhazam notes put three clan deserters with him; in this world he stands alone among the winter and white wolves, so it's a single pull, just don't drag the wolves in. He's not CC-immune, so mez and root work on him, and he has no special tricks. He's on the road of the mystic epic. Not many people hunt there, so you'll usually have him to yourself. Mystics: he's a stop on the road to Kelic, not the end of it.",
+  "yells": {
+    "aggro": [
+      "We only carried him. We only carried him!",
+      "Did the clan send you? Tell them I tried!",
+      "Not yet. I'm nearly home."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Deserters, stand! There is nowhere left to run!"
+      }
+    ],
+    "death": [
+      "Home... we were... going home...",
+      "Tell Jango... I waited..."
+    ],
+    "slay": [
+      "Now you are a deserter too.",
+      "Lie down. It's a long way home.",
+      "The curse goes with whoever carries it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead man stands in the snow, facing the way home.",
+      "Four dead men stand together, facing the way home.",
+      "One dead man stands alone in the snow, facing east."
+    ],
+    "realmFirstKill": "Runil the deserter has stopped running.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Runil staggers, and turns to face home."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "runil stands alone these days, no deserters near him",
+      "runil is small, 6k hp, single pull",
+      "mez and root work on him",
+      "keep the wolves out of it"
+    ],
+    "aftermathWin": [
+      "runil done, mystic step finished",
+      "easy one",
+      "he just turned to face east when he died",
+      "mezzed him and killed the wolves first"
+    ],
+    "aftermathLoss": [
+      "pulled the icestriders with him, [oops|ouch]",
+      "the winter wolves came in",
+      "forgot he hits back",
+      "dragged the frozen web in"
+    ],
+    "rumour": [
+      "runil was one of the deserters who dumped kelic in raumarik. curse got him too",
+      "the wolves wont go near runil",
+      "jango never came back, they say",
+      "runil was the first to turn for home"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Runil",
+    "text": "One of the deserters who carried [Kelic] into Raumarik. He did not get far on the way home."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: the deserter in the east is the one Galplen pities. He ran from a battle, yes, and he held the cursed man's arms while the killing was done, yes. But he was the first to turn for home, the tellers say, and that was the only brave thing he ever did, and the curse took his legs for it a day out from the snowline. The wolves circle him and do not bite. The children of Galplen leave him alone too, the few who go that far east.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put the deserter Runil to rest in {minutes} minutes.",
+    "loss": "Runil's deserters stood their ground against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -69,7 +69,7 @@ public static class AutonomousEpicSpecialForces
     };
 
     public static bool IsWin(string outcome) => outcome == "Boss defeated";
-    /// <summary>Beaten by the fight: defeated at an encounter, or still fighting when the four hours ran out.</summary>
+    /// <summary>Beaten by the fight: defeated at an encounter, or stalled in battle (no named, boss or wipe for an hour; until 1.2, the four-hour window).</summary>
     public static bool IsLoss(string outcome) => outcome is "Defeated" or "Timed out";
 
     /// <summary>

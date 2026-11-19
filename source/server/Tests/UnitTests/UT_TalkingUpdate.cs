@@ -212,7 +212,7 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousChatNews.SiegeFlags(eRealm.Midgard, [mustering], null)["attacking"]["keep"], Is.EqualTo("Caer Benowyc"));
             var hit = mustering with { BattleStarted = true };
             var flags = AutonomousChatNews.SiegeFlags(eRealm.Albion, [hit], (_, _, _) => "Pennine Mountains");
-            Assert.That(flags["defending"]["enemy"], Is.EqualTo("Midgard"));
+            Assert.That(flags["defending"]["enemy"], Is.EqualTo("mids"), "the people form (TEXT-018)");
             Assert.That(flags["defending"]["frontier"], Is.EqualTo("Pennine Mountains"));
             Assert.That(AutonomousChatNews.SiegeFlags(eRealm.Hibernia, [hit], null), Is.Empty);
         }
@@ -240,7 +240,8 @@ namespace DOL.GS.Tests
             DateTime now = DateTime.UtcNow;
             var item = new ChatNewsItem("enemy_seen", eRealm.Albion, now.AddMinutes(-3)) { Enemy = eRealm.Midgard, Zone = "Emain Macha", Size = 5 };
             string text = AutonomousChatLiveAnswers.SightingText(item, now, Always);
-            Assert.That(text, Is.EqualTo("5 mids in Emain Macha, couple min ago"));
+            // Chat 1.2 (LOG-033): the place in lower case, as chat typed it.
+            Assert.That(text, Is.EqualTo("5 mids in emain macha, couple min ago"));
             var big = item with { Size = 12, When = now };
             Assert.That(AutonomousChatLiveAnswers.SightingText(big, now, Always), Does.StartWith("big group of mids"));
         }
@@ -408,6 +409,30 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousBotCombatCalls.GroupEvent(state, View(false, 0), 80_000, Never), Is.Null, "most fights end quietly");
         }
 
+        /// <summary>Owner's PC, build b1b6846, 2026-11-18: hired Pannax said "nice xp, next :P" after a grey kill that gave nobody
+        /// experience. The end of a fight remembers whether the group's experience grew, and a line about xp needs it.</summary>
+        [Test]
+        public void NiceXpIsSaidOnlyAfterAKillThatGaveExperience()
+        {
+            var state = new AutonomousBotCombatCalls.GroupState();
+            AutonomousBotCombatCalls.GroupEvent(state, new(true, 1, 2, 2, false, Experience: 5_000), 1_000, Never);
+            AutonomousBotCombatCalls.GroupEvent(state, new(false, 0, 2, 2, false, Experience: 5_000), 9_000, Always);
+            Assert.That(state.LastFightGaveExperience, Is.False, "a grey kill: nobody's experience grew");
+            AutonomousBotCombatCalls.GroupEvent(state, new(true, 1, 2, 2, false, Experience: 5_000), 20_000, Never);
+            AutonomousBotCombatCalls.GroupEvent(state, new(false, 0, 2, 2, false, Experience: 5_400), 29_000, Always);
+            Assert.That(state.LastFightGaveExperience, Is.True);
+
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice xp, next", gaveExperience: false), Is.False);
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice xp, next", gaveExperience: true), Is.True);
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("gj", gaveExperience: false), Is.True, "plain praise fits any kill");
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice", gaveExperience: false), Is.True);
+            var killLines = Corpus.Lines.Where(l => l.Kind == "combat" && l.Topic == "kill").Select(l => l.Text).ToList();
+            Assert.That(killLines, Does.Contain("nice xp, next"), "the shipped corpus line this guards");
+            Assert.That(killLines.Where(t => !AutonomousBotCombatCalls.KillLineFits(t, false)), Is.EquivalentTo(new[] { "nice xp, next" }));
+            Assert.That(killLines.Count(t => AutonomousBotCombatCalls.KillLineFits(t, false)), Is.GreaterThanOrEqualTo(6),
+                "a kill with no experience still has lines to say");
+        }
+
         [Test]
         public void OomIsCalledInAFightOnly()
         {
@@ -471,7 +496,7 @@ namespace DOL.GS.Tests
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Plan("1.2", untouched), Is.Empty, "a newer build already ran");
             Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.PlanChanges("1.1", untouched).Select(c => c.NewDefault),
                 Is.EqualTo(new[] { "1.5", "False" }));
-            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.1.2.1"));
+            Assert.That(DOL.GS.ServerProperties.LivingServerSettingsUpgrade.Version, Is.EqualTo("1.2.0.2"));
 
             var chosen = new Dictionary<string, (string Value, string DefaultValue)>
             {
@@ -762,7 +787,7 @@ namespace DOL.GS.Tests
         public void InviteLinesAreDormantBecauseABotCannotInviteAPlayer()
         {
             var invites = Corpus.Lines.Where(l => l.Kind == "lfg" && l.Topic == "invite").ToArray();
-            Assert.That(invites, Is.Not.Empty);
+            // The dormant lines were deleted in the chat audit of 2026-11-18; any that come back must still need "recruiting".
             Assert.That(invites.Select(l => l.Needs), Has.All.Contains("recruiting"));
         }
 

@@ -1,0 +1,101 @@
+{
+  "id": "valmak",
+  "name": "Valmak",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/valmak",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "facts": [
+    {
+      "text": "Valmak is a level-64 named with 30,000 health in Faraheim who mesmerizes everyone near for 72 seconds.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named terror bird with a ridiculous aggro range and a 72-second area mez that can wipe whole groups (2005); killing him lowers faction with the Waiting Terror.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/5781"
+    },
+    {
+      "text": "On 35% of his hits, if the target is not mezzed or immune, he casts a 72 s mesmerize with radius 450 round his target (recast 60 s). No other spells. 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist; aggro range 800; resets at full health. Faction 'Waiting Terror'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs"
+    }
+  ],
+  "story": "The terror birds of Faraheim stand taller than a troll at the shoulder and do not fly; they never needed to. They graze among the deer of the middle country, quite still for hours, and the deer do not run from them, which the dwarves find more unsettling than anything else about them. Every so often, the deer are fewer.\n\nValmak is the one the others wait for. The skogsra call the terror birds the Waiting Terror, because they wait, and because when they stop waiting it is too sudden to be anything but terror. Valmak is the oldest and largest of them, and the others turn their heads when he moves, the way a flock turns to its leader. He sees further than the others. A hunter who thinks he is at a safe distance from Valmak is usually wrong by a good stretch.\n\nWhen he strikes, he cries. The cry is not loud as cries go, but it carries the way a hawk's shadow carries over a field, and everything near the creature he struck stops where it stands and stares, and stays so for a long minute, unable to move or think, while he deals with the one he chose. It is the same stillness that comes on a hare when the hawk's shadow passes, the dwarves say: older than any spell. The cry does not come with every blow, and it does not come twice in quick succession; it is a thing he spends, and he spends it well. Those who keep their distance from the one he is striking stay free to act.\n\nNo snare has held him and no charm has dulled him. The Remnants hunt the lesser terror birds from griffon-back, swooping, and never Valmak. They have a saying for a danger best not looked at closely: do not walk up to look at the big bird.",
+  "legend": "Valmak is the big terror bird in the middle of Faraheim, level 64, 30,000 health. He sees you further off than most (aggro range 800), so open on your terms. The danger is his mez: on about a third of his hits he mezzes his target and everyone within 450 of it for 72 seconds, once a minute at most. Whole groups die here because they stacked on the tank. Spread out, keep only the tank in close, and have purge or a minstrel ready. That's his only trick; otherwise he just hits. CC-immune, reach 350, resets full if you leave. Killing him costs Waiting Terror faction, which almost nobody cares about. Don't walk up to look at the big bird.",
+  "yells": {
+    "aggro": [
+      "(A shrieking cry splits the air.)",
+      "(The deer scatter. The great bird does not.)",
+      "(Valmak's head turns, slowly, toward you.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Valmak screams, and the world holds still.)"
+      }
+    ],
+    "death": [
+      "(The great bird topples.)",
+      "(The other terror birds turn their heads, and wait.)"
+    ],
+    "slay": [
+      "(Valmak stalks the fallen.)",
+      "(The deer come back to graze, a little fewer.)",
+      "(The big bird stands still again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Huge three-toed tracks. Something is watching from far off.",
+      "The deer graze at the great bird's feet. It waits."
+    ],
+    "realmFirstKill": "Valmak the terror bird is slain.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Valmak screams, and the world holds still."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "valmak: big aggro range, 72 sec aoe mez round whoever he hits. spread out, purge ready",
+      "his mez hits everyone within 450 of his target for 72 sec. spread out",
+      "only the tank in close",
+      "purge ready, once a minute at most",
+      "aggro range is big, pull from far"
+    ],
+    "aftermathWin": [
+      "killed the big bird. [finally|gg]",
+      "spread out and only the tank got mezzed",
+      "the other birds just watched",
+      "the deer didnt even look up when it died"
+    ],
+    "aftermathLoss": [
+      "mezzed for a minute and woke up dead",
+      "everyone stacked on the tank",
+      "walked too close to look",
+      "purge was on cooldown"
+    ],
+    "rumour": [
+      "dont walk close to look at the big bird in faraheim. [it sees you first|trust me]",
+      "the deer dont run from the terror birds. creepy",
+      "the skogsra call them the waiting terror",
+      "the remnants hunt the small birds from griffons. never valmak"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Valmak",
+    "text": "The terror bird the others wait for. When he cries, everything near him stops and stares for a long minute, and he uses that minute well."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the deer graze right up to the great birds' feet, and the birds do not look at them, and the deer do not look up. I watched for a whole afternoon. Once, the largest bird struck, too fast to see, and cried, and four deer near the one it struck stood stock still with their heads up, not running, not grazing, for as long as it would take a skald to sing a short song. The rest of the herd, further off, ran. By the time the four could move again, there were three.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Valmak the terror bird in {minutes} minutes.",
+    "loss": "Valmak's cry held {raidLeader}'s party from {realm} still for {minutes} minutes, and that was enough."
+  }
+}

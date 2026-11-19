@@ -19,11 +19,11 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Weekly] Slay The Enemies";
+		private const string questTitle = "Slay the Enemies";
 		private const int minimumLevel = 1;
 		private const int maximumLevel = 50;
 
-		private static GameNPC ReyHib = null; // Start NPC
+		private static GameNPC CaptainHib = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		
@@ -66,42 +66,7 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Hibernia);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 200, 334866, 420749))
-					{
-						ReyHib = npc;
-						break;
-					}
-				}
-
-			if (ReyHib == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find Rey , creating it ...");
-				ReyHib = new GameNPC();
-				ReyHib.Model = 26;
-				ReyHib.Name = "Rey";
-				ReyHib.GuildName = "Bone Collector";
-				ReyHib.Realm = eRealm.Hibernia;
-				//Druim Ligen Location
-				ReyHib.CurrentRegionID = 200;
-				ReyHib.Size = 60;
-				ReyHib.Level = 59;
-				ReyHib.X = 334866;
-				ReyHib.Y = 420749;
-				ReyHib.Z = 5184;
-				ReyHib.Heading = 1640;
-				ReyHib.Flags |= GameNPC.eFlags.PEACE;
-				ReyHib.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					ReyHib.SaveIntoDatabase();
-				}
-			}
+			CaptainHib = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Hibernia, 200); // Captain Eithne, Druim Ligen
 
 			#endregion
 
@@ -114,11 +79,11 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(ReyHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(ReyHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Rey the possibility to give this quest to players */
-			ReyHib.AddQuestToGive(typeof (PlayerKillWeeklyQuestHib));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainHib.AddQuestToGive(typeof (PlayerKillWeeklyQuestHib));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -128,27 +93,27 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (ReyHib == null)
+			if (CaptainHib == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(ReyHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(ReyHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Rey the possibility to give this quest to players */
-			ReyHib.RemoveQuestToGive(typeof (PlayerKillWeeklyQuestHib));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainHib.RemoveQuestToGive(typeof (PlayerKillWeeklyQuestHib));
 		}
 
-		private static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(ReyHib.CanGiveQuest(typeof (PlayerKillWeeklyQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (PlayerKillWeeklyQuestHib), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -161,18 +126,17 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							ReyHib.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+							CaptainHib.SayTo(player, "The enemy is out in the frontiers and the battlegrounds. Keep at it, and come back to me when the work is done.");
 							break;
 						case 2:
-							ReyHib.SayTo(player, "Hello " + player.Name + ", did you [demolish some skulls]?");
+							CaptainHib.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					ReyHib.SayTo(player, "Uh oh, "+ player.Name +". "+
-					                     "Fen put in a bulk order this time. There's no way I can collect this many bones in a week. \n" +
-					                     "I need your help with this, are you up for some [bone harvesting]?");
+					CaptainHib.SayTo(player, player.Name + ", a few skirmishes will not keep Albion and Midgard from our walls. " +
+					                       "I need someone for a longer campaign: a hundred of the enemy brought down, in the frontiers or the battlegrounds. Are you ready for [a longer campaign]?");
 				}
 			}
 				// The player whispered to the NPC
@@ -183,8 +147,8 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "bone harvesting":
-							player.Out.SendQuestSubscribeCommand(ReyHib, QuestMgr.GetIDForQuestType(typeof(PlayerKillWeeklyQuestHib)), "Will you undertake " + questTitle + "?");
+						case "a longer campaign":
+							player.Out.SendQuestSubscribeCommand(CaptainHib, QuestMgr.GetIDForQuestType(typeof(PlayerKillWeeklyQuestHib)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -192,10 +156,10 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "demolish some skulls":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Thank you for your contribution!", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("A hard campaign, and well fought. Hibernia will not forget it. In a week's time I will have need of you again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -261,7 +225,7 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(ReyHib.CanGiveQuest(typeof (PlayerKillWeeklyQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (PlayerKillWeeklyQuestHib), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (PlayerKillWeeklyQuestHib)) != null)
@@ -269,15 +233,15 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!ReyHib.GiveQuest(typeof (PlayerKillWeeklyQuestHib), player, 1))
+				if (!CaptainHib.GiveQuest(typeof (PlayerKillWeeklyQuestHib), player, 1))
 					return;
 
-				ReyHib.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainHib.SayTo(player, "Go, then. You will find the enemy in the frontiers and the battlegrounds.");
 
 			}
 		}
@@ -296,9 +260,9 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the frontiers or in battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLING_GOAL +")";
+						return "Bring down enemy fighters in the frontiers or the battlegrounds. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLING_GOAL +")";
 					case 2:
-						return "Return to Rey in Druim Ligen for your Reward.";
+						return "Return to Captain Eithne in Druim Ligen for your reward.";
 				}
 				return base.Description;
 			}
@@ -317,15 +281,15 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 			if (e != GameLivingEvent.EnemyKilled || Step != 1) return;
 			EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
 
-			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || gArgs.Target is not GamePlayer ||
+			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Weekly] Enemy Killed: ("+PlayersKilled+" | "+MAX_KILLING_GOAL+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: ("+PlayersKilled+" | "+MAX_KILLING_GOAL+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLING_GOAL)
 			{
-				// FinishQuest or go back to Rey
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}
@@ -358,7 +322,7 @@ namespace DOL.GS.WeeklyQuests.Hibernia
 			
 			if (reward > 0)
 			{
-				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for finishing Weekly Quest.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for your service to the realm.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				m_questPlayer.GainRealmPoints(reward, false);
 				m_questPlayer.Out.SendUpdatePlayer();
 			}

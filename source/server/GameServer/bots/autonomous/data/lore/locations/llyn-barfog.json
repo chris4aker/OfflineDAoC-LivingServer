@@ -1,0 +1,312 @@
+{
+  "id": "llyn-barfog",
+  "name": "Llyn Barfog",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    7
+  ],
+  "aliases": [
+    "barfog",
+    "the bearded lake"
+  ],
+  "summary": "Arthur's Bearded Lake, a door to Arawn's country left open when the white cattle went home: the afanc in the water, six named things in the hills, Barfog village, the ellyllon and the renegades.",
+  "facts": [
+    {
+      "text": "Welsh folklore, not game canon: Llyn Barfog, the Bearded Lake, was a door to Annwn. Arthur chained the lake's afanc and his horse Llamrei dragged it out, leaving a hoofprint in the rock (Carn March Arthur). Ladies of the lake kept milk-white cattle there, and took them back from a greedy farmer.",
+      "provenance": "myth",
+      "source": "https://folklorethursday.com/legends/folklore-legends-welsh-lakes-llyn-barfog/"
+    },
+    {
+      "text": "Llyn Barfog is zone 7 of region 1, with about 350 monsters: Welsh hobgoblins, bwgan and bwgwl, cythraul, cwn annwn, gwr-drwgiaid, undead monks, Evocatus praetorii (Spirits of Rome), ellyllon, lake adders, spiny eels, toads, bears and boars, and six catalog bosses (faction Denizens of Llyn Barfog).",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Barfog village on the lakeside has merchants and a smith; Twr ap Alsig of Barfog is part of Hidden Insurrection.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only); world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Path of the Renegade and Rebellion Accepted: renegade guards in Llyn Barfog keep diaries of treason, carry Arawnite orders and follow Sir Dillus.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Wizard's Appeal asks for the essence of a cythraul from the skeletons in Llyn Barfog.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Gwartheg Yllyn is a level 25 realm NPC on the eastern hills; Welsh 'gwartheg y llyn' means 'cattle of the lake', the name of the lake-maiden's herd in the Welsh tale (to verify).",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Welsh folklore, not game canon: the cwn annwn are Arawn's hounds; cythraul are devils; bwgan are bogeys.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/C%C5%B5n_Annwn"
+    },
+    {
+      "text": "Existing bot chat says the lake's beasts gained epic status, that afanc hatchlings swim the shallows, and that barfog means bearded.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "The open door, the hill folk as what came through to graze, the renegades' Arawnite masters, the crowned-by-himself king, Twr ap Alsig's Barfog Book and Siemus's shoreline paths are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Scouts looking into newly found diamondback toads by Llyn Barfog met what they called a two-legged, armless goblin with nasty teeth, living in colonies around ancient mystical rock formations on the lake's western shore.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/156.php (Camelot Herald, 2002-01-17, Pendragon patch notes; Wayback capture 2005-02-10)"
+    },
+    {
+      "text": "Mythic's 1.45 notes warned of nasty, intimidating creatures around the lake, and of claims that the Legendary Afanc, a demon of the water from King Arthur's day, had returned to tend her young.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "The door in the hills. Llyn Barfog lies high in the hills north of the Black Mountains, the Bearded Lake, named for the reeds that ring it, and the Welsh have always said it is a door. On still evenings its water shows a sky that is not the one above it. Arawn's country lies on the other side, the old men of Barfog village say, and the lake is where the two countries touch. In the oldest days a lady came up out of the water with milk-white cattle, the gwartheg y llyn, the cattle of the lake, and gave them to a farmer of the hills, and his herds grew until he was the richest man in the country; and when he grew greedy and set out to slaughter the oldest of them she stood on the shore and called them, every one, and they walked back into the water with her and did not come out again.\n\nArthur and the afanc. In Arthur's day the lake had a monster, an afanc, part beaver and part dragon depending on who tells it, that drowned cattle and children and broke the banks in flood. Arthur came with a chain and bound it while it slept, and his horse Llamrei dragged it ashore, and the hoofprint where the mare dug in is still pressed into the stone above the water. The bards end the tale there. The lake did not. Arthur dragged out one afanc, not the last. The great one that lives in the deep water now remembers the chain, and its hatchlings swim the shallows.\n\nWhat came through. The old men say that when the lady called her cattle home she left the door open behind her, and that the hills have been filling ever since with things that came through to graze where the white cattle grazed. The hounds of Annwn run the slopes, the cwn annwn, white with red ears in the songs and only grey in the hills. Cythraul, the Welsh devils, walk as skeletons by the water and are boiled down by wizards for their essence. The bwgan, the bogeys of the nursery, have a clan of their own with hunters and an elder and a fisherman who fishes the lake at night. Welsh hobgoblins hold the eastern hills. Evil men, the gwr-drwgiaid, and dead monks and Roman dead of the old praetorian guard walk among them. Above the lake the named things of the hills keep their own ground: a king who crowned himself the day the cattle left; Teazanodwc in her hollow in the south; the thing called Mouth on the eastern slope where the ground looks chewed; Fester in the black-reeded mire to the west, the rot that set in when nothing clean grazed the banks any more; and on scorched ground below the lake, the Wrath of Mordred, which is not Mordred but only his anger, still standing.\n\nWho lives there now. Barfog village keeps the lakeside under Twr ap Alsig, with a smith and armourers who sell to anyone going up into the hills and a crossbow-maker who will not say why he chose the lake. The ellyllon, the small folk of the Welsh hills, keep a village of their own on the north-western slope, with their froglords and their windchasers and their sages, and keep to themselves. In the east, renegade guards under Sir Dillus have turned their coats; their diaries show treason, and their orders come from the followers of Arawn in the pass. And a cowherd who calls himself Gwartheg Yllyn, the cattle of the lake, stands on the eastern hills with nothing to herd.\n\nWhy it matters to Albion. Llyn Barfog is Arthur's lake, where the first king of Albion did the thing the bards still sing, and it is also a door to the lord of the dead that nobody has shut. Camelot sends its companies up the hill to keep what came through from coming further, and its scouts up the eastern slope to find out who the renegades answer to. The old men of Barfog say neither will matter until somebody calls the white cattle home again, and that nobody living knows the call.",
+  "legend": "Llyn Barfog is the hill zone north of the Black Mountains with the lake in the middle, levels 20s to 50s around the edges, and six catalog nameds in the hills, each about an hour's respawn: the Legendary Afanc (70) in the lake, the King of the Barfog Hills (65) on the high ground to the north, Teazanodwc (63) in the hollow in the south, Mouth (62) on the eastern slope, Fester (64) in the mire to the west, and the Wrath of Mordred (71) on the scorched ground south of the lake. All six are crowd-control immune and all bring something: throws, minions, servants, a drain, disease, heat. Barfog village on the lakeside has merchants and a smith; Twr ap Alsig is there for Hidden Insurrection. The renegade guards and Sir Dillus in the east are for Path of the Renegade and Rebellion Accepted. The cythraul skeletons by the water give the essence for Wizard's Appeal. The ellyllon village is on the south-west slope. Do not swim the lake at dusk: the old men say the afanc takes swimmers, and you will not like where it puts you.",
+  "atmosphere": {
+    "firstEntry": [
+      "Llyn Barfog. The lake does not reflect this sky.",
+      "Reeds like a beard round the water.",
+      "Hounds baying somewhere on the slopes.",
+      "A hoofprint in the stone above the shore.",
+      "The hills are full of things that came through."
+    ],
+    "areas": [
+      {
+        "name": "the afanc's water",
+        "x": 455704,
+        "y": 389644,
+        "z": 2192,
+        "radius": 1200,
+        "lines": [
+          "Something under the water is as long as a ship.",
+          "The lake shows a sky that is not this one."
+        ]
+      },
+      {
+        "name": "Llamrei's stone",
+        "x": 451486,
+        "y": 393503,
+        "z": 2754,
+        "radius": 500,
+        "lines": [
+          "A hoofprint pressed into the stone.",
+          "Where Arthur's mare dug in, they say."
+        ]
+      },
+      {
+        "name": "Barfog village",
+        "x": 453050,
+        "y": 400100,
+        "z": 2100,
+        "radius": 1000,
+        "lines": [
+          "Barfog village. Smiths for the hill road.",
+          "Twr ap Alsig hears the hill news first."
+        ]
+      },
+      {
+        "name": "the King's hill",
+        "x": 445069,
+        "y": 378519,
+        "z": 6897,
+        "radius": 1000,
+        "lines": [
+          "A king's hill. The grass is flattened by his tread.",
+          "Nobody crowned him."
+        ]
+      },
+      {
+        "name": "Teazanodwc's hollow",
+        "x": 456333,
+        "y": 423806,
+        "z": 5337,
+        "radius": 1000,
+        "lines": [
+          "Small things stir in the hollow, all one way.",
+          "She never meets anyone alone."
+        ]
+      },
+      {
+        "name": "the Mouth's den",
+        "x": 471208,
+        "y": 384596,
+        "z": 6216,
+        "radius": 1000,
+        "lines": [
+          "The ground here is chewed.",
+          "Something here has never stopped being hungry."
+        ]
+      },
+      {
+        "name": "Fester's mire",
+        "x": 438366,
+        "y": 384511,
+        "z": 5176,
+        "radius": 1000,
+        "lines": [
+          "The air is sour. The reeds are black.",
+          "The rot of the banks, walking."
+        ]
+      },
+      {
+        "name": "the burnt ground",
+        "x": 462575,
+        "y": 413391,
+        "z": 3182,
+        "radius": 1000,
+        "lines": [
+          "Scorched earth. A traitor's anger still burns.",
+          "Camlann's fire, a long way from Camlann."
+        ]
+      },
+      {
+        "name": "the ellyllon village",
+        "x": 433000,
+        "y": 416200,
+        "z": 5450,
+        "radius": 1200,
+        "lines": [
+          "The small folk's village. Frogs on leads.",
+          "Ellyllon sages watch you pass."
+        ]
+      },
+      {
+        "name": "the renegades' hill",
+        "x": 477900,
+        "y": 393800,
+        "z": 4800,
+        "radius": 1500,
+        "lines": [
+          "Renegade guards. Albion's colours, turned.",
+          "A cowherd with nothing to herd."
+        ]
+      },
+      {
+        "name": "the hobgoblin hills",
+        "x": 464274,
+        "y": 385689,
+        "z": 5439,
+        "radius": 2000,
+        "lines": [
+          "Welsh hobgoblins hold the eastern hills.",
+          "Bwgan hunters on the ridges."
+        ]
+      },
+      {
+        "name": "the Roman dead",
+        "x": 470473,
+        "y": 375571,
+        "z": 5403,
+        "radius": 1200,
+        "lines": [
+          "Praetorians of a dead emperor, still on guard.",
+          "Rome came even here."
+        ]
+      },
+      {
+        "name": "the drowned ghost",
+        "x": 443899,
+        "y": 406882,
+        "z": 1789,
+        "radius": 800,
+        "lines": [
+          "Something huge and pale swims in the shallows.",
+          "The lake keeps its own dead too."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "llyn barfog has an afanc in it. arthur [dragged|pulled] one out of that very lake, [so they say|the old tale goes]",
+      "barfog is old welsh for bearded, [you know|they say]. the bearded lake",
+      "there's a hoof print stone up by llyn barfog. [arthurs horse|llamrei], dragging the afanc out",
+      "the lake ladies took their white cattle back into llyn barfog. [something else grazes there now|now look at it]",
+      "the barfog old men say the lake is a door to arawn's country",
+      "the lady of the lake called her white cattle back into llyn barfog. left the door open",
+      "the cwn annwn at llyn barfog are arawn's hounds, [heard|so the welsh say]",
+      "cythraul means devil in welsh. the skeletons by the lake",
+      "there's an ellyllon village on the nw slope at barfog. frogs on leads",
+      "the renegade guards at barfog take orders from the arawnites",
+      "six nameds round llyn barfog and every one is cc immune",
+      "the wrath of mordred isnt mordred, its just his anger left over from camlann"
+    ],
+    "rumour": [
+      "the monsters at llyn barfog gained epic status, they say. my xp did not notice",
+      "[swam|went] across llyn barfog [once|at dusk] and [something|a ripple] [followed me|went under me]. [never swam there again|i ran]",
+      "[heard|someone said] the afanc throws you up onto the shore by arthur's hoofprint stone",
+      "heard there's a cowherd at barfog called cattle of the lake with no cows",
+      "[heard|someone said] the bwgan fisherman fishes llyn barfog at night",
+      "heard sir dillus turned his coat for the arawnites",
+      "[heard|someone said] llyn cythraul is a huge ghost in the shallows",
+      "heard the king of the barfog hills crowned himself"
+    ],
+    "tell": [
+      "llyn barfog? lake with the legendary afanc in it. the barfog king, teazanodwc, mouth, fester and the wrath of mordred around it",
+      "six named things round one lake. pull them one at a time",
+      "is llyn barfog hard? the edges are 20s and 30s, the six nameds are 62 to 71",
+      "where's llyn barfog? north of the black mountains, the lake with the reeds",
+      "whats there? barfog village, the afanc, the ellyllon, the renegades, six nameds",
+      "where are the renegades? east side, sir dillus. path of the renegade"
+    ]
+  },
+  "loremaster": {
+    "intro": "Llyn Barfog is the [bearded lake], and the Welsh say it is a door. [Arthur] pulled an [afanc] out of it once; the [white cattle] went back into it. Ask of [barfog village] and [twr ap alsig], [gwartheg yllyn], the [renegades] and [sir dillus], [siemus tracksniffer], the [ellyllon], the [hill folk] and [llyn cythraul], or the named: the [king of the barfog hills], [teazanodwc], [mouth], [fester] and the [wrath of mordred].",
+    "topics": {
+      "bearded lake": "The reeds round its edge give it its beard. On still evenings the water shows a sky that is not ours. The old men say it is a door to Arawn's country, and that the [white cattle] went back through it.",
+      "white cattle": "The gwartheg y llyn, the cattle of the lake: a lady of the water gave them to a farmer of the hills and called them home when he grew greedy. A cowherd on the eastern hill, [gwartheg yllyn], has taken the name.",
+      "arthur": "He chained the afanc as it slept, and his horse Llamrei dragged it ashore; the hoofprint is still in the stone. Ask about the [afanc] that stayed.",
+      "afanc": "The Legendary Afanc has not left the lake since Arthur's day. It flings those who fight it in its water up onto the shore by the hoofprint stone, and its small young come with it.",
+      "barfog village": "The lakeside village, with a smith and armourers for the hill road, spoken for by [twr ap alsig].",
+      "twr ap alsig": "The man who speaks for Barfog village. He wrote the Barfog Book for the clerks of Camelot and wants Camelot to find out what the [renegades] are for.",
+      "gwartheg yllyn": "A cowherd on the eastern hills who calls himself the cattle of the lake and has nothing to herd.",
+      "renegades": "Renegade guards in Albion's colours in the east of Llyn Barfog, under Sir Dillus. Their diaries show treason and their orders come from the followers of Arawn in the pass.",
+      "sir dillus": "A knight of Albion who leads the [renegades] of Llyn Barfog. The Snowdonia captain wants to know who turned him, and when.",
+      "siemus tracksniffer": "A tracker who works the lake's southern shore and the water's edge below Barfog village, and says he can tell an afanc's young from an eel's wake at a hundred paces. He has never once followed either into the water. He sells what he knows of the shoreline paths, and the old men of Barfog say his prices are fair and his directions better than his stories.",
+      "ellyllon": "The small folk of the Welsh hills, who keep a village on the south-west slope of Llyn Barfog with froglords, guards, sages and windchasers, and their frogs on leads.",
+      "hill folk": "The things that came through the lake's door: the cwn annwn, Arawn's hounds; the cythraul, Welsh devils walking as skeletons; the bwgan, the bogeys of the nursery; Welsh hobgoblins; the gwr-drwgiaid, evil men; dead monks and dead Roman praetorians; and [llyn cythraul] in the shallows.",
+      "llyn cythraul": "The lake's own devil, a pale, huge thing that swims in the shallows. The children of Barfog leave it alone.",
+      "king of the barfog hills": "Nobody crowned him. He crowned himself the day the [white cattle] went home. He walks his hill as a king walks his hall, and no charm or command moves him.",
+      "teazanodwc": "She keeps the hollow in the south of the hills, and her servants pour out with her or she does not come out at all.",
+      "mouth": "The hill folk gave it no name but what it is. It lives where the ground looks chewed, eats the life of whoever it fights, and smaller mouths come when it calls.",
+      "fester": "The rot that set into the lake's banks when the [white cattle] went home, and learned to walk. Its sickness slows healing and its cloud spreads.",
+      "wrath of mordred": "Not Mordred, only his anger, which did not die at Camlann. It settled below the lake Arthur once cleansed, to spite him, and fights with a soldier's training."
+    }
+  },
+  "book": {
+    "title": "The Barfog Book",
+    "pages": [
+      "The Barfog Book, set down for the clerks of Camelot by Twr ap Alsig, who speaks for the village of Barfog on the lakeside, because the clerks asked and because somebody ought to. The lake is a door. Everybody in Barfog knows it and nobody in Camelot believes it, so I will start with what you can see: the reeds that give the lake its beard, the sky in the water on a still evening that is not the sky overhead, and the hoofprint in the stone where Arthur's mare dug in to drag the afanc ashore. Go and look at the print. Then go home.",
+      "Of the cattle. My grandmother told it this way. A lady came up out of the water with white cattle and gave them to a farmer of the hills, and he grew rich. When he grew greedy and took the knife to the oldest cow, the lady stood on the shore and called, and every beast walked back into the water and did not come out. The farmer drowned himself after, she said, or went to Camelot, which in her opinion was the same. There is a man on the eastern hill who calls himself Gwartheg Yllyn, the cattle of the lake, and has nothing to herd.",
+      "Of the afanc. Arthur dragged one out. The one in the deep water now is bigger and older, and has young. It does not leave the lake and does not want anyone in it. When men go into its water to fight it, it takes one of them and flings him up onto the shore by the hoofprint stone, and the fall breaks what it breaks, and he walks back down to the water if he can. It does this again and again, picking a different man as often as not. Its young come with it, small and many.",
+      "Of the hill folk. The ellyllon keep a village on the south-west slope and their frogs on leads. The hobgoblins hold the east. The bwgan have hunters and an elder, and a fisherman who fishes our lake at night, which we have asked him not to. The hounds of Annwn run the slopes. The cythraul walk by the water as bones and the wizards come up from the Snowdonia fortress to boil them down. There are dead monks, and dead Romans of some emperor's guard. And there is something pale and huge in the shallows that the children call Llyn Cythraul, the lake's own devil, and leave alone.",
+      "Of the named. On the high ground to the north a king who crowned himself the day the cattle left; he walks his hill, and the ground jumps under anyone standing near the man he strikes. In the hollow, Teazanodwc, who comes out with her servants or not at all. On the eastern slope, Mouth, which eats you to mend itself and has young. In the black reeds to the west, Fester, which makes you sick and then makes the sickness spread. And below the lake on scorched ground, the Wrath of Mordred, a soldier's anger with a soldier's training, that burns everyone around whoever it hits.",
+      "Of the renegades, last. In the east there are men in Albion's colours who are not Albion's men any more, under one Sir Dillus. Their diaries, which the Snowdonia captain's people take off them, say what they are. Their orders come from the followers of Arawn in the pass, and Omis the merchant reads them. I do not know what the lord of the dead wants with a lake that is already his door. I would like Camelot to find out before he walks through it. The renegades have a stable on their hill, and Kelin who keeps it says nothing to anyone, which in Barfog is its own kind of answer."
+    ]
+  },
+  "bosses": [
+    "legendary-afanc",
+    "king-of-the-barfog-hills",
+    "teazanodwc",
+    "mouth",
+    "fester",
+    "wrath-of-mordred",
+    "llyn-cythraul"
+  ],
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers",
+    "arawn",
+    "mordred"
+  ]
+}

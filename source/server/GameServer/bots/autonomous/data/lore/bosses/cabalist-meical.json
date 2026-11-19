@@ -1,0 +1,139 @@
+{
+  "id": "cabalist-meical",
+  "name": "Cabalist Meical",
+  "npcNames": [
+    "Cabalist Meical"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "meical",
+    "the borrowed master"
+  ],
+  "facts": [
+    {
+      "text": "Cabalist Meical: level 58, the drakoran elite model, a quest spawn (ClassicQuest package) at 408126, 430723 in the hall of making; aggro level 200 within 500, no faction, no spells or styles, respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The sentries and heavy metals of the hall (faction Chaotic Constructs) stand 190 to 980 from him; he shares no faction with them, so none comes when he is attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Restoring the Magic (Lady Lurlei of Caer Gothwaite): speak with Adelon on the hill right of the Fort Gwyntell gate; Meical's key from his house below the tower; a metal sphere from the second floor; give the orb to the lifeless creation; kill the Cabalist Meical when he comes to defend it; open Meical's box and read his note; cleanse the broken orb with a pendant.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cabalist Meical uses model 899, the drakoran elite model, with the drakoran race value (the Dales file); the name over the hall door is the old master's (the Dales file's 'borrowed name').",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "His drakoran name nobody knows, his reading of the master's books without the master's hand, the servants who will not come, the lifeless creation as the master's or his, and the orb's two readings are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The name over the door of the hall of making is Meical, and it was the old master's. The one who answers to it now is a drakoran, and the fort's name registrar writes his name in the second book with a mark beside it that means borrowed. What he was called before he came to the hall, nobody in the dales knows. Martley, the only drakoran who ever studied at the colleges, says he never knew him and would have; whoever this is learned his making from the old master's books, alone, after the burning, which Martley thinks is the most dangerous way there is to learn anything.\n\nHe came to the empty hall in the first summer of the war, while the colleges were still smoking, and found the master's books on the bench and the servants standing where they had stopped. He read the books. He set the servants going again. He took the name over the door, perhaps because the households kept calling him by it and it was simpler, perhaps because he believed that a man who could read the master's books was the master. He calls himself the cabalist. The households say Master Meical, as they always did, and the servants know better.\n\nThey know better and obey worse every year. The Guardian at the stair will not let him up. The Keeper gives him nothing. Tyian ignores his hand at the bench and Pazia keeps him out of the house. When he is troubled in his own hall, no servant of it comes to him; the sentries in their line and the heavy metals in the yard go on with what they were doing. He has the master's books and none of the master's hands.\n\nAt the top of the hall stands the lifeless creation, finished in every part but its heart, and below it the orb is broken. Lady Lurlei of Caer Gothwaite says the two are one working: the cabalist means to wake his creation with what the orb held, and the breaking of it is why the wards of Caer Gothwaite part before drakoran craft. Adelon on the hill says the creation is the old master's, the last thing he made, and that the drakoran only finished it. The realm finds out the only way it can. When someone sets a heart in the creation and tries to wake it, the cabalist comes up to the top of his hall to defend it. That is the one thing in the dales he will always come out for.",
+  "legend": "Cabalist Meical is the level 58 drakoran who runs Meical's Hall in the Dales of Devwy, and he only shows for Restoring the Magic (Lady Lurlei): after you give the orb to the lifeless creation at the top of the hall, he comes to defend it. Kill him, take his box (Pazia's key opens it), read the note, then cleanse the broken orb with the pendant. He is aggressive but has no faction, so none of the hall's constructs come to help him; the sentries and heavy metals nearby can still aggro on you by themselves, so clear the top of the hall first. No spells or styles in the data: a melee fight with a 58, a full group of fifties is comfortable. If you lose him, he is back in about ten minutes.",
+  "yells": {
+    "aggro": [
+      "Hands off my creation!",
+      "I am the master here. The name says so.",
+      "You will not wake what I have made."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Servants! To me! Why do you not come?"
+      }
+    ],
+    "death": [
+      "The books... said... it would obey...",
+      "Only... the name..."
+    ],
+    "slay": [
+      "Another part for the workshop.",
+      "Read, and understood.",
+      "The master's work is mine."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The top of the hall. Something waits that does not live.",
+      "Below, an orb lies broken."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The hall's servants go on working. None come."
+      }
+    ],
+    "realmFirstKill": "Cabalist Meical has fallen. The borrowed name is free."
+  },
+  "botLines": {
+    "briefing": [
+      "cabalist meical, 58, only shows for restoring the magic after you give the orb to the creation",
+      "no faction, the constructs wont help him. clear the sentries at the top first anyway",
+      "no spells, melee. full group of 50s is comfy",
+      "kill him, box, read the note, cleanse the orb with the pendant. 10 min if we fail"
+    ],
+    "aftermathWin": [
+      "meical down. now the box and the orb",
+      "none of his servants came, just like the registrar said",
+      "easy with the top cleared",
+      "cleanse the orb before someone wanders off"
+    ],
+    "aftermathLoss": [
+      "didnt clear the top and three sentries joined him",
+      "gave the orb with half the group afk",
+      "forgot the pendant step after all that",
+      "wiped and have to wait ten minutes for him"
+    ],
+    "rumour": [
+      "[heard|someone said] the meical in the hall is a drakoran who took a dead master's name",
+      "heard none of the hall's servants come when meical calls",
+      "[heard|someone said] martley says meical learned from the books alone, which is the dangerous way",
+      "heard the broken orb under the creation is why gothwaite's wards fail"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cabalist meical",
+    "text": "The drakoran who answers to the old master's name over the door of the hall of [meical]. He learned the making from the master's books alone after the burning, set the [servants] going again and calls himself the cabalist, but none of them obeys him well and none comes when he calls. At the top of the hall stands the lifeless creation, the master's or his, and below it the [orb] is broken. He comes out to defend the creation, and for nothing else."
+  },
+  "bookPage": "From a letter of Martley, the only drakoran who studied at the colleges, to the readers at Caer Gothwaite. You ask whether I know the one in the hall of making. I do not, and I would. He learned from the master's books, alone, with nobody to tell him what the master meant and what the master only wrote. That is how a man comes to believe that a name over a door is a name. I have seen him from the hill. He holds out his hand to the servants and they look past it, the way a dog looks past a stranger who calls it by its name. He has not understood why. I think he never will. I think that is why he is making something new.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Cabalist Meical beside his creation in {minutes} minutes.",
+    "loss": "Cabalist Meical kept his creation from {raidLeader}'s company of {realm}."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "tower-guardian",
+      "relation": "will not let him up the stair"
+    },
+    {
+      "id": "tower-keeper",
+      "relation": "gives him nothing from the stores"
+    },
+    {
+      "id": "tyian",
+      "relation": "ignores his hand at the bench"
+    },
+    {
+      "id": "pazia",
+      "relation": "keeps him out of the master's house"
+    },
+    {
+      "id": "adelon",
+      "relation": "watches the hall and sends the realm against him"
+    }
+  ]
+}

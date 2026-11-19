@@ -1,0 +1,273 @@
+{
+  "id": "tepoks-mine",
+  "name": "Tepok's Mine",
+  "realm": "Albion",
+  "regions": [
+    24
+  ],
+  "aliases": [
+    "tepoks",
+    "tepok"
+  ],
+  "summary": "The townsfolk's silver mine in the Black Mountains, taken by the goblins and kept working under Overseer Tepok as the counting-house of a war nobody has named yet.",
+  "facts": [
+    {
+      "text": "Tepok's Mine (levels 17-38) lies in Black Mountains South, entered by a boulder at the foot of a cliff beside a ruined house. Savage Black Mountains goblins seized it from the local townsfolk and defend it hard.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Players in 2001-02 met a named goblin called 'The Director', found the undead miners unaggressive, and warned that pulling a red dwarf youth brings his kin; Tepok Overseer conned red at level 31.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Its people: goblins with trades (whips, watchers, cleaners, snatchers, beastmasters, patrol leaders, monitors), cave lions and bears, undead miners and red dwarf youths.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Existing bot chat: Overseer Tepok runs his mine like a guild leader.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    },
+    {
+      "text": "The mine (region 24, about 130 spawns) is entered from Black Mtns. South; goblins of every trade fill it, with cave lions and bears in the north-west pens, cave fishers by the mouth, undead miners in the old shafts, red dwarf youths in the far galleries and six juggernauts (faction Cursed) in the deepest east gallery.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Named: Overseer Tepok (36-43) near the mouth with the goblin whip; Director Botok (35, no faction) among the red dwarf youths; Morvel and Tuder Glyne (34-37, forest poachers) at the eastern landing; Savant (31-34) inside the juggernauts' ring; Sarel Sebian (32-34, Red Dwarves) alone in the last gallery.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lord of Deceit (Magus Agyfen, Captain Rhodri): slay Overseer Tepok and take his sack, carry its dispatch to Twr ap Alsig, slay the courier Delfina in the Tylwyth Teg camp in Pennine, and have Twr translate the reports.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Hidden Insurrection (Captain Rhodri, Lieutenant Kuebler, Twr ap Alsig, Sir Bors' chest): find the goblin Savant in Tepok's Mine and search his belongings, then warn Twr ap Alsig with the dispatch.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Reeve Ithel and his tally, the overseer copying the reeve's remarks, the Glyne landing and Delfina's letters, and Savant's line about the stones are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The silver under the cliff. The mine under the north-western cliff of the Black Mountains was opened by the townsfolk of Ludlow and Humberton in the hungry years after Camlann, when the realm needed coin more than it needed quiet hills. They found silver in the first season and built a house for their reeve beside the door, and the reeve, a careful man called Ithel, kept a tally of every load that came up and every man who went down. For three seasons the tally was good. The goblins of the high valleys, who had fished the upper rivers and troubled nobody, came down to the edge of the trees and watched.\n\nWhat went wrong. The goblins took the mine in a single night, and they did not take it to ruin it. The men who were in the lower shaft that night are in it still, the undead miners who swing their picks in the old workings and do not look up from the stone; the reeve's house beside the door is a ruin, and the house the townsfolk left higher on the mountain belongs to Grilk now, by the goblins' whole law, which is that a thing nobody comes back for is yours. Then the goblins did the thing that frightened Humberton more than the taking. They kept the mine working. The tally Ithel began goes on after his last page in another hand, and the hand is Overseer Tepok's.\n\nWhat keeps house there now. Tepok runs the mine as a counting-house runs a trade, with a goblin for every task: whips for the diggers, watchers on the passages near the mouth, cleaners and snatchers, monitors, patrol leaders over the crowded halls in the north where the goblin host sleeps and eats in shifts, beastmasters for the pens where cave lions and bears are kept and broken. Cave fishers breed in a wet hollow close by the door, and nobody clears them, because they eat whatever wanders in. Tepok keeps his own office near the mouth, not in the deeps, with his whip at his elbow and a lion at his feet, so that he sees what comes in and what goes out; the Goblin Lord outside on the mountain is only his doorman. The red dwarves dig the far galleries under a bargain nobody in Humberton understands, kept for the goblins by Director Botok, who wears no clan's colours and answers, the dwarves say, only to the work; the dwarves' young are quick to take offence, and where one is struck the whole household answers. Sarel Sebian, a red dwarf who will not live with the others, works the farthest gallery alone. In the east two men of the forest poachers, Morvel and Tuder Glyne, keep a landing with the goblin snatchers, and what leaves the mine by the back ways leaves through them. And in the deepest gallery of all, where the townsfolk's last seam broke into something that was not silver, great shapes of cursed stone stand in a ring like a wall, and in the middle of them a goblin the others call Savant sits with his papers and studies them.\n\nWhy it matters to Albion. The silver does not go to the goblin camps. Captain Rhodri of the Snowdonia border keep has opened the overseer's sack more than once and found dispatches in it, written in a tongue that only Twr ap Alsig of Barfog will put into plain words, and the words lead north, to the Pennines, to a courier named Delfina among the same forest poachers and to the fair folk's camp she runs between. Savant's papers speak of a rising. Rhodri says Tepok's Mine is not a mine at all but the counting-house of a war, and that the realm will learn whose war on the day it is paid for. Humberton says the goblins have bosses too. Erick Redbeard, who left the galleries, says the bosses have bosses, and that he did not want to be there when the last of them came to collect.",
+  "legend": "Tepok's Mine is the goblin dungeon in Black Mountains South, levels 17 to 38, in at the boulder by the ruined house. Easy to find, extremely difficult to walk out of, the old guides said, and they were right. Goblins near the door for the twenties; the north halls are packed and the patrol leader walks through them, so pull to the corridor. The cave fishers by the entrance eat lowbies who wander. Do not pull a red dwarf youth unless you want all four and Director Botok with them. Overseer Tepok (36-43) is close to the entrance with his whip and a cave lion: kill him for Lord of Deceit and take his sack. The Glyne cousins in the east are poachers, not goblins, and come as a pair with the snatchers. Savant sits inside a ring of six Juggernauts in the deepest east gallery for Hidden Insurrection; clear the stone ones from the edge. The undead miners leave you alone if you leave them alone. Gamebots camp the mine in the thirties.",
+  "atmosphere": {
+    "firstEntry": [
+      "The goblins kept the mine working. Listen to the picks.",
+      "A counting-house dug into a mountain.",
+      "Somewhere ahead, a whip, and a voice keeping tally.",
+      "The air smells of lamp oil and lion."
+    ],
+    "areas": [
+      {
+        "name": "the mine mouth",
+        "x": 32476,
+        "y": 34737,
+        "z": 15179,
+        "radius": 800,
+        "lines": [
+          "The goblins kept the mine working. Listen.",
+          "A boulder for a door, and goblins at the turn."
+        ]
+      },
+      {
+        "name": "the fishers' hollow",
+        "x": 32114,
+        "y": 33139,
+        "z": 14936,
+        "radius": 600,
+        "lines": [
+          "Wet stone, and something breeding in it.",
+          "Nobody clears the fishers. They eat strangers."
+        ]
+      },
+      {
+        "name": "the old shafts",
+        "x": 32893,
+        "y": 29076,
+        "z": 14946,
+        "radius": 700,
+        "lines": [
+          "Dead miners dig. They do not look up.",
+          "The night shift never came up."
+        ]
+      },
+      {
+        "name": "the beast pens",
+        "x": 32000,
+        "y": 25500,
+        "z": 14300,
+        "radius": 1200,
+        "lines": [
+          "Cave lions in pens, and a goblin with a whip.",
+          "Bears broken to the goad. Mostly."
+        ]
+      },
+      {
+        "name": "the north halls",
+        "x": 34400,
+        "y": 26500,
+        "z": 14421,
+        "radius": 1300,
+        "lines": [
+          "The goblin host sleeps here in shifts.",
+          "A patrol leader counts heads. Yours too."
+        ]
+      },
+      {
+        "name": "the crawlers' run",
+        "x": 35073,
+        "y": 29047,
+        "z": 14670,
+        "radius": 600,
+        "lines": [
+          "Goblin crawlers in the low run.",
+          "The roof comes down to meet you here."
+        ]
+      },
+      {
+        "name": "the overseer's office",
+        "x": 35468,
+        "y": 34900,
+        "z": 14690,
+        "radius": 600,
+        "lines": [
+          "Overseer Tepok keeps the real ledger.",
+          "A whip, a lion, and a goblin who counts."
+        ]
+      },
+      {
+        "name": "the dwarf galleries",
+        "x": 35767,
+        "y": 31800,
+        "z": 14457,
+        "radius": 700,
+        "lines": [
+          "Red dwarves dig here. Leave their young alone.",
+          "The Director watches the bargain kept."
+        ]
+      },
+      {
+        "name": "the poachers' landing",
+        "x": 36500,
+        "y": 31900,
+        "z": 14440,
+        "radius": 600,
+        "lines": [
+          "Two poachers and the snatchers. Goods go out.",
+          "The Glynes do not ask what they carry."
+        ]
+      },
+      {
+        "name": "the cursed seam",
+        "x": 36418,
+        "y": 30367,
+        "z": 14417,
+        "radius": 600,
+        "lines": [
+          "Cursed stone stands in a ring like a wall.",
+          "In the middle, a goblin with papers. Savant."
+        ]
+      },
+      {
+        "name": "Sarel's gallery",
+        "x": 36852,
+        "y": 33142,
+        "z": 14434,
+        "radius": 500,
+        "lines": [
+          "A red dwarf works here alone. Sarel Sebian.",
+          "The last gallery. One pick, one lamp."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "overseer tepok runs his mine like a guild leader. goblins have bosses too",
+      "the undead miners in tepok's were the townsfolk who owned the place. [still digging|never stopped digging]",
+      "tepoks mine was humberton's silver mine before the goblins took it in one night",
+      "tepok keeps the mine's tally in the old reeve's columns. copied his notes word for word",
+      "the goblin lord outside tepoks is just the doorman. tepok has the real ledger",
+      "director botok keeps the red dwarves working for the goblins. no faction, just the work",
+      "the glynes in tepoks are poachers not goblins. silver goes out through them",
+      "savant sits inside a ring of juggernauts in the deep east gallery reading",
+      "the juggernauts in tepoks are stone. the last seam broke into something cursed",
+      "sarel sebian digs alone in the last gallery. wont live with the other red dwarves",
+      "the fishers by the tepoks door breed and nobody clears them. they eat strangers",
+      "captain rhodri says tepoks is a counting house for a war, not a mine"
+    ],
+    "rumour": [
+      "[heard|someone said] if you pull a red dwarf youth in tepok's the whole family shows up",
+      "there used to be a goblin called the director in tepok's mine, [heard|apparently]. management",
+      "[heard|someone said] tepok's sack has letters in it from the pennines",
+      "heard twr ap alsig in barfog is the only one who reads the goblin hand",
+      "[heard|someone said] the silver from tepoks pays for something up north",
+      "heard savant's papers talk about waking the last of the stones",
+      "[heard|someone said] erick redbeard left the mine because of the bargain",
+      "heard the north halls in tepoks sleep in shifts so theres always half awake",
+      "[heard|someone said] sarel sebian digs for something under the bargain, not for the goblins"
+    ],
+    "tell": [
+      "tepoks mine? goblin mine in black mountains south. goblins, cave lions, dead miners, dwarves. good xp twenties to thirties",
+      "where's tepoks? black mountains south, boulder by a ruined house under a cliff",
+      "is tepoks hard? 17 to 38, the north halls are packed, pull to the corridor",
+      "who do i kill for lord of deceit? overseer tepok, near the entrance, take his sack",
+      "where's savant? deepest east gallery inside the juggernaut ring",
+      "dont touch the red dwarf youths in tepoks unless you want the whole family"
+    ]
+  },
+  "loremaster": {
+    "intro": "Tepok's Mine was the townsfolk's until the [goblins] took it. Ask of [ithel] the reeve, of [tepok] and his [sack], of the [north halls], the [director] and the [red dwarves], of [sarel sebian], the [glyne] landing and the courier [delfina], of [savant] and the [cursed seam], or of the [miners], who were there first.",
+    "topics": {
+      "goblins": "They kept the mine working, which no one expected. [Tepok] runs it like a counting-house: whips, watchers, cleaners, snatchers, monitors, beastmasters, and a host in the [north halls]. The goblins of Black Mountains South call it their mountain's heart; Humberton calls it a till.",
+      "miners": "The dead diggers of the lower shafts, who were in the mine when it fell. They swing their picks and leave you be if you leave them be.",
+      "tepok": "Overseer Tepok, who stood at the door for an hour watching the townsfolk's baskets before the goblins took the mine, and who keeps its tally now in the reeve's own columns. His office is near the mouth, with a whip and a lion. Captain Rhodri wants his [sack].",
+      "sack": "The overseer's sack carries dispatches in the goblin hand and letters in the fair folk's, which only Twr ap Alsig of Barfog will read for the realm. The letters lead to the Pennines and a courier named [delfina].",
+      "delfina": "A courier of the forest poachers who runs letters between the fair folk's camp in the Pennine Mountains and the mine, by the poachers' ways and the [glyne] landing. Captain Rhodri wants her stopped.",
+      "glyne": "Morvel and Tuder Glyne, men of the forest poachers, keep the landing in the east of the mine with the goblin snatchers. Bars of silver go out through them and bundles of letters come in.",
+      "director": "Director Botok keeps the [red dwarves]' bargain for the goblins and wears no clan's colours. The dwarves say he answers only to the work. Old Albion guides spoke of 'the Director' as if he were a rumour.",
+      "red dwarves": "They dig the far galleries under a bargain with the goblins. Their young are touchy; strike one and the whole household answers. Erick Redbeard left in shame; [sarel sebian] stays, but alone.",
+      "sarel sebian": "A red dwarf of the mine who works the farthest gallery alone, with one lamp and one pick, and will not live with the households under the [director]. Erick Redbeard says Sarel is the only one of them who still digs for the clan and not for the bargain; the households say Sarel digs for something under the bargain. Either way, Sarel does not stop digging to talk.",
+      "savant": "A goblin scholar who sits in the deepest east gallery, the [cursed seam], inside a ring of standing stone shapes that wake and walk, and studies them by more lamps than any goblin needs. Sir Bors took a chest of his papers north; Twr ap Alsig read in it a line about a rising and 'the last' of the stones. Hidden Insurrection sends the realm to search his belongings again.",
+      "cursed seam": "Where the townsfolk's last seam broke into something that was not silver. The goblins call the shapes that stand there juggernauts. They stand round [savant] like a wall.",
+      "north halls": "The crowded galleries in the north where the goblin host sleeps and eats in shifts, with a patrol leader to count the sleepers.",
+      "ithel": "The townsfolk's reeve of the mine, who kept its first tally. His last page ends in the middle of a line, and the next is in another hand. See [tepok]."
+    }
+  },
+  "book": {
+    "title": "Tally of the Black Mountain Silver",
+    "pages": [
+      "Tally of the Black Mountain Silver, kept by Ithel, reeve of the mine under the cliff, with the later leaves as they came to Barfog. First tally of the first season. Silver in the second shaft, a hand's width, good colour. Eleven men below, four above, two boys for the baskets. Humberton has sent a clerk to count my counting, which I take kindly. The goblins came to the edge of the trees again this morning and sat there, a dozen of them, with their knees up, watching the baskets go by. The boys threw stones at them. They did not throw any back.",
+      "Third tally of the third season, kept by the reeve of the mine under the cliff. Silver good. Seven men in the lower shaft, two in the upper. Goblins seen on the mountain again, more than last year. The overseer of the goblins came down and stood at the entrance and watched us for an hour, with his hands behind his back, like a man inspecting a property he means to buy. The men laughed at him. I did not. The next page of this tally is in another hand, and the hand is not a man's.",
+      "The leaves after this are not Ithel's. Captain Rhodri of the Snowdonia border keep took them out of the overseer's sack and sent them to me at Barfog, because I read the goblin hand and nobody at the keep does. I am Twr ap Alsig, and I set this down for Camelot's clerks. The first goblin leaf is a tally in Ithel's own columns, kept in his own order: loads up, hands below, hands above. The hands below are goblins now. The hands above are goblins. In the last column, where Ithel wrote his remarks, the overseer has copied his remarks, word for word, every one, for a whole season, as a boy copies his letters.",
+      "Later leaves. The overseer stops copying the remarks and writes his own. Pens: two lions broken, one bear not. Fishers in the wet hollow by the door left alone, they keep the door better than watchers. North halls full, the patrol leader to count the sleepers at each change of the lamps. Dwarves: the Director reports the bargain kept, the youths quarrelsome, strike one and the household comes, which the Director says is no fault in a digger. The Glyne landing: twenty bars out, a bundle in. Savant still at the deep seam with the stones. Savant asks for more lamps.",
+      "Of the bundles that come in by the Glyne landing. They are letters, and they are not in the goblin hand. They are in the fair folk's hand, which I also read, and they come from the Pennines, and the one who carries them south along the poachers' ways is named in three of them: Delfina. The letters ask after the silver, after the lions, after the number of the host in the north halls. They are polite. The overseer answers every one by the next bundle, and his answers are the most careful writing I have ever seen from a goblin, or from most men.",
+      "Last, a leaf that was not in the sack, but in a chest that Sir Bors sent me from the north, taken from among Savant's things at the deep seam. It is a list of the stones in the ring, each with a name and a number of nights, and under them a single line I have read over many times: when the last is woken we will not need the hill. I do not know what hill. Captain Rhodri thinks he does, and has asked Camelot for more riders, and Camelot has asked him for another tally."
+    ]
+  },
+  "bosses": [
+    "overseer-tepok",
+    "director-botok",
+    "morvel-glyne",
+    "tuder-glyne"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins",
+    "realm-of-camelot"
+  ]
+}

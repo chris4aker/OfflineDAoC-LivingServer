@@ -1,0 +1,112 @@
+{
+  "id": "thuxra-the-cackler",
+  "name": "Thuxra the Cackler",
+  "npcNames": [
+    "Thuxra the Cackler"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Thuxra the Cackler: level 60, model 844 (the arboreal spirit and tree dervish body), size 77, at about 302,200/276,700 in the northern Cothrom Gorge; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The isle's world data has arboreal spirits (benevolent ones too), arboreal remnants and their foragers and defenders, and watchful and tittering tree dervishes (faction The Tree Dervishes).",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Thuxra as an arboreal spirit of the gorge turned by the rot, whose laughter the gorge clans fear more than any shriek.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The arboreal spirits of Hy Brasil are the souls of the forest, the Sylvan say, the part of a wood that is not any one tree, and most of them are benevolent, or at least indifferent: they drift between the trunks of the northern woods and tend what they tend, and the Sylvan leave them gifts of water. When the gorge split, some of the spirits of the woods that fell into it fell with them. They are the remnants now, foragers and defenders of woods that are not there any more. And one of them laughed.\n\nThuxra was the spirit of a wood that the gorge clans called the Laughing Wood before the split, for the sound the wind made in it, and the clans say he was its laughter. When the wood went down into Cothrom and the rot of the gorge came up through what was left of it, the laughter did not stop. It changed. The gorge folk call him the Cackler now, and the sound he makes in the northern gorge is the one sound in all of Cothrom that the gorge clans teach their children to run from, before the shrillers' cry or the hoofbeats of Dremcis's dead stag.\n\nThe tree dervishes of the isle, the dancing spirits that spin in the woods of Vigilant Rock and titter as they go, are thought by the Sylvan of Necht to be his kin: spirits of laughing woods, too, that were not broken. The dervishes will not go into the gorge. The Necht singers say it is because they hear Thuxra and recognise themselves.\n\nHe is the saddest of the gorge's troubles, the Sylvan say, because what he is laughing at is the wood he was, and he cannot stop. The gorge clans leave water for the benevolent spirits of the northern woods every spring. They leave none in the northern gorge. A few of the old women of the clans, they say, still do, on the night of the split, and pour it out on the bare stone, and do not stay to hear what he makes of it.",
+  "legend": "Thuxra the Cackler is a level 60 arboreal spirit in the northern Cothrom Gorge (about 302k/277k). Plain melee, no script, 80-second respawn. A strong full group of 50s handles him; the arboreal remnants around the northern gorge (36-44) are easy but can drift in, so clear first. Do not confuse him with the benevolent arboreal spirits elsewhere on the isle, which are not hostile to everyone. The gorge folk teach their children to run from his laugh; you may want to as well, if you are under 55. The tree dervishes of Vigilant Rock are a different faction and not near him.",
+  "yells": {
+    "aggro": [
+      "Ha. Ha ha. Ha.",
+      "Did you hear the wind? That was me. That was me.",
+      "(a laugh with no wood left in it)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Funny. It is all so funny. Ha."
+      }
+    ],
+    "death": [
+      "Ha... ha... the wood... was...",
+      "(the laughter stops, and the gorge is very quiet)"
+    ],
+    "slay": [
+      "Ha!",
+      "You fell. Like the wood. Ha.",
+      "Funny. So funny."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A laugh in the northern gorge. Run, the clans say.",
+      "Bare stone. Someone poured water on it once."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thuxra's cackle echoes through the gorge!"
+      }
+    ],
+    "realmFirstKill": "Thuxra the Cackler is silent. The Laughing Wood rests."
+  },
+  "botLines": {
+    "briefing": [
+      "thuxra the cackler is 60, northern cothrom gorge. [plain melee|no script]",
+      "clear the arboreal remnants around him first",
+      "strong 50s group fine",
+      "not the benevolent spirits. [different mob|dont mix them up]"
+    ],
+    "aftermathWin": [
+      "thuxra silent. [the laughing wood rests|finally quiet]",
+      "cleared the remnants first. [clean|nice]",
+      "creepy laugh, easy kill",
+      "the gorge clans will be glad"
+    ],
+    "aftermathLoss": [
+      "remnants drifted in. [too many|oops]",
+      "group too low. [60|ouch]",
+      "the laugh got to the healer lol",
+      "pulled a dervish too. [wrong spirit|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] thuxra was the laughter of a wood that fell into the gorge",
+      "the gorge clans teach their kids to run from thuxra's laugh before anything else",
+      "[word is|heard] the tree dervishes wont go into the gorge because they hear thuxra",
+      "some old gorge women still pour water on the bare stone for thuxra on the night of the split"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Thuxra",
+    "text": "Thuxra the Cackler, an arboreal spirit of [Cothrom Gorge] who was the laughter of the Laughing Wood before it fell into the split. The rot turned the laugh. The gorge clans teach their children to run from it."
+  },
+  "bookPage": "From Coll of the Domnann guides: before the split there was a wood the gorge clans called the Laughing Wood, for the wind in it, and Thuxra was its laughter. The wood went down into Cothrom and the rot came up through what was left, and the laughter did not stop. It changed. The gorge clans teach their children to run from that sound before any other. The tree dervishes of Vigilant Rock will not enter the gorge; the Necht singers say they hear him and recognise themselves. A few old women still pour water for him on the night of the split.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Thuxra the Cackler in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Thuxra the Cackler turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "cronwort",
+      "relation": "the rot that turned him"
+    },
+    {
+      "id": "elro-the-ancient",
+      "relation": "another tree-spirit of the isle, who held"
+    }
+  ]
+}

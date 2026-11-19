@@ -19,11 +19,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Enemies of the Realm";
 		private const int minimumLevel = 40;
 		private const int maximumLevel = 50;
 
-		private static GameNPC ReyHib = null; // Start NPC
+		private static GameNPC CaptainHib = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -65,42 +65,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Hibernia);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 200, 334866, 420749))
-					{
-						ReyHib = npc;
-						break;
-					}
-				}
-
-			if (ReyHib == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find Rey , creating it ...");
-				ReyHib = new GameNPC();
-				ReyHib.Model = 26;
-				ReyHib.Name = "Rey";
-				ReyHib.GuildName = "Bone Collector";
-				ReyHib.Realm = eRealm.Hibernia;
-				//Druim Ligen Location
-				ReyHib.CurrentRegionID = 200;
-				ReyHib.Size = 60;
-				ReyHib.Level = 59;
-				ReyHib.X = 334866;
-				ReyHib.Y = 420749;
-				ReyHib.Z = 5184;
-				ReyHib.Heading = 1640;
-				ReyHib.Flags |= GameNPC.eFlags.PEACE;
-				ReyHib.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					ReyHib.SaveIntoDatabase();
-				}
-			}
+			CaptainHib = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Hibernia, 200); // Captain Eithne, Druim Ligen
 
 			#endregion
 
@@ -113,11 +78,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(ReyHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(ReyHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			ReyHib.AddQuestToGive(typeof (PlayerKillQuestHib));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainHib.AddQuestToGive(typeof (PlayerKillQuestHib));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -127,27 +92,27 @@ namespace DOL.GS.DailyQuest.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (ReyHib == null)
+			if (CaptainHib == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(ReyHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(ReyHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			ReyHib.RemoveQuestToGive(typeof (PlayerKillQuestHib));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainHib.RemoveQuestToGive(typeof (PlayerKillQuestHib));
 		}
 
-		private static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(ReyHib.CanGiveQuest(typeof (PlayerKillQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (PlayerKillQuestHib), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -160,18 +125,17 @@ namespace DOL.GS.DailyQuest.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							ReyHib.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+							CaptainHib.SayTo(player, "The enemy is out in the frontiers and the battlegrounds. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							ReyHib.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainHib.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					ReyHib.SayTo(player, "Hello "+ player.Name +", I am Rey. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                     "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                     "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainHib.SayTo(player, "Well met, " + player.Name + ". I am Captain Eithne of the Druim Ligen garrison. Our scouts tell me Albion and Midgard are thick in the frontier today. " +
+					                     "Will you [ride out] and bring ten of them down?");
 				}
 			}
 				// The player whispered to the NPC
@@ -182,8 +146,8 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(ReyHib, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestHib)), "Will you undertake " + questTitle + "?");
+						case "ride out":
+							player.Out.SendQuestSubscribeCommand(CaptainHib, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestHib)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -191,10 +155,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Hibernia is in your debt. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -276,7 +240,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(ReyHib.CanGiveQuest(typeof (PlayerKillQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (PlayerKillQuestHib), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (PlayerKillQuestHib)) != null)
@@ -284,15 +248,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!ReyHib.GiveQuest(typeof (PlayerKillQuestHib), player, 1))
+				if (!CaptainHib.GiveQuest(typeof (PlayerKillQuestHib), player, 1))
 					return;
 
-				ReyHib.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainHib.SayTo(player, "Go, then. You will find the enemy in the frontiers and the battlegrounds.");
 
 			}
 		}
@@ -311,9 +275,9 @@ namespace DOL.GS.DailyQuest.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the frontiers or in battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in the frontiers or the battlegrounds. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Rey in Druim Ligen for your Reward.";
+						return "Return to Captain Eithne in Druim Ligen for your reward.";
 				}
 				return base.Description;
 			}
@@ -332,15 +296,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 			if (e != GameLivingEvent.EnemyKilled || Step != 1) return;
 			EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
 
-			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || gArgs.Target is not GamePlayer ||
+			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}
@@ -357,7 +321,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 			
 			if (reward > 0)
 			{
-				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for finishing Daily Quest.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for your service to the realm.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				m_questPlayer.GainRealmPoints(reward, false);
 				m_questPlayer.Out.SendUpdatePlayer();
 			}

@@ -630,6 +630,11 @@ public class UT_FactionCoherence
         Assert.That(AutonomousBotDebates.ExitOnCut("", ["A"]), Is.False, "a scene with no exit");
         Assert.That(Ex.IsScene(new Ex.Source("debate", 1, 0, "A")) && Ex.IsScene(new Ex.Source("storyline", 1, 0, "B")), Is.True);
         Assert.That(Ex.IsScene(new Ex.Source("thread", 1, 0, "asker")), Is.False);
+        // A tale is a scene too: its own lines go while it holds the channel (PC check 2026-11-10: they were held with the rest).
+        Assert.That(Ex.IsScene(new Ex.Source("tale", 1, 0, "B")), Is.True);
+        Assert.That(Ex.SinkHold(new Ex.Source("tale", 1, 3, "B"), sceneRunning: true, fits: true, 100_000, 99_000, 0), Is.Null);
+        Assert.That(Ex.SinkHold(new Ex.Source("tale_after", 2, 1, "rumour"), sceneRunning: true, fits: true, 100_000, 0, 0), Is.EqualTo("scene"),
+            "the rumour after a tale is no scene line");
     }
 
     /// <summary>

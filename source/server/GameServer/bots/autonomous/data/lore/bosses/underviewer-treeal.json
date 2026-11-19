@@ -1,0 +1,85 @@
+{
+  "id": "underviewer-treeal",
+  "name": "Underviewer Treeal",
+  "npcNames": [
+    "Underviewer Treeal"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Underviewer Treeal: level 42, the pook body (model 58) of the unseelie underviewers and the unseelie overman of region 220, size 51, at about 29,400/30,800 in the upper workings among silvermine sentries, gemclickers and gem-dusted skeletons; Scratch is about 900 away; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "A púca (pooka) is a shape-changing spirit of Irish folklore, seen as a horse, goat, hare or dark man.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/P%C3%BAca"
+    }
+  ],
+  "story": "The underviewers of the Coruscating Mine are pooks, the shape-changers of every hill-tale, a black horse one night and a goat the next and a dark man on the road the night after. Treeal is the eldest of them, the one who keeps the upper galleries at their pace. The collar book says it plainly: Treeal sets the pace, and the collars hum it.\n\nThe Howth miners who have put their ears to the sealed door on their side of the mountain say the picks beyond it keep a rhythm no miner keeps, too even and too long, and that it does not slow at night. That is Treeal's pace. A shift that keeps it does not tire, the captives say, because it has stopped being the kind of thing that tires.\n\nThe other pooks of the court say Treeal has held one shape in the mine for so long that he has forgotten how to change, and that this, not the collars, is why the court trusts him with the upper galleries: a pook that cannot change cannot run. The druids of Howth tell it the other way round. A pook that will not change, they say, has found something it likes too well to leave. They do not say what.",
+  "legend": "Underviewer Treeal (42) walks the upper workings of Coruscating Mine (about 29.4k/30.8k) among silvermine sentries (36-43), gemclickers and gem-dusted skeletons. Scratch (39) is about 900 away and Duga (42) about 1,000: take them one at a time. A group of low 40s; the sentries round him are the real trouble. Plain spawn, no script, 3-minute respawn. He is a pook like the unseelie underviewers (42-45) of the same galleries.",
+  "yells": {
+    "aggro": [
+      "You are out of step.",
+      "Keep the pace. Keep it."
+    ],
+    "phases": [],
+    "death": [
+      "The pace... someone keep..."
+    ],
+    "slay": [
+      "Too slow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The picks keep a pace no miner keeps."
+    ],
+    "phases": [],
+    "realmFirstKill": "Underviewer Treeal is down. The pace falters."
+  },
+  "botLines": {
+    "briefing": [
+      "treeal is 42 in the upper workings, sentries and gemclickers round him",
+      "scratch and duga are both close, one at a time"
+    ],
+    "aftermathWin": [
+      "treeal down. [the pace stops|grats]",
+      "one at a time worked. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "scratch came too. [rip|ouch]",
+      "sentries everywhere. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] the picks below the sealed howth door never slow at night. thats treeal's pace",
+      "treeal is a pook that forgot how to change shape, the other pooks say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Underviewer Treeal",
+    "text": "The eldest pook underviewer of the Coruscating Mine, who sets the pace of the upper galleries; the collars hum it. The court says he has forgotten how to change shape. The Howth druids say he has found something he likes too well to leave."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Underviewer Treeal in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Underviewer Treeal turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "scratch",
+      "relation": "the driver who works his galleries"
+    },
+    {
+      "id": "duga",
+      "relation": "the clerk of the upper workings"
+    }
+  ]
+}

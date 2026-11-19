@@ -71,6 +71,8 @@ func _process_inner(_delta: float) -> void:
 		# 2026-10-15 UI audit - the toggle only reached the offline bots)
 		if show and not targeted and not _companion_names and _group_oids.has(int(n.spawn.get("oid", 0))):
 			show = false
+		if show and _behind_wall(n, cam):
+			show = false
 		var labels: Array = n.get_meta("plate", [])
 		var fresh := false
 		if labels.is_empty():
@@ -94,6 +96,31 @@ func _process_inner(_delta: float) -> void:
 			n.set_meta("plate_col", col)
 			for l in labels:
 				(l as Label3D).modulate = col
+
+
+## A building wall between the camera and the name: the whole name hides (owner 2026-10-20: "names are still clipping
+## thru building walls i can see edge of nameplates" - a name is a flat card much wider than its NPC; standing just
+## behind a wall seen at a slant, one end of the card came out in front of it). Walls only (ZoneLoader.LAYER_WALL):
+## hills and the rest still clip the name pixel by pixel. Each NPC's ray is renewed every OCC_MS, at most
+## OCC_PER_FRAME rays a frame (a raid's crowd).
+const OCC_MS := 150
+const OCC_PER_FRAME := 24
+var _occ_rays := 0
+var _occ_frame := -1
+
+
+func _behind_wall(n: Npc, cam: Camera3D) -> bool:
+	var now := Time.get_ticks_msec()
+	if Engine.get_process_frames() != _occ_frame:
+		_occ_frame = Engine.get_process_frames()
+		_occ_rays = 0
+	if now >= int(n.get_meta("plate_occ_t", 0)) and _occ_rays < OCC_PER_FRAME:
+		_occ_rays += 1
+		n.set_meta("plate_occ_t", now + OCC_MS)
+		var to := n.global_position + Vector3(0, n.height + 0.2, 0)
+		var q := PhysicsRayQueryParameters3D.create(cam.global_position, to, ZoneLoader.LAYER_WALL)
+		n.set_meta("plate_occ", not cam.get_world_3d().direct_space_state.intersect_ray(q).is_empty())
+	return bool(n.get_meta("plate_occ", false))
 
 
 func _build(n: Npc) -> Array:

@@ -24,7 +24,10 @@ zone_id = int(sys.argv[1])
 names = [a.lower() for a in sys.argv[2:]]
 out = ROOT / f'godot/content/zones/zone{zone_id:03d}'
 zone = json.loads((out / 'zone.json').read_text(encoding='utf-8'))
-npks = {p.stem.lower(): p for p in (CLIENT / 'zones').rglob('*.npk')}
+npks = {p.stem.lower(): p for p in (CLIENT / 'zones/Dnifs').iterdir() if p.suffix.lower() == '.npk'}   # dungeon pieces
+npks.update({p.stem.lower(): p for p in (CLIENT / 'zones/Nifs').iterdir() if p.suffix.lower() == '.npk'})
+from build_zone import zone_local_npks
+npks.update({Path(k).stem: v for k, v in zone_local_npks(zone_id).items()})   # the zone's own first (2026-10-29)
 idx = TextureIndex()
 idx.first = [f'zones/zone{zone_id:03d}/nifs']
 odir = out / 'textures/original'

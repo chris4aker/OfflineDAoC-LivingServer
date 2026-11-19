@@ -56,6 +56,21 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void ChooseClaimant_AGuildAtItsClaimLimitDoesNotBlockTheNext()
+        {
+            // 1.2 play-check prep: the realm's biggest RvR guild already held its one keep, was chosen for every new capture
+            // and failed the limit, so no other guild ever claimed.
+            Assert.Multiple(() =>
+            {
+                Assert.That(GuildKeeps.ChooseClaimant([new("big", BotGuildCharter.Rvr, 12, AtClaimLimit: true), new("raid", BotGuildCharter.Raiding, 8)]),
+                    Is.EqualTo("raid"));
+                Assert.That(GuildKeeps.ChooseClaimant([new("big", BotGuildCharter.Rvr, 12, AtClaimLimit: true)]), Is.Null);
+                Assert.That(GuildKeeps.ChooseClaimant([new("big", BotGuildCharter.Rvr, 12), new("raid", BotGuildCharter.Raiding, 8)]),
+                    Is.EqualTo("big"), "under the limit the most present still claims");
+            });
+        }
+
+        [Test]
         public void ClaimDefenseRank_HalfTheForceFromTheClaimingGuild()
         {
             Assert.Multiple(() =>

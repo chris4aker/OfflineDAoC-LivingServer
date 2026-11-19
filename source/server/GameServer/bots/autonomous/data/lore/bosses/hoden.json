@@ -1,0 +1,122 @@
+{
+  "id": "hoden",
+  "name": "Hoden",
+  "npcNames": [
+    "Hoden"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "basilius",
+      "relation": "the morvalt king at whose shoulder he has stood since Faraheim"
+    },
+    {
+      "id": "mortufoghus",
+      "relation": "the mammoth of the bones, whom he once tried to drive off"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Hoden is a level-60 undead morvalt (the model of Basilius's hall) about 270 units from Basilius in the far north-east of Modernagrav (483798, 335598), among Basilius's deadly ones and grave-worker.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "His spawn carries PackageID BasiliusBaf: whenever Basilius is fighting, Basilius's brain pulls every living BasiliusBaf NPC within 2,500 into it. Basilius's own brain is aggressive at 800, so Hoden stands well inside his reach.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Basilius.cs"
+    },
+    {
+      "text": "Its template puts it in the Morvalt Samhalle faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Morvalt Samhalle into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60162182)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Hoden may be Swedish 'hoden' (the bulk, the heap) or a form of Hodr, the blind god of Norse myth; to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "Basilius's household in the hall at the far end of Modernagrav are the ones the diggers fear: three deadly ones, a grave-worker, the one the morvalt name with their word for dread, and Hoden, who has been at the king's shoulder since Faraheim and hits harder than all of them.\n\nHe was Basilius's shield-man when Basilius was only a war-chief in Faraheim, before the wall came down, and the dwarves of the Remnants remember him from those days as the largest morvalt they had ever seen walk upright. When the shamans began to say that the Mother lay beyond the rockwall and Basilius gave them picks, it was Hoden who swung the first one, the dwarves say, because Basilius told him to, and Hoden has never in his life been told to do anything by Basilius that he did not do.\n\nHe went through the gap at the king's back. He was the one sent to clear the bones the first season, when the vigil of dead beasts stood round them facing inward and the morvalt did not yet know what they were, and he came at Mortufoghus with an axe as if she were a cow in a byre. Orri of Hagall, who was there with the first explorers, wrote that the mammoth did not even turn her head. She walked over him. The morvalt carried what was left back to Basilius's hall, and what was left did not stay dead, and has the grey of the hall's dead now and the strength it always had. The dwarves say that is when Basilius stopped going near the bones.\n\nHoden does not dig and does not call into the bones and does not wait to be called. When anyone lays a hand on the king, the whole hall is on its feet, and Hoden first, because a shield-man's place is the king's shoulder, dead or alive. When anyone lays a hand on Hoden, the king comes; the dwarves have never seen the one fought without the other. They say Basilius keeps Hoden near as a reminder of what the Mother's household does to the morvalt who go too close, and that Hoden, who remembers nothing of the mammoth, keeps near because he always has.",
+  "legend": "Hoden is Basilius's shield-man, a level 60 undead morvalt standing about 270 from Basilius in his hall at the far north-east of Modernagrav. He's in the BasiliusBaf pack: whenever Basilius is in a fight, every BasiliusBaf mob within 2,500 joins, Hoden included; and he stands so close to Basilius (whose aggro range is 800) that you can't really fight Hoden alone. Treat him as part of the Basilius fight: tank him apart from the king, or mez him if your mezzer is reliable (he isn't CC-immune), while the group handles Basilius's stun and bleed. He has no abilities of his own, just big hits. Morvalt Samhalle, so bring-a-friend applies on top.",
+  "yells": {
+    "aggro": [
+      "The king's shoulder. Mine.",
+      "Touch him and you touch me.",
+      "Hoden does what Basilius says. Basilius says kill."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Still standing. The mammoth could not stop me either."
+      }
+    ],
+    "death": [
+      "Stay... at his shoulder...",
+      "The king... is alone..."
+    ],
+    "slay": [
+      "Down. Like the first wall.",
+      "For the king.",
+      "Crushed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A huge grey morvalt stands at the king's shoulder.",
+      "Basilius's shield-man, dead and still loyal."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hoden does not leave the king's side."
+      }
+    ],
+    "realmFirstKill": "Hoden falls at Basilius's shoulder. The king is alone."
+  },
+  "botLines": {
+    "briefing": [
+      "hoden is basilius pack, you fight both",
+      "tank hoden away from basilius or mez him",
+      "60, big hits, no tricks",
+      "basilius aggro range is 800, hoden is 270 from him"
+    ],
+    "aftermathWin": [
+      "hoden down, then the king",
+      "mez on hoden held",
+      "split them, worked",
+      "the shield man is dead"
+    ],
+    "aftermathLoss": [
+      "tried to pull hoden alone, the whole hall came",
+      "mez broke on hoden",
+      "hoden plus basilius stuns, nope",
+      "too close to the king"
+    ],
+    "rumour": [
+      "hoden swung the first pick at the rockwall",
+      "hoden went at mortufoghus with an axe and she walked over him",
+      "hoden came back dead and stayed loyal",
+      "basilius stopped going near the bones after hoden"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hoden",
+    "text": "Shield-man of [Basilius] since Faraheim, who swung the first pick at the [rockwall] and went at [Mortufoghus] with an axe. She walked over him. He came back dead, and loyal."
+  },
+  "bookPage": "From the slates of Orri of Hagall: the first season through the gap, I watched the big one, Basilius's shield-man, walk up to the mammoth at the bones with an axe on his shoulder, and I wrote on my slate that he would be dead by noon. He was dead before I finished writing. She did not charge him. She took one step, the way a cow steps over a stile, and he was under her foot. The next spring I saw him again in the far hall at his king's shoulder, grey and slow-eyed and the same size as ever. I broke that slate too.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Hoden, Basilius's shield-man, in Modernagrav in {minutes} minutes.",
+    "loss": "Hoden held the king's shoulder against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

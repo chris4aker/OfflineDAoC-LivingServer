@@ -1,0 +1,120 @@
+{
+  "id": "sarcondina",
+  "name": "Sarcondina",
+  "catalogKey": "albion-named-mobs-shrouded-isles/sarcondina",
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "aliases": [
+    "the marsh of inishail"
+  ],
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; the jelly model at size 150; tether 3,800; faction Undead Servants of Morgana.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs"
+    },
+    {
+      "text": "45% of her hits add a poison (80 matter every 4 s for 20 s) to a target that is not already poisoned.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs"
+    },
+    {
+      "text": "While she fights, a 'Sarcondina's servant' (level 55-59, jelly model) comes up beside her every 25-40 s; the servants die when she dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Sarcondina.cs"
+    },
+    {
+      "text": "She walks home at full health when nobody is left on her aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Sarcondina as older than the lord, the marsh nobody farms, the orcs' line round her page and the Kulaclan's account of why the ones who ran stayed in the north are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Sarcondina is the marsh of Inishail, or the marsh is hers; the tenants of the isle never made the distinction. The reader of the old tongues who wrote the college's description of the island before the war saw a great slow shape move in the middle of it at evening, and smaller ones come to it, and asked the tenants whose the wet ground was. They said the marsh's, and the lord did not contradict them. Lord Emthoro held every other part of Inishail by walking it. He never walked the middle.\n\nShe is older than the lord and older than his line. The lammia of the south-west say she was there when the isles were one country and the sea had not come in, and that she was the low country's marsh then and has simply become smaller. She does not hunt. She does not need to. Whatever comes into the wet ground comes to her in the end, and the smaller slimes and oozes of the marsh, corrosive and viscous and congealed, are her kin and her household, and when she is troubled they come up out of the slime one after another to her side. Her touch clings and eats, and goes on eating after she has let go, though not for long; the slime does not keep its anger.\n\nWhen the orcs who ran from Krondon's ogres crossed to Inishail, they tried first to farm the middle of the isle, because it was flat and wet and they were used to the Aldland shore. The Kulaclan, who stayed behind, tell what happened with some satisfaction: the ogres were only the reason the orcs left Aldland, and Sarcondina was the reason they ended up in the north-west, under the lord's door, which was worse. In the stolen tome in Toca's hut, on the page about the marsh, an orc has written SHE in the margin and drawn a careful line round the whole page.\n\nMorgana's dead have reached the marsh too, and the witch counts Sarcondina among her own, as she counts everything on the isles that kills Albion's soldiers. The lammia say Sarcondina has not noticed. The slime is spreading toward the beaches and the north. The lammia say she has noticed that.",
+  "legend": "Sarcondina, level 65, 30k health, in the slime marsh in the middle of Inishail. A slow melee fight with a steady stream of help: every 25 to 40 seconds a Sarcondina's servant (55-59) comes up next to her and joins in, so have someone pick each one up as it arrives or they stack on the healers. 45% of her hits put an 80 per tick poison on the target (20 seconds), so cure poison on the tank or heal through it. She cannot be mezzed or stunned. Her tether is long (3,800), so do not try to drag her out of the marsh. Servants die when she does. A wipe resets her to full and clears the servants; she respawns about an hour after she dies.",
+  "yells": {
+    "aggro": [
+      "The marsh heaves and rises.",
+      "Something vast and wet turns toward you.",
+      "The slime parts. She is here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The marsh bubbles. Her kin are coming."
+      }
+    ],
+    "death": [
+      "The great shape sinks back into the slime.",
+      "The marsh lies still."
+    ],
+    "slay": [
+      "The slime closes over the fallen.",
+      "The marsh takes another.",
+      "Whatever comes into the wet ground comes to her."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The marsh moves. Her servants are coming.",
+      "The orcs never farmed this ground."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sarcondina's kin crawl up out of the slime!"
+      }
+    ],
+    "realmFirstKill": "Sarcondina is dead. Inishail's marsh lies still."
+  },
+  "botLines": {
+    "briefing": [
+      "sarcondina, 65, 30k. a servant pops next to her every 25-40 sec. someone grab each one",
+      "45% of her hits poison the target, 80 a tick for 20 sec. cure poison on the tank",
+      "cant mez or stun her. long tether, dont try to drag her out of the marsh",
+      "servants die when she does. dont chase them if shes almost down"
+    ],
+    "aftermathWin": [
+      "sarcondina down. the marsh is ours for an hour",
+      "nobody let the servants stack. nice",
+      "cure poison on the tank was the whole fight",
+      "the orcs owe us one"
+    ],
+    "aftermathLoss": [
+      "three servants on the cleric, gone",
+      "the poison never got cured",
+      "tried to pull her out and she just walked home healed",
+      "took too long and the servants piled up"
+    ],
+    "rumour": [
+      "[heard|someone said] sarcondina was on inishail before lord emthoro",
+      "heard the inishail orcs tried to farm her marsh once",
+      "[heard|someone said] the lammia say sarcondina was the drowned country's marsh",
+      "heard the slime is spreading toward the beaches"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sarcondina",
+    "text": "The marsh of [inishail island], or the marsh's; the tenants never made the distinction. Older than the lord, she does not hunt: whatever comes into the wet ground comes to her, and her smaller kin crawl up to her side when she is troubled. The orcs who ran from Krondon tried to farm her marsh once."
+  },
+  "bookPage": "From Of the Isle of Rest, the reader's description recovered from Toca's hut, with the orcs' margins. Of the marsh. The middle of the isle is a wet ground that the tenants do not farm, being someone else's. At evening a great slow shape moves in it, and smaller ones come to it from all sides, as a household comes in from the fields. The lord does not walk the middle, though he walks everything else. In the margin, in charcoal, in the heavy hand: SHE. Below it the orc has drawn a farm, a small one, with a fence. Then he has drawn the marsh over it. Then he has drawn a line round the whole page, very carefully, the way the old women of a village draw round a sick house.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought down Sarcondina in Inishail's marsh in {minutes} minutes.",
+    "loss": "Sarcondina's marsh took {raidLeader}'s company of {realm}, as it takes everything in the end."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "spirit-of-lord-emthoro",
+      "relation": "the lord who left her marsh alone, and she him"
+    }
+  ]
+}

@@ -176,14 +176,34 @@ public static class BotIncomingFireReaction
     public static int? PersonalityRisk(GameBot bot) =>
         AutonomousBotPersonality.Applies(bot) ? AutonomousBotPersonality.For(bot).Traits.Risk : null;
 
+    /// <summary>
+    /// Whether a draw is late: past the slowest an average person takes for this kind (the range's top, before the time
+    /// to find an unseen attacker). Bots as people WP2 counts it as a reaction mistake (BOT_SKILL_MISTAKE kind=reaction). Pure.
+    /// </summary>
+    public static bool IsLate(BotIncomingFireKind kind, double roleFactor, double personalityFactor, double skillFactor, double roll)
+    {
+        (int min, int max) = DelayRange(kind);
+        if (max <= 0)
+            return false;
+        double fraction = Math.Clamp(roll, 0, 0.999_999);
+        return (min + fraction * (max - min)) * roleFactor * personalityFactor * skillFactor >= max;
+    }
+
     public static int Draw(GameBot bot, BotIncomingFireKind kind, GameLiving attacker)
     {
         if (kind == BotIncomingFireKind.None || bot?.CharacterClass == null)
             return 0;
         bool unseen = attacker != null && attacker.CurrentRegionID == bot.CurrentRegionID &&
                       !bot.IsObjectInFront(attacker, FrontArcDegrees);
-        return DelayMilliseconds(kind, RoleFactor((eCharacterClass)bot.CharacterClass.ID),
-            PersonalityFactor(PersonalityRisk(bot)), Util.RandomDouble(), unseen);
+        // Bots as people WP2: the bot's reactions facet (its own tier, or its RvR group's tier, owner decision 5) scales
+        // the person's delay; 1 (today) out of scope. The hold stays capped at MaxHoldMilliseconds.
+        double skill = BotSkillHands.ReactionFactor(bot, out BotSkillProfile profile, out bool spared);
+        double role = RoleFactor((eCharacterClass)bot.CharacterClass.ID), personality = PersonalityFactor(PersonalityRisk(bot));
+        double roll = Util.RandomDouble();
+        int hold = DelayMilliseconds(kind, role * skill, personality, roll, unseen);
+        if (!profile.IsNone)
+            BotSkillHands.NoteReaction(bot, profile, spared, IsLate(kind, role, personality, skill, roll), hold, skill);
+        return hold;
     }
 
     public static bool InMeleeReach(GameLiving bot, GameLiving attacker) =>

@@ -1,0 +1,89 @@
+{
+  "id": "king-vian",
+  "name": "King Vian",
+  "npcNames": [
+    "King Vian"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "King Vian: level 43, an ursine body (model 393, the ursine patrols' and warriors'), at about 31,640/35,570 in the southern hall among ursine dwellers (36), warriors (37-40), a patrol and a sorcerer (39); the Lair Overseer is about 1,500 away; no faction; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: King Vian's line won the tribe's old quarrel and the forge's keeper never bowed to it.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Vian is the king of the ursine of Treibh Caillte, and the realm knows him chiefly from people who saw him and came back puzzled. He is not a cruel-looking king. He sits in the southern hall among the old and young of his tribe, the ursine dwellers, with his warriors at the turns of the passage and a sorcerer reading the stone for him, and he listens more than he speaks, which in a bear is unsettling.\n\nThe druids say his line won the old quarrel that split the tribe, and put the losers in collars, and that a king who rules a hall worked by thralls is a king of a tribe that has already broken. The firbolg of Lough Derg say the druids have the wrong losers. Either way the collars are Vian's, and the Lair Overseer counts them at his door.\n\nThere is one thing in the caves a king cannot command. Below Hervelina's ledge the Dreaded Ursine keeps the first smiths' forge, and it was keeping it before Vian's grandfather took the hall, and it has never bowed to any of his line. Vian has never gone down to it. Hervelina says that a king who cannot reach his own tribe's fire is only a chieftain with a better chair, and that Vian knows it, and that this is why he listens: he is waiting to hear that the fire has gone out, so that he can light it again himself.",
+  "legend": "King Vian (43) holds the southern hall of Treibh Caillte (about 31.6k/35.6k) with ursine dwellers (36), warriors (37-40), a patrol and a sorcerer (39) round him; take the hall apart from the edges. The Lair Overseer (39) and his thralls are about 1,500 away; Thorg (42) is in the passages west. A group of mid 40s. Not part of Immortal Gift. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "You walk in my hall unasked.",
+      "Guards. The king is listening."
+    ],
+    "phases": [],
+    "death": [
+      "The fire... light it... again..."
+    ],
+    "slay": [
+      "Collar that one. If it breathes."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A king who listens more than he speaks."
+    ],
+    "phases": [],
+    "realmFirstKill": "King Vian of the lost tribe has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "king vian is 43 in the south hall with dwellers warriors and a sorcerer",
+      "work the hall from the edges. overseer and thorg are not far"
+    ],
+    "aftermathWin": [
+      "vian down. [long live nobody|grats]",
+      "the hall came apart nicely. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "pulled the whole hall. [rip|ouch]",
+      "thorg wandered in. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] king vian has never gone down to the forge. the dreaded ursine wont bow",
+      "vian listens more than he talks. creepiest bear in hibernia"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "King Vian",
+    "text": "The ursine king of Treibh Caillte in the southern hall, whose line won the tribe's old quarrel. He has never gone down to the first smiths' forge, whose keeper has never bowed to him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down King Vian in Treibh Caillte in {minutes} minutes.",
+    "loss": "King Vian turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "lair-overseer",
+      "relation": "the officer at his door"
+    },
+    {
+      "id": "thorg",
+      "relation": "his champion"
+    },
+    {
+      "id": "dreaded-ursine",
+      "relation": "the keeper who will not bow"
+    }
+  ]
+}

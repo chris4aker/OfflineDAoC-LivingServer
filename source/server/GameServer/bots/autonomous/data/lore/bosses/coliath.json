@@ -1,0 +1,129 @@
+{
+  "id": "coliath",
+  "name": "Coliath",
+  "catalogKey": "albion-named-mobs-shrouded-isles/colialt",
+  "locationId": "gwyddneau",
+  "realm": "Albion",
+  "aliases": [
+    "colialt",
+    "the lich of gwyddneau"
+  ],
+  "facts": [
+    {
+      "text": "Coliath (class Colialt), level 78, 40,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 30% of melee and 40% of everything else; faction Undead Servants of Morgana; lich model 952.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs"
+    },
+    {
+      "text": "When it enters the world 10-15 ancient zombies (level 61-66, 5,000 health) are placed within 500 of it; they join its target while it fights (within 3,000), are not replaced until it respawns, and all die when it dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs"
+    },
+    {
+      "text": "At 30% health or less it stops meleeing and chain-casts Lifedrain (700 body, 3.5 s cast, no recast, uninterruptible, range 1,800), following its target to stay in range; while in that state every point of spell damage it deals heals it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/Colialt.cs"
+    },
+    {
+      "text": "With nobody left on its aggro list it walks home at full health; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "Existing bot chat: nobody can say what Coliath guards in Gwyddneau.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "The three readings of what it guards, the crowd of the drowned dead, the thirst at the end and the Lacula Sept's saying are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Coliath stands on the highest ground of Gwyddneau, above the northern end of the lammia's town, and has stood there since the first year of Morgana's war. It is one of her liches, a dead mage kept past its death by her craft, and of all the things that stand in the open on the isles it is the hardest to bring down. It guards something. That much everyone agrees, because it has never once left the height, not to chase, not to feed, not when Clifton's lammia came up the slope in the first winter to drive it off. What it guards is the oldest wager in the garrison of the Isle of Glass, and nobody has collected.\n\nThere are three readings. The garrison's is treasure, because a soldier's always is. The lammia of Clifton say that the height was the burying place of the kings of the drowned country, and that the last of them lies under it, and that Morgana set a lich over him because a king of a drowned country is a king of the drowned, and she wants the drowned. The Lacula Sept, the lammia who hunt the dead on the ridge below, say Coliath guards nothing but itself: that a lich keeps the thing that holds its death somewhere near, and never goes far from it.\n\nIt does not stand alone. When it came to the height a crowd of the ancient dead came up out of the drowned ground and stood round it, and they stand there still, and when anything comes up the slope they turn with it. They are not raised again while it stands; when they are broken, the height is bare until the lich itself is gone and come back. And when it goes, they go with it.\n\nThe Lacula Sept has a saying about liches, taken from the ridge: a lich near its end stops striking and starts drinking. Coliath at the end of its strength lowers its arms and drinks the life out of whatever is before it, and goes after that one wherever they run, and everything it drinks it keeps. The lammia say the only answer is to be quicker than its thirst. Their dead are buried on the ridge in a row, facing the height, so that they can see whether anyone ever is.\n\nIf the lammia are right and a king lies under it, then the drowned dead of the north-west are his people, and Coliath is keeping a whole kingdom for the witch. The garrison has added that to the wager.",
+  "legend": "Coliath, level 78, 40k health, on the high ground just west of the north end of Clifton in Gwyddneau. The strongest named in the open isles. It starts with 10 to 15 ancient zombies (61-66, 5k each) standing round it, and they all come in when you engage; they are not replaced until Coliath respawns, so off-tanks and area damage clear them first or hold them. It cannot be mezzed or stunned, and resists magic more than melee. At 30% it stops meleeing and spams a 700 body lifedrain (3.5 s, uninterruptible, 1,800 range) on its target, following them, and every drain heals it. Save your burst for the last 30% and keep the drained player healed hard. All zombies die when it dies. If everyone drops off it, it goes home at full, and it respawns about an hour after death.",
+  "yells": {
+    "aggro": [
+      "You climbed. The height is mine.",
+      "Stand with them. Stand with the drowned.",
+      "Nothing passes."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Your strength. Give it to me."
+      }
+    ],
+    "death": [
+      "Keep... it... keep...",
+      "The height... is open..."
+    ],
+    "slay": [
+      "Drowned.",
+      "Stand with the rest.",
+      "One more for the crowd."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The highest ground of the isle. Something guarded.",
+      "A crowd of the ancient dead turns to look."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Coliath lowers its arms and begins to drink."
+      }
+    ],
+    "realmFirstKill": "Coliath has fallen. What it guarded lies open."
+  },
+  "botLines": {
+    "briefing": [
+      "coliath, 78, 40k. 10 to 15 ancient zombies stand round it and all come in. off tanks and aoe on them",
+      "zombies dont come back until coliath respawns, so clear them and they stay dead",
+      "at 30% it stops hitting and spams a 700 drain on one guy, uninterruptible, and the drain heals it",
+      "save burst for the last 30%, heal whoever it's draining like crazy. cant mez or stun it"
+    ],
+    "aftermathWin": [
+      "coliath down. so what was it guarding",
+      "burst at 30 did it. nicely done",
+      "zombies first, then the lich. textbook",
+      "somebody go tell the isle of glass to pay out the bet"
+    ],
+    "aftermathLoss": [
+      "it drained at 30 and healed back faster than we hit",
+      "the zombies got on the casters while we tanked it",
+      "the drained guy ran and it followed him into the cloth",
+      "pulled it with half the zombies loose. bad start"
+    ],
+    "rumour": [
+      "[heard|someone said] coliath guards the barrow of a drowned king",
+      "heard the lacula sept says coliath guards nothing but itself",
+      "[heard|someone said] the isle of glass garrison has a bet on coliath and nobody's ever won it",
+      "heard coliath never leaves the height, not even to chase"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "coliath",
+    "text": "One of Morgana's liches, on the highest ground of [gwyddneau] above the north end of Clifton, with a crowd of the ancient dead about it. It never leaves the height. The garrison says it guards treasure, the lammia say the barrow of the drowned country's last king, the Lacula Sept says nothing but itself. Near its end it stops striking and drinks."
+  },
+  "bookPage": "From the Road-Book to Gwyddneau of Brother Cynog of Caer Diogel. I went up the ridge below the height with two lammia of the Lacula Sept, who were going to bury one of their own, and they let me say the office over her, which surprised us all. Their dead lie in a row facing the lich, so they can see, they told me, whether anyone is ever quick enough. I asked quick enough for what. They said a lich near its end stops striking and starts drinking, and drinks faster than a slow company can hurt it, and keeps all it drinks. Their sister had been in a slow company. Above us the crowd of the drowned dead stood round the lich and did not move. I did not count them. I wished afterwards I had not looked.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought down Coliath on the heights of Gwyddneau in {minutes} minutes.",
+    "loss": "Coliath kept the height of Gwyddneau; {raidLeader}'s company of {realm} went down the slope."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "valnir-mordeth",
+      "relation": "another of Morgana's keepers who drinks what he takes"
+    },
+    {
+      "id": "host",
+      "relation": "keeps the cursed laculae in Caer Sidi for whom the Lacula Sept is named"
+    }
+  ]
+}

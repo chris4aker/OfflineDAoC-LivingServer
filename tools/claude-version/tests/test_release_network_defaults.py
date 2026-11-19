@@ -61,6 +61,31 @@ class NetworkDefaultsTests(unittest.TestCase):
         self.assertEqual(sorted(build.check_shipped_configs(self.runtime)),
                          ["server/config/serverconfig.xml", "server/win-x64/config/serverconfig.xml"])
 
+    def test_a_host_password_or_public_address_never_ships(self):
+        # Living Server 1.2: the developer hosted friends (Host for Friends) before building.
+        hosted = OPEN_CONFIG.replace("    </Server>", "        <HostPasswordHash>4a9e1d7e</HostPasswordHash>\r\n"
+                                                    "        <PublicIP>203.0.113.7</PublicIP>\r\n    </Server>")
+        self.config.write_bytes(hosted.encode("utf-8"))
+        build.set_network_defaults(self.config)
+        raw = self.config.read_bytes()
+        self.assertIn(b"<HostPasswordHash></HostPasswordHash>", raw)
+        self.assertIn(b"<PublicIP>auto</PublicIP>", raw)
+        self.assertNotIn(b"203.0.113.7", raw)
+
+        self.config.write_bytes(hosted.encode("utf-8"))
+        text = self.config.read_text(encoding="utf-8-sig")
+        self.config.write_text(text.replace("0.0.0.0", "127.0.0.1").replace("True</EnableUPnP>", "False</EnableUPnP>")
+                               .replace("True</DetectRegionIP>", "False</DetectRegionIP>"), encoding="utf-8")
+        with self.assertRaises(AssertionError) as raised:
+            build.check_network_defaults(self.config)
+        self.assertIn("HostPasswordHash", str(raised.exception))
+
+    def test_host_for_friends_files_are_left_out(self):
+        for name in ("host-for-friends.json", "host-for-friends-firewall.cmd", "host-for-friends-firewall-remove.cmd",
+                     "serverconfig.before-host-for-friends.xml"):
+            self.assertFalse(build.include(Path("server/config") / name), name)
+        self.assertTrue(build.include(Path("server/config/serverconfig.xml")))
+
     def test_a_runtime_without_a_config_is_refused(self):
         self.config.unlink()
         with self.assertRaises(AssertionError):

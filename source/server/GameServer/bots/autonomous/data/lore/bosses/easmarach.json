@@ -1,0 +1,133 @@
+{
+  "id": "easmarach",
+  "name": "Easmarach",
+  "catalogKey": "galladoria/easmarach",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. It takes damage only from attackers near the falls; at 30% it retreats to the waterfall, clears its foes and heals an eighth.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It can push a player behind the falls ('The strong current of the waterfall pushes you behind'); its death message: 'the current of the falls reduces significantly.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs"
+    },
+    {
+      "text": "Irish eas means 'waterfall'; the rest of the name is unglossed (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and in the first years anyone who pressed too close was caught and thrown behind the curtain of water to find their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it draws back into itself, forgets its enemies, and gathers again. When it dies at last, the roar falls to a murmur, and the way to the bridge is open.\n\nThe great falls are older than the Root's coming. Every water that runs into the hollow runs out over them, and a falls that old has a will. The Sylvan named it Easmarach long ago, and in the good years it was a door that kept things out of the hollow. Now it keeps things in, and its will is the Root's.\n\nIn the first years it was strong only where it was rooted, at its own foot, and nothing could hurt it from anywhere else; the Sylvan say the current has slackened since. Those who pressed too close were caught by the current and thrown behind the curtain onto a ledge, a long wet walk from where they had stood, until the falls stopped throwing anyone back. When it is badly hurt it does what a river does in flood. It draws back into the falls, forgets everyone it was fighting, gathers itself, and comes out stronger. Then it comes out again, looking for the first living thing it meets.\n\nThe bridge lies beyond it. While Easmarach lives the current at the bridge is fierce, and the Sylvan say that is why the three hundred and forty failed: they went for the bridge with the falls still roaring. When Easmarach dies the current slackens to a murmur and the way to the sanctum is open. The water primal and the falls were kin once, the Sylvan say, two parts of the same river.\n\nThe falls were a door the Sylvan set to keep the deep places, the Underneath, shut; the Root turned it round. Orlaith's company killed it before the bridge; Sétna of Howth wrote songs about the ledge and the murmur.",
+  "legend": "The old guides said you had to fight it in the spray at the foot of the falls and that the current threw people behind the waterfall; neither happens today, it takes damage from anywhere. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. Its hits still land hard on whoever holds it. Kill it and the bridge gets easier. Fight it where the healers can see the falls, because that is where it comes back out. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
+  "yells": {
+    "aggro": [
+      "The falls do not part for you.",
+      "The roar of the falls rises to a shout.",
+      "The door was made to keep things out. Now it keeps you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "The river remembers its source."
+      },
+      {
+        "trigger": "teleport",
+        "text": "The strong current of the waterfall pushes you behind."
+      }
+    ],
+    "death": [
+      "The water... grows quiet.",
+      "With the death of the Easmarach, the current of the falls reduces significantly."
+    ],
+    "slay": [
+      "Carried away, like all the rest.",
+      "Carried away.",
+      "The river takes you, as it took the rest."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The current pulls at your legs like hands.",
+      "The falls roar like a held breath let go."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=30",
+        "text": "Easmarach retreats into the waterfall!"
+      }
+    ],
+    "realmFirstKill": "The falls of Galladoria fall quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "easmarach at thirty [runs back into the falls|retreats], heals some and drops aggro. tanks grab it when it comes out",
+      "old guides say stand in easmarach's spray or you cant hurt it. [not anymore|range works now]",
+      "watch the falls when it runs, [first taunt keeps it|grab it as it comes out]",
+      "kill easmarach before the bridge, never after. [current is a wall|the falls first]"
+    ],
+    "aftermathWin": [
+      "easmarach down, the falls went quiet. [bridge next|on to the bridge]",
+      "falls went quiet, bridge is open. [lets go|titan time]",
+      "caught it fresh out of the falls, perfect taunt. [nice tank|grats]",
+      "easmarach down first try. [about time|clean]"
+    ],
+    "aftermathLoss": [
+      "it came back out of the falls and [nobody had aggro|ate the healers]",
+      "it came out of the falls and [went for the healers|nobody had it]",
+      "it came out of the falls healed and [went for the healers|nobody had it]. again",
+      "we tried the bridge with easmarach still up. [never again|the current]"
+    ],
+    "rumour": [
+      "[heard|old guides say] easmarach used to throw people behind the waterfall. [doesnt now|not anymore]",
+      "[heard|someone said] the first galladoria raids failed because they skipped the falls",
+      "[word is|heard] easmarach and the water primal were the same river once",
+      "theres a ledge behind the waterfall in galladoria. [nobody goes there now|sétna's walk, the bards call it]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Easmarach",
+    "text": "The will of the great falls, the last door before the sanctum. It is strong only at its foot, and when wounded it withdraws into the water to gather itself. Its death quiets the current."
+  },
+  "bookPage": "From Aodhan's notes: the Sylvan say the great falls of the hollow were a door once, set to keep the dark things in the deep places away from the isle. The falls were called Easmarach, a name that begins with the old word for a waterfall; the rest of it the Sylvan would not explain. When the Root came, the door turned round. Now the falls keep strangers out of the hollow's last chamber and throw them back behind the water. Sétna of Howth told me that when it died the roar fell to a murmur. The fire-keeper said: then it is a door again, only an open one, and someone should close it behind them.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the falls of Easmarach; {raidLeader}'s raid finished it in {minutes} minutes. The current dropped to a murmur.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Easmarach at the falls after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "corrupt-primal-of-water",
+      "relation": "kin of the same river"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose last door it guards"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Door of Falling Water",
+      "text": "Before Galladoria was the Root's, the great falls at its bottom were a door. The water of the isle's caves gathers there and falls in a single curtain, and behind and below it lie the deep places, older than the hollow, where the Sylvan say things live that were never part of the forest's world at all. The Sylvan elders gave the falls a will, as they gave keeper-trees their charges, and set it to keep those deep things in. They named it Easmarach, a name that begins with the old word for a waterfall, eas; what the rest of the name means, Lisín would not say, only that it was a promise.\n\nFor an age the door held. The Sylvan who went down into the caves in the good years heard the falls roaring in the dark below and knew that the deep things were behind it. The falls threw back anything that came up through them and anything that went down toward them. They had no anger in them; a door does not hate. They were simply a current that would not be crossed, and they were strongest at their own foot, where the water struck the stone.\n\nWhen the Root's roots hollowed the caves into Galladoria, the falls were at its bottom, and the Root turned the door round. It did not have to change the falls' nature. It only had to change which side they kept. Now Easmarach keeps strangers out of the hollow's last chamber, and the deep things behind it, the Sylvan say, have been left to the Root's own keeping."
+    },
+    {
+      "title": "Behind the Curtain",
+      "text": "Easmarach fights as a current fights. In the first years it was strong only where it was rooted, at the foot of its own falls, and no harm reached it from anywhere else, as no swimmer on the bank can hurt a river; those who pressed close enough to wound it were caught by the current and thrown behind the curtain, onto a narrow ledge of wet stone behind the falling water, a long cold walk from where they had stood. The Sylvan say the current has slackened in the seasons since, and the falls no longer throw anyone back. They are not sure it is a kindness. The three hundred and forty lost a whole party there for most of an hour, walking the ledges in the dark looking for the way back; one of them, a bard of Howth named Sétna, made a song about it that every alehouse in Howth still knows and nobody will sing at the falls.\n\nWhen it is badly hurt it does what a river does in flood. It draws back into the falls, forgets every enemy it was fighting, and gathers itself, and comes out stronger than it went in. Then it comes out again and goes for the first living thing it meets, as a flood takes the nearest house. Sétna's companions said a spearman of Connacht stood at the curtain with his shield up for most of that hour, so that the first thing it met would be him.\n\nThe Sylvan say the falls and the water guardian at the bridge are two parts of the same river: one that throws strangers back, one that carries them off. Those who have stood against both say they feel alike, cold and patient and without anger. The ledge has a name in Howth now, Sétna's Walk."
+    },
+    {
+      "title": "The Price of the Open Door",
+      "text": "The three hundred and forty went for the bridge with the falls still roaring. That, the Sylvan say, was their real mistake, more than the Root's laws, more than the menders. While Easmarach lives the current at the bridge is fierce, and the spray across the bridge stones made footing treacherous, and those fighting the four guardians were fighting the river too. Orlaith's hundred and forty went the long way round, through the western galleries to the foot of the falls, and killed Easmarach first.\n\nWhen it died the roar dropped to a murmur. The survivors describe it as the loudest silence they ever heard: a sound they had been hearing for hours without noticing, suddenly gone. The current at the bridge slackened. The way to the sanctum was open, as a door is open when its keeper falls. The Sylvan have had a saying since that spring: the falls first, or the river twice.\n\nSétna of Howth wrote a second song after Orlaith's going-down, about the murmur. The Sylvan sing that one. Orlaith's route through the western galleries cost her company two hours and the Conservator's pool, which they had to clear on the way, and the Sylvan say that was the price of the open door. The three hundred and forty had tried to save those two hours. Orlaith told the story of the two hours to every captain of Tir na Nog who asked her about Galladoria, and said she had been tempted at every turning of the western galleries to save the time anyway."
+    },
+    {
+      "title": "What Lies Below the Falls",
+      "text": "The Sylvan's deepest fear about Easmarach is not the falls. It is what the falls were made to keep in. The deep places below Galladoria were there before the hollow and before the Root, and the Sylvan do not know what lives in them; their oldest tellings call them only the Underneath. While Easmarach was a door set by the Sylvan, the Underneath was kept out. Now that it is a door set by the Root, nobody knows whether the Underneath is kept out, kept in, or simply let be.\n\nThere are two accounts, and they come from opposite ends of the isle. The Fomorians of Fomor, the Sylvan report, say their own city's lowest cisterns open onto the same Underneath, and that the hydra Myrddraxis was hatched from an egg found in its black sand; if that is so, the falls of Galladoria and the cisterns of Fomor are two doors on the same dark. The druids of Tir na Nog say there is no Underneath at all, that the deep places are only caves, and that the Sylvan dress an old fear in a new name. Lisín's answer was the same as always: the Sylvan would know.\n\nWhen the realm kills Easmarach and the roar falls to a murmur, the Sylvan who have gone down with the companies stop at the foot of the falls and listen. They say that in the silence, sometimes, something can be heard moving behind the water, a long way down, unhurried. They say it has never come up. They say that is because the door, whoever's it is now, still holds."
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "taiore",
+  "name": "Taiore",
+  "npcNames": [
+    "Taiore"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Taiore: level 35, a Sylvan body (model 767), faction Olcasgean, at about 389,100/306,000; respawn 560 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Twisted Evil (Jyrlan, Necht): 'Kill Luaire and his three named friends', then 'Drop the green elixir at the base of Luaire's tree' and three more elixirs at stones of the valley.",
+      "provenance": "game",
+      "source": "DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Taiore was a child when his mother Laraida took the household up the valley, and he is the youngest of the four still. The Necht Sylvan say that is the saddest thing about the high valley: that Taiore never chose. He went up because his mother went, and grew up among the Root's trees, and has never seen Domnann except as a green line on the horizon from the valley's edge.\n\nHe is the least of them in strength and the most in temper, and the realm's companies say he fights like a child, all at once and without caring. The Domnann wardens who keep the stone have argued for years about whether his name belongs on it. They have never decided, and so it is not there, and the space where it would go is kept clear. The Necht children, who have never been up the valley either, call him the boy on the hill, and leave him small carved toys at the valley's foot, which are gone by morning.",
+  "legend": "Taiore (35) is the weakest of the four Root's Sylvan in the high valley (with Laraida, Luaire, Rinne). Easy to kill once separated, but he is right next to the others. Twisted Evil target. About a 9-minute respawn. Bring a healer who can keep up, since the valley fights tend to become all four at once. The stilters on the valley road are 43-51 and worse than any of the four, so take the long way up the ridge.",
+  "yells": {
+    "aggro": [
+      "Mother! Strangers!",
+      "You will not take me down to Domnann."
+    ],
+    "phases": [],
+    "death": [
+      "Mother..."
+    ],
+    "slay": [
+      "Go back where you came from!"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young Sylvan who has never seen Domnann."
+    ],
+    "phases": [],
+    "realmFirstKill": "Taiore, the youngest of the high valley, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "taiore is 35, weakest of the four but stuck to them",
+      "part of twisted evil, kill him last if you can"
+    ],
+    "aftermathWin": [
+      "taiore down. [all four done|twisted evil]",
+      "felt bad about that one. [kid|sad]"
+    ],
+    "aftermathLoss": [
+      "he brought his mum. [laraida|rip]",
+      "pulled three. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] taiore was a child when his mother took him up the valley. he never chose",
+      "the domnann wardens leave a space on the stone where taiore's name would go"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Taiore",
+    "text": "The youngest of the Root's Sylvan household, Laraida's son, who went up the valley as a child and has never seen Domnann. The wardens keep a space clear on their stone for his name."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Taiore in Vigilant Rock in {minutes} minutes.",
+    "loss": "Taiore turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "whose side he took"
+    },
+    {
+      "id": "laraida",
+      "relation": "his mother"
+    },
+    {
+      "id": "luaire",
+      "relation": "kin"
+    }
+  ]
+}

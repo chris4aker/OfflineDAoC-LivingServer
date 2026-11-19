@@ -1,0 +1,168 @@
+{
+  "id": "stanga",
+  "name": "Stanga",
+  "catalogKey": "iarnvidiur-s-lair/stanga",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur"
+  ],
+  "related": [
+    {
+      "id": "iarnvidiur",
+      "relation": "his mistress, who kept him at his post"
+    },
+    {
+      "id": "hurjavelen",
+      "relation": "the thief who sometimes stands in his place"
+    },
+    {
+      "id": "ancient-syver",
+      "relation": "what he guards the passage to"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Stanga is a level-66 named with 30,000 health; five egilvarg come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He spreads Black Plague and a strength-constitution debuff around him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him an undead wolf that guards the passageways to the Ancient Syver; Hurjavelen is a rare spawn in his place.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    },
+    {
+      "text": "Swedish stanga means to butt or gore (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "With a 15% chance each Stanga casts Stanga's Debuff S/C (80, radius 400 round his target, range 1,500, 60 s) and Black Plague (disease, radius 450 round HIMSELF, 186 s). Five egilvarg (StangaBaf) join when he is engaged. Hurjavelen has his own spawn about 2,400 away; both are always present. 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs"
+    },
+    {
+      "text": "Stanga's tally on the passage wall and Hrefna's count come from the iarnvidiurs-lair file; the egilvarg's names and 'Stanga does not lie down' are Living Server lore. Swedish stanga 'to butt' (to verify).",
+      "provenance": "original",
+      "source": "Swedish, to verify"
+    }
+  ],
+  "story": "Stanga was the first wolf Iarnvidiur ever set to guard a door. He was the biggest of her first litter, a great grey dog-wolf with a temper and a way of butting with his head that gave him his name, and she set him in the passage to the Ancient Syver so that her other pups would not try their teeth on the old beast and lose. He kept it. He kept it longer than any wolf should live, through winters and plagues and the coming of the dwarves to the wood above, and in the end he died at it, of the old one's rot, and she did not let him leave.\n\nHe stands there still, dead, with five egilvarg round him, the young wolves she gives him to train, and he butts at anything that tries to pass. The walls of the passage are scored from the floor to the height of his shoulder with the marks of his head, in rows of four, one score to a season; Hrefna counted them, and the newest are shallow and ragged, which is how the dwarves know which seasons he has stood there dead.\n\nThe rot is in him now. It pours off his hide over everything that comes near him, and lingers, and dulls every remedy; and the one he is facing, and those close round that one, come away weak and slow to recover, as if they had stood a long watch. The Remnants say Stanga does not lie down, and use it of anyone who keeps at a task long after he should have stopped. His brother Hurjavelen keeps the side passage nearby, and the missing seasons on the wall are the nights the dwarves say Hurjavelen stood in his place. Hrefna's slates end with a line in her own hand that is not a count: let him lie down.",
+  "chapters": [
+    {
+      "title": "The First Door",
+      "text": "Before the old one had a door, she had a passage she did not want her pups to go down. At the end of it lay the Ancient Syver, already too big to hunt, and her first litter, who were young and stupid and very brave, kept trying their teeth on it and coming back without them. She needed something across the mouth of the passage that the pups would not get past.\n\nShe chose the biggest of them. Stanga was a great grey dog-wolf, larger than his brothers and slower, with a temper and a habit that gave him his name: when he was crossed, he did not bite, he butted, with his head down like a ram, and his head was very hard. She put him across the mouth of the syver's passage and told him to let no one by, and the pups who tried were butted back down the passage into the hollow until they stopped trying.\n\nHe was the first wolf she ever set to guard a door, the iarn dwarves say. Hati and Skoll at her own door came later, and Delegalt's bridge later still. Stanga was the first, and the dwarves say the old one has never been as sure of any of the others as she was of him. She did not need to be. He did what he was told for longer than any wolf has lived. The first clan, coming down into the lair for the first time, found him already there, grey at the muzzle, and wrote on their first slate that the passage was kept."
+    },
+    {
+      "title": "The Tally",
+      "text": "He butted the wall. He had nothing else to do in the long nights at the passage mouth, and he was a wolf of habit, and every season he put his head to the rock beside him and scored it. The walls of the passage are covered with the marks now, from the floor to the height of his shoulder, in rows of four.\n\nHrefna counted them. She went down with a war-party of the Remnants in the summer she turned forty, and while they held the passage mouth she sat with a lamp and a slate and counted, and found them as neat as a tally-stick: one score a season, four to a row, one row a year. The rows ran back further than the slates of the first clan. On the oldest rows the scores are deep and clean, a living wolf in his strength. On the newest they are shallow and ragged. That is how the dwarves know which seasons he has stood there dead.\n\nHere and there in the rows a season is missing. The dwarves say those are the seasons Hurjavelen stood in his place, and the old one let Stanga sleep at her feet; the thief-wolf keeps the side passage near his brother's, and the Remnants say he is the only one of the brood Stanga would ever let take his post.\n\nHrefna copied the whole tally onto slates, and the slates are in Faraheim, and the dwarves read them on the anniversary of the day she counted. They say the last row is not finished."
+    },
+    {
+      "title": "The Rot in the Hide",
+      "text": "He died at the passage mouth, of the old one's rot, in a hard winter after the first clan came. The dwarves who saw him that winter wrote that he lay down at last, across the passage, with his head on his paws, and that the old one came and stood over him and would not let him stay down. He got up again. He has been on his feet since, dead, with the rot that killed him in him still.\n\nIt pours off his hide now. The dwarves who have fought him say a grey sickness comes off him over everything that stands near him, and lingers on them long after, and makes every draught and charm work at half its strength while it lingers. And the one he is facing, and those close round that one, come away weak and slow to recover, the way a man comes off a long watch in the cold.\n\nHe does not hurry. He hits like the dead do, steadily and without tiring, and he does not stop. The Remnants have a saying for him which they use of any dwarf who keeps at a task long after he should have put it down: Stanga does not lie down. They mean it kindly, mostly.\n\nThe old one gives him egilvarg to train, five at a time, young wolves of the brood with more teeth than sense, and they stand round him at the passage mouth and come when he is roused. The dwarves say none of them has ever been as good at the post as he was."
+    },
+    {
+      "title": "Let Him Lie Down",
+      "text": "The companies of Midgard who go down to the Ancient Syver go through Stanga first, because there is no other way into the passage, and they come back with the rot on them and his head-marks on their shields. The Remnants who guide them say Stanga does not seem to know them from the pups he was set to keep out. He butts them back down the passage as he butted his brothers.\n\nWhen he falls he lies down across the passage mouth with his head on his paws, the companies say, exactly as the dwarves wrote that he lay down the winter he died. In a season he is on his feet again.\n\nHrefna's slates end with a line in her own hand, the dwarves of Faraheim say, that is not a count. It says: let him lie down. The dwarves read it aloud at the end of the anniversary, after the tally, and then they are quiet for a while.\n\nThe cast-out sculptor of Tuscaran, who heard the story at Dellingstad's fires from a dwarf trader, said it was the same thing the giants say about Hamar in the mine of Dodens Gruva: that somewhere under Aegir there is a dead servant who has never been told the shift is over, and that until someone tells him, the shift is not. The Remnants say they would tell Stanga if they knew how. The slates record three tries, each with a lamp and a word of the old tongue at the passage mouth, and each time he lowered his head and came on."
+    }
+  ],
+  "legend": "Stanga comes with five egilvarg, so pull clean and keep one person on the pack so it doesn't reach the healers. Two things to cure. His Black Plague hits everyone within 450 of STANGA himself for about three minutes and halves heals, so only the melee who must be close should be close, and cure disease on them. His strength/constitution debuff hits everyone within 400 of his target for a minute, so cleanse the tank and keep the rest of the melee spread. Then he's a straight fight: 30,000 health, 20% melee and 30% magic resists, CC-immune, undead (undead banes help). He hits steadily, so a steady healer beats burst. Hurjavelen is nearby on his own spawn, so don't drag Stanga toward the side passage. He guards the way to the Ancient Syver.",
+  "yells": {
+    "aggro": [
+      "(The dead wolf rises, stiff-legged, from its post.)",
+      "(Rot pours off his hide.)",
+      "(Stanga lowers his head to butt.)",
+      "(Stanga lowers his head and comes on.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Rot pours off Stanga's hide.)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Stanga will not move from the passage.)"
+      }
+    ],
+    "death": [
+      "(Stanga lies down at his post at last.)",
+      "(His head goes down on his paws.)",
+      "(Stanga lies down across the passage, head on his paws.)"
+    ],
+    "slay": [
+      "(Stanga noses the fallen, and returns to his post.)",
+      "(He stands guard over the body.)",
+      "(The egilvarg close in.)",
+      "(Stanga butts the wall, once.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead wolf stands guard. It has stood here a long time.",
+      "Rot drifts off a grey hide in the dark passage.",
+      "Head-marks score the walls, in rows of four."
+    ],
+    "realmFirstKill": "The dead wolf lies down across his passage.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "The dead wolf will not leave his post!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "stanga + 5 egilvarg, cure the debuff and disease",
+      "pull stanga's egilvarg one at a time if you can",
+      "undead bane on stanga",
+      "one person keeps the egilvarg off the healer",
+      "stanga plague is 450 round him, melee only near him, cure disease",
+      "his s/c debuff is 400 round the tank, cleanse",
+      "5 egilvarg with stanga, one person on them",
+      "hurjavelen is nearby on his own spawn, dont drag toward him"
+    ],
+    "aftermathWin": [
+      "stanga down, on to the syver",
+      "stanga's remains dropped, trophy!",
+      "the dead wolf finally lay down",
+      "shimmering gnawed bone!",
+      "stanga does not lie down. he did",
+      "egilvarg kept off the healer, easy",
+      "on to the ancient syver"
+    ],
+    "aftermathLoss": [
+      "the egilvarg add was too much",
+      "all five egilvarg came",
+      "disease stacked and the healer couldnt keep up",
+      "the egilvarg ran over the healer",
+      "healers stood next to stanga and got plagued",
+      "dragged him into hurjavelen"
+    ],
+    "rumour": [
+      "stanga died at his post and she wouldn't let him leave it. thats a dead wolf you're fighting",
+      "the dwarves say iarnvidiur lets stanga sleep at her feet some nights. thats when hurjavelen stands in",
+      "stanga was the biggest of iarnvidiur's first litter",
+      "stanga still guards the passage after he died. the dwarves say thats faithful, or something worse",
+      "remnant saying: stanga does not lie down",
+      "a dwarf counted stangas head marks on the wall. four a year",
+      "the missing marks on stangas wall are the nights hurjavelen stood his post"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Stanga",
+    "text": "The first wolf [Iarnvidiur] ever set at a door: the passage to the [Ancient Syver]. He butts the wall each season and Hrefna counted the marks, four to a year. He died of the old one's rot at his post and was not let lie down, and the rot pours off him over all who come near. The Remnants say Stanga does not lie down."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The dwarves of the Remnants have a saying, as faithful as Stanga, and they say it of a good dog and a bad husband both. The old dwarf who taught it to me said that faithfulness is a fine thing in a wolf and a terrible thing in a dead one, and that the old one never understood the difference. Then he said: perhaps she understood it very well. Perhaps that is why she kept him. Then he would not talk about it any more, and went to sit by his own dog, who was very old.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} relieved the dead wolf Stanga of his post in {minutes} minutes.",
+    "loss": "Stanga held his post against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

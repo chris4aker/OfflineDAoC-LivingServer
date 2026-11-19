@@ -8,7 +8,7 @@ namespace DOL.GS.Commands
     [CmdAttribute(
          "&trade",
          ePrivLevel.Player,
-         "Broadcast a trade message to other players in the same region",
+         "Post a trade message to your realm (gamebots may answer, a crafter by tell)",
          "/trade <message>")]
     public class TradeChannelCommandHandler : AbstractCommandHandler, ICommandHandler
     {
@@ -45,6 +45,8 @@ namespace DOL.GS.Commands
             AutonomousBeggars.OnPlayerAsked(client.Player, message, "trade");
             // RC6 on the owner's PC: a bot now and then answers the player's post, as it does a bot's.
             AutonomousBotChatCoordinator.OnPlayerTradePost(client.Player, message);
+            // Crafting 2.0 WP8: a WTB the realm's crafter gamebots can fill draws a quote by tell (bot_crafter_commerce, on by default).
+            CraftingEconomy.CrafterCommerce.OnPlayerTradePost(client.Player, message);
         }
 
         private static void Broadcast(GamePlayer player, string message)

@@ -118,7 +118,17 @@ namespace DOL.GS
              pet.InCombat);
 
         public static bool NeedsOrContinuesRest(GameBot bot) => bot.IsRecoveryResting ||
-            AutonomousRestPolicy.NeedsRecovery(bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, bot.MaxMana > 0);
+            AutonomousRestPolicy.NeedsRecovery(bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, bot.MaxMana > 0,
+                PowerRestThreshold(bot));
+
+        /// <summary>
+        /// The power (percent) below which this gamebot sits to rest (Bots as people WP2, item 2: "the power floor it rests
+        /// at"): Casual 25, Average 35, Veteran 45 (today's AutonomousRestPolicy.PowerRestThreshold), spread in the band; in
+        /// a group with a real player three quarters of the way back to 45; a solo offensive caster never below 35. Once
+        /// sitting it rests to full as today, so a low floor rests longer. Out of scope or switched off: today's 45. A group's
+        /// own pull gate (80% power) is unchanged.
+        /// </summary>
+        public static byte PowerRestThreshold(GameBot bot) => BotSkillHands.PowerRestFloor(bot);
 
         public static bool DeferOptionalCasterUpkeep(GameBot bot) => bot != null &&
             BotSpellPower.IsOffensiveCaster(bot) && bot.IsEnhancedResting;

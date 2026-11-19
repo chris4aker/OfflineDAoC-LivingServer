@@ -64,6 +64,8 @@ public static class AutonomousBotVoices
                 return reader.ReadToEnd();
             }
             VC corpus = VC.Parse(Read("chat.corpus.json"), Read("chat.voices.json"));
+            // Living Server 1.2: the lore bible's lore and rumour lines join the lore pool (docs/LORE.md).
+            corpus = corpus.WithLines(LoreChat.CorpusLines(LoreBible.Current));
             if (Log.IsInfoEnabled)
                 Log.Info($"Bot voices: loaded {corpus.Lines.Length} lines, {corpus.Scenes.Length} scenes, {corpus.Voices.Length} voices");
             return corpus;
@@ -131,7 +133,7 @@ public static class AutonomousBotVoices
         if (bot.CurrentZone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true)
         {
             flags.Add("in_rvr");
-            // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia, Cathal Valley) or the frontier proper
+            // 0.36-se.4: a battleground (Abermenai, Thidranki, Murdaigean, Caledonia; Cathal Valley is in the table but bots don't talk about it) or the frontier proper
             flags.Add(IsBattlegroundRegion(bot.CurrentRegionID) ? "in_battleground" : "in_frontier");
         }
         if (TravelingTo(bot) != null) flags.Add("traveling");
@@ -144,7 +146,11 @@ public static class AutonomousBotVoices
         if (IsCapitalRegion(bot.CurrentRegionID)) flags.Add("in_capital");
         if (!flags.Contains("in_dungeon") && !flags.Contains("in_capital")) flags.Add("outdoors");
         flags.Add(VC.TimeFlag(DateTime.Now.Hour));
+        // Owner, 2026-11-18 09:14 (decision 12): the season on the PC's calendar, so weather lines can say snow in winter.
+        flags.Add(VC.SeasonFlag(DateTime.Now));
         if (bot.IsPlayerLedGroup || AutonomousLivingServer.GroupHasPlayer(bot.Group)) flags.Add("in_player_group");
+        // Bot-led groups: the gamebots lead the party the player is in, so "you pull great" and "lead the way" don't fit.
+        if (BotLedGroups.IsHostedGroup(bot.Group)) flags.Add("bot_leads");
         if (bot.ResurrectionSpell != null && bot.ResurrectionSpell.Level <= bot.Level) flags.Add("can_rez");
         // Holiday chatter (bot_living_holidays): the PC's calendar, so the lines in holidays.lines can be said.
         if (AutonomousHolidays.On) flags.UnionWith(AutonomousHolidays.Flags(AutonomousHolidays.Now));
@@ -284,8 +290,73 @@ public static class AutonomousBotVoices
 
     public static string EnemyOf(eRealm realm, Random random)
     {
+        eRealm enemy = EnemyRealmOf(realm, random);
+        return enemy == eRealm.None ? null : GlobalConstants.RealmToName(enemy);
+    }
+
+    /// <summary>One of the two other realms, at random (None for a realm that is not one of the three).</summary>
+    public static eRealm EnemyRealmOf(eRealm realm, Random random)
+    {
         eRealm[] others = new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia }.Where(r => r != realm).ToArray();
-        return others.Length == 0 ? null : GlobalConstants.RealmToName(others[random.Next(others.Length)]);
+        return others.Length == 2 ? others[random.Next(others.Length)] : eRealm.None;
+    }
+
+    /// <summary>
+    /// 1.2 chat audit (TEXT-018): the three shapes of the enemy in a corpus line. {enemy} is the people, as players typed them
+    /// ("hibs", "mids", "albs": "lots of {enemy} at the mile gate"); {enemy_mod} the word before a noun ("hib": "a {enemy_mod}
+    /// stealther"); {enemy_realm} the realm's name ("Hibernia": "{enemy_realm} took a relic"). Before 1.2 {enemy} was the realm's
+    /// name in most lines ("crawling with Albion", "the Midgard took a relic") and the people in alarms ("small hibs group").
+    /// </summary>
+    public static (string Enemy, string EnemyMod, string EnemyRealm) EnemySlots(eRealm enemy) =>
+        enemy is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia
+            ? (AutonomousLivingServer.RealmPlural(enemy), AutonomousLivingServer.RealmPlural(enemy)[..^1], GlobalConstants.RealmToName(enemy))
+            : (null, null, null);
+
+    /// <summary>The realm a realm's name or people word stands for ("Hibernia", "hibs", "hib"), or None. Pure.</summary>
+    public static eRealm RealmFromWord(string word) => (word ?? string.Empty).Trim().ToLowerInvariant() switch
+    {
+        "albion" or "albs" or "alb" => eRealm.Albion,
+        "midgard" or "mids" or "mid" => eRealm.Midgard,
+        "hibernia" or "hibs" or "hib" => eRealm.Hibernia,
+        _ => eRealm.None,
+    };
+
+    /// <summary>
+    /// A caller's slots over a bot's (TEXT-018): a caller that names the enemy ("hibs" or "Hibernia") also sets {enemy_mod} and
+    /// {enemy_realm} from it, so they are never a different realm from {enemy}.
+    /// </summary>
+    public static void MergeSlots(Dictionary<string, string> all, IReadOnlyDictionary<string, string> slots)
+    {
+        if (all == null || slots == null)
+            return;
+        foreach (var pair in slots)
+            all[pair.Key] = pair.Value;
+        if (slots.TryGetValue("enemy", out string enemy) && !slots.ContainsKey("enemy_realm"))
+        {
+            eRealm realm = RealmFromWord(enemy);
+            // The caller's own {enemy} word stays as given ("hibs" from an alarm, "Hibernia" from a siege notice).
+            if (realm != eRealm.None)
+                (_, all["enemy_mod"], all["enemy_realm"]) = EnemySlots(realm);
+        }
+    }
+
+    /// <summary>
+    /// A news or siege slot set with the enemy's other shapes added (TEXT-018): {enemy_mod} ("hib") and {enemy_realm}
+    /// ("Hibernia"). The news board's own {enemy} (the realm's name, "Hibernia has {relic}") is left as it is until the news lines
+    /// (news.lines, AutonomousChatNews) move to {enemy_realm}; then the board gives the people like every other slot. Pure.
+    /// </summary>
+    public static IReadOnlyDictionary<string, string> WithEnemyShapes(IReadOnlyDictionary<string, string> slots)
+    {
+        if (slots == null || !slots.TryGetValue("enemy", out string value))
+            return slots;
+        eRealm realm = RealmFromWord(value);
+        if (realm == eRealm.None)
+            return slots;
+        (_, string mod, string name) = EnemySlots(realm);
+        var copy = new Dictionary<string, string>(slots, StringComparer.Ordinal);
+        copy.TryAdd("enemy_mod", mod);
+        copy.TryAdd("enemy_realm", name);
+        return copy;
     }
 
     /// <summary>A frontier keep of the realm and the zone it stands in (so a line names a real pair).</summary>
@@ -364,11 +435,14 @@ public static class AutonomousBotVoices
     {
         (string keep, string frontier) = FrontierKeepOf(realm, random);
         string dungeon = currentDungeon ?? DungeonFor(realm, level);
+        (string enemy, string enemyMod, string enemyRealm) = EnemySlots(EnemyRealmOf(realm, random));
         return new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["keep"] = keep,
             ["frontier"] = frontier,
-            ["enemy"] = EnemyOf(realm, random),
+            ["enemy"] = enemy,
+            ["enemy_mod"] = enemyMod,
+            ["enemy_realm"] = enemyRealm,
             ["capital"] = CapitalOf(realm),
             ["dungeon"] = dungeon,
             ["camp"] = dungeon,
@@ -395,8 +469,16 @@ public static class AutonomousBotVoices
         if (asked && TryLine(bot, "reply", out result, answers: "ask_howareyou", slots: slots, relax: relax, requireVoices: requireVoices))
             return true;
         return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting), slots: slots, relax: relax,
-            requireVoices: requireVoices, filter: line => asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal));
+            requireVoices: requireVoices, filter: line => PlainGreetingFits(line, asked));
     }
+
+    /// <summary>
+    /// Whether a greeting reply answers a plain hello: no holiday's own answer (chat 1.2, E4's CORPUS-B2-025: "hi" drew "happy
+    /// halloween to you too"), and no how-are-you answer unless the player asked how the bot is. Pure.
+    /// </summary>
+    public static bool PlainGreetingFits(VC.Line line, bool asked) =>
+        line != null && (asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal)) &&
+        !line.Needs.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal));
 
     /// <summary>A reply for the kind of question a player asked ("anyone on?" -> "here"), before replies by topic.</summary>
     public static bool TryShapedReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
@@ -462,6 +544,32 @@ public static class AutonomousBotVoices
         return AutonomousChatShortTalk.ReplyFits(incoming, reply);
     }
 
+    [ThreadStatic] private static int _promiseLines;
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<VC.Line, object> ComingLines = new();
+    private static readonly object Coming = new(), NotComing = new();
+
+    /// <summary>
+    /// Lets the replies and closings picked inside it say the bot is coming ("omw", "on my way", "count me in"): only a caller
+    /// that puts such a line through the promise gate opens it (chat 1.2 follow-up, owner 2026-11-18: "omw" only when
+    /// ChatPromises says the bot goes). Everywhere else a written reply never says it. Dispose to close it.
+    /// </summary>
+    public static PromiseScope PromiseLines() => new();
+
+    public readonly struct PromiseScope : IDisposable
+    {
+        public PromiseScope() => _promiseLines++;
+        public void Dispose() => _promiseLines = Math.Max(0, _promiseLines - 1);
+    }
+
+    /// <summary>Whether a written reply may be picked here: it promises nothing, or the caller gates promises. Cached per line.</summary>
+    public static bool PromiseAllowed(VC.Line line) =>
+        line == null || _promiseLines > 0 || !SaysComingLine(line);
+
+    /// <summary>Whether a corpus line says its speaker is coming (ChatPromiseRules.SaysComing on its text), remembered per line.</summary>
+    public static bool SaysComingLine(VC.Line line) =>
+        line != null && ComingLines.GetValue(line, l => ChatPromiseRules.SaysComing(l.Text) ? Coming : NotComing) == Coming;
+
     /// <summary>A corpus line of a kind for this bot, or false (the caller keeps its old line).</summary>
     public static bool TryLine(GameBot bot, string kind, out string text, string intent = null, Random random = null)
     {
@@ -502,12 +610,14 @@ public static class AutonomousBotVoices
             }
             Dictionary<string, string> all = SlotsFor(bot, random);
             if (slots != null)
-                foreach (var pair in slots)
-                    all[pair.Key] = pair.Value;
+                MergeSlots(all, slots);
             // Beta 1.1.2: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
             AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            // Chat 1.2 follow-up: a reply or closing that says the bot is coming only where the caller gates it (PromiseLines).
             Func<VC.Line, bool> allowed = kind is "reply" or "closing"
-                ? filter == null ? line => AutonomousChatFiller.ReplyAllowed(line, scope) : line => AutonomousChatFiller.ReplyAllowed(line, scope) && filter(line)
+                ? filter == null
+                    ? line => AutonomousChatFiller.ReplyAllowed(line, scope) && PromiseAllowed(line)
+                    : line => AutonomousChatFiller.ReplyAllowed(line, scope) && PromiseAllowed(line) && filter(line)
                 : filter;
             bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
             {
@@ -538,7 +648,9 @@ public static class AutonomousBotVoices
     {
         try
         {
-            return AutonomousChatNews.For(bot.Realm).Slots;
+            IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> slots = AutonomousChatNews.For(bot.Realm).Slots;
+            // TEXT-018: the news gives {enemy} as the realm's name; {enemy_mod} and {enemy_realm} are added to it.
+            return slots?.ToDictionary(pair => pair.Key, pair => WithEnemyShapes(pair.Value), StringComparer.Ordinal);
         }
         catch
         {
@@ -563,8 +675,7 @@ public static class AutonomousBotVoices
             var speaker = new VC.Speaker(id, name, realm, string.Empty, 1, BotPersonalityType.Leveler, new HashSet<string>(StringComparer.Ordinal));
             var all = new Dictionary<string, string>(StringComparer.Ordinal) { ["me"] = name };
             if (slots != null)
-                foreach (var pair in slots)
-                    all[pair.Key] = pair.Value;
+                MergeSlots(all, slots);
             bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
             {
                 Topic = topic,
@@ -581,14 +692,54 @@ public static class AutonomousBotVoices
         }
     }
 
-    /// <summary>A text in this bot's writing style (knowledge answers and other fixed text).</summary>
-    public static string StyleFor(GameBot bot, string text)
+    /// <summary>
+    /// A text in this bot's writing style (knowledge answers and other fixed text). 1.2 chat audit (DESIGN-015):
+    /// <paramref name="protect"/> are words the style must not touch (a lower-case place, item or monster name in the answer).
+    /// </summary>
+    public static string StyleFor(GameBot bot, string text, string kind = null, params string[] protect)
     {
         if (!Enabled || bot == null || string.IsNullOrEmpty(text))
             return text;
-        VC.Voice voice = Corpus.VoiceFor(bot.DatabaseID);
+        return StyleText(Corpus.VoiceFor(bot.DatabaseID), bot.DatabaseID, text, Random.Shared, kind, protect);
+    }
+
+    /// <summary>
+    /// The style and typing habits on a text, with <paramref name="protect"/> masked (DESIGN-015) and no laugh where
+    /// <see cref="VC.TakesEmote"/> says none. Pure for a given draw; the result is never over <see cref="VC.MaxLength"/>.
+    /// </summary>
+    public static string StyleText(VC.Voice voice, long botId, string text, Random random, string kind = null, IReadOnlyList<string> protect = null)
+    {
+        if (string.IsNullOrEmpty(text) || voice == null)
+            return text;
+        var values = new List<string>();
+        // PC check 2026-11-19 (build 5154cae): "a armorcrafter" from a line built in code; the article is put right first.
+        string masked = VC.FixArticles(text);
+        foreach (string word in (protect ?? []).Where(word => !string.IsNullOrWhiteSpace(word)).Distinct().OrderByDescending(word => word.Length))
+        {
+            if (values.Count > 200 || masked.IndexOf(word, StringComparison.Ordinal) < 0)
+                continue;
+            values.Add(word);
+            masked = masked.Replace(word, ((char)('' + values.Count - 1)).ToString(), StringComparison.Ordinal);
+        }
+        string styled = VC.Style(masked, voice, random, out _, kind);
         // Beta 1.1.2: the bot's own typing habits too (AutonomousChatIdiolect).
-        return AutonomousChatIdiolect.Apply(VC.Style(text, voice, Random.Shared), bot.DatabaseID, voice.Capitalize, Random.Shared);
+        styled = AutonomousChatIdiolect.Apply(styled, botId, voice.Capitalize, random, terse: !VC.TakesEmote(kind, text));
+        return VC.CutAtWord(VC.Unmask(styled, values));
+    }
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-043): a line made in code (a field line, a thread's line, a market answer) in its speaker's style.
+    /// A functional line (wts, lfg, pc, inc...) stays as typed for every writer, with only the typing habits and no "lol"; a
+    /// conversational one takes the writing style too, so a tidy writer is tidy in field talk as in its written lines.
+    /// </summary>
+    public static string StyleGenerated(GameBot bot, string text, Random random = null)
+    {
+        random ??= Random.Shared;
+        if (bot == null || string.IsNullOrEmpty(text))
+            return text;
+        if (!Enabled || VC.IsFunctional(text))
+            return AutonomousChatIdiolect.Apply(VC.FixArticles(text), bot.DatabaseID, false, random, terse: true);
+        return StyleText(Corpus.VoiceFor(bot.DatabaseID), bot.DatabaseID, text, random);
     }
 
     /// <summary>
@@ -616,14 +767,14 @@ public static class AutonomousBotVoices
             }
             Dictionary<string, string> all = SlotsFor(bot, random);
             if (slots != null)
-                foreach (var pair in slots)
-                    all[pair.Key] = pair.Value;
+                MergeSlots(all, slots);
             bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, noRepeat ? Recent : null, DateTime.UtcNow, random)
             {
                 Intent = intent,
                 Topic = topic,
                 Mood = mood,
-                Filter = filter,
+                // Chat 1.2 follow-up: a reply that says the bot is coming only where the caller gates it (PromiseLines).
+                Filter = kind is "reply" or "closing" ? filter == null ? (Func<VC.Line, bool>)PromiseAllowed : line => PromiseAllowed(line) && filter(line) : filter,
                 RelaxTo = VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
                 NeedSlots = NeedSlotsFor(bot),
@@ -674,10 +825,22 @@ public static class AutonomousBotVoices
     {
         NoteLevelUp(bot);
         SayMoment(bot, "ding", 0.35, 1_500);
-        // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
-        if (bot?.Level == 50)
-            AutonomousBotChatCoordinator.TellStory("ding50", bot);
+        switch (LevelUpTold(bot?.Level ?? 0))
+        {
+            // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
+            case "story":
+                AutonomousBotChatCoordinator.TellStory("ding50", bot);
+                break;
+            // Chat 1.2 (E2's LOG-035, owner's PC: about 30 real level-ups in a night, one "ding" heard): now and then a bot under
+            // 50 tells /faction it levelled ("ding 31").
+            case "ding":
+                AutonomousBotChatCoordinator.TellDing(bot);
+                break;
+        }
     }
+
+    /// <summary>How a level-up is told in /faction: "story" at 50, "ding" below it (TellDing keeps its own odds and pace). Pure.</summary>
+    public static string LevelUpTold(int level) => level >= 50 ? "story" : level > 1 ? "ding" : null;
 
     /// <summary>
     /// A gamebot died (GameBot.ProcessDeath): what killed it and how many were on it are noted first, so the death's /say

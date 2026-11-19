@@ -1,0 +1,239 @@
+{
+  "id": "nisses-lair",
+  "name": "Nisse's Lair",
+  "realm": "Midgard",
+  "regions": [
+    129
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "tomte"
+  ],
+  "summary": "The burrow of the tomte under East Svealand, ruled by the house-spirit Nisse, with spiders in the back.",
+  "facts": [
+    {
+      "text": "Nisse's Lair is a small burrow, the underground home of the tomte and their leader, Nisse; a small but powerful lair of spiders has taken over part of it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=42"
+    },
+    {
+      "text": "Its bestiary lists Nisse, tomte of many trades (elders, seers, shamans, witch doctors, jagers, warlords, captors and handlers with warhounds), sand lizards, cave spiders, a haunt and a prisoner.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=42"
+    },
+    {
+      "text": "In Scandinavian folklore the nisse or tomte is a small household spirit who looks after a farm if he is treated well and makes trouble if he is not; porridge is the traditional offering.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain)"
+    },
+    {
+      "text": "Bot chat says Nisse was a house spirit gone bad, and that porridge keeps him harmless; and that the tomte are tougher than they look.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Its entrance is in East Svealand, east of Dvalin.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, ZonePoint table (0.37b world data)"
+    },
+    {
+      "text": "The burrow holds lair guards and a lair patrol, tomte protectors, guards, cutthroats, apprentices, trainers with sand lizard hatchlings, handlers with warhounds, captors, hoodoos and an executioner with two prisoners, jagers, lookouts, sentinels, caitiffs, zealots, seers, shamans, witch doctors, elders and warlords; haunts; cave spiders, poisonous cave spiders and Callilepis Nocturna in the west; Nisse, Rygnol, Nioll, Skirr, Hnaki and Ripp.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 129, Nisse's Lair; 0.37b world data)"
+    },
+    {
+      "text": "Nisse, Skirr, Hnaki and Callilepis Nocturna are targets of 'Tomte of Doom'; the Executioner, Rygnol and Nioll of 'Thorgil's Daughter'.",
+      "provenance": "game",
+      "source": "scratchpad/gap/named.json (audit of the 0.37b DataQuest table)"
+    },
+    {
+      "text": "Callilepis nocturna is the scientific name of a real ground spider (to verify).",
+      "provenance": "original",
+      "source": "zoological name, to verify"
+    },
+    {
+      "text": "The butter, the braided hair, Nisse's first farm, the prisoners' window and Thorgil's daughter's escape as told here are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Every farm in Midgard used to have a tomte, a little old man of the house who mended the harness at night and kept the cows calm, so long as he got his porridge with butter in it at midwinter. Forget the butter and things went wrong. The tomte of the burrow under East Svealand are the ones whose butter was forgotten too many times. They went underground, below the hills east of Dvalin, and they took their grudge with them, and they made it a people.\n\nA people needs trades, and the tomte took them seriously, as small people do. There are guards at the door and protectors behind them, and a patrol that walks the passages in a very straight line. There are trainers who raise sand lizards from hatchlings, and handlers with warhounds, and jagers who hunt and lookouts who watch, and cutthroats and caitiffs who do what they are told and are not proud of it. There are apprentices everywhere, learning everything. There are zealots, seers, shamans and witch doctors who argue about what the tomte are owed and by whom. There are elders, and there are warlords, and there is a sentinel at every turning.\n\nAnd there are captors. The tomte keep prisoners: people from the farms above who forgot the butter, or whose grandparents did, taken at night and kept in a cell at the bottom of the burrow under the eye of an executioner. Rygnol and Nioll keep the cells; the Executioner keeps the axe. Thorgil of Svealand lost a daughter that way, and the farms still argue whether her grandmother had forgotten the butter or only skimped on it.\n\nNisse leads them, the oldest of the house-spirits, who was the tomte of the first farm in Svealand and remembers the name of the family that forgot him. He is not wicked, exactly. He is offended, and he has been offended for a long time. His seers Skirr and Hnaki keep his counsel, and Ripp, who is bigger than a tomte should be, keeps his door.\n\nIn the west of the burrow the spiders have taken rooms for themselves, poisonous ones, with a great night-hunting mother the scholars of Jordheim name in the old scholars' tongue. This offends Nisse further. The haunts that drift through the middle passages offend nobody; they were farmers once, the tomte say, who came down after their butter and stayed.\n\nYoung Midgardians go down to Nisse's Lair for their first real dungeon, and come back with bruises from people half their size. Their grandmothers put out the porridge that night, with extra butter, and say nothing.\n\nThe farms above have their own account of it. They say the burrow is the tomte's way of keeping a ledger, and that every family in Svealand has a page in it, and that a family that puts the butter out faithfully for three generations has its page torn out and burned on Nisse's hearth. Nobody has ever seen a page burned. The farms keep putting the butter out anyway, because nobody wants to be the generation that stopped.",
+  "legend": "Nisse's Lair is the first dungeon most Midgardians see: tomte from the single digits into the twenties. The entrance is in East Svealand, east of Dvalin. The front is lair guards and protectors around ten; the middle passages are trainers, handlers with warhounds and apprentices in the teens; the sentinels, caitiffs and warlords further in hit like twenty-year-olds. The captors and the Executioner with the prisoners are at the bottom (Thorgil's Daughter quest). Nisse himself sits in his hall with seers around (Tomte of Doom). The spiders in the west are worse than the tomte, and Callilepis Nocturna is the mother of them. Haunts drift through the middle and don't care about your level. Ripp is the big one at about twenty-five, so leave him for last. They're tougher than they look and they keep warhounds. Leave out porridge, my gran said, with butter, and he's harmless.",
+  "atmosphere": {
+    "firstEntry": [
+      "A tomte burrow. Small doors, small people, long grudges.",
+      "Somebody forgot the butter. The tomte remember.",
+      "A tiny sentinel salutes, then draws a knife.",
+      "The tunnels are low. Mind your head, and your manners."
+    ],
+    "areas": [
+      {
+        "name": "the burrow door",
+        "x": 33398,
+        "y": 33047,
+        "z": 15863,
+        "radius": 1500,
+        "lines": [
+          "Lair guards and protectors at the door.",
+          "A patrol walks past in a very straight line."
+        ]
+      },
+      {
+        "name": "the trainers' warren",
+        "x": 34802,
+        "y": 35954,
+        "z": 15696,
+        "radius": 1500,
+        "lines": [
+          "Sand lizard hatchlings, and the tomte who raise them.",
+          "Apprentices learning everything, all at once."
+        ]
+      },
+      {
+        "name": "the cells",
+        "x": 32729,
+        "y": 29477,
+        "z": 15765,
+        "radius": 1200,
+        "lines": [
+          "Prisoners from the farms above, and the Executioner.",
+          "Rygnol and Nioll keep the keys. The axe is his."
+        ]
+      },
+      {
+        "name": "Nisse's hall",
+        "x": 28984,
+        "y": 32932,
+        "z": 15792,
+        "radius": 1200,
+        "lines": [
+          "Nisse's hall. He remembers the name of the family.",
+          "Seers whisper about what the tomte are owed."
+        ]
+      },
+      {
+        "name": "the warlords' tunnels",
+        "x": 28328,
+        "y": 37038,
+        "z": 16015,
+        "radius": 2000,
+        "lines": [
+          "Warlords and sentinels. Very small, very serious.",
+          "Skirr's lookouts watch the long tunnel."
+        ]
+      },
+      {
+        "name": "the spider rooms",
+        "x": 26500,
+        "y": 33000,
+        "z": 15700,
+        "radius": 2000,
+        "lines": [
+          "The spiders took these rooms. The tomte are offended.",
+          "Callilepis Nocturna hunts here in the dark."
+        ]
+      },
+      {
+        "name": "the haunted run",
+        "x": 30330,
+        "y": 34322,
+        "z": 15912,
+        "radius": 1500,
+        "lines": [
+          "Haunts drift past. Farmers once, the tomte say.",
+          "They came down for their butter and stayed."
+        ]
+      },
+      {
+        "name": "the witch doctors' height",
+        "x": 34302,
+        "y": 40383,
+        "z": 16532,
+        "radius": 1200,
+        "lines": [
+          "Witch doctors brew on the height. Hnaki among them.",
+          "Ripp keeps a door nearby. He is too big for a tomte."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the tomte in nisse's lair are house spirits whose porridge got forgotten too many times",
+      "nisse was the tomte of the first farm in svealand, they say",
+      "the tomte took their trades with them underground. guards, trainers, executioner, the lot",
+      "the tomte keep prisoners from the farms above. people who forgot the butter",
+      "thorgil lost his daughter to the tomte. the farms still argue whether his mum forgot the butter",
+      "the haunts in nisses lair were farmers who came down for their butter and stayed",
+      "the spiders took rooms in the west of the burrow. nisse is offended",
+      "callilepis nocturna is the mother of the spiders in nisses lair. scholars name",
+      "skirr and hnaki are nisses seers",
+      "ripp is bigger than a tomte should be. he keeps a door",
+      "the tomte patrol walks in a perfectly straight line. always",
+      "grandmothers put extra butter out the night their grandkids come back from nisses lair"
+    ],
+    "rumour": [
+      "nisse was a house spirit gone bad, my gran said. leave out porridge and he's harmless",
+      "nisse's lair tomte are tougher than they look",
+      "the farm across the vale forgot the butter and woke up with their hair braided to the bedposts",
+      "the spiders in the back are worse than the tomte. [trust me|every time]",
+      "the executioner has never actually used the axe, they say. [hope so|dont test it]",
+      "the haunts dont care what level you are",
+      "the tomte remember the name of every family that forgot them",
+      "ripp is a big one. leave him for last",
+      "ripp is a tomte from a giants steading who grew to match",
+      "skirr runs the tomte war like a farm wife runs a kitchen, with a ladle",
+      "hnaki brews the curse that sours the milk of farms that forgot the bowl",
+      "callilepis nocturna guards a piece of the tomte treasure",
+      "the executioners log lists every farm that forgot the butter",
+      "rygnol wont let anyone past without a prisoners ticket",
+      "nioll remembers thorgils daughter because she asked his name"
+    ],
+    "tell": [
+      "nisse's lair is the tomte burrow in east svealand, east of dvalin. first dungeon, singles to twenties",
+      "nisse's lair? tomte with warhounds, and spiders in the back. bring a group",
+      "is nisses lair hard? the front is easy, the warlords and spiders arent",
+      "the prisoners and the executioner are at the bottom in the cells",
+      "nisse sits in his hall in the west middle",
+      "spiders are in the west rooms, callilepis nocturna is the big one",
+      "ripp keeps a door near the witch doctors height in nisses lair",
+      "skirr is around the warlords room, tomte of doom",
+      "hnaki is with the witch doctors on the height, tomte of doom",
+      "callilepis nocturna is the spider boss in the west, stealthers can slip past",
+      "the executioner is in the cells, thorgils daughter",
+      "rygnol is at the south entrance to the executioners room",
+      "nioll is the handler in the first room on the right, wear the earring"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Nisse's Lair. The [tomte] whose butter was forgotten went underground, and [Nisse] leads them. They keep [prisoners].\"",
+    "topics": {
+      "tomte": "House-spirits who mend the harness and calm the cows, if you put butter in their porridge at midwinter. These ones were forgotten too often, and took their [trades] underground.",
+      "Nisse": "The oldest of them, tomte of the first farm in Svealand. He is not wicked, exactly. He is offended, and has been for a long time. His seers are Skirr and Hnaki; Ripp keeps his door.",
+      "trades": "The [tomte] took every trade underground: guards, trainers with sand lizards, handlers with warhounds, jagers, seers, warlords, and an executioner for the [prisoners].",
+      "prisoners": "People from the farms above who forgot the butter, or whose grandparents did. Rygnol and Nioll keep the cells; the Executioner keeps the axe. See [Thorgil].",
+      "Thorgil": "A farmer of Svealand whose daughter the [tomte] took. The farms argue whether her grandmother forgot the butter or only skimped. He wants her back.",
+      "butter": "Midwinter porridge with a lump of butter melting in it, left on the barn step for the tomte. Forget it and the harness rots, the cows go dry, and one morning your hair is braided to the bedposts. Ask [Nisse].",
+      "spiders": "Poisonous cave spiders that took rooms in the west of the burrow, with a night-hunting mother the Jordheim scholars call Callilepis Nocturna. [Nisse] is offended.",
+      "haunts": "Drifting through the middle passages. The [tomte] say they were farmers who came down after their [butter] and stayed.",
+      "Ripp": "A tomte too big for a tomte, who keeps a door near the witch doctors' height. The Averrsons of East Svealand say Ripp was a tomte of a giant's steading once, and grew to match, and that the giants did not forget his butter, which is why he hates everyone else. He does not let anyone through his door who has not been sent.",
+      "Skirr": "The tomte warlord whose lookouts watch the long tunnel around the warlords' room. Yandu of East Svealand, who means to stop the tomte's artifact, sends the young after Skirr with the other names on the incomplete map. The Averrsons say Skirr commands the tomte's war the way a farm wife commands a kitchen: loudly, and with a ladle.",
+      "Hnaki": "A witch doctor of the tomte on the height where they brew, one of the names Yandu's incomplete map gives for the artifact the tomte are building. The Averrsons say Hnaki brews the butter-curse, the sickness that sours the milk of a farm that forgot its bowl, and that she is proud of it. She fights with the witch doctors round her.",
+      "Callilepis Nocturna": "The night-hunting mother of the cave spiders that took rooms in the west of the burrow, named by the scholars of Jordheim. [Nisse] is offended. Yandu sends the young to kill her and search behind her for a piece of the tomte's artifact; the Averrsons say the spiders guard it better than the tomte ever did. Those who move quietly may slip past her.",
+      "Executioner": "The tomte who keeps the axe in the cells of the burrow, where the [prisoners] from the farms are kept. Thorgil of Audliten's daughter Thorhalla was taken to his room, and the young who go down for her have to reach him before he does what his name says. His log, the Averrsons say, records every farm that forgot, in a very small hand.",
+      "Rygnol": "The tomte captor at the south entrance to the [Executioner]'s room, who brings the prisoners down and keeps the keys with [Nioll]. Emmerick Averrson's note sends the young past him with a tomte tooth earring. Rygnol is a stickler for the cells and fights anyone without a prisoner's ticket.",
+      "Nioll": "The tomte handler in the first room on the right of the burrow, who keeps the cells' keys with [Rygnol] and, if you come wearing a tomte tooth earring, may take you for one of his own long enough to talk. Thorgil's daughter went past him. He remembers her, the Averrsons say, because she asked his name."
+    }
+  },
+  "book": {
+    "title": "Midwinter Porridge",
+    "pages": [
+      "Written down by Sigrid Ketilsdottir of Vasudheim, for her grandchildren. My grandmother put a bowl of porridge on the barn step every midwinter, with a lump of butter melting in the middle, and she would not let us eat until it was done. When I was nine I asked why. She said the tomte had looked after our cows for two hundred years and had never once been paid in silver, and the least we could do was butter. Then she told me about the farm across the vale. I will write that down next, as she told it, because it is the reason for everything else.",
+      "At the farm across the vale they forgot. Not once: three winters running, because the old woman died and the young wife did not hold with it. The first winter the cows went dry. The second the harness rotted on its pegs. The third, one morning, the whole family woke up with their hair braided to the bedposts, every one of them, so tight they had to cut themselves free. The young wife put out the porridge that night with half a crock of butter in it. It was not touched. They moved to Jordheim in the spring.",
+      "My grandmother said the tomte who were forgotten too often went underground, to a burrow east of Dvalin, and made a people of their grudge, with trades and guards and warlords, as serious as any jarl's hall. She said the oldest of them, Nisse, was the tomte of the first farm in Svealand, and that he remembers the name of the family that forgot him, and that he will not say it to anyone who asks, because the family still farms, and a name said is a name forgiven. I asked her how she knew all this. She said her grandmother had told her, and that nobody in our family had ever asked a tomte directly, and that I was not to be the first.",
+      "When I was fourteen the tomte took Thorgil's girl, from the next farm over. They came in the night and nobody heard. Thorgil said his mother had never once forgotten the butter. My grandmother said, quietly, that his mother had used to scrape it very thin. Thorgil went into the burrow after her with his brothers and came out with bruises from people half his size, and without her. The tomte keep their prisoners at the bottom, behind a door with an executioner standing at it. Thorgil never got her back. She came home on her own, years later, grown, and would not say how.",
+      "I have never forgotten the butter. My children have never forgotten the butter. I put this in the book so that my grandchildren will not forget it either, when I am gone, and so that they know why: not because the tomte are wicked, but because they are owed, and they remember, and they are patient, and there are a great many of them now, under East Svealand, with knives. Put it out at midwinter. Put in more than you think. Do not scrape it thin. And should you ever hear small feet in the barn at night, do not go and look. Say thank you, loudly, and go back to sleep."
+    ]
+  },
+  "bosses": []
+}

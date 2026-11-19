@@ -59,7 +59,7 @@ namespace DOL.GS
                 }
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC copy in GetNPCsInRadius(10000))
             {
@@ -67,11 +67,13 @@ namespace DOL.GS
                 {
                     if (copy.IsAlive && copy is GSCAdds)
                     {
+                        // One encounter, one payout: the boss takes each copy's attackers (epic-bosses M5).
+                        EpicEncounterMechanics.TransferDamageCredit(copy, this);
                         copy.RemoveFromWorld();
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public void Spawn()
         {
@@ -243,7 +245,7 @@ namespace DOL.GS
                 }
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach(GameNPC copy in GetNPCsInRadius(10000))
             {
@@ -251,6 +253,7 @@ namespace DOL.GS
                 {
                     if (this != copy && copy is GSCAdds && copy.IsAlive)
                     {
+                        EpicEncounterMechanics.TransferDamageCredit(copy, this);
                         copy.RemoveFromWorld();
                     }
                 }
@@ -261,11 +264,14 @@ namespace DOL.GS
                 {
                     if (this != boss && boss is GiantSporiteCluster && boss.IsAlive)
                     {
-                        boss.Die(boss);
+                        // The boss dies with the real killer and pays for every body; this copy pays nothing. It used
+                        // to die by its own hand while this copy paid out too (epic-bosses M5).
+                        EpicEncounterMechanics.TransferDamageCredit(this, boss);
+                        boss.Die(killer);
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override short Strength { get => base.Strength; set => base.Strength = 50; }
         public override short Quickness { get => base.Quickness; set => base.Quickness = 100; }

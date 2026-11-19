@@ -17,6 +17,12 @@
 #   ui        the real window, driven page by page through a new install (--autopilot), with pictures
 #   newest    (no game needed) which package Setup installs: a newer one from GitHub's newest release, the embedded one
 #             with --no-update, and the embedded one when the release's digest is wrong or missing
+#   classoff  (after fresh, 1.2) the new install is the 0.37 edition (classes / enable_sluaghbinder False, the classic
+#             game.dll), and its installed server, on a playtester copy of that world, refuses the Sluaghbinder at
+#             character creation, makes a classic class, and keeps a character over a restart (-Playtester)
+#   update114 (1.2) Living Server 1.1.4's own published Setup (-FromSetup) installs a new 1.1.4 game; a character, a
+#             gamebot roster and changed settings are seeded (seed_progress.py); this Setup updates the game; everything
+#             seeded must be kept, also after the updated server's first start (smoke on the updated game)
 #
 # Every run except "newest" passes --no-update, so Setup installs the package it embeds and the checks below hold.
 param(
@@ -24,7 +30,11 @@ param(
     [Parameter(Mandatory)] [string]$Package,
     [string]$Work = 'C:\lstest',
     [string[]]$Scenario = @('fresh', 'update036'),
-    [string]$Shots = ''
+    [string]$Shots = '',
+    # update114: Living Server 1.1.4's published Setup exe (LivingServer-Setup-1.1.4-beta.exe)
+    [string]$FromSetup = '',
+    # classoff: the built playtester (source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll)
+    [string]$Playtester = ''
 )
 $ErrorActionPreference = 'Stop'
 $Exe = (Resolve-Path $Exe).Path
@@ -38,6 +48,17 @@ $script:n = 0
 function Check([bool]$ok, [string]$what) {
     if ($ok) { Write-Host "  PASS  $what" -ForegroundColor Green }
     else { Write-Host "  FAIL  $what" -ForegroundColor Red; $failures.Add($what) }
+}
+
+# Runs a console program and returns all it printed, stdout and stderr, as text; $LASTEXITCODE stays its exit code.
+# With $ErrorActionPreference = 'Stop', Windows PowerShell turns the first stderr line of a native program run with 2>&1
+# (a Python traceback, say) into a terminating NativeCommandError: the whole test then stopped and showed only
+# "python.exe : Traceback (most recent call last):" (e2e-resume on PR #270). Here that text is kept and shown instead.
+function Run-Native([string]$file, [object[]]$argList) {
+    $saved = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try { return (& $file @argList 2>&1 | ForEach-Object { "$_" } | Out-String) }
+    finally { $ErrorActionPreference = $saved }
 }
 
 function Sha([string]$p) { (Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash.ToLowerInvariant() }
@@ -55,14 +76,15 @@ try {
 } finally { $zip.Dispose() }
 Write-Host "Package $($info['BuildName']) for $($info['BaseRelease']) (root folder $pkgRoot)"
 
-function Setup([string]$name, [string[]]$argList, [switch]$CheckNewest) {
+function Setup([string]$name, [string[]]$argList, [switch]$CheckNewest, [string]$With = '') {
     $script:n++
+    $setupExe = if ($With) { $With } else { $Exe }
     $log = Join-Path $logs ('{0:00}-{1}.log' -f $script:n, $name)
     $all = @('--silent') + $(if ($CheckNewest) { @() } else { @('--no-update') }) + $argList + @('--log', $log)
     Write-Host ''
     Write-Host "== $name : Setup $($all -join ' ')" -ForegroundColor Cyan
     $start = Get-Date
-    $p = Start-Process -FilePath $Exe -ArgumentList ($all | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -Wait -PassThru -NoNewWindow
+    $p = Start-Process -FilePath $setupExe -ArgumentList ($all | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -Wait -PassThru -NoNewWindow
     $text = if (Test-Path $log) { Get-Content -LiteralPath $log -Raw } else { '' }
     $tail = ($text -split "`r?`n" | Where-Object { $_ -match 'STEP |RESULT |\[ *\d+%\]|FAILED|NOTHING WAS CHANGED' } | Select-Object -Last 40) -join "`n"
     Write-Host $tail
@@ -106,6 +128,33 @@ function Assert-LivingServer([string]$game, [string]$what) {
     Check (Test-Path (Join-Path $game "$pkgRoot\ROLLBACK.cmd")) "$what : the package folder (with ROLLBACK.cmd) is in the game"
     $rec = Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory -Filter 'fork-build-*' | Sort-Object Name | Select-Object -Last 1
     Check ($rec -and (Get-Content (Join-Path $rec.FullName 'install-record.json') -Raw | ConvertFrom-Json).BuildName -eq $info['BuildName']) "$what : the install record names $($info['BuildName'])"
+}
+
+# Starts a copy of the installed game's server and logs in like ENTER REALM (smoke_release_037.py); returns its output.
+function Smoke-Game([string]$game, [string]$test, [string]$label) {
+    Write-Host ''
+    Write-Host "== $label : start the installed server and log in ($game)" -ForegroundColor Cyan
+    $out = Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\smoke_release_037.py'), $game, $test)
+    $code = $LASTEXITCODE
+    Write-Host $out
+    Check ($code -eq 0) "$label : smoke_release_037.py finished (exit $code)"
+    Check ($out -match 'PASS: server started') "$label : the installed server starts"
+    $fork = Get-ChildItem $test -Recurse -File -Include *.log -ErrorAction SilentlyContinue | Select-String -Pattern "FORK_BUILD name=$([regex]::Escape($info['BuildName']))" -List | Select-Object -First 1
+    Check ($null -ne $fork) "$label : its log says FORK_BUILD name=$($info['BuildName'])"
+    if ($fork) { Write-Host "   $($fork.Line.Trim())" }
+    Check ($out -match 'PASS: ENTER REALM login') "$label : a login like ENTER REALM works"
+    return [pscustomobject]@{ Out = $out; Fork = $(if ($fork) { $fork.Line } else { '' }) }
+}
+
+# The edition line of make_classoff_copy.py status: "EDITION enable_sluaghbinder=<value> game.dll=<classic|sluaghbinder|...>"
+function Edition([string]$game) {
+    return (Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\make_classoff_copy.py'), 'status', '--game', $game)).Trim()
+}
+
+function Latest-InstallRecord([string]$game) {
+    $rec = Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory -Filter 'fork-build-*' -ErrorAction SilentlyContinue | Sort-Object Name | Select-Object -Last 1
+    if (!$rec) { return $null }
+    return (Get-Content (Join-Path $rec.FullName 'install-record.json') -Raw | ConvertFrom-Json)
 }
 
 function Released-ServerHash([string]$game) {
@@ -377,16 +426,72 @@ if ($Scenario -contains 'netfx') {
 
 if ($Scenario -contains 'smoke') {
     $game = if ($script:smokeGame) { $script:smokeGame } else { $fresh }
-    $test = Join-Path $Work 'smoke'
+    $null = Smoke-Game $game (Join-Path $Work 'smoke') 'smoke'
+}
+
+if ($Scenario -contains 'classoff') {
+    # 1.2 (owner decision 8, docs/INSTALL-CHECKS-1.2.md): the game a new player gets is the 0.37 edition, class off.
+    $game = if ($script:smokeGame) { $script:smokeGame } else { $fresh }
     Write-Host ''
-    Write-Host "== smoke: start the installed server and log in ($game)" -ForegroundColor Cyan
-    $out = & python (Join-Path $PSScriptRoot '..\..\source\tools\smoke_release_037.py') $game $test 2>&1 | Out-String
-    Write-Host $out
-    Check ($out -match 'PASS: server started') 'smoke: the installed server starts'
-    $fork = Get-ChildItem $test -Recurse -File -Include *.log -ErrorAction SilentlyContinue | Select-String -Pattern "FORK_BUILD name=$([regex]::Escape($info['BuildName']))" -List | Select-Object -First 1
-    Check ($null -ne $fork) "smoke: its log says FORK_BUILD name=$($info['BuildName'])"
-    if ($fork) { Write-Host "   $($fork.Line.Trim())" }
-    Check ($out -match 'PASS: ENTER REALM login') 'smoke: a login like ENTER REALM works'
+    Write-Host "== classoff: the 0.37 edition with this build ($game)" -ForegroundColor Cyan
+    $edition = Edition $game
+    Write-Host "   $edition"
+    Check ($edition -match 'enable_sluaghbinder=False\b') 'classoff: the new world has classes / enable_sluaghbinder False'
+    Check ($edition -match 'game\.dll=classic\b') 'classoff: the client is the 0.37 game.dll (no Sluaghbinder patches)'
+    Check ($edition -match 'CUSTOM-CLASS characters=0 gamebots=0') 'classoff: no Sluaghbinder character or gamebot in the new world'
+    $world = Join-Path $Work 'classoff-world.db'
+    $report = Join-Path $Work 'playtest-classoff'
+    if (Test-Path $world) { Remove-Item -Force $world }
+    # A playtester copy of the installed world: its saves emptied as a release's are, the edition's own switch kept.
+    $made = Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\make_test_world.py'), 'from-release', '--world', (Join-Path $game 'runtime\data\opendaoc.sqlite3.db'), '--out', $world, '--bots-per-realm', '0')
+    Check ($LASTEXITCODE -eq 0 -and $made -match '"enable_sluaghbinder": "off"') 'classoff: a playtester copy of the installed world, switch still off'
+    if (!$Playtester -or !(Test-Path $Playtester)) {
+        Check $false "classoff: the playtester is built (-Playtester '$Playtester')"
+    } else {
+        $pt = Run-Native 'dotnet' @($Playtester, 'run', '--world', $world, '--server-dir', (Join-Path $game 'runtime\server'), '--scenarios', 'class-switch,login-save-restart', '--out', $report)
+        $code = $LASTEXITCODE
+        Write-Host $pt
+        Check ($code -eq 0) "classoff: the playtester's class-switch and login-save-restart passed on the installed server (exit $code)"
+        Check ($pt -match 'Passed\s+class-switch') 'classoff: character creation offers no Sluaghbinder (62, 63 and 16 refused; a Naturalist made)'
+        Check ($pt -match 'edition: class off') 'classoff: the scenario ran the class-off rules'
+        $line = Get-ChildItem $report -Filter 'server-console-*.log' -ErrorAction SilentlyContinue | Select-String -Pattern 'FORK_BUILD name=' -List | Select-Object -First 1
+        Check ($line -and $line.Line -match 'sluaghbinder=off') "classoff: the server's FORK_BUILD line says sluaghbinder=off"
+        if ($line) { Write-Host "   $($line.Line.Trim())" }
+    }
+}
+
+if ($Scenario -contains 'update114') {
+    # 1.2: a player with Living Server 1.1.4 (its published Setup) updates to this build through Setup and keeps their
+    # characters and settings.
+    $game = Join-Path $root 'playable-update114'
+    $record = Join-Path $Work 'update114-seed.json'
+    $seedTool = Join-Path $PSScriptRoot 'seed_progress.py'
+    if (!$FromSetup -or !(Test-Path $FromSetup)) { Check $false "update114: 1.1.4's Setup is given (-FromSetup '$FromSetup')" }
+    else {
+        $r = Setup 'update114-install-1.1.4' @('--new', '--dest', $game, '--no-shortcuts') -With (Resolve-Path $FromSetup).Path
+        Check ($r.Code -eq 0) 'update114: 1.1.4''s Setup installed a new game'
+        $before = Latest-InstallRecord $game
+        Check ($before -and $before.BuildName -eq '1.1.4-beta') "update114: the game has Living Server 1.1.4 ($($before.BuildName))"
+        $seeded = Run-Native 'python' @($seedTool, 'seed', '--game', $game, '--record', $record)
+        Write-Host "   $($seeded.Trim())"
+        Check ($LASTEXITCODE -eq 0) 'update114: a character, a gamebot roster and changed settings seeded'
+        $r = Setup 'scan-114' @('--scan', '--game', $game)
+        Check ($r.Log -match 'LivingServer=OtherBuild \(1\.1\.4-beta\)') 'update114: this Setup recognises the 1.1.4 build'
+
+        $r = Setup 'update114-to-this-build' @('--game', $game, '--no-shortcuts')
+        Check ($r.Code -eq 0) 'update114: Setup updated the game'
+        Assert-LivingServer $game 'update114'
+        Check ($r.Log -notmatch 'Recommended settings: exit') 'update114: the player''s own settings were not replaced by the suggested ones'
+        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record)
+        Write-Host $kept
+        Check ($LASTEXITCODE -eq 0) 'update114: the character, its item, the roster, the settings and the files were kept'
+
+        $smokeDir = Join-Path $Work 'smoke-update114'
+        $null = Smoke-Game $game $smokeDir 'update114'
+        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record, '--db', (Join-Path $smokeDir 'data\opendaoc.sqlite3.db'))
+        Write-Host $kept
+        Check ($LASTEXITCODE -eq 0) 'update114: kept after the updated server''s first start (the smoke copy of the world)'
+    }
 }
 
 if ($Scenario -contains 'ui') {

@@ -1,0 +1,114 @@
+{
+  "id": "gneiss",
+  "name": "Gneiss",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/gneiss",
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Gneiss is the name of a banded metamorphic rock.",
+      "provenance": "original",
+      "source": "https://en.wikipedia.org/wiki/Gneiss"
+    },
+    {
+      "text": "Gneiss: level 70, 30,000 health, resists 20% melee and 30% other, reach 350. When engaged it pulls every NPC of package GneissBaf within 2,500 (six hardened granidons in the world data) into the fight; 60-120 s into the fight, and again after each attempt, a 'Gneiss's Piece' (level 58, 2,500 health) appears beside it, but only if no other piece is alive within 8,000; pieces are removed when Gneiss resets (not when it dies).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Gneiss.cs (integration/1.2); world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Gneiss stands at about 288,600/287,000 in Cothrom Gorge; hardened granidons (54-64) and granidons (48-53) herd in the western gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "When the earth split to make Cothrom Gorge in the Long Pushing, the stone that fell into the split did not all settle. Most of it lay where it landed and became the gorge floor. Some of it kept the shove of the Pushing in it, and got up, and walked. The granidons of the gorge are that stone: thick, slow, banded things that the Sylvan call the stone-folk, and that keep to the western gorge in two great herds, one on the high ledges and one on the floor.\n\nGneiss is the largest stone that walked, a hill of banded rock that the gorge folk say was the very lip of the split, and the granidons follow it as if it were their king. Perhaps it is. A guard of the oldest and hardest of them, hardened by the age the gorge has had to press on them, stands around it on the western floor and never wanders, and when Gneiss is troubled they close on the trouble with it. The rest of the herd does not come. The Sylvan say the hardened ones are Gneiss's household and the others are only its people.\n\nIt is old, and it is breaking. That is the other thing the gorge folk know. Whenever Gneiss fights, the strain opens its bands, and after a while a piece of it cracks away and gets up on its own, a stone the size of an ox with the same idea as the hill it came from. Only ever one piece at a time: the gorge folk have watched it from the rim and say the hill waits for the last piece to be broken, or to lie still, before another cracks loose, as if it could only spare so much of itself at once. When the trouble goes away, the loose pieces settle back into the gorge floor and are only stones. When Gneiss falls, the pieces already walking do not.\n\nThe Sylvan of the gorge listen for it. On a still night at the rim you can hear it grinding, and the old folk say that is Gneiss wearing itself down, and that in another age there will be nothing of it but a herd of small stones each walking its own way. The Olcasar of Galladoria, the stone-folk of the hollow, are said to have been woken the same way, by the same Pushing; Aodhan of Tir na Nog, who wintered in Domnann, thought Gneiss and the Olcasar would know each other if they ever met. The gorge folk hope they never do.",
+  "legend": "Six hardened granidons stand right next to Gneiss and all come with it: there is no pulling them apart, so plan for seven targets. Every 1-2 minutes of fighting, one Gneiss's Piece (58, 2,500 health) breaks off, but never a second while the first is alive: kill each piece fast and the next one waits. Pieces still alive when Gneiss dies stay behind, so finish them. The bigger granidon herds on the floor and the ledges are not linked to it; do not drag the fight into them. On a reset Gneiss walks home full and the pieces vanish. Resists 20% melee, 30% magic.",
+  "yells": {
+    "aggro": [
+      "(the hill grinds, and rises)",
+      "Ssssplit. Ssssplit again.",
+      "Household. Close."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "A piece of the hill cracks loose and walks!"
+      }
+    ],
+    "death": [
+      "(the hill settles, and is a hill)",
+      "Ssss... still..."
+    ],
+    "slay": [
+      "Ground down.",
+      "Under the stone.",
+      "(the hill grinds on)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hill where no hill was yesterday.",
+      "Banded stone, and a guard of harder stone."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Pieces of Gneiss break off and attack!"
+      },
+      {
+        "trigger": "death",
+        "text": "Gneiss, the walking hill, lies still."
+      }
+    ],
+    "realmFirstKill": "Gneiss, the walking hill, lies still."
+  },
+  "botLines": {
+    "briefing": [
+      "six hardened granidons come with gneiss. [no splitting them|seven targets]",
+      "a piece breaks off every minute or two, only one at a time. [kill it fast|next one waits]",
+      "pieces alive when gneiss dies stay. [finish them|clean up]",
+      "gneiss resets if everyone drops. [stay on it|keep aggro]"
+    ],
+    "aftermathWin": [
+      "gneiss down. the walking hill [lies still|is gravel]",
+      "only ever had one piece up at a time. [nice control|clean]",
+      "granidons, pieces, hill. [all rubble|grats]",
+      "the gorge folk can sleep without the grinding"
+    ],
+    "aftermathLoss": [
+      "pieces plus six granidons [was too much|ate the healers]",
+      "seven stone targets and [no aoe|not enough tanks]",
+      "pulled the floor herd too. [too many rocks|bad pull]",
+      "someone dragged it off and it [reset|went home full]"
+    ],
+    "rumour": [
+      "[heard|someone said] you can hear gneiss grinding at the gorge rim at night",
+      "the sylvan say gneiss was the lip of the split. [the gorge's own edge|walking]",
+      "[word is|heard] gneiss and the olcasar in galladoria [were woken the same way|know each other]",
+      "[heard|someone said] in another age gneiss will be a herd of small stones"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gneiss",
+    "text": "The largest stone that walked in [Cothrom Gorge], the lip of the split, with a household of hardened granidons. It sheds one piece of itself at a time, and waits for each to break."
+  },
+  "bookPage": "From Coll of the Domnann guides: the gorge folk say Gneiss was the very lip of the split, and still has the Long Pushing in it. The hardened granidons round it are its household; they close with it and the rest of the herd stays where it is. It is breaking, slowly. When it fights a piece cracks loose and walks, and the gorge folk who watch from the rim say the hill spares only one piece at a time and waits for that one to be broken before the next comes away. On still nights you can hear it grinding. Aodhan of Tir na Nog thought it kin to the Olcasar of the hollow.",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Gneiss in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Gneiss after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "cronwort",
+      "relation": "neighbour in Cothrom Gorge"
+    },
+    {
+      "id": "olcasar-geomancer",
+      "relation": "the stone-folk of Galladoria, who also wake from rock"
+    }
+  ]
+}

@@ -151,7 +151,21 @@ public static class RealmEventRecordStore
     }
     /// <summary>The outcome a row gives the raid record: a time-out its details say took no wipe is
     /// <see cref="TimedOutWithoutWipe"/> (no result); anything else as written.</summary>
-    public static string RecordOutcome(string outcome,string details)=>WipesIn(details) is int wipes?RecordOutcome(outcome,wipes):outcome;
+    public static string RecordOutcome(string outcome,string details)=>RecordOutcome(FoughtOutcome(outcome,details),UnderStrengthIn(details));
+    /// <summary>How the fight itself ended, whatever the raid's strength (the Herald's chronicle tells a defeat under
+    /// strength as a defeat): a time-out its details say took no wipe is <see cref="TimedOutWithoutWipe"/>, anything else as written.</summary>
+    public static string FoughtOutcome(string outcome,string details)=>WipesIn(details) is int wipes?RecordOutcome(outcome,wipes):outcome;
+    /// <summary>In a raid's details: it never had the bots it was sized for (2026-11-11, "go with who came").</summary>
+    public const string UnderStrengthMarker=" Under strength: ";
+    public static string WithUnderStrength(string details,int mostRecruited,int required)=>mostRecruited<required?$"{details}{UnderStrengthMarker}{Math.Max(0,mostRecruited)} of {required}.":details;
+    public static bool UnderStrengthIn(string details)=>details?.Contains(UnderStrengthMarker,StringComparison.Ordinal)==true;
+    /// <summary>
+    /// The raid record's name for a defeat or time-out of a raid that set out under strength (owner, 2026-11-11): neither a
+    /// win nor a loss, for the raid's size and the Special Forces alike, so a realm that could not fill a raid is not asked
+    /// for a still larger one. A win under strength is a win. The ledger and the Herald still say "Defeated" or "Timed out".
+    /// </summary>
+    public const string LostUnderStrength="Lost under strength";
+    public static string RecordOutcome(string recordOutcome,bool underStrength)=>underStrength&&recordOutcome is "Defeated" or "Timed out"?LostUnderStrength:recordOutcome;
     /// <summary>
     /// The raid record's name for a time-out with no wipe (owner, 2026-11-05): neither a win nor a loss, for the raid's size
     /// and the Special Forces alike. Here, not in AutonomousEpicSpecialForces: the launcher links this file alone.

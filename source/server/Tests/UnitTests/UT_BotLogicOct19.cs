@@ -146,7 +146,9 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 55, 0, 55), Is.True);
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 33, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds, 55), Is.True,
                     "early departure at 60% after the hub's patience");
-                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.False);
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 99, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.True,
+                    "who came goes, three parties at least (2026-11-11; it was half)");
+                Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 23, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.False);
                 Assert.That(RealmRaidRecruitmentPolicy.DepartHub(false, 100, RealmRaidRecruitmentPolicy.HubPatienceMilliseconds), Is.True,
                     "half of a full raid leaves after the hub's patience (2026-10-21)");
                 Assert.That(RealmRaidRecruitmentPolicy.RecruitCap(55), Is.EqualTo(72));
@@ -166,7 +168,7 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidRecruitmentPolicy.ScheduledRaidDue(1_000, 1_000, false, 110, 0), Is.False, "schedule switched off");
                 Assert.That(RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(0), Is.EqualTo(20 * 60_000L));
                 Assert.That(RealmRaidRecruitmentPolicy.FirstScheduledDelayMilliseconds(2), Is.EqualTo(40 * 60_000L));
-                Assert.That(RealmRaidRecruitmentPolicy.ScheduleMinutes, Is.EqualTo(150));
+                Assert.That(RealmRaidRecruitmentPolicy.ScheduleMinutes, Is.EqualTo(240), "four hours since 1.2 (the tale, then the call); 150 before");
                 Assert.That(RealmRaidRecruitmentPolicy.MinimumBotsSetting, Is.Zero);
             });
         }

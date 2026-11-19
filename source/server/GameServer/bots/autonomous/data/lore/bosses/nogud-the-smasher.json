@@ -1,0 +1,80 @@
+{
+  "id": "nogud-the-smasher",
+  "name": "Nogud the Smasher",
+  "npcNames": [
+    "Nogud the Smasher"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Nogud the Smasher: level 40, the scrag model (as the hill scrags and rock sheeries), no template or faction, aggro level 90 (range 500), no spells, respawn 600 s, on Snowdonia's western slopes at 516712, 359104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Crushed Faith sends the realm to the hill scrag camp south of Castle Myrddin for a glacial hammer it does not have.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Nogud's trade in smashing and the scrags' pride in him are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The scrags of Snowdonia are a stony, ugly folk of the high slopes, kin to the rock sheeries, who live by picking over what comes down the mountain in the thaw. They are not clever. They are proud of one of their own above all others, and the reason is the reason for his name.\n\nNogud smashes things. He smashed his way out of a rockfall that buried his camp in his first winter, smashed the rocks that fell on it, smashed the scrag who had told the camp the slope was safe. He has smashed carts, gates, a mill-wheel the Caer Hurbury millers rolled up to sell to the fortress, two of the fortress's lieutenants' horses and very nearly a lieutenant, and he does not ask first, and he does not always notice whether he has finished. The scrags sing about him in the evenings. The song is short, because Nogud does not like long songs.\n\nHe keeps the western slopes on his own. The scrags of the camp south of Castle Myrddin say he would have the glacial hammer the Church is looking for, if it had ever come near him, because anything that smashes belongs to Nogud. It never came near him. The Church keeps asking.",
+  "legend": "Nogud the Smasher, level 40 scrag, alone on the western slopes of Snowdonia. Aggro level 90, so he usually jumps you on sight. Plain melee, no spells, no friends: a group in the high thirties or a strong duo kills him. He is not the one with the glacial hammer for Crushed Faith, whatever the scrags say. Respawn ten minutes.",
+  "yells": {
+    "aggro": [
+      "Nogud smash!",
+      "Smash first. Ask never."
+    ],
+    "phases": [],
+    "death": [
+      "Nogud... smashed..."
+    ],
+    "slay": [
+      "Smashed.",
+      "Nogud smash again later."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Nogud the Smasher's slope. Mind the rocks."
+    ],
+    "phases": [],
+    "realmFirstKill": "Nogud the Smasher has fallen. The western slope is quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "nogud, 40 scrag, alone on the west slopes. he aggros on sight",
+      "plain melee, a duo can do nogud"
+    ],
+    "aftermathWin": [
+      "nogud down. the scrags will be singing about that",
+      "nogud smashed. by us for once"
+    ],
+    "aftermathLoss": [
+      "he smashed our caster before we were set"
+    ],
+    "rumour": [
+      "[heard|someone said] nogud smashed a mill wheel the caer hurbury millers were rolling to the fortress",
+      "heard the scrags only sing short songs about nogud because he hates long ones"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nogud",
+    "text": "Nogud the Smasher of [snowdonia]'s western slopes, the scrags' pride, who smashes carts, gates, mill-wheels and anything else and does not ask first."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} smashed Nogud the Smasher on the western slopes in {minutes} minutes.",
+    "loss": "Nogud smashed {raidLeader}'s company of {realm} off the western slopes."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

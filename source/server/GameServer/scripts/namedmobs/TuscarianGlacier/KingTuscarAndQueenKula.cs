@@ -19,9 +19,10 @@ namespace DOL.GS
         #region Award Epic Encounter Kill
         protected void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardEpicEncounterKillPoint();
+            AwardEpicEncounterKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
             {
@@ -58,8 +59,8 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
-            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
+            // Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is
+            // behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
             {
@@ -73,6 +74,7 @@ namespace DOL.GS
                     if (npc is KingTuscar && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing King Tuscar!");
                     }
                 }
@@ -110,13 +112,27 @@ namespace DOL.GS
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public static int QueenKulaCount = 0;
-        public override void Die(GameObject killer)//on kill generate orbs
+        private GameNPC _kingTuscar;
+        public bool IsKingTuscarUp()
         {
-            if(KingTuscar.KingTuscarCount > 0)
+            if (_kingTuscar == null)
+            {
+                foreach (GameNPC npc in GetNPCsInRadius(8000))
+                {
+                    if (npc is KingTuscar)
+                    {
+                        _kingTuscar = npc;
+                        break;
+                    }
+                }
+            }
+            return _kingTuscar != null && _kingTuscar.IsAlive && _kingTuscar.ObjectState is eObjectState.Active;
+        }
+        public override void ProcessDeath(GameObject killer)//on kill generate orbs
+        {
+            if (IsKingTuscarUp())
                 BroadcastMessage(String.Format("As the Queen Kula dies, King Tuscar scream in rage and gather more strength!"));
 
-            --QueenKulaCount;
             bool canReportNews = true;
             // due to issues with attackers the following code will send a notify to all in area in order to force quest credit
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -133,7 +149,7 @@ namespace DOL.GS
             {
                 ReportNews(killer);
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #endregion
         #region AddToWorld
@@ -146,15 +162,11 @@ namespace DOL.GS
             BodyType = (ushort)NpcTemplateMgr.eBodyType.Giant;
             if (!Styles.Contains(taunt))
                 Styles.Add(taunt);
-            ++QueenKulaCount;
 
             GameNpcInventoryTemplate template = new GameNpcInventoryTemplate();
             template.AddNPCEquipment(eInventorySlot.RightHandWeapon, 316, 0);
             Inventory = template.CloseTemplate();
             SwitchWeapon(eActiveWeaponSlot.Standard);
-            QueenKulaBrain.IsTargetPicked = false;
-            QueenKulaBrain.message1 = false;
-            QueenKulaBrain.IsPulled1 = false;
 
             VisibleActiveWeaponSlots = 16;
             MeleeDamageType = eDamageType.Slash;
@@ -163,20 +175,22 @@ namespace DOL.GS
             LoadedFromScript = false;//load from database
             SaveIntoDatabase();
             base.AddToWorld();
+            IsKingTuscarUp();
             return true;
         }
         #endregion
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss actions
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
-                if(KingTuscar.KingTuscarCount == 0 || HealthPercent <= 50)
+                bool kingTuscarUp = IsKingTuscarUp();
+                if(!kingTuscarUp || HealthPercent <= 50)
                 {
                     if (Util.Chance(50))
                         CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
                 }
-                if (KingTuscar.KingTuscarCount > 0 || HealthPercent > 50)
+                if (kingTuscarUp || HealthPercent > 50)
                     if (Util.Chance(10))
                     CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
             }
@@ -234,23 +248,23 @@ namespace DOL.AI.Brain
             }
         }
         #region Teleport Player & PlayerInCenter()
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public GameLiving randomtarget = null;
+        public GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        public static bool IsTargetPicked = false;
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        public bool IsTargetPicked = false;
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickPlayer(ECSGameTimer timer)
         {
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Port_Enemys.Contains(player))
                             {
@@ -273,11 +287,11 @@ namespace DOL.AI.Brain
                 {
                     if (Port_Enemys.Count > 0)
                     {
-                        GamePlayer Target = (GamePlayer)Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                        GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                         RandomTarget = Target;
                         if (RandomTarget.IsAlive && RandomTarget != null)
                         {
-                            if (EpicEncounterMechanics.AllowDisplacement) RandomTarget.MoveTo(160, 34128, 56095, 11898, 2124);
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(RandomTarget, 160, 34128, 56095, 11898, 2124, DisplacementKind.Teleport, Body);
                             Port_Enemys.Remove(RandomTarget);
                             RandomTarget = null;//reset random target to null
                             IsTargetPicked = false;
@@ -287,13 +301,13 @@ namespace DOL.AI.Brain
             }
             return 0;
         }
-        public static bool message1 = false;
+        public bool message1 = false;
         public void PlayerInCenter()
         {
-            if (!EpicEncounterMechanics.AllowPositionPuzzle) return;
+            if (!EpicEncounterMechanics.AllowPositionPuzzleFor(Body)) return;
             Point3D FrostPoint = new Point3D();
             FrostPoint.X = 34128; FrostPoint.Y = 56095; FrostPoint.Z = 11989;
-            foreach(GamePlayer player in Body.GetPlayersInRadius(8000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 8000))
             {
                 if (player != null)
                 {
@@ -330,7 +344,6 @@ namespace DOL.AI.Brain
         }
         #endregion
         #region OnAttackedByEnemy()
-        public static bool IsPulled1 = false;
         public override void OnAttackedByEnemy(AttackData ad)
         {
             if (HasAggro && Body.TargetObject != null)
@@ -362,7 +375,6 @@ namespace DOL.AI.Brain
                 INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60165083);
                 Body.Strength = npcTemplate.Strength;
                 IsTargetPicked =false;
-                IsPulled1 = false;
             }
             if (Body.IsOutOfTetherRange)
             {
@@ -383,13 +395,14 @@ namespace DOL.AI.Brain
                         " The merciless who are not afraid of death will survive in this brutal world! I am merciless I'm not afraid of death!'"));
                     message1 = true;
                 }
+                bool kingTuscarUp = Body is QueenKula queenKula && queenKula.IsKingTuscarUp();
                 if (IsTargetPicked == false)
                 {
-                    if (KingTuscar.KingTuscarCount == 1)
+                    if (kingTuscarUp)
                     {
                         new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickPlayer), Util.Random(15000, 25000));//timer to port and pick player
                     }
-                    else if(KingTuscar.KingTuscarCount == 0)
+                    else
                     {
                         new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickPlayer), Util.Random(8000, 12000));//timer to port and pick player
                     }
@@ -397,9 +410,9 @@ namespace DOL.AI.Brain
                 }
                 if(Body.TargetObject != null)
                 {
-                    if (Body.TargetObject is GamePlayer)
+                    if (EncounterTargets.IsRaider(Body.TargetObject))
                     {
-                        GamePlayer player = Body.TargetObject as GamePlayer;
+                        GameLiving player = EncounterTargets.AsRaider(Body.TargetObject);
                         if (player.effectListComponent.ContainsEffectForEffectType(eEffect.Mez))
                         {
                             RemoveFromAggroList(player);
@@ -409,11 +422,11 @@ namespace DOL.AI.Brain
                             RemoveFromAggroList(player);
                         }
                     }
-                    if (KingTuscar.KingTuscarCount == 1)
+                    if (kingTuscarUp)
                     {
                         Body.Strength = 350;//if king is up it will deal less dmg
                     }
-                    if (KingTuscar.KingTuscarCount == 0 || Body.HealthPercent <= 50)
+                    if (!kingTuscarUp || Body.HealthPercent <= 50)
                     {
                         Body.Strength = 500;//king is dead so more dmg
                     }
@@ -522,8 +535,8 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
-            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
+            // Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is
+            // behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
             {
@@ -537,6 +550,7 @@ namespace DOL.GS
                     if (npc is QueenKula && npc.IsAlive && npc.HealthPercent < 100)
                     {
                         npc.Health += damageAmount + criticalAmount;
+                        EncounterSignals.Note(npc, EncounterSignals.TwinHeal);//Living Server 1.2: the lore's "twinHeal" lines (LoreBossWatch)
                         EpicEncounterRestores.TellImmune(source, "Your damage is healing Queen Kula!");
                     }
                 }
@@ -566,11 +580,21 @@ namespace DOL.GS
         {
             get { return 300000; }
         }
-        public static int KingTuscarCount = 0;
-        public override void Die(GameObject killer)//on kill generate orbs
+        private GameNPC _queenKula;
+        public bool IsQueenKulaUp()
         {
-            --KingTuscarCount;
-            base.Die(killer);
+            if (_queenKula == null)
+            {
+                foreach (GameNPC npc in GetNPCsInRadius(8000))
+                {
+                    if (npc is QueenKula)
+                    {
+                        _queenKula = npc;
+                        break;
+                    }
+                }
+            }
+            return _queenKula != null && _queenKula.IsAlive && _queenKula.ObjectState is eObjectState.Active;
         }
         #region Styles
         public override void OnAttackedByEnemy(AttackData ad)// on Boss actions
@@ -604,7 +628,7 @@ namespace DOL.GS
                 if (Util.Chance(50))
                     CastSpell(Thunder_aoe2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//aoe mjolnirs after style big dmg
             }
-            if (QueenKula.QueenKulaCount == 0 || (HealthPercent <= 50 && KingTuscarBrain.TuscarRage==true))
+            if (!IsQueenKulaUp() || (HealthPercent <= 50 && Brain is KingTuscarBrain tuscarBrain && tuscarBrain.TuscarRage))
             {
                 if (ad.AttackResult == eAttackResult.HitStyle && ad.Style.ID == 175 && ad.Style.ClassID == 22)
                 {
@@ -638,15 +662,11 @@ namespace DOL.GS
                 Styles.Add(parry_followup);
             if (!Styles.Contains(after_block))
                 Styles.Add(after_block);
-            ++KingTuscarCount;
 
             GameNpcInventoryTemplate template = new GameNpcInventoryTemplate();
             template.AddNPCEquipment(eInventorySlot.TwoHandWeapon, 575, 0);
             Inventory = template.CloseTemplate();
             SwitchWeapon(eActiveWeaponSlot.TwoHanded);
-            KingTuscarBrain.message2 = false;
-            KingTuscarBrain.TuscarRage = false;
-            KingTuscarBrain.IsPulled2 = false;
 
             VisibleActiveWeaponSlots = 34;
             MeleeDamageType = eDamageType.Crush;
@@ -655,6 +675,7 @@ namespace DOL.GS
             LoadedFromScript = false;//load from database
             SaveIntoDatabase();
             base.AddToWorld();
+            IsQueenKulaUp();
             return true;
         }       
         #endregion
@@ -831,9 +852,8 @@ namespace DOL.AI.Brain
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public static bool message2 = false;
-        public static bool TuscarRage = false;
-        public static bool IsPulled2 = false;
+        public bool message2 = false;
+        public bool TuscarRage = false;
         public override void OnAttackedByEnemy(AttackData ad)
         {
             if (HasAggro && Body.TargetObject != null)
@@ -865,7 +885,6 @@ namespace DOL.AI.Brain
                 INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60162909);
                 Body.Strength = npcTemplate.Strength;
                 TuscarRage = false;
-                IsPulled2 = false;
             }
             if (Body.IsOutOfTetherRange)
             {
@@ -892,11 +911,12 @@ namespace DOL.AI.Brain
                 if (Body.TargetObject != null)
                 {
                     GameLiving living = Body.TargetObject as GameLiving;
-                    if(QueenKula.QueenKulaCount == 1)
+                    bool queenKulaUp = Body is KingTuscar kingTuscar && kingTuscar.IsQueenKulaUp();
+                    if(queenKulaUp)
                     {
                         Body.Strength = 350;
                     }
-                    if (QueenKula.QueenKulaCount == 0 || Body.HealthPercent <= 50)
+                    if (!queenKulaUp || Body.HealthPercent <= 50)
                     {
                         Body.Strength = 500;
                     }

@@ -1,0 +1,359 @@
+{
+  "id": "skona-ravine",
+  "name": "Skona Ravine",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    106
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves",
+    "lokis-mischief",
+    "wild-beasts"
+  ],
+  "summary": "The wooded ravine between Vanern and Myrkwood on the road south to Malmohus: the werewolves' camp over Varulvhamn, the Seithkona Circle, and old things of the gods' tales.",
+  "facts": [
+    {
+      "text": "Skona Ravine is zone 106 of region 100: Vanern Swamp lies to its west, Myrkwood Forest to its east, Malmohus to its south.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "The world data places the Seithkona Circle in the north-east of the ravine (742648, 911351), with low-level seithkona and a witch of the Folowers of Seithr faction (the spelling is the world's) around it.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data); Mob table"
+    },
+    {
+      "text": "Varulvhamn's main entrance is a zone point in the middle-west of the ravine (709125, 941529); two zone points inside the haven lead back to the same spot.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "A werewolf camp fills the middle of the ravine: werewolf guards and warders (Varulv faction), wolfaur headsmen (Wolfaur faction), a captain, a lieutenant, a courier and Captain Gruff.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Stor Gothi Annark (a teleporter) and Felisha (a stablemaster) keep a Midgard post in the north-middle of the ravine (712000, 924000).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Sidhe draoi and sidhe gaoite stand in the west of the ravine; the rogue epic 'The War Continues' sends players for a scrying crystal from a sidhe draoi.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); Mob table"
+    },
+    {
+      "text": "The seer epic 'The Desire of a God' sends players to Lyngheid in Fort Atla ('Loki seeks to cause trouble') and then to slay Storslange in the waters of Skona at night.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth the giants built Mokkurkalfi, a clay giant with a mare's heart, to stand with Hrungnir against Thor; it lost its nerve and Thjalfi felled it.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal 17 (public domain)"
+    },
+    {
+      "text": "In Swedish folklore the askafroa is the spirit of the ash tree, owed an offering on Ash Wednesday morning.",
+      "provenance": "myth",
+      "source": "Swedish folklore (Hylten-Cavallius), public domain"
+    },
+    {
+      "text": "Fjalar and Galar are the dwarves who murdered Kvasir and brewed the mead of poetry from his blood.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal 1 (public domain)"
+    },
+    {
+      "text": "The werewolves of Skona, the Seithkona Circle's two schools of prophecy and the Gudny book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Mythic's 1.45 notes: the svartalfar were very active around Skona Ravine, sending scouts south of Skona Ridge into Malmohus, which the werewolves of Skona avoid as if it were cursed.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Skona is a cut in Midgard. South of Gotar and between the black water of Vanern and the dark trees of Myrkwood, the land falls into a long wooded ravine, and at its southern end the woods give out and the white country of Malmohus begins. The skalds of Jordheim say the gods cut the ravine as a boundary, the last line of the ordered world before the country the wolf's daughter would freeze; the grandmothers of Gotar say it was cut by something older than the gods, being dragged; and the werewolves who live in it, asked, say it has always been theirs and that the question is rude.\n\nThe werewolves came first, by every account but the skalds'. Their camps fill the middle of the ravine: guards and warders of the varulv, headsmen of the wolfaur, captains and couriers going between, and under it, by a mouth in the west of the ravine, the haven of Varulvhamn where King Hresvelgr holds court among the old wolfaur and the high lords argue at their table. The varulv answer to the pack and never to a master. They watch the south. When the wolf's daughter came down in Malmohus and summoned the werewolf lords to her hollow, Hresvelgr refused her, and ever since the werewolves of Skona have stood along the ravine's southern edge looking toward the white country the way a pack watches a rival's ground. They do not cross. They let Midgard's companies pass south between their camps, and an old wolfaur once told a Midgard scout that the companies were doing the werewolves' work.\n\nThe seeresses came second. In the north-east of the ravine the Seithkona Circle keeps its high seats among the trees, and there the seithkona of the north sit and sing the spirits close and tell what will be. The Circle has prophesied about the dragon for as long as there has been a Circle, and its two schools disagree: that she will fly north at the end to meet her father when the chain breaks, or that she will die in her hollow first and finish the chain. The Circle has lost seeresses too. Ydenia went out of it into Vanern, and the dark ones who followed her keep her high seat on the island; and the young seithkona and the witch who wander the trees about the Circle now, sworn to the seithr and hostile to strangers, the Circle does not discuss.\n\nEverything else in Skona is older than both. The woods are full of the spirits of the grandmothers' tales: the tree spirits the folk call ra of pine and oak and willow, moss maidens, the skogsfru of the south-west who are the skogsra's Midgard cousins, whispering willows and shrieking ones, dryads among the young trees of the south-east, wind spirits in the open middle. In the south-west, where the ravine floor goes down to water, an ash-wife called Askafroa keeps the oldest ash in the ravine, and the folk of Gotar still take her a cup of water on the morning of the ash-day. In the water below her lives Storslange, a serpent of the kind the bound god sends on his errands, and the Circle's seeresses say it is the reason the werewolves will not drink from that pool. On the eastern heights, alone, lies something the skalds say should not exist at all: Mokerkialfi, the clay giant of the oldest tale, the one with the mare's heart, who ran from Thor and fell and did not die.\n\nStrangers have come too. Sidhe of Hibernia stand in the west of the ravine, druids and wind-callers, and Midgard's gothi say they are watching the road to Malmohus for Hibernia's own reasons, and that a scrying crystal taken from one of them once showed a woman near Mjollner Faste who had no business there. Elves who call themselves of Gashir keep a priestess in the north-west, and nobody in Midgard can say who Gashir is. Two dwarves wander the west who answer to the names of the two who murdered Kvasir in the oldest tale, and do not deny it.\n\nMidgard keeps a post in the ravine's north, with Stor Gothi Annark to send travellers home and Felisha with her horses, because the road south runs through here: from Gotar through Myrkwood and Skona to Malmohus, past the werewolves and the Circle, which is the road every scale of the dragon has come home by. Skona matters because it is the last of Midgard before the end of it, and because everything in it is watching the south.",
+  "legend": "Skona Ravine is the woods between Vanern and Myrkwood, mostly a 25-40 zone, and it's on the road to Malmohus. The middle is the werewolf camp: guards and warders in the 30s, wolfaur headsmen up to 41, a captain and a lieutenant, and they're social, so pull carefully. Varulvhamn's entrance is on the west side of the camp. The Seithkona Circle is up in the north-east; the young seithkona and the witch wandering around it are hostile and low level. Stor Gothi Annark the teleporter and Felisha the stablemaster are at the Midgard post in the north-middle, which is where most people come in. Big named: Storslange, a 56 serpent in the south-west water (seer epic, The Desire of a God), and Mokerkialfi, a 56 giant alone on the eastern heights. Smaller named all over: Nagoltooth, Cargila, Fjalar and Galar, Stripe, Zrit-Zrit, Leildolf the drakulv. The sidhe in the west are Hibernian and the rogue epic sends you after a sidhe draoi. Superstitions: don't drink from the serpent's pool, take the ash-wife a cup of water if you pass her tree, and never ask a werewolf how long they've been here.",
+  "atmosphere": {
+    "firstEntry": [
+      "The ground falls away into a long wooded ravine.",
+      "Somewhere ahead, wolves that walk on two legs.",
+      "Everything in Skona is watching the south.",
+      "Wind in the pines, and a howl that is not a wolf's.",
+      "The last of Midgard before the white country."
+    ],
+    "areas": [
+      {
+        "name": "the werewolf camp",
+        "x": 724000,
+        "y": 931000,
+        "z": 5000,
+        "radius": 4500,
+        "lines": [
+          "The varulv camp. Guards watch, warders walk.",
+          "Werewolves on two legs, looking south.",
+          "The pack answers to no master here."
+        ]
+      },
+      {
+        "name": "Varulvhamn's mouth",
+        "x": 709125,
+        "y": 941529,
+        "z": 2726,
+        "radius": 1200,
+        "lines": [
+          "A mouth in the ravine wall. The haven is below.",
+          "Hresvelgr's court lies under your feet."
+        ]
+      },
+      {
+        "name": "the Seithkona Circle",
+        "x": 742648,
+        "y": 911351,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "High seats among the trees. Seeresses sing.",
+          "The Circle sees two ends for the dragon.",
+          "Young seithkona drift between the trunks, unfriendly.",
+          "At night Korban speaks among the seithkona, unseen."
+        ]
+      },
+      {
+        "name": "the gothi's post",
+        "x": 712000,
+        "y": 924200,
+        "z": 5060,
+        "radius": 1200,
+        "lines": [
+          "Midgard's post in the ravine. A gothi, horses.",
+          "Stor Gothi Annark can send you home from here."
+        ]
+      },
+      {
+        "name": "the serpent's pool",
+        "x": 697728,
+        "y": 955520,
+        "z": 1639,
+        "radius": 3000,
+        "lines": [
+          "Dark water at the ravine's foot. Something long.",
+          "The werewolves do not drink here.",
+          "The bound god's serpent coils below."
+        ]
+      },
+      {
+        "name": "the ash-wife's wood",
+        "x": 694500,
+        "y": 960000,
+        "z": 2000,
+        "radius": 3000,
+        "lines": [
+          "The oldest ash in Skona. A cup sits at its root.",
+          "Skogsfru among the trees, beautiful from the front.",
+          "Askafroa walks here, pale, and harms no one."
+        ]
+      },
+      {
+        "name": "the clay giant's height",
+        "x": 743365,
+        "y": 942030,
+        "z": 5496,
+        "radius": 2500,
+        "lines": [
+          "A heap of old grey clay on the heights. It breathes.",
+          "The giant of the oldest tale lies here, afraid."
+        ]
+      },
+      {
+        "name": "the sidhe watch",
+        "x": 694000,
+        "y": 944000,
+        "z": 3000,
+        "radius": 3000,
+        "lines": [
+          "Sidhe of Hibernia, far from home, watching the road.",
+          "Druids in a Midgard wood. Nobody invited them."
+        ]
+      },
+      {
+        "name": "the elves of Gashir",
+        "x": 700050,
+        "y": 906500,
+        "z": 3000,
+        "radius": 1500,
+        "lines": [
+          "Elves who name a Gashir nobody in Midgard knows.",
+          "The Priestess of Gashir, and three who guard her.",
+          "Each Elf of Gashir keeps the north road in sight."
+        ]
+      },
+      {
+        "name": "the werewolf shaman's hut",
+        "x": 722285,
+        "y": 929680,
+        "z": 3545,
+        "radius": 900,
+        "lines": [
+          "The Werewolf Shaman keeps a sword hilt not his.",
+          "Thasior stands with the warders. He never strikes first."
+        ]
+      },
+      {
+        "name": "the windy rise",
+        "x": 739569,
+        "y": 935191,
+        "z": 4564,
+        "radius": 1500,
+        "lines": [
+          "Wind spirits, and Vindvasen, the windiest of them.",
+          "The wind here never sets down what it picks up."
+        ]
+      },
+      {
+        "name": "the sand bar",
+        "x": 741340,
+        "y": 938183,
+        "z": 5482,
+        "radius": 1000,
+        "lines": [
+          "The raised sand bar. Furf naps on it.",
+          "Werewolf warders walk past Furf and let him be."
+        ]
+      },
+      {
+        "name": "the eastern heights",
+        "x": 741500,
+        "y": 955000,
+        "z": 5800,
+        "radius": 3500,
+        "lines": [
+          "Pellinistra carries a wand that is not a werewolf's.",
+          "Lasaer, the biggest of the eastern wolves, alone."
+        ]
+      },
+      {
+        "name": "south-west of the stones",
+        "x": 742051,
+        "y": 918686,
+        "z": 5034,
+        "radius": 1200,
+        "lines": [
+          "By night Krrrck walks here, tormented.",
+          "By day, nothing but the stones' long shadows."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "skona was cut by the gods as the last line before malmohus, the skalds say",
+      "the grandmothers say skona was cut by something being dragged",
+      "the werewolves of skona answer to the pack, never a master",
+      "hresvelgr refused the dragon when she summoned the werewolf lords, so the skona pack watches south",
+      "the werewolves let midgard pass south, an old wolfaur said we do their work for them",
+      "the seithkona circle has two schools about the dragon. she flies north at the end, or dies first",
+      "ydenia left the seithkona circle for vanern, the circle doesnt talk about it",
+      "the ash wife askafroa keeps the oldest ash in skona, gotar folk bring her water on the ash day",
+      "mokerkialfi is the clay giant from the old tale, the one with the mares heart that ran from thor",
+      "storslange in the skona pool is one of lokis serpents, the seers say",
+      "fjalar and galar wander skona, same names as the dwarves who killed kvasir",
+      "the road south to malmohus runs through skona, every dragon scale came home this way"
+    ],
+    "rumour": [
+      "the werewolves in skona never drink from the serpents pool",
+      "the young seithkona round the circle are hostile, dont let the name fool you",
+      "sidhe from hibernia stand in west skona, nobody knows why",
+      "a scrying crystal from a sidhe draoi showed someone near mjollner faste",
+      "nobody in midgard knows who gashir is, the elves wont say",
+      "mokerkialfi lies on the east heights and shakes when it thunders",
+      "storslange only comes up at night, or thats what the epic says anyway",
+      "never ask a werewolf how long theyve been in skona",
+      "askafroa the ash wife never hurts anyone, the skogsfru round her do",
+      "gotar folk bring askafroa a cup of water on the ash day so she sends no sickness",
+      "thasior is a werewolf who never strikes first, he likes the sky too much to go down to the haven",
+      "vindvasen on the windy rise carries the voice of everyone who ever shouted in skona",
+      "the werewolf shaman has the hilt of the rindasdottir sword",
+      "furf the cat naps on the sand bar and the werewolves let him",
+      "pellinistra the werewolf carries an albion wand",
+      "lasaer got turned out of the werewolf camp for fighting the young",
+      "krrrck looked too long into the seithkona fire, his name is the only sound he can make",
+      "the priestess of gashir wont say who gashir is",
+      "each elf of gashir might not be an elf at all, the seeresses say",
+      "korban is a seithkona you hear and never see, only at night"
+    ],
+    "tell": [
+      "skona ravine is south of gotar, between vanern and myrkwood. road to malmohus",
+      "skona is 25 to 40 mostly, werewolf camp in the middle is social, careful",
+      "port in at stor gothi annark at the post up north, felisha has horses",
+      "varulvhamn entrance is on the west side of the werewolf camp in skona",
+      "big named in skona: storslange in the sw water, mokerkialfi on the east heights, both 56",
+      "seithkona circle is ne skona, the seers are there",
+      "askafroa is in the south west of skona by the whispering willow, harmless",
+      "thasior is with the warders in the werewolf camp, never attacks first",
+      "vindvasen is on the east rise with the wind spirits, passive",
+      "the werewolf shaman is at the hut on the west side of the werewolf camp, three sisters",
+      "furf is on the raised sand bar near the werewolf camp, furfs reward from dalla",
+      "pellinistra is on the east heights, a war of old, masrim wants his wand",
+      "lasaer is alone on the east heights, 26",
+      "krrrck only appears at night south west of the circle stones, krrrcks torment",
+      "priestess of gashir is north west with three elves of gashir",
+      "the elf of gashir guards are 20, three of them with the priestess",
+      "korban is with the seithkona south of the circle at night, the red dagger"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Skona. A cut in Midgard, the last of it before the white country. The [werewolves] hold the middle and [Varulvhamn] lies under it; the [Seithkona Circle] sits in the north-east; and older things lie in the woods, the [ash-wife], [Storslange] in the water, and [Mokerkialfi] on the heights.\"",
+    "topics": {
+      "werewolves": "The varulv of Skona answer to the pack. Their camp fills the ravine's middle, guards and warders and wolfaur headsmen, with Captain Gruff among the captains. They watch the south since their king refused the dragon, and let Midgard's companies pass.",
+      "Varulvhamn": "The werewolves' haven under the ravine, entered by a mouth west of the camp, where King Hresvelgr holds court among the old wolfaur. Two ways inside lead back up to the same mouth.",
+      "Seithkona Circle": "The high seats of the seeresses of the north, in the ravine's north-east. Two schools of prophecy about the dragon of Malmohus. Ydenia went out of the Circle into Vanern; the young seithkona who wander near it now are sworn to the seithr and hostile, and the Circle does not discuss them. See [Gudny].",
+      "ash-wife": "Askafroa, the spirit of the oldest ash in Skona, in the south-west. Gotar folk bring her a cup of water on the morning of the ash-day, as the old custom asks, lest she send sickness. The [skogsfru] keep the trees near her.",
+      "skogsfru": "The forest women of Skona's south-west, cousins of Aegir's skogsra: beautiful from the front, hollow behind. The ra of pine and oak and willow, the moss maidens and the willows are the rest of the ravine's tree-folk.",
+      "the sidhe": "Druids and wind-callers of Hibernia standing in the west of the ravine, watching the road south. A scrying crystal taken from a sidhe draoi once showed a woman hidden near Mjollner Faste. See [Gashir].",
+      "Gashir": "Elves of the north-west who call themselves of Gashir and keep a priestess. Nobody in Midgard knows who or what Gashir is, and the elves will not say. They are not [the sidhe] and do not speak to them.",
+      "Fjalar and Galar": "Two who wander the west of the ravine together under the names of the dwarves who murdered Kvasir and brewed the mead of poetry from his blood. They do not deny it. The [Seithkona Circle] will not have them near.",
+      "the post": "Midgard's post in the north of the ravine: Stor Gothi Annark, who sends travellers home, and Felisha the stablemaster. Most companies going south start here.",
+      "Gudny": "Gudny of the [Seithkona Circle], the seeress who wrote down what the Circle sees, for those who could not climb to the high seats: the [werewolves], the [ash-wife], the serpent and the giant.",
+      "the road south": "From Gotar through Myrkwood and Skona to Malmohus: the road every dragon scale has come home by. It passes between the [werewolves]' camps and the [Seithkona Circle], and nothing in Skona stops it.",
+      "Askafroa": "The ash-wife: the spirit of the oldest ash in Skona, a pale woman who walks among the elder skogsfru by the whispering willow in the south-west and harms no one. Gotar folk bring her a cup of water on the morning of the ash-day, as the old custom asks, lest she send sickness. The [skogsfru] keep the trees near her and are not so harmless. The [Seithkona Circle] say she is older than the werewolves' ravine.",
+      "Thasior": "A great werewolf who stands with the warders near the camp's middle and never strikes first, like Captain Gruff. The Circle says Thasior was one of the king's warders before the court went down into the haven, and that he would not go: he likes the sky. He watches the young of Midgard go by and nods to the ones he has seen before. See [werewolves].",
+      "Vindvasen": "A spirit of the wind on the rise in the east of the ravine among the wind spirits, pale as a ghost, which never strikes first and never lets anything it picks up fall. The Circle's young seeresses go up to listen to it. The seeresses say Vindvasen carries the voices of everyone who ever shouted in Skona, and that if you stand quite still on the rise you can hear your own.",
+      "Werewolf Shaman": "The shaman of the [werewolves]' camp, who keeps a hut on its west side and the hilt of a sword that is not his: the first part of Rinda's daughters' sword, which Jodis Rindasdottir of Skona wants back for Anrid of Jordheim. He is slow to anger and works his magic quickly when he is angry. The warders say he got the hilt in a trade he will not describe.",
+      "Furf": "A big cat of the brush on the raised sand bar in the centre of the ravine, near the werewolves' main camp, who naps in the sun and is the terror of the varulv's young. Dalla of Nalliten, who used to adventure, wants him dead for something he did to her long ago that she tells differently every time. The werewolf warders walk past Furf and let him be, which is wise.",
+      "Pellinistra": "A werewolf of the eastern heights who carries a wand, which werewolves do not. Masrim of Fort Atla wants the wand; the shadows of Loki's and Skadi's houses who bring it to him say it is Albion work, and that Pellinistra had it from the Albion dead who march in Gotar's hills, which Masrim finds very interesting. The [werewolves] do not talk about him.",
+      "Lasaer": "The biggest of the werewolves on the eastern heights, alone, larger even than Captain Gruff and nothing like as patient. The Circle says Lasaer was turned out of the camp for fighting the young and went up the heights to fight the weather instead. He fights anyone who comes up after him, and Skona's travellers do not.",
+      "Krrrck": "A tormented thing that walks south-west of the Seithkona Circle's stones only at night, and never strikes first. Arnleif of Vasudheim says Krrrck was a man once who looked too long into the Circle's fire, and that his name is the only sound he can still make. She sends the young to release his soul. The seeresses say that is kind, and do not do it themselves.",
+      "Priestess of Gashir": "The priestess of the elves who call themselves of [Gashir], in the north-west of the ravine with three elves to guard her. Inaksha of Haggerfel has had visions of Gashir and sends the seers to learn from her; Fressen's map shows the way. She will not say who or what Gashir is. She fights strangers who come to her unasked, with her guards.",
+      "Elf of Gashir": "The three elves who guard the [Priestess of Gashir] in the north-west of Skona, quiet and watchful, who keep the north road in sight and speak to nobody, not even the sidhe of the western watch. The seeresses say they are not elves at all but something that took the shape because it was the nearest. They fight beside their priestess.",
+      "Korban": "A seithkona among the young seeresses on the Circle's south side who is heard and not seen, and only at night. Genlu Edrill, the smith of Haggerfel, sends the young to seek out the seithkona Korban, who knows that the Red Daggers have the scroll of the seithkona. The Circle does not admit that Korban is one of them, nor that he is not."
+    }
+  },
+  "book": {
+    "title": "What the Circle Sees",
+    "pages": [
+      "Gudny of the Seithkona Circle, who sat the third high seat for nine winters, wrote this for those who cannot climb to us. The Circle sees a great deal and says little of it, because most of what we see is the south, and the south does not change: snow, the dragon in her hollow, the drakulv in their camps, the chain on her father holding. What I write here is the rest. Skona, the ravine we sit in, which most travellers pass through on their way to the white country and do not look at. They should look. Everything in Skona is looking at them.",
+      "The werewolves were here before the Circle. They say so, and the oldest seats agree. Their camps fill the middle of the ravine, and under it is their king's haven, and their king is the one who told the dragon no. Since then they stand at the southern edge and watch her country. We have sat with their old wolfaur, who come up out of the haven to talk philosophy with us on still nights, and they say the dragon's cold and their king's refusal are two halves of the same argument. They do not say which half they think will win. Neither do we.",
+      "The south-west of the ravine goes down to water, and there is an ash there older than any tree in Gotar, and a wife in it. The folk call her the ash-wife. On the morning of the ash-day they bring her a cup of water, and leave it at her root, and do not look back. In the pool below her lives a serpent that came up from the sea when the bound god's bowl last spilled, and the werewolves will not drink there. I asked one why. He said that serpent is not hungry. It is listening, and what it hears goes back down the rivers to the one who sent it.",
+      "On the eastern heights lies the saddest thing in Midgard. The skalds tell how the giants made a man of clay to stand with Hrungnir against Thor, and gave it a mare's heart because no giant's heart would fit, and how when it saw Thor it lost its courage and fell. The skalds say it died. It did not. It lies on our heights, a heap of grey clay that breathes, and when it thunders over Skona the heap shakes. The jotuns of Vanern come sometimes, at night, to look at it, and go home, and try again.",
+      "Strangers stand in Skona too. Sidhe of Hibernia in the west, watching the road; elves of a Gashir nobody can name, in the north-west; two dwarves with the names of the murderers of Kvasir, who laughed when I asked if the names were theirs. Midgard keeps a gothi at its post in the north, and horses, because the road south runs through us. I have watched the companies go down it since I first took the seat. Some come back with scales. The werewolves watch them go, and so do we, and so does everything else in the ravine. That is what the Circle sees."
+    ]
+  },
+  "bosses": [
+    "mokerkialfi",
+    "storslange",
+    "nagoltooth",
+    "cargila",
+    "captain-gruff",
+    "fjalar",
+    "galar",
+    "stripe",
+    "leildolf",
+    "zrit-zrit"
+  ]
+}

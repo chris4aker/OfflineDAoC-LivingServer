@@ -1,0 +1,108 @@
+{
+  "id": "summoned-guardian",
+  "name": "Summoned Guardian",
+  "npcNames": [
+    "Summoned Guardian"
+  ],
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "the spiritmaster who called them and set them at his door"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Two Summoned Guardians (level 61, ghost flag, Norse warrior models) stand a few hundred units from Aros the Spiritmaster in Dodens Gruva (39455, 37813 and 38666, 38101).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "An older Aros script (GameEpicAros / ArosBrain) gave Aros full resists while a Summoned Guardian stood within 300 of him and killed the guardians when he died; the live class SpiritmasterAros does not use them, so in Living Server they are plain spawns with no tie to his fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "When the last shift broke into the cold seam and the dead of the deep began to call, Aros the Spiritmaster made his promise at the shaft: that none of the men who died in the dark would be forgotten. The first two he kept it for were not miners. They were the jarl's door-wardens, two huscarls of Ormarr's household whose work was to stand at the spiritmaster's chamber while he read the tallies, and they died at that door on the night the calling came up the stair, holding it.\n\nAros called them back first, before Bjorn the Younger, before any of the shift, and set them where they had stood. The Glenlock slates name them only as the guardians; Ashild of Glenlock, who copied the slates, thinks their names were the first Aros ever spoke into the dark, and that he spoke them so often that afternoon that the mine wore them away. Whatever their names were, the guardians do not remember them. They remember the door.\n\nThe old miners' songs, as the Jamtland families sing them, say that while the two guardians stood at his shoulder the spiritmaster could not be wounded, that the dead at his door took every blow meant for him. The songs are old. In the mine as the Glenlock hill-watch knows it now the guardians stand a little apart from him, at the old door-posts of a chamber whose door is gone, and whatever they once did for him they do no longer; Aros's own shield now is the champion he raises. They stand, and watch the stair, and fight all who come near enough to be a threat to a door that is not there.\n\nSigthrud Thorgautsdottir's company, the first from Glenlock to bring Aros down, wrote on the hall at Glenlock that the guardians did not move when he fell. They stood at their posts, facing the stair, as if they had not noticed. The Jamtland families leave their names out of the anniversary saying, because nobody knows them. They leave a gap in the saying instead, a breath's length, for each.",
+  "legend": "The two Summoned Guardians stand near Aros the Spiritmaster in Dodens Gruva, level 61, ghostly Norse warriors. In the old days (and in an older version of Aros's script) a guardian standing next to Aros made him immune; in Living Server's live Aros script they have nothing to do with his fight. They're plain spawns: no special abilities, not CC-immune, and they don't join Aros by script, but they're close, so clear them before you start on him so they can't wander into the raid. Two quick pulls for a full group. Don't confuse them with his spirit champion, which he raises himself and which does matter.",
+  "yells": {
+    "aggro": [
+      "(The guardian lifts a shield toward a door that is not there.)",
+      "(A dead huscarl steps between you and the stair.)",
+      "(The guardian's mouth moves. No name comes.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(The guardian sets its feet, as at a door.)"
+      }
+    ],
+    "death": [
+      "(The guardian falls at its post, facing the stair.)",
+      "(A name almost forms on its lips, and is gone.)"
+    ],
+    "slay": [
+      "(The guardian returns to its post.)",
+      "(The door holds. There is no door.)",
+      "(The dead huscarl watches the stair again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two dead huscarls stand at door-posts with no door.",
+      "They guard the spiritmaster's chamber, from habit."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The guardian holds its ground as at a door."
+      }
+    ],
+    "realmFirstKill": "A Summoned Guardian falls. Its post is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "clear the two summoned guardians before aros",
+      "they dont make aros immune here, thats the old script",
+      "plain mobs, mez works",
+      "dont mix them up with his spirit champion"
+    ],
+    "aftermathWin": [
+      "both guardians down, now aros",
+      "easy pulls",
+      "they fell facing the stair",
+      "no immunity nonsense like the old days"
+    ],
+    "aftermathLoss": [
+      "pulled a guardian into the aros fight",
+      "thought they shielded him, wasted time",
+      "ghost hits hard for 61",
+      "both at once"
+    ],
+    "rumour": [
+      "the guardians were ormarrs door wardens, the slates say",
+      "aros called them back first, before anyone",
+      "the old songs say aros couldnt be hurt while they stood by him",
+      "the jamtland families leave a gap in the saying for them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Summoned Guardian",
+    "text": "Two of Ormarr's door-wardens who died holding [Aros]'s chamber when [the calling] came up [the stair]. Aros called them back first. The old songs say they shielded him; now they only stand."
+  },
+  "bookPage": "From The Tally of Dodens Gruva, gathered by Ashild of Glenlock: the slate for the door has two marks on it and no names, and under the marks, in the spiritmaster's own hand, the word kept. I think he wrote their names first and wore them off with speaking, that first night, saying them over and over into the dark as he had promised. The marks are deep. The slate is worn smooth round them, as if many fingers had touched it. The Jamtland families say the saying at the shaft with a gap in it for them.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} laid a Summoned Guardian down at its post in {minutes} minutes.",
+    "loss": "A Summoned Guardian held its door against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

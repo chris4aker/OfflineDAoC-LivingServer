@@ -72,6 +72,11 @@ namespace DOL.GS
                 AutonomousPveBossDanger.Record(bot.CurrentRegionID, bot.X, bot.Y, deadly.Level, DateTime.UtcNow);
             if (string.Equals(KillerKind(killer), "monster", StringComparison.Ordinal))
                 AutonomousRepeatDeathSpots.Record(bot.DatabaseID, bot.CurrentRegionID, bot.X, bot.Y, DateTime.UtcNow);
+            if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
+            {
+                AutonomousBattlegroundWave.NoteDeath(bot.CurrentRegionID, bot.Realm, killer is DOL.GS.Keeps.GameKeepGuard);
+                AutonomousBattlegroundKeepRally.NoteDeath(bot, killer);
+            }
             if (!Log.IsInfoEnabled)
                 return;
             try

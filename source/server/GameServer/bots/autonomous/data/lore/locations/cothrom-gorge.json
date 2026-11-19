@@ -1,0 +1,292 @@
+{
+  "id": "cothrom-gorge",
+  "name": "Cothrom Gorge",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    184
+  ],
+  "summary": "The great split of Hy Brasil, from Altan Garran's walls to the northern sea: rot in flower-shapes, walking stone, the laughing dervishes, and Marfoirwort.",
+  "facts": [
+    {
+      "text": "Zone 184 (region 181, x 278,528-344,064, y 262,144-327,680): 635 monsters, no realm NPCs. Altan Garran, the outlanders' town, stands in the south-east (about 336,600/315,500): Outland garda, conaitheoir, bardach and asarlai (faction Outland Residents), garran treants, Noirin the enchanter, Fedail and Treal.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: botonid dispersers (42-55), lurking and mind shrouders (Predators of Hy Brasil), dusky and greater sylvanshades, mirages, beckoners, venomous spores, granidons and hardened granidons (to 64), tittering, laughing and cackling tree dervishes (48-63), gorge shrillers, slogcloch, rencan beasts and the rencan aon, do and tri, treant elders and arcane treants, mature skimmers, flying devil rays (60-64), gluttons, tree striders and nimhulsce.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The gorge's bosses: Marfoirwort (80), Tachtwort (76), Fuilwort (75), Dremcis Fuiloltair (70) on Beomarbhan, Gneiss (70), Cronwort (68) with its Breanworts (65-71), Cuinn (65), Tudeg (64), Thuxra the Cackler (60), and the outlanders Fedail (56), Elnara Erea (55) and her treant, Treal, Ulicia (52) and Aodhnait (51); tier B outlanders Ansol, Fachtna, Zinsya and Declan.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Writhing Death (Dolph of Necht): 'Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge', kill Cronwort, Fuilwort and Tachtwort, then 'Kill Marfoirwort, the source of the worts'.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Feairna-Athar: the world data has a peaceful level-60 ghost of that name in the south-west of the gorge (about 287,700/320,800); The Lost Seed (Terod of Droighaid, 48-50) creates the real one when the player reaches it: a level-65 plant-bodied treant (SINeckBoss, model 767) at 288,348/319,950 that attacks at once. Terod: 'Farmers of Hibernia found seeds in Cothrom Gorge, which were cursed. A Few seeds got destroyed, but one was lost.'",
+      "provenance": "game",
+      "source": "scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2); world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Cothrom in Irish means 'fair, even, balanced', as in cothrom na Féinne, 'fair play'.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/cothrom"
+    },
+    {
+      "text": "Living Server lore: the split as the crack the Long Pushing left; the Sylvan joke of its name; the rot that came up through it; the gorge clans; the laughing dervishes as the Laughing Wood's children; the rencan counted by the clans; Altan Garran's walls; Noirin's study of the worts.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Cothrom Gorge is the crack the Long Pushing left. When the forests of Hy Brasil drove the Root east to World's End in the first age, the isle could not hold the strain, the Sylvan say, and it split from Domnann's southern woods to the sea, and the split never closed. The Sylvan named it Cothrom, which in the mainland's speech means even, or fair, and the guides explain the joke only once: it was the one thing in the Pushing that came out even. The isle broke, and the Root went down, and neither side won.\n\nThe rot came up through it. Whatever was spilled at World's End when the Root went down seeped west under the isle and found the split, and came up in the gorge's floor in flower-shapes: the worts, which the outlanders of Altan Garran say are all one plant, runners of the great killer at the head of the gorge, Marfoirwort, which stands in a ring of bare ground and drinks from everything that stands near what it strikes. Cronwort stands with its breanworts round it like children round a mother; Tachtwort comes up through the town's own floors under the south wall; Fuilwort reaches west of it. The botonid dispersers spread the spores the length of the gorge, and the venomous spores drift where the wind does not.\n\nThe stone walks here too. The granidons came out of the gorge's walls, and the largest that ever walked, Gneiss, keeps the lip of the split in the west with a household of hardened ones about it, and sheds a piece of itself at a time, and waits. The slogcloch move through the middle gorge, slow as landslides, with the nimhulsce in their wake. Dremcis Fuiloltair rides there, once the best hunter of the gorge clans, now a drinker of blood on a stag called Beomarbhan that died under him and was never let down.\n\nThere were people in the gorge before the rot: the gorge clans, hunters and gatherers of the split, who lived in its walls and counted their lives by the tide-cry of Tudeg, the eldest shriller, whose burrow is where the gorge opens on the northern sea. Above the clans' caves there was a wood the clans called the Laughing Wood for the sound of the wind in it, and the wood went down into the split in the Pushing, and its laughter did not stop. It changed. Thuxra the Cackler is what it became. The tree dervishes of the gorge are the wood's children, the clans say, tittering and laughing and cackling as they spin, and the dervishes of Vigilant Rock will not come into the gorge because they hear them and recognise themselves. In the east the clans counted the rencan: one, two, three, and the great beast, and named them so, and the names stuck.\n\nAltan Garran stands at the south-east end, where the gorge meets the high ground toward Domnann. It is the outlanders' town, walled, built around an old treant called Treal who walked back from the edge when the gorge split, and the people who built it live outside Domnann's law and like it that way: the garda on the walls, the bards and sorcerers, the Erea family who keep the trees, and a few who came from elsewhere, Aodhnait of Lough Derg among them. Fedail speaks for the town to strangers. He asks every Hibernian company to cut the worts and kill Marfoirwort, and does not believe they can. Treal buries the killer's root when it is brought to him, and Cuinn, the small iron-grey treant at his feet, guards the ground. In the south-west of the gorge, among the mirages, stands the pale shape of Feairna-Athar, a treant grown from the one cursed seed Droighaid's farmers lost in the gorge; it sleeps until the realm comes for it, and wakes raging.\n\nWhy does it matter? Because the gorge is the one wound on Hy Brasil that is still open at both ends. The rot comes up from under World's End and goes down again into the sea, and the worts grow closer to Altan Garran's walls every summer. The Domnann wardens say that when the gorge closes the isle will be whole. The outlanders say it will never close, and that the isle was never whole. Both of them send the realm's companies down into it.",
+  "legend": "Cothrom Gorge is Hy Brasil's 42-80 zone between Domnann and the northern sea. Altan Garran (south-east) is the outlanders' walled town: hostile to Hibernians (faction Outland Residents, garda 49-53), so Writhing Death starts there but you are not welcome. Camps: botonid dispersers (42-55) in the middle, dusky sylvanshades and beckoners, mirages and lurking shrouders in the south-west, laughing and cackling dervishes (to 63), granidons (to 64), mind shrouders, gluttons and devil rays (60-64) in the north-west. Bosses: Marfoirwort (80: leech pulse around its target, never stack), Tachtwort (76), Fuilwort (75), Dremcis on Beomarbhan (70: kill Dremcis and the stag dies), Gneiss (70: one granidon piece at a time), Cronwort (68: kill it and its breanworts go), Cuinn (65), Tudeg (64) on the north coast, Thuxra (60). Writhing Death: Cronwort, Fuilwort, Tachtwort, then Marfoirwort. Gorge custom: run from the laughter before you know what it is.",
+  "atmosphere": {
+    "firstEntry": [
+      "Cothrom Gorge. The isle split here and never closed.",
+      "Rot grows in flower-shapes.",
+      "Somewhere a tree is laughing.",
+      "Stone gets up and walks.",
+      "The tide-cry carries the length of the gorge."
+    ],
+    "areas": [
+      {
+        "name": "Altan Garran",
+        "x": 336600,
+        "y": 315500,
+        "z": 2400,
+        "radius": 2500,
+        "lines": [
+          "Altan Garran. Walls, and no welcome.",
+          "An old treant at the town's heart.",
+          "The worts are closer every summer."
+        ]
+      },
+      {
+        "name": "the south wall",
+        "x": 336850,
+        "y": 319070,
+        "z": 3060,
+        "radius": 1500,
+        "lines": [
+          "Tendrils come up through the floors.",
+          "The choker is under the south wall."
+        ]
+      },
+      {
+        "name": "the killer's ring",
+        "x": 293830,
+        "y": 283910,
+        "z": 2700,
+        "radius": 2000,
+        "lines": [
+          "A ring of bare ground. Nothing grows.",
+          "It drinks from everyone near its prey.",
+          "Cross one at a time."
+        ]
+      },
+      {
+        "name": "the lip of the split",
+        "x": 288550,
+        "y": 287050,
+        "z": 2000,
+        "radius": 2500,
+        "lines": [
+          "The lip of the split. Stone that waits.",
+          "One piece at a time, and then the next."
+        ]
+      },
+      {
+        "name": "the hunter's run",
+        "x": 307930,
+        "y": 294860,
+        "z": 3980,
+        "radius": 3000,
+        "lines": [
+          "A dead stag, ridden, never let down.",
+          "The blood-drinker's run."
+        ]
+      },
+      {
+        "name": "the spore floor",
+        "x": 319150,
+        "y": 292780,
+        "z": 3320,
+        "radius": 4000,
+        "lines": [
+          "Dispersers walk the floor, shedding.",
+          "The air is thick with seed."
+        ]
+      },
+      {
+        "name": "the laughing slopes",
+        "x": 326200,
+        "y": 288000,
+        "z": 3300,
+        "radius": 4000,
+        "lines": [
+          "Trees spinning, tittering.",
+          "The Laughing Wood's children."
+        ]
+      },
+      {
+        "name": "the fallen wood",
+        "x": 302180,
+        "y": 276690,
+        "z": 2320,
+        "radius": 2500,
+        "lines": [
+          "A laugh that was once the wind.",
+          "Run before you know what it is."
+        ]
+      },
+      {
+        "name": "the tide burrow",
+        "x": 288050,
+        "y": 269980,
+        "z": 3130,
+        "radius": 1500,
+        "lines": [
+          "The eldest shriller's burrow by the sea.",
+          "The gorge tells the hour by his cry."
+        ]
+      },
+      {
+        "name": "the rencan ground",
+        "x": 340000,
+        "y": 279000,
+        "z": 4800,
+        "radius": 4000,
+        "lines": [
+          "One, two, three, and the great beast.",
+          "The clans counted the rencan."
+        ]
+      },
+      {
+        "name": "the mirage fields",
+        "x": 299760,
+        "y": 316000,
+        "z": 2100,
+        "radius": 3500,
+        "lines": [
+          "Mirages over the gorge floor.",
+          "A treant from a lost seed sleeps here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cothrom means even or fair. sylvan say the split was the one thing in the long pushing that came out even",
+      "cothrom gorge is the crack the long pushing left. [never closed|from domnann to the sea]",
+      "the worts are all one plant, the outlanders say. runners of marfoirwort",
+      "the rot came up through the gorge from under worlds end",
+      "gneiss is the biggest stone that ever walked. [hardened granidons|one piece at a time]",
+      "dremcis was the best hunter of the gorge clans. now he drinks blood on a dead stag",
+      "the gorge clans told the hour by tudeg's tide cry",
+      "the tree dervishes in the gorge are the laughing wood's children. thats why they laugh",
+      "rencan aon, do, tri means one two three. the gorge clans counted them [lol|really]",
+      "altan garran is built around treal, an old treant who walked back from the edge",
+      "outlanders of altan garran live outside domnann's law and hate strangers. [hibs too|yes you]",
+      "aodhnait in altan garran is a lough derg spear who lost her company in the gorge",
+      "feairna-athar is a cursed treant grown from the lost seed. [south west gorge|the lost seed quest wakes it]"
+    ],
+    "rumour": [
+      "[heard|someone said] tachtwort's tendrils came up through another floor in altan garran",
+      "run from the laughter before you know what it is. [gorge custom|thuxra]",
+      "[word is|heard] the outlanders shot at a hib company from the walls again",
+      "the devil rays in the north west are 60-64. [dont fly too close|ouch]",
+      "[heard|someone said] the worts are closer to altan garran every summer",
+      "someone stacked near marfoirwort's target. [whole group drained|rip]",
+      "[word is|heard] the greater sylvanshades in the gorge are the gorge clans' shadows",
+      "treal buried another root. [writhing death done|grats someone]"
+    ],
+    "tell": [
+      "cothrom gorge is the big split on hy brasil, between domnann and the north sea. 42 to 80",
+      "is cothrom gorge hard? yes. 50s trash, 60s in the north west, bosses to 80",
+      "whats in cothrom gorge? the worts, marfoirwort, gneiss, dremcis, thuxra, tudeg, the outlanders",
+      "where is altan garran? south east end of cothrom gorge. outlanders, hostile, writhing death starts there",
+      "where is marfoirwort? head of the gorge in the north west, in a ring of bare ground. 80",
+      "where is the laughing? the cackling dervishes and thuxra in the north. run"
+    ]
+  },
+  "loremaster": {
+    "intro": "Cothrom Gorge, the split the Long Pushing left. The [rot] came up through it; the [stone] walks; the [clans] lived in its walls; the [Laughing Wood] fell into it. At the south-east end the outlanders keep [Altan Garran]. Ask me about the [rencan], if you like a joke.",
+    "topics": {
+      "rot": "What seeped west under the isle from World's End and came up in the gorge's floor in flower-shapes: the worts, all runners of Marfoirwort. Cronwort, Tachtwort and Fuilwort are its fingers; the dispersers spread its seed.",
+      "stone": "The granidons came out of the gorge walls. Gneiss, the largest, keeps the lip of the split with its household and sheds a piece at a time. The slogcloch move through the middle gorge slow as landslides.",
+      "clans": "The gorge clans, hunters and gatherers who lived in the walls before the rot and told the hour by Tudeg's tide-cry. Dremcis Fuiloltair was their best hunter. Few are left.",
+      "Laughing Wood": "The wood above the clans' caves that fell into the split in the Pushing. Its laughter did not stop; it changed, into Thuxra the Cackler. The gorge's tree dervishes are its children.",
+      "Altan Garran": "The outlanders' walled town at the south-east end, built around the treant Treal. Its people live outside Domnann's law: garda, bards, sorcerers, the Erea family. Fedail speaks for it to strangers.",
+      "rencan": "Beasts of the gorge's east that the clans counted, one, two, three, and named so: aon, do, tri. The great one they called the beast. The names stuck.",
+      "Feairna-Athar": "A treant of the south-west gorge, grown from the one cursed seed the farmers of Droighaid lost there. Its pale shape stands among the mirages; Terod's Lost Seed road wakes it, raging.",
+      "worts": "The [rot]'s flowers: Cronwort with its breanworts, Tachtwort under Altan Garran's south wall, Fuilwort west of it. Writhing Death sends the realm after all three and then the source. Treal buries the source's root.",
+      "Noirin": "The enchanter of [Altan Garran] who cut a piece out of each of the worts to learn where the fingers lead. She is the only outlander who writes anything down."
+    }
+  },
+  "book": {
+    "title": "The Split and the Town: a Study of Cothrom Gorge, by Noirin the enchanter of Altan Garran",
+    "pages": [
+      "I am an enchanter of Altan Garran, which means that I am trusted by my town about as far as the wall, and by the Hibernians not at all. I study the gorge because nobody else will. The Sylvan named it Cothrom, which in your speech means even, and their guides tell your companies it is because the split was the one thing in the Long Pushing that came out even. That is a Sylvan joke. Ours is shorter: the gorge is fair, because it kills everyone. I set down here what I have measured, and leave the jokes to the guides.",
+      "The worts are one plant. I have cut a piece out of each, the mother with her children round her, the choker under our south wall and the one west of it, and the pieces are the same piece. They are the fingers of the killer at the head of the gorge, in its ring of bare ground, and the killer's root goes down further than I can follow, east, toward the place where your Root went down. The rot came up through the split from under World's End. It will go back the same way when it is finished with us.",
+      "Before the rot there were the clans, who lived in the walls and told the hour by the old shriller's cry at the turn of the tide, and the Laughing Wood above their caves, which went down into the split in the Pushing and kept laughing. The clans' children are taught to run from that sound before they can walk. The spinning trees of the gorge laugh too. I think they are the wood's children, and I think they do not know what they are laughing at, which is the worst kind of laughter there is.",
+      "Altan Garran was built around Treal, who walked back from the edge when the gorge split. We live outside the Sylvan's law because the Sylvan did not come for us when the worts did. Fedail asks every company of yours to cut the fingers and kill the source, and does not believe you can, and is right more often than he is wrong. When you do, Treal buries the root, and the walls breathe for a season. Then the next summer the worts are closer. I measure it. I am the only one in town who does."
+    ]
+  },
+  "bosses": [
+    "cronwort",
+    "dremcis-fuiloltair",
+    "beomarbhan",
+    "gneiss",
+    "marfoirwort",
+    "tachtwort",
+    "fuilwort",
+    "fedail",
+    "elnara-erea",
+    "elnaras-pet",
+    "ulicia",
+    "aodhnait",
+    "treal",
+    "cuinn",
+    "tudeg",
+    "thuxra-the-cackler",
+    "ansol",
+    "fachtna",
+    "zinsya",
+    "declan"
+  ],
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles",
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "whose Long Pushing split the isle"
+    },
+    {
+      "id": "domnann",
+      "relation": "the forest it drains away from"
+    },
+    {
+      "id": "vigilant-rock",
+      "relation": "whose dervishes will not come here"
+    },
+    {
+      "id": "worlds-end",
+      "relation": "the edge to the east"
+    }
+  ]
+}

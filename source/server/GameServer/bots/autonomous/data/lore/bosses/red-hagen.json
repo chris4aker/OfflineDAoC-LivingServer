@@ -1,0 +1,108 @@
+{
+  "id": "red-hagen",
+  "name": "Red Hagen",
+  "npcNames": [
+    "Red Hagen"
+  ],
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "hagall-the-red-dagger",
+      "relation": "his captain"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Red Hagen is a level-53 humanoid alone in the east of Raumarik (654546, 765231), near a savage wyvern; he shares the Red Daggers' model.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "In 'An End to the Daggers', players slay Geyra in Yggdra Forest, then Red Hagen in Raumarik, and give Lynnleigh the map.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, and it is not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Every band of outlaws needs someone who remembers where things are, and for the Red Daggers it is Red Hagen. He keeps the map: not a map of Raumarik, which any trapper could draw, but the band's own, of every back road and blind pass between the Jamtland hills and the Raumarik heights, marked with which watch-post watches which path on which nights, and where the realm's war-bands lie up, and where the Albion men will be waiting to buy.\n\nHe is called Red for his beard, the skalds say, and the Daggers say for what he did at the ford the winter Hagall made him second, and neither will say more. He keeps apart from the band's hold. Hagall wants the map as far from the bounty hunters' fires as it can be and still be in Raumarik, and so Hagen lives in the east, alone, with a savage wyvern for a neighbour that he has an understanding with, and comes in to the hold only when the map needs new marks.\n\nLynnleigh heard of the map through a dagger. A warrior of Mularn brought her one of the band's red-hilted blades, and Elizabeth of Mularn knew the hand that had bound its hilt, and the trail led through the werewolf Geyra in Yggdra, who had been carrying the Daggers' messages for the Fenrir Pack, to Red Hagen. Take the map from Hagen, Lynnleigh says, and the Daggers are blind; take Hagall, and they are headless.\n\nHagen fights like a man who has been waiting for this. He has been. The Daggers have a saying about him, that he sleeps with one eye on the map and the other on the road, and the skalds add that he has never yet been surprised. He has a short blade and no mercy and no guile at all, and the map inside his coat, and he would rather burn it than give it up, if he had the time.",
+  "legend": "Red Hagen is a viking epic target (An End to the Daggers) in the east of Raumarik, level 53, alone except for a savage wyvern nearby, so kill or avoid the wyvern first. He's a plain spawn, no special abilities, not CC-immune, and nothing else joins him: one of the easier steps of the chain if your group is at level. You want the map he carries for Lynnleigh. The step before is the werewolf Geyra in Yggdra Forest; the step after is Hagall the Red Dagger and the Daggers' hold by the bounty hunters' fires. Hagen is the easy one; save your nerves for Hagall.",
+  "yells": {
+    "aggro": [
+      "Lynnleigh's dog. I wondered when.",
+      "You won't get the map. I'll eat it first.",
+      "One eye on the map, one on the road. And here you are."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hagall! The map! Somebody tell Hagall!"
+      }
+    ],
+    "death": [
+      "The roads... all of them... in my coat...",
+      "Burn it... somebody burn it..."
+    ],
+    "slay": [
+      "Mark that one on the map.",
+      "Another road closed.",
+      "Red for the ford. Red for you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lone camp in the east. Maps weighted with stones.",
+      "A wyvern dozes nearby. The man ignores it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Red Hagen reaches inside his coat for the map."
+      }
+    ],
+    "realmFirstKill": "Red Hagen is dead. The Daggers are blind."
+  },
+  "botLines": {
+    "briefing": [
+      "deal with the savage wyvern first",
+      "hagen is alone, plain mob",
+      "loot the map for lynnleigh",
+      "geyra in yggdra is the step before"
+    ],
+    "aftermathWin": [
+      "got the map. hagall next",
+      "easy step",
+      "the wyvern didnt even wake up",
+      "map shows every back road in jamtland"
+    ],
+    "aftermathLoss": [
+      "pulled the wyvern too",
+      "he hits fast",
+      "too few for a 53",
+      "forgot to loot the map, had to come back"
+    ],
+    "rumour": [
+      "red hagen keeps the red daggers map of every back road",
+      "the wyvern near hagen leaves him alone. understanding",
+      "they call him red for the ford, not his beard",
+      "he sleeps with one eye on the map"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Red Hagen",
+    "text": "Second of the [Red Daggers] and keeper of their map of the realm's back roads. He lives alone in the east of Raumarik, far from [Hagall]'s hold."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: a trapper of Galplen who winters in the east of Raumarik says the red-bearded man there has a wyvern for a neighbour and has never once been troubled by it. He watched them one morning, the man on a rock with papers spread out and weighted with stones, the wyvern on the next rock, both of them looking at the road. The trapper said it was like seeing two dogs that had agreed on a fence. He did not go closer. He says the man looked up at him once, and smiled.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Red Hagen's map in Raumarik in {minutes} minutes.",
+    "loss": "Red Hagen kept the Daggers' map from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

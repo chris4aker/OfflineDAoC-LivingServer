@@ -1,0 +1,127 @@
+{
+  "id": "fates-chosen",
+  "name": "Fate's Chosen",
+  "catalogKey": "caer-sidi/fatechosen",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 40,000 health. No scripted mechanic beyond its reset. Caer Sidi also holds 'fate's bearers' and the Horsemen's Harbingers of Fate.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs"
+    },
+    {
+      "text": "Fate's Chosen: level 81, 40,000 health, GetResist 40 melee / 70 everything else, AF 350, no other scripted mechanic.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs"
+    },
+    {
+      "text": "The mason of the last step, the yes-sayer version, the steward learning names, Ysolde's oath, and the formula of relief said over it are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Fate's Chosen stands at a post where the galleries of Caer Sidi end and the long stair to the riders begins, and the fate's bearers bow to it as servants bow to a steward. The Inconnu say it was one of the quiet dead who built the fortress, the mason who laid the last step of the riders' stair, and that Fames chose it as he chooses a face and set it there before the rising. The prisoners of the galleries say it is the dead man who answered yes for the lich, sent back down by the end of the world. Brother Cadoc saw a stone-cutter's scarred knuckles on it.\n\nIt learns the name of everyone who climbs past it, and the bearers carry the names up, so that Fames knows every face before a company reaches him. Words go into it and nothing comes out; the galleries' sorcerers say their spells sink into it like water into a mortar bed, and the Inconnu's mason-saying fits it: you do not argue with a wall, you take it down stone by stone. It keeps no court, because the riders want to see what a company does against one servant with nothing to hide behind.\n\nDame Ysolde made it her company's test and swore that if anyone died at its post they would all turn back. They passed it whole, the knights of the Isle of Glass taking it down a course at a time. Sir Geraint of Caerwent said the frontier formula of relief over it as it fell, which Ennyn said no one had ever done; when the company came down from the riders, it stood at its post again.\n\nThe Inconnu say only Fames, who posted it, may relieve it. Caer Gothwaite's companies say the formula over it anyway, and Dame Morwen Penhallow, who said the same words to her great-uncle in the Hall of the Corrupt, approves.",
+  "legend": "Fate's Chosen is the last named before the riders: level 81, 40,000 health, and it fights alone, no adds, no tricks. It is a melee kill: it takes 40% less from slash, crush and thrust but 70% less from everything else, so let the melee carry it and keep the casters' mana for the riders. Tank it, heal through it, burn it with steel. It resets to full if the fight ends. Use it as the check: if anyone dies here, your raid is not ready for Fames, Bellum, Morbus and Funus, and you should go home and come back. Do not blow cooldowns; nothing here needs them. After it falls, rest up fully before you walk up to Fames, because Fames picks someone the moment you are near him. Caer Gothwaite raids say 'you are relieved, go and rest' over it as it dies, for luck.",
+  "yells": {
+    "aggro": [
+      "The riders will know your names.",
+      "You climb. They watch.",
+      "Halfway is far enough for most."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Halfway is far enough. Turn back."
+      }
+    ],
+    "death": [
+      "It was... foretold...",
+      "The riders... are told..."
+    ],
+    "slay": [
+      "As it was written.",
+      "Not chosen.",
+      "The riders will not need to ask you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A watcher stands where fate told it to.",
+      "Fate's bearers pass here, carrying word upward."
+    ],
+    "phases": [],
+    "realmFirstKill": "Fate's Chosen has fallen. The riders take note."
+  },
+  "botLines": {
+    "briefing": [
+      "fate's chosen is the test. 40k, no adds, melee kill, casters save mana",
+      "if anyone dies here we go home, no riders tonight",
+      "no cooldowns on this one",
+      "rest full after it, fames picks someone as soon as we get close"
+    ],
+    "aftermathWin": [
+      "fate's chosen down. on to the riders",
+      "the riders know we're coming now",
+      "clean kill, we're ready",
+      "nobody died, good sign"
+    ],
+    "aftermathLoss": [
+      "if we cant beat fates chosen we're not ready for the top",
+      "three deaths on a tank and spank",
+      "we wasted cooldowns on it",
+      "people got sloppy"
+    ],
+    "rumour": [
+      "heard fate's chosen tells the riders who's coming",
+      "[someone said|heard] fate's chosen is the warmup for the horsemen",
+      "heard the riders picked fate's chosen out of the common dead",
+      "fames already knows who he'll ask by the time you pass fate's chosen, [heard|they say]",
+      "heard caer gothwaite raids tell fate's chosen it's relieved when it dies",
+      "[heard|someone said] fate's chosen tells the riders your name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fate's chosen",
+    "text": "The steward at the foot of the riders' stair in [Caer Sidi]. The Inconnu say it was the mason who laid the last step and that [Fames] chose it; it learns the names of all who climb and sends them up. Albion's knights say the frontier formula of relief over it as it falls. See [four riders]."
+  },
+  "bookPage": "Halfway up the fortress a single figure stood at a post, and the fate's bearers who passed it bowed to it as servants bow to a steward. Dame Ysolde called it the riders' test, and said that if we could not kill it cleanly we would turn back, and meant it. We killed it cleanly. As it fell it said that the riders would be told, and I felt, as I have felt nowhere else in my life, that someone far above us had just learned my name. When Fames looked along our ranks an hour later, I was not surprised that he knew whom to choose.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} passed Fate's Chosen in {minutes} minutes; the riders took note.",
+    "loss": "Fate's Chosen turned {realm}'s raid back before the riders; {raidLeader} was not ready."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "reports to the riders"
+    },
+    {
+      "id": "lord-gildas",
+      "relation": "Dame Morwen said the same formula of relief over Gildas"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Mason of the Last Step",
+      "text": "Halfway up the turning gaol, where the galleries end and the long stair to the riders begins, a single figure stands at a post, and the fate's bearers who pass it bow.\n\nWho it was, the accounts do not agree. The Inconnu say it was one of the quiet dead who built Caer Sidi: the masons of the old province who came to Annwn tired and were offered rest and asked for work instead, and who cut the pale stone of the fortress tier on tier. It laid the last step of the riders' stair, they say, and when it set the step in place Fames came down and looked at it, and chose it, as he chooses a face, and set it at the foot of the stair to watch who climbs. That was before the rising, in the first age of the gaol, and it has stood there since.\n\nThe prisoners of the galleries tell it otherwise. They say Fate's Chosen is the dead man who answered yes for the lich on the night of the rising, when the lich himself would not speak, and that the end of the world, curious, did not end him with the rest but sent him back down the stair to stand where he could see the next ones come. The Inconnu say the prisoners are wrong, and the prisoners say the Inconnu were not on the stair that night.\n\nPrydwen's steersman Iddon left the realm one sentence about the fortress: that it had been built by men who were tired. The clerks of Prydwen Keep, who have read every account of Caer Sidi that has come down the stair, point out that the masons' version fits him. Fate's Chosen does not hurry. It does not boast or threaten. It stands at its post with a mason's patience and a mason's arms, and Brother Cadoc of Caer Gothwaite wrote that its hands, when he saw them close, were scarred across the knuckles the way a stone-cutter's are."
+    },
+    {
+      "title": "The Bearers' Steward",
+      "text": "The fate's bearers carry the riders' business through the fortress, and Fate's Chosen keeps them in order.\n\nEvery bearer who climbs or descends the stair stops at its post and bows, as servants bow to a steward, and the Inconnu who have watched it say that something passes between them that is not speech. What passes, they believe, is names. Fate's Chosen learns the name of everyone who climbs past it, and the bearers carry the names up the stair, and when a company reaches the riders' hall, Fames already knows every face in it. Brother Cadoc felt it happen. He wrote that when the steward fell it said that the riders would be told, and that he felt, as he had nowhere else in his life, that someone far above him had just learned his name.\n\nThe masons who built the gaol were not men of words, the Inconnu say, and Fate's Chosen is not either. Words go into it and are kept, as the bearers' names are kept, and nothing comes back out. The galleries' sorcerers, who have tried everything on everything in Caer Sidi, say their spells sink into it like water into a mortar bed, and that only a blow it can feel through the arms moves it at all. The Inconnu have a saying for the masons, which they apply to the steward too: you do not argue with a wall; you take it down stone by stone.\n\nIt keeps no court. The steward needs none. It is the only keeper in the upper fortress that stands alone, and the Inconnu say that is deliberate. The riders want to see what a company does when it faces a single servant with nothing to hide behind: whether it keeps its order, whether its priests are where they should be, whether anyone panics. A company that cannot face one steward cleanly, the Inconnu say, will not be asked a question at the top of the stair. It will only be ended on the way."
+    },
+    {
+      "title": "Ysolde's Test",
+      "text": "Dame Ysolde of Caer Gothwaite made Fate's Chosen her company's test, and swore an oath on it that Brother Cadoc set down in full.\n\nShe had lost nine in the Crypt Lord's court, two in Ilron's gallery and none to Sanguis, and she stood the company at the foot of the steward's landing and told them what she meant to do. If anyone died at the steward's post, she said, they would turn back, all of them, and carry their dead home, and she would answer for it to the Constable herself. A company that could not pass a single servant whole had no business with the riders. Cadoc wrote that nobody argued and that he believed she meant it.\n\nThey passed it whole. Cadoc's account gives the steward less than a page. The knights of the Isle of Glass went in against it in pairs and took it down as masons take down a wall, from the top, a course at a time, and the wizards who had spent their fire in Ilron's gallery stood back and let them. It did not call for help; nothing came. It said, as it fell, that the riders would be told.\n\nThen the company did a thing the Inconnu had not seen before. Sir Geraint of Caerwent knelt by the fallen steward and said over it the formula of relief that the frontier keeps say at the change of the watch: you are relieved; go and rest. Geraint had learned it at Castle Sauvage, where the knights say it to every man who comes off a wall. Ennyn, who had come up the stair behind the company, sat down on the third step afterwards and said that in all the ages of the gaol no one had relieved the steward before, and that it had not known it was allowed to go.\n\nWhen the company came down from the riders, the steward was standing at its post again."
+    },
+    {
+      "title": "No One May Relieve It",
+      "text": "Fate's Chosen comes back to its post every time it falls, and the realm's readings of why are a quarrel about who has the right to send a servant home.\n\nThe Inconnu say that only the one who posted a sentry may relieve him, and that Fames, who chose the steward, has never come down the stair to do it; so the formula of relief, however kindly said, is said by the wrong mouth. Geraint's words let it rest for an hour, they say, and an hour is all a stranger's relief is worth. The Church of Camelot says the steward is a soul in bondage like every soul in Caer Sidi and will be relieved when Arawn's whole gaol is broken, and not before. The prisoners of the galleries, if it was their yes-sayer, say it is waiting for the end of the world to finish the conversation it began on the night of the rising.\n\nAlbion's knights have taken the custom up regardless. Every company of Caer Gothwaite that passes the steward's post says the formula over it as it falls, and the frontier keeps have heard of it and approve. Dame Morwen Penhallow, told of it at Castle Sauvage, said that a soldier who keeps his post past the end of the war deserves to hear the words even if he cannot obey them, and that she had said them to her own great-uncle in the Hall of the Corrupt for the same reason.\n\nWhat the steward wants, the Inconnu think, is only what every mason wants at the end of a long job: to be told that the work is good and that it may put down its tools. It cannot be told that by anyone but the rider who chose it. So it stands at its post, and learns the names, and sends them up, and the fate's bearers bow to it on the stair. Brother Cadoc wrote that he was sorry for it, and then crossed the line out, because he said that pity was the one thing Caer Sidi could use against a man."
+    }
+  ]
+}

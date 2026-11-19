@@ -23,6 +23,7 @@ jobs:
         run: |
           python3 tools/release/check_versions.py
           python3 -m unittest discover -s tools/release/tests -v
+          python3 -m unittest discover -s tools/installer/tests -v
 
   # The epic encounter catalog (docs/encounters) must match the boss scripts it was read from: a script change without
   # a regenerated catalog, or with a hand check now out of date, fails here (source/tools/epic_encounter_catalog.py).
@@ -36,9 +37,29 @@ jobs:
           python3 source/tools/epic_encounter_catalog.py --check
           python3 -m unittest discover -s source/tools/tests -v
 
+  # The new client as a 0.37c player gets it: the released scripts with tools/fork-build/content-patches.json applied
+  # must all compile in Godot against the released class cache, and issue #34's probe (skills onto the quickbar,
+  # Stealth, the merchant's SELL) must pass. tools/newclient-compat/installed_check.py; no game content needed.
+  new-client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the 0.37 release commit (the released scripts)
+        run: git fetch --depth=1 origin ab4df02a1ad26192357477dbc912756c6703fb66
+      - name: Godot 4.7.2 (SHA-512 from its release page)
+        run: |
+          curl -sSfL --retry 3 -o "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          echo "9aa00f7a605200940bce3027a567b782f49bd8e940dd06ae9e987bd65aee1b1467edd56ed84fcdcbdd44354bf613bdbb4e5d2913e925850368e150c59ed54c65  $RUNNER_TEMP/godot.zip" | sha512sum -c -
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+      - name: Installed scripts compile, issue #34 probe
+        run: python3 tools/newclient-compat/installed_check.py "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" "$RUNNER_TEMP/installed"
+
   server:
     runs-on: windows-latest
     timeout-minutes: 45
+    outputs:
+      artifact: ${{ steps.package.outputs.artifact }}
     steps:
       - uses: actions/checkout@v4
 
@@ -53,7 +74,10 @@ jobs:
         run: |
           python tools/bot-voices/build_corpus.py --verify
           python tools/bot-voices/check_runtime_names.py
+          python tools/bot-voices/debates_doc.py --check
+          python -m unittest discover -s tools/bot-voices/tests -v
           python -m unittest discover -s tools/claude-version/tests -v
+          python -m unittest discover -s tools/perf/tests -v
 
       - name: Create local server config (build only needs it to exist)
         shell: bash
@@ -129,13 +153,14 @@ jobs:
           path: chat-audit/
           if-no-files-found: warn
 
-      # The launcher ships in the build too (its Living Server tab and, from 1.1.2, its update check). Their own tests
-      # must pass; the rest of the launcher tests run in the informational launcher job below.
+      # The launcher ships in the build too (its Living Server tab, from 1.1.2 its update check, from 1.2 Host for Friends
+      # and Join Friend, from 1.2 also Crafting 2.0's economy page, bot purge and level-50 kit). Their own tests must pass;
+      # the rest of the launcher tests run in the informational launcher job below.
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
           dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~Tests.Update" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
+          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~LoreBestiaryTests|FullyQualifiedName~Tests.Update|FullyQualifiedName~HostForFriendsTests|FullyQualifiedName~JoinFriendTests|FullyQualifiedName~JoinFriendFormTests|FullyQualifiedName~GmAccessTests|FullyQualifiedName~HostForFriendsFirewallTests|FullyQualifiedName~CraftingEconomyLauncherTests|FullyQualifiedName~LauncherWindowSizeTests" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
           summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
           echo "::notice title=Living Server tab tests::${summary:-no summary line found}"
 
@@ -148,6 +173,28 @@ jobs:
             **/ui-preview/*.png
             **/ui-preview/*.html
           if-no-files-found: warn
+
+      # Character passport (1.2, docs/CHARACTER-PASSPORT.md): the shared library the server and the launcher compile, its
+      # command line tool, and its tests on synthetic saves (round trip, no duplication, rollback, backups, and a decision
+      # for every table of progress-policy.json).
+      - name: Test the character passport
+        shell: bash
+        run: |
+          dotnet build source/tools/OfflineDaoc.Passport.Cli/OfflineDaoc.Passport.Cli.csproj -c Release
+          out=$(dotnet test source/tools/OfflineDaoc.Passport.Tests/OfflineDaoc.Passport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Character passport tests::failed"; exit 1; }
+          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
+          echo "::notice title=Character passport tests::${summary:-no summary line found}"
+          server=$(dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_PassportLock" 2>&1 || true)
+          echo "::notice title=Passport lock and desk tests (server)::$(echo "$server" | grep -E "(Passed|Failed)!" | tail -n 1 || true)"
+
+      # Progress transfer (OfflineDaoc.ProgressImport): its engine's tests on synthetic saves (1.2: a play test sweep's
+      # guest record is never carried, so a transfer can't give GM back).
+      - name: Test the progress transfer engine
+        shell: bash
+        run: |
+          out=$(dotnet test source/tools/OfflineDaoc.ProgressImport.Tests/OfflineDaoc.ProgressImport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Progress transfer tests::failed"; exit 1; }
+          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
+          echo "::notice title=Progress transfer tests::${summary:-no summary line found}"
 
       # Only after every server test passed: the installable server build (docs/RELEASE-PLAN.md).
       - name: Package the server build
@@ -166,8 +213,8 @@ jobs:
           Copy-Item tools/fork-build/INSTALL.cmd, tools/fork-build/ROLLBACK.cmd, tools/fork-build/PREPARE-FOR-UPDATE.cmd, tools/fork-build/install-server-build.ps1, tools/fork-build/rollback-server-build.ps1, tools/fork-build/fork-build-common.ps1, tools/fork-build/README.txt, tools/fork-build/content-patches.json $dir
           # Whole files the content patches ship (content-patches.json "File" entries): Living Server's loading screen.
           Copy-Item tools/fork-build/content "$dir/content" -Recurse
-          Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json "$dir/tools/claude-version"
-          Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md "$dir/docs"
+          Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json, tools/claude-version/lore_books.py "$dir/tools/claude-version"
+          Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md, docs/PLAY-WITH-FRIENDS.md "$dir/docs"
           $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
           New-Item -ItemType Directory -Path "$dir/launcher" -Force | Out-Null
           $launcherInfo = @()
@@ -210,6 +257,26 @@ jobs:
           name: ${{ steps.package.outputs.artifact }}
           path: package/
           retention-days: 90
+
+  # The 1.2 gate's Install rows as tests (candidate-install.yml): this commit's package installed new the way a player gets
+  # it, the class-off (0.37) edition checked on it, and a 1.1.4 game updated to it through Setup with its saves kept.
+  # About 30-45 minutes of Windows runners with real downloads, so only for the candidate line (main, integration/1.2,
+  # release/*), for ci/* branches (pull requests that change these checks push one) and by hand.
+  candidate-install:
+    needs: server
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'integration/1.2' ||
+        startsWith(github.ref_name, 'release/') || startsWith(github.ref_name, 'ci/')))
+    concurrency:
+      group: candidate-install-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/candidate-install.yml
+    with:
+      package_artifact: ${{ needs.server.outputs.artifact }}
 
   launcher:
     runs-on: windows-latest

@@ -18,8 +18,14 @@ namespace DOL.GS.Quests
 
         protected const String MOB_NAME = "mobName";
         protected const String ITEM_INDEX = "itemIndex";
+        protected const String MOB_KILLED = "mobKilled";
 
-        protected bool MobKilled = false;
+        /// <summary>The monster is dead: return to the guard (saved with the task, so a relog keeps it).</summary>
+        protected bool MobKilled
+        {
+            get => GetCustomProperty(MOB_KILLED) == "1";
+            set => SetCustomProperty(MOB_KILLED, value ? "1" : "0");
+        }
 
         private static readonly int[] MoneyReward = [28, 57, 77, 105, 140, 190, 257, 347, 470, 632, 735, 852, 987, 1147, 1330, 1542, 1790, 2077, 2407, 2801];
         private static readonly string[] TaskObjects = ["Skin", "Meat", "Bones", "Tooth", "Claw", "Skin", "Legs", "Collar", "Bone", "Ear", "Head", "Hair", "Carapace", "Skull", "Pile of dirt", "dust", "Slice", "Wings", "egg", "heart", "mandible"];
@@ -43,6 +49,15 @@ namespace DOL.GS.Quests
         public KillTask(GamePlayer taskPlayer, DbTask dbTask) : base(taskPlayer, dbTask)
         {
         }
+
+        /// <summary>
+        /// Period (owner 2026-10-31: period numbers, not the old server's formula): "You will receive about triple a yellow
+        /// kill experience for each successful kill task" (Camelot Warcry task guide) - three times what a monster of your
+        /// level gives, worked out when you claim it (the guide: claim after levelling and it pays at the new level).
+        /// </summary>
+        public override long RewardXP => PeriodKillTaskXP(m_taskPlayer.Level);
+
+        public static long PeriodKillTaskXP(int level) => 3 * GameServer.ServerRules.GetExperienceForLiving(level);
 
         public override long RewardMoney
         {
@@ -142,10 +157,11 @@ namespace DOL.GS.Quests
                 GameLiving target = gArgs.Target;
                 if (ServerProperties.Properties.TASK_GIVE_RANDOM_ITEM == false)
                 {
-                    if (((KillTask)player.GameTask).MobName == target.Name)
+                    if (!MobKilled && MobName == target.Name)
                     {
-                        ((KillTask)player.GameTask).MobKilled = true;
+                        MobKilled = true;
                         player.Out.SendMessage("You must now return to " + player.GameTask.ReceiverName + " to receive your reward!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                        player.Out.SendQuestListUpdate();
                     }
                 }
                 else
@@ -269,7 +285,7 @@ namespace DOL.GS.Quests
             if (source == null)
                 return false;
 
-            GameNPC Mob = GetRandomMob(player);
+            GameNPC Mob = GetRandomMob(player, source);
 
             if (Mob == null)
             {
@@ -290,8 +306,10 @@ namespace DOL.GS.Quests
                 ((KillTask)player.GameTask).ItemIndex = Util.Random(0, TaskObjects.Length - 1);
                 ((KillTask)player.GameTask).MobName = Mob.Name;
                 player.GameTask.ReceiverName = source.Name;
-                player.Out.SendMessage(source.Name + " says, *Very well " + player.Name + ", it's good to see adventurers willing to help out the realm in such times. Search to the " + GetDirectionFromHeading(Mob.Heading) + " and kill a " + Mob.Name + " and return to me for your reward. Good luck!*", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                // the direction from the guard to the monster (it was the way the monster happened to face)
+                player.Out.SendMessage(source.Name + " says, *Very well " + player.Name + ", it's good to see adventurers willing to help out the realm in such times. Search to the " + GetDirectionFromHeading(source.GetHeading(Mob)) + " and kill a " + Mob.Name + " and return to me for your reward. Good luck!*", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 player.Out.SendDialogBox(eDialogCode.SimpleWarning, 1, 1, 1, 1, eDialogType.Ok, false, "You have been given a task!");
+                player.Out.SendQuestListUpdate();
                 return true;
             }
         }
@@ -323,10 +341,14 @@ namespace DOL.GS.Quests
         /// </summary>
         /// <param name="Player">The GamePlayer Object</param>
         /// <returns>The GameMob Searched</returns>
-        public static GameNPC GetRandomMob(GamePlayer Player)
+        /// <summary>
+        /// A common monster of the guard's zone, level L-2 .. L (a lower-case name: not a named one), chosen at random.
+        /// </summary>
+        public static GameNPC GetRandomMob(GamePlayer Player, GameLiving guard = null)
         {
-            GameNPC npc = Player.CurrentZone.GetRandomNPC(eRealm.None, Player.Level - 2, Player.Level);
-            return npc != null && npc.Name.ToLower().Equals(npc.Name) ? npc : null;
+            return PickFromZone(guard?.CurrentZone ?? Player.CurrentZone, [eRealm.None], Math.Max(1, Player.Level - 2), Player.Level,
+                npc => npc.Name.ToLower().Equals(npc.Name) && npc.Level >= Player.Level - 2 && npc.Level <= Player.Level &&
+                       (npc.Flags & GameNPC.eFlags.PEACE) == 0 && GameServer.ServerRules.IsAllowedToAttack(Player, npc, true));
         }
 
         /// <summary>

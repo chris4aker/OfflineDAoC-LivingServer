@@ -1,0 +1,138 @@
+{
+  "id": "hurionthex",
+  "name": "Hurionthex",
+  "catalogKey": "galladoria/hurionthex",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Every 18 seconds he changes form: his own, a Treant, a 'Saiyan' ape that spreads Black Plague, and a Granidon with a 120 damage shield.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Messages: 'A ring of magical energy emanates from Hurionthex', 'Hurionthex returns to his natural form'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs"
+    },
+    {
+      "text": "Bot chat: he wears a different shape every time, so trust nothing that looks friendly.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    }
+  ],
+  "story": "Hurionthex has no shape of his own that anyone trusts. The Sylvan think he was a shapechanger of the old forest, a druid of their own kind who learned to wear any skin, and that the Root taught him to forget which one was his. Now he cannot hold a form for longer than a few breaths. He becomes a treant, heavy and grinding; then a great ape that carries plague in its fur; then a granidon of living stone that wounds every hand that strikes it; then, briefly, himself, whatever that is. A ring of light marks each change. The wardens read the ring as sailors read the sky.\n\nHe was a Sylvan druid once, the Sylvan think, one of the shape-walkers who could wear the skin of any creature of the forest and come home to his own. The shape-walkers had one teaching: always remember which shape is yours. Hurionthex went down into the hollow wearing a borrowed skin, and the Root's sap got into him, and he forgot.\n\nNow he cannot hold any shape for long. Every few breaths a ring of light runs out from him and he becomes something else. As a treant he is heavy and grinding, and something in the bark lends his blows more force. As a great ape he carries plague in his fur. As a granidon of living stone his skin wounds every hand that strikes it. Then, briefly, he returns to his natural form, which nobody can describe afterward, and then the ring comes again. In later seasons he slipped away again and again and came back whole, until his old student Bébhinn saw that he only did it when the fighting paused.\n\nThe wardens of Domnann warn Hibernians to trust nothing friendly-looking in his hall. The Sylvan go further. They say he once walked up to a band of their own wearing the face of a Sylvan they had buried, and spoke to them in her voice. Aroon nearby keeps nine shadows; Hurionthex keeps nine faces. Neither has ever been sure who is safer.\n\nHe was the best of the Sylvan shape-walkers and went down into the hollow as a spy in a lurker's skin; the sap took the way home. He once wore the face of the fallen warden Muireann. The walkers of Domnann answer his question for him every time he falls.",
+  "legend": "Watch the forms. Stone form hurts every melee hit back: melee ease off or eat it with heals, casters keep going. Ape form spreads plague, so cure fast. He resets if you let the fight drop, so do not stop. Trust nothing friendly-looking in his hall. Call the forms out loud. Stone: melee steps back, casters keep going. Ape: clerics on disease. Treant: tank braces. His own face: everyone hits. He resets if the fight goes quiet, so never stop. And when he wears a face you know, a Sylvan face or a guildmate's, hit it anyway. The face is the trick; the creature underneath is the same.",
+  "yells": {
+    "aggro": [
+      "Which of me will you fight?",
+      "He smiles at you with someone else's face.",
+      "Which shape was mine? Help me remember."
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "A ring of magical energy emanates from Hurionthex."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "I have forgotten my own face. I will take yours."
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Treant, ape, stone, and none of them me."
+      }
+    ],
+    "death": [
+      "Hurionthex returns to his natural form.",
+      "At last... I remember... my own face..."
+    ],
+    "slay": [
+      "Your shape will suit me.",
+      "Your face will do nicely.",
+      "I will wear you home."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Footprints of four creatures, ending in one.",
+      "Something here is wearing a borrowed shape."
+    ],
+    "phases": [
+      {
+        "trigger": "formChange",
+        "text": "Hurionthex's body twists into a new shape!"
+      }
+    ],
+    "realmFirstKill": "Hurionthex lies still, wearing his own face at last."
+  },
+  "botLines": {
+    "briefing": [
+      "hurionthex changes form every few seconds. stone form reflects melee, [melee back off|casters only] then",
+      "ape form spreads plague. [cure it|clerics on cure disease]",
+      "call the forms on voice. stone means melee off, [ape means cure disease|ape is plague]",
+      "dont let the fight stop or he [resets|heals up], he used to do that all the time",
+      "his natural form is when everyone hits hardest. [watch for it|call it]"
+    ],
+    "aftermathWin": [
+      "he died in his own shape. [nobody knows what it was|looked sad, honestly]",
+      "hurionthex down in his own shape. [nobody can describe it|weird face]",
+      "called every form, nobody died to the shield. [proud|great]",
+      "plague cured, shield respected, shapeshifter dead. [textbook|grats]"
+    ],
+    "aftermathLoss": [
+      "the melee kept swinging into stone form and [killed themselves|died to the shield]",
+      "melee swung into stone form and [died to the shield|killed themselves]",
+      "the plague went through the healers. [cure it|clerics]",
+      "we paused and he [reset again|healed up]"
+    ],
+    "rumour": [
+      "[heard|someone said] hurionthex took the shape of a sylvan [once|last week] and walked up to a group",
+      "[heard|someone said] hurionthex walked up to some sylvan wearing a dead sylvan's face",
+      "[word is|heard] hurionthex was a sylvan shape-walker who forgot which shape was his",
+      "the old galladoria raids had him reset over and over. [fixed now|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hurionthex",
+    "text": "A shapechanger of the old forest who forgot which shape was his. Treant, plague-ape, living stone, then himself for a breath. Read the ring of light and change your fight with him."
+  },
+  "bookPage": "The shape-walkers of the Sylvan, Aodhan was told, have one teaching above all: always remember which shape is yours. A young walker practises coming home to her own skin a thousand times before she ever wears a stranger's. Hurionthex was the best of them, and proud, and went down into the hollow in a borrowed skin to spy on the Root. The sap got into him there and he forgot. Now he changes every few breaths and none of the changes is home. The Sylvan teach the young walkers his name as a warning. Then they ask the young one: which shape is yours? And the young one must answer at once.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to Hurionthex, in whatever shape he died; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on Hurionthex after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "aroon-the-urlamhai",
+      "relation": "his neighbour, who hides behind nine shadows where he hides behind faces"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "the Root whose sap made him forget"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Shape-Walkers",
+      "text": "The Sylvan have always had shape-walkers: druids of their own kind who can wear the skin of any creature of the forest and come home to their own. The craft is taught slowly. A young walker spends years learning to come home before she is ever allowed to leave; she practises a thousand times returning to her own skin from a fox's, from an owl's, from a hare's, until the way back is deeper in her than the way out. The shape-walkers have one teaching above all others, and every Sylvan child knows it even if she will never walk: always remember which shape is yours. Young walkers are asked the question at odd moments for the rest of their lives, at meals, on paths, half asleep, and must answer at once.\n\nHurionthex was the best of them in his generation, and the proudest. He could hold a treant's shape for a season, a great ape's for a month, and he was the only walker the Sylvan ever knew who could wear a granidon, the living stone of the hills, and come back. He taught at the walkers' grove in Domnann for many years, and the walkers who learned from him say he asked the question more often than any other teacher, and answered it more quickly himself. His own shape, the walkers remember, was a tall Sylvan with grey-green bark and a habit of standing very still before he changed, as if listening for the way out. His students called it his listening, and the best of them copied it."
+    },
+    {
+      "title": "The Spy in the Borrowed Skin",
+      "text": "When the Sylvan elders wanted to know what the Root was doing in the hollow, they sent Hurionthex. A shape-walker could go where a Sylvan could not, wearing the skin of something the hollow would not notice. He chose, the Sylvan think, a lurker of the upper pools, a dull thing nobody in Galladoria would look at twice, and went down. For a season he came back up every new moon to the walkers' grove and told the elders what he had seen: the Olcasar waking, the Uaimh digging, the Conservator counting.\n\nThen one new moon he came back as a lurker and did not change. The walkers at the grove asked him the question and he could not answer. He went back down. The Sylvan believe the Root's sap got into him through the borrowed skin, the way water gets into a boot through a seam, and that it did not take his shapes from him. It took the way home. He still has every shape he ever learned. He has none of them to return to.\n\nNow he cannot hold any shape for long. Every little while a ring of magical energy runs out from him and he becomes something else, and the wardens of Domnann learned to read the ring as sailors read the sky. As a treant he is heavy and grinding and something in the bark lends his blows more force. As the great ape, the shape the realm's scholars named Saiyan for reasons nobody now remembers, he carries a black plague in his fur. As a granidon, his best and proudest shape, his stone skin bites every hand that strikes it."
+    },
+    {
+      "title": "The Face of Muireann",
+      "text": "The Sylvan tell one story about him that they do not like telling. In the second year after the isles came out of the mist, a band of Domnann wardens went down into the eastern galleries to recover the body of a warden named Muireann, who had fallen there. They found her, they thought, standing in a side passage, alive, and she called them each by name and asked them to take her home. Two of them went to her before the third, an old walker who had studied under Hurionthex, asked her the question. She could not answer. The two did not come back.\n\nThat is why the walkers' grove teaches that nothing friendly-looking in his hall is to be trusted, and that a known face there is only a coat. The face is a coat, the walkers say; the creature underneath is the same. The Sylvan add something the wardens do not: that he may not know he is lying. He has lost his own face. When he wears a dead woman's, he may believe for a moment that it is his.\n\nIn his natural form, between the shapes, he is something nobody who has seen it can describe afterward. Those who have seen it say only that it looks unfinished, as if it were waiting for a shape to settle on it. Muireann's body was never found. Her name is on the Domnann list with a mark the Sylvan use for those whose faces are still walking."
+    },
+    {
+      "title": "Nine Faces, Nine Shadows",
+      "text": "He keeps the eastern galleries with Aroon, the keeper-ash who cut his nine weaknesses into nine shadows. The Sylvan say the two of them argue in the dark about which has found the better way never to die: nine faces, or nine shadows. In later seasons Hurionthex seemed to have found a third way. Again and again a company drove him near his end, and again and again he slipped away and came back whole, and it was the old walker who had saved the third warden who saw why: he only slipped away when the fighting paused. A shape-walker takes his chance to change when nobody is watching, she said; he had been her teacher, and it was the first thing he ever taught her.\n\nThe walkers' grove in Domnann still teaches. Every young walker is told his story on the day she first leaves her own skin, and asked the question that night, and every night after for a month. When the realm kills him the walkers go down to the grove and ask each other the question, all night, in turns, and answer it each time aloud. The old walker who saved the third warden says it is the only way she knows to mourn him: to do the one thing he could not. The old walker's name is Bébhinn. She is the last of Hurionthex's own students still teaching at the grove. Bébhinn says that on those nights she sometimes answers in his old voice, by accident, and that the young walkers pretend not to notice."
+    }
+  ]
+}

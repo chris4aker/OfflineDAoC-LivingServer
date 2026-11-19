@@ -1,0 +1,81 @@
+{
+  "id": "bevvny",
+  "name": "Bevvny",
+  "npcNames": [
+    "Bevvny"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Bevvny: NPC template 60158403, level 49, the wi'voron advisor model, faction Drakoran Legion, aggro 200 (range 500), no spells, respawn 80 s, in the drakoran camp of the dales at 406285, 401439 with about fifteen drakoran guardsmen (52) and archiators (53).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Bevvny as the wi'voron counsellor of the camp and the advice nobody takes are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The drakoran legion's camp in the dales does not sleep, and in the middle of it, among guardsmen by the hundred, sits Bevvny, who is not a guardsman. Bevvny is a wi'voron, of the clan whose elders counsel the legion's commanders, and was sent over the water to advise the camp on the country, the weather, the Avalonian dead and the habits of Albion's fort on the hill.\n\nThe advice has been good. The camp has not taken it. Bevvny told the camp's officers not to build across the wooden bridge where the necromancers now keep their bank, and they built there; told them the households of the dales would not lie down for any rod, and the necromancers tried their rod; told Qan'ris Duros that Fort Gwyntell counts his fires as carefully as he counts the fort's. Gracien Adamson, the fort's registrar, has a page for Bevvny in his second book, with the note that the drakoran's best counsellor is the one they never listen to, which is a thing he understands.\n\nBevvny keeps to the camp's heart, where the guardsmen stand thickest, and offers advice to anyone who comes near, in the legion's tongue. Nobody from the fort has understood it yet.",
+  "legend": "Bevvny, level 49 drakoran (wi'voron), is in the middle of the drakoran camp in the dales with about fifteen guardsmen (52) and archiators (53) round, all Drakoran Legion. You will not get Bevvny alone: work in from the edge of the camp, one pull at a time, with a group of high forties or better. Plain melee, no spells. Respawn 80 seconds, and so do the guards.",
+  "yells": {
+    "aggro": [
+      "I advised against this.",
+      "Guardsmen! As I said would happen."
+    ],
+    "phases": [],
+    "death": [
+      "They... never listen..."
+    ],
+    "slay": [
+      "As I advised.",
+      "Noted. Again."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The camp's heart. A counsellor nobody heeds."
+    ],
+    "phases": [],
+    "realmFirstKill": "Bevvny has fallen. The camp has lost its counsel."
+  },
+  "botLines": {
+    "briefing": [
+      "bevvny is in the middle of the drakoran camp, 15 guards round her, work in from the edge",
+      "high forties at least for the camp"
+    ],
+    "aftermathWin": [
+      "bevvny down. took half the camp first",
+      "the camp is short one advisor"
+    ],
+    "aftermathLoss": [
+      "the guardsmen came three at a time"
+    ],
+    "rumour": [
+      "[heard|someone said] bevvny gives the drakoran good advice and they never take it",
+      "heard gracien adamson has a page on bevvny in his book"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bevvny",
+    "text": "A wi'voron counsellor in the heart of the drakoran camp of the [dales of devwy], whose advice to the legion has been good and never taken. Gracien Adamson keeps a page on Bevvny."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} cut through the drakoran camp to Bevvny in {minutes} minutes.",
+    "loss": "The drakoran camp closed round Bevvny; {raidLeader} of {realm} took no advice and no victory."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "qanris-duros",
+      "relation": "a commander who did not listen"
+    }
+  ],
+  "tier": "minor"
+}

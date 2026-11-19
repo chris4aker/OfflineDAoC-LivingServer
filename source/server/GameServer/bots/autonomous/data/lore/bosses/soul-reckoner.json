@@ -1,0 +1,135 @@
+{
+  "id": "soul-reckoner",
+  "name": "Soul Reckoner",
+  "catalogKey": "caer-sidi/soulreckoner",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "the reckoner"
+  ],
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds; casts Drain Life Essence.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs"
+    },
+    {
+      "text": "While a soul lives and he is in his room he takes a quarter of the damage (the original made him fully immune; that is behind EpicEncounterMechanics.AllowSoulReckonerFullShield). Outside his room he takes none.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Soul Reckoner: 4-6 reckoned souls on engage, 1-2 more every 10-15 s; a quarter damage while a soul lives and he is inside his 1,500 room (full immunity and the 900 room are behind switches, off); no damage outside the room; Drain Life Essence.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs"
+    },
+    {
+      "text": "The first counter of the dead with the half-cut tally-stick, the blank line for the end of the world, the counted who stand about his table, Ysolde's two bands, Cadoc's count and the counters' ledger are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Soul Reckoner was the first of Arawn's keepers and the only one who never turned, because he never stopped doing his work: he counts. Before the gaol was built, the Inconnu say, Arawn set a table and a clerk at the bottom of it, and every prisoner who came into Caer Sidi passed the table and was written down; the reckoning hall and the fortress were raised around him, and he has never left his seat. The Inconnu say he was the first man who ever counted the dead after a battle, who died with his tally-stick half cut; the Church, the recording angel fallen. He wrote the Host once with seven blanks, and the line for the end of the world in the first cell is a blank he has never filled.\n\nOn the night of the rising his ledger had one line, none in, none out, and no prisoner came near him. His counted, the reckoned souls, drew in about his table and have stood there since; they come between him and every blow and take the most of it, and while he sits counting, more rise to stand about him, a few at a time, without end. Once nothing reached him through them at all; that went out of them when the end of the world first fell. Beyond his own hall nothing reaches him, because a reckoner away from his table is not there to be struck.\n\nDame Ysolde fought him at his table. Her wizards in two bands burned the counted from first to last and never once turned on the Reckoner, while her knights struck him through the thinning crowd and her priests fed back the strength he drew out of men into his ledger. Brother Cadoc counted the company aloud all hour; when the clerk fell across his ledger, the count was the same.\n\nNobody knows whom he counts for. Caer Gothwaite's companies now take a counter, and the counters' ledger under the chapel sill begins in Cadoc's hand: eighty in; seventy-one out.",
+  "legend": "Fight the Soul Reckoner in his own hall and nowhere else: dragged out of the room (about 1,500 around his spot) he takes no damage at all. He is level 81, 100,000 health. He starts with four to six reckoned souls and raises one or two more every 10-15 seconds for the whole fight. While any soul lives and he is in his room, he takes only a quarter of what you hit him for. In the original he was fully immune with souls up; that is switched off here so the fight can be won. So: two area groups on the souls from first pull to last and nothing else, a solid melee and tank group on the Reckoner himself, and healers watching whoever he hits with Drain Life Essence. Do not let the area groups switch to him; the souls never stop coming. The old guides called this the hardest room before the riders. Caer Gothwaite raids count heads going in and coming out.",
+  "yells": {
+    "aggro": [
+      "Name. Deeds. Debts. Step forward to be counted.",
+      "You are not on my ledger. That can be mended.",
+      "Count them in."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Rise, reckoned ones. Stand between me and the uncounted."
+      }
+    ],
+    "death": [
+      "The ledger... is closed...",
+      "Who will count them now?"
+    ],
+    "slay": [
+      "Counted.",
+      "Entered and closed.",
+      "One more to the tally."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Someone down here is counting. Out loud.",
+      "Every soul that comes here is counted. So are you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Reckoned souls rise to shield the Reckoner!"
+      }
+    ],
+    "realmFirstKill": "The Soul Reckoner's count is done. Caer Sidi forgets."
+  },
+  "botLines": {
+    "briefing": [
+      "reckoner stays in his room, out of it he takes no damage",
+      "souls keep coming, 1-2 every 10-15 sec. two aoe groups on souls the whole fight",
+      "while any soul is up he takes a quarter damage. melee and tanks on him anyway",
+      "heal whoever he drains"
+    ],
+    "aftermathWin": [
+      "reckoner down. nobody's counting us now",
+      "kept the souls down the whole time. nice",
+      "aoe groups won that one",
+      "the ledger is closed, gg"
+    ],
+    "aftermathLoss": [
+      "someone pulled him into the corridor. immune out there",
+      "souls stacked up and we did nothing",
+      "not enough aoe for the souls",
+      "his drain kept the tank dying"
+    ],
+    "rumour": [
+      "something at the bottom of caer sidi keeps the count. [i think its the reckoner|the soul reckoner]",
+      "[heard|someone said] the reckoner's souls take the hits for him",
+      "heard the reckoner is the only keeper who never turned",
+      "[heard|someone said] the priests think arawn wont thank us for killing the reckoner",
+      "heard caer gothwaite groups count heads going in and coming out of caer sidi",
+      "[heard|someone said] the reckoner wrote the host down once and left seven blanks"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "reckoner",
+    "text": "The first of Arawn's keepers in [Caer Sidi], a clerk at a table at the bottom of the gaol who writes every soul down once. His counted stand about him and take his blows; away from his table he cannot be struck. On the night of the rising his ledger read: none in, none out. See [Crypt Lord] and [Host]."
+  },
+  "bookPage": "Every soul that comes into Caer Sidi passes a table at the bottom of the fortress, and behind the table sits the Reckoner, and he writes it down: the name, the deeds, the debt. Brother Cadoc's company found him at his table still. The souls he had counted stood round him like a ledger made flesh, and took our blows for him, and new ones stood up out of the pages as fast as we cut the old ones down. Our priests did not like killing him. One said afterward that he was the only honest servant left in the place.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} closed the Soul Reckoner's ledger in {minutes} minutes.",
+    "loss": "The Soul Reckoner counted {realm}'s raid among his own; {raidLeader} could not clear the souls."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "crypt-lord",
+      "relation": "the warden above him, who took command of the prisoners"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Table at the Bottom of the Gaol",
+      "text": "The Soul Reckoner was the first of Arawn's keepers, and the only one who never turned, because he never stopped doing his work.\n\nHe counts. Before Arawn raised the crypts or the galleries or the riders' stair, the Inconnu say, he set a table at the bottom of the place where the gaol would be, and a clerk at it with a ledger and a patience without end, and every prisoner who came into Caer Sidi passed that table on the way in and was written down. The reckoning hall was built around the table afterwards, and the fortress around the hall, and the clerk has never once left his seat. The Inconnu say a reckoner away from his table is not a reckoner, and that he knows it.\n\nWho he was, nobody knows. The Inconnu say he was the first man who ever counted the dead after a battle, a scribe of some king long before Rome, who walked a field with a tally-stick and cut a notch for every body, and who died of what he saw there with the stick half cut. Arawn gave him the table so that he might finish. The Church of Camelot says he is the recording angel of the Book, fallen, and that his ledger is a forgery of the one that will be opened at the end. The clerks of Prydwen Keep, who keep the realm's oldest roll, say only that they recognise the manner.\n\nHe writes every soul once. He wrote the Host down once and left seven blanks. He wrote the riders down, and the Inconnu say the entry for the four is one line, and that the line for the end of the world in the first cell is a blank that he has never filled. Every soul that tries to leave the gaol passes his table again, and he looks up, and finds its line, and the Inconnu say that is the reason most of them never try."
+    },
+    {
+      "title": "None In, None Out",
+      "text": "On the night the gaol rose, the Reckoner's ledger had one line, and that line is the only thing anyone in Albion has ever read in it.\n\nNone in, none out. Every soul in the fortress was busy, and none passed the table. The Inconnu who read the page afterwards say that the Reckoner wrote it in the same hand as every other line, without haste, and then turned to a fresh leaf and went on counting, and that no one in the rising touched him. The prisoners feared being counted out more than they feared Arawn. Not one of them, in all the breaking of keepers that night, came down to the reckoning hall.\n\nWhat he did instead, the Inconnu say, was gather his counted. The reckoned souls, the ones written down and set aside to wait their turn, had always stood about his hall in their rows; on the night of the rising they drew in about his table, close, as a crowd draws in about a man reading names aloud. They have stood about him since. When he is threatened, they come between him and the blow, and take on themselves the most of it, so that what reaches the Reckoner through them is only a part. And they are never all gone. While the Reckoner sits at his table, he goes on counting, and as he counts, more of the counted rise and come to stand about him, a few at a time, without end.\n\nIn the first seasons after the rising, the Inconnu say, his counted stood so close that nothing reached him at all. That went out of them when the end of the world first fell. Now they take only the most of it. And beyond the walls of his own hall, the Inconnu add, nothing reaches him whether his counted are with him or not, because outside the reckoning hall he is not at his table, and a reckoner who is not at his table is not there to be struck."
+    },
+    {
+      "title": "The Hardest Room Before the Riders",
+      "text": "Dame Ysolde's company fought the Reckoner at his table, and Brother Cadoc counted his own company while it did.\n\nEnnyn had warned Ysolde not to draw the clerk away from his table, and she did not. She brought the company down into the reckoning hall and set it in the middle of the floor, with her best knights about the table and her wizards in two bands on either side of the hall. The bands had one task, and Ysolde gave it to them before they came down the stair: the counted. Whatever the wizards could set burning across a crowd, they were to set burning across the souls about the table, and keep it burning, from first to last, and never once turn it on the Reckoner.\n\nIt was the longest hour of the climb before the riders, Cadoc wrote. The counted rose about the table and the bands burned them and more rose, and the knights struck the Reckoner through the thinning crowd and felt their blows land on the souls between. He did not fight with his hands. He looked up from his ledger at whoever was nearest, and something went out of them into the ledger, their strength, and the priests fed it back to them as fast as they could. Cadoc said the Reckoner seemed to be reading each man's line as he drained it.\n\nCadoc counted his company the whole hour, aloud, under his breath, as he had counted the dead after the crypts. When the Reckoner fell forward across his ledger, Cadoc's count was the same as when they came in. He wrote that he did not know whether the Reckoner had been counting with him, and that at the end, as the clerk put down his pen, he had felt that the two of them agreed on the number."
+    },
+    {
+      "title": "Whom He Counts For",
+      "text": "The Reckoner turns to a fresh leaf and goes on counting every time he falls, and nobody knows any longer whom he counts for.\n\nThe Inconnu say he counts for Arawn still, and that their lord will come for the ledger when he retakes his gaol, and that the warden of the crypts goes down to the reckoning hall on certain nights and stands at the table without speaking, to see what is written, and that the Reckoner writes nothing while he stands there. The Church says he counts for the Devil. The clerks of Prydwen Keep say he counts for no one: that a reckoning, once begun, goes on for its own sake, as their own roll has gone on since Iddon nailed the first leaf to the door.\n\nWhat he wants, Brother Cadoc thought, is a closed book. Every ledger is kept in hope of a last line, and the Reckoner's has never had one. Arthur's seven are in it, the Inconnu say, and the lich's company, and Sir Tegid, and the nine of the crypts, and everyone who has climbed since, written once as they passed his table; and the line for the end of the world in the first cell is still blank. When it is filled, the Inconnu say, the Reckoner will close his book, and that will be the end of the age.\n\nCadoc's habit of counting his company has become the garrison's. Every company of Caer Gothwaite that goes up to the turning gaol now has a counter, a priest or a clerk, who counts the company aloud at the foot of the crypt stair, and again in the reckoning hall, and again on the shore. The counters write their counts in a ledger of their own that is kept in the chapel under the sill. Its first line is in Cadoc's hand. It reads: eighty in. The second line, in the same hand, reads: seventy-one out."
+    }
+  ]
+}

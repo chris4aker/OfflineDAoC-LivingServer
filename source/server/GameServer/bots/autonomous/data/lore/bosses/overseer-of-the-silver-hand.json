@@ -1,0 +1,117 @@
+{
+  "id": "overseer-of-the-silver-hand",
+  "name": "Overseer of the Silver Hand",
+  "npcNames": [
+    "Overseer of the Silver Hand"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Overseer of the Silver Hand: level 51, model 381 (a sidhe body, shared with the sidhe coimirceoir), at about 28,100/24,800 at the western end of the deep workings, with three Guardians of the Silver Hand (50-52, model 380) within about 300 units; respawn 180 seconds; plain spawns with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Bot chat: 'the overseer of the silver hand in coruscating mine. silver hand, like nuada. that is no accident'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In Irish myth Nuada lost his hand at the first battle of Mag Tuired and ruled again with a silver hand made by Dian Cécht; the epithet Airgetlám means 'silver hand'.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Nuada_Airgetl%C3%A1m"
+    },
+    {
+      "text": "Living Server lore: the Silver Hand as an Unseelie office older than the mine; the overseer's descents to the vein's end; his three guardians.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Unseelie give the Coruscating Mine's other servants mining titles, overman, viewer, underviewer, the way men name the officers of a working. The officer at the western end of the deep workings has a different kind of title, and the court will not say where it comes from. He is the Overseer of the Silver Hand, and the Howth miners, who know the bards' story of Nuada as well as anyone in Hibernia, have never once heard him called anything else.\n\nNuada was the king who lost his hand at Mag Tuired and could not rule, because a king must be whole, until a hand of silver was made for him; the bards call him Airgetlám, silver-hand, and do not say where the silver came from. The court's title, the druids of Howth think, is older than the Glitter and older than the Unseelie's claim to it. They think the Silver Hand was always an office of the dark court, and that the overseer's charge is not the mine at all but the thing the mine was dug toward: whatever of Nuada's silver is still down there, in the last gallery past Atur's breach.\n\nHe keeps three Guardians of the Silver Hand about him, sidhe in pale armour who never leave his side, and his chamber at the western end of the deep workings is the one place in the mine the collared hands are never sent. Once in a season, the miners say, he walks east along the deep gallery with his guardians, past the overmen and the viewers, past Atur in the breach, who lets him by, and past Lobigan at the vein's far end, and comes back up a day later smiling. Nobody has asked him what he saw. Chief Proinnsias of Howth, who has read Bran the Giant's map with Mikka of Caille, would very much like to.\n\nThe taverns of Howth say it plainly, and for once the druids agree with the taverns: silver hand, like Nuada. That is no accident.",
+  "legend": "The Overseer of the Silver Hand (51) stands at the western end of the Coruscating Mine's deep workings (about 28k/25k) with three Guardians of the Silver Hand (50-52) within a few hundred units: four 50s at once, so a full group with CC on the guardians or a puller who can split them. Plain mobs, no scripts, 3-minute respawns. Overman Regnal and Viewer Etol (49) are nearby in the same workings; clear them first. Nuada's Silver (Bran the Giant, Mikka, Chief Proinnsias) is the quest that points at this mine, though it does not send you to kill him. Atur and Lobigan are further east along the deep gallery.",
+  "yells": {
+    "aggro": [
+      "The Silver Hand receives you. Briefly.",
+      "Guardians.",
+      "You came for the king's silver? So did I. Long ago."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A king must be whole. You will not be."
+      }
+    ],
+    "death": [
+      "The hand... is still down there...",
+      "Tell Proinnsias... he is too late..."
+    ],
+    "slay": [
+      "Not whole.",
+      "The Hand keeps what it keeps.",
+      "Guardians, the next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Three guardians in pale armour, one overseer.",
+      "The one chamber the collared are never sent."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Guardians of the Silver Hand close around him!"
+      }
+    ],
+    "realmFirstKill": "The Overseer of the Silver Hand has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "overseer of the silver hand is 51 with three guardians 50-52. [four at once|full group]",
+      "cc the guardians or split them. [puller|careful]",
+      "clear regnal and etol first. [49s nearby|same workings]",
+      "3 min respawns"
+    ],
+    "aftermathWin": [
+      "the overseer is down. [silver hand like nuada|grats]",
+      "split the guardians. [clean|nice]",
+      "now the vein's end",
+      "proinnsias will want to hear"
+    ],
+    "aftermathLoss": [
+      "four fifties at once. [no cc|wipe]",
+      "pulled regnal too. [five|oops]",
+      "guardians on the healer",
+      "group too low"
+    ],
+    "rumour": [
+      "[heard|someone said] the overseer goes down past atur once a season and comes back smiling",
+      "silver hand, like nuada. that is no accident",
+      "[word is|heard] the silver hand is an unseelie office older than the mine",
+      "the collared hands are never sent to the overseer's chamber"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Overseer",
+    "text": "The Overseer of the Silver Hand keeps the western end of the Coruscating Mine's deep workings with three pale-armoured guardians. The druids think his office is older than the mine, and his charge Nuada's silver."
+  },
+  "bookPage": "From the scratchings on a collar found in the Coruscating Mine, with the Howth miner's notes below: the court calls its other servants overman and viewer, like any working. Him they call the Overseer of the Silver Hand and nothing else. Nuada lost his hand and could not rule until a silver one was made, and the bards do not say where the silver came from. The overseer keeps three guardians in pale armour, and the collared are never sent to his chamber. Once a season he walks east past Atur, who lets him by, and past the wolf at the vein's end, and comes back up a day later smiling.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Overseer of the Silver Hand in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Overseer of the Silver Hand turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "atur",
+      "relation": "who lets him pass"
+    },
+    {
+      "id": "lobigan",
+      "relation": "who keeps the vein's far end for him"
+    }
+  ]
+}

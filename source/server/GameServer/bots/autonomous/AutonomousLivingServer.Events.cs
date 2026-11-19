@@ -29,6 +29,8 @@ public static partial class AutonomousLivingServer
     /// <summary>A player or an autonomous gamebot gained a level: grats chains and server firsts.</summary>
     public static void OnLevelUp(GameLiving who, int level)
     {
+        // A hired companion counts as any gamebot here (owner 2026-11-18 09:14): its groupmates and the bots near it say grats,
+        // and it can claim a server first (it never outlevels its player, so it can only tie them).
         if (who == null || who is GameBot { IsAutonomousWorldBot: false } || who is GameBot { IsTemporaryGroupHelper: true })
             return;
         try
@@ -174,6 +176,8 @@ public static partial class AutonomousLivingServer
         if (!Firsts.TryAdd(title, row))
             return false;
         Log.Info($"LIVING_SERVER_FIRST title=\"{title}\" name=\"{who.Name}\" realm={GlobalConstants.RealmToName(who.Realm)} class=\"{row.ClassName}\"");
+        // Chat audit TEXT-051: the sentence players see, as their realm and the others read it.
+        BotChatTranscript.Screen("first", $"Server first: {who.Name} is the first on the server to reach {what}.", who.Realm);
         foreach (GamePlayer player in ClientService.Instance.GetPlayers())
         {
             if (player?.Client == null)
@@ -294,6 +298,16 @@ public static partial class AutonomousLivingServer
     /// <summary>Rough head count as players called it: exact below 10, then 10, 15, 20...</summary>
     public static string AlarmSize(int count) => count < 10 ? count.ToString() : (count / 5 * 5).ToString();
 
+    /// <summary>Under this many enemies an alarm is a "small group" (flag "few"); from it, "many" (1.2 chat audit, TEXT-020).</summary>
+    public const int AlarmManyEnemies = 8;
+
+    /// <summary>From this many enemies an alarm may call it a zerg (flag "zerg"; LOG-017: "Hibs zerg at Breifine, 3 or more").</summary>
+    public const int AlarmZergEnemies = 16;
+
+    /// <summary>The flags an alarm line is picked with: in_rvr, and few, many or many plus zerg by the head count. Pure.</summary>
+    public static string[] AlarmFlags(int count) => count >= AlarmZergEnemies ? ["in_rvr", "many", "zerg"]
+        : count >= AlarmManyEnemies ? ["in_rvr", "many"] : ["in_rvr", "few"];
+
     /// <summary>A frontier bot saw enemies (called from its threat scan): warn the realm in /faction now and then.</summary>
     public static void ObserveEnemies(GameBot bot, IReadOnlyList<GameLiving> nearby)
     {
@@ -331,7 +345,7 @@ public static partial class AutonomousLivingServer
         {
             ["size"] = AlarmSize(count), ["enemy"] = RealmPlural(enemy), ["place"] = place, ["classes"] = classes,
         };
-        if (AutonomousBotVoices.TryEventLine(bot, "alarm", out string line, slots: slots, flags: ["in_rvr"]))
+        if (AutonomousBotVoices.TryEventLine(bot, "alarm", out string line, slots: slots, flags: AlarmFlags(count)))
         {
             Speak(bot, Channel.Faction, line);
             Log.Info($"LIVING_SERVER_ALARM realm={GlobalConstants.RealmToName(bot.Realm)} enemy={enemy} count={count} place=\"{place}\" speaker=\"{bot.Name}\"");

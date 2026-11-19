@@ -84,6 +84,7 @@ public static class AutonomousZoneRoads
         }
         long profiled = NavQueryProfile.Start();
         long started = System.Diagnostics.Stopwatch.GetTimestamp();
+        using var aiProfile = AiProfile.Scope(AiSystem.RouteRoad); // AI_PROFILE: measures only
         try { via = Solve(nav, zone, roads, start, end); }
         finally
         {
@@ -210,6 +211,39 @@ public static class AutonomousZoneRoads
         if (zone == null || !Data.Value.TryGetValue(zone.ID, out ZoneRoads roads)) return null;
         List<int> near = Nearby(roads, point);
         return near.Count == 0 ? null : roads.Areas[near[0]];
+    }
+
+    /// <summary>
+    /// Bots as people WP4 (a wrong road, BotWayFinding.WrongBranch): fills <paramref name="into"/> with the anchors of the
+    /// point's own walkable area (that of its nearest anchor) in its cell and the eight around it, each with at least one
+    /// proven leg: the proven walking legs a wrong road may take, which may cross open ground (owner 2026-11-17 12:46). Returns
+    /// the count; 0 without road data. Reads only, no corridor query and no allocation (the caller proves the leg both ways).
+    /// </summary>
+    public static int AnchorsNear(Zone zone, Vector3 point, List<Vector3> into)
+    {
+        into.Clear();
+        if (zone == null || !Data.Value.TryGetValue(zone.ID, out ZoneRoads roads)) return 0;
+        int cx = (int)MathF.Floor(point.X / roads.Cell), cy = (int)MathF.Floor(point.Y / roads.Cell);
+        int nearest = -1;
+        float best = float.MaxValue;
+        for (int dx = -1; dx <= 1; dx++)
+            for (int dy = -1; dy <= 1; dy++)
+                if (roads.Cells.TryGetValue(CellKey(cx + dx, cy + dy), out List<int> anchors))
+                    foreach (int anchor in anchors)
+                    {
+                        Vector3 at = roads.Anchors[anchor];
+                        float dz = (at.Z - point.Z) * 2;
+                        float score = Vector2.DistanceSquared(new(at.X, at.Y), new(point.X, point.Y)) + dz * dz;
+                        if (score < best) { best = score; nearest = anchor; }
+                    }
+        if (nearest < 0) return 0;
+        int area = roads.Areas[nearest];
+        for (int dx = -1; dx <= 1; dx++)
+            for (int dy = -1; dy <= 1; dy++)
+                if (roads.Cells.TryGetValue(CellKey(cx + dx, cy + dy), out List<int> anchors))
+                    foreach (int anchor in anchors)
+                        if (roads.Areas[anchor] == area && roads.Next[anchor].Length > 0) into.Add(roads.Anchors[anchor]);
+        return into.Count;
     }
 
     /// <summary>Anchors in the point's cell and the eight around it, nearest first (height counts double).</summary>

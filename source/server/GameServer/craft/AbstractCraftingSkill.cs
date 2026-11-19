@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using DOL.Database;
+using DOL.Events;
+using DOL.GS.Crafting;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.PacketHandler;
 using DOL.GS.ServerProperties;
 using DOL.Language;
@@ -10,7 +13,12 @@ using DOL.Language;
 namespace DOL.GS
 {
     /// <summary>
-    /// AbstractCraftingSkill is the base class for all crafting skill
+    /// AbstractCraftingSkill is the base class for all crafting skill.
+    /// Crafting 2.0 WP1 (2026-11-15): every number (con, chance to make, chance to gain, time, quality, the secondary
+    /// skills, the pace) comes from <see cref="CraftRules"/>, so a gamebot crafter rolls exactly as a player does. This
+    /// class keeps the player's side: messages, inventory, the trade window. DividedRealms' skill-value members
+    /// (ChanceToMakeAt, BaseChanceToGainAt, QualityAt, CraftingTimeAt; rambodolphin13, 93c25b69) stay as one-line
+    /// delegations, so DR's bot crafting ports unchanged.
     /// </summary>
     public abstract class AbstractCraftingSkill
 	{
@@ -139,6 +147,41 @@ namespace DOL.GS
 			player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractCraftingSkill.CraftItem.StopWork", itemToCraft.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
+		/// <summary>What a player is told when the server rules refuse a recipe's product (another realm's recipe).
+		/// From rambodolphin13's DividedRealms (abe7b327), GPL-3.0.</summary>
+		public static string CraftRealmRefusal(DbItemTemplate product)
+		{
+			string realm = (eRealm)product.Realm switch
+			{
+				eRealm.Albion => "Albion",
+				eRealm.Midgard => "Midgard",
+				eRealm.Hibernia => "Hibernia",
+				_ => "no realm",
+			};
+			return $"You can't make the {product.Name}: that recipe is for {realm}. "
+				+ "Use /craft alb, /craft mid or /craft hib to show your own realm's recipes.";
+		}
+
+		/// <summary>
+		/// A translated message, or <paramref name="fallback"/> (English, formatted with the same arguments) when the
+		/// language files have no such key. WP1's new messages use it until WP3, which owns Crafting.txt, adds the keys.
+		/// </summary>
+		internal static string Text(GamePlayer player, string key, string fallback, params object[] args)
+		{
+			args ??= Array.Empty<object>();
+			string language = player?.Client?.Account?.Language;
+			try
+			{
+				if (language != null && LanguageMgr.TryGetTranslation(out string translated, language, key, new ReadOnlySpan<object>(args)))
+					return translated;
+			}
+			catch (Exception)
+			{
+				// no language manager (a test) or a bad format: the English text below
+			}
+			return args.Length == 0 ? fallback : string.Format(fallback, args);
+		}
+
 		protected virtual bool CanPlayerStartToCraftItem(GamePlayer player, Recipe recipe)
 		{
 			
@@ -146,6 +189,8 @@ namespace DOL.GS
 			
 			if (!GameServer.ServerRules.IsAllowedToCraft(player, recipe.Product))
 			{
+				// This refusal used to say nothing, so the craft button looked dead (DividedRealms abe7b327, player report 2026-11-08).
+				player.Out.SendMessage(CraftRealmRefusal(recipe.Product), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return false;
 			}
 
@@ -195,6 +240,9 @@ namespace DOL.GS
 			return true;
 		}
 
+		/// <summary>The secondary skill a material of this model is worked with, or NoCrafting (CraftRules; DR's name).</summary>
+		public static eCraftingSkill SecondarySkillForMaterial(int model) => CraftRules.SecondarySkillForMaterial(model);
+
 		public virtual bool CheckSecondCraftingSkillRequirement(GamePlayer player, Recipe recipe)
         {
 			int minimumLevel = GetSecondaryCraftingSkillMinimumLevel(recipe);
@@ -205,50 +253,20 @@ namespace DOL.GS
 			foreach (var ingredient in recipe.Ingredients)
 			{
 				DbItemTemplate material = ingredient.Material;
+				eCraftingSkill secondary = CraftRules.SecondarySkillForMaterial(material.Model);
 
-				switch (material.Model)
+				if (secondary == eCraftingSkill.NoCrafting || player.GetCraftingSkillValue(secondary) >= minimumLevel)
+					continue;
+
+				string key = secondary switch
 				{
-					case 522:   //"cloth square"
-					case 537:   //"heavy thread"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.ClothWorking) < minimumLevel)
-							{
-								player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoClothworkingSkill", minimumLevel, material.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								return false;
-							}
-							break;
-						}
-
-					case 521:   //"leather square"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.LeatherCrafting) < minimumLevel)
-							{
-								player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoLeathercraftingSkill", minimumLevel, material.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								return false;
-							}
-							break;
-						}
-
-					case 519:   //"metal bars"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.MetalWorking) < minimumLevel)
-							{
-								player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoMetalworkingSkill", minimumLevel, material.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								return false;
-							}
-							break;
-						}
-
-					case 520:   //"wooden boards"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.WoodWorking) < minimumLevel)
-							{
-								player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoWoodworkingSkill", minimumLevel, material.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								return false;
-							}
-							break;
-						}
-				}
+					eCraftingSkill.ClothWorking => "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoClothworkingSkill",
+					eCraftingSkill.LeatherCrafting => "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoLeathercraftingSkill",
+					eCraftingSkill.MetalWorking => "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoMetalworkingSkill",
+					_ => "AbstractCraftingSkill.CheckSecondCraftingSkillRequirement.NoWoodworkingSkill",
+				};
+				player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, key, minimumLevel, material.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+				return false;
 			}
 			return true;
 		}
@@ -315,52 +333,35 @@ namespace DOL.GS
 		#endregion
 
 		#region Gain points
+		/// <summary>
+		/// One won skill gain of a craft: the player pace (crafting_skill_rate) in points, 1 = the original single point,
+		/// never past <paramref name="cap"/> (subSkillCap for the secondary skills). Callers keep their own gain
+		/// conditions (the chance, the grey rule, the cap checks). From shadowofze's True165 (00f9fbf), GPL-3.0.
+		/// A gain of several points no longer steps over a crafting title (True165 did this in GamePlayer.GainCraftingSkill;
+		/// here, because WP3 owns that region): GamePlayer announces the title the new value lands on, and the titles the
+		/// gain stepped over are announced here, lowest first. At the default pace (1 point) nothing is added.
+		/// </summary>
+		protected static void GainRatedPoints(GamePlayer player, eCraftingSkill skill, int cap = CraftingRate165.NoCap)
+		{
+			int before = player.GetCraftingSkillValue(skill);
+			int points = CraftRules.PointsPerGain(before, CraftingRate165.PlayerRate, cap);
+			if (points <= 0)
+				return;
+
+			player.GainCraftingSkill(skill, points);
+
+			if (points > 1)
+				foreach (int title in CraftingRate165.TitlesSteppedOver(before, player.GetCraftingSkillValue(skill)))
+					GameEventMgr.Notify(GamePlayerEvent.NextCraftingTierReached, player, new NextCraftingTierReachedEventArgs(skill, title));
+		}
+
 		public virtual void GainCraftingSkillPoints(GamePlayer player, Recipe recipe)
 		{
 			foreach (var ingredient in recipe.Ingredients)
 			{
-				DbItemTemplate template = ingredient.Material;
-
-				switch (template.Model)
-				{
-					case 522:   //"cloth square"
-					case 537:   //"heavy thread"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.ClothWorking) < subSkillCap)
-							{
-								player.GainCraftingSkill(eCraftingSkill.ClothWorking, 1);
-							}
-							break;
-						}
-
-					case 521:   //"leather square"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.LeatherCrafting) < subSkillCap)
-							{
-								player.GainCraftingSkill(eCraftingSkill.LeatherCrafting, 1);
-							}
-							break;
-						}
-
-					case 519:   //"metal bars"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.MetalWorking) < subSkillCap)
-							{
-								player.GainCraftingSkill(eCraftingSkill.MetalWorking, 1);
-							}
-							break;
-						}
-
-					case 520:   //"wooden boards"
-						{
-							if (player.GetCraftingSkillValue(eCraftingSkill.WoodWorking) < subSkillCap)
-							{
-								player.GainCraftingSkill(eCraftingSkill.WoodWorking, 1);
-							}
-							break;
-						}
-				}
-				
+				eCraftingSkill secondary = CraftRules.SecondarySkillForMaterial(ingredient.Material.Model);
+				if (secondary != eCraftingSkill.NoCrafting && player.GetCraftingSkillValue(secondary) < subSkillCap)
+					GainRatedPoints(player, secondary, subSkillCap);
 			}
 
 			player.Out.SendUpdateCraftingSkills();
@@ -553,155 +554,68 @@ namespace DOL.GS
 		#region Calcul functions
 		public virtual int CalculateChanceToMakeItem(GamePlayer player, int craftingLevel)
         {
-			int con = GetItemCon(player.GetCraftingSkillValue(m_eskill), craftingLevel);
-			if (con < -3)
-				con = -3;
-			if (con > 3)
-				con = 3;
-
-			switch (con)
-			{
-				// Chance to MAKE ! (100 - chance to fail)
-				case -3:
-					return 100;
-				case -2:
-					return 100;
-				case -1:
-					return 100;
-				case 0:
-					return 100 - 8;
-				case 1:
-					return 100 - 16;
-				case 2:
-					return 100 - 32;
-				case 3:
-					return 0;
-				default:
-					return 0;
-			}
+			return ChanceToMakeAt(player.GetCraftingSkillValue(m_eskill), craftingLevel);
 		}
 
+		/// <summary>Chance to make an item at this skill value (CraftRules.ChanceToMake); a gamebot crafts by the same table.</summary>
+		public int ChanceToMakeAt(int skillValue, int craftingLevel) => CraftRules.ChanceToMake(skillValue, craftingLevel);
+
 		/// <summary>
-		/// Calculate chance to gain point
+		/// Calculate chance to gain point (CraftRules.ChanceToGainPoint: the con's chance, plus the capital bonus in a
+		/// capital city, patch 1.86)
 		/// </summary>
 		public virtual int CalculateChanceToGainPoint(GamePlayer player, int recipeLevel)
 		{
-			int con = GetItemCon(player.GetCraftingSkillValue(m_eskill), recipeLevel);
-			if (con < -3)
-				con = -3;
-			if (con > 3)
-				con = 3;
-			int chance;
-
-			switch (con)
-			{
-				case -3:
-					return 0;
-				case -2:
-					chance = 15;
-					break;
-				case -1:
-					chance = 30;
-					break;
-				case 0:
-					chance = 45;
-					break;
-				case 1:
-					chance = 55;
-					break;
-				case 2:
-					chance = 65;
-					break;
-				case 3:
-					return 0;
-				default:
-					return 0;
-			}
-
-			// In capital cities bonuses to crafting apply (patch 1.86)
-			if (player.CurrentRegion.IsCapitalCity)
-			{
-				chance += player.CraftingSkillBonus;
-
-				if (chance < 0)
-					chance = 0;
-				if (chance > 100)
-					chance = 100;
-			}
-
-			return chance;
+			bool inCapital = player.CurrentRegion?.IsCapitalCity == true;
+			var context = new CraftContext(player.GetCraftingSkillValue(m_eskill), recipeLevel, inCapital,
+				inCapital ? player.CraftingSkillBonus : 0);
+			return CraftRules.ChanceToGainPoint(context);
 		}
+
+		/// <summary>Chance to gain a point at this skill value, before a capital city's bonus (CraftRules).</summary>
+		public int BaseChanceToGainAt(int skillValue, int recipeLevel) => CraftRules.BaseChanceToGainPoint(skillValue, recipeLevel);
+
+		/// <summary>The clock a player crafts to: everything CraftRules.CraftingTimeSeconds needs, read from the player.</summary>
+		public CraftContext CraftContextFor(GamePlayer player, Recipe recipe)
+		{
+			eRealm realm = player.Realm;
+			return new CraftContext(
+				Skill: player.GetCraftingSkillValue(m_eskill),
+				RecipeLevel: recipe.Level,
+				SpeedMultiplier: player.CraftingSpeed,
+				RealmRelics: RelicMgr.GetRelicCount(realm),
+				KeepTimerDivisor: CraftRules.KeepTimerDivisor(
+					Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_5, realm),
+					Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_3, realm)),
+				MaxCraftTimeSeconds: Properties.MAX_CRAFT_TIME,
+				InstantGm: (ePrivLevel)player.Client.Account.PrivLevel >= ePrivLevel.GM);
+		}
+
 		public virtual int GetCraftingTime(GamePlayer player, Recipe recipe)
 		{
 			if ((ePrivLevel) player.Client.Account.PrivLevel >= ePrivLevel.GM)
 				return 0;
 
-			double baseMultiplier = (recipe.Level / 100) + 1;
-			if (baseMultiplier < 1) baseMultiplier = 1;
+			int craftingTime = CraftRules.CraftingTimeSeconds(CraftContextFor(player, recipe), CraftRules.IngredientCounts(recipe));
 
-			ushort materialsCount = 0;
-			foreach (var ingredient in recipe.Ingredients)
-			{
-				var countMod = ingredient.Count;
-				if (countMod > 100) countMod /= 10;
-				materialsCount += (ushort)countMod;
-			}
-
-			var divisorMod = 4;
-			int craftingTime = (int)(baseMultiplier * materialsCount / divisorMod);
-
-			// Player does check for capital city bonus as well
-			craftingTime = (int)(craftingTime / player.CraftingSpeed);
-
-			craftingTime = (int)(craftingTime * (1 - (.05 * RelicMgr.GetRelicCount(player.Realm))));
-
-			//keep bonuses reduction in crafting time
-			if (Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_5, (eRealm)player.Realm))
-				craftingTime = (int)(craftingTime / 1.05);
-			else if (Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_3, (eRealm)player.Realm))
-				craftingTime = (int)(craftingTime / 1.03);
-
-			int con = GetItemCon(player.GetCraftingSkillValue(m_eskill), recipe.Level);
-			double mod = 1.0;
-			switch (con)
-			{
-				case -3:
-					mod = 0.4;
-					break;
-				case -2:
-					mod = 0.6;
-					break;
-				case -1:
-					mod = 0.8;
-					break;
-				case 0:
-					mod = 1.0;
-					break;
-				case 1:
-					mod = 1.0;
-					break;
-				case 2:
-					mod = 1.0;
-					break;
-				case 3:
-					mod = 1.0;
-					break;
-			}
-
-			craftingTime = (int)(craftingTime * mod);
-
-			var maxCraftingTime = Properties.MAX_CRAFT_TIME;
-
-			if (craftingTime < 1)
-				craftingTime = 1;
-			else if (maxCraftingTime > 0 && craftingTime > maxCraftingTime)
-				craftingTime = maxCraftingTime;
-			
 			if (player.Client.Account.PrivLevel > 1)
 			{
 				player.Out.SendMessage($"[DEBUG] Crafting time: {craftingTime}s", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 			}
 			return craftingTime;
+		}
+
+		/// <summary>Crafting time in seconds at this skill value, at crafting speed 1 (DR's CraftingTimeAt). A gamebot works
+		/// to the same clock: its realm's relics and keep bonuses and max_craft_time apply.</summary>
+		public int CraftingTimeAt(int skillValue, Recipe recipe, eRealm realm)
+		{
+			var context = new CraftContext(skillValue, recipe.Level,
+				RealmRelics: RelicMgr.GetRelicCount(realm),
+				KeepTimerDivisor: CraftRules.KeepTimerDivisor(
+					Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_5, realm),
+					Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Craft_Timers_3, realm)),
+				MaxCraftTimeSeconds: Properties.MAX_CRAFT_TIME);
+			return CraftRules.CraftingTimeSeconds(context, CraftRules.IngredientCounts(recipe));
 		}
 
 		public virtual int GetSecondaryCraftingSkillMinimumLevel(Recipe recipe)
@@ -710,92 +624,24 @@ namespace DOL.GS
 		}
 
 		/// <summary>
-		/// Calculate crafted item quality
+		/// Calculate crafted item quality (CraftRules: the 1.87 rules, or the classic 94-99% with crafting_classic_quality)
 		/// </summary>
 		private int GetQuality(GamePlayer player, int recipeLevel)
 		{
-			// 2% chance to get masterpiece, 1:6 chance to get 94-99%, if legendary or if grey con
-			// otherwise moving the most load towards 94%, the higher the item con to the crafter skill
-			//1.87 patch raises min quality to 96%
-
-			// legendary
-			if (player.GetCraftingSkillValue(m_eskill) >= 1000)
-			{
-				if (Util.Chance(2))
-				{
-					return 100;	// 2% chance for master piece
-				}
-				return 96 + Util.Random(3);
-			}
-
-			int delta = GetItemCon(player.GetCraftingSkillValue(m_eskill), recipeLevel);
-			if (delta < -2)
-			{
-				if (Util.Chance(2))
-					return 100; // grey items get 2% chance to be master piece
-				return 96 + Util.Random(3); // handle grey items like legendary
-			}
-
-			// this is a type of roulette selection, imagine a roulette wheel where all chances get different sized
-			// fields where the ball can drop, the bigger the field, the bigger the chance
-			// field size is modulated by item con and can be also 0
-
-			// possible chance allocation scheme for yellow item
-			// 99:
-			// 98:
-			// 97: o
-			// 96: oo
-			// where one 'o' marks 100 size, this example results in 10% chance for yellow items to be 97% quality
-
-			delta = delta * 100;
-
-			int[] chancePart = new int[4]; // index ranges from 96%(0) to 99%(5)
-			int sum = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				chancePart[i] = Math.Max((4 - i) * 100 - delta, 0);	// 0 minimum
-				sum += chancePart[i];
-			}
-
-			// selection
-			int rand = Util.Random(sum);
-			for (int i = 3; i >= 0; i--)
-			{
-				if (rand < chancePart[i])
-					return 96 + i;
-				rand -= chancePart[i];
-			}
-
-			// if something still not clear contact Thrydon/Blue
-
-			return 96;
+			return QualityAt(player.GetCraftingSkillValue(m_eskill), recipeLevel);
 		}
 
+		/// <summary>Crafted item quality at this skill value (DR's QualityAt), by the server's quality rule.</summary>
+		public int QualityAt(int skillValue, int recipeLevel) =>
+			CraftRules.RollQuality(skillValue, recipeLevel, null, CraftingEconomyProperties.CRAFTING_CLASSIC_QUALITY);
 
 		/// <summary>
-		/// get item con color compared to crafters skill
+		/// get item con color compared to crafters skill (CraftRules.Con)
 		/// </summary>
 		/// <param name="crafterSkill"></param>
 		/// <param name="itemCraftingLevel"></param>
 		/// <returns>-3 grey, -2 green, -1 blue, 0 yellow, 1 orange, 2 red, 3 purple</returns>
-		public int GetItemCon(int crafterSkill, int itemCraftingLevel)
-		{
-			int diff = itemCraftingLevel - crafterSkill;
-			if (diff <= -50)
-				return -3; // grey
-			else if (diff <= -31)
-				return -2; // green
-			else if (diff <= -11)
-				return -1; // blue
-			else if (diff <= 0)
-				return 0; // yellow
-			else if (diff <= 19)
-				return 1; // orange
-			else if (diff <= 49)
-				return 2; // red
-			else
-				return 3; // impossible
-		}
+		public int GetItemCon(int crafterSkill, int itemCraftingLevel) => (int)CraftRules.Con(crafterSkill, itemCraftingLevel);
 		#endregion
 	}
 }

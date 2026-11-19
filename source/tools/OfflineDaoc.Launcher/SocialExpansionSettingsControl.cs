@@ -43,16 +43,54 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _breaks = Switch("Breaks and linkdeads");
     private readonly CheckBox _body = Switch("Body language");
     private readonly CheckBox _beggars = Switch("Beggars");
+    private readonly CheckBox _buffBots = Switch("No Lifer buffbots");
+    private readonly NumericUpDown _buffBotPercent = Number(0, 100, "No Lifers with a buffbot");
+    private readonly CheckBox _buffBotConcRange = Switch("2003 concentration range", part: true);
     private readonly CheckBox _deeds = Switch("Deeds and reputation");
     private readonly CheckBox _storylines = Switch("Storylines");
     private readonly CheckBox _characters = Switch("Spammers and roleplayers");
     private readonly CheckBox _rumours = Switch("True rumours");
     private readonly CheckBox _holidays = Switch("Holiday chatter");
+    private readonly ComboBox _thanksgiving = Choice("Thanksgiving", "US (November)", "Canada (October)", "Off");
+    private readonly CheckBox _hiredCompanions = Switch("Hired companions");
     private readonly CheckBox _leeroy = Switch("Leeroy in raids");
+    private readonly CheckBox _atmosphere = Switch("Atmosphere lines");
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
     private readonly CheckBox _manaHalved = Switch("Half below 50% power");
+    private readonly CheckBox _botGroupInvites = Switch("Bot leaders invite you");
+    private readonly CheckBox _botRaidInvites = Switch("Raid leaders invite you");
+    private readonly ComboBox _joinMode = Choice("When you join a bot's group", "Follow", "Lead");
+    private readonly NumericUpDown _lootWeight = Number(SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight, "Your loot share");
+    // Crafting 2.0, the player's side (docs/CRAFTING.md).
+    private readonly CheckBox _craftEraStart = Switch("Era start");
+    private readonly CheckBox _craftSecondaryCaps = Switch("Secondary skill caps");
+    private readonly NumericUpDown _craftPace = Number((int)SocialExpansionSettings.MinCraftingPace, (int)SocialExpansionSettings.MaxCraftingPace, "Crafting pace");
+    private readonly ComboBox _upkeep = Choice("Repair upkeep", "Classic", "Light", "Free");
+    private readonly CheckBox _coinByLevel = Switch("Coin by level");
+    private readonly CheckBox _classicQuality = Switch("Classic quality");
+    private readonly CheckBox _classicLosses = Switch("Classic losses");
+    // Crafting 2.0, the gamebots' side and the economy (WP9; CraftingEconomyProperties).
+    private readonly CheckBox _botCrafters = Switch("Bot crafters");
+    private readonly NumericUpDown _crafterShare = Number(0, 100, "Crafters among new bots");
+    private readonly ComboBox _botCraftPace = Choice("Bot crafting pace", "Bot XP rate", "Classic");
+    private readonly CheckBox _craftOrders = Switch("Craft orders", part: true);
+    private readonly ComboBox _commissions = Choice("Realm commissions", "Classic", "Doubled", "Off");
+    private readonly NumericUpDown _crafterListings = Number(SocialExpansionSettings.MinBotCrafterExchangeListings,
+        SocialExpansionSettings.MaxBotCrafterExchangeListings, "A crafter's Exchange posts");
+    private readonly NumericUpDown _crafterChat = CrafterChatInput("Crafters' chat");
+    private readonly NumericUpDown _exchangeTax = Number(0, SocialExpansionSettings.MaxExchangeTaxPercent, "Realm Exchange tax");
+    private readonly CheckBox _ledger = Switch("Economy ledger");
+    private readonly CheckBox _level50Kit = Switch("Level-50 kit and gold");
+    // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): the four master switches; their parts are server keys only.
+    private readonly CheckBox _skillProfiles = Switch("Skill that grows");
+    private readonly CheckBox _placeKnowledge = Switch("Knowing the way");
+    private readonly CheckBox _movementHabits = Switch("Moving like people");
+    private readonly CheckBox _milestones = Switch("Personal milestones");
+    private readonly CheckBox _eraClassShares = Switch("2003 class mix");
+    private readonly CheckBox _eraBuilds = Switch("2003 builds");
+    private readonly RuneButton _economy = Action("ECONOMY PAGE", DaocTheme.Midgard);
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
-    private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
+    private readonly XpRow _botXp = new("GAMEBOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
     private readonly Label _status = new()
     {
         Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft,
@@ -65,6 +103,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly System.Windows.Forms.Timer _poll = new() { Interval = 2000 };
     private SocialExpansionSettings _saved = SocialExpansionSettings.Defaults;
     private bool _loading;
+    // raid_learns_from_raiders has no checkbox: kept from the loaded values, off with ALL OFF, back on with Skill that grows.
+    private bool _raidLearns = true;
     // The saved settings couldn't be read at all: nothing may be saved over them (that would overwrite the
     // player's real values with what the tab happens to show) until a reload succeeds.
     private bool _loadFailed;
@@ -103,14 +143,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(guilds, _playerGuildEconomy, null, "Gamebots you /ginvite pay your guild's dues from real loot and earn it merit from levels and realm ranks. Even with bot guilds off.");
 
         var voices = Card("PERSONALITIES AND VOICES", DaocTheme.Gold, 4);
-        Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, tilting how each bot spends its time. Target a bot and type /personality.");
+        Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No Lifer, tilting how each bot spends its time. Target a bot and type /personality.");
         Add(voices, _voices, null, "Period chat lines from 2002–2003, chosen by realm, class, level and moment, each bot in its own writing style.");
         Dependent(_debates, Add(voices, _debates, null, "Spec arguments, relic alerts and long threads in /faction, every 30–45 minutes while you play. Needs bot voices."),
             v => v.Voices);
         Dependent(Caption("HOW MUCH THEY TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
             "2 (the default) sounds like a busy server; 1 is calmer, 3 very busy; 0 only answers. Chat still follows the hour and the bots online. Needs bot voices."), v => v.Voices);
 
-        var living = Card("SERVER LIFE", DaocTheme.Gold, 16);
+        var living = Card("SERVER LIFE", DaocTheme.Gold, 20);
         // First in the card (1.1.3, owner's PC 2026-11-09: off, 2,673 bots were online at 05:20): who is online when.
         Captioned(Caption("BOT SCHEDULE", part: false), Add(living, null, _schedule,
             "Off: every bot online day and night. Real clock: your PC's hour and weekday, busiest 7–11 pm and weekends, a few hundred at dawn. Session: 1–4 hour sessions."));
@@ -121,14 +161,24 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _alarms, null, "A frontier bot that sees 3+ enemies calls size, classes and place in /faction (once per 2 minutes).");
         Add(living, _nemesis, null, "Bots remember who killed them, name the killer in /faction and gloat when they get revenge.");
         Add(living, _breaks, null, "Idle bots go brb for 5–25 minutes; a bot in your group rarely goes linkdead for a minute.");
-        Add(living, _body, null, "Idle bots look around, emote, shift their feet in town, wave when you walk up and cheer a ding. No jumping or sitting.");
+        Add(living, _body, null, "Idle bots look around, emote, shift their feet in town, wave when you walk up and cheer a ding. No jumping.");
         Add(living, _beggars, null, "A few Crafter bots beg in their capital and hoard coin. Ask anyone for gold and they follow you, insulting you, until you leave.");
+        Add(living, _buffBots, null, "Some No Lifer bots run a level-50 buffbot (Cleric, Shaman, Druid) that follows them or parks at the nearest bind and keeps them buffed. Buffbots never group, fight or loot.");
+        Func<SocialExpansionSettings, bool> buffBotsOn = v => v.LivingBuffBots;
+        Dependent(Caption("NO LIFERS WITH ONE"), Add(living, null, WithUnit(_buffBotPercent, "%"),
+            "Share of the No Lifer bots that have a buffbot (30 by default). The same mains keep theirs across restarts."), buffBotsOn);
+        Dependent(_buffBotConcRange, Add(living, _buffBotConcRange, null,
+            "Concentration buffs reach a buffbot's main at any range, as in 2003 (the 5,000-unit limit came in 2005)."), buffBotsOn);
         Add(living, _deeds, null, "Bots that see you solo a named, go on a streak or die to a rat tell /faction. You earn a reputation and a nickname.");
         Add(living, _storylines, null, "Pairs of bots live out dramas over days. Take a side in /faction and the ending follows you.");
         Add(living, _characters, null, "Gold spammers flood /faction until they're banned; a few bots roleplay in thee and thou and get mocked.");
         Add(living, _rumours, null, "Bots pass on true rumours: a rare named that just spawned, an enemy keep with its guards down.");
         Add(living, _holidays, null, "Around Halloween, Christmas, New Year and other holidays on your PC's calendar, bots talk about them and wish you well.");
+        Dependent(Caption("THANKSGIVING"), Add(living, null, _thanksgiving,
+            "Which Thanksgiving bots talk about: the US one (fourth Thursday of November), Canada's (second Monday of October) or none."),
+            v => v.LivingHolidays);
         Add(living, _leeroy, null, "One end-game raid in twenty has a bot who charges the final boss early, yelling his name. The raid follows him in.");
+        Add(living, _atmosphere, null, "Short lines in the middle of the screen: entering a dungeon, a boss's lair, a boss's phase, a dragon waking, a realm's first kill. One every 30 s at most; realm news first.");
 
         var power = Card("POWER REGENERATION", DaocTheme.Gold, 3);
         Captioned(Caption("REGENERATION RATE", part: false), Add(power, null, WithUnit(_manaRate, "×"),
@@ -141,6 +191,76 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         };
         power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
         power.Grid.SetColumnSpan(powerNote, 3);
+
+        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 5);
+        Add(groups, _hiredCompanions, null, "Hire up to seven companions of your own with /hire beside a healer of your realm. They level with you, keep their gear and talk like the other bots. Off: nobody can hire, and hired ones stay home.");
+        Add(groups, _botGroupInvites, null, "A bot party leader of your level may send you a tell and the group invite box (at most every 45 minutes; /lfg asks for one). Say yes and just follow.");
+        Captioned(Caption("YOUR LOOT SHARE", part: false), Add(groups, null, WithUnit(_lootWeight, "members"),
+            "In any group with gamebots you count as this many members for coin and items, and upgrades for your class come to you first."));
+        Add(groups, _botRaidInvites, null, "At level 50, a forming dragon or epic dungeon raid's leader may invite you once per raid; one gamebot of your role steps out for you.");
+        Captioned(Caption("WHEN YOU JOIN A BOT'S GROUP", part: false), Add(groups, null, _joinMode,
+            "Follow: the bot leads and you follow (/lead takes over). Lead: saying yes makes you the leader at once (/lead bot hands it back)."));
+
+        var crafting = Card("CRAFTING (YOUR CHARACTERS)", DaocTheme.Gold, 8);
+        Add(crafting, _craftEraStart, null, "New characters join an order at a crafting master, as in 1.65 (off: they start with Basic Crafting). Characters who already craft keep their skills.");
+        Captioned(Caption("CRAFTING PACE", part: false), Add(crafting, null, WithUnit(_craftPace, "per gain"),
+            "Skill points each time a craft raises your skill. 1 is classic; a grey recipe still gives nothing."));
+        Captioned(Caption("REPAIR UPKEEP", part: false), Add(crafting, null, _upkeep,
+            "What the smith charges. Classic: full price, and the item loses durability. Light (default): half price, no durability lost. Free."));
+        Add(crafting, _coinByLevel, null, "Monster coin follows your XP rate for your level, so a level pays the classic coin at faster XP. Bots' coin is unchanged.");
+        Add(crafting, _craftSecondaryCaps, null, "Another order's craft stops at 75% or 40% of your primary skill, as the masters describe it. A classic option.");
+        Add(crafting, _classicQuality, null, "94–99% quality with a small chance of a masterpiece at any skill (off: 96–99%, masterpieces only at 1000).");
+        Add(crafting, _classicLosses, null, "A failed craft costs its materials, and a spellcraft explosion destroys the item. A classic option.");
+        var craftNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "Crafting works in the original game client only for now (see docs/CRAFTING.md). ALL OFF leaves these as they are.",
+        };
+        crafting.Grid.Controls.Add(craftNote, 0, crafting.Grid.RowCount - 1);
+        crafting.Grid.SetColumnSpan(craftNote, 3);
+
+        var economy = Card("BOT CRAFTERS AND THE ECONOMY", DaocTheme.Gold, 14);
+        Add(economy, _botCrafters, null, "Crafter gamebots join an order, buy real materials, work at the capital's stations and sell what they make on the Realm Exchange.");
+        Func<SocialExpansionSettings, bool> craftersOn = v => v.BotCrafters;
+        Dependent(Caption("CRAFTERS AMONG NEW BOTS"), Add(economy, null, WithUnit(_crafterShare, "%"),
+            "Share of NEW gamebots that are Crafters (7 by default). Existing bots keep the type they have."), craftersOn);
+        Dependent(Caption("BOT CRAFTING PACE"), Add(economy, null, _botCraftPace,
+            "Bot XP rate: a gain gives as many points as the bot XP multiplier of the crafter's level. Classic: one point."), craftersOn);
+        Dependent(_craftOrders, Add(economy, _craftOrders, null,
+            "Gamebots pay a crafter of their realm to make an upgrade; the coin is held until the piece is handed over. Needs bot crafters."), craftersOn);
+        Dependent(Caption("REALM COMMISSIONS"), Add(economy, null, _commissions,
+            "The quartermaster's orders to crafter bots, paid for their time. Classic: 30 a realm an hour. Doubled (default): 60."), craftersOn);
+        Dependent(Caption("A CRAFTER'S EXCHANGE POSTS"), Add(economy, null, WithUnit(_crafterListings, "posts"),
+            "How many Realm Exchange posts a crafter bot may hold for its own work (6 by default; other bots hold 3)."), craftersOn);
+        Dependent(Caption("CRAFTERS' CHAT"), Add(economy, null, WithUnit(_crafterChat, "×"),
+            "Crafters' trade and station chat: 1 is normal, 0 silent, 3 very busy."), craftersOn);
+        Captioned(Caption("REALM EXCHANGE TAX", part: false), Add(economy, null, WithUnit(_exchangeTax, "%"),
+            "Taken from the seller's proceeds of each Exchange sale, yours and the bots'. 0 (default): no tax; 5 is the classic option."));
+        Add(economy, _ledger, null, "Once an hour the server counts each realm's coin, faucets and sinks (log lines and one row an hour). It changes no amount.");
+        Add(economy, _level50Kit, null, "\"+ Lv.50\" bots arrive with a quality-100 kit and 10,000 gold. Off (a fresh-start world): plain merchant gear and a small purse.");
+        Add(economy, _eraClassShares, null, "New bots from the + Lv.1, + Lv.20 and + Lv.50 buttons come in each realm's 2003 class mix (Cleric 12% of Albion, Reaver 3%; estimates from period forums). Off: every class equally likely. Existing bots keep their class.");
+        Add(economy, _eraBuilds, null, "Each new gamebot keeps one of its class's 2003 builds for life (a Mind/Body Sorcerer more often than a Matter one; estimates from period forums), one in ten an odd spec. Off: today's builds. Bots you already have keep theirs.");
+        Add(economy, _economy, null, "The economy as the ledger records it: each realm's coin, what came in and went out, the tax and the Exchange's prices.");
+        var economyNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "Only gamebots craft and trade here; your /spawn helpers and hired companions never do. ALL OFF switches bot crafters and orders off.",
+        };
+        economy.Grid.Controls.Add(economyNote, 0, economy.Grid.RowCount - 1);
+        economy.Grid.SetColumnSpan(economyNote, 3);
+
+        var people = Card("BOTS AS PEOPLE", DaocTheme.Gold, 5);
+        Add(people, _skillProfiles, null, "Each bot is Casual, Average or Veteran and gets better with play: a Casual one pulls an add or lets a buff run out now and then. In your group they are careful.");
+        Add(people, _placeKnowledge, null, "Bots know the places they have been. Going somewhere new they ask the way in /faction, tag along behind someone, or take a wrong road for a minute.");
+        Add(people, _movementHabits, null, "Melee bots circle-strafe in RvR, groups travel on /stick in a line, bots sit while they wait and on the walls of keeps their realm holds.");
+        Add(people, _milestones, null, "Bots chase the ding to 50, realm rank 5 or a dragon trophy, talk about it as they get close, and the Herald lists it.");
+        var peopleNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "Only autonomous gamebots, never your companions; raids and keep fights keep their rules. A dragon trophy is only an item a bot really won in a raid.",
+        };
+        people.Grid.Controls.Add(peopleNote, 0, people.Grid.RowCount - 1);
+        people.Grid.SetColumnSpan(peopleNote, 3);
 
         var xp = Card("XP BY LEVEL RANGE", DaocTheme.Gold, 5);
         xp = xp with { Height = TitleRow + 2 * (XpRow.Height + XpRow.ErrorHeight) + Row + CardPadding };
@@ -176,6 +296,10 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             (voices.Panel, voices.Height),
             (living.Panel, living.Height),
             (power.Panel, power.Height),
+            (groups.Panel, groups.Height),
+            (crafting.Panel, crafting.Height),
+            (economy.Panel, economy.Height),
+            (people.Panel, people.Height),
             (xp.Panel, xp.Height),
         ];
         page.RowCount = parts.Length;
@@ -194,20 +318,41 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Controls.Add(scroller);
         scroller.BringToFront();   // docked last, so it fills what the footer leaves
 
-        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved,
+        foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
+                     _craftEraStart, _craftSecondaryCaps, _coinByLevel, _classicQuality, _classicLosses,
+                     _botCrafters, _craftOrders, _ledger, _level50Kit, _eraClassShares, _eraBuilds, _buffBotConcRange,
+                     _skillProfiles, _placeKnowledge, _movementHabits, _milestones,
                      _personalities, _voices, _debates,
-                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy })
+                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere, _hiredCompanions })
             box.CheckedChanged += (_, _) => Edited();
+        _skillProfiles.CheckedChanged += (_, _) =>
+        {
+            if (!_loading && _skillProfiles.Checked)
+                _raidLearns = true; // turning Bots as people's skill back on after ALL OFF brings raid learning back
+        };
         _schedule.SelectedIndexChanged += (_, _) => Edited();
+        _joinMode.SelectedIndexChanged += (_, _) => Edited();
+        _thanksgiving.SelectedIndexChanged += (_, _) => Edited();
+        _upkeep.SelectedIndexChanged += (_, _) => Edited();
+        _craftPace.ValueChanged += (_, _) => Edited();
+        _botCraftPace.SelectedIndexChanged += (_, _) => Edited();
+        _commissions.SelectedIndexChanged += (_, _) => Edited();
+        _crafterShare.ValueChanged += (_, _) => Edited();
+        _crafterListings.ValueChanged += (_, _) => Edited();
+        _crafterChat.ValueChanged += (_, _) => Edited();
+        _exchangeTax.ValueChanged += (_, _) => Edited();
+        _buffBotPercent.ValueChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
         _chatRate.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
         _manaRate.ValueChanged += (_, _) => Edited();
+        _lootWeight.ValueChanged += (_, _) => Edited();
         _playerXp.Changed += Edited;
         _botXp.Changed += Edited;
         _save.Click += (_, _) => SaveSettings();
         _undo.Click += (_, _) => LoadSettings();
         _herald.Click += async (_, _) => await OpenHeraldAsync();
+        _economy.Click += async (_, _) => await OpenEconomyAsync();
         _allOff.Click += (_, _) =>
         {
             SetValues(ReadValues().AllOff());
@@ -263,16 +408,50 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingBreaks = _breaks.Checked,
         LivingBodyLanguage = _body.Checked,
         LivingBeggars = _beggars.Checked,
+        LivingBuffBots = _buffBots.Checked,
         LivingDeeds = _deeds.Checked,
         LivingStorylines = _storylines.Checked,
         LivingCharacters = _characters.Checked,
         LivingRumours = _rumours.Checked,
         LivingHolidays = _holidays.Checked,
+        Thanksgiving = SocialExpansionSettings.ThanksgivingModes[Math.Max(0, _thanksgiving.SelectedIndex)],
+        HiredCompanions = _hiredCompanions.Checked,
         LivingLeeroy = _leeroy.Checked,
+        LivingAtmosphere = _atmosphere.Checked,
         PlayerXpByLevel = _playerXp.Value,
         BotXpByLevel = _botXp.Value,
         ManaRegenModifier = (double)_manaRate.Value,
         ManaHalvedBelowHalf = _manaHalved.Checked,
+        BotGroupInvites = _botGroupInvites.Checked,
+        BotRaidInvites = _botRaidInvites.Checked,
+        PlayerLootWeight = (int)_lootWeight.Value,
+        JoinMode = SocialExpansionSettings.JoinModes[Math.Max(0, _joinMode.SelectedIndex)],
+        CraftingEraStart = _craftEraStart.Checked,
+        CraftingSecondaryCaps = _craftSecondaryCaps.Checked,
+        CraftingPace = (double)_craftPace.Value,
+        PlayerUpkeep = SocialExpansionSettings.UpkeepModes[Math.Max(0, _upkeep.SelectedIndex)],
+        PlayerCoinByLevel = _coinByLevel.Checked,
+        CraftingClassicQuality = _classicQuality.Checked,
+        CraftingClassicLosses = _classicLosses.Checked,
+        BotCrafters = _botCrafters.Checked,
+        BotCrafterSharePercent = (int)_crafterShare.Value,
+        BotCraftingPace = SocialExpansionSettings.BotCraftingPaces[Math.Max(0, _botCraftPace.SelectedIndex)],
+        BotCraftOrders = _craftOrders.Checked,
+        RealmCommissions = SocialExpansionSettings.CommissionModes[Math.Max(0, _commissions.SelectedIndex)],
+        BotCrafterExchangeListings = (int)_crafterListings.Value,
+        BotCrafterChatRate = (double)_crafterChat.Value,
+        ExchangeTaxPercent = (int)_exchangeTax.Value,
+        EconomyLedger = _ledger.Checked,
+        Level50Kit = _level50Kit.Checked,
+        BotEraClassShares = _eraClassShares.Checked,
+        BotEraBuilds = _eraBuilds.Checked,
+        BuffBotPercent = (int)_buffBotPercent.Value,
+        BuffBotEraConcRange = _buffBotConcRange.Checked,
+        BotSkillProfiles = _skillProfiles.Checked,
+        RaidLearnsFromRaiders = _raidLearns,
+        BotPlaceKnowledge = _placeKnowledge.Checked,
+        BotMovementHabits = _movementHabits.Checked,
+        LivingMilestones = _milestones.Checked,
     };
 
     private void SetValues(SocialExpansionSettings settings)
@@ -290,6 +469,38 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _manaRate.Value = (decimal)Math.Clamp(double.IsNaN(settings.ManaRegenModifier) ? SocialExpansionSettings.DefaultManaRegenModifier : settings.ManaRegenModifier,
             SocialExpansionSettings.MinManaRegenModifier, SocialExpansionSettings.MaxManaRegenModifier);
         _manaHalved.Checked = settings.ManaHalvedBelowHalf;
+        _botGroupInvites.Checked = settings.BotGroupInvites;
+        _botRaidInvites.Checked = settings.BotRaidInvites;
+        _lootWeight.Value = Math.Clamp(settings.PlayerLootWeight, SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight);
+        _craftEraStart.Checked = settings.CraftingEraStart;
+        _craftSecondaryCaps.Checked = settings.CraftingSecondaryCaps;
+        _craftPace.Value = (decimal)Math.Clamp(double.IsNaN(settings.CraftingPace) ? SocialExpansionSettings.DefaultCraftingPace : Math.Round(settings.CraftingPace),
+            SocialExpansionSettings.MinCraftingPace, SocialExpansionSettings.MaxCraftingPace);
+        _upkeep.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.UpkeepModes, settings.PlayerUpkeep));
+        _coinByLevel.Checked = settings.PlayerCoinByLevel;
+        _classicQuality.Checked = settings.CraftingClassicQuality;
+        _classicLosses.Checked = settings.CraftingClassicLosses;
+        _botCrafters.Checked = settings.BotCrafters;
+        _crafterShare.Value = Math.Clamp(settings.BotCrafterSharePercent, 0, 100);
+        _botCraftPace.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.BotCraftingPaces, settings.BotCraftingPace));
+        _craftOrders.Checked = settings.BotCraftOrders;
+        _commissions.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.CommissionModes, settings.RealmCommissions));
+        _crafterListings.Value = Math.Clamp(settings.BotCrafterExchangeListings, SocialExpansionSettings.MinBotCrafterExchangeListings,
+            SocialExpansionSettings.MaxBotCrafterExchangeListings);
+        _crafterChat.Value = (decimal)Math.Clamp(double.IsNaN(settings.BotCrafterChatRate) ? SocialExpansionSettings.DefaultBotCrafterChatRate
+            : Math.Round(settings.BotCrafterChatRate, 1), 0, SocialExpansionSettings.MaxBotCrafterChatRate);
+        _exchangeTax.Value = Math.Clamp(settings.ExchangeTaxPercent, 0, SocialExpansionSettings.MaxExchangeTaxPercent);
+        _ledger.Checked = settings.EconomyLedger;
+        _level50Kit.Checked = settings.Level50Kit;
+        _eraClassShares.Checked = settings.BotEraClassShares;
+        _eraBuilds.Checked = settings.BotEraBuilds;
+        _buffBotPercent.Value = Math.Clamp(settings.BuffBotPercent, 0, 100);
+        _buffBotConcRange.Checked = settings.BuffBotEraConcRange;
+        _skillProfiles.Checked = settings.BotSkillProfiles;
+        _raidLearns = settings.RaidLearnsFromRaiders;
+        _placeKnowledge.Checked = settings.BotPlaceKnowledge;
+        _movementHabits.Checked = settings.BotMovementHabits;
+        _milestones.Checked = settings.LivingMilestones;
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
         _debates.Checked = settings.Debates;
@@ -301,15 +512,20 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _alarms.Checked = settings.LivingAlarms;
         _nemesis.Checked = settings.LivingNemesis;
         _schedule.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.ScheduleModes, settings.ScheduleMode));
+        _joinMode.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.JoinModes, settings.JoinMode));
         _breaks.Checked = settings.LivingBreaks;
         _body.Checked = settings.LivingBodyLanguage;
         _beggars.Checked = settings.LivingBeggars;
+        _buffBots.Checked = settings.LivingBuffBots;
         _deeds.Checked = settings.LivingDeeds;
         _storylines.Checked = settings.LivingStorylines;
         _characters.Checked = settings.LivingCharacters;
         _rumours.Checked = settings.LivingRumours;
         _holidays.Checked = settings.LivingHolidays;
+        _thanksgiving.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.ThanksgivingModes, settings.Thanksgiving));
+        _hiredCompanions.Checked = settings.HiredCompanions;
         _leeroy.Checked = settings.LivingLeeroy;
+        _atmosphere.Checked = settings.LivingAtmosphere;
         _playerXp.Value = settings.PlayerXpByLevel;
         _botXp.Value = settings.BotXpByLevel;
         _loading = false;
@@ -348,12 +564,34 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         {
             string runtime = Path.GetDirectoryName(Path.GetDirectoryName(_database)!)!;
             string records = DOL.GS.RealmEventRecordStore.Locate(runtime);
-            string path = await Task.Run(() => HeraldPage.Write(_database, records, Path.Combine(runtime, "herald"), DateTime.Now));
+            string folder = Path.Combine(runtime, "herald");
+            // The Herald links to the economy page beside it, so both are written (the Herald even if the page can't be).
+            string path = await Task.Run(() =>
+            {
+                try { EconomyPage.Write(_database, folder, DateTime.Now); }
+                catch (Exception) { /* the economy page is optional news */ }
+                return HeraldPage.Write(_database, records, folder, DateTime.Now);
+            });
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
             SetNotice("HERALD WRITTEN: " + path, error: false);
         }
         catch (Exception ex) { SetNotice("THE HERALD COULD NOT BE WRITTEN: " + ex.Message, error: true); }
         finally { _herald.Enabled = true; UpdateState(); }
+    }
+
+    /// <summary>Writes the economy page from the game database (read-only; fine while the server runs) and opens it.</summary>
+    private async Task OpenEconomyAsync()
+    {
+        _economy.Enabled = false;
+        try
+        {
+            string runtime = Path.GetDirectoryName(Path.GetDirectoryName(_database)!)!;
+            string path = await Task.Run(() => EconomyPage.Write(_database, Path.Combine(runtime, "herald"), DateTime.Now));
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+            SetNotice("ECONOMY PAGE WRITTEN: " + path, error: false);
+        }
+        catch (Exception ex) { SetNotice("THE ECONOMY PAGE COULD NOT BE WRITTEN: " + ex.Message, error: true); }
+        finally { _economy.Enabled = true; UpdateState(); }
     }
 
     private void SaveSettings()
@@ -425,8 +663,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         if (s.Voices) on.Add(s.Debates ? "voices and debates" : "voices");
         int living = new[] { s.LivingMemory, s.LivingGrats, s.LivingFirsts, s.LivingDeath, s.LivingAlarms, s.LivingNemesis,
             s.ScheduleMode != "off", s.LivingBreaks, s.LivingBodyLanguage, s.LivingBeggars,
-            s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy }.Count(x => x);
-        if (living > 0) on.Add($"Server life ({living} of 16 parts)");
+            s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy, s.LivingAtmosphere }.Count(x => x);
+        if (living > 0) on.Add($"Server life ({living} of 17 parts)");
+        if (s.HiredCompanions) on.Add("hired companions");
+        if (s.BotGroupInvites) on.Add("bot leaders' invites");
+        if (s.BotRaidInvites) on.Add("raid leaders' invites");
+        if (s.BotCrafters) on.Add(s.BotCraftOrders ? "bot crafters and craft orders" : "bot crafters");
+        int people = new[] { s.BotSkillProfiles, s.BotPlaceKnowledge, s.BotMovementHabits, s.LivingMilestones }.Count(x => x);
+        if (people > 0) on.Add($"bots as people ({people} of 4)");
         if (s.PlayerXpByLevel != "" || s.BotXpByLevel != "") on.Add("XP by level");
         if (on.Count == 0)
             return "Settings are loaded from the saved server settings. Everything is off: the game plays like the normal release.";
@@ -499,8 +743,9 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     {
         Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
         Margin = new Padding(20, 6, 18, 0),
-        Text = "Bots that feel like 2003 players. Everything here starts off; with it all off the game plays exactly like the normal " +
-               "release. Your /spawn companions never change. Saved settings are used on the next server startup.",
+        // Living Server 1.2 (owner 2026-11-16): every feature here is on by default (before 1.2 they all started off).
+        Text = "Bots that feel like 2003 players. Everything here is on by default; with ALL OFF the game plays exactly like the normal " +
+               "release. Your /spawn helpers never change. Saved settings are used on the next server startup.",
     };
 
     private static CheckBox Switch(string text, bool part = false) => new()
@@ -552,6 +797,19 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             Minimum = (decimal)SocialExpansionSettings.MinManaRegenModifier, Maximum = (decimal)SocialExpansionSettings.MaxManaRegenModifier,
             DecimalPlaces = 2, Increment = 0.25m, Value = (decimal)SocialExpansionSettings.DefaultManaRegenModifier,
             Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right,
+        };
+        StyleInput(number);
+        return number;
+    }
+
+    /// <summary>A 0-3 rate in steps of 0.1 (bot_crafter_chat_rate), 1 by default.</summary>
+    private static NumericUpDown CrafterChatInput(string name)
+    {
+        var number = new NumericUpDown
+        {
+            Minimum = 0, Maximum = (decimal)SocialExpansionSettings.MaxBotCrafterChatRate, DecimalPlaces = 1, Increment = 0.1m,
+            Value = (decimal)SocialExpansionSettings.DefaultBotCrafterChatRate, Width = 62, AccessibleName = name,
+            TextAlign = HorizontalAlignment.Right,
         };
         StyleInput(number);
         return number;

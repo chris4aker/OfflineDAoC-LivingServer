@@ -27,7 +27,14 @@ patch_classic_warmap_client.py and patch_quest_journal_button_client.py applied,
 World data checks (the release fails if one is off): the Darkness Falls raid spawns match
 darkness_falls_raid_event_mobs.json exactly (Princess Nahemah, High Lord Saeor and High Lord Oro moved off their daises),
 every quest kill target in set_quest_target_respawns.ledger.json respawns within 300 seconds, the relic pad needs 8,
-and the navmesh road, seam and pocket files are present.
+and the navmesh road, seam and pocket files are present. Every Crafting 2.0 table (EconomyTables.All, read from the
+server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships;
+so is the hired companions' table (offline_hired_companions, read from mode165/HiredCompanions165.cs). So must every
+"Bots as people" table (BotPeopleTables.All, read from bots/autonomous/BotPeopleTables.cs): they name the developer's
+bots (their skill, the places they know, their milestones, the raid mechanics they have seen).
+Every Living Server switch ships at its release value (release-server-settings.json: every feature on, owner 2026-11-16;
+diagnostics, the classic crafting rules and the epic encounter options off), written as both Value and DefaultValue so a
+later changed default still reaches the row, and checked in both editions' worlds.
 """
 from __future__ import annotations
 
@@ -39,6 +46,7 @@ import re
 import shutil
 import sqlite3
 import xml.etree.ElementTree as ET
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -62,7 +70,9 @@ EXCLUDED_NAMES = {"account.txt", "rvr-world.json", "bot-goals.json", "bot-world.
                   # DXVK stays in the developer's own install only (owner 2026-10-14)
                   "d3d9.dll", "dxvk.conf", "game.dll_d3d9.log",
                   # diagnostics switches (their code paths stay off without these files)
-                  "memory-census.on", "gc-snapshots.on", "gc-diagnostics.off"}
+                  "memory-census.on", "gc-snapshots.on", "gc-diagnostics.off",
+                  # Host for Friends' run state on the host's PC (Living Server 1.2): firewall scripts with local paths
+                  "host-for-friends.json", "host-for-friends-firewall.cmd", "host-for-friends-firewall-remove.cmd"}
 EXCLUDED_SUFFIXES = (".log", ".dmp", ".gcdump", ".bak", ".sqlite3.db", ".sqlite3.db-wal", ".sqlite3.db-shm",
                      ".sqlite3.db-journal")
 # Must never be anywhere in the runtime that ships (checked after the copy).
@@ -141,6 +151,8 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
         changed = con.execute("UPDATE Keep SET Realm=?,Level=?,ClaimedGuildName='' WHERE KeepID=?",
                               (keep["Realm"], keep["Level"], int(keep_id))).rowcount
         assert changed == 1, f"keep {keep_id} {keep['Name']}"
+        if "BaseLevel" in keep:  # a battleground keep: its bracket's top + 2 (BattlegroundKeepLevels, 2026-11-19)
+            con.execute("UPDATE Keep SET BaseLevel=? WHERE KeepID=?", (keep["BaseLevel"], int(keep_id)))
     for door_id, door in defaults["Door"].items():
         changed = con.execute("UPDATE Door SET Health=?,State=? WHERE Door_ID=?",
                               (door["Health"], door["State"], door_id)).rowcount
@@ -170,6 +182,91 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
     report = verify_clean(con, policy, defaults)
     con.close()
     return report
+
+
+def economy_tables(repo: Path) -> list[str]:
+    """EconomyTables.All, read from the server's own declaration (craft/economy/EconomyTables.cs): the saved-progress
+    tables of Crafting 2.0 (bot types, crafters, craft orders, the price index, the economy ledger, crafters' customers)."""
+    source = (repo / "source/server/GameServer/craft/economy/EconomyTables.cs").read_text(encoding="utf-8")
+    constants = dict(re.findall(r'public const string (\w+) = "(\w+)";', source))
+    names = re.search(r"string\[\] All = \[([^\]]*)\]", source)
+    assert names, "EconomyTables.All not found in EconomyTables.cs"
+    tables = [constants[name.strip()] for name in names.group(1).split(",") if name.strip()]
+    assert tables, "EconomyTables.All is empty"
+    return tables
+
+
+def hired_companion_tables(repo: Path) -> list[str]:
+    """The hired companions' saved-progress table (from True 1.65), read from the server's own declaration
+    (mode165/HiredCompanions165.cs): a character's companions, which own items and coin, so a played roster never ships."""
+    source = (repo / "source/server/GameServer/mode165/HiredCompanions165.cs").read_text(encoding="utf-8")
+    tables = re.findall(r'\[DataTable\(TableName = "(\w+)"\)\]', source)
+    assert tables, "no DataTable in HiredCompanions165.cs"
+    return tables
+
+
+def bot_people_tables(repo: Path) -> list[str]:
+    """BotPeopleTables.All, read from the server's own declaration (bots/autonomous/BotPeopleTables.cs): the saved-progress
+    tables of "Bots as people" (docs/BOTS-AS-PEOPLE-1.2.md: skill, places, milestones, raid mechanics seen)."""
+    source = (repo / "source/server/GameServer/bots/autonomous/BotPeopleTables.cs").read_text(encoding="utf-8")
+    constants = dict(re.findall(r'public const string (\w+) = "(\w+)";', source))
+    names = re.search(r"string\[\] All = \[([^\]]*)\]", source)
+    assert names, "BotPeopleTables.All not found in BotPeopleTables.cs"
+    tables = [constants[name.strip()] for name in names.group(1).split(",") if name.strip()]
+    assert tables, "BotPeopleTables.All is empty"
+    return tables
+
+
+def check_policy_covers(policy: dict, tables: list[str]):
+    """Every saved-progress table the server declares is emptied by clean_world (it reads progress-policy.json), so no
+    played economy ships: a table missing from the policy stops the build before anything is copied."""
+    emptied = set(policy["ProgressTables"]) | set(policy.get("OptionalProgressTables", [])) | set(policy["ClearTables"])
+    missing = [table for table in tables if table not in emptied]
+    assert not missing, f"saved-progress tables not in progress-policy.json, so a played world would ship them: {missing}"
+
+
+def verify_tables_empty(con: sqlite3.Connection, tables: list[str]) -> dict:
+    """Each table holds no row (a table the world does not have yet holds none either); the counts go in the report."""
+    present = {row[0] for row in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    report = {}
+    for table in tables:
+        if table not in present:
+            report[table] = "absent"
+            continue
+        rows = con.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0]
+        assert rows == 0, f"{table} still has {rows} row(s): played progress would ship"
+        report[table] = 0
+    return report
+
+
+def release_server_settings(repo: Path) -> dict:
+    """The Living Server switches every release world ships with (source/tools/release-server-settings.json)."""
+    settings = json.loads((repo / "source/tools/release-server-settings.json").read_text(encoding="utf-8"))["Settings"]
+    assert settings and all(isinstance(v, str) for v in settings.values()), "release-server-settings.json: Settings"
+    return settings
+
+
+def ship_server_settings(con: sqlite3.Connection, settings: dict) -> dict:
+    """Each switch's row gets its release value as Value and DefaultValue (the server's mark of an untouched default, so
+    LivingServerSettingsUpgrade can still move it in a later build), whatever the developer's install had: their own
+    choices, a diagnostics switch they turned on, or a launcher row (DefaultValue empty). A key without a row stays
+    without one: the server writes its code default (the same value, test_release_server_settings.py) at the first start."""
+    report = {}
+    for key, value in settings.items():
+        changed = con.execute("UPDATE ServerProperty SET Value=?, DefaultValue=? WHERE lower(`Key`)=lower(?)",
+                              (value, value, key)).rowcount
+        report[key] = value if changed else "no row (server default)"
+    con.commit()
+    return report
+
+
+def verify_server_settings(con: sqlite3.Connection, settings: dict) -> dict:
+    """Every switch row present holds its release value, untouched (Value and DefaultValue)."""
+    rows = {k.lower(): (v, d) for k, v, d in con.execute("SELECT `Key`, Value, DefaultValue FROM ServerProperty")}
+    wrong = {key: rows[key.lower()] for key, value in settings.items()
+             if key.lower() in rows and rows[key.lower()] != (value, value)}
+    assert not wrong, f"Living Server switches not at their release value (Value, DefaultValue): {wrong}"
+    return {"checked": sum(key.lower() in rows for key in settings), "without_row": sum(key.lower() not in rows for key in settings)}
 
 
 def set_edition(con: sqlite3.Connection, enabled: bool):
@@ -214,6 +311,10 @@ def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert set(keeps) == set(defaults["Keep"]), "the keep list differs from release-world-defaults.json"
     for keep_id, keep in defaults["Keep"].items():
         assert keeps[keep_id] == (keep["Realm"], keep["Level"], ""), f"keep {keep_id} {keep['Name']}: {keeps[keep_id]}"
+    with_base = {k: v for k, v in defaults["Keep"].items() if "BaseLevel" in v}
+    base_levels = dict(con.execute("SELECT KeepID,BaseLevel FROM Keep")) if with_base else {}
+    for keep_id, keep in with_base.items():
+        assert base_levels[int(keep_id)] == keep["BaseLevel"], f"keep {keep_id} {keep['Name']}: base level {base_levels[int(keep_id)]}"
     doors = {d: (h, s) for d, h, s in con.execute("SELECT Door_ID,Health,State FROM Door")}
     assert set(doors) == set(defaults["Door"]), "the door list differs from release-world-defaults.json"
     for door_id, door in defaults["Door"].items():
@@ -287,6 +388,7 @@ def set_network_defaults(config: Path):
         if count == 0:
             indent = re.search(r"([ \t]*)<Port>", text)
             text = text.replace("</Server>", f"{indent.group(1) if indent else '  '}<{tag}>{value}</{tag}>{newline}</Server>", 1)
+    text = clear_hosting(text)
     config.write_bytes((b"\xef\xbb\xbf" if bom else b"") + text.encode("utf-8"))
     check_network_defaults(config)
 
@@ -300,7 +402,29 @@ def check_network_defaults(config: Path):
     assert values["UdpIP"] in LOOPBACK, f"{config}: <UdpIP> is {values['UdpIP']!r}; the release must listen on 127.0.0.1 only"
     assert values["EnableUPnP"].lower() == "false", f"{config}: <EnableUPnP> is {values['EnableUPnP']!r}; it must be False"
     assert values["DetectRegionIP"].lower() == "false", f"{config}: <DetectRegionIP> is {values['DetectRegionIP']!r}; it must be False"
+    check_not_hosting(config, server)
     return values
+
+
+# Living Server 1.2 (Host for Friends): a release never ships a host password or a router address of the developer's.
+HOSTING_EMPTY = {"HostPasswordHash": "", "PublicIP": "auto"}
+
+
+def check_not_hosting(config: Path, server=None):
+    """No host password and no PublicIP but "auto" (or none) in a shipped config."""
+    if server is None:
+        server = ET.parse(config).getroot().find("Server")
+    password = (server.findtext("HostPasswordHash") or "").strip()
+    public = (server.findtext("PublicIP") or "").strip()
+    assert password == "", f"{config}: <HostPasswordHash> is set; a release must not ship a host password"
+    assert public.lower() in ("", "auto"), f"{config}: <PublicIP> is {public!r}; a release must not ship one"
+
+
+def clear_hosting(text: str) -> str:
+    """Empties a HostPasswordHash and resets a PublicIP to auto, where the file has them."""
+    for tag, value in HOSTING_EMPTY.items():
+        text = re.sub(rf"<{tag}>[^<]*</{tag}>", f"<{tag}>{value}</{tag}>", text)
+    return text
 
 
 def shipped_configs(runtime: Path) -> list[Path]:
@@ -331,6 +455,16 @@ def main():
         raise SystemExit("The snapshot client is not the Sluaghbinder client this release expects")
     policy = json.loads((repo / "source/tools/OfflineDaoc.ProgressImport/progress-policy.json").read_text())
     defaults = json.loads((repo / "source/tools/release-world-defaults.json").read_text(encoding="utf-8"))
+    # Crafting 2.0 (1.2): the economy's saved-progress tables must all be emptied (AGENTS.md, protect player data).
+    economy = economy_tables(repo)
+    # Hired companions (1.2 branch): their table is checked empty with the economy's.
+    economy += hired_companion_tables(repo)
+    check_policy_covers(policy, economy)
+    # Bots as people (1.2): every table naming the developer's bots must be emptied too.
+    bot_people = bot_people_tables(repo)
+    check_policy_covers(policy, bot_people)
+    # Living Server 1.2 (owner 2026-11-16): every feature ships on, whatever the developer's install had.
+    server_settings = release_server_settings(repo)
 
     print("Copying the runtime (personal, diagnostic and run-state files excluded)...", flush=True)
     runtime = out / "runtime"
@@ -343,6 +477,11 @@ def main():
             sqlite3.connect(database) as dst:
         src.backup(dst)
     world = clean_world(database, policy, defaults)
+    with closing(sqlite3.connect(database)) as con:
+        world["economy_tables"] = verify_tables_empty(con, economy)
+        world["bot_people_tables"] = verify_tables_empty(con, bot_people)
+        world["server_settings"] = ship_server_settings(con, server_settings)
+        world["server_settings_check"] = verify_server_settings(con, server_settings)
     world_data = check_world_data(database, repo)
 
     set_auto_account_creation(runtime / "server/config/serverconfig.xml")
@@ -382,6 +521,9 @@ def main():
     print("Building the 0.37 no-custom-class edition files...", flush=True)
     edition = out / "editions/0.37-no-custom-class"
     no_class = no_custom_class_database(database, edition / "runtime/data/opendaoc.sqlite3.db")
+    with closing(sqlite3.connect(edition / "runtime/data/opendaoc.sqlite3.db")) as con:
+        no_class["economy_tables"] = verify_tables_empty(con, economy)
+        no_class["server_settings_check"] = verify_server_settings(con, server_settings)
     (edition / "runtime/client-opendaoc/app").mkdir(parents=True, exist_ok=True)
     shutil.copy2(args.edition_game_dll, edition / "runtime/client-opendaoc/app/game.dll")
 

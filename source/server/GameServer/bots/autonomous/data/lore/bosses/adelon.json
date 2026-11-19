@@ -1,0 +1,124 @@
+{
+  "id": "adelon",
+  "name": "Adelon",
+  "npcNames": [
+    "Adelon"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the watcher on the hill"
+  ],
+  "facts": [
+    {
+      "text": "Adelon: template 60157561, level 50, on the hill west of Fort Gwyntell at 416800, 418544 by a small tree; aggro level 0, no faction, no spells or styles, respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Restoring the Magic (Lady Lurlei of Caer Gothwaite): speak with Adelon on the hill right of the Fort Gwyntell gate; Meical's key from his house below the tower; a metal sphere from the second floor; give the orb to the lifeless creation; kill the Cabalist Meical when he comes to defend it; open Meical's box and read his note; cleanse the broken orb with a pendant. Adelon is its first step.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lady Lurlei's turn-in text: Adelon sent word that the hero was going to take on Meical.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Adelon as the old master's last apprentice, the leaves of the mark-book he carried out, the tree he planted and his refusal to go back in are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "On the hill outside Fort Gwyntell, right of the gate, there is a small tree, and under it Adelon sits and watches the hall of making across the valley. He has been watching it since the first summer of the war. The fort's soldiers bring him bread. He eats it without looking away.\n\nHe was the old master's last apprentice. The school of making sent its readers out to the hall to learn from Master Meical at the bench, and Adelon was the last of them, the one who was there on the final evening, when the smoke came up from the south and the master sent him home. He did not go home. He went to the hill, and when the master did not come down from the tower, he went back once, by night, as far as the bench, and carried out what he could hold: a few leaves of the master's mark-book, the ones that lay on top. He has given them to Lady Lurlei of Caer Gothwaite one by one, as she has needed them. He has never gone back in.\n\nHe knows the hall better than anyone living. He knows the key on the hook in the house below and the sphere at the bench on the second floor, and he knows what the thing at the top of the hall would need to wake, because he watched the master build most of it. When the realm's young come to the hill to ask the way, he tells them, and sends word to Lady Lurlei of whoever is fool enough to go, and watches them cross the valley. He does not go with them. The fort's soldiers say that is the only thing he has ever been afraid of; Adelon says it is not fear, but that the master sent him home, and he has not been released from it.\n\nHe has no quarrel with anyone who comes to the tree. He has never once raised a hand, not to the soldiers, not to the drakoran scouts who come up the hill at dusk, not to the young who come to ask. If he is struck down, the fort is without its watcher a while, and then he is back under the tree, looking at the hall, as if he had only gone to fetch water. He planted the tree himself, on the first morning, from a seed out of the master's garden.",
+  "legend": "Adelon is a level 50 NPC sitting by a small tree on the hill right of the Fort Gwyntell gate in the Dales of Devwy. He never aggros and has no faction, no spells, nothing: he is the start of Restoring the Magic (Lady Lurlei), so talk to him, do not kill him. If someone does kill him, he respawns in about ten minutes and everyone waiting for the quest has to wait too. The quest runs: Pazia's key in the house below the hall, Tyian's sphere on the second floor, the orb to the lifeless creation at the top, Cabalist Meical, his box and note, then the pendant on the broken orb.",
+  "yells": {
+    "aggro": [
+      "Why? I have done nothing.",
+      "I only watch.",
+      "The master sent me home."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I was not released. I was only sent home."
+      }
+    ],
+    "death": [
+      "Who will... watch the hall...",
+      "Tell Lady Lurlei..."
+    ],
+    "slay": [
+      "I am sorry.",
+      "Go back to the fort.",
+      "I did not want this."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small tree on the hill. A man watches the hall.",
+      "Across the valley, the hall of making."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Adelon looks away from the hall, for once."
+      }
+    ],
+    "realmFirstKill": "Adelon is struck down. Nobody watches the hall."
+  },
+  "botLines": {
+    "briefing": [
+      "adelon, 50, by the little tree right of the fort gate. hes the quest guy for restoring the magic. dont kill him",
+      "never aggros, no faction, no spells. if someone kills him he's gone 10 min",
+      "order: pazia's key, tyian's sphere upstairs, orb to the creation, meical, box, pendant on the orb",
+      "talk to him first, he tells lurlei you're going"
+    ],
+    "aftermathWin": [
+      "who killed adelon. now we wait ten minutes",
+      "adelon down, why would you",
+      "he didnt even fight back",
+      "great, the quest guy is dead"
+    ],
+    "aftermathLoss": [
+      "he's 50 and we're 45, and he didnt even fight back properly",
+      "attacked the quest giver by accident lol",
+      "someone tab-targeted adelon instead of a drakoran scout",
+      "nobody should be losing to adelon"
+    ],
+    "rumour": [
+      "[heard|someone said] adelon was the old master's last apprentice and never went back in the hall",
+      "heard adelon carried out leaves of the master's mark-book and gives them to lady lurlei",
+      "[heard|someone said] adelon planted that tree on the hill from a seed out of the master's garden",
+      "heard adelon says he isnt scared, just never released"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "adelon",
+    "text": "The old master's last apprentice at the hall of [meical], sent home on the night of the burning, who sits under a small tree on the hill right of the Fort Gwyntell gate and watches the hall still. He carried out leaves of the master's mark-book and gives them to Lady Lurlei one by one. He tells the realm's young the way to the key, the sphere and the creation, and does not go with them; he says he has not been released."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. Adelon came to my table once, the only time he has come into the fort, to ask me to enter his name. I asked him what he would take as a name, and he said his own, and that he wanted it written in the book of the living, not in my second book, because he was not dead, only not released. I entered it. Then he asked me to enter the old master's under it, in the same book, with no mark. I said I could not prove the master was alive. He said I could not prove he was not. I entered it. He went back to his tree.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Adelon on the hill above Fort Gwyntell in {minutes} minutes, for no reason anyone could give.",
+    "loss": "Adelon, who never raised a hand, outlasted {raidLeader}'s company of {realm} on the hill."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "realm-of-camelot"
+  ],
+  "related": [
+    {
+      "id": "cabalist-meical",
+      "relation": "watches his hall and sends the realm against him"
+    },
+    {
+      "id": "tyian",
+      "relation": "knows the sphere at the bench"
+    },
+    {
+      "id": "pazia",
+      "relation": "knows the key on the hook"
+    }
+  ]
+}

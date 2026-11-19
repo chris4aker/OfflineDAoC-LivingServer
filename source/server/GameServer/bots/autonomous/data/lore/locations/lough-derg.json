@@ -1,0 +1,537 @@
+{
+  "id": "lough-derg",
+  "name": "Lough Derg",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    200
+  ],
+  "summary": "The red lake west of Tir na Nog, with the three towns named for the otherworld: Mag Mell, Mardagh and Tir na mBeo.",
+  "facts": [
+    {
+      "text": "Lough Derg (Loch Dearg, 'red lake') takes its name, in one legend, from the blood of a monster killed in it, the Caoránach, which reddened the water.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Lough_Derg_(Ulster)"
+    },
+    {
+      "text": "Mag Mell ('plain of delight') and Tír na mBeo ('land of the living') are otherworld names of Irish myth, like Tír na nÓg.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Mag_Mell"
+    },
+    {
+      "text": "In Irish folklore the lunantishee are the fairy guardians of the blackthorn, who will not let it be cut on the old feast days.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Lunantishee"
+    },
+    {
+      "text": "Zone 200 (region 200, x 319,488-385,024, y 483,328-548,864): 1,299 monsters and 261 bot camp goals, the busiest zone of the realm. Town areas: Mag Mell (346,463/490,663, radius 1,750), Mardagh (352,917/517,048) and Tir na mBeo (344,082/528,432, radius 2,500). Zone points: the gate to Tir na Nog (332,389/485,179) and a crossing to Domnann on Hy Brasil (348,198/492,819).",
+      "provenance": "game",
+      "source": "world data Area and ZonePoint tables (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters by count: lough wolves, blackthorns (Blackthorns) and lunantishee (Guardians of the Blackthorn), water beetles, spraggons, badgers, wild crouches, minor changelings, orchard nippers, eirebugs, skeletal minions and pawns, lucradans and lucragans (Leprechauns), cluricaun trips, ghostly and ghastly siabra, dergan furies and enchanters (Siabras, 12-17), parthanans (17-18), moss, dew and rock sheeries, roane maidens (Selkies), empyrean orbs.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Quest facts: 'Speak with Macnol in the ruined tower of Tir na mBeo'; Reidie 'in the Tir na mBeo tavern'; Guardian Andraste 'by the Tir na mBeo well'; 'the old man in the hut at the back of Tir na mBeo about Dagda's Harp'; 'Find the roane maiden Resa at night' and take her skin back from the leprechaun Hazard; 'See Fereinn on the island in Lough Derg'; 'Kill the summoner at the stone obelisk northwest of Mag Mell'; Satefe 'the named parthanan in the parthanan farm'; the Fallen One 'at night by the standing stone where ghastly siabra' gather.",
+      "provenance": "game",
+      "source": "DataQuest 'Seek the Moonstone', 'Little Wind', 'Essence of Hostility', 'The Lost Relics', 'Roane Skin', 'Lesser Of Two Evils', 'Summoner Expulsion', 'Eoghan's Spell' (world data)"
+    },
+    {
+      "text": "Aziliz (by the island shore, about 359,900/537,800) gives 26 data quests, more than any other NPC of the realm.",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md section 3 (world data)"
+    },
+    {
+      "text": "Living Server lore: the three otherworld towns, the lake's red legend as the shore folk tell it, the blackthorn truce, the summoner's obelisk, the siabra of the east shore, and Aziliz's lake book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Lough Derg: Satefe (20, parthanan, ghostly; Eoghan's Spell), Tangua (20, leprechaun, near Mardagh; Seeking Glory), Fallen One (19, FallenOne.cs: shown only at night, otherwise unseen and peaceful; Essence of Hostility), Tharl (19) and Hughar (16, curmudgeons), Bertha (14, a boar, Bertha.cs: not aggressive, calls a 'BerthaBaf' package no spawn carries), Duana (14, a wolf; Seek the Moonstone B and C), Bristle (13, badger), Lelly (13, roane maiden), Nock (13, sheevra, by Aziliz), Morty (11, a toad, Morty.cs: shown only between the eighth and twelfth game hours), Prunar (10, lunantishee), Spectral Orchard Nipper (10), Clik (9, water beetle), Hazard (9, leprechaun), Dacyn (8), Xerxes (6, skeleton), Spackit and Spykit (4, spraggons, not aggressive; their quest's Spicket has no spawn), Dwayne (3), Sabha (3).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "West of the capital the land falls away to a long lake, and the lake is red at sunset more often than water should be. The shore folk give two reasons. The fishers say a great worm lived in the lake in the first days, a thing of the deep cold that came up the rivers from the sea, and a hero of the old tales went down its throat and cut it open from inside, and its blood is still in the water. The druids of Mag Mell say the lake is red because the first families named everything around it after the country beyond the sunset, and the lake has been trying to look like that country ever since.\n\nThe names are certainly theirs. Mag Mell, the plain of delight, is the first town past the capital's west gate, a crowded place of stables and smiths and teachers where the young of the realm learn which end of a spear goes forward. Tir na mBeo, the land of the living, stands on the lake's south shore, with its well and its tavern, its huts, and the ruined tower where a man called Macnol keeps a signet ring he should not have. Mardagh lies between them, a hamlet of shops where an elven weaponsmith sells to anyone, and the scryer Muwn reads the water for anyone who pays. With Tir na Nog itself, three of the realm's oldest places are named after the land the dead and the blessed go to, and the bards of Mag Mell say that is the most Hibernian thing about Hibernia: it named its front door after paradise and its kitchen after the afterlife.\n\nThe lake country is busy and mostly kind. Its troubles are small and many, and every one has a name. The leprechauns of the meadows are thieves: the lucradans and the lucragans steal anything not tied down, and Hazard of their kind once stole the sealskin of Resa, a roane maiden of the lake, so that she could not go back into the water, and the women of Connla on the coast still talk about it. The roane maidens come ashore on the east side at night, and the shore folk leave them be. In the orchards the nippers bite, and one of them is a ghost of a nipper, which nobody can explain. In the woods northwest of Tir na mBeo the blackthorns grow and walk, and the lunantishee guard them: the shore folk keep a truce with the blackthorn, and nobody cuts it in the old feast seasons, and the lunantishee Prunar, who keeps half of Fagan's wand, does not care which season it is.\n\nThe east shore is not kind. The siabra hold it, the elves' cousins who stayed on this side of the Veil and never forgave the realm for being there: dergan furies and dergan enchanters in their camps, and the ghostly and ghastly siabra who walk around a standing stone on the eastern slope at night, where a thing the realm calls the Fallen One stands among them and does not speak. The siabra fight the curmudgeons for the hill country there, and both sides take any Hibernian who comes near for a spy. Beyond them the parthanans keep their farm, great slow tillers of the soil who are not friendly to anyone, and past the farm the empyrean orbs drift down from the high ground toward Bri Leith.\n\nTwo shadows lie close to the towns. East of Mag Mell a stone obelisk stands in the fields, and a summoner comes to it, one of the black-robed callers of the dead, and the skeletal things that wander the downs below Mag Mell are what he calls; every trainer in Mag Mell sends the young out to put him down, and he always comes back. And near the town, by the roadside, there is the old crossing to the west: a place where the channelers say the way to Domnann on Hy Brasil runs closest to the mainland, and companies have gone out over the sea from it since the Sylvan first came asking for swords.\n\nWhy does Lough Derg matter? Because the realm is made there. More young Hibernians have learned their trade on the lake shore than anywhere else, and more errands start there than anywhere else, most of them at the door of a woman called Aziliz who lives within sight of the island and seems to know what every village in the realm is short of. The lake is red at sunset because the country beyond it is red, the druids say. The fishers say it is the worm. The young of Mag Mell, who have been bitten by everything on the shore, say it is them.",
+  "legend": "Lough Derg is the starter zone west of Tir na Nog, levels 1-20, and the busiest zone in Hibernia. Mag Mell (by the capital's west gate) and Tir na mBeo (south shore) are the hubs, with trainers, stables and channelers; Mardagh between them is the shop stop. Easy camps: lough wolves, badgers, water beetles, spraggons, eirebugs, orchard nippers and the leprechauns (lucradans steal, kill them anyway). Blackthorns and lunantishee in the woods northwest of Tir na mBeo are 8-10 and social. The east shore is siabra country: dergan furies and enchanters 12-17, ghastly siabra round the standing stone at night (Fallen One for Essence of Hostility); do not wander there at 10. Parthanans (17-18) on their farm east. Roane maidens come out at night (Resa for Roane Skin). The summoner at the obelisk east of Mag Mell is a trainer quest and his skeletons wander the downs. Aziliz by the island shore has a huge list of item quests. Old lake custom: throw a crust in the water at sunset so the worm in the lake stays asleep.",
+  "atmosphere": {
+    "firstEntry": [
+      "Lough Derg. The lake is red at sunset.",
+      "Three towns named for the land beyond the sunset.",
+      "Wolves on the shore, thieves in the meadows.",
+      "Every errand in the realm starts at this lake.",
+      "Somewhere, a leprechaun is laughing."
+    ],
+    "areas": [
+      {
+        "name": "Mag Mell",
+        "x": 346460,
+        "y": 490660,
+        "z": 5330,
+        "radius": 1750,
+        "lines": [
+          "Mag Mell, the plain of delight.",
+          "Spears, stables and the young who carry them.",
+          "Fagan has a moonstone story for you."
+        ]
+      },
+      {
+        "name": "Tir na mBeo",
+        "x": 344080,
+        "y": 528430,
+        "z": 5450,
+        "radius": 2500,
+        "lines": [
+          "Tir na mBeo, the land of the living.",
+          "The well, the tavern and a hut at the back.",
+          "A ruined tower where Macnol keeps a ring."
+        ]
+      },
+      {
+        "name": "Mardagh",
+        "x": 352920,
+        "y": 517050,
+        "z": 5080,
+        "radius": 1500,
+        "lines": [
+          "Mardagh, a hamlet of shops.",
+          "The scryer Muwn reads the water for a fee."
+        ]
+      },
+      {
+        "name": "the summoner's obelisk",
+        "x": 335000,
+        "y": 483500,
+        "z": 5200,
+        "radius": 2500,
+        "lines": [
+          "A stone obelisk in the fields. It is cold.",
+          "Skeletons wander the downs below Mag Mell."
+        ]
+      },
+      {
+        "name": "the crossing",
+        "x": 348200,
+        "y": 492800,
+        "z": 5240,
+        "radius": 800,
+        "lines": [
+          "The old crossing to Domnann, over the sea.",
+          "The way west runs close here."
+        ]
+      },
+      {
+        "name": "the blackthorn wood",
+        "x": 342500,
+        "y": 520900,
+        "z": 5390,
+        "radius": 3000,
+        "lines": [
+          "Blackthorns, walking. Do not cut them.",
+          "The lunantishee guard the thorn.",
+          "Prunar keeps half of Fagan's wand here.",
+          "Prunar keeps half a wand, and the truce."
+        ]
+      },
+      {
+        "name": "the island shore",
+        "x": 360500,
+        "y": 539500,
+        "z": 4900,
+        "radius": 3000,
+        "lines": [
+          "Fereinn's island, out in the red water.",
+          "Aziliz knows what every village lacks.",
+          "Nock the sheevra, a shout away from Aziliz."
+        ]
+      },
+      {
+        "name": "the roane strand",
+        "x": 364800,
+        "y": 522700,
+        "z": 4730,
+        "radius": 2000,
+        "lines": [
+          "Seal-women come ashore here at night.",
+          "Resa looks for her skin in the grass."
+        ]
+      },
+      {
+        "name": "the siabra camps",
+        "x": 372500,
+        "y": 512000,
+        "z": 5150,
+        "radius": 4000,
+        "lines": [
+          "Dergan fires on the east shore.",
+          "The siabra never forgave the realm.",
+          "Ghastly shapes circle a standing stone."
+        ]
+      },
+      {
+        "name": "the parthanan farm",
+        "x": 378000,
+        "y": 500000,
+        "z": 5250,
+        "radius": 3500,
+        "lines": [
+          "The parthanans till. They do not welcome help.",
+          "Huts on the hill behind the farm."
+        ]
+      },
+      {
+        "name": "Satefe's field",
+        "x": 382495,
+        "y": 498373,
+        "z": 5214,
+        "radius": 1200,
+        "lines": [
+          "Satefe tills the field, pale as morning mist.",
+          "You can see the wheat through her."
+        ]
+      },
+      {
+        "name": "Tangua's hill",
+        "x": 351333,
+        "y": 518793,
+        "z": 5216,
+        "radius": 1200,
+        "lines": [
+          "Tangua was here a moment ago. He always was.",
+          "A leprechaun's hut, empty, still warm."
+        ]
+      },
+      {
+        "name": "the standing stone",
+        "x": 379946,
+        "y": 487965,
+        "z": 5277,
+        "radius": 1200,
+        "lines": [
+          "The Fallen One stands here, but only at night.",
+          "By day: grass, and a stone, and nothing."
+        ]
+      },
+      {
+        "name": "the curmudgeon camp",
+        "x": 370893,
+        "y": 529976,
+        "z": 5166,
+        "radius": 1500,
+        "lines": [
+          "Tharl's snares. Mind where you step.",
+          "Curmudgeons singing. That is the worst of it."
+        ]
+      },
+      {
+        "name": "the poachers' camp",
+        "x": 380655,
+        "y": 522322,
+        "z": 5664,
+        "radius": 1200,
+        "lines": [
+          "Hughar wears a daemon's skin he never earned.",
+          "Stolen furs, still tagged, still singing.",
+          "Bertha roots about as if she owned the camp."
+        ]
+      },
+      {
+        "name": "the old ruin",
+        "x": 380393,
+        "y": 497084,
+        "z": 5338,
+        "radius": 1200,
+        "lines": [
+          "Duana the wolf watches. She would speak, collared.",
+          "Dergan siabra, and a wolf who listens."
+        ]
+      },
+      {
+        "name": "Bristle's hill",
+        "x": 339733,
+        "y": 538697,
+        "z": 5817,
+        "radius": 1000,
+        "lines": [
+          "Bristle's sett. Something silver in the dark.",
+          "A badger who dug where he should not."
+        ]
+      },
+      {
+        "name": "Lelly's shore",
+        "x": 374597,
+        "y": 494930,
+        "z": 5033,
+        "radius": 1000,
+        "lines": [
+          "Lelly keeps her skin close, and her shell closer.",
+          "A seashell hums here, like the open sea."
+        ]
+      },
+      {
+        "name": "Morty's ground",
+        "x": 341194,
+        "y": 505428,
+        "z": 5529,
+        "radius": 800,
+        "lines": [
+          "Morty's ground. In the morning there is a toad.",
+          "Any other hour: nothing, not even a hole."
+        ]
+      },
+      {
+        "name": "the old orchard ground",
+        "x": 347561,
+        "y": 539537,
+        "z": 5608,
+        "radius": 1200,
+        "lines": [
+          "The Spectral Orchard Nipper flies where trees stood.",
+          "Blossom on the air, and no orchard."
+        ]
+      },
+      {
+        "name": "Clik's bay",
+        "x": 348842,
+        "y": 503168,
+        "z": 4598,
+        "radius": 800,
+        "lines": [
+          "Clik's bay. Something glints under the reeds.",
+          "A washing stone, and no jewels on it."
+        ]
+      },
+      {
+        "name": "Hazard's meadow",
+        "x": 337425,
+        "y": 532141,
+        "z": 5517,
+        "radius": 1000,
+        "lines": [
+          "Hazard the leprechaun. He stole a sealskin once.",
+          "A roane wept on this shore. Hazard laughed."
+        ]
+      },
+      {
+        "name": "south of the thorn",
+        "x": 341107,
+        "y": 514898,
+        "z": 5200,
+        "radius": 1000,
+        "lines": [
+          "Dacyn walks here, lost, with a blackthorn staff.",
+          "The thorn keeps its bargains."
+        ]
+      },
+      {
+        "name": "the bone ground",
+        "x": 356261,
+        "y": 494923,
+        "z": 4736,
+        "radius": 1200,
+        "lines": [
+          "Xerxes, king of the pawns, and his minions.",
+          "The old dead lie badly here, and walk."
+        ]
+      },
+      {
+        "name": "Spackit's valley",
+        "x": 357691,
+        "y": 484451,
+        "z": 6865,
+        "radius": 900,
+        "lines": [
+          "Spackit, a spraggon a long way from the den.",
+          "A small grey quarrel, waiting to start."
+        ]
+      },
+      {
+        "name": "Spykit's hill",
+        "x": 347235,
+        "y": 483802,
+        "z": 5200,
+        "radius": 900,
+        "lines": [
+          "Spykit, twice over, just over the hill.",
+          "Two small spraggons who think they are one."
+        ]
+      },
+      {
+        "name": "the lucradans' field",
+        "x": 347293,
+        "y": 486587,
+        "z": 5254,
+        "radius": 900,
+        "lines": [
+          "Dwayne, who never stole a thing. The others mind.",
+          "Buttons in the grass, for Dwayne."
+        ]
+      },
+      {
+        "name": "Sabha's pond",
+        "x": 327861,
+        "y": 516549,
+        "z": 4289,
+        "radius": 800,
+        "lines": [
+          "Sabha by his pond, waiting for a fish.",
+          "Keep the balance. Bring the fish."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "mag mell, tir na mbeo and tir na nog are all named after the otherworld. [plain of delight|land of the living]",
+      "lough derg means the red lake. fishers say a worm's blood is still in it",
+      "the lunantishee guard the blackthorns. [never cut one|they get angry]",
+      "a leprechaun called hazard stole a roane maiden's skin so she couldnt go back in the lake",
+      "the siabra on the east shore are elf cousins who stayed this side of the veil. [hate us|grumpy lot]",
+      "the summoner at the obelisk always comes back. [every mag mell trainer sends you|forever]",
+      "the skeletons on the downs near mag mell are the summoner's. [kill him|they keep coming]",
+      "aziliz by the island has more errands than anyone in the realm. [26 of them|busy]",
+      "macnol in the tir na mbeo ruins has a signet ring he shouldnt. [moonstone quest|he attacks you]",
+      "the dergan furies and the curmudgeons fight over the east hills. [stay out|both hate you]",
+      "theres a ghost orchard nipper in lough derg. nobody knows why. [spooky|lol]",
+      "the parthanans on their farm dont like help. [17-18|leave them]",
+      "the old crossing to hy brasil is right outside mag mell"
+    ],
+    "rumour": [
+      "[heard|someone said] the fallen one by the standing stone is a siabra lord who lost his name",
+      "throw a crust in lough derg at sunset so the worm stays asleep. [old custom|my gran did]",
+      "[word is|heard] hazard still has a second roane skin hidden somewhere",
+      "someone cut a blackthorn on a feast day and the whole wood got up. [wipe|lol]",
+      "[heard|someone said] the scryer in mardagh saw balor's eye in the lake water",
+      "spykit is out again near mag mell. [two of them|at night]",
+      "[word is|heard] tangua the leprechaun only shows in the huts behind the parthanan farm",
+      "the summoner came back to the obelisk [already|again]. [5 minutes|every time]",
+      "[heard|someone said] satefe the parthanan is so pale you can see through her",
+      "[heard|someone said] tangua knows where glory the bow went. good luck finding him",
+      "[heard|someone said] the fallen one only shows at night by the standing stone. by day theres nothing there",
+      "[heard|someone said] tharl the curmudgeon trapper has caught more hibs than hares",
+      "[heard|someone said] hughar wears alastriona's stolen daemon skin by the fire at night",
+      "[heard|someone said] bertha the sow calls for her litter when you hit her. none ever comes",
+      "[heard|someone said] duana the wolf can talk if you wear maeve's collar",
+      "[heard|someone said] bristle the badger dug up reidie's granny for her ring",
+      "[heard|someone said] lelly's seashell hums like the open sea. tavie wants it for a drum",
+      "[heard|someone said] nock stands right by aziliz on the island and she never does anything about it",
+      "[heard|someone said] morty the toad only shows up in the mornings. nothing there any other time",
+      "[heard|someone said] prunar broke fagan's wand because fagan cut the blackthorn out of season",
+      "[heard|someone said] the spectral orchard nipper still eats blossom off trees that were cut down ages ago",
+      "[heard|someone said] clik the beetle stole caitriona's jewels off her washing stone",
+      "[heard|someone said] hazard still has a bit of resa's sealskin, he cut a corner off it",
+      "[heard|someone said] dacyn cut the blackthorn in a feast season and the wood wont let him go home",
+      "[heard|someone said] the mag mell kids named the skeleton king xerxes after some king in a book",
+      "[heard|someone said] spicket spackit and spykit are spraggons from the den that got lost. they never attack first",
+      "[heard|someone said] there are two spykits over the hill from mag mell. mannix never said which one",
+      "[heard|someone said] dwayne is the only leprechaun in hibernia that never stole anything",
+      "[heard|someone said] tir na mbeo has never once forgotten sabha's fish. nobody knows what happens if they do"
+    ],
+    "tell": [
+      "lough derg is the starter zone west of tnn. mag mell and tir na mbeo are the towns. 1 to 20",
+      "where is mag mell? right outside the tnn west gate",
+      "is lough derg safe? mostly. stay off the east shore under 15, thats siabra country",
+      "whats in lough derg? wolves, leprechauns, blackthorns, siabra camps, a summoner, parthanans",
+      "where is tir na mbeo? south shore of the lake, south of mag mell past mardagh",
+      "where do i go after lough derg? south to the silvermine (ardagh, howth) or east to bri leith",
+      "satefe is a 20 named parthanan on the parthanan farm, east lough derg. eoghan's spell wants her wheat",
+      "tangua? a 20 named leprechaun, rare, seen up by mardagh. seeking glory quest",
+      "fallen one? 19, night only, at the standing stone east of the lake. essence of hostility: give him the bracer, he attacks",
+      "tharl is a 19 curmudgeon trapper in the curmudgeon camp on the south east shore. lesser of two evils",
+      "hughar is a 16 named curmudgeon poacher south east of the parthanan farm. alastriona's chest",
+      "bertha is a 14 boar at hughar's poacher camp. she wont attack you, and she has a long respawn",
+      "duana is a 14 wolf at the old ruin among the dergan siabra near the parthanan farm. seek the moonstone b and c",
+      "bristle is a 13 badger on the hill southwest of tir na mbeo. the hunt for bristle, talk to reidie first",
+      "lelly is a 13 named roane maiden on the shore north west of the parthanan farm. beautiful music",
+      "nock is a 13 named sheevra on the island shore near aziliz. seek the moonstone: take his head",
+      "morty is an 11 toad south of mag mell, only there in the game morning, and he doesnt attack",
+      "prunar is a 10 lunantishee in the blackthorn wood north west of tir na mbeo. fagan's wand, one half",
+      "spectral orchard nipper is a 10 ghost sprite south of tir na mbeo, flying. easy",
+      "clik is a 9 water beetle in the small bay southeast of mag mell. clik's raids",
+      "hazard is a 9 leprechaun in the meadows west of tir na mbeo. roane skin: get resa's skin back",
+      "dacyn is an 8 named south of the blackthorn wood in lough derg. low level, but he attacks",
+      "xerxes is a 6 skeleton with skeletal pawns and minions east of the crossing near mag mell",
+      "spackit and spykit are 4 spraggons northeast of mag mell. they dont attack. spicket isnt around",
+      "spykit is a 4 spraggon just over the hill northeast of mag mell. there are two of him",
+      "dwayne is a 3 leprechaun north of mag mell with the lucradans. he doesnt attack",
+      "sabha is a 3 small folk by the pond northwest of tir na mbeo. give him breeda's fish, he wont attack"
+    ]
+  },
+  "loremaster": {
+    "intro": "Lough Derg, the red lake. Its three towns, [Mag Mell], [Mardagh] and [Tir na mBeo], are named for the land beyond the sunset. Mind the [leprechauns], the [blackthorn], the [siabra] of the east shore and the [summoner]. And if you want an errand, ask [Aziliz].",
+    "topics": {
+      "Mag Mell": "The plain of delight, the first town past the capital's west gate: stables, smiths, teachers. Fagan there keeps the moonstone tales, and the firbolg guard Meara keeps the peace. The old [crossing] is close by.",
+      "Mardagh": "A hamlet of shops between [Mag Mell] and [Tir na mBeo], where an elven weaponsmith sells to anyone and the scryer Muwn reads the lake water.",
+      "Tir na mBeo": "The land of the living, on the south shore: the well where Guardian Andraste stands, Reidie's tavern, the old man in the hut at the back who knows about the Dagda's harp, and the ruined tower of Macnol.",
+      "lake": "The red lake. The fishers say a worm's blood reddened it when a hero cut it open from inside; the druids say it is trying to look like the country beyond the sunset. Fereinn keeps the island in the middle.",
+      "leprechauns": "Lucradans and lucragans, the meadow thieves, and the cluricaun trips with them. Hazard of their kind stole the sealskin of the roane maiden Resa. Wug stole a clay pot. They steal everything.",
+      "blackthorn": "The walking thorn of the woods northwest of [Tir na mBeo], and its guardians the lunantishee. The shore folk keep a truce: the thorn is not cut in the old feast seasons. Prunar of the lunantishee holds half of Fagan's wand.",
+      "siabra": "The elves' cousins who stayed on this side of the Veil and never forgave the realm for it. On the east shore: dergan furies, dergan enchanters, and the ghostly and ghastly siabra round the standing stone where the Fallen One waits at night.",
+      "summoner": "A black-robed caller of the dead who comes to the stone obelisk east of [Mag Mell]. The skeletons on the downs are his. Every trainer in Mag Mell sends the young to put him down. He comes back.",
+      "crossing": "The place outside [Mag Mell] where the channelers say the way to Domnann on Hy Brasil runs closest. Companies have gone west from it since the Sylvan came asking for swords.",
+      "Aziliz": "A woman who lives within sight of the island and sends the young everywhere: to Culraid for Lough Gur, to Howth after a spear, to the Coruscating Mine. She knows what every village in the realm is short of.",
+      "parthanans": "Great slow tillers of the farm on the east side of the lake, who do not welcome help. Satefe of their kind keeps the wheat a spell of Ardee needs. Tangua the leprechaun hides in the huts behind the farm.",
+      "Satefe": "Satefe is the parthanan who keeps the wheat, on the great slow farm on the east side of the lake, and you can see the wheat through her. The parthanans are pale enough at the best of times, but Satefe is paler, a tiller gone thin as mist, and the farm folk of Mag Mell say she was the first of them to till that field and has never stopped. Eoghan of the lake, who works a spell that needs a shaft of her wheat, says it is the only wheat in the realm that remembers being sown.",
+      "Tangua": "Tangua is a leprechaun of the old kind, and like all of them he has hidden something. The archers of Tir na Nog say it is the way to Glory, the bow of a hero of the old families, and that a sentinel of Bri Leith knows which leprechaun has the secret of it. The trouble is finding him: the quest-givers send the young to the huts behind the [parthanans]' farm, but the shore folk see him in the hills above [Mardagh], and he is never where the last person saw him.",
+      "Fallen One": "By day the standing stone on the eastern slope has nothing round it but grass. At night the ghastly siabra walk about it, and in the middle there is something the lake folk call the Fallen One because nobody has a better name: a warrior of the old war, Guardian Andraste says, whose bracer outlived him and went wandering in the hills on a rolling stone. Bring it back to him, and he remembers what he was. The siabra of the east shore will not go near the stone after dark.",
+      "Tharl": "The curmudgeons of the south-east shore keep a camp of fighters and singers, the singing being worse, and Tharl is their trapper. He sets snares along the shore for anything that walks, and he has caught more Hibernians than hares. Fereinn on the island, who will deal with the realm against the curmudgeons, asks the young for Tharl first, as proof that they mean it: a lesser evil, Aidaila of the lake calls it, for the sake of putting down a greater one.",
+      "Hughar": "Hughar is the curmudgeon poacher of the camp south-east of the parthanan farm, and he took the furs out of Alastriona's chest while she lay with a broken leg. She had tagged them, being a careful woman, and the tags still sing out to her, so she knows that the cruiach daemon skin is on Hughar's own back. He wears it in the evening by the fire, the poachers say, and tells stories about the daemon that he did not kill.",
+      "Bertha": "Bertha is the great sow the poachers of Hughar's camp have been meaning to butcher for longer than any of them has been poaching. She roots about the camp as if it were her farm and they her swineherds, and she harms nobody who leaves her be. When someone does not, she calls for her litter, the poachers say, the way a sow calls; no litter has ever come. She is seldom about, and when she has been taken, the camp goes a long while without her.",
+      "Duana": "Duana is a wolf of the lake who can talk, though only to someone wearing the right collar, and Maeve the Crone of Connacht has one. The young who carry Maeve's collar to the old tower among the dergan siabra find Duana there, and she speaks to them of the moonstone, and of a tracker in the Silvermine who has been following its trail, and she asks them to stop him. Edan, her brother, will talk to a collared stranger too, but he says less.",
+      "Bristle": "Bristle is the badger of the hill west of [Tir na mBeo], and Reidie of the town wants his head. The story in Tir na mBeo is that Bristle dug up Reidie's grandmother's grave looking for the silver ring she was buried with, and found it, and that the ring is in his sett to this day. Eruven of Basar pays for a badger's head, and sends the young to Reidie to learn which badger. Reidie always says the same one.",
+      "Lelly": "Lelly is a roane maiden of the lake shore north-west of the parthanan farm, one of the seal-women who keep their skins close since Resa lost hers to a leprechaun. She keeps a seashell that hums like the sea, and Tavie of the lake, whose drum was stolen by her twin sister Tira in Ardee, wants it, because a drum made with that shell would sound better than the one Tira took. Lelly does not want to give it up. The roane do not give anything up any more.",
+      "Nock": "Nock is a sheevra of the island shore, one of the siabra of the hills come down to the lake, and he stands within shouting distance of [Aziliz] the prophetess and has never once shouted. The trainers of Tir na Nog want his head for the first step of the moonstone's road, and Aziliz will not say why she lets him stand so near. The shore folk think she is watching him, and that he knows, and that both of them are waiting for the other to forget.",
+      "Morty": "Morty is a toad, a big one, of the hill-toad kind, and he is only seen in the mornings. The Mag Mell children say he keeps a toad's hours, which is not true of any other toad, and that if you come to his ground in the afternoon or the night there is nothing there at all, not even a toad-shaped hole. He bothers nobody. The farm folk say a morning when Morty is seen is a morning for planting.",
+      "Prunar": "Prunar is the lunantishee who keeps half of Fagan's wand. The lunantishee are the guardians of the blackthorn, the small folk who live in the walking thorn north-west of [Tir na mBeo], and the shore folk keep a truce with them: nobody cuts the thorn in the old feast seasons. Fagan cut it out of season, Nyderra of the lake says, and made a wand of it, and the lunantishee broke it in two and kept one half. Prunar has it. He thinks it is a fair price.",
+      "Spectral Orchard Nipper": "The orchard nippers are sprites of fruit trees, small biting things that eat blossom, and the Spectral Orchard Nipper is the ghost of one, which the people of [Tir na mBeo] find hard to understand: what does a sprite haunt? Their answer is the orchard that was cut down north of the town in the old families' wars, and they say the nipper still flies about where the trees stood, eating blossom that is not there, and that in spring you can smell it.",
+      "Clik": "Clik is a water beetle, a thieving one, in the little bay south-east of [Mag Mell], and he snitched Caitriona's jewels off her washing stone and carried them down into the reeds. Caitriona says he calls for help when he is cornered, like the coward he is, though the beetle larvae of the bay have never been much help to anyone. The Mag Mell children are sent after him before they are sent after anything else. It is a good first lesson in reeds.",
+      "Hazard": "Hazard is the leprechaun who stole Resa's skin. Resa was a roane maiden of the lake, and without her sealskin she could not go back into the water, and she sat on the shore weeping until the young of the realm, sent by the trainers of Tir na Nog, brought it back. Hazard keeps to the meadows west of [Tir na mBeo] now. He has stolen everything since that he could carry, the lucradans say, but nothing he has stolen since has been worth as much to anyone.",
+      "Dacyn": "Dacyn was a young man of [Mardagh], the shore folk say, who went into the blackthorn wood in a feast season to cut himself a staff, because he did not believe in the truce. He came out with the staff. He has been walking the low ground south of the wood ever since, alone, and strikes at anyone who comes near, and does not seem to know where he is going. The lunantishee, asked about him, say only that the thorn keeps its bargains.",
+      "Xerxes": "East of the crossing the old dead lie badly, and walk: the skeletal pawns and minions the Mag Mell children name as if they were pieces on a board. Their king the children call Xerxes, after a king in a scholar's book whose army was beaten by a few, and they dare each other to go and knock his crown off. He has no crown. He has a skull, a little larger than the others', and the minions stand round him as if that were enough.",
+      "Spackit and Spykit": "Mannix of the lake says three strange spraggons have come roaming the country north of [Mag Mell], foul-tempered and out of place, and names them Spicket, Spackit and Spykit; the shore folk say Spicket keeps the woods by the bridge north of Ardee, though nobody has seen him lately. Spackit is in the valley north-east of Mag Mell and Spykit, who is two of himself, just over the hill. For all Mannix's talk of temper, neither one has ever started a quarrel. They wait for one.",
+      "Dwayne": "Dwayne is a leprechaun of the least kind, smaller than the annoying lucradans he lives among north of [Mag Mell], and he has never stolen anything in his life, which the other leprechauns hold against him. They say he is not a real leprechaun. He says nothing. The Mag Mell children leave him buttons, which he keeps, and the lucradans steal them, and he lets them, and that is the closest Dwayne comes to the family trade.",
+      "Sabha": "By the pond north-west of [Tir na mBeo] lives Sabha, one of the small folk of the hills, alone. Breeda of the town sends the young to him with a fish, to appease him, she says, and keep the balance of things, though what Sabha would do unappeased nobody in Tir na mBeo has ever found out, because nobody has ever forgotten the fish. He does not attack. He takes the fish and looks at the pond, and the pond stays as it is."
+    }
+  },
+  "book": {
+    "title": "The Lake Book: Errands of Lough Derg, as Aziliz Keeps Them",
+    "pages": [
+      "People ask me how I know what every village is short of. I live on the lake, and everything in the realm comes past the lake sooner or later, or sends someone who does. Culraid wants swords. Howth wants a spear back. The smith in Mag Mell wants silver from a mine she will not go down. I write it all on the wall by my door and send the young, and they come back with what was wanted and a story, and I write the story underneath. This book is the wall, copied, because the wall is full.",
+      "Of the towns. Mag Mell is the loudest, Tir na mBeo the oldest, Mardagh the one with the best prices. The first families named the first two after the country beyond the sunset, and the capital too, and my mother used to say they were either very hopeful people or very tired ones. The old man in the hut at the back of Tir na mBeo will tell the Dagda's harp to anyone who sits still long enough. Macnol in the ruined tower will tell you nothing and then try to kill you, so take him the head he asks for and keep your guard up.",
+      "Of the small troubles. The leprechauns steal; the nippers bite; the wolves of the shore are hungry every winter. The blackthorn walks, and its guardians the lunantishee will not have it cut in the feast seasons, and we keep that truce because the one year somebody broke it the whole wood came down to the water. The roane maidens come ashore at night on the east strand. Resa of them lost her skin to the leprechaun Hazard once, and could not go home, and sat on the shore weeping until a young ranger of Connla brought it back.",
+      "Of the large ones. The siabra hold the east shore and do not want us on it, and their dead walk round a standing stone at night with something in the middle we call the Fallen One because nobody has a better name. The summoner comes back to his obelisk however often the young put him down. And the lake is red at sunset. The fishers say it is the worm. I have lived beside it all my life, and I throw it a crust every evening, and it has never once asked for anything else. That is more than I can say for the villages."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "siabra",
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "tir-na-nog",
+      "relation": "whose west gate opens onto it"
+    },
+    {
+      "id": "connacht",
+      "relation": "the front country to the south"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "reached by the crossing outside Mag Mell"
+    },
+    {
+      "id": "silvermine-mountains",
+      "relation": "the mountains to the south"
+    }
+  ]
+}

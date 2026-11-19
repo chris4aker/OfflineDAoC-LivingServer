@@ -811,8 +811,9 @@ namespace DOL.AI.Brain
             if (!CanBaf)
                 return;
 
-            // BaF only happens if the NPC has a faction, and if it was attacked (no BAF on body pull).
-            if (Body.Faction == null || Body.attackComponent.AttackerTracker.Count == 0)
+            // BaF only happens if the NPC was attacked (no BAF on body pull), and if it has a faction or (with no
+            // faction) brings its own kind (BafFriends).
+            if (!BafFriends.CanBringFriends(Body) || Body.attackComponent.AttackerTracker.Count == 0)
             {
                 _canBaf = false;
                 return;
@@ -843,6 +844,14 @@ namespace DOL.AI.Brain
             else
                 return;
 
+            // No new round of adds while the puller's group is still in the fight that brought friends (owner 2026-10-29:
+            // in Keltoi Fogou a respawned group joined a fight already under way).
+            if (BafFriends.InBafFight(playerPuller))
+            {
+                CanBaf = false;
+                return;
+            }
+
             // Prevent the same puller from triggering two BAFs at the same time.
             if (!playerPuller.TempProperties.TrySetProperty(ResetBafPropertyAction.Property, true))
                  return;
@@ -850,13 +859,14 @@ namespace DOL.AI.Brain
             _ = new ResetBafPropertyAction(playerPuller);
             CanBaf = false; // Mobs only BAF once per fight.
             int maxAdds = GetMaxAddsCountFromBaf(playerPuller, countFrom, out List<GameLiving> otherTargets, out int attackersCount);
-            int bafRadius = BAF_MIN_RADIUS + (Math.Min(8, attackersCount) - 1) * BAF_EXTRA_RADIUS_PER_OTHER_PLAYER;
-
-            if (Body.CurrentZone.IsDungeon)
-                bafRadius = (int) (bafRadius * BAF_RADIUS_DUNGEON_MODIFIER);
+            // Dawn of Light's ranges (owner 2026-10-29, BafFriends): friends within 2/5 of the pulled monster's aggro
+            // range, and in a dungeon up to 1,000 units (nearest first); each must be in sight of the pulled monster.
+            int bafRadius = BafFriends.Radius(AggroRange, Body.CurrentZone.IsDungeon, attackersCount);
 
             List<GameNPC> brainsInRadius = GetFriendlyAndAvailableNpcsInRadiusOrderedByDistance(bafRadius, maxAdds);
             int addCount = brainsInRadius.Count;
+            if (addCount > 0)
+                BafFriends.MarkBafFight(playerPuller);
             BafAddCount = addCount;
 
             foreach (GameNPC npc in brainsInRadius)
@@ -967,7 +977,10 @@ namespace DOL.AI.Brain
 
                 foreach (GameNPC npc in Body.GetNPCsInRadius((ushort) radius))
                 {
-                    if (npc == Body || !npc.IsFriend(Body) || !npc.IsAggressive || !npc.IsAvailableToJoinFight || npc.Brain is not StandardMobBrain)
+                    if (npc == Body || !BafFriends.IsFriend(Body, npc) || !npc.IsAggressive || !npc.IsAvailableToJoinFight || npc.Brain is not StandardMobBrain)
+                        continue;
+
+                    if (!BafFriends.InSight(Body, npc))
                         continue;
 
                     long xDiff = Body.X - npc.X;

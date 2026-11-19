@@ -1,0 +1,82 @@
+{
+  "id": "tuder-glyne",
+  "name": "Tuder Glyne",
+  "npcNames": [
+    "Tuder Glyne"
+  ],
+  "locationId": "tepoks-mine",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Tuder Glyne: NPC template 12440, level 34-37, model 20, faction forest poachers, aggro 200 (range 500), no spells, respawn 180 s, at 36792, 31715 a step from Morvel Glyne, with two goblin snatchers and the goblin monitor.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Tuder as the Glynes' carrier and the weight he takes on the poachers' road are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The forest poachers of Albion run a road of their own, and it does not appear on Camelot's maps. It goes from the high woods of the Pennines south along the hill paths and the dry stream-beds, and it ends in the east of Tepok's Mine, at a landing in the galleries where the goblin snatchers bring what goes out and take what comes in. The Glyne cousins keep that landing.\n\nTuder is the younger Glyne and carries. Tuder carries the bars out along the dry stream-beds on a back that has carried deer, boar, a sheep or two, once a sleeping drover's whole pack, and says silver is the easiest weight there is, because it does not struggle and it never wakes. Tuder has never been inside the mine further than the landing and does not mean to go, and stands where Morvel stands, a step to the side, as on the road.\n\nSilver goes out by the landing in bars, and bundles of letters come in by it from the north, in the fair folk's hand, carried along the poachers' road by a courier named Delfina. Neither Glyne reads them. Twr ap Alsig of Barfog, who does, says the letters ask after the silver and the lions and the host in the north halls, and that the Glynes are the only men in Albion paid by goblins, and that they are paid well.",
+  "legend": "Tuder Glyne, 34-37, forest poachers, is a step from Morvel Glyne at the eastern landing in Tepok's Mine, with the snatchers and the monitor. Same fight as Morvel: both come together. Plain melee, no spells, respawn about three minutes. A group in the high thirties handles the pair if someone controls one of them. The snatchers and the goblin monitor by the landing are goblins, not poachers, but they stand close enough to come anyway.",
+  "yells": {
+    "aggro": [
+      "Morvel, they found the landing.",
+      "This is a poacher's road. You are poached."
+    ],
+    "phases": [],
+    "death": [
+      "Should have... stayed in the hills..."
+    ],
+    "slay": [
+      "Lighter than silver.",
+      "That one did not struggle long."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two poachers and a pile of bars by the landing."
+    ],
+    "phases": [],
+    "realmFirstKill": "Tuder Glyne has fallen. Nothing more goes north."
+  },
+  "botLines": {
+    "briefing": [
+      "tuder is the other glyne. morvel stands a step away, they come together",
+      "if you mez one glyne make it tuder, morvel talks more"
+    ],
+    "aftermathWin": [
+      "tuder down, and the snatchers ran",
+      "tuder and morvel both down. nobody carrying silver tonight"
+    ],
+    "aftermathLoss": [
+      "tuder hits like a man who carries silver for a living"
+    ],
+    "rumour": [
+      "[heard|someone said] tuder glyne never goes past the landing",
+      "heard the glynes carry silver out along the dry streams to the pennines"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tuder glyne",
+    "text": "The younger of the Glyne cousins at the poachers' landing in [tepoks mine], who carries the goblins' silver north along the dry stream-beds. See [glyne]."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} ended Tuder Glyne's carrying in Tepok's Mine in {minutes} minutes.",
+    "loss": "Tuder Glyne carried {raidLeader} of {realm} out of the landing like a sack of silver."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "morvel-glyne",
+      "relation": "cousin; stands a step away"
+    }
+  ],
+  "tier": "minor"
+}

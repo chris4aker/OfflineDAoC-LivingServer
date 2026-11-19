@@ -28,8 +28,8 @@ internal sealed class RealmEventRecordsControl : UserControl
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute,70));layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         var toolbar=new FlowLayoutPanel{Dock=DockStyle.Fill,AutoSize=true,WrapContents=true};
         _realm.Items.AddRange(["All realms","Albion","Midgard","Hibernia"]);
-        _kind.Items.AddRange(["All events","Dragon","Epic dungeon","Neutral raid","Keep","Relic keep","Relic"]);
-        _outcome.Items.AddRange(["All outcomes","In progress","Boss defeated","Beaten to it","Defeated","Failed rally","Stopped by player","Route blocked","Timed out","Defended (timeout)","Captured","Captured / returned","Relic taken","Interrupted","Ended (unconfirmed)","Encounter unavailable"]);
+        _kind.Items.AddRange(["All events","Dragon","Open-world boss","Epic dungeon","Neutral raid","Keep","Relic keep","Relic"]);
+        _outcome.Items.AddRange(["All outcomes","In progress","Boss defeated","Beaten to it","Defeated","Failed rally","Stopped by player","Superseded","Sweep cap","Route blocked","Timed out","Defended (timeout)","Captured","Captured / returned","Relic taken","Interrupted","Ended (unconfirmed)","Encounter unavailable"]);
         _realm.SelectedIndex=_kind.SelectedIndex=_outcome.SelectedIndex=0;
         toolbar.Controls.AddRange([_realm,_kind,_outcome,_search,_refresh,_deleteAll]);layout.Controls.Add(toolbar,0,0);
         _grid.Dock=DockStyle.Fill;_grid.ReadOnly=true;_grid.AllowUserToAddRows=false;_grid.AllowUserToDeleteRows=false;
@@ -40,7 +40,7 @@ internal sealed class RealmEventRecordsControl : UserControl
         foreach(var (title,property,width) in new[]{("Started (local)","Started",150),("Ended (local)","Ended",150),("Type","Kind",105),("Event","Name",170),("Initiating realm","Realm",115),("Outcome","Outcome",160)})
             _grid.Columns.Add(new DataGridViewTextBoxColumn{HeaderText=title,DataPropertyName=property,Width=width,SortMode=DataGridViewColumnSortMode.NotSortable});
         _grid.Columns[3].AutoSizeMode=DataGridViewAutoSizeColumnMode.Fill;_grid.Columns[3].MinimumWidth=130;
-        _grid.SelectionChanged+=(_,_)=>_details.Text=_grid.CurrentRow?.DataBoundItem is Row row ? row.Record.Details+"\r\nEvent: "+row.Record.EventId+" | Record: "+row.Record.Id : "";
+        _grid.SelectionChanged+=(_,_)=>_details.Text=_grid.CurrentRow?.DataBoundItem is Row row ? LauncherLore.Describe(row.Record)+"\r\nEvent: "+row.Record.EventId+" | Record: "+row.Record.Id : "";
         layout.Controls.Add(_grid,0,1);layout.Controls.Add(_details,0,2);
         var footer=new FlowLayoutPanel{Dock=DockStyle.Fill,AutoSize=true,WrapContents=true};footer.Controls.AddRange([_previous,_next,_status]);layout.Controls.Add(footer,0,3);Controls.Add(layout);
         foreach(var filter in new[]{_realm,_kind,_outcome})filter.SelectedIndexChanged+=async(_,_)=>{_page=0;await RefreshAsync();};
@@ -64,7 +64,7 @@ internal sealed class RealmEventRecordsControl : UserControl
             if(IsDisposed||request!=_request)return;
             if(page>0&&result.Rows.Count==0){_page=0;await RefreshAsync();return;}
             _grid.DataSource=result.Rows.Select(r=>new Row(r)).ToList();
-            _details.Text=result.Rows.Count==0?"No matching records. Older events may have incomplete evidence; interrupted is not a defeat.":result.Rows[0].Details;
+            _details.Text=result.Rows.Count==0?"No matching records. Older events may have incomplete evidence; interrupted is not a defeat.":LauncherLore.Describe(result.Rows[0]);
             _previous.Enabled=page>0;_next.Enabled=(page+1)*100<result.Total;
             _status.Text=$"{result.Total:N0} matching records · Page {page+1} · newest first · saved across restarts";
         }

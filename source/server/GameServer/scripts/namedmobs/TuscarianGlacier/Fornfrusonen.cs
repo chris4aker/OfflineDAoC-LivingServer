@@ -50,7 +50,7 @@ namespace DOL.GS
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public override void Die(GameObject killer) //on kill generate orbs
+        public override void ProcessDeath(GameObject killer) //on kill generate orbs
         {
             foreach (GameNPC npc in GetNPCsInRadius(4000))
             {
@@ -58,7 +58,7 @@ namespace DOL.GS
                     npc.RemoveFromWorld();
             }
             BroadcastMessage(String.Format("The frosty glows in {0}'s eyes abruptly blinks out. {0}'s form slowly fades into the ice. The shard swiftly evaporate leaving no trace of their corporeal existence behind!", Name));
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {
@@ -183,10 +183,12 @@ namespace DOL.AI.Brain
             {
                 Body.Health = Body.MaxHealth;
                 ClearAggroList();
+                RearmAfterHeal();
             }
             else if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000))
             {
                 Body.Health = Body.MaxHealth;
+                RearmAfterHeal();
             }
             if (HasAggro && Body.TargetObject != null)
             {
@@ -200,7 +202,31 @@ namespace DOL.AI.Brain
             base.Think();
         }
 
-        public static bool FornInCombat = false;
+        public bool FornInCombat = false;
+
+        /// <summary>
+        /// Owner's PC, build b1b6846, 2026-11-18 (Tuscaran Glacier): after the 09:01 wipe a few raiders kept his aggro list
+        /// filled, so the full reset (which re-arms the shards) never ran; the two heals above put him back to full health
+        /// but left <see cref="FornInCombat"/> set, and the 09:15 retry fought him with no shards (dead in 2.2 minutes).
+        /// A heal to full with no shard alive now re-arms him as the reset does: the next pull raises fresh shards. A live
+        /// shard is never touched (a shard fight in progress goes on as it is), and nothing about him is weakened.
+        /// </summary>
+        public void RearmAfterHeal()
+        {
+            if (FornInCombat && !AnyShardAlive())
+                FornInCombat = false;
+        }
+
+        /// <summary>A Fornfrusenen Shard is alive near him (the reset's radius).</summary>
+        protected virtual bool AnyShardAlive()
+        {
+            foreach (GameNPC npc in Body.GetNPCsInRadius(4000))
+            {
+                if (npc != null && npc.IsAlive && npc.Brain is FornShardBrain)
+                    return true;
+            }
+            return false;
+        }
         public void SpawnShards()
         {
             for (int i = 0; i < Util.Random(2, 3); i++)
@@ -279,7 +305,7 @@ namespace DOL.GS
             get { return 50000; }
         }
 
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC boss in GetNPCsInRadius(3000))
             {
@@ -289,7 +315,7 @@ namespace DOL.GS
                         boss.Health -= boss.MaxHealth / 4; //deal dmg to boss if this is killed
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #region Stats
         public override short Charisma { get => base.Charisma; set => base.Charisma = 200; }

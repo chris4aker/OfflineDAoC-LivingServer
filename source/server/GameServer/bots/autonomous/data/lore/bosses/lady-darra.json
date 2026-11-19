@@ -1,0 +1,125 @@
+{
+  "id": "lady-darra",
+  "name": "Lady Darra",
+  "catalogKey": "hall-of-the-corrupt/ladydarra",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health, a paladin's blows (taunt, after-block and after-parry styles). Four Spectral Paladins (5,000 health, ghosts) stand at the corners of her room and cast Spectral Heal (350, every 5 s, range 2,000) on her while she is hurt; she heals no one else. If she resets with three or fewer left, all four come back.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Darra's origin as a miller's daughter of the Severn below Ludlow, her Lady Day letters to the prioress of Caer Ulfwych, Sir Cynan teaching her the shield, Reede reading her jars, her last letter and the prioress's unopened answer, and her words to Dame Morwen are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lady Darra was a miller's daughter from the Severn below Ludlow who went to the sisters of the hospice at Caer Ulfwych at fourteen because she had set her brother's arm straight. She learned her letters in a winter, sat eleven nights with a fever ward, and asked for the frontier against her prioress's advice: she would rather nurse men who knew why they were dying. The hospice sent her north to the Pennine watch with four knights, as it always did, and the eldest, Sir Cynan of Ludlow, taught her the shield on the road, so that she learned to answer a blocked blow and a turned one as he did.\n\nFor twenty years the watch's sickroom at the top of the sergeants' stair was the dullest room in the hall, and Darra's Lady Day letters to the prioress are the only account of the watch from inside that is not the clerk's: the sergeants' card game, Meade's verse, the lord walking his posts. In the eighth year she married Lord Gildas, having told him he was allowed to ask, and she kept her post. In the fifteenth year she taught a recruit called Reede to read her jars; Reede carried the wounded up her stair in the last winter.\n\nHer last letter went south with Hob the carrier asking for linen and for advice on a wound that would not close, Captain Atwell's cut, which she closed four times. The prioress's answer, to bind such a wound the instant it is made, came north with Sir Hamon's riders and was never opened; the dalesmen learned it from Hob's wife instead.\n\nNow she tends empty cots, and her four knights stand the corners of the sickroom and mend her, so that she does not tire while all four stand. She fights behind Sir Cynan's shield and calls a wandering foe back to herself as a sister calls back a fevered patient. The Inconnu say she is the only one of the watch at her post by her own choice, which is why the Summoners needed four knights to keep her there. To Dame Morwen Penhallow she once said Gildas's name; Morwen told her the watch was well, and she smiled.",
+  "legend": "Her four spectral paladins stand at the corners of her room, and each heals her for 350 every five seconds while she is hurt, so with all four up she out-heals a small raid. Kill the paladins first, one at a time, with the off-tanks keeping Darra busy, then burn her. She heals no one but herself; the captains and the officers are not her worry. If the raid wipes or drops her and she resets with three or fewer paladins left, all four come back fresh. Fight her in her chamber; past her post she cannot be harmed and walks home whole. She fights like a paladin too, with taunts and blows off a block or a parry. Her knights are the reason the Hall feels harder than it is.",
+  "yells": {
+    "aggro": [
+      "Not my sickroom. Not my men. Paladins!",
+      "Lie still. I will mend you.",
+      "Who brings swords into a sickroom?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lie still, my lord's men. I will mend you."
+      }
+    ],
+    "death": [
+      "Who will... sit up with them now...",
+      "Gildas... I never saw you... again..."
+    ],
+    "slay": [
+      "Another for the sickroom.",
+      "Rest. I will tend you later.",
+      "Lie down, child."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lady's chamber. Her paladins still guard the door.",
+      "Bandages, rolled and ready, on every shelf."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lady Darra rests. The sickroom of the Hall is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "darras 4 paladins heal her 350 every 5 sec. kill all 4, then her",
+      "off tanks keep darra busy while we do the paladins",
+      "fight her in her chamber",
+      "if she resets the paladins come back, all four"
+    ],
+    "aftermathWin": [
+      "darra down. kind of sad honestly",
+      "paladins first then her, good",
+      "four knights down, then the lady",
+      "she can rest now"
+    ],
+    "aftermathLoss": [
+      "left a paladin up and it kept healing her",
+      "the paladins got the casters",
+      "we went straight for darra and the paladins outhealed us",
+      "dragged her and she went immune"
+    ],
+    "rumour": [
+      "lady darra's four knights still keep her. [even dead|dead and all]",
+      "[heard|someone said] darra's knights mend her the way she mended the watch",
+      "[someone said|heard] darra's knights mend her the way she mended the watch",
+      "heard darra hasnt seen gildas since the last winter",
+      "the bards say keeping darra and gildas apart was the cruellest part"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "darra",
+    "text": "Lord Gildas' lady. She kept the [watch]'s sickroom in life. Now the four knights of her household stand at the corners of her room and mend her, as she once mended the watch. Break the knights before the lady. See [lord gildas]."
+  },
+  "bookPage": "The Lady Darra was at the sickbeds every night of that last winter, the clerk of the watch wrote, and she bound Captain Atwell's cut four times and it opened four times. When we came up Reede's stair she was still there, among the empty cots, with her paladins at the door, and when we drew she cried out that this was her sickroom and these were her men. Her four knights stood at the corners of the room and mended her as fast as we cut her, and we could not touch her until the last of them was down. Our priests prayed for her as they fought her. When she fell she asked who would sit up with them now. Nobody could answer that.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke Lady Darra's four knights and laid her to rest in the Hall of the Corrupt in {minutes} minutes.",
+    "loss": "Lady Darra's knights mended every wound {realm}'s raid gave her; {raidLeader} withdrew."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "her lord, whom she has not seen since"
+    },
+    {
+      "id": "sergeant-reede",
+      "relation": "carried the wounded up to her"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Miller's Daughter of Severn",
+      "text": "Darra was a miller's daughter from the Severn below Ludlow, and she went to the sisters at Caer Ulfwych at fourteen because she had set her brother's arm when the physician was drunk, and set it straight.\n\nThe hospice took girls who could already do something. Darra could do several things, the sisters' book says: set bones, stitch a cut so that it closed flat, sit up three nights without sleeping and be civil on the fourth. She could not read, and learned in a winter. She was not pious, and the sisters noted it without alarm; a sister of the hospice was expected to pray, the old prioress used to say, but the dying did not need her to mean it, they needed her to stay. Darra stayed. In her ninth year at the hospice there was a fever in Caer Ulfwych, and she sat with the fever ward for eleven nights while three other sisters took it and two died, and when it was over the prioress asked what she wanted, and she said the frontier.\n\nThe prioress tried to talk her out of it, and the letters survive. A frontier house, the prioress wrote, is a house of men who are hurt on purpose by other men, and it will break a sister's heart quicker than any fever. Darra wrote back that a fever was not on purpose either, as far as the patient could tell, and that she would rather nurse men who knew why they were dying. The prioress sent her north with four knights, as the hospice always did. The eldest, Sir Cynan of Ludlow, had known her father's mill. He taught her the shield on the road, because, he said, a sister who could not keep a man off her patient for the space of a prayer was only half a sister on the frontier, and she learned it as quickly as she had learned her letters. She learned to answer a blocked blow as he did, and a turned one, and the Pennine watch found out years later, at the sergeants' cards, that the lady could put a man on the floor faster than Sergeant Darryn."
+    },
+    {
+      "title": "Twenty Years of Knuckles",
+      "text": "The sickroom of the Pennine watch was at the top of the sergeants' stair, and for most of Darra's years there it was the dullest room in the hall.\n\nThe road was quiet. Lord Gildas's tallies of what came up it fill a book, but most nights nothing did, and the watch's hurts were the hurts of any garrison: knuckles from the cards, ankles from the stair, the winter coughs of the dalesmen and the injuries the seconded knights of Camelot did each other at dice. Darra wrote to the prioress every Lady Day, and her letters are the only account of the watch from inside that is not the clerk's. They are funny. She wrote that the sergeants had invented a card game whose sole object was to make work for her. She wrote that Lieutenant Meade had written her a verse on her birthday that rhymed sickroom with quick doom, and that she had made him rewrite it. She wrote that the lord of the watch walked his posts every evening from the upper gate to the lowest point and back, so regularly that she set her medicines by him.\n\nIn the eighth year she married him. The watch called it the only impulsive thing Gildas ever did; Darra's letter to the prioress that Lady Day says it was not impulsive at all, that she had been waiting four years for him to notice he was allowed to ask, and that in the end she had told him so. The prioress wrote back that a sister of the hospice might marry with the house's blessing so long as she kept her post, and Darra kept it. She was the lady of the watch in the hall and its sister in the sickroom, and the four knights stood the corners of the sickroom for twelve more years and never once stood at her side in the hall.\n\nIn the fifteenth year a recruit of seventeen called Reede came to the watch with a cough, and Darra kept the girl in the sickroom a week, and taught her to read the labels on the jars, because she asked. Reede was the one who carried the wounded up the sickroom stair in the last winter. Darra's last Lady Day letter says Reede was the best orderly she had ever had, and that she meant to ask Gildas to make her a sergeant, and that she had been told Reede already was."
+    },
+    {
+      "title": "The Cut That Opened",
+      "text": "Darra's last letter to Caer Ulfwych was not written on Lady Day. It went south with Hob the carrier in the deep of the last winter, and it asked two things: linen, and advice.\n\nCaptain Atwell had come in from the road at dusk with a cut across the forearm that he said was nothing. Darra dressed it. In the morning it was open, and she closed it again, flat, as she had been closing cuts since she was fourteen, and in the morning it was open again. She wrote that she had closed it four times, that it was clean and not deep and did not fester, and that it did not close, and that she had never seen a wound that did not want to close. Then the other captains began to come to her with cuts of their own from Atwell's practice blade, and their cuts would not close either. The sickroom went through more linen in that month than in the year before it. She asked the prioress whether the hospice's books held anything on a wound that reopens of itself, and she asked for all the linen the house could spare.\n\nThe prioress's answer came north in the spring, with Sir Hamon Brede's riders, and is kept at Caer Ulfwych because it was never opened at the Pennines. It is careful and long. The hospice's books held one account of such a wound, from the old frontier wars, and the remedy was to bind it at the instant it was made, before it knew it was a wound, and to keep binding until whatever had made it gave up. The prioress added that the account said the binding would not cure the man who carried the wound, only the men he gave it to. She hoped Darra would not need it.\n\nThe dalesmen of Long Dale learned the remedy anyway, from Hob's wife, who rolled the linen and read the letter before Hob carried it, and they still teach it to their children. Darra never read it. The clerk Tobias's last page says that on the last night, when Captain Heathyr at the door said that she could not feel her hands, the Lady Darra began to pray. Darra's letters say she prayed when there was nothing else left to do. It is the only time the clerk ever recorded her doing it."
+    },
+    {
+      "title": "Kept by Her Own Knights",
+      "text": "Lady Darra is in the sickroom still, among the empty cots, and the four knights who came north with her are at the corners.\n\nWhat the Summoners made of the oath of the four corners is told in the Hall's own history: the knights swore to keep her as she kept the sick, and now they keep her as she once kept the watch, mending whatever is done to her, and she does not tire while all four stand. What it made of Darra is harder to say, because she does not speak to anyone who comes up the stair except to tell them to put their swords down in a sickroom. The companies of Albion who have gone up describe a woman bending over cots that nobody lies in, smoothing sheets, setting out linen, and turning to meet them with Sir Cynan's shield on her arm as if she had always carried it. She fights as he taught her on the road north, behind the shield, answering a blocked blow or a turned one, and calling the attention of the man in front of her back to herself whenever it wanders, as a sister calls a fevered patient back to her voice.\n\nThe Church's sisters say she believes the watch is still alive and wounded, and that she is guarding her patients from strangers. The bards say she knows exactly what the watch is now, and is guarding them anyway, because a sister does not ask her patients what they have done. The Inconnu, who rarely say anything about the Pennine watch, said once to a reader of Caer Gothwaite that the lady is the only one in the hall who was not bound by Lord Gildas's order, because she was never on the roll as a soldier. She is at her post by her own choice. That, they said, is why the Summoners needed four knights to keep her there.\n\nShe has not seen Lord Gildas since the last winter. He is at the lowest point of the road and she is at the top of the stair, and neither can leave. When she falls she asks who will sit up with them now, and once, to Dame Morwen Penhallow, who had been told the story by her family all her life, she said Gildas's name. Morwen answered that he was well, and that the watch was well, and that the lady might rest. The company's account says the lady smiled. Morwen says she does not know whether it was a lie, and that she will say it again next spring."
+    }
+  ]
+}

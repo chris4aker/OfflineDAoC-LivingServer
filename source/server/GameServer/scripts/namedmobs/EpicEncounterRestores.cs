@@ -3,8 +3,8 @@ using DOL.GS.PacketHandler;
 namespace DOL.GS
 {
     /// <summary>
-    /// The rules of the original OpenDAoC mechanics restored behind <see cref="EpicEncounterMechanics"/> switches (all off by
-    /// default). Values read from OpenDAoC-Core 3513bad (2026-11-04). Kept apart from the scripts so they can be tested
+    /// The rules of the original OpenDAoC mechanics restored behind <see cref="EpicEncounterMechanics"/> switches (most on by
+    /// default; see ServerProperties). Values read from OpenDAoC-Core 3513bad (2026-11-04). Kept apart from the scripts so they can be tested
     /// without a world. Gamebots count as the class they are, like players: only the originals' target picking stays
     /// player-only (see docs/encounters/EPIC-ENCOUNTERS.md).
     /// </summary>
@@ -49,6 +49,19 @@ namespace DOL.GS
             };
         }
 
+        /// <summary>
+        /// An Earthmender's brain asks for a heal on this NPC (GuardianEarthmenderBrain.Think and its three twins, the
+        /// condition their loop over GetNPCsInRadius applies to each NPC, unchanged): the Earth primal, or with
+        /// <paramref name="mutualHeal"/> on another Earthmender (never itself), alive and below 100% (any missing point:
+        /// HealthPercent is whole percents rounded down). Every NPC that passes gets a cast request in the radius list's
+        /// order; the casting component starts the first and keeps the last as its queued spell (CastingComponent), so a
+        /// mender heals the first and the last of them, two casts a round. Pure, so the raid's tactic and its tests use the
+        /// boss's own rule.
+        /// </summary>
+        public static bool EarthmenderHealsTarget(bool isEarthPrimal, bool isEarthmender, bool isSelf, bool alive, int healthPercent,
+            bool mutualHeal) =>
+            (isEarthPrimal || mutualHeal && !isSelf && isEarthmender) && alive && healthPercent < 100;
+
         /// <summary>Aroon's Scaiths in the order they must die; the n-th one's death opens the n-th damage type on Aroon.</summary>
         public static readonly eDamageType[] AroonOrder =
         [
@@ -76,8 +89,124 @@ namespace DOL.GS
         /// <summary>The n-th Scaith (0 = Corp, the slash one) can be hurt once every Scaith before it is dead.</summary>
         public static bool ScaithAccepts(int index, bool[] deadInOrder) => AroonOpened(deadInOrder) >= index;
 
+        /// <summary>With AllowGalladoriaBridgeSpot a raider must stand within 350 of the bridge spot to start the last room; a
+        /// raid bot that has stood within 1,500 of it this long starts it all the same (the raid is never held there).</summary>
+        public const long BridgeFallbackMilliseconds = 180_000;
+
+        /// <summary>The bridge fallback is due (pure): a raid bot has been on the bridge since <paramref name="since"/> (0: none is).</summary>
+        public static bool BridgeFallbackDue(long since, long now) => since > 0 && now - since >= BridgeFallbackMilliseconds;
+
         /// <summary>Kvasir: cold heals him a fifth of his health.</summary>
         public static bool KvasirHealedBy(eDamageType type) => type == eDamageType.Cold;
+
+        private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicEncounterRestores));
+
+        /// <summary>1.2 play test: a hit that healed Funus to full is in the server log (who, what kind, class, weapon).</summary>
+        public static void NoteFunusHeal(GameObject source, GameLiving funus)
+        {
+            if (!Log.IsInfoEnabled) return;
+            string kind = source switch { GamePlayer => "player", GameBot => "bot", GameSummonedPet => "pet", _ => source?.GetType().Name };
+            GameLiving living = source as GameLiving;
+            Log.Info($"EPIC_FUNUS_HEALED source=\"{source?.Name}\" kind={kind} class={(eCharacterClass)ClassId(source)} weapon={WeaponType(source)} " +
+                     $"healthBefore={funus?.HealthPercent}% slot={living?.ActiveWeaponSlot} target=\"{(living?.TargetObject as GameObject)?.Name}\"");
+            // Play test duo5: scouts with a longbow still healed him with their melee weapon after the bow-keep fix. Once per
+            // raider every ten minutes: the call path that hit him, to find the switch that put the melee weapon in hand.
+            if (source != null && Log.IsInfoEnabled)
+            {
+                long now = GameLoop.GameLoopTime;
+                lock (HealTraces)
+                {
+                    if (HealTraces.TryGetValue(source.ObjectID, out long last) && now - last < 600_000) return;
+                    if (HealTraces.Count > 512) HealTraces.Clear();
+                    HealTraces[source.ObjectID] = now;
+                }
+                Log.Info($"EPIC_FUNUS_HEALED_TRACE source=\"{source.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+            }
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<int, long> HealTraces = new();
+
+        /// <summary>
+        /// 1.2 play test (PC log 1dc66b6, 2026-11-15: the Midgard raid could not take Kvasir below 81% in 18 minutes and the
+        /// log could not say who healed him): a hit that Kvasir's cold rule turns into a heal is in the server log, as
+        /// EPIC_KVASIR_HEALED. Asked from GameLiving.TakeDamage(AttackData) before his script heals him, with the same test
+        /// (rule on, cold, a combatant source). One line per source and damage source every five seconds; the lines skipped
+        /// meanwhile are counted on the next one.
+        /// </summary>
+        public static void NoteKvasirHeal(GameLiving victim, AttackData ad)
+        {
+            if (victim is not Kvasir || ad == null || !EpicEncounterMechanics.AllowKvasirColdHeal || !KvasirHealedBy(ad.DamageType) ||
+                !EpicEncounterActors.IsCombatant(ad.Attacker) || !Log.IsInfoEnabled)
+                return;
+            GameLiving source = ad.Attacker;
+            string how = KvasirHealVia(ad);
+            long now = GameLoop.GameLoopTime;
+            int skipped;
+            lock (KvasirHeals)
+            {
+                var key = (source.ObjectID, how);
+                if (KvasirHeals.TryGetValue(key, out var last) && now - last.At < 5_000)
+                {
+                    KvasirHeals[key] = (last.At, last.Skipped + 1);
+                    return;
+                }
+                if (KvasirHeals.Count > 512) KvasirHeals.Clear();
+                skipped = last.Skipped;
+                KvasirHeals[key] = (now, 0);
+            }
+            GameLiving owner = (source as GameNPC)?.Brain is DOL.AI.Brain.IControlledBrain { } brain && source is not GameBot
+                ? brain.GetLivingOwner() : null;
+            Spell spell = ad.SpellHandler?.Spell;
+            Log.Info($"EPIC_KVASIR_HEALED source=\"{source.Name}\" kind={KindOf(source)} class={(eCharacterClass)ClassId(source)} " +
+                     $"owner=\"{owner?.Name}\" ownerKind={(owner == null ? "-" : KindOf(owner))} ownerClass={(eCharacterClass)ClassId(owner)} " +
+                     $"via={how} attack={ad.AttackType} spellId={spell?.ID ?? 0} spell=\"{spell?.Name}\" spellType={spell?.SpellType} " +
+                     $"line=\"{ad.SpellHandler?.SpellLine?.KeyName}\" style=\"{ad.Style?.Name}\" weapon=\"{ad.Weapon?.Name}\" " +
+                     $"damageType={ad.DamageType} healthBefore={victim.HealthPercent}% target=\"{(source.TargetObject as GameObject)?.Name}\" " +
+                     $"skipped={skipped}");
+        }
+
+        /// <summary>What dealt a hit, for EPIC_KVASIR_HEALED (pure): melee, a style's proc, an item's proc or charge (weapon,
+        /// armor), a damage shield, a pet's proc or spell, or a spell.</summary>
+        public static string KvasirHealVia(AttackData ad)
+        {
+            if (ad == null) return "unknown";
+            Spell spell = ad.SpellHandler?.Spell;
+            bool pet = ad.Attacker is GameNPC and not GameBot;
+            if (spell == null) return ad.IsMeleeAttack ? pet ? "pet-melee" : "melee" : ad.AttackType == AttackData.eAttackType.Ranged ? "ranged" : "other";
+            if (spell.SpellType is eSpellType.DamageShield) return "damage-shield";
+            string line = ad.SpellHandler.SpellLine?.KeyName;
+            if (line == GlobalSpellsLines.Combat_Styles_Effect) return "style-proc";
+            if (line == GlobalSpellsLines.Item_Effects) return pet ? "pet-item-effect" : "item-effect";
+            if (line == GlobalSpellsLines.Mundane_Poisons) return "poison";
+            return pet ? "pet-spell" : "spell";
+        }
+
+        private static string KindOf(GameObject source) => source switch
+        {
+            GamePlayer => "player",
+            GameBot { IsAutonomousWorldBot: true } => "gamebot",
+            GameBot => "companion",
+            GameSummonedPet => "pet",
+            GameNPC { Brain: DOL.AI.Brain.IControlledBrain } => "pet",
+            null => "-",
+            _ => source.GetType().Name
+        };
+
+        private static readonly System.Collections.Generic.Dictionary<(int, string), (long At, int Skipped)> KvasirHeals = new();
+
+        /// <summary>Play test diagnostic: a bot that may fight <paramref name="target"/> only at range was switched to melee.</summary>
+        public static void NoteMeleeSwitch(GameObject bot, GameLiving target)
+        {
+            if (bot == null || !Log.IsInfoEnabled) return;
+            long now = GameLoop.GameLoopTime;
+            lock (HealTraces)
+            {
+                int key = -bot.ObjectID;
+                if (HealTraces.TryGetValue(key, out long last) && now - last < 600_000) return;
+                HealTraces[key] = now;
+            }
+            Log.Info($"EPIC_MELEE_SWITCH_TRACE bot=\"{bot.Name}\" target=\"{target.Name}\" stack={System.Environment.StackTrace.Replace(System.Environment.NewLine, " | ")}");
+        }
 
         public static void TellImmune(GameObject source, string text)
         {

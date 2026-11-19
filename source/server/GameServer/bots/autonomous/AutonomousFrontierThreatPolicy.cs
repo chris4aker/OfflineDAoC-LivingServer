@@ -7,6 +7,7 @@ public sealed class AutonomousFrontierThreatPolicy
 {
     public const int VisibilityBudget = 8;
     private long _nextScan;
+    private long _lastScan;
     private int _cursor;
     private bool _secondaryPending;
 
@@ -37,9 +38,20 @@ public sealed class AutonomousFrontierThreatPolicy
     public bool Due(long now, long key)
     {
         if (now < _nextScan) return false;
-        _nextScan = now + 1000 + (int)(unchecked((ulong)key) % 250);
+        LastIntervalMilliseconds = _lastScan > 0 ? now - _lastScan : IntervalMilliseconds(key);
+        _lastScan = now;
+        _nextScan = now + IntervalMilliseconds(key);
         return true;
     }
+
+    /// <summary>A bot's nominal scan interval: 1,000-1,249 ms by its id, so bots don't all scan on the same tick.</summary>
+    public static int IntervalMilliseconds(long key) => 1000 + (int)(unchecked((ulong)key) % 250);
+
+    /// <summary>
+    /// The real time between this scan and the one before (the nominal interval on the first): RvR perception
+    /// computes its chance per scan from it, so a bot that thinks less often still notices on the calibrated clock.
+    /// </summary>
+    public long LastIntervalMilliseconds { get; private set; } = 1125;
 
     // Rotate after a blocked window so a few enemies behind a wall cannot
     // permanently hide visible opponents farther down the nearby list.

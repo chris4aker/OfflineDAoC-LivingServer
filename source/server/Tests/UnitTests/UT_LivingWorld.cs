@@ -86,7 +86,7 @@ namespace DOL.GS.Tests
         public void ReputationTalkNeedsSomethingToTalkAbout()
         {
             Assert.That(Deeds.RepTopics(new OfflinePlayerReputationRecord()), Is.Empty);
-            var row = new OfflinePlayerReputationRecord { NamedSolo = 1, BestNamed = "Grimwold", RvrKills = 12, SillyDeaths = 3 };
+            var row = new OfflinePlayerReputationRecord { NamedSolo = 1, BestNamed = "Grimwold", RvrKills = 50, SillyDeaths = 3 };   // rep_rvr from 50 kills (chat audit 2026-11-18)
             Assert.That(Deeds.RepTopics(row).Select(t => t.Topic), Is.EquivalentTo(new[] { "rep_named", "rep_rvr", "rep_silly" }));
         }
 
@@ -98,7 +98,7 @@ namespace DOL.GS.Tests
         public void EveryArcHasFourEpisodesAndBothEndings()
         {
             var arcs = AutonomousBotStorylines.Arcs(Corpus.Scenes);
-            Assert.That(arcs.Keys, Is.EquivalentTo(new[] { "killsteal", "guildsplit", "romance", "ninjaloot" }));
+            Assert.That(arcs.Keys, Is.EquivalentTo(new[] { "killsteal", "guildsplit", "romance", "ninjaloot", "pricewar" }.Concat(MoreArcs)));
             foreach (var (arc, episodes) in arcs)
             {
                 Assert.That(episodes.Length - 1, Is.EqualTo(4), arc);
@@ -110,6 +110,59 @@ namespace DOL.GS.Tests
                 Assert.That(AutonomousBotStorylines.SceneFor(episodes[4], ""), Is.SameAs(episodes[4].Neutral));
                 Assert.That(AutonomousBotStorylines.SceneFor(episodes[2], "B"), Is.SameAs(episodes[2].Neutral));
             }
+        }
+
+        // The ten arcs of storylines_more.lines (owner 2026-11-18 09:14: "10 new arcs added to 1.2").
+        private static readonly string[] MoreArcs =
+            { "mentor", "bounty", "ballad", "masterpiece", "mistell", "buffbot", "keepgrudge", "loan", "gimped", "campspot" };
+
+        private static readonly Dictionary<eRealm, string[]> RealmClasses = new()
+        {
+            [eRealm.Albion] = new[] { "Armsman", "Paladin", "Mercenary", "Reaver", "Scout", "Infiltrator", "Minstrel", "Cleric", "Friar",
+                "Wizard", "Theurgist", "Sorcerer", "Cabalist", "Necromancer" },
+            [eRealm.Midgard] = new[] { "Warrior", "Thane", "Skald", "Berserker", "Savage", "Hunter", "Shadowblade", "Healer", "Shaman",
+                "Runemaster", "Spiritmaster", "Bonedancer" },
+            [eRealm.Hibernia] = new[] { "Hero", "Champion", "Blademaster", "Warden", "Druid", "Bard", "Ranger", "Nightshade", "Eldritch",
+                "Enchanter", "Mentalist", "Animist", "Valewalker" },
+        };
+
+        /// <summary>
+        /// The new arcs are realm-neutral (storylines are not filtered by realm), so every role that needs a class can be cast in
+        /// every realm; each arc's roles are the same in all six scenes (only episode 1 casts A and B, and a side character keeps
+        /// its letter, so a letter means one person); and the class-bound stories cast what they talk about.
+        /// </summary>
+        [Test]
+        public void TheMoreArcsCastInEveryRealmAndKeepTheirRoles()
+        {
+            var arcs = AutonomousBotStorylines.Arcs(Corpus.Scenes);
+            string[] healers = { "Cleric", "Friar", "Healer", "Shaman", "Druid", "Bard", "Warden" };
+            foreach (string arc in MoreArcs)
+            {
+                Assert.That(arcs.ContainsKey(arc), arc);
+                VC.Scene[] scenes = arcs[arc].Skip(1).SelectMany(e => new[] { e.Neutral, e.SideA, e.SideB }).Where(s => s != null).ToArray();
+                Assert.That(scenes, Has.Length.EqualTo(6), arc);
+                foreach (VC.Scene scene in scenes)
+                {
+                    Assert.That(scene.Realm, Is.EqualTo("*"), scene.Id);
+                    Assert.That(scene.Topic, Is.EqualTo("story_" + arc), scene.Id);
+                    Assert.That(scene.Beats.Count(b => !b.IsPause), Is.InRange(18, 24), scene.Id);
+                    foreach (var (role, spec) in scene.Roles)
+                    {
+                        VC.RoleSpec first = scenes.Select(s => s.Roles.GetValueOrDefault(role)).First(r => r != null);
+                        Assert.That(spec.Types, Is.EqualTo(first.Types), $"{scene.Id} {role}");
+                        Assert.That(spec.Classes, Is.EqualTo(first.Classes), $"{scene.Id} {role}");
+                        Assert.That((spec.LevelLow, spec.LevelHigh), Is.EqualTo((first.LevelLow, first.LevelHigh)), $"{scene.Id} {role}");
+                        if (spec.Classes.Length > 0)
+                            foreach (var (realm, classes) in RealmClasses)
+                                Assert.That(spec.Classes.Intersect(classes), Is.Not.Empty, $"{scene.Id} {role} in {realm}");
+                    }
+                }
+            }
+            Assert.That(arcs["mistell"][1].Neutral.Roles["B"].Classes, Is.SubsetOf(healers), "the healer with the slow heals");
+            Assert.That(arcs["buffbot"][1].Neutral.Roles["A"].Classes, Is.SubsetOf(healers), "the suspected buffbot buffs");
+            Assert.That(arcs["ballad"][1].Neutral.Roles["A"].Classes, Is.EquivalentTo(new[] { "Minstrel", "Skald", "Bard" }), "the songwriter");
+            Assert.That(arcs["bounty"][1].Neutral.Roles["A"].Classes, Is.EquivalentTo(new[] { "Scout", "Hunter", "Ranger" }), "the archers");
+            Assert.That(arcs["bounty"][1].Neutral.Roles["B"].Classes, Is.EquivalentTo(new[] { "Scout", "Hunter", "Ranger" }), "the archers");
         }
 
         [Test]

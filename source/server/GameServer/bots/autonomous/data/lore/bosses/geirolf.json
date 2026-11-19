@@ -1,0 +1,117 @@
+{
+  "id": "geirolf",
+  "name": "Geirolf",
+  "npcNames": [
+    "Geirolf"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "ingardild",
+      "relation": "the captain of the next armguard camp, his rival"
+    },
+    {
+      "id": "gunnolf",
+      "relation": "the western captain whose camp is further west"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Geirolf is a level-49 or -52 drakulv in the west of Malmohus (705873, 1001108) with seven drakulv armguards around him, the largest armguard camp in the ruins; a scaled varg snarler stands nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60161236)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Geirolfr, 'spear-wolf', is an attested Old Norse personal name.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "Geirolf keeps the largest camp of armguards in Malmohus, and he is the smallest of the named drakulv who hold one. The svartalfar of Svarhamr think the two facts are connected.\n\nHis name is the spear-wolf's, an old name of war, and the beam-cutters say he did not take it from anyone; the hollow gave it to a drakulv who had asked for nothing, in a winter when the western camps had lost three captains in a season and needed one who would not die. He has not died, or not often. He keeps his armguards close around him, closer than any other captain, and when he is threatened they come in from every side at once, and the svartalfar say that the spear-wolf has never in his life been where a blow could reach him without first going through four or five of his own. A drakulv of Ingardild's holding called him the hedgehog once, in the drakulv growl, and the western camps had their worst night on the beam over it.\n\nHis armguards are the young of the west, the ones who will become axehands and protectors and, if they live, guardians of the hollow. Geirolf trains them. The svartalfar on the walls of Svarhamr have watched him at it, setting two young armguards at each other and stopping it at first blood, over and over through a winter's evening, and Brisa the beam-cutter says it is the only time she has seen drakulv do anything that looked like teaching.\n\nGunnolf, whose holding lies further west, does not like him either, but for another reason. Gunnolf is of the old west, the camps that refused the runners, and Geirolf's holding, the old west says, would answer a runner if the hollow ever sent one. Geirolf has never said whether that is true. His armguards stand closer every year.",
+  "legend": "Geirolf is a small named drakulv (49 or 52) in the west of Malmohus with SEVEN drakulv armguards standing around him, the biggest armguard camp in the zone, plus a scaled varg snarler nearby. He's Pack Drakulv and the armguards are right there, so when you hit him expect most of the camp. Armguards are 46-51, so a full group at 50 can AoE or mez them down; small groups should pick the armguards off from the edges first. No tricks beyond that, not CC-immune. Ingardild's camp is close by, so keep the fight on the far side. There's no quest here.",
+  "yells": {
+    "aggro": [
+      "Armguards! Close up! Close!",
+      "You will have to go through all of them.",
+      "Spear-wolf does not stand in front. Spear-wolf stands in the middle."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Closer! Did I teach you nothing? CLOSER!"
+      }
+    ],
+    "death": [
+      "The ring... had a gap...",
+      "Teach them... better..."
+    ],
+    "slay": [
+      "First blood. Last blood.",
+      "Learn from that, young ones.",
+      "Again. Bring me another."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The largest armguard camp. They stand very close.",
+      "Young drakulv sparring. An old one watches."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Geirolf's armguards close around him."
+      }
+    ],
+    "realmFirstKill": "Geirolf the spear-wolf falls. His young scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "geirolf has seven armguards, the whole camp comes",
+      "full group: aoe or mez the armguards",
+      "small group: pick armguards off the edges first",
+      "hes small himself, 49 or 52"
+    ],
+    "aftermathWin": [
+      "seven armguards and geirolf, nice",
+      "the aoe did it",
+      "picked the edges, slow but safe",
+      "biggest camp in malmohus cleared"
+    ],
+    "aftermathLoss": [
+      "the whole camp came at once",
+      "ran into ingardilds camp too",
+      "not enough mez for seven",
+      "the snarler joined as well"
+    ],
+    "rumour": [
+      "geirolf trains the young armguards of the west",
+      "a drakulv called geirolf the hedgehog and the west camps had their worst night",
+      "the old west says geirolfs camp would answer a runner",
+      "geirolf has never been hit without going through his armguards"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Geirolf",
+    "text": "The spear-wolf, smallest captain of the largest armguard camp, who trains the young of the west. Rival of [Ingardild]; [Gunnolf] distrusts him. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Geirolf's line has fewer dots than it should for a captain of the west, and the reason is in the lines around it. Every one of his armguards that dies before him has its own small cut, the mark we make for a drakulv without a name, and there are so many of those around the spear-wolf's line that they look like a fence. My teacher called it his hedge. I call it what it is: the young of the west, who stood where they were taught to stand.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Geirolf's armguard camp in western Malmohus in {minutes} minutes.",
+    "loss": "Geirolf's armguards closed round him and held off {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

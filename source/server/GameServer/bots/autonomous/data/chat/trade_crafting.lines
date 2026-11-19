@@ -18,7 +18,6 @@ wtb a better weapon for my {class}, anything in my level range
 @invites trade
 anyone selling armor for a {level} {class}?
 @invites
-looking for {item}, will pay decent coin
 anyone have spare dye? want my gear to match for once
 wtb potions, mine ran out at the worst time
 @levels 20-50
@@ -27,49 +26,10 @@ looking for a spellcrafter, want to fix my stats before 50
 
 @kind trade
 @topic crafting
-@who Crafter
-@levels 1-50
-@invites joke
-crafting skill up at last, materials cost more than my house
-@invites
-anyone have spare metal bars? paying the merchant price
-@invites complaint
-leveling my craft, every failure is a lesson and a lot of coin
-@invites boast
-got a masterpiece today, almost fell out of my chair
-99 percent quality, close enough to perfect for me
-@invites
-armor for half the guild this week, everyone wants their own dye
-@invites complaint
-crafting is relaxing until you count the coin
-@invites trade
-need cloth for a few orders, anyone selling?
-@invites
-my craft skill is finally useful, guildies keep asking for stuff
-@invites ask_advice
-anyone know the next good item to skill up on?
-@invites chat
-the forge is my second home at this point
-@invites joke
-legendary someday, if my wallet survives
-@invites boast
-sold a full suit today, crafting finally paid for itself
-@invites trade
-spellcrafting tonight, the guild's gear first
-@invites
-@levels 35-50
-if anyone wants a spellcrafted piece, send me your stats and slot
-@invites complaint
-overcharged a gem and it blew up. there goes a week of coin
-@invites
-masterpiece weapons on request, prices are fair, i promise
-
-@kind trade
-@topic crafting
 @who *
 @levels 1-50
 @invites ask_craft
-what is everyone's craft? thinking about picking one up
+what is everyones craft? thinking about picking one up
 @invites
 is crafting worth it or just a money sink?
 @invites chat
@@ -80,8 +40,10 @@ dont sell your drops to the merchant before asking a crafter
 @kind reply
 @answers ask_craft
 @who *
-armorcraft, someone always needs armor
-weaponcraft, slow to level but people pay well
-tailoring, cloth and leather for half the realm
-spellcraft, but only if you have coin to burn
-fletching, archers keep me in business
+# Any bot answers, and the reply path has no slot for its real craft: so no line names one (chat audit CORPUS-C-034).
+none yet, too busy leveling
+havent picked one yet
+not me, i just break things
+none, i buy from crafters
+tried one once, ran out of coin
+no craft yet, maybe at 50

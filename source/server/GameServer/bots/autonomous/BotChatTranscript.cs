@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using DOL.GS.PacketHandler;
 using DOL.Logging;
 
 namespace DOL.GS;
@@ -29,37 +31,74 @@ public static class BotChatTranscript
     /// <summary>
     /// A line a bot said that a player can see. via= is the first method on the stack that chose the line; src= the feature
     /// that produced it, and inside an exchange (a thread, a story, replies, a burst, a debate) ex= its id, i= the line's index
-    /// and role= its speaker's part (1.1.3, owner 2026-11-08: most lines showed only the delivery method). cls= and lvl= are the
-    /// speaker's real class and level, so a line can be checked against them (source/tools/chat_audit.py).
+    /// and role= its speaker's part (1.1.3, owner 2026-11-08: most lines showed only the delivery method). kind= is the bot kind
+    /// (gamebot, companion, buffbot, helper; chat audit TEXT-051), cls= and lvl= the speaker's real class and level, so a line
+    /// can be checked against them (source/tools/chat_audit.py). Pass the speaking bot when it is known: a hired companion,
+    /// a helper or a buffbot is not found by name among the realm's gamebots (and a buffbot may share its name with one).
     /// </summary>
-    public static void Bot(string channel, string speaker, eRealm realm, string text, string to = null)
+    public static void Bot(string channel, string speaker, eRealm realm, string text, string to = null, GameBot who = null)
     {
         if (string.IsNullOrWhiteSpace(text)) return;
+        // Chat 1.2 follow-up: a promise made when its line was chosen stands once the line is out (ChatPromises, "unsaid").
+        if (who != null) ChatPromises.NoteSaid(who, text);
+        else ChatPromises.NoteSaid(speaker, realm, text);
         string via;
         try { via = Via(new StackTrace(1, false)); } catch { via = "?"; }
         Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
-                 $" via={via}{SourceFields(speaker, realm, via)}{CapField(channel, realm)} text=\"{Clean(text)}\"");
+                 $" via={via}{SourceFields(speaker, realm, via, who)}{CapField(channel, realm)} text=\"{Clean(text)}\"");
     }
 
-    /// <summary>" src=thread ex=12 i=2 role=answerer cls=\"Cabalist\" lvl=50" for the line being said now.</summary>
-    public static string SourceFields(string speaker, eRealm realm, string via)
+    /// <summary>
+    /// A bot's emote a player can see ("CHAT_EMOTE from=\"Marelle\" kind=gamebot realm=Albion emote=Cheer"): a separate tag, so the
+    /// chat audit's line counts stay lines (chat audit TEXT-051).
+    /// </summary>
+    public static void Emote(GameBot bot, eEmote emote)
+    {
+        if (bot == null) return;
+        Log.Info($"CHAT_EMOTE from=\"{bot.Name}\" kind={KindOf(bot)} realm={GlobalConstants.RealmToName(bot.Realm)} emote={emote}");
+    }
+
+    /// <summary>
+    /// Text the server puts on players' screens that no chat line carries: atmosphere lines, game-wide announcements, server
+    /// firsts ("CHAT_SCREEN kind=first realm=Albion text=\"...\""; to= when only one player sees it). Chat audit TEXT-051.
+    /// </summary>
+    public static void Screen(string kind, string text, eRealm realm = eRealm.None, string to = null)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return;
+        Log.Info($"CHAT_SCREEN kind={kind}" + (realm != eRealm.None ? $" realm={GlobalConstants.RealmToName(realm)}" : "") +
+                 (to != null ? $" to=\"{to}\"" : "") + $" text=\"{Clean(text)}\"");
+    }
+
+    /// <summary>The bot kind a transcript names: buffbot, companion (hired), helper (/spawn, /raid) or gamebot. Pure.</summary>
+    public static string KindOf(GameBot bot) =>
+        bot == null ? "?"
+        : bot.IsNoLiferBuffBot ? "buffbot"
+        : bot.IsHiredCompanion ? "companion"
+        : bot.IsTemporaryGroupHelper || !bot.IsAutonomousWorldBot ? "helper"
+        : "gamebot";
+
+    /// <summary>" src=thread ex=12 i=2 role=answerer kind=gamebot cls=\"Cabalist\" lvl=50" for the line being said now.</summary>
+    public static string SourceFields(string speaker, eRealm realm, string via, GameBot who = null)
     {
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         string fields = source != null
             ? $" src={source.Feature} ex={source.Exchange} i={source.Index} role={source.Role}"
             : $" src={FeatureOf(via)}";
-        GameBot bot = source?.Speaker != null && string.Equals(source.Speaker.Name, speaker, StringComparison.Ordinal) ? source.Speaker : null;
+        GameBot bot = who != null && string.Equals(who.Name, speaker, StringComparison.Ordinal) ? who
+            : source?.Speaker != null && string.Equals(source.Speaker.Name, speaker, StringComparison.Ordinal) ? source.Speaker : null;
         try
         {
             bot ??= Array.Find(AutonomousBotRegistry.Snapshot(), candidate => candidate != null && candidate.Realm == realm &&
                                                                                string.Equals(candidate.Name, speaker, StringComparison.Ordinal));
+            bot ??= HiredCompanions165.LiveBots().FirstOrDefault(candidate => candidate.Realm == realm &&
+                                                                              string.Equals(candidate.Name, speaker, StringComparison.Ordinal));
         }
         catch
         {
             bot = null;
         }
         if (bot != null)
-            fields += $" cls=\"{bot.CharacterClass?.Name ?? bot.ClassName}\" lvl={bot.Level}";
+            fields += $" kind={KindOf(bot)} cls=\"{bot.CharacterClass?.Name ?? bot.ClassName}\" lvl={bot.Level}";
         return fields;
     }
 

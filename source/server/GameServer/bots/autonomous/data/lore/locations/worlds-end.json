@@ -1,0 +1,281 @@
+{
+  "id": "worlds-end",
+  "name": "World's End",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    185
+  ],
+  "summary": "The far edge of Hy Brasil, where the forests drove the Root: the burned ring, Kontar's corrupt Sylvan, the shrouded headland, the octonoid shore and Krrzck.",
+  "facts": [
+    {
+      "text": "Zone 185 (region 181, x 344,064-409,600, y 229,376-294,912): 579 monsters, no realm NPCs. The Galladoria entrance is at 394,139/243,486. Krrzck, the mantid settlement, stands at about 367,500/262,500: Krrzck saoranach and maor, a smith (Kayleigh), a stable master (Dalniver), Krazckz, Xizxx, Aarzrrck, Krrikk, Krrzk, Zuraspa, and Eimear.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); world data ZonePoint table (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: botonid rencanraiders (46-52), the rencan (aon, do, tri, beast), corruptors (45-50), chalico, ancient treants (56-66) and treant antico, savage bugbears, drifting spores, giant anglers (Predators of Hy Brasil), octonids, elder octonids (65), arboreal octonids and ochtapas (58-64), death shrouds, skelks and mature skimmers.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The edge's bosses: Mollunero (75), Zytka (66), Balere (65), Kontar the Corrupt (65) and Elro the Ancient (65), Archilus (58) and Eimear (50); tier B Zuraspa (46, Krrzck) and Xcrzrk (46, Grazer; The Sylvan's Pain).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Saoránach is Irish for 'citizen' and maor for 'steward' or 'officer'.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/saor%C3%A1nach"
+    },
+    {
+      "text": "Ocht is Irish for 'eight'.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/ocht"
+    },
+    {
+      "text": "Living Server lore: the edge as the place the Root was driven to; the burned ring and the Red Summer; the clans of the edge who stayed too long; Kontar's soured springs; the headland of the unburned dead; the octonoid shore; Krrzck's shut town and the one outsider it let in; Eimear's account.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Mythic's 1.65 notes: the mantids keep a base at World's End from which their friends may cross to Allta Fearann, the untamed island of their legend (Dalniver arranges it).",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    }
+  ],
+  "story": "World's End is where the forests of Hy Brasil drove the Root. In the first age, the Sylvan say, the titan was everywhere under the isle, and the forests pushed him, root by root and age by age, along the high ground and east, until there was nowhere further east to push him, and he went down. The place he went down is the mouth of Galladoria. The land around it is World's End, the warm, sour coast at the far edge of the isle, and it remembers him: the ground is warm underfoot in winter, the springs taste of iron, and the trees are older and stranger than anywhere else on the isle.\n\nNear the mouth there is a ring of ground the Sylvan call An Fáinne Dóite, the burned ring, where in the Red Summer of Sylvan memory the fire came up out of the ground itself and burned the forest from below. The fire-keepers of Domnann still keep a clean fire at its edge, as if to show the ground what fire is supposed to look like. Elro the Ancient stands west of it in the old grove, the keeper-tree who helped drive the titan to the edge and held when his brother Aroon rotted; no song moves him, and when he is wounded the old grove wakes around him. The ancient treants of the northern edge are his, slow and furious, older than the Sylvan's oldest songs.\n\nThere were clans of the edge. They were Sylvan who stayed at World's End after the Pushing to watch the place the Root went down, and they stayed too long. Their chieftain, Kontar, drank from the soured springs and called it strength, and his clan drank after him, and they are corrupt now, the corruptors of the middle edge with their chalico beasts about them. Kontar keeps a guard of menders who stayed with him, and they keep only him whole. His kin in Domnann scratch his name off the wardens' stone every spring, and every spring someone scratches it back. The clan's dead were never burned. They lie on the eastern headland, and their shrouds walk it, and the eldest of them, Archilus, tears into more of himself for every hand that strikes him.\n\nThe shore is the octonoid mothers'. Three of them keep the shallows and the cold pools under the cliffs, Balere the eldest, Mollunero the strongest, Zytka the youngest, who came out of the Red Summer alive and is hot to the touch; each comes up with her young, and the young go back into the sea when she does. The Sylvan say they crawled up out of the Underneath, the deep dark under the isle that the falls of Galladoria drink from. The elder octonids and the eight-armed things that climb the shore trees are their kin, and the Sylvan guides refuse to walk anyone to Mollunero's pool.\n\nInland, on the high ground in the middle of the edge, stands Krrzck, the mantids' town. It is shut. The mantids of the edge trade when trade is useful, through one go-between at a time, and keep their walls closed to every people of the isle; the Sylvan have never been inside. In all the generations of the isle exactly one outsider has been let in: Eimear, an outlander girl of Altan Garran who sat outside the wall until they opened it. She speaks for them now, coldly, and the mantids' stewards and citizens let her. Out on the plain around the town the botonid rencanraiders and the rencan herds graze, and the Krrzck hunt them.\n\nWhy does it matter? Because the edge is where the isle's oldest trouble went down, and where it comes up. Every company the realm sends into Galladoria walks through World's End to the mouth, past the burned ring and Kontar's clan and the headland of shrouds, and the Sylvan who guide them stop at the ring's edge and touch the clean fire and go no further.",
+  "legend": "World's End is the eastern edge of Hy Brasil, levels 44-75, with the Galladoria entrance in the north-east. No realm town: Krrzck in the middle is the mantids' (Krrzck faction; Eimear, Zuraspa and the stewards are there). Camps: botonid rencanraiders and rencan (44-52) in the south, corruptors and chalico (45-56) around Kontar, giant anglers, savage bugbears, ancient treants (56-66) in the north, octonids and ochtapas on the shore (to 65). Bosses: Mollunero (75), Zytka (66) and Balere (65), the octonoid mothers (kill the mother and her brood vanishes); Kontar the Corrupt (65: kill his 8-10 bodyguards first, they heal only him); Archilus (58: below 90% every real player's hit spawns a shroud on that player, so let pets and bots do the hitting); Elro the Ancient (65: treants per real player at two health windows). Sylvan custom: touch the clean fire at the edge of the burned ring before you go down into Galladoria.",
+  "atmosphere": {
+    "firstEntry": [
+      "World's End. The ground is warm.",
+      "The springs taste of iron here.",
+      "The Root went down at the edge.",
+      "Shrouds walk the eastern headland.",
+      "Somewhere a mantid town keeps its walls shut."
+    ],
+    "areas": [
+      {
+        "name": "the burned ring",
+        "x": 392000,
+        "y": 247000,
+        "z": 4300,
+        "radius": 3000,
+        "lines": [
+          "An Fáinne Dóite, the burned ring.",
+          "A clean fire kept at its edge.",
+          "Touch the fire before you go down."
+        ]
+      },
+      {
+        "name": "the mouth",
+        "x": 394140,
+        "y": 243490,
+        "z": 4270,
+        "radius": 1200,
+        "lines": [
+          "The mouth of Galladoria. The Root went down here.",
+          "Warm air breathes out of the dark."
+        ]
+      },
+      {
+        "name": "the keeper's grove",
+        "x": 353020,
+        "y": 260460,
+        "z": 4910,
+        "radius": 2500,
+        "lines": [
+          "The keeper-tree of the edge. No song moves him.",
+          "The old grove sleeps lightly."
+        ]
+      },
+      {
+        "name": "the ancient woods",
+        "x": 377700,
+        "y": 240500,
+        "z": 3600,
+        "radius": 4500,
+        "lines": [
+          "Ancient treants, slow and furious.",
+          "Older than the Sylvan's oldest songs."
+        ]
+      },
+      {
+        "name": "Kontar's ground",
+        "x": 367890,
+        "y": 270040,
+        "z": 3420,
+        "radius": 3000,
+        "lines": [
+          "The clan that drank from the soured springs.",
+          "Menders who keep only their chief whole.",
+          "Corruptors among the chalico."
+        ]
+      },
+      {
+        "name": "the headland",
+        "x": 393000,
+        "y": 268500,
+        "z": 3700,
+        "radius": 3000,
+        "lines": [
+          "The headland of the unburned dead.",
+          "Shrouds tear into more shrouds."
+        ]
+      },
+      {
+        "name": "the octonoid shallows",
+        "x": 386000,
+        "y": 264000,
+        "z": 3410,
+        "radius": 4000,
+        "lines": [
+          "Mothers in the shallows, with their young.",
+          "One of them is hot to the touch."
+        ]
+      },
+      {
+        "name": "the cold pool",
+        "x": 381820,
+        "y": 268540,
+        "z": 3400,
+        "radius": 1500,
+        "lines": [
+          "The cold pool under the cliffs.",
+          "The guides will not come here."
+        ]
+      },
+      {
+        "name": "the eldest's shore",
+        "x": 387630,
+        "y": 239670,
+        "z": 4760,
+        "radius": 2000,
+        "lines": [
+          "The eldest mother's shore.",
+          "Her young never leave her."
+        ]
+      },
+      {
+        "name": "Krrzck",
+        "x": 367500,
+        "y": 262500,
+        "z": 3500,
+        "radius": 2500,
+        "lines": [
+          "Krrzck. The mantids' walls are shut.",
+          "An outlander girl speaks for them."
+        ]
+      },
+      {
+        "name": "the rencan plain",
+        "x": 365000,
+        "y": 278000,
+        "z": 3900,
+        "radius": 6000,
+        "lines": [
+          "Rencan herds on the plain.",
+          "The Krrzck hunt here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "worlds end is where the forests drove the root in the long pushing. [he went down at galladoria|the mouth]",
+      "the ground at worlds end is warm in winter and the springs taste of iron",
+      "the burned ring at worlds end is where fire came up out of the ground in the red summer",
+      "sylvan fire keepers keep a clean fire at the edge of the burned ring. [touch it before galladoria|custom]",
+      "elro the ancient helped drive the root to the edge and held when aroon rotted",
+      "kontar's clan stayed at the edge too long and drank from the soured springs",
+      "kontar's kin scratch his name off the domnann wardens' stone every spring. someone scratches it back",
+      "archilus is the eldest shroud of kontar's unburned dead on the headland",
+      "the octonoid mothers crawled up out of the underneath, the sylvan say",
+      "zytka came out of the red summer alive. thats why shes hot",
+      "krrzck is the mantid town. nobody gets in. [except eimear|one outsider ever]",
+      "the krrzck have citizens and stewards. [saoranach and maor|irish words lol]",
+      "the guides refuse to walk anyone to mollunero's pool"
+    ],
+    "rumour": [
+      "[heard|someone said] the clean fire at the burned ring went out for a moment last night",
+      "archilus: let pets and bots hit him below 90. [every player hit spawns a shroud|bots dont trigger it]",
+      "[word is|heard] eimear came out of krrzck to look at the sea and went back in",
+      "kontar's bodyguards heal only kontar. [kill them first|8 to 10]",
+      "[heard|someone said] the elder octonids are mollunero's older children",
+      "someone touched the fire at the ring and the galladoria run went fine. [coincidence|maybe]",
+      "[word is|heard] the ancient treants in the north move when elro is hit",
+      "the rencanraiders are botonids that ride rencan. [weird|lol]"
+    ],
+    "tell": [
+      "worlds end is the east edge of hy brasil. galladoria entrance is there. 44 to 75, no town",
+      "where is the galladoria entrance? north east of worlds end, past the burned ring",
+      "is worlds end hard? yes. 50s everywhere, octonoid mothers and kontar and elro are big pulls",
+      "whats in worlds end? octonoid mothers, kontar, archilus, elro, ancient treants, the krrzck mantids",
+      "where is krrzck? middle of worlds end on the high ground. mantid town, not friendly, not hostile",
+      "who is eimear? the only outsider the krrzck mantids ever let in. she speaks for them"
+    ]
+  },
+  "loremaster": {
+    "intro": "World's End, where the Root went down. The [burned ring] is near the [mouth]; the [keeper-tree] holds the west; the [clans] of the edge stayed too long; the [headland] keeps their dead; the [mothers] keep the shore; and [Krrzck] keeps its walls shut.",
+    "topics": {
+      "burned ring": "An Fáinne Dóite, where fire came up out of the ground in the Red Summer and burned the forest from below. The Domnann fire-keepers keep a clean fire at its edge. The guides touch it and go no further.",
+      "mouth": "The mouth of Galladoria, where the titan went down at the end of the Long Pushing. Warm air breathes out of it.",
+      "keeper-tree": "Elro the Ancient, who helped drive the titan to the edge and held when his brother Aroon rotted. No song moves him; wound him and the old grove wakes. The ancient treants of the north are his.",
+      "clans": "The Sylvan who stayed at the edge after the Pushing to watch where the Root went down, and stayed too long. Their chief Kontar drank from the soured springs; the corruptors are his clan now.",
+      "headland": "The eastern headland where Kontar's clan's dead lie unburned. Their shrouds walk it, and Archilus, the eldest, tears into more of himself for every hand that strikes him.",
+      "mothers": "The octonoid mothers of the shore, Balere, Mollunero and Zytka, each with her young. The Sylvan say they came up out of the Underneath. The guides will not walk anyone to Mollunero's pool.",
+      "Krrzck": "The mantids' town on the high ground, shut to every people of the isle. Its citizens and stewards trade through one go-between at a time. Exactly one outsider was ever let in: [Eimear].",
+      "Eimear": "An outlander girl of Altan Garran who sat outside Krrzck's wall until it opened. She speaks for the mantids now, coldly. She wrote down an account of the edge for anyone who asks properly.",
+      "Red Summer": "The one great forest fire of Sylvan memory, which came up out of the ground at World's End. Zytka came out of it alive. The [burned ring] is what it left."
+    }
+  },
+  "book": {
+    "title": "The Edge, as Eimear of Krrzck Tells It",
+    "pages": [
+      "I sat outside the wall of Krrzck for a season and a half because I wanted to know what a town with no doors does all day. They let me in at the end of it. I have been inside since, and I speak for them when they want someone to, and I write this because Tieru of Aalid Feie asked me to, properly, and the Krrzck say a proper asking should be answered. They do not say how. I am answering it this way. They will not read it.",
+      "The edge is where your Sylvan pushed the old one, the titan, until he went down. You can feel it in the ground. It is warm in winter. The springs taste of iron, and the Krrzck do not drink from them, and they told me why without being asked, which they never do: the clan that stayed at the edge drank, and look at them. Kontar's people are in the middle of the edge with their beasts, and his menders keep him whole and nobody else, and their dead lie on the headland unburned. The Krrzck do not go to the headland.",
+      "Near the mouth of the hollow there is a ring of burned ground where the fire once came up out of the earth. Your fire-keepers keep a small clean fire at its edge, and the Krrzck think this is the most sensible thing the Sylvan have ever done. On the shore three mothers keep their young in the shallows, and one of them is hot from the old fire, and one of them is cold, and the oldest never lets her young out of her reach. The Krrzck hunt the shore in the off seasons. They do not hunt the mothers.",
+      "The Krrzck are not your friends. They are not your enemies. They are busy, and they think you talk too much. When your companies walk past our wall toward the mouth, the stewards stand on it and count you, the same way the Sylvan count you at Aalid Feie, and when fewer come back the stewards say a word I will not translate. It is not an unkind word. It is the word they use for the rencan herds in a bad winter. It means: the edge took its share."
+    ]
+  },
+  "bosses": [
+    "balere",
+    "mollunero",
+    "zytka",
+    "kontar-the-corrupt",
+    "archilus",
+    "elro-the-ancient",
+    "eimear",
+    "zuraspa",
+    "xcrzrk"
+  ],
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles",
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "galladoria",
+      "relation": "whose mouth opens here"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "driven here in the Long Pushing"
+    },
+    {
+      "id": "cothrom-gorge",
+      "relation": "where the rot surfaces to the west"
+    },
+    {
+      "id": "allta-fearann",
+      "relation": "where the Krrzck keep a waystation"
+    }
+  ]
+}

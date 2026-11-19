@@ -1,0 +1,118 @@
+{
+  "id": "loken",
+  "name": "Loken",
+  "catalogKey": "midgard-named-mobs-classic-zones/loken",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "ulfketill",
+      "relation": "fellow servant of the bound god's mischief"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Loken is a level-65 named with 10,000 health in eastern Raumarik, with two wolf companions that come back once the fight is over.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Searing Blast and Flame Spear, and takes no damage from attackers who stand too far from his spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is the target of the Healer and Shaman epic 'The Desire of a God', which begins with word that Loki seeks to cause trouble; killing him yields a ball of flame.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/652"
+    },
+    {
+      "text": "Loke is the Swedish form of Loki (the -n form to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Loken takes no damage from attackers (players, pets or bots) standing outside his tether range from his spawn, and stops moving if his target is outside it. He casts Searing Blast (280 heat with a debuff, range 1,500, uninterruptible) whenever he is not casting, and Flame Spear (200 heat, recast 15-20 s). His two wolves (LokenWolf) join his target; they are replaced only after the fight and die when he dies. 10,000 health, CC-immune, 20% resist to everything; only one Loken can stand within 8,000.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Loken.cs"
+    }
+  ],
+  "story": "When the gods bound Loki they bound him under the earth with the guts of his own son, and set a serpent over his face to drip venom, and his wife Sigyn holds a bowl to catch it. When the bowl is full she must turn away to empty it, and the venom falls on his face, and he writhes, and the earth shakes. In Raumarik, the Galplen tellers say, a little of him gets out each time.\n\nWhat gets out is Loken: slim, fire-handed, smiling, with two of the wolves of Loki at his heels, Fenrir's cousins, who know him for kin. He comes up in the east of Raumarik, where the snow is scorched in the shape of footprints, and he does not go far from the place he came up. He cannot. The bound god's chains are long, but not that long, and Loken is held to the spot of his escaping as a kite is held to its string. That is why, the seers of the realm say, nothing thrown at him from afar ever lands: he is not wholly in the world unless you are standing in the place where he got out, close enough for the chain to feel you. Stand off, and the blows and spells pass through a thing that is mostly elsewhere. Come close, and he is as real as anyone.\n\nHe burns. He throws fire as freely as speech, one blast after another, and nothing a seer does breaks his throwing; between the blasts he hurls a spear of flame. His wolves come at the one he is burning. If they fall he does not call them back while the quarrel lasts; they come back afterward, when he has calmed, as dogs come back to a master who has stopped shouting.\n\nInaksha in the Vale of Mularn sends the young seers of the realm after him when the earth shakes, and Miri in Jordheim rewards those who come back. What they bring home is a ball of flame that does not cool. The Galplen folk say it is a little of Loki, and that the seers keep it to remind themselves that the bowl will fill again.",
+  "legend": "Loken is the healer and shaman epic target in eastern Raumarik, level 65, 10,000 health, with two wolves of Loki. The big thing: he takes no damage at all from anyone standing too far from his spawn spot. Every attacker, players, pets and bots, has to be close to where he started. He also stops moving if his target is out of that range, so you can't drag him away. He casts Searing Blast nonstop, 280 heat plus a debuff from 1,500 range, uninterruptible, plus a Flame Spear every 15-20 seconds, so heat resist and steady heals. His two wolves come in on his target and only come back after the fight; they die when he dies. CC-immune. Resets full if you leave.",
+  "yells": {
+    "aggro": [
+      "Oh, a seer. Have you come to put out a little fire?",
+      "Come closer. I can't quite see you from here.",
+      "My father sends his regards. Warmly."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Burn, then. My father's chains are long, but not that long."
+      }
+    ],
+    "death": [
+      "The bowl... is full again...",
+      "I'll be back... the next time she turns away..."
+    ],
+    "slay": [
+      "Ashes. Pretty.",
+      "Tell Sigyn I said hello.",
+      "One less bucket of water."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The snow is scorched here, in the shape of footprints.",
+      "Two wolves rise from the scorch and bare their teeth."
+    ],
+    "realmFirstKill": "Loken's fire is put out. For now.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Loken burns brighter. The earth shudders under him."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "loken: 2 wolves, fight him close to his spot",
+      "healers and shamans, this is your epic step",
+      "everyone stands close to his spawn or you do zero damage",
+      "he wont move if his target is far, dont try to pull him away",
+      "searing blast nonstop, heat resist and heals",
+      "2 wolves, they dont come back until after"
+    ],
+    "aftermathWin": [
+      "got the ball of flame! [epic done|finally]",
+      "everyone stood close this time, easy",
+      "wolves died with him",
+      "heat resist pots for everyone, worked"
+    ],
+    "aftermathLoss": [
+      "searing blast hurts more than i thought",
+      "the casters stood back and did nothing, immune from range",
+      "no heat resist, burned",
+      "tried to pull him to us, he just stood there"
+    ],
+    "rumour": [
+      "loken is a bit of loki that gets loose when the venom bowl spills. [the seers say|thats what inaksha says]",
+      "he cant be hurt from far away because hes mostly still chained, the seers say",
+      "the ball of flame never cools",
+      "his wolves are called his companions. cute"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Loken",
+    "text": "When the bowl over bound Loki is emptied and he writhes, some of what he is gets out. In Raumarik it walks as Loken, fire-handed, with two wolves at its heels."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: the seers of Fort Atla say Loken is held to the place he got out by the bound god's chain, as a kite is held to a string, and that is why arrows shot at him from a distance pass through him as through smoke. Only those who stand where he came up can touch him, because there the chain is short and he is wholly in the world. My uncle, who was a shaman, said that was quite true, and also that standing there was like standing in a smithy with the door shut.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Loken's fire in {minutes} minutes.",
+    "loss": "Loken burned {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

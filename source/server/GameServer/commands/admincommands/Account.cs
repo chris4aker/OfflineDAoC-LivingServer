@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DOL.Database;
+using DOL.GS.PacketHandler;
 using DOL.GS.PacketHandler.Client.v168;
 using DOL.Language;
 
@@ -260,6 +261,12 @@ namespace DOL.GS.Commands
                             return;
                         }
 
+                        if (PassportLock.IsAway(cha, out string deleteWhere))
+                        {
+                            client.Out.SendMessage($"{cha.Name} is visiting {deleteWhere} and cannot be deleted.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                            return;
+                        }
+
                         // If the character is logged in, remove them from the game
                         KickCharacter(cha);
                         GameServer.Database.DeleteObject(cha);
@@ -307,9 +314,15 @@ namespace DOL.GS.Commands
                             return;
                         }
                         
+                        if (PassportLock.IsAway(cha, out string moveWhere))
+                        {
+                            client.Out.SendMessage($"{cha.Name} is visiting {moveWhere} and cannot be moved.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                            return;
+                        }
+
                         // Check 'account' table for exact match
                         DbAccount acc = GetAccount(accountname);
-                        
+
                         // If the destination account does not exist
                         if (acc == null)
                         {

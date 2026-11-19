@@ -19,7 +19,7 @@ public static class AutonomousChatReplyBudget
         fit >= minFit ? Outcome.Answer : addressed ? Outcome.Ack : Outcome.Silent;
 
     private static readonly string[] Acks = ["?", "ya?", "hm?", "yes?", "ya", "whats up?", "yo", "hmm?", "yeah?", "sup?"];
-    private static readonly string[] BusyAcks = ["sec", "1 sec", "sec, fighting", "brt", "one sec"];
+    private static readonly string[] BusyAcks = ["sec", "1 sec", "sec, fighting", "sec, busy", "one sec"];
 
     /// <summary>
     /// A short acknowledgement. A bot leans on two or three of its own (fixed from its id), as people do; a busy bot says
@@ -32,6 +32,13 @@ public static class AutonomousChatReplyBudget
         int own = (int)(AutonomousBotPersonality.Mix(botId, 53) % (ulong)Acks.Length);
         return random.NextDouble() < 0.7 ? Acks[(own + random.Next(3)) % Acks.Length] : Acks[random.Next(Acks.Length)];
     }
+
+    /// <summary>
+    /// "sec, fighting" to a tell while the bot fights, "1 sec" while it only casts (1.2 chat audit, DESIGN-003: a tell to a busy bot
+    /// waited in silence). Pure.
+    /// </summary>
+    public static string BusyAck(bool fighting, Random random) =>
+        fighting ? BusyAcks[random.Next(BusyAcks.Length)] : Pick(random, "sec", "1 sec", "one sec", "sec, casting");
 
     /// <summary>
     /// A stock brush-off ("ask around maybe", "beats me", "i think so?", "good question"): the blind judge's most common
@@ -61,7 +68,15 @@ public static class AutonomousChatReplyBudget
     /// <param name="LastBotLine">The bot's own last line in this conversation, if any (its question the player may be answering).</param>
     /// <param name="Self">What is true of the bot (level, class, spec, weapon), for a question about it (round 3).</param>
     public sealed record Moment(string Message, string Channel, bool Addressed, eAutonomousChatIntent Intent, string ClassName, bool CanHeal,
-        bool CanRez, bool Busy, string LastBotLine = null, AutonomousChatQuestions.BotFacts Self = null);
+        bool CanRez, bool Busy, string LastBotLine = null, AutonomousChatQuestions.BotFacts Self = null)
+    {
+        /// <summary>The promise gate for this bot (ChatPromises.TryPromiseCome): true commits it to go, so it may say "omw". Null: never.</summary>
+        public Func<string, ChatPromiseReason, bool> TryCome { get; init; }
+
+        /// <summary>Asks the gate once; true commits the bot.</summary>
+        public bool Comes(ChatPromiseReason reason) =>
+            TryCome?.Invoke(AutonomousChatQuestions.PlaceNamed(Message, AutonomousChatPlaces.All)?.Key, reason) == true;
+    }
 
     /// <summary>The share of weak, readable social lines a channel still answers with a short reaction ("lol", "ugh", "same").</summary>
     public static double ReactionShare(string channel) => channel switch
@@ -175,7 +190,8 @@ public static class AutonomousChatReplyBudget
         if (rez)
             return moment.CanRez ? Pick(random, "where r u?", "where's ur body?", "where u at?") : Pick(random, $"no rez on a {cls} sry", $"{cls}, cant rez sry");
         if (heal)
-            return moment.CanHeal ? Pick(random, "where r u?", "where u at?", "omw, where?") : Pick(random, $"{cls}, no heals sry", $"no heals on a {cls} sry");
+            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where r u?", "where u at?", "where are you?")   // promise: gated (moment.Comes)
+                : Pick(random, $"{cls}, no heals sry", $"no heals on a {cls} sry");
         if (buff && question)
             return Pick(random, $"no buffs, im a {cls}", $"{cls}, sry no buffs", "nothing worth having sry");
         if (question)
@@ -269,19 +285,24 @@ public static class AutonomousChatReplyBudget
         return null;
     }
 
-    /// <summary>The short answer to a call: "omw" when it says where, "where?" when it doesn't. Pure.</summary>
-    public static string AlarmReaction(string message, Random random)
+    /// <summary>
+    /// The short answer to a call: "omw" when it says where and the promise gate sends the bot there, else "k" or "ugh, again";
+    /// "where?" when it doesn't say where (1.2 chat audit, DESIGN-006, CORPUS-C-018). Pure apart from the gate.
+    /// </summary>
+    public static string AlarmReaction(string message, Random random, Func<ChatPromiseReason, bool> comes = null)
     {
         string t = " " + AutonomousChatQuestions.Normalize(message ?? string.Empty) + " ";
         bool where = System.Text.RegularExpressions.Regex.IsMatch(t, @" (at|in|near|on|by|outside|inside) \w+") ||
-                     System.Text.RegularExpressions.Regex.IsMatch(t, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|tower|milegate) ");
-        return where ? Pick(random, "omw", "k", "omw", "on it", "otw") : Pick(random, "where?", "where", "where?!", "which way");
+                     System.Text.RegularExpressions.Regex.IsMatch(t, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|tower|milegate) ");   // chat-check: input
+        if (where && comes?.Invoke(ChatPromiseReason.Alarm) == true)
+            return Pick(random, "omw", "on it", "otw");   // promise: gated (comes)
+        return where ? Pick(random, "k", "k ty", "ugh, again", "ty", "not again") : Pick(random, "where?", "where", "where?!", "which way");
     }
 
     /// <summary>A short reaction of a kind. Pure.</summary>
     public static string Reaction(string kind, Random random) => kind switch
     {
-        "sympathy" => Pick(random, "ugh", "ouch", "that sucks", "rip", "oof", "been there", "same here", "ugh, same"),
+        "sympathy" => Pick(random, "ugh", "ouch", "that sucks", "rip", "yikes", "been there", "same here", "ugh, same"),
         "laugh" => Pick(random, "lol", "heh", "haha", "lol nice", "hehe", "rofl"),
         _ => Pick(random, "lol", "heh", "same", "ha", "lol yeah", "heh yeah", "lol same"),
     };
@@ -300,9 +321,9 @@ public static class AutonomousChatReplyBudget
         // The screen runs before every reaction too (round 3).
         if (AutonomousChatScreen.IsSpam(message))
             return null;
-        // A call gets "where?" or "omw", never "lol same" (round 3).
+        // A call gets "where?" or "k", never "lol same" (round 3).
         if (IsAlarm(message, moment.Intent))
-            return random.NextDouble() < DunnoShare(moment.Channel) ? AlarmReaction(message, random) : null;
+            return random.NextDouble() < DunnoShare(moment.Channel) ? AlarmReaction(message, random, moment.Comes) : null;
         // Thanks for heals a bot can't give get nothing from it.
         if (CreditFor(message) is { } credit && !CanGive(credit, moment))
             return null;
@@ -329,16 +350,19 @@ public static class AutonomousChatReplyBudget
         return kind != null && random.NextDouble() < ReactionShare(moment.Channel) ? Reaction(kind, random) : null;
     }
 
-    /// <summary>The truth for the bot's class to a request: a healer "omw, where?", anyone else "cant heal sry" or "use a pot". Pure.</summary>
+    /// <summary>The truth for the bot's class to a request: a healer "where r u?" ("omw, where?" only when the promise gate sends it),
+    /// anyone else "cant heal sry" or "use a pot" (DESIGN-006). Pure apart from the gate.</summary>
     public static string RequestAnswer(Moment moment, string padded, Random random)
     {
         string cls = (moment.ClassName ?? "adventurer").ToLowerInvariant();
         bool rez = System.Text.RegularExpressions.Regex.IsMatch(padded, @" (rez|res|rezz) ");
         bool heal = System.Text.RegularExpressions.Regex.IsMatch(padded, @" (heal|heals|healz) ");
         if (rez)
-            return moment.CanRez ? Pick(random, "where r u?", "omw, where?", "where's ur body?") : Pick(random, "cant rez sry", $"no rez on a {cls}", $"{cls}, no rez sry");
+            return moment.CanRez ? moment.Comes(ChatPromiseReason.Rez) ? "omw, where?" : Pick(random, "where r u?", "where?", "where's ur body?")   // promise: gated (moment.Comes)
+                : Pick(random, "cant rez sry", $"no rez on a {cls}", $"{cls}, no rez sry");
         if (heal)
-            return moment.CanHeal ? Pick(random, "omw, where?", "where r u?", "on it") : Pick(random, "cant heal sry", "use a pot", $"{cls}, no heals", "pot up!");
+            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where?", "where r u?", "where are you?")   // promise: gated (moment.Comes)
+                : Pick(random, "cant heal sry", "use a pot", $"{cls}, no heals", "pot up!");
         return Pick(random, "no buffs sry", $"{cls}, no buffs", "cant sry");
     }
 

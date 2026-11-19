@@ -1,0 +1,118 @@
+{
+  "id": "eildird",
+  "name": "Eildird",
+  "npcNames": [
+    "Eildird"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "svartalfar",
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "desukva",
+      "relation": "the svartalf of the eastern camps who will not say her name"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the dragon whose people took her in"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Eildird stands alone in the middle of Malmohus (729460, 1008578), level 51 by her template (the spawn row says 54), with nothing else close to her in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her NPC template (55005, ReplaceMobValues) gives her a svartalf's model and the Pack Drakulv faction: a svartalf counted among the dragon's people.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 55005)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Eildird is a svartalf, and the drakulv count her as one of their own. Nobody at Svarhamr likes to talk about her, which is how a traveller who asks comes to know that she matters.\n\nThe Dragonbane tell the story shortly. When the dragon came down in Malmohus and the clan of Svarhamr lost its foreman to her gaze, the clan swore not to leave the country until she was dead, and most of the clan kept the oath. A few went home. One went south. She was a girl, the svartalfar say, Sviga's own sister's daughter, and she had watched her uncle turn to ice with his face to the south, and something in her decided that what could do that was worth more than the clan that had brought him there. She walked into the ruins with her hands open and the drakulv did not kill her.\n\nShe lives among them still, or someone of the same name does. She keeps none of the camps and has no rank in the order of the court, but the drakulv who pass her let her be and answer if she calls, as they would answer one of the pack. The svartalfar say she speaks to the drakulv in their own growl and to the dragon in a language the svartalfar do not know, and that the free clans under Myrkwood who trade with the drakulv, the ones who believe the thralls' story of the freezing of the spiders, came to Malmohus through her.\n\nOdell, Svarhamr's vault keeper, keeps one list in the vault of every svartalf name outside its walls: the Spindelhalla thralls on one side, and on the other the svartalfar who trade with the dragon's court. Eildird's name is the first on that side, the Dragonbane say, and it is the only name on the list that is also cut on the beam: her death is carved there more than once, the way a drakulv's is, because the clan decided long ago that what had walked into the ruins was no longer a svartalf of Svarhamr but one of the brood, and should be counted like one. The beam-cutters cut it with a svartalf mark beside it all the same. Nobody remembers who first did that, or will admit to doing it now.",
+  "legend": "Eildird is a svartalf standing alone in the middle of Malmohus, level 51. She looks like any svartalf but her template puts her in Pack Drakulv, so she counts as drakulv: hit her and any drakulv near enough can come help her (patrols walk past this spot). No special abilities, not CC-immune, and nothing stands right next to her, so she's an easy kill if you check for patrols first. Svarhamr's folk don't like talking about her; she's the svartalf who went over to the dragon. She's no quest target; the drakulv patrols walking past are the only real danger, so wait for one to go by.",
+  "yells": {
+    "aggro": [
+      "Svarhamr sent you? Tell my uncle I am still here.",
+      "The pack is my clan now. Pack! To me!",
+      "You have the clan's face. I gave mine up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Sviga turned south. So did I. Only I kept walking."
+      }
+    ],
+    "death": [
+      "Cut me... with both marks...",
+      "The ice... was beautiful..."
+    ],
+    "slay": [
+      "The pack eats.",
+      "Another face for the beam.",
+      "You should have stayed at Svarhamr."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A svartalf stands among the ruins, unafraid.",
+      "The drakulv pass her by as one of their own."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Eildird calls in the drakulv growl."
+      }
+    ],
+    "realmFirstKill": "Eildird falls. Svarhamr cuts her with two marks."
+  },
+  "botLines": {
+    "briefing": [
+      "eildird looks like a svartalf but shes pack drakulv",
+      "check for patrols before you hit her, they can come",
+      "shes 51, no tricks",
+      "nothing standing next to her, easy if no patrol"
+    ],
+    "aftermathWin": [
+      "eildird down, no patrol came",
+      "easy",
+      "the svartalfar wont thank us for that one, or maybe they will",
+      "clean kill"
+    ],
+    "aftermathLoss": [
+      "a patrol came through mid fight",
+      "she called and the drakulv answered",
+      "thought she was dragonbane, she isnt",
+      "bad timing with the patrol"
+    ],
+    "rumour": [
+      "eildird was sviga's niece and walked into the ruins with open hands",
+      "her name is first on odells list",
+      "svarhamr cuts her death on the beam like a drakulv, with a svartalf mark too",
+      "the free svartalfar who trade with the drakulv came through eildird"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Eildird",
+    "text": "A svartalf of Svarhamr's clan, Sviga's niece by the Dragonbane's account, who walked into [the ruins] and was taken in by the [drakulv]. Her name heads Odell's list. See [svartalfar]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: I will write this once. Eildird's line is cut like a drakulv line, a name and dots, and beside every dot there is a small svartalf mark, the one we use for our own dead, a hook like a lamp hanging. My teacher did not cut those. Her teacher did not either. I have never seen anyone cut one and they are always there in the morning after her name is taken again. I have stopped asking. I think some of us still count her as ours, and do not want to be seen counting.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed Eildird, the svartalf of the drakulv, in Malmohus in {minutes} minutes.",
+    "loss": "Eildird and the pack drove {raidLeader}'s party from {realm} out of the ruins after {minutes} minutes."
+  }
+}

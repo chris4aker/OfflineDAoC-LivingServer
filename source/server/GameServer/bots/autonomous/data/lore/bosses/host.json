@@ -1,0 +1,136 @@
+{
+  "id": "host",
+  "name": "Host",
+  "catalogKey": "caer-sidi/host",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 79, 30,000 health each. Eight copies of Host appear; one is chosen as the real one, and killing it kills the rest.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs"
+    },
+    {
+      "text": "Linked dead come with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation (slaughter).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Host: eight copies, level 79, 30,000 health each; the real one is chosen at random with no tell and its death kills the rest; a linked household of archliches, black revenants, cursed laculae, forerunners and heralds of trucidation.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs"
+    },
+    {
+      "text": "The body-thief of the western marches, the crossroads above the Wye, the hawthorn custom, the eight niches, Ysolde's parties and 'count the bodies as they fall' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Real-world myth, not game canon: in the Gospel of Mark the unclean spirit asked its name answers 'Legion, for we are many'.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Exorcism_of_the_Gerasene_demoniac"
+    }
+  ],
+  "story": "The Host came to Caer Sidi as eight. In life, the Inconnu say, he was a sorcerer of the western marches in the last years of Rome who stole bodies, each younger than the last, as fever took the hill farms' sons; the Church burned the eighth body at a crossroads above the Wye, but he had not quite let go of the other seven. He came down the road to Annwn wearing all of them, eight men walking in step with one face among them that belonged to none. The marches still say never answer a stranger who knows your father's name and not your own, and hang hawthorn over a sick child's door.\n\nThe keepers gave him eight niches, and the Soul Reckoner wrote him down once and left seven blanks. On the night of the rising he walked out of all eight at once and took whatever he met, and keeps a household of archliches, black revenants, cursed laculae, forerunners and heralds of slaughter. When the one that matters is struck down, the rest fall where they stand like coats dropped off their pegs; but there is no mark on that one, no limp, no flinch, and nobody has ever found him except by finding he was the one who fell.\n\nDame Ysolde believed Ennyn that there was no tell. She shielded her priests against the household and sent her knights out to the eight in small parties to wound and hold each one. Twice a body fell and nothing else happened; the third time all seven others dropped. Sir Geraint of Caerwent said there was nothing to choose between it and the others until it fell. Ysolde had the bodies counted where they lay: count the bodies as they fall, not before.\n\nThe Church calls him many, after the Gospel, and hates the name the keepers gave him. The Inconnu say he wants a ninth body, which is why no squire walks alone in the crypts. Caer Ulfwych's sickrooms now hang the marches' hawthorn.",
+  "legend": "The Host is eight copies, level 79, 30,000 health each, and one of them is the real one, picked at random when they appear. There is no tell: same name, same look, same con, so any guide that says how to spot him is guessing. Kill the real one and the other seven die on the spot; kill a fake and it just stays dead. His household comes with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation, so off-tanks and area damage keep them off the healers. Split the raid into eight small parties, one per copy, each holding its copy and putting damage into it; the party that drops the real one ends it. Or, with fewer people, burn them one at a time. Do not spread the healers thin chasing eight fights. Caer Gothwaite raids count the bodies after, never before.",
+  "yells": {
+    "aggro": [
+      "We are many. We are one. Guess.",
+      "Eight doors, and only one room.",
+      "Which coat am I wearing?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Seven coats left. Which is me?"
+      }
+    ],
+    "death": [
+      "All of us... at once...",
+      "The coats... fall..."
+    ],
+    "slay": [
+      "Another body. We have room.",
+      "We will wear you for a while.",
+      "Fits well enough."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Eight of the same man. Seven of them are empty.",
+      "A household of the dead keeps its master's house."
+    ],
+    "phases": [],
+    "realmFirstKill": "The true Host is dead. Seven bodies fall with him."
+  },
+  "botLines": {
+    "briefing": [
+      "host is eight copies, 30k each, one real, no way to tell which",
+      "kill the real one and the other seven drop. fakes just stay dead",
+      "eight small groups, one per copy, or burn them one at a time",
+      "off-tanks and aoe on his household, keep them off the healers"
+    ],
+    "aftermathWin": [
+      "found the real one. all eight down",
+      "host down. that was a guessing game",
+      "first try on the right host, lucky",
+      "seven coats on the floor"
+    ],
+    "aftermathLoss": [
+      "we killed four fakes and ran out of mana",
+      "nobody called the real one",
+      "the archliches got loose",
+      "aoe on eight hosts does nothing"
+    ],
+    "rumour": [
+      "[heard|word is] the host in caer sidi is eight of him and only one is real",
+      "guests dont get breathed on by the host. [old joke|bad joke], i know",
+      "heard the host was a body thief who got stuck in eight bodies",
+      "kill the real host and the rest drop like coats, [heard|they say]",
+      "heard the host was a body thief who wore eight people",
+      "[heard|someone said] the hill farms hang hawthorn against the host"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "host",
+    "text": "The prisoner of [Caer Sidi] who came as eight: a body-thief of the western marches still wearing every body he stole. The [Soul Reckoner] wrote him down once. When the one that matters falls, the others drop like coats off their pegs, and nobody has ever found him except by his falling."
+  },
+  "bookPage": "Eight of the same man came at us out of the dark, and Dame Ysolde shouted that only one of them was real, and we did not believe her until we had killed two and the other six kept coming. The Inconnu guide said afterwards that the Host was a body-thief in life, a sorcerer who moved from one stolen body to the next, and that Arawn caught him wearing eight at once. When we found the true one and struck him down, the other seven folded where they stood, like coats falling off pegs when the wall gives way behind them.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} found the true Host among eight and ended all of him in {minutes} minutes.",
+    "loss": "The Host wore {realm}'s raid down body by body; {raidLeader} never found the real one."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners"
+  ],
+  "related": [
+    {
+      "id": "soul-reckoner",
+      "relation": "wrote him down once and left seven blanks"
+    },
+    {
+      "id": "crypt-lord",
+      "relation": "slept among the warden's niches"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Body-Thief of the Marches",
+      "text": "The keepers of Caer Sidi called him the Host because there was no other word for what he was: one prisoner who came to the gaol as eight.\n\nIn his life, the Inconnu say, he was a sorcerer of the western marches in the last years of Rome, when the legions were thinning and no one was watching the hill country. His art was the oldest theft there is. When his body grew old, he took another: a shepherd's, a soldier's, a magistrate's son's, each younger than the last, and he wore it until it too grew old, and then he took the next. The hill farms of the marches lost a son every generation to fever, they said, and the sons came back from the fever changed, and went away down the road and did not come home. The Church of the old province burned a man for it at last, at a crossroads above the Wye. The Inconnu say they burned the eighth body, and that the sorcerer had not quite let go of the other seven.\n\nHe came down the road to Annwn wearing all of them. Each of the bodies he had stolen had died when he left it, and each had come to the dead with its own death on it, and he could not take them off. The keepers who met him on the road saw eight men walking in step, with one face among them that did not belong to any of the bodies, and could not tell which it was.\n\nThe western bards still sing a warning about him in the marches, without his name: never answer a stranger who knows your father's name and not your own. The hill farms hang a hawthorn sprig over the door of a sick child's room, so that whatever comes in at the fever's height will know the house is watched."
+    },
+    {
+      "title": "Eight Niches, One Name",
+      "text": "The keepers of Caer Sidi gave the Host a niche for each body, eight in a row in the deep crypts, and the Soul Reckoner wrote him down once.\n\nThe Reckoner writes every soul once, at his table, as it passes. The Inconnu who have read his ledger say the entry for the Host is a single line, a single name that no one living can read, and that beside it the Reckoner left seven blanks. No keeper ever learned which body was the man. The Inconnu say the Reckoner knew, because the Reckoner knows every soul, and that he chose not to say, because a soul is counted, not pointed out.\n\nThe body-thief spent the ages of the gaol moving among his niches, a night in one and a night in another, so that even the crypt warden on his round could not say where the man was sleeping. On the night of the rising he walked out of all eight at once, in every direction, and took whatever he met. The prisoners of the deep rows who were nearest him were not seen again in their own shapes. What he gathered he kept about him as a household: archliches of the galleries, black revenants out of the lower crypts, the cursed laculae that had been lamps, forerunners, and the heralds the prisoners named for slaughter. They stand about the eight of him as servants stand about a lord at table.\n\nThe Host does not know himself which of the eight he is, the Inconnu think, any more than a man knows which of his hands he is. He knows only that when the one that matters is struck down, the rest go with it: the bodies fall where they stand, all at once, like coats dropped off their pegs when the man who wore them leaves the house. The Inconnu say there is no mark on the one that matters, no limp, no flinch, no look in the eye, and that in all the ages of the gaol nobody has ever found him except by finding that he was the one who fell."
+    },
+    {
+      "title": "Ysolde's Company in the Crypts",
+      "text": "Dame Ysolde's company met the Host in the deep crypts after the warden's court, and Brother Cadoc wrote the shortest account of the climb about it: they found him by elimination.\n\nThe eight came out of their niches together, in step, and the household came with them. Ysolde had been told by Ennyn that there was no tell, and she had believed him, which Cadoc thought was the wisest thing she did that day. She did not let her wizards guess. She put a shield about her priests against the household and sent her knights out to the eight in small parties, a party to each body, with orders to mark each one with a wound and then hold it, and she watched.\n\nIt took them most of an hour. The bodies fought like the men they had been, a shepherd's body with a shepherd's reach and a soldier's body with a soldier's guard, and the household pressed the priests the whole time. Twice a party brought its body down and nothing else happened, and the body lay where it fell, and Ysolde sent that party to the next. The third time a party brought its body down, all seven of the rest dropped where they stood, in the middle of their strokes, and the household broke and ran into the crypts.\n\nCadoc wrote that it was a magistrate's son's body, by its rings, and that it had a face that did not belong to it, which he did not describe. Sir Geraint of Caerwent, who had brought it down with his party, said afterwards that there was nothing to choose between it and the others until it fell, and that anyone who claimed otherwise was a liar or a minstrel. Ysolde had the company count the bodies as they lay, all eight, before she let anyone move on. The garrison of Caer Gothwaite says the count over every fallen company in the deep crypts since: count the bodies as they fall, not before."
+    },
+    {
+      "title": "My Name Is Many",
+      "text": "The Church of Camelot hates the name the keepers gave him, and the realm's readings of the Host begin with that quarrel.\n\nThe host, to the Church, is the bread of the sacrament, the body given for many. The priests of Caer Gothwaite say it is blasphemy for a heathen gaol to give the word to a thief of bodies, and they call him instead by the answer the unclean spirit gave in the Gospel when it was asked its name: many. The Inconnu say the keepers meant nothing by it; in the Roman tongue a host is only a great number, an army, and the keepers had learned their words from Romans. The bards of the marches say he is the thing their grandmothers hung hawthorn against, and that the name does not matter as long as the hawthorn is fresh.\n\nWhat he wants, the Inconnu say, is a ninth body. He has never stopped wanting one; the hunger that made him steal the first is still in him, and the gaol has given him nothing young to wear in all its ages. That is why he takes whatever he meets in the crypts, and why the prisoners of the deep rows give his niches a wide berth, and why the Inconnu who guide companies through the crypts will not let a squire walk alone there, even for a moment.\n\nSince Ysolde's company came home, the hospice of Caer Ulfwych has added the hawthorn of the marches to its sickrooms, over the door of every child's bed, and the prioress who allowed it wrote that she did not hold with heathen customs but would rather be wrong in a heathen way than right in a Christian one with an empty bed. Brother Cadoc keeps a hawthorn sprig in his breviary. He says it marks the page of the office for the dead where the names of the eight would go, if anyone knew them."
+    }
+  ]
+}

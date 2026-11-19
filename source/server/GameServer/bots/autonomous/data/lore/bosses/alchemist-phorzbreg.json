@@ -1,0 +1,117 @@
+{
+  "id": "alchemist-phorzbreg",
+  "name": "Alchemist Phorzbreg",
+  "npcNames": [
+    "Alchemist Phorzbreg"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "overste-callejo",
+      "relation": "the colonel of the hall of weapons outside his still-room"
+    },
+    {
+      "id": "olen-den-bartender",
+      "relation": "the bartender who keeps the jars full; the Valkyn say with Phorzbreg's brewing"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Alchemist Phorzbreg is a level-65 morvalt in Trollheim (37623, 47745), at the end of the hall of animated weapons, with animate axes and spears around him.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60157710)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Trollheim's bestiary names him (the existing Living Server lore spelled it Phorzberg; the world data spells Phorzbreg).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=67"
+    }
+  ],
+  "story": "Alchemist Phorzbreg keeps the Fathers' still-room at the end of the hall of weapons, and he is the reason the Valkyn give for the worst change the morvalt have suffered in Trollheim. The morvalt who first held the city went up to the surface of Aegir to hunt and plunder, as their people always had. The morvalt who drink what Phorzbreg makes are the ones who first stopped going out.\n\nHe found the still-room the way Olen found the jars, by accident, and he did not understand it, and he did not stop until he did. The Fathers distilled things there that the Valkyn have no names for, waters for the forges and the quarries and the healing draughts of the holy halls, and Phorzbreg has spent his life working out what the vessels were for by filling them with whatever the city gave him: the blood of the orms, the spores of the growing halls, the dregs of the Fathers' ale. Some of what comes out of his still-room is poison. Some of it is what Olen pours. Some of it, the trolls of Dyrfjall say, the morvalt drink before they go down past the stair, and come back from with their eyes wrong.\n\nHe is no warrior. He stands among his vessels and does not look up when strangers pass, and he lets them pass, because everything that walks through the hall of weapons with its hands to itself is nothing to him. The weapons around his door hang as still as the rest of the hall. The colonel outside says the fumes of the still-room make them restless; the Valkyn say the colonel says many things. A stranger who strikes the alchemist will find he is still a morvalt of the upper city, heavy and strong, and that he was only busy.\n\nRemandun den Laerd, who reads the Fathers' carvings, is said to have read the inscription over the still-room door to him once. The Valkyn do not know what it said. Phorzbreg broke the next three vessels he touched, and has not asked Remandun to read anything since.",
+  "legend": "Alchemist Phorzbreg is a level 65 morvalt at the far end of the animated weapons hall in Trollheim. He's PASSIVE (aggro 0) and has no faction, so he never comes at you and never brings friends. The animated axes and spears near him are passive too, but if your AoE touches them they'll join. If you want him, single-target only, pull him away from the weapons. No special abilities, not CC-immune. No quest needs him. Overste Callejo, aggressive, stands about 1,400 units away in the same hall. Pets and companion bots with AoE are the usual way people wake the weapon hall by accident; turn them to single target before you go in.",
+  "yells": {
+    "aggro": [
+      "My vessels! Away from my vessels!",
+      "You will make a fine distillate.",
+      "Busy. Always busy. Now angry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Something for this... somewhere on the shelf..."
+      }
+    ],
+    "death": [
+      "The last vessel... was the right one...",
+      "What did the door say..."
+    ],
+    "slay": [
+      "Into the still.",
+      "Rendered.",
+      "Back to work."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The Fathers' still-room. Vessels of grey stone, steaming.",
+      "A sour smell drifts over the hanging weapons."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Phorzbreg fumbles among his vessels."
+      }
+    ],
+    "realmFirstKill": "Alchemist Phorzbreg falls among his vessels."
+  },
+  "botLines": {
+    "briefing": [
+      "phorzbreg is passive, no friends",
+      "the weapons near him are passive too, no aoe",
+      "single target, pull him off the weapons",
+      "65, no tricks"
+    ],
+    "aftermathWin": [
+      "alchemist down",
+      "kept the weapons out of it",
+      "easy since hes passive",
+      "his vessels are still bubbling"
+    ],
+    "aftermathLoss": [
+      "aoe woke the spears",
+      "callejo walked over",
+      "hit an axe by accident",
+      "he hits harder than an alchemist should"
+    ],
+    "rumour": [
+      "phorzbregs brews are why the morvalt stopped going up to the surface",
+      "some of what olen pours comes from phorzbreg",
+      "remandun read the still room door to him and he broke three vessels",
+      "morvalt who drink his stuff before going down the stair come back wrong"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Alchemist Phorzbreg",
+    "text": "The morvalt in the Fathers' still-room at the end of the hall of [the weapons]. The Valkyn say those who drink his brews stopped going up to the surface. Some of it is what [Olen] pours."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the still-room has a door with a carving over it, Fathers' marks, worn. I held my lamp up to it while the alchemist inside paid us no mind, and the Valkyn guide traced the marks with her finger and would not say them. Later, at the fire, she said the Fathers' children who went out into the light were given a cup of something from that room before they left, so that they would forget the way back if they were taken. She said the morvalt have been drinking it for generations.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Alchemist Phorzbreg's still-room in Trollheim in {minutes} minutes.",
+    "loss": "Alchemist Phorzbreg rendered {raidLeader}'s party from {realm} down after {minutes} minutes."
+  }
+}

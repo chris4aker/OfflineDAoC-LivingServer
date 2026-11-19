@@ -1,0 +1,125 @@
+{
+  "id": "morgana",
+  "name": "Morgana",
+  "catalogKey": "albion-named-mobs-classic-zones/morgana",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Morgana's forces overran Avalon with the drakoran; Arawn sent the Inconnu against her because she takes his dead.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "Mythic's Catacombs lore: Merlin's honoured apprentice, she trapped him in a crystal in a cave of ley lines, now the Dark Spire, and attacked Avalon with the drakoran horde.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/464"
+    },
+    {
+      "text": "Morgana (template 700000001, level 90) carries the PEACE flag: she cannot be attacked. She stands invisible and untargetable at the fallen tower until a real player on step 1 of the Academy epic (Symbol of the Broken) comes within 1,000; then she shows herself and taunts the group.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs"
+    },
+    {
+      "text": "Bechard and Silcharde (level 65, 7,000 health each, flying, crowd-control immune, 20% resists, armour factor 350 with 20% absorb) appear below the tower; each joins the other's fight; drawn past their tether they take no damage. Bechard's body spells heal him by the damage they deal.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs"
+    },
+    {
+      "text": "When each demon dies, 14-16 demonic minions (level 30-33, flying) appear on top of the tower. When ten of Bechard's and ten of Silcharde's minions are dead, 'the tower is clear of necromantic ties', Morgana swears she will return and that the walls of Camelot shall fall, casts, and vanishes. The encounter resets after the epic-quest respawn interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs"
+    },
+    {
+      "text": "Her script calls Arthur her brother; in the legends she is his half-sister.",
+      "provenance": "original",
+      "source": "Arthurian legend"
+    }
+  ],
+  "story": "Morgana was the best pupil the colleges of Avalon ever had, and Merlin's own apprentice, and Arthur's sister by their mother, and she wanted his throne. When she could not take it she took his teacher instead: she drew Merlin to a cave where the lines of the land's power cross, and shut him in crystal, and drank from him, and came back out of the mist at the head of the drakoran to burn the city that had taught her. She steals the dead from Arawn to fill her ranks; it is why the lord of Annwn lends Albion his Inconnu.\n\nIn Lyonesse she has come back to Albion's own soil. At the fallen tower in the west, where the bone snappers swim in the flooded footings, she is working a summoning that the Academy says would bring an army through onto the drowned land, and from there to Cornwall, and from there to Camelot. She does not do the work with her own hands. She made two demons for it, Bechard and Silcharde, winged and alike, who keep the foot of the tower and answer for each other, so that whoever wakes one has both. Bechard feeds on his own spells: what he takes out of a man with them goes into him. And on the broken top of the tower she has hung the lesser work, small winged things roosting in the stones, that come down only when one of the two below them falls; the summoning is tied to all of it, and not one strand can be left whole.\n\nShe herself cannot be touched. The Danaoin sailors on the strand say it plainly, and the Academy's masters say it more politely: no hand, no blade and no spell of Albion's lays hold of her. She is not there to be fought. Most days she is not there to be seen; she shows herself only to those the Academy sends, and laughs at them for being so few, and asks where her brother's army is. When her work is undone she does not die. She makes the promise she has made at every ruin from Avalon to the Black Mountains, that she will return and the walls of Camelot will fall, and she is gone, and the tower is quiet, and after a while the work begins again.\n\nMaster Ferowl of the Academy sends his best to the fallen tower knowing all this. He tells them they are going to delay a war, not to win one. Nobody who has come back has told him he was wrong.",
+  "legend": "Morgana, level 90, at the fallen ruin in west Lyonesse, for the Academy epic. You cannot attack her: she is flagged peaceful and only appears when someone on the quest walks up. The job is her two demons, Bechard and Silcharde (65, 7k each), at the foot of the ruin. Pull one and both come. Both are crowd-control immune and untouchable if you drag them off their spot. Bechard heals himself with his body spells, so kill him first or keep him interrupted. Each demon drops 14 to 16 demonic minions (30-33, flying) from the top when it dies: kill at least ten of each demon's minions and Morgana gives her speech and leaves. That is the win. The whole thing resets about half an hour later.",
+  "yells": {
+    "aggro": [
+      "Ha, is this all the forces of Albion have to offer?",
+      "Where is my brother's army? He sends me children.",
+      "Bechard. Silcharde. Teach them."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "My creations, undone! Heed me: I shall return!"
+      }
+    ],
+    "death": [
+      "You may have won this battle. I shall return.",
+      "The walls of Camelot shall fall."
+    ],
+    "slay": [
+      "Is this all Albion has to offer?",
+      "One fewer to defend my brother's walls.",
+      "Merlin taught me better than that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fallen tower. A woman's voice chants inside.",
+      "Two winged shapes wait below the ruin."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The tower is clear of necromantic ties!"
+      }
+    ],
+    "realmFirstKill": "Morgana is driven from the fallen tower. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "you cant attack morgana. the job is bechard and silcharde, 65, 7k each",
+      "pull one demon and both come. bechard heals off his body spells, him first",
+      "each demon drops 14-16 minions from the top when it dies. kill 10 of each",
+      "cc immune and untouchable if you drag them off the ruin. fight them where they stand"
+    ],
+    "aftermathWin": [
+      "ritual broken. she said she'll be back. they always do",
+      "demons down, morgana gone. academy will be pleased",
+      "ferowl said delay a war, not win one. war delayed",
+      "minions cleared, she gave the speech. done"
+    ],
+    "aftermathLoss": [
+      "bechard kept healing off his spells",
+      "the minions swarmed the casters after silcharde dropped",
+      "dragged a demon off the ruin and it went untouchable",
+      "someone tried to hit morgana. you cant. stop"
+    ],
+    "rumour": [
+      "[heard|someone said] morgana is back in lyonesse, at the ruin by the telamon road. [dont fight her|kill her demons, not her]",
+      "[arawn|the lord of the underworld] [sent|lent] us the inconnu [because|since] morgana steals his dead",
+      "heard morgana only shows herself to the academy's people",
+      "[heard|someone said] morgana says the same thing every time. i shall return. she does"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "morgana",
+    "text": "Arthur's sister, Merlin's apprentice and his gaoler. At the [fallen tower] in [lyonesse] she works a summoning kept by two demons of her making, [bechard] and [silcharde], and the lesser things on the ruin's top. No hand of Albion's lays hold of her; the Academy sends its best to undo her work, not to end her."
+  },
+  "bookPage": "Of the fallen tower, last. I went near it once. There were two great winged things on the stones below it, of a kind I have no name for, and more on the broken top, small and many. A Danaoin sailor told me the lady inside is Arthur's sister, and that nobody can lay a hand on her, and that the two below her are her work, not her servants. Break the work and she goes, he said. She always comes back. My lord Bishop, I would like a new roof for the cathedral. I would settle for a new sexton.",
+  "chronicle": {
+    "win": "{realm}'s champions under {raidLeader} slew Bechard and Silcharde and broke Morgana's ritual at the fallen tower in {minutes} minutes.",
+    "loss": "Morgana's ritual at the fallen tower held; {raidLeader}'s champions from {realm} were driven off."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "sister-blythe",
+      "relation": "who prays to the lord whose dead Morgana steals"
+    },
+    {
+      "id": "cailleach-uragaig",
+      "relation": "an older power on the same drowned ground"
+    }
+  ]
+}

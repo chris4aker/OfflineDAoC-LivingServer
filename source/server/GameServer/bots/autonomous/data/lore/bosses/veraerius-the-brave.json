@@ -1,0 +1,134 @@
+{
+  "id": "veraerius-the-brave",
+  "name": "Vera'erius the Brave",
+  "catalogKey": "avalon-city/veraeriusbrave",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health. Spirit and Body damage heal him; at 70% health he casts Vera'erius Heal (400) on himself.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Spirit and body damage heal Vera'erius; at or below 70% he casts a 400 self-heal (3 s cast, every 8 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs"
+    },
+    {
+      "text": "The vyr'em who do not remember, the lordship won on the crossing, Maelon's duel on the second bridge and the notched sword, Magus Hedydd's theory and the kept slates of the old schools are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Vera'erius the Brave is lord of the vyr'em, the drakoran swordsmen, who do not remember where they came from and say a swordsman is from wherever he is standing. The other clans remember for them (hearth-guards, says the drau'gyn; the best of the pit-captives, says the syhr'phint); Elowen of Caer Gothwaite thought they had been at the front of the host so long they forgot there was anything behind it. The vyr'em have no lords by birth, only the sword who has not been beaten. Vera'erius won the lordship on the crossing, catching the old lord by the wrist as he went over the side in a storm and then taking the bow anyway, because he did not want to win by the sea. His honoured swords are his guard and his challengers.\n\nOn the evening of the second bridge in the third summer of the war he walked out alone and Sir Maelon of Caer Gothwaite met him; they fought steel on steel until dark and neither won. Maelon twice waved off his wizard: at the first bridge the drakoran had stood in a withering spell like warm rain and come out stronger. Maelon's notched sword is in Caer Gothwaite's chapel.\n\nSpells that wither the body or strike at the spirit mend him; fire, frost, storm and above all steel reach him as they reach any drakoran. The vyr'em call it courage; Magus Hedydd thought the vyr'em had forgotten the part of themselves such spells are aimed at. He does not stop for a scratch, but once he is wounded deep enough to slow him he steps back and binds himself, again and again, and the vyr'em teach their children as a compliment to a good enemy: a swordsman who binds his own wounds must be given no breath to do it.\n\nHe keeps the old schools, where he has had the children's slates kept dry, and drills his honoured swords in the yard. When he falls they do not avenge him; they wait to see who will be lord when he stands again, and it is him.",
+  "legend": "Spirit and body damage heal him. Bring steel and the other elements. From seventy percent down he heals himself every few seconds, so interrupt him. A straight fight otherwise, and the most honourable of the five lords; his swordsmen will not interfere unless you pull them.\n\nThe knights of Albion say it is the only fight in Avalon that feels fair, and some of them salute him before the pull. He takes it as his due. From seventy percent down he heals himself for 400 every eight seconds, a three-second cast, so keep someone on interrupts. His swordsmen stand around him in the schoolyard and must not be pulled with him.",
+  "yells": {
+    "aggro": [
+      "Face me, then. Steel to steel!",
+      "Vyr'em! Swords!",
+      "No tricks. No pits. Come."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=70",
+        "text": "Not yet! The vyr'em do not fall so easily!"
+      }
+    ],
+    "death": [
+      "A good death... at the front...",
+      "Tell your bards... I stood..."
+    ],
+    "slay": [
+      "You fought well. It was not enough.",
+      "Steel to steel. As it should be.",
+      "Rest, swordsman."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Swordsmen in ranks. Their lord stands at the front.",
+      "The old schoolyard. Swords ring here now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=70",
+        "text": "Vera'erius mends his own wounds!"
+      }
+    ],
+    "realmFirstKill": "Vera'erius the Brave has fallen at the front of his clan."
+  },
+  "botLines": {
+    "briefing": [
+      "no body or spirit damage on veraerius, it heals him",
+      "below 70% he heals himself every 8 sec, interrupt it",
+      "melee carries this one",
+      "dont pull his swordsmen"
+    ],
+    "aftermathWin": [
+      "veraerius down. respect though",
+      "melee carried that one, as it should",
+      "the bards will have to add a verse",
+      "steel to steel, we won"
+    ],
+    "aftermathLoss": [
+      "our spirit casters were healing him the whole time",
+      "pulled his swordsmen with him",
+      "nobody interrupted his self heal",
+      "not enough melee"
+    ],
+    "rumour": [
+      "heard vera'erius fights at the front of his own clan",
+      "[someone said|heard] body and spirit magic heal vera'erius",
+      "heard the bards made a song about veraerius",
+      "veraerius despises sys'sro's pit, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "vera'erius",
+    "text": "The Brave. Spirit and body magic heal him, and when he is hurt he heals himself. Bring steel."
+  },
+  "bookPage": "The swordsmen took the old schools, where our children learned their letters, and drill in the yard where the children played. My fishermen say their lord is the one drakoran the knights of Albion speak of without spitting. He fights at the front. He takes the first blow. He does not use pits or orbs. When an Inconnu wizard struck him with a withering spell, the fisherman says, the drakoran lord simply stood straighter, as though the spell had been a compliment. The knights fought him with steel after that. One of them told me afterwards that it was the only honest fight he had in the whole city.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} met Vera'erius the Brave steel to steel and felled him in {minutes} minutes.",
+    "loss": "Vera'erius the Brave held the front against {realm}'s raid; {raidLeader}'s spells only mended him."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "syssro-the-ruthless",
+      "relation": "despises his pit and says so"
+    },
+    {
+      "id": "duraek-the-empowered",
+      "relation": "despises his borrowed power, silently"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Clan That Does Not Remember",
+      "text": "The vyr'em do not remember where they came from, and they say they do not need to. A swordsman, their saying goes, is from wherever he is standing.\n\nThe other clans remember for them, and not kindly. The drau'gyn say the vyr'em were the soldiers who guarded the drau'gyn hearths on the burnt coast and had no fire of their own. The syhr'phint say the vyr'em were the best of the captives in their pits, let out to fight. The dry'ak, Dura'ek's own clan, say nothing at all, which the vyr'em take as the only courtesy any clan has ever shown them. Elowen of Caer Gothwaite, who collected all three, thought the vyr'em were simply the clan that had been at the front of the drakoran host for so long that it had forgotten there had been anything behind it.\n\nVera'erius was not born a lord. The vyr'em have no lords by birth; their lord is the sword who has not been beaten, and the clan's honoured swords stand around him to see that he goes on not being beaten, or to see who does it. Vera'erius won the lordship on the crossing of the western sea, on the deck of a vyr'em ship in a storm, the honoured swords told an Albion knight under parley: the old lord challenged him for the right to stand at the bow, and lost his footing, and Vera'erius caught him by the wrist before he went over and then took the bow anyway. The vyr'em do not think this was mercy. They think it was the act of a swordsman who did not want to win by the sea.\n\nHe has been lord of the vyr'em since. The honoured swords who stand about him in the schoolyard of Avalon are his challengers as much as his guard, and they are the only drakoran in the city who will say to his face that he is growing old."
+    },
+    {
+      "title": "Maelon on the Second Bridge",
+      "text": "In the third summer of the war Sir Maelon of Caer Gothwaite led the attempt on the three bridges, and the vyr'em held the second all day at the front, as their lord holds every front. Albion knows the day. It knows less of the evening.\n\nAt dusk, when both sides had drawn back to their ends of the bridge to carry off their dead, Vera'erius walked out alone to the middle of the second bridge and waited, and Maelon, who had been told by his own knights not to, walked out to meet him. Maelon's squire, who watched from the Albion end, wrote the only account. The two of them fought until it was too dark to see, steel on steel, neither giving ground, and the squire says that twice Maelon's company wizard raised his staff to strike the drakoran down from the bank and twice Maelon waved him off. The squire did not know why until later. A Caer Gothwaite wizard had tried, at the first bridge that morning, and the vyr'em lord had stood in the wizard's withering spell as a man stands in warm rain, and come out of it stronger.\n\nNeither won. When the dark came down they stepped back from each other, and Vera'erius lifted his sword to his brow, which Maelon took for a salute, and both walked back to their ends of the bridge. Maelon's sword had a notch in it the width of a thumb that his smith could not grind out, and Caer Gothwaite keeps the sword in its chapel with the notch turned to the wall.\n\nThe scars on the second bridge are from that day, the fishermen say, and it is that bridge Vera'erius walks out on some evenings to look at them. The fishermen say he seems pleased with them. They say he is looking for the one Maelon's sword left."
+    },
+    {
+      "title": "What Mends Him",
+      "text": "The vyr'em say their lord cannot be killed by sorcery, and the readers of Caer Gothwaite spent a long time trying to learn why.\n\nThe plain fact, which Sir Maelon's wizards learned at the first bridge and the Inconnu learned in their own way, is that the spells that wither the body and those that strike at the spirit do not hurt Vera'erius at all. They mend him. Every other kind of hurt reaches him as it reaches any drakoran: fire, frost, the shock of the storm, and above all steel. The vyr'em say it is his courage, which swallows any working aimed at the body's life or the spirit's and turns it to his own. Magus Hedydd of the Academy, who learned the readers' dusk-reading, thought it was older than courage: that the vyr'em, having forgotten where they came from, had forgotten the part of themselves that such spells are aimed at, and that the working finds only the drakoran's life and feeds it. Sefin of the Inconnu said only that the Inconnu do not send their spirit-speakers against him any more.\n\nThe other thing every company has learned about him is the binding. Vera'erius does not stop for a scratch. While he is whole, or nearly whole, he fights straight through every blow. But once he is wounded deep enough to slow him, he steps back, closes his eyes for the space of a breath, and binds himself, and he goes on doing it, again and again for as long as the wound is on him. The vyr'em saying that the knights of Albion took from the second bridge is about that breath. It is not advice. The honoured swords told Maelon's squire that it is the first thing a vyr'em child is taught about duels, and that it is said to the child as a compliment to the enemy: a swordsman who binds his own wounds must be given no breath to do it. Only a good enemy, they said, will think of that."
+    },
+    {
+      "title": "The Old Schools",
+      "text": "Vera'erius the Brave keeps the old schools of Avalon, where the children of the colleges were taught their letters, and drills his honoured swords in the schoolyard, and they stand about him there still.\n\nThe children of Caer Gothwaite learn their letters from readers who once taught in the old schools, and they are told on their first day that the schools are held by the swordsmen of the vyr'em and drilled in, and that one day they will be schools again. The vyr'em know this. An honoured sword told an Albion knight once that their lord had had the schoolroom slates stacked and kept dry, and had forbidden the drau'gyn to burn them, because he did not see why a swordsman should take a child's slate. The knight did not know whether to believe it. Elowen, who had taught in the schools as a girl, went to see. The slates were there.\n\nHe is the only drakoran lord the knights of Albion respect, because he fights at the front and asks no one to take a blow he would not take himself. He despises Sys'sro's pit and says so. He despises the power Dura'ek drinks from fire and frost and does not say so, which the knights call the only cowardice they have ever found in him. The Church at Caer Gothwaite says the respect is a sin, since he burned Avalon with the rest. The bards of Camelot have made a song of him anyway, the only drakoran ever given one.\n\nThe companies who bring him down in the schoolyard say he takes it as his due, salutes with his sword at his brow as he did to Maelon, and falls without a word. And the honoured swords about him do not avenge him. They wait to see which of them will be lord when he stands again, and he always does, and he is."
+    }
+  ]
+}

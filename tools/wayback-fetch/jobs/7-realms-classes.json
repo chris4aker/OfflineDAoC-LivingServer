@@ -1,0 +1,100 @@
+{
+    "name": "7-realms-classes",
+    "note": "PROBE ONLY, 8 pages. The site map shows /realms/<Server>/ with the same ~110 pages under each of 22 servers (per-class pages, c-<class>.php, per-realm crafter pages, alliance pages, map.php), almost all captured in 2002. Repeated per server, they look like server rankings and population pages, which we don't harvest, rather than class, race or spec descriptions. This fetches the /realms/ index and 7 Merlin pages so we can read what they are. Only if they describe classes, races, skill lines or specs should the next pass widen this to ONE server's pages (about 110), never all 22.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 8,
+    "targets": [
+        {
+            "url": "www.camelotherald.com/realms/",
+            "matchType": "exact",
+            "guess": false,
+            "note": "The /realms/ index.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: the server's index page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/armsman.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: a per-class page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/c-arms.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: the other per-class page form (c-<class>.php).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/albion.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: a per-realm page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/alliance-alb.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: an alliance page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/crafter-alb.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: a crafter page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        },
+        {
+            "url": "www.camelotherald.com/realms/Merlin/map.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Probe: the map page.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 1
+        }
+    ]
+}

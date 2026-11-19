@@ -174,7 +174,7 @@ Tomb, Spraggon Den.
 **Shared:** Darkness Falls (median 30, up to 49), open by realm control.
 
 **Battlegrounds:**
-- Abermenai 15–19, Thidranki 20–24, Murdaigean 25–29, Caledonia 30–35, Cathal Valley 45–49.
+- Abermenai 15–19, Thidranki 20–24, Murdaigean 25–29, Caledonia 30–35. Cathal Valley (45–49) is in the world database but came after this era, so bots don't talk about it.
 - When each opened is not checked, so lines name only Thidranki and Murdaigean.
 
 **Frontier** (each realm has 4 zones, with 7 keeps and 2 relic castles):

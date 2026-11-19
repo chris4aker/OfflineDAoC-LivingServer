@@ -17,6 +17,7 @@
  *
  */
 using DOL.Database;
+using DOL.GS.Crafting;
 using DOL.Language;
 using DOL.GS.PacketHandler;
 using System;
@@ -64,36 +65,15 @@ namespace DOL.GS
 		/// </summary>
 		public override int GetSecondaryCraftingSkillMinimumLevel(Recipe recipe)
 		{
-			switch (recipe.Product.Object_Type)
-			{
-				case (int)eObjectType.CrushingWeapon:
-				case (int)eObjectType.SlashingWeapon:
-				case (int)eObjectType.ThrustWeapon:
-				case (int)eObjectType.TwoHandedWeapon:
-				case (int)eObjectType.PolearmWeapon:
-				case (int)eObjectType.Flexible:
-				case (int)eObjectType.Sword:
-				case (int)eObjectType.Hammer:
-				case (int)eObjectType.Axe:
-				case (int)eObjectType.Spear:
-				case (int)eObjectType.HandToHand:
-				case (int)eObjectType.Blades:
-				case (int)eObjectType.Blunt:
-				case (int)eObjectType.Piercing:
-				case (int)eObjectType.LargeWeapons:
-				case (int)eObjectType.CelticSpear:
-				case (int)eObjectType.Scythe:
-					return recipe.Level - 60;
-			}
-
-			return base.GetSecondaryCraftingSkillMinimumLevel(recipe);
+			// CraftRules.SecondaryMinimumLevel (Crafting 2.0 WP1): the bot crafter asks the same level.
+			return CraftRules.SecondaryMinimumLevel(eSkill, recipe.Product.Object_Type, recipe.Level);
 		}
 
 		public override void GainCraftingSkillPoints(GamePlayer player, Recipe recipe)
 		{
 			if (Util.Chance(CalculateChanceToGainPoint(player, recipe.Level)))
 			{
-				player.GainCraftingSkill(eCraftingSkill.WeaponCrafting, 1);
+				GainRatedPoints(player, eCraftingSkill.WeaponCrafting);
 				base.GainCraftingSkillPoints(player, recipe);
 				player.Out.SendUpdateCraftingSkills();
 			}

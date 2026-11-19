@@ -1,0 +1,115 @@
+{
+  "id": "teazanodwc",
+  "name": "Teazanodwc",
+  "catalogKey": "albion-named-mobs-classic-zones/teazanodwc",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 63, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs"
+    },
+    {
+      "text": "When she first takes a target, four or five 'Teazanodwc's servant' (level 50-53, aggro range 1,000) appear beside her; no more come after, and they die with her or when she resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs"
+    },
+    {
+      "text": "She walks home at full health when nobody is left on her aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "The name is unglossed here (to verify). Her household that comes out all at once and not again, and the ellyllon's word for her, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Teazanodwc keeps the hollow in the south of the Barfog hills, on the edge of the king's high ground, and she has never asked the king's leave. The old men of Barfog do not agree on what she is, or on what her name means, or on whether it is a name at all and not a word the ellyllon use for her that the village took for one. They agree that she was not there before the lady of the lake called her cattle home, and that she has been there every day since.\n\nShe never comes out alone. That is the whole of what the village knows of her, and it is enough. Her servants live in the hollow with her, big slow things that move all one way, toward whatever she turns them toward, and when anything comes to the hollow they come out with her in a body, a handful of them at once, and stand round her. That is all of them. She does not call more; the hollow does not hold more. The old men say that when her household is put down, the hollow is quiet, and she is only herself, and that she has never liked being only herself.\n\nThe ellyllon on the next slope keep away from the hollow and keep their frogs away from it. Their sages say she is a mother of something, and that the servants are what she raised instead of children. Siemus the tracker, who has been as near the hollow as anyone living, says the servants' tracks all point toward her, every one, even the old ones in the dried mud, as if nothing in that hollow has ever once walked away from her.\n\nThe king walks his rings on the high ground above and does not look down into the hollow. Teazanodwc, the ellyllon say, looks up at him all the time.",
+  "legend": "Teazanodwc, level 63, 30k, in the hollow south-east of the lake. When she aggros, 4 or 5 servants (50-53) appear right beside her, all at once, and that is all of them: no more come for the rest of the fight. So the plan is simple: area damage on the servants while the tank holds her, or hold the servants and burn her. Their aggro range is long, so pull her clean and do not let a servant wander onto the healers. She cannot be mezzed or stunned. The servants die when she does. A wipe resets her and the servants, and she respawns about an hour after she dies.",
+  "yells": {
+    "aggro": [
+      "The hollow stirs. Everything in it turns toward you.",
+      "Teazanodwc rises, and her household with her.",
+      "A hiss from the hollow, and many feet."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Teazanodwc's servants pour out of the hollow."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Teazanodwc draws her household closer."
+      }
+    ],
+    "death": [
+      "The hollow is still.",
+      "Nothing in the hollow moves toward anything now."
+    ],
+    "slay": [
+      "The servants close over the fallen.",
+      "Another thing that walked toward her.",
+      "The hollow keeps it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small things stir in the hollow, all one way.",
+      "Every track in the mud points the same way."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Teazanodwc's servants pour out of the hollow!"
+      }
+    ],
+    "realmFirstKill": "Teazanodwc has fallen. Her hollow is empty."
+  },
+  "botLines": {
+    "briefing": [
+      "teazanodwc, 63, 30k. 4-5 servants pop next to her on pull and thats it, no more come",
+      "aoe the servants while the tank holds her, or hold them and burn her",
+      "servants have long aggro range, keep the healers back",
+      "cant mez or stun her. servants die with her"
+    ],
+    "aftermathWin": [
+      "servants first, then the boss. clean",
+      "teazanodwc down, the hollow is quiet",
+      "aoe did all the work on the servants",
+      "that hollow is creepy, lets go"
+    ],
+    "aftermathLoss": [
+      "the servants swarmed the healers",
+      "pulled her with a hobgoblin camp",
+      "nobody had aoe, the servants just ground us down",
+      "tank lost her to the servants and she went for the cloth"
+    ],
+    "rumour": [
+      "heard teazanodwc never fights alone",
+      "[someone said|heard] teazanodwc wasnt there before the lake ladies left",
+      "heard every track in her hollow points at her",
+      "[heard|someone said] the ellyllon think shes a mother of something"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "teazanodwc",
+    "text": "She keeps the hollow in the south of the Barfog hills without the king's leave. She never comes out alone: her whole household comes out with her at once, and the hollow holds no more. Every track in the mud there points toward her."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of the hollow. Siemus the tracker went to the edge of Teazanodwc's hollow one dry summer and came back and sat in my house for an evening before he would speak. He said there were tracks all over the floor of the hollow, old and new, big slow feet, and every one of them pointed toward the middle, where she lies. Not one pointed out. He said he looked for an hour for a single track walking away and did not find one. Then he said he had left by walking backwards, so that his own would point the right way, and laughed, and did not laugh again that night.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} emptied Teazanodwc's hollow in {minutes} minutes.",
+    "loss": "Teazanodwc's household came out of the hollow, and {raidLeader}'s company of {realm} did not."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "king-of-the-barfog-hills",
+      "relation": "she keeps her hollow on his hills without asking his leave"
+    }
+  ]
+}

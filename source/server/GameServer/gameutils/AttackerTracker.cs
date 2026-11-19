@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace DOL.GS
@@ -100,6 +101,60 @@ namespace DOL.GS
             _attackerCheckTimer.Stop();
         }
 
+        /// <summary>A real player lowers an epic NPC's armor factor scaling this much.</summary>
+        public const double PlayerArmorFactorStep = 0.04;
+        /// <summary>A pet (up to the epic NPC's pet cap) lowers it this much.</summary>
+        public const double PetArmorFactorStep = 0.01;
+        /// <summary>It never drops below this.</summary>
+        public const double ArmorFactorScalingFloor = 0.4;
+
+        /// <summary>
+        /// Offline DAoC: the share (0 to 1) of a player's armor drop that one gamebot (autonomous or companion) gives, and of
+        /// the default-to-floor range that bots alone can take off. Owner, 2026-11-14: bots stand in for players, but at half
+        /// strength, so a bot raid never turns an epic into a zerg fest. Server properties <c>epic_armor_counts_bots</c>
+        /// (off: 0, the stock players-only rule) and <c>epic_armor_bot_strength_percent</c> (default 50).
+        /// </summary>
+        public static double BotArmorFactorShare()
+        {
+            if (!ServerProperties.Properties.EPIC_ARMOR_COUNTS_BOTS)
+                return 0;
+
+            int percent = ServerProperties.Properties.EPIC_ARMOR_BOT_STRENGTH_PERCENT;
+            return Math.Clamp(percent, 0, 100) / 100.0;
+        }
+
+        /// <summary>
+        /// The epic NPC armor factor scaling for a set of live attackers: real players -0.04 each, pets -0.01 each up to the
+        /// pet cap, gamebots <see cref="BotArmorFactorShare"/> of a player's step each, and the bots' total drop capped at
+        /// that share of the default-to-floor range (a GameEpicBoss: 1.6 to 1.0 at 50%); never below 0.4.
+        /// </summary>
+        public static double ScaledArmorFactor(double defaultFactor, int petCap, IEnumerable<GameLiving> attackers)
+        {
+            int players = 0, bots = 0, pets = 0;
+
+            foreach (GameLiving attacker in attackers)
+            {
+                if (attacker is GamePlayer)
+                    players++;
+                else if (attacker is GameBot)
+                    bots++;
+                else if (attacker is GameSummonedPet && pets <= petCap) // the stock loop counted cap + 1 pets
+                    pets++;
+            }
+
+            return ScaledArmorFactor(defaultFactor, players, bots, pets, BotArmorFactorShare());
+        }
+
+        /// <summary>The armor factor scaling for these attacker counts (pure); see the overload above.</summary>
+        public static double ScaledArmorFactor(double defaultFactor, int players, int bots, int pets, double botShare)
+        {
+            botShare = Math.Clamp(botShare, 0, 1);
+            double botDrop = Math.Min(bots * PlayerArmorFactorStep * botShare,
+                Math.Max(0, defaultFactor - ArmorFactorScalingFloor) * botShare);
+            double factor = defaultFactor - players * PlayerArmorFactorStep - pets * PetArmorFactorStep - botDrop;
+            return factor < ArmorFactorScalingFloor ? ArmorFactorScalingFloor : factor;
+        }
+
         private readonly struct AttackerInfo
         {
             public readonly bool IsMelee;
@@ -140,32 +195,15 @@ namespace DOL.GS
             protected override int OnTick(ECSGameTimer timer)
             {
                 // Update `ArmorFactorScalingFactor`.
-                double armorFactorScalingFactor = _epicNpc.DefaultArmorFactorScalingFactor;
-                int petCount = 0;
-
                 lock (_attackerTracker._lock)
                 {
                     foreach (var pair in _attackerTracker._attackers)
-                    {
-                        if (TryRemoveAttacker(pair))
-                            continue;
+                        TryRemoveAttacker(pair);
 
-                        if (pair.Key is GamePlayer)
-                            armorFactorScalingFactor -= 0.04;
-                        else if (pair.Key is GameSummonedPet && petCount <= _epicNpc.ArmorFactorScalingFactorPetCap)
-                        {
-                            armorFactorScalingFactor -= 0.01;
-                            petCount++;
-                        }
-
-                        if (armorFactorScalingFactor < 0.4)
-                        {
-                            armorFactorScalingFactor = 0.4;
-                            break;
-                        }
-                    }
-
-                    _epicNpc.ArmorFactorScalingFactor = armorFactorScalingFactor;
+                    _epicNpc.ArmorFactorScalingFactor = ScaledArmorFactor(
+                        _epicNpc.DefaultArmorFactorScalingFactor,
+                        _epicNpc.ArmorFactorScalingFactorPetCap,
+                        _attackerTracker._attackers.Keys);
                     return base.OnTick(timer);
                 }
             }

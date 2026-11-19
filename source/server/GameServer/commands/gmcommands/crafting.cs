@@ -110,6 +110,8 @@ namespace DOL.GS.Commands
 						RecipeDB.FindBy(r);
 					}
 
+					// Invalid recipes are skipped and logged once (2026-11-15); they used to stop this loop with an exception.
+					client.Out.SendMessage($"Checked {recipeIDs.Count} recipes; {RecipeDB.InvalidRecipeCount} are hidden (see the server log).", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 					return;
 				}
 

@@ -1,0 +1,140 @@
+{
+  "id": "beran-the-supply-master",
+  "name": "Beran the Supply Master",
+  "catalogKey": "krondon/beransupplymaster",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 78 (NPC template 60158369, tether 4,000), 30,000 health, GetResist 20 melee / 30 other, CC immune. Every 15-35 s an Explosion cask appears at one of five fixed spots in the stores, burns 8 s, then deals 1,200 heat in a 1,000 radius around itself.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs"
+    },
+    {
+      "text": "Every 35-65 s he yells for help: 2-4 Onstal Hyrde (level 64-68) appear beside him and die when he dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs"
+    },
+    {
+      "text": "Onstal: Bosworth-Toller gives on-stael 'arrangement, disposition'; 'supply' is another reading, both to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "The ember-carrier of the Undercroft, the clay pot, Osgyth and her slate, Garmon the clerk and Brother Meurig the fire-warden of Camelot are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Beran was the ember-carrier of the Undercroft, the one ogre of the clan allowed to carry its single fire in a clay pot down every tunnel, never putting it down. When Orylle climbed into Krondon he came behind her with the pot and set it down in the first dry place he found, which was on a cask in the hall-folk's stores. Deben se Gecynde has never forgiven him for letting the clan's fire touch the pitch; the two have quarrelled about it since the first week of the taking.\n\nThe last storekeeper of the hall, Osgyth, laid the pitch-room out with the hall's measuring rod: every cask in its own bay, wide aisles between, the plan on a slate by the door with the words a cask burns where it stands. The ogres have never moved the casks. When Beran puts his torch to the stores the cask burns in its bay, not where the trouble is; the old pitch smokes for a long breath before it takes, then fills the room from wall to wall. Osgyth's keepers fought their fires from the door under wet sacking.\n\nBeran's household answers to the title over the second door, onstal hyrde, the keepers of supply. They come up out of the dark rooms a few at a time when he roars for them, and when he falls they sit down among the casks and wait. Wenna of Caer Gothwaite read onstal as supply; her clerk Garmon read it as arrangement, the plan of the bays. Both readings are kept.\n\nThe first company to kill him was led by Brother Meurig, fire-warden of Camelot, who had been on the roof of the burning granary by the north gate. His company went in wrapped in wet wool, backed out of the stores beyond the last ring on Osgyth's slate with Beran following, and killed him in the passage while the casks burned in their bays behind him. Meurig carried the empty clay pot home; it hangs in the fire-wardens' house at Camelot over the words: fight it from the door.",
+  "legend": "Beran is level 78 with 30,000 health, CC immune, 20% melee / 30% other reduction, and a 4,000 tether. He does nothing clever himself. The stores do the killing: every 15 to 35 seconds a cask lights at one of five fixed spots in the room around where he stands, smokes for 8 seconds, then explodes for 1,200 heat in a 1,000 radius. The casks are not aimed at you; they go off in the same five places every time, all within about a thousand of his spot. So do not fight him there: pick him up and drag him back out of the stores toward the way you came in, roughly 2,500 out, which is inside his tether and outside every cask. Heat resist and wet wool, as the Camelot friars say, if you must stay. Every 35 to 65 seconds he yells for help and two to four Onstal Hyrde (level 64 to 68) appear beside him; kill them, they die with him anyway. Untested in game with bots: whether the raid AI follows a drag out of the room.",
+  "yells": {
+    "aggro": [
+      "Thieves in the stores! Keepers, to me!",
+      "Mind the casks! No, do not mind them.",
+      "Count them! Count them as they burn!"
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Light it! Light another!"
+      }
+    ],
+    "death": [
+      "Who... counts the casks now...",
+      "The stores... are yours..."
+    ],
+    "slay": [
+      "That one is off the tally.",
+      "Burned and counted.",
+      "One cask, one thief."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Pitch-casks stacked to the roof. Mind the torches.",
+      "The smell of pitch, and of singed hair."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Beran sets a torch to a cask!"
+      }
+    ],
+    "realmFirstKill": "Beran the Supply Master is dead. The casks stay dark."
+  },
+  "botLines": {
+    "briefing": [
+      "beran's casks go off in the same 5 spots round his room. 1200 heat, 1000 radius",
+      "drag him out of the stores back the way we came, about 2500, then kill him",
+      "a cask smokes for 8 sec before it blows. if you see smoke near you, run",
+      "kill the onstal hyrde when he yells for help, 2 to 4 at a time"
+    ],
+    "aftermathWin": [
+      "nobody stood in a barrel. i'm proud of you all",
+      "beran down, the stores are ours",
+      "keepers died before they reached anyone",
+      "great spread, no barrel deaths"
+    ],
+    "aftermathLoss": [
+      "we fought him in the middle of the stores. thats where every cask goes off",
+      "nobody moved when the cask started smoking",
+      "his keepers piled up while we chased the casks",
+      "dragged him too far and he walked home full"
+    ],
+    "rumour": [
+      "heard the supply master in krondon blows up his own stores to kill you",
+      "[someone said|heard] beran's casks are older than the ogres. old siege pitch",
+      "heard beran lost his eyebrows to the first cask he opened",
+      "deben and beran argue over the pitch, [heard|word is]",
+      "heard beran used to carry the ogres' only fire in a pot",
+      "[heard|someone said] there's a friar in camelot who keeps beran's pot by the fire buckets"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beran",
+    "text": "The ogres' keeper of the stores, once the ember-carrier of the [Undercroft]. He lights the hall-folk's pitch for joy, but the casks still stand where the last storekeeper set them, and they burn where they stand. Brother Meurig of Camelot fought him from the door, as the hall-folk fought their fires. See [pitch-room]."
+  },
+  "bookPage": "Beran, the ogres say, had never seen a cask until he came to Krondon. He opened the first one in the stores, put a torch to it to see what was inside, and lost his eyebrows, and from that day he has loved the stores as a miser loves his gold. When we came he lit a cask and bellowed for his keepers in the same breath, and stood in the smoke laughing. We crossed the stores well apart from one another, like men crossing a frozen lake. When he fell, the ogres who keep the casks under him simply sat down among the barrels and waited for a new master.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} kept clear of the pitch-casks and ended Beran the Supply Master in {minutes} minutes.",
+    "loss": "Beran the Supply Master lit one cask too many under {realm}'s raid; {raidLeader} was carried out."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "deben-se-gecynde",
+      "relation": "argues with him over the pitch"
+    },
+    {
+      "id": "deben-se-gecynde",
+      "relation": "quarrels with him over the clan's ember and the pitch"
+    },
+    {
+      "id": "orylle",
+      "relation": "came up the shaft behind her carrying the clan's fire"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Ember-Carrier of the Undercroft",
+      "text": "The thrawn ogres of the Undercroft lived in the dark and did not much miss the light. They had one fire among the whole clan, and one ogre to carry it.\n\nIt was an ember in a clay pot, the ogres say, fed with coal-dust from the seams and never let go out, and it went wherever the clan went, down every new tunnel, so that there would always be a light to see a wound by and a flame to sear it. The ogre who carried it was not allowed to put it down, not to eat, not to sleep, not to fight. Before the climb that carrier was Beran. He had carried the pot since he was big enough to lift it, the ogres say, and he had burned his hands on it a hundred times, and he loved it more than anything he had ever owned, which was nothing else.\n\nWhen Orylle led her people up the shaft into the cellars of the hall, Beran came behind her with the pot. That is how the ogres of Krondon tell it, and the ghosts do not deny it. He was the first ogre into the stores because the stores were the first dry place he found to set the pot down, and he had been waiting his whole life to set it down. He set it on a cask. What happened next the hall already tells, and Beran tells it louder.\n\nDeben se Gecynde, who keeps the muster, has never forgiven him for it. Deben says the clan's ember was the clan's and not Beran's, and that a carrier who lets the fire touch the stores has failed at the one thing he was for. Beran says the fire found the pitch because the fire wanted it. The two of them have been quarrelling about it in the corridors of Krondon since the first week of the taking, and the young ogres of the hall take sides. The ghosts say the old clay pot is still in the stores, empty, on a shelf above the grain rooms, and that Beran will not let anyone touch it."
+    },
+    {
+      "title": "The Bays of the Pitch-Room",
+      "text": "The hall-folk's keeper of the stores was the most careful of all their keepers, and the most careful of them all was the last one, a woman the ghosts call Osgyth.\n\nShe laid the pitch-room out with the hall's own measuring rod. Every cask had its bay, and every bay its mark cut in the floor, and the aisles between were wide enough that a burning cask in one bay could not lick at the next. The casks were never moved. A cask that was taken out for the walls was replaced by another in the same bay, the same night, so that the room would always be as she had drawn it, and the drawing hung by the door on a slate. Wenna of Caer Gothwaite found the slate there, under the dust, still legible: a plan of the room with the bays marked as small rings, and a line of the hall-folk's letters under it that the ghosts read for her. A cask burns where it stands.\n\nThe ogres have not moved the casks either. Beran does not know what a plan is, but he knows where his casks are, and the bays are as Osgyth left them. When he puts his torch to the stores he puts it to whichever bay he reaches first, and the cask burns where it was stood, not where the trouble is. The ghosts say the old pitch smokes for a long breath before it takes, and that when it takes, it fills the air of the room from wall to wall. A burning cask of the hall-folk's pitch was never fought inside the stores. Osgyth's keepers fought their fires from the door, with wet sacking over their heads, and let the bays burn out.\n\nOsgyth died before the taking, the ghosts say, in her own bed, an old woman, and was spared seeing who kept her stores after her. Her ghost does not walk the pitch-room. The ghosts of the stores say she would not be able to bear the smell."
+    },
+    {
+      "title": "The Keepers of Supply",
+      "text": "Over the second door of the stores the hall-folk cut a title that the ogres took for a whole people: onstal hyrde, the keepers of supply.\n\nIn the hall's time they were the storekeeper's under-keepers, the men and women who carried, counted, mended the casks and swept the grain floors, and who came running when the storekeeper called for hands. The ogres who answer to the title now are the biggest of Beran's household, slow and heavy and devoted to him in the way of ogres who have never had anyone else to follow. They do not keep the stores. They keep Beran. When he roars for them they come up out of the dark rooms behind the grain floors, a few at a time, and when he is quiet again they go back. The ogres say the onstal hyrde have never been seen in the stores without him, and never once since the taking been seen to leave them.\n\nWenna's clerk at Caer Gothwaite, a young man named Garmon who copied out her notes, found the word onstal in two of her rubbings and could not agree with her about it. Wenna read it as supply, the stores themselves. Garmon thought it meant something nearer to arrangement, the order of a thing, and that the keepers of supply were really the keepers of the plan, the people who saw to it that every cask stood in its bay. Both readings are kept in the margin of the Krondon book. The Camelot loremasters mark the word to be checked, and have done for some years.\n\nWhen Beran falls, the ghosts say, his keepers sit down where they stand among the casks and wait. They do not run and they do not fight. The ghosts think they are waiting for someone to call for hands again. Garmon thought they were waiting for someone to tell them where the casks should go."
+    },
+    {
+      "title": "The Fire-Warden of Camelot",
+      "text": "The first company of Albion to kill Beran was led by a man who had never fought anything but fires.\n\nBrother Meurig was the Church's fire-warden of Camelot, the friar who kept the buckets and hooks of the city, and he had been on the roof of the great granary by the north gate the night it burned. He came to the isles because Sir Cador's account of the stores reached Camelot, and because Meurig read in it that the ogres of Krondon were burning pitch indoors without the least idea of how a fire is fought. He took it, his brothers said, as a personal insult.\n\nHe had Osgyth's slate copied before he went down. His company crossed to the stores, wrapped in wet wool as the fire-wardens of Camelot go into a burning house, and when Beran came at them roaring for his keepers, Meurig did not stand among the bays to fight him. He backed his company out of the stores the way they had come, down the passage towards the stair, far beyond the last ring on the slate, and Beran followed them, because Beran will follow anything that runs from his fire. Behind them, in the stores, the casks went up one after another in their bays, and lit nothing but the empty room.\n\nMeurig's company killed Beran in the passage with the stores roaring at his back. The friar wrote to his prior that the hall-folk had known everything he knew about fire and a good deal more, and that the ogre had simply never thought to ask them. He took the empty clay pot from its shelf on his way out and carried it home. It hangs now in the fire-wardens' house at Camelot, beside the buckets, with a card under it in Meurig's hand that reads: fight it from the door.\n\nThe ogres of Krondon say Beran was back among his casks before the next new moon, and that he has been looking for his pot ever since. Deben says it serves him right."
+    }
+  ]
+}

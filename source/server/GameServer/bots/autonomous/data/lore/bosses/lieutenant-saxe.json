@@ -1,0 +1,131 @@
+{
+  "id": "lieutenant-saxe",
+  "name": "Lieutenant Saxe",
+  "catalogKey": "hall-of-the-corrupt/lieutenantsaxe",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Lieutenant Saxe, 5,000 health, tether 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Saxe's level 50, 5,000 health, ghost flag, two-handed weapon, 50% evade, taunt and evade styles, tether 1,500 and 35% melee and 25% magic damage reduction are in his script; he has no spells.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantSaxe.cs"
+    },
+    {
+      "text": "Wulfstan and the words 'we stayed', Saxe's corridor ending at the Roman wall over Vibius's gallery, his facing the wall when the riders came, and the spear set by the Long Dale door are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lieutenant Saxe was a Saxon of Long Dale, great-grandson of Wulfstan, one of the twelve spearmen who kept the first watch on the Summoners' road under Captain Leofric at the cold camp by the Roman wall. When Leofric went down and the Summoners sent up a headless spear, the eleven kept the camp until relieved, and Wulfstan brought home his own spear and two words that his family said for four generations like a grace: we stayed. Saxe, big and slow-spoken, signed on at nineteen; his mother made him leave the spear over the hearth, and he went north with a two-handed sword. Lord Gildas made him a lieutenant over cleverer men because in thirteen years he had never once been anywhere but where he was put.\n\nHis post was the long dull corridor from the card table to a blank wall. It was the Roman wall Sextus Vibius built across his miners' gallery, which runs up to the old lead workings and out to the hillside, the one way into the hall that is not the road; by Gildas's day only the lord, who had read Master Wystan's rolls, remembered. Saxe kept it for six years without asking, never sat down, never played at the table, never came to Atwell's yard. For so big a man he moved like a dancer: a man who swung at Saxe swung at where he had been.\n\nThe despair of the last winter touched him least: distance, say the loremasters; a man who never doubted his post, say the Church's priests; Wulfstan, say the Long Dale Saxons. Sir Hamon's riders found every man of the watch dead and facing the road except Saxe, who faced the Roman wall with a clean sword. Nothing came through the wall behind him.\n\nHe keeps his corridor still, with no curse or poison, only a great sword and light feet, and his face is peaceful when he falls. Old soldiers drink to him standing. Long Dale sets Wulfstan's spear by the farm door once a year, point to the hills.",
+  "legend": "Saxe is the straight fight of the hall: a ghost lieutenant, level 50, 5,000 health, a two-handed sword and nothing else, no curse, no poison, no bleed. He evades about half of all melee swings and answers with evade styles, and he takes a third less from melee and a quarter less from magic, so let the casters finish him. His taunt styles keep him on the tank. Tether 1,500: drag him off his stone and he takes no damage and resets to full, as many times as you let him. The trap is the neighbours: Lieutenant Meade's card table is only about 530 from Saxe's corridor and Elva's armoury about 880, so fight him at the end of his corridor, toward the wall, not back toward the table, or you will have Meade's curse on your melee as well. Old soldiers salute his corridor on the way past.",
+  "yells": {
+    "aggro": [
+      "Post held, my lord. Post held.",
+      "Halt. This corridor is held.",
+      "No further."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I do not move. I have never moved."
+      }
+    ],
+    "death": [
+      "Post... abandoned...",
+      "Forgive me... my lord... I moved..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Post held.",
+      "Halt means halt.",
+      "Corridor clear."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A long corridor ends at a blank wall. Someone keeps it.",
+      "A big man stands facing the wall, not the road."
+    ],
+    "phases": [],
+    "realmFirstKill": "Lieutenant Saxe is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "saxe is a straight fight, no curse no poison. evades half the melee though",
+      "tether 1500, fight him at his post, off it hes immune",
+      "keep the fight toward the wall end, meade's table is close",
+      "5k hp, casters finish him"
+    ],
+    "aftermathWin": [
+      "lieutenant saxe down, one less on the watch",
+      "saxe down. respect",
+      "quick and clean",
+      "drink to saxe later",
+      "the corridor is open"
+    ],
+    "aftermathLoss": [
+      "someone dragged him off his post again. immune out there",
+      "fought back toward the table and got meade too",
+      "how did we wipe on saxe",
+      "melee whiffed for ages and we got sloppy"
+    ],
+    "rumour": [
+      "heard saxe never left a post in his life. or after",
+      "[someone said|heard] saxe's corridor ends at the old roman wall",
+      "heard the old soldiers drink to saxe standing up",
+      "heard saxe's great grandad was one of leofric's twelve"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "saxe",
+    "text": "Lieutenant Saxe was a Saxon of [Long Dale], great-grandson of one of [Leofric]'s twelve spearmen, made lieutenant because he never once left his post. His long dull corridor ends at the [Roman wall]; when the riders came, he alone faced it instead of the road. See also [Lord Gildas] and [Meade]."
+  },
+  "bookPage": "Lieutenant Saxe asked me today what the reports were for, and I told him they were so that the Constable would know what passes on the road. He said that nothing passes on the road. I said that was what the reports said. He thought about that for a long time and then said that he supposed it was good for the Constable to know that nothing passes, and went back to his corridor. He has kept that corridor for eleven years. It leads nowhere. Lord Gildas says he is the best soldier in the hall, and I think Lord Gildas is right.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Lieutenant Saxe from the Pennine watch in {minutes} minutes.",
+    "loss": "Lieutenant Saxe held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "lord-gildas",
+      "relation": "the lord who made him lieutenant for never leaving his post"
+    },
+    {
+      "id": "lieutenant-meade",
+      "relation": "kept away from his table and kept the strength of his arm"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Wulfstan's Spear",
+      "text": "Lieutenant Saxe was a Saxon of Long Dale, and his great-grandfather Wulfstan was one of the twelve spearmen who kept the first watch on the Summoners' road under Captain Leofric, at the cold camp by the Roman wall, before there was any hall.\n\nWhen Leofric went down the stair under a green bough and the Summoners sent up a headless spear in his place, the eleven who were left kept the camp until the Constable's relief came, and then went home. Wulfstan went home to Long Dale with his own spear, and hung it over the hearth, and told his sons one thing about the road, which the family repeated for four generations as a kind of grace before meat: we stayed. The other spearmen's families have their own stories about Leofric's camp, and some of them are better. Wulfstan's family never told a story. They told the two words, and they told them to every child.\n\nSaxe was the fourth generation, a big, slow-spoken dalesman who could carry a sheep under each arm and did not think that worth mentioning. He signed on with the watch at nineteen for the pay, as most dalesmen did, and he took Wulfstan's spear down from the hearth to take with him, and his mother made him put it back. She said that one man of the family had already given a spear to the Summoners' road and that was enough. He went north with a two-handed sword from the Long Dale smith instead, and carried it for the rest of his life.\n\nHe was a common watchman for nine years and a sergeant for four, and Lord Gildas made him a lieutenant over the heads of cleverer men in the fourteenth year of the watch. The clerk Tobias recorded the lord's reason, because the seconded knights of Camelot complained of it. In thirteen years, Gildas said, Saxe had never once been anywhere but where he was put. The knights said that was not a quality. Gildas said it was the only one."
+    },
+    {
+      "title": "The Corridor to the Wall",
+      "text": "Lord Gildas gave his new lieutenant the corridor that the watch called the long dull one, which ran from the lieutenants' card table to a blank wall and led, as everyone said, nowhere in particular.\n\nIt led to the Roman wall. When Master Wystan raised the hall at the head of the road, he built it over Leofric's old camp, and the corridor followed the line of the camp to the mouth of Sextus Vibius's old miners' gallery, where the Roman wall had stood, and Wystan's masons walled the gallery up again where Vibius had walled it. Behind that wall the Roman gallery still runs up through the limestone to the old lead workings, and from the workings to the open hillside. It is the only way into the hall that is not the road or the gate. Wystan's clerk noted it in the building rolls, and the rolls went to Camelot, and by Gildas's day nobody in the watch remembered it except the lord, who had read them.\n\nSaxe did not know what was behind the wall, and did not ask. He was given a corridor, so he kept it. He stood on his stone at the end of it through every watch for six years, with Wulfstan's two words for company, and the sergeants who passed the end of the corridor on their way to the cards said that he was the only man in the hall they had never once seen sitting down. He did not play at the table. He did not come to Captain Atwell's practice yard, because it was not his post. He was, the sergeants said, the most boring man in the Pennines, and the one they would have chosen to stand behind them.\n\nHe was not slow with a sword in his hands, for all that he was slow in speech. The Long Dale men who wrestled him at the harvest said that a man who swung at Saxe swung at where Saxe had been; for so big a man he moved his feet like a dancer, and when the swing had gone by him he came back with the great sword, and that was the end of the wrestling."
+    },
+    {
+      "title": "The Strength of His Arm",
+      "text": "When the despair came up the road in the last winter and lay on the card table, the man it touched least was Saxe, at the far end of his corridor, and the realm has argued since about whether that was luck or Lord Gildas.\n\nThe Camelot loremasters, who read the clerk's seating, say it was distance: the despair lay on Lieutenant Meade and on everyone within his reach, and Saxe was never within it. The Church's priests in Cornwall, who preached the Pennine watch as a sermon on obedience for a generation, say it was the post itself: a man who has never doubted where he stands has nothing in him for despair to take hold of. The Long Dale Saxons say it was Wulfstan. A family that has said 'we stayed' for four generations, they say, has already had that despair, and come through it, and does not catch it twice.\n\nOn the last night, the clerk's final page records, the lieutenants were at their posts. It does not say more about Saxe, because Tobias could not see the end of the long corridor from the captains' hall. What is known comes from the riders who came in the spring. Sir Hamon Brede's account says that every man of the watch they found was dead at his post and turned to face the road, except one. Lieutenant Saxe stood at the end of the long corridor facing the Roman wall, with his back to the hall, as he had stood every watch for six years, and his great sword was clean.\n\nHamon thought nothing of it, and wrote it down only because it was different. The Academy's readers, who later found Wystan's building rolls, thought a great deal of it. Whatever came up the road for the watch came up the road. Nothing came through the wall behind him."
+    },
+    {
+      "title": "A Toast in the Dales",
+      "text": "Lieutenant Saxe is at the end of his corridor still, and the corruption that keeps the rest of the watch turned to face the road did not have to turn him at all. He was already where he had been put.\n\nHe is the plainest of the officers to face, the companies of Albion say: a big man with a great sword who moves aside from a blow as lightly as he did at the harvest wrestling, and answers it, and will not let the man in front of him look anywhere else. He has no curse and no poison and no cut that will not close. He stands, and he has to be brought down standing. The companies who know the story say his face is peaceful when he falls, and that nobody has ever said that of any other officer of the watch.\n\nThe bards find him the most frightening thing in the hall, because the Summoners needed nothing clever to keep him; they only had to let him do what he had always done. The old soldiers of Albion find him the most admirable, and drink to him, standing, at the garrisons of Hadrian's Wall and Prydwen Keep, with two words that most of them do not know are Wulfstan's.\n\nLong Dale keeps the spear. It hangs over the hearth of the Saxe farm still, where Saxe's mother made him put it back, and his sister's line has kept it there and told the two words to its children. Once a year, on the night the dalesmen say the watch was lost, the head of the farm takes the spear down and sets it by the door, butt to the ground, point to the hills, and leaves it there until morning. Asked why, the family say only that the lieutenant is still standing, and that a man who stands a watch should have one of his own standing with him."
+    }
+  ]
+}

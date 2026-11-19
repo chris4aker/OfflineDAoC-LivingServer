@@ -1,0 +1,81 @@
+{
+  "id": "ailbe",
+  "name": "Ailbe",
+  "npcNames": [
+    "Ailbe"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ailbe: level 38, a deamhan hound body (model 649), at about 325,700/737,900 in the southern hills among the deamhan; respawn 600 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "In the Ulster Cycle Ailbe is the great hound of Mac Dathó, whom the kings of Ulster and Connacht fought over at his feast.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Sc%C3%A9la_Mucce_Meic_Dath%C3%B3"
+    }
+  ],
+  "story": "Ailbe is the largest of the deamhan hounds of Lough Gur's southern hills, and the lake folk named it after the hound of the old feast-tale, the one the kings of two provinces wanted so badly that their men fought over it across the hall and the hound chose a side and was killed on the road home. The lake folk say this Ailbe also chose a side. It runs with the deamhan of the air in the hills above the queen's door, and hunts whatever comes up from the lake.\n\nThe harpers of Innis Carthaig say it hunts for the queen who weeps by the door, the Melancholic Fairy Queen, and that it brings her what it catches, and that she does not want it. The hunters of the lake say it is only a hound. Both agree it is the reason no one walks the southern hills alone after dark.",
+  "legend": "Ailbe (38) is a big named deamhan hound in the southern hills of Lough Gur (about 326k/738k), among deamhan aeir (34-38) and deamhan hounds (41-45). The hounds around it are higher level than Ailbe, so watch the pull. A group of 40ish. Plain spawn, 10-minute respawn. Come in from the north, away from the queen's door, so the melancholic fairies (45-50) of the south-west hills stay out of it. Not part of any quest; it is just a big dog with a long respawn.",
+  "yells": {
+    "aggro": [
+      "(a great hound bays in the southern hills)",
+      "(Ailbe circles, then comes straight in)"
+    ],
+    "phases": [],
+    "death": [
+      "(the hound's baying breaks off on the hillside)"
+    ],
+    "slay": [
+      "(Ailbe drags its kill toward the queen's door)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hound bigger than the rest, baying."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ailbe, the great hound of the southern hills, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "ailbe is a 38 deamhan hound in the south hills",
+      "the deamhan hounds around are 41-45, careful"
+    ],
+    "aftermathWin": [
+      "ailbe down. [big dog|grats]",
+      "no hounds joined. [lucky|nice]"
+    ],
+    "aftermathLoss": [
+      "hounds piled in. [41-45|rip]",
+      "got chased off the hill. [lol|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] ailbe brings its kills to the melancholic fairy queen. she doesnt want them",
+      "nobody walks the south hills of lough gur alone after dark because of ailbe"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ailbe",
+    "text": "The great deamhan hound of Lough Gur's southern hills, named for the hound of the old feast-tale. The harpers say it hunts for the weeping queen, who does not want what it brings."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ailbe in Lough Gur in {minutes} minutes.",
+    "loss": "Ailbe turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "whose hills it hunts"
+    }
+  ]
+}

@@ -120,7 +120,9 @@ code map confirmed every line below):
   `market_fee_percent` 20 (housing market only). **No skill-gain multiplier exists.** The random-drop rate is a
   **code constant** (`ROGMobGenerator.BASE_ROG_CHANCE = 14`, +10 solo), and the Exchange has **no fee setting**.
 - **The world data** (0.35 world, 2026-10-11): **8,479 `CraftedItem` recipes, 1,606 unusable** (a missing
-  ingredient or product row, about 19%). The database isn't in Git; per-skill counts need the PC.
+  ingredient or product row, about 19%). The database isn't in Git; per-skill counts need the PC. **Corrected by M0
+  (2026-11-15):** that was a case-sensitive count; the server ignores case and finds 2 broken recipes in the 0.37b
+  world ([CRAFTING-M0-FINDINGS.md](CRAFTING-M0-FINDINGS.md)), and both bugs below are fixed there (tests only).
 - **Two bugs to fix before anything else:** `RecipeDB.FindBy` calls `SetRecommendedProductPriceInDB` on a null
   recipe when `crafting_adjust_product_price` is on (`Recipe.cs:136-141`), so turning that setting on with 19%
   broken recipes will throw; and `Repair.IsAllowedToBeginWork` has an integer division that makes its skill gate
@@ -140,7 +142,7 @@ code map confirmed every line below):
   "trained crafter" branches (buying material stacks, keeping stackables from the vendor,
   `AutonomousBotEconomy.cs:146-193, 566-612`) are dead.
 - **The Crafter personality is 12% of bots, not 7%** (`AutonomousBotPersonality.TypeSharePercent = [28, 20, 20,
-  16, 12, 4]` in the order Leveler, Socialite, Daredevil, Explorer, Crafter, No-lifer; `:36`). A bot's type is a
+  16, 12, 4]` in the order Leveler, Socialite, Daredevil, Explorer, Crafter, No Lifer; `:36`). A bot's type is a
   fixed bucket of a hash of its id, so **changing the shares re-types existing bots** near the bucket edges,
   including which ones are beggars and how they talk; a test pins the shares (`UT_AutonomousBotPersonality:15`).
   With `bot_personalities_enabled` (off in code, **on** after Setup's Recommended profile) a Crafter takes longer
@@ -211,8 +213,9 @@ number is an assumption-driven model to be recalibrated from live logs (M0).
 
 Every facet, with the era rule, what exists, what is new for the player, what is new for the bots, and its switch.
 "Ledger" means a realm-level model (skills, coins, stock) with real items made only when someone equips, sells or
-receives them; "in world" means a bot visibly does it. Everything bot-side is off by default with a switch in the
-launcher's Living Server tab.
+receives them; "in world" means a bot visibly does it. Everything bot-side has a switch, and every switch is on by
+default since 2026-11-16 (owner: "all our living server features should be in by default if someone downloads our
+installer"; only the diagnostics lines and the classic rule options stay off).
 
 | # | Facet | Era rule | Exists today | New: player | New: bots | Switch |
 |---|---|---|---|---|---|---|
@@ -443,10 +446,63 @@ M1 is small enough to ship early (even in 1.2) if the owner wants crafting pace 
 
 ## 14. What this file does not know
 
-- The current recipe count and the broken rows on the 0.37 world (M0).
-- Whether housing zones and the consignment merchants exist in this world.
-- Real kill speed, coin per hour and how often live bots reach the Exchange (M0 measures).
+The M0 static audit (2026-11-15) answered the first three questions as far as data, code and logs can:
+**[CRAFTING-M0-FINDINGS.md](CRAFTING-M0-FINDINGS.md)**. In short: the "19% broken" of section 3.1 was a case-sensitive
+count (1,608); the server ignores case and finds **2** broken recipes, plus 38 statless products it now hides and 8
+products with the wrong realm (a proposed world update fixes 10 of these 48); housing regions, lots, deeds and Market
+Explorers are present (no consignment merchant is placed until a house owner places one); kill rates and Exchange
+purchase rates are measured, but no log line records coin flows. Still unknown:
+
+- Anything in game: crafting the fixed recipes, housing and consignment on 0.37b, the "cannot be made" message.
+- Real coin per hour and Exchange listings and sales (the logs have no coin or listing lines; M3 adds them).
 - Whether template-aware valuation can be added without bots undressing (a test, then an overnight run).
 - Whether the roster design (bot players with alts and a shared purse) is built; the crafter-as-alt rule depends
   on it.
 - Whether a crowd of crafters at a forge reads as a living city or as furniture: only play answers it.
+
+## 15. Build status
+
+The build plan is [CRAFTING-2.0-BUILD-PLAN.md](CRAFTING-2.0-BUILD-PLAN.md) (2026-11-15). It ports DividedRealms' bot
+crafting and craft orders and True165's ledger, valuation, wear and pace where they fit (its §1). Each package edits
+only its own row. "Tests only" means automated tests; nothing counts as working until seen in a log on the owner's PC.
+
+| Package | Status | Seen in game |
+|---|---|---|
+| WP0 Foundation (rules, contracts, seams, tables, settings, log format) | Built on `craft/wp0-foundation`, into `integration/2.0`. Changes no behaviour: every seam's default is today's code; no setting is read yet. Tests only | Nothing to see |
+| WP1 Crafting core and M0 fixes | Built on `craft/wp1-core`, into `integration/1.2`. Players: every craft number from `CraftRules`/`SpellcraftRules`; pace (`crafting_skill_rate` 1), classic quality and losses (off), repairs keep durability under light upkeep; upstream spellcraft and salvage fixes; the start-up recipe catalog and its `CRAFT_RECIPE_AUDIT`/`CRAFT_RECIPE_BROKEN`/`CRAFT_WORLD_AUDIT` lines. Tests only | Not yet: the audit lines in a start-up log, a craft at pace 2+, a refused fifth gem |
+| WP2 Economy ledger | Built on `craft/wp2-ledger`, into `integration/1.2`. Instrumentation only (no amount changes): hourly `ECON_SUPPLY`/`ECON_FLOWS` per realm, one `offline_economy_ledger` row per realm and hour, residual = Δsupply − Σflows ([ECONOMY-LEDGER.md](ECONOMY-LEDGER.md)). True165's money ledger ported. Tests only | Not yet: the first owner's-PC log with `ECON_SUPPLY` lines |
+| WP3 Player side (M1) | Not started | — |
+| WP4 Bot crafters (M2) | Built on `craft/wp4-bot-crafters`, into `integration/1.2`. Off by default (`bot_crafters`), and idle until WP1 registers its recipe catalog. Crafter-type gamebots join an order (realm weights), buy materials, craft at real stations by `CraftRules`, up to 3 sessions of 10 pieces a trip, gain at the bot pace, list the best of a session (enchanted by the realm's spellcrafter and alchemist bots); stored types (7% for new bots); station hangouts; titles, the Legendary first, true /trade adverts. Tests only | Not yet: needs WP1 and `bot_crafters` on |
+| WP2 Economy ledger | Not started | — |
+| WP3 Player side (M1) | Built on `craft/wp3-player`, into `integration/1.2`: era start (new crafting records only; existing ones keep skills and order), secondary caps, smith upkeep, coin by level band, the two title ports, the launcher's Crafting card, [CRAFTING.md](CRAFTING.md). Found that 56 of M0's 57 "decoration" masters work through their guild title (`use_npcguildscripts`), so every order has a master in both capitals of each realm. Tests only | Nothing yet |
+| WP4 Bot crafters (M2) | Not started | — |
+| WP5 Market | Not started | — |
+| WP5 Market | Built on `craft/wp5-market`, into `integration/1.2`. Off by default (`bot_crafters`, `bot_craft_orders`). DividedRealms' craft orders with escrow (made on the crafter's trip, handed over at its break, refunded after 3 h), True165's milestone sets at 20/30/40 on the same board, realm quartermaster commissions (`realm_commissions` doubled: 60 a realm an hour, sized to the crafter's skill, paid for time as a `commission` faucet, governor multiplier for WP7), DR's flood cap (25 bot posts per kind) and own-work posts (`bot_crafter_exchange_listings` 6), unsold work back to its crafter, the price index per band (no buy-sell loop makes coin), the Exchange tax built at 0 (5% documented). Tests only | Not yet: needs `bot_crafters` and `bot_craft_orders` on |
+| WP6 Demand (M3) | Not started | — |
+| WP6 Demand (M3) | Built on `craft/wp6-demand`, into `integration/1.2`. Off by default (`bot_crafters`; orders also need `bot_craft_orders`). True165's ItemValue165 as the price index and BotGearValue165 as the base of a template-aware set score (caps and class weights; quality at 50); the no-undress guard on every equip (10,000-loadout property test); a gear check at every task break (empty, a band behind, no template at 50) that buys a gap's piece on the Exchange or posts a want-to-buy order on the WP5 board. Tests only | Not yet: needs `bot_crafters` on, WP4's crafters listing and WP5's board; the overnight `ECON_UNDRESS_GUARD blocked=0` check |
+| WP7 Sinks (M5) | Not started | — |
+| WP7 Sinks (M5) | Built on `craft/wp7-sinks`, into `integration/1.2`. Off by default (`bot_upkeep`, `bot_luxury_spending`, `bot_siege_supply`, each with `bot_crafters`). True165's gear wear (autonomous gamebots only, the player's formula), repair errand at 88% (own skill, then smith or crafter gamebot, at the player's upkeep price) and potions; ours: paid poison vials, siege supply from siegecrafter gamebots at 80%, the luxury sink and the money-supply governor (WP2's hourly row, sinks as a whole, the rehearsal gates' band; luxury intensity and WP5's commission multiplier). Tests only | Not yet: needs `bot_crafters` and a WP7 switch on |
+| WP8 Commerce and social (M4, M6) | Not started | — |
+| WP9 Launcher | Built on `craft/wp9-launcher`, into `integration/1.2`. The Living Server tab's Bot crafters and the economy card (every merged switch, defaults read from `CraftingEconomyProperties`), the No Lifer buffbot share and range, the level-50 kit setting (off: no kit or 10,000 gold, the server's starter gear), the economy page (supply, flows by kind, top sinks, the tax column, the price index, from `offline_economy_ledger` and `offline_exchange_index`), the Herald's top crafters per order, the bot purge of the Crafting 2.0 tables, and the release build's check that every `EconomyTables.All` table ships empty. Tests only | Not yet: the card, the economy page and the Herald on the owner's PC |
+| WP8 Commerce and social (M4, M6) | Built on `craft/wp8-commerce`, into `integration/1.2`. Off by default (`bot_crafters` with `bot_crafter_commerce`; `bot_crafting_social` for 8b). Players ask crafter gamebots by tell or /trade what they make and sell and get honest quotes from real skill and stock; haggling, customer memory; orders through WP5's board (escrow up front, or pay on delivery in a trade window); hand-over at the crafter's break; refunds, owed at login. 8b: guild crafters at material cost (a Crafting bot guild's bank pays the fee), the "pricewar" storyline between two real crafters of one order, no haste buff without a player crafter. The full bot trade (owner 2026-11-16, on `feat/bot-trade-full`): any gamebot trades in the client's own window both ways (buy its stock, loot and listings; sell it what it wants within its purse share; swaps; repair and spellcraft jobs; commissions), the busy rule and hold, want-to-buy adverts, a trade window in the new client; 8b: crafters first into Crafting guilds, bot-to-bot guild orders, guild banks buying materials and raid potions. Tests only | Not yet: needs `bot_crafters` and `bot_crafter_commerce` on; M4 (buy a set by tell, the trade window in both clients: buy, sell, swap, repair, imbue) and M6 (the storyline, a guild crafter) in a log |
+| WP9 Launcher | Not started | — |
+| WP10 Rehearsal | Built on `craft/wp10-rehearsal`, into `integration/1.2`: the rehearsal (today's economy plus a crafter stand-in on `CraftRules` until WP4), its gates, the readable ledger, `/lscraft`, `econ_timeline_report.py`. Changes no behaviour. Tests only | `/lscraft` answers on the owner's PC: not yet seen |
+
+Corrections found while building WP0 (the sections above are left as written on 2026-10-30): a bot holds 3 Exchange
+listings, not 1; the `Repair.cs` division and the `Salvage` type mutation are already fixed in our tree; the "19%
+broken recipes" is a case-sensitive audit (2 broken ignoring case, survey 2026-11-15); the Exchange tax is built
+with a default of 0, 5% as the documented option (owner 2026-11-15, decision 7); `bot_upkeep`, `bot_luxury_spending`
+and `bot_siege_supply` default off (on since 2026-11-16, like every bot-side switch; the "Off by default" notes in the
+build table above are as each package was built); the player pace key is True165's `crafting_skill_rate`.
+
+First owner's-PC night (2026-11-17, build 19e7037, 00:00-06:20): 227 commissions made and 244 lapsed. Of the lapsed,
+137 open ones belonged to crafters who had logged out (median 35 minutes after they were asked), 48 to crafters drawn
+into raids, groups and RvR (no task break), 38 had been made but never handed over (the trip was cut short before the
+end of its break) and 19 were open with a trip in the window. Changes (`fix/craft-orders-filled`): a commission is
+posted only to a crafter the schedule keeps online for 75 minutes (the 45-minute break window and a trip); an open
+commission whose crafter has logged out, joined a group, lost its craft break or is leaving on the schedule is withdrawn
+after 10 minutes (`ECON_ORDER outcome="withdrawn"`, `withdrawn=` on the hourly `ECON_COMMISSION` line) and the realm
+posts it again; the realm's piece is handed over at the station as soon as it is made. Crafted sales (`exchange_crafted`)
+count sales, not posts: the night's crafted pieces are mostly practice work below level 10 (about 90% of the own-work
+sessions are recipe level under 200), and the Exchange's upgrade buyers are level 20 and up; `ECON_INDEX` now carries
+`craftedListed` (live crafted bot listings) and `craftedPosted` (posted in the hour). Tests only.

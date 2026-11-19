@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using DOL.Database;
 using DOL.Logging;
+using DOL.Timing;
 
 namespace DOL.GS;
 
@@ -37,9 +38,59 @@ public static class AutonomousBotStatusPersistence
 
     public static object DatabaseWriteLock { get; } = new();
 
+    /// <summary>
+    /// The longest a bot's AI turn waits for <see cref="DatabaseWriteLock"/> before it gives up and tries on a later
+    /// turn. A status batch normally holds the lock about 20 ms (db.inventory_batch, ~1.3 s a minute over 60 batches,
+    /// overnight 2026-11-14/15), so this rarely defers anything; it only stops a slow write elsewhere from stalling the
+    /// game loop for seconds.
+    /// </summary>
+    public const int AiTurnWriteWaitMs = 50;
+
+    /// <summary>A batch holding the write lock longer than this is logged with what it wrote.</summary>
+    public const int SlowBatchLogMs = 500;
+
+    private const long DeferredLogIntervalMs = 60_000;
+    private static long _nextDeferredLogMs;
+    private static int _deferredSinceLog;
+    // What holds DatabaseWriteLock for a status batch, and since when (MonotonicTime ms); 0 when no batch holds it.
+    private static long _batchHeldSinceMs;
+
+    /// <summary>
+    /// Takes <see cref="DatabaseWriteLock"/> for a bot's AI turn, waiting at most <see cref="AiTurnWriteWaitMs"/>.
+    /// When <paramref name="entered"/> is false the caller must change nothing and try again later; once a minute
+    /// at most, an AUTONOMOUS_DB_WRITE_DEFERRED line says who gave up and what held the lock.
+    /// </summary>
+    public static AiProfile.HeldLock TryEnterForAiTurn(GameBot bot, string action, out bool entered)
+    {
+        AiProfile.HeldLock held = AiProfile.TryLock(DatabaseWriteLock, AiTurnWriteWaitMs, AiSystem.LockDatabaseWrite, out entered);
+        if (!entered)
+            NoteDeferred(bot, action);
+        return held;
+    }
+
+    private static void NoteDeferred(GameBot bot, string action)
+    {
+        int deferred = Interlocked.Increment(ref _deferredSinceLog);
+        long now = MonotonicTime.NowMs;
+        long next = Volatile.Read(ref _nextDeferredLogMs);
+        if (now < next || Interlocked.CompareExchange(ref _nextDeferredLogMs, now + DeferredLogIntervalMs, next) != next)
+            return;
+        Interlocked.Exchange(ref _deferredSinceLog, 0);
+        try
+        {
+            long since = Volatile.Read(ref _batchHeldSinceMs);
+            string holder = since > 0 ? $"status_batch heldMs={now - since}" : "other";
+            Log.Warn($"AUTONOMOUS_DB_WRITE_DEFERRED bot=\"{bot?.Name}\" id={bot?.DatabaseID ?? 0} action={action} " +
+                $"waitMs={AiTurnWriteWaitMs} holder={holder} deferredLastMinute={deferred}; the bot retries on a later turn");
+        }
+        catch
+        {
+        }
+    }
+
     public static void Queue(GameBot bot, bool includeInventory = false)
     {
-        if (bot?.IsAutonomousWorldBot == true && bot.DatabaseID > 0 && bot.PersistentRecord != null && !bot.IsEpicSpecialForce)
+        if (bot?.IsAutonomousWorldBot == true && bot.DatabaseID > 0 && bot.PersistentRecord != null && !bot.IsInMemoryOnly)
         {
             lock (PendingGate)
             {
@@ -52,6 +103,18 @@ public static class AutonomousBotStatusPersistence
         }
     }
 
+    /// <summary>A bot deleted for good leaves the save queue (2026-10-30: a released companion's record was gone, its
+    /// failed save requeued the whole batch every second, 918 times, and held up the other bots' saves).</summary>
+    public static void Forget(long botId)
+    {
+        lock (PendingGate)
+        {
+            Pending.Remove(botId);
+            PendingPriority.Remove(botId);
+            PendingInventory.Remove(botId);
+        }
+    }
+
     /// <summary>
     /// Group membership is shown as one launcher card and must not sit behind
     /// thousands of routine activity updates. Priority affects only status-row
@@ -59,7 +122,7 @@ public static class AutonomousBotStatusPersistence
     /// </summary>
     public static void QueueGroupMetadata(GameBot bot)
     {
-        if (bot?.IsAutonomousWorldBot != true || bot.DatabaseID <= 0 || bot.PersistentRecord == null || bot.IsEpicSpecialForce)
+        if (bot?.IsAutonomousWorldBot != true || bot.DatabaseID <= 0 || bot.PersistentRecord == null || bot.IsInMemoryOnly)
             return;
         lock (PendingGate)
         {
@@ -167,21 +230,46 @@ public static class AutonomousBotStatusPersistence
             foreach ((GameBot Bot, OfflineWorldBotRecord Record)[] batch in snapshots.Chunk(WriteBatchSize))
             {
                 bool saved;
-                lock (DatabaseWriteLock)
+                long heldSince, statusMs, inventoryMs = 0;
+                (BotInventory Inventory, string OwnerId)[] inventories = [];
+                // AI_PROFILE: the wait for the write lock, the status rows and the inventory rows are timed apart.
+                using (AiProfile.Lock(DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
-                    saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
-                    if (saved)
+                    heldSince = MonotonicTime.NowMs;
+                    Volatile.Write(ref _batchHeldSinceMs, Math.Max(1, heldSince));
+                    try
                     {
-                        saved = BotInventory.SaveManyIntoDatabase(batch
-                            .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
-                            .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID)));
+                        using (AiProfile.Scope(AiSystem.DbStatusBatch))
+                            saved = GameServer.Database.SaveObject(batch.Select(entry => (DataObject)entry.Record));
+                        statusMs = MonotonicTime.NowMs - heldSince;
+                        if (saved)
+                        {
+                            inventories = batch
+                                .Where(entry => inventoryIds.Contains(entry.Bot.DatabaseID) && entry.Bot.Inventory is BotInventory)
+                                .Select(entry => ((BotInventory)entry.Bot.Inventory, entry.Bot.InternalID))
+                                .ToArray();
+                            using (AiProfile.Scope(AiSystem.DbInventoryBatch))
+                                saved = BotInventory.SaveManyIntoDatabase(inventories);
+                            inventoryMs = MonotonicTime.NowMs - heldSince - statusMs;
+                        }
+                    }
+                    finally
+                    {
+                        Volatile.Write(ref _batchHeldSinceMs, 0);
                     }
                 }
+                LogSlowBatch(batch.Length, inventories, heldSince, statusMs, inventoryMs, saved);
 
                 if (!saved)
                 {
                     foreach ((GameBot bot, _) in batch)
                     {
+                        // a bot whose row was deleted can never save: drop it instead of retrying the batch forever
+                        if (DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(bot.DatabaseID)) == null)
+                        {
+                            Log.Warn($"AUTONOMOUS_STATUS_SAVE_DROPPED bot=\"{bot.Name}\" id={bot.DatabaseID}: its record no longer exists");
+                            continue;
+                        }
                         Queue(bot, inventoryIds.Contains(bot.DatabaseID));
                         if (priorityIds.Contains(bot.DatabaseID))
                             QueueGroupMetadata(bot);
@@ -206,6 +294,39 @@ public static class AutonomousBotStatusPersistence
             }
             Log.Error("Autonomous status batch persistence failed", exception);
             return 0;
+        }
+    }
+
+    /// <summary>
+    /// 2026-11-15 02:38: one batch held the write lock for over 6 s (an Inventory INSERT of 6,062 ms) and nothing said
+    /// what it wrote. A batch over <see cref="SlowBatchLogMs"/> now names its size, its split and its largest inventory.
+    /// </summary>
+    private static void LogSlowBatch(int bots, (BotInventory Inventory, string OwnerId)[] inventories, long heldSince,
+        long statusMs, long inventoryMs, bool saved)
+    {
+        long heldMs = MonotonicTime.NowMs - heldSince;
+        if (heldMs <= SlowBatchLogMs)
+            return;
+        try
+        {
+            int items = 0, largest = 0;
+            string largestOwner = string.Empty;
+            foreach ((BotInventory inventory, string ownerId) in inventories)
+            {
+                int count = inventory.AllItems.Count;
+                items += count;
+                if (count > largest)
+                {
+                    largest = count;
+                    largestOwner = ownerId;
+                }
+            }
+            Log.Warn($"AUTONOMOUS_STATUS_BATCH_SLOW heldMs={heldMs} statusMs={statusMs} inventoryMs={inventoryMs} " +
+                $"bots={bots} inventoryBots={inventories.Length} items={items} largest={largestOwner}:{largest} saved={saved} " +
+                $"gen2={GC.CollectionCount(2)} heapMB={GC.GetTotalMemory(false) / (1024 * 1024)}");
+        }
+        catch
+        {
         }
     }
 

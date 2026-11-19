@@ -1,0 +1,211 @@
+{
+  "id": "varulvhamn",
+  "name": "Varulvhamn",
+  "realm": "Midgard",
+  "regions": [
+    127
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "summary": "The werewolf haven under Skona Ravine where King Hresvelgr holds court and the old wolfaur argue philosophy.",
+  "facts": [
+    {
+      "text": "Varulvhamn is an underground lair of werewolves, less militant than those in Skona though no less aggressive to humans; the older wolfaur are nearer their natural form, more philosophical and even accepting of their Nordic neighbours; werewolf nobles gather there to discuss politics.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=17"
+    },
+    {
+      "text": "Its bestiary lists King Hresvelgr, High Lords Athulf, Modolfr and Tarnkappe, lords with names like Gifttand, Huggtand and Grym, werewolf guards, advisors and nobles, wolfaur lunarians, quixots and pragmatics, frukta and forodande wargs and wolfspiders.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=17"
+    },
+    {
+      "text": "Period comments put its entrance south-west of the Circle of Stones in Skona Ravine near 21k, 40k.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=17"
+    },
+    {
+      "text": "Hraesvelgr in the old songs is a giant in eagle's shape whose wings make the wind.",
+      "provenance": "myth",
+      "source": "Vafthrudnismal (Poetic Edda, public domain)"
+    },
+    {
+      "text": "Bot chat says Skona's werewolves will not set foot in Malmohus.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Its entrance is in Skona Ravine; two further zone points inside the haven send a traveller back up to Skona.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, ZonePoint table (0.37b world data)"
+    },
+    {
+      "text": "The upper tunnels hold werewolf churls and scruffs, crazed lycantics and wolfspiders, with Faz, Thelod and Ritter; the lords' chamber holds seven lords (Gifttand, Brumma, Ungar, Bete, Grym, Huggtand, Vild) with a werewolf lord, grimnoughts, bodyguards and nobles; wolfaur quixots, lunarians and pragmatics, frenetic wolfspiders and Manstrale the middle; High Lords Athulf, Modolfr and Tarnkappe three wings; scavengers, elite guards, prowlers, advisors and frukta and forodande wargs the lower halls; King Hresvelgr (also spawned as 'Hresvelgr' and 'Hresveigr' at the same spot) and the royal guard the bottom.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 127, Varulvhamn; 0.37b world data)"
+    },
+    {
+      "text": "The wolfaur are aggressive (aggro 200) in this world data, like the werewolves.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 127, Varulvhamn; 0.37b world data)"
+    },
+    {
+      "text": "Glosses to verify: Swedish gifttand 'poison tooth', huggtand 'fang', grym 'grim', vild 'wild', brumma 'growl', frukta 'fear', forodande (förödande) 'devastating'; German Tarnkappe 'cloak of invisibility' (the Nibelungenlied).",
+      "provenance": "original",
+      "source": "Swedish and German glossary, to verify"
+    },
+    {
+      "text": "The king's three names, the lords' table, the minutes of the council and the wolfaur's manners are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Below Skona Ravine, past the rope bridge and the werewolf camps, a tunnel goes down into Varulvhamn, the werewolves' haven. It is not a war-hold. The werewolves of Skona are the ones who go out burning; the ones in Varulvhamn are the court. Their king, Hresvelgr, sits at the bottom of it with his royal guard, and the werewolf nobles of all Midgard come down to talk politics in his hall. He took his name from the eagle-giant of the old songs whose wings make the wind. Nobody knows why a wolf chose a bird's name. Perhaps because the wind goes where it likes, and so does he.\n\nThe court is old and has its customs. The king is called by three names, and his heralds use all three, one after another, so that a stranger who hears them thinks there are three kings in the hall; the wolfaur say it is because the king has three natures, wolf and man and the thing between, and each must be greeted. Below him sit three high lords, each with a wing of the haven: Athulf who wants war, Modolfr who wants it later, and Tarnkappe, whose name in the southern tongue means the cloak that hides, and who is never quite where he seems to be. Below them sit the seven lords at their table in the middle halls, whose names are their natures: poison-tooth and fang, grim and wild, growl and the rest. They argue more than they govern. The nobles and the bodyguards stand behind them.\n\nThe werewolves share the haven with the wolfaur, the older generation, nearly natural in their wolf shapes and further from the old savagery: lunarians who keep the moon's count, pragmatics who keep accounts, quixots who keep causes. They are the werewolves' embarrassment, philosophical and open-minded, inclined to say that the Norse are neighbours and not prey. They will still defend their kin, and quickly; a stranger who mistakes their manners for softness finds out the difference in the first breath. The wargs of the lower halls, the fearful and the devastating, are not philosophical at all.\n\nThe upper tunnels are where the young ones live, the churls and scruffs and crazed lycantics who have not yet been taught manners, and the court keeps them there on purpose, between itself and the world. The haven has more than one way out. Some of its ramps climb straight back up to Skona, and the werewolves use them to come and go without passing their own door.\n\nThe werewolves keep one law above the court's customs: a wolf answers to the pack and never to a master. That is why none of them will set foot in Malmohus. In the third winter of her court the dragon there summoned the haven's lords to her ruins, and the high lords went, with an old wolfaur and the king's envoy, and her roar held every one of them still while she named her terms, all but the envoy, who had stopped at the outer wall to listen from there. Hresvelgr heard them in his hall and refused her in the words of the one law. The varulv still say 'stand at the outer wall' of a quarrel best heard from a distance.\n\nThe Norse towns of Skona and Svealand do not love the haven. But the old hunters say that while the court argues, the burnings are fewer, and that the day Varulvhamn stops arguing is the day to bar the doors.",
+  "legend": "Varulvhamn is a good dungeon for the high thirties into the forties: everything comes in packs, and it goes deep. Entrance is south-west of the Circle of Stones in Skona Ravine. Some ramps inside zone you straight back up to Skona, so watch your step on the slopes. The upper tunnels are churls, scruffs and lycantics. The lords' chamber in the middle has seven named lords at one table with bodyguards and nobles; pull them one at a time if you can, because the room links. The wolfaur look calm and talk philosophy, but they're aggressive like everything else, so don't walk past them. Each high lord holds a wing. The lower halls are packed with elite guards, advisors and frukta wargs: a full group, and pull carefully. The king sits at the very bottom with the royal guard; his heralds call him by three names and you'll see all three. Old saying: while the court argues, Skona sleeps.",
+  "atmosphere": {
+    "firstEntry": [
+      "The werewolves' haven. A court, not a camp.",
+      "Wolves argue politics in the dark. Mind your manners.",
+      "Claw-marks on the walls, at the height of a man.",
+      "Somewhere below, a herald calls a name three times."
+    ],
+    "areas": [
+      {
+        "name": "the upper tunnels",
+        "x": 33225,
+        "y": 31529,
+        "z": 14592,
+        "radius": 2000,
+        "lines": [
+          "Young wolves, churls and scruffs. No manners yet.",
+          "The court keeps its young between itself and the world."
+        ]
+      },
+      {
+        "name": "the lords' table",
+        "x": 31600,
+        "y": 35500,
+        "z": 14246,
+        "radius": 1200,
+        "lines": [
+          "Seven lords at one table. All of them talking.",
+          "Poison-tooth, fang, grim, wild: names that are natures."
+        ]
+      },
+      {
+        "name": "the wolfaur halls",
+        "x": 30049,
+        "y": 32066,
+        "z": 13930,
+        "radius": 2200,
+        "lines": [
+          "Old wolves talk philosophy. Their teeth are not old.",
+          "A lunarian keeps the moon's count on the wall."
+        ]
+      },
+      {
+        "name": "the high lords' wings",
+        "x": 27569,
+        "y": 27232,
+        "z": 13758,
+        "radius": 3000,
+        "lines": [
+          "Elite guards stand in the high lords' wings.",
+          "Advisors whisper. The wargs listen."
+        ]
+      },
+      {
+        "name": "the warg runs",
+        "x": 23261,
+        "y": 27350,
+        "z": 12996,
+        "radius": 2500,
+        "lines": [
+          "Frukta wargs, the fearful ones. They bite first.",
+          "The lower halls stink of wolf and old blood."
+        ]
+      },
+      {
+        "name": "the king's hall",
+        "x": 16052,
+        "y": 24705,
+        "z": 12681,
+        "radius": 2500,
+        "lines": [
+          "The king's hall. His herald calls him three ways.",
+          "The royal guard does not argue. It waits."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "king hresvelgr rules the werewolves of varulvhamn. hresvelgr was a giant eagle in the old songs. nobody knows why a wolf took the name",
+      "the wolfaur in varulvhamn are the old werewolves. calmer, they talk philosophy. the young ones hate it",
+      "werewolf nobles come to varulvhamn to talk politics. its their court",
+      "the king has three names and his heralds use all three. wolf, man and the thing between, the wolfaur say",
+      "tarnkappe means the cloak that hides. hes never quite where he seems",
+      "athulf wants war now, modolfr wants it later. thats the whole court",
+      "the seven lords at the table argue more than they rule",
+      "the court keeps the young wolves in the upper tunnels, between itself and the world",
+      "a wolf answers to the pack and never to a master. thats the werewolves one law",
+      "hresvelgrs envoy stood at the outer wall of the dragons ruins. her roar never held him",
+      "the lunarians keep the moons count on the wall",
+      "while the court argues, skona sleeps"
+    ],
+    "rumour": [
+      "[the werewolves|even the werewolves] of skona [will not|wont] [set foot|go] [in|near] malmohus. [ask yourself|think about] [why|what they know]",
+      "varulvhamn werewolves hit like a falling tree",
+      "the wolfaur look friendly. they arent. [learned that the hard way|ask my corpse]",
+      "some ramps in varulvhamn drop you straight back in skona. [annoying|happened to me twice]",
+      "the day varulvhamn stops arguing is the day to bar the doors, the old hunters say",
+      "the lords table links. pull one and you get the room",
+      "frukta means fear. the frukta wargs dont seem afraid of anything",
+      "tarnkappe moves around his wing. you never find him where you left him"
+    ],
+    "tell": [
+      "varulvhamn is under skona ravine, sw of the circle of stones. werewolves and wolfaur, king hresvelgr at the bottom",
+      "varulvhamn? werewolf court. good xp in your thirties, packs everywhere",
+      "is varulvhamn hard? the lower halls are, full group",
+      "the seven lords are at one table in the middle halls",
+      "the king is at the very bottom with the royal guard",
+      "watch the ramps, some zone you back to skona"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Varulvhamn, the werewolves' haven, where King [Hresvelgr] holds court, the [high lords] scheme and the [wolfaur] argue.\"",
+    "topics": {
+      "Hresvelgr": "The werewolf king, who took the name of the eagle-giant whose wings make the wind. The wind goes where it likes, and so does he. His heralds call him by [three names].",
+      "wolfaur": "The older generation, nearly natural in their wolf shapes. They say the Norse are neighbours, not prey. They will still defend their kin, quickly. See [manners].",
+      "three names": "The king's heralds call him three ways, one after another. The [wolfaur] say it is because he has three natures, wolf and man and the thing between, and each must be greeted.",
+      "high lords": "Athulf, who wants war; Modolfr, who wants it later; and Tarnkappe, the cloak that hides. Each holds a wing of the haven below the [lords' table].",
+      "lords' table": "Seven lords in the middle halls whose names are their natures: Gifttand, Huggtand, Grym, Vild, Brumma, Bete and Ungar. They argue more than they rule. See the [high lords].",
+      "manners": "The [wolfaur] are courteous and philosophical and will kill you in the first breath if you mistake that for softness. The young wolves of the [upper tunnels] have no manners at all.",
+      "upper tunnels": "Where the court keeps its young, the churls and scruffs and crazed lycantics, between itself and the world. Some of the haven's ramps climb straight back to Skona.",
+      "one law": "A wolf answers to the pack and never to a master. [Hresvelgr] answered the dragon of Malmohus with it, and no werewolf has set foot in Malmohus since."
+    }
+  },
+  "book": {
+    "title": "Minutes of a Werewolf Council",
+    "pages": [
+      "Overheard, and set down by Hallkel Thorvaldsson, a hunter of Skona who hid in a side tunnel of Varulvhamn for a night. The high lord Athulf said the Norse towns should be burned before the spring. A wolfaur, very old, said the Norse had not burned Skona when they could have. The high lord said that was weakness. The wolfaur said it was manners. King Hresvelgr said nothing for a long time, and then he said that a wolf answers to the pack and never to a master, and that the day the pack burns towns because it is told to, it has a master. Then they all went to eat. I left while they were eating.",
+      "The second night I did not leave. I had come down by the upper tunnels, past the young ones, who fight among themselves so much that a man who keeps still can walk through them like a draught. I lay in the side tunnel above the lords' table and listened to seven lords argue about a deer. It took until morning. The one called Gifttand wanted it given to the high lord. The one called Vild wanted to eat it. The one called Grym said nothing. In the end Vild ate it, and the others pretended not to notice. I have sat in the hall of a jarl. It was much the same.",
+      "The king's crier calls him three times when he enters, and three different names, and I thought at first there were three kings, and so did my grandfather, who heard it before me. A wolfaur told me, years after, when I was too old to be worth killing, that the king has three natures and each must be greeted, or the one not greeted will take offence. I asked which nature had taken offence most often. The wolfaur said: the one between. I asked what the one between was like. The wolfaur looked at me for a long time and said that I would not want to meet it, and that I had very nearly met it twice already, in the upper tunnels, without knowing.",
+      "Of the high lords, Athulf is the one who shouts, and Modolfr is the one who agrees with him and then waits, and Tarnkappe is the one I never saw. I heard him. He spoke from the left of the hall and then from the right of it without moving, and when the torches were lit there was nobody where the voice had been. The other lords do not look for him when he speaks. They know better. I asked a lord once, through a wolfaur, where Tarnkappe sits at feasts. The lord said: in the seat that looks empty. Nobody else sits there. Nobody puts food in front of it either, and in the morning the plate is clean.",
+      "The wolfaur said one more thing to me, the night it decided not to kill me. It said that the young ones in the upper tunnels think the old ones are soft because they talk. It said that talk is what a wolf does when it has already decided it can win, and is deciding whether to bother. Then it walked me to the ramp that goes up to Skona, and I came out under the stars, and I have not been down since. My son wants to go. I have given him this book and told him to read the last page twice."
+    ]
+  },
+  "bosses": [
+    "hresvelgr",
+    "high-lord-athulf",
+    "high-lord-modolfr",
+    "high-lord-tarnkappe",
+    "lords-of-the-table",
+    "ritter",
+    "manstrale",
+    "thelod",
+    "faz"
+  ]
+}

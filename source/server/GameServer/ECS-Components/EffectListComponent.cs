@@ -108,9 +108,8 @@ namespace DOL.GS
                     if (existingEffect.IsConcentrationEffect())
                     {
                         ISpellHandler spellHandler = existingEffect.SpellHandler;
-                        int radiusToCheck = EffectHelper.GetConcentrationEffectActivationRange(spellHandler.Spell.SpellType);
 
-                        if (!spellHandler.Caster.IsWithinRadius(effect.Owner, radiusToCheck))
+                        if (!EffectHelper.IsConcentrationEffectInRange(spellHandler.Caster, effect.Owner, spellHandler.Spell.SpellType))
                             continue;
                     }
 
@@ -408,12 +407,10 @@ namespace DOL.GS
             if (effectOwner == caster)
                 return;
 
-            int radiusToCheck = EffectHelper.GetConcentrationEffectActivationRange(spellHandler.Spell.SpellType);
-
             lock (_effectsLock)
             {
                 // Check if the concentration buff needs to be enabled or disabled, based on its current state and the distance between the player and the caster.
-                if (caster.IsWithinRadius(effectOwner, radiusToCheck))
+                if (EffectHelper.IsConcentrationEffectInRange(caster, effectOwner, spellHandler.Spell.SpellType))
                 {
                     if (spellEffect.IsDisabled)
                     {

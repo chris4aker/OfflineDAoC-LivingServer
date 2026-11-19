@@ -1,0 +1,332 @@
+{
+  "id": "stonehenge-barrows",
+  "name": "Stonehenge Barrows",
+  "realm": "Albion",
+  "regions": [
+    20
+  ],
+  "aliases": [
+    "the barrows",
+    "stonehenge"
+  ],
+  "summary": "The barrows under the great circle on Salisbury Plains: the first dead, the kings Merlin's stones were raised for, and a wizard keeping a door, all awake by rank.",
+  "facts": [
+    {
+      "text": "The Stonehenge Barrows are entered within the circles of Stonehenge on Salisbury Plains: a tomb haunted by undead that only highly skilled warriors should enter.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Salisbury_Plains"
+    },
+    {
+      "text": "Its dead: megalith, barrow and tomb wights, skeletal druids and druidesses, a skeletal high priestess, saxonbone and redbone skeletons, stone sentinels, petrified grovewood, soul harvesters, sacrificial souls, ossuary guardians, spectral wizards, grave goblins and pendrakes.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Medieval British legend, not game canon: Geoffrey of Monmouth has Merlin bring the stones from across the sea as a monument to the slain Britons, and buries Aurelius and Uther there (to verify details).",
+      "provenance": "myth",
+      "source": "Geoffrey of Monmouth, Historia Regum Britanniae (to verify)"
+    },
+    {
+      "text": "Existing bot chat: the heart of the barrows is called the barrow of Merlin; the shade of Uther Pendragon, the king's wight and wizard Lichas walk there; a passage ends in a hollow-sounding wall; touching the stones before a raid is luck.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    },
+    {
+      "text": "The barrows (region 20, about 315 spawns) have two levels: upper halls by the stair with grave goblins, Saxon skeletons, soul harvesters, fallen warriors and Wizard Lichas's dead; lower barrows with barrow, megalith and tomb wights, Celtic liches, tomb keepers, deep goblins, a petrified grove and skeletal druids.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 20 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Named: Wizard Lichas (48), two Priestesses of Purity (44, faction Coventina) over the Shade of Uther Pendragon (52), the Shade of Ambrosius Aurelianus (54) with stone sentinels and pendragon ardents, the King's Wight (50) at the bottom.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 20 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests: Feast of the Decadent (destroy Wizard Lichas), Symbol of the Broken (slay the Shade of Uther; slay the King's Wight at the bottom of the Barrows for the Lethantis Association), Hands of Fate (give the restless shade the Scroll of Fate and the Tome of the Dead), Passage to Eternity (templars seeking to defile the tomb of Uther). Weakened Bonds: 'Morgana's power has hold of the tombs below these rings'.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "British legend, not game canon: Geoffrey of Monmouth has Merlin bring the Giants' Dance from Ireland as a memorial to the Britons slain by Hengist; Aurelius Ambrosius and then Uther are buried there; Uther takes the name Pendragon from a dragon-shaped star seen at Aurelius's death.",
+      "provenance": "myth",
+      "source": "Geoffrey of Monmouth, Historia Regum Britanniae, VIII (to verify details)"
+    },
+    {
+      "text": "Romano-British religion, not game canon: Coventina was a goddess of a sacred spring, with a shrine at Carrawburgh on Hadrian's Wall.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Coventina"
+    },
+    {
+      "text": "The dead waking by rank, Lichas's school, the priestesses washing Uther's chamber and Dafydd of the harp's account are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The first dead. The stones on Salisbury Plain were old before Albion had a name, and the barrows under them are older than the stones. The people who raised the first ring buried their own beneath it, chamber under chamber, with their priests and priestesses and the groves they had kept, and the deepest barrows still hold them: druids in their bones, a high priestess with her rite half said, trees turned to stone where a grove was buried standing. Over them, in their turn, the barrow-builders laid their warriors and the wights that are what is left of them, and the ossuary filled with Celtic dead until its keepers stacked the bones to the roof. The stones above were the lid.\n\nThe kings. The chroniclers of Camelot say Merlin brought the great stones over the sea, the Giants' Dance, to stand over the Britons the Saxons slew at a feast of peace, and that the kings who came after were buried within the ring. Ambrosius Aurelianus, who avenged that feast, was laid there; then his brother Uther, who took the name Pendragon from a dragon of fire in the sky the night Ambrosius died, and whose household beasts and banner-dragons went down with him. The Saxons came too, in their time, and stayed in their own graves in the upper halls. Somewhere at the bottom of it all lies a king older than any of them, who is a wight now, and whom no chronicle names. And the heart of the barrows has always been called Merlin's, though everyone who has walked every hall says he is not in it.\n\nWhat went wrong. A barrow is a door that is meant to stay shut. The druids of the Plains say the ley of their seven rings runs to the great circle and down, and that what holds the dead of the barrows is the order of the rings, kept year by year; the Academy says Morgana's power has hold of the tombs below the rings, and that Archdruid Glasan has been loosening that order ring by ring. Grave goblins dig in from above, and tunnelers and cave hounds with them; grave-robbers from the Plains dug after them, with Lord Osric's papers in their coats, and are still down there, decaying. The dead are awake, and because they were buried by rank they woke by rank, and they keep a court.\n\nWho keeps house there now. The upper halls belong to the newer dead: the grave goblins and their diggings, the Saxon graves, the soul harvesters at their work, the fallen warriors in the field where they were laid out, and a wizard called Lichas, who the minstrels say was Merlin's pupil and stayed behind to keep a door when his master went away, and who keeps a school of the dead round him: advisors, followers who repented too late, phantoms. Two priestesses of Coventina, the old goddess of the sacred springs whose shrines stood along the Wall in Rome's day, keep a well in the west halls, side by side, and directly below their well the shade of Uther Pendragon walks the chamber where he was laid. Further west the shade of Ambrosius is restless among stone sentinels and his brother's dragons. The lower barrows belong to the oldest: the wights in their mounds, the liches of the ossuary, the tomb keepers, the deep goblins at the lowest point of all, the druids' grove of stone, and the King's Wight at the very bottom among his vipers. Somewhere a passage ends in a wall that sounds hollow when knocked. Nobody has found the way past it.\n\nWhy it matters to Albion. The barrows are the one place in Albion where the dead outrank the living, and every power in the realm has business with them. Templars have come to defile Uther's tomb and been turned back. The Academy sends the realm down to lay the old king's shade and to end Lichas; Loremaster Alain sends the Scroll of Fate and the Tome of the Dead to the restless Ambrosius; the Lethantis scholars want the King's Wight's skull. Half the realm touches the stones for luck before it goes anywhere dangerous. The other half says the stones are touching back.",
+  "legend": "Stonehenge Barrows is the crypt under the great circle on Salisbury Plains, levels 37 to 55, in through the stones. Two levels: the upper halls in the south near the stair (grave goblins, saxonbones, soul harvesters, fallen warriors, Lichas's lot) for the late thirties and forties, and the lower barrows in the north (wights, Celtic liches, tomb keepers, deep goblins, the stone grove) for the late forties and up. Undead everywhere: crush for the skeletons, slash for the wights. Wizard Lichas (48) for Feast of the Decadent sits among his advisors and repentant followers, clear them first. The two Priestesses of Purity stand together over Uther's chamber and come as a pair. The Shade of Uther (Symbol of the Broken), the Shade of Ambrosius (Hands of Fate) and the King's Wight at the bottom (skull for the Lethantis) are the big three. Touch the stones before you go in; half the realm does. Nobody has got past the hollow wall.",
+  "atmosphere": {
+    "firstEntry": [
+      "Under the stones. Here the dead outrank the living.",
+      "The roof is the stones. They are listening.",
+      "Every grave down here was dug by rank.",
+      "Somewhere below, a king no chronicle names."
+    ],
+    "areas": [
+      {
+        "name": "the stair down",
+        "x": 31600,
+        "y": 33000,
+        "z": 16300,
+        "radius": 1000,
+        "lines": [
+          "Under the stones. Here the dead outrank the living.",
+          "Diggers came down this way. Not all went up."
+        ]
+      },
+      {
+        "name": "the goblins' diggings",
+        "x": 31300,
+        "y": 30000,
+        "z": 15950,
+        "radius": 1200,
+        "lines": [
+          "Grave goblins tunnel the kings' earth.",
+          "Hounds in the diggings, and fresh spoil."
+        ]
+      },
+      {
+        "name": "the Saxon graves",
+        "x": 29900,
+        "y": 33500,
+        "z": 15955,
+        "radius": 800,
+        "lines": [
+          "Saxon bones, buried their own way.",
+          "The newcomers' graves. Newer by a few hundred years."
+        ]
+      },
+      {
+        "name": "the soul harvest",
+        "x": 29358,
+        "y": 29211,
+        "z": 15401,
+        "radius": 700,
+        "lines": [
+          "Something gathers souls here like grain.",
+          "The air is thick and pale and moving."
+        ]
+      },
+      {
+        "name": "Lichas's school",
+        "x": 28000,
+        "y": 30300,
+        "z": 15900,
+        "radius": 900,
+        "lines": [
+          "A wizard teaches the dead. They repent, too late.",
+          "Advisors, followers, phantoms. And Lichas."
+        ]
+      },
+      {
+        "name": "the field of the fallen",
+        "x": 27700,
+        "y": 33400,
+        "z": 15800,
+        "radius": 800,
+        "lines": [
+          "Warriors laid out in rows. They rise in rows.",
+          "Vigilant souls keep the field."
+        ]
+      },
+      {
+        "name": "Coventina's well",
+        "x": 27162,
+        "y": 31745,
+        "z": 16223,
+        "radius": 400,
+        "lines": [
+          "Two priestesses keep a well over a king.",
+          "The spring-goddess's water. Pure, and cold."
+        ]
+      },
+      {
+        "name": "Uther's chamber",
+        "x": 27192,
+        "y": 31692,
+        "z": 15712,
+        "radius": 450,
+        "lines": [
+          "The Pendragon's chamber. His shade walks it.",
+          "A king's grave. The king is not resting."
+        ]
+      },
+      {
+        "name": "the Pendragon hall",
+        "x": 26200,
+        "y": 31700,
+        "z": 15900,
+        "radius": 900,
+        "lines": [
+          "Stone sentinels and the Pendragon's dragons.",
+          "Ambrosius is restless here. He waits for word."
+        ]
+      },
+      {
+        "name": "the megalith chamber",
+        "x": 29872,
+        "y": 23211,
+        "z": 13824,
+        "radius": 800,
+        "lines": [
+          "The stones above are watching through the roof.",
+          "Megalithic terrors. The roof's own children."
+        ]
+      },
+      {
+        "name": "the wights' mounds",
+        "x": 30700,
+        "y": 24400,
+        "z": 14000,
+        "radius": 1100,
+        "lines": [
+          "Barrow wights in their mounds, and vipers.",
+          "Warriors who would not lie down."
+        ]
+      },
+      {
+        "name": "the ossuary",
+        "x": 31600,
+        "y": 22200,
+        "z": 13900,
+        "radius": 900,
+        "lines": [
+          "Bones stacked to the roof. Some of them are standing.",
+          "Celtic liches keep the ossuary's count."
+        ]
+      },
+      {
+        "name": "the King's barrow",
+        "x": 32250,
+        "y": 25100,
+        "z": 14100,
+        "radius": 700,
+        "lines": [
+          "The bottom of the barrows. A king, and his vipers.",
+          "No chronicle names him. He remembers."
+        ]
+      },
+      {
+        "name": "the tomb keepers' gallery",
+        "x": 31600,
+        "y": 27700,
+        "z": 13950,
+        "radius": 900,
+        "lines": [
+          "Tomb keepers, and fiends of scale and fire.",
+          "Someone kept these tombs. Something still does."
+        ]
+      },
+      {
+        "name": "the deep diggings",
+        "x": 33607,
+        "y": 27443,
+        "z": 13443,
+        "radius": 600,
+        "lines": [
+          "The lowest point. Deep goblins dig on.",
+          "Further down than any king was laid."
+        ]
+      },
+      {
+        "name": "the priestess' hall",
+        "x": 34300,
+        "y": 25200,
+        "z": 14030,
+        "radius": 900,
+        "lines": [
+          "Druid dead keep a rite older than the stones.",
+          "A grove buried standing, turned to stone.",
+          "Sacrificial souls, still waiting for the knife."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "touch the stones at stonehenge for luck before a big raid. half the realm does it",
+      "merlin's barrow lies under salisbury, right under the stones",
+      "the barrows are the only place in albion where the dead outrank the living",
+      "[the shade of uther pendragon|uther's shade] walks the barrows [and not merlin|while merlin is nowhere]. [that tells you something|make of that what you will]",
+      "the barrows were dug before the stones. the stones are the lid",
+      "ambrosius is buried in the barrows too. uther's older brother",
+      "uther took the name pendragon from a fire dragon in the sky, the pendrakes in the barrows are his",
+      "the priestesses of purity keep coventina's well right over uther's chamber",
+      "lichas keeps a school of the dead in the barrows. his followers repented too late",
+      "the kings wight at the bottom of the barrows is older than any king in the books",
+      "the dead in the barrows woke up by rank. thats why they keep a court",
+      "the grave goblins in the barrows are alive, they just dig there"
+    ],
+    "rumour": [
+      "there's a passage in the barrows that ends in a wall that sounds hollow. never found the way past it",
+      "merlin isn't dead. the barrow's [empty|for show], mark me",
+      "[heard|someone said] the priestesses pour their well water down to uther every day",
+      "heard ambrosius keeps asking if the scroll has come",
+      "[heard|someone said] the lethantis lot want the kings wight's skull for something nasty",
+      "heard templars tried to dig up uther. didnt go well for them",
+      "[heard|someone said] glasan is loosening the rings and thats why the barrows woke",
+      "heard the hollow wall is the door lichas keeps"
+    ],
+    "tell": [
+      "stonehenge barrows? under the stone circle on salisbury plains. wights, druid skeletons, uther's shade. forties, bring a good group",
+      "where are the barrows? inside the great circle on salisbury plains",
+      "is the barrows hard? upper halls late 30s, lower barrows late 40s and up",
+      "where's lichas? upper west halls, in the middle of his advisors and followers",
+      "where's the kings wight? the very bottom of the lower barrows, north side",
+      "who's in the barrows for quests? lichas, uther's shade, ambrosius, the kings wight"
+    ]
+  },
+  "loremaster": {
+    "intro": "Under the stones of Salisbury lie the barrows of kings, and at their heart the barrow of [Merlin]. He is not in it. [Uther] is, and his brother [ambrosius], and the Pendragon's [dragons]. Ask of [lichas] and the [feast of the decadent], of [coventina] and the [priestesses of purity], of the [king's wight], the [rings] that hold the dead, or the [hollow wall].",
+    "topics": {
+      "merlin": "The chroniclers say he brought the stones over the sea, the Giants' Dance, for the graves of the Britons the Saxons slew at a feast of peace, and so the barrow bears his name. Those who have walked every hall say it is empty of him. Ask the minstrels about [lichas].",
+      "uther": "Arthur's father, whom the chronicles bury inside the ring. His shade walks the chamber below [coventina]'s well. The Academy sends the realm down to lay it; templars have come to defile his tomb.",
+      "lichas": "A wizard, the minstrels say Merlin's pupil, who stayed behind to keep a door when his master went away. He keeps a school of the dead round him in the upper halls. Elvinia Dareal of Caer Witrin wants him ended for the [feast of the decadent].",
+      "ambrosius": "Ambrosius Aurelianus, king before his brother Uther, who avenged the Britons slain at the feast of peace. His shade is restless in the west halls among stone sentinels and the Pendragon's [dragons], and asks whether the scroll and the tome have come. Loremaster Alain sends them.",
+      "dragons": "The pendrakes and pendragon ardents of the west halls: the small drakes Uther kept and the ones that carried his banners, buried with the Pendragon's household. The chronicles say Uther took his name from a dragon of fire seen in the sky the night Ambrosius died.",
+      "coventina": "The Romano-British goddess of sacred springs, whose shrines stood along Hadrian's Wall. Two [priestesses of purity] keep her well in the west halls, directly over [uther]'s chamber, and pour its water down to him.",
+      "priestesses of purity": "Two women in white, of the order of [coventina], who keep a well in the west halls side by side and are never apart. They say they keep the king's chamber washed. Strike one and both turn.",
+      "king's wight": "A king older than any chronicle, at the very bottom of the barrows with his tomb wights and vipers about him. The Lethantis Association wants his skull.",
+      "hollow wall": "A passage in the barrows ends in a wall that sounds hollow when knocked. Nobody has found the way past it. Some say it is the door [lichas] keeps.",
+      "feast of the decadent": "Elvinia Dareal's work out of Caer Witrin: the hollow man Dathmul in Snowdonia, Vera Astyrian's scroll, and the wizard [lichas] in the barrows, all one gathering of the dead.",
+      "rings": "The druids of the Plains say the ley of their seven rings runs to the great circle and holds the barrows' dead in order; the Academy says Morgana's power has hold of the tombs below the rings, and Archdruid Glasan loosens them."
+    }
+  },
+  "book": {
+    "title": "A Minstrel's Note on the Barrow of Merlin",
+    "pages": [
+      "A Minstrel's Note on the Barrow of Merlin, by Dafydd of the harp, of West Downs, written at the inn there for anyone who asks me to sing it and will not believe the song. Every minstrel in Camelot sings that Merlin lies under the stones of Salisbury, and every adventurer who has been down there swears he does not. I went to see. I found the shade of the old king, which I did not like, and a wizard gone to bone and spite who called himself Lichas and asked me whether my master had sent me. I said I had no master. He said that was a pity, because his had been gone a very long time, and he was tired of keeping the door. I did not ask which door. I wish I had.",
+      "I went down a second time, because a minstrel who will not go back is a liar. The stair comes down into the diggings of the grave goblins, who are not dead and have no business there, and the hounds they keep, and beyond them the Saxons in their own graves, buried their own way, facing their own way, with their own small spears. A grave-robber from the Plains lay in a side passage with his spade beside him and his purse still full. He sat up when I passed and held out his hand, as a man does at a toll. I gave him nothing. He lay back down, and I heard him counting.",
+      "Of the wizard's school. Lichas keeps the dead about him in a hall the soul harvesters have left alone: spiritual advisors who advise nobody, followers who repented of something when it was too late, phantoms who listen. He teaches them. I could not hear what. The repentant ones stand nearest him, as pupils do, and I think if a stranger struck the master the whole class would stand up. I did not strike him. He asked me again whether my master had sent me. I said I would ask. He said the last one who said that was Merlin, and laughed, and the class laughed with him, a beat behind, as pupils laugh.",
+      "Of the well. In the west halls two women in white keep a well, side by side, and they are priestesses of Coventina, the goddess of springs, whose shrines the Romans kept along the Wall. They are not dead. I do not know what they are. They drew water while I watched and poured it on the floor, and the floor took it, and from underneath, where the water went, a man in a king's harness looked up. That is Uther's chamber, they told me, and they keep it washed. They would not say for whom.",
+      "Of the brothers. Ambrosius Aurelianus, who was king before Uther and avenged the Britons slain at the feast of peace, is further west among stone sentinels that were carved, I think, to stand at his door, and among Uther's dragons, the little drakes the Pendragon kept and the ardent ones that carried his banners. Ambrosius is restless. He spoke to me. He asked whether the scroll had come, and the tome. Loremaster Alain in Camelot says he knows what that means and has sent for them, and that a king who asks after his own fate has not finished with it.",
+      "Of the bottom, last. Below the halls the barrows go down to the oldest dead: wights in their mounds, the liches of the ossuary, a druid grove buried standing and turned to stone, and at the very bottom a king with serpents at his feet whom no chronicle names. The Lethantis scholars want his skull. I knocked on a wall on the way back up and it sounded hollow. I did not knock again. Whatever door Lichas keeps, I think I know which side of it I was on. I touched the stones on the way out, as everyone does. They were warm."
+    ]
+  },
+  "bosses": [
+    "shade-of-uther-pendragon",
+    "shade-of-ambrosius-aurelianus",
+    "kings-wight",
+    "wizard-lichas",
+    "priestess-of-purity"
+  ],
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers",
+    "keltoi"
+  ]
+}

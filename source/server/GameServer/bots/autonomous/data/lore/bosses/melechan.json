@@ -1,0 +1,72 @@
+{
+  "id": "melechan",
+  "name": "Melechan",
+  "npcNames": [
+    "Melechan"
+  ],
+  "locationId": "odins-gate",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "blodfelag",
+    "realm-enemies"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Melechan is a level-41 blodfelag (faction Blodfelag; the blodfelag haxa's model) in Odin's Gate (616,028/618,599), alone; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Albion's 'Secret Orders' (Heather Barclay of Swanton Keep) sends Albion's players to 'Kill the necromancer Melechan in the bandit camp in Odin's Gate'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Melechan as the blodfelag's agent at the gate is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Melechan is a blodfelag of West Svealand's blood-fellowship who went north to the frontier, to Odin's Gate, where the realms' roads meet, and set up among the bandits there as a dealer in the dead. Albion calls him a necromancer. The blodfelag call him their eyes on the gate. Midgard's huscarls at the portal keeps call him a nuisance, because he sells to all three realms and none of them can catch him at it.\n\nAlbion's spymasters at Swanton Keep send their own people over the frontier to kill him, which tells Midgard something about what he has been selling them. The Huginfel watch-captain Gudlor, who keeps a book of the blodfelag, has Melechan's name on the page of those who went over and did not come back, and under it, in a different hand, the words 'not ours'. The blodfelag's oath, the frontier says, has never been to a realm.",
+  "legend": "Melechan is a level 41 blodfelag 'necromancer' alone in Odin's Gate. He's actually an Albion quest target (Secret Orders), so Albion players come for him. For Midgard he's just a hostile named on the frontier. Blodfelag faction, but nothing of his faction nearby. No spells in his data. Watch for frontier warbands passing through Odin's Gate; he stands near their road.",
+  "yells": {
+    "aggro": [
+      "The dead pay better than the living. You'll see.",
+      "Albion sent you? No? Then who?"
+    ],
+    "death": [
+      "The oath... was never yours..."
+    ],
+    "slay": [
+      "Another for the market."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A blodfelag deals in the dead among the bandits."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "melechan is a 41 blodfelag in odins gate, alone",
+      "albion players hunt him for a quest, watch for them"
+    ],
+    "aftermathWin": [
+      "melechan down",
+      "beat the albs to him"
+    ],
+    "rumour": [
+      "melechan sells the dead to all three realms",
+      "albion sends its own people over the frontier to kill melechan"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Melechan",
+    "text": "A blodfelag of West Svealand who set up among the bandits of Odin's Gate as a dealer in the dead, and sells to every realm. Albion sends its own to kill him. See [road]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed Melechan's market at Odin's Gate in {minutes} minutes."
+  }
+}

@@ -13,7 +13,9 @@ namespace DOL.GS
         // metadata is world-lifetime data; mesh queries remain on the game loop.
         private sealed record CampMonster(string InternalId, string Name, int X, int Y, int Z,
             int EffectiveLevel, ushort CurrentRegionID, Zone CurrentZone,
-            AutonomousDungeonGoalCatalog.Point DungeonPoint);
+            AutonomousDungeonGoalCatalog.Point DungeonPoint, bool Aggressive = false, bool Flying = false,
+            // True 1.65: what the background builder needs for camp traits (AutonomousCampKnowledge)
+            int AggroRange = 0, bool Caster = false, byte BodyType = 0, int Race = 0);
 
         private static BackgroundSnapshotBuilder<CampMonster[], CampCatalogCell[]> _campBuilder;
         private static CampCatalogCell[] _campDraft;
@@ -94,6 +96,9 @@ namespace DOL.GS
                     // result. A worker can never expose a partly built catalog.
                     CampCatalogCell[] published = _campProjected.Where(cell => cell != null).ToArray();
                     Volatile.Write(ref _campCatalog, published);
+                    PublishCampSafeSpots(published);
+                    AutonomousCampCompetition.PublishCatalogWithPools(published.Select(cell =>
+                        (cell.Id, cell.RegionId, cell.X, cell.Y, cell.MonsterName, cell.LiveMobCount, cell.IsDungeon, cell.PoolMobs)));
                     AutonomousDungeonPopulationPolicy.PublishCatalog(published
                         .Where(cell => cell.IsDungeon)
                         .Select(cell => (cell.Id, cell.RegionId, cell.LiveMobCount)));
@@ -127,7 +132,15 @@ namespace DOL.GS
                     AutonomousDungeonGoalCatalog.Point point = null;
                     if (npc.CurrentZone.IsDungeon) AutonomousDungeonGoalCatalog.TryGet(npc, out point);
                     monsters.Add(new(npc.InternalID ?? string.Empty, npc.Name, npc.X, npc.Y, npc.Z, npc.EffectiveLevel,
-                        npc.CurrentRegionID, npc.CurrentZone, point));
+                        npc.CurrentRegionID, npc.CurrentZone, point,
+                        // owner 2026-11-08: camps among much stronger aggressive monsters (AutonomousCampThreatPolicy)
+                        npc.Brain is DOL.AI.Brain.StandardMobBrain mob && mob.AggroLevel > 0 && mob.AggroRange > 0,
+                        // True 1.65 (its owner 2026-11-10): flyer camps are skipped by solo bots with no ranged attack (AutonomousFlyerCampPolicy)
+                        (npc.Flags & GameNPC.eFlags.FLYING) != 0,
+                        (npc.Brain as DOL.AI.Brain.IOldAggressiveBrain)?.AggroRange ?? 0,
+                        npc.CanCastHarmfulSpells || npc.CanCastInstantHarmfulSpells,
+                        (byte)Math.Min(byte.MaxValue, (int)npc.BodyType),
+                        npc.Race));
                 }
             }
             return monsters.ToArray();
@@ -163,6 +176,25 @@ namespace DOL.GS
                 {
                     X = (int)Math.Round(point.X), Y = (int)Math.Round(point.Y), Z = (int)Math.Round(point.Z)
                 };
+                return;
+            }
+            // owner 2026-11-08: a merged camp whose own anchor has no walkable point uses a member's anchor instead of
+            // vanishing with all its members (AutonomousCampDedupe)
+            int[] fallback = cell.FallbackAnchors;
+            for (int i = 0; !starter && fallback != null && i + 2 < fallback.Length; i += 3)
+            {
+                var alternate = new ProjectionKey(cell.Zone, fallback[i], fallback[i + 1], fallback[i + 2], key.Revision);
+                if (_previousProjections.TryGetValue(alternate, out point) ||
+                    AutonomousRendezvousNavigation.TryChoosePoint(PathfindingProvider.Instance, cell.Zone,
+                        new Vector3(fallback[i], fallback[i + 1], fallback[i + 2]), out point))
+                {
+                    _buildingProjections.TryAdd(alternate, point);
+                    _campProjected[index] = cell with
+                    {
+                        X = (int)Math.Round(point.X), Y = (int)Math.Round(point.Y), Z = (int)Math.Round(point.Z)
+                    };
+                    return;
+                }
             }
         }
 
@@ -208,6 +240,8 @@ namespace DOL.GS
             _campBuilder = null;
             _campDraft = _campProjected = null;
             _campCatalog = [];
+            PublishCampSafeSpots([]);
+            AutonomousCampCompetition.PublishCatalog([]);
             AutonomousDungeonPopulationPolicy.PublishCatalog(null);
             _campBuildInFlight = _hasCampCatalog = false;
             _campProjectionError = null;

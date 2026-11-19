@@ -60,6 +60,7 @@ public static class AutonomousLivingWorld
             Log.Info($"LIVING_SESSION_START realm={GlobalConstants.RealmToName(realm)} away_minutes={(goneSince > 0 ? (now - goneSince) / 60_000 : -1)}");
             Run("session storylines", () => AutonomousBotStorylines.OnSessionStart(realm));
             Run("session debates", () => AutonomousBotDebates.OnSessionStart(realm, now));
+            Run("session tales", () => AutonomousTales.OnSessionStart(realm, now));
             Run("session roleplayers", () => AutonomousRoleplayers.OnSessionStart(realm, now));
             Run("session spammers", () => AutonomousGoldSpammers.OnSessionStart(realm, now));
         }

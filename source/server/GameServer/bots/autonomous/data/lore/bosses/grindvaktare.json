@@ -1,0 +1,117 @@
+{
+  "id": "grindvaktare",
+  "name": "Grindvaktare",
+  "npcNames": [
+    "Grindvaktare"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "dagar",
+      "relation": "the counter of days whose hall lies inside his gate"
+    },
+    {
+      "id": "master-smed",
+      "relation": "the smith of the western forge beyond"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Grindvaktare is a level-56 morvalt near Trollheim's entrance (30089, 45402; the zone-in is at 28284, 47911), among morvalt apprentices, 'anpassa foranst' morvalt and blood broms (blood gadflies).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); ZonePoint table"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60161676)"
+    },
+    {
+      "text": "Its template puts it in the Morvalt Samhalle faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Morvalt Samhalle into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish grindvakt(are) means 'gate-keeper, gate-guard'.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The first named morvalt anyone meets in Trollheim is the one who keeps the gate, and the morvalt call him nothing but that: Grindvaktare, the gate-keeper. The Valkyn say he is the oldest of the morvalt in the city and has forgotten whatever name he had before the gates broke.\n\nHe was the one who broke them. The Valkyn tell it as the beginning of the end: the morvalt swept across Aegir and came to the gates of Trollheim, and the gates held for a time, and then a morvalt with a ram of iron-tree came up out of the press and struck them until they gave. His war-chief rewarded him with the gate. He has stood inside it ever since, among the broken pieces of the doors, with the apprentices who are sent to him to be taught what a gate is for.\n\nWhat he teaches them is strange for a morvalt. He does not attack the strangers who come in. He watches them come, and lets them pass, because the morvalt of the upper city have a custom, the Valkyn say, that a stranger who walks in through the broken gate is a guest of the city until he shows himself an enemy, and the gate-keeper keeps the custom whether the city wants it or not. The Valkyn think he took it from the Fathers. Their gate-ward, too, let everyone in. The young morvalt round him do not keep the custom, and the blood broms that swarm in the warm air of the gate do not know there is one.\n\nOnce he is struck, the custom is over. The morvalt of the gate are all of the city's own, and the gate-keeper calls them the moment a guest becomes an enemy. The Valkyn guides who bring Midgard's companies in by the Stoneheart road walk past him without looking at him, and leave the gate-keeper alone whatever they do to the young ones. They say a Valkyn once asked him why he still keeps a gate that he broke. He said: someone has to know where it was.",
+  "legend": "Grindvaktare is the gate-keeper, a level 56 morvalt just inside Trollheim's entrance. He's PASSIVE (aggro 0), but his template puts him in Morvalt Samhalle, so if you hit him he can bring the morvalt around him (bring-a-friend); the apprentices and anpassa foranst near him (50-55) are aggressive on their own anyway, and blood broms buzz around. No special abilities, not CC-immune. Most groups walk past him; if you want him, clear the apprentices first. Dagar's hall is further in. If you're just passing through to Dagar or the bar, kill the aggressive apprentices on the way and walk past the gate-keeper; he won't follow. The blood broms are only 36-41 and mostly a nuisance.",
+  "yells": {
+    "aggro": [
+      "Guest no more.",
+      "The gate remembers you now. So do I.",
+      "To the gate! An enemy inside!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I broke these gates once. I can break you."
+      }
+    ],
+    "death": [
+      "Someone... must know... where it was...",
+      "The gate... is open..."
+    ],
+    "slay": [
+      "Out through the gate.",
+      "Enemy. As I thought.",
+      "Guests do not do that."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Broken gate-doors lie in pieces. A morvalt watches.",
+      "The gate-keeper lets you pass. For now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The gate-keeper calls the morvalt of the gate."
+      }
+    ],
+    "realmFirstKill": "The gate-keeper of Trollheim falls among his broken doors."
+  },
+  "botLines": {
+    "briefing": [
+      "grindvaktare is passive, walk past unless you want him",
+      "if you hit him he brings the gate morvalt",
+      "clear apprentices first",
+      "56, no tricks"
+    ],
+    "aftermathWin": [
+      "gate keeper down",
+      "cleared the apprentices then him, fine",
+      "brought two friends, managed",
+      "gate is ours for a bit"
+    ],
+    "aftermathLoss": [
+      "he called the whole gate",
+      "blood broms everywhere",
+      "hit him by accident with aoe",
+      "shouldve walked past"
+    ],
+    "rumour": [
+      "grindvaktare broke trollheims gates and was given the gate as reward",
+      "the gate keeper treats strangers as guests till they strike",
+      "grindvakt means gate guard",
+      "he keeps the gate so someone knows where it was"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Grindvaktare",
+    "text": "The gate-keeper, the morvalt who broke Trollheim's gates and was given them. He keeps a custom of guests at the broken gate. [Dagar]'s hall lies further in. See [morvalt]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the first thing my lamp showed me in Trollheim was the pieces of the gates, stone as thick as a house wall, lying where they fell. The second was a morvalt sitting among them who did not get up. The Valkyn guide walked past him and so did I, close enough to smell him. He watched me go by and said a word in the morvalt tongue. The guide said it was the word for guest. I did not feel like one. Then he looked at the guide, and said it again.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed the gate-keeper of Trollheim in {minutes} minutes.",
+    "loss": "The gate-keeper of Trollheim shut {raidLeader}'s party from {realm} out after {minutes} minutes."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "ronat",
+  "name": "Ronat",
+  "npcNames": [
+    "Ronat"
+  ],
+  "locationId": "cruachan-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ronat: level 47, a Fomorian body (model 825, size 127), faction Fomorian, at about 375,500/369,300 east of Dun Lamfhota; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Morven's Return (Cathbad of Howth): 'Ask Lucan about Morven's heirs', 'Slay Ronat, the first heir, east of Dun Lamfhota', 'Slay Uileog, the second heir', 'Slay Raemon, the third heir, at the cyclops tower'.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Ronat is Morven's first heir and the eldest of his household, and he keeps the ground east of Dun Lamfhota, as close to the Spear as a Fomorian can stand without the garrison coming out. The gorge folk say that is on purpose: Morven set his first heir there to watch the keep, because a lord who wants the hills back wants the thing the hills are fought for.\n\nRonat has never tried for the Spear. He watches. When an enemy realm takes the relic from Lamfhota, Ronat is seen on the ridge above the road, watching the thieves go, and the garrison of Dun Ailinne say he is learning how it is done. Lucan, the willow-woman's guardian across the estuary, told the realm the heirs' names, and Ronat's first. Dun Ailinne's chieftain keeps a mark on her wall for every time Ronat has been seen on the ridge during a relic theft, and the marks are a long row.",
+  "legend": "Ronat (47) is Morven's first heir, a big Fomorian east of Dun Lamfhota in Cruachan Gorge (about 375k/369k). First kill of the heirs in Morven's Return (after Cathbad, Sholto, the soul gem, the Enchantress and Lucan). A group of mid to high 40s. 5-minute respawn. Cruachan is frontier, and the relic keep is right there, so mind enemy warbands. He hits hard; keep the tank topped up.",
+  "yells": {
+    "aggro": [
+      "Father's claim. Father's hills.",
+      "You smell of Lamfhota."
+    ],
+    "phases": [],
+    "death": [
+      "The second heir... will have it..."
+    ],
+    "slay": [
+      "One less for the keep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Fomorian on the ridge, watching the Spear's keep."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ronat, Morven's first heir, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "ronat is 47, first heir, east of dun lamfhota",
+      "morven's return. watch for enemy warbands at the keep"
+    ],
+    "aftermathWin": [
+      "ronat down. [first heir|grats]",
+      "one head. [two to go|uileog next]"
+    ],
+    "aftermathLoss": [
+      "warband came through. [rip|frontier]",
+      "too low for 47. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] ronat watches the enemy realms steal the spear and learns how its done",
+      "morven set his first heir right next to lamfhota on purpose"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ronat",
+    "text": "Morven's first heir, a Fomorian set to watch Dun Lamfhota from the ridge east of it. He has never tried for the Spear; he watches the thieves who do."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ronat in Cruachan Gorge in {minutes} minutes.",
+    "loss": "Ronat turned back {realm}'s band under {raidLeader} in Cruachan Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "morven",
+      "relation": "his father"
+    },
+    {
+      "id": "uileog",
+      "relation": "the second heir"
+    }
+  ]
+}

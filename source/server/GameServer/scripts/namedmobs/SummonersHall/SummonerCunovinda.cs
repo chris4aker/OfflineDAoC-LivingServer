@@ -190,21 +190,21 @@ namespace DOL.AI.Brain
 			}
 			base.Think();
 		}
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
 		public static bool CanCast = false;
-		List<GamePlayer> Enemys_To_DD = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DD = new List<GameLiving>();
 		public void PickRandomTarget()
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000, bots: EncounterTargets.DisplacesBots(Body)))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Enemys_To_DD.Contains(player))
 							Enemys_To_DD.Add(player);//add player to list
@@ -215,7 +215,7 @@ namespace DOL.AI.Brain
 			{
 				if (CanCast == false)
 				{
-					GamePlayer Target = (GamePlayer)Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
+					GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 					RandomTarget = Target;//set random target to static RandomTarget
 					new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastBolt), 1000);
 					CanCast = true;
@@ -231,7 +231,7 @@ namespace DOL.AI.Brain
 				Body.StopFollowing();//stop follow
 				Body.CastSpell(CunovindaBolt, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);//cast bolt
 
-				RandomTarget.MoveTo(Body.CurrentRegionID, 24874, 36116, 17060, 3065);//port player to loc
+				EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 24874, 36116, 17060, 3065, DisplacementKind.Teleport, Body);//port player to loc
 
 				if(Body.TargetObject != null && Body.TargetObject != RandomTarget)
 					Body.TargetObject = RandomTarget;//set target as randomtarget

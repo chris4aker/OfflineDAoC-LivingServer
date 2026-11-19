@@ -74,6 +74,9 @@ namespace DOL.GS
                 var profile = GameServer.Database.FindObjectByKey<BotProfile>(botId);
                 if (profile == null || profile.OwnerCharacterID != owner.ObjectId)
                     return null;
+                // Bots never play the custom class (owner 2026-11-17): a saved Sluaghbinder companion stays saved, unloaded.
+                if (RefusalFor(profile) != null)
+                    return null;
 
                 // Create GameBot from profile
                 var bot = new GameBot(owner, profile.ClassId, profile.Name, profile.RaceId, profile.GenderId,
@@ -104,10 +107,7 @@ namespace DOL.GS
 
             try
             {
-                var profiles = GameServer.Database.SelectObjects<BotProfile>(
-                    DB.Column("OwnerCharacterID").IsEqualTo(owner.ObjectId).And(DB.Column("Name").IsEqualTo(botName)));
-
-                var profile = profiles.FirstOrDefault();
+                var profile = FindProfileByName(owner, botName);
                 if (profile == null) return null;
 
                 return LoadBot(owner, profile.BotId);
@@ -118,6 +118,20 @@ namespace DOL.GS
                 return null;
             }
         }
+
+        /// <summary>The owner's saved bot of that name, or null.</summary>
+        public static BotProfile FindProfileByName(GamePlayer owner, string botName)
+        {
+            if (owner == null || string.IsNullOrEmpty(botName)) return null;
+            return GameServer.Database.SelectObjects<BotProfile>(
+                DB.Column("OwnerCharacterID").IsEqualTo(owner.ObjectId).And(DB.Column("Name").IsEqualTo(botName))).FirstOrDefault();
+        }
+
+        /// <summary>Why a saved bot is not loaded: <see cref="OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage"/> for a
+        /// Sluaghbinder (bots never play the custom class, owner 2026-11-17); null for every other class.</summary>
+        public static string RefusalFor(BotProfile profile) =>
+            profile != null && !OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(profile.ClassId)
+                ? OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage : null;
 
         /// <summary>
         /// Get all saved bots for owner

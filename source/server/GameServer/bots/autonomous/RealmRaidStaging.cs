@@ -34,7 +34,11 @@ public static class RealmRaidStaging
         }
         return false;
     }
-    public static bool TryDragonPost(IPathfindingMgr nav, Zone zone, Vector3 home, int slot, IReadOnlyCollection<Vector3> occupied, out Vector3 staging)
+    /// <param name="inner">The ring's inner radius (3,600; an open-world boss's starts past its reach,
+    /// RealmRaidTetherReach.OpenWorldStagingInner).</param>
+    /// <param name="safe">Refuses a post (out of the reach of the monsters around it); null: every post.</param>
+    public static bool TryDragonPost(IPathfindingMgr nav, Zone zone, Vector3 home, int slot, IReadOnlyCollection<Vector3> occupied, out Vector3 staging,
+        float inner = RealmRaidTetherReach.DefaultStagingInner, Func<Vector3, bool> safe = null)
     {
         staging = default;
         if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
@@ -42,23 +46,52 @@ public static class RealmRaidStaging
         // ground the planner took for another area, so the party's route led out through Shannon Estuary and no zone
         // step reached the post (route audit 2026-10-18).
         int? lairArea = AutonomousZoneRoads.AreaAt(zone, home);
+        // The ground at the home's foot, found only when a post can't walk to the home itself (FootOf).
+        Vector3? foot = null;
+        bool footLooked = false;
         for (int attempt = 0; attempt < 36; attempt++)
         {
             double angle = (attempt * 47.5 + slot * 137.5) * Math.PI / 180;
-            float radius = 3600 + attempt % 6 * 500;
+            float radius = inner + attempt % 6 * 500;
             var raw = home + new Vector3((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius, 0);
             var floor = nav.GetClosestPoint(zone, raw, 96, 96, 4096, nav.DefaultFilters);
             if (!floor.HasValue || Math.Abs(floor.Value.Z - home.Z) > 768 ||
                 lairArea.HasValue && AutonomousZoneRoads.AreaAt(zone, floor.Value) is int area && area != lairArea.Value ||
                 occupied.Any(p => Vector3.DistanceSquared(p, floor.Value) < 600 * 600) ||
+                safe?.Invoke(floor.Value) == false ||
                 !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) ||
-                !AutonomousZonePointApproach.TryResolve(nav, zone, floor.Value, home, 300, out _) ||
+                !WalksToHome(nav, zone, floor.Value, home, ref foot, ref footLooked) ||
                 !HasOpenPartySpace(nav, zone, floor.Value)) continue;
             staging = floor.Value;
             return true;
         }
         return false;
     }
+
+    /// <summary>
+    /// The post has a walk to the home, or, when the home itself stands on ground no walk reaches, to the ground at its foot
+    /// (<see cref="FootOf"/>). Owner's PC, 2026-11-16 (build ccba364, /epictest sweep): the Curengkur raid never started,
+    /// "staging=False" three times (REALM_RAID_START_UNAVAILABLE). His spawn (376086,172803,3452, Allta Fearann) is on a
+    /// navmesh island about 200 above the hollow floor: every walk from the ring stops at 376013,172662,3248, 160 from it,
+    /// so all 36 candidates of every slot failed the walk (or the height check) and no post was ever placed.
+    /// </summary>
+    private static bool WalksToHome(IPathfindingMgr nav, Zone zone, Vector3 post, Vector3 home, ref Vector3? foot, ref bool footLooked)
+    {
+        if (AutonomousZonePointApproach.TryResolve(nav, zone, post, home, 300, out _)) return true;
+        if (!footLooked) { footLooked = true; foot = FootOf(nav, zone, home); }
+        return foot.HasValue && AutonomousZonePointApproach.TryResolve(nav, zone, post, foot.Value, 300, out _);
+    }
+
+    /// <summary>How far round (flat) and below the home its foot is looked for.</summary>
+    public const float FootRadius = 400, FootDepth = 600, FootMinimumDrop = 64;
+
+    /// <summary>The walkable floor nearest the home at least <see cref="FootMinimumDrop"/> below it, within
+    /// <see cref="FootRadius"/> round and <see cref="FootDepth"/> down: where raiders stand under a boss on a ledge or rock.
+    /// Null when there is none.</summary>
+    public static Vector3? FootOf(IPathfindingMgr nav, Zone zone, Vector3 home) =>
+        nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone) ? null :
+        nav.GetClosestPointInBounds(zone, home, new(-FootRadius, -FootRadius, -FootDepth), new(FootRadius, FootRadius, -FootMinimumDrop),
+            nav.DefaultFilters);
 
     // Prove a party can spread around the post, not merely that one nav polygon exists.
     public static bool HasOpenPartySpace(IPathfindingMgr nav, Zone zone, Vector3 center)

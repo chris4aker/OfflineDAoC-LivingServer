@@ -1,0 +1,139 @@
+{
+  "id": "maldahar-the-glimmer-prince",
+  "name": "Maldahar the Glimmer Prince",
+  "catalogKey": "open-world/maldahartheglimmerprince",
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "A level-73 named with 40,000 health who roams the Sheeroe Hills (388276, 696824).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be crowd-controlled (CCImmunity) and resets to full after 60 seconds out of combat.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Bot chat calls him the Glimmer King's son and warns that counting glimmers aloud brings him.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The father-son tie is Living Server lore: no Mythic source names his parentage.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Fergal, Eoghan's wife, the Ardee six, Gormflaith of Druim Ligen and the Lough Gur visits in his chapters are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Maldahar the Glimmer Prince appeared the spring after the sky tore over Sheeroe, riding the prince's road below his father's lair on a horse of cold light, and the Glimmer parted for him. The name came from the Azure, who say they heard the light call him so. Whether he is Cuuldurach's son by blood the bards still argue; the shepherds settled it for themselves by the way he looks back toward the lair when he rides.\n\nHis duty is the borders. The saying about never counting the glimmers aloud dates from his first season, when a herder's boy named Fergal counted a camp for a wager and the prince came down within the minute. Six young hunters of Ardee found that no sleep, root or stunning blow took hold of him, because, the druids say, he is not wholly on this side of the Veil. A Connacht company under Gormflaith of Druim Ligen found something crueller: they drew back for a breath to bind their cuts, and he was whole again. Gormflaith also saw the glimmer camps leave their places and run to their prince when he was struck, as a household runs to its heir.\n\nHe rides further than his father's court, as far as Lough Gur, where the Melancholic Fairy Queen weeps beside a shut door; whether he courts her, scouts her, or is only lonely, the realm keeps all three accounts. When he falls every glimmer on the ridge dims for a breath and the king turns his head, and the Cullen watch leaves the ridge quickly. Like his father he returns. The Azure, who fight every other light on Sheeroe, are forbidden by their leader Dsaldor to raise a hand against him, though they have burned his father's courtiers for years, and will not say why; Coseal their preacher says only that the son is not the father.",
+  "legend": "Mezz and root are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Pull him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears. He is a group's target, not a raid's: a strong group with no tricks can do it if it commits and does not stop. Pull him well away from the glimmer camps. Superstition: never call him by name on the ridge, call him 'the rider', or he hears you and comes. The shepherds say he dims the ridge when he dies, and that you should not be standing on the ridge when the king notices.",
+  "yells": {
+    "aggro": [
+      "My father's hills do not want you.",
+      "You threw a stone at me once. Your kind always does.",
+      "The court is watching. Do not disappoint them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You cannot hold light in your hands."
+      }
+    ],
+    "death": [
+      "Tell my father... the doors are open.",
+      "The light... goes home..."
+    ],
+    "slay": [
+      "Another for the court.",
+      "My father will hear of you.",
+      "Dim, and done."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hoofbeats of light on the grey grass.",
+      "The Glimmer part for someone you cannot see."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Glimmer Prince does not falter."
+      }
+    ],
+    "realmFirstKill": "The Glimmer Prince is unhorsed. Sheeroe mourns."
+  },
+  "botLines": {
+    "briefing": [
+      "no cc on maldahar, dont waste the mezz. [burn him|all in]",
+      "if we break off he resets in a minute. [commit or dont pull|all or nothing]",
+      "pull him well away from the glimmer camps, [or the court joins|or the camps add]",
+      "a strong group can do him, [no tricks|just damage]"
+    ],
+    "aftermathWin": [
+      "maldahar down. the glimmers went [quiet|dim] for a moment, swear it",
+      "the whole ridge dimmed for a second when he died. [saw it|creepy]",
+      "committed and never stopped. [thats the trick|grats]",
+      "maldahar down, now get off the ridge. [quick|before the king notices]"
+    ],
+    "aftermathLoss": [
+      "we stopped to rest and he was full again. [told you|knew it]",
+      "mezz didnt stick, root didnt stick, [nothing sticks|told you]",
+      "pulled him into a glimmer camp. [adds everywhere|bad pull]",
+      "he forgot his wounds while we rezzed. [one minute is all he needs|reset]"
+    ],
+    "rumour": [
+      "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]",
+      "[heard|someone said] maldahar rides to lough gur some nights to see the fairy queen",
+      "call him the rider on the ridge, never his name. [old shepherd rule|just in case]",
+      "[word is|heard] the king turns his head when maldahar falls"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Maldahar",
+    "text": "The Glimmer Prince, who rides the borders of his father's court. No charm holds him, and if he is let be for a minute he is whole again. Fight him all at once or not at all."
+  },
+  "bookPage": "From Eoghan the shepherd's account: the rider goes further than his father's court. I have seen him at the edge of the bog in winter, sitting his horse of light and looking west, toward Lough Gur, where the sad queen of the Good Folk weeps beside her shut door. Some say he courts her. My wife says he is lonely, which is a woman's answer and may be the true one. The young men of Ardee who went after him say no charm held him and no sleep took him, and that when they drew back to bind their cuts he was whole again before they had finished. Princes are like that, my wife says. They do not keep their wounds. Other people keep them for them.",
+  "chronicle": {
+    "win": "{realm} unhorsed Maldahar the Glimmer Prince on the Sheeroe ridges; {raidLeader} called it in {minutes} minutes.",
+    "loss": "{realm} chased the Glimmer Prince for {minutes} minutes under {raidLeader}, and he rode on whole."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "cuuldurach-the-glimmer-king",
+      "relation": "his father"
+    },
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "a lost royal of the otherworld at Lough Gur, whom he is said to visit"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Heir",
+      "text": "Maldahar was not seen the summer the sky tore. Eoghan's grandmother, who watched the wings come through, saw only the king and the lights. The prince appeared the following spring, riding down the prince's road below the lair on a horse of cold light, and the shepherds understood at once what he was from the way the Glimmer parted for him. The realm named him the Glimmer Prince, and the name Maldahar came from the Azure, who claimed to have heard the light call him so.\n\nWhether he is the king's son by blood, nobody can prove. The bards of Tir na Nog argued it for a season in the taverns: a king and a prince make a father and a son, said one side; a prince only proves a royal house, said the other, and queens have princes too. Brónach of Lough Gur ended the argument for most Hibernians by pointing out that he looks back toward the lair over his shoulder when he rides, the way a son looks back at a father's house. The bards still argue. The shepherds do not.\n\nHis duty is the borders. Where the court attends, the prince patrols, along the ridge, down to the head of the pass, and back. The shepherds' saying about never counting the glimmers aloud dates from his first season: a herder's boy named Fergal counted a camp of them for a wager, and the prince came down the ridge within the minute and looked at him, and Fergal did not speak for a week."
+    },
+    {
+      "title": "No Charm Holds Him",
+      "text": "The first to try him were six young hunters of Ardee who thought a prince would be easier than a king. Their enchanter sang him a sleep; it slid off him like water off oilcloth. Their druid called the roots up round his horse's legs; the roots found nothing to hold. Their warrior struck the blow that fells a bull; the prince did not notice. Two of the six came home and told it in every alehouse in Ardee: no charm, sleep or binding took hold of him, and none has been known to since. The druids of Lough Gur say he is not wholly on this side of the Veil, and that nobody can hold what is only partly here.\n\nA stronger company out of Connacht went after him the next month and learned something crueller. They fought him for half the afternoon and drove him to near his last, and then drew back for the space of a long breath to bind their cuts. When they came again he was whole. A prince does not keep his wounds, Eoghan's wife said when she heard; other people keep them for him.\n\nThat company's captain, a woman of Druim Ligen named Gormflaith, said the last word on it in the barracks there: there is no trick to him and no rest from him. She saw something else, too. When the prince was struck near a glimmer camp, the lights left their places and came to him, as a household comes running to its heir, and two of her company died under them before anyone understood what was happening."
+    },
+    {
+      "title": "The Rider at Lough Gur",
+      "text": "The prince goes further than his father's court ever reaches. Eoghan saw him in winter at the very edge of the Bog of Cullen, sitting his horse of light and looking west. West of the bog lies Lough Gur, and at Lough Gur, after dark, a fairy queen of the bright court weeps beside a door into the hill that has not opened for her since the night the courts quarrelled in the Cursed Forest. Some nights, the Ardee folk say, the prince rides as far as the lake and watches her across the water. He never goes nearer.\n\nThere are three explanations and the realm keeps all of them. The bards say he courts her, a prince of the far side and a queen locked out of her own, and that the trumpets that sound when she comes are for him. The druids say he is a scout, and that the far side is looking for every place where the Veil is thin, and that a weeping queen by a shut door marks one. Eoghan's wife says he is lonely, which the bards call a woman's answer, and which Brónach of Lough Gur says may be the true one.\n\nWhat all the accounts agree on is that he never stays. Before dawn he is back on the ridge above Sheeroe, riding the borders, and the Glimmer part for him again. The trumpets at Lough Gur, the Ardee folk add, sound differently on the nights he has been watching: lower, and shorter, as if whoever plays them were listening for something across the water. Nobody in Ardee has ever been willing to sit by the lake long enough to be sure."
+    },
+    {
+      "title": "When the Prince Falls",
+      "text": "When the prince falls, every glimmer on the ridge dims at once, for the space of a breath, as a hall falls silent when the heir is carried out. The shepherds saw it the first time from the far side of the bog. And somewhere at the top of the hills something very large turns its head. The king has never come down the pass to avenge his son. But the Cullen watch keeps a custom: when the lights dim, nobody stands on the ridge. They go down the pass, quickly, and let the king grieve in private.\n\nLike his father he returns. The Azure take this as proof that neither is truly alive; the druids take it as proof that the door behind them is open. Either way the prince's road is never empty for long, and the shepherds' children are still told not to count. The scribes of Tir na Nog note a last detail from Fergal, the boy who counted the camp: years later, grown and a spearman of Connacht, he rode with the company that brought the prince down in the fourth summer of the isles. He said the prince looked at him exactly as he had the first time, as though he remembered. Fergal swore he would never count anything in Sheeroe again, not even his own coin, and as far as anyone knows he never did.\n\nThe Azure have their own law about the prince. Dsaldor, who leads their crusade, forbids his people to raise a hand against him, and the realm has never learned why. Coseal the preacher says only that the son is not the father, and that the Order's quarrel is with the king and the light he stole."
+    }
+  ]
+}

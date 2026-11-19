@@ -1,0 +1,71 @@
+{
+  "id": "tebui",
+  "name": "Te'Bui",
+  "npcNames": [
+    "Te'Bui"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "svartalfar"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Te'Bui is a level-35 svartalf in Spindelhalla (32,268/31,192) among svartalf arbetare and thralls, blindsnakes, ekyps scavengers and arachite tunnelhosts; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Two quests end at Te'Bui: Dunfjall's 'Lord Lauur's Wife' ('Kill Te'Bui in Spindelhalla for the white spirit crystal') and Fressen's 'Thraxia's Dilemma' ('Kill the svartalf Te'Bui in Spindelhalla, who possesses the spirit', of Thraxia's captive priest).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Te'Bui as the keeper of stolen spirits is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Te'Bui keeps spirits. She is a svartalf of the working floor of Spindelhalla, small and unremarkable among the arbetare, and in a crystal she wears she holds what is not hers: the spirit of Lene, wife of Lord Lauur of Gotar, who walks the small hours above ground asking for her; and the spirit of a priest of Thraxia's, the arachite priestess of Gotar's skull post. Both were brought down to her. The svartalfar of Myrkwood and the werewolves of Varulvhamn trade in such things, and Te'Bui is where the trade ends.\n\nTe'Delna of the Myrkwood svartalfar is her kin, Myrkwood says, and sends her the spirits to keep, because nobody looks for a spirit among the thralls. Odell of Svarhamr found her name on a frame in the hand of one of the thralls she works beside, with a prayer under it: that those who come for the spirits will take her too, because she can hear them at night. She fights for the crystal anyway.",
+  "legend": "Te'Bui is a level 35 svartalf among the workers and thralls in Spindelhalla, close to Smarta. She has the white spirit crystal for Lord Lauur's Wife and possesses the priest's spirit for Thraxia's Dilemma, so both quest lines end here. No faction on her, but Smarta's workers stand all round, so expect company. No spells. Two quests, one kill: do both at once if you have them.",
+  "yells": {
+    "aggro": [
+      "The spirits are mine to keep. Go.",
+      "(The crystal at her throat flickers white.)"
+    ],
+    "death": [
+      "(The crystal goes dark. Two voices sigh.)"
+    ],
+    "slay": [
+      "Another for the crystal."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A small svartalf wears a crystal. It whispers."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "te'bui is the 35 svartalf with the spirit crystal in spindelhalla",
+      "both lord lauurs wife and thraxias dilemma end at her"
+    ],
+    "aftermathWin": [
+      "got the crystal",
+      "lene is free, and the priest"
+    ],
+    "rumour": [
+      "te'bui holds lord lauurs wife's spirit and a priest of thraxias in one crystal",
+      "te'delna of myrkwood is te'buis kin and sends her the spirits"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Te'Bui",
+    "text": "A svartalf of Spindelhalla's working floor who keeps stolen spirits in a crystal: Lord Lauur's wife Lene, and a priest of Thraxia's. See [thralls]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} freed the spirits Te'Bui kept in Spindelhalla in {minutes} minutes."
+  }
+}

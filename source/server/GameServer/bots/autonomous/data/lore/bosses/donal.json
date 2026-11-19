@@ -1,0 +1,112 @@
+{
+  "id": "donal",
+  "name": "Donal",
+  "npcNames": [
+    "Donal"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Donal: level 50, model 304, at about 403,800/759,500 in the eastern Bog of Cullen.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Ide (52), Donal (50), Deniela, Jannet and Manius (48) stand together at about 404,000/759,200 in the eastern Bog of Cullen (z 4,944), all plain spawns with an 80-second respawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Donal as the captain of the Cullen outlaws, an Ardee spearman who killed a man at the muster and went into the bog.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "On the eastern edge of the Bog of Cullen, where the marsh gives onto a low island of firm ground, there is a camp that the people of Alainn Binn call the Cullen outlaws. It has been there for a generation: mainland men and women who could not stay in Ardee or Howth or Connacht for one reason or another, and went into the bog where the realm does not follow, and kept going until they reached ground that would hold a fire. They do not rob the villages. They do not trade with them either. They fight anyone who comes onto their island, and the villages have learned to leave them alone.\n\nDonal is their captain, because somebody has to be and he was the one who found the island. He was a spearman of Ardee, the Alainn Binn folk say, the year the Cullen watch was first set at the foot of the Sheeroe pass, and he killed a man at the muster over something that was said about his sister, and walked out of the watch-house before the captain could have him taken. He went into the bog because nobody would follow him there, and he walked until the ground held, and lit a fire, and others who could not go home found the fire.\n\nHe runs the camp the way the Cullen watch is run, which the watch finds funny and he does not: there is a tally of who came in and when, a watch on the island's edges every night, and a bell, which is a cracked pot struck with a spear-butt, three slow strokes for strangers on the firm ground. Deniela, Jannet and Manius keep the edges with him. Ide keeps them alive. Saemus kept the bog off them for one summer, and Donal has not forgiven himself for letting him go to the siabra for it.\n\nThe Cullen watch knows exactly where he is and has never come for him. The old watch captains say it is because the outlaws on the eastern edge of the bog are a second watch that costs the realm nothing: nothing comes out of the eastern marsh toward Alainn Binn without passing Donal's fire first. Donal says that is not why he keeps the watch, and the old captains say that it does not matter why.",
+  "legend": "Donal (50) is the captain of the Cullen outlaws on the eastern edge of the Bog of Cullen (about 404k/759k), standing with Ide (52) and Deniela, Jannet and Manius (48). Expect several at once; pull from the edges or bring CC. Plain mobs, no scripts, 80-second respawns. Not a quest target in this world's data, but Ide beside him is (Unnatural Powers), so you will meet him there. The old Cullen watch captains call his camp the second watch: nothing comes out of the eastern marsh without passing it. Come in from the Alainn Binn side, and rest before the pull: five named on one island hit hard.",
+  "yells": {
+    "aggro": [
+      "Three strokes! Strangers on the firm ground!",
+      "You found the island. Now leave it.",
+      "Ide, stay back."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold the edge! The way the watch holds it!"
+      }
+    ],
+    "death": [
+      "Tell the watch... I kept it too...",
+      "The fire... keep the fire..."
+    ],
+    "slay": [
+      "Off the island.",
+      "Strike the pot. Once more.",
+      "Another for the bog."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A cracked pot hangs on a spear by the fire.",
+      "A watch on the island's edge. Not the realm's."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Three slow strokes on a cracked pot!"
+      }
+    ],
+    "realmFirstKill": "Donal, captain of the Cullen outlaws, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "donal is 50, captain of the cullen outlaws. [several named with him|ide and three more]",
+      "pull from the edges or bring cc",
+      "plain mobs, 80 sec respawns",
+      "not a quest target here"
+    ],
+    "aftermathWin": [
+      "donal down. [the outlaws are leaderless|got him]",
+      "pulled singly. [worked|nice]",
+      "the cullen watch will shrug",
+      "ide next"
+    ],
+    "aftermathLoss": [
+      "pulled the whole island. [five named|wipe]",
+      "heard the three strokes and [everyone came|oops]",
+      "cc broke",
+      "group too low"
+    ],
+    "rumour": [
+      "[heard|someone said] donal killed a man at the ardee muster and walked into the bog",
+      "the cullen outlaws strike a cracked pot three times for strangers, like the watch bell",
+      "[word is|heard] the cullen watch knows where donal is and never comes for him",
+      "the old watch captains call donal's camp the second watch"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Donal",
+    "text": "Captain of the Cullen outlaws, an Ardee spearman who killed a man at the muster and walked into the bog. He runs his island like the Cullen watch: a tally, a night watch, a cracked pot for a bell."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the outlaws' island, again, because my grandson asked who Donal is. He was a spearman of Ardee the year the Cullen watch was set, and he killed a man at the muster over something said about his sister, and walked into the bog before he could be taken. He found firm ground and lit a fire. He keeps it like the watch: a tally, a night watch, a cracked pot struck three times for strangers. The watch has never come for him. The old captains say nothing comes out of the eastern marsh without passing his fire.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Donal in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Donal turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "ide",
+      "relation": "the camp's wise-woman"
+    },
+    {
+      "id": "saemus",
+      "relation": "the outlaw he lost"
+    }
+  ]
+}

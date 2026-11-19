@@ -233,6 +233,11 @@ public static class PlayerMobNavigator
     private static bool StartJourney(GamePlayer player, Destination destination, out string message)
     {
         Stop(player, string.Empty, false);
+        if (!HostPcFeatures.IsOnHostPc(player))
+        {
+            message = HostPcFeatures.TravelHostOnly;
+            return false;
+        }
         if (!LocalPlayerTravelInput.TryCreate(player, out var input))
         {
             message = "/travel needs the local DAoC game window focused and an unmodified forward key. No movement was started.";

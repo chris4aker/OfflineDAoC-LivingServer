@@ -44,14 +44,13 @@ modernagrav is open for 35s now, anyone checked it out?
 @realm alb
 @invites complaint
 @about place
-isle of glass dragonflies, the bane of my 20s
+isle of glass dragonflies, the bane of my teens
 @about
 @invites
 @about place
 avalon isle drakoran camps are always busy
 @about
 @about place
-avalon city is the prettiest place in the realm, no contest
 @about
 @invites ask_anyone
 @about place
@@ -64,14 +63,18 @@ anyone been to inishail yet? heard it opened for 35s
 @who *
 @levels 35-50
 @invites news
-caer benowyc is under attack again, who is close?
+@needs defending
+{keep} is under attack again, who is close?
+@needs
 @invites
 @about place
 hadrian's wall is always where the fight is
 @about
-anyone heading to caer berkstead tonight?
+anyone heading to {keep} tonight?
 @about place
+@needs keep_news
 the pennine keeps keep changing hands
+@needs
 @about
 @invites ask
 castle excalibur still ours? checking before i log off
@@ -82,7 +85,9 @@ snowdonia is quiet, too quiet
 @invites
 @realm mid
 @invites news
-bledmeer faste is getting hit, defenders please
+@needs defending
+{keep} is getting hit, defenders please
+@needs
 @invites
 @about place
 odin's gate fights never end
@@ -95,24 +100,30 @@ anyone up for jamtland tonight? keeps are swapping
 @about
 @invites
 @invites ask
-mjollner faste still holding? relic is there
+mjollner faste still holding?
 @invites
 @needs at:uppland
 uppland is calm, heading to the front instead
 @needs
 @invites news
-glenlock faste fell an hour ago, retaking it?
+@needs keep_lost_recent
+{keep} just fell, retaking it?
+@needs
 @invites
 @realm hib
 @invites news
-dun crauchon needs defenders, enemies at the door
+@needs defending
+{keep} needs defenders, enemies at the door
+@needs
 @invites
 @about place
 emain macha is always on fire
 @about
 @invites news
 @about place
+@needs keep_news
 breifine keeps changing hands every hour
+@needs
 @about
 @invites ask
 dun dagda still ours? relic check
@@ -122,7 +133,7 @@ cruachan gorge is quiet tonight, good
 @needs
 @invites news
 @about place
-mount collory road is full of stealthers, careful
+mount collory road always has a stealther or two on it, careful
 @about
 
 @kind ambient

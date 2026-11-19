@@ -163,7 +163,13 @@ namespace DOL.GS
         /// One idle turn of a bot standing at <paramref name="anchor"/>. Returns true while a town step it started is
         /// still walking, so the caller doesn't stop it.
         /// </summary>
-        public static bool Idle(GameBot bot, BodySpot spot, Vector3 anchor) => Act(bot, spot, anchor, allowStep: true);
+        public static bool Idle(GameBot bot, BodySpot spot, Vector3 anchor)
+        {
+            // Bots as people 1.2 (WP5): a long wait ends seated, or on a held keep's wall (BotMovementHabitsRuntime).
+            if (spot == BodySpot.Waiting)
+                BotMovementHabitsRuntime.WaitTurn(bot, BotMovementHabitsRuntime.WaitSpot.Group);
+            return Act(bot, spot, anchor, allowStep: true);
+        }
 
         /// <summary>A bot standing still this long, with nothing to fight, counts as standing around.</summary>
         public const long StandingStillMs = 5_000;
@@ -221,12 +227,14 @@ namespace DOL.GS
                     greetDue = watcher.Realm == bot.Realm && distance <= GreetRadius &&
                                (!state.Greeted.TryGetValue(watcher.Name, out long last) || now - last >= GreetCooldownMs);
 
-                BodyChoice choice = Choose(spot, greetDue, bot.IsRecoveryResting,
+                // A bot seated by a habit (WP5) idles as a resting one: looks around, no emote that would stand it up.
+                BodyChoice choice = Choose(bot.IsSeatedByHabit ? BodySpot.Resting : spot, greetDue, bot.IsRecoveryResting || bot.IsSeatedByHabit,
                     Random.Shared.NextDouble(), Random.Shared.NextDouble(), Random.Shared.NextDouble(), allowStep);
                 switch (choice.Move)
                 {
                     case BodyMove.Look:
-                        bot.TurnTo(Turned(bot.Heading, choice.HeadingOffset));
+                        // Living Server 1.2: a wide look is sent in steps instead of one snap (BotTurning).
+                        BotTurning.TurnGradually(bot, Turned(bot.Heading, choice.HeadingOffset));
                         Count(ref _looks);
                         return false;
                     case BodyMove.Emote:
@@ -236,7 +244,7 @@ namespace DOL.GS
                     case BodyMove.Greet:
                         lock (state.Greeted)
                             state.Greeted[watcher.Name] = now;
-                        bot.TurnTo(watcher);
+                        BotTurning.TurnGradually(bot, watcher);
                         AutonomousLivingServer.Later(bot, 350 + Random.Shared.Next(500),
                             () => Eligible(bot) && bot.IsWithinRadius(watcher, GreetRadius * 2), () => bot.Emote(choice.Emote));
                         Count(ref _greets);
@@ -284,7 +292,7 @@ namespace DOL.GS
                     eEmote emote = Pick(CheerEmotes, Random.Shared.NextDouble());
                     AutonomousLivingServer.Later(bot, 600 + i * 900 + Random.Shared.Next(1_200), () => Eligible(bot), () =>
                     {
-                        bot.TurnTo(who);
+                        BotTurning.TurnGradually(bot, who);
                         bot.Emote(emote);
                         Count(ref _cheers);
                     });

@@ -101,6 +101,10 @@ public static class AutonomousObjectiveAssignments
         // TargetName is the camp's monster while the bot works a camp (a kill elsewhere has no camp and no effect).
         if (!string.IsNullOrWhiteSpace(record.CurrentCampId))
             AutonomousCampDangerBench.RecordKill(AutonomousCampDangerBench.SpeciesKey(bot.CurrentRegionID, record.TargetName));
+        // True 1.65: kills offset empty hunts in the camp memory
+        if (AutonomousCampCompetition.TryGetSpot(record.CurrentCampId, out AutonomousCampCompetition.CampSpot spot) && !spot.Dungeon)
+            AutonomousCampEmptyMemory.RecordKill(AutonomousCampEmptyMemory.Key(spot.Region, spot.Name, spot.X, spot.Y),
+                GameLoop.GameLoopTime);
     }
 
     public static bool HasActiveRvrTenure(OfflineWorldBotRecord record, DateTime utcNow)
@@ -231,7 +235,7 @@ public static class AutonomousObjectiveAssignments
 
             DateTime utcNow = DateTime.UtcNow;
             GameBot[] roster = AutonomousBotRegistry.Snapshot()
-                .Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup &&
+                .Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) &&
                               bot.PersistentRecord != null && !AutonomousBeggars.Is(bot))
                 .ToArray();
             // The existing one-minute pass is also a backstop for a service bot
@@ -242,7 +246,7 @@ public static class AutonomousObjectiveAssignments
             // Group/warband deadlines belong to the coordinator, not individual
             // members' old allocation timestamps. Snapshot once per allocation pass.
             var groupOwned = roster.Where(bot => bot.Group != null &&
-                !bot.Group.GetMembersInTheGroup().Any(member => member is GamePlayer)).ToHashSet();
+                (!bot.Group.GetMembersInTheGroup().Any(member => member is GamePlayer) || BotLedGroups.IsHostedGroup(bot.Group))).ToHashSet();
             foreach (GameBot bot in roster.Where(bot => !groupOwned.Contains(bot)))
                 if (NormalizeLegacyTimedAssignment(bot.PersistentRecord, utcNow))
                 {
@@ -348,7 +352,8 @@ public static class AutonomousObjectiveAssignments
                     AutonomousBotPersonality.Enabled
                         ? AutonomousBotPersonality.PlanGoals(pool.Select(AutonomousBotPersonality.PlannerType).ToArray(),
                             pool.Select(CanTakeBattleground).ToArray(), target.SoloPve - assignedSolo, target.GroupPve - assignedGroup,
-                            withRvr ? target.RvR - assignedRvr : 0, target.Battlegrounds - assignedBattleground, Random.Shared)
+                            withRvr ? target.RvR - assignedRvr : 0, target.Battlegrounds - assignedBattleground, Random.Shared,
+                            withRvr ? pool.Select(BotMilestoneLife.RvrLean).ToArray() : null) // Bots as people WP6: realm rank 5 leans to RvR
                         : new eAutonomousObjectiveKind?[pool.Length];
 
                 GameBot[] pvePool = members.Where(bot => !groupOwned.Contains(bot) && !HasActiveRvrTenure(bot.PersistentRecord, utcNow) &&
@@ -628,7 +633,10 @@ public static class AutonomousObjectiveAssignments
         bool trainingComplete = !WantsBetweenTaskTraining(bot) ||
             (!bot.HasSpendableAutonomousTrainingPoints && !bot.HasPendingAutonomousTraining);
         bool inventoryComplete = !WantsBetweenTaskInventory(bot) || AutonomousBotEconomy.GetNeededService(bot) == null;
-        if (!trainingComplete || !inventoryComplete)
+        // A seam (Crafting 2.0 WP0): every registered break activity flagged in this break (DividedRealms' craft trip,
+        // 'C') must be over too. True with none registered.
+        bool activitiesComplete = DOL.GS.CraftingEconomy.BotServiceSeams.BreakActivitiesDone(bot);
+        if (!trainingComplete || !inventoryComplete || !activitiesComplete)
             return false;
 
         CompleteBetweenTaskServices(bot);
@@ -668,17 +676,28 @@ public static class AutonomousObjectiveAssignments
     // durable phase commits to unloading even after the first slot is freed.
     private static bool TryBeginBetweenTaskServices(GameBot bot)
     {
-        if (bot?.PersistentRecord == null || bot.Group != null)
+        if (bot?.PersistentRecord == null)
+            return false;
+        // A seam (Crafting 2.0 WP0): work done at every natural task break, grouped or not (DividedRealms: deliver
+        // and commission craft orders). Nothing is registered by default.
+        DOL.GS.CraftingEconomy.BotServiceSeams.AtTaskBreak(bot, DOL.GS.CraftingEconomy.TaskBreakPoint.Begin);
+        if (bot.Group != null)
             return false;
         // Unload at this task boundary when the bag is nearly full, not only
         // when completely full: otherwise the next task leaves loot on the ground.
         BetweenTaskPlan plan = RollBetweenTaskPlan(bot.HasSpendableAutonomousTrainingPoints,
             AutonomousBotEconomy.IsBackpackNearlyFull(bot), Random.Shared.NextDouble(), Random.Shared.NextDouble());
         bool downtime = AutonomousBotPersonality.RollTownBreak(bot, Random.Shared.NextDouble());
-        if (!plan.Train && !plan.Unload && !downtime) return false;
+        // Seams (Crafting 2.0 WP0): registered break activities add their letter (DR's craft trip: 'C'), and a
+        // registered town-visit need asks for the inventory stop. With none registered both are empty and draw no
+        // random number, so the plan is exactly the old one.
+        string activities = DOL.GS.CraftingEconomy.BotServiceSeams.RollBreakActivities(bot, Random.Shared,
+            out bool activityInventoryStop, out string activityText);
+        bool unload = plan.Unload || activityInventoryStop || DOL.GS.CraftingEconomy.BotServiceSeams.WantsVisit(bot);
+        if (!plan.Train && !unload && !downtime && activities.Length == 0) return false;
         OfflineWorldBotRecord record = bot.PersistentRecord;
         record.ObjectiveKind = eAutonomousObjectiveKind.SoloPve.ToString();
-        record.ObjectiveAssignmentId = BetweenTasksPrefix + (plan.Train ? "T" : "") + (plan.Unload ? "I" : "") + (downtime ? "D" : "") +
+        record.ObjectiveAssignmentId = BetweenTasksPrefix + (plan.Train ? "T" : "") + activities + (unload ? "I" : "") + (downtime ? "D" : "") +
             "-" + bot.DatabaseID + "-" + GameLoop.GameLoopTime;
         record.ObjectiveAssignedUtc = DateTime.UtcNow.ToString("O");
         // A failed service route cannot trap the bot forever either. Existing
@@ -690,8 +709,8 @@ public static class AutonomousObjectiveAssignments
         record.CurrentCampId = string.Empty;
         record.TargetName = string.Empty;
         record.TravelDestination = string.Empty;
-        record.ObjectiveProgress = "Task complete; " + (plan.Train ? "train earned specialization points; " : "") +
-            (plan.Unload ? "unload backpack; " : "") + (downtime ? "15-30 minute town break if reachable within the maintenance budget; " : "") + "then choose the next task";
+        record.ObjectiveProgress = "Task complete; " + (plan.Train ? "train earned specialization points; " : "") + activityText +
+            (unload ? "unload backpack; " : "") + (downtime ? "15-30 minute town break if reachable within the maintenance budget; " : "") + "then choose the next task";
         AutonomousBotEconomy.MarkInventoryChanged(bot);
         bot.MarkAutonomousStateDirty();
         AutonomousBotStatusPersistence.Queue(bot);
@@ -705,6 +724,8 @@ public static class AutonomousObjectiveAssignments
     public static void CompleteBetweenTaskServices(GameBot bot)
     {
         if (!IsBetweenPveTasks(bot)) return;
+        // A seam (Crafting 2.0 WP0): the break is closing (DividedRealms: hand over what this break's craft trip made).
+        DOL.GS.CraftingEconomy.BotServiceSeams.AtTaskBreak(bot, DOL.GS.CraftingEconomy.TaskBreakPoint.End);
         if (BetweenTaskServiceExpired(bot))
             DOL.Logging.LoggerManager.Create(typeof(AutonomousObjectiveAssignments)).Warn(
                 $"AUTONOMOUS_BETWEEN_TASK_TIMEOUT bot=\"{bot.Name}\" id={bot.DatabaseID} level={bot.Level} " +

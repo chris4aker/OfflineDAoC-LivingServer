@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.PacketHandler;
 using DOL.GS.ServerProperties;
@@ -15,15 +16,19 @@ namespace DOL.GS.Commands;
     "/lstest list - every part, on or off",
     "/lstest storyline | debate | dunce - the next /faction scene starts now (a storyline episode, any debate, a dunce rage quit)",
     "/lstest spammer | roleplayer | rumour - a gold spammer, a roleplayer's line, a rumour about a rare named in this region",
+    "/lstest tale [boss] [raid] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...; with raid: the rumour after it is the raid, when it can form); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one",
     "/lstest tell - a bot starts a tell to you",
     "/lstest memory - what bots remember about you",
     "/lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted",
     "/lstest greet | gossip - a remembered bot near you greets you; a bot that likes you mentions you in /faction",
-    "/lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that",
+    "/lstest deed <solo|group|streak|ganked|silly|fell|drowned> - a bot near you tells the realm it saw that",
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
-    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once",
-    "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)")]
+    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)",
+    "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
+    "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)",
+    "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)",
+    "/lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -58,6 +63,38 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 int roleplayers = AutonomousRoleplayers.SpeakSoon(realm);
                 Say(client, Off(Properties.BOT_LIVING_CHARACTERS, "bot_living_characters") ??
                     (roleplayers > 0 ? $"One of {roleplayers} roleplayer(s) online speaks in /faction {WhenFaction(realm)} (and may be mocked)." : "No roleplayer of your realm is online and free to talk."));
+                return;
+            case "tale":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string talesOff)
+                    Say(client, talesOff);
+                else
+                {
+                    // "/lstest tale golestandt raid": the rumour after it is the raid, without the roll, when the raid can form.
+                    bool raid = args.Length > 3 && args[^1].Equals("raid", StringComparison.OrdinalIgnoreCase);
+                    string[] words = args.Skip(2).Take(args.Length - 2 - (raid ? 1 : 0)).ToArray();
+                    string about = words.Length > 0 ? string.Join(' ', words) : null;
+                    string loreId = about == null ? null : AutonomousTales.RequestedLore(about,
+                        LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases)))
+                            .Concat(AutonomousTales.Legends.Select(legend => (legend.Key, (IEnumerable<string>)legend.Value))));
+                    if (!AutonomousTales.TryStart(realm, loreId, null, out string noTale))
+                        Say(client, $"No tale: {noTale}.");
+                    else
+                    {
+                        string noRaid = raid ? AutonomousTales.AskRaidRumour(realm, loreId) : null;
+                        Say(client, $"The realm's storyteller is asked for a tale in /faction{(loreId != null ? " (" + loreId + ")" : "")}; it starts within a few seconds." +
+                            (!raid ? "" : noRaid == null ? " The rumour after it will be the raid, if the raid can still form then."
+                                : $" The rumour after it will be the raid if it can form then; right now it cannot: {noRaid}."));
+                    }
+                }
+                return;
+            case "fireside":
+                if (Off(Properties.BOT_LIVING_TALES, "bot_living_tales") is string firesideOff)
+                    Say(client, firesideOff);
+                else
+                {
+                    AutonomousTales.ForgetFiresides(gm);
+                    Say(client, "Fireside tales forgotten for today. Sit down out of combat, in a group with a gamebot, in a place that has a tale (a dragon's zone, an epic dungeon, Darkness Falls, Summoner's Hall): a groupmate tells it within ten seconds.");
+                }
                 return;
             case "rumour":
             case "rumor":
@@ -99,7 +136,8 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 else if (arg == "now")
                 {
                     AutonomousRaidLeeroy.ChargeNow();
-                    Say(client, "A raid with a Leeroy that is gathering for its final boss charges at once (two raiders there will do).");
+                    Say(client, $"A raid with a Leeroy that is gathering for its final boss charges at once (two raiders there will do). " +
+                        $"This lapses if none is gathering within {AutonomousRaidLeeroy.ChargeNowWindowMilliseconds / 60_000} minutes.");
                 }
                 else
                 {
@@ -118,6 +156,13 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     : $"No {GlobalConstants.RealmToName(raidRealm)} raid: {why}.");
                 return;
             }
+            case "craft" or "wtb" or "commission": CraftEconomyTestCommandHandler.Run(client, args[1..]); return; // Crafting 2.0 (WP10)
+            case "skill" or "lost" or "ask" or "milestone" or "wall": // Bots as people (WP0 declares them; each package registers its own)
+                Say(client, BotPeopleTest.Run(sub, gm, gm.TargetObject as GameBot, args.Skip(2).ToArray()));
+                return;
+            case "lore":
+                Say(client, LoreAtmosphere.TestHere(gm));
+                return;
             default:
                 DisplaySyntax(client);
                 return;
@@ -128,7 +173,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
     {
         if (!AutonomousBotVoices.Enabled || !AutonomousBotDebates.Enabled)
         {
-            Say(client, "Bot voices or debates are off (bot_voices, bot_debates).");
+            Say(client, "Bot voices or debates are off (bot_voices_enabled, bot_voices_debates).");
             return;
         }
         // "" is any debate; null lets a due storyline episode come first.
@@ -166,21 +211,25 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             : $"{bot.Name} can't remember you (bot memory off, or it is not a gamebot of your realm).");
     }
 
+    /// <summary>The deed a /lstest deed word names (chat 1.2 follow-up, E4: "drowned" too), or None. Pure.</summary>
+    public static AutonomousPlayerDeeds.Kind DeedKind(string arg) => arg switch
+    {
+        "solo" => AutonomousPlayerDeeds.Kind.NamedSolo,
+        "group" => AutonomousPlayerDeeds.Kind.NamedGroup,
+        "streak" => AutonomousPlayerDeeds.Kind.RvrStreak,
+        "ganked" => AutonomousPlayerDeeds.Kind.Ganked,
+        "silly" => AutonomousPlayerDeeds.Kind.SillyDeath,
+        "fell" => AutonomousPlayerDeeds.Kind.Fell,
+        "drowned" => AutonomousPlayerDeeds.Kind.Drowned,
+        _ => AutonomousPlayerDeeds.Kind.None,
+    };
+
     private static void Deed(GameClient client, GamePlayer gm, string arg)
     {
-        AutonomousPlayerDeeds.Kind kind = arg switch
-        {
-            "solo" => AutonomousPlayerDeeds.Kind.NamedSolo,
-            "group" => AutonomousPlayerDeeds.Kind.NamedGroup,
-            "streak" => AutonomousPlayerDeeds.Kind.RvrStreak,
-            "ganked" => AutonomousPlayerDeeds.Kind.Ganked,
-            "silly" => AutonomousPlayerDeeds.Kind.SillyDeath,
-            "fell" => AutonomousPlayerDeeds.Kind.Fell,
-            _ => AutonomousPlayerDeeds.Kind.None,
-        };
+        AutonomousPlayerDeeds.Kind kind = DeedKind(arg);
         if (kind == AutonomousPlayerDeeds.Kind.None)
         {
-            Say(client, "/lstest deed <solo|group|streak|ganked|silly|fell>");
+            Say(client, "/lstest deed <solo|group|streak|ganked|silly|fell|drowned>");
             return;
         }
         if (Off(AutonomousPlayerDeeds.On, "bot_living_deeds") is string off)
@@ -208,22 +257,47 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             return;
         }
         AutonomousHolidays.TestDate = day.Value.Date.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
-        Say(client, $"Bots treat today as {day:yyyy-MM-dd} ({name}) until /lstest holiday off or a restart. Say \"happy {name}\" in /faction, or wait for their own lines (about one line in five on the day).");
+        Say(client, HolidayHint(name, day.Value));
         if (!AutonomousHolidays.On)
             Say(client, "Holiday chatter is off (bot_living_holidays).");
     }
 
+    /// <summary>What /lstest holiday tells the GM to say: the holiday's own wish ("happy new year"), as bots read it. Pure.</summary>
+    public static string HolidayHint(string name, DateTime day)
+    {
+        string wish = AutonomousHolidays.Wish(name);
+        string say = wish == null ? "Wait for their own lines" : $"Say \"{wish}\" in /faction, or wait for their own lines";
+        return $"Bots treat today as {day:yyyy-MM-dd} ({name}) until /lstest holiday off or a restart. {say} (about one line in five on the day).";
+    }
+
     private static void List(GameClient client)
     {
-        Say(client, "Living Server parts (on/off):");
-        Say(client, $"  voices {OnOff(AutonomousBotVoices.Enabled)}, debates {OnOff(AutonomousBotDebates.Enabled)}, tells {OnOff(Properties.BOT_VOICES_TELLS)}, memory {OnOff(AutonomousLivingServer.MemoryOn)}");
-        Say(client, $"  deeds {OnOff(Properties.BOT_LIVING_DEEDS)}, storylines {OnOff(Properties.BOT_LIVING_STORYLINES)}, spammers and roleplayers {OnOff(Properties.BOT_LIVING_CHARACTERS)}, rumours {OnOff(Properties.BOT_LIVING_RUMOURS)}");
-        Say(client, $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), leeroy {OnOff(AutonomousRaidLeeroy.On)}");
+        foreach (string line in ListLines())
+            Say(client, line);
     }
+
+    /// <summary>The /lstest list lines: every part and its switch. Pure but for the settings it reads.</summary>
+    public static string[] ListLines() =>
+    [
+        "Living Server parts (on/off):",
+        $"  voices {OnOff(AutonomousBotVoices.Enabled)}, debates {OnOff(AutonomousBotDebates.Enabled)}, tells {OnOff(Properties.BOT_VOICES_TELLS)}, memory {OnOff(AutonomousLivingServer.MemoryOn)}",
+        $"  deeds {OnOff(Properties.BOT_LIVING_DEEDS)}, storylines {OnOff(Properties.BOT_LIVING_STORYLINES)}, spammers and roleplayers {OnOff(Properties.BOT_LIVING_CHARACTERS)}, rumours {OnOff(Properties.BOT_LIVING_RUMOURS)}",
+        $"  tales {OnOff(Properties.BOT_LIVING_TALES)}, tale raids {OnOff(Properties.BOT_LIVING_TALE_RAIDS)}, beggars {OnOff(Properties.BOT_LIVING_BEGGARS)}, bonds {OnOff(Properties.BOT_GROUP_BONDS)}",
+        $"  atmosphere lines {OnOff(Properties.LIVING_ATMOSPHERE_LINES)}, cosmetics {OnOff(Properties.BOT_COSMETICS)}",
+        $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), " +
+        $"leeroy {OnOff(AutonomousRaidLeeroy.On)}{(AutonomousRaidLeeroy.ChargeNowArmed ? " (a \"now\" is armed)" : "")}",
+        BotPeopleTest.ListLine(BotPeopleSwitches.Current),
+    ];
 
     private static string OnOff(bool on) => on ? "on" : "OFF";
 
-    private static string Off(bool on, string setting) => on ? null : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
+    // Settings the launcher's Living Server tab has no switch for (chat audit TEXT-041).
+    private static readonly HashSet<string> ServerOnlySettings = new(StringComparer.Ordinal) { "bot_living_tales", "bot_living_tale_raids" };
+
+    /// <summary>What /lstest says when the part asked for is switched off; null when it is on. Pure.</summary>
+    public static string Off(bool on, string setting) => on ? null : ServerOnlySettings.Contains(setting)
+        ? $"That part is off ({setting}); it is a server setting, not in the launcher."
+        : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
 
     /// <summary>When a line asked for now really reaches /faction (live test 2026-11-08: "within a second" came 4.5 minutes later).</summary>
     private static string WhenFaction(eRealm realm) =>

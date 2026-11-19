@@ -1,0 +1,280 @@
+{
+  "id": "snowdonia",
+  "name": "Snowdonia",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    12
+  ],
+  "aliases": [
+    "the mountains",
+    "snowdonia fortress"
+  ],
+  "summary": "Albion's mountain frontier: Snowdonia Fortress and its roll, Castle Myrddin and Caer Hurbury, the ellyllon's frog lakes, the giants' bones, the cyclopes and Arawn's errands in the passes.",
+  "facts": [
+    {
+      "text": "Snowdonia is zone 12 of region 1, a frontier zone with Snowdonia Fortress, Caer Hurbury (keep 55, level 5) and Castle Myrddin (keep 58, level 10, a relic keep).",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Keep/Mob tables, region 1 zone 12 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Its monsters are faerie frogs (faction Ellyllon), cyclopes, giant skeletons, bwca, faint grims, giant boars and hill scrags, and ten named quest monsters: Soulfear, the Eye of Arawn, Dathmul, Shaman Saelonna, Blacktooth, Nogud the Smasher, Nasher, Grunge, the Snowdon Grim and Worry Wort.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Keep/Mob tables, region 1 zone 12 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Albion's two relics are Merlin's Staff (magic) and the Scabbard of Excalibur (strength); which one Castle Myrddin holds is not in the world tables read (to verify).",
+      "provenance": "game",
+      "source": "source/server/GameServer/keeps/Relics/GameRelic.cs"
+    },
+    {
+      "text": "Quests: Feast of the Decadent (destroy the focus Dathmul, a hollow man north-north-east of Caer Hurbury), Passage to Eternity (find the Eye of Arawn), Symbol of the Broken (Shaman Saelonna's Book of Arawn), Crushed Faith (the Snowdon Grim at the Snowdonia/Pennine pass) and Wizard's Demand (Worry Wort's skin: you may need to kill him more than once).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The realm holding the most frontier keeps finds its Darkness Falls door open.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "Real-world: Snowdonia (Eryri) is the mountain country of north-west Wales; Myrddin is Merlin's Welsh name; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Snowdonia"
+    },
+    {
+      "text": "Cynfarch the clerk and the Fortress Roll with its second column, the eagles leaving, the ellyllon's frogs kept as hounds, the skin taken more than once, the Eye of Arawn's gift of his eye and Soulfear's unended song are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The mountain frontier. North-west of the Black Mountains the land heaves up into Snowdonia, the highest country in Albion, bare rock and snow-gullies and green hollows under the cliffs, and this is where Albion's frontier begins. The old tongue named the mountains for the eagles; the eagles left when the war came. Long before the realms, the mountains belonged to the giants, and the giants' bones are still in the high corries, too big to bury, standing up again on the nights when the cold comes down. One-eyed giants of a later age, the cyclopes, keep the north-eastern heights and serve whoever pays them best; the Followers of Arawn pay them best, and the greatest of them has given his one eye to Arawn's service and is called by its name.\n\nThe ellyllon's mountain. The fair folk of Snowdonia are the ellyllon, the small strange people whose seer keeps a hollow in the Pennines to the south-east, and in Snowdonia they keep their frogs. The faerie frogs of the mountain lakes are the ellyllon's, as hounds are a lord's, and they come in hundreds, and the ellyllon count every one. One of them, a great toad they call Worry Wort, sheds his skin in pieces when he is struck and grows it back whole, and the wizards of Swanton Keep want a complete one; the ellyllon say a skin is only complete when it has been taken more than once. The bwca of the mountain farms were house-spirits once, like the boggarts of the Pennines, and went bad when the farms emptied.\n\nMyrddin's castle and the fortress. Albion holds the mountains from two keeps and a fortress. Castle Myrddin stands on the north-western heights, named for Merlin in the old tongue, and the riders say the realm keeps a relic of his in it, in the seasons when the realm has it to keep; every war-band of the other realms that comes into the mountain frontier comes for it. Caer Hurbury guards the eastern pass. And Snowdonia Fortress, in the southern valley, is the realm's frontier house: wizards and knight-commanders on its walls, Captain Rhodri and Captain Leri and their lieutenants in its hall, the Castle Sauvage emissary at its door, and a siege-master who sells rams to anyone with a warrant.\n\nWhat went wrong. The mountains are full of the war's leavings and Arawn's errands. A hollow man stands north of Caer Hurbury, a focus for something the druids of the west are gathering, and the Academy wants it destroyed. An Arawnite shamaness, Saelonna, keeps a Book of Arawn in the middle valley and reads from it to the dead. Dead soldiers of an older war haunt the passes, Nasher in the south and the Snowdon Grim at the pass toward the Pennines, who has taken more than one Church errand's worth of hammers off the road. A warg of the shadow hunters called Blacktooth runs the north-east, a scrag called Nogud the Smasher holds the western slopes, and a great boar called Grunge keeps the middle valley. And in the south-east, where the fortress cannot see, something keens among the boogies of the mountain: the hill-folk call her Soulfear, and say that whoever hears her name sung at night does not hear the end of the song.\n\nWhy it matters to Albion. Snowdonia is the realm's door to the war. The road north from Swanton Keep comes up through these valleys to the fortress and out onto the frontier, and Castle Myrddin is one of the two places the other realms most want to take. The captains of the fortress say Snowdonia has never been quiet for a season. The ellyllon say the mountain has never been quiet at all.",
+  "legend": "Snowdonia is Albion's mountain frontier zone, north-west of Black Mtns North, the road up from Swanton Keep. Snowdonia Fortress in the southern valley is the realm's frontier town: Captain Rhodri (Path of the Renegade, lots of data quests), Captain Leri, Lieutenants Brude and Niane, Sir Gwyn, Master Rusiv the Castle Sauvage emissary and the siege merchant. Castle Myrddin in the north-west is a level 10 relic keep, and Caer Hurbury in the east is a level 5 keep; both change hands in the realm war, and enemy war-bands come for Myrddin. Monsters: faerie frogs (high twenties) in the lakes, giant skeletons in the high corries, cyclopes in the low forties in the north-east, hill scrags, bwca. Named quest targets are scattered: the Eye of Arawn (a cyclops, 49) and Blacktooth (45) in the north-east, Dathmul north of Caer Hurbury, Shaman Saelonna in the middle valley (her Book of Arawn starts Symbol of the Broken), Nogud in the west, Grunge in the middle, Nasher and the Snowdon Grim in the southern passes, and Worry Wort the toad in the south-east, who you may have to kill more than once for a whole skin. Soulfear (54) is in the south-east too; she is a group target.",
+  "atmosphere": {
+    "firstEntry": [
+      "Snowdonia. The highest country in Albion.",
+      "Snow-gullies, bare rock and the war beyond.",
+      "Frogs croak in their hundreds in the lakes.",
+      "The fortress bell. Somewhere a keep has fallen.",
+      "Giant bones in the corries, waiting for the cold."
+    ],
+    "areas": [
+      {
+        "name": "Snowdonia Fortress",
+        "x": 528451,
+        "y": 358290,
+        "z": 8320,
+        "radius": 3500,
+        "lines": [
+          "Snowdonia Fortress. The realm's door to the war.",
+          "Captain Rhodri has a task for everyone.",
+          "Wizards on the walls, eyes on the passes."
+        ]
+      },
+      {
+        "name": "Castle Myrddin",
+        "x": 507115,
+        "y": 309292,
+        "z": 6832,
+        "radius": 1800,
+        "lines": [
+          "Castle Myrddin, named for Merlin.",
+          "A relic keep. Every enemy war-band wants it.",
+          "The walls here have changed banners often."
+        ]
+      },
+      {
+        "name": "Caer Hurbury",
+        "x": 546502,
+        "y": 337035,
+        "z": 4960,
+        "radius": 1500,
+        "lines": [
+          "Caer Hurbury guards the eastern pass.",
+          "North of the walls, a hollow man stands."
+        ]
+      },
+      {
+        "name": "the hollow man's ground",
+        "x": 548712,
+        "y": 328104,
+        "z": 4500,
+        "radius": 1000,
+        "lines": [
+          "Dathmul stands empty. Something fills him.",
+          "A focus for something the druids are gathering."
+        ]
+      },
+      {
+        "name": "the cyclops heights",
+        "x": 556000,
+        "y": 319000,
+        "z": 4500,
+        "radius": 3000,
+        "lines": [
+          "Cyclopes on the north-eastern heights.",
+          "The Eye of Arawn watches with its one eye.",
+          "Blacktooth's pack runs the heights too."
+        ]
+      },
+      {
+        "name": "Saelonna's valley",
+        "x": 521626,
+        "y": 349668,
+        "z": 4500,
+        "radius": 1200,
+        "lines": [
+          "Shaman Saelonna reads the Book of Arawn aloud.",
+          "The dead lean in to listen."
+        ]
+      },
+      {
+        "name": "the giants' corries",
+        "x": 534000,
+        "y": 330000,
+        "z": 6000,
+        "radius": 4000,
+        "lines": [
+          "Giant bones in the high corries. Too big to bury.",
+          "When the cold comes down, they stand."
+        ]
+      },
+      {
+        "name": "the frog lakes",
+        "x": 540000,
+        "y": 345000,
+        "z": 4000,
+        "radius": 5000,
+        "lines": [
+          "Faerie frogs in their hundreds. The ellyllon count them.",
+          "Worry Wort croaks. His skin is never whole."
+        ]
+      },
+      {
+        "name": "Nogud's slope",
+        "x": 516712,
+        "y": 359104,
+        "z": 4500,
+        "radius": 1000,
+        "lines": [
+          "Nogud the Smasher's slope. Mind the rocks.",
+          "A scrag who smashes first and does not ask."
+        ]
+      },
+      {
+        "name": "Grunge's wallow",
+        "x": 524712,
+        "y": 339104,
+        "z": 4500,
+        "radius": 1000,
+        "lines": [
+          "Grunge roots in the middle valley.",
+          "A boar the size of a cart, in a very bad mood."
+        ]
+      },
+      {
+        "name": "the southern passes",
+        "x": 543700,
+        "y": 359000,
+        "z": 4500,
+        "radius": 5000,
+        "lines": [
+          "Nasher walks the southern pass, long dead.",
+          "The Snowdon Grim keeps the way to the Pennines."
+        ]
+      },
+      {
+        "name": "the keening ground",
+        "x": 548712,
+        "y": 355104,
+        "z": 4500,
+        "radius": 1500,
+        "lines": [
+          "A keening among the boogies of the mountain.",
+          "Soulfear sings. Do not stay for the end."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "snowdonia fortress is our frontier town. captain rhodri has a million quests",
+      "castle myrddin is a relic keep. every enemy warband in the mountains goes for it",
+      "the ellyllon keep the faerie frogs like hounds. they count them",
+      "giant skeletons in the high corries stand up when the cold comes",
+      "cyclopes up in the ne work for whoever pays. arawn's lot pay best",
+      "the bwca were house spirits before the farms emptied, like boggarts",
+      "the fortress rings its bell when myrddin falls",
+      "caer hurbury guards the eastern pass in snowdonia",
+      "the fortress roll has a second column. the captains read that one",
+      "the snowdon grim and nasher were soldiers older than rome's last legion",
+      "the road from swanton keep comes up through snowdonia to the frontier",
+      "the old tongue named snowdonia for the eagles. they left when the war came"
+    ],
+    "rumour": [
+      "[heard|someone said] worry wort grows his skin back. you need to kill him more than once",
+      "heard the eye of arawn gave his one eye to arawn",
+      "[heard|someone said] dathmul is a focus for something the druids are gathering",
+      "heard saelonna reads her book of arawn to the dead",
+      "[heard|someone said] the snowdon grim has never been where sir benitt says",
+      "heard nobody comes back with the end of soulfear's song",
+      "[heard|someone said] blacktooth runs with the shadow hunters in the ne",
+      "heard grunge and nogud have more kills in the fortress roll than the dead do"
+    ],
+    "tell": [
+      "snowdonia? the mountain frontier nw of black mtns north, up the road from swanton",
+      "is it hard? frogs in the high 20s, cyclopes in the 40s, rvr on top of that",
+      "whats there? snowdonia fortress, castle myrddin, caer hurbury, a lot of named quest mobs",
+      "where's myrddin? nw heights. hurbury is the eastern pass. the fortress is in the southern valley",
+      "eye of arawn and blacktooth are ne, dathmul north of hurbury, saelonna in the middle valley",
+      "worry wort and soulfear are se. nasher and the snowdon grim are in the southern passes"
+    ]
+  },
+  "loremaster": {
+    "intro": "Snowdonia, the mountain frontier. Ask of [snowdonia fortress], [castle myrddin] and [caer hurbury], of the [ellyllon] and [worry wort], the [cyclopes] and the [eye of arawn], the [giants' bones] and the [bwca], [dathmul] and [saelonna], the dead of the [passes], or of [soulfear].",
+    "topics": {
+      "snowdonia fortress": "The realm's frontier house in the southern valley: wizards and knight-commanders on the walls, Captains Rhodri and Leri, Lieutenants Brude and Niane, Sir Gwyn, Sir Defi, Brother Alfred, Master Rusiv of Castle Sauvage at the door. It keeps a roll of every company that goes out.",
+      "castle myrddin": "A relic keep on the north-western heights, named for Merlin in the old tongue. The riders say the realm keeps a relic of his there when it has it to keep. Every enemy war-band in the mountains comes for it.",
+      "caer hurbury": "The keep that guards Snowdonia's eastern pass. North of it stands [dathmul].",
+      "ellyllon": "The small strange fair folk whose seer keeps a hollow in the Pennines; in Snowdonia they keep faerie frogs in the mountain lakes as a lord keeps hounds, and count every one. See [worry wort].",
+      "cyclopes": "One-eyed giants of the north-eastern heights who serve whoever pays them best. The Followers of Arawn pay best. See [eye of arawn].",
+      "giants' bones": "The bones of the old giants lie in the high corries, too big to bury, and stand up when the cold comes down.",
+      "bwca": "House-spirits of the mountain farms who went bad when the farms emptied, like the boggarts of the Pennines.",
+      "worry wort": "Worry Wort is the great toad of the ellyllon's frog lakes in the south-east of Snowdonia. When he is struck down his skin comes away in pieces, and he grows it back whole and is in the lake again before long; the wizard Yorel Anbidian of Swanton Keep wants a complete skin and has learned that one killing is seldom enough. The ellyllon say a skin is only complete when it has been taken more than once, which they think is a joke and Yorel does not.",
+      "eye of arawn": "The greatest of the cyclopes of the north-eastern heights, who gave his one eye to Arawn's service.",
+      "dathmul": "A hollow man north of Caer Hurbury, a focus for something the druids of the west are gathering.",
+      "saelonna": "An Arawnite shamaness of the middle valley who reads to the dead from a Book of Arawn.",
+      "passes": "Nasher keeps the southern pass and the Snowdon Grim the pass toward the Pennines: dead soldiers in harness older than Rome's last legion.",
+      "soulfear": "Something that keens at night among the boogies of the mountain in the south-east. The hill-folk say whoever hears her song does not hear its end."
+    }
+  },
+  "book": {
+    "title": "The Fortress Roll of Snowdonia",
+    "pages": [
+      "The Fortress Roll of Snowdonia, kept by Lieutenant Niane's clerk, Cynfarch, who is tired of being asked whether he is any kin to the scribe of the scorched journal. The fortress keeps a roll of every company that passes through its gate onto the frontier, as Prydwen keeps its roll of knights. I write the company, the captain, the day, and the day they come back. The second column is the one the captains read. Captain Rhodri reads it every morning before he eats, and some mornings he does not eat. Captain Leri reads it at night, after, and says nothing, and puts out the lamp herself.",
+      "Of Castle Myrddin. It is named for Merlin in the old tongue, and the riders say the realm keeps a relic of his there, in the seasons when the realm has it to keep. Every war-band from the north that comes into the mountains comes for Myrddin, and the castle has changed banners more often than any wall in the west. When it falls, the fortress rings its bell and every company in the roll that is still on the mountain turns toward it. I have written that line in the roll more times than I like.",
+      "Of Arawn's errands. A cyclops of the north-eastern heights has given his one eye to Arawn's service and is called by it, the Eye of Arawn, and Mistress Ainsliee sends the Church's own to find him. In the middle valley a shamaness called Saelonna reads to the dead out of a Book of Arawn, and the Academy wants the book. North of Caer Hurbury a hollow man called Dathmul stands empty with something pouring into him, and Elvinia Dareal of Caer Witrin says it is a focus. I write down their names so the next clerk knows them.",
+      "Of the dead of the passes. Nasher walks the southern pass and the Snowdon Grim keeps the pass toward the Pennines, and they were soldiers once, in harness older than Rome's last legion. The Grim took a glacial hammer off a Church errand, and Sir Benitt of Castle Sauvage has sent half the young of the realm after it, and it has never once been where he said. Grunge the boar and Nogud the scrag are only beasts. The roll has more of their names in the second column than any of the dead's, because the young go after the beasts first and the dead later, when they know better.",
+      "Of the frogs and the singer. The ellyllon keep faerie frogs in the mountain lakes as a lord keeps hounds, and count them, and are angry when one is missing. Their great toad Worry Wort grows his skin back whole each time he loses it, and the wizards of Swanton want a whole one, which means more than one killing. And in the south-east, past the frogs, among the boogies of the mountain, something keens at night that the hill-folk call Soulfear. Nobody in the roll has gone to look at her and come back with the end of the song."
+    ]
+  },
+  "bosses": [
+    "soulfear",
+    "eye-of-arawn",
+    "dathmul",
+    "shaman-saelonna",
+    "blacktooth",
+    "nogud-the-smasher",
+    "nasher",
+    "snowdon-grim",
+    "grunge"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn",
+    "old-powers",
+    "realm-of-camelot"
+  ]
+}

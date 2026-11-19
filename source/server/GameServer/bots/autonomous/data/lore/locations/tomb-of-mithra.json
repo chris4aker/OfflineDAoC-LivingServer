@@ -1,0 +1,238 @@
+{
+  "id": "tomb-of-mithra",
+  "name": "Tomb of Mithra",
+  "realm": "Albion",
+  "regions": [
+    21
+  ],
+  "aliases": [
+    "mithra",
+    "mithras tomb",
+    "the tomb"
+  ],
+  "summary": "The Roman cave-temple of Mithras under Camelot Hills, where the cult's oaths, tests and failed sacrifices are still kept: every squire's first dungeon.",
+  "facts": [
+    {
+      "text": "Mithra's Tomb in Camelot Hills is geared to low-level players and called the best dungeon for new players to level in.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Camelot_Hills"
+    },
+    {
+      "text": "A period Allakhazam guide maps its forgotten promise room, the original disciple (crypt) room and the acolyte room, with skeletons, zombies, spectrals and bleeder lizards; it names Acolyte Nerita and Favonius Facilus.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/Mithra_Guide.html"
+    },
+    {
+      "text": "The world here names Acolyte Nascita and Favonius Facilis, and holds malevolent disciples, cursed believers, botched sacrifices, forgotten promises, living entombed, undead builders, fallen paladins and bleeders.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "High Priest Andania's lines: 'The power of Mithra cleanses this holy place. Out! Out! I command you!' and 'Come to me, my servants! Come and serve in the glory of Mithra!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/HighPriestAndania.cs"
+    },
+    {
+      "text": "Roman religion, not game canon: Mithras was worshipped in sunken, windowless cave-temples, much by soldiers, in seven grades of initiation.",
+      "provenance": "myth",
+      "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    },
+    {
+      "text": "The tomb (region 21, about 174 spawns, levels 8-16) holds living entombed, malevolent disciples, bleeders, botched sacrifices, decaying spirits, cursed believers, undead builders and guardsmen, fallen paladins, ghost miners, putrid sacrificers, undead poachers and one forgotten promise in the promise room.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 21 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Named: Favonius Facilis (16) in the disciples' crypt with Virilis and Virilus side by side; Anilius (14) and Erisus (13) in the west; Acolyte Nascita (13) in the acolyte room; High Priest Andania (15) in the deepest hall.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 21 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "High Priest Andania is hidden, untargetable and peaceful until a real player comes within 500; when he dies his last words are 'You may have defeated us here, but we shall meet again someday!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/HighPriestAndania.cs"
+    },
+    {
+      "text": "Anilius brings three helpers at his side when first engaged; Erisus calls the cursed believers and malevolent disciples tagged to him within 1,500.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Anilius.cs; source/server/GameServer/scripts/mobs/AlbionMobs/Erisus.cs"
+    },
+    {
+      "text": "Willing Sacrifice (Brother Codeth): Anilius in the west, Favonius Facilis, Virilus, the Forgotten Promise and the password room (west, north, west, north), Acolyte Nascita's ritual that needs someone willingly slain, then follow the slave to High Priest Andania.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Roman religion, not game canon: the seven grades were Corax, Nymphus, Miles, Leo, Perses, Heliodromus and Pater.",
+      "provenance": "myth",
+      "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+    },
+    {
+      "text": "The priests' wish for a willing sacrifice, the twins' oath night, Iorwen of Cotswold's account and 'the tomb keeps every promise made in it' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The fort and the god. Before Camelot there was a Roman fort in these hills, and under the fort, as under every Roman fort in the west, the soldiers dug a temple to their god. Mithras was a soldier's god, born out of the rock with a knife in one hand and a torch in the other, and his worship was a soldier's worship: underground, in the dark, in a long low hall with benches down both sides, where men climbed the god's seven grades one oath at a time, Raven and Bride and Soldier and Lion, Persian and Runner of the Sun and Father. When they died they were buried in the rock beside the temple so that they could go on keeping their oaths. The fort's builders dug the galleries for them, and went on digging, because every year there were more oaths and more men to bury with them.\n\nWhat went wrong. Rome went home and the god did not. The last priests of the temple would not leave him, and without the legion to feed them they turned their worship inward: they tested their own followers harder each year, and the tests grew into sacrifices, and the sacrifices into something the old grades had never asked for. The priests wanted a sacrifice that was willing. The men they bound to the altar were not, and the god, the priests said, could tell. The botched sacrifices of those years are still in the lower halls, and the putrid sacrificers who botched them, and the believers who believed too long and were cursed for it. In the end the priests sealed themselves in with their god, and the fort above them fell down, and the shepherds of Camelot Hills forgot there had ever been a temple there at all.\n\nWhat keeps house there now. They are all still at their posts. The disciples kneel in their crypt under Favonius Facilis, who was the temple's keeper of the dead; the builders are still building; the guardsmen are still on guard; ghost miners still work a gallery that should have been finished centuries ago. Twin brothers of the cult, Virilis and Virilus, stand side by side in the crypt as they stood at their initiation. Anilius, who set the first of the cult's tests, keeps the western halls and never meets a stranger alone; Erisus, beyond him, has only to raise his voice for the cursed believers to come. The acolyte Nascita keeps the warm room below where the bleeders breed, and he is still looking for a willing sacrifice. And in the deepest hall High Priest Andania waits for the god's enemies to come into his presence, and is not to be seen until they do. In the room the squires call the promise room the oaths themselves walk, a forgotten promise that has outlived every man who swore it, and it will tell anyone who listens the old way to the room of the password: west, then north, then west, then north.\n\nWhy it matters to Albion. Every squire of the realm goes down into the tomb sooner or later, for the first time, with a sword that is too new and a friend who swears he knows the way. The knights of Camelot Hills send their squires to it as their own masters sent them, and Brother Codeth at the bridge post keeps a journal of the cult and sends the young down to learn its password and end its high priest. The cult has never been ended. Andania, the squires say, always promises to meet them again someday, and always keeps his promise. The tomb keeps every promise made in it; that is what it is for.",
+  "legend": "The Tomb of Mithra is the starter dungeon in Camelot Hills, levels 8 to 16, and every Albion character has been there. Skeletons break on crush, zombies on slash, the ghosts (decaying spirits, chilled presences, insidious whispers) do not care much either way. The bleeders breed in the acolyte room down below: hatchlings, then aged ones, then the broodmothers, so clear it in that order. Willing Sacrifice from Brother Codeth at the bridge post walks you through all the nameds: Anilius in the west (three helpers come with him), Favonius Facilis and Virilus in the disciples' crypt (Virilis is right beside Virilus, do not mix them up), the Forgotten Promise in the promise room (west, north, west, north to the password room), Acolyte Nascita's ritual, then High Priest Andania, who only appears when someone walks into his room. Erisus near Anilius calls the cursed believers and disciples around him. Gamebots camp the tomb all day, so expect company.",
+  "atmosphere": {
+    "firstEntry": [
+      "A soldier's god was worshipped here. His soldiers stayed.",
+      "Benches down both walls. Nobody sits.",
+      "Somewhere below, lizards in the warm dark.",
+      "An oath is being kept here. Several hundred."
+    ],
+    "areas": [
+      {
+        "name": "the promise room",
+        "x": 28415,
+        "y": 32728,
+        "z": 15576,
+        "radius": 900,
+        "lines": [
+          "The promise room. Oaths walk here without their men.",
+          "A forgotten promise, still being kept.",
+          "West, north, west, north, something whispers."
+        ]
+      },
+      {
+        "name": "the acolyte room",
+        "x": 27762,
+        "y": 32932,
+        "z": 14527,
+        "radius": 800,
+        "lines": [
+          "Warm dark, and lizards breeding in it.",
+          "An acolyte waits for someone willing."
+        ]
+      },
+      {
+        "name": "the disciples' crypt",
+        "x": 28243,
+        "y": 29927,
+        "z": 15487,
+        "radius": 800,
+        "lines": [
+          "Disciples kneel in the crypt. They never rose.",
+          "Two brothers stand side by side, as at their oath."
+        ]
+      },
+      {
+        "name": "the western halls",
+        "x": 26310,
+        "y": 29942,
+        "z": 15519,
+        "radius": 900,
+        "lines": [
+          "Anilius keeps the first test.",
+          "He never meets a stranger alone."
+        ]
+      },
+      {
+        "name": "Erisus's chapel",
+        "x": 25461,
+        "y": 29752,
+        "z": 15039,
+        "radius": 800,
+        "lines": [
+          "Cursed believers kneel round a lean priest.",
+          "One raised voice, and they all rise."
+        ]
+      },
+      {
+        "name": "the high priest's hall",
+        "x": 22916,
+        "y": 34413,
+        "z": 15247,
+        "radius": 700,
+        "lines": [
+          "An empty hall. Then it is not.",
+          "The god's high priest commands you out."
+        ]
+      },
+      {
+        "name": "the miners' gallery",
+        "x": 29484,
+        "y": 29992,
+        "z": 15667,
+        "radius": 700,
+        "lines": [
+          "Ghost miners at a gallery never finished.",
+          "Picks ring on stone. No dust rises."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "[mithra's tomb|the tomb of mithra] was every squire's first dungeon, and the promise room [was where|is where] we all broke our promises",
+      "mithra was a soldier's god. makes sense the tomb is full of soldiers who never left",
+      "the romans worshipped mithra underground in the dark. [the tomb is his temple|thats what the tomb was]",
+      "mithra had seven grades, raven up to father. andania is the last father",
+      "the mithra cult wanted a willing sacrifice. nobody volunteered so they botched the rest",
+      "virilis and virilus are twins in the mithra crypt. hit the right one",
+      "favonius facilis keeps the dead in the crypt like a sacristan",
+      "anilius never fights alone, three of his lot get up with him",
+      "the forgotten promise says west north west north. thats the password room",
+      "the bleeders in mithra breed. hatchlings, old ones, then the broodmothers",
+      "the ghost miners in mithra are still digging a gallery the romans never finished",
+      "brother codeth at the bridge keeps a journal on the mithra cult"
+    ],
+    "rumour": [
+      "we used to meet at the pk bridge before a mithra run. good times",
+      "[heard|someone said] the high priest in mithra still shouts at people to get out of his holy place",
+      "[heard|someone said] andania isnt even there till you walk into his room",
+      "heard nascita still wants someone to volunteer for his altar. no thanks",
+      "[heard|someone said] andania always says he will see you again. he does, every respawn",
+      "heard the cursed believers all stand up when erisus shouts",
+      "[heard|someone said] the mithra tomb keeps every promise you make in it",
+      "heard the twins in the crypt hold a grudge if you hit the wrong one"
+    ],
+    "tell": [
+      "mithra? the tomb in camelot hills. skeletons, zombies, ghosts and lizards. best first dungeon in albion, bring a mace and a friend",
+      "where's mithra? camelot hills, ask at the bridge post, brother codeth knows",
+      "is mithra hard? its 8 to 16. bring a mace for skeletons and a blade for zombies",
+      "whats in mithra? the cult, the crypt, the promise room, the lizard room, the high priest",
+      "best level for mithra? 10ish for the crypt, mid teens for the lizard room and andania",
+      "mithra quest? willing sacrifice from brother codeth, takes you through all the nameds"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Tomb of Mithra was a Roman [temple] before it was a tomb, and its [servants] are still at their worship. Ask of the [father] and the [promise room], of [favonius facilis], [virilis and virilus], [anilius], [erisus], [nascita], [andania] and the [bleeders], or of [brother codeth], who keeps the cult's journal. You will have been there. Everyone has.",
+    "topics": {
+      "temple": "The soldiers of the old fort worshipped Mithras underground, climbing his seven grades from Raven to [father] one oath at a time. They were buried in the rock beside him to keep their oaths. The squires' [promise room] is where those oaths still walk.",
+      "servants": "Disciples, believers, builders, failed sacrifices, guardsmen, ghost miners and a high priest who orders every stranger out of his holy place. They do not know Rome has gone. Ask of [favonius facilis], [virilis and virilus], [anilius], [erisus], [nascita] or [andania].",
+      "father": "The highest of the seven grades of Mithras. [Andania] was the last of the temple's Fathers, and the cult still obeys him. In Lyonesse the Cailleach calls the same god Father and is answered.",
+      "promise room": "Where every squire of Albion swears a promise at the door, and breaks it. A forgotten promise walks there with no face, saying four words over and over: west, north, west, north, the way to the room where the cult keeps its password.",
+      "favonius facilis": "Keeper of the temple's dead, who walks between the kneeling disciples in the crypt like a sacristan at a vigil. Brother Codeth's journal puts him second among the cult's tests.",
+      "virilis and virilus": "Twin brothers of the cult who took the Soldier's oath on the same night and still stand side by side in the crypt. Strike the wrong one and the right one will not forgive it. The cult's rolls remember Virilus; Virilis only stands beside him.",
+      "anilius": "He sets the cult's first test in the western halls and has never once met a stranger alone: his followers stand up at his elbow the moment he is challenged.",
+      "erisus": "A lean priest of the cult in a chapel beyond [anilius]. When he raises his voice the cursed believers and the malevolent disciples round him all rise to answer.",
+      "nascita": "The acolyte of the warm room below, who keeps the bleeders and the altar and has been asking for a willing sacrifice since Rome went home. The day someone says yes, a slave will show the way to [andania].",
+      "andania": "High Priest of Mithra, the last Father of the temple, who is not to be seen in his hall until the god's enemies stand in it. He orders them out in Mithra's name, and when he falls he promises to meet them again someday. He always does.",
+      "brother codeth": "A brother of the Church at the bridge post in Camelot Hills who keeps a journal of Mithra's cult and sends the young down to learn its password and end its high priest.",
+      "bleeders": "The lizards that breed in the warm dark of the acolyte room: hatchlings, aged bleeders and swollen broodmothers. The acolyte [nascita] keeps them for the altar."
+    }
+  },
+  "book": {
+    "title": "A Squire's First Descent",
+    "pages": [
+      "A Squire's First Descent, set down by Iorwen of Cotswold, squire to Sir Edric of Caer Ulfwych, in the spring of her first year. Sir Edric took four of us down into Mithra's tomb on the first warm day of spring, as his own master had taken him. He told us the skeletons break under a mace and the dead men under a blade and that the ghosts care for neither, and then he made us each swear a promise at the door of the room the squires call by that name. Mine was never to run. I ran twice before noon.",
+      "Edric laughed and said that was the point, and that the tomb keeps every promise you leave in it. He showed us the promise itself, a thing walking slowly round the room with no face, and told us to listen. It said the same four words over and over in a voice like a man reading a list: west, north, west, north. Edric said every squire in Albion knows those four words and not one knows what they open. Brother Codeth at the bridge knows. He would not tell Edric either. He only wrote something in his journal, and blotted it, and told Edric to bring us back to him when we were older.",
+      "Of the crypt. The disciples kneel there in rows with their heads down and get up only when you come too close. Their keeper Favonius Facilis walks between the rows like a sacristan at a vigil. Beside him stand two brothers so alike that Ffion, who was with us, struck the wrong one and had to apologise to the right one, who did not accept. Edric says they were twins who took the oath of the Soldier on the same night and have stood together ever since. Their names are Virilis and Virilus, and the cult remembers one of them better than the other.",
+      "Of the western halls. Anilius sets the cult's first test, Edric says, and he set it for us: he would not come out to us alone, but with three of his followers at his elbow, all at once, so that the four of us had four of them. Ffion ran. I did not, that time. Past him there is a lean priest called Erisus who has only to raise his voice and every cursed believer in his chapel stands up off the floor to answer it. We did not go past him. Edric said that would be next spring's lesson.",
+      "Of the warm room below. The lizards breed there, small ones and old ones and great swollen mothers, and an acolyte called Nascita keeps them and keeps the altar. He looked at each of us in turn as if he were weighing us. Edric said the cult wants a sacrifice that is willing, and that Nascita has been asking for one since Rome went home, and that the day someone says yes to him he will finish his ritual and a slave will walk out of the dark to show the way to the high priest. Nobody has said yes in Edric's lifetime. Edric thinks that is just as well.",
+      "Of the high priest, last. We walked into his hall and it was empty, and Edric told us to stand still, and then it was not empty: an old man in a priest's robes stood at the far end where nobody had been, and ordered us out of his holy place in the name of Mithra. We went. Edric says the companies Brother Codeth sends have killed him more than once, and that every time he falls he says that they will meet again someday, and they always do. I asked Edric what promise I should make next spring. He said: to come back."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ]
+}

@@ -1015,7 +1015,7 @@ namespace DOL.GS.Spells
 			{
 				_lastDuringCastLosCheckTime = GameLoop.GameLoopTime;
 
-				if (!m_caster.castingComponent.StartDuringCastLosCheck(target))
+				if (!m_caster.castingComponent.StartDuringCastLosCheck(target, this))
 					HasLos = true;
 			}
 
@@ -1032,11 +1032,14 @@ namespace DOL.GS.Spells
 		private void NotifyCompanionsOfHarmfulCast()
 		{
 			if (!Spell.IsHarmful) return;
+			// A mesmerize, stun or root does not send the companions at its target (owner 2026-10-29); they join the
+			// fight on another monster (PlayerLedPullCoordinator.FindLeaderControlFight).
+			if (PlayerLedPullCoordinator.IsCrowdControl(Spell)) return;
 			if (Caster is GamePlayer player)
 				PlayerLedPullCoordinator.LeaderEngaged(player, Target);
 			else if (Caster is GameNPC { Brain: ControlledMobBrain { Owner: GamePlayer owner } } &&
 				owner.ControlledBrain?.Body == Caster)
-				PlayerLedPullCoordinator.LeaderEngaged(owner, Target);
+				PlayerLedPullCoordinator.LeaderEngaged(owner, Target, fromPet: true);
 		}
 
 		public void Tick()
@@ -1350,6 +1353,10 @@ namespace DOL.GS.Spells
 		{
 			GamePlayer playerCaster = Caster as GamePlayer;
 			DbInventoryItem playerWeapon = null;
+
+			// Crafting 2.0 WP7 (from True165): a gamebot's staff wears from its harmful spells like a player's (bot_upkeep).
+			if (Caster is GameBot wearingBot && !HasPositiveEffect)
+				GameInventoryItem.OnBotItemUsed(wearingBot, wearingBot.ActiveWeapon);
 
 			if (playerCaster != null)
 			{

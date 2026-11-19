@@ -24,8 +24,12 @@ public static class RealmExchangeSaleLedger
     }
     private static readonly ConditionalWeakTable<IObjectDatabase, State> States = new();
 
+    /// <param name="TaxCopper">What the Exchange tax kept from the seller (Crafting 2.0; 0 while there is no tax).</param>
+    /// <param name="Crafted">The item was crafted, by a player or a gamebot (DividedRealms ceac061a), so crafted sales can
+    /// be counted. Neither is a stored column yet: the ledger's subscribers (EconomySeams.SaleCommitted) read them.</param>
     public sealed record Sale(int Realm, string ItemName, int Quantity, long PriceCopper,
-        string SellerId, string SellerName, string BuyerId, string BuyerName, DateTime SoldUtc);
+        string SellerId, string SellerName, string BuyerId, string BuyerName, DateTime SoldUtc,
+        long TaxCopper = 0, bool Crafted = false);
 
     [GameServerStartedEvent]
     public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)
@@ -33,7 +37,7 @@ public static class RealmExchangeSaleLedger
         IObjectDatabase database = GameServer.Database;
         State state = States.GetOrCreateValue(database);
         lock (RealmExchangeBroker.TransactionLock)
-        lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+        using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
         lock (state.Gate)
         {
             try { Initialize(database, state); }
@@ -74,6 +78,8 @@ public static class RealmExchangeSaleLedger
                 // Replace the cached row only after commit. A failed write must
                 // neither erase the old sale nor consume a history position.
                 state.Rows[previous.SlotId - 1] = next;
+                // A seam (Crafting 2.0 WP0): the economy ledger and the price index hear of the committed sale.
+                CraftingEconomy.EconomySeams.RaiseSaleCommitted(sale);
                 return true;
             }
             catch (Exception error)

@@ -91,14 +91,14 @@ namespace DOL.GS
             base.AddToWorld();
             return true;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             SpawnAnnouncer();
-            if (killer is GamePlayer)
+            if (EncounterTargets.IsRaider(killer))
             {
-                GamePlayer player = killer as GamePlayer;
+                GameLiving player = EncounterTargets.AsRaider(killer);
                 if(player != null)
-                    BroadcastMessage(String.Format("my kind will avenge me! You won't make out of here alive " + player.CharacterClass.Name+ "!"));
+                    BroadcastMessage(String.Format("my kind will avenge me! You won't make out of here alive " + EncounterTargets.ClassOf(player)?.Name+ "!"));
             }
             var prepareMezz = TempProperties.GetProperty<ECSGameTimer>("kvasir_prepareMezz");//cancel message
             if (prepareMezz != null)
@@ -106,7 +106,7 @@ namespace DOL.GS
                 prepareMezz.Stop();
                 TempProperties.RemoveProperty("kvasir_prepareMezz");
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         private void SpawnAnnouncer()
         {
@@ -140,7 +140,7 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public static bool IsPulled = false;
+        public bool IsPulled = false;
         private bool StartMezz = false;
         private bool AggroText = false;
         public void BroadcastMessage(String message)
@@ -154,12 +154,12 @@ namespace DOL.AI.Brain
         {
             if(!AggroText && Body.TargetObject != null)
             {
-                if (Body.TargetObject is GamePlayer)
+                if (EncounterTargets.IsRaider(Body.TargetObject))
                 {
-                    GamePlayer player = Body.TargetObject as GamePlayer;
+                    GameLiving player = EncounterTargets.AsRaider(Body.TargetObject);
                     if (player != null && player.IsAlive)
                     {
-                        BroadcastMessage(String.Format("To come this far... only to die a horrible death! Huh! Do you not wish that you were taking on a safer endavour at this moment? You realize of course that all of your efforts will come to naught as you are about to die " + player.CharacterClass.Name + "?"));
+                        BroadcastMessage(String.Format("To come this far... only to die a horrible death! Huh! Do you not wish that you were taking on a safer endavour at this moment? You realize of course that all of your efforts will come to naught as you are about to die " + EncounterTargets.ClassOf(player)?.Name + "?"));
                         AggroText = true;
                     }
                 }
@@ -223,6 +223,7 @@ namespace DOL.AI.Brain
         private int PrepareMezz(ECSGameTimer timer)
         {
             BroadcastMessage(String.Format("{0} lets loose a primal scream so intense that it resonates in the surrounding ice for several seconds. Many in the immediate vicinite are stunned by the sound!", Body.Name));
+            EncounterSignals.Note(Body, EncounterSignals.Scream);//Living Server 1.2: the lore's "scream" lines (LoreBossWatch)
             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastMezz), 2000);
             return 0;
         }
@@ -319,8 +320,6 @@ namespace DOL.GS
             Size = 50;
             Level = 50;
             MaxSpeedBase = 0;
-            TunnelsBrain.message1 = false;
-            TunnelsBrain.message2 = false;
 
             Faction = FactionMgr.GetFactionByID(140);
 
@@ -343,8 +342,8 @@ namespace DOL.AI.Brain
             AggroLevel = 0;
             AggroRange = 0;
         }
-        public static bool message1 = false;
-        public static bool message2 = false;
+        public bool message1 = false;
+        public bool message2 = false;
         public void BroadcastMessage(String message)
         {
             foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -356,9 +355,9 @@ namespace DOL.AI.Brain
         {
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(10000))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 10000))
                 {
-                    if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && !message2 && player.IsWithinRadius(Body, 400))
+                    if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && !message2 && player.IsWithinRadius(Body, 400))
                         message2 = true;
                 }
                 if (message2 && !message1)

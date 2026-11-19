@@ -2,9 +2,22 @@ namespace DOL.GS
 {
     public class HunterBotSpec : BotSpec
     {
-        public HunterBotSpec()
+        public HunterBotSpec(eSpecType spec = eSpecType.None)
         {
             SpecName = "HunterBotSpec";
+
+            if (spec == eSpecType.SpearHunter)
+            {
+                // Spear first, the melee Hunter (owner 2026-10-29), on the same points as the others.
+                WeaponOneType = eObjectType.Spear;
+                Is2H = true;
+                SpecType = eSpecType.None;
+                Add(Specs.Spear, 50, 1.0f);
+                Add(Specs.Beastcraft, 39, 0.7f);
+                Add(Specs.Stealth, 35, 0.4f);
+                Add(Specs.CompositeBow, 25, 0.2f);
+                return;
+            }
 
             int randBaseWeap = Util.Random(2);
 

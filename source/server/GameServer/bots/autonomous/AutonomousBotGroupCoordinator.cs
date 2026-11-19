@@ -70,6 +70,8 @@ public static partial class AutonomousBotGroupCoordinator
         public bool LeaderReadyForAssembly { get; init; }
         public bool GroupCombatActive { get; init; }
         public bool RecoveringBetweenPulls { get; init; }
+        /// <summary>The real player this party hosts (bot-led groups); null for a bot-only party. The bots lead.</summary>
+        public GamePlayer HostedPlayer { get; init; }
     }
 
     public sealed class StoredMetadata
@@ -173,6 +175,26 @@ public static partial class AutonomousBotGroupCoordinator
         public long PublishedAttendanceRevision = -1;
         public long? PublishedDeadlineTick;
         public long PublishedRemaining;
+        // Bot-led groups (AutonomousBotGroupCoordinator.BotLed.cs): the real player this party hosts, never its leader.
+        public GamePlayer HostedPlayer { get; set; }
+        public BotPveGroupRole PlayerRole { get; set; }
+        // Why the party is letting the hosted player go (an AFK or linkdead let-go), read by the removal handler; null for a
+        // player who left on their own.
+        public string LetGoReason { get; set; }
+        public BotLedGroups.FollowState Follow { get; set; }
+        public Vector3 PlayerLastPosition { get; set; }
+        // When the hosted player was first seen out of the world (a zone or region change, a /jump), or 0.
+        public long PlayerAwaySince { get; set; }
+        public ushort PlayerLastRegion { get; set; }
+        /// <summary>Started from the player's own group by /lead bot (B2): its gamebots' own goals may differ.</summary>
+        public bool FromPlayersGroup { get; init; }
+        // B4 (AutonomousBotGroupCoordinator.Replacement.cs): the party hosted the player at some point; the leader's search
+        // for a replacement; the natural break ("last pull then town"); the leader's goodbye when the party ends.
+        public bool HadHostedPlayer { get; set; }
+        public AutonomousPartyReplacement.Search Replacement { get; set; }
+        public BotLedGroups.BreakState Break { get; set; }
+        public long NextBreakCheck { get; set; }
+        public BotLedGroups.Lead? FarewellLine { get; set; }
     }
 
     /// <summary>Population-wide work belongs to one service phase, not every
@@ -183,16 +205,28 @@ public static partial class AutonomousBotGroupCoordinator
         if (Interlocked.Read(ref _lastMaintenanceTick) == now || now < Interlocked.Read(ref _maintenanceRetryTick)) return;
         try
         {
-            RealmEventNotices.Pulse(now);
-            AutonomousLivingServer.Pulse(now);
-            RealmEventControls.Pulse();
-            AutonomousRealmRaid.Pulse(now);
-            AutonomousRealmRaid.RecruitForcedParty(now);
-            AutonomousEpicSpecialForces.Pulse(now);
-            AutonomousRvrEventLayer.PulseDefense(now);
-            RealmWarbandSupport.Pulse(now);
-            AutonomousObjectiveAssignments.ReconcileIfDue();
-            lock (Sync)
+            // AI_PROFILE: each serial pulse is timed on its own (audit 2026-11-03 §1.3, §9: at most 2 ms each).
+            using (AiProfile.Scope(AiSystem.PulseRealmEventNotices))
+                RealmEventNotices.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseLivingServer))
+                AutonomousLivingServer.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRealmEventControls))
+                RealmEventControls.Pulse();
+            using (AiProfile.Scope(AiSystem.PulseRealmRaid))
+                AutonomousRealmRaid.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRaidForcedParty))
+                AutonomousRealmRaid.RecruitForcedParty(now);
+            using (AiProfile.Scope(AiSystem.PulseEpicSpecialForces))
+                AutonomousEpicSpecialForces.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseNoLiferBuffBots))
+                NoLiferBuffBots.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseRvrDefense))
+                AutonomousRvrEventLayer.PulseDefense(now);
+            using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
+                RealmWarbandSupport.Pulse(now);
+            using (AiProfile.Scope(AiSystem.PulseObjectiveAssignments))
+                AutonomousObjectiveAssignments.ReconcileIfDue();
+            using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             {
                 if (_lastMaintenanceTick == now) return;
                 Interlocked.Exchange(ref _lastMaintenanceTick, now);
@@ -202,10 +236,14 @@ public static partial class AutonomousBotGroupCoordinator
                 if (now >= _nextBrokenSessionSweep)
                 {
                     _nextBrokenSessionSweep = now + BrokenSessionSweepMilliseconds;
-                    RemoveBrokenSessions();
+                    // Capped (BrokenSessionFinishesPerSweep): with parties left to end, the next tick goes on.
+                    using (AiProfile.Scope(AiSystem.PulseBrokenSessions))
+                        if (RemoveBrokenSessions()) _nextBrokenSessionSweep = now + 1;
                 }
-                FormSiegeParties();
-                TryFormGroups();
+                using (AiProfile.Scope(AiSystem.PulseFormSiegeParties))
+                    FormSiegeParties();
+                using (AiProfile.Scope(AiSystem.PulseTryFormGroups))
+                    TryFormGroups();
             }
         }
         catch (Exception exception)
@@ -219,7 +257,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static string RvrForceId(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             return bot.Group != null && TryGetSession(bot.Group, out Session session) &&
                 session.ObjectiveKind == eAutonomousObjectiveKind.RvR ? session.Id : $"rvr-{bot.DatabaseID}";
@@ -231,8 +269,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper)
             return null;
 
+        using var aiProfile = AiProfile.Scope(AiSystem.CoordinatorPulse);
         PrepareCoordinatorTick();
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot.Group != null && TryGetSession(bot.Group, out Session currentSession))
                 RemoveBrokenSession(currentSession.Group, currentSession);
@@ -251,7 +290,10 @@ public static partial class AutonomousBotGroupCoordinator
 
             // Objective membership is authoritative.  A rebalance can never
             // leave a mixed PvE/RvR party running under the leader's old task.
-            if (!group.GetMembersInTheGroup().Any(member => member is GamePlayer))
+            // A party started from the player's own group (/lead bot) keeps going after the player leaves, whatever its
+            // gamebots' own goals were.
+            if (!group.GetMembersInTheGroup().Any(member => member is GamePlayer) &&
+                !(TryGetSession(group, out Session fromPlayers) && fromPlayers.FromPlayersGroup))
             {
                 eAutonomousObjectiveKind purpose = AutonomousObjectiveAssignments.KindFor(members[0]);
                 if (members.Any(member => AutonomousObjectiveAssignments.KindFor(member) != purpose))
@@ -262,8 +304,11 @@ public static partial class AutonomousBotGroupCoordinator
             }
 
             // Player-led parties are visible in the launcher, but the human is
-            // deliberately not serialized or included in the bot count.
-            if (group.GetMembersInTheGroup().Any(member => member is GamePlayer))
+            // deliberately not serialized or included in the bot count. A party
+            // that hosts the player (bot-led groups) is still run by its bot leader.
+            if (group.GetMembersInTheGroup().Any(member => member is GamePlayer) &&
+                !(TryGetSession(group, out Session hosting) && OnlyHostedPlayer(group, hosting) &&
+                  members.All(member => !member.IsPlayerLedGroup)))
             {
                 string key = $"player-{RuntimeHelpers.GetHashCode(group):x8}";
                 string goal = "Assist the player-led party";
@@ -291,6 +336,8 @@ public static partial class AutonomousBotGroupCoordinator
             if (!UpdateSession(session, members))
                 return null;
             members = BotMembers(session.Group);
+            // True 1.65 (veteran review M11): the role-aware layout follows camp, member and role changes
+            RefreshRoleFormation(session, members);
             if (bot.Group != session.Group || members.Length == 0)
                 return null;
             return BuildDirective(session, members);
@@ -305,12 +352,13 @@ public static partial class AutonomousBotGroupCoordinator
     /// </summary>
     public static int MaximumGroupedForObjective(eAutonomousObjectiveKind objectiveKind, int rosterCount) =>
         objectiveKind == eAutonomousObjectiveKind.RvR
-            ? Math.Max(0, rosterCount - MinimumSoloRvrReserve(rosterCount))
+            ? Math.Max(0, rosterCount - MinimumSoloRvrReserve(rosterCount, RvrTacticsSoloReserveShare()))
             : Math.Max(0, rosterCount);
 
-    public static int MinimumSoloRvrReserve(int rosterCount) => rosterCount < 4
+    // 1.2 (rvr_roam_population_split): with the split on, the reserve is the split's small share (15%), not 35%.
+    public static int MinimumSoloRvrReserve(int rosterCount, double share = 0.35d) => rosterCount < 4
         ? Math.Max(0, rosterCount - 2)
-        : Math.Max(2, (int)Math.Ceiling(rosterCount * 0.35d));
+        : Math.Max(2, (int)Math.Ceiling(rosterCount * share));
 
     public static int AvailableGroupSlotsForObjective(eAutonomousObjectiveKind objectiveKind, int realmRosterCount, int realmGroupedCount) =>
         Math.Max(0, MaximumGroupedForObjective(objectiveKind, realmRosterCount) - realmGroupedCount);
@@ -322,7 +370,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null || camp == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) ||
                 IsAssemblyPhase(session.Phase) || session.Recovery.IsRegrouping)
@@ -331,7 +379,13 @@ public static partial class AutonomousBotGroupCoordinator
             GameBot leader = ChooseLeader(session, members);
             if (leader != bot)
                 return;
+            // Bot-led groups: while the hosted player is away the party pulls where it stands but goes nowhere new.
+            if (BotLedGroups.ViewOf(session.Group)?.BlocksNewTravel == true && session.Camp != null)
+                return;
+            bool newCamp = !string.Equals(session.Camp?.Id, camp.Id, StringComparison.Ordinal);
             AssignCamp(session, camp, members);
+            if (newCamp && HostedPlayerPresent(session))
+                BotLedGroups.Announce(leader, BotLedGroups.Lead.Move, session.HostedPlayer, camp.ZoneName, camp.MonsterName);
             WriteSessionMetadata(session, members);
         }
     }
@@ -360,7 +414,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static bool PlanMeetupNearCamp(GameBot leader, SharedCamp camp)
     {
         if (leader?.Group == null) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(leader.Group, out Session session) || session.MeetupPlanned ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve || session.Phase != "Leader staging" ||
@@ -443,7 +497,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static void ReportNoAvailableCamp(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session) ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve || session.Camp != null ||
@@ -470,7 +524,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp == null ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve)
@@ -508,7 +562,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp?.Id != campId ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve)
@@ -542,7 +596,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static HashSet<string> RejectedDungeonCamps(GameBot bot)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session))
                 return new(StringComparer.Ordinal);
@@ -560,7 +614,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static void RejectUnreachableCamp(GameBot bot, string campId, string reason = "")
     {
         if (AutonomousRealmRaid.GetView(bot?.Group) != null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (bot?.Group == null || !TryGetSession(bot.Group, out Session session) || session.Camp?.Id != campId)
                 return;
@@ -600,7 +654,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Camp == null || session.Recovery.IsRegrouping)
                 return;
@@ -709,7 +763,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static GameBot PartyPuller(GameBot member)
     {
         if (member?.Group == null) return null;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(member.Group, out Session session) ? ChoosePuller(session, BotMembers(member.Group)) : null;
     }
 
@@ -718,11 +772,18 @@ public static partial class AutonomousBotGroupCoordinator
         if (AutonomousRealmRaid.GetView(directive?.Leader?.Group) != null) return true;
         if (directive?.IsDynamic != true || directive.Leader == null)
             return true;
+        // Bot-led groups: a hosted player far behind holds the party like a member (BotLedGroups.FollowState.HoldsPace).
+        if (BotLedGroups.ViewOf(directive.Leader.Group)?.HoldsPace == true)
+            return false;
         long now = GameLoop.GameLoopTime;
+        // A PvE party's member in another region, or one not getting closer, holds it at most 10 minutes
+        // (AutonomousGroupMemberStall.LongHoldMilliseconds; owner's PC 2026-11-15, build 1dc66b6).
+        bool boundedHold = directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve;
         return BotMembers(directive.Leader.Group).Where(member => member.IsAlive)
-            .All(member => member.CurrentRegionID == directive.Leader.CurrentRegionID &&
-                (member.GetDistanceTo(directive.Leader) is var distance && distance <= CohesionRadius ||
-                 AutonomousGroupMemberStall.Release(member, directive.Leader, distance, CohesionRadius, now)));
+            .All(member => member.CurrentRegionID == directive.Leader.CurrentRegionID
+                ? member.GetDistanceTo(directive.Leader) is var distance && distance <= CohesionRadius ||
+                  AutonomousGroupMemberStall.Release(member, directive.Leader, distance, CohesionRadius, now, boundedHold)
+                : boundedHold && AutonomousGroupMemberStall.ReleaseFromOtherRegion(member, directive.Leader, now));
     }
 
     /// <summary>How far the farthest living member trails the leader; MaxValue when one is in another region.</summary>
@@ -730,15 +791,24 @@ public static partial class AutonomousBotGroupCoordinator
     {
         GameBot leader = directive?.Leader;
         if (leader == null) return 0;
+        // Bot-led groups: the leader stops for a hosted player far behind, and goes on once they are close.
+        if (BotLedGroups.ViewOf(leader.Group)?.HoldsPace == true) return float.MaxValue;
         float farthest = 0;
         long now = GameLoop.GameLoopTime;
+        bool boundedHold = directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && AutonomousRealmRaid.GetView(leader.Group) == null;
         foreach (GameBot member in BotMembers(leader.Group))
         {
             if (!member.IsAlive || member == leader) continue;
-            if (member.CurrentRegionID != leader.CurrentRegionID) return float.MaxValue;
+            if (member.CurrentRegionID != leader.CurrentRegionID)
+            {
+                // A PvE member away in another region for 10 minutes no longer stops the leader (it keeps travelling).
+                if (boundedHold && AutonomousGroupMemberStall.ReleaseFromOtherRegion(member, leader, now)) continue;
+                return float.MaxValue;
+            }
             float distance = member.GetDistanceTo(leader);
-            // A member stuck for 45 seconds no longer holds the group (see AutonomousGroupMemberStall).
-            if (AutonomousGroupMemberStall.Release(member, leader, distance, CohesionRadius, now)) continue;
+            // A member stuck for 45 seconds, or not getting closer for 10 minutes in a PvE party, no longer holds the
+            // group (see AutonomousGroupMemberStall).
+            if (AutonomousGroupMemberStall.Release(member, leader, distance, CohesionRadius, now, boundedHold)) continue;
             farthest = Math.Max(farthest, distance);
         }
         return farthest;
@@ -748,7 +818,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && session.Recovery.IsRegrouping;
     }
 
@@ -756,7 +826,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && IsAssemblyPhase(session.Phase);
     }
 
@@ -774,7 +844,7 @@ public static partial class AutonomousBotGroupCoordinator
         // coordinator lock, which every grouped actor's Pulse also contends for.
         if (bot.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             // Membership can change between the brain thread and coordinator.
             // Capture once: a second property read could become null mid-check.
@@ -847,7 +917,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || bot.Group == null) return;
         if (AutonomousRealmRaid.GetView(bot.Group) != null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (TryGetSession(bot.Group, out Session session) && !session.Ending &&
                 session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
@@ -865,7 +935,7 @@ public static partial class AutonomousBotGroupCoordinator
             crossing.SourceRegion == crossing.TargetRegion)
             return true;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -906,7 +976,7 @@ public static partial class AutonomousBotGroupCoordinator
             crossing == null || crossing.SourceRegion == crossing.TargetRegion ||
             crossing.TargetRegion != directive.Camp.RegionId || bot == directive.Leader)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -951,7 +1021,7 @@ public static partial class AutonomousBotGroupCoordinator
             bot.CurrentRegionID != directive.Camp.RegionId || directive.GroupCombatActive)
             return false;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != directive.GroupId)
                 return false;
@@ -962,6 +1032,14 @@ public static partial class AutonomousBotGroupCoordinator
             if (inside < members.Length)
             {
                 reason = $"Holding at the inside arrival point while the party loads ({inside}/{members.Length} inside)";
+                return true;
+            }
+            // Bot-led groups: the party waits on the far side of the entrance for the player it hosts, until the
+            // follow rules let the player catch up on their own (10 minutes not getting closer).
+            if (HostedPlayerPresent(session) && session.Follow is { Released: false } &&
+                session.HostedPlayer.IsAlive && session.HostedPlayer.CurrentRegionID != directive.Camp.RegionId)
+            {
+                reason = $"Holding at the inside arrival point for {session.HostedPlayer.Name}";
                 return true;
             }
 
@@ -1012,7 +1090,7 @@ public static partial class AutonomousBotGroupCoordinator
         staging = default;
         if (bot?.Group == null || directive?.IsDynamic != true || directive.Camp?.IsDungeon != true)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             return TryGetSession(bot.Group, out Session session) &&
                    session.Id == directive.GroupId &&
@@ -1026,7 +1104,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (bot?.Group == null || directive?.IsDynamic != true || directive.Camp?.IsDungeon != true ||
             bot.CurrentRegionID == directive.Camp.RegionId)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(bot.Group, out Session session) && session.Id == directive.GroupId &&
                 session.DungeonArrivalRegion == directive.Camp.RegionId &&
                 BotMembers(bot.Group).Any(member => member.CurrentRegionID == directive.Camp.RegionId);
@@ -1035,7 +1113,7 @@ public static partial class AutonomousBotGroupCoordinator
     public static void MarkCombatObserved(Group group)
     {
         if (group == null) return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!Sessions.TryGetValue(group, out Session session)) return;
             session.CombatObserved = true;
@@ -1057,13 +1135,13 @@ public static partial class AutonomousBotGroupCoordinator
             reporter.IsAutonomousWorldBot != true || reporter.IsTemporaryGroupHelper)
             return false;
 
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(reporter.Group, out Session session))
                 return false;
 
             GameBot[] members = BotMembers(session.Group);
-            puller = ChoosePuller(session, members);
+            puller = AutonomousRealmRaid.GetView(session.Group) != null ? RaidPullerFor(session, members, reporter) : ChoosePuller(session, members);
             if (puller == null || puller.Brain is not BotBrain ||
                 !AutonomousDungeonPolicy.CanHandoffRouteBlocker(
                     session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve,
@@ -1171,7 +1249,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return true;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             Group group = bot.Group;
             if (group == null || !Sessions.TryGetValue(group, out Session session))
@@ -1185,7 +1263,7 @@ public static partial class AutonomousBotGroupCoordinator
                 // Only locally present living members take part in puller
                 // selection. A casualty or reinforcement across the world is
                 // not a veto on every surviving party's combat.
-                var expeditionPuller = ChoosePuller(session, BotMembers(group));
+                var expeditionPuller = RaidPullerFor(session, BotMembers(group), bot);
                 return bot == expeditionPuller && bot.HealthPercent >= 70;
             }
             GameBot[] members = BotMembers(group);
@@ -1196,6 +1274,8 @@ public static partial class AutonomousBotGroupCoordinator
             return !IsAssemblyPhase(session.Phase) && !session.Recovery.IsRegrouping && combatActor &&
                 !session.Recovery.HasCasualty(RecoveryMembers(session, members, false)) &&
                 !session.RecoveringBetweenPulls && MembersReadyForPull(members) &&
+                // Bot-led groups: the hosted player near the camp, alive, and up on health and power like the rest.
+                BotLedGroups.ViewOf(group)?.BlocksPull != true &&
                 (session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
                     HasActivePveComposition(session, members)) &&
                 members.Length >= 2 && members.All(member => !member.IsOnStableMasterRoute &&
@@ -1281,7 +1361,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group != null)
         {
-            lock (Sync)
+            using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             {
                 if (TryGetSession(bot.Group, out Session session) && session.Id == groupId &&
                     session.RendezvousSlots.TryGetValue(MemberKey(bot), out Vector3 slot))
@@ -1295,7 +1375,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null)
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Id != groupId) return false;
             long key = MemberKey(bot);
@@ -1329,6 +1409,9 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static Vector3 DesiredFormationPoint(GameBot bot, Vector3 center, bool tight)
     {
+        // True 1.65 (veteran review M11): tanks in front toward the camp, healers and casters behind (RoleFormation)
+        if (TryRoleFormationPoint(bot, center, tight, out Vector3 rolePoint))
+            return rolePoint;
         GameBot[] members = BotMembers(bot?.Group)
             .OrderBy(member => member.DatabaseID > 0 ? member.DatabaseID : member.ObjectID)
             .ToArray();
@@ -1358,7 +1441,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (bot?.Group == null || string.IsNullOrWhiteSpace(groupId))
             return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             Group group = bot.Group;
             if (!Sessions.TryGetValue(group, out Session session) || session.Id != groupId ||
@@ -1500,22 +1583,31 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static void OnMemberRemoved(Group group, GameLiving living)
     {
+        if (living is GamePlayer player)
+        {
+            OnHostedPlayerRemoved(group, player);
+            return;
+        }
         if (living is not GameBot bot || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper)
             return;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             ClearMetadata(bot, true);
             if (group != null && Sessions.TryGetValue(group, out Session session))
             {
+                BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.LeftGroup);
                 if (!session.ProcessingAttendanceRemovals && !session.Ending &&
                     session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
                 {
                     // A member who leaves (most often to answer a real player's /invite) no longer ends the party for
                     // everyone: in game 2026-10-27 one friar joining Claudecheck ended a five-bot party 57 minutes before
                     // its time. The rest carry on, as after a no-show, while they still have a tank, a healer and a hitter.
-                    session.PveRoles.Remove(MemberKey(bot));
+                    bool hadRole = session.PveRoles.Remove(MemberKey(bot), out BotPveGroupRole leftRole);
                     GameBot[] stayed = BotMembers(group);
-                    if (!HasViablePveComposition(session, stayed))
+                    bool viable = HasViablePveComposition(session, stayed);
+                    // B4: a party that hosts the player looks for a replacement, and waits for one if it lost its core.
+                    bool recruiting = hadRole && TryStartReplacement(session, leftRole, stayed, viable, bot.Name);
+                    if (!viable && !recruiting)
                     {
                         FinishGroupTask(session, $"{bot.Name} left the locked PvE party and no viable core roster remained");
                         return;
@@ -1577,26 +1669,77 @@ public static partial class AutonomousBotGroupCoordinator
     }
 
 
+    /// <summary>
+    /// A bot-only party's members hold a bot-group lease for it (docs/DUTY-LEASE.md), bound to the group, so it ends when
+    /// a member leaves or the party disbands. A raid's or a siege's own party already holds its members with that
+    /// activity's higher lease, so it claims nothing over them (no refusal to record: it is the same party).
+    /// </summary>
+    private static void ClaimSessionLeases(Session session, GameBot[] members)
+    {
+        foreach (GameBot member in members)
+        {
+            if (member.Group != session.Group || !BotDutyLeases.WouldGrant(member, eDutyLeaseKind.BotGroupSession, session.Id))
+                continue;
+            BotDutyLeases.Claim(member, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.GroupSession,
+                $"{session.ObjectiveKind} party", session.Group);
+        }
+    }
+
     public static void OnDisbanding(Group group)
     {
         if (group == null)
             return;
         AutonomousDefensivePull.Cancel(group);
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             AutonomousRealmRaid.RemoveParty(group);
             if (Sessions.TryGetValue(group, out Session ending) && ending.ObjectiveKind == eAutonomousObjectiveKind.RvR)
                 AutonomousRvrEventLayer.RemoveForce(ending.Id);
             if (ending?.DungeonBoss is { } boss)
                 LogDungeonBossResult(ending, boss, "party disbanded");
+            if (ending?.HostedPlayer != null)
+                EndHosting(ending, ending.HostedPlayer, "party_disbanded");
+            BotLedGroups.ClearHosted(group);
             foreach (GameBot bot in AllBotMembers(group))
+            {
                 ClearMetadata(bot, true);
+                if (ending != null) BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, ending.Id);
+            }
             Sessions.Remove(group);
         }
     }
 
     /// <summary>The time one group formation pass may spend once it has tried a leader.</summary>
     public const long FormationPassBudgetMilliseconds = 150;
+
+    /// <summary>
+    /// Past this much of a formation pass, a party's rendezvous checks stop between members and the party is formed on a
+    /// later pass instead (its members stay free; the zone steps already proven are remembered, AutonomousZoneItinerary).
+    /// Owner's PC, build 9a173f4, 2026-11-19 (sweep 7c): Tuscaran Glacier (04:07:08) and Evern (04:07:31) ended 23 s apart
+    /// and released about 150 raiders; the next PvE formation pass held the coordinator lock 2,817 ms
+    /// (AI_PROFILE_BUDGET over=pulse.try_form_groups:2817.3) and the server stalled 3,040 ms at 04:07:46. The pass budget
+    /// is checked only between leaders, and one party's rendezvous proves a zone itinerary for each of its members.
+    /// Timing only: the same parties form, a pass or a few later.
+    /// </summary>
+    public const long FormationPassHardCapMilliseconds = 2 * FormationPassBudgetMilliseconds;
+
+    /// <summary>A party's rendezvous checks stop now and go on in a later pass (pure).</summary>
+    public static bool DefersRendezvous(long passElapsedMilliseconds, long capMilliseconds) =>
+        capMilliseconds > 0 && passElapsedMilliseconds >= capMilliseconds;
+
+    // Set by a formation pass around its NewSession calls only (one thread: the coordinator's lock is held).
+    [ThreadStatic] private static System.Diagnostics.Stopwatch _formationPassClock;
+    [ThreadStatic] private static bool _rendezvousDeferred;
+
+    /// <summary>The formation pass asks for no more rendezvous checks this pass.</summary>
+    private static bool RendezvousOverBudget()
+    {
+        if (_rendezvousDeferred) return true;
+        if (_formationPassClock == null || !DefersRendezvous(_formationPassClock.ElapsedMilliseconds, FormationPassHardCapMilliseconds))
+            return false;
+        _rendezvousDeferred = true;
+        return true;
+    }
 
     /// <summary>Whether a formation pass has spent its budget: at least one leader tried and the budget used. Pure.</summary>
     public static bool FormationPassSpent(int leadersTried, long elapsedMilliseconds) =>
@@ -1646,7 +1789,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (objectiveKind == eAutonomousObjectiveKind.GroupPve)
             AutonomousGroupSupply.Update(activeRoster.Where(bot => bot.Group == null && !AutonomousRealmRaid.IsReserved(bot)));
         GameBot[] available = activeRoster
-            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !bot.IsPlayerLedGroup && bot.Group == null && bot.CurrentRegion != null &&
+            .Where(bot => bot.IsAlive && !bot.IsTemporaryGroupHelper && !BotDutyLeases.IsSpokenForByPlayer(bot) && bot.Group == null && bot.CurrentRegion != null &&
                           !AutonomousRealmRaid.IsReserved(bot) &&
                           // A bot the schedule is sending home finishes and logs off; it starts no new party (1.1.3).
                           !AutonomousBotSchedule.LeavingSoon(bot) &&
@@ -1740,6 +1883,7 @@ public static partial class AutonomousBotGroupCoordinator
             int rolledSize = objectiveKind == eAutonomousObjectiveKind.RvR
                 ? AutonomousRvrStaging.RollWarbandSize(largestAllowed, Random.Shared.NextDouble(), leader.Level)
                 : 8;
+            if (!pve) rolledSize = RvrTacticsPartySize(leader, rolledSize, largestAllowed, activeRoster); // 1.2 WP6: the split
             if (rolledSize == 1)
                 continue;
             // PvE recruits by travel time to the leader, from any region of the realm; RvR keeps the leader's region.
@@ -1784,7 +1928,10 @@ public static partial class AutonomousBotGroupCoordinator
             }
             else
             {
-                compatible = compatiblePool.Take(rolledSize - 1).ToArray();
+                // Pet caps (audit 2026-11-03): at most rvr_group_pet_cap pet classes in one warband; the rest stay free.
+                compatible = AutonomousRvrPetCap.Pick(compatiblePool, rolledSize - 1, AutonomousRvrPetCap.IsPetClass(leader) ? 1 : 0,
+                    AutonomousRvrPetCap.CapFor(rolledSize, ServerProperties.Properties.RVR_GROUP_PET_CAP), AutonomousRvrPetCap.IsPetClass);
+                compatible = RvrTacticsRoster(leader, compatiblePool, compatible, rolledSize) ?? compatible;
                 if (!AutonomousRvrStaging.AcceptWarband(rolledSize, compatible.Length))
                     continue;
                 rolledSize = compatible.Length + 1;
@@ -1810,7 +1957,22 @@ public static partial class AutonomousBotGroupCoordinator
             }
 
             rendezvousChecks++;
-            Session session = NewSession(group, leader, rolledSize, objectiveKind);
+            Session session;
+            _formationPassClock = passClock;
+            _rendezvousDeferred = false;
+            try { session = NewSession(group, leader, rolledSize, objectiveKind); }
+            finally { _formationPassClock = null; }
+            if (session == null && _rendezvousDeferred)
+            {
+                // Sweep 7c: the pass spent its time; the party forms on a later pass and its members stay free meanwhile.
+                _rendezvousDeferred = false;
+                GameBot[] deferred = BotMembers(group);
+                group.DisbandGroup();
+                Log.Info($"AUTONOMOUS_GROUP_FORMATION_DEFERRED realm={GlobalConstants.RealmToName(leader.Realm)} objective={objectiveKind} " +
+                         $"leader={leader.Name} size={deferred.Length} passMs={passClock.ElapsedMilliseconds} " +
+                         $"reason=\"the formation pass spent {FormationPassHardCapMilliseconds} ms; the rendezvous checks go on in a later pass\"");
+                break;
+            }
             if (session == null)
             {
                 GameBot[] unmatched = BotMembers(group);
@@ -1828,6 +1990,7 @@ public static partial class AutonomousBotGroupCoordinator
             GameBot[] formedMembers = BotMembers(group);
             WriteSessionMetadata(session, formedMembers);
             AutonomousBotGuildSocial.OnGroupFormed(formedMembers, objectiveKind == eAutonomousObjectiveKind.RvR);
+            if (!pve) RvrTacticsPartyFormed(session, leader, formedMembers); // 1.2 WP6: what the party is for
             if (pve)
                 AutonomousBotBonds.OnPartyFormed(formedMembers);
             Log.Info($"AUTONOMOUS_GROUP_FORMED group={session.Id} realm={GlobalConstants.RealmToName(leader.Realm)} " +
@@ -1912,7 +2075,8 @@ public static partial class AutonomousBotGroupCoordinator
             return false;
         }
         if (raidView == null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
-            !HasViablePveComposition(session, members))
+            !HasViablePveComposition(session, members) &&
+            !AutonomousPartyReplacement.HoldsParty(session.Replacement, GameLoop.GameLoopTime))
         {
             FinishGroupTask(session, "The PvE party no longer has a viable tank, healer, and attacker roster");
             return false;
@@ -1929,6 +2093,20 @@ public static partial class AutonomousBotGroupCoordinator
             FinishGroupTask(session, "No living group leader remains");
             return false;
         }
+        // Bot-led groups: the hosted player is observed once per pass (meetup, pace, pull gate, AFK, linkdead).
+        if (session.HostedPlayer != null && raidView == null && leader != null)
+            StepHostedPlayer(session, members, leader);
+        // True 1.65 (veteran review M6): a fighting party calls RUN before a wipe (AutonomousBotGroupCoordinator.GroupRun)
+        // Not while the party hosts a real player: the bots would run and leave the player with the pack.
+        if (raidView == null && leader != null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
+            session.HostedPlayer == null)
+            CheckGroupRun(session, members, leader);
+        // B4: the natural break ("last pull then town") and the search for a replacement.
+        if (raidView == null && leader != null && StepNaturalBreak(session, members, leader))
+            return false;
+        if (raidView == null && leader != null && StepReplacement(session, BotMembers(session.Group), leader))
+            return false;
+        members = BotMembers(session.Group);
 
         // Only enrolled dragon/epic parties use simultaneous hub assembly.
         // Automatic and forced enrollment share this path. Never wait for a
@@ -2131,6 +2309,8 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.Recovery.Observe(RecoveryMembers(session, members, false), session.TaskClock.HasStarted))
         {
             session.Wipes++;
+            if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
+                RvrEngagement.RecordWipe(session.Group, GameLoop.GameLoopTime);   // 1.2 WP4: the group remembers its wipes
             // Beta 1.1.2, round 7: a wipe is a story one of the party may tell in /faction.
             if (members.Length > 0 && Random.Shared.NextDouble() < 0.5)
                 AutonomousBotChatCoordinator.TellStory("wipe", members[Random.Shared.Next(members.Length)]);
@@ -2219,7 +2399,8 @@ public static partial class AutonomousBotGroupCoordinator
             }
         }
 
-        if (session.Phase == "Meeting up" && members.All(member => AtRendezvous(session, member)))
+        if (session.Phase == "Meeting up" && members.All(member => AtRendezvous(session, member)) &&
+            !HostedPlayerHoldsMeetup(session))
         {
             session.Phase = "Choosing group target";
             // The camp planned at formation: the party met at the town nearest it and goes straight there.
@@ -2466,13 +2647,21 @@ public static partial class AutonomousBotGroupCoordinator
     /// </summary>
     private static bool HasViablePveComposition(Session session, GameBot[] members)
     {
-        if (session == null || members == null || members.Length < 3 ||
+        // Bot-led groups: a hosted player fills their own role ("you are the only healer: the group counts you").
+        bool player = HostedPlayerPresent(session);
+        if (session == null || members == null || members.Length + (player ? 1 : 0) < 3 ||
             members.Any(member => !session.PveRoles.ContainsKey(MemberKey(member))))
             return false;
 
         int tanks = members.Count(member => session.PveRoles[MemberKey(member)] == BotPveGroupRole.Tank);
         int healers = members.Count(member => session.PveRoles[MemberKey(member)] == BotPveGroupRole.Healer);
         int attackers = members.Count(member => session.PveRoles[MemberKey(member)] == BotPveGroupRole.Attacker);
+        if (player)
+        {
+            tanks += session.PlayerRole == BotPveGroupRole.Tank ? 1 : 0;
+            healers += session.PlayerRole == BotPveGroupRole.Healer ? 1 : 0;
+            attackers += session.PlayerRole == BotPveGroupRole.Attacker ? 1 : 0;
+        }
         return tanks > 0 && healers > 0 && attackers > 0;
     }
 
@@ -2557,7 +2746,11 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (session == null || session.Ending)
             return;
+        // Bot-led groups (B2): a party hosting the player with one gamebot left asks the player to lead instead.
+        if (TryOfferLeadToLastBot(session, reason))
+            return;
         session.Ending = true;
+        BotGroupRetreat.Clear(session.Group);
         GameBot[] members = AllBotMembers(session.Group);
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
             AutonomousRvrEventLayer.RemoveForce(session.Id);
@@ -2595,6 +2788,10 @@ public static partial class AutonomousBotGroupCoordinator
             AutonomousBotBonds.OnPartyFinished(members, session.TaskClock.HasStarted,
                 session.TaskClock.HasExpired(GameLoop.GameLoopTime), session.Wipes,
                 session.Camp?.ZoneName ?? session.RendezvousName);
+        // Bot-led groups: the leader says goodbye to the player it hosted before the party breaks up.
+        if (HostedPlayerPresent(session) && ChooseLeader(session, members.Where(member => member.IsAlive).ToArray()) is { } farewell)
+            BotLedGroups.Announce(farewell, session.FarewellLine ?? BotLedGroups.Lead.Farewell, session.HostedPlayer,
+                farewell.CurrentZone?.Description, session.Camp?.MonsterName);
         session.Group.DisbandGroup();
         foreach (GameBot member in members)
         {
@@ -2629,6 +2826,8 @@ public static partial class AutonomousBotGroupCoordinator
             bool tight = zone?.IsDungeon == true;
             foreach (GameBot member in members)
             {
+                // Sweep 7c: past the formation pass's hard cap the checks go on in a later pass.
+                if (RendezvousOverBudget()) return false;
                 Vector3 desired = DesiredFormationPoint(member, chosen, tight);
                 if (!AutonomousRendezvousNavigation.TryResolveFormationSlot(nav, zone, chosen, desired, out Vector3 slot))
                     return false;
@@ -2714,7 +2913,7 @@ public static partial class AutonomousBotGroupCoordinator
             return PveCorpseDisposition.NotManaged;
         if (AutonomousRealmRaid.GetView(corpseGroup) != null)
             return AutonomousRealmRaid.CorpseRecovery(deadBot);
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (deadBot.Group != corpseGroup || !Sessions.TryGetValue(corpseGroup, out Session session) ||
                 session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
@@ -2778,6 +2977,9 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static bool IsTownArea(GameObject obj) => obj?.CurrentRegion?.IsCapitalCity == true ||
         NamedTownArea(obj) != null;
+
+    /// <summary>The object stands in a capital or a named town area (the meetup towns' rule), for chat.</summary>
+    internal static bool IsInTownArea(GameObject obj) => IsTownArea(obj);
 
     private static string TownName(GameObject obj) => obj?.CurrentRegion?.IsCapitalCity == true
         ? obj.CurrentRegion.Description
@@ -2890,10 +3092,14 @@ public static partial class AutonomousBotGroupCoordinator
         };
         if (session.TaskClock.DeadlineTick.HasValue && AutonomousRealmRaid.GetView(session.Group) == null)
             status += $"; shared task ends {session.TaskClock.ExpiresUtc:HH:mm} UTC";
+        // Bot-led groups: the camp level counts the hosted player and stays within six levels above them.
+        (int averageLevel, int levelBonus) = HostedLevels(session, members);
+        if (HostedPlayerPresent(session))
+            status += $"; with {session.HostedPlayer.Name}";
         return new(session.Id, session.Phase, goal, status, session.ObjectiveKind, leader, session.Rendezvous, session.Camp,
-            members.Length, (int)Math.Round(members.Average(member => member.Level)), session.WipePenalty,
-            session.PreferredLevelBonus, true)
+            members.Length, averageLevel, session.WipePenalty, levelBonus, true)
         {
+            HostedPlayer = HostedPlayerPresent(session) ? session.HostedPlayer : null,
             RendezvousRegion = session.RendezvousRegion,
             LeaderName = leader?.Name ?? string.Empty,
             RendezvousName = session.RendezvousName,
@@ -3066,13 +3272,20 @@ public static partial class AutonomousBotGroupCoordinator
         TryMatchPveRoster(leader, candidates, MinimumPveFormationSize, 8, out template, out _, offTanks: true)
             ? template.Length : 0;
 
-    private static bool HasActivePveComposition(Session session, GameBot[] members) =>
-        session != null && members != null &&
-        CanUsePveCombatRoster(session.LockedSize, members.Length,
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Tank),
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Healer),
-            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Attacker)) &&
-        members.All(member => session.PveRoles.ContainsKey(MemberKey(member)));
+    private static bool HasActivePveComposition(Session session, GameBot[] members)
+    {
+        if (session == null || members == null)
+            return false;
+        // Bot-led groups: a hosted player counts for their own role here too, as in HasViablePveComposition, or a party
+        // whose only healer is the player would never pull (found while building B2).
+        int player = HostedPlayerPresent(session) ? 1 : 0;
+        int Count(BotPveGroupRole wanted) =>
+            members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == wanted) +
+            (player == 1 && session.PlayerRole == wanted ? 1 : 0);
+        return CanUsePveCombatRoster(session.LockedSize + player, members.Length + player,
+                   Count(BotPveGroupRole.Tank), Count(BotPveGroupRole.Healer), Count(BotPveGroupRole.Attacker)) &&
+               members.All(member => session.PveRoles.ContainsKey(MemberKey(member)));
+    }
 
     public static bool CanUsePveCombatRoster(int lockedSize, int activeSize,
         int tanks, int healers, int attackers) =>
@@ -3106,7 +3319,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     public static bool UsesDefensivePullGroup(Group group)
     {
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
             return TryGetSession(group, out Session session) &&
                 AutonomousDefensivePull.UsesDefensivePull(session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve,
                     group.MemberCount, BotMembers(group).All(member => member.Level == 50));
@@ -3159,6 +3372,7 @@ public static partial class AutonomousBotGroupCoordinator
         session.PublishedAttendanceRevision = session.Attendance.Revision;
         session.PublishedDeadlineTick = session.TaskClock.DeadlineTick;
         session.PublishedRemaining = session.TaskClock.PausedRemainingMilliseconds;
+        ClaimSessionLeases(session, members);
         foreach (GameBot member in members)
         {
             if (member.PersistentRecord == null) continue;
@@ -3241,6 +3455,23 @@ public static partial class AutonomousBotGroupCoordinator
         return replacement;
     }
 
+    /// <summary>
+    /// A raid party's puller for <paramref name="asking"/>: the party's own (ChoosePuller, among the members in the camp's
+    /// region) when it stands in the asker's region; otherwise one of the members here, ranged pullers first. Owner's PC,
+    /// 2026-11-14: the Midgard members walking back through Dodens Gruva after the Roesia wipe could never pull, because
+    /// their puller was chosen among those already in Summoner's Hall (AutonomousDungeonPolicy.PullerAway).
+    /// </summary>
+    private static GameBot RaidPullerFor(Session session, GameBot[] members, GameBot asking)
+    {
+        GameBot own = ChoosePuller(session, members);
+        if (asking == null || !AutonomousDungeonPolicy.PullerAway(own != null, own?.IsAlive == true,
+                own?.CurrentRegionID ?? 0, asking.CurrentRegionID))
+            return own;
+        return members.Where(b => b.IsAlive && !b.IsOnStableMasterRoute && b.CurrentRegionID == asking.CurrentRegionID &&
+                                  b.GetDistanceTo(asking) <= 1100)
+            .OrderBy(b => AutonomousDefensivePull.HasRangedPull(b) ? 0 : 1).ThenBy(MemberKey).FirstOrDefault();
+    }
+
     private static GameBot ChoosePuller(Session session, GameBot[] members)
     {
         if (AutonomousRealmRaid.GetView(session.Group) != null && session.Camp is { } camp)
@@ -3271,29 +3502,67 @@ public static partial class AutonomousBotGroupCoordinator
     private static long _nextBrokenSessionSweep;
     public const int BrokenSessionSweepMilliseconds = 500;
 
-    private static void RemoveBrokenSessions()
+    /// <summary>
+    /// At most this many parties are ended (FinishGroupTask) in one sweep; the rest are ended on the next ticks. Owner's PC,
+    /// build b1b6846, 2026-11-18: the sweep right after a raid ended released its parties all at once under the coordinator
+    /// lock (pulse.broken_sessions 1,914 ms; SERVER_STALL worstTickMs=2060 at 12:00:08, 5 s after REALM_RAID_ENDED
+    /// epic-midgard; 1,091 ms at 08:03 and 734 ms at 10:04 after the earlier raid ends). Each party still ends with its
+    /// own reason; only when changes, by a tick or a few.
+    /// </summary>
+    public const int BrokenSessionFinishesPerSweep = 2;
+
+    private static int _brokenSessionCursor;
+
+    /// <summary>Returns true when the sweep stopped at its cap with sessions left to look at (the next one goes on from
+    /// there).</summary>
+    private static bool RemoveBrokenSessions()
     {
-        foreach ((Group group, Session session) in Sessions.ToArray())
-            RemoveBrokenSession(group, session);
+        int next = SweepBrokenSessions(Sessions.ToArray(), _brokenSessionCursor, pair => RemoveBrokenSession(pair.Key, pair.Value),
+            BrokenSessionFinishesPerSweep);
+        _brokenSessionCursor = Math.Max(0, next);
+        return next >= 0;
     }
 
-    private static void RemoveBrokenSession(Group group, Session session)
+    /// <summary>One broken-session sweep (pure but for <paramref name="finishIfBroken"/>, true when it ended a party): from
+    /// <paramref name="start"/> round the list, until <paramref name="maxFinishes"/> parties were ended. Returns where the
+    /// next sweep goes on, or -1 when this one looked at every session.</summary>
+    public static int SweepBrokenSessions<T>(IReadOnlyList<T> sessions, int start, Func<T, bool> finishIfBroken, int maxFinishes)
+    {
+        int n = sessions.Count;
+        if (n == 0) return -1;
+        start = (start % n + n) % n;
+        int finished = 0;
+        for (int k = 0; k < n; k++)
+        {
+            int i = (start + k) % n;
+            if (finished >= maxFinishes) return i;
+            if (finishIfBroken(sessions[i])) finished++;
+        }
+        return -1;
+    }
+
+    /// <summary>True when it ended the party (FinishGroupTask on a session not already ending).</summary>
+    private static bool RemoveBrokenSession(Group group, Session session)
     {
         if (AutonomousRealmRaid.TryConsumeRelease(group, out string releaseReason))
         {
+            bool wasEnding = session.Ending;
             FinishGroupTask(session, releaseReason);
-            return;
+            return !wasEnding;
         }
         GameBot[] members = BotMembers(group);
         bool requiredSize = AutonomousRealmRaid.GetView(group) != null || session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
-                            HasViablePveComposition(session, members);
+                            HasViablePveComposition(session, members) ||
+                            AutonomousPartyReplacement.HoldsParty(session.Replacement, GameLoop.GameLoopTime);
         if (members.Length >= 2 && requiredSize && members.All(member => member.Group == group) &&
-            !group.GetMembersInTheGroup().Any(member => member is GamePlayer))
-            return;
+            (!group.GetMembersInTheGroup().Any(member => member is GamePlayer) || OnlyHostedPlayer(group, session)))
+            return false;
+        bool ending = session.Ending;
         FinishGroupTask(session, session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && !requiredSize
             ? "The PvE party lost its viable tank, healer, or attacker core"
             : members.Length < 2
             ? "Fewer than two active members remain; dissolving the orphaned party"
             : "The group roster is no longer valid");
+        return !ending;
     }
 }

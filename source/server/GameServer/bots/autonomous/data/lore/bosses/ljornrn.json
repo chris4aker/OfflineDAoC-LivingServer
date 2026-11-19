@@ -1,0 +1,117 @@
+{
+  "id": "ljornrn",
+  "name": "Ljornrn",
+  "npcNames": [
+    "Ljornrn"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "gunnolf",
+      "relation": "the captain of the old west, whose camp is close to his altars"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the mother to whom the sacrifices are made"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ljornrn is a level-51 drakulv in the far west of Malmohus (693382, 995163) among drakulv axehands and scaled varg snarlers, with swarms of flies and a drakulv sacrificer nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60163349)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Ljornrn is not a known Old Norse name; it may be a corrupted form (perhaps of Bjorn, or of an 'ljon-' compound). Its meaning is unknown and is left to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "In the far west of Malmohus, where the old west keeps its camps, the sacrificers of the drakulv have their altars in a broken courtyard of the ruins, and the flies there never die. It is too cold for flies in Malmohus. The svartalfar of Svarhamr say the swarms over the western altars are the only living thing in the country that the dragon's cold has never touched, and that the sacrificers take it as a sign she is pleased.\n\nLjornrn keeps the ground around the altars. His name is the strangest on Svarhamr's beam, and the beam-cutters admit they do not know what it means or where it came from. Brisa the beam-cutter thinks it was a man's name once, Bjorn perhaps, misheard by a drakulv mouth and kept wrong, because the drakulv who first held it took it off a Midgard traveller at the altars and would not be corrected. The grandmothers of Gotar say otherwise: that the name is in the tongue of the ruins' builders, and that the drakulv found it cut in the courtyard stone where the altars now stand. Nobody can read the builders' tongue. Nobody has dared to scrape the courtyard and look.\n\nHe is not a sacrificer. He keeps the axehands who guard the altars and the scaled varg, the dragon-wolves' hounds, that lie about the courtyard like dogs about a hearth, and he decides who comes to the altars and who does not. The sacrificers do their work and he does his. What is sacrificed, the svartalfar do not say in front of strangers, but they say that the flies are always thickest in the morning after a company of Midgard has come down the western road and not gone back.\n\nGunnolf's camp of the old west lies close by, and the old west does not trouble the altars. The svartalfar say the two captains have an understanding: Gunnolf answers no runner, and Ljornrn keeps no altar for any drakulv who does.",
+  "legend": "Ljornrn is a level 51 named drakulv in the far west of Malmohus, guarding the drakulv altars with axehands (48-51), scaled varg snarlers (53-55) and swarms of flies around, plus a sacrificer a bit further off. Plain drakulv, no abilities, not CC-immune, but Pack Drakulv, and there's a lot standing next to him, so the snarlers and axehands will likely come. The snarlers hit harder than he does. Clear the edges, pull him out with range, and don't fight on top of the flies. The western Gunnolf is close by. No quest needs him; people clear the altars for the named.",
+  "yells": {
+    "aggro": [
+      "Not to the altars. Not you.",
+      "Hounds! Axes! A guest for the courtyard.",
+      "The flies are hungry this morning."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Then you will go to the altar after all."
+      }
+    ],
+    "death": [
+      "Say it... right... my name...",
+      "The flies... will have me too..."
+    ],
+    "slay": [
+      "For the altar.",
+      "The flies thank you.",
+      "Kept the courtyard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Flies, in this cold. The altars are near.",
+      "Scaled hounds lie about a broken courtyard."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The flies rise thick around Ljornrn."
+      }
+    ],
+    "realmFirstKill": "Ljornrn falls. The western altars stand unkept."
+  },
+  "botLines": {
+    "briefing": [
+      "ljornrn guards the west altars, axehands and snarlers with him",
+      "snarlers are 53 to 55, they hurt more than he does",
+      "pull him out with range, dont fight in the flies",
+      "western gunnolf is close, watch it"
+    ],
+    "aftermathWin": [
+      "ljornrn down, altars clear",
+      "snarlers were the hard part",
+      "good pull",
+      "the flies didnt even notice"
+    ],
+    "aftermathLoss": [
+      "two snarlers came with him",
+      "fought in the flies and pulled the sacrificer too",
+      "gunnolf joined",
+      "too much standing round him"
+    ],
+    "rumour": [
+      "the flies over the west altars are the only thing the cold never touched",
+      "nobody knows what ljornrn means, maybe a misheard bjorn",
+      "the grandmothers say ljornrns name is cut in the courtyard stone",
+      "flies are thickest after a company goes west and doesnt come back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ljornrn",
+    "text": "Keeper of the western altars of the [drakulv], among axehands and scaled hounds. His name is the strangest on Svarhamr's beam; some say it is cut in the stone of [the ruins]. Near [Gunnolf]'s camp."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: I cut Ljornrn's name the way the drakulv say it, because I do not know how else to cut it. My teacher cut it differently, closer to a Midgard name, and her teacher cut it as a mark with no sound at all, a shape copied from somewhere. I asked her where. She said: from the courtyard where the altars are, when there were no altars there yet, before the cold. She never told me what the shape meant. I think she did not know either, and I think that frightened her more than the flies.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed Ljornrn at the western altars of Malmohus in {minutes} minutes.",
+    "loss": "Ljornrn kept the western altars from {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

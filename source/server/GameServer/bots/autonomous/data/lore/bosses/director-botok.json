@@ -1,0 +1,86 @@
+{
+  "id": "director-botok",
+  "name": "Director Botok",
+  "npcNames": [
+    "Director Botok"
+  ],
+  "locationId": "tepoks-mine",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Director Botok: NPC template 12419, level 35, goblin model 588, NO faction, aggro 200 (range 500), no spells, respawn 180 s, at 35670, 32457 among four red dwarf youths (faction Red Dwarves) and the goblin cleaner.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Players in 2001-02 met a named goblin in the mine called 'The Director' and warned that pulling a red dwarf youth brings his kin.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Botok as keeper of the dwarves' bargain and 'the work' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The red dwarves were digging in the Black Mountains before the townsfolk came, and they dig in the far galleries of the mine still, under a bargain with the goblins that nobody in Humberton understands and that Erick Redbeard calls the shame of his clan. Director Botok keeps that bargain. He is a goblin and wears no goblin's colours. He wears no dwarf's colours either. The dwarves say he answers only to the work.\n\nHe stands among the dwarves' young in the galleries, where the cleaner sweeps the spoil, and watches the picks. He does not use a whip. He does not need one. The bargain, as the households tell it, is that the dwarves dig where the Director says and keep half of what they find, and that the goblins keep the other half and keep everyone else out; and the Director's part is to say where. He has never once said wrong.\n\nThe households' young are hot-tempered and stand together, and they stand round Botok, and so the Director has never been alone when anyone came to argue with him. Overseer Tepok writes 'the Director reports the bargain kept' in his ledger at the end of every season. Old Albion guides spoke of the Director as a rumour. He is not a rumour. He is the reason the far galleries are still dug, and the reason Sarel Sebian digs alone.",
+  "legend": "Director Botok, level 35, is in the red dwarf galleries of Tepok's Mine, south-east, with four red dwarf youths and the goblin cleaner. He has no faction of his own, but you will not get him alone: pull a youth and the rest come, and Botok stands in the middle of them. Bring a group in the high thirties, crowd control for the youths, then kill him. Plain melee, no spells, back in three minutes.",
+  "yells": {
+    "aggro": [
+      "The work does not stop for visitors.",
+      "You are standing on a seam. Move."
+    ],
+    "phases": [],
+    "death": [
+      "Dig... where I said..."
+    ],
+    "slay": [
+      "Back to work. All of you.",
+      "There. Now the gallery is quiet."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The dwarf galleries. A goblin watches the picks."
+    ],
+    "phases": [],
+    "realmFirstKill": "Director Botok has fallen. The bargain is open."
+  },
+  "botLines": {
+    "briefing": [
+      "botok is in the red dwarf galleries, the youths stand with him so its four plus him",
+      "mez the youths, kill botok, then the youths one by one"
+    ],
+    "aftermathWin": [
+      "the director is down. the dwarves just kept digging",
+      "botok down. never did find out what the bargain was"
+    ],
+    "aftermathLoss": [
+      "the youths came all at once, as promised"
+    ],
+    "rumour": [
+      "[heard|someone said] the director decides where the red dwarves dig",
+      "heard the old guides thought the director was made up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "director",
+    "text": "Director Botok of [tepoks mine] keeps the [red dwarves]' bargain for the goblins: the dwarves dig where he says and keep half. He wears no clan's colours, and the households' young stand round him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} put an end to Director Botok's bargain in Tepok's Mine in {minutes} minutes.",
+    "loss": "The red dwarf youths stood round their Director; {raidLeader} of {realm} came away from the galleries."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins"
+  ],
+  "related": [
+    {
+      "id": "overseer-tepok",
+      "relation": "the overseer he reports to"
+    }
+  ],
+  "tier": "minor"
+}

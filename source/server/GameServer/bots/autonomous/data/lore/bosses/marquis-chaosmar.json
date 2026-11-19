@@ -1,0 +1,144 @@
+{
+ "id": "marquis-chaosmar",
+ "name": "Marquis Chaosmar",
+ "npcNames": [
+  "Marquis Chaosmar"
+ ],
+ "aliases": [
+  "chaosmar"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord, in the south"
+  },
+  {
+   "id": "high-lord-oro",
+   "relation": "another court of mirrors"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "cut his line twice"
+  },
+  {
+   "id": "duke-eligar",
+   "relation": "called the court a hall of mirrors"
+  },
+  {
+   "id": "duke-alloc",
+   "relation": "found him in his seat"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Chaosmar is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands twice: in High Lord Baln's hall and on the approach near Legion's lair.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Chaosmar among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Chaosmar is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Marquis Chaosmar has two spawns in Darkness Falls, both level 73, both raid-event rows.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "No demonology source found for the name Chaosmar.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Marquis Chaosmar is two demons, and the court has never been able to decide which one is him. For four Rolls he was a single marquis of High Lord Baln's household with a seat in the southern hall, a quarrelsome, ambitious peer who wanted a post at the Throne and said so to anyone who would listen. In the Fifth Roll the Chamberlain announced Marquis Chaosmar at the Master's door, and the marquis walked in, and took a place among the demons who stand on the approach. At the same hour Duke Alloc, counting the seats in Baln's hall for the parade, found Chaosmar in his.\n\nThe court sent both to the Inquisitors, who examined them for a long dark and reported that they were the same demon down to the memory: each remembered the Feast, the First Roll and the morning of the Fifth, and each remembered walking down the approach. Each said the other was the copy. Grand Chancellor Adremal could not strike off a demon who had not fallen, and could not decide which one had, so he cut Chaosmar's line twice, one under the other, the only name the Roll carries twice. High Lord Oro had already come back from the deep fires as three, and Duke Eligar, who had argued that Oro had fallen, said the court was becoming a hall of mirrors. The Chancellor said the Roll counts names.\n\nThe two Chaosmars do not meet. They send each other messages by the imps, polite and furious, each addressed to the copy. The southern one says the Throne's one walked off with his ambition. The Throne's says the southern one is what was left behind. The princes keep a wager on which will be struck first, and the Chancellor keeps both lines very straight.",
+ "legend": "There are two Marquis Chaosmar spawns, one in High Lord Baln's hall in the south and one on the approach to Legion, near Marquis Haurian and the Mutilators of Legion's Own. Same name, same level (73), no script, and both are raid-reserved. Kill both if you clear both areas; the 'real one' does not drop anything better, whatever someone in your guild swears. In Baln's hall he sits near Duke Alloc, so pull him toward the west wall with Alloc already dead. Players say the two of them hate each other, and joke about bringing one to meet the other.",
+ "yells": {
+  "aggro": [
+   "I am the original. Ask the other one.",
+   "Did he send you? He sends everyone.",
+   "Two of me, and still you came."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Tell the copy I fell well. Better than he will."
+   }
+  ],
+  "death": [
+   "Strike the other line... not mine...",
+   "Now there is one. Whichever."
+  ],
+  "slay": [
+   "Down. Tell the other one.",
+   "One for me. None for the copy.",
+   "Write that I did it."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A marquis waits here. You may have met him elsewhere.",
+   "Somewhere else in the hollow, the same demon waits."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The marquis calls for his other self. No answer."
+   }
+  ],
+  "realmFirstKill": "Marquis Chaosmar has fallen. One of him, at least."
+ },
+ "botLines": {
+  "briefing": [
+   "chaosmar is in balns hall AND on the approach. [two spawns|there are two of him], same level",
+   "73 no tricks. [kill both if we clear both|we do both]",
+   "in balns hall pull chaosmar west [with alloc dead first|after alloc]",
+   "on the approach he sits by haurian. [single pull|one at a time]"
+  ],
+  "aftermathWin": [
+   "chaosmar down. [one of him|which one lol]",
+   "killed a chaosmar. [the other one next|one to go]",
+   "both chaosmars dead tonight. [nice|now theres none]",
+   "chaosmar done. [no difference in loot|told you, same drops]"
+  ],
+  "aftermathLoss": [
+   "chaosmar wiped us with alloc. [bad pull|pulled both]",
+   "the approach chaosmar brought haurian. [regroup|rez]",
+   "lost the chaosmar pull. [again|ugh]",
+   "too many on the approach with chaosmar. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] there are two marquis chaosmars and each says the other is the copy",
+   "the chancellor wrote chaosmar on the demon roll twice. [only name on it twice|they say]",
+   "[someone said|my guildie says] the two chaosmars send each other letters through the imps",
+   "the real chaosmar drops better loot. [no he doesnt|thats a lie]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "chaosmar",
+  "text": "A marquis of High Lord [Baln]'s household who, in the Fifth Roll, was found both in Baln's hall and on the approach to the Master's door. The Inquisitors found them identical; each says the other is the copy. The Chancellor cut his line twice, the only name the Roll carries twice."
+ },
+ "bookPage": "From the imps' gossip, as Mystemas told it to an Albion cleric for a fee: Two letters went down the slope this Roll and two came back up it, and I carried all four. The southern Marquis wrote to the copy at the Throne that he had stolen the ambition they were born with. The Throne's Marquis wrote to the copy in Baln's hall that he was what had been left behind, like a shed skin. Each sealed his letter with the same seal and signed it with the same name. I have read every letter they ever sent. I have never once been able to tell which one was writing.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} struck down Marquis Chaosmar in {minutes} minutes; which one is still argued.",
+  "loss": "Marquis Chaosmar threw back {realm}'s raid under {raidLeader}, and the other Chaosmar was not told."
+ }
+}

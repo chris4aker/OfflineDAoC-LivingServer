@@ -1,0 +1,123 @@
+{
+  "id": "bane-of-hope",
+  "name": "Bane of Hope",
+  "catalogKey": "caer-sidi/baneofhope",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Casts Essense of Souls (damage over time). Its teleport of a target to one of three fixed spots is behind EpicEncounterMechanics.AllowDisplacement, which is off in Living Server.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs"
+    },
+    {
+      "text": "Bane of Hope: Essense of Souls (spirit DoT 150 / 4 s, 45 s, radius 600, range 1500) cast at an attacker who is not its current target on a 25% chance, then 12-18 s cooldown; GetResist 40 melee / 70 other; teleport off (AllowDisplacement).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs"
+    },
+    {
+      "text": "The Bane as the last thought of men in cells, the second man, Dame Nest's roll and names, the open chapel door at Caer Gothwaite are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Bane of Hope keeps a crossing in the middle tiers of Caer Sidi, and its work is not to hold the prisoners but to make them stop believing in the door. The Inconnu say Arawn found it walking at the back of the columns of the dead: the last thought of every man who died in a cell, that no one was coming, thickest from the Roman gaols under the forums of the old province. The Church says it is despair, the sin against hope, given a body. Because plans need two, it has always looked hardest at the second man, the one who comes to stand beside the first.\n\nIn the old days it scattered men three halls apart. It scattered Dame Nest of the ring-forts' company through four tiers; she walked home calling names, found eleven, marked them on her roll at Caer Gothwaite (Elidir the bowman, Mabli of Gothwaite Harbor, Rhodri and his brother among them) and went back to the crossing three times to call the rest. It scattered Dame Ysolde's company too, and her company broke it; it has not moved a man since. The Inconnu say the part of it that cast men away was the part that believed they would not come back.\n\nNow it only burns, and its fire falls where it always fell: on the hand that strikes it from beside, and from him on to all who stand close, as despair goes through a cell. The prisoners who still conspired met in its halls far apart. The sickness wears slowly and kills only a man no one prays for. Steel bites it, for men in cells have always believed a blade sooner than a word.\n\nBrother Cadoc wrote four words across the page that tells of it: there is a door. Since Dame Nest's time the chapel door at Caer Gothwaite stands open while a company is in Caer Sidi, so that the Bane might see it open.",
+  "legend": "The Bane of Hope is level 81, 100,000 health, and a melee kill: 40% less from slash, crush and thrust, 70% less from everything else. In the first seasons it threw people to one of three far spots in Caer Sidi; that teleport is switched off here, so ignore the old guides about walking back. What it still does: when someone other than its current target hits it, there is a one-in-four chance it turns and puts Essense of Souls on that person, a spirit burn of 150 every four seconds for 45 seconds that also lands on everyone within 600 of them, then it waits 12-18 seconds before it can do it again. So the melee and anyone else hitting it spread out wide, well away from the healers, spirit resists help, and the healers keep the burning alive for the full 45 seconds. The main tank never gets it while it is the target. Caer Gothwaite folk leave the chapel door open while you are in.",
+  "yells": {
+    "aggro": [
+      "There is no door. There was never a door.",
+      "Hope is a long way off.",
+      "Burn, and be alone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Feel your hope go. It burns as it leaves."
+      }
+    ],
+    "death": [
+      "There... is... a door...",
+      "Someone... found it..."
+    ],
+    "slay": [
+      "Hope ends here.",
+      "Alone, at the end.",
+      "No one is coming."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Every way out looks like a way in.",
+      "The halls here are quiet. Even the dead avoid them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "The Bane of Hope burns at the souls of the living!"
+      }
+    ],
+    "realmFirstKill": "The Bane of Hope has fallen. There is a door after all."
+  },
+  "botLines": {
+    "briefing": [
+      "bane of hope doesnt port any more. melee kill, spells do little",
+      "it burns whoever hits it that isnt the tank, 600 splash. spread wide",
+      "spirit burn lasts 45 sec, heal it through",
+      "keep the healers well away from the melee pile"
+    ],
+    "aftermathWin": [
+      "bane of hope down. we have hope now. lol",
+      "nobody died to the burn, nice healing",
+      "the crossing is ours",
+      "easy one once you heal the burn"
+    ],
+    "aftermathLoss": [
+      "everyone stacked on it and the burn splashed the whole melee",
+      "the healers stood in the 600 and burned too",
+      "nobody healed the burn through, it ran the whole 45",
+      "too many casters, it shrugs spells off"
+    ],
+    "rumour": [
+      "heard the bane of hope used to throw people to the other end of caer sidi",
+      "[someone said|heard] its job was to make prisoners stop believing in the door",
+      "heard even the prisoners avoid the bane's crossing",
+      "[heard|word is] it forgot how to port people after the first time someone came back",
+      "heard the chapel door at caer gothwaite stays open while a group is in caer sidi",
+      "[heard|someone said] the bane used to port you three halls away"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bane of hope",
+    "text": "The keeper of the crossing in [Caer Sidi] whose work was to make prisoners stop believing in the door. It once scattered companies through the fortress; [Dame Ysolde]'s company broke that. It burns now the second man, the one who stands beside. Brother Cadoc wrote across its page: there is a door."
+  },
+  "bookPage": "The Bane of Hope did not seem to fight us so much as rearrange us. One moment Brother Cadoc was at my shoulder; the next he was gone, and I heard later that he had stood up three halls away in the dark with the dead turning to look at him, and had walked back to us slowly, praying aloud the whole way, and had woken nothing. Others were less calm. Dame Ysolde said afterwards that its burning was the lesser cruelty. The greater is that it makes you believe you are alone. We were not. That is how we won.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} kept the prayers coming and ended the Bane of Hope in {minutes} minutes.",
+    "loss": "The Bane of Hope burned through {realm}'s raid in Caer Sidi; {raidLeader} could not keep the prayers coming."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keeper of the Unopened Door",
+      "text": "Every gaol has a keeper whose work is not to hold the prisoners but to make them stop believing in the door. In Caer Sidi it is the Bane of Hope.\n\nThe Inconnu say Arawn did not make it. He found it, as he found the end of the world, walking at the back of the columns of the dead: the last thought of every man who ever died in a cell, that no one was coming. It came to Annwn from every prison in the world, and it came most thickly, the Inconnu say, from the Roman gaols of the old province, where men waited in the dark under the forum for a trial that was never held. Arawn gave it a shape and a post at a crossing in the middle tiers of his fortress, and told it to be thorough.\n\nThe Church of Camelot has a name for what it is. Despair, its priests teach, is the sin against hope, the one that says no mercy can reach me, and the theologians call it the worst of all because it shuts the door from the inside. The priests of Caer Gothwaite say the Bane is that sin given a body, and that a heathen lord who keeps despair at a crossing in his gaol knows exactly what he is doing. The Inconnu do not argue. They say only that Arawn's gaol was never meant to be escaped, and that a gaoler who wants his prisoners quiet needs them to stop planning.\n\nPlans need two, and so the Bane has always looked hardest at the second. The prisoners of the middle tiers learned that before the rising: the man who stood before the Bane alone was a prisoner; the man who came to stand beside him was a conspiracy, and it was the second man it turned to. It still does. The prisoners avoid its crossing from long habit, and the halls around it are the quietest in the fortress."
+    },
+    {
+      "title": "Three Halls Apart",
+      "text": "In the old days of the gaol the Bane of Hope scattered men, and the realm remembers the scattering better than anything else it ever did.\n\nIt moved them without warning: one moment at a comrade's shoulder, the next three halls away in the dark, among dead who turned to look. Prisoners who had planned an escape together woke apart and alone, and while they searched for one another it burned them. In the first seasons after the rising it did the same to Albion. Dame Nest of the ring-forts led the second company to climb, and the Bane scattered it through four tiers of the dead, and Nest walked back to the shore alone, calling names.\n\nThe names she called are kept. Her company's roll lies in the chapel at Caer Gothwaite under the sill, and the names she found are marked on it in her own hand: Elidir the bowman, Mabli of Gothwaite Harbor, Rhodri and his brother, and seven more. Beside the others she wrote nothing. The garrison says she went back to the crossing three times in the year after, alone, and called the names again, and that on the third time the Bane was not at its post, and she took that for an answer.\n\nIt scattered Dame Ysolde's company too, and Brother Cadoc stood up three halls away from her with the dead turning to look at him, and walked back slowly, praying aloud, and woke nothing. Ysolde said afterwards that the burning was the lesser cruelty; the greater was that it made a man believe he was alone. Her company broke it, and when it stood again at its post it had forgotten how to move a man. The Inconnu say the part of it that cast people away was the part that believed they would not come back, and that it died the first time someone did. Since that day the Bane has only burned."
+    },
+    {
+      "title": "The Burning of the Second Man",
+      "text": "The Bane's fire is a sickness of the soul, and it falls where it always fell: on the one who comes to help.\n\nIt does not burn the knight before it. It burns the hand that strikes it from beside, the second man, the conspirator, and not every time, but often enough that the Inconnu who guide companies through its crossing warn every one of them. And the fire does not stay on the one it chooses. It spreads to all who stand close to him, as despair goes through a cell, from one prisoner to the man chained next to him. The prisoners of the middle tiers, when they still conspired, met in its halls a long way apart, each out of reach of the next, and whispered across the distance.\n\nThe sickness does its work slowly. It does not strike; it wears, a little at a time, for as long as a long prayer, and it kills a man only if no one prays for him while it works. Brother Cadoc wrote that in Ysolde's company he and his brother priests walked among the burning with their hands raised the whole time the Bane stood, and that it was the only part of the climb where he felt that prayer was exactly what was wanted and no more.\n\nThe Bane is not hard to wound for one that has stood so long. The Inconnu say the despair of the gaols was never proof against a sword, only against a promise; men in cells have always believed a blade sooner than a word. The galleries' sorcerers say their spells slide off it as comfort slides off a man in a cell, and Ysolde's knights found their steel bit. Sir Geraint of Caerwent wrote that it was the only keeper in Caer Sidi that seemed surprised to be struck, as if it had never expected anyone to try."
+    },
+    {
+      "title": "There Is a Door",
+      "text": "Brother Cadoc wrote four words across the top of the page that tells of the Bane of Hope, and they are the most copied words he ever wrote: there is a door.\n\nHe meant, he said later, nothing clever. He meant that the Bane's whole work was to make men believe the door did not exist, and that Ysolde's company had come in through it from the living world, and would go out through it, and that the Bane had seen them come and could not pretend otherwise. The Church of Camelot, which does not like Cadoc's accounts, likes that page, and the sisters of the hospice of Caer Ulfwych read it to the dying.\n\nThe readings of the Bane since its breaking differ. The Inconnu say it is a keeper whose purpose has died, and that it burns now only because burning is the part of its work it still remembers. The Church says despair cannot be killed, only refused, and that every company that passes the crossing together refuses it again. The bards say it is lonely, and that the companies who climb are the first visitors it has had in an age who arrived in company and left in company, and that it does not know what to do with them.\n\nThe garrison of Caer Gothwaite keeps a custom for it. The chapel door is never shut while a company is in Caer Sidi. It stands open day and night, in rain and in the sea wind, with a sister sitting just inside it, until the company comes home or the candle at the door burns down. Dame Nest began the custom in the year she went back to the crossing. When the garrison asked her why, she said that if the Bane of Hope could see the chapel door from its crossing, she wanted it to see the door open."
+    }
+  ]
+}

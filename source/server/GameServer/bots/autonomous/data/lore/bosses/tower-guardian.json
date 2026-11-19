@@ -1,0 +1,125 @@
+{
+  "id": "tower-guardian",
+  "name": "Tower Guardian",
+  "npcNames": [
+    "Tower Guardian"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the great guardian of the hall"
+  ],
+  "facts": [
+    {
+      "text": "Tower Guardian: template 60167195, level 61, a construct at size 250, at the hall of making in the south of the Dales at 408391, 434523; aggro level 200 within 500, faction Chaotic Constructs, strength 127, dexterity 122, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Shacklers (45-48), a heavy metal and frazzled assemblies of the same faction stand 280 to 950 from it.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "The last order of the old master ('let no one up'), the guardian's refusal of the new Meical, the hall's under-servants and Gracien Adamson's entry are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Master Meical of the school of making built his servants to do the work nobody wanted, and the work nobody wanted most was standing at the foot of the tower all night. So he built the Guardian. The households of the dales remember the summer it was carried up from the workshops in pieces on six wagons and put together at the tower door, oak and iron and something the master would not name, until it stood taller than the door it guarded. They remember that it was slow to wake and slow to learn, and that once it had learned a thing it never unlearned it.\n\nThe last thing it learned was the last order the old master gave it. The households say he came down from the tower on the night the colleges burned, with the smoke already on the wind from the south, and put his hand on the Guardian's knee, because he could not reach any higher, and told it to let no one up. Then he went back up. He did not come down again. The Guardian has let no one up since.\n\nThat includes the one who wears his name. The drakoran who came to the empty hall, read the master's books and set the servants going again found that the Guardian did not know him and would not learn him. The fort's registrar, Gracien Adamson, who has watched the hall from the hill for years, writes that the new Meical goes into his tower by another way, and that the Guardian turns its head to watch him go, every time, as if it were counting.\n\nIt is the greatest of the servants and the strongest, and it moves faster than anything that size should. The lesser servants of the hall work around its feet, the shacklers and the heavy metals and the frazzled things that came out of the workshop wrong, and when the Guardian is troubled they leave their work and come to it, as hands come to the foreman; but only those working close by, and only as many as the trouble seems to need. When it is broken it is up again before the dust has settled, because the hall still has its parts and the order is still in it. Let no one up.",
+  "legend": "The Tower Guardian is the level 61 construct at Meical's Hall in the south of the Dales of Devwy, and it is enormous: you see it from across the valley. It is aggressive from about 500 away, hits very hard (high strength and dexterity in the data) and has no spells or styles: a heavy melee fight for a full group of fifties with a real tank and steady heals. The shacklers, heavy metals and frazzled assemblies working around it share its faction and come in when it is hit, more of them the bigger your group, so clear the ones nearest it first. It respawns in about 80 seconds, so do not rest under it afterwards. The rest of the hall (Tower Keeper, Tyian, Pazia) is in the 50s.",
+  "yells": {
+    "aggro": [
+      "NO ONE. UP.",
+      "The order stands. You do not.",
+      "Halt at the door."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hands! To the door! No one up!"
+      }
+    ],
+    "death": [
+      "The order... stands...",
+      "Let... no one... up..."
+    ],
+    "slay": [
+      "No one up.",
+      "The door is kept.",
+      "Removed from the stair."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A construct taller than the door it guards.",
+      "Iron and oak. Its head turns to follow you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The hall's servants drop their work and come."
+      }
+    ],
+    "realmFirstKill": "The Tower Guardian has fallen. The stair is open, for now."
+  },
+  "botLines": {
+    "briefing": [
+      "the big guardian at meical's hall, 61, huge. aggros at 500, hits like a siege ram, no spells",
+      "shacklers and heavy metals around it are its faction and come in. clear the close ones first",
+      "full group of 50s, real tank, steady heals. no aoe till the helpers are down",
+      "80 sec respawn, dont sit under it after"
+    ],
+    "aftermathWin": [
+      "guardian down. that thing is the size of a keep",
+      "helpers first, then the big one, clean",
+      "never thought a 61 could swing that fast",
+      "back in 80 sec, out of the hall"
+    ],
+    "aftermathLoss": [
+      "aoe'd and the whole workshop came",
+      "tank folded on the third swing",
+      "brought two groups and it called every heavy metal in the yard",
+      "sat under it after the kill. it came back"
+    ],
+    "rumour": [
+      "[heard|someone said] the old master told the guardian let no one up the night the colleges burned",
+      "heard the guardian doesnt obey the drakoran meical at all",
+      "[heard|someone said] the guardian watches the new meical go in another way and counts",
+      "heard it took six wagons to bring the guardian to the hall"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tower guardian",
+    "text": "The greatest of the old master's [servants] at the hall of [meical], taller than the door it guards. On the night the colleges burned the master put a hand on its knee and told it to let no one up, and went back up the stair and never came down. It has let no one up since, the drakoran who wears the master's name included. The lesser servants come to it when it is troubled."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. I have no name to enter for the Guardian at the hall of making; it has never given one. The households say it was put together at the tower door in the summer before the war, from six wagons of parts, and that the old master gave it one order on the last night and it has kept it. I watched from the hill one evening while the one who wears the master's name went into the hall by the west side. The Guardian turned its head and watched him all the way in. I have put a mark beside the old master's name. I cannot prove he is dead either, and the Guardian does not think so.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} brought down the Tower Guardian at the hall of making in {minutes} minutes.",
+    "loss": "The Tower Guardian let no one of {raidLeader}'s company of {realm} up."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "cabalist-meical",
+      "relation": "will not obey the drakoran who wears its master's name"
+    },
+    {
+      "id": "tower-keeper",
+      "relation": "the other great servant of the hall, who keeps the door below"
+    },
+    {
+      "id": "heavy-metal-mark-i",
+      "relation": "the first of the heavy servants that work round its feet"
+    }
+  ]
+}

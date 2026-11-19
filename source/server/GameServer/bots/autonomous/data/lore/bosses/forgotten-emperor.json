@@ -1,0 +1,86 @@
+{
+  "id": "forgotten-emperor",
+  "name": "Forgotten Emperor",
+  "npcNames": [
+    "Forgotten Emperor"
+  ],
+  "locationId": "catacombs-of-cardova",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Forgotten Emperor: NPC template 12909, level 35, model 106, Spirits of Rome, aggro level 51 (range 200), no spells, respawn 300 s, in the emperor's hall at 33261, 35321.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 23 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Arc of Ages (Master Vismer): take the Staff of Enlightenment from the Forgotten Emperor in the Catacombs of Cornwall, then wield it on the north platform at Lethantis.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The forgotten emperor as the man whose name the legion struck out, and the beaten coins, are Living Server writing built on existing bot chat (the blank-faced coins).",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    }
+  ],
+  "story": "He was the emperor of the west, the man a legion raised up and marched away from Rome instead of toward it, to found a city at the edge of the world. He died before it was built, and the legion struck out his name, from its stones and its rolls and the coins it had struck for him, beating his face flat on every one, as Rome did to the memory of those it condemned. Why, nobody alive knows. The Book of Deeds of Seleucus calls him only 'the emperor I served'.\n\nThe legion buried him with every honour all the same, and he is still in the emperor's hall, crowned, with his staff of office, a few paces from the chair another man sits in. He is slow to rise against anyone who comes into the hall, slower than any other dead thing in Cardova, as if he were not sure whether he still had the right to give an order. Taras watches him. The Spirit of the Emperor talks round him.\n\nIohannes Aldar says he is the true emperor and Seleucus his usurper. The minstrels of Camelot agree, because it makes a better song. Grindan Halig says a name is struck out for a reason, and the realm should leave it struck. Master Vismer of Camelot has asked for his staff and has not said what for.",
+  "legend": "Forgotten Emperor, level 35, in the emperor's hall of Cardova. Low aggro level (51), so he often does not jump you when you walk in, but Seleucus, Taras and the praetorians are right there. Kill him for the Staff of Enlightenment (Arc of Ages, Master Vismer). Plain melee, about five minutes to respawn. People shout Roman names at him; nothing happens.",
+  "yells": {
+    "aggro": [
+      "The legion... still knows my face.",
+      "Who gave you leave to enter?"
+    ],
+    "phases": [],
+    "death": [
+      "Forgotten... again..."
+    ],
+    "slay": [
+      "Remember that.",
+      "Struck out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A crowned dead man with a staff, unsure of his right."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Forgotten Emperor has fallen. His name is still lost."
+  },
+  "botLines": {
+    "briefing": [
+      "forgotten emperor is in the emperors hall, low aggro but the room is full",
+      "kill him for the staff of enlightenment, arc of ages from vismer"
+    ],
+    "aftermathWin": [
+      "got the staff of enlightenment. off to lethantis",
+      "forgotten emperor down. still no name"
+    ],
+    "aftermathLoss": [
+      "went for the staff and the praetorians went for us"
+    ],
+    "rumour": [
+      "[heard|someone said] the forgotten emperor is the real emperor and seleucus stole the chair",
+      "heard if you say his real name he stops. nobody knows it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "forgotten emperor",
+    "text": "The crowned dead man of [cardova]'s emperor's hall whose name the legion struck out and whose face is beaten flat on its coins. Some say he is the true emperor; Master Vismer wants his staff."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} took the Forgotten Emperor's staff in Cardova in {minutes} minutes.",
+    "loss": "The Forgotten Emperor kept his staff; {raidLeader} of {realm} left the emperor's hall without it."
+  },
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "emperor-seleucus",
+      "relation": "sits in his chair"
+    }
+  ],
+  "tier": "minor"
+}

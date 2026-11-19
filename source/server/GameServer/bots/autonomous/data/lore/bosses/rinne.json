@@ -1,0 +1,91 @@
+{
+  "id": "rinne",
+  "name": "Rinne",
+  "npcNames": [
+    "Rinne"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Rinne: level 36, a Sylvan body (model 767), faction Olcasgean, at about 389,200/306,200; respawn 580 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Twisted Evil (Jyrlan, Necht): 'Kill Luaire and his three named friends', then 'Drop the green elixir at the base of Luaire's tree' and three more elixirs at stones of the valley.",
+      "provenance": "game",
+      "source": "DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Rinne is Luaire's sister, and the household's watcher. When the four of them stand together in the high valley she stands a little apart, facing the way the realm comes up, and the Necht Sylvan say she was a warden of Domnann once and kept the wardens' habit when she kept nothing else. She saw her own wardens' stone, the story goes, the day she left, and scratched her name off it herself before anyone else could.\n\nThe Domnann wardens have never put it back. Rinne is the one the realm's young see first on the valley path, and the one who calls the others, and when she falls the household turns as one. The wardens say she still keeps the watch she was taught; she has only changed which side of it she stands on. The Necht Sylvan who keep the coast watch now say they learned the walk from her, before she left, and that she taught it well.",
+  "legend": "Rinne (36) stands slightly apart from Laraida, Luaire and Taiore in the high valley west of Necht. She is the one you meet first on the path: pull her alone if you can before the others notice. Part of Twisted Evil. About a 10-minute respawn. She is a plain spawn with no script; the only trick is the pull. Clear the stilters on the path below first, since they are higher level than she is.",
+  "yells": {
+    "aggro": [
+      "Wardens. I know the walk.",
+      "I scratched my own name off."
+    ],
+    "phases": [],
+    "death": [
+      "The watch... is yours..."
+    ],
+    "slay": [
+      "Off the stone.",
+      "Not a warden now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Sylvan watching the valley path, the wardens' way."
+    ],
+    "phases": [],
+    "realmFirstKill": "Rinne's watch in the high valley is ended."
+  },
+  "botLines": {
+    "briefing": [
+      "rinne is first on the valley path. pull her alone",
+      "36, part of twisted evil"
+    ],
+    "aftermathWin": [
+      "rinne down alone. [nice pull|grats]",
+      "one of four. [keep going|next]"
+    ],
+    "aftermathLoss": [
+      "she called the others. [rip|four at once]",
+      "got seen on the path. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] rinne was a domnann warden and scratched her own name off the stone",
+      "rinne keeps the wardens' watch for the root now"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rinne",
+    "text": "Luaire's sister, once a Domnann warden, who scratched her own name off the wardens' stone and keeps the watch for the Root's household in the high valley."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Rinne in Vigilant Rock in {minutes} minutes.",
+    "loss": "Rinne turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "olcasgean",
+      "relation": "whose side she took"
+    },
+    {
+      "id": "luaire",
+      "relation": "her brother"
+    },
+    {
+      "id": "laraida",
+      "relation": "kin"
+    }
+  ]
+}

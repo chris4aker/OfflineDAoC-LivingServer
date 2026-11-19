@@ -5,8 +5,8 @@ using NUnit.Framework;
 namespace OfflineDaoc.Launcher.Tests;
 
 /// <summary>
-/// Since 0.33 "Claude Takeover": every install makes its own local account, and the
-/// "no custom class" edition (classes/enable_sluaghbinder = False) never rolls class 63.
+/// Since 0.33 "Claude Takeover": every install makes its own local account. Since 1.2 no launcher batch rolls class 63
+/// in either edition (owner 2026-11-17: bots never play the custom class).
 /// </summary>
 public sealed class ClaudeTakeoverEditionTests
 {
@@ -34,21 +34,21 @@ public sealed class ClaudeTakeoverEditionTests
         finally { Directory.Delete(folder, true); }
     }
 
-    [Test]
-    public void DisabledCustomClassIsNeverRolled()
+    // Owner 2026-11-17: bots never play the custom class, in either edition; the batches no longer read the edition switch.
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TheCustomClassIsNeverRolled(bool eraClassShares)
     {
         var reserved = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         MethodInfo generate = Launcher.GetType("OfflineDaoc.Launcher.BotCharacterGenerator")!
             .GetMethod("Generate", BindingFlags.Static | BindingFlags.Public, [typeof(int), typeof(ISet<string>), typeof(bool)])!;
-        int Roll(bool allow)
+        var rolls = Enumerable.Range(0, 1500).Select(_ =>
         {
-            object identity = generate.Invoke(null, [3, reserved, allow])!;
+            object identity = generate.Invoke(null, [3, reserved, eraClassShares])!;
             return (int)identity.GetType().GetProperty("ClassId")!.GetValue(identity)!;
-        }
-        var disabled = Enumerable.Range(0, 1500).Select(_ => Roll(false)).ToList();
-        Assert.That(disabled, Does.Not.Contain(63));
-        var enabled = Enumerable.Range(0, 1500).Select(_ => Roll(true)).ToList();
-        Assert.That(enabled, Does.Contain(63), "the default (the b edition) keeps the Sluaghbinder in the Hibernian pool");
+        }).ToList();
+        Assert.That(rolls, Does.Not.Contain(63));
+        Assert.That(rolls.Distinct().Count(), Is.EqualTo(13), "every other Hibernian class still comes up");
     }
 
     [TestCase(true, "VERSION 0.37b")]

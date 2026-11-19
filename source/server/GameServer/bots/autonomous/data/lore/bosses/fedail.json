@@ -1,0 +1,126 @@
+{
+  "id": "fedail",
+  "name": "Fedail",
+  "npcNames": [
+    "Fedail"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
+    },
+    {
+      "text": "Irish garda 'guard', cónaitheoir 'resident', asarlaí 'sorcerer'; 'Altan Garran' read as altán 'ravine' + garrán 'grove' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Fedail: level 56, model 737, faction Outland Residents, aggressive (200), at about 336,700/313,900 inside Altan Garran.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Fedail as the outlander who speaks for Altan Garran to strangers and keeps the wort remains.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Altan Garran is the only town in Cothrom Gorge, and it is not a Sylvan town. Its people are outlanders: Sylvan and half-Sylvan families who left Domnann over the generations, for quarrels, for debts, for love, for the wardens' law, and went down into the gorge where the wardens do not walk, and built a walled grove of their own on the gorge's eastern ledges. They keep their own garda on the walls, their own bards and sorcerers, their own markets, and their own opinion of strangers, which is low. The Domnann wardens call them the outlanders and trade with them when they must. Hibernians who walk up to the gate unannounced are generally met at it.\n\nFedail is the one who meets them. He speaks for the town to strangers, which in Altan Garran is not an honour but a chore given to the one who has the least patience for it, on the theory that he will get it over with quickly. He has held it for as long as the worts have been at the walls. A Hibernian who reaches the gate and is not cut down by the garda first is brought to Fedail, and Fedail looks at him for a long time and then says what he says to all of them: the town is dying of the writhing death, and the town does not much care who stops it.\n\nWhat he asks is always the same. Cut the three worts nearest the town, Cronwort on the floor, Fuilwort on the west road, Tachtwort under the south wall, and bring him what is left of each, which he seals in a jar for Noirin. Then go to the head of the gorge and kill the thing they come from. Fedail does not believe it can be done. He asks anyway, because the outlanders have tried everything else, and because a stranger who dies at the head of the gorge is one fewer stranger in the town.\n\nThe garda say he was a Domnann warden once, the best of his year, and that he left over a judgement of the wardens' stone that he would not accept. He has never said what it was. When a Hibernian comes back from the head of the gorge carrying the killer-plant's root, Fedail sends him on to Treal, the town's old tree, without a word of thanks. The garda say that is how you can tell he is pleased.",
+  "legend": "Fedail (56) is the Writhing Death quest NPC in Altan Garran, but in this world's data he and the rest of the town (Outland Residents) are set aggressive, so a Hibernian walking in may simply be attacked: how 'speak to Fedail' works with that is untested here. As a fight he is a plain 56 melee with no script, standing among Outland garda (49-53) who will be in it too. If you are clearing the town, pull garda singly from the edges and take Fedail last. The quest: Cronwort, Fuilwort, Tachtwort, remains to Fedail, then Marfoirwort, root to Treal. Hedierna, the other named starter, is not in this world's spawn data.",
+  "yells": {
+    "aggro": [
+      "Another stranger at the gate.",
+      "Garda! A Hibernian.",
+      "The town does not care who you are."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "You should have gone to the gorge head instead."
+      }
+    ],
+    "death": [
+      "Tell Noirin... the jar is on the second shelf...",
+      "Cut the worts... at least..."
+    ],
+    "slay": [
+      "One fewer stranger.",
+      "The writhing death takes everyone in the end.",
+      "Garda, the gate."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A walled town on the gorge ledges. Garda on the walls.",
+      "Strangers are met at the gate here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fedail calls the garda to the square."
+      }
+    ],
+    "realmFirstKill": "Fedail of Altan Garran has fallen. The gate is unwatched."
+  },
+  "botLines": {
+    "briefing": [
+      "fedail is 56 in altan garran. [plain melee|no script]",
+      "the whole town is aggro in this data. [garda everywhere|careful]",
+      "pull garda singly from the edges first",
+      "writhing death: three worts, then marfoirwort, root to treal"
+    ],
+    "aftermathWin": [
+      "fedail down. [the town is quiet|got him]",
+      "pulled the garda singly and it worked",
+      "now about those worts",
+      "the outlanders will remember this"
+    ],
+    "aftermathLoss": [
+      "walked in the gate and the whole town jumped us. [aggro town|lol]",
+      "garda plus fedail. [too many|wipe]",
+      "tried to talk to him. [he attacked|aggro]",
+      "pulled a bardach and an asarlai. [bad|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] fedail was a domnann warden once and left over a judgement",
+      "fedail never thanks anyone. [the garda say thats how you know hes pleased|grumpy]",
+      "[word is|heard] fedail keeps the wort remains in a sealed jar for noirin",
+      "the outlanders of altan garran left domnann over [debts and quarrels|the wardens' law]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fedail",
+    "text": "He speaks for Altan Garran, the outlanders' walled town in [Cothrom Gorge], to strangers. He asks them to cut the worts and kill [Marfoirwort], and he does not believe they can."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: Fedail meets the strangers because he has the least patience of any of us, and gets it over quickly. He says the same thing to all of them. The town is dying of the writhing death and does not much care who stops it. Cut the three worts, bring him the remains, which he seals in a jar for me, and then go up the gorge and kill the thing they come from. He does not think it can be done. The garda say he was a Domnann warden once and left over a judgement he would not accept.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Fedail in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Fedail turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "tachtwort",
+      "relation": "the wort he sends strangers to cut"
+    },
+    {
+      "id": "treal",
+      "relation": "the tree that receives the root"
+    },
+    {
+      "id": "marfoirwort",
+      "relation": "the source he wants dead"
+    }
+  ]
+}

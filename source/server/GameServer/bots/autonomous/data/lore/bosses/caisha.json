@@ -1,0 +1,131 @@
+{
+ "id": "caisha",
+ "name": "Caisha",
+ "npcNames": [
+  "Caisha"
+ ],
+ "aliases": [
+  "the girl in the well"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "nahemahs-bower"
+ ],
+ "related": [
+  {
+   "id": "princess-nahemah",
+   "relation": "drowned her in the well"
+  },
+  {
+   "id": "ambassador-mannam",
+   "relation": "wears her face"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Caisha is a level 50 plain GameNPC of the Demon Lords faction, female, using model 655 (the soultorn model) at size 34, in Princess Nahemah's bower about 950 units from Ambassador Mannam.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In Hibernia's 'Strange Bedfellows', Caisha rises from the well in the princess's room when Princess Nahemah dies, and is killed so that her spirit is captured in Mystemas's soul stone.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "The soultorn of Darkness Falls are spirits named for the orders of the three realms (soultorn albion protector, soultorn norse einherjar, soultorn hibernian silver hand and others).",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "No source found for the name Caisha.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "In the world data Caisha is a permanent spawn by the well (respawn 180 seconds), not something the princess's death calls up.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Her origin, the well and the borrowed face are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Caisha is a face kept in water. She stands in no hall and holds no line on the Roll; the court lists her, when it lists her at all, among the furnishings of Princess Nahemah's room, and the furnishing she belongs to is the well. She is a mortal, or was. Her shape is the shape of the soultorn, the torn souls of soldiers that wander the hollow, but she is smaller than most of them and older than all of them, because she was taken long before the doors opened, when nothing mortal came into the court except by mischance.\n\nThe three realms each claim her, and none agree. Albion's Church says she was a lady of the old kings' household who walked in the castle ruins of Camelot Hills, where the Albion door now stands, and heard singing under the stones. Hibernia's druids say she was a girl of Connacht who went into a green hill on Samhain eve and came out on the wrong side of it; Tir na Nog still names her as one of its own, and the name Caisha comes from there, if it is her name. Midgard's skalds do not know who she was and call her the girl in the well. The bower, when asked, says that what she was does not matter, only what she is for.\n\nWhat she is for is her face. The princess's household wears what mortals want and trust, and a face is easiest to wear when its owner is kept close and kept fresh. Nahemah drowned the girl's soul in the well of her own room so that it would not age, and has drawn the face up out of the water whenever the bower had need of it. When Ambassador Mannam went up the Albion stair to the king's hall, it was Caisha's face he wore, folded in a dark stone at his belt, and the Church of Albion has never forgiven itself for letting it in.\n\nThe princess's women say the girl never leaves the rim of the well, and has stood there so long that she no longer knows she could. They are careful in that room: they keep it quiet and keep the water covered, and they do not go near the rim. Mystemas, who wants the princess and the ambassador dead and has said so to anyone who will listen, wants Caisha as well, and offers the realms a stone to catch her in. He says it is a kindness to the girl. The bower says it is theft, and that the imp means to wear her himself. Hibernia's bards, who sing of her at wakes, say only that she has waited a long time at the bottom of the water for someone to come for her, and that she has no reason to think the next one will be kinder than the last.",
+ "legend": "Caisha stands by the well in Princess Nahemah's room, about thirteen hundred units from the princess. The Hibernian quest text says she rises from the well when the princess dies; in this world she is simply there, a permanent spawn that comes back in about three minutes. Level 50, a soultorn spirit, no script, not hard. Do not let a fight with the princess drift over to the well, or you will have her too. Hibernia's version of the quest catches her spirit in Mystemas's soul stone; Albion and Midgard never meet her and take the stone from Ambassador Mannam instead. Players say she is the face the ambassador wore at Camelot. Hibernians call her one of their own, and a few will not finish the quest out of pity. Most do, because the reward is good.",
+ "yells": {
+  "aggro": [
+   "Are you the one who came for me?",
+   "Not another stone. Please, not another stone.",
+   "The water was cold. You are colder."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "I have stood at this water so long. Let me stand somewhere else."
+   }
+  ],
+  "death": [
+   "Is it you? Is it finally... no...",
+   "Give my face back to someone who will keep it."
+  ],
+  "slay": [
+   "Down into the water with me.",
+   "Now you will be kept too.",
+   "Stay. It is quiet here."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The well in the princess's room is covered, and dripping.",
+   "Something small and pale waits beside the water."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The drowned girl's voice comes up out of the well."
+   }
+  ],
+  "realmFirstKill": "Caisha is free of the well, or of the world."
+ },
+ "botLines": {
+  "briefing": [
+   "caisha stands by the well in nahemah's room. [keep the princess fight away from the well|dont drag the princess to the well]",
+   "50, spirit, easy. [hibs need her for the stone|hib quest only]",
+   "caisha comes back in about 3 min. [get the stone done|dont wait around]",
+   "soul stone out before she dies. [hibs dont forget|check your stone]"
+  ],
+  "aftermathWin": [
+   "caisha down. [stone's full|got her in the stone]",
+   "caisha done. [back to mystemas|turn it in]",
+   "the girl in the well is dead. [poor thing|sad quest]",
+   "caisha caught. [strange bedfellows done|nearly done]"
+  ],
+  "aftermathLoss": [
+   "dragged the princess onto caisha. [told you|ouch]",
+   "forgot the soul stone. [have to do nahemah again|ugh]",
+   "caisha got the healer. [regroup|rez]",
+   "fought caisha and nahemah together. [bad pull|wipe]"
+  ],
+  "rumour": [
+   "[heard|word is] caisha is the face the ambassador wore at camelot",
+   "caisha was a hib girl taken into a hill. [so the druids say|hibs claim her]",
+   "[someone said|my guildie says] the albs say she was a lady of camelot. [everyone claims her|lol]",
+   "mystemas wants caisha's soul in a stone. [for what though|creepy imp]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "caisha",
+  "text": "A drowned mortal soul kept in the well of Princess [Nahemah]'s room so that her face would not age. Ambassador [Mannam] wore it at Albion's throne. She rises when the princess falls. Albion and Hibernia both claim her; Midgard calls her the girl in the well."
+ },
+ "bookPage": "From The Girl in the Well, as the bards of Tir na Nog sing it at wakes, set down in prose: She went into the green hill on the eve of Samhain to follow the music, and the music was sweet, and she came out on the wrong side of the hill, under the world, in a room that smelled of perfume and storm. There was a well in the room and a lady beside it. The lady said she had a beautiful face, and asked to borrow it, and the girl said yes, because she was polite. That is the whole of her fault. The lady put her in the water so the face would keep.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} drew Caisha up out of the princess's well in {minutes} minutes.",
+  "loss": "Caisha dragged {realm}'s raid under {raidLeader} down into the cold of the well."
+ }
+}

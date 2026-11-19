@@ -8,7 +8,7 @@ using OfflineDaoc.Configuration;
 namespace DOL.UnitTests
 {
     /// <summary>
-    /// Battlegrounds as the fourth bot goal (owner, 2026-10-07): brackets by level only, 0% by default,
+    /// Battlegrounds as the fourth bot goal (owner, 2026-10-07): brackets by level only, 0% by default then (since 2026-11-16) 15% for levels 20–49,
     /// never for level 50, and battleground slots only for bots whose level has a bracket.
     /// </summary>
     [TestFixture, NonParallelizable]
@@ -21,10 +21,13 @@ namespace DOL.UnitTests
             Assert.That(BattlegroundBrackets.ForLevel(level)?.Name, Is.EqualTo(expected));
 
         [Test]
-        public void DefaultsKeepBattlegroundsOff()
+        public void DefaultsSendFifteenPercentOfLevelsTwentyToFortyNine()
         {
+            // Owner, 2026-11-16: Living Server features on by default; 15% of levels 20–49 go to the battlegrounds.
             BotGoalSettings defaults = BotGoalSettings.Defaults;
-            Assert.That(new[] { defaults.Levels1To19, defaults.Levels20To49, defaults.Level50 }.Select(row => row.Battlegrounds), Has.All.EqualTo(0));
+            Assert.That(defaults.Levels20To49.Battlegrounds, Is.EqualTo(15));
+            Assert.That(new[] { defaults.Levels1To19, defaults.Level50 }.Select(row => row.Battlegrounds), Has.All.EqualTo(0));
+            Assert.DoesNotThrow(() => defaults.Validate());
         }
 
         [Test]

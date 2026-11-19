@@ -40,6 +40,9 @@ if ((args.Length == 3 || args.Length == 4) && args[0].Equals("pack", StringCompa
     {
         var file = new MpkFile(path);
         file.Header.Name = Path.GetFileName(path).ToLowerInvariant();
+        // Each entry's time is its input file's, not the time of packing, so the same files (with the same times) pack
+        // into the same archive (Living Server 1.2: tools/fork-build/make_pregame_splash.py sets them).
+        file.Header.TimeStamp = (uint)File.GetLastWriteTimeUtc(path).ToFileTimeUtc();
         if (!archive.AddFile(file)) throw new InvalidOperationException($"Duplicate MPK entry: {file.Header.Name}");
     }
     archive.Write(archivePath);

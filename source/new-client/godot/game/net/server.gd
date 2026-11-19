@@ -133,6 +133,10 @@ func _on_raw(code: int, data: PackedByteArray) -> void:
 		conc_list = _read_conc(data)
 	elif code == 0xC5 or code == 0xC6:                   # AddFriend / RemoveFriend: your friends online
 		_friends_packet(code == 0xC5, data)
+	elif code == 0xF3 and data.size() >= 4:              # TimerWindow (PacketLib168 2505): crafting, salvage, repair
+		_timer_packet(data)
+	elif code == 0xEA:                                   # TradeWindow (PacketLib1109): trading with a gamebot (below)
+		_trade_packet(data)
 	elif code == 0x92 and data.size() >= 14:             # Weather (PacketLib168): the region's storm
 		weather = {"x": _be32(data, 0), "width": _be32(data, 4),
 				"fog": _be16(data, 8), "speed": _be16(data, 10), "intensity": _be16(data, 12),
@@ -337,8 +341,12 @@ static func _overview_gear(nm: String, c: Dictionary) -> Dictionary:
 		# PacketLib1125: an item's guild emblem in its colour's place (owner 2026-10-17: no emblems on the select
 		# screen) - a dye is 0-143 (tints.csv), more is the emblem
 		var tex := int(colors.get(k, 0))
+		# the chest's, gloves' and boots' extensions (their meshes, Fig3Figure.item_armor): PacketLib1125's two
+		# bytes, boots << 4 | gloves and torso << 4 | hood
+		var ext := int({22: int(c.get("ext_boots_gloves", 0)) & 0xF, 23: int(c.get("ext_boots_gloves", 0)) >> 4,
+				25: int(c.get("ext_torso_hood", 0)) >> 4}.get(slots[k], 0))
 		ItemDb.add_runtime(id, {"id": id, "name": "", "model": m, "object_type": 42 if shield else 0, "hand": 0,
-				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0})
+				"color": tex if tex <= 0xFF else 0, "emblem": tex if tex > 0xFF else 0, "extension": ext})
 		inv[str(slots[k])] = {"id": id, "count": 1}
 	return inv
 
@@ -486,6 +494,8 @@ func _save_looks() -> void:
 ## PLAY: the server loads the character and puts it in the world; the zone loads when its position arrives.
 func enter_world(c: Dictionary) -> void:
 	max_speed_pct = 100
+	companion_defensive = false                           # (the server's stance starts aggressive at every login)
+	model_types = {}
 	game_time_ms = -1                                     # (a fresh login waits for the server's own time)
 	_friends_listed = false
 	friends_online = []
@@ -559,6 +569,8 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 				return
 		"max_speed":
 			max_speed_pct = int(d.percent)
+		"model_type":                                     # (kept: a GM is hidden at world init, before the world
+			model_types[int(d.oid)] = int(d.type)         # listens - owner 2026-10-29, the ghost was missing)
 		"time":                                           # (recorded even between worlds: a new one starts from it)
 			game_time_ms = int(d.time)
 			game_time_at = Time.get_ticks_msec()
@@ -582,6 +594,7 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 					_quiet_delves -= 1                       # a GM's debug line for a hover's request (the old client
 					return                                   # asked only on a right-click, where it still shows)
 				_exchange_text(String(d.get("text", "")))
+				_trade_text(String(d.get("text", "")))
 			if not playing:
 				_backlog.append([kind, d])
 				return
@@ -603,8 +616,12 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 					# a concentration / permanent effect: no time shown (the server sends its endless duration as ~18 h,
 					# 65535 s; owner 2026-10-11: no time for those) - nothing timed runs that long
 					var timed := int(e.seconds) > 0 and int(e.seconds) < NO_TIME_SECONDS
+					# its third byte: 1 = an immunity, or a buff another one overrides (the server's IsDisabled) - the old
+					# client draws it tinted red (owner 2026-10-19)
 					effects[int(e.index)] = {"icon": int(e.icon), "name": String(e.name), "negative": int(e.negative),
-							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0}
+							"until": Time.get_ticks_msec() + int(e.seconds) * 1000 if timed else 0,
+							"disabled": (int(e.get("immune", 0)) & 1) != 0,
+							"ability": bool(e.get("ability_icon", false))}
 			PlayerData.effects_changed.emit()
 		"map_marker":
 			map_markers[int(d.id)] = Vector4(float(d.region), float(d.x), float(d.y), float(d.z))
@@ -616,6 +633,11 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 			on_points(d)
 		"character":
 			on_character(d)
+		"craft_skills":                                   # VariousUpdate 8: your tradeskills (at world init, each gain)
+			craft_skills = {}
+			for s in d.get("skills", []):
+				craft_skills[int(s.id)] = {"points": int(s.points), "name": String(s.name)}
+			craft_changed.emit()
 		"weapon_armor":                                   # the sheet's weapon skill / damage, armor factor
 			weapon_stats = d
 			PlayerData.changed.emit()
@@ -885,6 +907,82 @@ var _model_icons := {}                   # content/items/model_icons.json (pipel
 signal skills_changed
 
 
+# ---------------------------------------------------------------- crafting (owner 2026-10-30: "the crafting UI ... and
+# the crafter self repair salvage stuff")
+## Your tradeskills (VariousUpdate 8: eCraftingSkill id -> {points, name}); the primary one and its title come in
+## VariousUpdate 3 (info.craft_skill / craft_title).
+var craft_skills := {}
+signal craft_changed
+## The group's companion stance (server chat 2026-10-30, both modes): /aggressive or /defensive for the whole group, the
+## server's DebugMode 'H' op 30 on every change ([4] 1 defensive / 0 aggressive). Not saved: aggressive at login.
+var companion_defensive := false
+signal stance_changed
+var info_item_slot := -1                 # the inventory slot whose information was just asked for (its answer's buttons)
+## The server's timer window (0xF3): seconds and its text ("Currently Making: bronze dagger", "Salvaging: ...",
+## "Repairing: ..."); seconds -1 when it closes.
+signal craft_timer(seconds: int, title: String)
+var _recipes := {}
+
+
+func _timer_packet(data: PackedByteArray) -> void:
+	var secs := (data[0] << 8) | data[1]
+	var flag := data[3]                                   # 1 open, 0 close (a GM's craft opens with 0 seconds)
+	if flag == 0:
+		craft_timer.emit(-1, "")
+		return
+	var n := data[2]
+	var title := data.slice(4, mini(4 + n, data.size())).get_string_from_ascii()
+	craft_timer.emit(secs, title)
+
+
+## Make a recipe (MakeProductHandler 0xED: CraftedItem.CraftedItemID). Asked again while making one, the server
+## cancels that one instead - its only cancel.
+func craft(recipe_id: int) -> void:
+	if client:
+		client.call("Craft", recipe_id)
+
+
+## Salvage / self-repair a backpack item (DetailDisplayHandler 102 / 100), with the original client's own line first.
+func salvage(slot: int) -> void:
+	if client and slot >= 40 and slot <= 79:
+		PlayerData.message.emit("Attempting to salvage your %s." % String(ItemDb.item("srv:%d" % slot).get("name", "item")), "system")
+		_quiet_delves += 1                                # (a GM's "Delve objectType=102" debug line: not shown)
+		client.call("Detail", 102, slot)
+	else:
+		PlayerData.message.emit("You can only salvage items in your backpack!", "error")
+
+
+func self_repair(slot: int) -> void:
+	if client and slot >= 40 and slot <= 79:
+		PlayerData.message.emit("Attempting to self-repair your %s." % String(ItemDb.item("srv:%d" % slot).get("name", "item")), "system")
+		_quiet_delves += 1
+		client.call("Detail", 100, slot)
+	else:
+		PlayerData.message.emit("You can only repair items in your backpack!", "error")
+
+
+## The recipes of a realm ("alb" / "mid" / "hib") (content/crafting/recipes.json, pipeline/build_recipes.py: the
+## server's tables): trade id (string) -> [recipe].
+func recipes_for(realm: String) -> Dictionary:
+	if _recipes.is_empty():
+		var t = JSON.parse_string(FileAccess.get_file_as_string("res://content/crafting/recipes.json")) \
+				if FileAccess.file_exists("res://content/crafting/recipes.json") else null
+		_recipes = t if t is Dictionary else {"skills": {}}
+	return (_recipes.get("normal", {}) as Dictionary).get(str(REALM_IDS.get(realm, 1)), {})
+
+
+func trade_name(trade_id: int) -> String:
+	if craft_skills.has(trade_id):
+		return String(craft_skills[trade_id].name)
+	recipes_for("alb")
+	return String((_recipes.get("skills", {}) as Dictionary).get(str(trade_id), "Trade %d" % trade_id))
+
+
+## Your realm's key ("alb" / "mid" / "hib") - the character being played.
+func my_realm() -> String:
+	return String(selected.get("realm", "alb"))
+
+
 func on_skills(d: Dictionary) -> void:
 	if int(d.first) == 0:
 		skills = []
@@ -1095,9 +1193,12 @@ func effects_list() -> Array:
 	var now := Time.get_ticks_msec()
 	for k in keys:
 		var e: Dictionary = effects[k]
-		var ic := skill_icon("spell", int(e.icon))
+		# an ability's effect (UpdateIcons' second byte 0xFF: Stealth, Sprint ...) takes the abilities' icon: Stealth's
+		# 403 as a spell icon was another spell's picture (owner 2026-10-28)
+		var ic := skill_icon("icon" if bool(e.get("ability", false)) else "spell", int(e.icon))
 		out.append({"icon": int(ic[0]), "border": int(ic[1]), "name": String(e.name), "fx": int(e.icon),
-				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9})
+				"seconds": maxf(0.001, (int(e.until) - now) / 1000.0) if int(e.until) > 0 else 1e9,
+				"disabled": bool(e.get("disabled", false))})
 	return out
 
 
@@ -1195,7 +1296,22 @@ func reuse_left(id: String) -> float:
 	return left
 
 
+## The specializations the server does something with when used (its ISpecActionHandlers: StealthSpecHandler only).
+const USABLE_SPECS := ["Stealth"]
+
+
+## A specialization's place in your usable skills (the specs come first), by its name; -1 if you have none of it.
+func spec_index(spec_name: String) -> int:
+	for i in skills.size():
+		if int(skills[i].page) != 0:
+			break
+		if String(skills[i].name) == spec_name:
+			return i
+	return -1
+
+
 ## A quickbar / sheet entry used: "srv:skill:<n>" (n = place among the non-spec skills) -> UseSkill,
+## "srv:spec:<name>" (a specialization, found by name: the list's order can change) -> UseSkill type 0,
 ## "srv:spell:<line>:<level>" -> UseSpell, "srv:<slot>" (an item) -> UseSlot.
 func use_entry(id: String, player: Node3D, zone_id: int, target_in_view: bool) -> bool:
 	if client == null or not id.begins_with("srv:"):
@@ -1204,7 +1320,12 @@ func use_entry(id: String, player: Node3D, zone_id: int, target_in_view: bool) -
 	var heading := heading_of(fposmod(-rad_to_deg(player.facing()), 360.0))
 	var speed := Vector2(player.velocity.x, player.velocity.z).length() / 0.025
 	var parts := id.split(":")
-	if parts.size() >= 3 and parts[1] == "skill":
+	if parts.size() >= 3 and parts[1] == "spec":
+		var si := spec_index(id.substr(9))
+		if si < 0:
+			return false
+		client.call("UseSkill", r.x, r.y, r.z, speed, heading, target_in_view, si, 0)
+	elif parts.size() >= 3 and parts[1] == "skill":
 		client.call("UseSkill", r.x, r.y, r.z, speed, heading, target_in_view, int(parts[2]), 1)
 	elif parts.size() >= 4 and parts[1] == "spell":
 		client.call("UseSpell", r.x, r.y, r.z, speed, heading, target_in_view, int(parts[3]), int(parts[2]))
@@ -1243,6 +1364,7 @@ var weight_max := -1
 var game_time_ms := -1                   # the server's last time of day (ms into the game day; Time packet), -1 none yet
 var game_time_at := 0                    # ...when it came (ticks ms)
 var day_increment := 24.0                # ...and its clock's speed (WORLD_DAY_INCREMENT)
+var model_types := {}                     # object id -> its last PlayerModelTypeChange (3 hidden, 2 seen)
 var max_speed_pct := 100                 # your last MaxSpeed (percent): kept across a region change - the server sends it
 										 # only when it changes (a skald's speed song pulses on at the same value)
 var group_members: Array = []            # the group window's members in group order (you included)
@@ -1289,13 +1411,27 @@ func on_inventory(d: Dictionary) -> void:
 		if int(d.window) == 3:
 			vault_open.emit("VAULT", VAULT_FIRST, VAULT_COUNT)
 		else:
-			vault_open.emit("ACCOUNT VAULT", CHEST_FIRST, ACCOUNT_VAULT_COUNT)
+			vault_open.emit(_house_window_title(), CHEST_FIRST, ACCOUNT_VAULT_COUNT)
 		return
 	if not chest.is_empty():
 		_listings_packet({"items": chest}, false)
 		if mine.is_empty():
 			return
 	_on_inventory_items(d, mine)
+
+
+## The HouseVault window (4) is a house vault (GameHouseVault: 100 slots, client 150-249) or the account vault
+## keeper's page: the account vault when you last right-clicked an Account Vault Keeper, else the house vault.
+func _house_window_title() -> String:
+	var v: Node = viewer()
+	# the 0.37c zone viewer doesn't keep the NPC you last spoke to (1.2's does): without it, keep the 0.37c title - this
+	# server.gd ships to 0.37c games for issue #34, where the account vault would have been titled "HOUSE VAULT"
+	if v == null or not ("_interact_npc" in v):
+		return "ACCOUNT VAULT"
+	var n = v.get("_interact_npc")
+	if is_instance_valid(n) and n is Node and n.get("spawn") is Dictionary 			and String(n.spawn.get("name", "")).to_lower().contains("account"):
+		return "ACCOUNT VAULT"
+	return "HOUSE VAULT"
 
 
 ## Slots no longer held (a container opened afresh: its list replaces what was there).
@@ -1573,4 +1709,179 @@ func use(id: String) -> bool:
 	var v := viewer()
 	if v == null:
 		return false
-	return use_entry(id, v.player, current_zone_id(), not PlayerData.target.is_empty())
+	# the cast's "target in view" flag: whether you can see it, as the client worked it out (owner 2026-10-19: a spell at a
+	# target behind a wall cast in full, then "You can't see your target from here!" - the old client is refused at
+	# once). It was "you have a target", so the server's start-of-cast check (SpellHandler: HasLos = TargetInView)
+	# always passed and only the position updates' flag told it otherwise, at the end. A target that isn't a drawn
+	# living (yourself, a door, an object) keeps "a target" - the server's own range rule covers those.
+	var in_view := not PlayerData.target.is_empty()
+	var w = v.get("npcs")
+	if in_view and w is ServerWorld and (w as ServerWorld).target and is_instance_valid((w as ServerWorld).target):
+		in_view = (w as ServerWorld).target_in_view(v.player.global_position)
+	return use_entry(id, v.player, current_zone_id(), in_view)
+
+
+# ---------------------------------------------------------------- the trade window (Living Server 1.2)
+
+## Trading with gamebots (Living Server 1.2, Crafting 2.0 WP8: buy, sell, swap, repairs, spellcraft, commissions). The
+## server's TradeWindow packet (0xEA, PacketLib1109.SendTradeWindow) is not decoded by the 0.37c network client, so it
+## comes here raw (_on_raw): your side's backpack slots and coin, the partner's coin, the partner's items (item data as
+## InventoryUpdate's), the Repair and Combine boxes and the title ("Trading with <name>"); 40 zero bytes close it. The
+## 0.37c client cannot send the original's ModifyTrade packet either, so the trade window (MerchantWindow.TradeWindow)
+## acts through the server's /tradewindow command (BotTrades.Command): put, take, coin, repair, combine, buy, accept,
+## close. The partner's terms and its list of goods come as system lines, read here (_trade_text).
+signal trade_changed                     # Server.trade opened or changed
+signal trade_closed
+const TRADE_DETAIL := 7                  # DetailRequest object type of a trade window item (DetailDisplayHandler)
+var trade := {}                          # {title, partner, my_slots, my_money, their_money, their_items: [runtime ids], repair, combine}
+var trade_goods: Array = []              # the partner's goods: [{number, text}] ("[<name> sells] 1. ...")
+var trade_status := ""                   # the partner's last word on the terms ("<name> has accepted the trade.", "... waits: ...")
+var trade_accepted := false
+var trade_lines: Array = []              # the terms' lines, newest last (at most 8)
+
+
+func _trade_packet(data: PackedByteArray) -> void:
+	var closed := true
+	for b in data:
+		if b != 0:
+			closed = false
+			break
+	if closed or data.size() <= 40:
+		if not trade.is_empty():
+			trade = {}
+			trade_accepted = false
+			trade_status = ""
+			trade_closed.emit()
+		return
+	var slots := []
+	for i in 10:
+		if int(data[i]) != 0:
+			slots.append(int(data[i]))
+	var p := 12
+	var mine := _trade_money(data, p)
+	p += 12
+	var theirs := _trade_money(data, p)
+	p += 12
+	var count := int(data[p])
+	p += 2
+	var repair := int(data[p]) != 0
+	var combine := int(data[p + 1]) != 0
+	p += 2
+	var items := []
+	var r := {"at": p}
+	for i in count:
+		if int(r.at) >= data.size():
+			break
+		var it := _trade_item(data, r)
+		var id := "srvt:%d" % i
+		ItemDb.add_runtime(id, _server_item(id, it, "t:%d" % i))
+		items.append(id)
+	_forget_details("t:")
+	var title := ""
+	if int(r.at) < data.size():
+		var n := int(data[int(r.at)])
+		title = data.slice(int(r.at) + 1, int(r.at) + 1 + n).get_string_from_ascii()
+	var partner := title.trim_prefix("Trading with ") if title.begins_with("Trading with ") else title
+	if trade.is_empty() or String(trade.get("partner", "")) != partner:
+		trade_lines = []
+		trade_status = ""
+		trade_accepted = false
+		if String(trade.get("partner", "")) != partner:
+			trade_goods = trade_goods if _goods_of == partner else []
+	trade = {"title": title, "partner": partner, "my_slots": slots, "my_money": mine, "their_money": theirs,
+			"their_items": items, "repair": repair, "combine": combine}
+	trade_changed.emit()
+
+
+## Five big-endian shorts (mithril, platinum, gold, silver, copper) after a zero short: copper.
+static func _trade_money(d: PackedByteArray, at: int) -> int:
+	var v := 0
+	for k in 5:
+		v = v * (1000 if k < 3 else 100) + _be16(d, at + k * 2)
+	return v
+
+
+## One item of the partner's side (the network client's ReadItem, PacketLib1124.WriteItemData after its slot byte).
+static func _trade_item(d: PackedByteArray, r: Dictionary) -> Dictionary:
+	var p := int(r.at)
+	var it := {}
+	it["slot"] = int(d[p]); p += 1
+	p += 2                                               # unique id
+	it["level"] = int(d[p]); p += 1
+	it["value1"] = int(d[p]); p += 1
+	it["value2"] = int(d[p]); p += 1
+	it["hand"] = int(d[p]) >> 6; p += 1
+	var type := int(d[p]); p += 1
+	it["type_damage"] = type >> 6
+	it["object_type"] = type & 0x3F
+	p += 1
+	it["weight"] = _be16(d, p); p += 2
+	it["condition"] = int(d[p]); p += 1
+	it["durability"] = int(d[p]); p += 1
+	it["quality"] = int(d[p]); p += 1
+	it["bonus"] = int(d[p]); p += 1
+	it["bonus_level"] = int(d[p]); p += 1
+	it["model"] = _be16(d, p); p += 2
+	it["extension"] = int(d[p]); p += 1
+	var tex := _be16(d, p); p += 2
+	var flag := int(d[p]); p += 1
+	if tex > 0xFF:
+		it["emblem"] = tex | (0x10000 if (flag & 0x01) != 0 else 0)
+	else:
+		it["color"] = tex
+	if (flag & 0x08) != 0:
+		p += 2
+		p += 1 + int(d[p])
+	if (flag & 0x10) != 0:
+		p += 2
+		p += 1 + int(d[p])
+	it["effect"] = _be16(d, p); p += 2
+	var n := int(d[p]) if p < d.size() else 0
+	it["name"] = d.slice(p + 1, p + 1 + n).get_string_from_ascii()
+	p += 1 + n
+	r["at"] = p
+	return it
+
+
+var _goods_of := ""                      # whose list trade_goods holds
+
+
+## The system lines about a trade: the partner's list of goods, its terms and its word ("has accepted").
+func _trade_text(text: String) -> void:
+	var m := RegEx.create_from_string("^\\[(.+?) sells\\] (.*)$").search(text)
+	if m:
+		var who := m.get_string(1)
+		var rest := m.get_string(2)
+		if who != _goods_of:
+			trade_goods = []
+			_goods_of = who
+		var num := RegEx.create_from_string("^(\\d+)\\. (.*)$").search(rest)
+		if num:
+			var n := int(num.get_string(1))
+			if n == 1:
+				trade_goods = []
+			trade_goods.append({"number": n, "text": num.get_string(2)})
+		elif rest.begins_with("nothing"):
+			trade_goods = []
+		trade_changed.emit()
+		return
+	if trade.is_empty():
+		return
+	var partner := String(trade.get("partner", ""))
+	if partner == "" or not text.begins_with(partner) and not text.begins_with("You "):
+		return
+	if text == partner + " has accepted the trade.":
+		trade_accepted = true
+		trade_status = text
+	elif text.begins_with(partner + " waits: ") or text.begins_with(partner + " has not accepted"):
+		trade_accepted = false
+		trade_status = text
+	trade_lines.append(text)
+	while trade_lines.size() > 8:
+		trade_lines.pop_front()
+	trade_changed.emit()
+
+
+## /tradewindow on the server (BotTrades.Command): the trade window's buttons.
+func trade_command(args: String) -> void:
+	command("/tradewindow " + args)

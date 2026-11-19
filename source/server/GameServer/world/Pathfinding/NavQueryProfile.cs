@@ -46,9 +46,15 @@ namespace DOL.GS
 
         public static void Stop(Kind kind, long started)
         {
+            long ticks = Stopwatch.GetTimestamp() - started;
+            // AI_PROFILE gets the single native queries as leaves; ZoneStep, Corridor and Road have their own scopes
+            // there, because other queries run inside them.
+            if (kind is Kind.PathStraight or Kind.ClosestPoint or Kind.OtherQuery)
+                AiProfile.AddLeaf(kind == Kind.PathStraight ? AiSystem.NavPath :
+                    kind == Kind.ClosestPoint ? AiSystem.NavClosestPoint : AiSystem.NavOther, ticks);
             if (_calls == null) return;
             _calls[(int)kind]++;
-            _ticks[(int)kind] += Stopwatch.GetTimestamp() - started;
+            _ticks[(int)kind] += ticks;
         }
 
         public static string Summary()

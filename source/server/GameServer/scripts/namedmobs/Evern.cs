@@ -80,7 +80,6 @@ namespace DOL.GS
             INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60160628);
             LoadTemplate(npcTemplate);
             RespawnInterval = ServerProperties.Properties.SET_SI_EPIC_ENCOUNTER_RESPAWNINTERVAL * 60000; //1min is 60000 miliseconds
-            EvernBrain.spawnfairy = false;
             //Idle = false;
             MaxSpeedBase = 300;
 
@@ -139,7 +138,7 @@ namespace DOL.GS
             else
                 log.Warn("Evern exist ingame, remove it and restart server if you want to add by script code.");
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC npc in GetNPCsInRadius(8000))
             {
@@ -150,7 +149,7 @@ namespace DOL.GS
                         npc.Die(npc); //we kill all fairys if boss die
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
     }
 }
@@ -167,7 +166,7 @@ namespace DOL.AI.Brain
             AggroRange = 600;
             ThinkInterval = 1500;
         }
-        public static bool spawnfairy = false;
+        public bool spawnfairy = false;
         private bool RemoveAdds = false;
         public override void Think()
         {

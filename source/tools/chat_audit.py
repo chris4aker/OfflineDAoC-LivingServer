@@ -208,6 +208,7 @@ ANSWERS = {
     "its ok", "fun in a grp", "grp always", "depends what u do most", "grp mostly", "some", "out past the road", "next to the merchants",
 }
 
+# The reactions AutonomousChatExchange.Reactions knows (keep the two lists together; chat 1.2 follow-up added "lol ouch", "ouch gl", "yikes").
 REACTION = re.compile(
     r"^(?:oof|rip|lol rip|ouch|ugh|bleh|gz|gz!+|gz gz|grats|gratz|grats!|grats grats|grats man|nice|nice!|nice gz|woot|wow nice|sweet|lucky|"
     r"lucky you|lucky you lol|jealous|show off|well earned|well played|well done|nice going|nice score|good stuff|go you|way to go|"
@@ -217,7 +218,7 @@ REACTION = re.compile(
     r"argh hate that|ugh i feel you|the dice hate us all|the worst feeling|thats just mean|dont let it get to you|happens to the best of us|"
     r"yep happened to me too|next one will go better|take a break maybe|been there haha|grr i know that one|been like that all night haha|"
     r"aww sorry that is awful|ha welcome to my week|yep it does that|forgive me unlucky|gz u earned it|gz you earned it|"
-    r"ha nice now find something meaner|now thats a good night|lol|heh|haha|true|lol true|ha|nice gz)$")
+    r"ha nice now find something meaner|now thats a good night|lol|heh|haha|true|lol true|ha|nice gz|lol ouch|ouch gl|yikes)$")
 TRIGGER = re.compile(
     r"\b(?:died|dead|die|killed|got me|rip me|wiped?|wipe|ding|dinged|50!+|finally|got that|is down|owe it|has it out|camping|"
     r"took|lost|captured|relic|keep|grats|hate me|ganked|train|nemesis|again|even|got him|got her|told u|dropped|drop|loot|won|beat|"
@@ -225,7 +226,7 @@ TRIGGER = re.compile(
 
 
 def is_reaction(line: Line) -> bool:
-    if line.src in ("debate", "storyline"):
+    if line.src in ("debate", "storyline", "tale"):
         return False  # a scene's written lines (a dunce's roast is the scene, not a pile-on)
     if line.src in ("burst", "reaction") or line.role in ("reactor", "riff"):
         return True
@@ -600,7 +601,7 @@ SEEK_LOOKING = re.compile(
 SEEK_CLOSED = re.compile(r"^(?:nm|nvm|nevermind)?,? ?(?:got a grp|grouped|found a grp|found one|full|grp full|full now|heading out|going as is|"
                          r"we re off)\b|\b(?:got a grp|grp full|nm full)\b")
 # Lines that are a scene's or a feature's script, or someone else's turn: not the speaker's own story.
-NOT_OWN_STORY_SRC = {"debate", "storyline", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
+NOT_OWN_STORY_SRC = {"debate", "storyline", "tale", "tale_after", "story", "spammer", "rumour", "roleplayer", "news", "event", "burst", "reaction"}
 NOT_OWN_STORY_ROLE = {"answerer", "reactor", "riff", "third", "B", "C"}
 
 DUNGEON_WORDS = {

@@ -97,9 +97,10 @@ Protectors, Tir na Nog Adventurers).
 | `offline_bot_guild_members` | BotId, GuildId, RankLevel, JoinedUtc | one row per guilded bot, **including bots in your guild** |
 
 - The guilds themselves are ordinary `Guild`/`GuildRank` rows.
-- **Release builder:** empties both tables, deletes every non-starting guild and its ranks, and
-  removes the bot guild settings so a release ships with bot guilds off. This also closes an existing
-  gap: a guild created in a played install would otherwise ship.
+- **Release builder:** empties both tables and deletes every non-starting guild and its ranks. This also
+  closes an existing gap: a guild created in a played install would otherwise ship. Since 1.2 it writes the
+  bot guild settings at their release values (`source/tools/release-server-settings.json`: on), so a
+  release ships with bot guilds on; the 0.36 builder removed them and shipped them off.
 - **Progress transfer:** carries both tables with `offline_world_bots` and `Guild`. They are
   listed as optional tables (`OptionalProgressTables`), because a server creates them on its first
   start; a database that never ran this version simply has nothing to carry.
@@ -246,11 +247,11 @@ something (docs/bot-voices/DESIGN.md 3.7). The lines in `AutonomousBotGuildChatL
 - **Bot-to-bot memory and loyalty, and guild-based memory of you:** this comes with the bot-voices
   memory work (`docs/bot-voices/DESIGN.md`, step 3).
 
-### 3.11 Settings (all off until `bot_guilds_enabled`)
+### 3.11 Settings (all wait for `bot_guilds_enabled`, on by default since 1.2)
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `bot_guilds_enabled` | False | the master switch: formation, membership, invites and everything below. Off keeps every bot guildless and today's behavior. |
+| `bot_guilds_enabled` | True (since 1.2; False before) | the master switch: formation, membership, invites and everything below. Off keeps every bot guildless and today's behavior. |
 | `bot_guild_share` | 0.70 | share of eligible bots placed in bot guilds |
 | `bot_guild_min_level` | 5 | lowest level that joins a bot guild |
 | `bot_guild_social` | True | guild chat, greetings, replies, recruiting (phase 2) |
@@ -270,7 +271,9 @@ Phase 3 (grouping) has no switch of its own; it follows `bot_guilds_enabled`.
 - **In game:** with GM rights, `/serverproperties refresh` after changing the database.
 
 **Release safety:**
-- The release builder deletes every `bot_guild*` setting, so a release ships with bot guilds off.
+- Since 1.2 the release builder writes every `bot_guild*` setting at its release value
+  (`source/tools/release-server-settings.json`), so a release ships with bot guilds on (the 0.36 builder
+  deleted them and shipped them off).
 - It empties the bot guild tables and alliances, deletes non-starting guilds and their ranks, and
   blanks starting guilds' alliance ids.
 

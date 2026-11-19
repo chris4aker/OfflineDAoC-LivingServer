@@ -40,9 +40,11 @@ namespace DOL.GS
 			get { return 30000; }
 		}
 
+		private DraugynSphere _sphere;
+		private bool IsSphereActive => _sphere != null && _sphere.IsAlive && _sphere.ObjectState is eObjectState.Active;
 		public override void StartAttack(GameObject target)
 		{
-			if (DraugynSphere.SphereCount > 0)
+			if (IsSphereActive)
 				return;
 			else
 				base.StartAttack(target);
@@ -52,7 +54,7 @@ namespace DOL.GS
 		{
 			if (IsAlive && keyName == GS.Abilities.CCImmunity)
 				return true;
-			if (DraugynSphere.SphereCount > 0 && IsAlive && keyName == GS.Abilities.DamageImmunity)
+			if (IsSphereActive && IsAlive && keyName == GS.Abilities.DamageImmunity)
 				return true;
 			return base.HasAbility(keyName);
 		}
@@ -74,7 +76,7 @@ namespace DOL.GS
 		}
 		public void CreateSphere()
         {
-			if (DraugynSphere.SphereCount == 0)
+			if (!IsSphereActive)
 			{
 				DraugynSphere Add = new DraugynSphere();
 				Add.X = 26766;
@@ -83,6 +85,7 @@ namespace DOL.GS
 				Add.CurrentRegion = CurrentRegion;
 				Add.Heading = 966;
 				Add.AddToWorld();
+				_sphere = Add;
 			}
 		}
 	}
@@ -188,23 +191,13 @@ namespace DOL.GS
 		{
 			get { return 10000; }
 		}
-		public static int SphereCount = 0;
-		public static bool IsSphereDead = false;
-        public override void Die(GameObject killer)
-        {
-			--SphereCount;
-			IsSphereDead = true;
-            base.Die(killer);
-        }
         public override bool AddToWorld()
 		{
 			INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60160133);
 			LoadTemplate(npcTemplate);
-			IsSphereDead = false;
 
 			Faction = FactionMgr.GetFactionByID(9);
 			MaxSpeedBase = 0;
-			++SphereCount;
 			RespawnInterval = -1;
 
 			DraugynSphereBrain sbrain = new DraugynSphereBrain();
@@ -259,15 +252,15 @@ namespace DOL.AI.Brain
 				Body.SetGroundTarget(Body.X, Body.Y, Body.Z);
 				Body.CastSpell(Sphere_pbaoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
 
-				foreach(GamePlayer player in Body.GetPlayersInRadius(300))
+				foreach(GameLiving player in EncounterTargets.InRadius(Body, 300, bots: EncounterTargets.DisplacesBots(Body)))
                 {
 					if(player != null)
                     {
-						if(player.IsAlive && AggroList.ContainsKey(player) && player.Client.Account.PrivLevel == 1)
+						if(player.IsAlive && AggroList.ContainsKey(player) && EncounterTargets.NotGm(player))
                         {
 							if(!player.IsWithinRadius(Body,200))
                             {
-								player.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading);
+								EncounterDisplacement.Move(player, Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading, DisplacementKind.Pull, Body);
                             }
                         }
                     }

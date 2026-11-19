@@ -1,0 +1,91 @@
+{
+  "id": "morvel-glyne",
+  "name": "Morvel Glyne",
+  "npcNames": [
+    "Morvel Glyne"
+  ],
+  "locationId": "tepoks-mine",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Morvel Glyne: NPC template 12434, level 34-37, model 19, faction forest poachers, aggro 200 (range 500), no spells, respawn 180 s, at 36737, 31691 beside Tuder Glyne (36792, 31715) with two goblin snatchers and the goblin monitor.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Delfina, the courier slain in Lord of Deceit, is also of the forest poachers (Pennine Mountains, level 43).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The poachers' road, the landing and the Glynes' pay are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The forest poachers of Albion run a road of their own, and it does not appear on Camelot's maps. It goes from the high woods of the Pennines south along the hill paths and the dry stream-beds, and it ends in the east of Tepok's Mine, at a landing in the galleries where the goblin snatchers bring what goes out and take what comes in. The Glyne cousins keep that landing.\n\nMorvel is the elder Glyne and does the talking, which is not much. Morvel learned the poachers' road from the Pennine end and walked it south when the Pennine farms emptied and there was nothing left in the high woods worth taking, and found at the end of it a goblin with a ledger who wanted carriers and asked no questions of anyone who asked none of him. Morvel has kept that bargain better than the dwarves keep theirs. The snatchers trust nobody, and they stand at Morvel's shoulder.\n\nSilver goes out by the landing in bars, and bundles of letters come in by it from the north, in the fair folk's hand, carried along the poachers' road by a courier named Delfina. Neither Glyne reads them. Twr ap Alsig of Barfog, who does, says the letters ask after the silver and the lions and the host in the north halls, and that the Glynes are the only men in Albion paid by goblins, and that they are paid well.",
+  "legend": "Morvel Glyne, 34-37, forest poachers faction, stands right next to Tuder Glyne at the eastern landing of Tepok's Mine with two goblin snatchers and the goblin monitor. You fight both Glynes at once: they are the same faction and a step apart. Mez or root one, kill the other, and keep the snatchers off your casters. Plain melee, no spells.",
+  "yells": {
+    "aggro": [
+      "Nobody comes to the landing by this road.",
+      "Tuder! Company!"
+    ],
+    "phases": [],
+    "death": [
+      "The road... goes on without me..."
+    ],
+    "slay": [
+      "Nothing personal. Just the road.",
+      "One less on the road."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The poachers' landing. Goods go out by night."
+    ],
+    "phases": [],
+    "realmFirstKill": "Morvel Glyne has fallen. The landing is shut."
+  },
+  "botLines": {
+    "briefing": [
+      "the glynes are a pair, morvel and tuder, a step apart, both come",
+      "mez tuder, kill morvel, mind the snatchers"
+    ],
+    "aftermathWin": [
+      "morvel down. tuder next",
+      "both glynes down. the poachers road is short two"
+    ],
+    "aftermathLoss": [
+      "the snatchers got behind us while we were on the glynes"
+    ],
+    "rumour": [
+      "[heard|someone said] the glynes carry tepok's silver north to the pennines",
+      "heard the glynes are the only men in albion paid by goblins"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "glyne",
+    "text": "Morvel and Tuder Glyne of the forest poachers keep the landing in the east of [tepoks mine] where the goblins' silver goes out and letters from the Pennines come in. Morvel is the elder and talks; Tuder carries."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} closed the poachers' landing in Tepok's Mine, Morvel Glyne first, in {minutes} minutes.",
+    "loss": "The Glyne cousins held the landing in Tepok's Mine against {raidLeader} of {realm}."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "tuder-glyne",
+      "relation": "cousin and fellow carrier"
+    },
+    {
+      "id": "overseer-tepok",
+      "relation": "the goblin who pays them"
+    }
+  ],
+  "tier": "minor"
+}

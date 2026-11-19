@@ -41,6 +41,54 @@ public static class HeraldPage
 
     public sealed record Character(string Name, int Realm, string ClassName, int Level, long RealmPoints, string Guild, bool IsBot);
 
+    /// <summary>A crafter of an order: a player's account in a realm (crafting is shared per account and realm, named by its
+    /// highest-level character there) or an autonomous gamebot. Skill is the primary craft's value.</summary>
+    public sealed record Crafter(string Name, int Realm, int Order, int Skill, bool IsBot);
+
+    /// <summary>The six orders a character can join (eCraftingSkill id, the craft, the profession in a title), in the
+    /// order docs/CRAFTING.md lists them. Basic Crafting and Siegecraft are not orders in the era.</summary>
+    public static readonly (int Id, string Craft, string Profession)[] Orders =
+    [
+        (1, "Weaponcraft", "Weaponcrafter"), (2, "Armorcraft", "Armorer"), (11, "Tailoring", "Tailor"),
+        (12, "Fletching", "Fletcher"), (4, "Alchemy", "Alchemist"), (13, "Spellcraft", "Spellcrafter"),
+    ];
+
+    /// <summary>The crafting title of a skill, as the server writes it (AbstractProfession.GetTitleFormat, language/EN/Crafting.txt).</summary>
+    public static string CraftTitle(int skill, string profession) => (Math.Max(0, skill) / 100) switch
+    {
+        0 => $"{profession}'s Helper",
+        1 => $"Junior Apprentice {profession}",
+        2 => $"Apprentice {profession}",
+        3 => $"Neophyte {profession}",
+        4 => $"Assistant {profession}",
+        5 => $"Junior {profession}",
+        6 => $"Journeyman {profession}",
+        7 => $"Senior {profession}",
+        8 => $"Master {profession}",
+        9 => $"Grandmaster {profession}",
+        _ => $"Legendary {profession}",
+    };
+
+    /// <summary>The skills of a SerializedCraftingSkills value ("id|value;id|value"), in saved order (BotCraftingSkills.Parse).</summary>
+    public static List<(int Id, int Value)> CraftSkills(string saved)
+    {
+        var skills = new List<(int, int)>();
+        foreach (string entry in (saved ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            string[] parts = entry.Split('|');
+            if (parts.Length == 2 && int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int id) &&
+                int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int value) && id > 0 && value > 0 &&
+                skills.All(s => s.Item1 != id))
+                skills.Add((id, value));
+        }
+        return skills;
+    }
+
+    /// <summary>The top crafters of each order, highest skill first (then name), at most <paramref name="perOrder"/> each.</summary>
+    public static Dictionary<int, List<Crafter>> TopCrafters(IEnumerable<Crafter> crafters, int perOrder = 5) =>
+        Orders.ToDictionary(o => o.Id, o => crafters.Where(c => c.Order == o.Id && c.Skill > 0)
+            .OrderByDescending(c => c.Skill).ThenBy(c => c.Name, StringComparer.OrdinalIgnoreCase).Take(perOrder).ToList());
+
     /// <summary>Realm rank and level ("RR3L4") for a realm point total, as the server's table counts them.</summary>
     public static string RealmRank(long realmPoints)
     {
@@ -97,6 +145,7 @@ public static class HeraldPage
                 botGuild[Long(r[0])] = Str(r[1]);
 
         var characters = new List<Character>();
+        var crafters = ReadCrafters(c, tables);
         if (tables.Contains("DOLCharacters"))
         {
             foreach (var r in Rows(c, "SELECT Name, Realm, Class, Level, RealmPoints, GuildID FROM DOLCharacters"))
@@ -131,6 +180,8 @@ public static class HeraldPage
             foreach (var r in Rows(c, "SELECT Title, Realm, Name, ClassName, AchievedUtc FROM offline_server_firsts WHERE Name <> '' ORDER BY AchievedUtc DESC LIMIT 40"))
                 firsts.Add((Str(r[0]), Int(r[1]), Str(r[2]), Str(r[3]), Str(r[4])));
 
+        var milestones = ReadMilestones(c, tables);
+
         var wanted = new List<(string Name, int Realm, int Kills, int Hunters)>();
         if (tables.Contains("offline_bot_nemesis"))
             foreach (var r in Rows(c, """
@@ -146,7 +197,104 @@ public static class HeraldPage
         }
         catch (Exception) { /* the ledger is optional news */ }
 
-        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events);
+        // Living Server 1.2: the bosses each realm has slain, with their stories (LoreBestiary).
+        var bestiary = new Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>();
+        try
+        {
+            for (int realm = 1; realm <= 3; realm++) bestiary[realm] = LauncherLore.Bestiary(LauncherLore.Source, recordsPath, realm);
+        }
+        catch (Exception) { bestiary.Clear(); /* the ledger is optional news */ }
+
+        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary, crafters, milestones);
+    }
+
+    /// <summary>A reached personal milestone of a gamebot (Bots as people WP6, offline_bot_milestones).</summary>
+    public sealed record Milestone(string Name, string ClassName, int Realm, string Arc, string Trophy, string Source, string When);
+
+    /// <summary>Milestones of the Realms shows the last this many reached arcs.</summary>
+    public const int MilestoneRows = 40;
+
+    /// <summary>What the Herald says a milestone was (Bots as people WP6 arcs: the ding to 50, realm rank 5, a dragon trophy).</summary>
+    public static string MilestoneText(string arc, string trophy, string source) => arc switch
+    {
+        "ding50" => "Reached level 50",
+        "rr5" => "Earned realm rank 5",
+        "dragon_trophy" when !string.IsNullOrWhiteSpace(trophy) && !string.IsNullOrWhiteSpace(source) => $"Won {trophy} from {source}",
+        "dragon_trophy" when !string.IsNullOrWhiteSpace(trophy) => $"Won {trophy} in a great raid",
+        "dragon_trophy" => "Won a trophy in a great raid",
+        _ => "",
+    };
+
+    /// <summary>
+    /// The last <see cref="MilestoneRows"/> reached arcs, newest first, of gamebots still playing (a retired bot is not news).
+    /// Only gamebots have arcs (the server never gives a player's character one). Read-only; an older world has no table.
+    /// </summary>
+    private static List<Milestone> ReadMilestones(SQLiteConnection c, HashSet<string> tables)
+    {
+        var list = new List<Milestone>();
+        if (!tables.Contains("offline_bot_milestones"))
+            return list;
+        var columns = Rows(c, "PRAGMA table_info(offline_bot_milestones)").Select(r => Str(r[1])).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (!columns.IsSupersetOf(["CharacterId", "Name", "ClassName", "Realm", "Arc", "State", "ReachedUtc"]))
+            return list;
+        string trophy = columns.Contains("Trophy") ? "COALESCE(m.Trophy,'')" : "''";
+        string source = columns.Contains("Source") ? "COALESCE(m.Source,'')" : "''";
+        bool bots = tables.Contains("offline_world_bots") &&
+            Rows(c, "PRAGMA table_info(offline_world_bots)").Any(r => Str(r[1]).Equals("IsRetired", StringComparison.OrdinalIgnoreCase));
+        string retired = bots ? " AND NOT EXISTS (SELECT 1 FROM offline_world_bots b WHERE b.BotId = m.CharacterId AND COALESCE(b.IsRetired,0)<>0)" : "";
+        foreach (var r in Rows(c, $"""
+            SELECT m.Name, m.ClassName, m.Realm, m.Arc, {trophy}, {source}, m.ReachedUtc FROM offline_bot_milestones m
+            WHERE m.State = 'reached' AND COALESCE(m.Name,'') <> '' AND COALESCE(m.ReachedUtc,'') <> '' AND m.Realm IN (1,2,3){retired}
+            ORDER BY m.ReachedUtc DESC LIMIT {MilestoneRows}
+            """))
+        {
+            var milestone = new Milestone(Str(r[0]), Str(r[1]), Int(r[2]), Str(r[3]), Str(r[4]), Str(r[5]), Str(r[6]));
+            if (MilestoneText(milestone.Arc, milestone.Trophy, milestone.Source).Length > 0)
+                list.Add(milestone);
+        }
+        return list;
+    }
+
+    /// <summary>Players' crafting (AccountXCrafting, per account and realm) and crafter gamebots' (offline_world_bots'
+    /// SerializedCraftingSkills, primary first; offline_bot_crafters' PrimaryCraft when it has a row). Read-only.</summary>
+    private static List<Crafter> ReadCrafters(SQLiteConnection c, HashSet<string> tables)
+    {
+        var crafters = new List<Crafter>();
+        var orderIds = Orders.Select(o => o.Id).ToHashSet();
+        if (tables.Contains("AccountXCrafting") && tables.Contains("DOLCharacters") &&
+            Rows(c, "PRAGMA table_info(DOLCharacters)").Any(r => Str(r[1]).Equals("AccountName", StringComparison.OrdinalIgnoreCase)))
+        {
+            // The account's highest-level character in that realm names its crafting.
+            var names = new Dictionary<(string Account, int Realm), string>();
+            foreach (var r in Rows(c, "SELECT AccountName, Realm, Name FROM DOLCharacters WHERE COALESCE(Name,'')<>'' ORDER BY Level DESC, Name"))
+                names.TryAdd((Str(r[0]).ToLowerInvariant(), Int(r[1])), Str(r[2]));
+            foreach (var r in Rows(c, "SELECT AccountId, Realm, SerializedCraftingSkills, CraftingPrimarySkill FROM AccountXCrafting"))
+            {
+                int order = Int(r[3]), realm = Int(r[1]);
+                if (!orderIds.Contains(order) || !names.TryGetValue((Str(r[0]).ToLowerInvariant(), realm), out string? name)) continue;
+                int skill = CraftSkills(Str(r[2])).FirstOrDefault(s => s.Id == order).Value;
+                crafters.Add(new Crafter(name, realm, order, skill, false));
+            }
+        }
+        // A world from before the bots had a crafting column has no crafter bots.
+        if (tables.Contains("offline_world_bots") &&
+            Rows(c, "PRAGMA table_info(offline_world_bots)").Any(r => Str(r[1]).Equals("SerializedCraftingSkills", StringComparison.OrdinalIgnoreCase)))
+        {
+            var primary = new Dictionary<long, int>();
+            if (tables.Contains("offline_bot_crafters"))
+                foreach (var r in Rows(c, "SELECT BotId, PrimaryCraft FROM offline_bot_crafters"))
+                    primary[Long(r[0])] = Int(r[1]);
+            foreach (var r in Rows(c, "SELECT BotId, Name, Realm, SerializedCraftingSkills FROM offline_world_bots WHERE COALESCE(IsRetired,0)=0 AND COALESCE(SerializedCraftingSkills,'')<>''"))
+            {
+                var skills = CraftSkills(Str(r[3]));
+                if (skills.Count == 0) continue;
+                int order = primary.TryGetValue(Long(r[0]), out int p) && p > 0 ? p : skills[0].Id;
+                if (!orderIds.Contains(order)) continue;
+                crafters.Add(new Crafter(Str(r[1]), Int(r[2]), order, skills.FirstOrDefault(s => s.Id == order).Value, true));
+            }
+        }
+        crafters.RemoveAll(cr => cr.Realm is < 1 or > 3 || string.IsNullOrWhiteSpace(cr.Name));
+        return crafters;
     }
 
     private static string Render(DateTime now, List<Character> characters,
@@ -154,7 +302,9 @@ public static class HeraldPage
         List<(string Name, int Realm, int Original, int Level, string Claim)> keeps,
         List<(int Realm, int Original, int Type, string Captured)> relics,
         List<(string Title, int Realm, string Name, string ClassName, string When)> firsts,
-        List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events)
+        List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events,
+        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null, List<Crafter>? crafters = null,
+        List<Milestone>? milestones = null)
     {
         var h = new StringBuilder();
         string E(string s) => WebUtility.HtmlEncode(s);
@@ -200,12 +350,27 @@ public static class HeraldPage
 
         // Server firsts.
         h.Append("<section><h2>Server Firsts</h2>");
-        if (firsts.Count == 0) h.Append("<p class=\"muted\">No firsts recorded yet. The first of each class to reach level 50 or a new realm rank will be named here.</p>");
+        if (firsts.Count == 0) h.Append("<p class=\"muted\">No firsts recorded yet. The first to reach level 50, the first of each class to 50 and the first to each realm rank will be named here.</p>");
         else
         {
             h.Append("<table><tr><th>Achievement</th><th>Who</th><th>Realm</th><th>When</th></tr>");
             foreach (var f in firsts)
                 h.Append($"<tr><td>{E(f.Title)}</td><td>{E(f.Name)} <span class=\"muted\">{E(f.ClassName)}</span></td><td>{Realm(f.Realm)}</td><td>{E(When(f.When))}</td></tr>");
+            h.Append("</table>");
+        }
+        h.Append("</section>");
+
+        // Bots as people (1.2, WP6): the personal milestones the realms' people reached, newest first.
+        h.Append("<section><h2>Milestones of the Realms</h2>");
+        if (milestones is not { Count: > 0 })
+            h.Append("<p class=\"muted\">No milestones told yet. When one of the realm's adventurers reaches level 50, earns realm rank 5 or wins a trophy from a dragon or a great foe, the criers will tell it here.</p>");
+        else
+        {
+            h.Append("<p class=\"muted\">Deeds the criers carried from town to town.</p>");
+            h.Append("<table><tr><th>Who</th><th>Realm</th><th>Milestone</th><th>When</th></tr>");
+            foreach (var m in milestones)
+                h.Append($"<tr><td>{E(m.Name)} <span class=\"muted\">{E(m.ClassName)}</span></td><td>{Realm(m.Realm)}</td>" +
+                         $"<td>{E(MilestoneText(m.Arc, m.Trophy, m.Source))}</td><td>{E(When(m.When))}</td></tr>");
             h.Append("</table>");
         }
         h.Append("</section>");
@@ -254,6 +419,28 @@ public static class HeraldPage
         }
         h.Append("</section>");
 
+        // Living Server 1.2, Crafting 2.0: the top crafters of each order (design facet E).
+        var topCrafters = TopCrafters(crafters ?? []);
+        h.Append("<section><h2>Master Crafters</h2>");
+        if (topCrafters.Values.All(list => list.Count == 0))
+            h.Append("<p class=\"muted\">No one has joined a crafting order yet. Speak to a crafting master in your capital to join one.</p>");
+        else
+        {
+            h.Append("<p class=\"muted\">The most skilled of each order, players and gamebots alike. <a href=\"economy.html\">The realms' purses</a>.</p><div class=\"realms\">");
+            foreach (var (id, craft, profession) in Orders)
+            {
+                var list = topCrafters[id];
+                h.Append($"<div class=\"card\"><h3>{E(craft)}</h3>");
+                if (list.Count == 0) { h.Append("<p class=\"muted\">No members yet.</p></div>"); continue; }
+                h.Append("<table>");
+                foreach (var cr in list)
+                    h.Append($"<tr><td>{E(cr.Name)} <span class=\"muted\">{E(CraftTitle(cr.Skill, profession))}</span></td><td>{Realm(cr.Realm)}</td><td class=\"num\">{cr.Skill:N0}</td></tr>");
+                h.Append("</table></div>");
+            }
+            h.Append("</div>");
+        }
+        h.Append("</section>");
+
         // Population census.
         h.Append("<section><h2>Census</h2><table><tr><th>Realm</th><th class=\"num\">Characters</th><th class=\"num\">Level 50</th><th class=\"num\">Level 40–49</th><th class=\"num\">Level 20–39</th><th class=\"num\">Below 20</th><th>Most common class</th></tr>");
         for (int realm = 1; realm <= 3; realm++)
@@ -273,10 +460,31 @@ public static class HeraldPage
         {
             h.Append("<table><tr><th>Event</th><th>Realm</th><th>Outcome</th><th>Began</th></tr>");
             foreach (var e in events)
+            {
                 h.Append($"<tr><td>{E(e.Name)}</td><td>{E(e.Realm)}</td><td>{E(e.Outcome)}</td><td>{E(When(e.StartedUtc))}</td></tr>");
+                // Living Server 1.2: the chronicle sentence from the final boss's lore.
+                if (DOL.GS.LoreChannels.LoreChronicle.For(LauncherLore.Source, e) is { } chronicle)
+                    h.Append($"<tr class=\"chronicle\"><td colspan=\"4\">{E(chronicle)}</td></tr>");
+            }
             h.Append("</table>");
         }
         h.Append("</section>");
+
+        // Living Server 1.2: the Bestiary of the Realms, each realm's slain bosses and their stories.
+        var slain = (bestiary ?? []).ToDictionary(p => p.Key, p => p.Value.Where(b => b.Unlocked).OrderBy(b => b.FirstKillUtc, StringComparer.Ordinal).ToList());
+        if (slain.Values.Any(list => list.Count > 0))
+        {
+            h.Append("<section><h2>Bestiary of the Realms</h2><p class=\"muted\">The great foes each realm has brought down, and what is told of them.</p>");
+            for (int realm = 1; realm <= 3; realm++)
+            {
+                if (!slain.TryGetValue(realm, out var list) || list.Count == 0) continue;
+                h.Append($"<h3 class=\"sub\">{Realm(realm)}</h3>");
+                foreach (var b in list)
+                    h.Append($"<div class=\"beast\"><p><b>{E(b.Boss.Name)}</b> <span class=\"muted\">{E(b.Location.Name)} · first slain {E(When(b.FirstKillUtc))}" +
+                             (b.Wins + b.Losses > 0 ? $" · raids {b.Wins} won, {b.Losses} lost" : "") + $"</span></p><p>{E(b.Boss.Story ?? "")}</p></div>");
+            }
+            h.Append("</section>");
+        }
 
         h.Append("<footer>Written by the Offline DAoC launcher from this game's own records. Nothing here leaves your computer.</footer>");
         h.Append("</main></body></html>");
@@ -326,6 +534,6 @@ public static class HeraldPage
         table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid color-mix(in srgb,var(--rule) 35%,transparent)}
         th{font-variant:small-caps;letter-spacing:.04em;color:var(--muted);font-weight:normal}.num{text-align:right;font-variant-numeric:tabular-nums}
         .realm{font-weight:bold}.realm.alb{color:var(--alb)}.realm.mid{color:var(--mid)}.realm.hib{color:var(--hib)}
-        section{overflow-x:auto}footer{margin-top:40px;text-align:center;color:var(--muted);font-style:italic;font-size:14px}
+        section{overflow-x:auto}.chronicle td{font-style:italic;color:var(--muted);border-bottom:1px solid color-mix(in srgb,var(--rule) 35%,transparent)}.beast{margin:0 0 14px}.beast p{margin:2px 0}footer{margin-top:40px;text-align:center;color:var(--muted);font-style:italic;font-size:14px}
         """;
 }

@@ -1,0 +1,66 @@
+{
+  "id": "rana",
+  "name": "Rana",
+  "npcNames": [
+    "Rana"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "svartalfar"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Rana is a level-49 svartalf of the Dragonbane Svartalfar faction in the east of Malmohus (739,912/988,844), beside svartalf infiltrators (52); aggressive. (The gap list's quests for 'Rana' belong to Rana the healer trainer of Jordheim, a different person.)",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Rana as the Dragonbane's watcher on the eastern camps is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Rana is Svarhamr's eye on its own east. The Dragonbane svartalfar of Malmohus keep a beam of the dragon's wakings and a clan's grudge, and they do not trust the camps of the eastern ruins, the bloodbinders and foisters and infiltrators the elders call the outer watch and Odell, in drink, calls the free clans who trade with the drakulv. So the elders sent one of their own to stand among them. Rana stands beside two infiltrators on the edge of the eastern camps and watches who comes and goes, and cuts what she sees on a stick that goes home to the beam.\n\nThe infiltrators know what she is. The free clans do not care: a Dragonbane among them is only another svartalf who will not be going home. Brisa the beam-cutter of Svarhamr says Rana's marks are the most honest on the beam, and the least welcome, and that the elders read them last. She strikes at strangers before they can ask her whose watch she keeps; nobody in the east is allowed to know.",
+  "legend": "Rana is a level 49 Dragonbane svartalf in east Malmohus with two svartalf infiltrators (52) right beside her, at the edge of the eastern svartalf camps. She's on the Dragonbane Svartalfar faction, and the infiltrators stand right beside her, so plan for three. No spells. Not the same Rana as the Jordheim healer trainer who gives Darksong's Dirge. The camps east of her are hostile too.",
+  "yells": {
+    "aggro": [
+      "Svarhamr sees you.",
+      "(She cuts a mark on a stick before she draws.)"
+    ],
+    "death": [
+      "Send... the stick home..."
+    ],
+    "slay": [
+      "One more mark."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Dragonbane svartalf watches the eastern camps."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "rana is the 49 dragonbane svartalf in east malmohus, two 52 infiltrators with her",
+      "not the jordheim healer trainer rana"
+    ],
+    "aftermathWin": [
+      "rana down, infiltrators too",
+      "the stick she was carving had our names on it"
+    ],
+    "rumour": [
+      "rana is svarhamrs eye on the eastern camps",
+      "brisa says ranas marks are the most honest on the beam and the least welcome"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rana",
+    "text": "A Dragonbane svartalf of Svarhamr who stands among the eastern camps and cuts what she sees on a stick for the beam. See [the eastern camps]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Svarhamr's eye in the east of Malmohus in {minutes} minutes."
+  }
+}

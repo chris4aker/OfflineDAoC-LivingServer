@@ -1,0 +1,206 @@
+{
+  "id": "balor",
+  "name": "Balor",
+  "catalogKey": "tur-suil/balor",
+  "locationId": "tur-suil",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 81, 40,000 health, Tur Suil's final; he takes 30% less from slash, crush and thrust.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "At every tenth of health lost (90% down to 10%) he spawns an Eye of Balor: a flying, untargetable eye that casts Balor's Eye Light, heat damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs"
+    },
+    {
+      "text": "He cannot be hurt outside his tether and calls nearby kin into the fight.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as a level-81 humanoid in Tur Suil, without description.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "Irish myth: Fomorian king with a destroying eye, killed by Lugh at the second battle of Mag Tuired.",
+      "provenance": "legend",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Dec 2003: 'you only need 2fg's'.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/balor-quest-raid-today-friday.163060/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Muirgen, Eochaidh of Ardee, Fiachna of Howth, Gleann Glas and the seven hides are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "In Irish myth Lugh slew Balor at the second battle of Mag Tuired with a sling-stone through the eye.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    }
+  ],
+  "story": "In the realm's myth Balor was king of the Fomorians, whose eye, poisoned by his father's druids' cauldron, destroyed whatever it saw; he shut his daughter Eithne in a tower on Tory against a prophecy, and her son Lugh drove the eye out through his skull at the second battle of Mag Tuired, where it fell facing the Fomorian host and destroyed it.\n\nThe Sylvan of Domnann know a second verse: the eye's bearers, who always walked backwards, wrapped it in seven hides and carried it west; the Fomorians themselves say the eye followed its people of its own will. When the hides slipped on the shore of Hy Brasil it looked on a valley for one breath and burned the Sylvan village of Gleann Glas and everything else in it; that is the Vale of Balor. On the crag above, the Fomorians built Tur Suil, the tower of the eye, with one window, and grew a king around the eye again, with a household: Sargan and Norsob, Kierac and the Master of Pain, Abomos, Queen Qunilaria, and the Balorians.\n\nEochaidh of Ardee's three bands found that his hide turns blade and spell alike, that he cannot bleed outside his chamber, and that as he weakens an eye opens in the roof beyond any weapon, chooses one of those below and burns them until it shuts; Eochaidh was chosen at the last. Fiachna of Howth's small company brought him down the next spring, carrying a smooth stone for Lugh's sake, and every company that has climbed Tur Suil since has carried one. He returns, the Vale glows red more often, Qunilaria's diggers may be near the Root, and the Fomorians wait for the lid to rise fully. Muirgen, who set all this down in 'The Tower of the Eye', ended it with a warning from the old tale: towers do not hold everything, and the realm must keep climbing.",
+  "legend": "His hide resists everything, blades and spells about alike, so it is a long grind for everyone. Every ten percent, if no eye is already open, an eye opens over the room, picks one random person and burns them with heat for about eighteen seconds, then closes. You cannot target it and spreading out does not help: heal whoever it picks and wear heat resists. Fight him in his chamber and kill the adds he calls. Never meet his eye, the old hibs say, and they do not mean it as a joke. Melee and casters both grind; the healers watch the roof. Call his tens aloud so the healers know when the next eye can open, and never chase him if he drifts toward the door. Old hibs end every briefing the same way: never meet his eye.",
+  "yells": {
+    "aggro": [
+      "You have looked upon Balor. That was enough.",
+      "Lugh's people. I know the look of you.",
+      "Climb, then. The window has been waiting."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Another eye opens. It has seen you."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Lugh is not here to save you, little ones."
+      },
+      {
+        "trigger": "health<=10",
+        "text": "The lid is lifting. Look away. Look away!"
+      },
+      {
+        "trigger": "health<=70",
+        "text": "Sons of my house, to the chamber!"
+      }
+    ],
+    "death": [
+      "The eye... closes... for now...",
+      "The window... someone must close the window..."
+    ],
+    "slay": [
+      "Ash, like the valley.",
+      "Seen, and burned.",
+      "Another valley, another ash."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An eye the size of a shield turns toward you.",
+      "One window. Something looks out of it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "An Eye of Balor opens above the chamber!"
+      },
+      {
+        "trigger": "health<=30",
+        "text": "The eye of Balor opens again. It is choosing."
+      }
+    ],
+    "realmFirstKill": "Balor of the Evil Eye is fallen. The tower is blind."
+  },
+  "botLines": {
+    "briefing": [
+      "balor resists everything, melee and magic about the same. [long fight|pace yourselves]",
+      "every ten percent an eye opens and burns one random guy with heat. [heal whoever it picks|heat resists up], you cant target it",
+      "two or three groups is enough if [the healers watch the eye|we keep the eye target alive]",
+      "call his tens out loud, [each one can open an eye|eye every ten percent]",
+      "if he drifts toward the door [let him go back|stop hitting], he is immune outside"
+    ],
+    "aftermathWin": [
+      "balor down. lugh would be proud. [grats all|nice one]",
+      "every eye picked someone and nobody died to it. [good heals|best balor run yet]",
+      "the window is dark tonight. [finished lugh's story|grats hibernia]",
+      "healers kept every eye target up. [amazing|well done]",
+      "carried my lucky stone all the way up. [worked|didnt need it]"
+    ],
+    "aftermathLoss": [
+      "the eye picked our main healer and [nobody healed her|she cooked]. watch the eye target",
+      "we lost it at the last eyes. [so close|ten percent]",
+      "no heat resists and the eye [melted people|cooked the casters]",
+      "melee hit his hide and casters ran out of mana. [balance it|plan]",
+      "he called his kin and we [had no one free|got swamped]"
+    ],
+    "rumour": [
+      "[heard|someone said] balor's eye never closes [even dead|even when hes down]. it just waits",
+      "a sylvan told me the vale of balor glowed red the night the realm [beat|went up against] him",
+      "[heard|someone said] balor sits at the window looking out over hy brasil all day",
+      "[word is|heard] the bards joke that lugh's grandsons would give balor a family reunion",
+      "if you climb tur suil carry a smooth stone, [for lugh|old habit]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Balor",
+    "text": "The eye's memory of a king, grown back in Tur Suil. Steel bites him poorly. As he weakens an eye opens in the roof, chooses one of you, and burns them until it shuts. Watch whom it chooses, and do not meet his gaze."
+  },
+  "bookPage": "A Sylvan who carried water for the company that killed him told Muirgen what she saw. The king did not look at anyone. He did not need to. Each time the warriors cut him deeper, something opened in the dark under the roof: an eye, red at the rim, that looked the room over and chose one of them, and that one burned until it shut. When he fell it closed for the last time, she said, like a house putting out its lamp. She does not believe it is gone. She believes it is waiting, as the eye waited in its seven hides on the long voyage west, for someone to let the hides slip.",
+  "chronicle": {
+    "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Balor of the Evil Eye in {minutes} minutes. Nine eyes closed together.",
+    "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Balor and his opening eyes after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "norsob-the-annihilator",
+      "relation": "his warlord of the west hall"
+    },
+    {
+      "id": "sargan-the-conqueror",
+      "relation": "his warlord of the far west hall"
+    },
+    {
+      "id": "kierac-the-destroyer",
+      "relation": "the guard of his torturer's hall"
+    },
+    {
+      "id": "master-of-pain",
+      "relation": "his torturer"
+    },
+    {
+      "id": "abomos-the-soultrapper",
+      "relation": "the keeper of his cells"
+    },
+    {
+      "id": "queen-qunilaria",
+      "relation": "the queen of his diggers"
+    },
+    {
+      "id": "myrddraxis",
+      "relation": "the hydra of his kin's city"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The King of the Fomorians",
+      "text": "Every Hibernian child learns the tale, and the bards of Tir na Nog sing it the same way they have for an age. Balor was king of the Fomorians, the sea-people of the old days who held these coasts before the Tuatha came. As a boy he crept to the door of a hall where his father's druids were brewing a spell, and the fumes of the cauldron rose into one of his eyes, and from that day the eye destroyed whatever it looked upon. He kept it shut under a lid so heavy that four men had to raise it with a polished handle, and on the battlefield they raised it toward the enemy, and the enemy died. The bards add that the Fomorians who marched behind him could never let him turn round.\n\nA druid foretold that Balor would die by the hand of his own grandson. He had one child, a daughter named Eithne, and he shut her in a tower on Tory, the rock of the northern sea, so that no man should ever reach her. A man reached her anyway, as the bards say men always do, and she bore a son. Balor had the infant thrown into the sea; the child was saved, and raised far away among the Tuatha, and his name was Lugh.\n\nThese things are the realm's myth, older than any record, and Muirgen, the druid of Tir na Nog who went to Hy Brasil with the first of the realm's swords and wrote 'The Tower of the Eye', took care to say so. What follows in this telling is what the Sylvan of Hy Brasil told her, and what the realm has learned since, in the tower itself."
+    },
+    {
+      "title": "Mag Tuired, and the Second Verse",
+      "text": "At the second battle of Mag Tuired the Tuatha and the Fomorians met for the last time, and Balor's bearers raised the lid. Lugh, who had come to the battle against all advice, put a stone in his sling and drove it through the eye so hard that the eye went out through the back of Balor's skull, and fell, still open, facing the Fomorian host behind him. Its gaze killed his own army. That is where the Hibernian bards end the song, and that is why the Fomorians lost the old war and went into the sea.\n\nThe Sylvan of Domnann know a second verse. They say the Fomorians who lived through Mag Tuired were the eye's own bearers, the men whose duty had always been to walk backwards before their king so that his gaze would never fall on them, and that when the eye fell they were the only ones not looking at it. They wrapped it, still open, in seven hides of seven beasts, and carried it to the shore without once turning round, and put to sea. The Sylvan say the Fomorians still keep the names of the seven beasts and will tell no outsider what they were.\n\nThere is a third account, from the Fomorians themselves, as the Sylvan have overheard it in the shore stair of Fomor. In that telling Balor did not die at Mag Tuired at all, only lost his eye for a while, and the eye was not carried but followed its people west of its own will, looking for them. The Sylvan think this is the Fomorians comforting themselves. Muirgen thought it was the most frightening of the three."
+    },
+    {
+      "title": "The Vale of Ash",
+      "text": "The boat came to Hy Brasil in a mist, as all boats come there, in the age when the isle was still hidden and the Sylvan believed no one could find it. The Fomorians found it because they were not looking for it, the Sylvan say; Hy Brasil hides from those who search. They came ashore on the western coast, below a crag above a green valley, and as they carried the eye up the beach the hides slipped.\n\nThe eye looked at the valley for as long as it takes to draw breath. Everything in its gaze died: the trees, the grass, a Sylvan village called Gleann Glas whose name the Sylvan still say at their fires, and every creature in the valley down to the worms. The bearers covered it again. The valley has never grown back. The Sylvan call it by Balor's name now, the Vale of Balor, and walk round it rather than through, and the realm's scouts who cross it report that the ash there is still fine and grey under the grass that has crept in at its edges, and that nothing lives in the middle of it at all.\n\nThe Sylvan date the Fomorians' coming to Hy Brasil from that day, and the beginning of the long encroachment that Hibernia's first allies on the isle asked the realm to help them stop. When the Sylvan came down to the shore to ask the realm for swords, the Vale was the first thing they named, before Fomor and before the Root."
+    },
+    {
+      "title": "The Tower with One Window",
+      "text": "On the crag above the burned valley the Fomorians built a tower to hold the eye. They built it as Balor in the old tale built a tower on Tory to hold his daughter: tall, with one window, so that whatever was kept inside could see out and nothing could come in. They named it Tur Suil, which Muirgen glossed as the tower of the eye, and set the eye behind the window, and began, slowly, over long generations, to grow a king around it again.\n\nHow, nobody outside the tower knows. The Sylvan believe the Fomorians fed the eye, as the hydrars of Fomor feed their hydra, and that a body grew from what it was fed; they point to the Sylvan of the Burning That Failed, whose spirits Abomos the Soultrapper keeps in his cells, and say the king was built from such things. The druids of Tir na Nog believe the eye built the body itself, out of its memory of the king who once carried it, and that the Balor of Tur Suil is the eye's idea of a king rather than a king. Muirgen's note in the margin of her book takes the druids' side: the eye was never his; he was always the eye's.\n\nAround the king the Fomorians set a household. Sargan the Conqueror and Norsob the Annihilator to hold the western halls, kept apart because they hate each other. Kierac the Destroyer to guard the torturer's hall, with the Master of Pain living inside him. Abomos to keep the cells. Queen Qunilaria to dig. And soldiers, the Balorians, named for the heroes the Fomorians had killed."
+    },
+    {
+      "title": "The Eye in the Roof",
+      "text": "The Balor of Tur Suil is huge and slow, and his hide turns blade and spell alike, as old hide turns weather: Eochaidh's people said nothing they carried bit him as they wished, and that swords and spells came down off the crag equally tired. He is bound to his chamber at the top of the crag, and beyond it the tower will not let him bleed. When strangers come up the stair, his kin come up from the halls to stand with him. None of that is why the realm fears him.\n\nThe eye in his face is shut now, its lid a slab of flesh nobody has ever seen raised. But it is not the only eye in Tur Suil. The first company of the realm to reach his chamber, three bands under a champion of Ardee named Eochaidh in the first winter of the isles, found out what happens when he is wounded. As his strength ran out of him an eye opened in the dark under the roof, high up, beyond any sword or arrow, red at the rim. It looked about the room for a moment as if choosing, and then it settled on one of them, and that one burned with the same light that had ash-blackened the Vale, and went on burning while it looked, until it shut. Then, as he weakened further, it opened again, and chose again. Eochaidh's band learned to watch the roof and to run to whoever it had chosen with water and salve. Eochaidh himself was chosen at the last, when there was no one left to run to him.\n\nThe bards say Balor's gaze killed his own army at Mag Tuired, because it looked on everything at once. In his tower, they say, it has learned to look at one person at a time, which is crueller. Muirgen's Sylvan water-carrier said the worst of it was not the burning but the choosing: every face in the room turned up to the roof each time it opened, and every one of them was hoping."
+    },
+    {
+      "title": "Lugh's Stone",
+      "text": "The first company to bring him down came up in the next spring, and the realm's records remember that it was small: two bands and a third to hold the stair, under a bard of Howth named Fiachna who had studied every account of Eochaidh's band. Fiachna carried a smooth stone in his pack all the way up the tower, for Lugh's sake, and his company laughed at him for it. He told Muirgen afterwards that he had never needed it and had been glad of it the whole way.\n\nWhen Balor fell, the eye in the roof shut for the last time that day, like a house putting out its lamp. Muirgen's Sylvan water-carrier, who had gone up with the company, did not believe it was gone; she believed it was waiting. The king returns, as the eye does, and the realm goes up the tower again whenever the Vale glows red at night, which is the sign the Sylvan of the western coast watch for.\n\nEvery Hibernian company that has climbed Tur Suil since has carried a smooth stone. It is the oldest custom of the realm on Hy Brasil, older than the four doors of Sheeroe, and anyone who laughs at it is told Fiachna's story. Nobody has ever thrown one. The bards say that is as it should be: the stone was Lugh's to throw, and the realm only carries it to remind the eye who its grandson was. Fiachna's own stone lies on the sill of the one window of the king's chamber, where he set it on the way down; no Fomorian has ever moved it."
+    },
+    {
+      "title": "What the Eye Wants",
+      "text": "The Sylvan believe the eye wants to see everything, and that this is all it has ever wanted: an eye that was put out once wants nothing so much as to look. Balor sits in his chamber and looks out of the one window over the isle, and his household works for him. Queen Qunilaria's brood digs downward under the crag, and in recent seasons, the Sylvan report, it broke into something soft and very old far below that smells of sap. They believe the eye's diggers are close to the roots of Olcasgean, the Root of Galladoria, and that nobody has ever thought what happens when the eye in the tower and the Root in the hollow meet.\n\nThe Fomorians of Fomor have their own hope, which the Sylvan have overheard in the shore stair: that one day the lid will rise fully, and on that day the city will climb the stair together and take the isle, and then the sea, and then the land beyond the sea that they lost at Mag Tuired. The druids of Tir na Nog take it seriously. They have noted that the Vale glows red more often than it did in the first seasons, and that the Fomorian forays against Domnann follow the glow by a few weeks.\n\nIn the old tale the prophecy said Balor would die by his grandson, and he shut his daughter in a tower, and it did not help. Muirgen ended her book with that: towers do not hold everything. The realm keeps climbing this one, every generation, to make sure."
+    }
+  ]
+}

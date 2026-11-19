@@ -1,0 +1,100 @@
+{
+  "id": "the-dyer-household",
+  "name": "Dyer household",
+  "npcNames": [
+    "Edyo Dyer",
+    "Celm Dyer",
+    "Cerdic Dyer",
+    "Earma Dyer"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "edyo dyer",
+    "celm dyer",
+    "cerdic dyer",
+    "earma dyer"
+  ],
+  "facts": [
+    {
+      "text": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts, no faction, no spells, respawn 80 s, in the north of the dyers' hamlet (~432.0-432.4k, 390.5-391.0k); Beonoc Dyer (50) is the head of the house.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The blue dye, the quarrel over the stream and each member's habit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Dyers dyed blue, and quarrelled with the Tinctors over whose name was older. Beonoc Dyer, the head of the house, is a tale of his own.\n\nEdyo Dyer kept the vats and the household's books, and still stirs a vat that has been dry for years.\n\nCelm Dyer cut the woad and carried it, and comes in from the field at dusk with empty arms.\n\nCerdic Dyer was the one who started the quarrel with the Tinctors, over a stretch of the stream, and still stands on the bank to see that no red runs into the blue.\n\nEarma Dyer, the youngest, was learning the trade, and has blue hands to the elbow, and always will.",
+  "legend": "The Dyer household: Edyo (48), Celm (45), Cerdic (45) and Earma (44) Dyer, ghosts in the north of the dyers' hamlet, with Beonoc Dyer (50) as the head of the house nearby. They stand together and aggro on sight; pull singles from the edge. Plain melee, no spells, respawn 80 seconds. The Tinctors are a short walk south-west. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "yells": {
+    "aggro": [
+      "Keep off the blue!",
+      "A Tinctor, is it?"
+    ],
+    "phases": [],
+    "death": [
+      "The vat... gone dry..."
+    ],
+    "slay": [
+      "Dyed blue.",
+      "Into the vat."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Edyo Dyer, at the door of the house.",
+      "Celm Dyer is still at home.",
+      "Cerdic Dyer is still at home.",
+      "Earma Dyer is still at home."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Dyer house falls quiet. The stream does not run blue."
+  },
+  "botLines": {
+    "briefing": [
+      "dyer house in the dyers hamlet, four of them plus beonoc, pull singles",
+      "dont pull the tinctors at the same time"
+    ],
+    "aftermathWin": [
+      "cleared the dyers",
+      "earma dyer down. blue hands and all"
+    ],
+    "aftermathLoss": [
+      "pulled the dyers and the tinctors came too"
+    ],
+    "rumour": [
+      "[heard|someone said] edyo dyer still stirs a dry vat",
+      "heard celm dyer comes in from the field every dusk with nothing",
+      "[heard|someone said] cerdic dyer started the quarrel with the tinctors over the stream",
+      "heard earma dyer has blue hands to the elbow"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dyer",
+    "text": "The Dyers dyed blue in the dyers' hamlet of the [dales of devwy]: Edyo at the vats, Celm with the woad, Cerdic who began the quarrel with the [tinctor] family, young Earma with blue hands, and Beonoc, the head of the house."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} gave the Dyer household their rest for a while, in {minutes} minutes.",
+    "loss": "The Dyer household kept house; {raidLeader} of {realm} was shown the door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "beonoc-dyer",
+      "relation": "head of the house"
+    },
+    {
+      "id": "the-tinctor-household",
+      "relation": "the quarrel over the stream"
+    }
+  ],
+  "tier": "minor"
+}

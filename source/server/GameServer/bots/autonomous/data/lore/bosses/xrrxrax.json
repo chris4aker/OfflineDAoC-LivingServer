@@ -1,0 +1,85 @@
+{
+  "id": "xrrxrax",
+  "name": "Xrrxrax",
+  "npcNames": [
+    "Xrrxrax"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Xrrxrax: level 36, an ixthiar body (model 686), faction Ixthiar Swarm, at about 402,600/330,600 among the ixthiar clippers of Vigilant Rock's south; respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Xrrxrax as the swarm's scout north of the Vale.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The ixthiar swarm rose out of the ash of Gleann Glas, in the Vale of Balor, and it spreads. Its clippers have come north into the southern edge of Vigilant Rock, and with them a larger one the Necht Sylvan call Xrrxrax, for the sound its mandibles make. The Domnann wardens say it is the swarm's scout, the first of the brood sent north to find out what the rock will feed, and that the Ixthiar Broodmother in the vale knows everything it learns.\n\nThe wardens kill it when they can, and it comes back, and each time it comes back a little further north. Necht keeps a stake in the ground where it was last seen. The stakes make a line toward the village. The Domnann wardens are not sure whether the swarm is coming for Necht or for the Watchers. They say it may not know either, and that a swarm goes where it is fed.",
+  "legend": "Xrrxrax (36) is a named ixthiar among the ixthiar clippers (28-30) on the south side of Vigilant Rock (about 403k/331k). Easy for a group of mid 30s. 10-minute respawn. It belongs to the same swarm as the Vale of Balor's Broodmother and Monger. Plain spawn with no script. The clippers around it are social with it. A group of mid 30s is fine; this is a good warm-up before the dervish woods to the north.",
+  "yells": {
+    "aggro": [
+      "(mandibles: xrr, xrr, xrax)",
+      "(the scout's antennae turn toward you)"
+    ],
+    "phases": [],
+    "death": [
+      "(the mandibles click once more and stop)"
+    ],
+    "slay": [
+      "(xrr. xrax.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Ixthiar clippers, and a larger one clicking."
+    ],
+    "phases": [],
+    "realmFirstKill": "Xrrxrax, the swarm's scout, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "xrrxrax is a 36 ixthiar among clippers south of the rock",
+      "easy for mid 30s, 10 min respawn"
+    ],
+    "aftermathWin": [
+      "xrrxrax down. [scout dead|grats]",
+      "put a new stake in lol"
+    ],
+    "aftermathLoss": [
+      "clippers swarmed. [rip|ouch]",
+      "group too low. [36|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] xrrxrax is the ixthiar swarm's scout sent north from the vale",
+      "necht puts a stake where xrrxrax was last seen. the stakes are getting closer"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Xrrxrax",
+    "text": "The ixthiar swarm's scout on the south edge of Vigilant Rock, named for the sound of its mandibles. Each time it returns it comes a little further north; Necht marks the place with a stake."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Xrrxrax in Vigilant Rock in {minutes} minutes.",
+    "loss": "Xrrxrax turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-fomorians",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "ixthiar-broodmother",
+      "relation": "the mother of the swarm"
+    },
+    {
+      "id": "monger",
+      "relation": "the swarm's forager"
+    }
+  ]
+}

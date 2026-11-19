@@ -1,0 +1,121 @@
+{
+  "id": "drygau",
+  "name": "Drygau",
+  "npcNames": [
+    "Drygau"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Drygau (51), Adwyth (50) and Anhylaw (49) share model 825, a Fomorian body (as do the vale's fomorian condlers and gristlers), and stand within about 800 units of each other at about 319,500/356,700 in the eastern Vale of Balor, by the gap in the zone wall east of Aalid Feie; plain spawns with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The Tree Maidens (Lynara, Domnann): kill a stilter by Necht, a corruptor on the Krrzck road and a tittering tree dervish in Cothrom Gorge, ask Tieru in Aalid Feie, 'kill the guard in the gap in the zone wall east of Aalid Feie (he calls two friends)', then at the tree answer the maiden ('the maidens of the trees', 'to free their voice') and sing 'morwynol gan yr llais'; the quest's targets include Drygau and Adwyth.",
+      "provenance": "game",
+      "source": "DataQuest 'The Tree Maidens' (world data)"
+    },
+    {
+      "text": "The three names read as Welsh: drygau 'evils, harms', adwyth 'misfortune, woe', anhylaw 'unruly, unmanageable'; 'morwynol gan yr llais' as roughly 'maidenly song of the voice' (all to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Living Server lore: the last singing tree east of Aalid Feie; the three Fomorian guards who took the gap and named themselves for what they do; the maiden's silenced voice.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The tree maidens of Hy Brasil are the Sylvan's own spirits of the old trees, the singers inside the bark, and the Sylvan of Necht say that once every great tree on the isle had a voice in it that sang at dusk. The eye's one look at Gleann Glas burned the trees of the vale and their voices with them, all but one. The last tree with a maiden in it stands east of Aalid Feie, past the gap in the old wall that the Sylvan built across the vale to keep the Fomorians to the west, and the Fomorians took the gap.\n\nThree Fomorians hold it, and the vale's Sylvan say they named themselves when they took it, in the borrowed tongue the Fomorians of the vale have picked up from somewhere, the way Milo and Oscar picked up theirs. Drygau is the eldest, the one who stands in the gap itself, and his name means the harms, the evils done. Adwyth and Anhylaw stand with him, and when anyone comes to the gap Drygau calls, and the other two are at his side before the stranger has crossed the old wall. They have never been seen apart.\n\nWhat they guard is the maiden's voice. The Fomorians did not burn the last tree. They did something the Sylvan find worse: they silenced it, with a binding none of the Necht singers can name, and set the three at the gap so that nobody could come to the tree and sing it free. The song that frees a maiden's voice is old, and the Sylvan who know it can be counted on one hand; Lynara of Domnann is one, and Tieru of Aalid Feie knows where the others are. They send young Hibernians east with the words.\n\nDrygau does not care about the tree. That is the part of the story the Sylvan of Necht tell with the most anger. He keeps the gap because it is a gap, a hole in a Sylvan wall that a Fomorian stands in, and the vale's Fomorians count it as a victory every day it is held. The maiden in the tree has been silent since the first summer of the isles. On still evenings at Aalid Feie, the Sylvan say, you can hear the place in the dusk where her song should be.",
+  "legend": "Drygau (51) holds the gap in the zone wall east of Aalid Feie with Adwyth (50) and Anhylaw (49) within about 800 units of him. The Tree Maidens quest says 'he calls two friends', so plan on all three Fomorians at once: three 49-51 melee mobs with no scripts. A full group of 50s, two tanks or crowd control on the other two. Then for the quest, say hello at the tree and answer the maiden ('the maidens of the trees' or 'to free their voice') and sing 'morwynol gan yr llais'. Raiaya hands out the songs as rewards. Approach from the Aalid Feie side so you do not drag the vale's Fomorians in.",
+  "yells": {
+    "aggro": [
+      "The gap is held. Adwyth! Anhylaw!",
+      "A Sylvan wall, and a Fomorian in it.",
+      "Harm, for you. Harm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold the gap! Do not let them reach the tree!"
+      }
+    ],
+    "death": [
+      "The gap... is open...",
+      "Let her sing, then... let her..."
+    ],
+    "slay": [
+      "Harmed.",
+      "The gap holds.",
+      "No song tonight."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A gap in an old Sylvan wall. Fomorians in it.",
+      "Beyond the gap, a tree that should be singing."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Drygau calls the other two to the gap!"
+      }
+    ],
+    "realmFirstKill": "Drygau has fallen. The gap in the Sylvan wall is open."
+  },
+  "botLines": {
+    "briefing": [
+      "drygau, adwyth and anhylaw come together. [three fomorians|49-51]",
+      "tree maidens quest. kill the guard in the gap east of aalid feie",
+      "two tanks or cc one of them. [no scripts|plain melee]",
+      "after, say hello at the tree and sing morwynol gan yr llais"
+    ],
+    "aftermathWin": [
+      "the gap is open. [the maiden can sing|go to the tree]",
+      "three fomorians down. [nice|clean]",
+      "sang the song at the tree. [it worked|she answered]",
+      "raiaya has the songs for rewards"
+    ],
+    "aftermathLoss": [
+      "thought it was one guard. [it was three|he calls two friends]",
+      "one tank, three fomorians. [no|wipe]",
+      "pulled the condlers too. [too many|oops]",
+      "forgot the words at the tree lol"
+    ],
+    "rumour": [
+      "[heard|someone said] the last tree with a maiden in it stands past the gap east of aalid feie",
+      "drygau means harms in some old tongue [i think|my guild says]",
+      "[word is|heard] you can hear where the maiden's song should be at dusk",
+      "lynara in domnann knows the song that frees the maidens"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Drygau",
+    "text": "The eldest of three Fomorians holding the gap in the Sylvan wall east of Aalid Feie, with [Adwyth] and [Anhylaw]. They keep the last tree maiden of the vale silent. His name means the harms done."
+  },
+  "bookPage": "Tieru of Aalid Feie: there was a voice in every great tree once, and the eye burned the vale's trees and their voices with them, all but one, east of here past the gap in the old wall. The Fomorians did not burn that tree. They silenced it, and set three of their own in the gap so nobody could come and sing it free. Drygau stands in the gap and calls, and Adwyth and Anhylaw come. They named themselves, harms and woe and unruliness, in a tongue they found somewhere. Lynara of Domnann knows the song. I know where to send the young who will carry it.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Drygau in the gap east of Aalid Feie in {minutes} minutes.",
+    "loss": "Drygau turned back {realm}'s band under {raidLeader} in the gap east of Aalid Feie after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "adwyth",
+      "relation": "his sister-in-arms at the gap"
+    },
+    {
+      "id": "anhylaw",
+      "relation": "the third guard of the gap"
+    },
+    {
+      "id": "balor",
+      "relation": "whose eye burned the vale"
+    }
+  ]
+}

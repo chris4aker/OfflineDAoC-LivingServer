@@ -25,6 +25,7 @@ public sealed partial class AutonomousWorldBotController
     private long _dragonRallyRetry;
     private bool TravelRealmExpedition(GameBot bot, AutonomousRealmRaid.View order)
     {
+        using var aiProfile = AiProfile.Scope(AiSystem.ControllerRaidTravel); // AI_PROFILE: measures only
         if (GameLoop.GameLoopTime < _expeditionRouteRetry) return true;
         var c = order.Camp;
         if (_camp == null || _camp.RegionId != c.RegionId || _camp.X != c.X || _camp.Y != c.Y || _camp.Z != c.Z)

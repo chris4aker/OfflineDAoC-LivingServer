@@ -1,0 +1,447 @@
+{
+  "id": "valley-of-bri-leith",
+  "name": "Valley of Bri Leith",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    206
+  ],
+  "summary": "The valley of the fairy mound east of Lough Derg: Caille, Brynach and the fort of Druim Cain, the empyreans of the high ground, the faerie horses and the Old Hermit's tent.",
+  "facts": [
+    {
+      "text": "In Irish myth Brí Léith is the sídh (fairy mound) of Midir, who loved Étaín and won her back from the king of Tara in the Tochmarc Étaíne.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Midir"
+    },
+    {
+      "text": "Cad Goddeu ('the Battle of the Trees') is a medieval Welsh poem in the Book of Taliesin in which Gwydion brings the trees to life to fight.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cad_Goddeu"
+    },
+    {
+      "text": "Zone 206 (region 200, x 385,024-450,560, y 483,328-548,864): 363 monsters. Towns: Caille (area at 420,684/516,178; Ainrebh the enchanter, Lysagh, Ariana, Brynn), Brynach (409,987/528,096) and Druim Cain (421,166/484,998, radius 3,500: a fort of Master Rangers, Master Eldritch, Champions and Keep Sentinels, a siege merchant, trainers of every path and Channeler Ynsalg, the Druim Ligen Emissary). The Coruscating Mine entrance is at 397,971/488,565.",
+      "provenance": "game",
+      "source": "world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: empyreans (guardians, overseers, watchers, sentinels, elders, wisps and orbs, faction Empyreans, to 44), barca, primroses, siog seekers, footpads, pillers and waylayers (Siabras), faerie drakes, faerie horses and steeds, veil wisps, mad changelings, moss and grass sheeries, fee lions, rage wolves, wrath and fury sprites, hill hounds, mermen, and five druids of the faction 'druids of southern Albion'.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Named: Mikka (50, Secret of Nuada's Silver A) beside the Old Hermit's tent (about 410,500/538,000) with The Blademaster (Cad Goddeau A); tier B Guardian Hru and Niy the Overseer (40) on the empyrean heights; tier C Lashold, Lusmorebane, Riocard (Draoi Dorcha; Cad Goddeau D), Keeper Rasa, Watcher Rylie and others.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md; DataQuest 'Cad Goddeau A'-'D'"
+    },
+    {
+      "text": "Quests: Unnatural Powers (Ainrebh); Traces of the Mad Changlings ('From Caille head southeast across Moon Lake to the tall standing stones'); Lysagh's Problem (fury sprites mug him in Caille); The Anxious Healer ('the faerie horse meadow by the guard tower southwest of Caille').",
+      "provenance": "game",
+      "source": "DataQuest 'Traces of the Mad Changlings', 'Lysagh's Problem', 'The Anxious Healer' (world data); GAPS-hibernia.md section 3"
+    },
+    {
+      "text": "Living Server lore: the valley as Midir's mound country; the empyreans as the mound's old servants; the siog; the faerie horses; the hermit and the dark druids who came over from southern Albion after the tree-song; Druim Cain as the eastern door; Moon Lake; the Old Hermit's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of the Valley of Bri Leith: Lashold (33, irewolf, not aggressive; The Anxious Healer), Lusmorebane (32, a changeling body, not aggressive; Traces of the Mad Changlings), Riocard (28, Draoi Dorcha; Cad Goddeau D), Erhael and Nymir (27, siog), Keeper Rasa (26, Empyreans; Sile's Sight; aggressive though the quest speaks to her), Tric (25, faerie drake; Bria's Savior), Wilde (24, a faerie steed body), Watcher Rylie (19, Empyreans, WatcherRylie.cs: hidden by night, stuns then casts an energy blast, calls a 'RylieBaf' package no spawn carries), Sloithi (17, Siabras), Glare (16, fury sprite; Lysagh's Problem), Blademaster and The Blademaster (15, two spawns by the Old Hermit's tent; Cad Goddeau A), Fearan (15, a sheerie; Fearan), Miner Cucugar (13, sheevra; Stolen Ore A).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "The old songs say Bri Leith was Midir's: the mound of a lord of the Sidhe who loved a woman of the mortal kings and won her back from Tara by a game of chess and a pair of swans. The valley that bears the mound's name lies east of Lough Derg, low in the middle, with Caille and Brynach in its floor and high ground all round, and the people of Caille say the mound is still there, under the empyreans' heights in the east, and that its lord has not come out of it since the Veil came down.\n\nThe empyreans keep the heights. They are bright things, guardians and overseers and watchers, elders and wisps and orbs that drift down toward the lake country, and the druids of the realm think they were the mound's servants, set to keep its doors when its lord went in, and that they have gone on keeping them ever since with no lord to report to. They do not like the realm on their heights. Guardian Hru and Niy the Overseer keep the highest ground, and Keeper Rasa and Watcher Rylie hold the slopes below, and the empyrean keepers of the north-east carry swords that the chief of Culraid wants for his own reasons.\n\nThe valley floor is the fair folk's country in the plainer sense. Faerie horses and steeds graze the meadow by the guard post southwest of Caille, and faerie drakes nest above it, and the veil wisps that drift through the grass at dusk are, the Caille folk say, threads come loose from the Veil itself. The siog, the siabra of the valley, keep camps on the western hills, seekers and footpads and waylayers, and rob the road to the Silvermine. South-east of Caille, across Moon Lake, the mad changelings live at the foot of the hills behind the tall standing stones, the ones who were swapped in cradles and never swapped back, and their leader Lusmorebane is the maddest of them.\n\nIn the south of the valley, beside the faerie horse meadow, an old man keeps a tent. The realm calls him only the Old Hermit. He is a druid of the oldest craft, the craft of the trees, and he sleeps a great deal and wakes at odd seasons, and when he wakes the realm's young are sent to him from four directions with the things he needs: a druid's plant and a key, a jewel taken from a child of the Azure, a scroll from a druid the cliff siabra held, the head of a dark druid. The dark druid is Riocard, who keeps a high place in the west of the valley with five druids who came over from southern Albion. The Caille folk say they came for the hermit's craft, the old song that makes trees stand up and fight, which the bards of Albion have their own poem about. The hermit says nothing. Mikka the map-reader camps beside him and reads the half of an enchanted map that leads, Howth says, to Nuada's silver.\n\nCaille is the valley's town, a low place of merchants and an enchanter, Ainrebh, who studies the crystal that ate a man in the Bog of Cullen and sends the realm to the Druid Prince with it. Fury sprites came into Caille once and mugged the armourer Lysagh for a green crystal, and the town has not let him forget it. Brynach is the smaller stop to the south. Druim Cain is the fort at the valley's north end, garrisoned like Druim Ligen, with master rangers and master eldritch on its walls and the Druim Ligen emissary's fire inside: the eastern door to the frontier. In the hills to the west the dark court cut its own door into the Coruscating Mine, and the Howth men will not go near it.\n\nWhy does it matter? Because Bri Leith is the realm's nearest neighbour among the mounds. The lord of the valley went in and shut his door and left his servants keeping it, and the realm lives in his front garden. The hermit says the mound's door will open again one day. He says it the way old men say it will rain.",
+  "legend": "Valley of Bri Leith, east of Lough Derg, levels 10-50. Caille is the town in the valley floor (Ainrebh: Unnatural Powers; Lysagh's Problem; Brynn), Brynach a small stop south of it, and Druim Cain the frontier fort at the north end (teleport, trainers, siege merchant). The Coruscating Mine entrance is in the high western hills. Camps: barca, primroses, sheeries and veil wisps (10-17) near Caille, faerie horses and drakes (18-26) in the south meadow, siog siabra on the western hills (15-34), mad changelings (26-30) across Moon Lake, empyreans (34-44) on the eastern heights. Named: Mikka (50) by the Old Hermit's tent, Guardian Hru and Niy the Overseer (40), Riocard and his Albion druids up high in the west (Cad Goddeau D). The Old Hermit is the end of every Cad Goddeau step. Caille custom: never ride a horse from the faerie meadow, however tame it looks.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Valley of Bri Leith. A lord's mound.",
+      "Bright things keep the eastern heights.",
+      "Faerie horses in the south meadow.",
+      "Threads of the Veil drift in the grass.",
+      "An old man sleeps in a tent."
+    ],
+    "areas": [
+      {
+        "name": "Caille",
+        "x": 420680,
+        "y": 516180,
+        "z": 1820,
+        "radius": 2000,
+        "lines": [
+          "Caille, low in the valley floor.",
+          "Ainrebh studies a crystal that ate a man.",
+          "Glare, a fury sprite, at Lysagh's shop door."
+        ]
+      },
+      {
+        "name": "Brynach",
+        "x": 409990,
+        "y": 528100,
+        "z": 2110,
+        "radius": 1000,
+        "lines": [
+          "Brynach, a small stop on the south road.",
+          "Horses for the meadow road."
+        ]
+      },
+      {
+        "name": "Druim Cain",
+        "x": 421170,
+        "y": 485000,
+        "z": 1980,
+        "radius": 3500,
+        "lines": [
+          "Druim Cain, the eastern door.",
+          "Master rangers and eldritch on the walls.",
+          "The emissary's fire burns inside."
+        ]
+      },
+      {
+        "name": "the Old Hermit's tent",
+        "x": 410520,
+        "y": 537980,
+        "z": 4930,
+        "radius": 1200,
+        "lines": [
+          "An old man's tent by the meadow.",
+          "He sleeps. He wakes. He waits.",
+          "A map-reader camps beside him.",
+          "Two blademasters by the tent. Which is which?"
+        ]
+      },
+      {
+        "name": "the faerie meadow",
+        "x": 408820,
+        "y": 542650,
+        "z": 5890,
+        "radius": 3000,
+        "lines": [
+          "Faerie horses in the meadow. Do not ride.",
+          "Drakes nest above the grass."
+        ]
+      },
+      {
+        "name": "the empyrean heights",
+        "x": 440000,
+        "y": 505000,
+        "z": 6000,
+        "radius": 6000,
+        "lines": [
+          "Bright servants of a shut mound.",
+          "They keep the doors with no lord."
+        ]
+      },
+      {
+        "name": "Moon Lake",
+        "x": 430000,
+        "y": 528000,
+        "z": 2000,
+        "radius": 4000,
+        "lines": [
+          "Moon Lake, and tall stones beyond.",
+          "The mad changelings live behind them."
+        ]
+      },
+      {
+        "name": "the siog hills",
+        "x": 400000,
+        "y": 497000,
+        "z": 6000,
+        "radius": 4500,
+        "lines": [
+          "Siog fires on the western hills.",
+          "The road to the Silvermine is robbed here."
+        ]
+      },
+      {
+        "name": "Riocard's height",
+        "x": 403240,
+        "y": 500320,
+        "z": 8700,
+        "radius": 1200,
+        "lines": [
+          "A dark druid's high place.",
+          "Druids from over the sea, singing to trees.",
+          "Riocard and his Albion druids, listening."
+        ]
+      },
+      {
+        "name": "the court's door",
+        "x": 397970,
+        "y": 488570,
+        "z": 7600,
+        "radius": 1000,
+        "lines": [
+          "The dark court's door into the mine.",
+          "Howth men will not come here."
+        ]
+      },
+      {
+        "name": "the horse meadow guard post",
+        "x": 397824,
+        "y": 542028,
+        "z": 5341,
+        "radius": 1200,
+        "lines": [
+          "Lashold lies in the grass with the drakes.",
+          "An irewolf who does not hunt. Why?"
+        ]
+      },
+      {
+        "name": "the changelings' stones",
+        "x": 444641,
+        "y": 544551,
+        "z": 7027,
+        "radius": 1500,
+        "lines": [
+          "Lusmorebane, maddest of the changelings.",
+          "Tall stones, and laughter behind them."
+        ]
+      },
+      {
+        "name": "Erhael's ground",
+        "x": 444000,
+        "y": 525233,
+        "z": 6400,
+        "radius": 1200,
+        "lines": [
+          "Erhael speaks for the siog. Carefully.",
+          "Between the siog and the heights."
+        ]
+      },
+      {
+        "name": "Nymir's hollow",
+        "x": 414100,
+        "y": 490448,
+        "z": 1824,
+        "radius": 1200,
+        "lines": [
+          "Nymir's hollow, too deep for the heights to see.",
+          "Siog seekers in the wet ground."
+        ]
+      },
+      {
+        "name": "Keeper Rasa's encampment",
+        "x": 436274,
+        "y": 497622,
+        "z": 3993,
+        "radius": 1200,
+        "lines": [
+          "Keeper Rasa keeps a door with no lord.",
+          "Rory waits here, and knows a moonstone."
+        ]
+      },
+      {
+        "name": "Tric's ridge",
+        "x": 431292,
+        "y": 505334,
+        "z": 6389,
+        "radius": 1000,
+        "lines": [
+          "Tric the drake, among the empyreans, on purpose.",
+          "Mind whom you strike on this ridge."
+        ]
+      },
+      {
+        "name": "Wilde's herd",
+        "x": 422207,
+        "y": 541951,
+        "z": 6340,
+        "radius": 1500,
+        "lines": [
+          "Wilde, the stallion. Never ride the horses.",
+          "Faerie steeds that run where no road goes."
+        ]
+      },
+      {
+        "name": "Rylie's watch",
+        "x": 442741,
+        "y": 541751,
+        "z": 6341,
+        "radius": 1200,
+        "lines": [
+          "Watcher Rylie keeps her post. By day only.",
+          "At night the watch is empty."
+        ]
+      },
+      {
+        "name": "Sloithi's road",
+        "x": 395481,
+        "y": 495743,
+        "z": 6400,
+        "radius": 1200,
+        "lines": [
+          "Sloithi waits for a late cart.",
+          "Siog footpads in the gorse, quiet."
+        ]
+      },
+      {
+        "name": "the Old Hermit's tent (The Blademaster)",
+        "x": 410811,
+        "y": 538011,
+        "z": 4931,
+        "radius": 1000,
+        "lines": [
+          "The Blademaster waits for the first verse.",
+          "Two blades by the tent. Which is which?"
+        ]
+      },
+      {
+        "name": "the hill crest",
+        "x": 401831,
+        "y": 513456,
+        "z": 6430,
+        "radius": 1200,
+        "lines": [
+          "Fearan runs the crest, never alone.",
+          "Grass sheeries, quick in the wind."
+        ]
+      },
+      {
+        "name": "Cucugar's cut",
+        "x": 393759,
+        "y": 493809,
+        "z": 6352,
+        "radius": 1000,
+        "lines": [
+          "Miner Cucugar's cut. Silver that may be Howth's.",
+          "A careful siabra working, near a door."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "bri leith was midir's mound in the old songs. [sidhe lord|chess and swans]",
+      "the empyreans are the mound's servants still guarding doors with no lord, druids say",
+      "the veil wisps in bri leith are threads come loose from the veil, caille folk say",
+      "faerie horses in the south meadow. never ride one. [caille custom|really]",
+      "the siog are bri leith's siabra. they rob the silvermine road",
+      "the mad changelings across moon lake were swapped in cradles and never swapped back",
+      "the old hermit is a druid of the tree craft. every cad goddeau step ends with him",
+      "riocard is a dark druid with five albion druids up on the west height. [cad goddeau d|tree song]",
+      "the albion bards have a poem about trees standing up to fight. [cad goddeu|same song maybe]",
+      "mikka camps by the old hermit and reads half an enchanted map. [nuada's silver|howth]",
+      "druim cain is the frontier fort at the north of bri leith. [like druim ligen|eastern door]",
+      "fury sprites mugged lysagh in caille. [lysagh's problem|lol]",
+      "the dark court's door into the coruscating mine is in bri leith's west hills"
+    ],
+    "rumour": [
+      "[heard|someone said] the old hermit woke up [again|this morning]. cad goddeau time",
+      "someone rode a faerie horse from the meadow and [never came back|ended up in the cursed forest]",
+      "[word is|heard] the empyrean elders are 44 and dont like visitors",
+      "the mad changelings followed someone back to caille. [lusmorebane|creepy]",
+      "[heard|someone said] riocard's albion druids sang and the trees moved",
+      "guardian hru and niy the overseer are 40. [up on the east heights|named]",
+      "[word is|heard] lysagh got mugged again. [fury sprites|poor guy]",
+      "the veil wisps were thicker than ever at dusk. [veil thin|hmm]",
+      "[heard|someone said] lashold the irewolf lies with the faerie drakes and never hunts",
+      "[heard|someone said] lusmorebane got lusmore's hump in the old story. thats why hes so mad",
+      "[heard|someone said] riocard heard half the hermit's tree song and wants the other half",
+      "[heard|someone said] erhael is the only siog the empyreans never caught in a lie",
+      "[heard|someone said] nymir the siog lives in a hollow so deep the empyreans cant see him",
+      "[heard|someone said] keeper rasa judges who is worthy and attacks everyone anyway",
+      "[heard|someone said] tric sits right by the empyreans so you hit the wrong thing",
+      "[heard|someone said] some caille kid rode wilde for a dare and came back a year later not a day older",
+      "[heard|someone said] watcher rylie is only out by day. she stuns you first then blasts",
+      "[heard|someone said] sloithi robs the druim cain carts but always leaves the carters alive",
+      "[heard|someone said] glare the fury sprite keeps burning lysagh's leather in caille",
+      "[heard|someone said] there are two blademasters by the hermit's tent and neither will say which is the real one",
+      "[heard|someone said] beat the blademaster by the hermit's tent and the other one just watches",
+      "[heard|someone said] fianait's otherworld garden wont grow unless fearan dies for it",
+      "[heard|someone said] miner cucugar has silver ore that howth swears is theirs"
+    ],
+    "tell": [
+      "bri leith is east of lough derg. caille is the town, druim cain the fort. 10 to 50",
+      "where is caille? middle of the valley of bri leith, low down. ainrebh is there",
+      "where is druim cain? north end of bri leith. frontier fort, channeler, trainers",
+      "is bri leith hard? floor is easy, siog hills 20s-30s, empyrean heights 34-44",
+      "whats in bri leith? empyreans, faerie horses, siog siabra, mad changelings, the old hermit",
+      "where is the coruscating mine entrance? the high west hills of bri leith",
+      "lashold is a 33 irewolf in the faerie horse meadow southwest of caille. not aggro. the anxious healer",
+      "lusmorebane is the 32 leader of the mad changelings behind the standing stones across moon lake. not aggro",
+      "riocard is a 28 dark druid up on the high place in the west of bri leith, with five druids. cad goddeau d",
+      "erhael is a 27 siog on the east side of bri leith, siog waylayers near",
+      "nymir is a 27 siog down in the deep hollow south of druim cain, siog seekers round him",
+      "keeper rasa is a 26 empyrean at the encampment north east of caille. sile's sight. shes aggro, careful",
+      "tric is a 25 faerie drake on the ridge north of the log east of caille. bria's savior: dont hit the empyreans",
+      "wilde is a 24 faerie steed, the big stallion of the herd south of caille. dont ride the horses lol",
+      "watcher rylie is a 19 empyrean east above moon lake, day only. stuns then energy blast. seek the moonstone b",
+      "sloithi is a 17 siabra in the siog hills north west of bri leith with the siog footpads",
+      "glare is a 16 fury sprite by caille. lysagh's problem: kill glare and the other one",
+      "the blademaster is a 15 by the old hermit's tent. cad goddeau a. theres two of them, blademaster and the blademaster",
+      "the blademaster for cad goddeau a is right next to the old hermit's tent, 15",
+      "fearan is a 15 grass sheerie running the hill crest west of caille with a friend. the fearan quest",
+      "miner cucugar is a 13 sheevra miner near the court's door in bri leith. stolen ore a"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Valley of Bri Leith, the front garden of a lord's [mound]. The [empyreans] keep its doors; the [faerie] horses graze the meadow; the [siog] rob the roads; the [changelings] live across the lake. [Caille] and [Druim Cain] keep the floor. And the [Hermit] sleeps.",
+    "topics": {
+      "mound": "Brí Léith, the mound of Midir in the old songs, a lord of the Sidhe who won a mortal king's wife back by chess and swans. The Caille folk say it is under the eastern heights and its lord has not come out since the Veil.",
+      "empyreans": "Bright things of the eastern heights, guardians and overseers, watchers and elders. The druids think they are the [mound]'s servants, still keeping its doors with no lord to report to. Guardian Hru and Niy the Overseer hold the top.",
+      "faerie": "The faerie horses and steeds of the south meadow, the drakes above it, and the veil wisps at dusk, threads come loose from the Veil. Caille's custom: never ride a horse from the meadow.",
+      "siog": "The siabra of the valley's western hills, seekers, footpads, pillers and waylayers, who rob the road toward the Silvermine.",
+      "changelings": "The mad changelings across Moon Lake, at the foot of the hills behind the tall standing stones: children swapped in cradles and never swapped back. Lusmorebane is the maddest.",
+      "Hermit": "The Old Hermit of the faerie meadow, a druid of the tree craft who sleeps and wakes at odd seasons. The realm's young bring him a druid's plant and a key, a jewel, a scroll and a dark druid's head. [Riocard] wants his song.",
+      "Riocard": "Riocard is a dark druid, one of the Draoi Dorcha, who keeps a high place in the west of the valley with five druids who came over from southern Albion. The Caille folk say they came for the [Hermit]'s song, the old tree-song that makes trees stand up and fight, and that Riocard has heard part of it and wants the rest. Chieftess Niamh of Caille wants him dead. The Old Hermit only wants his song left alone.",
+      "Caille": "The valley's low town: merchants, Ainrebh the enchanter who studies the bog's crystal, and Lysagh the armourer, once mugged by fury sprites for a green stone.",
+      "Druim Cain": "The fort at the valley's north end, garrisoned like Druim Ligen, with the Druim Ligen emissary's fire: the realm's eastern door to the frontier.",
+      "Lashold": "Lashold is the irewolf of the faerie horse meadow, by the guard post south-west of [Caille], and he runs with the faerie drakes, which no other wolf would do. He does not hunt the horses. He does not hunt anything, the Caille folk say; he lies in the meadow grass and watches, and the faerie drakes lie beside him. Cinead the healer of Tir Urphost wants something of his for the work against the Grey Man, and the meadow folk do not understand why it must be him.",
+      "Lusmorebane": "Lusmorebane leads the mad changelings across Moon Lake, at the foot of the hills behind the tall standing stones, and he is the maddest of them. The bards say his name is Lusmore's bane, after the hunchback of the old tale whom the good folk relieved of his hump for a song, and that Lusmorebane is what the good folk gave the hump to. He does not attack first. He wears a jewelled necklace, and Tressa of the valley wants it.",
+      "Erhael": "Erhael is a siog of the eastern hills, one of the siabra of the valley, and keeps the ground between the siog waylayers and the empyreans' heights. He is the one the siog send to talk to the empyreans when there is talking to be done, the Caille folk say, because he is the only siog the empyreans have never caught lying. That is not the same as never lying.",
+      "Nymir": "Nymir keeps the lowest ground in the valley, north of [Caille] down toward [Druim Cain], among the siog seekers, in a hollow so deep the empyreans on the heights cannot see into it. The siog say he chose it for that. The Druim Cain garrison say he chose it because it is wet and he likes the wet. Both may be true. He has never once climbed out of it.",
+      "Keeper Rasa": "Keeper Rasa is an empyrean of the encampment north-east of [Caille], one of the mound's servants who keep doors with no lord to keep them for. Sile the ranger trainer of Connla judges who is worthy of Oran O'Braonain's treasure, and she sends them to Rasa with a package and an orb, and Rasa decides. Rory, who knows about the moonstone, keeps at her encampment. Rasa does not like visitors, worthy or not, and says so plainly, and not with words.",
+      "Tric": "Tric is the faerie drake on the ridge north of the fallen log east of [Caille], and he has been troubling Bria, whose sister Kaenia of Lough Derg asks the young to help her. He is clever for a drake, and he sits on the ridge where the empyreans walk, so that whoever comes for him has to be careful whom they strike. Bria says he knows that. Bria says he planned it.",
+      "Wilde": "The faerie horses of Bri Leith are not for riding, the Caille folk say, and Wilde is why. He is the stallion of the herd, the faerie steed the others follow, and a young man of Caille once got on his back for a dare and rode him into the meadow and was not seen again for a year, and when he came home he had grown no older and would not speak of where he had been. Never ride the horses.",
+      "Watcher Rylie": "Watcher Rylie is an empyrean of the eastern slopes above Moon Lake, near the changelings' stones, and she keeps her watch by daylight; at night her post is empty, and the Caille folk say she goes inside the mound to report what she saw. Maeve the Crone of Connacht sends the moonstone-seekers to her. She calls for the other watchers when she is pressed, and none come; she strikes first to stun and then with light, the Caille folk say, a watcher's habit.",
+      "Sloithi": "Sloithi is a siabra of the siog hills in the north-west, near the court's door, with the siog footpads, and he is the one they send down to the roads when a carter from Druim Cain is late. He robs the carts and leaves the carters, which the siog think is generous and the carters do not. The Druim Cain garrison have a price on him. It has gone up every season and nobody has collected it.",
+      "Glare": "Glare is the fury sprite who keeps attacking Lysagh, the armourer of [Caille], whose sister Gemma in Tir na Nog sends him shipments by the young. There are two fury sprites, and Glare is the worse, a spiteful light that comes in at the shop door and burns the leather. Lysagh wants the corpse, if a sprite has one, so that he can show Gemma he is not making it up. He is not making it up.",
+      "The Blademaster": "By the Old Hermit's tent there are two blademasters, and both of them answer to the name, which is the trouble. One is the Blademaster the trainers of Tir na Nog send the young to defeat at the first step of the old tree-song's road, and the other is the Blademaster who stands with him and will not say which of them is the real one. The Hermit says it does not matter. The tree-song does not care who wins the first verse, only that it is sung.",
+      "Fearan": "Fearan is a sheerie of the grass, one of the small green folk of the hill crest west of [Caille], and he runs the crest with a companion, never alone. Fianait, who is planting an otherworld garden, needs him for the last of it: spores from a dew sheerie, otherworld soil, grass seed sealed by Ainrebh the enchanter, and then Fearan. The sheeries say a garden from the otherworld wants a little of this world killed into it, or it will not grow.",
+      "Miner Cucugar": "Cucugar is a sheevra miner, the leader of the siabra's careful cut near the court's door in the north-west, and he has silver ore that Howth says is Howth's. Chief Proinnsias of Howth wants a sample of it, and Dera of Mag Mell wants to know where it came from. Cucugar says it came out of the ground. The trainers of Tir na Nog send the young to ask him again, more firmly."
+    }
+  },
+  "book": {
+    "title": "What the Hermit Remembers, written in his tent by the faerie meadow",
+    "pages": [
+      "I am old and I sleep a great deal. When I wake the realm sends children to me with things in their hands, and I take the things and send the children away and go back to sleep. Between the sleeping and the waking I remember. This book is what I remember, for anyone who comes to the tent while I am asleep and wants to know why they were sent. I write it in pieces. The pieces do not always agree. That is the nature of a long memory, and of a short temper, which I also have.",
+      "I remember when the lord of the mound went in. The valley was his, all of it, and his servants were bright and many, and when the Veil came down he went into the hill and shut the door, and told his servants to keep it. They are keeping it still, up on the eastern heights. They have not had a word from him in longer than your realm has had a name, and they do not know that this is strange. Servants who have been told to wait do not ask how long.",
+      "I remember the song of the trees. It is older than me and older than the mound, and it makes trees stand up and fight, and the bards across the sea in the land of the Britons have a poem about it, badly remembered. A druid of theirs came over the water with five others and keeps a high place in the west of my valley and wants the song. I do not give it to him. The realm's children bring me his head now and then, and he grows another, and comes back.",
+      "I remember the valley before the siabra of the hills and the changelings across the lake. I remember the court cutting its door in the western hills into the mine. I remember a young map-reader camping beside me with half a map, and Howth's chief saying it led to a king's silver hand. That was not long ago. When the children come with their plant and their key and their jewel, I wake, and I remember all of it at once, and it is a great weight, and then I sleep again."
+    ]
+  },
+  "bosses": [
+    "mikka",
+    "guardian-hru",
+    "niy-the-overseer"
+  ],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe",
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "coruscating-mine",
+      "relation": "whose court door opens in the valley's hills"
+    },
+    {
+      "id": "cursed-forest",
+      "relation": "the court wood to the east"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "the lake country to the west"
+    },
+    {
+      "id": "bog-of-cullen",
+      "relation": "where Ainrebh's crystal was found"
+    }
+  ]
+}

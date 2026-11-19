@@ -1,0 +1,217 @@
+{
+  "id": "delling-crater",
+  "name": "Delling Crater",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    153
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "dellingstad",
+    "hrimthursa",
+    "wild-beasts"
+  ],
+  "summary": "Aegir's great crater: the closed town of Dellingstad, the caldera's fumes and golems, the griffmen's eyrie, and the rime giants' watch at the gate to Tuscaran.",
+  "facts": [
+    {
+      "text": "Delling Crater is zone 153 of region 151, between Gripklosa and Faraheim; Tuscaran Glacier's entrance is a zone point in its north-east (398621, 271246).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data); source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Dellingstad, in the south-west of the crater (around 365000, 321900), is a town of the People of Dellingstad faction: citizens, miners, fortifiers, soothsayers and alblastere (crossbowmen), all aggressive to strangers by template, with the merchants Brunhil and Forgemaster Brungar. Weaponmaster Zargin trains students there with dummy golems.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The caldera floor holds the Elements of the Caldera (noxious fumes, sulphurous clouds, pumice, basalt and obsidian golems, steam and vapor elements), with yellowed and sulphur-stained skeletons.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The griffmen of the Klippa Vaktaren faction (skywatchers, elders to 65, seconds) keep an eyrie in the north-east with griffon companions, bondmates, draftriders, frostwings and eyrie tenders; the hrimthursa of the Glacier Harskaren stand guard near Tuscaran's gate.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Delling's beasts: crater cicadas in great numbers, woolly and venerable mammoths, megaloceros, cave lions, sabre-toothed cats (Cats of Aegir) with Khrin among them, caldera stingers, greater mylings; morvalt mammut jagare camp in the south-east.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The quest 'Mammoth Hunt' (Bothrar Hadd in Bjarken) sends players to Mammoth Valley for bull and matriarch tusks and pelts; Volkstad in Dellingstad sends them to wipe out the morvalt mammut jagare camp above the valley; a last whisker from a matriarch or bull is returned in Dellingstad, to Vorkald.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Dellingr is the god of the dawn, father of Day.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning; Vafthrudnismal (public domain)"
+    },
+    {
+      "text": "Dellingstad's people in Living Server's Tuscaran lore: Jorunn the fishwife, Eyvor the trader, Orm Kolbeinsson and his son.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The skalds say Delling, the god of the dawn, came down to Aegir once to see where the night goes when the day drives it off, and found it here, in a great bowl in the middle of the island, and struck the bowl so hard in his anger that it has burned ever since. The iarn dwarves say the bowl was a mountain once, and that it burst, and that the fire under it is not a god's but the island's own. Either way the crater is Aegir's heart, and it is hot at the bottom and frozen at the rim, and everything that lives in it has made its peace with one or the other.\n\nThe bottom belongs to the caldera. Its fumes and clouds drift over the floor, and the golems of pumice and basalt and obsidian walk in them, made of the crater's own stone, with the steam and vapor of its vents for company; the skeletons on the caldera floor are yellowed with sulphur, the bones of those who went down to look and did not come up. The crater folk say the elements of the caldera are not hostile, only busy, and that the bones are of those who interrupted them.\n\nDellingstad holds the south-west. It is a town of its own people, miners and fortifiers and soothsayers, with crossbowmen on its walls, and it is not Midgard's and does not wish to be. Its traders go out and its fishwives cut ice off the glacier's edge, and Orm Kolbeinsson's widow left salt for him every spring after the giants took him at the outer ice. But the town lets no stranger in until the stranger has proved a friend, and its folk meet strangers with crossbows. Weaponmaster Zargin teaches the town's young in a yard by the gate, with golems of straw and clay for them to strike. Vorkald, who keeps the town's account with the herd, takes the whisker of the mammoths when the morvalt hunters above Mammoth Valley have been cleared.\n\nThe north-east rim belongs to the sky. The griffmen of the cliffs keep an eyrie there, the Klippa Vaktaren, cliff-watchers who fly griffons bonded to them and watch the crater from above; the Remnants' own griffon-flying began, the dwarves say, with a dwarf who sat a summer watching these cliffs. And beyond the eyrie, at the rim's edge, the rime giants of Tuscaran keep a watch over the gate into the glacier, guards and shamans of the hrimthursa who answer to whatever is left of the Council inside. The Valkyn scout who watched Tuscaran from a crack in Delling's rim watched from here.\n\nBetween the bottom and the rim are the crater's beasts: cicadas in thousands on the western slopes, mammoths and megaloceros in the open ground, cave lions, and in the south-east the sabre-toothed cats of Aegir, whose oldest male the crater folk call Khrin. Delling matters because Tuscaran is behind it, and because Dellingstad is the one people on Aegir who were here before Midgard came and have never asked Midgard for anything.",
+  "legend": "Delling Crater is the middle of Aegir: Dellingstad in the south-west, the caldera in the middle, the griffmen's eyrie in the north-east and Tuscaran Glacier's entrance past it at the north-east rim, guarded by hrimthursa. Levels run 30s to high 50s, higher than most of the isles. Dellingstad is a hostile town until you raise People of Dellingstad faction: its crossbowmen and fortifiers will shoot you. Weaponmaster Zargin (54) and Vorkald (52, the Mammoth Hunt whisker turn-in) are in the town. The caldera's elements and golems are Elements of the Caldera and social. The griffmen (Klippa Vaktaren) go up to 65 with griffons to 67: leave the eyrie alone unless you mean it. Khrin, a 50 sabre-toothed cat, leads the cats in the south-east near the morvalt mammut jagare camp. The skalds say the dawn god hit the crater so hard it still burns.",
+  "atmosphere": {
+    "firstEntry": [
+      "A great bowl in Aegir's heart, hot below, frozen above.",
+      "Fumes drift over the crater floor.",
+      "Griffons wheel along the north-eastern rim.",
+      "Somewhere north-east, the glacier's gate."
+    ],
+    "areas": [
+      {
+        "name": "Dellingstad",
+        "x": 365074,
+        "y": 321886,
+        "z": 6500,
+        "radius": 3000,
+        "lines": [
+          "Dellingstad. Crossbows on the walls, for you.",
+          "A town of its own people. It is not Midgard's."
+        ]
+      },
+      {
+        "name": "Zargin's yard",
+        "x": 363385,
+        "y": 322586,
+        "z": 6556,
+        "radius": 1000,
+        "lines": [
+          "Students strike golems of straw and clay.",
+          "The weaponmaster watches every stroke."
+        ]
+      },
+      {
+        "name": "the caldera",
+        "x": 368913,
+        "y": 306842,
+        "z": 5000,
+        "radius": 6000,
+        "lines": [
+          "Sulphur fumes. Golems of stone walk in them.",
+          "Yellowed bones of those who interrupted the elements.",
+          "The crater's fire is very close here."
+        ]
+      },
+      {
+        "name": "the eyrie",
+        "x": 386000,
+        "y": 285000,
+        "z": 8000,
+        "radius": 5000,
+        "lines": [
+          "The cliff-watchers' eyrie. Griffons bonded to men.",
+          "From here they watch the whole crater."
+        ]
+      },
+      {
+        "name": "the giants' watch",
+        "x": 398621,
+        "y": 271246,
+        "z": 8500,
+        "radius": 2500,
+        "lines": [
+          "Rime giants guard the gate into Tuscaran.",
+          "The glacier begins past the rim. So does the long climb."
+        ]
+      },
+      {
+        "name": "the cat country",
+        "x": 386500,
+        "y": 315000,
+        "z": 6500,
+        "radius": 3500,
+        "lines": [
+          "Sabre-toothed cats in the south-east rocks.",
+          "The old male watches from above the hunters' camp."
+        ]
+      },
+      {
+        "name": "the cicada slopes",
+        "x": 357233,
+        "y": 297690,
+        "z": 6000,
+        "radius": 5000,
+        "lines": [
+          "Thousands of crater cicadas. The noise never stops.",
+          "The western slopes sing all summer."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the skalds say delling the dawn god struck the crater so hard it still burns",
+      "the dwarves say delling crater was a mountain that burst",
+      "the crater is hot at the bottom and frozen at the rim",
+      "the caldera elements arent hostile, only busy, the crater folk say",
+      "dellingstad is its own peoples town, not midgards",
+      "dellingstad lets no stranger in till theyve proved a friend",
+      "orm kolbeinssons widow left salt every spring after the giants took him",
+      "weaponmaster zargin teaches dellingstads young with golems of straw",
+      "vorkald keeps dellingstads account with the mammoth herd",
+      "the klippa vaktaren are cliff watchers who fly bonded griffons",
+      "the remnants griffon flying began with a dwarf watching the delling cliffs",
+      "rime giants guard the gate into tuscaran at the ne rim"
+    ],
+    "rumour": [
+      "the yellow bones on the caldera floor are people who interrupted the elements",
+      "the crater cicadas never stop singing in summer",
+      "dellingstad crossbowmen shoot midgard on sight if your faction is bad",
+      "the valkyn scout watched tuscaran from a crack in dellings rim",
+      "khrin the old sabre cat watches the morvalt hunters camp",
+      "the griffmen elders are older than dellingstad",
+      "dellingstad fishwives cut ice off the glacier for the fish",
+      "dont fall into the caldera, nobody comes up"
+    ],
+    "tell": [
+      "delling crater is the middle of aegir, between gripklosa and faraheim",
+      "tuscaran glacier entrance is at the ne rim of delling",
+      "dellingstad is sw delling, hostile till you have faction",
+      "delling is 30s to high 50s, griffmen to 65",
+      "khrin is a 50 sabre cat in se delling",
+      "zargin and vorkald are in dellingstad"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Delling, the crater at Aegir's heart. [Dellingstad] keeps its own counsel in the south-west, the [caldera] burns in the middle, the [cliff-watchers] fly the north-east rim, and past them the [giants' watch] guards the way into Tuscaran.\"",
+    "topics": {
+      "Dellingstad": "The crater town of its own people, miners and fortifiers and soothsayers with crossbowmen on the walls. It trades on its own terms and treats strangers as enemies until they prove friends. [Weaponmaster Zargin] and [Vorkald] are here.",
+      "caldera": "The crater floor, with its fumes and sulphur clouds, golems of pumice, basalt and obsidian, and steam and vapor elements. The yellowed skeletons there are of those who went down to look. See [the dawn god].",
+      "the dawn god": "The skalds say Delling, god of the dawn, came to see where the night goes and struck the crater in anger. The iarn dwarves say it was a mountain that burst. The crater burns either way.",
+      "cliff-watchers": "The griffmen of the Klippa Vaktaren, who fly griffons bonded to them from an eyrie on the north-east rim and watch the whole crater. The Remnants say their own griffon-flying began by watching these cliffs.",
+      "giants' watch": "Hrimthursa guards and shamans at the north-east rim, keeping the gate into Tuscaran Glacier for whatever is left of the Council inside.",
+      "the herd's account": "Dellingstad pays to have the morvalt mammoth-hunters cleared from above Mammoth Valley and takes a whisker of the herd as its due. [Vorkald] keeps the account.",
+      "the cats": "The sabre-toothed cats of Aegir in the crater's south-east rocks, led by the old male [Khrin], above the morvalt hunters' camp.",
+      "Kolfinna": "Kolfinna, a miner of [Dellingstad], who wrote 'The Bowl and the Rim' for her daughter, about the town, the [caldera] and the giants at the gate."
+    }
+  },
+  "book": {
+    "title": "The Bowl and the Rim",
+    "pages": [
+      "Kolfinna, who has mined the south-west wall of the crater for thirty years, wrote this for her daughter, who wants to leave Dellingstad and asks what she would be leaving. Daughter, you would be leaving the bowl. Our people were in it before Midgard came to Aegir, before the trolls came out of the mountain, some say before the giants cut their halls in the ice. We are not Midgard's. We trade with Midgard when it suits us and shoot at it when it does not, and Midgard has never once understood the difference, which is the difference.",
+      "The bottom of the bowl is the caldera. Your grandfather went down to it once, to see the golems up close, and came back with his beard yellow and would not talk about it. The elements are not cruel. They are busy, the way a forge is busy, and a thing that walks into a forge does not get an apology. There are bones on the floor down there. We do not go to fetch them. The caldera keeps what it keeps, and we keep away from it, and that has been the arrangement since before the town had walls.",
+      "The north-east rim is the cliff-watchers'. They fly their griffons along it all day, and they see everything in the bowl, and they have never told us anything they saw. Past them are the giants at the gate. When I was your age a trader of the town, Orm, was taken at the outer ice, and his wife left salt for him every spring until she died, and his son leaves it still. The giants have never touched the salt. I do not know what that means. Nobody does. The soothsayers have a guess and keep it to themselves.",
+      "In town there is Zargin's yard, where you were taught the crossbow, and Vorkald's table, where the town keeps its account with the herd, and the walls, where we stand. Strangers come to the gate with their hands open and we make them prove their hands. That is the town. Go to Bjarken, daughter, and they will be kind to you, and they will not understand you. Come home when you want to be understood. The bowl will still be here. It has been here longer than the dawn, and it will be here after."
+    ]
+  },
+  "bosses": [
+    "weaponmaster-zargin",
+    "vorkald",
+    "khrin",
+    "ornulf",
+    "anicho",
+    "kampestein",
+    "klippe",
+    "hako",
+    "smastein"
+  ]
+}

@@ -50,7 +50,6 @@ CraftersTitle.Senior:				Expert {0}
 CraftersTitle.Master:				Maître {0}
 CraftersTitle.Grandmaster:			Grand Maître {0}
 CraftersTitle.Legendary:			{0} Légendaire
-CraftersTitle.LegendaryGrandmaster:		Grand Maître Légendaire {0}
 
 CraftLevelToCraftTitle.Helper:				Aide {0}
 CraftLevelToCraftTitle.JuniorApprentice:		Apprenti Débutant {0}

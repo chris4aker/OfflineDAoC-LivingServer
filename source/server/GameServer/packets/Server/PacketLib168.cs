@@ -481,8 +481,7 @@ namespace DOL.GS.PacketHandler
 
 							//Try to fix the region ip so UDP is enabled!
 							string ip = entries[index].ip;
-							if (ip == "any" || ip == "0.0.0.0" || ip == "127.0.0.1" || ip.StartsWith("10.13.") || ip.StartsWith("192.168."))
-								ip = ((IPEndPoint) m_gameClient.Socket.LocalEndPoint).Address.ToString();
+							ip = RegionAddress.ForClient(m_gameClient, ip);
 							pak.FillString(ip, 20);
 							index++;
 						}
@@ -572,8 +571,7 @@ namespace DOL.GS.PacketHandler
 				{
 					//Try to fix the region ip so UDP is enabled!
 					string ip = playerRegion.ServerIP;
-					if (ip == "any" || ip == "0.0.0.0" || ip == "127.0.0.1" || ip.StartsWith("10.13.") || ip.StartsWith("192.168."))
-						ip = ((IPEndPoint) m_gameClient.Socket.LocalEndPoint).Address.ToString();
+					ip = RegionAddress.ForClient(m_gameClient, ip);
 					pak.FillString(ip, 22);
 					pak.WriteShort(playerRegion.ServerPort);
 				}
@@ -911,7 +909,10 @@ namespace DOL.GS.PacketHandler
 			if (obj is GamePlayer)
 				oType = 2;
 			else if (obj is GameNPC npc)
-				oType = npc.Health > 0 ? 1 : 0;
+				// type 0 = "leave the corpse to fade". A gamebot's body is the bot itself (it stays in the world until
+				// raised or released), so a removal is always a move or a park: a corpse left behind showed as a second dead
+				// copy at the death spot (owner 2026-10-30, "since 0.1": release moved the dead bot to its bind point).
+				oType = npc is GameBot || npc.Health > 0 ? 1 : 0;
 
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.RemoveObject)))
 			{
@@ -2064,6 +2065,8 @@ namespace DOL.GS.PacketHandler
 					}
 					if (m_gameClient.Player.TradeWindow is SelfCraftWindow)
 						pak.WritePascalString("Combining for " + m_gameClient.Player.Name);
+					else if (m_gameClient.Player.TradeWindow is DOL.GS.CraftingEconomy.IBotTradeWindow botTrade) // Crafting 2.0 WP8: a gamebot (no Partner)
+						pak.WritePascalString("Trading with " + botTrade.BotName);
 					else
 						pak.WritePascalString("Trading with " + m_gameClient.Player.TradeWindow.Partner.Name); // transaction with ...
 					SendTCP(pak);
@@ -3953,7 +3956,7 @@ namespace DOL.GS.PacketHandler
 			//all the task info is sent in name field
 
 			string taskStr = string.Empty;
-			if (task == null)
+			if (task == null || !task.TaskActive)
 				taskStr = "You have no current personal task.\n";
 			else taskStr = "[" + task.Name + "] " + task.Description + ".\n";
 

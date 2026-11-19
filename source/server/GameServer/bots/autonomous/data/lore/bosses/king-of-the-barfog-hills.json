@@ -1,0 +1,118 @@
+{
+  "id": "king-of-the-barfog-hills",
+  "name": "King of the Barfog Hills",
+  "catalogKey": "albion-named-mobs-classic-zones/kingbarfog",
+  "locationId": "llyn-barfog",
+  "realm": "Albion",
+  "aliases": [
+    "barfog king"
+  ],
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs"
+    },
+    {
+      "text": "20% of his hits add Crush: 400 natural damage to everyone within 800 of his target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs"
+    },
+    {
+      "text": "He walks home at full health when nobody is left on his aggro list; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "His self-crowning the day the cattle left, the flattened grass, the ground that jumps round the struck man and his indifference to the lake are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Nobody crowned the King of the Barfog Hills. He crowned himself, the old men of Barfog say, the day the lady of the lake called her white cattle home and left the slopes above the water with nobody to keep them. He came through the open door after the cattle went in, or he was there before and only waited; the old men disagree. What they agree on is that he took the high ground north of the lake that same evening, and that he has kept it since, after his fashion.\n\nHe walks his hill as a king walks his hall. The grass lies flat where he has trodden, in paths that go round the whole of the high ground and back, and the hobgoblins and the bwgan go round his paths and not across them. He does not claim the lake. The afanc has the water and he has the hill, and in all the years the old men have watched them neither has troubled the other, which is more than can be said for anyone else in the hills.\n\nHe cannot be charmed, held, put to sleep or turned. A king does not take orders, the hill folk say, and his subjects never gave him any. He fights with his whole weight, and when he strikes a man the ground jumps under the man and under everyone standing near him, as if the hill itself were angry on its king's behalf; the old men of Barfog say a sensible subject keeps a long way from anyone the king is looking at. Teazanodwc keeps her hollow on the southern edge of his hills without asking his leave, and the old men say that is the only thing that has ever made him look up.\n\nThe ellyllon on the south-western slope call him the king with no crown, and bow when he passes, which is more than anyone else does. He has never once harmed an ellyll. They say it is because they bow. The old men of Barfog say it is because they are too small to notice.",
+  "legend": "The King of the Barfog Hills, level 65, 30k, on the high ground north of the lake. A heavy melee fight with one trick: 20% of his hits add Crush, 400 natural damage to everyone within 800 of whoever he hit. So everyone who does not have to be near the tank stays more than 800 away from the tank, and the melee who do stay keep their health up. He is immune to mez, stun, root and the rest, so no crowd control plans. No adds. Tank, heal, burn. If everyone drops off him he goes home at full, and he respawns about an hour after he dies.",
+  "yells": {
+    "aggro": [
+      "Kneel on my hill!",
+      "Who walks my grass without leave?",
+      "My hill. My law. Kneel."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A king does not yield his hill!"
+      }
+    ],
+    "death": [
+      "The hill... has no king...",
+      "Crown... whoever... wants it..."
+    ],
+    "slay": [
+      "Flattened like the grass.",
+      "My subjects bow. You lie down.",
+      "The hill is mine."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A king's hill. The grass is flattened by his tread.",
+      "Paths worn round the hill. Nobody crosses them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The King of the Barfog Hills shakes the ground!"
+      }
+    ],
+    "realmFirstKill": "The King of the Barfog Hills is dethroned."
+  },
+  "botLines": {
+    "briefing": [
+      "king of the barfog hills, 65, 30k, cc immune. straight melee fight",
+      "20% of his hits do 400 to everyone within 800 of the tank. stay more than 800 off the tank",
+      "melee near him keep your health up, the crush stacks up fast",
+      "no adds, just tank heal burn"
+    ],
+    "aftermathWin": [
+      "long live... nobody. the king is dead",
+      "dethroned",
+      "nobody stood near the tank who didnt need to. clean",
+      "the ellyllon will be sad"
+    ],
+    "aftermathLoss": [
+      "tried to mez him. he's immune. told you",
+      "the cloth stood right behind the tank and ate every crush",
+      "melee went in low and the crush finished them",
+      "pulled him onto the hobgoblins"
+    ],
+    "rumour": [
+      "heard the king of the barfog hills crowned himself",
+      "[someone said|heard] you cant mez the king of the barfog hills",
+      "heard the ellyllon bow to the barfog king",
+      "[heard|someone said] the king and the afanc never fight each other"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "king of the barfog hills",
+    "text": "Nobody crowned him. He crowned himself the day the white cattle went home, and walks the high ground north of Llyn Barfog as a king walks his hall. No charm or command moves him, and the ground jumps round anyone he strikes. He leaves the afanc's water alone."
+  },
+  "bookPage": "From the Barfog Book of Twr ap Alsig. Of the king. My father took me up to see the king's paths when I was small. The grass on the high ground is flattened in rings, round and round, and the hobgoblins and the bwgan walk round the rings and never across. The king was walking. He did not look at us. My father said a sensible subject keeps a long way from anyone the king is looking at, because when he strikes, the hill strikes with him, and everyone near the man he hits goes down too. We were a long way off. I still felt it in my feet.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} dethroned the King of the Barfog Hills in {minutes} minutes.",
+    "loss": "The King of the Barfog Hills kept his hill; {raidLeader}'s company of {realm} did not kneel, and fell."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "legendary-afanc",
+      "relation": "the beast of the lake, whose water he does not claim"
+    },
+    {
+      "id": "teazanodwc",
+      "relation": "keeps her hollow on his hills without asking his leave"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "eraliwyr",
+  "name": "Eraliwyr",
+  "npcNames": [
+    "Eraliwyr"
+  ],
+  "locationId": "spraggon-den",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Eraliwyr: level 35, the small-folk body of the spraggons (model 112, size 66, the size of a spraggonote), at about 31,600/27,000 at the northern crossing, under 500 from Spriggit, among spraggonix and an earth sprite; no faction; respawn 300 seconds; a plain spawn (package ClassicQuest).",
+      "provenance": "game",
+      "source": "world data Mob table, region 222 (read 2026-11-06)"
+    },
+    {
+      "text": "Viraniel's Plague (Viraniel, Tir na Nog): Dwerrania's potion turns Viraniel into a skeleton warrior who flies off; Dwerrania gives a jade jar; 'Find the alchemist Eraliwyr hidden deep in the Spraggon Den (talk to him; he attacks) and kill him.'; then a sand worm's tongue (Bog of Cullen beach), a greater zephyr's wind (east of Tir Urphost) and a luch catcher's bladder (south-southwest of Treibh Caillte); 'Check on Viraniel.'",
+      "provenance": "game",
+      "source": "DataQuest 'Viraniel's Plague' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Eraliwyr came into the Spraggon Den years ago to work where nobody would watch him, and the spraggons let him stay because he is near enough their own kind to argue with: small and knobbled and grey, one of the small folk of the hills, though no spraggon will say he is one of them and he has never said he is not. He keeps a lamp and a bench at the northern crossing beside Spriggit, and the den says the cold that crackles off Spriggit came off that bench.\n\nTir na Nog tells the rest. Viraniel, a woman of the druid grove, took a cup from him once in the lower town, for a cough, and sickened of something no draught of the grove would touch. When Dwerrania the herb-woman gave her the best the grove could make, the flesh went off her bones and she went over the wall a skeleton, armed, on the wind. Dwerrania sends the young to the den with a jade jar to carry the cure's makings home in, and they come back by way of the Cullen strand, the cliff-top above Tir Urphost and the luch country south of Treibh Caillte, and in the end Viraniel comes back too, and is herself, more or less.\n\nThe druids keep the jar. Eraliwyr talks to those who find him, politely, about the weather in the den and the price of jade, right up until he does not.",
+  "legend": "Eraliwyr (35) hides at the northern crossing of the Spraggon Den (about 31.6k/27.0k), under 500 from Spriggit (26) and among spraggonix (24-29). He is the kill step of Viraniel's Plague (Viraniel in Tir na Nog, Dwerrania in the druid grove): the quest says talk to him, then he attacks. A 35 in a 20s den: a group of mid 30s or a strong 40 solo. Clear Spriggit first; his root is the danger. Plain spawn, no script, 5-minute respawn.",
+  "yells": {
+    "aggro": [
+      "So you have come about Viraniel. Everyone does.",
+      "A cup for your cough, then?"
+    ],
+    "phases": [],
+    "death": [
+      "The jade... was mine..."
+    ],
+    "slay": [
+      "Another one for the grove to bury."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An alchemist's lamp at the crossing. A bench, cold."
+    ],
+    "phases": [],
+    "realmFirstKill": "Eraliwyr the alchemist is dead in the den."
+  },
+  "botLines": {
+    "briefing": [
+      "eraliwyr is 35 at the northern crossing, spriggit right next to him",
+      "viraniel's plague: talk to him, he attacks. kill spriggit first"
+    ],
+    "aftermathWin": [
+      "eraliwyr down. [back to dwerrania|grats]",
+      "spriggit rooted me the whole time lol"
+    ],
+    "aftermathLoss": [
+      "spriggit rooted us and the spraggonix piled in. [rip|ouch]",
+      "hes 35 not 25. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] viraniel took a cup from eraliwyr for a cough. look how that went",
+      "spriggit's cold came off eraliwyr's bench, the den says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Eraliwyr",
+    "text": "The alchemist of the small folk who works at the Spraggon Den's northern crossing. The druid grove of Tir na Nog blames his cup for Viraniel's sickness; Dwerrania sends the young after him with a jade jar."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Eraliwyr in the Spraggon Den in {minutes} minutes.",
+    "loss": "Eraliwyr turned back {realm}'s band under {raidLeader} in the Spraggon Den after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "tir-na-nog",
+      "relation": "Viraniel and Dwerrania of the druid grove"
+    },
+    {
+      "id": "spraggon-den",
+      "relation": "Spriggit, his neighbour"
+    }
+  ]
+}

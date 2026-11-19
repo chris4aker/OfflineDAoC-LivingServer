@@ -71,7 +71,7 @@ namespace DOL.AI.Brain
         {
             ThinkInterval = 1000;
         }
-        public static List<GamePlayer> PlayersInGalla = new List<GamePlayer>();
+        public static List<GameLiving> PlayersInGalla = new List<GameLiving>();
         public static bool Pick_randomly_Target = false;
         private bool allowTimer = false;
         private int TimerDoStuff(ECSGameTimer timer)
@@ -89,15 +89,15 @@ namespace DOL.AI.Brain
         {
             if (Body.IsAlive && Body.CurrentRegionID == 191)
             {
-                foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRegion(Body.CurrentRegion))
+                foreach (GameLiving player in EncounterTargets.InRegion(Body))
                 {
-                    if (player.IsAlive && player.Client.Account.PrivLevel == 1 && !PlayersInGalla.Contains(player))
+                    if (player.IsAlive && EncounterTargets.NotGm(player) && !PlayersInGalla.Contains(player))
                         PlayersInGalla.Add(player);//add players to list from whole galladoria
                 }
             }
         }
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -108,9 +108,9 @@ namespace DOL.AI.Brain
             {
                 if (PlayersInGalla.Count > 0)
                 {
-                    GamePlayer ptarget = PlayersInGalla[Util.Random(1, PlayersInGalla.Count) - 1];
+                    GameLiving ptarget = PlayersInGalla[Util.Random(1, PlayersInGalla.Count) - 1];
                     RandomTarget = ptarget;
-                    if (RandomTarget != null && RandomTarget.Client.Account.PrivLevel == 1 && RandomTarget.IsAlive && RandomTarget.CurrentRegionID == 191)
+                    if (RandomTarget != null && EncounterTargets.NotGm(RandomTarget) && RandomTarget.IsAlive && RandomTarget.CurrentRegionID == 191)
                     {
                         //create mob only for visual purpose
                         EyesWatchingYouEffect mob = new EyesWatchingYouEffect();

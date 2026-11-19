@@ -1,0 +1,62 @@
+name: Play with friends report
+description: Hosting or joining a friend's world (Host for Friends, Join Friend). This feature is experimental.
+title: "[Play with friends] "
+labels: ["play-with-friends"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying play with friends. It is experimental: nobody has played it between two real PCs yet, so your report helps.
+
+        **Do not paste** your `account.txt`, any password, any IP address, invite codes or your database. Logs can hold IP addresses and account names: remove them first.
+  - type: dropdown
+    id: role
+    attributes:
+      label: Were you the host or the guest?
+      options:
+        - Host (HOST FOR FRIENDS)
+        - Guest (JOIN FRIEND)
+        - Both (two PCs of mine)
+    validations:
+      required: true
+  - type: dropdown
+    id: network
+    attributes:
+      label: How were you connected?
+      options:
+        - Home network (same house)
+        - Tailscale
+        - Internet (internet hosting box ticked)
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Living Server version
+      placeholder: "1.2"
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened?
+      description: The message you saw, if any (for example "Cannot reach your friend's server" or "Your account needs an invite").
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      description: What you did, in order.
+      placeholder: |
+        1. Host pressed START HOSTING
+        2. Guest pasted the code and pressed JOIN FRIEND
+        3. ...
+    validations:
+      required: true

@@ -1,0 +1,85 @@
+{
+  "id": "chlorosis",
+  "name": "Chlorosis",
+  "npcNames": [
+    "Chlorosis"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Chlorosis: level 40, a Sylvan body (model 767, plant), size 72, at about 386,200/335,500 on the western heights among the mantid defenders; respawn 660 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Chlorosis is the yellowing of a plant's leaves for lack of chlorophyll, a sign of sickness.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Chlorosis"
+    }
+  ],
+  "story": "The Necht druids gave Chlorosis its name, from the word for the yellowing a sick plant shows before it dies. It was a Sylvan once, large and old, and it went up onto the western heights where the mantids keep the road north, and the rot of the hollow found it there, alone. Its bark has gone the pale yellow of a leaf in a dry autumn, and where it walks the scrub yellows behind it.\n\nThe mantid defenders of the heights will not let it pass north and will not kill it, and it stands among them as if it were waiting for someone to tell it which way to go. The Domnann wardens say it is what Laraida's household would have become without each other: a Sylvan with the Root's sickness and no one to share it with. The mantids of the heights call it something in their own speech that the Necht scribes write down as 'the one that asks'.",
+  "legend": "Chlorosis (40) is a big corrupt Sylvan on the western heights among the mantid defenders (about 386k/336k). The mantids are aggressive, so clear a path. A group of high 30s to 40 handles it. 11-minute respawn. Plain spawn, no script. The mantid defenders are 29-34 and the protectors to 40, all aggressive, so come up from the Necht side and clear a lane. It respawns slowly, so check it is up before you climb.",
+  "yells": {
+    "aggro": [
+      "(yellow leaves fall from it as it turns)",
+      "Which way? Tell me which way."
+    ],
+    "phases": [],
+    "death": [
+      "(the yellow bark cracks and greys)"
+    ],
+    "slay": [
+      "(the scrub yellows where you fell)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tall yellowed Sylvan among the mantids."
+    ],
+    "phases": [],
+    "realmFirstKill": "Chlorosis has fallen on the western heights."
+  },
+  "botLines": {
+    "briefing": [
+      "chlorosis is 40 on the west heights among the mantids",
+      "clear the mantid defenders first"
+    ],
+    "aftermathWin": [
+      "chlorosis down. [the yellow one|grats]",
+      "got through the mantids. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "mantids joined in. [rip|ouch]",
+      "group too low. [40|more people]"
+    ],
+    "rumour": [
+      "[heard|someone said] the scrub goes yellow where chlorosis walks",
+      "the mantids wont let chlorosis go north and wont kill it either"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Chlorosis",
+    "text": "A great Sylvan of the western heights gone yellow with the hollow's rot, named by the Necht druids for a sick leaf's yellowing. It waits among the mantids for someone to tell it which way to go."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Chlorosis in Vigilant Rock in {minutes} minutes.",
+    "loss": "Chlorosis turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "laraida",
+      "relation": "of the same cause"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "whose rot it carries"
+    }
+  ]
+}

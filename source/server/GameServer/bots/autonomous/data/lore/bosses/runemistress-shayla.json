@@ -1,0 +1,66 @@
+{
+  "id": "runemistress-shayla",
+  "name": "Runemistress Shayla",
+  "npcNames": [
+    "Runemistress Shayla"
+  ],
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Runemistress Shayla is a level-45 woman of Midgard (a viking maiden's model) high in Raumarik (598,619/749,701, z 7,596) among windswept wraiths (52-55) and a frore lich (56); no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Shayla as the runemistress who went to read the Revenant's walls is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Shayla was a runemistress of Odin's house who went up into Raumarik's high cold to read what the frost had written. The runemasters of Jordheim say the ice of the north-west is carved: not by hands but by the wind, which writes in the old letters on every face of rock above the Revenant's fortress, and that a runemistress who could read it would know what the wind knows. Shayla went to read it. She stands there still, among the windswept wraiths and a lich of the frore, alive or near enough, and reads.\n\nThe Galplen tellers say the wind told her what it tells the dead, and she stayed to hear the rest. She does not come down. She does not welcome visitors either: the runemasters who have climbed to her say she looks at them as if they were a word she had misread, and corrects it. The wraiths round her do not touch her. The runemasters of Jordheim keep her name on their rolls as away, not lost.",
+  "legend": "Runemistress Shayla is a level 45 runemistress high in the north-west of Raumarik, standing among windswept wraiths (52-55) and a frore lich (56), which are the real danger: they're much higher level than she is. No faction, no spells on her. Come in a strong group or don't come; pulling her clean of the wraiths is the trick. She stands on a high ledge, so mind the climb.",
+  "yells": {
+    "aggro": [
+      "You are a word I misread. Let me correct it.",
+      "The wind writes. You interrupt."
+    ],
+    "death": [
+      "The wind... still writing..."
+    ],
+    "slay": [
+      "Corrected."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The rock here is carved by wind. A woman reads it."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "shayla is a 45 runemistress up in sw raumarik",
+      "the wraiths and lich round her are 52 to 56, they're the problem"
+    ],
+    "aftermathWin": [
+      "shayla down",
+      "pulled her away from the wraiths, barely"
+    ],
+    "rumour": [
+      "shayla went up to read what the wind writes on the raumarik rock and stayed",
+      "the jordheim runemasters keep shayla on the rolls as away, not lost"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Runemistress Shayla",
+    "text": "A runemistress of Odin's house who climbed into Raumarik's high cold to read what the wind carves on the rock, and stayed to read the rest. See [Revenant]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} interrupted Runemistress Shayla's reading in Raumarik in {minutes} minutes."
+  }
+}

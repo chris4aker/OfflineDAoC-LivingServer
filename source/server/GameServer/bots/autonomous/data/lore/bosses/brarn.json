@@ -1,0 +1,81 @@
+{
+  "id": "brarn",
+  "name": "Brarn",
+  "npcNames": [
+    "Brarn"
+  ],
+  "locationId": "cliffs-of-moher",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Brarn: level 40, a cliff dweller (model 415), at about 229,000/467,700 on the strand at the foot of the cliffs; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Brarn as the cliff dwellers' spear-master and Tawi Shon's kinsman.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Brarn is the spear-master of the cliff dwellers, the oldest of the strand people still able to hold a spear, and the one who teaches the young of the strand to hunt. The cliff dwellers say he is Tawi Shon's kinsman, the nephew of the watcher who kept the boats' fire on the cliff-top, and that he is the one who keeps the strand's side of the old quarrel: that Tir Urphost put the fire out to wreck a trader with Tawi Shon's sons aboard.\n\nHe has never been up the cliff path. He says he will go up it the day the village admits what it did, and not before, and that the light that swings on the highest point on storm nights is his uncle asking the same thing. The realm's young who come down the strand for the cliff dwellers' spears meet Brarn last, and he fights as a man fights who has been waiting all his life to be asked.",
+  "legend": "Brarn (40) is the named cliff dweller on the strand at the foot of the Cliffs of Moher (about 229k/468k, sea level), among cliff dweller spearmen and hunters (37-44) who are social with him. Clear the camp edge first. Group of 40s. Plain spawn, 80-second respawn. The cliff path down is narrow; mind the drop. Plain spawn, no script; the danger is the camp around him.",
+  "yells": {
+    "aggro": [
+      "Did the village send you? Did they say what they did?",
+      "A spear for every lamp they cover."
+    ],
+    "phases": [],
+    "death": [
+      "Ask them... about the fire..."
+    ],
+    "slay": [
+      "One more for the strand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An old spear-master on the strand, waiting to be asked."
+    ],
+    "phases": [],
+    "realmFirstKill": "Brarn, spear-master of the strand, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "brarn is the 40 named cliff dweller on the strand",
+      "spearmen and hunters around are social, clear first"
+    ],
+    "aftermathWin": [
+      "brarn down. [the spear master|grats]",
+      "cleared the camp first. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "whole camp came. [rip|ouch]",
+      "fell on the cliff path. [lol|again]"
+    ],
+    "rumour": [
+      "[heard|someone said] brarn is tawi shon's nephew and keeps the strand's side of the fire quarrel",
+      "brarn says he will go up the cliff path the day tir urphost admits what it did"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Brarn",
+    "text": "The cliff dwellers' spear-master on the strand, Tawi Shon's kinsman, who keeps the strand's side of the fire quarrel and has never climbed the cliff path."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Brarn in the Cliffs of Moher in {minutes} minutes.",
+    "loss": "Brarn turned back {realm}'s band under {raidLeader} in the Cliffs of Moher after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "tawi-shon",
+      "relation": "whose kin he is, the strand says"
+    }
+  ]
+}

@@ -193,6 +193,72 @@ namespace DOL.GS.Tests
             });
         }
 
+        // Bot-led groups (docs/BOT-LED-GROUPS.md, change 7): in a gamebot party that hosts the player the bots lead and
+        // have no PlayerGroupLeader; the hosted player is credited by the same rule.
+        private static (Player player, Bot bot, Monster kill, Group group) HostedParty()
+        {
+            Player player = Make<Player>();
+            player.TestRegion = 1;
+            SetHealth(player, 1);
+            Bot bot = Make<Bot>();
+            Group group = Token();
+            player.Group = group;
+            bot.Group = group;
+            BotLedGroups.SetHosted(group, new BotLedGroups.HostedView(player, "alb-test-001"));
+            return (player, bot, Make<Monster>(), group);
+        }
+
+        [Test]
+        public void ABotLedPartysKillCreditsTheHostedPlayerInRange()
+        {
+            var (player, bot, kill, group) = HostedParty();
+            try
+            {
+                player.TestX = QuestKillCredit.Range;
+                Assert.Multiple(() =>
+                {
+                    Assert.That(bot.IsPlayerLedGroup, Is.False, "the bot leads, it follows nobody");
+                    Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.SameAs(player));
+                });
+            }
+            finally
+            {
+                BotLedGroups.ClearHosted(group);
+            }
+        }
+
+        [Test]
+        public void TheHostedPlayerFarDeadOrElsewhereGetsNothing()
+        {
+            var (player, bot, kill, group) = HostedParty();
+            try
+            {
+                player.TestX = QuestKillCredit.Range + 1;
+                Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.Null, "too far");
+                player.TestX = 0;
+                player.TestRegion = 2;
+                Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.Null, "another region");
+                player.TestRegion = 1;
+                SetHealth(player, 0);
+                Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.Null, "dead");
+                SetHealth(player, 1);
+                player.Group = Token();
+                Assert.That(QuestKillCredit.GroupLeaderFor(bot, kill), Is.Null, "left the party");
+            }
+            finally
+            {
+                BotLedGroups.ClearHosted(group);
+            }
+        }
+
+        [Test]
+        public void ABotOnlyPartyCreditsNobody()
+        {
+            Bot bot = Make<Bot>();
+            bot.Group = Token();
+            Assert.That(QuestKillCredit.GroupLeaderFor(bot, Make<Monster>()), Is.Null);
+        }
+
         [Test]
         public void ACompanionWithAnOwnerIsLeftToTheOwnerPath()
         {

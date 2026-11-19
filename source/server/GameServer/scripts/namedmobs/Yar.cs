@@ -124,7 +124,7 @@ namespace DOL.AI.Brain
                 {
                     if (npc.Name.ToLower().Contains("drakulv"))
                     {
-                        foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                        foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                         {
                             npc.StartAttack(player);
                         }

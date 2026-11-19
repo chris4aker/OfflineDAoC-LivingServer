@@ -1,0 +1,131 @@
+{
+  "id": "fulafeallan",
+  "name": "Fulafeallan",
+  "catalogKey": "krondon/fulafeallan",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 77, 30,000 health, CC immune, tether 3,800. On engage 4-5 Part of Fulafeallan (level 65-68, 3,000 health) appear; while any part lives its resists are 95% for every damage type, otherwise 20 melee / 30 other; a reset removes the parts. Same code as Fuladl.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs"
+    },
+    {
+      "text": "Ful 'foul' and feallan 'to fall'; the reading 'foul-falling' is to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "The well-diggers' seep and basin, Wigheard, 'count the crawlers, then the father', Mistress Nonn of the college of healing and Madog the squire are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The wet passage of Krondon was dug by the hall's well-diggers for sweeter water, and they found a seep in its roof that the hall drank from for generations, with a basin at its end marked with a spade crossed with a cup. Then the seep went foul, the roof began to glisten, and one night the well-digger Wigheard did not come back; his fellows found the basin full of grey and his spade upright in it under a roof bulging like a fish's belly. The hall-folk named the thing from what the well-diggers swore: the foul thing that falls.\n\nEleven well-diggers went in once for Wigheard's body. Their spades went into the great grey mass to the haft and came out clean, until an old man resting on the floor saw that whenever the mass was struck the small crawling pieces on the walls shuddered as if they were the ones struck. They killed the crawlers one by one, and then his spade went into the mass as into flesh. He cut the saying low inside the passage mouth: count the crawlers, then the father.\n\nThe hall-folk argued for the rest of their history whether Fulafeallan and the foul sickness of the low drains were two rots or one. The leech Hrothwyn said two; the sweepers said one; Mistress Nonn of Avalon's college of healing wrote that the rot had been one thing long before the hall and had split as a river splits round an island, and would always want to be one again. The ogres say two names over two doors make two things.\n\nSir Cador of the Isle of Glass took his second company into the wet passage because Wenna of Caer Gothwaite wanted a rubbing of the bricks. When the thing came up the passage at her lamp, the oldest sweeper's ghost pointed at the well-diggers' saying and Wenna read it aloud. Cador held the mass on his shield while his knights burned the crawlers; then it bled, and he killed it, and wore his filthy mail into the queen's hall.",
+  "legend": "Fulafeallan is Fuladl's twin in the wet passage, with the same script: level 77, 30,000 health, CC immune, 3,800 tether. When engaged, four or five Parts of Fulafeallan (level 65 to 68, 3,000 health) appear beside it, and while any part lives the big rot takes 95% less from everything. One tank holds it; everyone else kills the parts, area damage first, mez or root the strays. When the last part dies it is a normal 20% melee / 30% other mob and melts. Reset it and a fresh set of parts comes next time. Despite the name, nothing in it drops from the roof on anyone; the old warning about walking under it is just the name talking. It is nowhere near Fuladl, and it guards nothing the raid needs on the way to Orylle.",
+  "yells": {
+    "aggro": [
+      "...",
+      "Water drips. Then something heavier.",
+      "Above you."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The foulness falls and splits."
+      }
+    ],
+    "death": [
+      "The roof is only stone now.",
+      "The dripping stops."
+    ],
+    "slay": [
+      "Fallen on.",
+      "Taken from above.",
+      "Swallowed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Water drips from the roof. Not all of it is water.",
+      "The roof here glistens and bulges."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Fulafeallan breaks apart and crawls!"
+      }
+    ],
+    "realmFirstKill": "Fulafeallan will drip no more in Krondon."
+  },
+  "botLines": {
+    "briefing": [
+      "same as fuladl: 95% dmg reduction while any of its 4-5 parts are up",
+      "tank holds the big one, everyone else on the parts. count them",
+      "aoe the parts, mez or root strays, then burn the big rot",
+      "it doesnt drop from the roof, thats just the name. normal pull"
+    ],
+    "aftermathWin": [
+      "both rots done. krondon smells a bit better",
+      "fulafeallan down, that was messy",
+      "nobody got landed on",
+      "pieces died fast"
+    ],
+    "aftermathLoss": [
+      "the bits got us again. we never learn, parts first",
+      "a part was still alive behind the channel and the big one shrugged everything off",
+      "the tank lost it while everyone chased parts",
+      "too many parts loose on the casters"
+    ],
+    "rumour": [
+      "[heard|someone said] fulafeallan drops off the ceiling in the wet tunnels",
+      "fuladl and fulafeallan. two rots, old names, same mess",
+      "heard the ghosts avoid the wet passage",
+      "heard the ogres opened the bricked passage looking for a storeroom",
+      "heard the well diggers of the old hall left a saying at the wet passage. count the crawlers",
+      "[heard|someone said] the two rots in krondon are one thing that split"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "fulafeallan",
+    "text": "The foul thing that falls, in the wet passage of [Krondon], named for the well-digger Wigheard. The well-diggers' saying is cut by its passage mouth: count the crawlers, then the father; while its pieces crawl, nothing goes into it. Kin to [fuladl], or the same thing split in two."
+  },
+  "bookPage": "From the account of Madog, squire to Sir Cador of the Isle of Glass, of the second descent. Mistress Wenna knelt at the broken bricks of the wet passage to take her rubbing, and the roof beyond us glistened. The thing came up the passage towards her lamp before she had finished. My lord put himself in front of her and swore. Then an old ghost with a broom came through the wall and pointed at words cut low by the passage mouth, and the mistress read them out: count the crawlers, then the father. We burned every crawler first. My lord killed the father. He would not let me clean his mail.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} burned Fulafeallan out of Krondon's low passages in {minutes} minutes.",
+    "loss": "Fulafeallan fell on {realm}'s raid in the dark; {raidLeader} could not cut the pieces fast enough."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "krondon-hall-folk"
+  ],
+  "related": [
+    {
+      "id": "fuladl",
+      "relation": "its kin, or its other half"
+    },
+    {
+      "id": "fuladl",
+      "relation": "the other rot; one thing split in two, or two things, nobody agrees"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Well-Diggers' Seep",
+      "text": "The wet passage of Krondon was dug for water, and it found more of it than the hall-folk wanted.\n\nThe hall's well-diggers drove it east under the hill in the reign of an early ealdor, looking for a spring sweeter than the cisterns, and the ghosts say they found one: a seep in the roof of the passage where the water of the hill came through the stone clear and cold. The well-diggers cut a channel in the floor beneath it and a basin at the end, and for some generations the hall drank from the wet passage and was proud of its water. Wenna of Caer Gothwaite found the basin, dry and cracked, with the well-diggers' mark on its rim: a spade crossed with a cup.\n\nThen the seep went foul. The ghosts do not know why; the leech Hrothwyn thought the water had found its way through the old ogre tunnels below the hill, as the water of the low drains had, and brought something with it. The roof of the passage began to glisten. The water in the basin tasted of iron and then of rot. And one night, the ghosts say, a well-digger named Wigheard went down to clear the channel and did not come back, and when his fellows went to look they found the basin full of grey and his spade standing upright in it, and above the basin the roof of the passage bulging like the belly of a fish.\n\nThe hall-folk named it from what the well-diggers said had happened to Wigheard: the foul thing that falls, fulafeallan. Whether it fell on him from the roof, as the well-diggers swore, or rose out of the basin and only seemed to fall, nobody living saw. The hall-folk bricked the passage up and cut the name over the bricks, and the well-diggers never dug in Krondon again. They left their spades in a rack at the passage mouth. The ogres use them for firewood."
+    },
+    {
+      "title": "Count the Crawlers",
+      "text": "Before the bricks went up, Wigheard's fellows went in once to bring his body out, and that is where the well-diggers' saying comes from.\n\nThere were eleven of them, the ghosts say, with spades and mattocks and lamps, and they found the thing lying in the channel under the seep, a great grey mass, and around it on the walls and in the channel smaller pieces of it, crawling, the size of dogs. The well-diggers went at the great mass first, because it lay over Wigheard. Their spades went into it to the haft and came out clean, and it did not stir. They struck it until their arms gave out. One of them, an old man whose name the ghosts have lost, sat down on the floor of the passage to rest and watched the small pieces on the walls, and saw that every time a spade went into the great mass, the small ones shuddered, all of them, together, as if they were the ones being struck.\n\nHe told the others to leave the big one. They went after the crawlers instead, with the mattocks, one by one along the walls, and killed every one they could find, and when the last of them stopped moving the old man got up and put his spade into the great mass, and it went in as into flesh. They had Wigheard out before morning.\n\nThe saying the well-diggers left behind them is cut on the inside of the passage mouth, low down, where a man sitting to rest would see it: count the crawlers, then the father. The ghosts say it was the old man's, and that he cut it himself before the bricks went up, so that whoever opened the passage again would know. The ogres who opened it could not read it. Sister Gwerful of Caer Ulfwych, who read the leech's page for the other rot, found the saying afterwards and said it was the same counsel in fewer words."
+    },
+    {
+      "title": "One Rot or Two",
+      "text": "The hall-folk walled up two rots in two passages, far apart under the hill, and argued for the rest of their history about whether they had walled up one.\n\nHrothwyn the leech held that they were two. The foul sickness of the low drains came up out of the stone with the seepage, she wrote, and the foul thing that falls came down through the roof with the seep, and two sicknesses that come from opposite directions are not the same sickness, whatever they look like. The sweepers held that they were one, and that the drains between the two passages were the first the hall ever bricked, because the sweepers' grandfathers had seen the two reach for each other through them. The ghosts of the hall still take sides. The oldest sweeper, the one with the broom on his door, will not speak of the wet passage at all; he says it is the same work.\n\nAvalon had an opinion too. The college of healing at its spring kept letters from the hall's leeches, carried across the strait with the storm-tithe, and Mistress Nonn of the college answered Hrothwyn's account with one of her own. She thought the rot of Krondon had been one thing once, long before the hall, and had split, as a river splits around an island, and that each half had gone on growing alone. A thing that has been one, she wrote, will always want to be one again. Wenna of Caer Gothwaite found the letter among the Krondon books with the college's seal on it, and copied the last sentence into the margin of her own notes twice.\n\nThe ogres, who broke both walls in the same summer, have settled the question to their own satisfaction. They say there are two rots because there are two names, and two names over two doors make two things. It is the only question about the hall the ogres have ever answered by reading."
+    },
+    {
+      "title": "The Rubbing",
+      "text": "Sir Cador of the Isle of Glass took his second company into the wet passage because Wenna of Caer Gothwaite wanted a rubbing of the bricks.\n\nHis squire Madog wrote the account, because Cador would not. The bricks lay broken across the passage mouth, and Wenna knelt to take her rubbing of the two names and the chiselled line between them while the company stood over her with lamps, and the roof beyond them glistened. The thing came up the passage towards the light while she was still on her knees. Cador put himself between it and her. Madog says it was the only time on either descent that he heard Cador swear.\n\nThe ghost of the oldest sweeper came through the wall then, Madog wrote, and stood beside the well-diggers' saying at the passage mouth and pointed at it, and Wenna read it aloud from where she knelt. Count the crawlers, then the father. Cador's knights let the great mass come on to Cador's shield and left it there, and went for the crawlers on the walls and in the channel, and burned each one as the sweepers had, and when the last one was ash the great mass began to bleed. Cador killed it himself. He stank of it for the rest of the descent and would not let Madog clean his mail, and he wore it filthy into the queen's hall, and the ghosts say Orylle wrinkled her nose at him.\n\nWenna finished her rubbing afterwards with the lamp in one hand and the paper flat against the bricks, and it is in the Krondon book now, with a clerk's gloss. The rot came back into the wet passage within the season, as the leech had said both of them would. Mistress Nonn's letter would say it was looking for the other half of itself. The fishermen of the Avalon shore, who have never seen either, say only that the shore stinks less in the years someone goes down."
+    }
+  ]
+}

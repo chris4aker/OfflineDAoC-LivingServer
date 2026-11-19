@@ -1,0 +1,387 @@
+{
+  "id": "camelot-hills",
+  "name": "Camelot Hills",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    0
+  ],
+  "aliases": [
+    "the hills",
+    "the king's hills"
+  ],
+  "summary": "The king's valley: Cotswold and Prydwen Keep, where every squire of Albion starts, the river and its old folk, and the ruined castle that is the door to the court below.",
+  "facts": [
+    {
+      "text": "Camelot Hills is zone 0 of region 1, Albion's starting zone, with the areas Cotswold Village and Prydwen Keep and about 1,240 monsters, from snakes, brownies and spriggarns to bandits, dragon ants, filidh and lesser demons.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 0 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The zone holds the entrance to the City of Camelot, the boat to the Shrouded Isles, the housing road, the Tomb of Mithra and Albion's Darkness Falls door (a DFEnterJumpPoint at 599716, 536189, in the river ruins).",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 0 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lady Nimue (level 95) north of the stables starts Legend of the Lake, Wizard Lost, Heart of Albion, Barbaric Tales, Forged Excellence and Lisreen's Plight.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests name the Difwych brothers (Lady Judith's Circlet, The Captured Courier, Growler's Necklace), the demon Fielath in the broken tower in the undead ruins by the river, Hugrath (Frip's father) in the smaller broken tower south-east of the Demon Tower, Aithne Con at the stone ring, Ygwrch Gyrg on the hill with the stone head statue, Lady Leana at the willow pond and Mulgrut Maggot west of Prydwen Keep.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Cronker is a scripted toad: between game hours 8 and 14 he is a normal mob; at other hours his model, name and targeting are hidden and he is peaceful.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Cronker.cs"
+    },
+    {
+      "text": "Brother Codeth at the bridge post starts Willing Sacrifice, the hunt for the Cult of Mithra's password in the Tomb of Mithra.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Real-world: the Cotswolds are hills in southern England; Nimue is one of the names of the Lady of the Lake in Arthurian romance; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Nimue"
+    },
+    {
+      "text": "Lord Hagan's castle, Brother Odran and the Door-Book, the Prydwen roll's first leaf and Cenred the joiner are from the other Albion files; Wat of Cotswold and his book, the Roman fort over Mithra's temple, the Difwych as incomers of the hungry years, Hugrath as a carter, the dyers' thread for the sprites and the dwarven mission's converts are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The king's hills. Before there was a city on the height, there was a river, and the river made the hills. It comes down out of the east past the ruins, runs under the bridge, bends below Prydwen Keep and goes west in shallows and wet meadows toward Cotswold and the city gates, and every settlement in the hills has grown up where it could be forded. The Romans forded it first. They built a fort on the high ground east of the bridge and dug a temple to Mithras under the fort, and when the fort fell down the temple stayed, and its doors are still in the hillside east of the bridge. After Rome the hill-folk had the fords, and the filidh of the old faith had the stone ring on the southern hillside, and the spriggarns, the brownies and the river sprites had everything else. The spriggarns say the hills were theirs before any of them. They carved the great stone head on the hill east of Cotswold to prove it, or found it there and claimed it; they do not agree among themselves which.\n\nUther's hills, Arthur's keep. The kings came up the river. In Uther's day a lord called Hagan built a castle by the ford upstream, where the river runs between low banks, and capped a warm well under its chapel; nobody now knows why. Arthur built his city on the height above the western fords, and Cotswold grew at its feet, a village of joiners, smiths and dyers who sold to the court. Cenred the joiner made the doors of half its houses. At the bend of the river Arthur raised the keep that bears his ship's name, and the muster of that ship, seven names marked home, was nailed to its door, and became the first leaf of the Prydwen roll. For a generation the hills were the edge of the realm. Then the realm grew past them, and Prydwen Keep became what it is now: the house of the rolls, where every knight of Albion is entered, and the hills became the place where the young of Albion learn to be knights.\n\nWhat went wrong. Lord Hagan's castle did not keep. After Camlann its well opened from below, and the court of the Dark Ones came up through it into the chapel, and the castle fell to ruin around the door the court had made. The Church sent Brother Odran to keep a Door-Book of its openings, and Albion learned that the door opens only in the seasons when the realm holds the frontier. In the seasons when it is shut, something still comes up. Lesser demons walk the broken walls; the drowned dead of the old chapel rise in the cellars; and one of the demons, a thing the bandits call Fielath, keeps the tallest of the broken towers and trades spells to anyone with something worth giving. The bandits have learned to trade with him. The bandit families came up the Castle Sauvage road in the hungry years after the war began, the Difwych brothers among them, and they keep their camps east of the city gates, close enough to Camelot to rob it and far enough from Prydwen to be forgotten. And the druids of the stone ring, who had kept to themselves since Rome, began to bury their dead upright in the ring and to wake them again, which the Church calls the worst thing in the hills and the filidh call the oldest.\n\nWhat lives there now. The hills are crowded and mostly kind. Frip's bridge below the ruins is held by a post of the king's knights under banners, with a priest of the Church, Brother Codeth, who keeps a journal on the cult that still meets in Mithra's temple. The hunters keep a camp on the eastern road. The stables at Cotswold and by the northern water send horses on every road in Albion. North of the stables, by a still water, Lady Nimue keeps a house, and the young of the realm go to her for errands and come back with stories about Excalibur and Merlin. The faeries of the willow pond answer to a lady of their own, the snakes and the dragon ants have the dry slopes, and the river sprites have the shallows. Every squire of Albion has a first enemy in these hills, and most of them remember its name.\n\nWhy it matters to Albion. Camelot Hills are the realm's heart and its oldest wound in one valley. The king's city, Prydwen's rolls, the boat to the isles and the door of the court below Darkness Falls all lie within a morning's ride of each other. The Church rings the bells of the city harder on feast days, the priests say, so that the court can hear them through the ruins. The squires say the court rings back.",
+  "legend": "Camelot Hills is where every Albion starts: Cotswold Village by the Camelot gates has the trainers, merchants, the stable and the boat to the Shrouded Isles; Prydwen Keep at the river bend has more trainers, merchants, a teleporter and a hastener. Levels 1 to 12 or so. Snakes, brownies, spriggarns and river sprites by Cotswold, skeletons and zombies around the cemetery west of Prydwen, bandits and dragon ants in the east. The bandit camps east of the gates are where the Difwych brothers sit, and half the early quests send you after one of them. Do not wander into the ruins upriver from Frip's bridge at level five: that is the Darkness Falls door, and the demons around the broken towers will eat a newbie. Fielath sits in the tallest one. Cronker the toad only shows up in the morning (game hours 8 to 14); come back later if he is not there. Aithne Con at the stone ring on the hillside south of the river is dangerous for her level; bring a friend, as the quest says. Lady Nimue by the water north of the stables hands out the best low-level chains in the realm. The Tomb of Mithra is the hole in the hillside east of the bridge, the first dungeon everybody does.",
+  "atmosphere": {
+    "firstEntry": [
+      "The king's hills. A river, a keep, a city above.",
+      "New swords, new squires, old snakes.",
+      "Bells from Camelot. Something answers upriver.",
+      "Every squire of Albion has walked this road.",
+      "Smoke from Cotswold chimneys and bandit fires."
+    ],
+    "areas": [
+      {
+        "name": "Cotswold Village",
+        "x": 560368,
+        "y": 511740,
+        "z": 2280,
+        "radius": 2500,
+        "lines": [
+          "Cotswold. Joiners, dyers and a hundred new squires.",
+          "Master Kless reads a note and frowns at it.",
+          "Every door here was hung by a Cotswold joiner."
+        ]
+      },
+      {
+        "name": "Prydwen Keep",
+        "x": 574139,
+        "y": 530505,
+        "z": 3317,
+        "radius": 2000,
+        "lines": [
+          "Prydwen Keep. Every knight of Albion is on its roll.",
+          "Captain Bonswell's garrison walks the wall.",
+          "Sir Jerem's squire has not reported. Again."
+        ]
+      },
+      {
+        "name": "the Camelot gates",
+        "x": 552500,
+        "y": 512000,
+        "z": 2900,
+        "radius": 1500,
+        "lines": [
+          "The king's gates. Sentinels on every arch.",
+          "The road to Camelot. Every road, in the end."
+        ]
+      },
+      {
+        "name": "Frip's bridge",
+        "x": 585500,
+        "y": 534000,
+        "z": 2072,
+        "radius": 1500,
+        "lines": [
+          "Banners on the bridge. The king's knights hold it.",
+          "A boy at the bridge asks after his father.",
+          "Brother Codeth writes in his journal and sighs."
+        ]
+      },
+      {
+        "name": "the ruins by the river",
+        "x": 599500,
+        "y": 536200,
+        "z": 2960,
+        "radius": 1800,
+        "lines": [
+          "Lord Hagan's castle. Something laughs underneath.",
+          "Fielath watches from the tallest broken tower.",
+          "Hugrath Wormly wanders the ruin. He has friends.",
+          "A warm draught comes up through the chapel floor."
+        ]
+      },
+      {
+        "name": "the stone ring",
+        "x": 578176,
+        "y": 543872,
+        "z": 2755,
+        "radius": 1400,
+        "lines": [
+          "The filidh's ring. The dead here stand upright.",
+          "Aithne Con keeps the ring. Bring a friend."
+        ]
+      },
+      {
+        "name": "the willow pond",
+        "x": 574357,
+        "y": 500329,
+        "z": 2558,
+        "radius": 1000,
+        "lines": [
+          "Willows over the pond. Small bright things laugh.",
+          "Lady Leana's faeries do not want you here."
+        ]
+      },
+      {
+        "name": "Lady Nimue's water",
+        "x": 574097,
+        "y": 498308,
+        "z": 2427,
+        "radius": 900,
+        "lines": [
+          "Lady Nimue watches the water. She knows your name.",
+          "Errands for the young, and stories of Excalibur."
+        ]
+      },
+      {
+        "name": "the northern stables",
+        "x": 572800,
+        "y": 504450,
+        "z": 2190,
+        "radius": 800,
+        "lines": [
+          "Nob the stableboy counts the horses twice.",
+          "Flies, hay and faeries in the tack room."
+        ]
+      },
+      {
+        "name": "the stone head hill",
+        "x": 579555,
+        "y": 508716,
+        "z": 2861,
+        "radius": 1200,
+        "lines": [
+          "A great stone head watches the valley.",
+          "Ygwrch Gyrg's spriggarns hold the hill. Sil did not."
+        ]
+      },
+      {
+        "name": "Cronker's meadow",
+        "x": 561682,
+        "y": 527316,
+        "z": 1915,
+        "radius": 900,
+        "lines": [
+          "Wet grass, and something croaking in it.",
+          "Cronker keeps the meadow. Mornings only."
+        ]
+      },
+      {
+        "name": "the river shallows",
+        "x": 562500,
+        "y": 522000,
+        "z": 2150,
+        "radius": 2000,
+        "lines": [
+          "River sprites in the shallows. Thwori leads them.",
+          "Drakelings bask on the stones by the ford."
+        ]
+      },
+      {
+        "name": "the cemetery",
+        "x": 570194,
+        "y": 524831,
+        "z": 2619,
+        "radius": 1200,
+        "lines": [
+          "The old cemetery. Not every grave stayed shut.",
+          "Mulgrut Maggot walks with his zombies again."
+        ]
+      },
+      {
+        "name": "the Difwych camps",
+        "x": 598000,
+        "y": 506000,
+        "z": 2200,
+        "radius": 3000,
+        "lines": [
+          "Bandit fires east of the gates. Difwych fires.",
+          "Cilydd, Cyfer and Cyfwlch. Brothers, all thieves."
+        ]
+      },
+      {
+        "name": "the dwarven mission",
+        "x": 578300,
+        "y": 493200,
+        "z": 2578,
+        "radius": 1200,
+        "lines": [
+          "Dwarven priests, far from any mountain.",
+          "Converts stand guard. They do not smile."
+        ]
+      },
+      {
+        "name": "the door of Mithra's temple",
+        "x": 603376,
+        "y": 523018,
+        "z": 3136,
+        "radius": 800,
+        "lines": [
+          "A door in the hillside. Mithra's temple.",
+          "Every squire's first dark. Most come back up."
+        ]
+      },
+      {
+        "name": "the ferry to the isles",
+        "x": 564976,
+        "y": 509200,
+        "z": 2811,
+        "radius": 600,
+        "lines": [
+          "The boat to the Shrouded Isles waits here.",
+          "Gulls, tar and a ferryman who never sleeps."
+        ]
+      },
+      {
+        "name": "the hunters' camp",
+        "x": 588609,
+        "y": 515619,
+        "z": 2885,
+        "radius": 900,
+        "lines": [
+          "Hunter Derwyn's camp. Arrows, bolts and gossip.",
+          "Brother Willem binds the hunters' bites."
+        ]
+      },
+      {
+        "name": "Cilydd's camp",
+        "x": 600186,
+        "y": 513284,
+        "z": 2090,
+        "radius": 800,
+        "lines": [
+          "Cilydd Difwych sits on a box he cannot open.",
+          "A bandit fire by the Mithra road."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "camelot hills is where every alb starts. cotswold or prydwen, depends who you ask",
+      "prydwen keep is named after arthur's ship. the first page of the roll is the ship's muster",
+      "the df door is in the ruins upriver from the bridge. dont go there at level 5",
+      "the ruins by the river were a castle in uther's day. the court below took it after camlann",
+      "the tomb of mithra is under an old roman fort east of the bridge",
+      "cotswold joiners hung half the doors in the hills, [heard|they say]",
+      "the spriggarns say they carved the stone head on the hill. or found it",
+      "lady nimue by the water north of the stables gives out the best low lvl quests in albion",
+      "brother codeth at the bridge keeps a journal on the mithra cult. read it before you go down",
+      "the filidh at the stone ring bury their dead standing up. then wake them",
+      "the dyers in cotswold leave thread on the ford stones for the river sprites",
+      "nob the stableboy knows every horse in albion by name",
+      "every squire in camelot hills has heard something laughing under the ruins at night"
+    ],
+    "rumour": [
+      "[heard|someone said] fielath in the broken keep upriver will trade a spell for anything shiny",
+      "heard cyfer difwych sold lady judith's circlet to a demon. classy",
+      "[heard|someone said] the difwych came up the sauvage road with nothing and decided the king owed them",
+      "heard frip's dad hugrath walks the small ruin now. dont tell the kid",
+      "[heard|someone said] cronker the toad is only there in the mornings. the rest of the day hes just gone",
+      "heard there's no talking to lady leana. sir quait makes everyone try anyway",
+      "[heard|someone said] ygwrch gyrg doesnt come out till you've killed enough of his spriggarns",
+      "heard aithne con at the stone ring hits way harder than she should. bring a friend",
+      "[heard|someone said] the dwarf priests north of the stables have alb converts guarding them",
+      "heard mulgrut maggot still walks round the cemetery with his zombies and his charm",
+      "[heard|someone said] thwori is the boss of the river sprites. hes tiny",
+      "heard sir jerem's squire graid has been guarding that rock in salisbury for years",
+      "[heard|someone said] the court below rings back when camelot rings the bells",
+      "[heard|someone said] cilydd difwych has a box he cant open. took it off a courier"
+    ],
+    "tell": [
+      "camelot hills? the starter zone round camelot. cotswold by the gates, prydwen keep at the river bend",
+      "is it dangerous? not unless you go up the river to the ruins. thats the df door, demons everywhere",
+      "where? right outside camelot. you walk out the gates and youre in it",
+      "whats there? trainers, the boat to the isles, the tomb of mithra, newbie camps everywhere",
+      "where's cronker? wet meadow by the river south of cotswold, mornings only. if hes not there come back later",
+      "where's lady nimue? by the water north of the stables. go see her at like 5",
+      "difwych brothers are at the bandit camps east of the gates. cyfer in the middle one",
+      "aithne con? stone ring on the hillside south across the river. bring a friend",
+      "lady leana is at the willow pond by the northern stables. dont kill her faeries first",
+      "fielath? the demon in the tallest broken keep in the ruins upriver. low level but its next to the df door",
+      "hugrath wormly is in the small ruin south east of fielath. he brings undead friends",
+      "thwori? river sprite boss in the shallows south of cotswold. easy, just small",
+      "ygwrch gyrg is on the stone head hill east of cotswold. kill spriggarns till he shows",
+      "mulgrut maggot walks between the cemetery west of prydwen and the hill with the tall stone",
+      "the dwarf priests are up north past the stables. aggressive, and the converts help them",
+      "where's cilydd difwych? bandit camp by the mithra road, east of the gates. the captured courier",
+      "where's the housing gate? camelot hills, just south of the camelot gate. you come out in caerwent"
+    ]
+  },
+  "loremaster": {
+    "intro": "Camelot Hills, the king's valley. Ask of [cotswold] and [prydwen keep], of the [ruins] upriver and [darkness falls], of [frip's bridge] and [brother codeth], of [lady nimue] by the water, or of the hills' own folk: [cronker], [fielath], the [difwych], [aithne con], [hugrath wormly], [thwori], [ygwrch gyrg], [lady leana], [mulgrut maggot] and the [dwarven priests]. The knights of the hills are [sir jerem], [sir quait], [sir dorian], [sir barcroft], [sir beckham], [lady aelawen], [master kless] and [captain bonswell].",
+    "topics": {
+      "cotswold": "Cotswold Village grew at the feet of Arthur's city, a village of joiners, smiths and dyers who sold to the court. Cenred the joiner made the doors of half its houses. Its bindstone is where every squire of Albion starts, and [master kless] is where most of them get their first errand.",
+      "prydwen keep": "Arthur's keep at the river bend, named for his ship. The muster of that ship was nailed to its door and became the first leaf of the Prydwen roll, where every knight of Albion is entered. [captain bonswell] keeps the garrison and [sir jerem] keeps a squire he cannot find.",
+      "ruins": "Lord Hagan's castle upriver from [frip's bridge], built in Uther's day over a capped warm well. After Camlann the well opened from below and the court of the Dark Ones made it a door. Lesser demons walk the broken walls and [fielath] keeps the tallest tower. See [darkness falls].",
+      "darkness falls": "The door of the court below lies in the ruins upriver from the bridge. It opens only in the seasons when Albion holds the frontier; Brother Odran's Door-Book records every opening.",
+      "frip's bridge": "The bridge below the ruins, held by the king's knights under banners: Sir Barcroft, Lady Aelawen, who meets the supply runs, Corporal Dunleigh and the sergeants, and [brother codeth]. A boy called Frip sits by it and asks after his father, [hugrath wormly].",
+      "brother codeth": "A priest of the Church at the bridge post who keeps a journal on the cult that still meets in Mithra's temple, and gives it to anyone willing to go down and learn the cult's password. He says someone must always be willing to be the sacrifice; he means it less kindly than it sounds.",
+      "master kless": "A master of Cotswold who sends the young north with notes for Lieutenant Kuebler of Castle Sauvage. Everyone reads the note on the road. He writes it to be read.",
+      "captain bonswell": "Captain of the Prydwen Keep garrison. He says the argument over the eighth mark on the first leaf of the roll is the oldest thing in the keep after the door.",
+      "sir jerem": "A knight of Prydwen Keep whose squire Graid guards a great stone in Salisbury Plains and never reports. Every new squire is sent to look for Graid. There is usually something to deal with when they find him.",
+      "sir quait": "A knight of the northern stables who sends squires to Nob the stableboy about the faeries tormenting the horses, and tells them to try talking first. See [lady leana].",
+      "sir dorian": "A knight who keeps the post by the Cotswold bindstone and knows the comings and goings of the village, including, Nob says, the last time anyone saw Sil. See [ygwrch gyrg].",
+      "sir barcroft": "Knight of the bridge post below the ruins. He keeps the banners straight and his back to the river, because the river is Albion's and the ruins are not.",
+      "sir beckham": "A knight who keeps the road north of Prydwen Keep and the merchants who use it.",
+      "lady aelawen": "A lady of the bridge post who meets the supply runs the young carry for their trainers and sends them on to the frontier commanders. She counts every crate twice.",
+      "lady nimue": "Lady Nimue keeps a house by the water north of the stables and gives the young errands: after Excalibur, after Merlin, after the heart of Albion, after the dagger Lisreen. She never says what she wants them for. The minstrels say her name is in the old songs; she does not say whether the songs are right.",
+      "cronker": "Cronker is a great toad of the wet meadow by the river south of Cotswold, older than any squire's grandmother. The children of Cotswold say he keeps the morning: between breakfast and the noon meal he sits in his grass and croaks at anyone who comes near, and at any other hour you can walk across the place where he sits and find nothing there at all. The filidh say he goes back into the river to sleep. The children say he goes somewhere else, and comes back older.",
+      "fielath": "Fielath is a demon of the court below who did not go back down. He keeps the tallest of the broken towers in Lord Hagan's ruins and deals in spells, and the bandits of the hills have learned that he will trade a spell for anything bright: Cyfer Difwych gave him Lady Judith's gold and pearl circlet, and Gaevin Sebryn has been trying to get it back ever since. Brother Codeth says Fielath is the only honest merchant in the ruins, because he always says what he wants.",
+      "difwych": "The Difwych brothers, Cilydd, Cyfer and Cyfwlch, came up the Castle Sauvage road in the hungry years after the war began and decided the king owed them. Cilydd keeps the camp near the Mithra road and took a courier's box; Cyfer keeps the central camp east of the city gates and sold a lady's circlet to a demon; Cyfwlch holds the road north toward Castle Sauvage and stole the necklace of a dead man called Growler, who came looking for it. A fourth Difwych, Cleddyf, keeps to himself and says he is not related.",
+      "aithne con": "Aithne Con is a filidh of the old faith who keeps the stone ring on the hillside south of the river, where the druids of southern Albion bury their dead upright and wake them again. She is stronger than her years and her devout keep close to her. Llewellyn Camber, who fishes the water south of Prydwen, wants her head and will not say what passed between them; he tells everyone to bring a friend.",
+      "hugrath wormly": "Hugrath was a carter of the bridge who went into Lord Hagan's ruins to see what the warm air was and did not come out. He walks the small broken tower south-east of the tallest one now, dead and in company. His son Frip sits by the bridge and asks every squire whether they have seen him. Brother Codeth has asked the knights not to tell the boy.",
+      "thwori": "Thwori is the captain of the river sprites in the shallows below Cotswold, hardly bigger than the spritelings he leads. The sprites were in the river before the fords, and they drown the boots of anyone who stands still in it, and Thwori leads them in it. The Cotswold dyers leave a twist of coloured thread on the stones by the ford in spring so that the sprites leave the dye-vats alone. It mostly works.",
+      "ygwrch gyrg": "Ygwrch Gyrg is the chief of the spriggarns on the hill with the great stone head east of Cotswold. He killed Sil, Nob's friend, on that hill, and he does not come out for one squire: the spriggarns say a chief shows himself only when his people have been hurt enough to need him. Nob the stableboy wants him dead, and says so to everyone who rides through the northern stables.",
+      "lady leana": "Lady Leana is the lady of the faeries of the willow pond north of the stables: the bell-wethers, the wolf-criers and the mischief-makers that torment Nob's horses. Sir Quait tells squires to talk to her first and not to harm her people before they do. Every squire who has tried has come back saying the same thing: there is no talking to her. She thinks the pond and the horses are both hers.",
+      "mulgrut maggot": "Mulgrut Maggot was a cleric of the cemetery west of Prydwen Keep who kept a charm of his own making that he would not give up. He walks between the cemetery and the hill with the tall stone with his zombies about him, still keeping it. Hugh Gallen, the armourer of Prydwen, sells the story of the charm to any squire who will buy something first.",
+      "dwarven priests": "Dwarven priests in the northern hills, far from any mountain, with men of Albion who have taken their faith standing guard over them. Nobody at Prydwen will say how they came, or which gods they preach. The Church calls the converts apostates; the converts call the Church late. Both sides draw steel on anyone who comes near the mission without being asked.",
+      "cilydd difwych": "Cilydd Difwych is the eldest of the three [difwych] brothers and keeps the bandit camp nearest the Mithra road, where the squires walk down to the tomb with their first swords. He ambushed a courier called Dustan there and took the box Dustan was carrying for Sister Rhigwyn, and he has not opened it, because he cannot open it; the key went west with Dustan, who is held by a druid in the Plains. Cilydd sits on the box as a hen sits on an egg and tells his camp it will make them all rich.",
+      "the grant": "A little south of the city gate, a second gate opens on the crown land granted to those who served in the war, lot by lot: nine villages, Caerwent first, where the realm keeps its homes. The Pipers at the gate are always in a hurry. Ask the loremaster of the grant itself for the rest."
+    }
+  },
+  "book": {
+    "title": "A Squire's Year in the Hills",
+    "pages": [
+      "A Squire's Year in the Hills, written by Wat of Cotswold, squire, for his brother Perkin, who will be a squire next spring and will not listen. Brother: you will start where I started, at the bindstone in Cotswold, with a sword the smith says is good and a master who says it is not. Master Kless will give you a note and send you to the frontier with it and you will think it is an honour. It is a note. Read it on the road. Everyone does, and he knows, and he writes it so that it is worth reading. That is the first thing the hills teach: the errands are lessons and the lessons are errands.",
+      "Prydwen Keep. When they enter you on the roll, Perkin, ask to see the first leaf. They will not show it to you, but ask, so that they know you know it is there. It is the muster of Arthur's ship, seven names marked home and an eighth mark scraped off, and the clerks have argued about the eighth mark for longer than the keep has had a roof. Captain Bonswell says the argument is the oldest thing in the keep after the door. Sir Jerem will ask you to look for his squire Graid, who guards a stone in the Plains and never reports. Everybody looks for Graid. Graid is fine.",
+      "The river. The sprites in the shallows below Cotswold are small and quick and will drown the boots of anyone who stands still among them. They have a captain called Thwori who is not much bigger than the rest. Up the slope the spriggarns hold the hill with the great stone head on it, and they killed Nob's friend Sil there last summer, and their chief, Ygwrch Gyrg, does not come out until you have made enough noise among his people. Nob cried about Sil for a week. Do not laugh at Nob. He knows every horse in Albion by its name.",
+      "The thieves. East of the city gates the bandits keep their fires, and the three Difwych brothers keep the best of them. Cyfer stole Lady Judith's circlet and sold it to a demon for a spell, which tells you what kind of thief he is. Cilydd took a courier's box on the Mithra road. Cyfwlch holds the road to Castle Sauvage and robbed a dead man's necklace, and the dead man came looking for it. The Difwych came up that road in the hungry years with nothing, my master says, and decided the king owed them. They have been collecting ever since.",
+      "The ruins. Upriver from the bridge where the knights keep their banners there is a castle that a lord built in Uther's day and the court below took after Camlann. You can feel the warm air coming out of the chapel floor from the bridge. A boy called Frip sits by the bridge and asks every squire whether they have seen his father, Hugrath, who went into the ruin and did not come out. We have seen him, Perkin. He walks the small broken tower with his new friends. Do not tell Frip. Brother Codeth says to let the boy keep the asking until he is old enough to stop.",
+      "The waters. North of the stables there is a willow pond where the faeries live under a lady of their own, Leana, and they torment Nob's horses, and there is no talking to her, though Sir Quait will tell you to try. Past the pond Lady Nimue keeps a house by the water. She gives the young errands, after Excalibur, after Merlin, after the heart of the realm, and she never says what she wants them for. The minstrels say her name is in the old songs. When I asked her, Perkin, she only asked whether I could swim."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "realm-of-camelot",
+    "dark-ones",
+    "old-powers"
+  ]
+}

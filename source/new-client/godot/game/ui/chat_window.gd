@@ -201,6 +201,8 @@ func _client_command(text: String) -> bool:
 			PlayerData.track_requested.emit(cmd)
 		"realmwar", "rw":
 			PlayerData.window_toggle.emit("warmap")
+		"craft" when Server.active and rest == "":       # the tradeskill window (the original's own /craft;
+			PlayerData.window_toggle.emit("craft")         # owner 2026-10-30)
 		"qbar":
 			var ui := get_parent().get_parent() as GameUI
 			var args := rest.split(" ", false)
@@ -213,6 +215,9 @@ func _client_command(text: String) -> bool:
 			Server.quit_world(false)
 		"train" when rest == "":                            # the trainer window, anywhere (TrainWindowHandler; owner
 			Server.client.call("TrainWindow")              # 2026-10-14: /train didn't open it away from a trainer)
+		"stealth", "hide" when Server.spec_index("Stealth") >= 0:   # hide / come out: the Stealth spec used, as its
+			Server.use("srv:spec:Stealth")                  # Abilities row (the server has no /stealth - owner 2026-10-28,
+			                                                  # GitHub issue #16: "unrecognized command")
 		_:
 			return false
 	return true

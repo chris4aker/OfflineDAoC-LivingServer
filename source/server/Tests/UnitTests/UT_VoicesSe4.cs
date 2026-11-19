@@ -544,7 +544,8 @@ namespace DOL.GS.Tests
             Assert.That(Corpus.Lines.Single(l => l.Text.StartsWith("anyone know who camps")).Invites, Is.EqualTo("ask_know"));
             Assert.That(Corpus.Lines.Single(l => l.Text == "anyone else up at this hour? i never sleep").Invites, Is.EqualTo("chat"),
                 "\"anyone else...?\" is company, not a request: \"same here\", not \"sorry, busy\".");
-            Assert.That(Corpus.Lines.Single(l => l.Text == "murd tonight? short a couple for a group").Invites, Is.EqualTo("lfg"));
+            // 1.2 chat audit (CORPUS-A-018): no group is promised; the line asks who is going.
+            Assert.That(Corpus.Lines.Single(l => l.Text == "murd tonight? anyone going?").Invites, Is.EqualTo("lfg"));
             Assert.That(Corpus.Lines.Where(l => l.Text.Contains('?') && l.Invites is "joke" or "boast").Select(l => l.Text),
                 Is.All.Not.StartWith("who is the best"));
         }

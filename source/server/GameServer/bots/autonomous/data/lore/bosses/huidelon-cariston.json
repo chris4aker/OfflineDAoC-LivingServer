@@ -1,0 +1,125 @@
+{
+  "id": "huidelon-cariston",
+  "name": "Huidelon Cariston",
+  "npcNames": [
+    "Huidelon Cariston"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the lamp-keeper of little haven"
+  ],
+  "facts": [
+    {
+      "text": "Huidelon Cariston: template 60162253, level 54, a man of Little Haven at 355305, 380351 with an equipment template; faction Caldey Outpost, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Crackling Pitch Skeleton Hand XP Item is a turn-in quest Huidelon Cariston gives at levels 49-50; an NPC that gives a quest leaves players in its level range alone, and companions are judged by their owner.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC that gives a quest leaves a player in its level range alone; companions are judged by their owner)"
+    },
+    {
+      "text": "The Caldey Outpost's base hostility is 30, a neutral standing: its people do not attack a newcomer.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first (the clan's barbarian defenders stand 560 to 800 off).",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Huidelon as Little Haven's lamp-keeper, the lamps the dead put out, the pitch hands that burn and the haven's one light are Living Server writing; that he pays for the hands of the pitch-dark dead is from the Caldey file; the counting of Caer Sidi's lamps is from the Caer Sidi and Caldey files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Little Haven counts lamps. From its doors on a clear night the fishermen can see the lamps of Arawn's gaol across the strand, and the custom of the village, older than the war, is to count them before bed, as Hedd the ferryman counted them, and to sleep easier when the count is right. Huidelon Cariston keeps the village's own lamps, the ones on the quay and at the outpost gate and over the long room where Rose sews, and has done since he was a boy. He is the lamp-keeper. In a village that counts lamps, that is not a small office.\n\nThe dead of Caldey put lamps out. Nobody knows why; the priests of the dead used to say it was because the dead dislike being seen, and the fishermen say it is because the dead remember the dark of the grave and want it back. They come down to the village edge at night, not to fight, only to put out a light and go away again, and the worst of them are the skeletons of pitch: black, crackling dead whose bones were tarred, the village thinks, by some old burying custom of the colleges' boatmen, and whose hands, when they are struck off, burn for a while like torches.\n\nHuidelon pays for those hands. The ledger of Little Haven says so in his own words: every hand that comes to him is one that will not reach for a lamp of his. But the fishermen know the other reason, because they have seen it. On the nights when the oil runs short, Huidelon lights the quay lamp with a pitch hand. It burns longer than oil and brighter, and the dead do not put it out. He says the only light on Caldey the dead will leave alone is one they made themselves.\n\nHe is a quiet man, and has never raised a hand to the living. The clan's defenders count the village as theirs and him with it, and the clan's bard has a verse about the lamp-keeper that the fishermen sing when the count of the gaol lamps is right.",
+  "legend": "Huidelon Cariston is a level 54 villager of Little Haven on Caldey who buys Crackling Pitch Skeleton Hands (his turn-in, levels 49 to 50). He is not hostile: the Caldey Outpost faction starts neutral and he leaves players of his quest's level band alone. Hitting him brings the clan's barbarian defenders (same faction) and sours your standing with the outpost. No spells or styles in the data; there is no quest to kill him. The pitch skeletons whose hands he wants are on Caldey itself; bring the hands at 49 or 50 and he pays in experience. Rose and Tristram Adamson buy other parts nearby.",
+  "yells": {
+    "aggro": [
+      "Not the lamps!",
+      "Defenders! To the quay!",
+      "You will not put my light out."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Keep the lamps lit! Keep them lit!"
+      }
+    ],
+    "death": [
+      "Count... the lamps...",
+      "The quay lamp... light it..."
+    ],
+    "slay": [
+      "Put out.",
+      "Dark now.",
+      "One light fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lamp on the quay burns with a strange flame.",
+      "Little Haven's lamps, kept and counted."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The clan's defenders run down from the wall."
+      }
+    ],
+    "realmFirstKill": "Huidelon Cariston has fallen. Who keeps the lamps now?"
+  },
+  "botLines": {
+    "briefing": [
+      "huidelon cariston, 54, lamp keeper in little haven. turn-in npc, not a mob",
+      "clan is neutral, he wont aggro. hitting him brings the defenders and kills your standing",
+      "no spells, no quest to kill him",
+      "bring him crackling pitch skeleton hands at 49-50"
+    ],
+    "aftermathWin": [
+      "huidelon down, why",
+      "the quay lamp went out lol",
+      "clan's mad now",
+      "no more hand turn-ins for a bit"
+    ],
+    "aftermathLoss": [
+      "defenders came off the wall",
+      "aoe clipped him, whole clan came",
+      "he's 54 and the clan is 50s",
+      "do not hit the lamp keeper"
+    ],
+    "rumour": [
+      "[heard|someone said] huidelon cariston lights the quay lamp with a burning pitch hand",
+      "heard the dead of caldey come down at night just to put out lamps",
+      "[heard|someone said] the only light on caldey the dead leave alone is one they made",
+      "heard little haven counts the caer sidi lamps before bed"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "huidelon cariston",
+    "text": "The lamp-keeper of [little haven], a village that counts lamps, the gaol's across the strand and its own. The dead of [caldey] come down at night to put lamps out, the pitch skeletons worst; Huidelon pays for their hands, which burn when struck off, and on nights when the oil is short lights the quay lamp with one. The dead leave that light alone."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid by Huidelon Cariston, to a young paladin of the realm, for four pitch hands: the usual, and a cup of something. I asked him, as I ask each time, whether he means to burn them. He said he means to keep them so they cannot reach for his lamps. Then the paladin asked him straight, and he said yes, the quay lamp, when the oil runs out, and that it burns till dawn and the dead walk round it. The paladin said it was a terrible thing to do. Huidelon said so is the dark. I have entered the payment and the cup.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Huidelon Cariston of Little Haven in {minutes} minutes, and the quay went dark.",
+    "loss": "The clan's defenders drove {raidLeader}'s company of {realm} away from Little Haven's lamps."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "realm-of-camelot"
+  ],
+  "related": [
+    {
+      "id": "caer-sidi",
+      "relation": "Little Haven counts the gaol's lamps across the strand"
+    },
+    {
+      "id": "rose",
+      "relation": "his lamp hangs over her long room"
+    }
+  ]
+}

@@ -52,6 +52,9 @@ namespace DOL.GS
         public ServiceObjectId ServiceObjectId { get; } = new(ServiceObjectType.CastingComponent);
         public bool IsCasting => SpellHandler != null; // May not be actually casting yet.
 
+        /// <summary>A focus spell's channel after its cast (the caster stands; its next spell ends the focus).</summary>
+        public bool IsFocusChanneling => SpellHandler is { CastState: eCastState.Focusing } handler && handler.Spell?.IsFocus == true;
+
         // A requested cast is asynchronous: IsCasting alone does not cover the
         // interval before the casting service accepts it. Bots must not build a
         // burst of requests that all inspected the same pre-cast mana balance.
@@ -156,7 +159,7 @@ namespace DOL.GS
             lock (_startSkillRequestsLock)
             {
                 if (Owner is GameBot bot && (_startSkillRequests.Count != 0 ||
-                    BotSpellPower.IsOffensiveCaster(bot) && IsCasting))
+                    BotSpellPower.IsOffensiveCaster(bot) && IsCasting && !IsFocusChanneling))
                     return false;
 
                 if (IsGuardedNpc && spell != null)
@@ -191,25 +194,33 @@ namespace DOL.GS
             return null;
         }
 
-        public bool StartDuringCastLosCheck(GameLiving target)
+        /// <param name="spellHandler">The handler asking (SpellHandler.CheckDuringCast passes itself); null: the component's.
+        /// Owner's PC, 2026-11-19 14:56:33 (build 1.2-43c43aa): the component's SpellHandler was cleared during the tick (an
+        /// interrupt or the cast ending), this line threw a NullReferenceException in CastingService and the service removed
+        /// the gamebot Carik from the world. The handler and its LoS checker are now read once; a missing one means no check.</param>
+        public bool StartDuringCastLosCheck(GameLiving target, SpellHandler spellHandler = null)
         {
+            spellHandler ??= SpellHandler;
             // Target check may appear redundant since CastingComponent is supposed to set LosChecker to null when no LoS check is required.
             // But for player casted spells, the target is determined by SpellHandler.
-            if (SpellHandler.LosChecker == null || target == null || target == Owner)
+            var packets = spellHandler?.LosChecker?.Out;
+            if (packets == null || target == null || target == Owner)
                 return false;
 
-            _duringCastLosCheckListener.SpellHandler = SpellHandler;
-            SpellHandler.LosChecker.Out.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
+            _duringCastLosCheckListener.SpellHandler = spellHandler;
+            packets.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
             return true;
         }
 
         public bool StartEndOfCastLosCheck(GameLiving target, SpellHandler spellHandler)
         {
-            if (SpellHandler.LosChecker == null || target == null || target == Owner)
+            // The asking handler's checker (it is the component's handler while its cast ends); read once, see above.
+            var packets = (spellHandler ?? SpellHandler)?.LosChecker?.Out;
+            if (packets == null || target == null || target == Owner)
                 return false;
 
             _endOfCastLosCheckListener.AddPendingLosCheck(target, spellHandler);
-            SpellHandler.LosChecker.Out.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener);
+            packets.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener);
             return true;
         }
 
@@ -435,6 +446,15 @@ namespace DOL.GS
                     {
                         if (CastingComponent.Owner is not GamePlayer player)
                         {
+                            // A bot's focus channel gives way to its next spell, as a player's does: the new spell's
+                            // CheckBeginCast ends the focus. Queued behind the channel, every later spell waited for it
+                            // to end and the bot stood in place (why bots' pet focus shields were disabled).
+                            if (CastingComponent.Owner is GameBot && currentSpell.IsFocus &&
+                                currentSpellHandler.CastState is eCastState.Focusing)
+                            {
+                                CastingComponent.SpellHandler = newSpellHandler;
+                                return;
+                            }
                             CastingComponent.QueuedSpellHandler = newSpellHandler;
                             return;
                         }

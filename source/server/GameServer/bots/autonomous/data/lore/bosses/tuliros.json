@@ -1,0 +1,85 @@
+{
+  "id": "tuliros",
+  "name": "Tuliros",
+  "npcNames": [
+    "Tuliros"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Tuliros: level 40, a Sylvan body (model 767, plant), at about 395,900/312,600 high in the sylvan valley among the stilters and corrupt sylvan; respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Tuliros as the Root's household's gatekeeper on the valley road.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Tuliros keeps the road into the high valley, below the place where Laraida's household stands around Luaire's tree. He was not of the household, the Necht Sylvan say; he came later, a Sylvan of the coast who heard Laraida singing one night and walked up to find out what the song was, and never walked down. He stands among the stilters and the twisted ones on the valley road now and turns back anyone who climbs it.\n\nJyrlan of Necht, who sends the young up the valley with elixirs, says Tuliros is the warning the valley gives: listen to the song too long and you stay. The Necht children are told not to hum Laraida's tunes, though none of them knows any. The Necht druids who made Jyrlan's elixirs say Tuliros is the one they would most like to bring back down, because he came up for a song and not for the Root, and a man who came for a song can be sung home.",
+  "legend": "Tuliros (40) stands on the sylvan valley road west of Necht (about 396k/313k) among stilters (43-51) and corrupt sylvan. The stilters are the real danger; pull Tuliros away from them. 80-second respawn. Below the Twisted Evil four. Plain spawn with no script and a quick respawn, so do not sit on his spot. Corrupt and twisted sylvan (32-42) walk the road too. Go up the ridge side, not the valley floor, if you only want the Twisted Evil four.",
+  "yells": {
+    "aggro": [
+      "You heard the song too. Stay.",
+      "The road goes up. It does not come down."
+    ],
+    "phases": [],
+    "death": [
+      "I only... wanted to hear the end..."
+    ],
+    "slay": [
+      "Stay, then."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A Sylvan on the valley road, listening upward."
+    ],
+    "phases": [],
+    "realmFirstKill": "Tuliros no longer keeps the valley road."
+  },
+  "botLines": {
+    "briefing": [
+      "tuliros is 40 on the valley road, stilters around",
+      "pull him away from the stilters"
+    ],
+    "aftermathWin": [
+      "tuliros down. [road's open|grats]",
+      "no stilters joined. [nice|lucky]"
+    ],
+    "aftermathLoss": [
+      "stilters. [43-51|rip]",
+      "pulled half the valley. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] tuliros walked up the valley to hear laraida's song and never came down",
+      "necht kids are told not to hum laraida's tunes. because of tuliros"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tuliros",
+    "text": "A coast Sylvan who walked up the high valley to hear Laraida's song and stayed. He keeps the valley road and turns back whoever climbs it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Tuliros in Vigilant Rock in {minutes} minutes.",
+    "loss": "Tuliros turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "laraida",
+      "relation": "whose household he serves"
+    },
+    {
+      "id": "luaire",
+      "relation": "whose tree he guards"
+    }
+  ]
+}

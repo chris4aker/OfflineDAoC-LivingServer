@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
@@ -58,7 +59,7 @@ namespace DOL.GS
                                  product.Name.EndsWith("cloth square") ||
                                  product.Name.EndsWith("wooden boards"));
 
-            if (product.PackageID.Contains("NoPriceUpdate"))
+            if (product.PackageID?.Contains("NoPriceUpdate") == true) // PackageID is nullable (11 recipe products in the 0.37 world)
                 updatePrice = false;
 
             if (updatePrice)
@@ -106,99 +107,191 @@ namespace DOL.GS
         public long Cost => Count * Material.Price;
     }
 
+    /// <summary>
+    /// Why the server will not let a recipe be crafted. 2026-11-15 (crafting M0 audit): every reason is a way a
+    /// CraftedItem row would fail or misbehave further down the craft (see docs/CRAFTING-M0-FINDINGS.md).
+    /// </summary>
+    public enum eRecipeProblem
+    {
+        None = 0,
+        /// <summary>The CraftedItem row is missing.</summary>
+        RecipeMissing,
+        /// <summary>No ItemTemplate for the product's Id_nb (lookups ignore case).</summary>
+        ProductMissing,
+        /// <summary>No CraftedXItem rows for the product.</summary>
+        NoIngredients,
+        /// <summary>An ingredient's ItemTemplate is missing.</summary>
+        IngredientMissing,
+        /// <summary>An ingredient count of 0 or less: free materials, and a negative count wraps the craft time.</summary>
+        IngredientCount,
+        /// <summary>Two ingredients share a name: RemoveUsedMaterials would add the same bag slot twice and throw.</summary>
+        DuplicateIngredientName,
+        /// <summary>CraftingSkillType names no crafting skill: getSkillbyEnum gives null or reads past its array.</summary>
+        SkillType,
+        /// <summary>A weapon or armor slot product with the generic object type: a statless shell nobody can repair.</summary>
+        ProductUnusable,
+        /// <summary>The recipe id is not a 16-bit number, so the client can never ask for it (RecipeCatalog, WP1).</summary>
+        RecipeIdInvalid,
+    }
+
     public class RecipeDB
     {
         protected static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
-        private static Dictionary<ushort, Recipe> recipeCache = new Dictionary<ushort, Recipe>();
 
-        public static Recipe FindBy(ushort recipeDatabaseID)
+        // 2026-11-15: valid recipes are cached; an invalid one is remembered as invalid, logged once and returned as null
+        // every time (it used to be cached as null and reloaded and logged on every click, or cached as a product-less
+        // recipe that threw KeyNotFoundException on the second click, and crafting_adjust_product_price called the price
+        // update on the null and threw on the first).
+        private static readonly ConcurrentDictionary<ushort, Recipe> recipeCache = new();
+        private static readonly ConcurrentDictionary<ushort, eRecipeProblem> invalidRecipes = new();
+
+        /// <summary>The recipe with this client recipe id, or null if the server cannot make it (logged once).</summary>
+        public static Recipe FindBy(ushort recipeDatabaseID) => FindBy(recipeDatabaseID, LoadFromDB);
+
+        /// <summary>FindBy with the loader given, so the caching rules can be tested without a database.</summary>
+        public static Recipe FindBy(ushort recipeDatabaseID, Func<ushort, Recipe> load)
         {
-            Recipe recipe;
-            recipeCache.TryGetValue(recipeDatabaseID, out recipe);
-            if (recipe != null)
-            {
-                //avoid repeated DB access for invalid recipes
-                if (recipe.Product != null) return recipeCache[recipeDatabaseID];
-                else throw new KeyNotFoundException("Recipe is marked as invalid. Check your logs for Recipe with ID " + recipeDatabaseID + ".");
-            }
+            if (recipeCache.TryGetValue(recipeDatabaseID, out Recipe cached))
+                return cached;
+
+            if (invalidRecipes.ContainsKey(recipeDatabaseID))
+                return null;
+
+            Recipe recipe = null;
 
             try
             {
-                recipe = LoadFromDB(recipeDatabaseID);
-                return recipe;
+                recipe = load(recipeDatabaseID);
             }
             catch (Exception e)
             {
-                log.Error(e);
-                recipe = NullRecipe;
-                return recipe;
-            }
-            finally
-            {
-                if (Properties.CRAFTING_ADJUST_PRODUCT_PRICE)
-                    recipe.SetRecommendedProductPriceInDB();
-                recipeCache[recipeDatabaseID] = recipe;
+                if (log.IsErrorEnabled)
+                    log.Error($"[CRAFTING] Recipe {recipeDatabaseID} could not be loaded; it is skipped until the server restarts.", e);
             }
 
+            if (recipe?.Product == null)
+            {
+                invalidRecipes.TryAdd(recipeDatabaseID, eRecipeProblem.RecipeMissing);
+                return null;
+            }
+
+            if (Properties.CRAFTING_ADJUST_PRODUCT_PRICE)
+            {
+                try
+                {
+                    recipe.SetRecommendedProductPriceInDB();
+                }
+                catch (Exception e)
+                {
+                    if (log.IsErrorEnabled)
+                        log.Error($"[CRAFTING] Price correction failed for recipe {recipeDatabaseID} ({recipe.Product.Id_nb}).", e);
+                }
+            }
+
+            recipeCache[recipeDatabaseID] = recipe;
+            return recipe;
         }
 
-        private static Recipe NullRecipe => new Recipe(null, null);
+        /// <summary>How many recipes this run has found invalid (for the GM command and tests).</summary>
+        public static int InvalidRecipeCount => invalidRecipes.Count;
+
+        /// <summary>Forgets every cached recipe, valid or not (a GM reload or a test).</summary>
+        public static void ClearCache()
+        {
+            recipeCache.Clear();
+            invalidRecipes.Clear();
+        }
+
+        /// <summary>
+        /// The first reason a recipe cannot be crafted, in the order the loader meets them, or None. Pure, so the audit
+        /// and the tests apply exactly the server's rule. A missing ingredient template is passed as a null template.
+        /// </summary>
+        public static eRecipeProblem FindProblem(DbItemTemplate product, int craftingSkillType, IReadOnlyList<(string Id, int Count, DbItemTemplate Template)> ingredients, out string detail)
+        {
+            detail = string.Empty;
+
+            if (product == null)
+                return eRecipeProblem.ProductMissing;
+
+            if (ingredients == null || ingredients.Count == 0)
+                return eRecipeProblem.NoIngredients;
+
+            var names = new HashSet<string>(StringComparer.Ordinal); // CheckRawMaterials matches bag items by Name, ordinal
+
+            foreach (var ingredient in ingredients)
+            {
+                if (ingredient.Template == null)
+                {
+                    detail = ingredient.Id;
+                    return eRecipeProblem.IngredientMissing;
+                }
+
+                if (ingredient.Count <= 0)
+                {
+                    detail = $"{ingredient.Id} x{ingredient.Count}";
+                    return eRecipeProblem.IngredientCount;
+                }
+
+                if (!names.Add(ingredient.Template.Name ?? string.Empty))
+                {
+                    detail = ingredient.Template.Name;
+                    return eRecipeProblem.DuplicateIngredientName;
+                }
+            }
+
+            if (!IsCraftingSkillType(craftingSkillType))
+            {
+                detail = craftingSkillType.ToString();
+                return eRecipeProblem.SkillType;
+            }
+
+            if (product.Object_Type == (int)eObjectType.GenericItem && IsWeaponOrArmorSlot(product.Item_Type))
+            {
+                detail = $"item type {product.Item_Type}";
+                return eRecipeProblem.ProductUnusable;
+            }
+
+            return eRecipeProblem.None;
+        }
+
+        /// <summary>A value CraftingMgr.getSkillbyEnum maps to a crafting skill (1-15 without the unused 5).</summary>
+        public static bool IsCraftingSkillType(int craftingSkillType) =>
+            craftingSkillType >= (int)eCraftingSkill.WeaponCrafting && craftingSkillType <= (int)eCraftingSkill._Last && craftingSkillType != 5;
+
+        private static bool IsWeaponOrArmorSlot(int itemType) =>
+            (itemType >= (int)eInventorySlot.RightHandWeapon && itemType <= (int)eInventorySlot.DistanceWeapon) ||
+            (itemType >= (int)eInventorySlot.HeadArmor && itemType <= (int)eInventorySlot.ArmsArmor && itemType != (int)eInventorySlot.Jewelry && itemType != (int)eInventorySlot.Cloak);
 
         private static Recipe LoadFromDB(ushort recipeDatabaseID)
         {
-
-            string craftingDebug = string.Empty;
-            
             var dbRecipe = GameServer.Database.FindObjectByKey<DbCraftedItem>(recipeDatabaseID.ToString());
             if (dbRecipe == null)
             {
-                craftingDebug = "[CRAFTING] No DBCraftedItem with ID " + recipeDatabaseID + " exists.";
-                log.Warn(craftingDebug);
+                if (log.IsWarnEnabled)
+                    log.Warn($"[CRAFTING] No CraftedItem row with ID {recipeDatabaseID}; the recipe is hidden.");
                 return null;
-                //throw new ArgumentException(craftingDebug);
             }
-                
-            
 
             DbItemTemplate product = GameServer.Database.FindObjectByKey<DbItemTemplate>(dbRecipe.Id_nb);
-            if (product == null)
-            {
-                craftingDebug = "[CRAFTING] ItemTemplate " + dbRecipe.Id_nb + " for Recipe with ID " + dbRecipe.CraftedItemID + " does not exist.";
-                log.Warn(craftingDebug);
-                return null;
-                //throw new ArgumentException(craftingDebug);
-            }
+            var rawMaterials = product == null
+                ? new List<DbCraftedXItem>()
+                : DOLDB<DbCraftedXItem>.SelectObjects(DB.Column("CraftedItemId_nb").IsEqualTo(dbRecipe.Id_nb));
 
-            var rawMaterials = DOLDB<DbCraftedXItem>.SelectObjects(DB.Column("CraftedItemId_nb").IsEqualTo(dbRecipe.Id_nb));
-            if (rawMaterials.Count == 0)
-            {
-                craftingDebug = "[CRAFTING] Recipe with ID " + dbRecipe.CraftedItemID + " has no ingredients.";
-                log.Warn(craftingDebug);
-                return null;
-                //throw new ArgumentException(craftingDebug);
-            }
-
-            bool isRecipeValid = true;
-
-            var ingredients = new List<Ingredient>();
+            var lookedUp = new List<(string Id, int Count, DbItemTemplate Template)>(rawMaterials.Count);
             foreach (DbCraftedXItem material in rawMaterials)
-            {
-                DbItemTemplate template = GameServer.Database.FindObjectByKey<DbItemTemplate>(material.IngredientId_nb);
+                lookedUp.Add((material.IngredientId_nb, material.Count, GameServer.Database.FindObjectByKey<DbItemTemplate>(material.IngredientId_nb)));
 
-                if (template == null)
-                {
-                    craftingDebug = "[CRAFTING] Cannot find raw material ItemTemplate: " + material.IngredientId_nb + ") needed for recipe: " + dbRecipe.CraftedItemID + "\n";
-                    isRecipeValid = false;
-                }
-                ingredients.Add(new Ingredient(material.Count, template));
-            }
-
-            if (!isRecipeValid)
+            eRecipeProblem problem = FindProblem(product, dbRecipe.CraftingSkillType, lookedUp, out string detail);
+            if (problem != eRecipeProblem.None)
             {
-                log.Warn(craftingDebug);
+                if (log.IsWarnEnabled)
+                    log.Warn($"[CRAFTING] Recipe {dbRecipe.CraftedItemID} ({dbRecipe.Id_nb}) is hidden: {problem}{(detail.Length > 0 ? " " + detail : string.Empty)}.");
                 return null;
-                //throw new ArgumentException(errorText);
             }
+
+            var ingredients = new List<Ingredient>(lookedUp.Count);
+            foreach (var material in lookedUp)
+                ingredients.Add(new Ingredient(material.Count, material.Template));
 
             bool makeTemplated = dbRecipe.MakeTemplated;
 

@@ -1,0 +1,85 @@
+{
+  "id": "rob-ria",
+  "name": "Rob Ria",
+  "npcNames": [
+    "Rob Ria"
+  ],
+  "locationId": "forest-sauvage",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Rob Ria: NPC template 60165363, level 40, faction Mist Hunters (with the 35 forest hunters, levels 21-24), aggro level 200, at 625315, 447716 in the east of Forest Sauvage. He gives The Forest Plot.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Forest Plot: the Mist Hunters need a scout's bow; kill a gytrash in the Pennine Mountains (midnight to 6 A.M.) and an Arawnite shamaness at the first camp fire outside Snowdonia Fortress.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Mist Hunters' forest law, the wood's leave, Rob Ria's bow and his quarrel with Camelot are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Rob Ria leads the Mist Hunters, the hunters of the old forest who keep their camps in the east of Sauvage, and he will tell anyone who lives long enough to ask that his people hunted there before there was a Camelot to forbid it. They take what the wood allows and nothing else: a deer in its season, a boar that has gone wrong, never a tree, never anything that walks near the knight in green. They call it the wood's leave, and they say the forest knows who has it.\n\nCamelot calls them poachers and outlaws, and Lord Mathius's riders have orders to treat them as such, so the Mist Hunters treat Albion's travellers as Albion treats them. Those who have earned the hunters' trust find Rob Ria a fair man to deal with. He wants a scout's bow of the old pattern, strung with what comes off a gytrash of the Pennines in the dead hours and fletched with what an Arawnite shamaness carries outside the Snowdonia fortress, and he pays for the makings. The woodsmen of Castle Sauvage say he means it for the day the enemy comes down through the northern passes in earnest; the castle's lieutenants say he means it for them. Rob Ria says only that a bow is for whatever needs shooting.\n\nHe is quick and close with a blade, and his hunters come to his whistle.",
+  "legend": "Rob Ria, level 40, east Forest Sauvage with the Mist Hunters (forest hunters, 21-24). Aggressive unless your Mist Hunter standing is good; with good standing he gives The Forest Plot (gytrash in the Pennines at night, Arawnite shamaness outside Snowdonia Fortress, for a bow). If you fight him, clear the hunters around him first: they are the same faction and come with him. A group of 40s handles it.",
+  "yells": {
+    "aggro": [
+      "You have not got the wood's leave.",
+      "Hunters! To me!"
+    ],
+    "phases": [],
+    "death": [
+      "The wood... will remember who had leave..."
+    ],
+    "slay": [
+      "The forest takes what it allows."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The Mist Hunters' camp. Bows in the mist."
+    ],
+    "phases": [],
+    "realmFirstKill": "Rob Ria is down. The Mist Hunters scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "rob ria, 40, east sauvage. his mist hunters come with him, clear them first",
+      "if your faction is good you dont fight him, he has the forest plot quest"
+    ],
+    "aftermathWin": [
+      "rob ria down. the mist hunters will remember that",
+      "there goes my mist hunter faction"
+    ],
+    "aftermathLoss": [
+      "his hunters came out of the mist on all sides"
+    ],
+    "rumour": [
+      "[heard|someone said] rob ria wants a bow for when the mids come through the passes",
+      "heard the mist hunters never cut a tree. the wood's leave they call it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "rob ria",
+    "text": "The leader of the [mist hunters] in the east of [forest sauvage]. His people take only what the wood allows, the wood's leave, and treat Camelot's travellers as Camelot treats them. Those who earn his trust find him fair; he wants the makings of a scout's bow of the old pattern."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down Rob Ria among the Mist Hunters of Forest Sauvage in {minutes} minutes.",
+    "loss": "Rob Ria kept the wood's leave; {raidLeader} of {realm} was driven out of the Mist Hunters' camp."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "green-knight",
+      "relation": "keeper of the wood whose law the Mist Hunters keep"
+    }
+  ],
+  "tier": "minor"
+}

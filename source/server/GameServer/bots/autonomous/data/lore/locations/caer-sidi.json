@@ -1,0 +1,339 @@
+{
+  "id": "caer-sidi",
+  "name": "Caer Sidi",
+  "realm": "Albion",
+  "regions": [
+    60
+  ],
+  "aliases": [
+    "sidi",
+    "cs",
+    "the mill"
+  ],
+  "summary": "Arawn's turning gaol on the road to Annwn, where the dead who would not lie down are kept, and the end of all things waits at the top.",
+  "facts": [
+    {
+      "text": "Caer Sidi is a level 50 Shrouded Isles epic dungeon bordering Caldey.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=84"
+    },
+    {
+      "text": "Arawn, lord of the underworld, sent his Inconnu to help Albion because Morgana was taking his dead to serve her.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
+    },
+    {
+      "text": "In Mythic's Catacombs lore Arawn chose nine Maidens to guard his cauldron, and Morgana stole souls from the Deadlands of Annwn and turned them against him.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/460"
+    },
+    {
+      "text": "Welsh myth, not game canon: in the Welsh poem Preiddeu Annwfn, Caer Siddi is a revolving fortress of the otherworld where Gweir lies chained; three shiploads of Arthur's men sailed in Prydwen and only seven came back; a cauldron there, warmed by nine maidens' breath, will not boil a coward's food.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Caer_Sidi"
+    },
+    {
+      "text": "Its dead include crypt knights, custodians, forerunners, reckoned souls, fate's bearers, calcified manes, an archlich and heralds of trucidation.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Apocalypse and four Horsemen (Fames, Bellum, Morbus, Funus) are the final encounter; the Horsemen speak of fate and ask the raid whether it challenges it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "A February 2003 Albion guide put Apocalypse at a minimum of about a hundred players, the author's lowest kill at 105.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Existing bot chat says Caer Sidi sits on the road to Annwn and holds a prison of souls with something at the bottom that keeps the count.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Hedd the ferryman of Caldey and the counting of the nine lamps, the quiet dead as masons and the turning axle moved by each counted soul, Iddon the steersman and Prydwen Keep's roll beginning as Arthur's ship's muster, the Reckoner's empty page, the Inconnu's three answers at the third step, Sir Tegid's summer company, Dame Nest of the ring-forts, and the lamp and sill at Caer Gothwaite are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Welsh myth, not game canon: the poem Preiddeu Annwfn says the cauldron of the chief of Annwn would not boil a coward's food, and names Caer Siddi among the otherworld fortresses Arthur's company visited.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Preiddeu_Annwfn"
+    }
+  ],
+  "story": "Caer Sidi is Arawn's gaol, the fortress that turns, standing on the water beyond the western strand of Caldey wherever the tide is on the turn. The Caldey fishermen count its nine lamps on notched sticks and leave one window unlit toward the sea; Hedd the ferryman has never seen its door in the same place twice. The bards' song of Arthur's three shiploads and the seven who came home was, Hedd says, made by someone who stood on that strand.\n\nThe Inconnu say the quiet dead built it, a season's labour apiece for their rest, out of the pale stone of Annwn, with the Reckoner's table at the bottom and the first cell at the top and the crypts, galleries, chapel, yard and larders between, all set on an axle that every counted soul moves by a hair. Arawn gave each keeper one task: the Reckoner, the warden of the crypts, the custodians and crypt knights, the sacristan of the vessels and the cauldron's rim, the provisioner, the Silencer who ends the prisoners' calling, and the Bane of Hope who ends their belief in the door. The prisoners were sorted by what they would not do.\n\nPrydwen Keep is named for Arthur's ship: its roll began as the ship's muster, seven names marked home and an eighth mark scraped away, nailed to the door by Iddon the steersman. When Morgana began drawing the dead out of Annwn the gaol rose, and the Reckoner's ledger holds one page with one line, none in, none out. The galleries rose first; the warden let the rising win and then commanded it; the Silencer's hush swallowed the inner halls; only the Reckoner was left alone.\n\nThe Inconnu guide Albion through every tier but the last and wait on the third step of the riders' stair, because the dead's own servants can give the riders no true answer. At Caer Gothwaite a lamp burns in the chapel window while a company is inside, and the sill is cut with names, from Sir Tegid's summer company to Dame Ysolde's seventy-one. When the end of the world fell, the fortress stopped turning for a breath and Hedd cut a mark across his whole stick. If the mill ever stops for good, the Inconnu say, the prisoners will learn the way out, and walk to Morgana.",
+  "legend": "A hundred for Apocalypse, the Albion guides said in 2003, and the lowest kill anyone could claim was a hundred and five; by summer, ninety good players could do it and eighty were brave. Everyone has a Caer Sidi rule. Never wear anything shiny; the dead go for the gilded first. Count your people at the door, because the bards came home with seven. Do not pull the Crypt Lord's court in one piece. Ilron is where most stories end, because most raids hit the wrong Ilron. Fight the Soul Reckoner at his table and nowhere else. Kill Lord Sanguis, then kill him again. Stand in the Sacristan's way, do not chase him. Leave your fire wizards off the Provisioner. At the top, Fames will look at one of you and ask whether you challenge fate, and the raid leader says yes, and then you have two minutes, and everyone remembers those two minutes for the rest of their lives. The old hands call the place the Mill, because it turns, and because it grinds.",
+  "atmosphere": {
+    "firstEntry": [
+      "The walls turn slowly. The door you came by is gone.",
+      "Caer Sidi. Arawn's gaol. Every cell is open.",
+      "The fortress turns. Somewhere a millstone grinds.",
+      "Lights burn here without flame or warmth.",
+      "The dead stand their posts. Their gaoler is gone."
+    ],
+    "areas": [
+      {
+        "name": "the hall of the four riders",
+        "x": 29468,
+        "y": 25235,
+        "z": 19490,
+        "radius": 1200,
+        "lines": [
+          "Four riders wait. They will ask you a question.",
+          "The riders are courteous. They will ask once."
+        ]
+      },
+      {
+        "name": "the reckoning hall",
+        "x": 28967,
+        "y": 35874,
+        "z": 15370,
+        "radius": 900,
+        "lines": [
+          "Someone down here is counting. Out loud.",
+          "Souls stand round a table, waiting to be counted."
+        ]
+      },
+      {
+        "name": "the crypt lord's court",
+        "x": 26567,
+        "y": 40143,
+        "z": 15372,
+        "radius": 900,
+        "lines": [
+          "The dead stand in ranks. Their lord is awake.",
+          "Rows of the dead, waiting for an inspection."
+        ]
+      },
+      {
+        "name": "the blood chapel",
+        "x": 34062,
+        "y": 32787,
+        "z": 14518,
+        "radius": 800,
+        "lines": [
+          "The floor is red. It has been red a long time.",
+          "Lord Sanguis has died here before. Often."
+        ]
+      },
+      {
+        "name": "the lich's gallery",
+        "x": 36385,
+        "y": 37593,
+        "z": 17006,
+        "radius": 800,
+        "lines": [
+          "Four of him. Only one casts a shadow.",
+          "Wait for the shadow that falls true."
+        ]
+      },
+      {
+        "name": "the drill yard",
+        "x": 35625,
+        "y": 41676,
+        "z": 15631,
+        "radius": 800,
+        "lines": [
+          "Dead knights at drill. Their warlord is watching.",
+          "Twelve knights in line. Their warlord corrects them."
+        ]
+      },
+      {
+        "name": "the sacristy walk",
+        "x": 32158,
+        "y": 35804,
+        "z": 16750,
+        "radius": 900,
+        "lines": [
+          "Footsteps on the walk above. Always the same round.",
+          "Do not chase him. Stand in his way."
+        ]
+      },
+      {
+        "name": "the turning gate",
+        "x": 31666,
+        "y": 35982,
+        "z": 18639,
+        "radius": 900,
+        "lines": [
+          "The gate you came by has moved.",
+          "Count your people. The bards came home with seven."
+        ]
+      },
+      {
+        "name": "the silent halls",
+        "x": 31035,
+        "y": 36303,
+        "z": 15621,
+        "radius": 900,
+        "lines": [
+          "Your footsteps make no sound here.",
+          "Something here hates a raised voice."
+        ]
+      },
+      {
+        "name": "the bane's crossing",
+        "x": 31265,
+        "y": 30833,
+        "z": 13954,
+        "radius": 900,
+        "lines": [
+          "Every way out looks like a way in.",
+          "Friends who stood here a moment ago are gone."
+        ]
+      },
+      {
+        "name": "the larders",
+        "x": 30063,
+        "y": 40880,
+        "z": 17004,
+        "radius": 800,
+        "lines": [
+          "Empty larders. Something still guards them.",
+          "A cauldron's rim, cold, and nothing in it."
+        ]
+      },
+      {
+        "name": "the chosen's post",
+        "x": 37500,
+        "y": 30162,
+        "z": 13969,
+        "radius": 800,
+        "lines": [
+          "A watcher stands where fate told it to.",
+          "The riders above will know your names."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "caer sidi [sits on|straddles] the road to annwn. [the souls in there|whatever is in there] [aren't meant to leave|stay locked up]",
+      "caer sidi was arawn's jail. oathbreakers, cowards, warlords who wouldnt lie down. [then morgana opened the door|then somebody opened the door]",
+      "the old poem says the fortress turns so nobody finds the door. [feels like it in there|i believe it]",
+      "something at the bottom of caer sidi [keeps the count|counts every soul]. the soul reckoner, [i think|my guess]",
+      "the four riders at the top of caer sidi ask you if you challenge fate. [say yes|you say yes]. then you have two minutes",
+      "arawn built caer sidi to turn so the prisoners never learn where the door is. [smart|clever] jailer",
+      "the old hands call caer sidi the mill. [it turns and it grinds|because it grinds you up]",
+      "the inconnu guide you through caer sidi but they wont go past the four riders. [not their place|they say its not their place]",
+      "caer sidi has tiers. reckoning hall at the bottom, crypts, galleries, the yard, and the riders at the top",
+      "the prisoners in caer sidi didnt escape, they took over. [why leave a world that forgot you|nowhere to go]",
+      "the soul reckoner is the only keeper in caer sidi who never turned. [he just kept counting|still counting]",
+      "lord sanguis was a roman magistrate. [bought his years with blood|paid for long life in other peoples blood]",
+      "every caer sidi raid is a debt paid to arawn, [my guild leader says|they say]. his own jail rose on him"
+    ],
+    "rumour": [
+      "heard you never wear anything shiny into caer sidi. the dead go for the gilded first",
+      "[heard|someone said] apocalypse needs a hundred. lowest kill anyone bragged about was a hundred and five",
+      "[heard|word is] the host in caer sidi is eight of him and only one is real",
+      "[heard|someone said] you need ninety good people for apoc now. eighty if youre brave",
+      "[heard|word is] the crypt lord's court is forty mobs in one pull",
+      "count your people at the caer sidi door. [the bards came home with seven|seven came home in the song]",
+      "[heard|someone said] the spectral provisioner ignores fire. leave the wizards home",
+      "heard fames picks one person out of the raid and asks them the question. [hope its not you|nerve wracking]"
+    ],
+    "tell": [
+      "caer sidi? albions epic dungeon past caldey. arawns old jail, liches and dead knights, apocalypse and four horsemen on top. raid of 100",
+      "undead fortress in the isles. soul reckoner, lich lords, crypt lord, and the horsemen. bring a hundred and a lot of clerics",
+      "its the big one. you climb the whole fortress and at the top four riders ask you a question",
+      "is caer sidi hard? its albions epic dungeon. a hundred people for apocalypse, and every boss on the way has a trick",
+      "where is caer sidi? across the water past caldey, in the isles. the inconnu guide you in",
+      "caer sidi is a full raid night. reckoner, crypt lord, ilron, sanguis twice, then the four riders and apoc"
+    ]
+  },
+  "loremaster": {
+    "intro": "Caer Sidi? The [bards] sing of it, and the bards are nearly right. It is [Arawn's gaol], and its [prisoners] have made themselves its lords. At the top waits something worse: the [four riders].",
+    "topics": {
+      "bards": "Arthur sailed Prydwen to Caer Sidi with three shiploads of men, the old song says, and seven came home. The fortress turns, so few find its door. Remember the number seven before you go.",
+      "arawn's gaol": "Every kingdom of the dead needs a place for those who will not go quietly. Arawn built his on the road to Annwn and set keepers in it: knights, custodians, a [sacristan], a provisioner, a reckoner who counts.",
+      "prisoners": "When Morgana began stealing Arawn's dead, the prisoners heard that the door of the underworld could be opened from the wrong side, and they rose. Liches, a blood-lord, a warlord, a host of eight. Ask about [Lich Lord Ilron] if you would know where most tales end.",
+      "four riders": "Fames, Bellum, Morbus and Funus: Famine, War, Plague and the Funeral, named in the Roman tongue. They go before [Apocalypse]. They will not attack you first. They will ask you a question. Answer it.",
+      "apocalypse": "The end of the world, locked in the first cell Arawn ever built. He is not angry. He is curious. He will ask you why you came. Bring a hundred, and clerics, and do not lose heart when he takes to the air.",
+      "sacristan": "The keeper of the sacred vessels. He still walks his round on the high walk, though the vessels are long gone. Stand in his way.",
+      "lich lord ilron": "Most of the tales I know end at him. He shows you four of himself; only one is true. Find the one that matters.",
+      "the mill": "The old hands' name for Caer Sidi: it turns, and it grinds. They mean it fondly. Mostly.",
+      "inconnu": "Arawn's pale servants, who guide Albion's raids through the gaol. They will not go past the four riders. Ask about [Arawn's gaol] to know why they come at all.",
+      "tiers": "Reckoning hall at the bottom, then the crypts, the galleries and chapels, the yard and the sacristy walk, and at the top the first cell. Climb in that order; the [four riders] keep the last stair.",
+      "caldey": "The last farmed island of the isles, across the water from Caer Sidi. Its fishermen count the fortress's nine lamps on notched sticks and leave one window unlit toward the sea. Hedd keeps the ferry and the count. See [the mill] and [inconnu].",
+      "prydwen roll": "Prydwen Keep's roll began as the muster of Arthur's ship: three columns of names, seven marked home, an eighth mark scraped away. Iddon the steersman nailed it to the door of the keep he built. See [bards].",
+      "masons": "The Inconnu say the quiet dead built Caer Sidi, a season's work each for their rest, and that no two tool-marks in it are in the same hand. The Church says the marks are the Devil's. See [tiers]."
+    }
+  },
+  "book": {
+    "title": "The Turning Gaol",
+    "pages": [
+      "The Turning Gaol, set down by Brother Cadoc of Caer Gothwaite, who went up with the third company of the autumn and came down again. Arthur sailed Prydwen to the fortress that turns, so the old song goes, with three shiploads of men, and seven came home. I always took the song for a riddle. Then I stood on the shore beyond Caldey and watched the walls of Caer Sidi move in the dusk, slow as a millstone, and I understood that the bards had been plain. Its door is never where you left it. The Inconnu who guided us said that was the point. A gaol should not be easy to leave.",
+      "The Inconnu told us what the place was for. Their lord Arawn keeps the dead, and most of the dead go quietly. Some do not: the oath-breaker, the coward, the warlord who would not lay down his sword, the priest who wanted to come back. Arawn built Caer Sidi for them and gave it keepers. A reckoner to count them in. A provisioner to feed them from a cauldron that will not boil a coward's meat. A sacristan to keep the vessels. Knights to keep the doors, and a warden over the crypts where the prisoners sleep between their reckonings.",
+      "When the witch began stealing the dead of Annwn, the Inconnu said, the prisoners learned that a door can be opened from the wrong side. They did not escape. They did something worse. They stayed, and made themselves the masters of their own prison. The liches took the galleries. The blood-lord took the chapel. The warlord took the yard and drilled the keepers' own knights. The warden let them think they had won and then gave them orders. The reckoner went on counting, and no one knows any more for whom he counts. The fortress turns on.",
+      "We went up through the crypts with eighty and lost nine to the warden's court in the first hall. In the gallery Ilron showed us four of himself, and our wizards spent their fire on the wrong three, and that is where the company I went up with the summer before had broken. This time Dame Ysolde waited until each image moved, and found the one who had grown old in the gaol. Sanguis we killed twice; the second time the floor of his chapel went from red to grey, and our priests wept, which they will not admit.",
+      "At the top of the fortress is the first cell Arawn built, and the last he locked. Four riders wait before its door, and they are courteous, and they ask a question. The first of them, Fames, looked at Dame Ysolde for a long time and asked whether we would challenge fate. She said yes. He told us we would be given a little time to prepare. In that time nobody spoke except to pray. Then War came, and Plague, and the Funeral, each in his turn, and then the door opened, and the end of the world came out of it, and was curious about us.",
+      "I will not write what Apocalypse said to us, because he said it to each of us, and it was not the same. I will write that he rose into the air twice and that both times we nearly broke, and that when we broke his harbingers he praised us and meant it. When he fell, the fortress stopped turning for the space of a breath. Our Inconnu guide, who had waited at the foot of the stair, said afterwards that he felt it below, and that his lord would know. We came home with seventy-one. I have counted them every night since.",
+      "Told by Hedd, ferryman of the Caldey strand, to a clerk of the garrison of Caer Gothwaite, and set down in his words. My father taught me the lamps before he taught me the oars. Nine on the sea side, one to a floor, and they come round slow. You notch the stick for each. When the top one looks at you, you look at your feet. That is all the knowing there is. People from Camelot ask me how to cross. I tell them I have never crossed and never will, and that the only boat I ever saw come back from that water came back empty, with its oars shipped neat as a priest's hands, and the tide brought it in to my strand the night before Dame Ysolde's people went over. I sold it. Nobody on Caldey would row it.",
+      "The first leaf of the Prydwen roll, described by a clerk of Prydwen Keep for the readers of Caer Gothwaite. A strip of vellum a forearm long, three columns, a hundred and some names to each, in a harbour clerk's hand of Arthur's day; the first column headed with the name of the ship. Seven names bear a small mark at the left, in the same ink. One is Iddon, steersman, whose sentence about the masons the keep also holds. In the margin of the third column is an eighth mark, scraped. Under glass it shows faintly. The keep does not lend the strip and will not have it moved; when the Church asked, the castellan of that day replied that it was nailed up by a man who had earned the right to choose where his ship's names hung.",
+      "Ennyn of the Inconnu, as Brother Cadoc took him down on the walk from the stair, at my asking. You ask why we sit. Because a servant does not go into his master's bedchamber to see if the master sleeps. He listens at the door. I listened. I heard the first rider's grace run out, and the next, and the last. I heard the door. Then I heard nothing for so long that I began to count, as the Reckoner counts, and I had counted past the number of your company before I heard the fortress stop. You did not feel it up there. It is felt at the bottom of things. My lord will have felt it in Annwn. I hope he was pleased. I do not know that he was.",
+      "A leaf of the Reckoner's ledger, carried down from the reckoning hall by a knight of Dame Ysolde's company and read for us by the Inconnu, who would not touch it. Columns of names in a hand like falling rain, each with a deed and a debt, and a mark at the end that the Inconnu say means counted in. Halfway down the leaf the names stop and a single line runs across both columns: none in, none out. Below it the names begin again in the same hand, but the mark at the end of each is different, and the Inconnu, asked what the new mark means, conferred among themselves for some time and then said they did not know. I have kept the leaf. I do not open it after dark."
+    ]
+  },
+  "bosses": [
+    "apocalypse",
+    "fames",
+    "bellum",
+    "morbus",
+    "funus",
+    "soul-reckoner",
+    "crypt-lord",
+    "lich-lord-ilron",
+    "lord-sanguis",
+    "lich-lord-sanguis",
+    "warlord-dorinakka",
+    "host",
+    "silencer",
+    "bane-of-hope",
+    "fates-chosen",
+    "skeletal-sacristan",
+    "spectral-provisioner"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "caer-sidi-prisoners",
+    "morgana"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Shore Beyond Caldey",
+      "text": "Caldey is the last island of the Shrouded Isles that the living can farm, and its fishermen are the only folk of Albion who see Caer Sidi every day of their lives.\n\nFrom the western strand of Caldey, on a clear evening, the fortress stands out on the water where no rock is: a pale wall in tiers, with lights in it that burn without flame. It is not always there. The fishermen say it stands whenever the tide is on the turn and is gone when the tide stands still, and that a boat which rows toward it at slack water rows all night and comes home with the dawn behind it. Hedd, who has kept the ferry at the strand for forty years, and his father before him, has watched the fortress every evening of his life and has never once seen its door in the same place twice.\n\nThe Caldey folk have a way of reading it. They count the lamps. Caer Sidi shows nine lamps on its seaward face, one to a tier, and as the fortress turns they pass behind its shoulder and come round again, slow as the hand of a water-clock. Hedd's family keep the count on a notched stick, a notch for each lamp that comes round, and they say that when the ninth lamp, the topmost, faces the strand, the door faces it too. They do not use the count to cross. They use it to know when not to look.\n\nThe custom is older than Albion's coming to the isles. When the Inconnu first came up out of the ground at Caldey, in the first season of Morgana's war, to offer their lord's friendship to the knights of Albion, the fishermen had already been leaving one lamp unlit in every window that faced the sea, for longer than anyone could say, so that whatever looked out of the ninth lamp would see only dark houses. The Inconnu told the knights that this was wise. It is the only time the Caldey folk remember the Inconnu praising anything they did.\n\nThe bards of Albion sang of the fortress long before any of them saw it. In the old song it is the fortress that turns, where a prisoner lies chained in the otherworld and Arthur's men went in three ships and seven came home. The scholars of Camelot have found the same turning walls in the poems of the western bards, and argue over whether some bard of Arthur's day saw Caer Sidi from this strand or only dreamed it. Hedd answers as his father did. The song, he says, was made by a man who stood here at the turn of the tide. Nobody who had only dreamed it would have thought to count the lamps."
+    },
+    {
+      "title": "The Pale Stone",
+      "text": "Arawn built Caer Sidi of the stone of Annwn, and he built it with the labour of the quiet dead.\n\nThe Inconnu tell it so. Most of the dead who came down the four roads into Annwn asked nothing but rest, and Arawn gave it to them; but rest, in his kingdom, was a thing earned, and the quiet dead earned it with a season's work apiece. They quarried the pale stone from under the land that would become Albion, from the same seams the Inconnu later cut their own city out of. They carried it to the edge between the worlds, where the sea of the isles meets the sea of the dead, and laid it in tiers. When a mason's season was done he set his tools down on the course he had laid and walked on into Annwn, and the next soul took them up. The Inconnu say the tool-marks on every course of Caer Sidi are in a different hand, and that no two hands in the whole fortress are the same.\n\nArawn set two things in place before any wall: the Reckoner's table at the bottom, and the first cell at the top. Everything between was built to keep them apart. Above the reckoning hall the masons cut the crypts, row on row of niches where the prisoners would sleep between their reckonings. Above the crypts they raised the galleries, narrow and lamplit, for those who had to be kept from the rest: the priests who had found ways back from death, the sorcerers, the men who wore other men. Above the galleries went the chapel and the high walk, the yard where the keepers' knights drilled, and the larders. Then the long stair, the riders' hall, and the cell.\n\nLast came the turning. Arawn set the whole fortress on an axle of the same pale stone, running up through the heart of every tier, and the Inconnu say it turns because the dead keep coming: every soul that passes the Reckoner's table moves it by the width of a hair. A gaol whose door stands still is a gaol whose prisoners learn the way to it. Caer Sidi's door has not stood still since the first soul was counted in.\n\nThe Church of Camelot disputes the masons. Its priests at Caer Gothwaite say no Christian soul ever laboured for a heathen lord of the dead, and that the tool-marks are the Devil's. The Inconnu do not argue. They say only that the masons of the later courses came down the roads in the centuries when Rome held the province, and that one of them cut his name into the fourth course of the crypts in the province's own tongue, and that the Church is welcome to go and read it."
+    },
+    {
+      "title": "Arawn's Household",
+      "text": "Every keeper of Caer Sidi was given one task and no other, and the Inconnu say that is why most of them are still at it.\n\nThe Reckoner came first, a clerk of the dead with a table, a ledger and a patience without end, and every prisoner passed his table on the way in. The warden of the crypts came next, the best of all the keepers, who knew every niche in the deep rows and who slept in each. Custodians kept the doors and crypt knights the corridors, and they drilled in the yard between watches as soldiers of the living do. The sacristan kept the chapel's vessels: its cups and lamps, its vestments, and the rim of the cauldron that nine maidens of Annwn once kept warm with their breath, which Arawn lent to his gaol so that its prisoners might be fed. The provisioner fed them from it. The western bards' poems say the cauldron of the lord of Annwn would not boil a coward's meat, and the Inconnu say the provisioner made sure every coward in Caer Sidi knew it.\n\nTwo keepers had stranger work. In a gaol of the dead, noise is a kind of hope; prisoners tap on the stone, call through the walls, sing. Arawn set the Silencer to end it, and where he walked in the inner halls, footsteps made no sound. And every prison needs a keeper whose task is not to hold the prisoners but to make them stop believing in the door. In Caer Sidi that was the Bane of Hope, which moved prisoners without warning to the far ends of the fortress, so that men who had planned an escape together woke three halls apart and alone.\n\nThe prisoners were sorted by what they would not do. The oath-breakers would not keep faith and the cowards would not stand. The warlords would not lay down their swords; one of them, Dorinakka, killed two keepers on the road and was sent to the yard for it. The priests would not stay dead, and Ilron, whose god nobody remembers, was put in the galleries with them. A magistrate of the old province, Sanguis, who had bought three lifetimes with other men's blood, was given a chapel of his own, because the keepers believed in fitting punishments. A body-thief who arrived wearing more bodies than one man should was given a niche for each and called the Host; no keeper ever learned which body was the man, and the Reckoner, who writes every soul down once, wrote him down once and left the other niches blank.\n\nWho the keepers were before they were keepers, the accounts do not agree. The Church calls them demons. The Inconnu say they were dead men and women who, offered rest, asked for work instead, and that Arawn honoured the asking. The Inconnu add that they themselves were once offered the same choice, and are still deciding."
+    },
+    {
+      "title": "Prydwen's Muster",
+      "text": "Prydwen Keep, on Albion's old frontier, is named for Arthur's ship, and its roll began as that ship's muster.\n\nWhen Arthur sailed for the fortress that turns, he took three shiploads of men, and a clerk at the western harbour wrote the name of every man who went aboard on a single strip of vellum: three columns, one to a ship, with Prydwen's column first. The clerk's name is not on the strip. When Prydwen came back alone, a season later, the same clerk met her on the quay and drew a mark beside the name of each man who stepped off. There are seven marks. The bards have made the seven into a riddle ever since; the strip makes them seven men, with names.\n\nOne of them was Prydwen's steersman, Iddon. The roll says he would not go to sea again and asked the king for land as far from the water as Albion went, and Arthur gave him a hill on the eastern border, where the road ran out toward the lands that are now Midgard's. Iddon built a watch-house there and named it for his ship, and he brought the clerk's strip with him and nailed it to the door. It is the first leaf of the Prydwen roll. Every name the keep has written since has been written after it: the knights of the frontier wars, Sir Arward's thirty, the nine dead of the Dragon's Walk, the companies that went down into the kingdom below the realms.\n\nWhat Iddon saw in Caer Sidi he never told, or never told anyone who wrote it down. The roll keeps one sentence of his, set down by his grandson: that the fortress had been built by men who were tired, and that he had felt sorry for them. The Inconnu, shown the sentence in Caer Gothwaite, said that a steersman would notice the masons, since a steersman's whole trade is reading the work of other hands.\n\nThere is an eighth mark on the strip, in the margin of the third column, scraped almost away. The clerks of Prydwen Keep have argued for generations whether it is an eighth man home who did not wish to be counted, or a mark made in error and corrected, or something that came off the ship that was not a man. The bards, who prefer seven, ignore it. The Church once asked for the strip to be taken down and kept in a chapel; the keep refused, and it is still nailed where Iddon put it, under glass now, beside the door."
+    },
+    {
+      "title": "The Night the Count Stopped",
+      "text": "Arawn learned that his gaol had risen from the Reckoner's ledger, which for one night had nothing in it.\n\nThe rising came in the second year of Morgana's war, when the witch began drawing the dead out of the Deadlands to march in her armies, and word passed through Caer Sidi that the door of Annwn could be opened from the wrong side. Word goes through a gaol faster than any gaoler. The prisoners did not escape, because escape would have meant walking out into a world that had forgotten them. They broke the keepers instead, and the Inconnu who have read the Reckoner's ledger since say that the night it happened is the only page in it with a single line: none in, none out. Every soul in the fortress was busy, and none passed the table.\n\nThe galleries rose first. Their priests and sorcerers had been waiting longest, and Ilron had spent his waiting learning to be in several places at once; he took a gallery and filled it with himself, and only one of him there has aged a day since he was locked in; men who stand too close to the others fall still as sleepers. Sanguis gathered his blood mages in the red chapel, and its floor, which had been red since he came, began to drip. In the yard Dorinakka found the crypt knights leaderless and did what he had always done: he drilled them, and they have marched at his back since, in better order than they ever kept for Arawn, and come when he calls. The Host walked out of all his niches in every direction at once and took whatever he met.\n\nSome keepers fell and some turned, and some did neither. The warden of the crypts let the prisoners break the lesser keepers and believe they had won, and then walked out among them and gave them orders, and they obeyed; the Crypt Lord, they call him now. The Silencer chose no side. That night every prisoner in the inner halls called out at once, the Inconnu say, and his hush grew so deep around so many voices that the inner halls have been soundless ever since. The Bane of Hope went on with its work on prisoner and rebel alike, and the prisoners learned to avoid its crossing. The sacristan's vessels were broken or carried off, and the cauldron's rim went down to the larders, where it lies cold; the provisioner guards the empty shelves and the sacristan walks his round of the high walk, checking for cups that are not there.\n\nNobody touched the Reckoner. The prisoners feared being counted out more than they feared Arawn. The morning after the empty page, he turned to a fresh leaf and went on counting, and the Inconnu say nobody knows any longer whom he counts for."
+    },
+    {
+      "title": "The Foot of the Stair",
+      "text": "The Inconnu will guide Albion's knights through every tier of Caer Sidi but the last, and they will not say why until they are asked three times.\n\nThey are Arawn's people, pale and quiet, and they came up out of the ground at Caldey in Morgana's war because the witch was stealing their lord's dead. Their city lies under the isles, cut from the same pale stone as the gaol, and they know Caer Sidi the way a household knows its master's other house. They know which crypts the Crypt Lord's ranks stand in and which niches the Host still uses. They know the Sacristan's round to the step. At the foot of the long stair to the riders' hall they stop, sit down on the third step, and wait.\n\nAsked once, the Inconnu say it is not their place. Asked twice, they say it is not their lord's wish. Asked a third time, they give the reason, and it comes from the four-roads law that binds the riders. An ending may take only those who come to it early by choice, and so the riders must ask each climber whether he comes to challenge fate. The Inconnu are the dead's own servants. They already belong to the end of things; they cannot come to it early, and so they cannot truthfully answer yes, and to answer no on their lord's own stair would be to say that they had climbed it for nothing. If Fames ever chose an Inconnu face, the law would have no answer, and the Inconnu say nobody, not even Arawn, knows what the riders would do with a question that has no answer.\n\nEnnyn, who guided Dame Ysolde's company, gave Brother Cadoc a shorter version on the walk down: a servant does not go into his master's bedchamber to see if the master is asleep. He listens at the door.\n\nThe Church of Camelot has never trusted the Inconnu, and its priests at Caer Gothwaite say the stair is only the place where the Inconnu stop pretending to be Albion's friends. Cadoc, who is one of those priests, disagreed in writing. He noted that Ennyn sat on the third step through every hour Ysolde's company spent above, and that when the company came down, the Inconnu had not moved, and his cloak was wet through, though there is no rain inside Caer Sidi. Ennyn would not say what had wet it. Cadoc thought it was the fortress's own sweat, at the axle's top, where the turning is hardest."
+    },
+    {
+      "title": "The Lamp at Caer Gothwaite",
+      "text": "Albion's town in the isles is Caer Gothwaite, on the Isle of Glass, and its garrison keeps a lamp lit in the chapel window that faces Caer Sidi for as long as any company of theirs is inside.\n\nThe custom began with the summer company. It went up in the first summer after the rising was known in Camelot, under Sir Tegid of Caer Gothwaite, with eighty men and women and Brother Cadoc among its priests, and it broke in Ilron's gallery when its wizards spent their fire on the wrong three images. Tegid died there. The Inconnu carried out the living, and Cadoc came down the tiers on an Inconnu's back, and found when he reached the shore that somebody at Caer Gothwaite had lit the window lamp on the night they went in and had kept it trimmed for nine days. Nobody would say who. The garrison has kept the custom since, and the lamp has a keeper now, a sacristan of the living whose only task, like the keepers of the gaol, is the one task.\n\nThree companies went up that autumn. The first was lost in the crypts among the warden's ranks and none of it came down; its names are the first under the lamp, cut into the sill. The second climbed past the Bane of Hope's crossing, and the Bane scattered it through the fortress, and its captain, Dame Nest of the ring-forts, walked back to the shore alone through four tiers of the dead, calling the names of her company, and found eleven of them. She would not go up again. She trained the third company instead.\n\nThe third was Dame Ysolde's, and it came down with seventy-one of its eighty and the end of the world ended behind it. On its way up it broke the Bane of Hope, which had scattered Dame Nest's company, and the Bane has not moved a living soul through the fortress since; the Inconnu say the part of it that cast men away was the part that believed they would come back. The lamp was put out the morning it came home, and the garrison says the Caldey fishermen, watching from their strand across the water, lit every window that faced the sea that night for the first time in living memory, because Hedd's stick said the ninth lamp of the fortress was dark.\n\nThe sill under the chapel window at Caer Gothwaite is cut with names now on both sides. The garrison's clerks keep a copy for the Prydwen roll. Brother Cadoc reads the sill on the night of the autumn's first frost, aloud, the whole of it, beginning with Sir Tegid, and has asked to be the last name on it."
+    },
+    {
+      "title": "If the Mill Stops",
+      "text": "Everything in Caer Sidi depends on the turning, and the turning stopped once.\n\nIt stopped for the space of a breath when the end of the world fell before Dame Ysolde's company. Ennyn felt it on the third step and said his lord would know. Hedd felt it on the strand of Caldey, where every lamp of the fortress stood still at once on his stick, the ninth facing the shore, and dark. He says the sea went flat from the strand to the fortress, and that he could hear, very far off across the water, a sound like many people putting down tools. Then the lamps moved again, and the tide turned, and the fortress was gone until the evening.\n\nWhat would happen if it stopped for good is the one question on which the Inconnu, the Church and the bards all give an answer, and no two answers match. The Inconnu say a gaol whose door stands still is a gaol whose prisoners learn the way to it. Every prisoner in Caer Sidi knows now that the door of Annwn swings both ways; if the door of the gaol stopped too, they would only need to walk. They would not walk into Annwn. They would walk to Morgana, who has spent her war taking the dead that would go quietly, and would be glad of the dead that never would. The Church says the mill grinds the damned, and that a stopped mill is a mercy God has not chosen to grant. The bards say nothing turns forever, and that the song of seven was written for the day it stops.\n\nArawn says nothing at all, but the Inconnu say he walks to the foot of the riders' stair once every winter, alone, and looks up it, and goes back down. They think he is checking the lock. The Caldey folk think he is listening for the masons. Hedd's father once saw a pale figure on the fortress's lowest tier at the turn of the tide, standing with its hand flat on the stone, the way a man feels a wall for the warmth of a fire on the other side.\n\nHedd has cut one long mark across the whole width of his tally stick for the night the lamps stood still. He keeps the stick over the ferry-house door, and says he hopes never to cut another mark like it, because the next time the lamps stand still, he does not think they will move again."
+    }
+  ]
+}

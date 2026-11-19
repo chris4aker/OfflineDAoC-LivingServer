@@ -1,0 +1,122 @@
+{
+  "id": "olen-den-bartender",
+  "name": "Olen den Bartender",
+  "npcNames": [
+    "Olen den Bartender"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "jarala-den-kvinnlig",
+      "relation": "the morvalt woman who stands at his bar"
+    },
+    {
+      "id": "snemel-den-forsumlig",
+      "relation": "the watch-captain who should be keeping the drinkers in order"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Olen den Bartender is a level-67 morvalt in the hall of counsel in Trollheim's upper city (36620, 43013), among forty-four berusade vaktare (level 52-58) with Jarala den Kvinnlig beside him and bloodthirsty butchers (blodtorstig slaktare) nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "His template makes him a GameEpicNPC (source/server/GameServer/gameobjects/GameEpicNPC.cs): immune to confusion and nearsight while alive, 10,000 + 125 x level health, 1.5x damage factor.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164636, ClassType GameEpicNPC)"
+    },
+    {
+      "text": "Template: aggro level 100 at range 400, speed 225, Morvalt Samhalle faction (bring-a-friend).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish berusade vaktare means 'drunken watchmen'; den is 'the'.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    },
+    {
+      "text": "Trollheim's bestiary names Olen den Bartender.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=67"
+    }
+  ],
+  "story": "In the hall of counsel where the Uppat once sat in a ring and kept order, there is a bar, a door laid on two barrels, and a morvalt named Olen keeps it. The skalds of Jordheim tell how he came to it: he was the first morvalt into the hall when the gates broke, and he found the Fathers' ale still in the jars, and drank it, and it was the first thing in his life that was not raw. He has been pouring it ever since.\n\nThe drinkers are the watch. The morvalt of the upper city set a guard on the hall of counsel when they took it, and the guard came in and did not go out again, and the Valkyn call them by the morvalt's own word for them now, the drunken watchmen. There are more of them in that hall than anywhere else in Trollheim, shouting, quarrelling over the stone seats, and every one of them would die for the bar before he would die for the city. Olen pours for all of them. Nobody else is served. The Valkyn say he keeps the jars full from the Fathers' cellars and from something of his own that he brews in the dark, and that the Fathers' ale ran out long ago.\n\nHe is a great heavy morvalt, quicker on his feet than his bulk suggests, and his drinkers' quarrels have made him hard to put down; the Valkyn say no shaman's fog has ever turned his head or closed his eyes, because a man who has stood behind a bar that long has seen every game a drunk can play. When a stranger comes too near the door laid on barrels, he comes round it, and the watch comes with him.\n\nJarala den Kvinnlig stands at the end of his bar. The Valkyn say she is the only one of them he respects, and that she does not drink. Snemel, the captain whose work it is to keep the watch sober, stands further off among the butchers and has not been near the bar in a long time. The trolls of Dyrfjall, who mean to sit in the ring again one day, say Olen is the morvalt they will be sorriest to throw out, and that if the Fathers come home he will be the one who pours for them.",
+  "legend": "Olen den Bartender is a level 67 morvalt in the hall of counsel in Trollheim's upper city, surrounded by about forty drunken watchmen (berusade vaktare, 52-58) with Jarala (60) standing right next to him and bloodthirsty butchers nearby. He's an epic-class NPC by template: around 18,000 health, hits 1.5x harder than a normal 67, immune to confusion and nearsight, and he's Morvalt Samhalle so he brings friends. He attacks if you get within 400. Do not fight him in the bar: pull him out with range, clear the edge of the drunks first, and expect Jarala to come too. Bring a full group or two.",
+  "yells": {
+    "aggro": [
+      "Bar's closed. To you.",
+      "Watch! A customer who won't pay!",
+      "Family drinks. You are not family."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Somebody pour me one. NOW."
+      }
+    ],
+    "death": [
+      "Keep... the jars... full...",
+      "For when they... come home..."
+    ],
+    "slay": [
+      "Out.",
+      "Last call for you.",
+      "Mop that up."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The hall of counsel. A door on two barrels. Shouting.",
+      "Drunken watchmen sprawl on the Fathers' stone seats."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The drunken watch roar for their bartender."
+      }
+    ],
+    "realmFirstKill": "Olen den Bartender is dead. The jars stay full."
+  },
+  "botLines": {
+    "briefing": [
+      "olen is epic class, ~18k hp, hits hard, no confuse or ns",
+      "forty drunks in that bar, pull him out",
+      "jarala is right next to him, she comes too",
+      "morvalt samhalle, he brings friends, aggro range 400"
+    ],
+    "aftermathWin": [
+      "olen down, we closed the bar",
+      "pulled him clean with jarala, fine",
+      "never been served but we got the bartender",
+      "drunks everywhere but we lived"
+    ],
+    "aftermathLoss": [
+      "fought in the bar, the whole watch came",
+      "jarala plus olen too much",
+      "got too close and he came round the bar",
+      "ran out of power halfway through his hp"
+    ],
+    "rumour": [
+      "olen drank the fathers ale when the gates broke, first thing he ever had that wasnt raw",
+      "nobody has ever been served at olens bar",
+      "the drunken watch never left the hall of counsel",
+      "if the fathers come home olen will pour for them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Olen den Bartender",
+    "text": "The keeper of the bar in the hall of counsel, among the drunken watch. [Jarala den Kvinnlig] stands at the end of his bar. See [Olen]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: I went to the door of the hall of counsel with a Valkyn guide, once, and looked in. The drunken watch were singing, if that is the word, and on the bar was a cup, a Fathers' cup of grey stone, full, set apart from the others with nobody touching it. The guide said it is always there and always full and that Olen will kill any morvalt who drinks from it. I asked her who it was for. She did not answer, but she stood very straight in the doorway for a while before we went.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed Olen's bar in Trollheim's hall of counsel in {minutes} minutes.",
+    "loss": "Olen and the drunken watch threw {raidLeader}'s party from {realm} out of the hall of counsel after {minutes} minutes."
+  }
+}

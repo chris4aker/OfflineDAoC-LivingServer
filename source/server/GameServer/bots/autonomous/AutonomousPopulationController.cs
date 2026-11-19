@@ -38,6 +38,9 @@ public static class AutonomousPopulationController
     // in run 22's allocation trace); a retired bot's history only gains a pending delete, which the command poll runs.
     private static readonly HashSet<long> OrphanChecked = new();
     private static volatile OfflineWorldBotRecord[] _cachedRoster = Array.Empty<OfflineWorldBotRecord>();
+    // The roster the population logs in from: _cachedRoster without the gamebots of the custom class (owner 2026-11-17: bots
+    // never play the Sluaghbinder). They stay on _cachedRoster, so they keep their guild, characters and items.
+    private static volatile OfflineWorldBotRecord[] _loginRoster = Array.Empty<OfflineWorldBotRecord>();
     private static bool _cachedEnabled;
     private static int _cachedRampMinutes = 15;
     private static int _polling;
@@ -61,10 +64,13 @@ public static class AutonomousPopulationController
         }
         if (previouslyOnline.Length > 0)
         {
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
+        RetireBuffBotCopies();
         RefreshControlPlane(force: true);
+        RetireCustomClassBots(_cachedRoster);
+        LogEraBuildCensus(_cachedRoster);
         _nextCommandPollUtc = DateTime.MinValue;
         _nextOrphanRepairUtc = DateTime.MinValue;
         lock (OrphanChecked) OrphanChecked.Clear();
@@ -84,6 +90,7 @@ public static class AutonomousPopulationController
         PendingSpawns.Clear();
         PendingCommands.Clear();
         _cachedRoster = Array.Empty<OfflineWorldBotRecord>();
+        _loginRoster = Array.Empty<OfflineWorldBotRecord>();
     }
 
     private static void Poll(object state)
@@ -104,7 +111,7 @@ public static class AutonomousPopulationController
                 QueueOwnerCommands(repairOrphans);
             }
 
-            OfflineWorldBotRecord[] roster = _cachedRoster;
+            OfflineWorldBotRecord[] roster = _loginRoster;
             int desired = AutonomousPopulationRamp.DesiredActiveCount(_cachedEnabled, roster.Length, _cachedRampMinutes, nowUtc - _startedUtc);
             int online = AutonomousBotRegistry.Count;
             // Living Server schedules (off by default): only bots scheduled online are logged in, and the
@@ -126,7 +133,12 @@ public static class AutonomousPopulationController
                 missing = desired - online - PendingSpawns.Count;
             _populationSatisfied = missing <= 0;
             if (!_rampFinished && AutonomousPopulationRamp.Finished(_cachedEnabled, _cachedRampMinutes, nowUtc - _startedUtc, missing <= 0))
+            {
                 _rampFinished = true;
+                GameBot.SpecRefundLog.Flush();   // the saved bots' refunds of this start, in one line
+            }
+            else if (_rampFinished)
+                GameBot.SpecRefundLog.Flush();   // bots refunded since (nothing when there were none)
             if (missing <= 0)
                 return;
 
@@ -205,7 +217,7 @@ public static class AutonomousPopulationController
         try
         {
             if (prepared.Generation != Volatile.Read(ref _loginGeneration) || _timer == null) return;
-            OfflineWorldBotRecord record = _cachedRoster.FirstOrDefault(candidate => candidate.BotId == botId);
+            OfflineWorldBotRecord record = _loginRoster.FirstOrDefault(candidate => candidate.BotId == botId);
             if (record == null || record.IsRetired || record.IsOnline || AutonomousBotRegistry.Contains(botId))
                 return;
 
@@ -393,13 +405,123 @@ public static class AutonomousPopulationController
         // longer holds the shared write lock that game-loop transactions wait on.
         _cachedEnabled = ReadBool("population_enabled", false);
         _cachedRampMinutes = ReadInt("startup_ramp_minutes", 15);
+        // Players' hired companions (HiredCompanions165) are logged in by their players, never by the population: loaded
+        // first, so none is ever taken for a gamebot (if their table can't be read, this poll logs in nobody).
+        HiredCompanions165.EnsureLoaded();
         _cachedRoster = DOLDB<OfflineWorldBotRecord>
             .SelectObjects(DB.Column("IsRetired").IsEqualTo(false))
+            .Where(record => !HiredCompanions165.IsHired(record.BotId))
             .OrderBy(record => record.BotId)
             .ToArray();
+        _loginRoster = CustomClassBotRetirement.LoginRoster(_cachedRoster);
         // A gamebot taken off the roster (launcher removal, retirement, test-roster rollback) leaves its guild.
         long[] rosterIds = _cachedRoster.Select(record => record.BotId).ToArray();
         NpcService.Instance.Post<long[]>(ids => AutonomousBotGuilds.Reconcile(ids), rosterIds);
+    }
+
+    /// <summary>
+    /// Owner rule 2026-11-17: bots never play the custom class. A gamebot that is already a Sluaghbinder (test worlds have
+    /// some) is kept, character and items, and never logged in again; once per start each says so in the log
+    /// (BOT_CUSTOM_CLASS_RETIRED) and its launcher row says so in the Activity column. Reversible: nothing is deleted and
+    /// IsRetired (the launcher's delete request) is not set.
+    /// </summary>
+    private static void RetireCustomClassBots(OfflineWorldBotRecord[] roster)
+    {
+        try
+        {
+            OfflineWorldBotRecord[] kept = CustomClassBotRetirement.Kept(roster);
+            var changed = new List<OfflineWorldBotRecord>();
+            foreach (OfflineWorldBotRecord record in kept)
+            {
+                Log.Info(CustomClassBotRetirement.LogLine(record));
+                if (CustomClassBotRetirement.MarkActivity(record))
+                    changed.Add(record);
+            }
+            if (changed.Count > 0)
+            {
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+                    GameServer.Database.SaveObject(changed.Cast<DataObject>());
+            }
+        }
+        catch (Exception exception)
+        {
+            Log.Error("Custom-class gamebots could not be marked (they are still never logged in)", exception);
+        }
+    }
+
+    /// <summary>
+    /// Owner decision 2026-11-18: the No Lifer buffbots an earlier build saved into the roster (before #334) are retired, kept
+    /// and never logged in, never deleted. Once per world (living_server_world_repairs), before the first roster read; see
+    /// <see cref="BuffBotCopyRetirement"/> for how a copy is told from a gamebot. If anything fails, nothing is recorded and
+    /// the next start tries again.
+    /// </summary>
+    private static void RetireBuffBotCopies()
+    {
+        try
+        {
+            if (BuffBotCopyRetirement.AlreadyRan(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS))
+                return;
+            HiredCompanions165.EnsureLoaded();
+            OfflineWorldBotRecord[] rows = DOLDB<OfflineWorldBotRecord>.SelectAllObjects().ToArray();
+            BuffBotCopyRetirement.Result result = BuffBotCopyRetirement.Find(rows, HiredCompanions165.IsHired,
+                BuffBotCopyRetirement.PercentFor(ServerProperties.Properties.BOT_NOLIFER_BUFFBOT_PERCENT));
+            var changed = new List<OfflineWorldBotRecord>();
+            foreach (BuffBotCopyRetirement.Copy copy in result.Copies)
+                if (BuffBotCopyRetirement.Retire(copy))
+                    changed.Add(copy.Record);
+            if (changed.Count > 0)
+            {
+                bool saved;
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+                    saved = GameServer.Database.SaveObject(changed.Cast<DataObject>());
+                if (!saved)
+                {
+                    Log.Error($"{BuffBotCopyRetirement.SummaryLogTag} the retired copies could not be saved; tried again next start");
+                    return;
+                }
+            }
+            foreach (BuffBotCopyRetirement.Copy copy in result.Copies.Where(copy => changed.Contains(copy.Record)))
+                Log.Info(BuffBotCopyRetirement.RetiredLine(copy));
+            foreach (OfflineWorldBotRecord record in result.Suspected)
+                Log.Warn(BuffBotCopyRetirement.SuspectedLine(record));
+            Log.Info(BuffBotCopyRetirement.SummaryLine(result, changed.Count));
+            MarkWorldRepairDone();
+        }
+        catch (Exception exception)
+        {
+            Log.Error($"{BuffBotCopyRetirement.SummaryLogTag} the buffbot copies could not be checked; tried again next start", exception);
+        }
+    }
+
+    private static void MarkWorldRepairDone()
+    {
+        string done = BuffBotCopyRetirement.WithRepair(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS);
+        DbServerProperty row = DOLDB<DbServerProperty>.SelectObject(DB.Column("Key").IsEqualTo(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS_KEY));
+        if (row != null)
+        {
+            row.Value = done;
+            GameServer.Database.SaveObject(row);
+        }
+        ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS = done;
+    }
+
+    /// <summary>
+    /// Era builds 1.2 (WP3): ERA_BUILD_CENSUS, one line a realm once per start, after the first roster read: the gamebots
+    /// by plan (era, kept, new) and by class against the era share (EraBuildCensus). Hired companions are not in the roster.
+    /// </summary>
+    private static void LogEraBuildCensus(OfflineWorldBotRecord[] roster)
+    {
+        try
+        {
+            foreach (string line in EraBuildCensus.Lines(roster.Select(record =>
+                         new EraBuildCensus.Entry(record.Realm, record.ClassId, record.SerializedBuildPlan)),
+                         OfflineDaoc.Shared.EraBuildCatalog.Default))
+                Log.Info(line);
+        }
+        catch (Exception exception)
+        {
+            Log.Error("ERA_BUILD_CENSUS could not be counted", exception);
+        }
     }
 
     private static volatile bool _populationSatisfied;
@@ -545,10 +667,41 @@ public static class AutonomousPopulationController
 
     private static void DeleteBot(long botId)
     {
+        // A player's hired companion is released by its player in game (/hire release), never deleted by a launcher command.
+        if (HiredCompanions165.IsHired(botId))
+            throw new InvalidOperationException("A hired companion is released by its player in game (/hire release), not deleted from the launcher.");
+        DeleteBotData(botId);
+    }
+
+    /// <summary>A hired companion its player released for good (HiredCompanions165.AskRelease): its record and everything it
+    /// carries are deleted, as the launcher's delete does for a gamebot. Its hire row is already gone.</summary>
+    internal static void DeleteHiredCompanion(long botId)
+    {
+        try
+        {
+            DeleteBotData(botId);
+        }
+        catch (Exception exception)
+        {
+            Log.Error($"HIRED_COMPANION_DELETE_FAILED bot={botId}: its record stays, retired", exception);
+            if (DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(botId)) is { } record)
+            {
+                record.IsRetired = true;
+                record.Activity = "Released by its player";
+                record.Dirty = true;
+                GameServer.Database.SaveObject(record);
+            }
+        }
+    }
+
+    private static void DeleteBotData(long botId)
+    {
         AutonomousBotGuilds.Remove(botId, null);
         OfflineWorldBotRecord record = DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(botId));
         if (AutonomousBotRegistry.TryGet(botId, out GameBot liveBot))
             liveBot.Delete();
+        AutonomousBotStatusPersistence.Forget(botId);
+        BotPeopleStore.Current.Forget(BotPersonKey.Of(botId)); // Bots as people: a deleted bot's skill, places and arcs go too
 
         string ownerId = AutonomousBotEconomy.GetOwnerId(botId);
         DbInventoryItem[] items = DOLDB<DbInventoryItem>.SelectObjects(DB.Column("OwnerID").IsEqualTo(ownerId)).ToArray();

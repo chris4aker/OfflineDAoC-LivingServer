@@ -8,7 +8,7 @@ namespace DOL.GS.Commands
     [CmdAttribute(
          "&lfg",
          ePrivLevel.Player,
-         "Broadcast a LFG message to other players in the same region",
+         "Post a looking-for-group message to your realm (a gamebot may answer by tell)",
          "/lfg <message>")]
     public class LFGCommandHandler : AbstractCommandHandler, ICommandHandler
     {

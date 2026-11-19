@@ -1,0 +1,86 @@
+{
+  "id": "eye-of-arawn",
+  "name": "Eye of Arawn",
+  "npcNames": [
+    "Eye of Arawn"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Eye of Arawn: NPC template 60160654, level 49, the cyclops model, faction Followers of Arawn, aggro 200 (range 500), no spells, respawn 300 s, alone on the north-eastern heights of Snowdonia at 556712, 318104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Passage to Eternity: Mistress Ainsliee of Snowdonia Fortress sends the realm to find the Eye of Arawn.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The cyclops who gave his eye to Arawn and the heights' tithe of sight are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The cyclopes of the north-eastern heights serve whoever pays them best, and for as long as the shepherds of Snowdonia can remember the Followers of Arawn have paid best. They pay in a coin the cyclopes value above silver. A cyclops has one eye, the hill-folk say, because it gave the other away in a bargain before the world was finished, and has wanted a better bargain ever since.\n\nThe greatest of them made the best bargain of all. He gave his one eye to Arawn's service, freely, and in return he was given sight of another kind: he sees what the lord of the dead sees, the hour a man will die and the road he will walk to it. His kin call him the Eye of Arawn and keep away from him, because a cyclops who has no eye and still looks at you is not one of them any longer.\n\nHe stands alone on the heights, where nothing else will stand near him, and he does not hunt. Mistress Ainsliee of Snowdonia Fortress sends the realm to find him, and will not say what she asks him. The Church of the fortress says that whoever goes to him should go knowing the answer already, because the Eye tells every visitor the truth, and the truth he tells is always the same: the road, and the hour.",
+  "legend": "Eye of Arawn, level 49 cyclops of the Followers of Arawn, alone on the north-eastern heights of Snowdonia. Nothing stands near him, so it is a clean fight: plain melee, no spells, but he hits like a 49 cyclops. A group in the mid forties takes him. Passage to Eternity sends you to find him for Mistress Ainsliee. Respawn five minutes.",
+  "yells": {
+    "aggro": [
+      "I have seen your road. It is short.",
+      "Arawn sees you. Through me."
+    ],
+    "phases": [],
+    "death": [
+      "The road... ends... I saw it..."
+    ],
+    "slay": [
+      "As I saw it.",
+      "Your hour. Exactly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "One eye, given away. Something else looks out."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Eye of Arawn has fallen. The heights are blind."
+  },
+  "botLines": {
+    "briefing": [
+      "eye of arawn, 49, alone on the ne heights. clean fight, hits hard",
+      "passage to eternity, find the eye for mistress ainsliee"
+    ],
+    "aftermathWin": [
+      "eye down. he said it would be a short road. he was wrong",
+      "eye of arawn down, back to the fortress"
+    ],
+    "aftermathLoss": [
+      "he said our road was short and he was right"
+    ],
+    "rumour": [
+      "[heard|someone said] the eye of arawn gave his eye to arawn for a new kind of sight",
+      "heard the other cyclopes wont stand near the eye of arawn"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "eye of arawn",
+    "text": "The greatest of Snowdonia's [cyclopes], who gave his one eye to Arawn's service and sees what the lord of the dead sees: the road and the hour. He stands alone on the north-eastern heights."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} closed the Eye of Arawn on the Snowdonia heights in {minutes} minutes.",
+    "loss": "The Eye of Arawn saw the road of {raidLeader}'s company of {realm}, and it was short."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "shaman-saelonna",
+      "relation": "the Followers of Arawn pay both"
+    }
+  ],
+  "tier": "minor"
+}

@@ -1,0 +1,120 @@
+{
+  "id": "borimo",
+  "name": "Borimo",
+  "npcNames": [
+    "Borimo"
+  ],
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "aliases": [
+    "the nearer giant"
+  ],
+  "facts": [
+    {
+      "text": "Borimo: template 770042 (it replaces the spawn's values), level 53, a granite giant elder's model at size 150, in the middle of the moor at 381777, 741975; aggro level 200 within 500, faction Granite Giants of Dartmoor, respawn 80 seconds; nothing of his faction within 1,200.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Borimo stands about 16,400 from Golestandt; Trahern, 7,100 from him, about 22,600.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Aggressive NPCs attack anyone in their aggro range, but pass over riders on a steed.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (CheckPlayerAggro: any aggro level above 0 attacks within the aggro range; riders on a steed are skipped)"
+    },
+    {
+      "text": "The name Borimo is unglossed (to verify). The quarrel of the nearer stone, the Roman measuring and Old Jory Hext's saying are Living Server writing; the quarrel itself is in the Dartmoor file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "In the middle of the moor, a short walk apart as giants walk, stand Borimo and Trahern, and they have quarrelled since before Rome over which of them stands nearer the Bed. The drovers of the Cornish road have told the quarrel to the clerks of Prydwen Keep for generations, and the clerks have written it down so many times that the roll calls it the old suit, as if it were a case at law that has never come to judgement.\n\nIt came to judgement once. In the days of the province a Roman surveyor of the legate's cohort, laying out the province's western bounds, set up his cross-staff on the moor and measured from each giant to the warm ground where the dragon lies, and found Borimo the nearer by a long way, and cut it on a boundary stone, and went home. Borimo has stood a little taller ever since. Trahern has never accepted the measure. The drovers say the stone with the surveyor's cut on it was found broken in pieces the next spring, and the pieces were nearer Trahern.\n\nBorimo is the elder of the two, and the stronger, and the prouder; he holds that standing nearest the Bed is the whole worth of a giant, and that a giant who stands farther off is only rock. He will not suffer a man on his ground, nearer or farther, and comes at any traveller who walks close, as if the man had come to measure him again. In all the years of the old suit neither giant has ever once crossed the moor to help the other. When Borimo is troubled he stands alone, as he has always preferred, and the drovers say Trahern watches from his own ground and is pleased.\n\nWhen he is broken he does not stay broken. Old Jory Hext, who drove the Cornish road for fifty years, said the moor would not allow it: \"the moor keeps its nearest stone.\" The Hexts walk their cattle wide of him still, and when a new drover asks which way to go round, the old ones ask him first whether he would rather be measured by Borimo or by Trahern.",
+  "legend": "Borimo is a level 53 named granite giant in the middle of Dartmoor. Despite the old Dartmoor notes, he is aggressive (aggro 200 from the template, range 500); walking near him is a fight, riding past is not. Nothing of his faction stands within 1,200, so he comes alone, and Trahern, 7,000 off, never joins. No spells or styles in the data, just a big giant swinging: a group of fifties, or a strong duo, handles him. Keep the fight in the middle of the moor and away from the Bed to the south-east, where the stonelords and the dragon are. He respawns in about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "You came to measure me again.",
+      "Nearer than him. Always nearer.",
+      "Off my ground."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Trahern laughs from his ground! He will not laugh long!"
+      }
+    ],
+    "death": [
+      "Still... nearer... than him...",
+      "Measure... it again..."
+    ],
+    "slay": [
+      "Measured.",
+      "Farther off now.",
+      "Ground into my ground."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A giant stands here, a little taller than it should.",
+      "Somewhere to the south, the ground is warm."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Borimo roars toward Trahern's ground."
+      }
+    ],
+    "realmFirstKill": "Borimo has fallen. Trahern is the nearer stone, for a while."
+  },
+  "botLines": {
+    "briefing": [
+      "borimo, 53 named giant mid-moor dartmoor. aggros at 500, the notes saying he doesnt are wrong",
+      "nothing near him, trahern is 7k away and never comes. just him",
+      "no spells, melee giant. 50s group or a solid duo",
+      "stay away from the bed se of him. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "borimo down. trahern's the nearer stone now lol",
+      "nobody came, like i said",
+      "easy giant, we never went near the bed",
+      "80 sec, go"
+    ],
+    "aftermathLoss": [
+      "walked up to him because the notes said no aggro",
+      "chased him toward the bed and ate stonelords",
+      "duo at 48, not enough",
+      "he was back before we got off his ground"
+    ],
+    "rumour": [
+      "[heard|someone said] borimo and trahern have argued since before rome about who stands nearer the bed",
+      "heard a roman measured them once and borimo won. trahern broke the stone",
+      "[heard|someone said] the hext drovers ask new drovers if they want to be measured by borimo or trahern",
+      "heard neither giant has ever helped the other once"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "borimo",
+    "text": "The elder of the two quarrelling giants in the middle of [dartmoor], who holds that standing nearest the Bed is the whole worth of a giant. A Roman surveyor of the old province once measured him the nearer; [trahern] has never accepted it. He suffers no one on his ground, and in all the years of the quarrel neither giant has crossed the moor to help the other."
+  },
+  "bookPage": "From the roll of Prydwen Keep, a clerk's note in the margin of the drovers' accounts. The old suit again: the Hext drovers say Borimo and Trahern are still at it, and that Borimo has stood up a hand taller since the Roman measured him, and that Trahern has taken to facing the other way. I asked young Hext which way the drovers go round them. He said that depends on whether you would rather be measured by Borimo or Trahern, and that a wise drover would rather not be measured at all, and goes round both, wide, on the side away from the warm ground. I have entered the old suit as undecided. It is the forty-first time.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke Borimo, the nearer stone, in {minutes} minutes.",
+    "loss": "Borimo measured {raidLeader}'s company of {realm} and found it short."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "trahern",
+      "relation": "the old suit: which of them stands nearer the Bed; a Roman measured Borimo the nearer"
+    },
+    {
+      "id": "golestandt",
+      "relation": "the Bed he stands nearer than Trahern"
+    }
+  ]
+}

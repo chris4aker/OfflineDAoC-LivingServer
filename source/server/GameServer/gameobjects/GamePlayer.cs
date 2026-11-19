@@ -8090,9 +8090,12 @@ namespace DOL.GS
 
         /// <summary>A same-region MoveTo farther than this (x + y distance) refreshes the world view afterwards.</summary>
         public const int WorldRefreshJumpDistance = 1000;
-        /// <summary>When the refreshes run after a teleport or region change (ms): once the client has usually finished
-        /// loading, and once more for a slow load.</summary>
-        public static readonly int[] WorldRefreshDelays = [1500, 5000];
+        /// <summary>
+        /// When the refresh runs after a teleport or region change (ms). Owner 2026-10-29: two full refreshes made every
+        /// NPC in sight flicker twice on every teleport; now one refresh resends only what was first sent while the
+        /// client was loading (what it may have dropped), so NPCs already shown never flicker.
+        /// </summary>
+        public static readonly int[] WorldRefreshDelays = [2500];
         private ECSGameTimer _worldRefreshTimer;
 
         /// <summary>
@@ -8107,10 +8110,11 @@ namespace DOL.GS
         {
             _worldRefreshTimer?.Stop();
             int step = 0;
+            long since = GameLoop.GameLoopTime;
             _worldRefreshTimer = new ECSGameTimer(this, timer =>
             {
                 if (ObjectState == eObjectState.Active && Client?.ClientState is GameClient.eClientState.Playing)
-                    PlayerObjectCache.ClearLocked();
+                    PlayerObjectCache.ForgetSentSince(since);
                 step++;
                 if (step < WorldRefreshDelays.Length)
                     return WorldRefreshDelays[step] - WorldRefreshDelays[step - 1];
@@ -9694,6 +9698,13 @@ namespace DOL.GS
             if (floorObject.ObjectState is not eObjectState.Active)
                 return;
 
+            // A relic is taken with the same rules whether right-clicked or picked up with the Get key (2026-10-30).
+            if (floorObject is GameRelic relic)
+            {
+                relic.Interact(this);
+                return;
+            }
+
             if (floorObject is GameStaticItemTimed staticItem &&
                 !staticItem.IsOwner(this) &&
                 (ePrivLevel) Client.Account.PrivLevel <= ePrivLevel.Player)
@@ -10240,7 +10251,8 @@ namespace DOL.GS
 
                 var innerTasks = characterDataQuests.Select(async characterQuest =>
                 {
-                    var dbDataQuest = await DOLDB<DbDataQuest>.FindObjectByKeyAsync(characterQuest.DataQuestID);
+                    // As the data quest cache reads it: with the epic chains linked (EpicChainLinks, Living Server 1.2).
+                    var dbDataQuest = Quests.EpicChainLinks.Link(await DOLDB<DbDataQuest>.FindObjectByKeyAsync(characterQuest.DataQuestID));
 
                     if (dbDataQuest == null || (DataQuest.eStartType)dbDataQuest.StartType is DataQuest.eStartType.Collection)
                         return null;
@@ -10518,14 +10530,14 @@ namespace DOL.GS
             {
                 if (craftingForRealm == null)
                 {
-                    DbAccountXCrafting newCrafting = new()
-                    {
-                        AccountId = this.AccountName,
-                        Realm = (int) this.Realm,
-                        CraftingPrimarySkill = 15
-                    };
+                    // Crafting 2.0 (WP3): with crafting_era_start on, a NEW account-realm row starts without an order and
+                    // without skills (join one at a Master); off, Basic Crafting with every skill at 1 as before. A row
+                    // that exists is never touched, so no character's skills or order change with the setting.
+                    DbAccountXCrafting newCrafting = DOL.GS.Crafting.PlayerCraftingRules.NewAccountRealmRow(AccountName, (int) Realm, DOL.GS.CraftingEconomy.CraftingEconomyProperties.CRAFTING_ERA_START);
                     GameServer.Database.AddObject(newCrafting);
                     craftingForRealm = newCrafting;
+                    if (DOL.GS.CraftingEconomy.CraftingEconomyProperties.CRAFTING_ERA_START)
+                        DOL.GS.Crafting.PlayerCraftingRules.LogEraJoin(this, "start", eCraftingSkill.NoCrafting);
                 }
                 try
                 {
@@ -10593,6 +10605,9 @@ namespace DOL.GS
                                 }
                             }
                         }
+
+                        // A row with skills but no primary keeps its skills (see DOL.GS.Crafting.PlayerCraftingRules.LoadedPrimary).
+                        CraftingPrimarySkill = DOL.GS.Crafting.PlayerCraftingRules.LoadedPrimary(CraftingPrimarySkill, m_craftingSkills.Count);
                     }
                 }
                 catch (Exception e)
@@ -11671,15 +11686,28 @@ namespace DOL.GS
             lock (_craftingLock)
             {
                 AbstractCraftingSkill craftingSkill = CraftingMgr.getSkillbyEnum(skill);
+                // Crafting 2.0 (WP3): a skill the character was never trained in gains nothing (with era start a crafter
+                // holds only the skills of the orders joined); before, this threw KeyNotFoundException.
+                if (!m_craftingSkills.TryGetValue(skill, out int currentValue))
+                    return false;
+                // Secondary caps (crafting_secondary_caps, off by default): another order's craft stops at 75% or 40% of
+                // the primary. GMs are not capped, as they skip the station checks.
+                if (craftingSkill != null && count > 0 && Client?.Account?.PrivLevel <= 1)
+                {
+                    int primaryValue = m_craftingSkills.TryGetValue(CraftingPrimarySkill, out int primaryCurrent) ? primaryCurrent : 0;
+                    count = DOL.GS.Crafting.PlayerCraftingRules.PointsAllowed(currentValue,
+                        count, DOL.GS.Crafting.PlayerCraftingRules.SkillCap(CraftingPrimarySkill, primaryValue, skill, DOL.GS.CraftingEconomy.CraftingEconomyProperties.CRAFTING_SECONDARY_CAPS));
+                }
                 if (craftingSkill != null && count >0)
                 {
-                    m_craftingSkills[skill] = count + m_craftingSkills[skill];
+                    m_craftingSkills[skill] = count + currentValue;
                     CraftingProgressMgr.TrackChange(this, m_craftingSkills);
                     Out.SendMessage(LanguageMgr.GetTranslation(Client.Account.Language, "GamePlayer.GainCraftingSkill.GainSkill", craftingSkill.Name, m_craftingSkills[skill]), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                     int currentSkillLevel = GetCraftingSkillValue(skill);
                     if (HasPlayerReachedNewCraftingTitle(currentSkillLevel))
                     {
                         GameEventMgr.Notify(GamePlayerEvent.NextCraftingTierReached, this,new NextCraftingTierReachedEventArgs(skill,currentSkillLevel) );
+                        DOL.GS.Crafting.PlayerCraftingRules.LogTitle(this, skill, currentSkillLevel, skill == CraftingPrimarySkill);
                     }
                     if (GameServer.ServerRules.CanGenerateNews(this) && currentSkillLevel >= 1000 && currentSkillLevel - count < 1000)
                     {
@@ -11802,12 +11830,15 @@ namespace DOL.GS
         {
             if (skill == eCraftingSkill.NoCrafting) return false;
 
-            if (CraftingPrimarySkill == eCraftingSkill.NoCrafting)
-                CraftingPrimarySkill = eCraftingSkill.BasicCrafting;
+            // Crafting 2.0 (WP3): with era start a character without an order takes the added order's craft as primary,
+            // not Basic Crafting (DOL.GS.Crafting.PlayerCraftingRules.PrimaryAfterAdding).
+            CraftingPrimarySkill = DOL.GS.Crafting.PlayerCraftingRules.PrimaryAfterAdding(CraftingPrimarySkill, skill, DOL.GS.CraftingEconomy.CraftingEconomyProperties.CRAFTING_ERA_START);
 
             lock (_craftingLock)
             {
-                if (m_craftingSkills.ContainsKey(skill))
+                // Adds a skill the character lacks (a Master's training). Before 1.2 this tested ContainsKey and then
+                // called Add, which threw for a held skill and did nothing for a missing one; no character lacked one then.
+                if (!m_craftingSkills.ContainsKey(skill))
                 {
                     AbstractCraftingSkill craftingSkill = CraftingMgr.getSkillbyEnum(skill);
                     if (craftingSkill != null)
@@ -11880,12 +11911,18 @@ namespace DOL.GS
 
             if (recipe == null)
             {
-                if (log.IsWarnEnabled)
-                    log.Warn("[CRAFTING] Item " + itemID + " not found in recipe database!");
+                // RecipeDB logged why, once (2026-11-15); the player hears that the recipe is unavailable instead of nothing.
+                Out.SendMessage("That recipe cannot be made on this server.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
             }
 
             AbstractCraftingSkill skill = CraftingMgr.getSkillbyEnum(recipe.RequiredCraftingSkill);
+            if (skill != null && !DOL.GS.Crafting.PlayerCraftingRules.IsTrained(GetCraftingSkillValue(recipe.RequiredCraftingSkill)))
+            {
+                // Crafting 2.0 (WP3): with era start a character holds only its orders' skills.
+                Out.SendMessage(DOL.GS.Crafting.PlayerCraftingRules.NotTrainedMessage(skill.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
             if (skill != null)
             {
                 skill.CraftItem(this, recipe);
@@ -13744,6 +13781,46 @@ namespace DOL.GS
         public readonly Lock ItemUpdateCacheLock = new();
         public readonly Lock DoorUpdateCacheLock = new();
         public readonly Lock HouseUpdateCacheLock = new();
+
+        /// <summary>
+        /// Forgets only what was first sent at or after <paramref name="since"/> (a teleport), so the next world update
+        /// sends it again; everything the client already had stays as it is.
+        /// </summary>
+        public void ForgetSentSince(long since)
+        {
+            lock (NpcUpdateCacheLock)
+            {
+                foreach (var pair in NpcUpdateCache.Where(pair => pair.Value.CreatedTime >= since).ToArray())
+                {
+                    NpcUpdateCache.Remove(pair.Key);
+                    NpcInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (ItemUpdateCacheLock)
+            {
+                foreach (var pair in ItemUpdateCache.Where(pair => pair.Value.LastUpdateTime >= since).ToArray())
+                {
+                    ItemUpdateCache.Remove(pair.Key);
+                    ItemInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (DoorUpdateCacheLock)
+            {
+                foreach (var pair in DoorUpdateCache.Where(pair => pair.Value >= since).ToArray())
+                {
+                    DoorUpdateCache.Remove(pair.Key);
+                    DoorInRangeCache.Remove(pair.Key);
+                }
+            }
+            lock (HouseUpdateCacheLock)
+            {
+                foreach (var pair in HouseUpdateCache.Where(pair => pair.Value >= since).ToArray())
+                {
+                    HouseUpdateCache.Remove(pair.Key);
+                    HouseInRangeCache.Remove(pair.Key);
+                }
+            }
+        }
 
         /// <summary><see cref="Clear"/> under the cache locks, for a refresh while the world update may be running.</summary>
         public void ClearLocked()

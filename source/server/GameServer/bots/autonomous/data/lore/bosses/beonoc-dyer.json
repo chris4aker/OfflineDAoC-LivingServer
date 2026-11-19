@@ -1,0 +1,120 @@
+{
+  "id": "beonoc-dyer",
+  "name": "Beonoc Dyer",
+  "npcNames": [
+    "Beonoc Dyer"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "old beonoc"
+  ],
+  "facts": [
+    {
+      "text": "Beonoc Dyer: template 60158367, level 50, a man's model flagged as a ghost, in the dyers' hamlet in the north-east of the Dales at 432504, 390557; aggro level 200 within 500, no faction, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The other Dyers (Edyo 75 from him, Earma 304, Celm 450, Cerdic 561) are ghosts with no faction either; they come only by their own aggro.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Beonoc as the head of the house and keeper of the blue vat, the blue on his hands and his answer to the registrar are Living Server writing; the Dyers' blue stretch and their quarrel with the Tinctors are from the Dales file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Dyers and the Tinctors coloured the colleges' gowns in the hamlet on the stream in the north-east of the dales, one craft with two names, and they quarrelled for three generations over which name was older. The Dyers' stretch of the stream ran blue. Beonoc was the head of the house when the war came, the eldest, the keeper of the blue vat, and his hands were blue to the wrist and had been since he was a boy. The households say that is how you know him still.\n\nThe colleges' gowns were blue for the readers and red for the masters and green for the college of healing, and the blue was the Dyers', and Beonoc held that blue was therefore the oldest colour, because there had been readers before there were masters. The Tinctors held otherwise. The quarrel went to the chancellors' court in Avalon twice and was sent back undecided both times, and Beonoc said that proved it, and so did the Tinctors.\n\nWhen the drakoran came across the dales in the first summer of the war, the hamlet stayed, because the dyers would not leave their vats; a vat left cold for a week is spoiled, and a dyer who spoils his blue has nothing. The Dyers died in their house beside the blue stretch, and Beonoc died at the vat. The registrar at Fort Gwyntell writes that the vat is still warm, which he cannot explain, and that the stream below the Dyers' house still runs a little blue in the morning.\n\nBeonoc keeps his house as the other households keep theirs. He gives his name to whoever asks, and the names of his house after it, and he will not suffer a stranger in the dye-yard, and comes at anyone who walks in among the vats. His household are about him, close, but each of them keeps the house in his own way, and none of them comes to Beonoc's help when he is troubled, nor he to theirs, unless the stranger has walked into their own corner of the yard too. The Priest of Arawn says that is how the dead are when they are held and not released: together, and each alone.",
+  "legend": "Beonoc Dyer is a level 50 ghost, the head of the Dyer household in the dyers' hamlet in the north-east of the Dales of Devwy. He is aggressive from about 500 away. He has no faction, and neither do the other Dyers around him (Edyo, Earma, Celm and Cerdic, 44 to 48, between 75 and 560 away), so nobody is called in, but they stand so close that walking into the yard aggros several of them at once. Pull Beonoc from the edge, or clear the house from the outside in. No spells or styles in the data: melee ghosts, a group of fifties clears the house. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Beonoc Dyer, of the blue vat. And you?",
+      "Out of the dye-yard!",
+      "Blue is the oldest. Say it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The vat will spoil! The blue will spoil!"
+      }
+    ],
+    "death": [
+      "Keep... the vat warm...",
+      "Blue... was first..."
+    ],
+    "slay": [
+      "Dipped.",
+      "Blue to the wrist.",
+      "Out of my yard."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Vats in the yard. One is still warm.",
+      "The stream below runs a little blue."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The blue vat steams in the cold."
+      }
+    ],
+    "realmFirstKill": "Beonoc Dyer is laid. The blue vat cools at last."
+  },
+  "botLines": {
+    "briefing": [
+      "beonoc dyer, 50 ghost, head of the dyers' house ne dales. aggros at 500",
+      "no faction but the other dyers stand right on top of him, walking in grabs several",
+      "pull him from the edge. melee ghosts, group of 50s",
+      "80 sec respawn"
+    ],
+    "aftermathWin": [
+      "old beonoc down",
+      "pulled him off the edge, only edyo came",
+      "blue hands, he wasnt lying",
+      "80 sec, back out of the yard"
+    ],
+    "aftermathLoss": [
+      "walked into the middle of the yard and got the whole house",
+      "forgot ghosts dont care that we're 52",
+      "lost track of who was who in the yard",
+      "he was back before we got out"
+    ],
+    "rumour": [
+      "[heard|someone said] beonoc dyer's hands are still blue to the wrist",
+      "heard the dyers' vat is still warm and nobody knows why",
+      "[heard|someone said] beonoc says blue is the oldest colour because there were readers before masters",
+      "heard the stream by the dyers still runs blue some mornings"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "beonoc dyer",
+    "text": "The head of the [dyer] household in the dyers' hamlet, keeper of the blue vat, blue to the wrist. He held that blue was the oldest colour because there were readers before masters, and took the quarrel with the [tinctor] house to the chancellors' court twice. He died at the vat in the first summer of the war; the registrar says it is still warm. He keeps his yard against strangers, and his household keep it each alone."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. I asked Beonoc Dyer his name from the edge of the dye-yard and he gave it, and the names of his house, and then asked me which was older, the Dyers or the Tinctors. I said I was a registrar and kept names, not their ages. He said then I was no use, and turned back to his vat. The vat was steaming. It was a cold morning. I put my hand in the stream below the yard on the way back and it came out a little blue, and stayed blue until the evening, and I have entered that, though I do not know under whose name.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid Beonoc Dyer at his blue vat in {minutes} minutes.",
+    "loss": "Beonoc Dyer put {raidLeader}'s company of {realm} out of the dye-yard."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "the-dyer-household",
+      "relation": "the head of the house, keeper of the blue vat"
+    },
+    {
+      "id": "beath",
+      "relation": "the Priest of Arawn says the necromancer's craft keeps him at his vat"
+    }
+  ]
+}

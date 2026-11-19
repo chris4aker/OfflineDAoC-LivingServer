@@ -64,9 +64,18 @@ namespace DOL.GS
 			base.AddToWorld();
 			return true;
 		}
+		/// <summary>His live apparitions (flood guard, 1.2: at most the period raid's count).</summary>
+		private int LiveApparitions()
+		{
+			int alive = 0;
+			foreach (GameNPC npc in GetNPCsInRadius(5000))
+				if (npc != null && npc.IsAlive && npc.RespawnInterval == -1 && npc.PackageID == "RisnirCrussAdd")
+					alive++;
+			return alive;
+		}
         public override void EnemyKilled(GameLiving enemy)
         {
-			if (enemy != null && enemy is GamePlayer)
+			if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.MayAdd("RisnirCruss.Apparitions", LiveApparitions()))
             {
 				GameNPC add = new GameNPC();
 				add.Name = "Apparition of " + enemy.Name;

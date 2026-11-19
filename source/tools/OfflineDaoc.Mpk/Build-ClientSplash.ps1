@@ -7,6 +7,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# Living Server 1.2 makes content/pregame-splash.mpk with tools/fork-build/make_pregame_splash.py instead (the same TGA
+# format and packing, on any system, repeatable byte for byte); this script stays for Windows.
 
 $sourcePath = [System.IO.Path]::GetFullPath($SourceImage)
 $outputPath = [System.IO.Path]::GetFullPath($OutputMpk)

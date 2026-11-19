@@ -1,0 +1,312 @@
+{
+  "id": "muspelheim",
+  "name": "Muspelheim",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    104
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "muspel-fire",
+    "dishonoured-dead",
+    "houses-of-midgard"
+  ],
+  "summary": "The fire beyond Fort Veldon's pass: lava lakes and sulphur, the fire giants and the raukomaz, the fire wyrms, the dverge forge where the Grenlock crest is made whole, and the burned dead of every company that went in.",
+  "facts": [
+    {
+      "text": "Muspelheim is zone 104 of region 100, north-east of the Vale of Mularn, reached by the pass above Fort Veldon. It has no town; the dverge keep a forge in the south (the Dverge Smith, Sinyr and Armard, about 841,000/693,000).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+    },
+    {
+      "text": "Its folk: flaming raukomaz (Raukomaz), ashmongers, noxious and nocuous hounds (Dverge), seared skeletons (The Unsleeping), mephitic ghouls, charred skeletal warriors and commanders, burnt skeletal sentries and pyrotasms (Lost Souls), soot harvesters, fire flowers, lava lizards, fire ants, flame throwers, firecats, ashen spirits and magmatasms (The Condemned), young fire wyrms (Fire Wyrms), cinder drakes, sulphur crabs, fire giant lookouts, watchmen, scouts and guards (Fire Giants), fire phantoms, fire toads and vapor wraiths.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+    },
+    {
+      "text": "'Grenlock Clan' (Anrid, for spiritmasters): 'Recover the four pieces of the crest from Svan's sons', then 'Take the four pieces to Sinyr at the Dverge forge in Muspelheim'; 'Forgotten Journey': 'Follow Gunnar's trail into Muspelheim and find the crest piece.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'Better Off Buried' (Gudlor of Huginfel) ends: 'slay the twisted blodfelag king Strykel' on 'the island of fire just east of the Muspelheim entrance'; Strykel is of the Fire Giants.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+    },
+    {
+      "text": "'Young Fire Wyrm Lord' (Bolli of Mularn, 'former Skald now retired', with 'a tale of love, adventure and loss'): 'follow the wall left around to the wyrms, and destroy the young wyrm lord'. 'Foolish Dancers': the ashen spirit Olash at the large lava pit along the north wall, 11 P.M. to 6 A.M.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'Sugnhild's Revenge' sends players to 'the blodfelag fort with the moat' for Konung Botolf Redhands, but the world data places him, a ghost, on the northern heights of Muspelheim (847,764/651,684).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+    },
+    {
+      "text": "'Thane's Blood' (Gythja of Bragi): wearing Dahn's charm, slay the Seer of Ancient Dawning, then take the axe to the Dverge smith.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Fenrir's Folly sends players to 'Seek the fire giants in Muspelheim and learn what you can from them'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Muspelheim is the world of fire in the south, guarded by Surt with his flaming sword; its sons will ride against the gods at Ragnarok. Norwegian dverg is 'dwarf'.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "The Alfevsons as Svan's sons, the dverge forge's craft and Bolli's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The skalds say that before there was anything there was the fire in the south and the ice in the north, and the world was made where they met. The fire was Muspelheim. The Muspelheim of Midgard is not that world, the gothi of Mularn say, only a place where it shows through: a country of lava lakes and sulphur and black stone beyond the pass above Fort Veldon, where the ground is hot to stand on and the air shakes. The skalds say it anyway. When the end comes, the sons of Muspel will ride out of the south under Surt with his burning sword, and the young of the vale who climb the pass for a smith's errand like to tell each other that they have seen the stable.\n\nFire folk hold it. The fire giants keep its west and east, lookouts and watchmen and scouts, and they are not the sons of Muspel, the dverge say, only their poor relations, who came to warm themselves and stayed. The raukomaz burn in the lava of the east under a lord made of fire. The fire wyrms nest at the far end of the eastern wall, young ones under a lord of their own who is the subject of a skald's story, and the cinder drakes fly above them. Fire ants farm the slopes, firecats hunt them, sulphur crabs crawl the lava lakes, and the flowers that grow here burn.\n\nThe dverge are the only ones who chose it. They are dwarves of a stubborn kind who came to Muspelheim for the heat, because a forge here needs no bellows, and keep a forge in the south where they make what cannot be made anywhere else. Sinyr, their best, is the only smith in the realm who can put the Grenlock crest back together, and the spiritmasters of Hel's house bring him the pieces. Their hounds, noxious things bred from the fire, keep strangers off.\n\nThe dead are everywhere. Companies went into Muspelheim in every age, for its ore and its fire and its stories, and many did not come out, and the fire did not let them lie: charred skeletal warriors still stand in their ranks with commanders who still give orders, burnt sentries keep watches nobody relieves, the seared skeletons of the Unsleeping walk because they never lay down after they burned, and ashen spirits dance at the lava pits in the small hours. Gunnar was one who went in. He was the fourth of Svan's sons, the Alfevsons, who each kept a piece of the Grenlock crest; his brothers Siv and Coplin are spirits in the Svealands and Myrkwood, and Ove runs with the werewolves of Askheim, and Gunnar's shade stands in Muspelheim among the lost souls of his company with the fourth piece still on him.\n\nMuspelheim twists what comes into it. A blodfelag king called Strykel came over the pass with an oath and a grudge and became a fire giant on the island of fire by the way in, and the watch-captain of Huginfel says that is the only thing that could have made him worse. A svartalf thief sits on the high northern ledge with half a staff stolen from Myrkwood. And a king's ghost, Botolf Redhands, whom the widow Sugnhild of Huginfel believes is in the blodfelag fort, stands instead on the heights above the lava, as far from the fort as a ghost can get.\n\nMuspelheim matters because it is the realm's forge and its warning. Everything the smiths of Fort Veldon cannot make they send the young to Muspelheim for, and everything the skalds say about the end of the world, they say while pointing north-east. The dverge, asked whether Surt is really coming, say that he has not ordered anything from them yet.",
+  "legend": "Muspelheim is the 20-35 fire zone north-east of the Vale, up the pass from Fort Veldon. No town; the dverge forge in the south has the Dverge Smith, Sinyr (where you finish the Grenlock Clan crest) and Armard, but their noxious hounds are hostile. Soot harvesters and fire flowers at the entrance for Cornelis's Foolish Dancers; Olash at the north-wall lava pit only 11 P.M. to 6 A.M. Fire ants and sulphur crabs west, lost souls (charred skeletal warriors and the four Charred Skeletal Commanders) in the middle, raukomaz and Lord Fire east, fire giants west and east, the fire wyrms and the Young Wyrm Lord (33) at the far east end along the wall (Bolli's quest). Strykel is on the island of fire just east of the entrance. Konung Botolf Redhands is up on the northern heights here, not in the blodfelag fort the quest text says. Dverge joke: Surt hasn't ordered anything from them yet.",
+  "atmosphere": {
+    "firstEntry": [
+      "Muspelheim. The ground is hot to stand on.",
+      "Lava, sulphur, and the air shaking above it.",
+      "The fire the world was made from shows through here.",
+      "Somewhere south, Surt's stable, the young say."
+    ],
+    "areas": [
+      {
+        "name": "the pass",
+        "x": 828000,
+        "y": 675000,
+        "z": 4000,
+        "radius": 4000,
+        "lines": [
+          "The pass from Fort Veldon. Soot and fire flowers.",
+          "Gokstorm watches the way in. Grogak wants to be him.",
+          "Bright Flame burns among the flame throwers."
+        ]
+      },
+      {
+        "name": "the island of fire",
+        "x": 825200,
+        "y": 660976,
+        "z": 5573,
+        "radius": 1500,
+        "lines": [
+          "The island of fire. A blodfelag king, twisted.",
+          "Strykel became a giant here, and worse."
+        ]
+      },
+      {
+        "name": "the western lava lake",
+        "x": 828838,
+        "y": 655802,
+        "z": 4616,
+        "radius": 2500,
+        "lines": [
+          "The lava lake. Sulphine crawls its edge.",
+          "Olash dances at the pit in the small hours."
+        ]
+      },
+      {
+        "name": "the dverge forge",
+        "x": 841300,
+        "y": 693000,
+        "z": 2650,
+        "radius": 2500,
+        "lines": [
+          "The dverge forge. No bellows needed here.",
+          "Sinyr can make the Grenlock crest whole.",
+          "Armard works beside him. The hounds keep watch."
+        ]
+      },
+      {
+        "name": "the south-west slopes",
+        "x": 833253,
+        "y": 696459,
+        "z": 5552,
+        "radius": 2500,
+        "lines": [
+          "Brimstone, worse than the rest of Muspelheim.",
+          "Firecats on the ash."
+        ]
+      },
+      {
+        "name": "the lost company",
+        "x": 858000,
+        "y": 684000,
+        "z": 4000,
+        "radius": 3500,
+        "lines": [
+          "A Charred Skeletal Commander still gives orders.",
+          "The Shade of Gunnar keeps the fourth piece.",
+          "Sentry Incin stands a watch nobody relieves.",
+          "Hrodek of the Unsleeping never lay down."
+        ]
+      },
+      {
+        "name": "the middle ash",
+        "x": 846000,
+        "y": 668000,
+        "z": 3000,
+        "radius": 4000,
+        "lines": [
+          "Eld, a willow that burned and kept growing.",
+          "Seared skeletons and mephitic ghouls."
+        ]
+      },
+      {
+        "name": "the northern heights",
+        "x": 842000,
+        "y": 651500,
+        "z": 9200,
+        "radius": 4000,
+        "lines": [
+          "The heights. Konung Botolf Redhands stands here.",
+          "Bjame the svartalf thief, and Haeng beside him.",
+          "Coal smoulders below the ledge."
+        ]
+      },
+      {
+        "name": "the raukomaz lava",
+        "x": 865000,
+        "y": 678000,
+        "z": 1500,
+        "radius": 5000,
+        "lines": [
+          "The raukomaz burn in the lava. Lord Fire rules them.",
+          "The Seer of Ancient Dawning saw the first sunrise."
+        ]
+      },
+      {
+        "name": "the fire giants' east",
+        "x": 873000,
+        "y": 670000,
+        "z": 5000,
+        "radius": 6000,
+        "lines": [
+          "Fire giant lookouts. Poor relations of Muspel.",
+          "The Spirit of Flames dances on the ridge."
+        ]
+      },
+      {
+        "name": "the wyrms' wall",
+        "x": 873763,
+        "y": 651839,
+        "z": 5737,
+        "radius": 3000,
+        "lines": [
+          "The fire wyrms nest at the end of the wall.",
+          "The Young Wyrm Lord. Bolli's tale ends here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "muspelheim is the fire in the south the world was made from, it shows through here the gothi say",
+      "when the end comes the sons of muspel ride out under surt with his burning sword",
+      "the fire giants of muspelheim are the poor relations of muspel, they came to get warm and stayed",
+      "the dverge came to muspelheim for the heat, a forge here needs no bellows",
+      "sinyr at the dverge forge is the only smith who can make the grenlock crest whole",
+      "svans sons the alfevsons each kept a piece of the grenlock crest",
+      "siv and coplin are spirits, ove runs with the werewolves, gunnar's shade is in muspelheim",
+      "muspelheim twists what comes into it. strykel was a blodfelag king, now hes a fire giant",
+      "the fire doesnt let the dead lie down in muspelheim, the charred companies still stand in rank",
+      "the unsleeping never lay down after they burned",
+      "the young of the vale say theyve seen surts stable when they come back from muspelheim",
+      "asked if surt is really coming, the dverge say he hasnt ordered anything from them yet"
+    ],
+    "rumour": [
+      "sentry incin counts the burnt sentries every hour",
+      "a charred skeletal commander still waits for the word to fall back",
+      "the young wyrm lord is the one in bollis tale of love and loss. ask him in mularn, he'll cry",
+      "lord fire is a raukomaz lord down in the lava, half the time you cant see him",
+      "sinyr at the dverge forge is the only smith who can put the grenlock crest back together",
+      "hrodek is one of the unsleeping. he never lay down after he burned",
+      "the spirit of flames dances up on the north ridge",
+      "konung botolf redhands, sugnhild says hes in the blodfelag fort. hes not, hes up on the muspelheim heights",
+      "the seer of ancient dawning saw the first sunrise, the gythja of bragi says, and burned",
+      "armard is sinyrs forge mate at the dverge forge",
+      "strykel was a blodfelag king. muspelheim twisted him into a fire giant",
+      "bjame is a svartalf up on the high ledge, stole half of serilynas staff",
+      "grogak is a fire giant runt who wants to be a big one",
+      "the shade of gunnar is the fourth of svans sons. his piece of the crest is in muspelheim",
+      "bright flame burns brighter than the flame throwers round it",
+      "coal is a fire elemental that went out and lit again",
+      "gokstorm is the fire giant who watches the gate in",
+      "olash the ashen spirit only dances at the north lava pit between eleven and six",
+      "brimstone smells worse than the rest of muspelheim, which is saying something",
+      "eld is a willow that grew in muspelheim and caught fire and kept growing",
+      "haeng is a ghost on the high ledge beside bjame",
+      "sulphine is a sulphur crab at the lava lake in the north, arnkatla wants her gone",
+      "sentry incin still stands his watch with the dead of gunnars company",
+      "the charred skeletal commanders still give orders to the burnt sentries"
+    ],
+    "tell": [
+      "muspelheim is 20 to 35, up the pass from fort veldon in the vale",
+      "no town in muspelheim, the dverge forge is south but their hounds are hostile",
+      "sentry incin is with the charred skeletons east middle, 21",
+      "the charred skeletal commanders are with the lost company in the middle, 26 to 29",
+      "young wyrm lord is far east past the wyrms, follow the wall left round, 33",
+      "lord fire is east in the lava with the flaming raukomaz, 31",
+      "sinyr and armard are at the dverge forge in the south, the crest goes to sinyr",
+      "hrodek and the shade of gunnar are east middle with the lost souls",
+      "seer of ancient dawning is far east with the raukomaz, thanes blood",
+      "strykel is on the island of fire just east of the entrance, better off buried",
+      "bjame and haeng are up on the high northern ledge, protecting myrkwood",
+      "olash is at the big lava pit on the north wall at night, foolish dancers",
+      "sulphine is at the lava lake in the north west, sulphines demise",
+      "konung botolf redhands is on the northern heights, sugnhilds revenge",
+      "gokstorm and grogak are west by the way in, bright flame north west with the flame throwers",
+      "coal, the spirit of flames and eld are north and middle, brimstone south west"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Muspelheim, beyond Fort Veldon's pass, where the fire the world was made from shows through. The [fire giants] and the [raukomaz] hold it, the [dverge] work their forge in it, and the [burned dead] of every company that went in are still standing. Svan's sons ended there too: see [Svan's sons].\"",
+    "topics": {
+      "fire giants": "Lookouts, watchmen, scouts and guards in the west and east, poor relations of the sons of Muspel who came to warm themselves and stayed. Fenrir's Folly sends the curious to learn from them. See [Gokstorm], [Strykel].",
+      "raukomaz": "Fire things of the eastern lava, flaming and quick, under [Lord Fire]. The dverge say they are what the lava dreams.",
+      "dverge": "Stubborn dwarves who came for the heat, because a forge in Muspelheim needs no bellows. Their forge is in the south: [Sinyr], [Armard] and the Dverge Smith. Their noxious hounds keep strangers off.",
+      "burned dead": "Companies of every age who went in and did not come out, kept standing by the fire: charred skeletal warriors and their [Charred Skeletal Commander]s, burnt sentries, the Unsleeping, the ashen spirits of the lava pits.",
+      "Svan's sons": "The four Alfevsons, sons of Svan, who each kept a piece of the Grenlock crest: Siv and Coplin are spirits now, Ove runs with the werewolves of Askheim, and [Shade of Gunnar] stands here. Anrid of Jordheim gathers the pieces; [Sinyr] makes them whole.",
+      "Bolli": "Bolli of Mularn, a skald retired, who has a tale of love, adventure and loss about the [Young Wyrm Lord] and wrote down what he saw in the fire in Fire Under the Pass.",
+      "Young Wyrm Lord": "The lord of the young fire wyrms at the far end of the eastern wall, vast and coiled, the end of Bolli's tale. Bolli of Mularn, who was a skald, says he went into Muspelheim young with a woman he loved and came out old without her, and that the wyrm lord was the reason. He sends the young to follow the wall round and destroy it. It burns anything that reaches it.",
+      "Lord Fire": "The lord of the [raukomaz], a great fire elemental that drifts in the eastern lava, pale as a ghost in the heat-haze and hard to see until it is on you. The dverge say Lord Fire is older than their forge and that they pay it nothing, which is why it hates them. Its raukomaz gather round it in the hottest part of the lake.",
+      "Sinyr": "The best smith of the [dverge] forge, the only one in Midgard who can put the four pieces of the Grenlock crest back together. The spiritmasters of Hel's house bring him the pieces from [Svan's sons]. To strangers who come to the forge without them, he is a dverge with a hammer. He says the crest was made at this forge once, before the clan broke.",
+      "Armard": "A dverge of the forge who works beside [Sinyr] and keeps the fire, and is the first to take up a hammer against strangers. The dverge say Armard has never made anything himself, and has never needed to; he keeps the forge hot enough for those who do. He has burns on both arms and boasts of every one. Sinyr calls him the bellows.",
+      "Hrodek": "One of the Unsleeping, a seared dead man of the middle-east who never lay down after he burned. The seared skeletons follow the way he walks. The dverge say he was a smith who came to steal their fire, and that the fire kept him. He comes at anyone alive. The dverge do not let their hounds near him; the hounds come back singed.",
+      "Spirit of Flames": "A spirit of fire that dances on the northern ridge of the east, ghost-pale in the heat, alone. The fire giant lookouts below it do not look up. Bolli says it was there in his day and danced the same steps, and that nobody in Muspelheim has ever seen it stop. It strikes those who come up the ridge to watch.",
+      "Konung Botolf Redhands": "The ghost of a king, Botolf of the red hands, on the northern heights above the lava. Sugnhild of Huginfel, whose husband he killed, believes he is in the blodfelag fort with the moat and sends the young there for him; he is not. He stands here, as far from the fort as a ghost can get, and the dverge say that is because he knows who is coming.",
+      "Seer of Ancient Dawning": "A great dead seer among the raukomaz of the far east, who saw the first sunrise, the Gythja of Bragi says, and burned for it. The Gythja sends thanes to slay it wearing a charm from Dahn of Audliten, for an axe that has a secret. The seer guards the axe as if the sunrise were still in it. It comes at anyone who nears the axe.",
+      "Strykel": "The twisted king of the blodfelag of West Svealand, who came over the pass with an oath and a grudge and became a fire giant on the island of fire just east of the way in. Gudlor of Huginfel sends the young to end him at the end of a long errand with a book of the dead. Gudlor says Muspelheim was the only thing that could have made him worse.",
+      "Bjame": "A svartalf on the high northern ledge, a thief who stole half of a staff from Myrkwood. Serilyna of Galplen's 'Protecting Myrkwood' runs through the Cursed Tomb and the Vendo Caverns to him. He hides in the one place the svartalfar's enemies would not think to look, and the heat has not improved his temper. He comes at anyone who climbs to the ledge, thinking they want the staff back.",
+      "Grogak": "A small fire giant by the way in, a runt of the [fire giants] who stands near [Gokstorm] and wants to be him. The dverge say Grogak has been trying to grow for a hundred years and has managed a finger's width. He makes up for it by fighting everyone. He is twice the height of a troll, and the other giants call him small.",
+      "Shade of Gunnar": "The shade of Gunnar Alfevson, the fourth of [Svan's sons], who followed a trail into Muspelheim and died among a company of the burned dead. He still has his piece of the Grenlock crest, and stands with the charred warriors as if he were one of them. Anrid's 'Forgotten Journey' sends the young after him. He fights with his company when strangers come.",
+      "Bright Flame": "A fire elemental among the flame throwers of the west, brighter than all of them, a flame that has never once flickered. The young of Fort Veldon steer by it on the way to the lava lake, and then give it a wide berth. The flame throwers burn round it like moths round a lamp, and they come to its side when it flares.",
+      "Coal": "A fire elemental below the northern heights among the ashmongers, which went out once, the dverge say, and lit again, and has burned darker ever since. It smoulders where it stands and flares at anyone who comes near. The ashmongers sift its ash for something; they have never said what. The dverge say they are looking for whatever it was before it went out the first time.",
+      "Gokstorm": "A fire giant who watches the way in from the west, the first of the [fire giants] the young meet. The fire giants say Gokstorm was posted at the pass so long ago that nobody remembers who posted him. [Grogak] envies him. Gokstorm does not notice Grogak. He strikes anyone who comes up the pass, the same blow every time.",
+      "Olash": "An ashen spirit of the Condemned who dances at the large lava pit along the north wall in the small hours, between the last of the night and dawn. Cornelis of Fort Veldon wants something of Olash's for a maul. The dverge call the ashen spirits the foolish dancers: they danced too close to the fire once, and cannot stop.",
+      "Brimstone": "A lost soul of fire on the south-western slopes among the firecats, which smells worse than the rest of Muspelheim, which is saying something. The dverge say Brimstone was a sulphur-gatherer who fell in, and that the smell is his own. He attacks anyone who comes upwind. The firecats will not hunt near him. Nobody has ever stood downwind of him long enough to learn more.",
+      "Eld": "A willow in the middle ash that grew in Muspelheim, caught fire and kept growing. Its name is fire in the old tongue. The dverge say it drinks lava. It burns anyone who comes under its branches, and has never once been put out. Bolli says it was a sapling in his day, and that he watched it catch. Its leaves are ash.",
+      "Haeng": "A ghost on the high northern ledge beside [Bjame], whom the svartalf seems to have brought with him from the Cursed Tomb with the stolen staff. Haeng is part of Serilyna's errand too. The dverge say Bjame keeps him as a dog keeps fleas: without choosing to. He strikes at anyone who comes near the thief. Nobody knows who he was before the tomb.",
+      "Sulphine": "A sulphur crab at the lava lake in the north-west, larger and yellower than the others, with ashen spirits round it. Arnkatla of Haggerfel wants it dead. The young of Haggerfel say Sulphine has eaten a smith's apprentice and his tongs, and spat the tongs out. Arnkatla says the crab took her brother's boots, and that is why. She has a brood in the lake.",
+      "Sentry Incin": "A dead sentry among the charred warriors in the middle-east, beside the [Shade of Gunnar], who still stands the watch he was set before the company burned. Nobody has come to relieve him. He takes every stranger for the enemy he was posted against. The burnt sentries round him keep the same watch, and he counts them every hour, the dverge say.",
+      "Charred Skeletal Commander": "The commanders of the [burned dead], four of them, who still give orders to the charred warriors and burnt sentries in their ranks. The dverge say the fire took the company but not its order of march, and that the commanders are still waiting for the word to fall back. They fight in the middle of their ranks. The word has never come."
+    }
+  },
+  "book": {
+    "title": "Fire Under the Pass",
+    "pages": [
+      "Bolli of Mularn, who was a skald, wrote this when he stopped being one. I went into Muspelheim young, with a woman I loved, because she wanted to see the fire the world was made from and I wanted to see her see it. We went up the pass from Fort Veldon in high summer and the ground was hot through our boots before we reached the top. At the top the fire giant who watches the way in looked at us and did not move. He looked at me the way a man looks at weather. I have never been looked at like that since, and I have stood before jarls.",
+      "The dverge were kind to us in their way, which is to say they did not set the hounds on us the first time. Their forge is in the south, on stone so hot that they hammer without a bellows, and their best smith, Sinyr, told us that everything in Muspelheim was either made or unmade by the fire and that there was nothing in between. I asked which we were. He said we had not been here long enough to tell. She laughed. I wrote it down. I have the page still. The dverge sold us bread baked on the bare stone, and it was the best bread I have eaten, and I have never been able to say why.",
+      "We went east, past the burned companies who stand in their ranks with their commanders, past the sentry who still keeps a watch nobody relieves, past the raukomaz drifting in the lava under their lord, who is a fire you can hardly see. We saw the spirit of flames dancing on the ridge, and she wanted to dance with it. I stopped her. Of everything I did in Muspelheim, that is the one I am sure was right. We slept that night among the fire ants' mounds, which were warm, and she counted the cinder drakes overhead until she fell asleep. I did not sleep. I watched the wall to the east, where the wyrms are.",
+      "At the end of the eastern wall the fire wyrms nest, and their lord is young as wyrms are young, and larger than the hall at Mularn. We should have turned back. She wanted to see it, and we saw it, and it saw us. I will not write the rest. I have sung it at every table in the vale for forty years, and every time I sing it a little differently, and none of the ways is true enough. The young come to me and ask to hear it. Then I send them to the wall.",
+      "I have one more thing to say. The skalds say that at the end of the world Surt will ride out of the south with his burning sword and the sons of Muspel behind him. The dverge, asked about it, say he has not ordered anything from them yet. I believe the dverge. Muspelheim is not the end of the world. It is only the fire that will be there at the end, waiting, as it waited for us. Go up the pass, since you will. Come back down it. Tell somebody at the bottom what you saw. That is all a skald is for."
+    ]
+  },
+  "bosses": []
+}

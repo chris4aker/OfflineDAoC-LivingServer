@@ -1,0 +1,85 @@
+{
+  "id": "duga",
+  "name": "Duga",
+  "npcNames": [
+    "Duga"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Duga: level 42, faction Unseelie Court (the only named spawn in the mine with a faction), a goblin body (model 246) like the unseelie mangos who share his faction, at about 29,500/29,800 in the upper workings, under 900 from Frit; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Duga's ledger as the tally of the debts from the broken bargain of the Cursed Forest.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Duga keeps the ledger. The collar found in the upper workings says so, scratched small on the inside: he wrote the groom from Mag Mell into it without asking his name, because he does not want names, he wants hands. He is a goblin of the court, one of the kind the captives call the mangos, and he is the only one of the court's servants in the mine who wears its colours openly, as if he wanted to be seen wearing them.\n\nThe Howth miners say the ledger is older than the court's mine. When the bargain broke in the Cursed Forest and the two courts shared out what was left, every debt owed to the Unseelie was written down, and the book they were written in went with the court's clerks wherever there was collecting to be done. The mine, Howth says, is only the page the ledger has reached. Every hand Duga writes down is a debt being paid by someone who never owed it, and the debt does not get smaller.\n\nHe keeps his place in the upper workings, among the sentries and the drudging dead, a short walk from the side passage where Frit sits and will not work. He is the one officer who looks at her. He looks at her every day, the captives say, with his pen ready, and writes nothing down.",
+  "legend": "Duga (42) is in the upper workings of Coruscating Mine (about 29.5k/29.8k) with silvermine sentries (36-43), undead drudgers (36), gemclickers and unseelie underviewers (42) close round him. He is the one named here with a faction (Unseelie Court, same as the unseelie mangos), so clear the court's goblins near him first. Underviewer Treeal is about 1,000 away; Frit (peaceful) under 900: leave her be. Group of low 40s. Plain spawn, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "Name? No. Only the hand.",
+      "Another one for the ledger."
+    ],
+    "phases": [],
+    "death": [
+      "Strike me... from the..."
+    ],
+    "slay": [
+      "Written. Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A goblin in the court's colours, writing."
+    ],
+    "phases": [],
+    "realmFirstKill": "Duga has fallen. The ledger lies open."
+  },
+  "botLines": {
+    "briefing": [
+      "duga is 42 in the upper workings, sentries and drudgers round him",
+      "hes unseelie court faction like the mangos, clear them first"
+    ],
+    "aftermathWin": [
+      "duga down. [ledger closed|grats]",
+      "nobody hit frit. [good|nice]"
+    ],
+    "aftermathLoss": [
+      "sentries joined. [rip|ouch]",
+      "too many drudgers. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] duga's ledger is older than the mine. its the cursed forest debts",
+      "duga looks at frit every day with his pen ready and never writes anything"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Duga",
+    "text": "The goblin of the Unseelie Court who keeps the ledger of hands in the Coruscating Mine's upper workings. Howth says the ledger holds the debts of the broken bargain, and the mine is only the page it has reached."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Duga in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Duga turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "cursed-forest",
+      "relation": "the broken bargain whose debts his ledger keeps"
+    },
+    {
+      "id": "coruscating-mine",
+      "relation": "Frit, whom he watches"
+    }
+  ]
+}

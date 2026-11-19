@@ -85,7 +85,7 @@ namespace DOL.GS
         {
             // Listing, purchases, logout and the rolling writer must not race
             // each other's persistence flags or ownership changes.
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 return SaveManyIntoDatabaseLocked(inventories);
         }
 

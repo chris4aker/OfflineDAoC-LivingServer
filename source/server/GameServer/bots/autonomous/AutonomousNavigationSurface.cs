@@ -21,6 +21,20 @@ public static class AutonomousNavigationSurface
         // No guessed height/nearest island for unsupported remote providers.
         return null;
     }
+
+    // Every walkable polygon but water (the [include, exclude] pair of PathfindingMgrBase's filters).
+    private static readonly EDtPolyFlags[] DryGroundFilters = [EDtPolyFlags.All ^ EDtPolyFlags.Disabled, EDtPolyFlags.Swim];
+
+    /// <summary>
+    /// <see cref="MoveAlongGround"/> on dry ground only: the walk stops at the water's edge as it does at a wall or a
+    /// ledge. For the short combat steps of Living Server 1.2 (BotBrain.CombatMovement); null without a local mesh.
+    /// </summary>
+    public static Vector3? MoveAlongDryGround(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end)
+    {
+        if (nav is LocalPathfindingMgr local)
+            return local.GetMoveAlongSurfaceGrounded(zone, start, end, DryGroundFilters);
+        return null;
+    }
     // Repair stale imported/interpolated Z, not horizontal path obstruction.
     // A wide nearest-poly search can select a table, another floor, or the far
     // side of a wall. Keep XY effectively fixed and retain bounded vertical range.

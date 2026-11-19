@@ -1,0 +1,278 @@
+{
+  "id": "catacombs-of-cardova",
+  "name": "Catacombs of Cardova",
+  "realm": "Albion",
+  "regions": [
+    23
+  ],
+  "aliases": [
+    "cardova"
+  ],
+  "summary": "A Roman crypt under a ring of standing stones in Cornwall, where a lost legion still stands its posts round three who might be emperor, waiting for the order to stand down.",
+  "facts": [
+    {
+      "text": "A shepherd boy found an opening in a small crypt inside a ring of standing stones in Cornwall, leading to Roman-style halls; a legion had travelled with an emperor no one can name, though no record has Rome reaching that far or an emperor dying there; an expedition lost half its members to an awakened entity, and locals call it haunted.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=25"
+    },
+    {
+      "text": "Mythic's quest 'Fall of an Emperor': a wizard's spell opened the tomb's lower levels; the emperor Seleucus says a curse binds him to four generals, Olivarius, Taras, Crotus and Amminus, and asks to be laid to rest; their focus items are offered in the chamber of cleansing and the crypt of the displaced soul.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
+    },
+    {
+      "text": "Its dead keep Roman rank: legionaries, centurions of every grade, praetorian guards, optiones, tribunes, praetors, legates, aquilifer, imaginifer, draconarius, a dux.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Existing bot chat speaks of a nameless emperor and of coins with blank faces; the quest names Seleucus. Both are kept: the name is learned, not known.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    },
+    {
+      "text": "The catacombs (region 23, about 130 spawns, levels 29-49) hold every rank of a legion, faction Spirits of Rome: immunes, vigiles, legionaries, cohortales, centurions of five grades, optiones, tribunes, praetors, prefects, legates, a dux, standard-bearers, praetorian guards, an eques and a magister.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 23 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The emperor's hall holds Emperor Seleucus (40), the Forgotten Emperor (35), Taras Princep Praetorii (36) and the Spirit of the Emperor (49, peaceful); Olivarius (32) keeps the hall before it and Crotus (32) the hall after; Amminus pilus (38-42) keeps the far south crypt. Two back exits lead out to Cornwall.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 23 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Amminus pilus calls four centurions to his side when he takes a target ('I require assistance!'); an unseen Pilus'Fury burns real players and their pets standing in the middle of the long hall ('Smoke seeps up through the cracks in the hall's floor.').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/AmminusPilus.cs; source/server/GameServer/scripts/mobs/AlbionMobs/PilusFury.cs"
+    },
+    {
+      "text": "Arc of Ages (Master Vismer): take the Staff of Enlightenment from the Forgotten Emperor in the Catacombs of Cornwall.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Roman practice, not game canon: the legions in Britain raised several usurper emperors; the memory of a condemned ruler could be struck out (damnatio memoriae), his face erased from coins and his name from stones; a legion's senior centurion was the primus pilus; Roman floors were heated from below by the hypocaust; the Genius of the emperor received offerings.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Damnatio_memoriae"
+    },
+    {
+      "text": "The emperor of the west, the honour road, Brother Teilo's translation and the three readings of the emperor's hall are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The emperor of the west. In the last years of Rome in Britain the legions of the island made their own emperors more than once, and marched them east to take the world. One legion, the Cornish say, raised an emperor and marched him the other way: west, past the tin roads and the cold forts, to the edge of the world, to found a city where no Roman had stood and where no rival could follow. No chronicle of Camelot gives his name. The coins the legion struck for him, the few that come up out of the Cornish ground, have a face on them that has been beaten flat, the way the Romans flattened the faces of those they meant to forget.\n\nWhat went wrong. The city was never built. The emperor died in the west, by sickness or by a knife, and the legion did not march home: it had no home that would take it back. It went down instead into halls it dug under a ring of older stones and buried its emperor there with all the honours of Rome, and his general Seleucus took the chair. Seleucus wrote a Book of Deeds, as emperors did, and in it he set down the oath his four generals swore to him, Olivarius, Taras, Crotus and Amminus: to stand by him in life and after it. They kept it. The last leaves of his book are in a shaking hand and ask whoever reads them for release. The legion is still in the halls, every rank of it, and it is still on duty, because nobody has given the order to stand down, and the only man who could give it is the one it has forgotten.\n\nWhat keeps house there now. Immunes and vigiles keep the door. The legionaries and their decurion have their barracks beyond it, the cohorts theirs. The dux holds the command hall with his prefects and legates, as if the province were still his to govern, and the praetors keep a gallery of their own and hear no cases. The standard-bearers stand together under their eagle, their dragon and their image with a broad-striped tribune among them. The praetorian guard keeps its prince Olivarius in the hall before the emperor's, and Crotus with the centurions in the hall after it. In the emperor's hall there are three who might be emperor, and the Cornish cannot agree which: Seleucus in the chair; a crowned dead man the legion calls the Forgotten Emperor, who carries a staff of office and is slow to rise against anyone; and a pale spirit that harms nobody and talks to anyone who will listen. Taras, the third general, stands at the chair's side. South of the emperor's hall the centurions keep two galleries flanking a long hall, and at the end of the long hall, past a mounted eques and a magister, the first spear of the legion, Amminus the pilus, keeps the crypt where the emperor's body was laid. The legion built that hall as an honour road and heated its floor from beneath, as Romans heated their baths; the heat is still there, and in the middle of the road the old floor smokes. The centurions never walked the middle. And the pilus has never once stood alone: he calls, and his centurions come.\n\nWhy it matters to Albion. The Catacombs of Cardova are the proof that Rome reached further into the west than its own records admit, and every scholar of the realm wants something from them. Master Vismer of Camelot wants the Forgotten Emperor's staff for a rite of his own. Iohannes Aldar of Cornwall Station wants the Book of Deeds and the name. Grindan Halig, who will not go down himself, says the tomb is the place of the dead and should not be disturbed by those whose hearts still beat, and that the realm will regret learning the name it asks for. Above the door Centurion Favius walks his line in front of the legion's dead, waiting for an inspection. Below it the legion is waiting for an order. They have both been waiting since Rome went home.",
+  "legend": "Cardova is the Roman crypt in Cornwall, levels 29 to 49, door inside the ring of stones in the south. Knock twice; it is tradition. Everything down there is Spirits of Rome and they help each other, so pull singles. The command hall and the praetorian guards around Olivarius are the toughest rooms. Fall of an Emperor from Grindan Halig and Iohannes Aldar walks you through it: talk to the Spirit of the Emperor (he is peaceful), kill Olivarius, Taras and Crotus and offer each focus in the emperor's hall, kill Amminus pilus at the end of the long hall and offer his amulet in the crypt, then kill Emperor Seleucus. Amminus says 'I require assistance!' and four centurions appear at his side; they vanish when he dies. In the long hall smoke seeps up through the floor down the middle: walk the walls or burn. The Forgotten Emperor has the Staff of Enlightenment for Arc of Ages. Two back exits lead out to Cornwall, west and south.",
+  "atmosphere": {
+    "firstEntry": [
+      "Roman halls under Cornwall. The legion is on duty.",
+      "Tiled floors, smooth pillars. No dust.",
+      "Somewhere ahead, a roll is being called.",
+      "Rome never came this far. Rome is here."
+    ],
+    "areas": [
+      {
+        "name": "the door hall",
+        "x": 31000,
+        "y": 31000,
+        "z": 16100,
+        "radius": 1000,
+        "lines": [
+          "Roman halls under Cornwall. The legion is on duty.",
+          "Immunes at the door. They expect a password."
+        ]
+      },
+      {
+        "name": "the barracks",
+        "x": 32100,
+        "y": 31700,
+        "z": 16044,
+        "radius": 900,
+        "lines": [
+          "Bunks for a cohort. Every one is taken.",
+          "A decurion still calls the morning roll."
+        ]
+      },
+      {
+        "name": "the command hall",
+        "x": 30900,
+        "y": 34000,
+        "z": 15600,
+        "radius": 1000,
+        "lines": [
+          "A dux and his legates. The eagles are still raised.",
+          "Orders for a province that is not there."
+        ]
+      },
+      {
+        "name": "the praetors' gallery",
+        "x": 34300,
+        "y": 32500,
+        "z": 15790,
+        "radius": 800,
+        "lines": [
+          "Praetors hold court for no one.",
+          "Clerks of the dead, copying the dead."
+        ]
+      },
+      {
+        "name": "the standards",
+        "x": 32158,
+        "y": 33868,
+        "z": 15760,
+        "radius": 600,
+        "lines": [
+          "Eagle, dragon and image, still held high.",
+          "A broad-striped tribune guards the standards."
+        ]
+      },
+      {
+        "name": "Olivarius's hall",
+        "x": 32600,
+        "y": 34700,
+        "z": 15800,
+        "radius": 700,
+        "lines": [
+          "The praetorian guard keeps its prince.",
+          "Olivarius, first of the four, at his post."
+        ]
+      },
+      {
+        "name": "the emperor's hall",
+        "x": 33391,
+        "y": 35258,
+        "z": 15521,
+        "radius": 700,
+        "lines": [
+          "Three who might be emperor. One chair.",
+          "A pale spirit talks. The chair does not.",
+          "Taras at the chair's side, as he swore."
+        ]
+      },
+      {
+        "name": "Crotus's watch",
+        "x": 33450,
+        "y": 36500,
+        "z": 15200,
+        "radius": 600,
+        "lines": [
+          "Crotus and the centurions hold the south door.",
+          "The third general. His focus is still warm."
+        ]
+      },
+      {
+        "name": "the centurions' galleries",
+        "x": 33400,
+        "y": 38300,
+        "z": 14767,
+        "radius": 1600,
+        "lines": [
+          "Centurions of every grade, in rank.",
+          "The first spear's officers, waiting for him."
+        ]
+      },
+      {
+        "name": "the long hall",
+        "x": 33370,
+        "y": 40000,
+        "z": 15007,
+        "radius": 900,
+        "lines": [
+          "The floor is warm. Smoke in the cracks.",
+          "An honour road. The old soldiers kept to the walls."
+        ]
+      },
+      {
+        "name": "the pilus's crypt",
+        "x": 33500,
+        "y": 44400,
+        "z": 14900,
+        "radius": 700,
+        "lines": [
+          "The crypt of the displaced soul.",
+          "Amminus never stands alone. Listen for the call."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cardova holds a roman emperor nobody can name. cornwall is a strange place to bury an emperor",
+      "emperor seleucus in cardova [has a name|is named], so he can't be the nameless one. [the forgotten emperor is the real mystery|that leaves the forgotten emperor]",
+      "the legion in cardova keeps rank. centurions, tribunes, praetors, a dux. [still waiting to stand down|nobody gave the order]",
+      "cardova's legion marched its emperor west instead of east. never went home",
+      "the coins in cardova have the face beaten flat. the romans did that to people they wanted forgotten",
+      "seleucus took the chair when the first emperor died. his four generals swore to him for life and after",
+      "olivarius taras crotus amminus. the four who kept the oath too well",
+      "the long hall in cardova has a heated floor like a roman bath. still warm",
+      "amminus pilus is the first spear of the legion. never fights alone",
+      "the spirit of the emperor in cardova is peaceful. it just talks",
+      "the forgotten emperor carries a staff vismer wants. arc of ages",
+      "the dux in cardova still runs the province from the command hall"
+    ],
+    "rumour": [
+      "knock on the cardova door twice before you go in. it's tradition and the dead seem to like it",
+      "an old crafter i know swears the coins in cardova have a blank face on them. never saw one myself",
+      "[heard|someone said] seleucus is a greek name. pretender, if you ask me",
+      "heard the spirit of the emperor asks whose release you mean. creepy",
+      "[heard|someone said] the forgotten emperor is the real one and seleucus sat in his seat",
+      "heard the cardova floor smokes down the middle of the long hall. walk the walls",
+      "[heard|someone said] crotus never says a word",
+      "heard there's a back door out of cardova at the bottom by amminus",
+      "[heard|someone said] olivarius thought up the oath and swore it first",
+      "heard crotus's focus is still warm when you take it. creepy"
+    ],
+    "tell": [
+      "cardova? roman crypts in cornwall under a stone ring. a whole dead legion in rank, and an emperor at the bottom. thirties and forties",
+      "where's cardova? south cornwall, the little crypt in the ring of stones",
+      "is cardova hard? 29 to 49, everything links, pull singles. the command hall is rough",
+      "fall of an emperor? grindan halig and iohannes aldar. four generals then seleucus",
+      "where's amminus? end of the long hall at the bottom. stay off the middle of the floor",
+      "who has the staff for arc of ages? the forgotten emperor in the emperor's hall"
+    ]
+  },
+  "loremaster": {
+    "intro": "Cardova is a Roman crypt where Rome never went. Its [legion] is still on duty round its [emperor], and Albion argues which of three that is. Ask of [seleucus] and his [book of deeds], the [forgotten emperor], the [spirit of the emperor], of the four, [olivarius], [taras], [crotus] and [amminus], of the [long hall] or the [command hall].",
+    "topics": {
+      "legion": "Every rank of a Roman legion stands its post there: immunes and vigiles at the door, legionaries and cohorts in their barracks, the dux in his [command hall], praetors, standard-bearers, the praetorian guard, centurions of every grade. They are waiting for the order to stand down.",
+      "emperor": "Three in one hall: [seleucus] in the chair, the [forgotten emperor], and the [spirit of the emperor]. The Cornish cannot agree which is the emperor. The coins have a beaten-flat face.",
+      "seleucus": "The general who took the chair when the emperor of the west died, and wrote a [book of deeds]. His four generals swore to stand by him in life and after it: [olivarius], [taras], [crotus] and [amminus]. His last leaves ask for release.",
+      "forgotten emperor": "A crowned dead man in the emperor's hall who carries a staff of office and is slow to rise. Iohannes Aldar thinks he is the emperor whose name was struck out; Master Vismer wants his staff.",
+      "spirit of the emperor": "A pale spirit in the emperor's hall that harms no one and talks to anyone who will listen. Brother Teilo thinks it is the emperor's genius, the guardian of the office, and that it does not know which man it belongs to.",
+      "olivarius": "Olivarius Princeps Praetorii, prince of the praetorian guard, first of the four generals, who keeps the hall before the emperor's with his guards and tribunes round him. The oath was his idea, Teilo's reading of the deeds says, and he was the first to swear it; the legion still stands in the order he set. Fall of an Emperor asks for his focus to be offered in the emperor's hall.",
+      "taras": "Taras, the third of the four in the deeds' order and the one charged to stand at the chair's side. He stands there still, close enough to Seleucus to touch the chair.",
+      "crotus": "Crotus Princeps Praetorii keeps the hall behind the emperor's with the centurions, the south door that leads to the long hall and the crypt. The deeds give him the charge in a single line, and the Cornish say he took it in a single word, and has not said another since. He is the youngest of the four, and his focus, the companies say, is still warm when it is taken from him. Fall of an Emperor asks for it.",
+      "amminus": "Amminus the pilus, first spear of the legion, keeps the crypt of the emperor's body at the end of the [long hall]. He has never stood alone: he calls, and his centurions come.",
+      "long hall": "The honour road Seleucus laid from his chair to the dead emperor's crypt, its floor heated from below like a Roman bath so that the guard should never stand cold. Down the middle the old floor smokes. The centurions walked at the walls.",
+      "book of deeds": "Seleucus's own account of his reign, a plain list of things done, put into Albion's tongue by Brother Teilo of Cornwall Station. Iohannes Aldar wants the original.",
+      "command hall": "Where the dux and his prefects and legates still govern a province that is not there."
+    }
+  },
+  "book": {
+    "title": "The Book of Deeds of Seleucus",
+    "pages": [
+      "The Book of Deeds of Seleucus, put into the tongue of Albion by Brother Teilo of Cornwall Station, with his notes. Teilo writes first: the book came up out of the emperor's hall in the hands of a company Iohannes Aldar sent down, and it is written as the Romans wrote the deeds of their emperors, plainly, a list of things done, so that the reader may judge. I have kept it plain. Where the Latin is broken I say so. Where it is not broken and I wish it were, I say nothing, and the reader will see the places.",
+      "Here are set down the deeds of Seleucus, emperor, who came to the edge of the world with his legion to found a city where no Roman had stood. Here too are set down the names of his four generals, Olivarius, Taras, Crotus and Amminus, who swore to stand by him in life and after it. I gave the legion bread when the ships did not come. I gave the legion halls when the ground was too hard for a city. I gave the legion a law when the emperor I served was dead and buried with every honour. I did not take his name. His name was taken, and I wrote it nowhere, as the law required.",
+      "Teilo's note. Here the deeds speak of the emperor before Seleucus, the one whose face is beaten flat on the coins, and they do not give his name; they say only 'the emperor I served'. Iohannes Aldar reads this as a confession, that Seleucus took the chair and struck out the man who sat in it. Grindan Halig reads it the other way: that the legion condemned its own emperor's memory for some crime the book will not tell, and Seleucus obeyed. The minstrels of Camelot say Seleucus is a Greek king's name and not a Roman's, and that a pretender wears it.",
+      "Of the honour road. The deeds say Seleucus laid a road through the halls from his chair to the crypt where the emperor before him lies, and heated its floor from below as the baths of Rome were heated, so that the dead man's guard should never stand cold. He gave the road to Amminus, the first spear of the legion, to keep, and Amminus kept it. Teilo's note: the companies who have walked it say the floor is warm yet, and that down the middle of the road it smokes. The old soldiers walked at the walls. So did the companies who came back.",
+      "Of the four. The deeds name the generals and their charges. Olivarius, prince of the praetorians, to keep the hall before the chair. Taras to stand at the chair's side. Crotus to keep the hall behind it. Amminus to keep the dead emperor's crypt and never to keep it alone: he has only to call, the deeds say, and the centurions of the first cohort stand at his side, and when he no longer needs them they are gone. Teilo's note: the companies say the same, in fewer words and worse ones, and add that the centurions come up out of the floor of the crypt as if they had been lying under it all along.",
+      "Teilo's note, last but one. There are three in the emperor's hall: Seleucus in the chair, the crowned dead man the legion calls the Forgotten Emperor, and a pale spirit that harms no one. I think the spirit is the emperor's genius, the guardian of the office to which every Roman legion made offerings, and that it does not know which of the two men it belongs to. It talks because nobody has answered it. Iohannes thinks it talks because it is lonely. Master Vismer wants the Forgotten Emperor's staff, and has not said what for.",
+      "The last leaves, in the shaking hand. They kept their oath. I did not ask them to keep it so well. Whoever reads this, release them, and release me. Teilo's note: I have read this to the Spirit of the Emperor in the hall, because a company asked me to come down and I wished to see. The spirit listened to the end. Then it asked me, very politely, whose release I meant. I did not know. I do not know now. I came up the long hall at the wall, as the companies do, and I have not been down again."
+    ]
+  },
+  "bosses": [
+    "emperor-seleucus",
+    "amminus-pilus",
+    "taras-princep-praetorii",
+    "forgotten-emperor"
+  ],
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ]
+}

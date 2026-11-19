@@ -80,6 +80,12 @@ namespace DOL.GS.Housing
 				if (!string.IsNullOrEmpty(DatabaseItem.OwnerID))
 					return;
 
+				if (PassportLock.IsVisitor(player.DBCharacter))
+				{
+					ChatUtil.SendMerchantMessage(player, "Visitors from another world can't buy a lot here.");
+					return;
+				}
+
 				if (HouseMgr.GetHouseNumberByPlayer(player) != 0 && player.Client.Account.PrivLevel != (int)ePrivLevel.Admin)
 				{
 					ChatUtil.SendMerchantMessage(player, "You already own another lot or house (Number " + HouseMgr.GetHouseNumberByPlayer(player) + ").");

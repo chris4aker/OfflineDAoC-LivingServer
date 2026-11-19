@@ -1,0 +1,112 @@
+{
+ "id": "lecherous-gress",
+ "name": "Lecherous Gress",
+ "tier": "minor",
+ "npcNames": [
+  "Lecherous Gress"
+ ],
+ "aliases": [
+  "gress"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "mutilators-pit"
+ ],
+ "related": [
+  {
+   "id": "prince-asmoien",
+   "relation": "gave him his rooms"
+  },
+  {
+   "id": "mutilators",
+   "relation": "Namox keeps his stair"
+  },
+  {
+   "id": "malroch-the-cook",
+   "relation": "cooked what he carried"
+  },
+  {
+   "id": "archivist-borath",
+   "relation": "found the sickness"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Lecherous Gress is a level 40 plain GameNPC of the Demon Lords faction, using model 638 (the molochian tempter model) at size 145, above the rocot rooms about 790 units from Mutilator Namox, respawning in 180 seconds.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In Midgard's 'Black Plague' the player is sent from Mularn to kill Lecherous Gress above the Rocot rooms in Darkness Falls and bring the stoppered wondrous potion back to Nanna.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Prima's map key lists Lecherous Gress near the Midgard entrance and the Chthonic Knights; the world data puts him above the Mutilators' pit in the west.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "In Sebastien Michaelis's hierarchy Gressil is a demon of impurity; Gress may echo that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "His night visits and his part in the plague are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Lecherous Gress lives above the rocot rooms in the high west, over the Mutilators' pit, in a set of chambers Prince Asmoien gave him because nobody else would live near him. He is a tempter of the old kind, a large soft demon of the shape the molochian tempters wear, and in the Uncounted Age his work was to lie on sleepers. He would come in the night and lie on a sleeping demon's back, warm and heavy, and whisper, and in the morning the sleeper would want something it had not wanted before.\n\nWhen the court sent the Black Plague up into the realms, Gress carried it. The Archivist had found the sickness in the records and the Cook had made it, but somebody had to put it into the capitals, and Gress went up the cracks at night to Camelot and Jordheim and Tir na Nog and lay on the backs of the sleeping. The sick woke with their backs burning as if they had slept on coals, which in a sense they had, and the smell of rot in the room.\n\nMidgard's enchanters and seers traced the sickness from Mularn down to the rooms above the rocots, and Midgard came for him. The stoppered potion he keeps is the plague's own undoing, which Gress was given in case he caught the thing himself; he never needed it. The Mutilator Namox, who keeps the stair below his rooms, will not say what Gress sends down it.",
+ "legend": "Gress is the Midgard target of the Black Plague quest: Anya Vinsdottir and Nanna send you, and you kill him above the rocot rooms in the high west, past the Mutilators' pit, for the stoppered potion. Level 40, a plain NPC, big and soft. Mutilator Namox stands at the stair below him and Xagalith is not far, so come up the stair carefully and do not pull the pit. He respawns in about three minutes. Midgard players call him the sleeper-sitter and joke about checking their backs at the bind stone.",
+ "yells": {
+  "aggro": [
+   "Lie down. You look tired.",
+   "Such a warm back you have."
+  ],
+  "phases": [],
+  "death": [
+   "Who will... visit them now..."
+  ],
+  "slay": [
+   "Sleep."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The room is warm and close, and smells of sweat and coals.",
+   "Something large and soft shifts in the dark."
+  ],
+  "phases": [],
+  "realmFirstKill": "Lecherous Gress is dead. The capitals sleep easier."
+ },
+ "botLines": {
+  "briefing": [
+   "gress is above the rocot rooms, past the pit. [mid plague quest|black plague]",
+   "40, normal npc, but namox is on the stair. [dont pull the pit|careful on the stair]"
+  ],
+  "aftermathWin": [
+   "gress down. [potion got|got the potion]",
+   "lecherous gress is dead. [back to nanna|turn it in]"
+  ],
+  "aftermathLoss": [
+   "pulled namox on the stair to gress. [oops|wipe]",
+   "gress got us. [embarrassing|how]"
+  ],
+  "rumour": [
+   "[heard|word is] lecherous gress spread the black plague by lying on sleepers",
+   "check your back after df. [gress joke|lol]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "gress",
+  "text": "Lecherous Gress, an old tempter who lives above the rocot rooms in the high west and lay on sleepers' backs in the Uncounted Age. He carried the Black Plague up into the capitals by night. Mutilator [Namox] keeps the stair below him."
+ },
+ "bookPage": "From the notes of Ulfljot the enchanter, in the round hut by the Mularn entrance: The sick all say the same. They went to bed well. In the night something heavy lay on them, warm, and spoke, though none can say what it said. In the morning the back was burning. I have looked at their backs. The burn is the shape of something lying down. I do not know what lies down in that shape. I have asked the skalds, and the oldest of them said only that there are rooms under the world where something sleeps by day so that it can visit by night.",
+ "chronicle": {
+  "win": "{realm}'s company under {raidLeader} ended Lecherous Gress's night visits in {minutes} minutes."
+ }
+}

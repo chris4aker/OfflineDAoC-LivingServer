@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using DOL.AI.Brain;
 using DOL.Database;
 using DOL.Events;
 using DOL.GS;
+using static DOL.GS.Pathfinder;
 
 namespace DOL.GS
 {
@@ -54,10 +56,10 @@ namespace DOL.GS
             return 0.20;
         }
 
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             SpawnAfterDead();
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool AddToWorld()
@@ -85,12 +87,22 @@ namespace DOL.GS
 
         public void SpawnAfterDead()
         {
+            Vector3 position = new(X, Y, Z);
+            Zone zone = CurrentZone;
+            bool usePathfinding = zone != null && zone.IsPathfindingEnabled;
+            EDtPolyFlags[] filters = usePathfinding ? PathfindingProvider.Instance.DefaultFilters : null;
+
             for (int i = 0; i < Util.Random(20, 25); i++) // Spawn 20-25 adds
             {
+                // Pick positions on the navmesh whenever possible, so that adds can't spawn inside walls.
+                Vector3 spawnPoint = usePathfinding ?
+                    PathfindingProvider.Instance.GetRandomPoint(zone, position, 80, filters) ?? position :
+                    new(X + Util.Random(-50, 80), Y + Util.Random(-50, 80), Z);
+
                 SBDeadAdds Add = new SBDeadAdds();
-                Add.X = X + Util.Random(-50, 80);
-                Add.Y = Y + Util.Random(-50, 80);
-                Add.Z = Z;
+                Add.X = (int) spawnPoint.X;
+                Add.Y = (int) spawnPoint.Y;
+                Add.Z = (int) spawnPoint.Z;
                 Add.CurrentRegion = CurrentRegion;
                 Add.Heading = Heading;
                 Add.AddToWorld();
@@ -210,7 +222,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickRandomTarget), Util.Random(20000, 30000));
                     StartCastMezz = true;
                 }
-                if (EpicEncounterMechanics.AllowDisplacement && Util.Chance(10))
+                if (EpicEncounterMechanics.AllowDisplacementFor(Body) && Util.Chance(10))
                 {
                     if (IsTargetTeleported == false)
                     {
@@ -301,23 +313,23 @@ namespace DOL.AI.Brain
         #endregion
         #region Pick player to port
         public static bool IsTargetTeleported = false;
-        public static GamePlayer teleporttarget = null;
-        public static GamePlayer TeleportTarget
+        public static GameLiving teleporttarget = null;
+        public static GameLiving TeleportTarget
         {
             get { return teleporttarget; }
             set { teleporttarget = value; }
         }
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickTeleportPlayer(ECSGameTimer timer)
         {
-            if (!EpicEncounterMechanics.AllowDisplacement) return 0;
+            if (!EpicEncounterMechanics.AllowDisplacementFor(Body)) return 0;
             if (Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Port_Enemys.Contains(player))
                             {
@@ -338,7 +350,7 @@ namespace DOL.AI.Brain
                 {
                     if (Port_Enemys.Count > 0)
                     {
-                        GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                        GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                         TeleportTarget = Target;
                         if (TeleportTarget.IsAlive && TeleportTarget != null)
                         {
@@ -351,10 +363,10 @@ namespace DOL.AI.Brain
         }
         public int TeleportPlayer(ECSGameTimer timer)
         {
-            if (!EpicEncounterMechanics.AllowDisplacement) return 0;
+            if (!EpicEncounterMechanics.AllowDisplacementFor(Body)) return 0;
             if (TeleportTarget != null && TeleportTarget.IsAlive && HasAggro)
             {
-                if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 21115, 53483, 11286, 2100);
+                if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 21115, 53483, 11286, 2100, DisplacementKind.Teleport, Body);
                 Port_Enemys.Remove(TeleportTarget);
                 TeleportTarget = null;//reset random target to null
                 IsTargetTeleported = false;
@@ -470,11 +482,11 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
             {
                 if (player != null && player.IsAlive)
                 {
-                    if (player.CharacterClass.ID is 48 or 47 or 42 or 46) //bard,druid,menta,warden
+                    if (EncounterTargets.ClassId(player) is 48 or 47 or 42 or 46) //bard,druid,menta,warden
                     {
                         if (Body.TargetObject != player)
                         {
@@ -500,6 +512,9 @@ namespace DOL.GS
 {
     public class SBDeadAdds : GameNPC
     {
+        private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+        private const int DESPAWN_RETRY_INTERVAL = 30000;
+
         public SBDeadAdds() : base()
         {
         }
@@ -542,8 +557,22 @@ namespace DOL.GS
             SBDeadAddsBrain adds = new SBDeadAddsBrain();
             LoadedFromScript = true;
             SetOwnBrain(adds);
+            new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
             base.AddToWorld();
             return true;
+        }
+
+        private int Despawn(ECSGameTimer timer)
+        {
+            if (!IsAlive)
+                return 0;
+
+            // Don't despawn mid fight.
+            if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+                return DESPAWN_RETRY_INTERVAL;
+
+            RemoveFromWorld();
+            return 0;
         }
     }
 }

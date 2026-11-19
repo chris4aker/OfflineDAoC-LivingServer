@@ -1,0 +1,266 @@
+{
+  "id": "breifine",
+  "name": "Breifine",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    212
+  ],
+  "summary": "The frontier hills over Marfach: four duns on Caimheul's old stones, Evern's ring, the war's dead and the keen that comes up through the floors.",
+  "facts": [
+    {
+      "text": "Zone 212 (region 200, x 385,024-450,560, y 352,256-417,792): 97 monsters. Keeps: Dun Bolg (keep 102, level 4; Chieftain Bolg), Dun Crimthain (101, level 4; Chieftess Crimthain), Dun Da Behnn (104, level 1; Chieftess Da Behnn) and Dun nGed (103, level 1). The Marfach entrance is at 445,881/392,547.",
+      "provenance": "game",
+      "source": "world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: spectral manslayers (50-53), umber bears, ghastly Midgard invaders, undead Briton invaders and skeletal dwarf invaders (43-46), bloodletters and earthshakers (48-49), grogans, empyrean guardians, torcan, a boogie man, a bananach, a moss monster, a Parthenon guard; Evern (76, Faerie Court) with a wraith drake (67) beside him; Morven (46, Fomorian), Raemon (45) and Witch Xia (28).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Bréifne was a medieval kingdom of north-west Ireland; the bánánach is a battle-spirit of Irish tradition that shrieks over the field.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Br%C3%A9ifne"
+    },
+    {
+      "text": "Morven's Return: 'Slay Raemon, the third heir, at the cyclops tower'. Season of Remorse ends with Witch Xia and her summoned pet.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return', 'Season of Remorse' (world data)"
+    },
+    {
+      "text": "Evern: level 76, faction Faerie Court; the fairies that land on his stones keep him alive (Evern.cs).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones (Evern)"
+    },
+    {
+      "text": "Living Server lore: the duns on Caimheul's stones; the keen through the floors, loudest when a keep changes hands; the candle in the window when a Lady falls; the three realms' dead; Evern's ring older than the keeps; Nóra's account of the hills.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawn of Breifine: Witch Xia (28, a small orc body), alone; Season of Remorse asks for 'Witch Xia and her summoned pet', but no pet spawn stands near her in the world data.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Breifine was the old families' country before it was the frontier. Its hills were the hill-chieftains', and the greatest of them, Caimheul, kept his dún on the highest ground over the caves where the families buried their dead. When the realm war came the realm built its keeps on the old stones, because they were there and they were good, and Dun Bolg, Dun Crimthain, Dun Da Behnn and Dun nGed stand now on the foundations of a chieftain whose household never stopped standing under them. The keen of Marfach comes up through the keeps' floors. The garrisons say it is loudest the night a keep changes hands.\n\nEach dun has its chieftain, and each chieftain keeps a custom of the old families. Chieftain Bolg keeps the western dun and settles quarrels by single combat in the yard, the way the hill-chieftains did. Chieftess Crimthain keeps the eastern dun and keeps hostages' names on her wall, the names of the children of the frontier families she has sworn to protect, so that she never forgets whom she answers to. Chieftess Da Behnn keeps the southern dun and keeps the keeners' custom: when a Lady falls under the hill, a candle in her window. Dun nGed, the smallest, keeps no custom anyone can name, and its garrison likes it that way.\n\nThe war's dead walk the hills between. The ghastly Midgard invaders and undead Briton invaders and skeletal dwarves of the south are the enemy realms' fallen, who heard the keen from below and got up; the spectral manslayers in the north are older, and nobody agrees whose they were. A bananach, a battle-spirit of the old tales, shrieks over the northern field at night, and the bloodletters and earthshakers walk the high ground with it. The keeners of the Breifine hills sing the right keen when a hosting comes home short, so that the ones left on the field go on and do not join them.\n\nIn the middle of it stands Evern's ring. It is older than any keep and older than Caimheul's dún: a ring of stones around a fairy lord who has stood there since the Veil came down, kept alive by the fairies that land on his stones and are spent there, one by one. A wraith drake circles over him. The garrisons of all four duns leave him alone, and he leaves them alone, and the frontier's oldest saying is that Evern was here before the war and will be here after it.\n\nMorven's house stands on the eastern edge of Breifine, the Fomorian lord's who held these hills before the keeps; he is there still, and his third heir, Raemon, keeps the cyclops tower in the west. Witch Xia keeps a hollow in the south, where the morsmutare witches' remorse comes to its end. And in the east, past Dun Crimthain, the way goes down under the hill into Marfach.\n\nWhy does it matter? Because Breifine is the frontier that remembers. The other hills were empty when the keeps went up; Breifine had a household under it, and the household is still there, and the war is fought on its roof.",
+  "legend": "Breifine is frontier (RvR) between Cruachan Gorge and Emain Macha: four keeps, Dun Bolg (west), Dun Crimthain (east), Dun Da Behnn (south) and Dun nGed. The Marfach Caverns entrance is in the east past Dun Crimthain. PvE: realm-war dead (ghastly Midgard, undead Briton and skeletal dwarf invaders, 43-46) in the south, spectral manslayers (50-53) and bloodletters and earthshakers (48-49) in the north, umber bears, grogans. Evern (76) stands in his stone ring in the middle with a wraith drake (67) next to him: kill the fairies on his stones first or they keep him alive. Morven (46) and Raemon (45, at the cyclops tower) are Morven's Return; Witch Xia (28) ends Season of Remorse. Breifine custom: put a candle in the window when a Lady of Marfach falls, and say the right keen when a hosting comes home short.",
+  "atmosphere": {
+    "firstEntry": [
+      "Breifine. The frontier that remembers.",
+      "Keeps on a chieftain's old stones.",
+      "A keen comes up through the floor.",
+      "The war's dead walk the hills.",
+      "Evern was here before the war."
+    ],
+    "areas": [
+      {
+        "name": "Dun Bolg",
+        "x": 402980,
+        "y": 366850,
+        "z": 4840,
+        "radius": 2500,
+        "lines": [
+          "Dun Bolg. Quarrels go to the yard.",
+          "Chieftain Bolg keeps the old way."
+        ]
+      },
+      {
+        "name": "Dun Crimthain",
+        "x": 437610,
+        "y": 368010,
+        "z": 4090,
+        "radius": 2500,
+        "lines": [
+          "Dun Crimthain. Names on the wall.",
+          "The chieftess never forgets whom she answers to."
+        ]
+      },
+      {
+        "name": "Dun Da Behnn",
+        "x": 432590,
+        "y": 403580,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Dun Da Behnn. A candle in the window.",
+          "A Lady has fallen under the hill."
+        ]
+      },
+      {
+        "name": "Dun nGed",
+        "x": 397100,
+        "y": 399740,
+        "z": 4380,
+        "radius": 2500,
+        "lines": [
+          "Dun nGed keeps no custom at all.",
+          "Its garrison likes it that way."
+        ]
+      },
+      {
+        "name": "Evern's ring",
+        "x": 429880,
+        "y": 380410,
+        "z": 2330,
+        "radius": 1500,
+        "lines": [
+          "A ring of stones, older than the keeps.",
+          "Fairies land on the stones and are spent.",
+          "A wraith drake circles overhead."
+        ]
+      },
+      {
+        "name": "the Marfach way",
+        "x": 445880,
+        "y": 392550,
+        "z": 6410,
+        "radius": 1200,
+        "lines": [
+          "The way under the hill.",
+          "The keen is loudest here."
+        ]
+      },
+      {
+        "name": "the invaders' field",
+        "x": 418000,
+        "y": 412500,
+        "z": 2650,
+        "radius": 4000,
+        "lines": [
+          "Enemy dead, risen at the keen.",
+          "Britons and dwarves in old armour."
+        ]
+      },
+      {
+        "name": "the northern field",
+        "x": 421000,
+        "y": 360000,
+        "z": 3500,
+        "radius": 5000,
+        "lines": [
+          "A battle-spirit shrieks at night.",
+          "Manslayers older than the war."
+        ]
+      },
+      {
+        "name": "Morven's house",
+        "x": 442020,
+        "y": 386260,
+        "z": 4530,
+        "radius": 1200,
+        "lines": [
+          "A Fomorian lord's house on the edge.",
+          "He held these hills before the keeps."
+        ]
+      },
+      {
+        "name": "Xia's hollow",
+        "x": 400024,
+        "y": 404256,
+        "z": 3322,
+        "radius": 1200,
+        "lines": [
+          "Witch Xia's hollow. An invader who stayed.",
+          "The remorse ends here."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the breifine keeps stand on caimheul's old dun. [the household is still under them|marfach]",
+      "the keen of marfach comes up through the breifine keep floors. loudest when a keep changes hands",
+      "chieftain bolg settles quarrels by single combat in the yard. [old families way|ouch]",
+      "chieftess crimthain keeps the names of the frontier children she protects on her wall",
+      "dun da behnn puts a candle in the window when a lady of marfach falls",
+      "dun nged keeps no custom anyone can name. [its garrison likes it|lol]",
+      "the invader dead in south breifine heard the keen from below and got up",
+      "a bananach shrieks over the north field at night. [battle spirit|old tales]",
+      "evern's ring is older than the keeps. the fairies on his stones keep him alive",
+      "evern was here before the war and will be here after it. [frontier saying|true]",
+      "morven was a fomorian lord of the hills before the keeps. his house is on the east edge",
+      "the marfach entrance is in east breifine past dun crimthain",
+      "the breifine keeners sing the right keen when a hosting comes home short"
+    ],
+    "rumour": [
+      "[heard|someone said] the keen was loud in dun bolg last night. [it changed hands|uh oh]",
+      "kill the fairies on evern's stones first or he never dies. [76|wraith drake too]",
+      "[word is|heard] the invaders in the south were marching on dun da behnn",
+      "dun da behnn has a candle in the window. [a lady fell|grats someone]",
+      "[heard|someone said] the bananach shrieked before the last relic raid. [omen|brr]",
+      "raemon is at the cyclops ruin in the west of breifine. [morven's return|45]",
+      "[word is|heard] chieftain bolg beat someone in the yard over a horse",
+      "the spectral manslayers in the north are 50-53. [tough|careful]",
+      "[heard|someone said] witch xia taught the morsmutare witches. shes an old orc the invaders left behind"
+    ],
+    "tell": [
+      "breifine is frontier between cruachan gorge and emain macha. four keeps",
+      "where is the marfach entrance? east breifine past dun crimthain",
+      "is breifine dangerous? frontier, enemy realms. pve dead 43-53",
+      "whats in breifine? dun bolg, crimthain, da behnn, nged, evern's ring, the war dead, the marfach way",
+      "where is evern? stone ring in the middle of breifine. 76, kill the fairies first",
+      "what are the breifine keeps? dun bolg, dun crimthain, dun da behnn and dun nged",
+      "witch xia is a 28 orc witch alone in the south of breifine. season of remorse ends with her"
+    ]
+  },
+  "loremaster": {
+    "intro": "Breifine, the frontier that remembers. Its four duns, [Bolg], [Crimthain], [Da Behnn] and [nGed], stand on [Caimheul]'s stones; the [keen] comes up through their floors; the war's [dead] walk the hills; [Evern]'s ring is older than all of it.",
+    "topics": {
+      "Bolg": "Dun Bolg, the western dun, where Chieftain Bolg settles quarrels by single combat in the yard, as the hill-chieftains did.",
+      "Crimthain": "Dun Crimthain, the eastern dun, where Chieftess Crimthain keeps the names of the frontier children she has sworn to protect on her wall. The Marfach way is beyond it.",
+      "Da Behnn": "Dun Da Behnn, the southern dun, where Chieftess Da Behnn keeps the keeners' custom: a candle in the window when a Lady falls under the hill.",
+      "nGed": "Dun nGed, the smallest dun, which keeps no custom anyone can name.",
+      "Caimheul": "The greatest of the hill-chieftains of Breifine, whose dún stood where the keeps stand now, over the caves of the dead. His household is still under the hill, in Marfach.",
+      "keen": "The keen of Marfach, which comes up through the keeps' floors and is loudest the night a keep changes hands. The Breifine keeners sing the right keen back when a hosting comes home short.",
+      "dead": "The enemy realms' fallen, Britons and Midgard men and dwarves, who heard the keen from below and got up; and the spectral manslayers of the north, older, whose nobody knows. A bananach shrieks over them.",
+      "Evern": "A fairy lord in a ring of stones in the middle of Breifine, older than the keeps, kept alive by the fairies that land on his stones. A wraith drake circles over him. He was here before the war.",
+      "Witch Xia": "Witch Xia keeps a hollow in the south of Breifine, alone, and the morsmutare witches' remorse comes to its end with her. She is no woman of the realm but one of the orc-folk who came with the invaders and stayed when they went home, small and old and clever, and the morsmutare witches learned their craft from her. The empyrean guardian of the stone ring sends the young to her last. The quest-givers speak of a pet she calls up. Nobody has seen it."
+    }
+  },
+  "book": {
+    "title": "Under the Duns: Breifine, from Nóra of the Breifine hills",
+    "pages": [
+      "I am a keener's daughter of the Breifine hills, and I have written of the caves already. This is the roof. The realm built its keeps on Caimheul's stones because the stones were good and the ground was high, and nobody asked the household under them. The household answers anyway. When a keep changes hands, the garrison hears the keen come up through the floor, louder than any other night, and the chieftains no longer pretend it is the wind. They have learned to sleep through it, mostly, the way a family sleeps through an old relative's snoring.",
+      "Each dun keeps one of the old families' customs, whether it knows it or not. Bolg settles quarrels in the yard, single combat, as the hill-chieftains did. Crimthain keeps the names of the children she protects on her wall, which is what the hostage-houses were before they went wrong. Da Behnn keeps a candle for my mother's trade, and lights it in the window when a Lady falls. Dun nGed keeps nothing, and I think that is a custom too: a keep that has chosen to forget, on a hill that never does.",
+      "The war's dead heard the keen. The Britons and the men of Midgard who fell in the south got up in their armour and walk there still, and the dwarves with them, and the frontier keeners will not sing for them, because they are not ours to send on. We sing for our own, when a hosting comes home short, the right keen, facing forward, so that the ones left on the field go on. Over the north field at night the battle-spirit shrieks, and we do not sing for her either.",
+      "In the middle of the hills is Evern's ring. My grandmother's grandmother said it was old when Caimheul was young. The fairy lord in it has stood there since the Veil came down, and the small fairies land on his stones and are spent there to keep him alive, one by one, and a wraith drake circles over him. The garrisons leave him be. He was here before the war, the frontier says, and he will be here after it. I believe it. Breifine keeps everything, the living and the dead and the old lord in his ring, and it gives back only what it is sung for."
+    ]
+  },
+  "bosses": [
+    "evern",
+    "morven",
+    "raemon"
+  ],
+  "era": "hib-the-realm-war",
+  "factions": [
+    "frontier-guard",
+    "lords-of-the-undead",
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "marfach-caverns",
+      "relation": "the caves under the hills"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "whose dún the keeps stand on"
+    },
+    {
+      "id": "cruachan-gorge",
+      "relation": "where Morven's other heirs are"
+    },
+    {
+      "id": "emain-macha",
+      "relation": "the frontier to the east"
+    }
+  ]
+}

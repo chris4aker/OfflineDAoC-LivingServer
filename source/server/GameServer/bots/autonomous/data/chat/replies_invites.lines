@@ -17,7 +17,6 @@ know what you mean
 noticed that too
 seems like it
 yup
-pretty much
 heh, sounds about right
 ha, same here
 # Sympathy fits a complaint, not "picked up new spells, cant wait to try them" (live test 2026-10-18).
@@ -73,7 +72,7 @@ nice!
 gratz on that
 show off
 jealous
-not bad at all
+not bad, not bad
 wow nice
 lucky
 well earned
@@ -85,7 +84,7 @@ brag brag brag
 teach me
 very nice
 go you
-pics or it didnt happen
+screenshot or it didnt happen
 @intent banter
 lol sure you did
 @intent
@@ -103,7 +102,7 @@ cute, try it on something red next
 ugh, same
 rough
 been there
-happens to the best of us
+happens to the best
 bad luck
 it gets better
 hang in there
@@ -129,7 +128,7 @@ eh, still more fun than playing safe
 @answers news
 @who *
 oh nice
-huh, didnt know that
+huh, news to me
 good to know
 no way
 since when?
@@ -143,7 +142,7 @@ huh, cool
 wonder how long that lasts
 figures
 is that right?
-ill keep an eye out
+ill watch for it
 that explains a lot
 @who Explorer
 oh, ill have to go see
@@ -165,14 +164,11 @@ might have room later, no promises
 good luck, its quiet tonight
 same, been looking for ages
 check {dungeon}, groups form there
-gl, its slow right now
-a healer will get snapped up quick
 how close to the next level?
 what level are you now?
 keep asking, someone will be up for it
 lots of people were at {camp} earlier
 @needs in_group
-our group is full, sorry
 @needs solo
 same here, lf a group too
 @needs
@@ -183,7 +179,6 @@ gl! someone will grab you soon
 @kind reply
 @answers trade
 @who *
-how much?
 check the exchange first
 whats the price?
 what stats?
@@ -191,7 +186,6 @@ might be interested, pst
 too rich for me
 what level is it?
 try the exchange, it sells there
-not for my class sorry
 seen those go cheap on the exchange
 is it still up?
 maybe, what are you asking?
@@ -210,7 +204,7 @@ already have one, gl though
 @answers ask
 @who *
 no idea sorry
-good question
+hm, no clue there
 not sure
 dunno
 beats me
@@ -220,9 +214,11 @@ hmm not sure
 someone said something about that earlier
 cant help there sorry
 no idea, i just got here
+@answers ask_know
 pretty sure yes but dont quote me
 i think so?
-couldnt tell you
+@answers ask
+couldnt say
 not a clue honestly
 wish i knew
 @answers ask,ask_where,ask_advice
@@ -237,7 +233,7 @@ try asking a guard
 @answers ask_where
 @who *
 follow the road
-check your map
+the guards can point you there
 ask a guard, they know the way
 no idea where that is
 near {zone} i think
@@ -247,7 +243,7 @@ past the bridge i think
 north of town, keep going
 i got lost there too
 somewhere past {camp}
-its on the map i think
+a guard can point you, i think
 cant remember the way sorry
 out the gate, then ask a guard
 same area as {camp} i think

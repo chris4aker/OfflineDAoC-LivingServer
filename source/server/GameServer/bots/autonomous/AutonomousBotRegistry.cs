@@ -15,6 +15,24 @@ public static class AutonomousBotRegistry
     // them, but never part of the population, the planners' roster, the guild roster or the save sweep.
     private static readonly ConcurrentDictionary<long, GameBot> SpecialForces = new();
     public static int SpecialForcesOnline => SpecialForces.Count;
+    // The No Lifers' buffbots (GameBot.IsNoLiferBuffBot, NoLiferBuffBots): found by id and by name like any gamebot (/who,
+    // /send, /target, /invite reach them), but, like the Special Forces, never part of the population, the planners' roster,
+    // any group or the save sweep.
+    private static readonly ConcurrentDictionary<long, GameBot> BuffBots = new();
+    public static int BuffBotsOnline => BuffBots.Count;
+    // Players' hired companions (HiredCompanions165, from True 1.65): persistent bot rows their players log in and out.
+    // Found by id like any gamebot and saved by the save sweep, but never part of the population count, the planners'
+    // roster (Snapshot), the realm guilds or friends lists: no raid, siege, guild group or chat planner ever picks one.
+    private static readonly ConcurrentDictionary<long, GameBot> Hired = new();
+    public static int HiredOnline => Hired.Count;
+
+    /// <summary>The hired companions in the world now.</summary>
+    public static GameBot[] HiredSnapshot() =>
+        Hired.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();
+
+    /// <summary>The buffbots in the world now.</summary>
+    public static GameBot[] BuffBotSnapshot() =>
+        BuffBots.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();
     private static int _populationForBrainTick;
     private static long _nextPopulationSampleTick;
     private const int PopulationSampleIntervalMs = 1_000;
@@ -66,9 +84,12 @@ public static class AutonomousBotRegistry
     // Population targets are counts of live actors, never dictionary slots.
     public static int Count => Active.Values.Count(bot => bot?.ObjectState == GameObject.eObjectState.Active);
 
-    public static bool Contains(long botId) => Active.ContainsKey(botId) || SpecialForces.ContainsKey(botId);
+    public static bool Contains(long botId) => Active.ContainsKey(botId) || SpecialForces.ContainsKey(botId) || BuffBots.ContainsKey(botId) ||
+                                               Hired.ContainsKey(botId);
 
-    public static bool TryGet(long botId, out GameBot bot) => Active.TryGetValue(botId, out bot) || SpecialForces.TryGetValue(botId, out bot);
+    public static bool TryGet(long botId, out GameBot bot) =>
+        Active.TryGetValue(botId, out bot) || SpecialForces.TryGetValue(botId, out bot) || BuffBots.TryGetValue(botId, out bot) ||
+        Hired.TryGetValue(botId, out bot);
 
     // One array per game-loop tick, shared by every caller (all read-only): RvR planning built a
     // fresh 9,000-entry array per AI turn (55 MB of allocations in 40 s, run 9 trace).
@@ -113,6 +134,10 @@ public static class AutonomousBotRegistry
     {
         bot = TryGetByName(name, out GameBot found) && found.Realm == realm && found.IsAutonomousWorldBot &&
               !found.IsTemporaryGroupHelper ? found : null;
+        // A buffbot answers to its name as a player's second character would (it declines invites and says it is a buffbot).
+        bot ??= string.IsNullOrWhiteSpace(name) ? null : BuffBots.Values.FirstOrDefault(candidate =>
+            candidate?.ObjectState == GameObject.eObjectState.Active && candidate.Realm == realm &&
+            string.Equals(candidate.Name, name.Trim(), StringComparison.OrdinalIgnoreCase));
         return bot != null;
     }
 
@@ -123,21 +148,46 @@ public static class AutonomousBotRegistry
             SpecialForces[bot.DatabaseID] = bot;
             return;
         }
+        if (bot?.IsAutonomousWorldBot == true && bot.DatabaseID > 0 && bot.IsNoLiferBuffBot)
+        {
+            BuffBots[bot.DatabaseID] = bot;
+            return;
+        }
+        if (bot?.IsAutonomousWorldBot == true && bot.DatabaseID > 0 && HiredCompanions165.IsHired(bot))
+        {
+            Hired[bot.DatabaseID] = bot;
+            return;
+        }
         if (bot?.IsAutonomousWorldBot == true && bot.DatabaseID > 0)
         {
             Active[bot.DatabaseID] = bot;
             _snapshot = new(-1, []);
             AutonomousBotRealmGuilds.OnBotOnline(bot);
             BotFriends.OnBotOnline(bot); // Fork: friends hear when a bot comes online
+            BotSkill.OnLoggedIn(bot); // Bots as people WP1: its skill profile (BOT_SKILL_PROFILE)
+            BotMilestoneLife.OnLoggedIn(bot); // Bots as people WP6: it takes or resumes its milestone arc
         }
     }
 
     public static void Unregister(GameBot bot)
     {
         AutonomousBeggars.Forget(bot);
+        BotDutyLeases.OnLoggedOut(bot); // a bot that leaves the world gives up whatever had its time
+        ChatPromises.OnLoggedOut(bot); // and an "omw" it had not kept is broken (logged_out)
+        BotPeopleStore.OnLoggedOut(bot); // Bots as people: its rows are saved soon, off the game loop (no-op for companions)
         if (bot?.DatabaseID > 0 && bot.IsEpicSpecialForce)
         {
             SpecialForces.TryRemove(bot.DatabaseID, out _);
+            AutonomousBotEconomy.ForgetCachedDecision(bot.DatabaseID);
+            return;
+        }
+        if (bot?.DatabaseID > 0 && bot.IsNoLiferBuffBot)
+        {
+            BuffBots.TryRemove(bot.DatabaseID, out _);
+            return;
+        }
+        if (bot?.DatabaseID > 0 && Hired.TryRemove(new KeyValuePair<long, GameBot>(bot.DatabaseID, bot)))
+        {
             AutonomousBotEconomy.ForgetCachedDecision(bot.DatabaseID);
             return;
         }
@@ -154,7 +204,7 @@ public static class AutonomousBotRegistry
 
     public static int SaveAll()
     {
-        GameBot[] bots = Active.Values
+        GameBot[] bots = Active.Values.Concat(Hired.Values)
             .Where(bot => bot?.PersistentRecord?.IsPersisted == true)
             .ToArray();
         if (bots.Length == 0)

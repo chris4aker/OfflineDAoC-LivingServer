@@ -12,13 +12,13 @@
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Crafter
-A: {q} who wants to take a keep tonight? we have been sitting at home all week | ok real talk, when did we last take a keep that wasnt ours already
+A: {q} who wants to take a keep tonight? we have been sitting at home all week | ok seriously, when did we last take a keep that wasnt ours already
 B: depends which one. the close ones always have half their realm parked next to them | which keep tho. the near ones get defended in two minutes
-C: hit the far one. by the time they notice we are inside | go deep, nobody watches the back keeps at this hour
+C: hit the far one. by the time they notice we are inside | go deep, nobody ever watches the back keeps
 B: deep means a very long walk home if it goes wrong
 C: walking is half the fun | then dont die :P | so dont lose
 ~ 25
-D: i am in, give me a few to grab my stuff from the bank | count me in, just finishing a quest turn in
+D: i am in, give me a few to grab my stuff from the bank | i like it, just finishing a quest turn in
 A: need numbers first. how many can we get without begging
 ?D: my guild has maybe six on, let me ask them | i can poke my guild, a few of them look bored
 B: we need two rams or we are knocking with our fists | without rams we are just tourists with swords
@@ -32,7 +32,7 @@ D: we just leave a couple on the hill to watch the road
 ?C: or we bring a speed class and run if it turns ugly
 A: so when do we go
 B: half an hour, meet at {keep} | thirty minutes, gather at {keep} and dont wander off
-?D: does a keep lord drop anything good? | is the lord worth killing for loot or just the realm points
+D: does a keep lord drop anything good? | is the lord worth killing for loot or just the realm points
 B: realm points and bragging rights mostly
 D: bragging rights it is then
 ~ 40
@@ -40,7 +40,7 @@ E: i will set the ram by the gate at {keep} | ram goes by the gate at {keep}, tr
 C: who is calling targets once we are in | someone has to lead inside or we will spread out on every stair
 A: i will call, everyone /assist me when the guards come | i will lead, stay tight and assist me
 C: ok boss
-D: on my way, two minutes | omw, saddling up
+D: sounds like a plan | good, finally a plan
 
 @topic keep_door_defense
 @levels 35-50
@@ -48,11 +48,11 @@ D: on my way, two minutes | omw, saddling up
 @role B type=NoLifer
 @role C type=Leveler,Explorer
 @role D type=Socialite,Crafter
-A: {q} next time they ram a door, where does everyone actually stand? | {q} serious question, how do we hold a door when they bring rams
+A: {q} next time they ram a door, where does everyone actually stand? | {q} how do we hold a door when they bring rams?
 B: numbers matter more than anything | numbers first, always
 A: say fifteen, two rams, a few casters on the hill. the usual | usually fifteen or so, rams on the door and casters behind them
 C: half the time i get the call in {capital} and miss the whole thing | i always hear about it when i am in {capital}, long run
-B: casters on the walls, melee by the inner door, healers out of LoS | if you get there: casters up top, everyone else waits inside
+B: casters on the walls, melee by the inner door, healers out of LoS | casters up top, everyone else waits inside, that is the whole plan
 ?D: and the healers, just stand in the courtyard? | where should a healer even stand in a defense
 B: stay off the walls, they target healers first | inside, behind the door, never on the wall where archers see you
 D: good to know | noted for next time
@@ -71,9 +71,9 @@ A: stay out there and hit their healers from behind | dont come in, pick off the
 C: ok, i will be the surprise | sneaky, i like it
 ~ 15
 D: and the inner door? everyone just piles on the stairs? | so when they reach the inner door
-B: healers behind the pillars, everyone else on the stairs | stairs, now. healers stay back
+B: healers behind the pillars, everyone else on the stairs | on the stairs. healers stay back
 ?C: best defense i ever saw, three of us picked off their healers outside and nobody turned around | once picked off two casters on the hill while their whole zerg faced the door
-A: ok enough, who is going out? doors need defenders more than they need this argument | anyway, see you all on the walls
+A: ok, writing all of this on my hand for the next call | good, now somebody remind me of this when the door is actually at half
 
 @topic siege_engines
 @levels 35-50
@@ -81,13 +81,13 @@ A: ok enough, who is going out? doors need defenders more than they need this ar
 @role B type=NoLifer
 @role C type=Daredevil,Socialite
 @role D type=Crafter
-A: {q} why does nobody ever build a catapult | serious question, has anyone actually used a catapult in a raid
+A: {q} why does nobody ever build a catapult? | serious question, has anyone actually used a catapult in a raid
 B: because a ram does the job and catapults take forever to set up | rams hit the door, catapults hit the wall, only one of those matters
 C: catapults are for the defenders, hit the crowd at the ram | from inside the catapult is great, it drops on people bunched at the door
 B: ok fair, from inside its a different story
 D: i built a trebuchet once. took me all evening to get it to the keep | dragged a trebuchet across {frontier} once, never again
 C: lol where did it end up | did it at least hit something
-D: an {enemy} stealther killed me next to it and it sat there all night | died to a stealther five steps from the keep, left it in the grass
+D: a {enemy_mod} stealther killed me next to it and it sat there all night | died to a stealther five steps from the keep, left it in the grass
 ~ 30
 A: where do siege weapons even come from, a vendor? | who makes these things, is it a trade?
 ?B: crafted, its a separate trade skill | siegecraft, its its own trade
@@ -96,14 +96,14 @@ A: so ballistas, anyone? | what about ballistas, are they any use
 D: shoots one guy really hard. great if that one guy is their healer | ballista on the healer, very satisfying when it works
 B: and useless when they move | it works right until the healer takes a step to the left
 ~ 25
-C: honestly the best siege weapon is twenty people with swords | real talk, the zerg is the siege weapon
+C: honestly the best siege weapon is twenty people with swords | face it, the zerg is the siege weapon
 B: twenty people with swords dont break a door fast | swords on a door is like rain on a rock
-?A: can the defenders break a ram, or is it safe once it is set up | do rams die if the people inside hit them
+A: can the defenders break a ram, or is it safe once it is set up | do rams die if the people inside hit them
 C: they can, which is why you guard the thing | oh they break, ask anyone who left one alone
 ?D: i lost a ram to two guys with axes once. two | had a ram smashed by a pair of tanks while we watched the gate
 D: ok i am making another ram tonight, who is carrying | building a ram later, need a volunteer mule
 B: not me, i carried the last two | someone else, my back still hurts from last week
-A: i will. if i die the ram is a gift to {enemy} | fine, i will haul it. pray for me
+A: i will. if i die the ram is a gift to the {enemy} | fine, i will haul it. pray for me
 D: lol | deal, ram is yours
 
 @topic guild_keep_claim
@@ -113,7 +113,7 @@ D: lol | deal, ram is yours
 @role C type=Leveler
 @role D type=Socialite
 @role E type=Explorer,Daredevil
-A: {q} would your guild claim a keep if it could? i want our banner on a wall | {q} anyone else want to see their guild banner over a keep
+A: {q} would your guild claim a keep if it could? i want our banner on a wall | {q} anyone else want to see their guild banner over a keep?
 B: sure, then you get to defend it every time someone sneezes | then enjoy waking up for every raid on it
 C: wait guilds can own keeps? | how does claiming even work, i thought keeps belonged to the realm
 A: the realm still holds it, the guild just puts its name on it | still the realm's keep, we just claim it and look after it
@@ -123,7 +123,7 @@ D: honestly i like seeing guild names on keeps, makes it feel real | a keep with
 B: until the guild logs off and the keep falls with nobody home | it feels real until that guild logs off for the weekend
 E: our guild had one for a week. most stressful week of my life | we claimed one once and argued about it for days
 ?A: why only a week, what went wrong | only a week? what went wrong
-E: lost it at 3am to a ram group, nobody was on | night raid, everyone asleep, it was gone by breakfast
+E: lost it in the middle of the night to a ram group, nobody was on | night raid, everyone asleep, it was gone by morning
 C: so whats the point if you just lose it | why claim it at all then
 A: pride mostly | because its ours, for a while anyway
 D: pride counts for a lot out there
@@ -135,7 +135,7 @@ C: can anyone in the realm help defend it or just the guild | if i see it under 
 B: everyone helps. a keep is a keep | anyone can defend it, nobody checks your guild tag at the door
 C: cool, if you ever get one i will wander over
 D: bring friends | bring a healer, they always need one
-A: and if it falls, it was {enemy}'s fault, not ours :P | if we lose it, blame the night shift
+A: and if it falls, blame the {enemy}, not us :P | if we lose it, blame the night shift
 
 @topic relic_4am
 @levels 40-50
@@ -144,8 +144,8 @@ A: and if it falls, it was {enemy}'s fault, not ours :P | if we lose it, blame t
 @role B type=NoLifer
 @role C type=Daredevil
 @role D type=Leveler,Crafter
-A: {q} anyone else up? this is exactly when {enemy} likes to move on the relics | {q} why does {enemy} always go for the relics at this hour
-B: its 4am, of course this is when they come | they always come when we are all asleep
+A: {q} anyone else up? this is exactly when {enemy} like to move on the relics | {q} why do {enemy} always go for the relics at this hour?
+B: of course this is when they come | they always come when we are all asleep
 C: i am up, cant sleep, whats the topic | here, insomnia club reporting in
 A: if they came right now, how many of us could even show up | honestly, how many bodies could we raise right now
 ?B: depends what they bring | how big a raid are we talking
@@ -157,7 +157,7 @@ C: so is this fair? hitting relics when the owners are offline | is a 4am relic 
 B: they show up, we dont. thats the game | nobody stops us from staying up either
 A: easy to say, some of us work in the morning | its not cheap, its just annoying
 C: a win is a win, we would do the same | we would do the exact same thing if we had the numbers
-?D: hi, what did i miss, why is faction busy at this hour | woke up for water and faction is on fire, whats up
+D: hi, what did i miss, why is faction busy at this hour | woke up for water and faction is on fire, whats up
 A: arguing about 4am relic raids | whether night raids on relics count, weigh in
 D: lol, i am going back to bed | i have work in a few hours, you guys are nuts
 ~ 40
@@ -179,7 +179,7 @@ D: wake me when it is time | ok now i am really going to bed
 @role D type=Socialite
 @role E type=Explorer,NoLifer
 @role F type=Leveler levels=35-49
-A: {q} does the relic bonus actually matter or is it in our heads | {q} honest question, does anyone actually feel the relic bonus in a fight
+A: {q} does the relic bonus actually matter or is it in our heads? | {q} does anyone actually feel the relic bonus in a fight?
 B: you dont feel it, its in your head | the difference is smaller than people think
 C: tell that to my damage | my melee says otherwise
 B: placebo | sure, sure
@@ -213,8 +213,8 @@ C: then stay home, more realm points for us | then you can guard {capital} while
 @role B type=Leveler
 @role C type=Explorer,Socialite
 @role D type=NoLifer
-A: nothing worse than darkness falls closing on you mid pull | {q} anyone else lose a whole camp when df closes on us
-B: happened to me once, out i went | lost a whole camp to that once, booted to the surface
+A: nothing worse than losing darkness falls while you are still down there | {q} anyone else been deep in df when the keeps flipped?
+B: happened to me once, half an hour later their groups were in my camp | yes. first the warning, then {enemy} walking down the stairs
 C: and it always means someone took a keep from us | which means a keep fell and nobody was home
 A: and nobody even noticed it was being hit | usually one we left empty for hours
 D: and this is why pve people should care about rvr | see, this is why the leveling crowd should help defend
@@ -228,19 +228,19 @@ D: leveling people do, thats the point | it pulls the leveling crowd into the fr
 ~ 25
 B: so when it closes, how do we get it back | what does it take to reopen it
 D: take back whatever fell, then maybe one of theirs | get our keeps back first
-C: next time it closes i will come if someone groups me | next time, invite me, i will drop the grind
+C: next time it closes, maybe i will join in | next time, i might drop the grind for it
 B: me too. never thought df would drag me into the frontier | lol, the demons made a soldier out of me
 A: thats how they get you
 ?C: next thing you know you are counting realm points in your sleep | first it is df, then you are buying realm abilities
 B: never | we will see about that
-?D: i give it a month | you will be in an 8man by christmas
+?D: a month, tops | you will be in an 8man by christmas
 
 @topic realm_point_pace
 @levels 40-50
 @scene rvr_rp_pace
 @role B type=NoLifer
 @role C type=Leveler,Daredevil
-A: {q} how long did it take you to get your first realm rank | how long is the grind to rr2 for a normal person
+A: {q} how long did it take you to get your first realm rank? | how long is the grind to rr2 for a normal person
 B: depends how you play. an 8man gets there fast, the zerg slower | small group is way faster than following the zerg
 C: i got mine defending keeps mostly, took forever | slow and steady, keep defense mainly
 A: i get almost nothing in the zerg | i swear i get nothing for half the zerg kills
@@ -250,7 +250,7 @@ C: also stop chasing the people who just arrived, they are worth almost nothing 
 A: so the answer is find a group | so basically i need friends
 B: find a good group, not just any group | a group that assists, not just a group
 C: and dont die. dying is the real realm point killer | dying gives them points too, dont forget that
-?A: does anyone actually look at realm rank when inviting | do people check your rank before inviting you
+A: does anyone actually look at realm rank when inviting | do people check your rank before inviting you
 B: some do. it tells you if someone has been out there | the serious groups look, yeah
 C: i look at whether they listen, not the rank | i dont care about rank, i care if they follow the assist
 ~ 35
@@ -258,7 +258,7 @@ A: ok heading to {frontier}, wish me realm points | heading out, if i come back 
 B: watch the roads, stealthers love new faces | stick to groups on the way out
 C: and take a speed class with you if you can find one
 ?A: lol i will grab the first one i see
-~ 20
+~ 90
 A: update, died on the road | made it most of the way... dead. stealther. of course
 B: welcome to the frontier | classic
 C: shake it off and run back | release and go again
@@ -268,22 +268,22 @@ C: shake it off and run back | release and go again
 @scene rvr_first_ra_choice
 @role B type=NoLifer
 @role C type=Socialite
-@role D type=Daredevil
-@role E type=Leveler,Explorer
+@role D class=Armsman,Mercenary,Paladin,Reaver,Warrior,Berserker,Savage,Thane,Skald,Hero,Champion,Warden,Valewalker type=Daredevil
+@role E class=Armsman,Mercenary,Warrior,Berserker,Savage,Hero,Champion type=Leveler,Explorer
 A: finally have enough realm points for my first ability, what do i get | first realm ability is in reach, help me not waste it
 B: purge, dont even think | purge, every time
-C: depends on your class, what are you | what class? that changes everything
+C: what are you playing? depends on that | what class? that changes everything
 A: {class} | i am {class}, if that helps
 C: then maybe not purge first | hmm, then it depends on your group
 B: purge is never wrong. stun, mez, root, you just walk out | everything stops you in rvr, purge lets you leave
 D: ignore pain saved my life more times than purge | ignore pain is the best panic button, nothing comes close
-?E: i went determination, i hated being stunned | determination for me, stuns were ruining my nights
+E: i went determination, i hated being stunned | determination for me, stuns were ruining my nights
 B: determination is fine, purge is better | shorter stuns are nice, no stun is nicer
 ~ 30
 D: the problem with purge is people waste it on a snare | half the people with purge use it on a snare and then eat the stun
 C: yeah timing matters more than the pick | knowing when to press it is the whole skill
 E: for casters its mastery of concentration, keep casting while they hit you | casters, moc all the way
-?A: wait so moc means melee doesnt interrupt a caster? | casters can keep casting while getting hit?
+A: wait so moc means melee doesnt interrupt a caster? | casters can keep casting while getting hit?
 E: something like that, it helps a lot, not magic though | mostly, it is not a guarantee
 ~ 25
 A: ok so purge, ignore pain, moc, determination... thats every one | so you all picked something different. great
@@ -301,7 +301,7 @@ E: lol
 @role C type=NoLifer
 @role D type=Socialite
 @role E type=Daredevil
-A: {q} the zerg ran over our 8man again, forty of them | forty people chasing eight, very brave of them
+A: the zerg ran over our 8man again, forty of them | forty people chasing eight, very brave of them
 B: thats rvr. bring more people | more people is a strategy too
 C: it is not a strategy, it is a crowd | the zerg isnt strategy, its gravity
 B: a crowd that takes keeps | a crowd that holds the relics
@@ -319,8 +319,8 @@ A: we did once. caught them at a bridge | caught twenty in a narrow spot once an
 ?B: once | and how many times did you not
 A: once is enough for a story | the one time counts more than the twenty losses
 ~ 25
-?D: zerg forming at {keep} later, anyone | so who wants to zerg tonight, {keep} raid after dinner
-B: me | count me in, obviously
+D: zerg forming at {keep} later, anyone | so who wants to zerg tonight, {keep} raid later on
+B: me | obviously
 C: we will be off doing our own thing, call if you need us | we will roam, send a tell if you find a fight for eight
 E: if you see eight people fighting forty, thats us. send help | if the zerg passes us dying, please stop and help
 D: will do :) | deal, we will come rescue you
@@ -331,7 +331,7 @@ D: will do :) | deal, we will come rescue you
 @role B type=Daredevil
 @role C type=NoLifer
 @role D type=Leveler
-A: ok who was hitting the tank | why was half the group on their tank
+A: {q} last fight, who was hitting the tank? | why was half our group on their tank last night
 B: me, sorry, he was hitting our healer | guilty, he was right in front of me
 C: thats exactly why you hit their healer, so he goes down after | the tank doesnt die, ever. their healer does
 A: rule is simple: /assist the MA, no exceptions | /assist on me, nothing else, that was the deal
@@ -352,10 +352,10 @@ C: lol | peel duty, the job nobody wants
 ?D: whats peel | what does peel mean
 C: get the enemy off our healer | pull the attackers off our casters
 ~ 20
-A: ok regroup at {keep}, round two | everyone back to {keep}, we try again
-B: assist this time, i promise | promise, nothing but the MA target
+A: ok, next time we do it that way | next fight, new rules
+B: assist next time, i promise | promise, nothing but the MA target
 ?C: i will believe it when i see it | sure you will
-D: macro made! | got my assist key set up, lets go
+D: macro made! | got my assist key set up
 
 @topic stealther_travelers
 @levels 35-50
@@ -374,13 +374,13 @@ D: as a stealther, i promise we are not all bad | speaking for stealthers, we do
 A: name one thing | ok what else do you do
 D: scouting. i tell you where the zerg is | spotting groups before they hit our keeps
 C: true, a stealther called the last raid an hour early | that was useful last week, i admit
-A: fine. scout them, not me | ok but go scout {enemy}, not my corpse
+A: fine. scout them, not me | ok but go scout the {enemy}, not my corpse
 ~ 25
 B: there is no counter to a stealther except not being alone | best defense is three friends
 ?C: or run in a big group like a sensible person | or wait for the zerg and ride along
 A: ok so who wants to walk me to {keep} | escort needed to {keep}, will pay in gratitude
-C: i can, leaving in a few | on my way out anyway, wait at the gate
-D: i can watch the road ahead | i will go ahead and look for my {enemy} cousins
+C: i would, but im nowhere near the gate | ask at the gate, someone always rides out
+D: a stealther could watch the road ahead | find a stealther to look for their stealthers, it takes one to find one
 B: a stealther escort for a stealther victim, poetry | lol, hire one to catch one
 A: whatever works | i am not proud, i will take it
 
@@ -390,7 +390,7 @@ A: whatever works | i am not proud, i will take it
 @role B type=Leveler,Socialite
 @role C type=Daredevil
 @role D type=NoLifer
-A: {q} how do you fight an archer who wont come closer | archer pinned me on a hill for ten minutes, how do you even fight that
+A: {q} how do you fight an archer who wont come closer? | archer pinned me on a hill for ten minutes, how do you even fight that
 B: you dont, you leave LoS | break line of sight and make him come to you
 A: there was no LoS to break, open field | i was in a field, nothing to hide behind
 C: then charge. archers are paper up close | close the gap, they fold in melee
@@ -420,7 +420,7 @@ A: ok i am going back out, with a group this time | lesson learned, groups only
 @role D type=Daredevil
 @role E class=Armsman,Paladin,Warrior,Thane,Hero,Champion type=Leveler
 @role A class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden,Mentalist
-A: is it just me or does every {enemy} group go straight for the healers | died four fights in a row as the first target
+A: is it just me or do {enemy_mod} groups always go straight for the healers | died four fights in a row as the first target
 B: thats every group, healers die first or the fight lasts forever | of course, kill the healer first, thats rvr
 C: welcome to playing a healer | thats healer life, sadly
 A: i dont mind dying, i mind dying first every time | i would just like to cast one spell before i die
@@ -435,7 +435,7 @@ A: then the casters take all the hits | if i stand back i am out of range of the
 D: healers have to stand where the fight is, thats the trap | the range is the problem, you have to be close enough
 C: and far enough. its an art | close enough to heal, far enough to live
 ~ 25
-?A: should healers just be tougher | anyone else think healers should get more health
+A: should healers just be tougher | anyone else think healers should get more health
 B: a tough healer is unkillable, nobody would play anything else | then everyone would roll one
 D: or just learn to move | movement is your armor
 C: and buy purge, the moment you have the points | purge is the healer's best friend
@@ -449,7 +449,7 @@ D: i give that plan one fight | we will see how long that lasts
 @role B type=NoLifer
 @role C type=Leveler
 @role D class=Minstrel,Skald,Bard type=Socialite,Explorer
-A: {q} why did everyone run in a different direction | that retreat was a disaster, who called it
+A: {q} why did everyone run in a different direction last fight? | that retreat last night was a disaster, who called it
 B: nobody called it, everyone just ran | it wasnt a retreat, it was a scatter
 C: and we lost our speed when the speed class died first | our speed singer was the first one they killed
 A: so what, we guard the speed like a healer? | protect the speed class like a healer then
@@ -467,8 +467,8 @@ B: the leader calls it and we follow the speed | whoever leads, and everyone sti
 ?D: and stay close, the song only reaches so far | if you wander off you lose the song
 C: right, nobody wanders | no wandering, no heroics
 ~ 20
-A: regroup, same group, new rules | ok heading back out, same group
-D: speed is up, stick close | songs up, dont fall behind
+A: next time, same group, new rules | ok, new rules for next time
+D: speed stays up, stick close | songs up, dont fall behind next time
 B: and if i yell run, run | when i say run, you run
 C: running is a skill too | lol we have had practice at that
 
@@ -479,7 +479,7 @@ C: running is a skill too | lol we have had practice at that
 @role C type=Daredevil
 @role D type=Explorer
 @role E type=Socialite,Leveler
-A: {q} anyone else think a bridge is the best place to fight | {q} if the {enemy} zerg ever has to cross a bridge, shouldnt we be holding it
+A: {q} anyone else think a bridge is the best place to fight? | {q} if a {enemy_mod} zerg ever comes across a bridge, shouldnt we be holding it?
 B: bridges are the best spot in {frontier}. they have to come to us | love a bridge, nowhere for them to spread out
 C: tanks hold the middle, casters hang back on our side? | casters at the end, tanks on the middle?
 B: dont put tanks in the middle, they get surrounded | tanks on our end, let them walk into the casters
@@ -518,19 +518,19 @@ A: too many people in one spot, the game cant keep up | it happens every big fig
 D: turn off the spell effects, helps a lot | lower the settings, it really helps
 B: then i cant see what is happening | i turned off everything, now i fight colored blobs
 D: you couldnt see before either, you were frozen | at least now you see the blobs move
-?C: is the lag on my end or theirs | is it my computer or the server
+C: is the lag on my end or theirs | is it my computer or the server
 A: both probably | both, always both
 ~ 30
 C: honestly i fight on the edges of the zerg, it runs smoother out there | i stay at the edge in big fights, less lag
 B: and fewer realm points | and less action
 C: i would rather fight than watch a frozen screen | and fewer deaths, so i come out ahead
-?D: on a modem i just park at the keep and hope | dialup gang here, i dont even try sieges
+D: on a modem i just park at the keep and hope | dialup here, i dont even try sieges
 A: modem in a siege is brave | lol, respect
 ~ 25
 B: new computer next month, then i will be unstoppable | saving up for a new video card
 C: then they will add more people and you will lag again | then they will bring twice as many
 D: no computer survives the zerg | the zerg always wins against hardware
-A: the real enemy was the lag all along | {enemy} doesnt beat us, the lag does
+A: the real enemy is the lag | {enemy} dont beat us, the lag does
 
 @topic population_imbalance
 @levels 35-50
@@ -539,7 +539,7 @@ A: the real enemy was the lag all along | {enemy} doesnt beat us, the lag does
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler,Crafter
-A: {q} the biggest realm always wins, why even fight | does anyone else think the biggest realm just holds everything
+A: {q} the biggest realm always wins, why even fight? | does anyone else think the biggest realm just holds everything
 B: they have more people at every hour, thats it | its just math, they have more on at night
 C: more people doesnt mean better people | numbers are not everything
 B: numbers take relics | it is everything when they are at the door with fifty
@@ -559,7 +559,7 @@ E: silver lining, at least our fights run smooth | at least we dont lag in every
 ~ 25
 B: so we pick the right fights and avoid the zerg | we play smart and pick fights
 C: and take keeps when they are asleep | hit them at odd hours, use their own trick
-D: lol 4am raids it is | someone set an alarm
+D: lol middle of the night raids it is | someone set an alarm
 A: not me, i need my sleep | i will be asleep
 E: maybe a sensible hour first | tomorrow at prime time then, like sensible people
 
@@ -569,14 +569,14 @@ E: maybe a sensible hour first | tomorrow at prime time then, like sensible peop
 @role B type=Socialite
 @role C type=Daredevil
 @role D type=Explorer,NoLifer
-A: {q} ever watch an {enemy} zerg spend twenty minutes looking for a door | once watched an {enemy} group walk into a keep wall for five minutes
+A: {q} ever watch a {enemy_mod} zerg of forty spend twenty minutes looking for a door? | once watched a {enemy_mod} group walk into a keep wall for five minutes
 B: lol they do that, its a tradition | they always get lost near the keeps
 C: to be fair we did the same last week | we arent much better, i saw our zerg get lost in fog
 A: we were exploring | that was a scouting trip
 ~ 25
 D: you know they say the same about us on their side | they probably tell the same jokes about {realm}
 B: sure, but ours are funnier | they wish they had our jokes
-C: had a good duel with one of theirs today, he waved first | i fought an {enemy} today who saluted before we fought, class act
+C: had a good duel with one of theirs today, he waved first | i fought one of the {enemy} today who saluted before we fought, class act
 ?D: did you win | and then?
 C: he won. it was still classy | no. but it was polite
 ~ 30
@@ -595,13 +595,14 @@ D: lol | most polite war in history
 @scene rvr_thid_twinks
 @role B type=Socialite
 @role C type=NoLifer
-@role D type=Crafter,Daredevil
+@role D type=Crafter,Daredevil levels=20-24
 @role E type=Leveler
+@role A levels=20-24
 A: just got farmed by a twink in thidranki | some twink in thidranki killed me in two hits
 B: welcome to the bg | thats thidranki, half of them are twinks
 C: crafted gear, all spellcrafted, dyed black. classic twink | best gear money can buy at 24, i know the type
 A: how is that fair? i have quest gear | i am wearing drops and quest rewards, he looked like a statue
-?D: as a twink, i feel attacked | hey some of us twinks are nice
+?D: hey, twink here, we are not all like that | hey some of us twinks are nice
 ~ 25
 D: it took weeks to put my set together, its a hobby for me | we spend a lot of time on this gear, it is a hobby
 C: and the hobby is beating up new players | the hobby is killing people with half your gear
@@ -617,7 +618,7 @@ C: and stay close to the keep when you are new | use the keep, the guards help
 D: group with me and i will keep you alive | tell you what, come with me, i will show you around
 A: a twink offering help? suspicious | how do i know this isnt a trick
 D: we are on the same side, remember | same realm, i couldnt hit you if i wanted to
-A: ok fine, sending invite | ok, inviting
+A: ok fine, pst me | ok, /tell me later then
 B: the twink escort service, now open | lol, twink bodyguard
 
 @topic thidranki_first_night
@@ -626,7 +627,8 @@ B: the twink escort service, now open | lol, twink bodyguard
 @role B type=Socialite
 @role C type=Explorer
 @role D type=Daredevil
-A: {q} first time in thidranki, what do i do | new to the battlegrounds, is thidranki worth it
+@role A levels=20-24
+A: {q} first time in thidranki, what do i do? | new to the battlegrounds, is thidranki worth it
 B: yes! go now, its the best part of the game | absolutely, best fun at your level
 C: find the keep in the middle, thats where the action is | stick with a group, follow the crowd to the keep
 A: what if i die | do i lose anything if i die there
@@ -642,8 +644,8 @@ A: ok i am here, its chaos | made it, there are people everywhere
 B: find our group, stay near them | go with the biggest group of your realm
 A: i got a message about realm points | what are realm points, i just got some
 C: you killed someone, grats! | thats from a kill, grats on your first
-A: :D | first blood!
-?B: dont run off chasing the next one | dont let it go to your head
+A: woot | first blood!
+B: dont run off chasing the next one | dont let it go to your head
 ~ 20
 A: dead. i ran after a guy alone | ok i ran off chasing the next one
 D: lol everyone does that | first lesson of thidranki
@@ -655,7 +657,8 @@ A: running back in, i love this place | going back in, this is so much fun
 @scene rvr_murdaigean_night
 @role B type=Leveler
 @role C type=NoLifer
-@role D type=Socialite
+@role D type=Socialite levels=25-29
+@role A levels=25-29
 A: murdaigean is so much better than thidranki | anyone else enjoying murdaigean more than thidranki
 B: same, fewer twinks, more real fights | less twink, more fighting, yes
 C: there are still twinks, they just look older | twinks exist here too, trust me
@@ -663,9 +666,9 @@ A: yeah but at least it isnt every fight | ok but they are not everywhere
 ~ 25
 D: is murdaigean busy now? | anyone in murdaigean right now, is it worth going
 C: usually, the keep changes hands all night | most evenings, the keep fight never stops
-D: on my way | coming, two minutes
-B: pick up a healer on the way, we have none | bring a healer if you see one
-?D: i will drag one along | i will grab a healer on the way
+D: might go after this | maybe later, after this camp
+B: pick up a healer if you go | bring a healer if you see one
+?D: noted | good idea
 ~ 30
 A: question, do the realm points here stay with me later | does bg rvr count for anything
 B: yes, you keep them | you keep them when you leave, its real
@@ -673,10 +676,10 @@ A: so i could be ranked before i even see the frontier | nice, so i can get a ra
 C: lots of people do that, its a good start | plenty of people come out of the bgs with ranks
 ?B: the real gain is the practice | and they know how to fight when they reach the frontier, which matters more than the rank
 ~ 25
-D: arrived, which way is the fight | here now, wow there are a lot of people
+D: so where is the fight usually | which way do people go in there
 C: stick with the biggest group, dont wander | find our group and stay with it
-A: heading over, dont win without me | coming too, save me some
-B: no promises | hurry
+A: maybe i will try it tonight | sounds like my kind of place
+B: bring a friend or two | do it, its fun
 
 @topic war_stories
 @levels 35-50
@@ -706,7 +709,7 @@ E: wish i had been there | ok next time call me, leveling can wait
 C: we called you! you said one more pull | we did call you, you said one more level
 E: ...fair | i stand by that pull
 ~ 20
-?F: anyone up for round two | should we go back out and make another story
+F: anyone up for round two | should we go back out and make another story
 A: yes, i need a new story | always
 B: let me sit for power first | i am oop, give me a minute
 D: meet at {keep} | same place, {keep}?
@@ -718,7 +721,7 @@ D: meet at {keep} | same place, {keep}?
 @role C type=Leveler
 @role D type=Socialite levels=30-49
 @role E type=Crafter,Explorer
-A: {q} our guild is recruiting for rvr, anyone who wants regular raids | small rvr guild looking for people who like fighting more than leveling
+A: our guild is recruiting for rvr, anyone who wants regular raids | small rvr guild looking for people who like fighting more than leveling
 B: what time do you raid | when do you play
 A: most evenings, prime time, sometimes late | evenings mostly, weekends late
 C: do you need a certain class | what classes are you short on
@@ -749,10 +752,10 @@ B: look at that, a guild is born | recruiting works, who knew
 @role C type=Socialite
 @role D type=Daredevil
 @role E type=Leveler,Explorer
-A: {q} first night in the frontier, how do i even start | just went to the frontier for the first time, where do i go
+A: {q} first night in the frontier, how do i even start? | just went to the frontier for the first time, where do i go
 B: find a group, never walk alone | first rule: never alone
 C: go to {keep} and see who is there | head to {keep}, someone is always around there
-A: ok on my way, is {frontier} dangerous? | i see {frontier} on the map, is it safe
+A: ok, is {frontier} dangerous? | i see {frontier} on the map, is it safe
 B: nowhere is safe | lol no
 D: if you see nobody around, assume someone is there | stealthers on the roads, stick near other people
 ~ 25
@@ -761,8 +764,8 @@ C: wait a bit, people come and go | sit there a while, a group always shows up
 ?A: ok, waiting. what now | what do i do while i wait
 B: make an assist macro while you wait | check your gear, sell junk, set up assist
 ~ 30
-E: hey new person, we have room in our group | inviting you, we are heading out now
-A: thanks! where are we going | ok joined, what are we doing
+E: hey new person, pst me, we might have a spot | send me a tell, we are heading out soon
+A: thanks, tell sent! where are we going | ok, tell sent, what are we doing
 E: roaming, looking for {enemy} | just looking for a fight, follow the leader
 A: what happens if we see the zerg | what if we meet a big group
 E: we run | we turn around, fast

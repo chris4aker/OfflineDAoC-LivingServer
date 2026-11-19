@@ -53,7 +53,7 @@ namespace DOL.GS.Quests
         {
             HashSet<string> names = new(StringComparer.OrdinalIgnoreCase);
 
-            foreach (DbDataQuest quest in GameServer.Database.SelectAllObjects<DbDataQuest>())
+            foreach (DbDataQuest quest in EpicChainLinks.Link(GameServer.Database.SelectAllObjects<DbDataQuest>()))
             {
                 if (!string.IsNullOrEmpty(quest.StartName))
                     names.Add(quest.StartName);

@@ -45,4 +45,77 @@ namespace DOL.GS
             return result;
         }
     }
+
+    /// <summary>
+    /// One caster's memory of the expired buffs it noticed (Bots as people WP2, docs/BOTS-AS-PEOPLE-1.2.md, item 2: "Buffs"):
+    /// a person does not always renew a buff the moment it runs out. The first time a buff is seen missing on a target the
+    /// caster decides once (BotSkillHands.BuffLapse: Casual 25% of expiries stay off 20-90 s, Average 12% for 10-45 s,
+    /// Veteran 4% for 5-20 s; a quarter of the rate in a group with a real player; never in a dungeon or with a named
+    /// in play, and a running lapse is dropped as soon as that changes or the scope refuses); the answer holds for the lapse and <see cref="DecisionMemoryMilliseconds"/> after, so the maintenance pass
+    /// (every 1.75-5 s) does not roll again. Another buffer of the group may renew it meanwhile, as in a real group.
+    /// </summary>
+    public sealed class BotBuffLapses<T> where T : class
+    {
+        /// <summary>A decision is kept this long after its lapse ends (the buff is then renewed, not rolled for again).</summary>
+        public const long DecisionMemoryMilliseconds = 30_000;
+        /// <summary>At most this many decisions are kept (oldest dropped first by the prune).</summary>
+        public const int MaxKept = 64;
+
+        private readonly object _gate = new();
+        private readonly Dictionary<(T Target, int Spell), (long Decided, long Until)> _decided = new();
+
+        /// <summary>
+        /// True while the caster lets this missing buff lapse. <paramref name="decide"/> (called once per expiry, with
+        /// <paramref name="state"/>) returns the lapse in ms, 0 to renew at once. While a lapse runs,
+        /// <paramref name="stillAllowed"/> is asked at every pass (the scope, a dungeon, a named in play: BotSkillHands.
+        /// LapseStillAllowed); false drops the lapse and the buff is renewed now.
+        /// </summary>
+        public bool Waits<TState>(T target, int spellId, long now, TState state, Func<TState, long> decide,
+            Func<TState, bool> stillAllowed = null)
+        {
+            if (target == null)
+                return false;
+            bool running = false;
+            lock (_gate)
+            {
+                if (_decided.TryGetValue((target, spellId), out var decision) && now >= decision.Decided &&
+                    now < decision.Until + DecisionMemoryMilliseconds)
+                {
+                    if (now >= decision.Until)
+                        return false;
+                    running = true;
+                }
+            }
+            if (running)
+            {
+                if (stillAllowed == null || stillAllowed(state))
+                    return true;
+                lock (_gate)
+                    _decided[(target, spellId)] = (now, now);
+                return false;
+            }
+            long lapse = Math.Max(0, decide(state));
+            lock (_gate)
+            {
+                if (_decided.Count >= MaxKept)
+                    Prune(now);
+                _decided[(target, spellId)] = (now, now + lapse);
+            }
+            return lapse > 0;
+        }
+
+        public int Count
+        {
+            get { lock (_gate) return _decided.Count; }
+        }
+
+        private void Prune(long now)
+        {
+            foreach (var key in _decided.Where(entry => now >= entry.Value.Until + DecisionMemoryMilliseconds || now < entry.Value.Decided)
+                         .Select(entry => entry.Key).ToArray())
+                _decided.Remove(key);
+            if (_decided.Count >= MaxKept)
+                _decided.Clear();
+        }
+    }
 }

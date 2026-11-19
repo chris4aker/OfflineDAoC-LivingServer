@@ -1,0 +1,136 @@
+{
+  "id": "cailleach-uragaig",
+  "name": "Cailleach Uragaig",
+  "catalogKey": "albion-named-mobs-classic-zones/cailleachuragaig",
+  "locationId": "lyonesse",
+  "realm": "Albion",
+  "aliases": [
+    "the cailleach"
+  ],
+  "facts": [
+    {
+      "text": "Level 70, 10,000 health, crowd-control immune, armour factor 350 with 20% absorb, 20% resist to everything. Drawn past her tether she takes no damage from any attacker (players, pets and bots alike).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs"
+    },
+    {
+      "text": "When she engages she cries 'Father! Lend me your Torch of Light so we may be delivered from these aggressors!' and four Mithra's Torches of Light (level 65, untargetable, flying, no name) appear at four fixed places round her pillars; each throws Flame Spear (150 heat, instant, range 4,000) at her target, and all four are removed five seconds after she engages.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs"
+    },
+    {
+      "text": "She casts Flame Spear herself: a 200 heat bolt, 4 s cast, range 1,800, not marked uninterruptible. Below 30% her script calls helpers with the package CailleachUragaigBaf within 2,500; no world spawn carries that package, so nobody answers. Out of combat she walks home at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/CailleachUragaig.cs"
+    },
+    {
+      "text": "Seven cailleach priests and seven cailleach guards (levels 60-67) stand round her pillars as their own camp.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 1 zone 10 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mithraic mysteries, not game canon: the highest grade of initiate was Pater, 'Father', and the torchbearers Cautes and Cautopates carried torches raised and lowered.",
+      "provenance": "myth",
+      "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
+    },
+    {
+      "text": "Gaelic folklore, not game canon: the Cailleach is the hag of winter. Uragaig is a place name on Colonsay (to verify).",
+      "provenance": "myth",
+      "source": "to verify"
+    }
+  ],
+  "story": "The Cailleach is the old woman of the cold in the tales of the north, who carries winter in her apron and strikes the ground with her staff to harden it. The Cornish say one came south in the year Lyonesse drowned, because the drowned country was cold and wet enough to suit her, and because there was a house standing empty there that had been built for a god.\n\nThe house was Rome's. West of the road, inside a ring of pillars, the soldiers of the legions had kept their god Mithras, the bull-slayer born from the rock, and his priests were known by their grades from Raven up to Father, and two of them carried torches at his side, one raised and one lowered. When Rome went home the god stayed, as gods do, with nobody left to call him by his name. The Cailleach called him. Whether she was a priestess of that cult who grew old past dying, or a hag of the north who found a god asleep and woke him for her own use, the fishermen below the pillars will not say. They say she calls him Father, and that he answers.\n\nHe answers once. When the sisterhood's house is threatened she cries out to him, and the torches of the god stand up in the air round the pillars, four of them, burning with no flame you could warm your hands at, and all of them throw at the one she has marked, together, and then go dark. 'The Father lends his torches,' the Danaoin fishermen say when a thing is given and taken back in the same breath; 'he does not give them.' After that she is alone with her own fire, and she makes it the slow way, a spear of it at a time, drawing each one up out of the cold ground while she mutters; the fishermen say a shout in her ear at the wrong moment and the spear falls to nothing in her hand.\n\nHer sisters keep the ring with her: old women in grey who were once, perhaps, the girls of the drowned villages, and the guards who stand at the pillars' feet. The sisterhood is not her bodyguard. It is her household, and keeps its own counsel, and has its own quarrel with anyone who walks in among the pillars uninvited. Lidmann Halsey of Adribard's Retreat sends the realm's Defenders to her because she has been drawing the cold of the north down into Albion's west for a long time, and the Cornish cannot get their harvests in. She cannot be hurt off her own ground; the house of the god keeps her. On it she is an old woman with a god's borrowed fire, and the Cornish will not say her name.",
+  "legend": "The Cailleach Uragaig, level 70, 10k, in the ring of pillars straight west off the Lyonesse road. Her sisterhood is around her: seven priests and seven guards, 60s, their own camp, so clear the ones close to her first or fight her where they will not join. When she aggroes, four torches of Mithra appear round the pillars and each throws a 150 heat bolt at her target, then they vanish five seconds later. You cannot target the torches and you do not need to: have the first target topped and heat resist up. After that she casts a 200 heat bolt with a 4 second cast, so interrupt her. She is crowd-control immune and takes no damage if you drag her off her pillars. Her old 30% call for help finds nobody in this world. About half an hour respawn.",
+  "yells": {
+    "aggro": [
+      "Father! Lend me your Torch of Light so we may be delivered from these aggressors!",
+      "Cold ground, cold sea, cold you.",
+      "Who walks in the Father's house unasked?"
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "The torches of the Father burn for me!"
+      },
+      {
+        "trigger": "health<=30",
+        "text": "Sisters! The house is broken into!"
+      }
+    ],
+    "death": [
+      "Father... the torches... are out...",
+      "The cold... goes north again..."
+    ],
+    "slay": [
+      "Winter takes you.",
+      "Lie down in the salt.",
+      "The Father has no use for you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The air turns cold. Torches burn without flame.",
+      "A ring of pillars. Rome's god kept house here."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "Mithra's Torches of Light rise round the pillars!"
+      },
+      {
+        "trigger": "health<=30",
+        "text": "The Cailleach calls her sisters. Nobody comes."
+      }
+    ],
+    "realmFirstKill": "The Cailleach Uragaig is gone. Lyonesse warms."
+  },
+  "botLines": {
+    "briefing": [
+      "cailleach, 70, 10k. clear her sisterhood priests and guards near the pillars first",
+      "on aggro 4 torches each throw a 150 heat bolt at her target then vanish in 5 sec. top the first target",
+      "you cant target the torches, dont try. after that she casts 4 sec heat bolts, interrupt her",
+      "cc immune and no dmg if you drag her off her pillars. fight her there"
+    ],
+    "aftermathWin": [
+      "the hag is down. lyonesse feels warmer already",
+      "torches out, cailleach out",
+      "kept her interrupted the whole way. nice",
+      "lidmann can have his pouch now"
+    ],
+    "aftermathLoss": [
+      "the torches all hit the main tank at once and nobody was ready",
+      "her sisterhood priests joined in, should have cleared them",
+      "nobody interrupted, she spammed fire bolts",
+      "pulled her off the pillars and she went untouchable"
+    ],
+    "rumour": [
+      "cailleach uragaig walks lyonesse. the old folk in cornwall won't say the name",
+      "[heard|someone said] the cailleach calls on her father and torches of mithra come",
+      "heard the cailleach's sisterhood are drowned village girls grown old",
+      "[heard|someone said] the cornish cant get the harvest in while the cailleach sits in lyonesse"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "cailleach",
+    "text": "The hag of the cold, from the tales of the north, who keeps house in Rome's ring of pillars in [lyonesse] with her sisterhood. She calls the old god Mithras Father, and his torches answer her once and go out; after that her fire comes the slow way. The house keeps her: off her own ground nothing bites. The Cornish will not say her name."
+  },
+  "bookPage": "From the letters of Clemo Penrose, sexton of the broken cathedral. Of the pillars west of the road. A company of Defenders went in among them in the spring, past the old women in grey, and I watched from the fishermen's huts. The hag cried out to her Father and four torches stood up in the air round the pillars, and every one of them threw at the same knight, who went down on one knee and got up again because a priest was already at his shoulder, and then the torches were gone. After that it was the hag's own fire, slow to make. Every time she drew a spear up out of the ground a little minstrel sang at her, very loud and very badly, and the spear went to nothing in her hand. I think he saved them all.",
+  "chronicle": {
+    "win": "{realm}'s champions under {raidLeader} put out the Father's torches and ended the Cailleach Uragaig in Lyonesse in {minutes} minutes.",
+    "loss": "The Cailleach Uragaig kept the pillars of Lyonesse; {raidLeader}'s champions of {realm} went home cold."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "sister-blythe",
+      "relation": "the other old faith in Lyonesse's ruins, across the road in the cathedral"
+    },
+    {
+      "id": "morgana",
+      "relation": "a younger power on the same drowned ground, whom the sisterhood does not serve"
+    }
+  ]
+}

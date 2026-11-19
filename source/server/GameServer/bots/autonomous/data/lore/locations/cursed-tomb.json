@@ -1,0 +1,216 @@
+{
+  "id": "cursed-tomb",
+  "name": "Cursed Tomb",
+  "realm": "Midgard",
+  "regions": [
+    128
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "summary": "The tomb in Gotar where Midgard buries those the gods refused: deserters, oath-breakers and kings who died badly.",
+  "facts": [
+    {
+      "text": "The Cursed Tomb is the final resting place of dishonoured warriors and kings of Midgard who deserted in battle, betrayed their comrades, let greed and vice outweigh honour or died in less than heroic ways, and whom the gods would not allow into Valhalla. Its entrance is in Gotar at 60k, 54k.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=40"
+    },
+    {
+      "text": "Its bestiary lists draugr warriors, hounds and a commander, a tomb priestess, a dread lichess, cursed and vengeful dead, dishonored hagbui, cursed mora (dancers and weepers), roaming corpses that burst into corpse crawlers, trapped thralls and a way keeper.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=40"
+    },
+    {
+      "text": "Period comments say killing the Draugr Commander spawns the princess, killing her brings back the commander and six warriors, and roaming corpses split into corpse crawlers; it was a coin-loot dungeon early on and was once renamed the Burial Halls.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=40"
+    },
+    {
+      "text": "Draugr and haugbui are the walking dead of the sagas, and a mara is a spirit that rides sleepers.",
+      "provenance": "myth",
+      "source": "Norse sagas and folklore (public domain)"
+    },
+    {
+      "text": "Bot chat says the dread lichess was a queen once, and nobody says whose.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Its entrance is in Gotar. The upper halls hold trapped thralls and lost and cursed spirits (Unbegotten faction), tomb sentries, roaming corpses and corpse crawlers, draugr warriors and hounds under the Draugr Commander, the Tomb Priestess, Bevard and a way keeper; the kings' halls hold dishonored hagbui (Soulkeepers faction) with Haggert and mad rats; the deep crypt holds the Dread Lichess, Troika and cursed mora dancers and weepers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 128, Cursed Tomb; 0.37b world data)"
+    },
+    {
+      "text": "In this world the period loop (commander, princess, commander and six) and the corpses splitting into crawlers are not scripted: there is no princess spawn, and corpse crawlers stand as their own spawns.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 128, Cursed Tomb; 0.37b world data)"
+    },
+    {
+      "text": "The Tomb Priestess is a target of the quest 'Protecting Myrkwood'.",
+      "provenance": "game",
+      "source": "scratchpad/gap/named.json (audit of the 0.37b DataQuest table)"
+    },
+    {
+      "text": "Hrafnhild the tomb-wife, the no-torch custom, the way keeper's count and the sealed door are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Not everyone goes to Valhalla. When a warrior of Midgard dies running, or breaks an oath, or sells his comrades, or lets greed master him, or dies some small, shameful death that no skald will sing, the valkyries pass him by. He still has to go somewhere. Midgard sends its dishonoured dead to a tomb in the hills of Gotar, above the bone bridge south of Nalliten, and seals it, and does not visit. The custom is old: the body goes in at night, with no torches, so that the gods will not look, and the door is opened only wide enough.\n\nThe first who went in were kings. The skalds say the tomb was dug for a jarl of the old kingdoms who had run from a battle and lived, and been made to wish he had not, and that his household went in with him because nobody would have them after. The hagbui of the kings' halls are that household and the households of the kings who followed, sitting in their rooms with the rats, still dressed for a feast that was never given. Haggert is the oldest of them anyone has named. The way keeper stands where the upper halls meet the lower, and counts who passes, because a thing that was dishonoured in life is very careful about numbers.\n\nThe upper halls fill with everyone else. The draugr warriors still drill under their commander, with their hounds at heel, as if one more good drill would undo the running. Tomb sentries walk the passages. The thralls who were buried with their masters are trapped there still, and the lost spirits of those who were brought in without names wander among them. The roaming corpses are the newest, the ones the tomb has not yet finished with, and the crawling things that go about beside them are what the tomb makes of a body when it has. A priestess keeps the dead in some order, and Bevard, who was a reeve once, keeps a reeve's eye on her.\n\nThe deep crypt is the worst. The cursed mora are there, the night-riders who sit on sleepers' chests, dancing and weeping by turns in a pit room under a vault, and Troika, who is three of something and answers to none of the names the priestess calls. And in the middle of the crypt the Dread Lichess keeps her court. She was a queen once, the bards say, and they will not say whose, because the queen's line still has descendants, and they are proud.\n\nMidgard does not go back for its dishonoured. But the young do, in their twenties, for the coin and the practice and because their trainers did; and lately the folk of Myrkwood have asked for the priestess to be put down, because her dead have begun to leave the tomb at night by ways the sealed door does not cover. The old tomb-wives of Gotar say that is what comes of visiting. The tomb was content while nobody looked. Now everyone looks, and the dead have noticed that the door is no longer the only way out.",
+  "legend": "The Cursed Tomb is the twenties dungeon in Gotar, above the bone bridge south of Nalliten: draugr, mora and the walking dead. The upper halls are low twenties: trapped thralls, spirits, roaming corpses and the corpse crawlers that walk with them, plus draugr warriors with hounds under the Draugr Commander. The old tale about killing the commander to bring out a princess is from the old days; here he is just a named with a lot of draugr round him. The Tomb Priestess is a Protecting Myrkwood target. The kings' halls with the dishonored hagbui and Haggert are mid twenties. The deep crypt is the hardest: cursed mora dancers and weepers, Troika and the Dread Lichess, around twenty-five, all close together, so bring a full group. Nobody knows whose queen the lichess was. Don't light torches at the door, the Gotar folk say. Nobody follows that one.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tomb of the dishonoured. Valhalla did not want them.",
+      "The dead here drill and weep. They cannot rest.",
+      "No torch was lit at this door. Yours is the first.",
+      "Something inside counts your steps."
+    ],
+    "areas": [
+      {
+        "name": "the thralls' halls",
+        "x": 32489,
+        "y": 32802,
+        "z": 15989,
+        "radius": 1500,
+        "lines": [
+          "Thralls buried with their masters. Still trapped.",
+          "Lost spirits with no names drift past."
+        ]
+      },
+      {
+        "name": "the drill ground",
+        "x": 33622,
+        "y": 31654,
+        "z": 15666,
+        "radius": 2000,
+        "lines": [
+          "The Draugr Commander drills the dead, hounds at heel.",
+          "Dead and still drilling. As if it would undo the running."
+        ]
+      },
+      {
+        "name": "the priestess's rooms",
+        "x": 33555,
+        "y": 31403,
+        "z": 15786,
+        "radius": 1000,
+        "lines": [
+          "The Tomb Priestess keeps the dead in order.",
+          "A reeve's eye watches from the doorway. Bevard."
+        ]
+      },
+      {
+        "name": "the way keeper's arch",
+        "x": 35365,
+        "y": 31192,
+        "z": 15628,
+        "radius": 800,
+        "lines": [
+          "The way keeper counts who passes.",
+          "Upper halls behind you. The kings' halls ahead."
+        ]
+      },
+      {
+        "name": "the kings' halls",
+        "x": 36882,
+        "y": 33432,
+        "z": 15712,
+        "radius": 1500,
+        "lines": [
+          "Dishonoured kings, dressed for a feast never given.",
+          "Haggert, oldest of the hagbui, sits among the rats."
+        ]
+      },
+      {
+        "name": "the deep crypt",
+        "x": 37359,
+        "y": 34547,
+        "z": 15385,
+        "radius": 1500,
+        "lines": [
+          "The Dread Lichess keeps her court. Whose queen?",
+          "Mora dance and weep by turns under the vault.",
+          "Troika answers to none of the names called."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the cursed tomb is where midgard puts the dead the gods wouldnt take. deserters, oathbreakers, bad kings",
+      "the draugr in the cursed tomb still drill under their commander. dead and still drilling",
+      "the tomb was dug for a jarl who ran from a battle and lived. his household went in with him",
+      "you take the dead into the cursed tomb at night with no torches, so the gods dont look",
+      "the way keeper in the cursed tomb counts everyone who passes",
+      "the trapped thralls were buried with their masters. still down there",
+      "the mora in the deep crypt are night riders. they sit on sleepers chests",
+      "troika is three of something. the priestess doesnt know what",
+      "bevard was a reeve once. still keeps an eye on the priestess",
+      "haggert is the oldest hagbui in the tomb anyone has named",
+      "myrkwood wants the tomb priestess put down. her dead have started getting out",
+      "the gotar tomb wives say the tomb was fine while nobody visited"
+    ],
+    "rumour": [
+      "the dread lichess in the cursed tomb was a queen once, they say. nobody says whose",
+      "corpse crawlers in the cursed tomb, worst name worst monster",
+      "the old tale says kill the commander and a princess comes. not here, [never seen her|she isnt there]",
+      "dont light torches at the cursed tomb door, the gotar folk say",
+      "the dead found another way out of the tomb. the door isnt the only one any more",
+      "the lichess's family is still around and still proud, so the bards keep quiet",
+      "the kings halls rats are the size of dogs. [mad rats|they are mad too]",
+      "someone in my guild said something inside the tomb said thank you to him. he left",
+      "the dread lichess was the only one of the jarls household who didnt run",
+      "troika is three dead in one grave because nobody would pay for three",
+      "bevard the reeve counts everyone who comes into the cursed tomb",
+      "the draugr commander gave the order to run and drills it out of them still",
+      "haggert was the jarls grandfather, buried with a shame that wasnt his",
+      "the tomb priestess was a tomb wife once and sealed herself in"
+    ],
+    "tell": [
+      "cursed tomb is in gotar above the bone bridge south of nalliten. draugr and mora, twenties",
+      "cursed tomb? the dishonoured dead. good xp in your twenties",
+      "is the cursed tomb hard? the deep crypt is, the rest is fine for a group",
+      "the dread lichess is in the deep crypt at the far end",
+      "the draugr commander is on the drill ground in the upper halls",
+      "the tomb priestess is near the drill ground, shes a quest target",
+      "dread lichess and troika are in the deep crypt of the cursed tomb",
+      "bevard is at the doorway of the tomb priestess rooms",
+      "the draugr commander is on the drill ground with the draugr hounds",
+      "haggert is in the kings halls among the rats",
+      "the tomb priestess is in the back left of her rooms, protecting myrkwood",
+      "troika is unbegotten faction, it stands by the lichess"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The Cursed Tomb is where we put the [dishonoured], the dead the valkyries passed by. And a [queen] who will not be named.\"",
+    "topics": {
+      "dishonoured": "Deserters, oath-breakers, those who sold their comrades or died shamefully. They still drill and weep in there. They go in by night, with [no torches].",
+      "queen": "The Dread Lichess, in the [deep crypt]. The bards will not say whose queen she was, because her line has descendants, and they are proud.",
+      "no torches": "The custom of the tomb: the dead go in at night with no light, so the gods do not look, and the door is opened only wide enough. Ask a [tomb-wife].",
+      "kings' halls": "The first who went in were a jarl who ran from a battle and his household. Their hagbui sit in the kings' halls still, with Haggert the oldest, past the [way keeper].",
+      "way keeper": "Stands where the upper halls meet the [kings' halls] and counts who passes. A thing dishonoured in life is careful about numbers.",
+      "deep crypt": "The worst of the tomb: cursed mora dancing and weeping, Troika who is three of something, and the [queen]'s court.",
+      "draugr": "The walking dead of the sagas. In the tomb they drill under their commander with their hounds, as if one more drill would undo the running.",
+      "tomb-wife": "The old women of Gotar who carry the dishonoured to the door, like Hrafnhild. They say the tomb was content while nobody visited, and that now the dead have found other ways out.",
+      "priestess": "The Tomb Priestess keeps the [dishonoured] in order. Myrkwood wants her put down; her dead have begun to walk at night.",
+      "Dread Lichess": "The [queen] of the deep crypt, a lich in a crowned shroud who keeps her court among the cursed mora. The bards will not say whose queen she was, because her line has descendants in Midgard and they are proud. Hrafnhild the tomb-wife says the Lichess was buried with her household when her jarl ran, and that she was the only one of them who had not run. She does not forgive the others.",
+      "Troika": "A thing of the deep crypt of the Unbegotten that answers to none of the names the mourners call, and which the tomb-wives say is three of something: three dead who were buried in one grave because nobody would pay for three. It walks beside the [Dread Lichess] as if it were her guard. It is not, the tomb-wives say; it only has nowhere else to stand.",
+      "Bevard": "A reeve of the dishonoured jarl's household who watches from the doorway of the [Tomb Priestess]'s rooms. In life he kept the jarl's accounts and counted the men who ran; in death he counts the living who come in. Hrafnhild the tomb-wife says he has never once come out of the doorway, and that nobody has ever got past it without him seeing.",
+      "Draugr Commander": "The commander of the [draugr] on the drill ground, who drills the walking dead with their hounds as if one more drill would undo the running. He was the jarl's captain, the tomb-wives say, who gave the order to run, and he has been trying ever since to drill it out of them. He fights anyone who comes onto his ground in the middle of a drill.",
+      "Haggert": "The oldest of the hagbui in the [kings' halls], sitting among the rats at a feast never given, past the way keeper. Haggert was the jarl's own grandfather, Hrafnhild says, dead before the battle, buried with his grandson's shame though he had none of his own. He is small and bent and hateful, and the rats are his.",
+      "Tomb Priestess": "The priestess who keeps the dishonoured in order, in the back of her rooms beyond [Bevard]'s doorway. Her dead have begun to walk at night into Myrkwood, and Serilyna of Galplen sends the young to put her down for the top half of a staff the svartalfar stole. The tomb-wives say she was one of them once, and sealed herself in."
+    }
+  },
+  "book": {
+    "title": "Sealing the Tomb",
+    "pages": [
+      "Told to a scribe of Nalliten by Hrafnhild, tomb-wife of Gotar, in her ninetieth winter. When a warrior of my village died running from a Hibernian charge, his father would not let us burn him. He said the smoke would only make the gods look at us. We carried him to the tomb instead, in the night, with no torches, and the old priestess opened the door just wide enough and we pushed him through. From inside, something said thank you. The priestess shut the door and told us not to answer, ever, whatever we heard from in there. We walked home without speaking.",
+      "I became a tomb-wife after that, because somebody had to, and I carried them for sixty winters: runners, oath-breakers, a man who sold his brother to the Albion slavers, a woman who poisoned her husband's mead, and once, wrapped in good cloth with gold on it, a jarl's son whose name the jarl would not tell me. I never lit a torch. I never answered. I counted them, though, as the priestess taught me, because the thing at the arch inside counts them too, and it is better that both counts agree. Once they did not agree. I went back the next night and stood at the door until they did.",
+      "The priestess told me the tomb was dug for a jarl of the old kingdoms who ran from a battle and lived, and that his whole household went in with him because no one would have them after. She said they are in the kings' halls still, dressed for a feast. She said that every dishonoured king since has been carried to the same halls, and that they sit at one table and do not speak to each other, and that the worst of it for them is not the dark but the company. I asked her how she knew. She said she had been inside once.",
+      "In my last winters the young ones began going in. With torches. For coin, and to practise, because the trainers sent them. I told them it was wrong. They laughed. I do not blame them; I would have laughed. But the dead have noticed the light. The Myrkwood folk say the priestess's dead walk the forest edge at night now, by some way out that is not the door. I sealed that door sixty winters. I did not know there was another. Neither, I think, did the priestess who taught me. Or she knew and did not say, which would be like her, and like the tomb.",
+      "The queen at the bottom I never carried. She was there before me and before the priestess who taught me. The priestess said she was somebody's queen, once, and would not say whose, and when I pressed her she said: her grandchildren still feast in a hall I could walk to by noon, and they are proud, and so we do not say it. I have told this scribe everything else. I will not tell him that either. He has asked three times. He is a Nalliten man, and young, and does not understand that some names are kept shut for the same reason the door is: not to hide what is inside, but to keep it from noticing us."
+    ]
+  },
+  "bosses": []
+}

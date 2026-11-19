@@ -1,0 +1,102 @@
+{
+  "id": "overseer-tepok",
+  "name": "Overseer Tepok",
+  "npcNames": [
+    "Overseer Tepok"
+  ],
+  "locationId": "tepoks-mine",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Overseer Tepok: NPC template 12435, level 36-43, goblin model 588, faction Black Mountains Goblins, aggro 200 (range 500), no spells or styles, respawn 180 s, at 35468, 34956 near the mine mouth with the goblin whip.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 24 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lord of Deceit (Magus Agyfen, Captain Rhodri of the Snowdonia border keep): descend into Tepok's Mine, slay Overseer Tepok and take his sack, then carry its dispatch to Twr ap Alsig of Barfog.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Players in 2001-02 found Tepok Overseer a red con at level 31.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=26"
+    },
+    {
+      "text": "Tepok's hour at the door, his copying of the reeve's remarks and his letters to the Pennines are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before the goblins took the mine, a goblin in a good coat came down the mountain one morning and stood at its door for an hour with his hands behind his back, watching the townsfolk's baskets go by, like a man looking over a property he means to buy. The miners laughed at him. Ithel the reeve did not, and wrote it down. That was Tepok.\n\nWhen the mine was his he did not tear up the reeve's tally. He kept it, in the reeve's own columns, and for a whole season he copied the reeve's remarks into the last column word for word, as a boy copies his letters, until he understood what a tally was for. Then he wrote his own. He has kept it ever since: loads up, hands below, hands above, the pens, the halls, the dwarves' bargain, and the bars that go out by the poachers' landing.\n\nHe keeps his office near the mouth and not in the deeps, with his whip at his elbow and a lion at his feet, because an overseer who cannot see the door cannot count what goes through it. The Goblin Lord on the mountain thinks himself a king. Tepok calls him the doorman. Captain Rhodri, who has opened the overseer's sack, says Tepok is the only goblin in the mountains who writes letters, and that the letters are answered.",
+  "legend": "Overseer Tepok is level 36 to 43 depending on the spawn, near the entrance of Tepok's Mine (turn east from the door), with the goblin whip and a cave lion close by: they are his help, take them first or take them together. Plain melee, no spells. Goblins of the same faction nearby can join. Kill him for Lord of Deceit from Captain Rhodri and loot his sack. He comes back in about three minutes.",
+  "yells": {
+    "aggro": [
+      "Who sent you? Write it down. No, I will.",
+      "Whip! Lion! Visitors to be counted!"
+    ],
+    "phases": [],
+    "death": [
+      "The tally... is... short..."
+    ],
+    "slay": [
+      "One fewer above. I will note it.",
+      "Entered in the ledger. Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A goblin who counts. His office is by the door."
+    ],
+    "phases": [],
+    "realmFirstKill": "Overseer Tepok has fallen. The ledger stops."
+  },
+  "botLines": {
+    "briefing": [
+      "tepok, 36 to 43, east of the tepoks entrance. his whip and a lion stand with him",
+      "kill tepok and loot the sack for lord of deceit, rhodri wants it",
+      "keep the goblins behind him off us, same faction, they come"
+    ],
+    "aftermathWin": [
+      "tepok down. grab the sack before someone else does",
+      "got the sack. letters in it, goblin writing",
+      "the overseer is out of business. for three minutes"
+    ],
+    "aftermathLoss": [
+      "the lion was worse than tepok",
+      "his whip and half the door came with him"
+    ],
+    "rumour": [
+      "[heard|someone said] tepok copied the old reeve's notes until he could write",
+      "heard the letters in tepok's sack come from the pennines"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tepok",
+    "text": "Overseer [Tepok] of [tepoks mine] keeps the mine's tally in the townsfolk's reeve's own columns, and an office by the door so that he can see what comes in. His [sack] carries letters to and from the Pennines; Captain Rhodri of the Snowdonia border keep wants it opened."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} closed Overseer Tepok's ledger in Tepok's Mine in {minutes} minutes.",
+    "loss": "Overseer Tepok entered {raidLeader} of {realm} in his tally and went back to counting."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "goblins"
+  ],
+  "related": [
+    {
+      "id": "director-botok",
+      "relation": "his Director, who keeps the red dwarves' bargain"
+    },
+    {
+      "id": "morvel-glyne",
+      "relation": "keeps his eastern landing"
+    },
+    {
+      "id": "tuder-glyne",
+      "relation": "keeps his eastern landing"
+    }
+  ],
+  "tier": "minor"
+}

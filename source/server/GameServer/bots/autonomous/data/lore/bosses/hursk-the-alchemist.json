@@ -1,0 +1,90 @@
+{
+  "id": "hursk-the-alchemist",
+  "name": "Hursk the Alchemist",
+  "npcNames": [
+    "Hursk the Alchemist"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Hursk the Alchemist: level 43, a two-headed ettin body (model 401, shared with the northern and forest ettins), size 102, at about 30,560/34,190 (z 12,747) on the lowest level among troglodytes (35-50) and lair worms; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift (Kinney, Ascatinius in Connla): kill the befuddled rock golem on the golem teleporters to reach Hervelina; 'Kill Driff Tinel.' (his blood to Hervelina); 'Kill Ceracor.' (a piece of rock golem); 'Kill Pericolias the Dreaded.' (his fang); 'Find the alchemy book in Hursk the Alchemist's room.' and read it; kill the Dreaded Ursine to reach the forge; use the forge to obtain the Faqist.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift's search point for the alchemy book is at 30,561/34,189 in region 224: Hursk's own spot.",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Hursk is a giant of the two-headed kind, an ettin, and alchemy is a strange trade for an ettin, because both heads must agree on the measure. Hervelina the hermit, who has watched him longer than anyone, says that is the whole of his trouble. One head reads. The other burns the book.\n\nHe came down into Treibh Caillte for the forge the ursine say their first smiths lit, and he has spent his life on the lowest level of the caves trying to work out what it makes and in what order. He has written a book about it, in two hands that slope two ways, and he has never finished it, because each head crosses out the other's pages. What survives both is the only account anyone has of the Faqist, and the alchemists of Connla, who want one, send the young down to his room to read it.\n\nHe does not mind them reading. He minds them leaving with what they read. The troglodytes of the lowest level keep away from his room, Hervelina says, not for fear of the ettin but of the smell, and the lair worms that bore through everything else in the caves bore round it. One head of Hursk thinks the forge wants blood and fang and a piece of the waking stone. The other head thinks the forge wants nothing at all and is only waiting. Hervelina thinks the second head is the clever one.",
+  "legend": "Hursk the Alchemist (43) is a two-headed ettin in his room on the lowest level of Treibh Caillte (about 30.6k/34.2k, z 12,750), with troglodytes (35-50) and lair worms round him. Immortal Gift sends you to find the alchemy book in his room and read it; the book's spot is right where he stands, so kill him or draw him off first. A group of low to mid 40s; watch the 50 troglodyte nearby. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "My book! Which of us let you in?",
+      "Out of my room. Both of us say so."
+    ],
+    "phases": [],
+    "death": [
+      "The measure... we never agreed..."
+    ],
+    "slay": [
+      "One for the book. One for the fire."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A room that smells of two kinds of burning."
+    ],
+    "phases": [],
+    "realmFirstKill": "Hursk the Alchemist is down. His book lies open."
+  },
+  "botLines": {
+    "briefing": [
+      "hursk is 43, two headed ettin on the lowest level",
+      "immortal gift book is where he stands. troglodytes round him"
+    ],
+    "aftermathWin": [
+      "hursk down. [read the book|grats]",
+      "two heads, one corpse. [lol|nice]"
+    ],
+    "aftermathLoss": [
+      "the 50 troglodyte joined. [rip|ouch]",
+      "lair worms everywhere down there. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] hursk's two heads keep crossing out each other's pages",
+      "the lair worms bore round hursk's room, not through it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hursk",
+    "text": "The two-headed ettin alchemist on Treibh Caillte's lowest level, whose unfinished book on the first smiths' forge is the only account of the Faqist. One head reads; the other burns the book."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Hursk the Alchemist in Treibh Caillte in {minutes} minutes.",
+    "loss": "Hursk the Alchemist turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "dreaded-ursine",
+      "relation": "the keeper of the forge he studies"
+    },
+    {
+      "id": "helminth",
+      "relation": "his neighbour on the lowest level"
+    }
+  ]
+}

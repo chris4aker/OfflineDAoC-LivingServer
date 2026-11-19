@@ -1,0 +1,108 @@
+{
+  "id": "dreaded-ursine",
+  "name": "Dreaded Ursine",
+  "npcNames": [
+    "Dreaded Ursine"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Dreaded Ursine: level 51, model 394 (the ursine shaman body), size 92, at about 30,100/31,400 (z 16,393) in Treibh Caillte, guarding the forge; respawn 180 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Immortal Gift (Kinney and Ascatinius, Connla): '...Kill the dreaded ursine to reach the forge. Use the forge to obtain the Faqist. Give the Faqist to Ascatinius in Connla.'",
+      "provenance": "game",
+      "source": "DataQuest 'Immortal Gift' (world data)"
+    },
+    {
+      "text": "Living Server lore: the Dreaded Ursine as the last smith-shaman of the undivided tribe, guarding the first smiths' forge.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "At the bottom of Treibh Caillte, under the hermit Hervelina's ledge, there is a forge that the ursine say their first smiths lit before the tribe split, and it is still warm. In front of it stands the largest bear-folk anyone has seen, grey-muzzled and scarred, in the robes of a shaman, and the ursine do not give it a name. They call it the Dreaded, and keep away from the forge.\n\nHervelina, who has watched it longer than anyone, thinks it is the last of the smith-shamans, the ursine who kept the forge's fire and its songs in the days when the tribe was one people. When the old quarrel split the tribe and King Vian's line put the losers in collars, the forge was the one thing neither side would let the other have, and its keeper stood in front of it and let neither side near. The quarrel ended. The keeper did not move. It has been standing in front of the forge since before King Vian's grandfather, Hervelina says, and has outlived everyone who remembers what the quarrel was about, and it is guarding the fire for a tribe that does not exist any more.\n\nHursk the Alchemist, on the lowest level, has spent his life trying to understand what the forge makes, and has a book about it in his room that he never finished. The alchemists of Connla, who send the young of the realm down after the Faqist, say the forge makes what Hursk could not: worked in the right order, with the blood and the fang the quest names, it gives a thing that Kinney of Connla first called an immortal gift. The Dreaded Ursine does not care what it makes. It cares that the fire is kept, and that nobody who is not of the tribe touches it.\n\nHervelina's own view is that it is waiting for the tribe to come back together, and that it would step aside for an ursine who came to the forge with a thrall's collar in one hand and a warrior's spear in the other. Nobody has tried.",
+  "legend": "The Dreaded Ursine is a level 51 ursine shaman (size 92) guarding the forge at the bottom of Treibh Caillte (about 30k/31k, z 16,393), the last kill of Immortal Gift before you use the forge for the Faqist. Plain mob, no script, 3-minute respawn; a full group of high 40s to 50. Getting there is the hard part: the rocky golems are the stairs, so learn which golem stack sends you where, and expect troglodytes (50) in the deep galleries. Hervelina the hermit is the quest's guide and sits above the forge; she is peaceful. King Vian's hall is on another level entirely, so you do not have to fight him for this.",
+  "yells": {
+    "aggro": [
+      "(the grey-muzzled bear rises before the forge)",
+      "(an old smith-song, growled)",
+      "(the Dreaded lifts a hammer older than the tribe's quarrel)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(the forge flares behind the Dreaded Ursine)"
+      }
+    ],
+    "death": [
+      "(the forge's keeper falls, and the fire burns on)",
+      "(an old song stops in the middle)"
+    ],
+    "slay": [
+      "(the Dreaded stands before the forge again)",
+      "(not of the tribe)",
+      "(the fire is kept)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A forge at the bottom of the caves, still warm.",
+      "A grey-muzzled bear in a shaman's robes."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The first smiths' forge flares behind the Dreaded!"
+      }
+    ],
+    "realmFirstKill": "The Dreaded Ursine has fallen. The first forge is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "dreaded ursine is 51 at the forge, bottom of treibh caillte. [immortal gift|last kill]",
+      "plain mob, full group high 40s-50",
+      "learn the golem stairs to get there. [they move you between floors|stand on the spot]",
+      "troglodytes are 50 in the deep galleries"
+    ],
+    "aftermathWin": [
+      "dreaded ursine down. [use the forge|faqist time]",
+      "found the right golem stack first try lol",
+      "the forge is still warm",
+      "back to ascatinius in connla"
+    ],
+    "aftermathLoss": [
+      "golem sent us to the wrong floor. [split up|oops]",
+      "troglodytes on the way. [50|ouch]",
+      "group too low for 51",
+      "pulled a warrior pair too"
+    ],
+    "rumour": [
+      "[heard|someone said] the dreaded ursine has guarded the forge since before king vian's grandfather",
+      "hervelina says the dreaded ursine would step aside for an ursine with a collar and a spear",
+      "[word is|heard] the forge makes the faqist, the immortal gift",
+      "the ursine never say the dreaded's name. [they just call it the dreaded|creepy]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dreaded",
+    "text": "The Dreaded Ursine, last smith-shaman of the undivided tribe, guarding the first smiths' forge at the bottom of Treibh Caillte for a people that no longer exists. Immortal Gift ends at its fire."
+  },
+  "bookPage": "From Hervelina the hermit's account, as she told it to me over her tea: the Dreaded has stood in front of the forge since before Vian's grandfather. When the tribe split, the forge was the one thing neither side would let the other have, and its keeper let neither near. The quarrel ended. The keeper did not move. It guards the fire for a tribe that does not exist. I think it would step aside for an ursine who came with a thrall's collar in one hand and a warrior's spear in the other. Nobody has tried.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Dreaded Ursine in Treibh Caillte in {minutes} minutes.",
+    "loss": "Dreaded Ursine turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "treibh-caillte",
+      "relation": "the caves of the lost tribe"
+    }
+  ]
+}

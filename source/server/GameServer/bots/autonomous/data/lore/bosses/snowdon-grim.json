@@ -1,0 +1,86 @@
+{
+  "id": "snowdon-grim",
+  "name": "Snowdon Grim",
+  "npcNames": [
+    "Snowdon Grim"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Snowdon Grim: NPC template 60166286, level 36-38, the skeletal legionnaire model, ghost, no faction, aggro level 70 (range 500), no spells, respawn 300 s, at the Snowdonia/Pennine pass at 539712, 353104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Crushed Faith (Sister Rhigwyn, Sir Benitt): kill the Snowdon Grim at the Snowdonia/Pennine pass ('Still no hammer'), then a grave goblin in the Barrows, then Dash by Caer Boldiam, who has the glacial hammer.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Grim's habit of taking whatever is carried through his pass, and the hammer he never had, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Two passes cross the south of Snowdonia, one toward the southern valleys and one toward the Pennines, and both are older than the roads Rome laid over them. The shepherds say the soldiers who keep them are older than the roads too: dead men in harness of a pattern no armourer of Camelot can name, from a war before the last legion came, who were set to hold the passes by someone who never came back to relieve them.\n\nThe Snowdon Grim keeps the pass toward the Pennines, and he is a hoarder. Whatever is carried through his pass, he takes, and keeps, in a heap among the rocks: drovers' crooks, a friar's bell, a lieutenant's sword, more than one hammer. When the Church lost the glacial hammer every knight of Castle Sauvage knew where it had gone. The Grim did not have it. He never had it. He has everything else, and the Church cannot quite believe that the one thing it wanted is not in the heap.",
+  "legend": "Snowdon Grim, level 36-38 ghost legionnaire at the Snowdonia/Pennine pass. Aggro level 70, so he often jumps you. Plain melee. For Crushed Faith you kill him and get 'still no hammer': that is the quest, keep going (grave goblin in the Barrows, then Dash by Caer Boldiam at night). Crush on the bones. Respawn five minutes. His heap of junk is scenery; there is nothing in it for you.",
+  "yells": {
+    "aggro": [
+      "Leave it. Leave all of it.",
+      "Mine. That too."
+    ],
+    "phases": [],
+    "death": [
+      "Keep... the heap..."
+    ],
+    "slay": [
+      "Into the heap.",
+      "Mine now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead soldier on a heap of other men's things."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Snowdon Grim has fallen. His heap is unguarded."
+  },
+  "botLines": {
+    "briefing": [
+      "snowdon grim at the pennine pass, 36 to 38 ghost, he aggros",
+      "crushed faith: kill the grim, no hammer, keep going"
+    ],
+    "aftermathWin": [
+      "grim down. still no hammer, as the quest said",
+      "the grim had everything except the hammer"
+    ],
+    "aftermathLoss": [
+      "the grim jumped us at the pass while we were reading the quest"
+    ],
+    "rumour": [
+      "[heard|someone said] the snowdon grim keeps a heap of everything people carried through his pass",
+      "heard the church still thinks the grim has their hammer"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "snowdon grim",
+    "text": "The dead soldier of the pass from [snowdonia] to the Pennines, who keeps whatever is carried through it on a heap among the rocks. He never had the Church's glacial hammer."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} broke the Snowdon Grim at the Pennine pass in {minutes} minutes.",
+    "loss": "The Snowdon Grim added {raidLeader}'s company of {realm} to his heap."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "nasher",
+      "relation": "keeps the other pass"
+    }
+  ],
+  "tier": "minor"
+}

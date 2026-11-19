@@ -1,0 +1,307 @@
+{
+  "id": "gotar",
+  "name": "Gotar",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    103
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "dishonoured-dead",
+    "arachites",
+    "houses-of-midgard"
+  ],
+  "summary": "The coast and woods south of the Svealands: Fort Atla where the grandmothers talk and the blind Masrim listens, Nalliten of the kobolds and trolls, a drowned ship's crew on the shore, the arachites' skull post, and the door to the Cursed Tomb.",
+  "facts": [
+    {
+      "text": "Gotar is zone 103 of region 100. Its towns (Areas): Fort Atla in the north-west (749,260/815,624, radius 4,000), a full training town, and Nalliten in the east (770,510/837,379). The Cursed Tomb opens in the south-east (780,867/857,045).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "Fort Atla has trainers of every Midgard calling (Halker, Kalli, Lalida, Salma, Ronja, Budo, Boidoc, Thetus, Sarry, Unn, Welgen, Korgan, Hyndia, Lycla, Jucla, Dissa) and the quest voices Masrim, Lyngheid, Salevia (in the bar), Darrius, Greyfell and Kari the healer.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+    },
+    {
+      "text": "Its folk: wolf nippers, pine and wood imps (forest imps), hosts of the wind and of the earth, wind wisps, carrion crawlers and eaters, dryad sprouts and sprigs, sapherds, the Drowned Ones (drowned souls, skeletal oarsmen and seafarers), hobgoblins of Clan Smyg, svartalf outcasts and guards with svartalf merchants, nacken, gotawitches and seithkona (Folowers of Seithr), seithr orbs, perfidious pooks, spooks, spectral hogs and undead explorers (The Condemned), and wildlings.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+    },
+    {
+      "text": "Masrim of Fort Atla is blind ('Read the scrolls to the blind Masrim', 'War Concluded') and asks after an undead army in 'A War of Old', whose step is 'Slay Scout Argyle'. Lyngheid of Fort Atla is told 'Loki seeks to cause trouble' in 'The Desire of a God'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Thraxia, an arachite (class DaySpawn), is seen only by day ('Talk to Thraxia by the skull post, 8 A.M. to 4 P.M.'); Styrimathr Ygna of the Drowned Ones (class NightSpawn) only by night. Scout Argyle (class ScoutArgyle) calls ScoutArgyleBaf allies, of whom the world data has none.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/TimeDependentSpawnNpc.cs; source/server/GameServer/scripts/mobs/MidgardMobs/ScoutArgyle.cs; runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+    },
+    {
+      "text": "Lord Lauur of Gotar walks only between midnight and 8 A.M.; his wife's spirit is held by the svartalfar and the arachites (Dunfjall's 'Lord Lauur's Wife'). Kobold Helen of Nalliten is accused of attacking travellers on the road at night ('Prove Kobold Helen's Innocence').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Fressen of Nalliten keeps a map of elves and of 'this mysterious Gahsir' that Inaksha's seers take to Salevia in the Fort Atla bar to read.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Old Norse styrimadr (stýrimaðr) is a ship's steersman or captain; in Scandinavian folklore the nacken (näcken) is a water spirit who plays the fiddle in streams.",
+      "provenance": "myth",
+      "source": "Old Norse lexicon; Scandinavian folklore (to verify)"
+    },
+    {
+      "text": "The grandmothers of Gotar, the drowned ship's story, the skull post's custom and Oddny's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Gotar is the south of the old country, where the farmland runs out into woods and the woods run down to the sea. The skalds say the Gautar lived here, a people of the old songs who were neither Svear nor Danes and quarrelled with both, and that the land still has their temper. Fort Atla stands in its north-west, the biggest town between Jordheim and the south: a fort that grew a market, then a tavern, then a master of every house of the realm, so that the young who have chosen their gods need not walk all the way back to the city to be taught. Nalliten lies east, a town of kobolds and trolls by the coast road, with troll flayers at its gate and a stable for the long road south.\n\nFort Atla is famous for its grandmothers. Every realm has old women who know things; Gotar's are a power. They sit by the tavern fire and by the well and on the benches outside the trainers' halls, and they have opinions about the dragon in Malmohus and the ruins of the grey stone, and the jarls of the south ask them first. It was the grandmothers of Gotar who said the mara of Malmohus are the dreams of the ruins' sleeping builders, and the seers of Fort Atla who went south to listen. One of those seeresses was Thorkatla, before the snow. The grandmothers do not talk about her.\n\nThe coast has its own dead. A ship came ashore east of the fort in the jarls' days, the grandmothers say, a longship that had rowed out against a storm because its steersman would not wait, and its crew drowned within sight of the beach. They did not stay drowned. The skeletal oarsmen still stand on the shore at their benches with nothing to row, the drowned souls drift in the shallows, and their steersman comes up out of the water at night to look at the sky, as if deciding whether to put out. By day he is not there. Nobody in Gotar puts to sea on a night when he is on the beach.\n\nThe woods are full of older folk. Imps of the pine and the wood, hosts of the wind and of the earth that walk like men made of weather and of hillside, dryads and the sapherds, who are the shepherds of the young trees and walk with them. The nacken play in the streams, as they do in every old story, and lead the careless into the water. In the south, round the arachites' skull post, the witches of the seithr keep their circle; the gotawitches, the grandmothers call them, Gotar's own, and they say it the way a family says the name of a cousin who did badly. The arachite priestess who keeps the skull post is seen only by day. By night the post stands alone.\n\nGotar's dead are not all its own. In the far south-east, past the door to the Cursed Tomb, there are undead scouts who came from no grave in Midgard: the remnant of an army out of Albion that died in Gotar's hills long ago and kept marching. The blind Masrim of Fort Atla, who serves the realm in ways the shadows of Loki's house do not discuss, asks after that army, and sends the young to break its scouts. The Cursed Tomb itself, where the valkyries' rejected sleep badly, opens in the same corner, and the grandmothers say that is no accident: dead things go where other dead things are.\n\nGotar matters because the realm's south runs through it. The warbands bound for Malmohus and the dragon pass Fort Atla and stop at its tavern; the seers' epic runs through Lyngheid, who knows that Loki seeks trouble; the rogues' runs through Masrim; Lord Lauur of Gotar walks the night hours with his wife's spirit stolen by the svartalfar and the arachites of the south, and Fressen of Nalliten keeps a map of elves and a name, Gashir, that Inaksha's seers carry north to be read. The grandmothers have heard all of it before. They are usually right.",
+  "legend": "Gotar is the 10-20 zone south of East Svealand, and Fort Atla in the north-west is the big one: every class trainer, a bar (Salevia translates maps in it), Masrim (rogue epic, A War of Old) and Lyngheid (seer epic). Nalliten in the east is the kobold and troll town with a stable. The Cursed Tomb door is in the south-east. Shore east of Atla has the Drowned Ones, skeletal oarsmen in the mid teens, and their steersman Styrimathr Ygna only appears at night. Thraxia at the skull post in the south-east only appears by day (Thraxia's Dilemma). Scout Argyle in the far south-east is the A War of Old kill; his pack call goes to nobody in this world, so he's alone. Hosts of the wind and earth in the south-west, imps everywhere, Clan Smyg hobgoblins in the middle. Lord Lauur only walks midnight to 8 A.M. for his wife's quest. Grandmothers' saying: don't put to sea on a night the steersman is on the beach.",
+  "atmosphere": {
+    "firstEntry": [
+      "Gotar. Woods, coast, and a temper older than the Svear.",
+      "Somewhere a grandmother has an opinion about you.",
+      "Salt on the wind, and something drowned in it.",
+      "The road south to the dragon runs through here."
+    ],
+    "areas": [
+      {
+        "name": "Fort Atla",
+        "x": 749260,
+        "y": 815624,
+        "z": 4900,
+        "radius": 4000,
+        "lines": [
+          "Fort Atla. Every house of the realm teaches here.",
+          "The grandmothers are by the fire. They know.",
+          "Masrim is blind. He hears everything.",
+          "Willen the sapling grows by the road out."
+        ]
+      },
+      {
+        "name": "Nalliten",
+        "x": 770510,
+        "y": 837379,
+        "z": 4600,
+        "radius": 2000,
+        "lines": [
+          "Nalliten. Kobolds and trolls by the coast road.",
+          "Fressen's map shows elves, and a name: Gashir.",
+          "Trolki the pook says he is Fressen's friend."
+        ]
+      },
+      {
+        "name": "the drowned shore",
+        "x": 762937,
+        "y": 821000,
+        "z": 4456,
+        "radius": 2500,
+        "lines": [
+          "The oarsmen sit at benches with nothing to row.",
+          "At night the steersman, Styrimathr Ygna, wades ashore."
+        ]
+      },
+      {
+        "name": "the skull post",
+        "x": 770419,
+        "y": 854175,
+        "z": 4736,
+        "radius": 1500,
+        "lines": [
+          "The arachites' skull post. Thraxia comes by day.",
+          "By night the post stands alone.",
+          "Lord Lauur walks here between midnight and dawn."
+        ]
+      },
+      {
+        "name": "the witches' circle",
+        "x": 760680,
+        "y": 859688,
+        "z": 4800,
+        "radius": 2500,
+        "lines": [
+          "The gotawitches keep their circle. Seithr orbs drift.",
+          "Gotar's own witches. The grandmothers sigh."
+        ]
+      },
+      {
+        "name": "the tomb road",
+        "x": 776000,
+        "y": 858000,
+        "z": 5000,
+        "radius": 4000,
+        "lines": [
+          "The door to the Cursed Tomb. Dead things gather.",
+          "Tas the cat stalks the tomb road.",
+          "Twitchclaw robs the tomb road where nobody watches."
+        ]
+      },
+      {
+        "name": "the Albion dead",
+        "x": 773591,
+        "y": 863484,
+        "z": 5416,
+        "radius": 2000,
+        "lines": [
+          "Scout Argyle, of an army that kept marching.",
+          "An Albion helm, rusted, on a Midgard hill."
+        ]
+      },
+      {
+        "name": "the hosts' hills",
+        "x": 740000,
+        "y": 852000,
+        "z": 4900,
+        "radius": 5000,
+        "lines": [
+          "Hosts of wind and earth walk like weather.",
+          "Jordande remembers being the hill.",
+          "Vefyn, a small wind, quarrels with the larger ones."
+        ]
+      },
+      {
+        "name": "the far south-west",
+        "x": 739798,
+        "y": 861951,
+        "z": 5272,
+        "radius": 1500,
+        "lines": [
+          "Black Rixtas, an arachite, alone by the cliffs.",
+          "Even the winds go round this place."
+        ]
+      },
+      {
+        "name": "the svartalf outcasts",
+        "x": 742500,
+        "y": 841000,
+        "z": 4800,
+        "radius": 3500,
+        "lines": [
+          "Svartalf outcasts, with merchants of their own.",
+          "Davnis watches and does not raise a hand."
+        ]
+      },
+      {
+        "name": "the western woods",
+        "x": 732000,
+        "y": 838000,
+        "z": 5000,
+        "radius": 5000,
+        "lines": [
+          "Pine imps, and Tweedle the rudest of them.",
+          "Vidalf blows through the imps' woods."
+        ]
+      },
+      {
+        "name": "the sapherds' hill",
+        "x": 727000,
+        "y": 812000,
+        "z": 6500,
+        "radius": 4000,
+        "lines": [
+          "Sapherds walk with the young trees.",
+          "Salix the willow weeps on the hill.",
+          "Barkley the brownie mocks the dryads."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the gautar lived in gotar in the old songs, neither svear nor danes, and quarrelled with both",
+      "fort atla grew from a fort into a market, then a tavern, then a master of every house",
+      "the grandmothers of gotar are a power. the southern jarls ask them first",
+      "the grandmothers say the mara of malmohus are the dreams of the ruins sleeping builders",
+      "thorkatla was a seeress of fort atla before the snow. the grandmothers wont talk about her",
+      "a longship drowned off gotar because its steersman wouldnt wait out the storm",
+      "the drowned oarsmen still sit at their benches on the shore with nothing to row",
+      "nobody in gotar puts to sea on a night the steersman is on the beach",
+      "the gotawitches are gotars own seithr witches, the grandmothers say it like a bad cousins name",
+      "the undead scouts in the south east are what is left of an albion army that kept marching",
+      "dead things go where other dead things are, the cursed tomb door is in the same corner",
+      "the sapherds are the shepherds of the young trees"
+    ],
+    "rumour": [
+      "masrim is blind and hears everything in fort atla",
+      "lord lauurs wife's spirit is held by the svartalfar and the arachites",
+      "jordande is the host of the earth that remembers what it was before the hill",
+      "thraxia only comes out by day. by night her skull post is empty",
+      "black rixtas is the arachite the drowned ones wont go near",
+      "scout argyle is from an albion army that died here and kept marching",
+      "salix the willow has been weeping since the sapherds lost their grove",
+      "trolki the pook says he is fressens friend. fressen says he isnt",
+      "vidalf and vefyn are two winds that were one wind once",
+      "davnis the svartalf outcast wont fight anyone, he just watches the camp",
+      "tas the cat stalks the cursed tomb road. even the dead give her room",
+      "twitchclaw robs the tomb road. kobold helen gets the blame for the coast road, her family says it was her twin",
+      "styrimathr ygna was the steersman of the drowned ship. he comes ashore at night",
+      "tweedle and barkley are little brownie things in the woods, rude as you like",
+      "willen is a sapherd sapling. it wont hurt you, the old sapherds will"
+    ],
+    "tell": [
+      "gotar is 10 to 20, fort atla in the north west has every trainer",
+      "nalliten is the kobold and troll town east, cursed tomb door is south east",
+      "jordande is in the south west with the hosts of the earth, 20",
+      "thraxia is by the skull post south east, only by day, thraxias dilemma",
+      "black rixtas is a 16 arachite in the far south west",
+      "scout argyle is the undead scout far south east, a war of old, masrim sends you",
+      "salix is up the hill in the north west with the sapherds",
+      "trolki is east near fressen, about 10",
+      "vidalf is west among the imps, vefyn south among the winds",
+      "davnis is the passive svartalf in the middle west",
+      "tas is a cat in the south east by the tomb road",
+      "twitchclaw is south east too, near the tomb road, a 9 kobold",
+      "styrimathr ygna is with the skeletal oarsmen on the east shore, night only",
+      "tweedle is west with the pine imps, barkley north west with the wood imps",
+      "willen is north west by fort atla, level 5, never attacks"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Gotar, the south of the old country. [Fort Atla] and its [grandmothers], [Nalliten] by the coast, the [drowned ship] on the shore, the [skull post] in the south and, past it, the [Albion dead] and the door to the Cursed Tomb.\"",
+    "topics": {
+      "Fort Atla": "The fort that grew a market, a tavern and a master of every house. [Masrim], [Lyngheid], Salevia in the bar and Greyfell in the tavern are here, and the [grandmothers] by the fire.",
+      "grandmothers": "Gotar's old women are a power: the southern jarls ask them first. They said the mara of Malmohus are the dreams of the ruins' sleeping builders, and sent the seers south to listen. They do not talk about Thorkatla.",
+      "Nalliten": "A town of kobolds and trolls on the coast road east, with troll flayers on its gate. Fressen keeps a map of elves there, and Kobold Helen is accused of robbing travellers at night; her family says it was her twin. See [Twitchclaw].",
+      "Masrim": "A blind man of Fort Atla who serves the realm in ways the shadows of Loki's house do not discuss. He asks after the [Albion dead] and the Hibernian informers in Yggdra, and has the scrolls read to him.",
+      "Lyngheid": "A seeress of Fort Atla who knows that Loki seeks to cause trouble, and sends Inaksha's seers on to Skona's serpent and the jotun of Vanern.",
+      "Lord Lauur": "A lord of Gotar who walks only between midnight and dawn, because his wife's spirit is held by the svartalfar and the arachites, and he will not rest until it is given back. See [skull post].",
+      "drowned ship": "A longship that rowed out against a storm because its steersman would not wait, and drowned within sight of the beach. Its oarsmen still sit on the shore. See [Styrimathr Ygna].",
+      "skull post": "The arachites' post in the south-east, where their priestess [Thraxia] keeps her court by day. Near it the gotawitches keep their seithr circle.",
+      "Albion dead": "Undead scouts in the far south-east from no grave in Midgard: the remnant of an army out of Albion that died in Gotar's hills and kept marching. [Masrim] asks after it. See [Scout Argyle].",
+      "Jordande": "A host of the earth in the south-west, older and slower than the others, standing among them like a stone among sheep. The grandmothers say the hosts of the earth are pieces of the hills that got up and walked, and that Jordande got up last and remembers being the hill. It strikes anyone who walks on it as if they had walked on its back.",
+      "Thraxia": "The arachite priestess who keeps the [skull post], and is seen only by day. Fressen of Nalliten sends folk to her when one of her priests is held captive by Spindelhalla's svartalfar and Varulvhamn's werewolves; Dunfjall's people deal with her. By night the post stands empty, and the arachites say she has gone down to pray to what lives under their halls.",
+      "Black Rixtas": "A lone arachite on the cliffs of the far south-west, small and black and far from any kin. The grandmothers say he was cast out from the [skull post] for praying too loudly. The winds go round his rock and nothing nests there. He comes at anyone who climbs to him, as if they had come from Thraxia. Thraxia's priests do not speak his name.",
+      "Scout Argyle": "The foremost of the undead scouts of the [Albion dead], an Albion name on a dead man in Midgard's hills, still scouting for an army that died. He calls for his company when he is struck; the company does not come. Masrim sends the young of Loki's and Skadi's houses to break him and bring word of the rest. Nobody knows who he scouted for.",
+      "Salix": "A great willow on the sapherds' hill in the north-west that weeps and strikes. The sapherds say it was the oldest tree of their grove before the woodcutters of Fort Atla came, and that it has been weeping since. Its roots go round the hill, and the young sapherds walk wide of them. It does not let anyone sit under it.",
+      "Trolki": "A pook by the coast road near Nalliten who tells everyone he is Fressen's friend. Fressen says he is not. Pooks are liars by nature, the grandmothers say, and Trolki is a good one: half of Nalliten has lent him something. He bites when asked for it back, and nobody has ever got anything back. Fressen keeps a list of what Trolki owes him, and it is long.",
+      "Vidalf": "A small wind of the wind-elemental kind in the western woods among the pine imps, which blows the imps' fires out for spite. The grandmothers say [Vefyn] and Vidalf were one wind once and quarrelled, and have been blowing at each other across Gotar ever since. It comes at anyone it catches. The imps blame Vidalf for every cold supper in the woods, and they are usually right.",
+      "Davnis": "A svartalf of the outcasts' camp in the middle west who does not fight. He watches the camp, the merchants and the road, and raises a hand against nobody, and the outcasts leave him alone. The grandmothers say he was a thrall in Spindelhalla and walked out, and that he is waiting for the rest of Odell's list. Odell has his name, they say, on the side of the list that walked out.",
+      "Tas": "A wild cat of the tawny kind on the tomb road in the south-east, sleek and patient. Even the carrion crawlers give her room. The children of Nalliten say Tas hunts the dead as well as the living, and that is why the tomb road's dead keep to the tomb. Nobody has asked her. She attacks anything that walks her road.",
+      "Twitchclaw": "A kobold of the tomb road who robs travellers there. Kobold Helen of Nalliten is blamed for the night robberies on the coast road, and her family says it was her twin; Twitchclaw says nothing, and keeps to the tomb road, where nobody watches. He has a twitch in his left hand that gives him away. He fights like a cornered rat, which he is.",
+      "Vefyn": "The other half of [Vidalf], a small wind among the hosts of the wind in the south. The hosts of the wind are larger, and Vefyn quarrels with them too. The grandmothers say a wind with a grudge is the worst kind, because it never stops. It strikes whoever it is blowing at. The fishermen of the drowned shore say Vefyn is the one that drove the steersman's ship.",
+      "Styrimathr Ygna": "The steersman of the [drowned ship], whose name means steersman in the old tongue: Ygna, who would not wait out the storm. He comes up out of the water at night to stand among his oarsmen and look at the sky. By day he is not there. The grandmothers say he is still deciding whether to put out, and that he will drown whoever is standing nearest when he decides.",
+      "Tweedle": "A little brownie of the western woods who keeps company with the pine imps and is ruder than all of them. Tweedle throws pine cones at travellers and then throws himself, and the imps laugh. The sapherds say the brownies came into Gotar with the imps and have never earned their keep. Fort Atla's children are told Tweedle will take their shoes, and he has.",
+      "Barkley": "A brownie of the north-western woods among the wood imps, who mocks the dryads to their faces and is chased off every spring. The sapherds say he takes his name from the bark he strips off the young trees to make his bed. He bites travellers who stop to laugh. The dryads have tried to grow a thorn hedge round his bed; he sleeps in it happily.",
+      "Willen": "A sapherd sapling by Fort Atla's road that has never struck anyone. The sapherds bring their young trees down to the edge of the town so that they can look at it, the grandmothers say, the way a mother brings a child to the door. The older sapherds are not so patient. Leave Willen alone. The grandmothers say a town that hurts Willen will lose its woods.",
+      "Oddny": "Oddny the net-mender of Fort Atla, a grandmother of Gotar, who wrote The Grandmothers' Gotar for a granddaughter going north to be taught in Jordheim."
+    }
+  },
+  "book": {
+    "title": "The Grandmothers' Gotar",
+    "pages": [
+      "Oddny the net-mender of Fort Atla wrote this for her granddaughter Alfdis, who has chosen Skadi and is going north to the city. Child, the city will tell you Gotar is the south and the south is backward. Let it. We were here when the Svear were driving their cattle into the east and the Danes were stealing them, and we quarrelled with both, and we are still here. The fort has every house's master now, and the young need not walk to Jordheim to be taught. You are walking anyway. I approve. Look at the city once. Then come home and tell us what we already know.",
+      "The grandmothers sit where they always sat: by the tavern fire, by the well, on the benches outside the masters' halls. The jarls of the south ask us first; they have since the dragon. It was we who said the mara of Malmohus are the dreams of the sleeping builders under the grey stone, and we who sent the seers south to listen. Some of them came back. One of them was a girl named Thorkatla, the kindest of them, who went into the snow in the north after a vision of her own. I will not write what came back. Do not ask the others either.",
+      "Do not put to sea on a night the steersman is on the beach. That is the oldest thing a Gotar child is told, and it is true. A longship came home in the jarls' days in a storm, and its steersman Ygna would not wait, and rowed out against it, and they drowned within sight of us. The oarsmen still sit on the shore east of the fort, at benches made of nothing, rowing nothing. By night Ygna comes up out of the water and looks at the sky. He is deciding, the grandmothers say. One night he will decide. Do not be nearest.",
+      "The south of the land is the witches'. The gotawitches keep their circle near the arachites' skull post, and they are ours: Gotar women who went to the seithr and did not come back to us. I knew one. The arachite priestess Thraxia keeps the post by day and goes down at night to pray to whatever they pray to. Lord Lauur walks there in the small hours looking for his wife, whose spirit the svartalfar and the spiders have between them. Should you meet him, be kind. He does not remember he is dead, or he does not care.",
+      "And in the far corner, past the door of the Cursed Tomb, there are dead men in Albion helms. An army came out of the west once and died in our hills, and its scouts are still scouting. Blind Masrim at the fort asks about them; he asks about everything. The grandmothers say dead things go where other dead things are, and that is why the Albion dead stay near the tomb. Be careful in the city, child. Write to us. And when the masters of Skadi's house tell you how to hunt, nod, and then hunt the way your grandfather did. He was never wrong."
+    ]
+  },
+  "bosses": []
+}

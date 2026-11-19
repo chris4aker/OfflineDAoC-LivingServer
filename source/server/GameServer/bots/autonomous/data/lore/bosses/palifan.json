@@ -1,0 +1,111 @@
+{
+  "id": "palifan",
+  "name": "Palifan",
+  "npcNames": [
+    "Palifan"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "the lord of the stagnant pools"
+  ],
+  "facts": [
+    {
+      "text": "Palifan: template 60164833, level 55, a guagaran, in the stagnant pools in the middle of Caldey at 360119, 406603; aggro level 200 within 500, no faction, no spells or styles, respawn 720 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Guagaran stagnators (47-54) wallow 450 to 790 from him; with no faction, he calls none of them.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "The priests' fish-stews, the still water, Palifan's slow return and the Little Haven saying are Living Server writing; that he rules the stagnant pools is from the Caldey file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The priests of the dead who kept Caldey for the colleges were not only gravediggers. They farmed what the isle allowed, and in the middle of it, where the ground sinks into a bowl, they dug fish-stews: square pools fed by a spring and drained by a sluice, where carp were kept for the fast days. The water moved. That was the whole of the priests' craft with it: keep the spring open, keep the sluice clear, and the pools stay sweet.\n\nWhen the witch called and the isle stood up, nobody kept the sluice. The dead do not fast. The spring silted and the pools went still and green, and the guagaran came up into them out of somewhere the fishermen of Little Haven would rather not guess, heavy, slow, wide-mouthed beasts that like nothing better than water that does not move. They are called stagnators now, the ones that wallow there, and the greatest of them, the one that lies in the middle pool where the priests' spring used to rise, Little Haven calls Palifan.\n\nHe does not rule the others as a lord rules; the stagnators wallow where they wallow and do not come when he is troubled, and he does not call. He rules the pools as a stone rules a stream, by lying in the way. Everything that comes down to the water to drink comes past him, and he comes up out of the green at anything that walks to the edge, slow to start and hard to stop.\n\nWhat Little Haven notices about him is how long he stays gone. When the realm's young put him down, the middle pool is empty for a long while, longer than any of the isle's dead stay down, and the fishermen say that is because a guagaran is a living thing and has to be grown, not raised. They have a saying for patience, out of it: \"as long as waiting for Palifan.\" They also say the spring is trying to come back, a little more each time he is gone, and that if the realm put him down often enough the pools might run sweet again. Nobody has tried.",
+  "legend": "Palifan is a level 55 guagaran in the stagnant pools in the middle of Caldey. He is aggressive from about 500 away. He has no faction, so the guagaran stagnators (47 to 54) wallowing 450 to 800 from him do not join unless you walk into their own range: come at him from the side with the fewest. No spells or styles in the data: a melee kill for a small group of fifties. His respawn is long for a named on Caldey, about twelve minutes, so if someone just killed him, go and do something else; the stagnators are decent experience while you wait, one at a time.",
+  "yells": {
+    "aggro": [
+      "The green water heaves.",
+      "A wide mouth rises out of the pool.",
+      "The pool is his. So is the edge."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Palifan thrashes, and the still water churns."
+      }
+    ],
+    "death": [
+      "The great guagaran sinks into the green.",
+      "The pool goes still. For once, stiller."
+    ],
+    "slay": [
+      "Dragged under the green.",
+      "The pool closes over another.",
+      "Still water. Still body."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Still green pools where fish-stews used to be.",
+      "Something huge lies in the middle pool."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The stagnant pools churn around Palifan."
+      }
+    ],
+    "realmFirstKill": "Palifan has fallen. The middle pool stirs, almost sweet."
+  },
+  "botLines": {
+    "briefing": [
+      "palifan, 55 guagaran in the middle pools of caldey. aggros at 500",
+      "no faction, stagnators around wont join unless you walk into them. come from the empty side",
+      "no spells, melee, small group of 50s",
+      "12 min respawn, if hes not up go do something else"
+    ],
+    "aftermathWin": [
+      "palifan down. as long as waiting for palifan, as they say",
+      "came in from the empty side, clean",
+      "twelve minutes till the next one",
+      "no stagnators, nice"
+    ],
+    "aftermathLoss": [
+      "walked through the stagnators to get to him",
+      "he hits like a cart for a frog thing",
+      "camped him and the stagnators wandered into us",
+      "he wasnt even up, we wiped on stagnators"
+    ],
+    "rumour": [
+      "[heard|someone said] palifan's pools were the caldey priests' fish ponds",
+      "heard little haven says as long as waiting for palifan when something takes forever",
+      "[heard|someone said] the spring under palifan's pool comes back a bit every time he dies",
+      "heard the stagnators dont care when palifan's in trouble"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "palifan",
+    "text": "The greatest guagaran of the stagnant pools in the middle of [caldey], which were the priests' fish-stews until the isle stood up and nobody kept the sluice. He rules the pools by lying in the way; the other stagnators do not come for him. He is long in coming back when put down, and [little haven] says the spring under his pool creeps back each time he is gone."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. A child of the village asked me to enter her wager, that she would see Palifan's pool run clear before she was grown. I entered it, at a penny. Her mother says the priests' spring is under that pool and the guagaran lie on it the way a dog lies on a door. The child goes up to the edge of the green every time the realm's young put him down, and comes back to tell me the water was moving. She is right. It moves a little longer each time. I have raised the wager to tuppence, on her side.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} hauled Palifan out of the stagnant pools in {minutes} minutes.",
+    "loss": "Palifan dragged {raidLeader}'s company of {realm} under the green water."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "caldey",
+      "relation": "the stagnant pools that were the priests' fish-stews"
+    }
+  ]
+}

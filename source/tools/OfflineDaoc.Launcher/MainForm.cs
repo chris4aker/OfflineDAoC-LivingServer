@@ -14,6 +14,10 @@ internal sealed partial class MainForm : Form
     internal const int LiveBotSnapshotMaxAgeMilliseconds = 20_000;
     internal const int LiveBotSnapshotWaitMilliseconds = 3_000;
     internal const int ServerReadinessPollMilliseconds = 500;
+    // PC check 2026-11-19 (build 5154cae): the dashboard showed "5 online" and "Bot status updated 6:58:55" for half an hour
+    // while the server had 563+ bots on. A snapshot read that never returns held the refresh gate (_refreshing), and every
+    // later refresh (the five-minute one, REFRESH, the RvR panel) returned at that gate without a word. A read gets this long.
+    internal const int DashboardReadTimeoutMilliseconds = 60_000;
     // The launcher's own folder. In the 0.36c install the new client's launcher lives in new-client\runtime and
     // runs the SAME server as the original client's launcher (named in server_root.txt), so both clients share one
     // account, one bot roster and one world.
@@ -88,6 +92,7 @@ internal sealed partial class MainForm : Form
     private readonly ComboBox _botXpRate = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 108 };
     private readonly CheckBox _makeMeGm = new() { Text = "Make Me a GM", AutoSize = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly CheckBox _rvrAnnouncements = new() { Text = "RvR and battleground announcements", AutoSize = true, Checked = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
+    private readonly CheckBox _leanMemory = new() { Text = "Lean server memory", AutoSize = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly CheckBox _pveAnnouncements = new() { Text = "PvE realm event announcements", AutoSize = true, Checked = true, ForeColor = DaocTheme.Parchment, Font = new Font("Georgia", 9f, FontStyle.Bold) };
     private readonly Label _xpSettingsStatus = new()
     {
@@ -132,6 +137,9 @@ internal sealed partial class MainForm : Form
     private readonly Button _startButton;
     private readonly Button _stopButton;
     private readonly Button _playButton;
+    // Living Server 1.2, play with friends (from rambodolphin13/DividedRealms 3c6cc9d).
+    private readonly Button _joinFriendButton;
+    private readonly Button _hostFriendsButton;
     private Process? _serverProcess;
     private RollingServerLog? _serverLog;
     private bool _stoppingServer;
@@ -203,6 +211,10 @@ internal sealed partial class MainForm : Form
         _startButton.Click += (_, _) => OnStartButton();
         _stopButton.Click += async (_, _) => await StopServerAsync();
         _playButton.Click += (_, _) => LaunchClient();
+        _joinFriendButton = ActionButton("JOIN FRIEND", Color.FromArgb(104, 111, 77));
+        _hostFriendsButton = ActionButton("HOST FOR FRIENDS", Color.FromArgb(150, 112, 52));
+        _joinFriendButton.Click += (_, _) => OpenJoinFriend();
+        _hostFriendsButton.Click += (_, _) => OpenHostForFriends();
 
         rootLayout.Controls.Add(BuildHeader(), 0, 0);
         rootLayout.Controls.Add(BuildCards(), 0, 1);
@@ -236,12 +248,15 @@ internal sealed partial class MainForm : Form
         _serverReadinessPoll.Tick += async (_, _) => await RefreshWhenServerReadyAsync();
         Shown += async (_, _) =>
         {
-            await RefreshDashboardAsync();
-            await RefreshRealmExchangeAsync();
+            // PC check 2026-11-19 (build 5154cae): the clocks start first. They were started only after the first dashboard
+            // and Realm Exchange reads, so START clicked while a slow exchange read ran (its seller join scanned every bot row
+            // for every listing) got the server-start refresh ("5 online", 6:58:55) and then no five-minute refresh.
             _displayClock.Start();
             ScheduleNextAutoRefresh();
             UpdateAutoRefreshCountdown();
             _autoRefresh.Start();
+            await RefreshDashboardAsync();
+            await RefreshRealmExchangeAsync();
             // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
             await CheckForUpdatesAsync(asked: false);
         };
@@ -343,7 +358,8 @@ internal sealed partial class MainForm : Form
         var banner = new FantasyBanner { Dock = DockStyle.Fill, Margin = new Padding(2, 2, 2, 3) };
         var header = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, BackColor = Color.Transparent, Padding = new Padding(12, 7, 10, 6) };
         header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        header.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 145));
+        // Two button columns: the server on the left, playing with friends on the right.
+        header.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 284));
 
         var titlePanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.Transparent };
         titlePanel.Controls.Add(new RealmShieldPicture
@@ -380,8 +396,8 @@ internal sealed partial class MainForm : Form
         AddUpdateStrip(titlePanel, versionLabel);
         header.Controls.Add(titlePanel, 0, 0);
 
-        var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
-        foreach (var button in new[] { _startButton, _stopButton, _playButton })
+        var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = true, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
+        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton })
         {
             button.Width = 132;
             button.Height = 26;
@@ -390,16 +406,42 @@ internal sealed partial class MainForm : Form
         actions.Controls.Add(_startButton);
         actions.Controls.Add(_stopButton);
         actions.Controls.Add(_playButton);
+        // A new column: the three server buttons fill the first one.
+        actions.SetFlowBreak(_playButton, true);
+        actions.Controls.Add(_joinFriendButton);
+        actions.Controls.Add(_hostFriendsButton);
+        if (_newClient)
+        {
+            // Join Friend starts the original client; the new client is not supported yet.
+            _joinFriendButton.Enabled = false;
+            SetToolTip(_joinFriendButton, "Join Friend is not available for the new client yet. Use the original game's launcher.");
+        }
+        else
+            SetToolTip(_joinFriendButton, "Play in a friend's world over your home network, Tailscale or the internet. Your own server and save are not touched.");
+        SetToolTip(_hostFriendsButton, "Let friends join this game's server over your home network or Tailscale, with a password, and set up the firewall for it.");
         header.Controls.Add(actions, 1, 0);
         banner.Controls.Add(header);
         return banner;
     }
 
+    private void OpenJoinFriend()
+    {
+        using var form = new JoinFriendForm(_root);
+        form.ShowDialog(this);
+    }
+
+    private void OpenHostForFriends()
+    {
+        using var form = new HostForFriendsForm(_root, IsServerRunning, StartServer, StopServerAsync);
+        form.ShowDialog(this);
+    }
+
     private Control BuildCards()
     {
         var cards = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 6, RowCount = 1, Padding = new Padding(0, 4, 0, 5), BackColor = Color.Transparent };
-        // Realm cards need room for two generation actions; status cards do not.
-        foreach (float width in new[] { 16f, 13f, 19f, 19f, 19f, 14f })
+        // Realm cards need room for three generation actions (+ Lv.1, + Lv.20, + Lv.50); status cards do not. The server card
+        // keeps its 16: at 15 "NOT CONFIGURED" broke as "CONFIGURE / D" (CI preview, 2026-11-15).
+        foreach (float width in new[] { 16f, 12f, 20f, 20f, 20f, 12f })
             cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
         cards.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         cards.Controls.Add(Card("SERVER", _serverState, DaocTheme.Iron), 0, 0);
@@ -426,58 +468,84 @@ internal sealed partial class MainForm : Form
 
     private Control RealmGenerateButton(int realm, string realmName, Color accent)
     {
-        var split = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty, Padding = Padding.Empty };
-        split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        var split = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1, Margin = Padding.Empty, Padding = Padding.Empty };
+        for (int column = 0; column < 3; column++)
+            split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / 3));
         split.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        // In level order: + Lv.1, + Lv.20, + Lv.50 (which stays at the right, where it was).
         split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 1), 0, 0);
-        split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 50), 1, 0);
+        split.Controls.Add(RealmGenerateBattlegroundButton(realm, realmName, accent), 1, 0);
+        split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 50), 2, 0);
         return split;
     }
 
-    private Button RealmGenerateLevelButton(int realm, string realmName, Color accent, int level)
+    private Button RealmGenerateCardButton(string text, Color accent)
     {
-        Button button = ActionButton($"+ Lv.{level}", accent);
+        Button button = ActionButton(text, accent);
         if (button is RuneButton rune) rune.ShowOrnaments = false;
         button.Margin = new Padding(1, 0, 1, 0);
         button.Font = new Font("Georgia", 8f, FontStyle.Bold);
         button.Height = 22;
         button.Dock = DockStyle.Fill;
         _realmGenerateButtons.Add(button);
-        button.Click += async (_, _) =>
-        {
-            if (_generatingBot)
-                return;
-
-            int batchSize = GetGenerationBatchSize();
-            _generatingBot = true;
-            SetRealmGenerationEnabled(false);
-            _footer.Text = batchSize == 1
-                ? $"Rolling a new level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} character…"
-                : $"Creating {batchSize} level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} characters as one protected batch…";
-            try
-            {
-                IReadOnlyList<BotCharacterGenerator.Identity> identities =
-                    await Task.Run(() => GenerateBotCharacters(realm, batchSize, level));
-                _realmFilter.SelectedItem = realmName[0] + realmName[1..].ToLowerInvariant();
-                await RefreshDashboardAsync();
-                BotCharacterGenerator.Identity last = identities[^1];
-                SelectBot(last.Name);
-                _footer.Text = batchSize == 1
-                    ? $"Created {last.Name}, a level {level} {last.RaceName} {last.ClassName}. Queued for staggered login."
-                    : $"Created all {batchSize} level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} characters. All are queued for staggered login.";
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(this, exception.Message, "Unable to generate bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                _generatingBot = false;
-                SetRealmGenerationEnabled(true);
-            }
-        };
         return button;
+    }
+
+    private Button RealmGenerateLevelButton(int realm, string realmName, Color accent, int level)
+    {
+        Button button = RealmGenerateCardButton($"+ Lv.{level}", accent);
+        button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, level, null);
+        return button;
+    }
+
+    // Living Server 1.2 (owner, 2026-11-15: "a Lvl 20 button for bot adds makes sense"): "+ Lv.20" makes bots for the
+    // Thidranki battleground, each at a random level 20-24 (BattlegroundBotLevels). Shift 10, Ctrl 100, as the others.
+    private Button RealmGenerateBattlegroundButton(int realm, string realmName, Color accent)
+    {
+        BattlegroundBotLevels.Bracket bracket = BattlegroundBotLevels.Default;
+        Button button = RealmGenerateCardButton(BattlegroundBotLevels.ButtonText, accent);
+        _helpTip.SetToolTip(button, BattlegroundBotLevels.ButtonTip(bracket));
+        button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, 0, bracket);
+        return button;
+    }
+
+    private async Task GenerateFromRealmCardAsync(int realm, string realmName, int level, BattlegroundBotLevels.Bracket? battleground)
+    {
+        if (_generatingBot)
+            return;
+
+        int batchSize = GetGenerationBatchSize();
+        string realmTitle = realmName[0] + realmName[1..].ToLowerInvariant();
+        string levelText = battleground == null ? $"level {level}" : $"level {battleground.MinLevel}–{battleground.MaxLevel}";
+        _generatingBot = true;
+        SetRealmGenerationEnabled(false);
+        _footer.Text = batchSize == 1
+            ? $"Rolling a new {levelText} {realmTitle} character…"
+            : $"Creating {batchSize} {levelText} {realmTitle} characters as one protected batch…";
+        try
+        {
+            IReadOnlyList<CreatedBot> created =
+                await Task.Run(() => GenerateBotCharacters(realm, batchSize, level, battleground));
+            _realmFilter.SelectedItem = realmTitle;
+            await RefreshDashboardAsync();
+            CreatedBot last = created[^1];
+            SelectBot(last.Identity.Name);
+            string levels = battleground == null
+                ? $"level {level}"
+                : $"{battleground.Name}, levels {created.Min(bot => bot.Level)}–{created.Max(bot => bot.Level)}";
+            _footer.Text = batchSize == 1
+                ? $"Created {last.Identity.Name}, a level {last.Level} {last.Identity.RaceName} {last.Identity.ClassName}. Queued for staggered login."
+                : $"Created all {batchSize} {realmTitle} characters ({levels}). All are queued for staggered login.";
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, exception.Message, "Unable to generate bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            _generatingBot = false;
+            SetRealmGenerationEnabled(true);
+        }
     }
 
     // Ctrl-click makes 100, Shift-click 10. The keys are read as they were when the click arrived (Control.ModifierKeys
@@ -535,8 +603,18 @@ internal sealed partial class MainForm : Form
         tabs.TabPages.Add(events);
         var records = new TabPage("Realm Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
         var eventRecords = new RealmEventRecordsControl(() => RealmEventRecordStore.Locate(_root));
-        records.Controls.Add(eventRecords);
+        // Living Server 1.2: the records and the Bestiary of the Realms (LoreBestiary), side by side.
+        var recordTabs = new TabControl { Dock = DockStyle.Fill };
+        var recordsPage = new TabPage("Records") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
+        recordsPage.Controls.Add(eventRecords);
+        var bestiaryPage = new TabPage("Bestiary") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
+        var bestiary = new BestiaryControl(() => RealmEventRecordStore.Locate(_root));
+        bestiaryPage.Controls.Add(bestiary);
+        recordTabs.TabPages.Add(recordsPage);
+        recordTabs.TabPages.Add(bestiaryPage);
+        records.Controls.Add(recordTabs);
         records.Enter += async (_, _) => await eventRecords.RefreshAsync();
+        bestiaryPage.Enter += async (_, _) => await bestiary.RefreshAsync();
         tabs.TabPages.Add(records);
         tabs.TabPages.Add(xpSettings);
         var botGoals = new TabPage("Bot Goals Setting") { BackColor = DaocTheme.Panel, ForeColor = DaocTheme.Text };
@@ -562,7 +640,7 @@ internal sealed partial class MainForm : Form
         {
             Dock = DockStyle.Fill,
             ColumnCount = 3,
-            RowCount = 7,
+            RowCount = 8,
             BackColor = Color.Transparent,
         };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 210));
@@ -571,6 +649,7 @@ internal sealed partial class MainForm : Form
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
@@ -608,7 +687,11 @@ internal sealed partial class MainForm : Form
         layout.SetColumnSpan(_pveAnnouncements, 2);
         layout.Controls.Add(XpRateDescription("Screen announcements when realm raids form, and to every realm when a final boss (epic dungeons, Summoner's Hall, Darkness Falls) is defeated."), 2, 5);
         _pveAnnouncements.CheckedChanged += async (_, _) => await SaveAnnouncementSettingAsync();
-        layout.Controls.Add(_xpSettingsStatus, 0, 6);
+        layout.Controls.Add(_leanMemory, 0, 6);
+        layout.SetColumnSpan(_leanMemory, 2);
+        layout.Controls.Add(XpRateDescription("Test option, off by default: the server keeps less memory in reserve. Gameplay is the same; it takes effect at START SERVER."), 2, 6);
+        _leanMemory.CheckedChanged += async (_, _) => await SaveLeanMemorySettingAsync();
+        layout.Controls.Add(_xpSettingsStatus, 0, 7);
         layout.SetColumnSpan(_xpSettingsStatus, 3);
         surface.Controls.Add(layout);
         return surface;
@@ -1034,7 +1117,7 @@ internal sealed partial class MainForm : Form
         {
             Dock = DockStyle.Fill,
             BackColor = DaocTheme.StoneDark,
-            ColumnCount = 4,
+            ColumnCount = 5,
             RowCount = 1,
             Margin = new Padding(0),
             Padding = new Padding(0),
@@ -1043,6 +1126,7 @@ internal sealed partial class MainForm : Form
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 48));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 168));
+        panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 196)); // Character passport (MainForm.Passport.cs)
         panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         panel.Controls.Add(_footer, 0, 0);
         panel.Controls.Add(_autoRefreshCountdownCaption, 1, 0);
@@ -1053,6 +1137,7 @@ internal sealed partial class MainForm : Form
         _deleteAllBotsButton.Enabled = false;
         _deleteAllBotsButton.Click += async (_, _) => await DeleteAllBotsAsync();
         panel.Controls.Add(_deleteAllBotsButton, 3, 0);
+        panel.Controls.Add(PassportButton(), 4, 0);
         return panel;
     }
 
@@ -1281,7 +1366,7 @@ internal sealed partial class MainForm : Form
         _footer.Text = "Reading current playerbot status…";
         try
         {
-            var snapshot = await Task.Run(ReadSnapshot);
+            var snapshot = await ReadWithinAsync(Task.Run(ReadSnapshot), DashboardReadTimeoutMilliseconds);
             // Restore the pre-refresh baseline while still on the UI thread,
             // then apply the authoritative states from the completed snapshot.
             // No click can be processed between these operations.
@@ -1331,6 +1416,10 @@ internal sealed partial class MainForm : Form
                 _footer.Text = stuck;
             UpdateAutoRefreshCountdown();
         }
+        catch (TimeoutException)
+        {
+            _footer.Text = $"Reading the bot status took over {DashboardReadTimeoutMilliseconds / 1000} seconds; it is read again at the next refresh.";
+        }
         catch (Exception exception)
         {
             _footer.Text = $"Dashboard refresh failed: {exception.Message}";
@@ -1344,6 +1433,14 @@ internal sealed partial class MainForm : Form
                 _refreshButton.Text = "REFRESH";
         }
     }
+
+    /// <summary>
+    /// The result of a background read, or a <see cref="TimeoutException"/> once <paramref name="timeoutMilliseconds"/> pass:
+    /// a read that hangs (a locked database, a stalled file) no longer holds the refresh gate for good. The read itself runs on;
+    /// its late result is dropped.
+    /// </summary>
+    internal static Task<T> ReadWithinAsync<T>(Task<T> read, int timeoutMilliseconds) =>
+        read.WaitAsync(TimeSpan.FromMilliseconds(timeoutMilliseconds));
 
     private async Task RefreshRealmExchangeAsync()
     {
@@ -1359,7 +1456,7 @@ internal sealed partial class MainForm : Form
         _footer.Text = "Reading the Realm Exchange inventory…";
         try
         {
-            List<AuctionRow> auctions = await Task.Run(ReadRealmExchangeSnapshot);
+            List<AuctionRow> auctions = await ReadWithinAsync(Task.Run(ReadRealmExchangeSnapshot), DashboardReadTimeoutMilliseconds);
             _auctions.Clear();
             _auctions.AddRange(auctions);
             ApplyAuctionFilter();
@@ -1398,7 +1495,10 @@ internal sealed partial class MainForm : Form
             ? "COALESCE(i.RealmExchangeListedUtc, '')" : "''";
         command.CommandText = $"""
             SELECT COALESCE(NULLIF(u.Name, ''), NULLIF(t.Name, ''), 'Unknown item') AS ItemName,
-                   COALESCE(c.Name, b.Name, 'Unknown seller') AS Seller,
+                   COALESCE(c.Name,
+                            (SELECT b.Name FROM offline_world_bots b
+                             WHERE i.OwnerID LIKE 'offlinebot:%' AND b.BotId = CAST(SUBSTR(i.OwnerID, 12) AS INTEGER)),
+                            'Unknown seller') AS Seller,
                    COALESCE(u.Level, t.Level, 0) AS ItemLevel,
                    i.Count,
                    i.SellPrice,
@@ -1408,7 +1508,6 @@ internal sealed partial class MainForm : Form
             LEFT JOIN ItemTemplate t ON t.Id_nb = i.ITemplate_Id
             LEFT JOIN ItemUnique u ON u.Id_nb = i.UTemplate_Id
             LEFT JOIN DOLCharacters c ON c.DOLCharacters_ID = i.OwnerID
-            LEFT JOIN offline_world_bots b ON i.OwnerID = ('offlinebot:' || b.BotId)
             WHERE i.OwnerLot IN (65001, 65002, 65003)
               AND i.SellPrice > 0
             ORDER BY RealmName, ItemLevel DESC, ItemName
@@ -1481,6 +1580,8 @@ internal sealed partial class MainForm : Form
             _rvrAnnouncements.Enabled = editable;
             _pveAnnouncements.Checked = snapshot.PveAnnouncements;
             _pveAnnouncements.Enabled = editable;
+            _leanMemory.Checked = snapshot.LeanMemory;
+            _leanMemory.Enabled = editable;
             if (_savingXpRates)
             {
                 _xpSettingsStatus.ForeColor = DaocTheme.Success;
@@ -1601,6 +1702,32 @@ internal sealed partial class MainForm : Form
         transaction.Commit();
     }
 
+    private async Task SaveLeanMemorySettingAsync()
+    {
+        if (_loadingXpRates || _savingXpRates) return;
+        bool enabled = _leanMemory.Checked;
+        if (IsServerRunning() || FindExactServerProcess() is not null)
+        {
+            MessageBox.Show(this, "Stop the server before changing this option.", "Server is running");
+            await RefreshDashboardAsync();
+            return;
+        }
+        _savingXpRates = true;
+        _leanMemory.Enabled = _startButton.Enabled = false;
+        try
+        {
+            await Task.Run(() =>
+            {
+                using var connection = new SQLiteConnection($"Data Source={_database};Version=3;Pooling=False;Default Timeout=10");
+                connection.Open();
+                LeanServerMemory.Persist(connection, enabled);
+            });
+            _xpSettingsStatus.Text = enabled ? "Lean server memory is on from the next START SERVER." : "Lean server memory is off from the next START SERVER.";
+        }
+        catch (Exception ex) { MessageBox.Show(this, ex.Message, "Unable to save the memory option"); }
+        finally { _savingXpRates = false; await RefreshDashboardAsync(); }
+    }
+
     private async Task SaveGmSettingAsync()
     {
         if (_loadingXpRates || _savingXpRates) return;
@@ -1630,23 +1757,9 @@ internal sealed partial class MainForm : Form
         PersistGmSetting(connection, account, enabled);
     }
 
-    private static void PersistGmSetting(SQLiteConnection connection, string account, bool enabled)
-    {
-        using var transaction = connection.BeginTransaction();
-        using var command = connection.CreateCommand();
-        command.Transaction = transaction;
-        command.CommandText = "CREATE TABLE IF NOT EXISTS offline_local_options (Key TEXT PRIMARY KEY,Value TEXT NOT NULL)";
-        command.ExecuteNonQuery();
-        command.CommandText = "INSERT INTO offline_local_options VALUES ('MakeMeGM',@value) ON CONFLICT(Key) DO UPDATE SET Value=excluded.Value";
-        command.Parameters.AddWithValue("@value", enabled ? "true" : "false");
-        command.ExecuteNonQuery();
-        command.CommandText = "UPDATE Account SET PrivLevel=@privilege WHERE Name=@account";
-        command.Parameters.AddWithValue("@privilege", enabled ? 2 : 1);
-        command.Parameters.AddWithValue("@account", account);
-        if (command.ExecuteNonQuery() != 1)
-            throw new InvalidOperationException("Your local account must exist before changing GM access. Enter the game once, then stop the server and retry.");
-        transaction.Commit();
-    }
+    // Only the account in account.txt (this PC's player) ever gets GM; friends' accounts never do (GmAccess, Living Server 1.2).
+    private static void PersistGmSetting(SQLiteConnection connection, string account, bool enabled) =>
+        GmAccess.Persist(connection, account, enabled);
 
     private void ShowXpRateApplying(string label, bool playerRate)
     {
@@ -1823,10 +1936,10 @@ internal sealed partial class MainForm : Form
                 string assignedUtc = hasLiveStatus ? live!.ObjectiveAssignedUtc : reader.GetString(18);
                 string objectivePhase = hasLiveStatus ? live!.ObjectivePhase : reader.GetString(19);
                 string objectiveExpiresUtc = hasLiveStatus ? live!.ObjectiveExpiresUtc : reader.GetString(20);
+                // A buffbot copy the server retired is kept, not deleted (owner 2026-11-18): it shows as such; Delete is unchanged.
+                bool retiredCopy = BotDeletionText.IsRetiredCopy(deletionQueued, reader.GetString(5), reader.GetString(8));
                 string activity = deletionQueued
-                    ? running || serverProcessPresent
-                        ? "Deletion requested — waiting for safe server removal"
-                        : "Deletion pending — Delete is available while the server is stopped"
+                    ? BotDeletionText.Activity(reader.GetString(5), reader.GetString(8), running || serverProcessPresent)
                     : FormatBotActivity(rawActivity, currentGoal, targetName, destination, progress, isOnline);
                 GroupMetadata? group = isOnline ? ParseGroupMetadata(itinerary) : null;
                 bots.Add(new BotRow(botId, reader.GetString(1), RealmName(reader.GetInt32(2)), reader.GetString(3), GenderName(reader.GetInt32(4)), reader.GetString(5), level, zoneName, activity, isOnline, true, deletionQueued,
@@ -1834,6 +1947,7 @@ internal sealed partial class MainForm : Form
                     objectiveKind, assignmentId, assignedUtc, objectivePhase)
                 {
                     ObjectiveExpiresUtc = objectiveExpiresUtc,
+                    IsRetiredCopy = retiredCopy,
                     HasGroupTaskClock = group?.HasTaskClock == true,
                     TaskTimerPaused = group?.TaskTimerPaused == true,
                     TaskRemainingMilliseconds = group?.TaskRemainingMilliseconds ?? 0,
@@ -1894,7 +2008,7 @@ internal sealed partial class MainForm : Form
         bool rvrAnnouncements = ReadSwitch(connection, "rvr_battleground_announcements");
         bool pveAnnouncements = ReadSwitch(connection, "pve_realm_event_announcements");
         return new DashboardSnapshot(serverState, bots, groups, active, memoryMb, botAiDelay, playerXpRate, botXpRate, makeMeGm, ReadRvrWorld(),
-            rvrAnnouncements, pveAnnouncements);
+            rvrAnnouncements, pveAnnouncements, LeanServerMemory.Read(connection));
     }
 
     // Anything but an explicit "false" (including a missing row) reads as on.
@@ -2178,13 +2292,18 @@ internal sealed partial class MainForm : Form
         return value is not string text || !text.Trim().Equals("false", StringComparison.OrdinalIgnoreCase);
     }
 
-    private IReadOnlyList<BotCharacterGenerator.Identity> GenerateBotCharacters(int realm, int count, int level = 1)
+    private sealed record CreatedBot(BotCharacterGenerator.Identity Identity, int Level);
+
+    /// <param name="battleground">"+ Lv.20": each bot gets a random level in this bracket (<paramref name="level"/> is then
+    /// unused); otherwise <paramref name="level"/> is 1 or 50.</param>
+    private IReadOnlyList<CreatedBot> GenerateBotCharacters(int realm, int count, int level = 1,
+        BattlegroundBotLevels.Bracket? battleground = null)
     {
         if (!File.Exists(_database))
             throw new InvalidOperationException("The prepared world database is missing.");
         if (count is not (1 or 10 or 100))
             throw new ArgumentOutOfRangeException(nameof(count));
-        if (level is not (1 or 50)) throw new ArgumentOutOfRangeException(nameof(level));
+        if (battleground == null && level is not (1 or 50)) throw new ArgumentOutOfRangeException(nameof(level));
 
         using var connection = new SQLiteConnection($"Data Source={_database};Version=3;Pooling=False;Default Timeout=10");
         connection.Open();
@@ -2204,17 +2323,28 @@ internal sealed partial class MainForm : Form
             while (reader.Read()) reserved.Add(reader.GetString(0));
         }
 
-        bool allowSluaghbinder = SluaghbinderEnabled(connection, transaction);
+        // Era builds 1.2: the batch draws the realm's 2003 class mix (bot_era_class_shares, on by default). The edition switch
+        // no longer matters here: bots never play the custom class (owner 2026-11-17).
+        bool eraClassShares = EraClassShares.IsOn(connection, transaction);
+        // Crafting 2.0 (WP9): "+ Lv.50" bots get the quality-100 kit and 10,000 gold only with launcher_level50_kit on.
+        bool level50Kit = Level50Kit.IsOn(connection, transaction);
+        // The server's own bracket for that battleground: a Battleground table row replaces the period levels.
+        if (battleground != null)
+            battleground = LiveBattlegroundBracket(connection, transaction, battleground);
         // The server's own invalid-names list, so a launcher bot never gets a name a player couldn't.
         Func<string, bool> rejected = OfflineDaoc.Shared.EraBotNames.LoadRejected(Path.Combine(_serverDirectory, "config", "invalidnames.txt"));
-        var identities = new List<BotCharacterGenerator.Identity>(count);
+        var identities = new List<CreatedBot>(count);
         for (int index = 0; index < count; index++)
         {
-            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, allowSluaghbinder, rejected);
-            BotStartingLocation start = level == 50
+            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, eraClassShares, rejected);
+            int botLevel = battleground == null ? level : BattlegroundBotLevels.RollLevel(battleground, Random.Shared);
+            // Level 1 starts in a Classic/SI starting area. Higher levels start in their capital, where the realm's
+            // teleporters (with the [Battlegrounds] choice) and every class trainer are.
+            bool startsInCapital = botLevel > 1;
+            BotStartingLocation start = startsInCapital
                 ? CapitalBotStartingLocation(identity.Realm)
                 : ChooseBotStartingLocation(connection, transaction, identity.Realm, identity.RaceId, identity.ClassId);
-            identities.Add(identity);
+            identities.Add(new CreatedBot(identity, botLevel));
             string now = DateTime.UtcNow.ToString("O");
             using var insert = connection.CreateCommand();
             insert.Transaction = transaction;
@@ -2231,9 +2361,12 @@ internal sealed partial class MainForm : Form
                      'Awaiting staggered login queue', @placement, @now, 0)
                 """;
             insert.Parameters.AddWithValue("@name", identity.Name);
-            insert.Parameters.AddWithValue("@level", level);
-            insert.Parameters.AddWithValue("@xp", level == 50 ? 169999999950L : 0L);
-            insert.Parameters.AddWithValue("@money", level == 50 ? 100000000L : 0L);
+            insert.Parameters.AddWithValue("@level", botLevel);
+            // The server's experience for the level (169,999,999,950 at 50, 0 at 1).
+            insert.Parameters.AddWithValue("@xp", BattlegroundBotLevels.ExperienceForLevel(botLevel));
+            insert.Parameters.AddWithValue("@money", battleground != null
+                ? BattlegroundBotLevels.PurseCopper(botLevel)
+                : botLevel == 50 ? Level50Kit.PurseCopper(level50Kit) : 0L);
             insert.Parameters.AddWithValue("@realm", identity.Realm);
             insert.Parameters.AddWithValue("@classId", identity.ClassId);
             insert.Parameters.AddWithValue("@className", identity.ClassName);
@@ -2246,13 +2379,16 @@ internal sealed partial class MainForm : Form
             insert.Parameters.AddWithValue("@y", start.Y);
             insert.Parameters.AddWithValue("@z", start.Z);
             insert.Parameters.AddWithValue("@zoneId", start.ZoneId);
-            insert.Parameters.AddWithValue("@zoneName", level == 50 ? start.ZoneName : start.RegionId is 51 or 151 or 181
+            insert.Parameters.AddWithValue("@zoneName", startsInCapital ? start.ZoneName : start.RegionId is 51 or 151 or 181
                 ? "Shrouded Isles starting area"
                 : "Classic starting area");
             insert.Parameters.AddWithValue("@placement",
                 $"Launcher assigned a realm/race/class-valid random start in region {start.RegionId} before server startup");
             insert.ExecuteNonQuery();
-            if (level == 50)
+            // Only "+ Lv.50" gets its gear set here, with the level-50 kit on. A "+ Lv.20" bot (and a "+ Lv.50" bot with the
+            // kit off) gets plain merchant gear for its level from the server at its first login (AutonomousStarterGear; owner
+            // 2026-11-15, "Arrive with starter gear"); "+ Lv.1" bots earn theirs.
+            if (battleground == null && botLevel == 50 && level50Kit)
             {
                 long botId = connection.LastInsertRowId;
                 using var gear = connection.CreateCommand();
@@ -2275,6 +2411,23 @@ internal sealed partial class MainForm : Form
     }
 
     private sealed record BotStartingLocation(int RegionId, int X, int Y, int Z, int ZoneId = 0, string ZoneName = "");
+
+    /// <summary>The bracket as the server reads it (BattlegroundBrackets.Load): its Battleground table row, if any.</summary>
+    private static BattlegroundBotLevels.Bracket LiveBattlegroundBracket(SQLiteConnection connection, SQLiteTransaction transaction,
+        BattlegroundBotLevels.Bracket period)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Battleground' COLLATE NOCASE";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+            return period;
+        command.CommandText = "SELECT MinLevel, MaxLevel FROM Battleground WHERE RegionID=@region LIMIT 1";
+        command.Parameters.AddWithValue("@region", (int)period.RegionId);
+        using var reader = command.ExecuteReader();
+        return reader.Read() && !reader.IsDBNull(0) && !reader.IsDBNull(1)
+            ? BattlegroundBotLevels.WithDatabaseRow(period, Convert.ToInt32(reader.GetValue(0)), Convert.ToInt32(reader.GetValue(1)))
+            : period;
+    }
 
     // Match the server's established capital recovery anchors. Its normal
     // login validation grounds these positions on the current navmesh.
@@ -2480,6 +2633,9 @@ internal sealed partial class MainForm : Form
         connection.Open();
         using var transaction = connection.BeginTransaction();
         bool serverRunning = IsServerRunning() || FindExactServerProcess() is not null;
+        // A player's hired companion is released in game, never deleted here (BotPurge.HiredRefusal).
+        if (BotPurge.IsKeptHiredCompanion(connection, transaction, botId))
+            throw new InvalidOperationException(BotPurge.HiredRefusal);
         if (serverRunning)
         {
             using var retire = connection.CreateCommand();
@@ -2516,14 +2672,17 @@ internal sealed partial class MainForm : Form
         string now = DateTime.UtcNow.ToString("O");
         if (serverRunning)
         {
+            // Players' hired companions stay (BotPurge.KeptHiredQuery): the running server never gets a Delete for one.
+            var tables = BotPurge.Tables(connection, transaction);
+            string keepHired = tables.Contains(BotPurge.HiredTable) ? $" AND BotId NOT IN ({BotPurge.KeptHiredQuery(tables)})" : string.Empty;
             using (var queue = connection.CreateCommand())
             {
                 queue.Transaction = transaction;
-                queue.CommandText = """
+                queue.CommandText = $"""
                     INSERT INTO offline_bot_commands (BotId, CommandType, RequestedUtc, State)
                     SELECT b.BotId, 'Delete', @now, 'Pending'
                     FROM offline_world_bots b
-                    WHERE b.IsRetired=0
+                    WHERE b.IsRetired=0{keepHired.Replace(" BotId", " b.BotId")}
                       AND NOT EXISTS (
                           SELECT 1 FROM offline_bot_commands c
                           WHERE c.BotId=b.BotId AND c.CommandType='Delete' AND c.State IN ('Pending','Processing'))
@@ -2534,27 +2693,14 @@ internal sealed partial class MainForm : Form
 
             using var retire = connection.CreateCommand();
             retire.Transaction = transaction;
-            retire.CommandText = "UPDATE offline_world_bots SET IsRetired=1, Activity='Deletion requested', CurrentGoal='', LastUpdateUtc=@now WHERE IsRetired=0";
+            retire.CommandText = "UPDATE offline_world_bots SET IsRetired=1, Activity='Deletion requested', CurrentGoal='', LastUpdateUtc=@now WHERE IsRetired=0" + keepHired;
             retire.Parameters.AddWithValue("@now", now);
             retire.ExecuteNonQuery();
         }
         else
         {
-            foreach (string sql in new[]
-            {
-                "DELETE FROM Inventory WHERE OwnerID LIKE 'offlinebot:%'",
-                "DELETE FROM offline_auction_escrow WHERE BidderBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_auction_ledger WHERE SellerBotId IN (SELECT BotId FROM offline_world_bots) OR BuyerBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_auction_listings WHERE SellerBotId IN (SELECT BotId FROM offline_world_bots) OR HighBidderBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_bot_commands WHERE BotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_world_bots",
-            })
-            {
-                using var command = connection.CreateCommand();
-                command.Transaction = transaction;
-                command.CommandText = sql;
-                command.ExecuteNonQuery();
-            }
+            // The bots' rows in every table, the Crafting 2.0 tables included (BotPurge, WP9).
+            BotPurge.DeleteAllBots(connection, transaction);
         }
 
         UpdatePopulationTarget(connection, transaction);
@@ -2562,27 +2708,9 @@ internal sealed partial class MainForm : Form
         return serverRunning;
     }
 
-    private static void PurgeBotData(SQLiteConnection connection, SQLiteTransaction transaction, long botId)
-    {
-        string owner = $"offlinebot:{botId}";
-        foreach (string sql in new[]
-        {
-            "DELETE FROM Inventory WHERE OwnerID=@owner",
-            "DELETE FROM offline_auction_escrow WHERE BidderBotId=@id",
-            "DELETE FROM offline_auction_ledger WHERE SellerBotId=@id OR BuyerBotId=@id",
-            "DELETE FROM offline_auction_listings WHERE SellerBotId=@id OR HighBidderBotId=@id",
-            "DELETE FROM offline_bot_commands WHERE BotId=@id",
-            "DELETE FROM offline_world_bots WHERE BotId=@id",
-        })
-        {
-            using var command = connection.CreateCommand();
-            command.Transaction = transaction;
-            command.CommandText = sql;
-            command.Parameters.AddWithValue("@id", botId);
-            command.Parameters.AddWithValue("@owner", owner);
-            command.ExecuteNonQuery();
-        }
-    }
+    // The bot's rows in every table, the Crafting 2.0 tables included (BotPurge, WP9).
+    private static void PurgeBotData(SQLiteConnection connection, SQLiteTransaction transaction, long botId) =>
+        BotPurge.DeleteBot(connection, transaction, botId);
 
     private static void UpdatePopulationTarget(SQLiteConnection connection, SQLiteTransaction transaction)
     {
@@ -2590,7 +2718,10 @@ internal sealed partial class MainForm : Form
         using (var countCommand = connection.CreateCommand())
         {
             countCommand.Transaction = transaction;
-            countCommand.CommandText = "SELECT COUNT(*) FROM offline_world_bots WHERE IsRetired=0";
+            // the gamebot roster: players' hired companions are logged in by their players, never by the population target
+            countCommand.CommandText = "SELECT COUNT(*) FROM offline_world_bots WHERE IsRetired=0" +
+                (BotPurge.Tables(connection, transaction).Contains(BotPurge.HiredTable)
+                    ? $" AND BotId NOT IN (SELECT BotId FROM {BotPurge.HiredTable})" : string.Empty);
             count = Convert.ToInt32(countCommand.ExecuteScalar());
         }
         int target = count;
@@ -2711,6 +2842,10 @@ internal sealed partial class MainForm : Form
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
+            bool lean = false;
+            try { lean = LeanServerMemory.Read(_database); }
+            catch (Exception exception) when (exception is SQLiteException or IOException) { }
+            LeanServerMemory.Apply(startInfo.Environment, lean);
             _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _serverProcess.OutputDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine(args.Data); };
             _serverProcess.ErrorDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine("ERROR: " + args.Data); };
@@ -2999,51 +3134,8 @@ internal sealed partial class MainForm : Form
             _serverReadinessPoll.Stop();
     }
 
-    private void EnsureBorderlessFullscreen()
-    {
-        // Use this installation's own client profile (paths.dat settings=), never another copy's preferences.
-        string profile = "OfflineDAoC036";
-        string pathsFile = Path.Combine(_clientDirectory, "paths.dat");
-        if (File.Exists(pathsFile))
-        {
-            string? value = File.ReadLines(pathsFile).FirstOrDefault(line => line.TrimStart().StartsWith("settings=", StringComparison.OrdinalIgnoreCase));
-            if (value != null)
-            {
-                string candidate = value[(value.IndexOf('=') + 1)..].Trim();
-                if (candidate.Length > 0 && candidate.All(c => char.IsLetterOrDigit(c) || c == '_' || c == '-')) profile = candidate;
-            }
-        }
-        var profileDirectory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Electronic Arts", "Dark Age of Camelot", profile);
-        Directory.CreateDirectory(profileDirectory);
-        var path = Path.Combine(profileDirectory, "user.dat");
-        var lines = File.Exists(path) ? File.ReadAllLines(path).ToList() : new List<string>();
-        var mainIndex = lines.FindIndex(line => line.Trim().Equals("[main]", StringComparison.OrdinalIgnoreCase));
-        if (mainIndex < 0)
-        {
-            if (lines.Count > 0 && lines[^1].Length != 0) lines.Add(string.Empty);
-            lines.Add("[main]");
-            lines.Add("fullscreen_windowed=1");
-        }
-        else
-        {
-            var sectionEnd = lines.FindIndex(mainIndex + 1, line => line.TrimStart().StartsWith('['));
-            if (sectionEnd < 0) sectionEnd = lines.Count;
-            var settingIndex = -1;
-            for (var index = mainIndex + 1; index < sectionEnd; index++)
-            {
-                if (lines[index].TrimStart().StartsWith("fullscreen_windowed=", StringComparison.OrdinalIgnoreCase))
-                {
-                    settingIndex = index;
-                    break;
-                }
-            }
-            if (settingIndex >= 0) lines[settingIndex] = "fullscreen_windowed=1";
-            else lines.Insert(sectionEnd, "fullscreen_windowed=1");
-        }
-        File.WriteAllLines(path, lines);
-    }
+    // Shared with Join Friend (ClientDisplayPreferences, from rambodolphin13/DividedRealms 3c6cc9d).
+    private void EnsureBorderlessFullscreen() => ClientDisplayPreferences.EnsureBorderlessFullscreen(_clientDirectory);
 
     private Process? FindExactServerProcess()
     {
@@ -3328,7 +3420,8 @@ internal sealed partial class MainForm : Form
         public string NameWithMeetUpTimer => IsOnline && GroupPhase == "Meeting up" &&
             TaskTimerDisplay.Remaining(MeetUpDeadlineUtc, DateTime.UtcNow) is long remaining
                 ? $"{Name} ({TaskTimerDisplay.Format(remaining)})" : Name;
-        public string State => DeletionQueued ? "Deleting…" : IsOnline ? "Online" : "Offline";
+        public bool IsRetiredCopy { get; init; }
+        public string State => BotDeletionText.State(DeletionQueued, IsRetiredCopy, IsOnline);
         public string RvrFormation => GroupId.Length > 0 ? $"Warband {GroupId}" : "Solo roamer";
     }
 
@@ -3353,7 +3446,7 @@ internal sealed partial class MainForm : Form
     }
     private sealed record DashboardSnapshot(string ServerState, List<BotRow> Bots, List<GroupRow> Groups,
         int Active, double ServerMemoryMb, BotAiDelayReport? BotAiDelay, double PlayerXpRate, double BotXpRate, bool MakeMeGm = false, RvrWorldSnapshot? RvrWorld = null,
-        bool RvrAnnouncements = true, bool PveAnnouncements = true);
+        bool RvrAnnouncements = true, bool PveAnnouncements = true, bool LeanMemory = false);
 
     private sealed record LiveBotStatus(long BotId, int Level, string ZoneName, string Activity,
         string CurrentGoal, string TargetName, string TravelDestination, string ObjectiveProgress,
@@ -3376,7 +3469,7 @@ internal sealed partial class MainForm : Form
              State.StartsWith("ESCORT", StringComparison.OrdinalIgnoreCase) ||
              State.StartsWith("DROPPED", StringComparison.OrdinalIgnoreCase) ||
              State.StartsWith("Under attack", StringComparison.OrdinalIgnoreCase));
-        public string Marker => Kind == "Dragon" ? "◆ DRAGON" : Kind == "Epic dungeon" ? "◆ DUNGEON" : Kind == "Neutral raid" ? "◆ NEUTRAL RAID" : Kind == "Relic" ? "◆ RELIC" : Kind == "Relic keep" ? "▣ RELIC KEEP" : "▣ KEEP";
+        public string Marker => Kind == "Dragon" ? "◆ DRAGON" : Kind == "Open-world boss" ? "◆ BOSS" : Kind == "Epic dungeon" ? "◆ DUNGEON" : Kind == "Neutral raid" ? "◆ NEUTRAL RAID" : Kind == "Relic" ? "◆ RELIC" : Kind == "Relic keep" ? "▣ RELIC KEEP" : "▣ KEEP";
         // Compatibility with the last-known JSON generated by older servers.
         // Current publishers filter by the authoritative server keep flag.
         public bool IsProtectedPortal => Kind.Equals("Portal keep", StringComparison.OrdinalIgnoreCase) ||

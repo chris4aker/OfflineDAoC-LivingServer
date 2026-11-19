@@ -321,8 +321,8 @@ namespace DOL.GS.DailyQuest
 			if (e != GameLivingEvent.EnemyKilled || Step != 1) return;
 			
 			EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
-			if (!(player.GetConLevel(gArgs.Target) > -3) || gArgs.Target is not GamePlayer enemyPlayer ||
-			    enemyPlayer.Realm == 0 || player.Realm == enemyPlayer.Realm) return;
+			if (!(player.GetConLevel(gArgs.Target) > -3) || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
+			    gArgs.Target.Realm == 0 || player.Realm == gArgs.Target.Realm) return;
 			PlayerKilled = 1;
 			player.Out.SendMessage("[Hardcore] Enemy Killed: ("+PlayerKilled+" | "+MAX_KillGoal+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);

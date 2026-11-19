@@ -1,0 +1,213 @@
+{
+  "id": "spindelhalla",
+  "name": "Spindelhalla",
+  "realm": "Midgard",
+  "regions": [
+    125
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "arachites",
+    "svartalfar"
+  ],
+  "summary": "The spider hall under Midgard where arachites farm silk with svartalf thralls and something deeper is worshipped.",
+  "facts": [
+    {
+      "text": "Allakhazam's bestiary lists 49 creatures in Spindelhalla: arachites (prelate, krigare, vakt, impaler, grymherre, tunnelhost, husker), spindel silksters and layers, svartalf thralls, workers and a foreman, cave trows and a trow trollkarl, deeplurks, djupt beasts, ekyps, a kopparorm and lost hagbui.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=56"
+    },
+    {
+      "text": "The bot camp catalog finds the same peoples there (region 125).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/capnbry_classic_si_goals.json"
+    },
+    {
+      "text": "Bot chat says the arachites keep svartalf slaves to tend the spiders and silk, that the prelates pray to something in the deep, and that it goes deeper than the maps.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Swedish spindel means spider and hall (halla) hall; djupt means deep (to verify the Mythic usage).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Spindelhalla's entrance is in Myrkwood Forest. The upper level holds the arachite farm (vakt, impalers, krigare, grymherre, prelates, huskers, tunnelhosts), spindel silksters and layers, svartalf thralls, arbetare and a foreman, hallaratta, blindsnakes, stingers, husks and duegar thieves; terra crabs below; the deep level holds cave trows and a trollkarl, deeplurks, djupt odjur, usling and vivunder, ekyps, mad kobolds, lost hagbui, undead troll warriors, cursed thulians, crushers and kopparorm.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 125, Spindelhalla; 0.37b world data)"
+    },
+    {
+      "text": "Swedish glosses (to verify): arbetare 'worker', grym herre 'grim lord', vakt 'guard', krigare 'warrior', hallaratta 'hall-rat', djupt odjur 'deep monster', usling 'wretch', gunstling 'favourite', trollkarl 'sorcerer', kopparorm 'copper worm' (the slow-worm), ond 'evil', fasa 'dread'.",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Odell's list of thralls' names, the silk-frame prayers, the svartalf cutters who dug the hall and the thralls' hope in the dragon's cold (malmohus) are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Three named stand in Spindelhalla's deep: Igo (cave trow), Ond (rock-sheerie model, elemental) and Fas (ghost, the deep ones' model), all aggressive at short range with no faction.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Spindelhalla was not cut by spiders. The svartalfar cut it, long before the arachites came, as one of the halls on their deep roads under Myrkwood: a great upper gallery for markets and meetings, with stairs going down from it to the cutters' works, and below those the old roads themselves, which go further than any svartalf now living has walked. The free svartalfar of Malmohus still call it by its old name, which means the hall of lamps. Nobody else does.\n\nThe arachites came up from below. The svartalfar's own accounts say they came up the deep roads one winter from somewhere the cutters had never reached, and that they did not fight for the hall so much as fill it: webs in every passage, spiders in every web, and the spider-folk walking behind them with their impalers. The svartalfar who could not run became the first thralls. Their children are thralls now, and their grandchildren, and a foreman of their own blood who has been a thrall so long he no longer minds it keeps them bent over the strands.\n\nThe upper gallery is the farm. Spindel silksters and layers hang in the webs; the thralls and workers tend them; the arachite guards and warriors and the grim lords keep the thralls in and the strangers out; and the huskers go about with their sacks, collecting what the spiders leave of anything that was caught. The hall-rats and blindsnakes live off the scraps. Duegar thieves come in from the edges after silk and are not always caught. The arachite prelates have their place at the head of the farm and pray there, toward the floor.\n\nBelow the farm the arachites do not go easily. The terra crabs keep a wet level between, and under that the deep begins, and the deep is not theirs. Cave trows hold it, with a sorcerer of their own, and the deeplurks that feed and dissemble and kill, and things the svartalfar name only as the deep ones: monsters, wretches, and worse. Mad kobolds wander there who came down from somewhere and cannot find the way back up. Hagbui walk it, the lost dead of an older people buried in the roads before even the svartalfar cut them, and the dead of trolls with them. At the very bottom two old things are said to sit, whom the svartalfar call by words that mean evil and dread, and the svartalfar do not explain the names.\n\nThe prelates pray toward the deep. The thralls say they are praying to whatever sits at the bottom, and that it listens, and that when the prayers end the webs shake for a long time. The thralls pray too, scratching their prayers on the silk-frames in svartalf letters for anyone who will read them. In recent winters some of the frames have named the dragon in Malmohus, whose cold, the thralls believe, will one day come down the roads and freeze the webs, and let them walk out. The free svartalfar of Malmohus say that is not how the dragon's cold works. Odell, Svarhamr's vault keeper in Malmohus, who buys the drakulv's news through the free clans, keeps a list of every thrall's name he can get, against the day.\n\nThe tailors of Jordheim swear the finest thread in Midgard comes out of Spindelhalla. None of them has ever had any to sell.",
+  "legend": "Spindelhalla goes deeper than the maps: the further down, the stranger. The entrance is in Myrkwood. The upper farm is late thirties to mid forties: arachites, spiders, svartalf thralls and the hall-rats. Watch the webs, the spiders come out of them, and the prelates and grymherre at the far end hit hard. The svartalf thralls are hostile like everything else, sorry. Down past the terra crabs the deep is fifty-ish: cave trows with a trollkarl casting, deeplurks, the djupt things, ekyps and undead trolls, and it's all close together, so bring a real group. The named at the very bottom are the hardest thing in the dungeon. Old superstition: don't free the thralls, they'll only be taken again, and they know it. Another: read any silk-frame you find with writing on it, because the svartalfar of Malmohus will want the names. The tailors' joke is that nobody has ever sold Spindelhalla silk; the thieves' joke is that the duegar have.",
+  "atmosphere": {
+    "firstEntry": [
+      "The spider hall. Silk hangs everywhere, like smoke.",
+      "Thralls bend over the webs. Something prays below.",
+      "The walls were cut by careful hands. Not spiders'.",
+      "Webs shiver, though there is no wind."
+    ],
+    "areas": [
+      {
+        "name": "the gallery of webs",
+        "x": 32653,
+        "y": 28830,
+        "z": 16004,
+        "radius": 2200,
+        "lines": [
+          "Silksters and layers hang in the webs like fruit.",
+          "Huskers drag sacks of what the spiders left."
+        ]
+      },
+      {
+        "name": "the thralls' floor",
+        "x": 33139,
+        "y": 31807,
+        "z": 16012,
+        "radius": 1500,
+        "lines": [
+          "Svartalf thralls bend over the strands.",
+          "A foreman of their own blood watches them work.",
+          "Prayers are scratched on the silk-frames here."
+        ]
+      },
+      {
+        "name": "the prelates' end",
+        "x": 31185,
+        "y": 34465,
+        "z": 15997,
+        "radius": 1800,
+        "lines": [
+          "The prelates pray toward the floor.",
+          "Grim lords stand at the head of the farm."
+        ]
+      },
+      {
+        "name": "the crab level",
+        "x": 35962,
+        "y": 31119,
+        "z": 15537,
+        "radius": 2000,
+        "lines": [
+          "Wet stone and terra crabs. The farm ends here.",
+          "Below this, the arachites do not go easily."
+        ]
+      },
+      {
+        "name": "the deep roads",
+        "x": 30986,
+        "y": 30476,
+        "z": 14817,
+        "radius": 3000,
+        "lines": [
+          "The old svartalf roads. Trows hold them now.",
+          "Hagbui of a forgotten people walk the deep roads.",
+          "A mad kobold mutters about the way up."
+        ]
+      },
+      {
+        "name": "the bottom",
+        "x": 31220,
+        "y": 30173,
+        "z": 14400,
+        "radius": 3500,
+        "lines": [
+          "The deep ones feed here. The webs above shake.",
+          "Two old things sit at the bottom. Evil and dread."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the arachites keep svartalf slaves in spindelhalla to tend the [spiders|silk]. [grim stuff|makes my skin crawl]",
+      "the arachite prelates in spindelhalla pray to something in the deep. never stayed to find out what",
+      "under the spider farm in spindelhalla there are cave trows and deep things. the djupt, the svartalfar call them",
+      "spindelhalla was a svartalf hall before the spiders came. the hall of lamps, the free svartalfar call it",
+      "the arachites came up the deep roads one winter and filled the hall with webs",
+      "the svartalf foreman in spindelhalla has been a thrall so long he doesnt mind it",
+      "huskers collect what the spiders leave. [dont ask|dont look in the sacks]",
+      "duegar thieves sneak into spindelhalla for silk. some get out",
+      "below the crab level the deep isnt the arachites. trows hold it",
+      "the lost hagbui in the deep are older than the svartalf roads",
+      "the svartalfar call the two things at the bottom evil and dread. they dont explain",
+      "the thralls scratch prayers on the silk frames. read them if you find them",
+      "some thralls think the dragons cold will come down the roads and freeze the webs",
+      "odell in malmohus keeps a list of every spindelhalla thralls name",
+      "the mad kobolds in the deep came down from somewhere and cant find the way back up"
+    ],
+    "rumour": [
+      "[old|some] [scouts|explorers] [say|claim] spindelhalla goes deeper than the maps. [the webs hide another stair|the silk covers the rest]",
+      "[my tailor friend|an old tailor] swears the finest thread in midgard comes from spindelhalla. nobody [i know|ever] has [any to sell|some to sell]",
+      "the prelates pray to whatever sits at the bottom, the thralls say. and it listens",
+      "when the prelates stop praying the webs shake for ages",
+      "the duegar have sold spindelhalla silk, the thieves say. [never seen it|no proof]",
+      "the trollkarl in the deep casts like a runemaster. watch him",
+      "the kopparorm is a copper worm, harmless above ground. not down there",
+      "dont free the thralls, theyll only be taken again, and they know it",
+      "a thrall once gave my guildie a silk frame with a name on it. he took it to malmohus",
+      "the two old things at the bottom of spindelhalla are ond and fas, evil and dread",
+      "igo the cave trow chief holds the edge between the farm and the deep"
+    ],
+    "tell": [
+      "spindelhalla is arachites, spiders and svartalf thralls up top, trows and deep things lower down. late 30s to 50",
+      "spindelhalla? spider dungeon. good xp, watch the webs",
+      "spindelhalla entrance is in myrkwood forest",
+      "is spindelhalla hard? the farm is fine for a group, the deep is fifty and packed",
+      "the deep part is past the terra crabs",
+      "named at the very bottom are the hardest in there",
+      "spindelhalla nameds: igo at the edge, ond and fas at the bottom, short aggro range but packed rooms"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Spindelhalla, the spider hall. The [arachites] farm silk there with svartalf [thralls], and below the farm is a [temple], and below that the [deep roads].\"",
+    "topics": {
+      "arachites": "Spider-folk who came up the [deep roads] one winter and filled the svartalf hall with webs. Their warriors keep the strangers out and the [thralls] in.",
+      "temple": "Where the arachite prelates pray toward the deep. Below it live the djupt beasts, the deep things, and cave trows. Nobody says what the prelates pray to; the [thralls] say it listens.",
+      "thralls": "Svartalfar who could not run when the [arachites] came, and their children. They scratch prayers on the [silk-frames]. [Odell] keeps their names.",
+      "hall of lamps": "Spindelhalla's old name among the free svartalfar of Malmohus. Their cutters made it as a hall on the [deep roads], before the [arachites].",
+      "deep roads": "The svartalf roads under Myrkwood, older than any svartalf now living. In Spindelhalla they are held by cave trows, deeplurks and the [deep ones].",
+      "deep ones": "What the svartalfar call the djupt things at the bottom of the [deep roads]: monsters and wretches. Two old ones sit lowest, named in svartalf for evil and dread.",
+      "silk-frames": "The frames the [thralls] stretch silk on. They scratch prayers on them in svartalf letters, some of them to the dragon of Malmohus, whose cold they believe will free them.",
+      "Odell": "The vault keeper of Svarhamr in Malmohus. He buys the drakulv's news through the free svartalf clans of the east, and keeps in the vault a list of every svartalf name outside Svarhamr's walls: on one side the Spindelhalla [thralls], against the day they walk out, and on the other the ones who went to the dragon's court.",
+      "duegar": "Dwarf thieves who come into Spindelhalla from the edges after silk. The tailors of Jordheim have never sold Spindelhalla silk; the duegar may have.",
+      "the edge": "The passages between the bottom of the [arachites]' farm and the top of the [deep roads], held by the cave trows under [Igo], who keeps a bargain with the spiders. The trows burn the emptied husks for warmth."
+    }
+  },
+  "book": {
+    "title": "The Silk-Frame Prayers",
+    "pages": [
+      "Gathered by Odell, vault keeper of Svarhamr in Malmohus, from frames the drakulv and the Midgard hunters brought out. I keep the names. Every frame that comes to me I copy, and every name on it I write in the list, and when a name comes twice on frames from different winters I know that thrall is still alive. Most names come once. I do not know if that means they died, or only that nobody brought out their next frame. I keep the list anyway. Somebody must have it ready, on the day. The drakulv laugh at me for it. They carry the frames all the same.",
+      "Scratched in svartalf letters on a silk-frame, as a scholar of Jordheim read it for me. 'Lord of the dark, who gave our people the deep roads, we have been sold to the spiders. They feed us and we feed the webs. The foreman says to be glad because the prelates pray for us too. I have heard the prelates pray. They do not pray to you. They pray to something underneath you, and it is listening, and when they finish it is a long time before the webs stop shaking. Come and take us home, lord, if there is still a lord to come, before it answers them.'",
+      "From a frame of the winter of the long frost: 'The foreman says the hall was ours once. He says his grandfather's grandfather cut the lamp-niches in the gallery with his own chisel, and that the niches are still there under the silk. He showed me one. There was soot in it, very old. He did not seem sad. He said: they kept the hall, didn't they? Somebody did. I wanted to hit him. I did not. The huskers were near.' Under it, in another hand, smaller: 'The niche is still there. I put my finger in the soot. It was our soot. I am glad of that, at least.'",
+      "From a frame brought out by a Jordheim hunter: 'Something came up from below last night, past the crabs. Not a trow. The arachite guards went down to it and two came back. The prelates prayed all night, louder than I have ever heard them, and in the morning the prelates were smiling. I have never seen a prelate smile. I am writing my name very large on this frame, in case it is the last one.' The name was large. It has not come again. I have written it in the list in large letters too, as she wanted, and drawn a line beside it, which I do for no other name.",
+      "From three frames, different hands, the same winter: 'They say there is a dragon in the south made of cold. They say her cold is coming. They say it will come down the old roads and the webs will freeze and break, and we will walk out over them. My mother says it is a foolish story. My mother has been a thrall for sixty winters.' I have told the drakulv to tell the thralls that the dragon's cold does not travel. The drakulv say they will not, because the thralls would stop writing. I have not pressed them. I am not sure they are wrong."
+    ]
+  },
+  "bosses": [
+    "ond",
+    "fas",
+    "igo",
+    "kalph",
+    "yleg",
+    "danin",
+    "vixitr",
+    "smarta",
+    "tebui"
+  ]
+}

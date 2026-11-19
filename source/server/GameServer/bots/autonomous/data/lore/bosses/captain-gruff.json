@@ -1,0 +1,66 @@
+{
+  "id": "captain-gruff",
+  "name": "Captain Gruff",
+  "npcNames": [
+    "Captain Gruff"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Captain Gruff is a level-39 werewolf (the royal guard's model, large) in the werewolves' camp in the middle of Skona Ravine (725,771/928,102), beside a werewolf captain, a courier and guards. He does not attack first (aggro level 0).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Gruff as the captain who lets Midgard's companies pass is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Captain Gruff keeps the south road. He is a captain of the varulv of Skona, the biggest of them, and his post is the camp in the middle of the ravine where the couriers go up and down between the haven of Varulvhamn and the werewolves' watch on the south. Since their king refused the dragon, the werewolves have let Midgard's companies pass through Skona on the way to Malmohus, and it is Gruff who lets them. He stands with his arms folded and watches each company go by and does not move.\n\nThe Seithkona Circle says he counts them. Gudny says he counts them going south and again coming back, and that he keeps the difference the way the svartalfar of Svarhamr keep their beam. He has never raised a hand to anyone who did not raise one first. The werewolves say that is the only thing anyone needs to know about Captain Gruff, and that the second thing is that, once a hand is raised, he does not stop.",
+  "legend": "Captain Gruff is a level 39 werewolf in the werewolf camp in the middle of Skona. He doesn't attack first, so you can walk past him; he only fights if you start it, and then the werewolf captain, courier and guards beside him are right there. Leave him alone unless you want the camp. Bots and players walk right past him on the road to Malmohus all the time. If you do start it, remember the werewolf captain, courier and guards stand right beside him.",
+  "yells": {
+    "aggro": [
+      "You struck first. Remember that.",
+      "(Gruff unfolds his arms.)"
+    ],
+    "death": [
+      "The road... is still open..."
+    ],
+    "slay": [
+      "Should have kept walking."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great werewolf with folded arms watches the road."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "captain gruff never attacks first, only if you hit him",
+      "his camp is right there, captain, courier, guards"
+    ],
+    "aftermathWin": [
+      "gruff down",
+      "the werewolves wont forget that"
+    ],
+    "rumour": [
+      "captain gruff counts every company going south and coming back",
+      "gruff lets midgard pass since the werewolf king refused the dragon"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Captain Gruff",
+    "text": "The great varulv captain of the camp in the middle of Skona, who lets Midgard's companies pass on the road south and counts them both ways. He never strikes first. See [werewolves]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Captain Gruff's watch in Skona in {minutes} minutes."
+  }
+}

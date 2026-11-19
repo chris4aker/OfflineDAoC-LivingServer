@@ -29,6 +29,22 @@ namespace DOL.GS
         /// <summary>The most chat lines one beat becomes.</summary>
         public const int MaxPieces = 3;
 
+        /// <summary>
+        /// The most words a piece of <see cref="Split"/> carries: its limit plus a short tail (fewer than three words) that goes
+        /// back with the piece before it.
+        /// </summary>
+        public static int PieceWordLimit(int maxWords) => maxWords + 2;
+
+        /// <summary>
+        /// Whether a one-word laugh or emoticon tail ("lol", ":)") still fits a piece split at <paramref name="maxWords"/>
+        /// (0: no limit). A piece is one chat line, and a terse writer's sentences run together in it, so the whole piece is
+        /// its last sentence's worth: a tail that pushes it past <see cref="PieceWordLimit"/> would make a line the split
+        /// should have broken (chat follow-up F2: "gripklosa is nothing but mountains, trolls walked down from them, mystery
+        /// solved lol"). Pure.
+        /// </summary>
+        public static bool TailFits(string text, int maxWords) =>
+            maxWords <= 0 || Words(text) + 1 <= PieceWordLimit(maxWords);
+
         /// <summary>Whether a style is the terse one (strips punctuation, abbreviates).</summary>
         public static bool IsTerse(VC.Voice voice) => voice != null && voice.StripPunctuation;
 
@@ -104,21 +120,25 @@ namespace DOL.GS
 
         /// <summary>
         /// A debate line as the speaker types it: its pieces (one chat line each), split and styled as described above. With no
-        /// style (voices off) the line is split only. Pure for a given draw.
+        /// style (voices off) the line is split only. <paramref name="noLaugh"/>: a beat said with no added laugh
+        /// (AutonomousBotDebates.NoLaughBeat), which also takes no "lol" from the speaker's typing habits (chat 1.2 follow-up,
+        /// E3's CORPUS-B2-032 gap). Pure for a given draw.
         /// </summary>
-        public static List<string> Typed(string line, VC.Voice voice, long botId, Random random)
+        public static List<string> Typed(string line, VC.Voice voice, long botId, Random random, bool noLaugh = false)
         {
             random ??= Random.Shared;
             bool terse = IsTerse(voice);
             var typed = new List<string>();
-            foreach (string piece in Split(line, terse ? TerseMaxWords : MaxWords))
+            int max = terse ? TerseMaxWords : MaxWords;
+            foreach (string piece in Split(line, max))
             {
                 string text = piece;
                 if (voice != null)
                 {
                     // A tidy writer's capital starts the chat line; no second sentence is capitalised and no full stop ends it.
-                    text = VC.Style(text, voice with { CapitalizeSentences = false, EndPeriod = false }, random);
-                    text = AutonomousChatIdiolect.Apply(text, botId, voice.Capitalize, random);
+                    // A laugh tail only where it keeps the piece within the split's limit (TailFits); no laugh on a no-laugh beat.
+                    text = VC.Style(text, voice with { CapitalizeSentences = false, EndPeriod = false }, random, out _, null, max);
+                    text = AutonomousChatIdiolect.Apply(text, botId, voice.Capitalize, random, terse: noLaugh, maxWords: max);
                 }
                 text = Chat(text, terse);
                 if (text.Length > 0)

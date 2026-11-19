@@ -1,0 +1,258 @@
+{
+  "id": "vanern-swamp",
+  "name": "Vanern Swamp",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    107
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "jotuns-of-vanern",
+    "lokis-mischief",
+    "hagbui",
+    "dark-seithkona"
+  ],
+  "summary": "Midgard's western bog of jotuns and clay giants, where a seeress keeps a high seat on an island.",
+  "facts": [
+    {
+      "text": "Allakhazam's Vanern Swamp bestiary lists Mokkurvalve, Ulfketill and Ydenia of the Seithkona among its 50 creatures.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=34"
+    },
+    {
+      "text": "Ulfketill and his clay jotun guards sit in the west of the swamp (zone table and spawns); Ydenia's water is around 43k, 27k.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "The Healer and Shaman epic sends players against Ulfketill and the jotuns of Vanern.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/720"
+    },
+    {
+      "text": "Bot chat says Midgard is built on giants' quarrels: fire giants in Muspelheim, jotuns in Vanern, frost giants on the glacier.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "The swamp's world data holds a whole household of hagbui (Old Norse haugbui, 'mound-dweller'): berserkers, thanes, runemasters, spiritmasters, shamans, guards, a herald, a swordbearer, squires, pages and two forge tenders, in the north-west of the zone.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 100, Vanern Swamp zone 107; 0.37b world data)"
+    },
+    {
+      "text": "Clay jotuns, clay jotun retainers and runners stand in the middle of the swamp; broken and crippled jotuns, on the clay jotuns' model, walk the western banks near Ulfketill; jotun outcasts under a jotun despot and a jotun overlord hold the north, beside large enslaved orms and orm runners.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 100, Vanern Swamp zone 107; 0.37b world data)"
+    },
+    {
+      "text": "Black orms keep the north-eastern water; the reincarnate orms by the barrows carry the ghost flag.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 100, Vanern Swamp zone 107; 0.37b world data)"
+    },
+    {
+      "text": "The Viking epic 'An End to the Daggers' sends players to an island in Vanern Swamp to kill Ydenia of the Seithkona for a Tome of Enchantments; the quest spawns her as a ghost, and its text says her followers protect her spirit and come to her aid.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/Viking50.cs"
+    },
+    {
+      "text": "Two dark seithkona stand on Ydenia's island and join her when she is fought; a dark seithkona initiate stands at the swamp's south-eastern edge.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ydenia.cs"
+    },
+    {
+      "text": "Bot chat calls Vanern 'the one place even trolls dont like'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/ambient_realms_more.lines"
+    },
+    {
+      "text": "Arnkel the ferryman, the clay yards, the mare's heart, the Circle's silence over Ydenia and the hagbui's forge are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Before it was a swamp it was a lake, and the lake was called Vanern. A jarl of the old kingdoms was laid in a mound on its western shore with his whole household round him, his thanes and his runemasters, his crier and his swordbearer, the boys who poured his ale and the smiths who kept his blades, and the mound was closed and the lake went on lapping at its foot. Then the lake silted. Reed came in from the edges, then black water, then mud, and in a few lifetimes Vanern was a bog with a hill in its corner. The household never left the hill. The old word for such dead is haugbui, the mound-dwellers, and the swamp folk say hagbui and leave it at that. Their forge still burns in the north-west of the swamp, and nobody has ever found out what they are making.\n\nThe jotuns came after, down out of the mountains, cast off by their own kind or simply poor: no glacier, no fire, only mud. They made the best of it. They build in clay, and they have built in clay since the oldest tale, when giants made a man of clay to stand beside Hrungnir against Thor and gave him a mare's heart because no giant's heart would fit, and watched him fail. The jotuns of Vanern have been trying to get it right ever since. Their clay yards stand in the middle of the swamp, and the clay jotuns who walk out of them run errands and carry loads and stand guard. The ones that come out wrong are not unmade. The jotuns cannot bring themselves to break their own work, so the broken ones and the crippled ones limp the western banks for good, and the greatest failure of all, Mokkurvalve, comes apart a little every time he moves.\n\nNot every jotun in Vanern builds. In the north the outcasts keep a hard place under a despot and an overlord, and they do their carrying with orms: great swamp serpents yoked and goaded and run along the causeways until they founder. The black orms of the north-eastern water are the free ones, and they hate the yoked ones. By the barrows there are orms of a third kind, pale and slow, which the ferrymen say are orms that died in the mound's shadow and were sent back by the household, as a jarl sends a thrall back to finish a task.\n\nUlfketill is the jotuns' pride, the wolf-kettle, who works the bound god's mischief and keeps his own clay guards in the west. When Loki wants trouble in Midgard, the trouble tends to come up through Vanern, where everything low runs to, and Lyngheid at Fort Atla sends the realm's young seers after it.\n\nAnd on an island in the eastern water there is a high seat. Ydenia was a seithkona of the Circle in Skona, one of the singing women who sit high and call the spirits close and tell what will be. She sang her own death one night and would not have it. She went out to the island to sing it away, and the bog took her body anyway, and she kept the seat without it. Two of her sisters followed her out of the Circle and serve her still. The Circle does not say her name. Lynnleigh of Svealand says it often, because Ydenia's tome of enchantments is on that island, and Midgard would like it back.\n\nSo Vanern matters, though nobody loves it. It is the realm's low place. Mischief runs down into it, the old dead sit on its hill, and the jotuns keep trying, in mud, to undo the oldest shame of their kind. The ferrymen pole across it as they always have and count what the water takes.",
+  "legend": "Vanern is where Midgard learns to swim in armour. Everyone has been thrown in by Ydenia at least once, and the bog is deep enough that you come up somewhere else. The old joke is that the swamp has three kinds of jotun: the ones that work, the ones that broke, and the ones nobody will talk to, and you can tell them apart by whether they limp. The broken and crippled jotuns on the west bank are good hunting and they hit harder than they look. Stay out of the outcasts' ground in the north unless you came for it; the despot and the overlord are in there, and the orm runners move fast. The hagbui up in the north-west are a full dead household: thanes and runemasters together, so watch for casters behind the berserkers. People say the hagbui forge is making a sword for the jarl, and that when it is done he will get up. People say the reincarnate orms can't be killed for good; they just come back paler. Seers come for Ulfketill, vikings come for Ydenia, and everyone else comes for the camps and goes home muddy. Never tell a clay jotun it looks well made.",
+  "atmosphere": {
+    "firstEntry": [
+      "Reed and black water. The jotuns build in clay here.",
+      "Vanern Swamp. The mud remembers every footstep.",
+      "Somewhere a ferryman's pole knocks on wood.",
+      "A hill in the corner of the bog. Smoke rises from it.",
+      "The water is warm and smells of iron."
+    ],
+    "areas": [
+      {
+        "name": "the jotun camp",
+        "x": 629994,
+        "y": 897954,
+        "z": 2291,
+        "radius": 1600,
+        "lines": [
+          "Clay figures stand half-made in the bog.",
+          "A pit of fired clay, still warm. Something boiled here.",
+          "Clay guards stand round the wolf-kettle like dogs."
+        ]
+      },
+      {
+        "name": "the seeress's island",
+        "x": 665500,
+        "y": 894000,
+        "z": 1550,
+        "radius": 1600,
+        "lines": [
+          "A high seat on an island. Someone is singing.",
+          "The singer has no shadow. Her sisters do.",
+          "The water round the island is cold as a grave."
+        ]
+      },
+      {
+        "name": "the barrows of the hagbui",
+        "x": 632816,
+        "y": 881509,
+        "z": 2920,
+        "radius": 3000,
+        "lines": [
+          "The jarl's dead household never left the hill.",
+          "A forge burns in the barrows. No one living works it.",
+          "A herald of the dead waits to announce someone."
+        ]
+      },
+      {
+        "name": "the outcasts' causeway",
+        "x": 651604,
+        "y": 876269,
+        "z": 1835,
+        "radius": 2200,
+        "lines": [
+          "Yoked orms strain along the causeway.",
+          "The outcasts watch you as a despot watches a debtor.",
+          "Goad-marks score the mud. Something was driven here."
+        ]
+      },
+      {
+        "name": "the clay yards",
+        "x": 649009,
+        "y": 907381,
+        "z": 1878,
+        "radius": 2200,
+        "lines": [
+          "Clay jotuns walk out of the yards with loads.",
+          "Every figure here was made by hand. None is right."
+        ]
+      },
+      {
+        "name": "the broken bank",
+        "x": 627500,
+        "y": 903300,
+        "z": 2200,
+        "radius": 2600,
+        "lines": [
+          "The broken ones limp the bank. No one unmakes them.",
+          "A crippled jotun drags a clay leg through the reeds."
+        ]
+      },
+      {
+        "name": "the mud flats",
+        "x": 669766,
+        "y": 912584,
+        "z": 1780,
+        "radius": 4000,
+        "lines": [
+          "Mud frogs croak in the flats. The crabs listen.",
+          "The flats suck at your boots like a hungry mouth."
+        ]
+      },
+      {
+        "name": "the orm water",
+        "x": 670296,
+        "y": 878671,
+        "z": 1803,
+        "radius": 3000,
+        "lines": [
+          "Black orms coil in the north-eastern water.",
+          "The free orms hiss at the causeway, where the yoked ones go."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the vanern jotuns build clay giants. ever since the old tale with hrungnir",
+      "ulfketill is a vanern jotun who works for loki. seers hunt him for their epic",
+      "ydenia on the island in vanern is a seithkona gone bad. [she throws you in|dont let her pick you]",
+      "vanern used to be a lake. [the ferrymen say|my gran says] the jarl on the hill is older than the swamp",
+      "hagbui means mound dweller. the whole household is still up there, herald and all",
+      "the hagbui forge has been burning since before jordheim. nobody knows what theyre making",
+      "jotuns cant bring themselves to break their own work. thats why the broken ones limp around the west bank",
+      "the first clay giant had a mare's heart. the vanern jotuns are still embarrassed about it",
+      "the outcasts up north run yoked orms on the causeway till they drop",
+      "the reincarnate orms by the burial mounds died once already. the hagbui sent them back",
+      "ydenia sang her own death and wouldnt have it. the bog took her anyway and she kept her seat",
+      "the seithkona circle in skona wont say ydenias name. lynnleigh will, she wants that tome",
+      "loki's trouble runs downhill. vanern is the bottom of the hill",
+      "lyngheid at fort atla sends the young seers after ulfketill",
+      "the ferrymen of vanern count what the water takes. they say the count never goes down"
+    ],
+    "rumour": [
+      "heard loki's trouble always comes through vanern first",
+      "[heard|someone said] the hagbui forge is making the jarl a sword, and when its done he gets up",
+      "reincarnate orms dont stay dead, they just come back paler. [probably|thats what i heard]",
+      "never tell a clay jotun it looks well made. [they know|they take it badly]",
+      "the jotun despot up north owes everyone money. [or everyone owes him|one of those]",
+      "a broken jotun followed me half way to mularn once. didnt attack. just limped",
+      "they say mokkurvalve only shows himself some seasons. [nobody|no one] i know has seen him",
+      "ydenias sisters still stand on the island with her. [creepy|they dont blink]",
+      "the warm water in vanern is the hagbui forge, [my guildie swears|so they say]"
+    ],
+    "tell": [
+      "vanern swamp, west side. jotuns, clay giants, mokkurvalve, ulfketill and the seeress ydenia on her island",
+      "vanern? good jotun camps, muddy. watch for ydenia on the island",
+      "its the swamp west of the forest. bring someone who can swim",
+      "is vanern hard? the west bank and the outcasts up north hit hard. the flats are easy",
+      "hagbui are up in the north west corner. full dead household, casters and all",
+      "where's ydenia? the island in the eastern water. her two sisters are with her"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Vanern was a lake once, and a jarl's [hagbui] still sit on its hill. The [jotuns] there build in clay, and have been trying to get it right since the old tale. On an island a [seeress] keeps her own high seat.\"",
+    "topics": {
+      "jotuns": "Poor cousins of the mountain giants, with only mud to work. [Ulfketill], the wolf-kettle, serves Loki's mischief. Their clay giant [Mokkurvalve] comes apart as he moves. The ones that come out wrong walk the [broken bank]; the hard ones keep to the [outcasts]' ground.",
+      "seeress": "[Ydenia] of the Seithkona. She sang her own death and refused it. The bog took her body; she kept her [high seat]. The [Seithkona Circle] does not say her name.",
+      "hagbui": "The mound-dwellers. A jarl of the old kingdoms was laid in a mound on Vanern's shore with his whole household, and when the lake silted they stayed. Their [forge] still burns.",
+      "forge": "The [hagbui] keep a forge in their barrows, tended by dead smiths. The swamp folk say it is a sword for the jarl, and when it is finished he will rise. The water downstream of it is warm.",
+      "broken bank": "The [jotuns] cannot bring themselves to unmake their own work. Clay jotuns that came out wrong, broken or crippled, limp the western banks near [Ulfketill] for good.",
+      "outcasts": "The jotun outcasts of the north, under a despot and an overlord. They do their carrying with yoked [orms] on the causeway, and they talk to no one.",
+      "orms": "Swamp serpents. The black orms of the north-east are free; the [outcasts] yoke the large ones as runners; the pale reincarnate orms by the [hagbui] barrows died once and were sent back.",
+      "high seat": "A seithkona sits high to sing the spirits close. [Ydenia] set hers on an island in the eastern water. Two of her sisters followed her out of the [Seithkona Circle] and stand by it still.",
+      "Seithkona Circle": "The seeresses of Skona Ravine. They tell what will be and do not try to change it. [Ydenia] tried. They have not spoken her name since.",
+      "mare's heart": "The old tale: giants made a man of clay to stand by Hrungnir against Thor, and gave him a mare's heart because no giant's heart would fit. He failed. The [jotuns] of Vanern still try to better him; [Mokkurvalve] is the closest they have come.",
+      "ferrymen": "Vanern's ferrymen pole travellers across the black water and keep a count of what the swamp takes. The oldest of them, Arnkel, wrote some of it down."
+    }
+  },
+  "book": {
+    "title": "The Ferryman's Count",
+    "pages": [
+      "I am Arnkel. I have poled the black water of Vanern for forty winters, and my father before me, and his before him. We keep a count, we ferrymen, on a stick in the boathouse: a notch for every traveller the swamp takes. My grandfather said the count would go down one day, when the jotuns got it right. It has not gone down. I am writing this because my hands are too stiff for the pole and the boy who has it now does not listen. Here is what is out there, so that somebody knows.",
+      "The hill in the corner was a jarl's mound when Vanern was a lake. My grandfather's grandfather saw the lake. The jarl went in with all his household, thanes and runemasters, his crier, his ale-boys, his smiths, and when the water went to mud they did not come out. Their forge burns still. The water that runs down from the barrows is warm in winter. I do not pole that way. The crier stands at the door of the mound as if he is waiting to call somebody's name, and I do not want it to be mine.",
+      "The jotuns told me, through a kobold who lived with them, that their grandfathers' grandfathers built the clay giant that stood with Hrungnir. It had a mare's heart, because no giant's heart was big enough, and when it saw Thor it lost its nerve and Thor's servant cut it down. The jotuns do not tell that part. The kobold did. They have built in clay ever since to prove the first one was a mistake. The ones that come out wrong they will not break. They let them walk. The west bank is full of them, limping.",
+      "The biggest of their failures I have seen only twice in forty winters, which is twice more than most. They call him Mokkurvalve. He is the height of a mast and he sheds as he walks: a lump of him falls into the reeds, and lies a while, and gets up on its own and follows him. The kobold said that if he is ever broken right through, every lump of him will get up at once and look for the one who did it. The kobold did not seem to think this was a reason not to try.",
+      "The island in the eastern water I take people to, when they ask, and I do not wait. There is a high seat on it, and the woman on the seat has no shadow. She was a seeress of the Circle in Skona. My mother saw her come, alive, and saw her sing all one night, and saw the bog take her at dawn, and the next night she was singing again. She does not like visitors. She throws them in the water, and the water round that island is cold as nothing else in Vanern is cold. I have fished out eleven. I have notched four.",
+      "I asked Ulfketill's kobold once why the wolf-kettle makes his clay guards only in the quiet, never when he is roused. He said a pot made in anger cracks in the firing, everyone knows that. He said Ulfketill makes three, and keeps three, and when one breaks in a quarrel he will not make another until the quarrel is over and he has had his supper. Then the kobold went quiet, because he had said more than a kobold should. I put it in the count anyway. I have put everything in the count. Somebody should know."
+    ]
+  },
+  "bosses": [
+    "ulfketill",
+    "mokkurvalve",
+    "ydenia-of-the-seithkona",
+    "jango",
+    "valthjof",
+    "rottild-the-traitor",
+    "freyana",
+    "ajniollia",
+    "mista",
+    "noma-rindasdottir"
+  ]
+}

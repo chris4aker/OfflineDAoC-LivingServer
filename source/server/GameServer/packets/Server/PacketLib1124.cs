@@ -297,6 +297,10 @@ namespace DOL.GS.PacketHandler
 			else if (npc is GameBotTaxi taxi && taxi.Rider?.StableRouteMountForClient == taxi)
 				taxi.Rider.SendStableRideAssociation(m_gameClient.Player, true);
 
+			// a bot first seen while resting is seated at once (the client forgets the state when an object leaves view)
+			if (npc is GameBot seated && seated.IsSeatedForClients)
+				SendEmoteAnimation(seated, GameBot.SitEmote);
+
 			// If the client needs us to send a create packet for its steed, it means we updated it in 'PlayerPositionUpdateHandler' but they fell off.
 			// It can happen because of lag or if a NPC fails to broadcast its position.
 			if (npc == m_gameClient.Player.Steed)
@@ -607,8 +611,7 @@ namespace DOL.GS.PacketHandler
 				pak.FillString(region.ServerPort.ToString(), 5);
 				pak.FillString(region.ServerPort.ToString(), 5);
 				string ip = region.ServerIP;
-				if (ip == "any" || ip == "0.0.0.0" || ip == "127.0.0.1" || ip.StartsWith("10.") || ip.StartsWith("192.168."))
-					ip = ((IPEndPoint)m_gameClient.Socket.LocalEndPoint).Address.ToString();
+				ip = RegionAddress.ForClient(m_gameClient, ip);
 				pak.FillString(ip, 20);
 				SendTCP(pak);
 			}

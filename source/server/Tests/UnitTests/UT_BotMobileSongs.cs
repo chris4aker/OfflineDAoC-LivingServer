@@ -1015,18 +1015,56 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void SoloPaladinSwitchesOnceToTheDamageChantAndThenHoldsIt()
+        public void PaladinHoldsTheEnduranceChantInAFightWithoutCycling()
         {
+            // owner 2026-10-30: endurance in a fight, no chant cycling (each recast replays the chant's sound)
             Bot bot = NewBot(typeof(ClassPaladin)); bot.CaptureCasts = true; bot.Attacking = true;
             Spell endurance = Song("EnduranceRegenBuff");
             Spell damage = Song("DamageAdd", id: 99972);
             bot.InstantMiscSpells = new List<Spell> { endurance, damage };
+            typeof(BotBrain).GetMethod("TryMaintainTankChant", Hidden).Invoke(bot.Brain, null);
+            Assert.That(bot.LastRequested?.ID, Is.EqualTo(endurance.ID), "a Paladin starts the endurance chant");
+
             var source = new ECSPulseEffect(new(bot, 0, 1, new SpellHandler(bot, endurance, Line)), endurance.Frequency);
             source.Start();
             bot.effectListComponent.BeginTick();
+            bot.LastRequested = null;
+            Field(typeof(BotBrain), bot.Brain, "_nextSongTwistTick", 0L);
             typeof(BotBrain).GetMethod("TryMaintainTankChant", Hidden).Invoke(bot.Brain, null);
-            Assert.That(bot.LastRequested?.ID, Is.EqualTo(99972), "a solo Paladin in a fight holds the damage chant");
+            Assert.That(bot.LastRequested, Is.Null, "and then holds it: no switch to the damage chant");
         }
+
+        [TestCase(true, false, false, false, false, eSpellType.SpeedEnhancement)]
+        [TestCase(true, true, false, false, false, eSpellType.EnduranceRegenBuff)]
+        [TestCase(false, true, false, false, false, eSpellType.EnduranceRegenBuff)]
+        [TestCase(false, false, true, false, false, eSpellType.PowerRegenBuff)]
+        [TestCase(false, false, false, true, false, eSpellType.HealthRegenBuff)]
+        [TestCase(false, false, false, false, true, eSpellType.EnduranceRegenBuff)]
+        public void PerformerHoldsOneSongForTheSituation(bool traveling, bool combat, bool power, bool health, bool endurance, eSpellType expected)
+        {
+            var all = new HashSet<eSpellType> { eSpellType.SpeedEnhancement, eSpellType.EnduranceRegenBuff,
+                eSpellType.PowerRegenBuff, eSpellType.HealthRegenBuff };
+            Assert.That(BotSongTwistPolicy.PerformerHold(traveling, combat, power, health, endurance, all, null), Is.EqualTo(expected));
+        }
+
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void PerformerWithoutSpeedOrEnduranceUsesAnAlternative(bool traveling, bool combat)
+        {
+            // owner 2026-10-30: no speed or endurance song yet -> use another song until then
+            Assert.That(BotSongTwistPolicy.PerformerHold(traveling, combat, false, false, false,
+                new HashSet<eSpellType> { eSpellType.HealthRegenBuff }, null), Is.EqualTo(eSpellType.HealthRegenBuff));
+            Assert.That(BotSongTwistPolicy.PerformerHold(traveling, combat, false, false, false,
+                new HashSet<eSpellType> { eSpellType.ArmorAbsorptionBuff }, null), Is.EqualTo(eSpellType.ArmorAbsorptionBuff));
+            Assert.That(BotSongTwistPolicy.PerformerHold(traveling, combat, false, false, false,
+                new HashSet<eSpellType>(), null), Is.Null);
+        }
+
+        [Test]
+        public void IdlePerformerWithNothingNeededKeepsItsSong() =>
+            Assert.That(BotSongTwistPolicy.PerformerHold(false, false, false, false, false,
+                new HashSet<eSpellType> { eSpellType.HealthRegenBuff, eSpellType.PowerRegenBuff }, eSpellType.HealthRegenBuff),
+                Is.EqualTo(eSpellType.HealthRegenBuff));
 
         [TestCase(typeof(ClassSkald), "HealthRegenBuff")]
         [TestCase(typeof(ClassPaladin), "EnduranceRegenBuff")]

@@ -1,0 +1,117 @@
+{
+  "id": "kariig",
+  "name": "Kariig",
+  "npcNames": [
+    "Kariig"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "svartalfar"
+  ],
+  "related": [
+    {
+      "id": "desukva",
+      "relation": "the svartalf on the height above his camps"
+    },
+    {
+      "id": "eildird",
+      "relation": "the svartalf who went over to the drakulv; the eastern camps say they did not"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Two svartalfar named Kariig stand in the east of Malmohus (746939, 999253 and 748779, 1000556), level 53 by their template, among svartalf foisters and bloodbinders. The template gives both the same svartalf model.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 55006)"
+    },
+    {
+      "text": "The spawn rows put Kariig and the eastern svartalf foisters, infiltrators and bloodbinders in the Dragonbane Svartalfar faction, but their NPC templates (ReplaceMobValues) clear it, so in this world they have no faction and bring no friends.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Kariig's template gives a parry and an evade chance (10 each).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "The east of Malmohus belongs to svartalfar, and they are not the svartalfar of Svarhamr. Their camps are full of bloodbinders and foisters and infiltrators, who attack strangers on sight, and the Dragonbane, asked whose they are, give answers that do not agree. The elders of Svarhamr say the eastern camps are the clan's outer watch, posted so long ago that they have forgotten who posted them and now trust nobody, the Dragonbane included. Odell the vault keeper, when he is in drink, says that they are the free clans from under Myrkwood, the ones who believe the thralls' story and trade with the drakulv, and that the elders call them the outer watch because it is easier than saying the word traitor in the meeting hall.\n\nThe eastern camps answer to Kariig, and Kariig is two svartalfar. They are twins, the camps say, born in the same hour in the deep places under Myrkwood, and their mother gave them one name because the svartalfar of that clan believe twins share a single soul and that naming them twice would split it. They are both bloodbinders by craft, blade-dancers who cut their own palms before a quarrel and fight with the blood still running, and they are hard to strike cleanly; svartalf scouts say a blow aimed at a Kariig as often as not finds empty air or the flat of a blade.\n\nThey do not call the camps when they are attacked. The bloodbinders say a twin needs no one but the other half of its soul, and the other half is never far. Brisa the beam-cutter, who has no love for the eastern camps, says the truth is that nobody in the east trusts anybody else enough to come when called, and that the twins are no exception.\n\nWhat the Kariig want is the question Svarhamr cannot answer. The eastern camps watch the drakulv and do not fight them. They watch Svarhamr too. When a company of Midgard goes down the road south, the bloodbinders are on the heights to see it pass, and the elders of Svarhamr have stopped asking where the news goes afterwards.",
+  "legend": "There are two Kariigs, twin svartalf bloodbinders, in the svartalf camps in the east of Malmohus, level 53, standing among foisters and bloodbinders. They parry and evade a bit, otherwise no abilities and not CC-immune. Their templates give them (and the eastern svartalf camps) no faction, so nobody gets called in, but the foisters and bloodbinders standing right next to them (51-56) will see the fight and join. Mez or clear the nearest svartalfar first, then take one twin at a time; the two Kariigs stand about two thousand units apart, so pulling one doesn't bring the other unless you drag the fight.",
+  "yells": {
+    "aggro": [
+      "One soul, two blades.",
+      "Svarhamr's dogs? Or the drakulv's? Tell me which, before you die.",
+      "The east watches. The east does not forgive."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "My blood is on the blade now. Come closer."
+      }
+    ],
+    "death": [
+      "Brother... keep the soul...",
+      "Half... is enough..."
+    ],
+    "slay": [
+      "The east saw.",
+      "Bled.",
+      "Tell no one. You cannot."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The eastern camps. Svartalfar who trust no one.",
+      "Blood on the snow, cut on purpose."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Kariig's palms run red on the hilt."
+      }
+    ],
+    "realmFirstKill": "A Kariig falls. The other keeps the soul."
+  },
+  "botLines": {
+    "briefing": [
+      "two kariigs, twins, east malmohus svartalf camps",
+      "they parry and evade, bring patience",
+      "no faction, but the foisters next to them will join, clear them",
+      "one twin at a time, they're far apart"
+    ],
+    "aftermathWin": [
+      "one kariig down, other one still up",
+      "lots of misses but we got there",
+      "cleared the foisters first, clean",
+      "the east is a bit quieter"
+    ],
+    "aftermathLoss": [
+      "the bloodbinders all joined",
+      "dragged it into the other twin",
+      "too many parries, ran out of power",
+      "pulled the whole camp"
+    ],
+    "rumour": [
+      "kariig is twins with one name, they share a soul",
+      "odell says the eastern camps are traitors, the elders say outer watch",
+      "the bloodbinders cut their own palms before they fight",
+      "the eastern svartalfar watch every company that goes south"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kariig",
+    "text": "Twin bloodbinders with one name, who hold the [svartalfar]'s eastern camps of Malmohus. Svarhamr's elders call the east their outer watch; Odell calls it something else. See [Desukva] and [Svarhamr]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: the eastern camps are not on our beam. We cut the dragon and her brood, not svartalfar, and whatever the elders say in the meeting hall, nobody has ever proposed cutting the Kariig. My teacher went east once, young, to see the twins. She said they stood back to back in the snow with their palms open and bleeding, and asked her which side Svarhamr was on, and when she said the clan's, they laughed and asked which clan. She said she did not have an answer, and that was the first time she had noticed.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down a Kariig in the eastern camps of Malmohus in {minutes} minutes.",
+    "loss": "The Kariig twins' camps bled {raidLeader}'s party from {realm} out of eastern Malmohus after {minutes} minutes."
+  }
+}

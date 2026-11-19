@@ -1,0 +1,269 @@
+# Live /faction scenes (1.2, owner 2026-11-18: "if they are the best scenes then let's double the number written").
+# Each needs a realm news flag and plays only while it is true: a keep under siege ("defending"), the realm's army on an
+# enemy keep ("attacking"), a keep or relic just lost or won, Darkness Falls just changed hands. {keep}, {relic} and
+# {enemy} are the news's own (AutonomousBotDebates.LiveSlots), so "{keep} is under attack" names the keep that is.
+# What a bot says is what the realm can see: the warning, the news, /realm. Nobody claims to be at the keep or to be
+# riding there (no "omw"), and nobody counts a zerg they cannot see. The talk versions of the same topics play otherwise.
+# New writing; period knowledge from the research brief.
+
+@kind debate
+
+# ======================= Any realm =======================
+@realm *
+
+@topic keep_live
+@levels 35-50
+@needs defending
+@scene live_inc_keep
+@role B type=NoLifer
+@role C type=Daredevil
+A: {keep} is under attack! | {enemy} are hitting {keep} | anyone see {keep} flashing? {enemy} are on it
+B: how many | anyone know numbers | is it a zerg or one group
+A: no idea, nobody out there has said | cant tell, just the warning so far | only the warning, no numbers yet
+?C: they always bring a ram for that one | {keep} again, they love that door | of course its {keep}
+B: whoever is close, call numbers in faction | if you are near it, say how many | someone near it count them, please
+D: casters on the walls, kill the ram crew first | ram crew first, not the tanks around it | stairs and lord room if the door goes
+A: keep the lord standing, nothing else matters | lord up, door repaired, thats the whole plan | hold the inner door and they lose interest
+
+@topic keep_live
+@levels 35-50
+@needs defending
+@scene live_door_defense
+@role B type=NoLifer
+@role C type=Leveler,Explorer
+@role D type=Socialite,Crafter
+A: {keep} is getting hit, {enemy} at the door | door warning at {keep}, here we go | {enemy} on {keep} again
+B: anyone actually there? | who is inside right now | is anyone home at {keep}
+C: not me, i would never make it in time | too far out for me, sorry | im nowhere near, someone closer?
+B: then whoever is: casters on the walls, melee at the inner door | if you are there, casters up top and everyone else inside
+?D: and healers? | where does a healer stand in a defense
+B: inside, behind the door, off the walls where archers see you | never on the wall, they shoot healers first
+~ 30
+A: still flashing | {keep} is still under attack | they are still on it
+C: ram crews die fast to a caster on the wall | kill whoever is on the rams | the rams matter, the tanks dont
+D: and if the outer door goes, everyone to the lord | if they get in, the lord room is where we stop them
+~ 25
+B: if it falls we take it back later | worst case it flips and we take it back at prime time | doors fall, doors get retaken
+A: not today i hope | fingers crossed | lets hope the guards hold
+
+@topic relic_live
+@levels 30-50
+@needs relic_lost_recent
+@scene live_relic_lost
+@role B type=NoLifer
+@role C type=*
+A: did we just lose {relic}? | {relic} is gone, {enemy} took it | anyone see the warning? {relic} is gone
+B: yeah, {enemy} walked it out | gone. nobody was home | saw it, {enemy} have it now
+C: we take it back at prime time | it comes back, it always does | this weekend, a proper raid
+?A: of course nobody was on | figures | sneaky bastards
+B: next time someone watches the relic keep | ten people awake would have stopped that | the guards alone never stop a raid
+A: great. just great | ugh | well, now we have a story
+
+@topic relic_live
+@levels 30-50
+@needs relic_won_recent
+@scene live_relic_won
+@role B type=Socialite
+@role C type=NoLifer
+A: we got {relic}! | {relic} is ours, did you see the warning | the relic raid worked, {relic} is ours
+B: about time | nice, who led that | gz realm
+C: now they come back for it, guard it | they will want it back by tomorrow | enjoy it, they always come back
+?D: does it really make a difference | is the bonus worth all that
+B: it does, and it makes them angry, which is better | every fight gets a little easier, and they hate it
+A: best news in a while | i love this realm | gz to everyone who went
+
+@topic keep_live
+@levels 30-50
+@needs keep_lost_recent
+@scene live_keep_lost
+@role B type=NoLifer
+@role C type=*
+A: lost {keep}, {enemy} have it | {keep} flipped, see the warning? | {enemy} took {keep}
+B: was anyone even there | nobody defended? | of course, nobody home
+C: guards alone never hold | a keep with no people is just a building | the guards did what they could
+?D: does it matter, its one keep | its one keep, relax
+C: one keep is how darkness falls goes | it matters for df and for pride | one keep, then two, then df closes
+B: we take it back later | it flips back at prime time | it will be ours again by tomorrow
+A: hope so | fine. later then | noted
+
+@topic keep_live
+@levels 30-50
+@needs keep_won_recent
+@scene live_keep_won
+@role B type=Socialite
+@role C type=NoLifer
+A: we took {keep}! | {keep} is ours now, see the warning | {keep} flipped to us
+B: nice | gz whoever did that | about time
+C: and now they'll want it back | enjoy it, they want it back already | good, now someone has to hold it
+?D: who claims it | is a guild going to claim it
+B: a big guild, a small one cant hold a claim | a guild with people online at night
+A: good day for the realm | love it | one more for us
+
+@topic keep_live
+@levels 35-50
+@needs attacking
+@scene live_attack_keep
+@role B type=Daredevil
+@role C type=NoLifer
+A: our army is on {keep}, see the news | we are hitting {keep} right now | the realm is on {keep}
+B: about time we went for one of theirs | finally, a keep of theirs | nice, who called it
+C: the ram crew needs healers watching them | the ram crew dies first, every time | if the rams die its over
+?D: is it worth it, they will just take it back | they retake everything by morning
+B: realm points now, worry later | worth it for the points alone | thats rvr, it goes back and forth
+A: go realm | gl to everyone out there | hope the door goes fast
+
+@topic df_live
+@levels 30-50
+@needs df_ours,df_changed_recent
+@scene live_df_ours
+@role B type=Leveler
+@role C type=NoLifer
+A: darkness falls is ours again | we have df, see the message? | df just opened for us
+B: finally, demons | about time | nice, xp time
+C: whoever took the keeps, thank you | thank the keep people for that one | the frontier crowd did that
+?D: how long do we keep it | when do we lose it again
+C: until someone takes the keeps back | as long as we hold the most keeps
+A: get in while it lasts | enjoy it | go while its ours
+
+@topic df_live
+@levels 30-50
+@needs df_changed_recent,!df_ours
+@scene live_df_lost
+@role B type=Leveler
+@role C type=Explorer,Socialite
+@role D type=NoLifer
+A: there goes darkness falls | lost df, see the message | df closed on us again
+B: which keep fell | so someone took a keep from us | who lost what
+C: no idea, check /realm | /realm says who has it now | doesnt matter which, we are short on keeps
+?A: anyone deep in there when it went | i feel for anyone mid camp down there
+D: and this is why pve people should help defend | see, this is why levelers should care about rvr
+B: i care when it costs me demons | i care now
+A: and that is how df makes soldiers | frontier it is then | ok, keeps first
+
+# ======================= Midgard =======================
+@realm mid
+
+@topic keep_live
+@levels 35-50
+@needs defending
+@scene live_mid_inc
+@role B type=NoLifer
+@role C type=Daredevil
+A: INC {keep}, {enemy} at the door | {enemy} hitting {keep}, see the warning? | {keep} under siege again
+B: albs or hibs | which realm | who is it this time
+A: {enemy}, says the warning | its {enemy}, of course | {enemy}. who else
+C: again? | they love that keep | every single week
+?D: watch their scouts on the hill | their stealthers camp the road in | they always leave a few on the hill
+B: hit whoever is on the ram, ignore the tanks | ram first, everything else after
+A: keep the lord alive and its ours | hope the guards hold | for midgard
+
+@topic relic_live
+@levels 30-50
+@needs relic_lost_recent
+@scene live_mid_relic_lost
+@role B type=NoLifer
+@role C type=*
+A: {relic} gone?? | {enemy} took {relic}, see the warning | lost {relic}, unbelievable
+B: where was everyone | nobody at the relic keep, again | they always know when we are asleep
+C: we get it back. we always do | big raid this weekend, mark it | it walks home again, it just takes a while
+?D: the guards cant hold that alone | forty people walk past guards like nothing
+B: someone should watch the relic keeps | ten of us awake would have done it
+A: midgard remembers | they will pay for that | let them keep it warm for us
+
+@topic keep_live
+@levels 35-50
+@needs attacking
+@scene live_mid_attack
+@role B type=NoLifer
+@role C type=Daredevil
+A: midgard is on {keep}, see it | we are hitting {keep}, the trolls are out | {keep} is getting rammed, by us for once
+B: hah, good | about time | the zerg rolls on
+C: {enemy} will log everyone in for that one | they will defend hard, its theirs | watch for their stealthers on the road
+?D: is this the big guild or a pickup raid | who is leading it
+B: no idea, but i like it | does it matter, its a door
+A: skal | break that door | the hill is ours
+
+# ======================= Albion =======================
+@realm alb
+
+@topic keep_live
+@levels 35-50
+@needs defending
+@scene live_alb_inc
+@role B type=NoLifer
+@role C type=Daredevil
+A: {enemy} at {keep}, the warning just went up | {keep} under attack, {enemy} again | INC {keep}
+B: they never bring fewer than two groups | numbers anyone? | is anyone out there to count
+C: no word yet | nobody has called it | only the warning so far
+?D: their healers lock the doorway, kill them first | target the healers on the hill | the healers at the back, start there
+B: archers on the walls, everyone else inside | walls first, then the lord room
+A: albion holds | long live the king, and the door | for albion
+
+@topic keep_live
+@levels 30-50
+@needs keep_won_recent
+@scene live_alb_keep_won
+@role B type=Socialite
+@role C type=NoLifer
+A: {keep} is ours, the banner is up | took {keep} from {enemy} | {keep} flipped, albion again
+B: hah, take that | {enemy} will be crying on the boards | lovely
+C: they will be back with two rams by morning | dont celebrate yet, they always come back | hold it this time
+?D: do we get anything for it | what does a keep actually give us
+C: realm points, df when we hold enough, and pride | keeps add up to darkness falls
+A: pints all round | best news in hours | good work, albion
+
+@topic keep_live
+@levels 35-50
+@needs attacking
+@scene live_alb_attack
+@role B type=Daredevil
+@role C type=NoLifer
+A: albion is on {keep}, look at that | we are at {keep}, {enemy} wont like this | our rams are on {keep} for once
+B: finally | about time we knocked on their door | good, they knock on ours enough
+C: their healers will mez the door | their stealthers will be on the road in, watch it | they will send everyone they have
+?D: anyone know who is leading | who called this
+B: no idea, but good | whoever it is, i like them
+A: give them a bad night | camelot sends its regards | gl out there
+
+# ======================= Hibernia =======================
+@realm hib
+
+@topic keep_live
+@levels 35-50
+@needs defending
+@scene live_hib_inc
+@role B type=NoLifer
+@role C type=Daredevil
+A: {keep} is under attack, {enemy} on the door | {enemy} are at {keep} | the {keep} warning is up
+B: how big | anyone count them | numbers?
+C: no idea, nobody close enough has said | cant tell yet | just the warning so far, no numbers
+?D: a bard on the wall can mez the whole ram crew | mez the ram crew and they just stand there | shoot the scouts first, they hurt the wall
+B: druids behind the door, everyone else on the rams | hold the inner door, they always get bored
+A: always that door | for hibernia | hope it holds
+
+@topic keep_live
+@levels 30-50
+@needs keep_lost_recent
+@scene live_hib_keep_lost
+@role B type=NoLifer
+@role C type=*
+A: {keep} is gone, {enemy} took it | we lost {keep}, ugh | anyone see {keep} flip
+B: again? | who took it | was it {enemy}
+A: {enemy} | the warning said {enemy} | {enemy}, of course
+C: it comes back with the next big push | they never hold our keeps long | we plant shrooms on it and take it back
+?D: emain is ours, they are just visiting | they are tourists in emain
+B: so who leads the retake later | someone call a retake when people are on | we need a leader for the retake
+A: anyone but me | not it | someone who knows emain better than me
+
+@topic keep_live
+@levels 35-50
+@needs attacking
+@scene live_hib_attack
+@role B type=Daredevil
+@role C type=NoLifer
+A: hibernia is on {keep}, look | our army is hitting {keep} | we are at {keep} for once
+B: hah | about time | love it
+C: bards, keep the speed up for the ram crew | mez their defenders off the walls | shrooms on their walls will hurt them
+?D: who called it | anyone know who leads
+B: no idea, someone brave | doesnt matter, its happening
+A: for hibernia | break that door, hibernia | the dream trees are watching

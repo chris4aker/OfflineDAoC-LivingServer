@@ -55,9 +55,12 @@ public static class AutonomousChatExchange
     /// The /faction sink's rule (AutonomousBotChatCoordinator.BroadcastFactionAsWritten), pure: null when the line may be said,
     /// else why it is held. A tagged event or a line to the player always goes. A running scene owns the channel: only its own
     /// lines go. Every other line must fit under the ceiling, and an opener must keep its distance from the line before it
-    /// (more so in the two minutes after a scene, so the lines that waited don't all land at once).
+    /// (more so in the two minutes after a scene, so the lines that waited don't all land at once). 1.2: an opener also waits
+    /// while the listener's pace has no room for it and its answer (<paramref name="openerFitsPace"/>,
+    /// AutonomousChatBudget.OpenerFitsPace: "pace"); a line that goes on with an exchange is never held by the pace.
     /// </summary>
-    public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt)
+    public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt,
+        bool openerFitsPace = true)
     {
         if (ExemptFromCeiling(source))
             return null;
@@ -68,6 +71,8 @@ public static class AutonomousChatExchange
             return "ceiling";
         if (!scene && IsOpener(source))
         {
+            if (!openerFitsPace)
+                return "pace";
             long spacing = now - sceneEndedAt < ResumeAfterSceneMs ? ResumeSpacingMs : OpenerSpacingMs;
             if (now - lastLineAt < spacing)
                 return "spacing";
@@ -85,6 +90,14 @@ public static class AutonomousChatExchange
     /// after <see cref="DueWaitMs"/>.
     /// </summary>
     public const long DueWaitMs = 180_000, DueRetryMs = 3_000;
+
+    /// <summary>
+    /// The longest a chosen chat line is held before it is sent or given up (chat 1.2 follow-up: a promise waits this long for
+    /// its line, ChatPromiseRules.SayWithinSeconds): a due feature's <see cref="DueWaitMs"/>. An exchange's line is given up
+    /// sooner (<see cref="Rules.MaxLateMs"/> with its spacing and busy waits, about 42 s) and a scene's resume after
+    /// <see cref="ResumeAfterSceneMs"/>; a wait behind a running scene can be longer, which the send-time check covers.
+    /// </summary>
+    public const long LongestHoldMs = DueWaitMs;
 
     public enum DueStep { Said, Retry, GiveUp }
 
@@ -107,8 +120,10 @@ public static class AutonomousChatExchange
     public static string DroppedLog(string feature, eRealm realm, long exchange, long waitedMs, string reason) =>
         $"LIVING_FEATURE_DROPPED feature={feature} realm={GlobalConstants.RealmToName(realm)} ex={exchange} waited_s={waitedMs / 1_000} reason={reason ?? "held"}";
 
-    /// <summary>A line of a running debate, storyline or dunce scene (AutonomousBotDebates): it owns /faction while it plays.</summary>
-    public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline";
+    /// <summary>A line of a running debate, storyline, dunce scene or tale (AutonomousBotDebates): it owns /faction while it
+    /// plays. (PC check 2026-11-10, build cf2c873: a tale's lines were tagged "tale", which this did not know, so the tale held
+    /// /faction and its own lines with it; nothing was heard.)</summary>
+    public static bool IsScene(Source source) => source != null && source.Feature is "debate" or "storyline" or "tale";
 
     /// <summary>Whether one more line fits under a channel's ceiling: the rate it would make, not the rate before it. Pure.</summary>
     public static bool Fits(double perMinute, double ceiling, double windowMinutes = 2.0) => perMinute + 1.0 / windowMinutes <= ceiling + 1e-9;
@@ -156,6 +171,50 @@ public static class AutonomousChatExchange
         public long LastAt = long.MinValue / 2;
         public readonly Dictionary<string, long> LastSeqBy = new(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<long, long> Running = new();
+        /// <summary>Until when a player's line has the floor: bots' own exchanges wait so its answer comes first (0: none).</summary>
+        public long PlayerFloorUntil;
+    }
+
+    /// <summary>
+    /// The longest a player's line holds the bots' own exchanges in its channel (PC check 2026-11-19, build 5154cae: six seconds
+    /// after "is it far?", Emberreaver's answer to Grittath's question read as the answer to the player). The hold ends as soon
+    /// as the player's answer is said (<see cref="ReleasePlayerFloor"/>).
+    /// </summary>
+    public const long PlayerFloorMaxMs = 30_000;
+
+    /// <summary>How often a held line looks again.</summary>
+    public const int PlayerFloorRetryMs = 1_000;
+
+    /// <summary>A player's line will be answered in the lane by <paramref name="until"/>: bots' exchanges wait until then (at most <see cref="PlayerFloorMaxMs"/>).</summary>
+    public static void HoldForPlayer(string key, long now, long until)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            lane.PlayerFloorUntil = Math.Max(lane.PlayerFloorUntil, Math.Min(until, now + PlayerFloorMaxMs));
+    }
+
+    /// <summary>Until when a player's line has the floor in this lane (0 or past: it hasn't). Read by the scenes (AutonomousBotDebates).</summary>
+    public static long PlayerFloorUntil(string key)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            return lane.PlayerFloorUntil;
+    }
+
+    /// <summary>
+    /// When a scene's next beat looks again while a player's line has the floor (PC check 2026-11-19, build c81eb5d: Ealhswith's
+    /// storyline beat came 2 s before the answer to "how do i get to breifine?"): within a second, so it goes on as soon as the
+    /// answer is said; 0 when the player's line has no floor now. Pure.
+    /// </summary>
+    public static long SceneWaitsForPlayerUntil(long playerFloorUntil, long now) =>
+        playerFloorUntil > now ? Math.Min(playerFloorUntil, now + PlayerFloorRetryMs) : 0;
+
+    /// <summary>The player's answer was said: the bots' exchanges in the lane go on.</summary>
+    public static void ReleasePlayerFloor(string key)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            lane.PlayerFloorUntil = 0;
     }
 
     private static readonly Dictionary<string, Lane> Lanes = new(StringComparer.Ordinal);
@@ -289,6 +348,7 @@ public static class AutonomousChatExchange
         private readonly IReadOnlyList<Line> _lines;
         private readonly Rules _rules;
         private int _waitsSpacing, _waitsBusy;
+        private long _heldForPlayerMs;
 
         public long Id { get; }
         public string Feature { get; }
@@ -334,14 +394,18 @@ public static class AutonomousChatExchange
             Line line = Current;
             if (line == null)
                 return new Decision(Act.Stop, 0, "done");
-            long seq, lastAt, speakerSeq = 0;
+            long seq, lastAt, speakerSeq = 0, playerFloor;
             lock (Lane)
             {
                 seq = Lane.Seq;
                 lastAt = Lane.LastAt;
+                playerFloor = Lane.PlayerFloorUntil;
                 if (speakerName != null)
                     Lane.LastSeqBy.TryGetValue(speakerName, out speakerSeq);
             }
+            // PC check 2026-11-19: a player's line has the floor; its answer comes first, then the bots' talk goes on.
+            if (playerFloor > now && _heldForPlayerMs < PlayerFloorMaxMs)
+                return new Decision(Act.Wait, (int)Math.Min(PlayerFloorRetryMs, playerFloor - now), "player first");
             if (!free)
             {
                 if (_waitsBusy < _rules.MaxBusyWaits)
@@ -366,7 +430,8 @@ public static class AutonomousChatExchange
                 int cap = IsShort(line.Text) ? _rules.MaxInterleaveShort : _rules.MaxInterleave;
                 if (since > cap)
                     return new Decision(Act.Stop, 0, "lost its referent");
-                if (now - _prevAt > _rules.MaxLateMs + _rules.MaxSpacingWaits * 2L * _rules.SpacingMs + _rules.MaxBusyWaits * (long)_rules.BusyRetryMs)
+                if (now - _prevAt > _rules.MaxLateMs + _rules.MaxSpacingWaits * 2L * _rules.SpacingMs + _rules.MaxBusyWaits * (long)_rules.BusyRetryMs +
+                    _heldForPlayerMs)
                     return new Decision(Act.Stop, 0, "too late");
             }
             if (_rules.SpacingMs > 0 && now - lastAt < _rules.SpacingMs && _waitsSpacing < _rules.MaxSpacingWaits)
@@ -387,6 +452,13 @@ public static class AutonomousChatExchange
             switch (decision.Act)
             {
                 case Act.Wait:
+                    if (decision.Reason == "player first")
+                    {
+                        // The hold is waited out exactly, with no jitter, and does not count against the busy or spacing waits.
+                        _heldForPlayerMs += Math.Max(1, decision.WaitMs);
+                        DueAt = now + Math.Max(1, decision.WaitMs);
+                        return DueAt;
+                    }
                     if (decision.Reason == "spacing")
                         _waitsSpacing++;
                     else
@@ -573,17 +645,17 @@ public static class AutonomousChatExchange
     // The reactions source/tools/chat_audit.py counts (keep the two lists together).
     private static readonly HashSet<string> Reactions = new(StringComparer.Ordinal)
     {
-        "oof", "rip", "lol rip", "ouch", "ugh", "bleh", "gz", "gz gz", "grats", "gratz", "grats grats", "grats man", "nice", "nice gz", "woot", "wow nice",
+        "oof", "rip", "lol rip", "ouch", "ugh", "bleh", "gz", "gz gz", "grats", "gratz", "grats grats", "grats man", "nice", "nice gz", "woot", "wow nice",   // chat-check: input
         "sweet", "lucky", "lucky you", "lucky you lol", "jealous", "show off", "well earned", "well played", "well done", "nice going", "nice score",
         "good stuff", "go you", "way to go", "look at you", "must be nice", "not bad at all", "very nice", "brag brag brag", "teach me",
-        "pics or it didnt happen", "classic", "happens", "happens lol", "rip grp", "that stinks", "that sucks", "ugh that sucks", "ugh same",
+        "pics or it didnt happen", "classic", "happens", "happens lol", "rip grp", "that stinks", "that sucks", "ugh that sucks", "ugh same",   // chat-check: input
         "ugh the worst", "rough", "rough night huh", "bad luck", "been there", "bleh been there", "hang in there", "it gets better", "ah man",
-        "sorry that is rough", "oof sorry", "oof sorry heh", "thats annoying", "argh hate that", "ugh i feel you", "the dice hate us all",
+        "sorry that is rough", "oof sorry", "oof sorry heh", "thats annoying", "argh hate that", "ugh i feel you", "the dice hate us all",   // chat-check: input
         "the worst feeling", "thats just mean", "dont let it get to you", "happens to the best of us", "yep happened to me too",
         "next one will go better", "take a break maybe", "been there haha", "grr i know that one", "been like that all night haha",
         "aww sorry that is awful", "ha welcome to my week", "yep it does that", "forgive me unlucky", "gz u earned it", "gz you earned it",
         "ha nice now find something meaner", "now thats a good night", "lol", "heh", "haha", "hehe", "true", "lol true", "true true", "ha", "rip me",
-        "lol how",
+        "lol how", "lol ouch", "ouch gl", "yikes",   // chat 1.2 follow-up: yikes is said where bots said oof
     };
 
     /// <summary>A pure reaction ("oof", "rip", "lol", "gz"): it says nothing but how the speaker feels about the line before.</summary>

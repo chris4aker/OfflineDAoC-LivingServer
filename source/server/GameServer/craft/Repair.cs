@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using DOL.Database;
+using DOL.GS.Crafting;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.PacketHandler;
 using DOL.Language;
 
@@ -164,10 +166,7 @@ namespace DOL.GS
 		/// (percentNeeded / 100) * craftLevel, integer division, so the 50 of BeginWork became 0 and anyone could start a
 		/// repair, with the chance from CalculateSuccessChances at 0% below 44% skill.
 		/// </summary>
-		public static bool HasSkillToRepair(int skill, int craftLevel, int percentNeeded)
-		{
-			return (long)skill * 100 >= (long)craftLevel * percentNeeded;
-		}
+		public static bool HasSkillToRepair(int skill, int craftLevel, int percentNeeded) => CraftRules.HasSkillToRepair(skill, craftLevel, percentNeeded);
 
 		#region Calcul functions
 
@@ -187,21 +186,32 @@ namespace DOL.GS
 			eCraftingSkill skill = CraftingMgr.GetSecondaryCraftingSkillToWorkOnItem(item);
 			if (skill == eCraftingSkill.NoCrafting) return 0;
 
-			int chancePercent = (int)((90 / (CraftingMgr.GetItemCraftLevel(item) * 0.5)) * player.GetCraftingSkillValue(skill)) - 80; // 50% = 10% chance, 100% = 100% chance
-			if (chancePercent > 100)
-				chancePercent = 100;
-			else if (chancePercent < 0)
-				chancePercent = 0;
-
-			return chancePercent;
+			return RepairChancePercent(player.GetCraftingSkillValue(skill), CraftingMgr.GetItemCraftLevel(item));
 		}
 
-		public static bool ModifyConditionAndDurability(DbInventoryItem item)
+		/// <summary>
+		/// The chance to repair an item: 10% at half its craft level, 100% at its craft level. 2026-11-15: the formula
+		/// divided by craftLevel * 0.5 in doubles, so a craft level of 0 or less (a level-0 weapon is -5) gave infinity or
+		/// a negative slope, and the cast to int of infinity or NaN is not a percent. Such an item is trivial: 100%.
+		/// </summary>
+		public static int RepairChancePercent(int skill, int craftLevel) => CraftRules.RepairChancePercent(skill, craftLevel);
+
+		/// <summary>
+		/// Restores an item's condition (as far as its durability allows) and, under the classic player upkeep only,
+		/// spends that much durability. Crafting 2.0 WP1 (2026-11-15): reads player_upkeep (UpkeepPolicy); the default,
+		/// light, and free no longer wear durability away, so a much-repaired item is never ruined. Used by the player
+		/// repair in the trade window and the smith.
+		/// </summary>
+		public static bool ModifyConditionAndDurability(DbInventoryItem item) =>
+			ModifyConditionAndDurability(item, UpkeepPolicy.ConsumesDurability(UpkeepPolicy.Current));
+
+		/// <summary>ModifyConditionAndDurability with the upkeep rule given (tests, and a caller with its own rule).</summary>
+		public static bool ModifyConditionAndDurability(DbInventoryItem item, bool consumesDurability)
 		{
 			int repairAmount = Math.Min(item.MaxCondition - item.Condition, item.Durability);
 			item.Condition += repairAmount;
 
-			if (!item.IsNotLosingDur)
+			if (consumesDurability && !item.IsNotLosingDur)
 				item.Durability -= repairAmount;
 
 			return repairAmount > 0;
@@ -323,15 +333,15 @@ namespace DOL.GS
 		/// </summary>
 		protected static int CalculateSuccessChances(GamePlayer player, GameSiegeWeapon siegeWeapon)
 		{
-			player.GetCraftingSkillValue(eCraftingSkill.WoodWorking);
-			int chancePercent = 90 - 50 / player.GetCraftingSkillValue(eCraftingSkill.WoodWorking);
-
-			if (chancePercent > 100)
-				chancePercent = 100;
-			else if (chancePercent < 0)
-				chancePercent = 0;
-			return chancePercent;
+			return SiegeRepairChancePercent(player.GetCraftingSkillValue(eCraftingSkill.WoodWorking));
 		}
+
+		/// <summary>
+		/// The chance to repair a siege weapon: 90 - 50 / woodworking, integer division as written (40% at 1, 65% at 2,
+		/// 90% from 51). 2026-11-15: a woodworking of 0 threw DivideByZeroException in the repair timer; an untrained skill
+		/// (-1) gave 140, clamped to 100. Both now count as 1, the lowest trained value.
+		/// </summary>
+		public static int SiegeRepairChancePercent(int woodworking) => CraftRules.SiegeRepairChancePercent(woodworking);
 
 		#endregion
 

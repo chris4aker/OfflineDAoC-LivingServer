@@ -87,9 +87,9 @@ namespace DOL.AI.Brain
         
         public override void Think()
         {
-            foreach(GamePlayer ppls in Body.GetPlayersInRadius(800))
+            foreach (GameLiving ppls in EncounterTargets.InRadius(Body, 800))
             {
-                if (ppls == null || !ppls.IsAlive || ppls.Client.Account.PrivLevel != 1 || isDisabled)
+                if (ppls == null || !ppls.IsAlive || !EncounterTargets.NotGm(ppls) || isDisabled)
                     continue;
 
                 AggroList.TryAdd(ppls, new(100));

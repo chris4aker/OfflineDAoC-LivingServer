@@ -46,7 +46,7 @@ public class BotGoalsSettingsTests
         Call("SaveSettings");
         Field<NumericUpDown[,]>("_values")[1, 0].Value = 99;
         Call("LoadSettings");
-        Assert.That(Field<NumericUpDown[,]>("_values")[1, 0].Value, Is.EqualTo(40));
+        Assert.That(Field<NumericUpDown[,]>("_values")[1, 0].Value, Is.EqualTo(35)); // the Levels 20–49 default (35/35/15/15, 2026-11-16)
         Assert.That(_panel.GetType().GetProperty("HasUnsavedChanges")!.GetValue(_panel), Is.False);
     }
 

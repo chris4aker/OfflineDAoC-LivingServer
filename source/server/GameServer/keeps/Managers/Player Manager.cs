@@ -142,6 +142,7 @@ namespace DOL.GS.Keeps
 		public static void BroadcastKeepTakeMessage(string message, eRealm capturingrealm)
 		{
 			if (!GameWideAnnouncements.Enabled(AnnouncementKind.RvrBattleground)) return;
+			LoreAtmosphere.NoteNews();   // realm news: atmosphere lines wait (Living Server 1.2)
 			foreach (GamePlayer player in ClientService.Instance.GetPlayers())
 			{
 				player.Out.SendMessage(message, eChatType.CT_Important, eChatLoc.CL_SystemWindow);

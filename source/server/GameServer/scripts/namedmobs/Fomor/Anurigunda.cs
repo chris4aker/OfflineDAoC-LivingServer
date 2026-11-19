@@ -48,7 +48,7 @@ namespace DOL.GS
 
 			return base.HasAbility(keyName);
 		}
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(CurrentRegionID))
 			{
@@ -60,7 +60,7 @@ namespace DOL.GS
 					}
 				}
 			}
-			base.Die(killer);
+			base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
 		{
@@ -91,19 +91,20 @@ namespace DOL.AI.Brain
 			AggroRange = 600;
 			ThinkInterval = 1500;
 		}
-		public static bool IsPulled = false;
+		public bool IsPulled = false;
 		private bool RemoveAdds = false;
 		public void BlockEntrance()
         {
 			Point3D entrance = new Point3D(31234, 33215, 15842);
-			foreach(GamePlayer player in Body.GetPlayersInRadius(Body.CurrentRegionID))
+			// sic: the radius is the region number (180), as in the original; kept, flagged for the owner (1.2 epic targets).
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, Body.CurrentRegionID, bots: EncounterTargets.DisplacesBots(Body)))
             {
 				if (player == null) continue;
-				if(player.IsAlive && player.Client.Account.PrivLevel == (uint)ePrivLevel.Player)
+				if(player.IsAlive && EncounterTargets.NotGm(player))
                 {
 					if(player.IsWithinRadius(entrance,400))
                     {
-						player.MoveTo(180, 30652, 33089, 16124, 3169);
+						EncounterDisplacement.Move(player, 180, 30652, 33089, 16124, 3169, DisplacementKind.Barrier, Body);
                     }
                 }
             }
@@ -162,8 +163,8 @@ namespace DOL.AI.Brain
 			}
 			base.Think();
 		}
-		public static bool Adds1 = false;
-		public static bool Adds2 = false;
+		public bool Adds1 = false;
+		public bool Adds2 = false;
 		public void SpawnFomorians()
         {
 			if (Body.HealthPercent <= 40 && Adds1 == false)

@@ -1,0 +1,122 @@
+{
+  "id": "nedat-gungledar",
+  "name": "Nedat gungledar",
+  "npcNames": [
+    "Nedat gungledar"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers"
+  ],
+  "related": [
+    {
+      "id": "uppat-gungledar",
+      "relation": "the other leader, of the stone that grows upward"
+    },
+    {
+      "id": "nosdoden",
+      "relation": "the thing that lies on the mound the Nedat kept"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Nedat gungledar is a level-70 creature on the stalactite model (951) in Trollheim's eastern halls (40977, 32340), among eleven stalactites (level 54-56), about 2,900 units from Uppat gungledar.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may. The stalactites around it are aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164425)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The world data gives it one line of chat in the gap audit.",
+      "provenance": "game",
+      "source": "scratchpad/gap/named.json (coverage audit)"
+    },
+    {
+      "text": "Swedish nedat (nedåt) means 'downward'; for 'gungledar' see Uppat gungledar. To verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The Nedat, the downward ones, kept the holy halls of Trollheim and the mound at its root. They carried the dead down the spiral stair and carried the living's questions down after them. Their leader, the Valkyn say, sat at the foot of the mound. That is the Valkyn's way of putting it, and the trolls of Dyrfjall correct them: the Nedat leader did not sit anywhere. It hung.\n\nIt hangs still, in the eastern halls, a little way from the Uppat leader, where the roof of the city comes down in long stone teeth. It is the greatest of the stones that hang, and the lesser ones around it hang with it. The trolls say the Fathers found the two great stones together when they first dug the east, one growing up from the floor and one reaching down from the roof, and that the two had not yet met and never would, and that this was the whole of what the Fathers believed about the world: the living go up and the dead go down and the middle is where you stand. They made the bridge over the chasm the boundary between the orders, and they met once a year in the middle of it, and neither set foot on the other's side.\n\nThe order that kept the dead took its name from the stone that reaches down. The Nedat keepers who went down to the mound, Grimsa the Downward the last of them, did not take the stone with them; it cannot be carried, and it was never theirs. It stayed in the east when the holy halls emptied, and when the thing came down onto the mound and lay there, it stayed too.\n\nThe morvalt leave it alone, and it leaves them alone, which is the only peace in Trollheim. The stalactites around it are less patient, and the Valkyn guides who bring Midgard's scouts that far stop at the edge of them. Those who have gone on and struck the great one say it does not hurry and does not need to. The Valkyn say it has been reaching for the floor since before the trolls went out into the light, and will go on reaching when they have all come home.",
+  "legend": "Nedat gungledar is a level 70 stone creature in Trollheim's eastern halls, about 2,900 units from Uppat gungledar, hanging among eleven aggressive stalactites (54-56). The leader itself is passive (aggro 0) with no faction, so it never comes unless you hit it and never brings friends. Clear the stalactites first, they're the real hazard on the walk. No special abilities, no quest need; people kill it because it's there and because it's a 70. Don't confuse it with anything to do with Nosdoden: the mound is far to the north. Bring a group that can handle a 70's hits; it has plenty of health and nothing clever.",
+  "yells": {
+    "aggro": [
+      "Down. Everything goes down.",
+      "You struck the hanging stone. The roof remembers.",
+      "The dead go down. You first."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Reaching. Still reaching."
+      }
+    ],
+    "death": [
+      "Fall... at last...",
+      "The floor... I never touched it..."
+    ],
+    "slay": [
+      "Down.",
+      "The stair takes you.",
+      "Dead go down."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The roof reaches down in long stone teeth.",
+      "A hanging stone, greater than the rest, is alive."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dust falls from the Nedat leader like slow rain."
+      }
+    ],
+    "realmFirstKill": "The Nedat leader falls. It touches the floor at last."
+  },
+  "botLines": {
+    "briefing": [
+      "nedat gungledar is 70 and passive",
+      "eleven stalactites round it, those are aggro",
+      "clear the stalactites then hit it",
+      "no faction, no friends, no quest"
+    ],
+    "aftermathWin": [
+      "nedat leader down",
+      "stalactites first worked",
+      "slow but steady",
+      "both leaders now"
+    ],
+    "aftermathLoss": [
+      "the stalactites swarmed us",
+      "pulled too many stones",
+      "70 is still a 70",
+      "lost a caster to a stalactite"
+    ],
+    "rumour": [
+      "the nedat leader is a hanging stone, it never sat anywhere",
+      "the fathers believed the living go up and the dead go down",
+      "the nedat keepers took their name from the hanging stone",
+      "the morvalt and the nedat leader leave each other alone"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Nedat leader",
+    "text": "The greatest of the hanging stones in the eastern halls, from which the downward order that kept the [mound] took its name. It never sat; it hangs. See [Uppat leader] and [Uppat and Nedat]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: my grandmother said the kobolds are the children of the Nedat and the trolls of the Uppat, and that is why we go into small dark places and they go up into the light. The trolls laugh at that. But when I stood under the Nedat leader with my lamp out, I felt it the way you feel a parent standing over a bed, and when the Valkyn guide said it was time to go, I went backwards, as you do from a jarl. She did not laugh. She went backwards too.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down the Nedat leader in Trollheim's eastern halls in {minutes} minutes.",
+    "loss": "The Nedat leader hung unbroken over {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

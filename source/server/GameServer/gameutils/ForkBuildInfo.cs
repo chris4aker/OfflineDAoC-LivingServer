@@ -14,8 +14,13 @@ namespace DOL.GS;
 /// </summary>
 public static class ForkBuildInfo
 {
-    /// <summary>The fork's build name (Living Server); bump it with each fork release.</summary>
-    public const string BuildName = "1.1.4-beta";
+    /// <summary>
+    /// The fork's build name (Living Server); bump it with each fork release. Up to 1.1.4 the releases were betas
+    /// ("1.1.4-beta", tag v1.1.4-beta); from 1.2 on they are final releases (owner, 2026-11-19): "1.2", tag v1.2. The
+    /// package folder (LivingServer-&lt;name&gt;), its zip and BUILD-INFO.txt, Setup's exe and the launcher's own build are
+    /// all named from it, and the launchers' update check compares it with the release tag (1.1.4-beta &lt; 1.2).
+    /// </summary>
+    public const string BuildName = "1.2";
 
     /// <summary>
     /// The Offline DAoC release(s) this build installs on; the installer checks the game against them. Comma-separated
@@ -68,13 +73,19 @@ public static class ForkBuildInfo
                $"bot_guilds={On(Properties.BOT_GUILDS_ENABLED)}" +
                (Properties.BOT_GUILDS_ENABLED ? $" bot_guild_parts={(guildParts.Length == 0 ? "none" : guildParts)}" : string.Empty) +
                $" bot_player_guild_economy={On(Properties.BOT_PLAYER_GUILD_ECONOMY)}" +
+               $" bot_group_invite_player={On(Properties.BOT_GROUP_INVITE_PLAYER)}" +
+               $" bot_group_player_loot_weight={BotLedGroups.LootWeight}" +
+               $" bot_raid_invite_player={On(Properties.BOT_RAID_INVITE_PLAYER)}" +
+               $" bot_led_group_join_mode={(BotLedGroups.CurrentJoinMode == BotLedGroups.JoinMode.Lead ? BotLedGroups.JoinModeLead : BotLedGroups.JoinModeFollow)}" +
                $" mana_regen={Properties.MANA_REGEN_AMOUNT_MODIFIER.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
                $" mana_halved_below_50={On(Properties.MANA_REGEN_AMOUNT_HALVED_BELOW_50_PERCENT)}" +
                $" xp_rate_by_level={Range(Properties.XP_RATE_BY_LEVEL)} bot_xp_rate_by_level={Range(Properties.BOT_XP_RATE_BY_LEVEL)}" +
                $" quest_xp_by_level={On(Properties.QUEST_XP_BY_LEVEL)}" +
                $" bot_personalities={On(Properties.BOT_PERSONALITIES_ENABLED)} bot_voices={On(Properties.BOT_VOICES_ENABLED)}" +
                (Properties.BOT_VOICES_ENABLED ? $" bot_debates={On(Properties.BOT_VOICES_DEBATES)}" : string.Empty) +
-               $" living={(livingParts.Length == 0 ? "off" : livingParts)} bot_schedule={AutonomousBotSchedule.CurrentMode.ToString().ToLowerInvariant()}";
+               $" living={(livingParts.Length == 0 ? "off" : livingParts)} bot_schedule={AutonomousBotSchedule.CurrentMode.ToString().ToLowerInvariant()}" +
+               // The edition (classes / enable_sluaghbinder): on in 0.37b, off in 0.37. A class-off check reads it here.
+               $" sluaghbinder={On(Properties.ENABLE_SLUAGHBINDER)}";
     }
 
     [GameServerStartedEvent]

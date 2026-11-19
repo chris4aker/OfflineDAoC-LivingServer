@@ -1,0 +1,256 @@
+{
+  "id": "vale-of-balor",
+  "name": "Vale of Balor",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    183
+  ],
+  "summary": "Gleann Glas, until the eye looked at it once: ash and haunts, the ixthiar swarm, Fomorian households with borrowed names, and Aalid Feie on the edge.",
+  "facts": [
+    {
+      "text": "Zone 183 (region 181, x 262,144-327,680, y 327,680-393,216): 653 monsters. Aalid Feie (area at 310,486/351,988, radius 6,000) is the zone's town and a teleport point: trainers of every path, merchants, a vault keeper, a channeler, Tieru, Fylara MacKieran and Niamh, and two mantids, Krrkxrx and Chrriptax. The Tur Suil entrance is at 283,113/389,741.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+    },
+    {
+      "text": "Monsters: Fomorians of the western slopes (condlers, vilns, sceins, gristlers, desters, mergals, slylores, anistructs, myders, 35-66), the ixthiar (reapers, doomcallers, decimaters, ruinaters, callers, plaguebringers, 34-50), malignant, nasty, spiteful, hateful and vicious sylvanshades, cervideth, great haunts (51-56), chipped arbordons, tumblers, mad grazers, sifters, gorge shrillers, cniogcrag cutters and mincers, bugbears, sap drinkers.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The vale's bosses: Milo (56, Fomorian), Oscar (55), Monger (54, Ixthiar Swarm), Drygau (51), the Ixthiar Broodmother (51), Adwyth (50) and Anhylaw (49); Gnat (35, the neutral file) stands near Aalid Feie.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Fylara's Armor: 'Kill a gorge shriller north across the wooden bridge near Aalid Feie', 'Clear an entire ixthiar nest before it respawns to make the broodmother appear, and kill her.' Drygau and Adwyth are targets of The Tree Maidens.",
+      "provenance": "game",
+      "source": "DataQuest 'Fylara's Armor' (world data, read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "In Irish myth Balor's eye destroyed whatever it looked upon when its lid was opened.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Living Server lore: Gleann Glas and its watch-fire; the one look; the ash the ixthiar came up through; the haunts; the western households and their borrowed names; the gap in the Sylvan wall; the red glow before the raids; Aalid Feie's mantids; Tieru's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Vale of Balor was Gleann Glas, the green valley, a Sylvan country of orchards and a watch-fire on the coast. When the Fomorians came west after Mag Tuired with the eye wrapped in seven hides, it was Gleann Glas's watch-fire that drew their boat ashore, and the Sylvan of the valley came down to the strand to see who had landed. On the crag above the valley, where the tower of Tur Suil stands now, the bearers set the eye down and unwrapped it, and it looked once, at the valley, and the valley burned. The Sylvan of Domnann say it took a single breath. The ash lay a hand deep from the crag to the sea, and nothing grew in it for a generation.\n\nThings came up through the ash instead. The ixthiar swarm rose out of the burned ground in the western vale, the Sylvan say, as if the eye's heat had hatched something that had been waiting under Gleann Glas since before the Sylvan woke. They are many and they nest, and their nests are kept by a mother who rises when a nest is emptied, and their dead are carried by a forager the Domnann wardens call the Monger, who deals them out to the nests like a trader dividing a catch. The wardens walk the monger's round each evening to find their own dead before he does. The great haunts walk the middle vale, tall pale shapes of the people who were standing on the strand, and the sylvanshades of the eastern vale are shadows burned onto the ground in the one look, which got up afterwards.\n\nThe Fomorians did not stay on the crag. Households of them went down into the vale to hold it, and Sargan's custom went with them: they wear the names of the dead, and the household of the western slope took the greatest names it heard from the mainland fishers at Aalid Feie. Milo is a Fomorian mouth's way of saying Míl, the father of the Gaels; Oscar left Milo's household and stands alone above the sea with a Fianna hero's name. The condlers and gristlers and sceins of the western slopes are the households' fighters, and they keep the old Gleann Glas road as a border. When the vale glows red at night, the Sylvan say, the king has climbed back into his tower, and the western households ride on Domnann within weeks.\n\nThe Sylvan built a wall across the eastern vale after the burning, to keep what lived in the ash from the forests beyond, and the wall had tree maidens in it, Sylvan women who chose to stand as trees along its line and sing it whole. Three Fomorians hold a gap in it east of Aalid Feie: Drygau the eldest, Adwyth who sings low at the roots of the last tree maiden's tree each dusk to lay her voice over the maiden's, and Anhylaw, the unruly one. The last maiden is silent while they hold the gap. The Tree Maidens road sends the realm's young to open it.\n\nAalid Feie keeps the vale's edge, a town of Sylvan and Hibernians and, oddly, mantids, two of whom live there and trade and do not explain themselves. Fylara MacKieran makes armour there from the broodmother's shell. Tieru keeps the town's account. The wooden bridge north of the town crosses toward the gorge, and the gorge shrillers come over it at night.\n\nWhy does it matter? Because the vale is the realm's first sight of what the eye does. Every Hibernian company bound for Tur Suil walks through Gleann Glas's ash to get there, and the Sylvan of Aalid Feie stand at the edge of town and watch them go, and count them back. The ash is thinner now, and in a few places there is grass again. The Sylvan say that when the eye is shut for good the vale will be green, and will be Gleann Glas again, and that they have been saying so since the first winter.",
+  "legend": "Vale of Balor, Hy Brasil's 31-66 zone west of Domnann. Aalid Feie is the town (trainers, channeler, vault, Fylara's Armor). The Tur Suil entrance is in the south-west of the vale. Camps: tumblers and ixthiar ruinaters (34-40) near town, ixthiar reapers, doomcallers and decimaters (39-50) west, cervideth and sylvanshades (44-52) east, great haunts (51-56) and chipped arbordons in the middle, and the western-slope Fomorians (condlers, vilns, sceins, gristlers 54-66), which are social and hit hard. Named: Milo (56) and Oscar (55) on the western slopes, Monger (54) and the Ixthiar Broodmother (51: clear a whole nest before it respawns and she appears), and the gap trio east of Aalid Feie, Drygau (51), Adwyth (50) and Anhylaw (49), which come together (The Tree Maidens). Old Sylvan custom: when the vale glows red at night, Domnann doubles its watch.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Vale of Balor. Gleann Glas, once.",
+      "Ash a hand deep, and a little grass.",
+      "The tower watches from its crag.",
+      "Pale haunts in the middle vale.",
+      "Something in the ground is nesting."
+    ],
+    "areas": [
+      {
+        "name": "Aalid Feie",
+        "x": 310490,
+        "y": 351990,
+        "z": 3570,
+        "radius": 3000,
+        "lines": [
+          "Aalid Feie keeps the vale's edge.",
+          "Two mantids trade here and explain nothing.",
+          "Tieru counts the companies back."
+        ]
+      },
+      {
+        "name": "the wooden bridge",
+        "x": 309800,
+        "y": 334000,
+        "z": 3500,
+        "radius": 1500,
+        "lines": [
+          "The wooden bridge north to the gorge.",
+          "Shrillers cross it at night."
+        ]
+      },
+      {
+        "name": "the gap in the wall",
+        "x": 319500,
+        "y": 357000,
+        "z": 4630,
+        "radius": 1500,
+        "lines": [
+          "A gap in the Sylvan wall, held.",
+          "The last tree maiden is silent.",
+          "Someone sings low at her roots."
+        ]
+      },
+      {
+        "name": "the ixthiar nests",
+        "x": 283000,
+        "y": 348500,
+        "z": 3700,
+        "radius": 5000,
+        "lines": [
+          "Ixthiar nests in the old ash.",
+          "The mother rises when a nest is emptied."
+        ]
+      },
+      {
+        "name": "the monger's round",
+        "x": 274730,
+        "y": 351730,
+        "z": 3840,
+        "radius": 2500,
+        "lines": [
+          "The monger deals out the dead.",
+          "The wardens walk this round at dusk."
+        ]
+      },
+      {
+        "name": "the haunted middle",
+        "x": 303000,
+        "y": 368500,
+        "z": 4220,
+        "radius": 4500,
+        "lines": [
+          "Tall pale shapes on the old strand road.",
+          "The people who came down to see."
+        ]
+      },
+      {
+        "name": "the burned east",
+        "x": 312300,
+        "y": 363500,
+        "z": 3900,
+        "radius": 4000,
+        "lines": [
+          "Shadows burned onto the ground. They stood up.",
+          "Sylvanshades, bitter ones."
+        ]
+      },
+      {
+        "name": "the western slopes",
+        "x": 280000,
+        "y": 375000,
+        "z": 3600,
+        "radius": 6000,
+        "lines": [
+          "Fomorian households on the western slopes.",
+          "Borrowed names, held hard.",
+          "The old Gleann Glas road is a border here."
+        ]
+      },
+      {
+        "name": "the crag road",
+        "x": 283110,
+        "y": 389740,
+        "z": 4220,
+        "radius": 2000,
+        "lines": [
+          "The road up to Tur Suil.",
+          "The eye's tower on its crag."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the vale of balor was gleann glas, a sylvan valley, until the eye looked at it once",
+      "gleann glas's watch fire drew the fomorian boat ashore. [irony|sad]",
+      "the ash was a hand deep from the crag to the sea, sylvan say. nothing grew for a generation",
+      "the ixthiar came up through the ash. [something under gleann glas|hatched by the heat]",
+      "the great haunts are the sylvan who came down to the strand to see who had landed",
+      "the sylvanshades in the east are shadows burned onto the ground that got up",
+      "the western fomorians wear borrowed names. milo is mil, oscar is oscar of the fianna",
+      "when the vale glows red the king is back in tur suil and raids on domnann follow",
+      "the sylvan wall had tree maidens in it. three fomorians hold the gap east of aalid feie",
+      "aalid feie has two mantids living in it. [nobody knows why|they trade]",
+      "fylara in aalid feie makes armor from the ixthiar broodmother's shell",
+      "the domnann wardens walk the monger's round every evening to find their dead first",
+      "there is grass in the vale again in a few places. [sylvan say it will be green|someday]"
+    ],
+    "rumour": [
+      "[heard|someone said] the vale was glowing red last night. [balor is up|domnann doubled the watch]",
+      "clear the whole ixthiar nest before it respawns or the broodmother wont come. [fylara's armor|annoying]",
+      "[word is|heard] adwyth sings at the tree maiden's roots every dusk",
+      "the fomorians on the western slopes are 54-66 and social. [careful|wipe city]",
+      "[heard|someone said] oscar wont fight beside milo any more",
+      "someone pulled the gap trio and only expected one. [three of them|lol]",
+      "[word is|heard] the great haunts walk toward the strand at dawn",
+      "gnat is standing near aalid feie again. [not a quest mob|watch out]"
+    ],
+    "tell": [
+      "vale of balor is west of domnann. aalid feie is the town. 31 to 66",
+      "where is aalid feie? east edge of the vale of balor. channeler, trainers, mantids",
+      "is the vale of balor hard? near town 30s-40s, middle 50s, western fomorians up to 66",
+      "whats in the vale of balor? ixthiar, haunts, sylvanshades, fomorian households, the tur suil road",
+      "where is the tur suil entrance? south west of the vale, up the crag road",
+      "where is the ixthiar broodmother? west vale nests. clear a nest and she comes"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Vale of Balor, which was [Gleann Glas] until the [eye] looked at it once. The [ixthiar] came up through the ash; the [haunts] walk; the western [households] wear borrowed names; three Fomorians hold the [gap]. [Aalid Feie] keeps the edge.",
+    "topics": {
+      "Gleann Glas": "The green valley, a Sylvan country of orchards with a watch-fire on the coast. The watch-fire drew the Fomorian boat ashore. The Sylvan say the valley will be Gleann Glas again when the [eye] is shut.",
+      "eye": "Balor's eye, carried west in seven hides and unwrapped on the crag. It looked once at the valley, and the valley burned in a breath. When the vale glows red at night, the king is back in his tower.",
+      "ixthiar": "The swarm that rose out of the ash in the western vale. Its nests are kept by a mother who rises when a nest is emptied, and its dead carried by the Monger. The wardens walk the monger's round at dusk.",
+      "haunts": "The great haunts of the middle vale, the Sylvan who came down to the strand to see who had landed. The sylvanshades of the east are shadows the look burned onto the ground, which stood up afterwards.",
+      "households": "The Fomorian households of the western slopes, following Sargan's custom of the names of the dead: Milo, who took Míl's name, and Oscar, who took a Fianna hero's and left Milo's house. They keep the old road as a border.",
+      "gap": "The gap in the Sylvan wall east of [Aalid Feie], held by Drygau, Adwyth and Anhylaw. The wall had tree maidens in it who sang it whole; the last one is silent while the three hold the gap.",
+      "Aalid Feie": "The town on the vale's eastern edge: Sylvan, Hibernians and two mantids who trade and do not explain themselves. Fylara MacKieran makes armour there from the broodmother's shell. Tieru keeps the account.",
+      "Tieru": "The keeper of [Aalid Feie]'s account, who stands at the edge of town as companies go up the crag road to Tur Suil, and counts them back."
+    }
+  },
+  "book": {
+    "title": "The Ash Book of Aalid Feie, kept by Tieru",
+    "pages": [
+      "I keep the account of Aalid Feie, which is the account of what went up the crag road and what came back, and before that it was my mother's, and before that it was the account of Gleann Glas, which was a different book. The Gleann Glas book is in Domnann now, in the seed-house, and its last page is a list of the families who went down to the strand to see who had landed. The page after it is blank. The Sylvan left it blank on purpose, so that the valley would have somewhere to begin again.",
+      "The eye looked once. The Sylvan of Domnann who saw the light from their hills say it was like the sun coming up in the wrong place, and lasting a breath, and going out. In the morning there was ash from the crag to the sea, a hand deep, and the Sylvan walked out into it and found nobody. The haunts in the middle vale are the families of the strand. They walk the old road toward the sea at dawn as if they were still going down to look.",
+      "The swarm came up out of the ash in the second generation, from somewhere under the valley that the eye's heat woke. They nest, and their mother comes when a nest is emptied, and the forager carries their dead. The Fomorians came down off the crag into the west of the vale and took the names of our heroes and yours, and keep the old road as a border. The wall the Sylvan built across the east had maidens singing in it. Three Fomorians hold the gap now, and the last maiden is silent.",
+      "This is what the town does: it watches the vale for the red glow, and when the glow comes it sends word to Domnann, and Domnann doubles its watch. It trades with two mantids, who arrived one spring and did not leave. It makes armour from the swarm-mother's shell. And it stands at the edge when your companies go up the crag road to the tower, and I count them, and when they come back I count them again, and the difference goes in the book, in the same ink as the Gleann Glas list."
+    ]
+  },
+  "bosses": [
+    "milo",
+    "oscar",
+    "ixthiar-broodmother",
+    "monger",
+    "drygau",
+    "adwyth",
+    "anhylaw"
+  ],
+  "era": "hib-age-of-the-fomorians",
+  "factions": [
+    "fomorians",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "tur-suil",
+      "relation": "the tower on the crag whose eye burned the vale"
+    },
+    {
+      "id": "balor",
+      "relation": "whose one look made it"
+    },
+    {
+      "id": "sargan-the-conqueror",
+      "relation": "whose custom of borrowed names the slope households follow"
+    },
+    {
+      "id": "caillte-garran",
+      "relation": "the lost grove to the east, over the Fomor stair"
+    },
+    {
+      "id": "domnann",
+      "relation": "which the vale's raids reach"
+    }
+  ]
+}

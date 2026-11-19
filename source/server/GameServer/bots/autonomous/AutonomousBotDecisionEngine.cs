@@ -28,6 +28,8 @@ public enum eWorldServiceKind
     VaultKeeper,
     RealmExchange,
     CraftStation,
+    // A Darkness Falls seals merchant: seal gear bought with the bot's own looted seals (owner 2026-10-30).
+    SealMerchant,
 }
 
 /// <summary>
@@ -63,7 +65,8 @@ public static class AutonomousBotDecisionEngine
         double TravelMinutes,
         int AverageMobLevel = 0,
         int DungeonPopulation = 0,
-        int DungeonSoftCapacity = 0);
+        int DungeonSoftCapacity = 0,
+        int SpreadWeight = 0);
 
     public sealed record Service(
         eWorldServiceKind Kind,
@@ -271,8 +274,12 @@ public static class AutonomousBotDecisionEngine
 
     /// <summary>A camp's draw weight: live spawns, times an optional personal taste (percent, AutonomousBotPersonality).</summary>
     public static int OutdoorDrawWeight(Camp camp, Func<Camp, int> personalWeightPercent) =>
-        personalWeightPercent == null ? OutdoorSpawnWeight(camp)
-            : Math.Max(1, OutdoorSpawnWeight(camp) * Math.Max(1, personalWeightPercent(camp)));
+        personalWeightPercent == null ? SpreadOrSpawnWeight(camp)
+            : Math.Max(1, SpreadOrSpawnWeight(camp) * Math.Max(1, personalWeightPercent(camp)));
+
+    /// <summary>The draw weight before taste: the spread weight when the planner set one (spawns, nearness, bots already
+    /// there; True 1.65), otherwise the capped live spawns.</summary>
+    private static int SpreadOrSpawnWeight(Camp camp) => camp.SpreadWeight > 0 ? camp.SpreadWeight : OutdoorSpawnWeight(camp);
 
     private static Camp SelectByLiveSpawns(Camp[] choices, Random random, Func<Camp, int> personalWeightPercent = null)
     {
@@ -412,8 +419,17 @@ public static class AutonomousRestPolicy
         byte manaPercent,
         byte endurancePercent,
         bool usesPower) =>
+        NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower, PowerRestThreshold);
+
+    /// <summary>The same with a bot's own power floor (Bots as people WP2: BotRestRecovery.PowerRestThreshold).</summary>
+    public static bool NeedsRecovery(
+        byte healthPercent,
+        byte manaPercent,
+        byte endurancePercent,
+        bool usesPower,
+        byte powerThreshold) =>
         healthPercent < HealthRestThreshold ||
-        (usesPower && manaPercent < PowerRestThreshold) ||
+        (usesPower && manaPercent < powerThreshold) ||
         endurancePercent < EnduranceRestThreshold;
 
     public static bool IsFullyRecovered(
@@ -447,11 +463,12 @@ public static class AutonomousRestPolicy
     // finish recovering instead of standing as soon as those thresholds are crossed.
     public static bool ShouldRest(
         bool atRestPoint, bool moving, bool inCombat, bool alreadyResting,
-        byte healthPercent, byte manaPercent, byte endurancePercent, bool usesPower) =>
+        byte healthPercent, byte manaPercent, byte endurancePercent, bool usesPower,
+        byte powerThreshold = PowerRestThreshold) =>
         atRestPoint && !moving && !inCombat &&
         (alreadyResting
             ? !IsFullyRecovered(healthPercent, manaPercent, endurancePercent, usesPower)
-            : NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower));
+            : NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower, powerThreshold));
 }
 
 public static class AutonomousFormation

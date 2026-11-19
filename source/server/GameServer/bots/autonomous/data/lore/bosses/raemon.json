@@ -1,0 +1,85 @@
+{
+  "id": "raemon",
+  "name": "Raemon",
+  "npcNames": [
+    "Raemon"
+  ],
+  "locationId": "breifine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Raemon: level 45, at about 399,900/369,200 in west Breifine at what the quest calls the cyclops tower; not of the Fomorian faction and not a Fomorian body (model 403); aggro 90; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Morven's Return (Cathbad of Howth): 'Ask Lucan about Morven's heirs', 'Slay Ronat, the first heir, east of Dun Lamfhota', 'Slay Uileog, the second heir', 'Slay Raemon, the third heir, at the cyclops tower'.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Raemon is Morven's third heir, and he is not a Fomorian. The Breifine keeners are certain of that much and of little else. He keeps an old ruin in the west of Breifine that the frontier calls the cyclops tower, after whatever one-eyed thing built it, and Morven named him heir, the keeners say, because a lord who has lost his people adopts whoever will hold a hill for him.\n\nRaemon holds it, alone. He does not attack everyone who comes near; he watches, and decides, and the garrison of Dun Bolg say he has let realm scouts pass who came to look and not to take. The keeners think he was a Hibernian once, a deserter of the early war who took Morven's bargain because no one else would have him. When the young bring his head to Cathbad with the others, Cathbad looks at it longer than at the Fomorians', and does not say why.",
+  "legend": "Raemon (45) is the third heir of Morven's Return, at the cyclops ruin in west Breifine (about 400k/369k). He is not fully aggressive (aggro 90), so he may let you walk past; he will not let you take his head without a fight. A group of mid 40s. 5-minute respawn. Breifine is frontier; Dun Bolg is nearby. Breifine custom: leave him be if you only came to look.",
+  "yells": {
+    "aggro": [
+      "You came to take, not to look.",
+      "Morven's hill. My hill."
+    ],
+    "phases": [],
+    "death": [
+      "Tell Cathbad... I was of Howth once..."
+    ],
+    "slay": [
+      "You should have only looked."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lone figure at an old one-eyed ruin."
+    ],
+    "phases": [],
+    "realmFirstKill": "Raemon, Morven's third heir, has fallen at the ruin."
+  },
+  "botLines": {
+    "briefing": [
+      "raemon is 45, third heir, at the cyclops ruin west breifine",
+      "not fully aggro, but he fights for his head"
+    ],
+    "aftermathWin": [
+      "raemon down. [three heads|morven's return done]",
+      "back to cathbad. [howth|grats]"
+    ],
+    "aftermathLoss": [
+      "enemy realm showed up. [frontier|rip]",
+      "he hits harder than he looks. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] raemon isnt a fomorian. morven adopted him",
+      "raemon lets scouts pass who came to look, dun bolg says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Raemon",
+    "text": "Morven's third heir, not a Fomorian, who holds the cyclops ruin of west Breifine alone. The keeners think he was a deserter of the early war who took Morven's bargain."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Raemon in Breifine in {minutes} minutes.",
+    "loss": "Raemon turned back {realm}'s band under {raidLeader} in Breifine after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "morven",
+      "relation": "who named him heir"
+    },
+    {
+      "id": "uileog",
+      "relation": "the second heir"
+    }
+  ]
+}

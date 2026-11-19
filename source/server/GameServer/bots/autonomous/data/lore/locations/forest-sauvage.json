@@ -1,0 +1,277 @@
+{
+  "id": "forest-sauvage",
+  "name": "Forest Sauvage",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    11
+  ],
+  "summary": "Albion's frontier wood between Camelot Hills and the Pennines: Castle Sauvage at its gate, Caer Renaris and the relic keep Castle Excalibur to the north, the fellwoods and Mist Hunters, and the Green Knight.",
+  "facts": [
+    {
+      "text": "Castle Sauvage, north-east of Camelot Hills, is an entrance to the Albion frontier.",
+      "provenance": "mythic",
+      "source": "https://camelotherald.fandom.com/wiki/Camelot_Hills"
+    },
+    {
+      "text": "Forest Sauvage is zone 11 of region 1, a frontier zone of about 430 monsters: fellwoods of many kinds, rainbow sprites, forest giants and ettins, forest hunters (faction Mist Hunters) under Rob Ria, death stalkers, adders, ancient basilisks and small skeletal legionnaires (Spirits of Rome).",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Castle Sauvage (area at 585085, 477504) holds Lord Mathius, Lieutenants Kuebler and Watson, Sir Benitt, Sir Tilian, Arly Camden, Caelin Finan, Scout Dherin, Sister Ellayne and the stable master Uliam.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Caer Renaris is keep 56 (level 5) and Castle Excalibur keep 57 (level 10), both Albion's.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Albion's relics are named Merlin's Staff and the Scabbard of Excalibur; which keep holds which is not in the tables read (Castle Excalibur holding the Scabbard is inferred from the name, to verify).",
+      "provenance": "game",
+      "source": "source/server/GameServer/keeps/Relics/GameRelic.cs"
+    },
+    {
+      "text": "The Green Knight (level 79, 100,000 health) stands at 592359, 418245 on the northern edge. His greeting: his forest is 'a delicate beast that can easily turn against you'; 'Tread lightly! I am ever watchful of my home!'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs"
+    },
+    {
+      "text": "The weekly frontier quests of all three realms ask for the Green Knight, Evern and the Glacier Giant ('large monsters have blocked the supply lines in our frontier').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/AtlasQuests/DailyQuests/{Albion,Midgard,Hibernia}/Frontier/Weekly/EpicRvRMobsWeeklyQuest*.cs"
+    },
+    {
+      "text": "Quests: Kindred of the Fallen (Kuebler, Sir Tillian, Aiellana, two standing stones of power, a wounding stone, a summoned druid); Dugan's Magical Totem (the eyes of Brodecia at the ettin camp north-east of Castle Sauvage); Departed Fellowship (Cadwallen's sacrificial dagger and the hornbeam, silver oaken, gold oaken, knotted and gnarled fellwoods); The Forest Plot (Rob Ria's Mist Hunters).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Middle English romance, not game canon: in Sir Gawain and the Green Knight, the Green Knight offers a beheading game, one blow for one blow a year apart.",
+      "provenance": "myth",
+      "source": "Sir Gawain and the Green Knight (14th century)"
+    },
+    {
+      "text": "Malory, not game canon: whoever wore Excalibur's scabbard would lose no blood.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Excalibur"
+    },
+    {
+      "text": "The forest as a sleeping beast, 'a beast is woken by being asked', Old Hopcyn's account, the unrelieved cohort and the Mist Hunters' forest law are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The wood at the edge. Forest Sauvage is the wild wood that lies between Camelot Hills and the high Pennines, and for as long as Albion has had a frontier this has been the first of it. The forest is older than the realm. The woodsmen of Castle Sauvage say it is not quite a forest: it is a beast lying down, the trees are its fur, the rivers its veins, and the deadwood in it is not dead, only asleep. They cut timber at its southern edge and nowhere else, and they cut it quietly.\n\nThe castle and the keeps. Castle Sauvage stands at the southern edge where the road comes up out of Camelot Hills, and it is the realm's front door: Lord Mathius holds it with his lieutenants, Kuebler and Watson, and Sir Benitt and Sir Tilian keep its upper rooms and send the young of the realm out into the wood on errands they come back from older. North through the forest, where the trees thin towards the hills, stand the two keeps of Sauvage: Caer Renaris in the west, a frontier hold of the old pattern, and Castle Excalibur to the east of it, one of the two keeps in Albion built to hold a relic of the realm. The riders say the Scabbard of Excalibur lies there, the scabbard whose wearer could not bleed, and that this is why the castle was named as it was; the enemy realms come through the northern passes year after year to take it. Between the keeps and the castle the forest belongs to nobody.\n\nWhat lives in it. The fellwoods walk there, the deadwood that woke: ebony and ashen and hornbeam and black poplar, willow and aspen and oak, and in the north the knotted fellwoods that stand like old men by the Green Knight's road. Rainbow sprites crowd the western glades. Forest giants keep the eastern hills and ettins the north-east, with a camp on the south bank of the river under one Brodecia, whose eyes a carver of Caer Witrin wants for a totem. Death stalkers and adders and old basilisks haunt the ground round the castle, and among the trees halfway north small skeletons in Roman harness still march, legionaries of some cohort that went into the wood and was not relieved. In the east the Mist Hunters keep their own camps under Rob Ria, hunters of the old forest who answer to no lord. And at the northern edge of the forest, where the road climbs towards the Pennines, a knight in green stands among the trees.\n\nThe keeper. The Green Knight is courteous. He greets every traveller who stops to speak with him, and he warns them that his forest is a delicate beast that turns easily on those who mistreat it, and that if the beast is woken he must rise to defend it. He has never once drawn on anyone who did not ask him to; the woodsmen say a beast is woken by being asked. The bards of Camelot know a Green Knight from the old romance, who rode into Arthur's hall at Christmas and offered a game of one blow for one blow, a year apart, and was struck and picked up his own head. Whether this is the same knight nobody has asked him. Midgard and Hibernia have their own names for him and send their war-bands through the passes to hunt him, as Albion sends its own against their great beasts, because he stands where every road into Albion's frontier must go by him.\n\nWhy it matters to Albion. Sauvage is where the realm's wars begin and where its young are first sent to be tested. Every company that rides out to the keeps passes the castle, and the forest, and the knight. Lord Mathius keeps the castle and the keeps keep the relic; the Green Knight keeps the wood, and he keeps it for nobody's realm but its own.",
+  "legend": "Forest Sauvage is Albion's frontier wood, levels teens to 30s, between Camelot Hills and the Pennines. Castle Sauvage in the south is the frontier gate: merchants, a healer, Lord Mathius, Lieutenant Kuebler (Kindred of the Fallen and a lot of courier quests), Sir Tilian upstairs, Arly Camden and Caelin Finan for Feast of the Decadent. North are the keeps: Caer Renaris and Castle Excalibur, the relic keep the other realms come for. The Green Knight (79, 100k) stands on the north edge of the wood. He is peaceful until someone whispers 'defend it' to him, so nobody pulls him by accident. He is a big one: bring a raid, melee does the work (he shrugs off most magic). Felwood rises at everyone's feet about every half minute, he goes for a healer every minute or so, his swings set off a heat burst around his target, and at every 10% he breaks off and walks to one of four spots nearby. Follow him and he only heals a sliver. Leave him for a minute and he is full again. Midgard and Hibernia have him on their weekly kill list too, so expect company. Rob Ria and the Mist Hunters are in the east; Brodecia's ettin camp is north-east on the river.",
+  "atmosphere": {
+    "firstEntry": [
+      "Forest Sauvage. Tread lightly. Something is watching.",
+      "The deadwood here is only asleep.",
+      "Albion's frontier begins under these trees.",
+      "Somewhere north, a knight in green is waiting.",
+      "An axe rings once to the south, then stops."
+    ],
+    "areas": [
+      {
+        "name": "Castle Sauvage",
+        "x": 585085,
+        "y": 477504,
+        "z": 2600,
+        "radius": 1800,
+        "lines": [
+          "Castle Sauvage. Albion's frontier gate.",
+          "Lord Mathius keeps the road out of the realm.",
+          "Every company that rides north passes here."
+        ]
+      },
+      {
+        "name": "the Green Knight's road",
+        "x": 592359,
+        "y": 418245,
+        "z": 4988,
+        "radius": 1500,
+        "lines": [
+          "A knight in green waits among the trees.",
+          "Knotted fellwood stands by the road like old men.",
+          "Tread lightly. Something is watching."
+        ]
+      },
+      {
+        "name": "Caer Renaris",
+        "x": 579877,
+        "y": 429821,
+        "z": 4640,
+        "radius": 1200,
+        "lines": [
+          "Caer Renaris. A frontier hold of the old pattern.",
+          "A gold-barked fellwood walks below the walls."
+        ]
+      },
+      {
+        "name": "Castle Excalibur",
+        "x": 601562,
+        "y": 430054,
+        "z": 5664,
+        "radius": 1500,
+        "lines": [
+          "Castle Excalibur. A relic keep of Albion.",
+          "The enemy comes through the passes for this."
+        ]
+      },
+      {
+        "name": "the sprite glades",
+        "x": 574578,
+        "y": 452192,
+        "z": 4158,
+        "radius": 1800,
+        "lines": [
+          "Rainbow sprites. The glade glitters.",
+          "Small laughter, and nothing to see."
+        ]
+      },
+      {
+        "name": "the Roman march",
+        "x": 583384,
+        "y": 439246,
+        "z": 4420,
+        "radius": 1200,
+        "lines": [
+          "Small skeletons in Roman harness, marching.",
+          "A cohort that was never relieved."
+        ]
+      },
+      {
+        "name": "the giants' hills",
+        "x": 606299,
+        "y": 448492,
+        "z": 3050,
+        "radius": 2000,
+        "lines": [
+          "Forest giants on the eastern hills.",
+          "Trees broken at shoulder height."
+        ]
+      },
+      {
+        "name": "Brodecia's camp",
+        "x": 614486,
+        "y": 442715,
+        "z": 2805,
+        "radius": 1200,
+        "lines": [
+          "An ettin camp on the river's south bank.",
+          "Brodecia keeps four eyes on you."
+        ]
+      },
+      {
+        "name": "the Mist Hunters' camps",
+        "x": 620489,
+        "y": 459390,
+        "z": 3299,
+        "radius": 2000,
+        "lines": [
+          "The Mist Hunters. They answer to no lord.",
+          "Rob Ria's hunters, watching from the mist."
+        ]
+      },
+      {
+        "name": "the standing stones",
+        "x": 608248,
+        "y": 462792,
+        "z": 3819,
+        "radius": 900,
+        "lines": [
+          "Two standing stones of power.",
+          "A druid seer fell here and did not stay fallen."
+        ]
+      },
+      {
+        "name": "the deadwood",
+        "x": 594335,
+        "y": 453780,
+        "z": 3366,
+        "radius": 2000,
+        "lines": [
+          "Ashen fellwood. The deadwood is awake.",
+          "The forest's fur stands on end."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the green knight waits near castle sauvage like he's expecting someone. i bet it's not us",
+      "[heard|an old bard says] the green knight [offers|plays] a game: [you strike once, he strikes back next year|one blow for one blow, a year apart]. [nobody takes it|i wouldn't]",
+      "the sauvage woodsmen say the forest is a beast lying down. the trees are its fur",
+      "the green knight never attacks first. you have to ask him. [nobody asks twice|think about that]",
+      "castle excalibur is a relic keep. the scabbard, [supposedly|the riders say]",
+      "the little skeletons in sauvage are a roman cohort nobody ever relieved",
+      "lord mathius holds castle sauvage. every group heading north goes past him",
+      "the mist hunters in east sauvage answer to rob ria, not camelot",
+      "old hopcyn cut wood in sauvage forty years and never once in sight of the green knight",
+      "brodecia has two heads so four eyes. dugan wants them for a totem",
+      "the fellwoods in sauvage are deadwood that woke up",
+      "the gold oaken fellwood by caer renaris is older than the keep"
+    ],
+    "rumour": [
+      "rode right past the green knight once. he nodded. i swear he nodded",
+      "three full groups took on the green knight once, [so i heard|in the story i heard]. all anyone saw after was [death spam|the release timer]",
+      "[heard|someone said] the green knight walks off between four clearings when he's hurt",
+      "heard the mids and hibs have the green knight on their weekly list too",
+      "[heard|someone said] every person near the green knight gets a felwood of their own",
+      "heard the green knight is full again a minute after you give up on him",
+      "[heard|someone said] magic slides off the green knight like rain off holly",
+      "heard the fallen druid seer by the standing stones keeps coming back"
+    ],
+    "tell": [
+      "forest sauvage? albions frontier wood past castle sauvage. the green knight lives there. talk to him, dont fight him unless you bring a raid",
+      "is sauvage hard? teens to 30s mostly. the green knight is 79 and needs a raid",
+      "where's castle sauvage? north out of camelot hills, the road to the frontier",
+      "where are the keeps? north of the forest. caer renaris west, castle excalibur east of it",
+      "where is the green knight? far north edge of the wood by the road. whisper defend it only if you mean it",
+      "where's rob ria? east sauvage with the mist hunters"
+    ]
+  },
+  "loremaster": {
+    "intro": "[Forest sauvage] is the wild wood at Albion's edge, and the woodsmen say it is a [beast] lying down. Ask of [castle sauvage], [caer renaris] and [castle excalibur]; of the [fellwoods] and the [gold oaken fellwood]; of [brodecia], the [fallen druid seer] and the [standing stones]; of the [mist hunters] and the [roman march]; or of the keeper of the wood, the [green knight].",
+    "topics": {
+      "forest sauvage": "The wild wood between Camelot Hills and the Pennines, the first of Albion's frontier. The woodsmen say it is a [beast] lying down. [Castle sauvage] keeps its southern edge, [caer renaris] and [castle excalibur] its northern, and the [green knight] keeps the wood itself.",
+      "beast": "The trees are its fur, the woodsmen say, the rivers its veins, and the deadwood is only asleep. The [green knight] tells every traveller himself: wake the beast within and he must rise to defend it. He waits to be asked.",
+      "castle sauvage": "Albion's frontier gate at the southern edge of [forest sauvage]. Lord Mathius holds it, with Lieutenants Kuebler and Watson; Sir Benitt and Sir Tilian keep the upper rooms and send the young out on errands. Every company that rides north to the keeps passes its gate.",
+      "caer renaris": "A frontier hold of the old pattern in the north-west of [forest sauvage]. A gold-barked [gold oaken fellwood] walks the trees below it.",
+      "castle excalibur": "One of Albion's two relic keeps, in the north of [forest sauvage]. The riders say the Scabbard of Excalibur is kept there, the scabbard whose wearer could not bleed; the realm's two relics are Merlin's Staff and the Scabbard. Midgard and Hibernia come through the northern passes for it.",
+      "fellwoods": "The deadwood of Sauvage that woke and walks: ebony, ashen, hornbeam, black poplar, willow, aspen, oak, and the knotted fellwoods by the [green knight]'s road. When he is roused, the rotting kind stand up at every traveller's feet.",
+      "gold oaken fellwood": "A fellwood with gold in its bark that walks below [caer renaris], older than the castle. The Church's champions hunt it with Cadwallen's sacrificial dagger from the druids' underground hall in Campacorentin, one of five fellwoods the dagger must taste before it will point the way to the ruined tower by Hadrian's Wall. The woodsmen call it the forest's purse and leave it be.",
+      "brodecia": "The ettin who heads the camp on the south bank of the river, north-east of [castle sauvage]. Dugan Advien, the wood carver of Caer Witrin, wants the eyes of Brodecia for a totem, and Brodecia, having two heads, has four of them and is careful with all four. The woodsmen say the camp moved there to watch the [mist hunters], and the hunters to watch the camp.",
+      "fallen druid seer": "A druid seer who fell among the [standing stones] east of the river in the old wars of the druids, and did not stay fallen. Sir Tilian of [castle sauvage] sends the young after her kin: a wounding stone set between the two stones, nearer the larger, calls one of the fallen up to be ended.",
+      "standing stones": "Two stones of power east of the river in [forest sauvage], the larger and the lesser, where the [fallen druid seer] walks. Aiellana of Adribard's Retreat knows what they were for and tells only those Sir Tilian sends her.",
+      "mist hunters": "The hunters of the old forest in the east of [forest sauvage], under [rob ria]. They answer to no lord of Camelot's and hunt only what the wood allows; they trade with those they have learned to trust.",
+      "roman march": "Small skeletons in Roman harness, legionaries and a centurion or two, still marching between the castle and the keeps: a cohort that went into the wood in the province's day and was not relieved.",
+      "green knight": "He stands by the road at the northern edge of [forest sauvage] and warns those who stop. He fights only those who ask him to defend his wood. Then the deadwood stands up at every man's feet, his sword sets the air alight round the struck man, he breaks off to walk between his clearings as he is wounded, and he goes past the front rank for whoever kneels over the hurt."
+    }
+  },
+  "book": {
+    "title": "What the Woodsman Said",
+    "pages": [
+      "What the Woodsman Said: the account of Old Hopcyn, woodcutter of Castle Sauvage forty years, as taken down by Lieutenant Kuebler's clerk because the lieutenant wanted it written before Hopcyn died, and Hopcyn wanted it written so that the lieutenant would stop asking. Go past him on the road and he will speak to you. He always does. He told me the forest was a delicate beast and that I was wise to stop and speak with him, and I thanked him and walked on with my axe over my shoulder and did not cut a single branch until I was out of sight of him.",
+      "I have cut wood in Sauvage forty years. I have never once cut it within sight of him. That is the whole of my secret, and I give it freely. The young ones from the castle do not believe it is so simple. He never draws on you unless you ask him to, I tell them. He tells you what will happen if the beast wakes, and then he waits, and it is you who has to say the word. A beast is woken by being asked. I have seen three men ask him in forty years. One of them came back.",
+      "The one who came back was a knight of the castle in his first summer, with a company behind him out of Camelot. He told me what he had seen while I mended his axe-handle, which he had broken on a felwood. The deadwood stood up everywhere at once, he said, a tree at every man's feet, so that a company of forty fought forty trees as well as the knight, and the more of them came, the more trees. He said the green man's sword set the air alight round whoever it struck, and the men at that man's shoulder burned with him.",
+      "He said the green man was not to be turned by words. The company's wizards threw everything they had and it ran off him like rain off holly, but the axes bit, and the swords. He said, and this is the part he told me twice, that the green man went past the knights in front of him every so often as if they were not there, to cut at whoever was kneeling over the wounded. The company lost two of its priests that way before they learned to keep a shield-wall round them that was not facing the knight at all.",
+      "And he said the green man would not stay where he was hurt. When the company had cut him a while he broke off and walked away from them, not fast, not fighting, through the trees to another clearing, and stood there and took a breath, and the green came back into him a little. Only a little. The company followed him every time and he never went to the same clearing twice running. There were four clearings, the knight thought, all within a long bowshot of the knotted trees. He drew me a map of them on the back of his muster roll. I burned it, and I told him why: a man who knows where the green man is going will follow him, and I have cut wood in Sauvage forty years by not following him.",
+      "Last, because the lieutenant asked. When a company gives up and leaves him, the knight told me, he stands where they left him a few breaths, and then he is whole again, every cut closed, and he bows to the empty road and walks back to his place by the knotted trees and the deadwood lies down. Then the next company comes, from our realm or from the other two, and stops, and he speaks to them as courteously as before. I asked the knight why he had gone back the second year. He said he wanted to see whether the green man remembered him. He did not come back."
+    ]
+  },
+  "bosses": [
+    "green-knight",
+    "rob-ria"
+  ],
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers",
+    "realm-of-camelot"
+  ]
+}

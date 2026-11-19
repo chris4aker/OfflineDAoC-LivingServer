@@ -1,0 +1,298 @@
+{
+  "id": "bog-of-cullen",
+  "name": "Bog of Cullen",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    205
+  ],
+  "summary": "The great bog under Sheeroe: Alainn Bin and the Siopa fruit stand, the war-crow and the queen of the reeds, the siabra magi and the Cullen outlaws.",
+  "facts": [
+    {
+      "text": "Zone 205 (region 200, x 352,256-417,792, y 712,704-778,240): 710 monsters. Town areas: Alainn Bin (404,610/765,704, Chieftess Dana) and Siopa (361,354/750,434, the fruit stand and its merchants).",
+      "provenance": "game",
+      "source": "world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: savage fishing bears (52-56), bog creepers, swamp hoppers, irewood saplings and greenbarks, siabra waterwalkers, venators, raiders, wayguards, mireguards, lookouts and seekers (Siabras, 30-56), black wraiths, bog crawlers, morass leeches, bog frogs, far darrig, deamhan hounds, corpan side, amadan touched, mermen (Suire), badh, banshees and lesser banshees, fog wraiths, aughisky, lhiannan-sidhe, far dorocha (62) and two cronicorns (68).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The bog's bosses: Badb (70), Queen Cliodna (70), Madawg (55), the two Geas Bound Protectors (52), Ide (52), Saemus (52), Kunsgnos (52) and Donal (50); tier B named Deniela, Jannet and Manius (48) on the outlaws' island with Ide and Donal, Rioldna the banshee (47), Enan (43) and Muroi (40); Hag Madailein (55) and Fruadan Draoi Manius 'behind Alainn Binn' (Last Heir).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Last Heir' (world data, read 2026-11-06)"
+    },
+    {
+      "text": "Quest facts: geas bound protectors 'by the rocks past the Siopa fruit stand' (The Lost Relics); 'Ask the locals of Alainn Binn about Ysberin' and 'Slay the siabra magi Madawg who killed Ysberin' (Unnatural Powers); 'Slay the banshee Rioldna northwest of Alainn Binn' (The Moonstone Twin); 'Seek out the Shrieking Tree in the bog' (Last Heir).",
+      "provenance": "game",
+      "source": "DataQuest 'The Lost Relics', 'Unnatural Powers', 'The Moonstone Twin', 'Last Heir' (world data)"
+    },
+    {
+      "text": "In Irish myth the Badb is a war goddess who appears as a crow; Clíodhna is a queen of the banshees whose three birds sang the sick to sleep and healed them.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cl%C3%ADodhna"
+    },
+    {
+      "text": "In Irish folklore the each-uisce (aughisky) is a water horse that drowns its riders, the leannán sí a fairy lover, and the fear dearg ('red man', far darrig) a fairy prankster.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Each-uisce"
+    },
+    {
+      "text": "Living Server lore: the bog as the bottom of Sheeroe's water and the drain of the realm's old quarrels; the Cullen road; Ysberin the path-keeper; the Shrieking Tree; the outlaws' island; the song that must not finish; Dana's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Mythic's 1.45 notes: on the Bog of Cullen's northern edge a pass that had not been there before appeared from under thick mist, leading into the Sheeroe Hills.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Everything that runs off Sheeroe ends in the Bog of Cullen. The grey hills stand to the north, and their water comes down off them black and slow and spreads out across the low country in pools and reed-beds and mud that moves under the foot, and the bog people say the bog takes whatever the water brings: peat and bones and old swords from the hostings, and lately grey dust off the Glimmer's grass. It was a bad place before the sky tore over the ridge, the people of Alainn Bin say, only more quietly. The Cullen road runs along its northern edge to the watch-house below the pass, and nobody whistles on it after dark.\n\nThe bog's oldest powers were never anybody's courtiers. Badb is the war-crow, who wakes at dusk in the middle of the bog and smells battle coming; the bog folk say she has been restless every evening since the frontier keeps began to change hands, and that her badh, the crow-things of the eastern reeds, fly toward the hills before every hosting. Queen Cliodna keeps her court among the reeds near her, a queen of the banshees' kin whose birds once sang the sick to sleep and healed them, and now sing the healthy to sleep and do not wake them. Every grandmother of the Cullen country tells the same thing: never let a song in the bog finish.\n\nThe bog had a keeper once. Ysberin was the path-keeper of Cullen, a wise-woman who knew which tussocks held and which pools had no bottom, and carried a staff of black bog-oak, and walked the realm's companies across to the Sheeroe road for a coin and a promise to come back the same way. The siabra magus Madawg killed her for the staff. Since then the paths have moved, the bog folk say, and his apprentice Kunsgnos, a waterwalker of the siabra, keeps the middle of the bog between his master and the place where Saemus stands. The siabra hold much of the bog now: waterwalkers on the pools, venators and wayguards and mireguards in the reeds, war-bands in the north toward the irewoods, lookouts on the higher ground. Lovernios the Druid Prince wants Ysberin's staff back in Tir na Nog, and the crystal that ate Saemus, so the Druid Court can study what made them.\n\nOn the eastern edge, on an island in the reeds within sight of Alainn Bin, the Cullen outlaws keep a camp: men and women of the realm who went into the bog beyond its law and stayed. Donal is their captain, an Ardee spearman who killed a man at the muster and walked into the reeds; Ide is their wise-woman, Ysberin's pupil; Deniela, Jannet and Manius keep the island with them, Manius the one the bog calls the fruadan draoi, the outlaws' druid. Saemus was one of them, until he went to the siabra for power. They keep a watch of their own, a tally and a cracked pot for a bell, and they leave Alainn Bin alone, mostly.\n\nPast the Siopa fruit stand on the western side, by the rocks, two ghosts stand guard over a hiding place. They are the Geas Bound Protectors, set there by a geas to keep the Dagda's harp from every hand but the rightful one, and never told how to tell the difference; Lobais in the palace sends the young to them. Northwest of Alainn Bin a banshee called Rioldna keens on the path that Brigit of the palace sends the moonstone-seekers down. In the south the Shrieking Tree screams at night, and its wraith with it. Hag Madailein keeps a hut on the higher ground in the north. The black wraiths walk the eastern pools, and the aughisky, the water horses, wait at the edges for anyone foolish enough to ride them, and the fairy lovers wait for anyone foolish enough to listen.\n\nWhy does it matter? Because the bog is where the realm's quarrels end up. The hostings cross it to reach Sheeroe; the outlaws hide in it; the palace's lost things are hidden in it; the frontier's battles wake its crow. The bog folk say it keeps everything it is given, and gives back only what it is asked for properly, by name, with the path-keeper's coin. There has been no path-keeper since Ysberin.",
+  "legend": "The Bog of Cullen is south of Sheeroe, levels 30-70. Alainn Bin (east) and the Siopa fruit stand (west) are the merchant stops; no trainers. Camps: siabra everywhere (raiders 37-43 in the north, mireguards and wayguards, venators and waterwalkers to 56), bog creepers and swamp hoppers (42-48), savage fishing bears (52-56), bog crawlers, far darrig, badh, black wraiths, banshees. Lowbies stay on the northern road. Big ones: Badb (70, wakes at dusk, calls raven wraiths) and Queen Cliodna (70, mez/sleep songs, bring purges), with two cronicorns (68) nearby. Tier A named: Madawg (Unnatural Powers), the two Geas Bound Protectors past Siopa (The Lost Relics), Saemus, Kunsgnos, and the outlaws' island east (Ide, Donal, plus Deniela, Jannet, Manius at 48: pull them apart). Rioldna (47) northwest of Alainn Bin is a Moonstone Twin step. Bog superstitions: never let a song finish, never whistle on the Cullen road after dark, and never ride a horse you find standing at the water's edge.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Bog of Cullen. Black water off the grey hills.",
+      "The mud moves under your feet.",
+      "Somewhere in the reeds, a song begins.",
+      "Do not let it finish.",
+      "The bog keeps what it is given."
+    ],
+    "areas": [
+      {
+        "name": "Alainn Bin",
+        "x": 404610,
+        "y": 765700,
+        "z": 4960,
+        "radius": 1750,
+        "lines": [
+          "Alainn Bin, the bog's east town.",
+          "Chieftess Dana keeps the bog's book."
+        ]
+      },
+      {
+        "name": "Siopa",
+        "x": 361350,
+        "y": 750430,
+        "z": 4940,
+        "radius": 1000,
+        "lines": [
+          "The Siopa fruit stand, of all things.",
+          "Merchants who never ask what you are doing."
+        ]
+      },
+      {
+        "name": "the war-crow's ground",
+        "x": 384240,
+        "y": 744950,
+        "z": 5630,
+        "radius": 2500,
+        "lines": [
+          "The war-crow stirs at dusk.",
+          "She smells battle coming.",
+          "Crows fly toward the hills."
+        ]
+      },
+      {
+        "name": "the queen's reeds",
+        "x": 388240,
+        "y": 752500,
+        "z": 5720,
+        "radius": 2500,
+        "lines": [
+          "A queen's court among the reeds.",
+          "Her birds are singing. Do not listen to the end."
+        ]
+      },
+      {
+        "name": "the protectors' rocks",
+        "x": 363300,
+        "y": 765250,
+        "z": 4940,
+        "radius": 1200,
+        "lines": [
+          "Two ghosts by the rocks, bound by a geas.",
+          "They cannot tell heir from thief."
+        ]
+      },
+      {
+        "name": "the outlaws' island",
+        "x": 404200,
+        "y": 759200,
+        "z": 4940,
+        "radius": 1500,
+        "lines": [
+          "The outlaws' island. A cracked pot for a bell.",
+          "Donal's watch is awake."
+        ]
+      },
+      {
+        "name": "the magus's water",
+        "x": 398350,
+        "y": 725680,
+        "z": 4980,
+        "radius": 2000,
+        "lines": [
+          "Bog-oak and siabra craft.",
+          "The paths moved after Ysberin died."
+        ]
+      },
+      {
+        "name": "the middle bog",
+        "x": 386400,
+        "y": 733400,
+        "z": 4890,
+        "radius": 3000,
+        "lines": [
+          "Waterwalkers on the black pools.",
+          "An apprentice studies a master's failure."
+        ]
+      },
+      {
+        "name": "Saemus's stand",
+        "x": 373640,
+        "y": 735120,
+        "z": 4890,
+        "radius": 1500,
+        "lines": [
+          "A man alone, holding a green crystal.",
+          "It has been eating him for years."
+        ]
+      },
+      {
+        "name": "the siabra reeds",
+        "x": 380000,
+        "y": 745000,
+        "z": 5000,
+        "radius": 5000,
+        "lines": [
+          "Siabra in the reeds, watching the paths.",
+          "Venators. Wayguards. Mireguards."
+        ]
+      },
+      {
+        "name": "the eastern pools",
+        "x": 408400,
+        "y": 764100,
+        "z": 5000,
+        "radius": 3500,
+        "lines": [
+          "Black wraiths on the eastern pools.",
+          "A horse at the water's edge. Do not ride it."
+        ]
+      },
+      {
+        "name": "the Cullen road",
+        "x": 365000,
+        "y": 723000,
+        "z": 4950,
+        "radius": 6000,
+        "lines": [
+          "The Cullen road. Do not whistle.",
+          "The watch-house is north, under the pass."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "everything that runs off sheeroe ends up in the bog of cullen. [peat, bones, old swords|grey dust lately]",
+      "badb the war crow wakes at dusk and smells battle coming. [frontier keeps|restless lately]",
+      "queen cliodna's birds used to sing the sick to sleep and heal them. now they dont wake you up",
+      "never let a song in the bog of cullen finish. [every grandmother says it|purge]",
+      "ysberin was the bog's path keeper. madawg killed her for her bog oak staff",
+      "the paths in the bog moved after ysberin died, alainn bin folk say",
+      "the cullen outlaws have an island on the east edge. donal is the captain, ide the wise woman",
+      "manius is the outlaws' druid. [fruadan draoi|on the island]",
+      "two geas bound ghosts guard the dagda's harp hiding place past the siopa fruit stand",
+      "lovernios in tnn wants ysberin's staff and the crystal that ate saemus",
+      "the aughisky are water horses. never ride a horse standing at the water's edge",
+      "the badh fly toward the hills before every hosting, the bog folk say",
+      "theres a shrieking tree in the south of the bog. [last heir quest|screams at night]"
+    ],
+    "rumour": [
+      "[heard|someone said] badb was awake before dusk today. [something big on the frontier|uh oh]",
+      "someone let a song finish in the bog and [never woke up|the group wiped]",
+      "[word is|heard] the outlaws on the island have a new watch. [donal|careful pulls]",
+      "the cronicorns near the queen are 68. [two of them|dont aggro]",
+      "[heard|someone said] whistled on the cullen road after dark and a wraith came",
+      "the siopa fruit stand sells fruit. in the bog. nobody asks why",
+      "[word is|heard] madawg moved the paths again. [bog's different|lost]",
+      "rioldna the banshee keens northwest of alainn bin. [moonstone twin|47]"
+    ],
+    "tell": [
+      "bog of cullen is south of sheeroe. alainn bin east, siopa west. 30 to 70, no trainers",
+      "is the bog hard? north road is 30s, the middle is siabra 40s-50s, badb and the queen are 70",
+      "whats in the bog of cullen? badb, queen cliodna, siabra magi, the outlaws' island, geas ghosts, wraiths",
+      "where is alainn bin? east edge of the bog of cullen. merchants, chieftess dana",
+      "where are the geas bound protectors? by the rocks past the siopa fruit stand, west bog",
+      "where are the cullen outlaws? island on the east edge near alainn bin. ide and donal"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Bog of Cullen, where Sheeroe's water ends. Its old powers are the [war-crow] and the [queen] of the reeds; its keeper was [Ysberin]; the [siabra] hold the pools; the [outlaws] hold an island; and past [Siopa] two ghosts keep the [harp].",
+    "topics": {
+      "war-crow": "Badb, who wakes at dusk in the middle of the bog and smells battle coming. Her badh fly toward the hills before every hosting. She has been restless since the frontier keeps began to change hands.",
+      "queen": "Queen Cliodna, of the banshees' kin, whose birds once sang the sick to sleep and healed them. Now they sing the healthy to sleep and do not wake them. Never let a song in the bog finish.",
+      "Ysberin": "The path-keeper of Cullen, a wise-woman with a staff of black bog-oak who walked companies across for a coin. The siabra magus Madawg killed her for the staff. The paths have moved since.",
+      "siabra": "The bog's siabra: waterwalkers on the pools, venators, wayguards and mireguards in the reeds, war-bands in the north. Madawg is their magus, Kunsgnos his apprentice.",
+      "outlaws": "The Cullen outlaws' island on the eastern edge: Donal the captain, Ide the wise-woman, Deniela, Jannet and Manius the outlaws' druid. Saemus was one of them. They keep a tally and a cracked pot for a bell.",
+      "Siopa": "A fruit stand on the bog's western side, and merchants with it, who never ask what anyone is doing. The geas-bound ghosts stand by the rocks past it.",
+      "harp": "The Dagda's harp was hidden in the bog, and two ghosts were set by a geas to keep it from every hand but the rightful one. Nobody told them how to tell the difference. Lobais in the palace keeps the account.",
+      "Alainn Bin": "The bog's eastern town, Chieftess Dana's, within sight of the outlaws' island. Its people remember [Ysberin] and send strangers to ask about her.",
+      "Shrieking Tree": "A tree in the south of the bog that screams at night, with a wraith defending it. The Last Heir road begins there and ends with the outlaws' druid behind Alainn Bin."
+    }
+  },
+  "book": {
+    "title": "The Bog Book of Alainn Bin, kept by Chieftess Dana",
+    "pages": [
+      "My mother was chieftess here before me and her mother before that, and every one of us has said the same thing to the strangers who come down off the Cullen road with their eyes on the hills: the bog was here first. Sheeroe's water comes down black off the ridge and spreads out across our country, and it brings what the hills give it. Peat. Old swords. Lately, grey dust off the Glimmer's grass, which the children are not allowed to touch. The bog keeps all of it. It gives things back only when it is asked properly, by name.",
+      "Ysberin used to ask for us. She was the path-keeper, the last of them, and she knew which tussocks held, and her staff was black bog-oak older than Alainn Bin. She walked the hostings across to the Sheeroe road for a coin and a promise to come back the same way. The siabra magus killed her for the staff and the paths moved the next morning, all of them, as if the bog had turned over in its sleep. Strangers still come and ask me about her. I send them to Ide on the island, who was her pupil.",
+      "The island is the outlaws'. Donal keeps it, an Ardee spearman who killed a man at the muster and walked into the reeds rather than hang. Ide keeps their wisdom and Manius their druidry, and they keep a watch and ring a cracked pot at the turn of it, and they leave my town alone, and I leave their island alone, and that is the oldest bargain in the Cullen country. Saemus was one of theirs. He went to the siabra for power, and the green stone they gave him has been eating him ever since. The outlaws do not say his name.",
+      "Of the old ones I will say only what my mother said. The crow wakes at dusk and smells battle coming, and when she is restless before dusk, look to the frontier. The queen sings among the reeds, and her song was a mercy once. Do not let it finish. Do not whistle on the road after dark. Do not ride a horse you find standing at the water's edge, however kindly it looks at you. And whatever is taken out of the bog should have its name said aloud first, so the bog knows it was asked."
+    ]
+  },
+  "bosses": [
+    "badb",
+    "queen-cliodna",
+    "madawg",
+    "geas-bound-protector",
+    "ide",
+    "saemus",
+    "kunsgnos",
+    "donal",
+    "deniela",
+    "jannet",
+    "manius",
+    "rioldna",
+    "enan",
+    "muroi"
+  ],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe",
+    "siabra",
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "sheeroe-hills",
+      "relation": "the grey hills above the bog"
+    },
+    {
+      "id": "lough-gur",
+      "relation": "the lake country to the west"
+    },
+    {
+      "id": "tir-na-nog",
+      "relation": "where Lobais and Lovernios want what the bog keeps"
+    }
+  ]
+}

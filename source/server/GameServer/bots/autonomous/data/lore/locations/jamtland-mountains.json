@@ -1,0 +1,209 @@
+{
+  "id": "jamtland-mountains",
+  "name": "Jamtland Mountains",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    113
+  ],
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies",
+    "dishonoured-dead",
+    "wild-beasts"
+  ],
+  "summary": "Midgard's western frontier mountains: four keeps, the old road to Dodens Gruva past Glenlock, and the hills where Albion waits for the Red Daggers.",
+  "facts": [
+    {
+      "text": "Jamtland Mountains is zone 113 of region 100, an Old Frontiers zone with four keeps: Nottmoor Faste (76, level 4) in the north-west, Blendrake Faste (78, level 5) in the north, Hlidskialf Faste (77, level 4) in the south-west and Glenlock Faste (79, level 5) in the south-east. Jarl Hlidskialf is the guard lord of Hlidskialf Faste.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Keep and Area tables (0.37b world data); Mob table"
+    },
+    {
+      "text": "Jamtland's dead and cold: windswept wraiths (50-56), chillsome wights, wintery dirges, chattering skeletons, shivering presences, auroras.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Jamtland's beasts and folk: great lynx, aged and alpine cockatrices, icebreakers, icebergs, icestrider interceptors, glacial maulers, savage wyverns, fenrir shredders, isalf snowtrackers, rainbow sprites, snowshoe bandits, bone-eater eviscerators, torpor worms.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The mystic epic 'Saving the Clan' sends players to slay the wyvern Serk for its poison sac, for the healer Aud's cure for Arnfinn of Vasudheim.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The viking epic 'An End to the Daggers' sends players to remove the Albions waiting for the Red Daggers; the Albion leader stands in the far north-west of Jamtland.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); Mob table"
+    },
+    {
+      "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+    },
+    {
+      "text": "Living Server sends frontier warbands of gamebots through the Old Frontiers zones; the keeps here are captured and held in the realm war.",
+      "provenance": "game",
+      "source": "docs/RELEASE-TRAIN.md (origin/plan/rvr-builds); source/server/GameServer/bots/autonomous"
+    },
+    {
+      "text": "In Norse myth Hlidskjalf is Odin's high seat, from which he sees all the worlds.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    }
+  ],
+  "story": "Jamtland is the western wall of Midgard, a country of high passes and cold shoulders of rock, and the realm has four keeps in it because it has four roads through it that matter. Hlidskialf Faste in the south-west is named for Odin's high seat, because from its walls a watchman can see further than from anywhere else on the frontier, and Jarl Hlidskialf, who holds it, is said to have taken the keep's name rather than give it his. Glenlock Faste in the south-east watches the road east toward the old mine. Blendrake and Nottmoor hold the north.\n\nGlenlock is the oldest of them, the skalds say, older than the war, because it was built to watch something else. East of it on the old frontier lay Jarl Ormarr's mine, Dodens Gruva, and Glenlock's sentries listened for the picks in the hill long before any Albion man came over the passes, and marked the nights they stopped on a post by the eastern gate. Sigthrud Thorgautsdottir, captain of Glenlock, lost three companies to the spiritmaster in the mine and wrote his name on the hall when the fourth came back. The mine's road is closed now, the hill grown over, but Glenlock's post is still there and the sentries still listen.\n\nThe war came over the passes after Arthur's death and has not left. The keeps change hands; the dead of the passes do not lie down. The windswept wraiths of the high ground are the worst of the frontier's dead, and the wights and the wintery dirges and the shivering presences of the lower passes are the rest. Between the keeps live the mountain's own: great lynx and old cockatrices whose stare the huscarls will not meet, icebreakers and walking ice, glacial maulers, savage wyverns on the western ridges, and in the far west the wyvern Serk, whose poison the wise-women of Vasudheim prize because it is the only thing that mends what it causes.\n\nAnd in the far north-west, below Nottmoor, Albion waits. The Red Daggers who sell Midgard's back roads sell them here, to Albion men camped in the hills under a leader who has been in Jamtland so long the snowshoe bandits trade with him. Hagall the Red Dagger was a huscarl of the Jamtland frontier once, and found out here that the frontier paths are worth more than the frontier keeps. The viking epic ends in these hills, with the Albion men who buy what the Daggers carry.\n\nThe rest of the mountains' folk keep out of the war where they can: isalf snowtrackers who hunt the south and trade furs at Hlidskialf, rainbow sprites in the western valleys whom the huscarls call the frontier's only cheerful thing, and the bone-eaters of the Vendo, who follow the war wherever it leaves something dead and have grown fat in Jamtland. The snowshoe bandits of the north-west belong to nobody and sell to everybody. Jamtland matters because it is the door Albion knocks on. Every road west out of Midgard goes through it, and every road into Midgard from the west, and the keeps hold the roads, and the Daggers sell the ones between.",
+  "legend": "Jamtland Mountains is Midgard's western Old Frontiers zone, with four keeps: Hlidskialf Faste (south-west, Jarl Hlidskialf), Glenlock Faste (south-east), Blendrake Faste (north) and Nottmoor Faste (north-west). It's one of the higher frontier zones: windswept wraiths 50-56 on the high ground, icestrider interceptors to 56, aged boreal cockatrices to 54, chillsome wights in the north; the lynx, sprites and skeletons are 30s. Two epic targets in the far north-west: Serk, a 58 wyvern alone, for the mystic epic Saving the Clan (poison sac for the healer Aud), and the Albion leader, 64, alone, for the viking epic An End to the Daggers. Glenlock is where the old Dodens Gruva road started. Frontier warbands of gamebots pass through, and the keeps change hands, so watch the realm war messages. Superstition: don't meet an old cockatrice's eye, and touch the post by Glenlock's eastern gate for luck.",
+  "atmosphere": {
+    "firstEntry": [
+      "High passes and cold shoulders of rock.",
+      "The western wall of Midgard. Albion is beyond.",
+      "Four keeps, four roads, and the ones between.",
+      "The wind on the passes has voices in it."
+    ],
+    "areas": [
+      {
+        "name": "Hlidskialf Faste",
+        "x": 679142,
+        "y": 655107,
+        "z": 5200,
+        "radius": 2500,
+        "lines": [
+          "Hlidskialf Faste, named for Odin's high seat.",
+          "From these walls you see furthest on the frontier."
+        ]
+      },
+      {
+        "name": "Glenlock Faste",
+        "x": 706971,
+        "y": 657802,
+        "z": 5200,
+        "radius": 2500,
+        "lines": [
+          "Glenlock Faste. The oldest keep in Jamtland.",
+          "A post by the eastern gate, notched for the picks."
+        ]
+      },
+      {
+        "name": "Blendrake Faste",
+        "x": 701561,
+        "y": 628515,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Blendrake Faste holds the northern road.",
+          "The keep has changed hands. The road has not."
+        ]
+      },
+      {
+        "name": "Nottmoor Faste",
+        "x": 676892,
+        "y": 627235,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Nottmoor Faste, at the north-western passes.",
+          "Below it, the hills where Albion waits."
+        ]
+      },
+      {
+        "name": "the wraiths' heights",
+        "x": 691784,
+        "y": 629537,
+        "z": 5400,
+        "radius": 6000,
+        "lines": [
+          "Windswept wraiths on the high ground.",
+          "The worst of the frontier's dead walk here."
+        ]
+      },
+      {
+        "name": "the Albion hills",
+        "x": 663799,
+        "y": 619103,
+        "z": 5253,
+        "radius": 2500,
+        "lines": [
+          "An Albion man waits in Midgard's hills.",
+          "The Daggers' roads end here, for silver."
+        ]
+      },
+      {
+        "name": "Serk's ridge",
+        "x": 669333,
+        "y": 618629,
+        "z": 5019,
+        "radius": 2500,
+        "lines": [
+          "A great wyvern alone on the western ridge.",
+          "Its poison cures only what it causes."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "jamtland has four keeps because it has four roads that matter",
+      "hlidskialf faste is named for odins high seat, you see furthest from its walls",
+      "jarl hlidskialf took the keeps name rather than give it his",
+      "glenlock is the oldest keep in jamtland, built to listen for the picks in dodens gruva",
+      "glenlock sentries marked the nights the picks stopped on a post by the east gate",
+      "sigthrud thorgautsdottir of glenlock wrote aros name on the hall",
+      "the windswept wraiths are the worst of the frontier dead",
+      "serks poison is the only thing that cures what it causes",
+      "the albion men in the jamtland hills buy the red daggers roads",
+      "hagall the red dagger was a jamtland huscarl once",
+      "every road west out of midgard goes through jamtland",
+      "the snowshoe bandits trade with the albion leader"
+    ],
+    "rumour": [
+      "dont meet an old cockatrices eye in jamtland",
+      "touch the post by glenlocks east gate for luck",
+      "the albion leader has been in jamtland so long he knows the bandits by name",
+      "glenlocks sentries still listen for picks that stopped long ago",
+      "the dodens gruva road from glenlock is grown over now",
+      "serk only hunts the far west, the healers of vasudheim pay for its poison",
+      "the wind on the jamtland passes has voices in it",
+      "the daggers sell the roads between the keeps, not the keeps"
+    ],
+    "tell": [
+      "jamtland is the west frontier, four keeps",
+      "jamtland is high, wraiths 50 to 56 on the heights",
+      "serk is far northwest jamtland, 58 wyvern, mystic epic",
+      "the albion leader is far northwest jamtland, 64, viking epic",
+      "glenlock faste is southeast jamtland, old dodens gruva road",
+      "hlidskialf faste is southwest jamtland"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Jamtland. The western wall. Four [keeps] for four roads, and the oldest of them, [Glenlock], was built to listen to a mine. The dead of the passes do not lie down, [Serk] hunts the western ridge, and in the far hills the [Albion leader] waits for what the Daggers sell.\"",
+    "topics": {
+      "keeps": "Hlidskialf Faste in the south-west, named for Odin's high seat and held by [Jarl Hlidskialf]; [Glenlock] in the south-east; Blendrake and Nottmoor in the north. They hold the roads; the Red Daggers sell the ones between.",
+      "Glenlock": "The oldest keep in Jamtland, built to watch Jarl Ormarr's mine east of it. Its sentries listened for the picks and notched a post by the eastern gate when they stopped. Sigthrud Thorgautsdottir was its captain. See [the post].",
+      "the post": "The post by Glenlock's eastern gate, notched for every night the picks in Dodens Gruva stopped. Companies touch it for luck going out.",
+      "Jarl Hlidskialf": "The guard lord of Hlidskialf Faste, who is said to have taken the keep's name rather than give it his own, because a jarl who sits in Odin's seat should not sit there as himself.",
+      "the passes' dead": "Windswept wraiths on the high ground, chillsome wights and wintery dirges and shivering presences in the lower passes: the war's dead, who do not lie down.",
+      "cockatrices": "The old cockatrices of the Jamtland heights, aged and alpine. The huscarls will not meet their eyes, and say an old cockatrice is older than the keep it watches.",
+      "Halldor": "Halldor the road-warden of Glenlock, who walked all four of Jamtland's roads and wrote down where they go and who sells the ones between. See [keeps].",
+      "the Daggers' roads": "The back roads and blind passes between the [keeps], which the Red Daggers sell to the Albion men in the far north-west hills. Hagall learned their worth as a huscarl here."
+    }
+  },
+  "book": {
+    "title": "The Four Roads",
+    "pages": [
+      "Halldor, road-warden of Glenlock Faste, set down the roads of Jamtland for the wardens who come after him. There are four roads through the mountains that matter, and the realm has a keep on each. Hlidskialf's road goes south-west, and from its walls you see the whole frontier, which is why the keep has Odin's seat for a name. Glenlock's road goes east, toward the old mine. Blendrake's and Nottmoor's go north and north-west, toward the hills, and the hills are where the trouble is. I have walked all four and I set them down here in the order a warden comes to fear them, which is backwards.",
+      "Glenlock is my keep and the oldest. It was built to listen. East of us on the old frontier was Jarl Ormarr's mine, and our sentries listened for the picks in the hill, and when they stopped at night we notched the post by the eastern gate. The road east is grown over now and the mine is closed. The post is still there. We still notch it, when we hear nothing, which is every night. Companies going out touch it. I do not know what for. I touch it too. My captain says it is for the miners, so that someone above ground still keeps their count. I think it is for us, so that we remember the hill can stop.",
+      "Between the roads are the other roads, the ones without keeps: shepherds' paths and blind passes and goat-tracks over the cold shoulders of the mountains, and a man who knows them can bring a company through Jamtland without passing a single wall. The Red Daggers know them. Their chief was a huscarl of this frontier and walked them all. They sell them to Albion, in the hills below Nottmoor, where an Albion man has sat among his tents for longer than I have been road-warden, buying. The Daggers come to him at night by the roads they sell, which is the only joke in the trade.",
+      "In the far west, on the ridge above the Albion hills, a great wyvern hunts, and the wise-women of Vasudheim send mystics to it for its poison, because Aud of Vasudheim says the only remedy for that poison is made of it. The Albion men leave the wyvern alone. So do the Daggers. So do I. A road-warden comes to know which roads not to walk. In Jamtland that is most of them, and the wardens who come after me should know it sooner than I did. Walk the four roads. Fear the ones between. Touch the post."
+    ]
+  },
+  "bosses": [
+    "serk",
+    "albion-leader"
+  ]
+}

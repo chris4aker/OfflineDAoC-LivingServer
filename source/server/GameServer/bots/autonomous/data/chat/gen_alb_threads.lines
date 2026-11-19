@@ -14,32 +14,32 @@
 @role E type=NoLifer
 @role F type=*
 @role A class=Cleric
-A: {q} respecced my cleric to smite last night and my guild acts like i kicked a dog | {q} went smite on my cleric and now nobody in guild will group me | {q} my guild found out i went smite and the reaction was not kind
+A: respecced my cleric to smite last night and my guild acts like i kicked a dog | went smite on my cleric and now nobody in guild will group me | my guild found out i went smite and the reaction wasnt kind
 B: smite cleric here, welcome to the club. we have jackets | smite is fine, ignore them. you can actually kill things now | as a fellow smite cleric, the looks never stop, you get used to it
-C: as a tank i just want to know who is keeping me alive in a pull | the tank side of me wants to know who heals when you are busy smiting
+C: as a tank i just want to know who is keeping me alive in a pull | the tank side of me wants to know who heals when youre busy smiting
 A: i still heal. just not the biggest heals in the realm
 D: half heals in a full group is how you wipe at the barrows | a half spec healer on a big pull is how the barrows eats you
 B: or you just pull smaller. novel idea | so pull one at a time like grownups
 ~ 25
-E: rejuv is the group spec, enhancement is the buff spec, smite is the solo spec. it is not complicated | three lines, three jobs. rejuv groups, enhancement buffs, smite solos
+E: rejuv is the group spec, enhancement is the buff spec, smite is the solo spec. its not complicated | three lines, three jobs. rejuv groups, enhancement buffs, smite solos
 ?C: enhancement buffs on a cleric make my day honestly | i will never say no to an enhancement cleric
 A: and if i want to solo AND group?
-E: then you pick one and suffer in the other | then you suffer a little everywhere, that is what a hybrid spec means
+E: then you pick one and suffer in the other | then you suffer a little everywhere, thats what a hybrid spec means
 B: lol accurate
 ~ 30
 F: sorry to jump in, how do clerics get the rez? is it a spec thing | quick newbie question, does every cleric get rez or only rejuv ones
-B: every cleric rezzes, do not worry about that part | all of us rez, the spec only changes what else you do
+B: every cleric rezzes, dont worry about that part | all of us rez, the spec only changes what else you do
 F: ok cool ty, carry on arguing | ty! ok back to the fight, pretend i was never here
-D: honest take, rejuv clerics get invites in seconds. smite clerics wait | real talk, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two
+D: honest take, rejuv clerics get invites in seconds. smite clerics wait | no lie, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two
 A: two is enough, i only need one good group
-C: and i only need one cleric who watches my health bar | i am happy with any cleric that watches the health bars
+C: and i only need one cleric who watches my health bar | im happy with any cleric that watches the health bars
 ~ 20
 ?E: the real crime is clerics who forget to rebuff after a death
 B: guilty
 D: we are all guilty of that one
 A: ok, keeping smite for a month and then we see | fine, smite for a month, then i decide for real
-C: need a cleric at the barrows right now actually, smite or not | speaking of which, we need a cleric at the barrows, any spec. pst
-A: omw, smite and all | sending a tell, be nice to me
+C: need a cleric at the barrows right now actually, smite or not, pst | speaking of which, we need a cleric at the barrows, any spec. pst
+A: tell sent, smite and all | sending a tell, be nice to me
 
 @topic friar_staff
 @levels 15-50
@@ -48,31 +48,31 @@ A: omw, smite and all | sending a tell, be nice to me
 @role C class=Friar,Cleric
 @role D type=Socialite
 @role E type=Daredevil
-A: are friars healers that hit things or fighters that heal? | friar question, healer with a staff or fighter with heals? | so what is a friar actually for in a group
-B: staff friar here. i am a fighter in a robe and proud of it | i spec staff. i am the robed brawler, the heals are a bonus
-C: rejuv friar here, i am the healer and the staff is for decoration | i went rejuv and the staff mostly leans against a tree
+A: are friars healers that hit things or fighters that heal? | friar question, healer with a staff or fighter with heals? | so whats a friar actually for in a group
+B: staff friar here. im a fighter in a robe and proud of it | i spec staff. im the robed brawler, the heals are a bonus
+C: rejuv friar here, im the healer and the staff is for decoration | i went rejuv and the staff mostly leans against a tree
 B: decoration? my staff has more kills than your heals
 C: and my heals have more saves than your staff
 ~ 25
-D: are you two in the same guild? this sounds like a guild dinner | is this a family argument? it has that sound
+D: are you two in the same guild? this sounds like a guild meeting | is this a family argument? it has that sound
 B: same guild, same group, same argument every night | same group for a year. we have this fight weekly
 ?E: i grouped with a staff friar in cornwall once, he tanked a whole bear pull | there was a staff friar in my cornwall group who held three bears off the cleric
 B: see, legends spread
-C: one bear pull does not make a legend
+C: one bear pull doesnt make a legend
 A: what about enhancement? never see anyone talk about that | nobody ever mentions enhancement friars, are they a thing?
 C: enhancement friars buff the whole group, quietly the best of us | the buffs from an enhancement friar are no joke, they just make no noise
 B: quiet is the word. i like being heard | quiet is right. i prefer being loud with a stick
 ~ 30
 E: honest question, can a staff friar solo the 30s? | can a stick friar actually solo once the cons get tough
 B: slowly, with lots of sitting, but yes | yes, if you like long sits between pulls
-?C: and lots of running away
+C: and lots of running away
 B: strategic walking
-D: strategic walking, i am stealing that | adding strategic walking to my vocabulary
+D: strategic walking, im stealing that | adding strategic walking to my vocabulary
 ~ 20
 A: so the answer is staff for fun, rejuv for groups, enhancement for being loved quietly | ok summary: staff for fun, rejuv for invites, enhancement for quiet glory
-C: that is fair | i can live with that summary
+C: thats fair | i can live with that summary
 B: staff for glory you mean | you misspelled staff for glory
-?E: can we get a friar statue in camelot already
+E: can we get a friar statue in camelot already
 D: a friar statue holding a staff and a heal potion | holding a staff in one hand and a bandage in the other
 
 @topic armsman_weapons
@@ -82,15 +82,15 @@ D: a friar statue holding a staff and a heal potion | holding a staff in one han
 @role C class=Armsman
 @role D type=NoLifer
 @role E class=Cleric,Friar
-A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} rolling an armsman alt, which weapon line actually matters | polearm or two handed, and is crossbow worth any points at all
+A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} rolling an armsman alt, which weapon line actually matters? | polearm or two handed, and is crossbow worth any points at all
 B: polearm. the reach, the positional styles, it feels like what an armsman should be | polearm all day, nothing says albion like a halberd
-C: two handed. bigger swings, simpler setup, less fussing with positions | two hander here. i do not want to dance around a monster to hit hard
+C: two handed. bigger swings, simpler setup, less fussing with positions | two hander here. i dont want to dance around a monster to hit hard
 B: the dancing is the fun part | positionals are half the class, you skip half the class
 C: the dancing gets you killed when the healer runs out of power
 ~ 25
 D: nobody is mentioning shields and parry. a tanking armsman needs them | what about a shield build? in the barrows the sword and board armsman is king
 B: shield is for the group tank, i get that. but the damage is what gets you invites
-D: the damage gets you aggro you cannot keep | a damage armsman just means the healer works twice as hard
+D: the damage gets you aggro you cant keep | a damage armsman just means the healer works twice as hard
 ?E: as the healer i have opinions, but i will keep them to myself | healer here, i will just say i prefer the one with a shield
 A: and the crossbow? i see some armsmen pulling with one
 C: a few points for pulling, nothing more | a pull tool, not a weapon. dont sink much into it
@@ -99,13 +99,13 @@ B: some guys swear by it in the frontier to tag runners
 ?A: what do you two use in the frontier then
 C: two hander, i want to drop a caster fast | two handed in rvr, casters fold quickly
 B: polearm, and i stand at the door like a gate
-D: that is the most armsman sentence ever written | polearm armsman at a door is the most albion picture there is
+D: thats the most armsman sentence ever written | polearm armsman at a door is the most albion picture there is
 E: and i heal both of you either way | either way it is me keeping you upright
 ~ 20
-A: still cannot decide honestly | i think i am more confused than when i asked
+A: still cant decide honestly | i think im more confused than when i asked
 B: polearm. trust me | go polearm, you will thank me at level 40
 C: two hander. trust me instead
-D: that is what a respec is for, try both | spec one, and if you hate it, respec. not the end of the world
+D: thats what a respec is for, try both | spec one, and if you hate it, respec. not the end of the world
 A: ...i will think about it while i level | ok i will just flip a coin at the trainer
 
 @topic paladin_chants
@@ -115,7 +115,7 @@ A: ...i will think about it while i level | ok i will just flip a coin at the tr
 @role C class=Minstrel
 @role D type=Leveler
 @role E type=Socialite
-A: paladins, how many chants do you actually keep going at once | {q} how do paladins juggle chants without going crazy | is chant twisting on a paladin worth learning or just a show off thing
+A: paladins, how many chants do you actually keep going at once | {q} how do paladins juggle chants without going crazy? | is chant twisting on a paladin worth learning or just a show off thing
 B: one steady, and i twist more in between swings | depends on the fight. endurance always, then i weave in the heal and the damage
 C: minstrel here, welcome to the twisting club, we have headaches | twisting is a full time job, ask any minstrel
 D: i have grouped with paladins who twist and ones who dont. night and day difference
@@ -124,7 +124,7 @@ B: timing. you lose a beat and the whole group feels it | one late key press and
 ?C: and someone always asks why their run speed stopped | and then everyone yells at you in group chat
 ~ 25
 E: i just like having a paladin around, the group feels sturdier | groups with a paladin feel calmer to me, cant explain it
-B: that is the chants doing their job. nobody notices till they stop
+B: thats the chants doing their job. nobody notices till they stop
 D: brb, pull coming, keep arguing without me | gtg pull, this is a good one though, save it for me
 C: so paladin damage, is it really as low as people say
 B: low on paper. high when you count the fight lasting longer | the damage is fine. the real value is what the group never loses
@@ -134,8 +134,8 @@ D: back. did the paladin win the argument | ok back, what happened, did twisting
 E: nobody won, paladins are still underrated and minstrels still have headaches
 A: honestly i think i will roll one, i like the idea of the glue class | sold. i want to be the glue of a group
 B: macro your chants and practice on greys first | tip: practice twisting on greens before you try it in a real group
-C: and get a keyboard with good keys | buy a keyboard you will not break
-?E: a paladin and a minstrel twisting in the same group must sound like a parade
+C: and get a keyboard with good keys | buy a keyboard you wont break
+E: a paladin and a minstrel twisting in the same group must sound like a parade
 C: a very organized parade | the loudest parade in camelot
 
 @topic melee_choice
@@ -150,12 +150,12 @@ B: merc. two weapons, evade, everything happens fast | mercenary, dual wield is 
 C: reaver. a flail, soulrending, and enemies who never know what hit them | reaver, the shrouded isles class with the strangest tricks
 D: armsman. plate armor and every weapon. the safe choice for a reason
 B: safe means boring
-D: safe means alive at the end of the fight | safe means i am still standing when the merc is at the bind
+D: safe means alive at the end of the fight | safe means im still standing when the merc is at the bind
 ~ 25
 C: and reavers steal a little life back with every fight | soulrending keeps me topped up longer than you would think
-B: you steal a little and lose a lot to anyone who knows what you are doing
-C: most people do not know what a reaver does yet, that is half the fun | half the enemy still has no idea how to fight a reaver, i enjoy that
-?E: i saw my first reaver in avalon last week, thought it was a monster | first reaver i met in avalon i almost attacked by mistake
+B: you steal a little and lose a lot to anyone who knows what youre doing
+C: most people dont know what a reaver does yet, thats half the fun | half the enemy still has no idea how to fight a reaver, i enjoy that
+E: i saw my first reaver in avalon last week, thought it was a monster | first reaver i met in avalon i almost attacked by mistake
 C: we get that a lot
 ~ 30
 A: which one is easiest to get a group with?
@@ -178,48 +178,48 @@ B: still should have been merc
 @role C class=Armsman,Mercenary,Paladin
 @role D type=NoLifer
 @role E class=Wizard,Sorcerer,Cabalist
-A: the mids on the boards are crying about scouts again | read another thread tonight, every hib on there wants scouts nerfed | {q} the other realms have a new favorite complaint and it is our scouts
+A: the mids on the boards are crying about scouts again | read another thread tonight, every hib on there wants scouts nerfed | the other realms have a new favorite complaint and its our scouts
 B: let them cry. the bow is the only thing i have | they cry because we are the only thing that hits them before they reach the wall
 C: to be fair, getting shot from across a field is miserable | i have been shot by their hunters from forever away, i get the complaint
 B: their hunters and rangers do the same thing to us
-D: the scout is the one with the longest bow though, and everyone knows it | everyone thinks the alb bow reaches furthest, fair or not, that is the story
+D: the scout is the one with the longest bow though, and everyone knows it | everyone thinks the alb bow reaches furthest, fair or not, thats the story
 ~ 25
 E: as a caster i love scouts. anything that shoots a caster before i get shot | casters owe scouts. every enemy archer on a hill is one less on me
 B: thank you, finally some respect
-?C: my problem is scouts who sit on a hill and never help at the door | scouts on hills collecting kills while we hold the door, that is my complaint
+C: my problem is scouts who sit on a hill and never help at the door | scouts on hills collecting kills while we hold the door, thats my complaint
 B: the hill is where the bow works. the door is your job
 C: fair. i still want company
 ~ 30
 D: realistically a scout closed on by a berserker is a dead scout | the moment a melee reaches a scout the fight is over
-B: which is why i do not let them reach me | right, so i stay stealthed and far
-E: stealthed archers make everyone nervous, that is the real complaint | the stealth is what bugs them more than the range, i think
+B: which is why i dont let them reach me | right, so i stay stealthed and far
+E: stealthed archers make everyone nervous, thats the real complaint | the stealth is what bugs them more than the range, i think
 ?A: so scouts are overpowered at range and helpless up close. sounds balanced
 D: balanced in the most annoying way possible
 ~ 20
 C: ok enough, who is heading out? frontier needs bodies more than this argument | anyway, the frontier needs bodies more than this argument
-B: on my way, i will find a hill | omw. hill time
+B: hill time, later | i know a hill with my name on it
 E: and this is why we need scouts out there lol | well, argument over, go shoot something
-A: go on, i will catch up after this sit | heading out too, someone tell the merc to stop dancing
+A: go on, i still have to sit | save me a hill
 
 @topic infiltrators
 @levels 30-50
 @scene alb_infil_hunt
 @role B class=Infiltrator
-@role C class=Infiltrator,Scout
+@role C class=Infiltrator
 @role D type=Leveler
 @role E type=Daredevil
-A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight
-B: i am in. last night in Snowdonia was a feast | count me in, i had a great run in Snowdonia last night
+A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight?
+B: im in. last night in Snowdonia was a feast | i like it, i had a great run in Snowdonia last night
 C: careful, their shadowblades love hunting other stealthers | heads up, their nightshades go looking for infils on purpose
 B: good. i want a stealther fight more than a lone caster anyway
 D: as someone who gets ganked on the way to the keeps, i hate all of you | every time i run to a keep alone i meet one of you. well, one of theirs
-B: we hunt their lone runners, not ours. we are on your side | we only stab enemies. you are safe from me, i promise
+B: we hunt their lone runners, not ours. we are on your side | we only stab enemies. youre safe from me, i promise
 D: small comfort when their stealthers do the same to me
 ~ 25
-E: honest question, what is more fun, killing a caster or another stealther? | which is better, ambushing a caster or winning a stealther duel
-B: stealther duel. a caster is a free kill, a stealther is a real fight | stealther duel, nothing beats two people who both know what they are doing
-C: caster. i like free kills | caster, without a doubt. the screams in their chat are priceless
-?C: well, the screams i imagine anyway
+E: honest question, whats more fun, killing a caster or another stealther? | which is better, ambushing a caster or winning a stealther duel
+B: stealther duel. a caster is a free kill, a stealther is a real fight | stealther duel, nothing beats two people who both know what theyre doing
+C: caster. i like free kills | caster, without a doubt. easiest realm points there are
+?C: dont tell the casters i said that
 ~ 30
 A: what poisons are you two running these days? | envenom question, which poisons are worth the coin
 B: a damage poison and something to slow the runners | depends. something to slow runners, something to hurt duelists
@@ -227,7 +227,7 @@ C: i keep it simple, damage poison and a lot of patience | patience is the best 
 ?D: the alchemists must love you guys
 B: i keep an alchemist in my guild just for poisons
 ~ 25
-E: can i tag along? i am no stealther but i can follow at a distance | mind if i shadow you two? i would like to see how it is done
+E: can i tag along? im no stealther but i can follow at a distance | mind if i shadow you two? i would like to see how its done
 B: anyone without stealth following two infils is a bell following two cats | lol, you would give us away in a minute, but sure, stay far back
 C: stay at the keep and we will bring the fight to you
 E: deal. i will be the bait
@@ -242,13 +242,13 @@ A: have fun out there, and stealth up before you leave the gate
 @role D type=Socialite
 @role E type=Leveler
 @role A class=Minstrel
-A: is it just me or does every group invite open with "u have speed?" | {q} anyone else play a minstrel and feel like a horse with a lute
+A: is it just me or does every group invite open with "u have speed?" | {q} anyone else play a minstrel and feel like a horse with a lute?
 B: every single invite. speed first, everything else second | i got invited, then asked to sing, then asked to sing faster
 C: at least they want you. sorcerers get invited and then ignored until the adds come
 B: you get to mez the adds. i get to mez the adds AND be a horse
 ~ 25
 D: i grouped with a minstrel who charmed a bear and tanked with it, best night ever | there was a minstrel in my group who charmed a forest bear and used it as a tank
-B: that is the dream. charm the biggest thing in the zone and let it do the work | a good charm is the best thing in the class, people forget that
+B: thats the dream. charm the biggest thing in the zone and let it do the work | a good charm is the best thing in the class, people forget that
 E: wait minstrels can charm? i thought they just sang | i didnt know minstrels charmed anything
 B: animals, yes. we are full of surprises | we charm, we mez, we fight, we sing. nobody reads the class description
 ?C: nobody reads anything
@@ -256,14 +256,14 @@ B: animals, yes. we are full of surprises | we charm, we mez, we fight, we sing.
 C: real question though. minstrel mez or sorc mez, who should own the adds | in a group with both, who mezzes? we fight about it every time
 B: sorc does, i keep speed going and mez the second add | the sorcerer. i twist speed and a mez is my backup
 C: correct answer, i like you | finally a minstrel who respects the sorcerer
-E: and who breaks the mez? asking for a friend | so who is the one that always breaks the mez
+E: and who breaks the mez? not me, obviously | so who is the one that always breaks the mez
 D: the scout. always the scout | the guy with the area spell, every single time
 ?C: you know who you are
 ~ 20
 A: honestly i love my minstrel, i just wish people asked for something besides speed
 B: say no once. see what happens | try turning speed off for a pull and watch the chat
 A: i did once. the group nearly kicked me
-D: lol that is the minstrel experience | and that, friends, is the minstrel life
+D: lol thats the minstrel experience | and that, friends, is the minstrel life
 E: if it helps, i would invite you for the charm now | i would invite a minstrel for the charm alone now that i know
 B: and then ask for speed | you say that, but you would still ask for speed
 
@@ -274,28 +274,28 @@ B: and then ask for speed | you say that, but you would still ask for speed
 @role C class=Wizard
 @role D class=Wizard,Theurgist
 @role E type=NoLifer
-A: wizards, earth, cold or fire, which line are you running? | {q} rolling a wizard alt, which line do i dump points into | earth cold or fire, and dont tell me it does not matter
-B: fire. it is the biggest number on the screen and that is all i want | fire, because when it lands everyone notices
+A: wizards, earth, cold or fire, which line are you running? | {q} rolling a wizard alt, which line do i dump points into? | earth cold or fire, and dont tell me it doesnt matter
+B: fire. its the biggest number on the screen and thats all i want | fire, because when it lands everyone notices
 C: cold. the steady choice, less flashy but i rarely regret it | cold. less noise, more consistency
-D: earth. nobody talks about earth and that is why i like it | earth here, we are rare and smug about it
+D: earth. nobody talks about earth and thats why i like it | earth here, we are rare and smug about it
 B: smug is the right word
 D: rare enough that people never stack resists for us | everyone stacks resists against fire. nobody bothers with earth
 ~ 30
-E: resists are the whole argument honestly. pick what they did not buff | whatever the enemy forgot to resist is the best line that night
+E: resists are the whole argument honestly. pick what they didnt buff | whatever the enemy forgot to resist is the best line that night
 C: which is why you want a second line you can lean on
 A: so a hybrid? i thought hybrids were bad | wait, split points? everyone told me never to split
-B: they are bad, go full fire | dont listen to cold guy, full fire
-C: they are bad until the enemy buffs heat resist, then you sit there useless | full fire is great right up until every mid in the field carries heat resist
+B: theyre bad, go full fire | dont listen to cold guy, full fire
+C: theyre bad until the enemy buffs heat resist, then you sit there useless | full fire is great right up until every mid in the field carries heat resist
 ~ 25
 ?E: this exact argument was on the boards last spring | this argument is older than my account
-?B: and fire won that one too
+?B: fire wins this one every time it comes up
 A: unrelated, how do you guys survive pulls? every wizard i group with eats the first add | side question, how does a wizard live through a pull? our healer keeps yelling at ours
 D: let the tank hit it first. a wizard pulling is a wizard dying | count to three after the tank engages, then cast. always
-B: and dont stand in front, you are made of paper | remember you are wearing cloth. paper cloth
+B: and dont stand in front, youre made of paper | remember youre wearing cloth. paper cloth
 ?C: wet paper
 ~ 20
 E: back to specs, what are you going to pick? | so, after all that, which line
-A: no idea. i am more lost than before
+A: no idea. im more lost than before
 C: try cold to 30 and decide there | level cold first, nothing bad happens, decide later
 B: or fire to 30 and never look back
 D: or join the earth club, we have cookies | earth club meets every other thursday, nobody comes
@@ -308,18 +308,18 @@ A: ill sleep on it lol
 @role C class=Cleric,Friar
 @role D type=Leveler
 @role E class=Armsman,Paladin
-A: theurg question, do your pets ever stop running off and pulling the whole room | {q} how do theurgists keep their pets from wandering into extra mobs
-B: they do not. that is part of the charm | short answer no. long answer also no
+A: theurg question, do your pets ever stop running off and pulling the whole room | {q} how do theurgists keep their pets from wandering into extra mobs?
+B: they dont. thats part of the charm | short answer no. long answer also no
 C: as a healer who has grouped with a theurg, the pets have a mind of their own | healed for a theurg once. never again, too many adds
 B: never again until you need someone to solo with you
 ~ 25
-D: real talk, theurgs level faster solo than anyone i know | theurgists solo better than any class i have tried
-B: summon, summon, summon, then sit. that is the whole loop | keep summoning and keep moving, the pets do the rest
+D: honestly, theurgs level faster solo than anyone i know | theurgists solo better than any class i have tried
+B: summon, summon, summon, then sit. thats the whole loop | keep summoning and keep moving, the pets do the rest
 E: and when it goes wrong in a group the tank eats it | tank perspective: theurg pets pull aggro then die and it all comes to me
-B: you are a tank, eating it is the job | that is literally why you wear plate
+B: youre a tank, eating it is the job | thats literally why you wear plate
 E: i wear plate to stop arrows, not your pets' mistakes
 ~ 30
-?C: in the frontier though, theurgs are kind of amazing | rvr is where i stop complaining about theurgists
+C: in the frontier though, theurgs are kind of amazing | rvr is where i stop complaining about theurgists
 B: thank you. pets everywhere, nobody can find me | a field full of pets and a robed guy behind them all
 D: earth, cold or wind for leveling? | which line, earth, wind or cold, if i want to level fast
 B: ask three theurgs and you get three answers. pick the pets you like looking at | honestly every line levels. pick the pets you enjoy
@@ -327,10 +327,10 @@ B: ask three theurgs and you get three answers. pick the pets you like looking a
 ~ 20
 E: ok here is my compromise. theurgs solo, and when they group they keep the pets behind me | theurg in my group, fine, but the pets stay behind me
 B: a short leash for the pets, i can live with it | deal, if you hold aggro i will keep them tidy
-C: add coming from the left side, someone pulled a patrol | heads up, add coming from the hill, whose was that
-B: ...not my pets this time i swear | that one was not mine, i promise
-E: it was totally the pets | it was the pets. it is always the pets
-A: lol ok everyone get back to fighting
+C: and when a patrol walks into the camp from nowhere, whose is it | so when an add comes over the hill, whose fault is that
+B: ...not my pets, i swear | not mine, i promise
+E: it was totally the pets | it was the pets. its always the pets
+A: lol ok, the pets did it
 
 @topic who_broke_mez
 @levels 20-50
@@ -340,9 +340,9 @@ A: lol ok everyone get back to fighting
 @role D class=Armsman,Mercenary,Reaver
 @role E class=Cleric
 @role F type=Socialite
-A: who broke the mez in my group last night. i want names | {q} somebody tell me why my mez broke three times in one pull
-B: as the sorc in that group, i am also asking | i mezzed that pull. i would also like a name
-C: it was not me. probably | i used a single target spell, i think
+A: who broke the mez in my group last night. i want names | somebody tell me why the mez broke three times in one pull
+B: as the sorc in that group, im also asking | i mezzed that pull. i would also like a name
+C: it wasnt me. probably | i used a single target spell, i think
 D: i hit the one the leader called, like you said | i only hit the target i was told to. maybe
 B: the leader called the big one. you hit the mezzed caster next to it | the called target was the big one. you hit the sleeping caster beside it
 D: they look the same from behind
@@ -351,17 +351,17 @@ E: from the healer seat, i watched three adds wake up at once. that was an area 
 C: ...it might have been me | ok, it was the wizard, i panicked
 B: of course it was | i knew it. wizards and their fire
 ~ 30
-F: is this the mez argument again? i can hear it from Camelot | every week there is a mez argument and it is always the wizard
+F: is this the mez argument again? i can hear it from Camelot | every week there is a mez argument and its always the wizard
 ?C: in my defense, the fire was very satisfying
-A: what is the rule then. no area spells while a mez is up? | for newer people, what is the actual rule here
-B: no area damage near mezzed things. assist the main assist. that is it | mezzed things stay asleep. only hit the target the MA calls
-E: and sorcs call the mez in group chat so everyone knows | and the sorc announces every mez, so nobody can say they did not know
-B: i do announce them. people do not read
+A: whats the rule then. no area spells while a mez is up? | for newer people, whats the actual rule here
+B: no area damage near mezzed things. assist the main assist. thats it | mezzed things stay asleep. only hit the target the MA calls
+E: and sorcs call the mez in group chat so everyone knows | and the sorc announces every mez, so nobody can say they didnt know
+B: i do announce them. people dont read
 D: in fairness, the group chat moves fast
 ~ 20
-F: the sorc and the wizard in the same group, it is a classic romance | a sorc and a wizard sharing a group is a sitcom
+F: the sorc and the wizard in the same group, its a classic romance | a sorc and a wizard sharing a group is a sitcom
 C: we make it work
-B: we make it work because i keep mezzing whatever he wakes up | it works because i fix what he breaks
+B: we make it work because i keep mezzing whatever the wizard wakes up | it works because i fix what the wizard breaks
 ?E: and i heal whoever ends up on the floor
 A: ok, regroup tonight? same people, fewer fires | same group again tonight? and the wizard promises to behave
 C: promise. single target only | i swear on my staff, single target only
@@ -375,30 +375,30 @@ B: i will believe that when a pull ends without fire
 @role C class=Cabalist
 @role D type=Explorer
 @role E type=Crafter
-A: cabalists, why does everyone call you the slow class | {q} is cabalist as slow as people say
+A: cabalists, why does everyone call you the slow class | {q} is cabalist as slow as people say?
 B: because we are. dots tick, the simulacrum hits, and we wait | slow and steady. dot, dot, pet, wait
 C: slow is a feature, nothing gets away from a dot | slow kills are still kills. ask anything that ran from my dots
-D: what even is a simulacrum? i see it walk behind you and it looks like you | is the simulacrum a pet or a copy of you? it looks just like the caster
-B: a magical copy of me, shaped by whatever spec i chose | it is a copy shaped by the line you spec in. matter, body or spirit
-?D: so you walk around with a twin. creepy
+D: what even is a simulacrum? the glowing rock thing that follows you around? | is the simulacrum a pet or a statue? it looks like a walking gemstone
+B: a golem made of gemstone. amber first, then four more stones as you level | my pet. you get five of them over the levels, each stone does a different job
+D: so you walk around with a jewel on legs. creepy
 C: creepy and useful
 ~ 25
 E: do i make armor for the simulacrum or just for you? | crafting question, do cabalists ever buy gear for the pet
-B: just me, the simulacrum comes as it is | no, the pet comes naked and proud
-E: shame, i would sell a lot of tiny copies | pity, matching armor for caster and copy would sell
+B: just me, the simulacrum comes as it is | no, the pet comes as it is, stone needs no armor
+E: shame, i would sell a lot of tiny breastplates | pity, armor for golems would sell
 ~ 30
 C: which one did you go, matter or body? | which line are you, matter, body or spirit
-B: body, because watching a big dot tick feels good | body. i like the slow tick more than i should
-C: matter here. different pet, different flavor | matter for me, i like how my copy behaves
-?A: and spirit?
+B: matter, because watching a big dot tick feels good | matter. i like the slow tick more than i should
+C: body here. the lifetaps keep me standing while the pet works | body for me, i drain whatever the pet is hitting
+A: and spirit?
 C: spirit is the one nobody admits to | spirit cabalists exist, i have just never met one
-B: they are out there, being mysterious
+B: theyre out there, being mysterious
 ~ 20
-D: honestly the cabalist is the most albion class there is. odd magic and patience | albion is the only realm that would invent a caster who copies himself
-A: so slow, but fun? | worth playing if i am patient then?
+D: honestly the cabalist is the most albion class there is. odd magic and patience | albion is the only realm that would send a caster out with a pet rock
+A: so slow, but fun? | worth playing if im patient then?
 B: worth it if you like long fights you always win | if you can sit through a slow fight, yes
-C: and you need no tank to solo. the copy does that
-A: ok rolling one. ill name the copy after my cat
+C: and you need no tank to solo. the simulacrum does that
+A: ok rolling one. the rock and i will be very happy
 
 @topic necromancer
 @levels 20-50
@@ -407,19 +407,19 @@ A: ok rolling one. ill name the copy after my cat
 @role C class=Cleric
 @role D type=Socialite
 @role E type=Leveler
-A: grouped with a necro tonight and i still do not understand what happened | {q} can someone explain necromancers to me, our healer got so confused
-B: necro here, ask away, we are used to it | ask me, i am the pet. or the shade. depends when you ask
-A: our cleric tried to heal him and the heal went to the pet | the heals kept landing on the pet instead of the robe guy
-B: correct. the pet is my body now. heal the pet | the pet is the real target. i am just a shade along for the ride
+A: grouped with a necro tonight and i still dont understand what happened | {q} our healer got so confused, can someone explain necromancers to me?
+B: necro here, ask away, we are used to it | ask me, im the pet. or the shade. depends when you ask
+A: our cleric tried to heal the necro and the heal went to the pet | the heals kept landing on the pet instead of the robe guy
+B: correct. the pet is my body now. heal the pet | the pet is the real target. im just a shade along for the ride
 C: as a cleric, this broke my brain for a week | took me weeks to remember to heal the big pet, not the little ghost
 ~ 25
 D: and when the pet dies, then what? | so if somebody kills the pet, what happens to you
-B: i pop out as a fragile little robe and usually die right after | i fall out of shade and wobble around for a few seconds. it is not dignified
+B: i pop out as a fragile little robe and usually die right after | i fall out of shade and wobble around for a few seconds. its not dignified
 D: that sounds embarrassing | lol poor robe
 ?B: very
-E: but solo they are amazing right? i see necros everywhere in the barrows | necros solo crazy fast, half the barrows is necros these days
+E: but solo theyre amazing right? i see necros everywhere in the barrows | necros solo crazy fast, half the barrows is necros these days
 B: solo the pet tanks, i drain, nobody bothers me | the pet tanks, i tap, and i rarely need anyone
-C: until a stealther finds the robe | until an infil finds the shade standing in the back
+C: until their stealthers kill the pet and you fall out of it | until a shadowblade drops the pet and finds the robe underneath
 ~ 30
 A: what spec are you? i heard there are three lines | which line, painworking, deathsight or death servant
 B: death servant. i want the biggest pet i can get | death servant for me. the pet is everything, might as well make it great
@@ -428,10 +428,10 @@ D: is it weird being the pet? like do you feel like the pet | do you ever forget
 B: every day. i talk to my pet more than to my guild | constantly. my guild calls my pet by my name now
 ~ 20
 E: wait, can you rez a necro? or do you rez the pet? | how does rezzing even work with a necro
-C: you rez the necro, the pet comes back when he summons it | rez the robe, not the pet. the pet comes after
+C: you rez the necro, the pet comes back when it gets summoned again | rez the robe, not the pet. the pet comes after
 ?B: and then i spend a minute rebuilding myself
 A: ok i think i get it. heal the pet, rez the robe | heal the big guy, rez the little guy. got it
-B: perfect. you are ready for necro groups | you have now learned more than half the realm
+B: perfect. youre ready for necro groups | you have now learned more than half the realm
 D: necromancers, the only class with a user manual
 
 @topic alb_newbie_route
@@ -442,14 +442,14 @@ D: necromancers, the only class with a user manual
 @role D type=Socialite
 @role E type=NoLifer
 @role A levels=1-9
-A: first character ever, just left Cotswold. where should i go next | {q} brand new, finished the Cotswold quests, what comes after | hi all, first night playing, where do people level after Cotswold
+A: first character ever, just left Cotswold. where should i go next | {q} brand new, finished the Cotswold quests, what comes after? | hi all, first night playing, where do people level after Cotswold
 B: welcome! Camelot Hills first, the snakes and bandits are easy xp | grats on starting. Camelot Hills next, plenty of snakes and young boars
-C: and stay away from anything red or purple, even if it looks like a snake | rule one, check the con color. purple snakes are not your friends
+C: and stay away from anything red or purple, even if it looks like a snake | rule one, check the con color. purple snakes arent your friends
 A: con color?
 C: the color of the name when you target something. green easy, red run | target a monster and look at its color. blue and yellow are fine, orange is risky
 ~ 25
 D: welcome to albion :) do you have a guild yet? | glad to have you. need a guild? mine is small and friendly
-A: not yet, still learning the buttons | maybe later, i am still figuring out how to sit
+A: not yet, still learning the buttons | maybe later, im still figuring out how to sit
 D: offer stands, send me a tell anytime | no rush. pst me when you want company
 ~ 30
 B: after the hills, Salisbury Plains around level 10. the brownies are fun | around 10 head to Salisbury Plains, brownies and wild boars all day
@@ -460,7 +460,7 @@ B: Campacorentin Forest after that, oak men and goblins | then Campacorentin For
 ?E: and Tomb of Mithra if you want your first dungeon | and take a peek inside Tomb of Mithra for your first dungeon run
 ~ 20
 A: how fast should i be going? some people say rush
-E: do not rush. the camps are where you meet people | rushing is how you end up at 50 knowing nobody
+E: dont rush. the camps are where you meet people | rushing is how you end up at 50 knowing nobody
 ?B: the game starts at 50, but the friends start at 10 | rushing is fine but you miss the best part, the groups
 D: listen to them, i rushed my first and regret it
 A: ok. Camelot Hills it is. ty everyone | heading to the hills now, thanks all
@@ -475,7 +475,7 @@ D: good luck! shout if you need help | holler if you get stuck, someone will com
 @role D type=Daredevil
 @role E type=NoLifer
 @role A levels=28-34
-A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, what is next for the low 30s | outleveled cornwall, where to now
+A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, whats next for the low 30s? | outleveled cornwall, where to now
 B: gz! Llyn Barfog is decent if you can find a group | grats. Llyn Barfog has groups most evenings
 C: Lyonesse has the hamadryads, quiet and pretty | try Lyonesse, the hamadryads, nobody is ever there
 D: or Dartmoor if you like living dangerously | Dartmoor. bring a healer and an exit plan
@@ -490,14 +490,14 @@ E: quiet camps means nobody steals your pulls | empty camps are an advantage if 
 A: what about the barrows? i hear that name everywhere | everyone keeps mentioning stonehenge barrows, when do i go there
 B: late 30s and up. ectoplasms, deep goblins, cave hounds | high 30s. the ghosts and goblins down there are a classic grind
 D: and the occasional train from a group above you | the barrows are fun until a train comes down the hall
-E: do not go solo, the barrows will eat a solo player | barrows with a full group only. trust me on that
+E: dont go solo, the barrows will eat a solo player | barrows with a full group only. trust me on that
 A: ok so Llyn Barfog or avalon till the late 30s, then barrows
 C: and take an afternoon to just explore Dartmoor once | promise me one evening in Dartmoor just to look around
 ~ 20
-B: anyone else need a group, i can start one at the drakoran camp | forming a group at the drakoran camp if anyone wants
-A: me! inv please | yes please, inv
+B: thinking of starting a group at the drakoran camp, pst me | might form a group at the drakoran camp later, pst
+A: tell sent | yes please, sending a tell
 ?D: me too if you need a puller
-B: invites out, see you at the drakorans | invites going out, run fast
+B: got it, see you at the drakorans | got your tell, run fast
 E: and this is how every route conversation ends, in a group lol | the route talk always ends with someone forming a group
 
 @topic avalon_vs_classic
@@ -507,9 +507,9 @@ E: and this is how every route conversation ends, in a group lol | the route tal
 @role C type=Leveler
 @role D type=Crafter
 @role E type=Socialite
-A: honest opinion, is the shrouded isles leveling better than the classic zones | {q} avalon or the old zones for leveling, which do you prefer
+A: honest opinion, is the shrouded isles leveling better than the classic zones | {q} avalon or the old zones for leveling, which do you prefer?
 B: avalon. the Isle of Glass alone is worth the box | Avalon, every corner looks new. the old zones feel tired to me
-C: classic. i know every pull in Cornwall, why would i relearn everything | classic zones. i know where every spawn is, that is speed
+C: classic. i know every pull in Cornwall, why would i relearn everything | classic zones. i know where every spawn is, thats speed
 B: knowing every spawn is why everyone else is there too
 C: and the avalon camps fill up on weekends now as well | the drakoran camps were full last saturday, so much for empty
 ~ 30
@@ -519,15 +519,15 @@ B: lonely is peaceful. i hunted grindylows for an hour without one ks | peaceful
 ?C: grindylows. that word still makes me laugh
 ~ 25
 A: what about Inishail Island? i have never been | anyone been to Inishail Island much
-B: a little. strange place, worth a look on a quiet night | explored it once, very pretty, very odd
+B: a little. strange place, worth a look when things are quiet | explored it once, very pretty, very odd
 ?E: i got lost there for an hour once and had to ask my guild for directions
-C: see, that is the problem with new zones. nobody knows the way | that is what i mean. in Cornwall i could walk it blind
+C: see, thats the problem with new zones. nobody knows the way | thats what i mean. in Cornwall i could walk it blind
 D: you could walk it blind because you have walked it a thousand times | after a hundred hours in a zone anyone can walk it blind
 ~ 20
 E: ok what about the bugs, the apple flies on Avalon Isle are the worst | anyone else hate the apple flies on Avalon Isle
 B: apple flies are part of the charm
-C: apple flies are why i went back to classic | they are the reason i stopped leveling there
-A: so it is avalon for the view and classic for the routine | sounds like: classic if you like routine, avalon if you like new
+C: apple flies are why i went back to classic | theyre the reason i stopped leveling there
+A: so its avalon for the view and classic for the routine | sounds like: classic if you like routine, avalon if you like new
 B: and avalon if you want a camp to yourself on a tuesday
 ?D: and both if you want to sell to both crowds
 C: fine. i will try avalon this weekend. no promises | fine, one night in avalon. if i hate it you owe me a drink
@@ -540,12 +540,12 @@ E: we will hold you to that
 @role C type=Crafter
 @role D type=NoLifer
 @role E type=Explorer
-A: finally bought a lot in Caerwent. who wants a housewarming | {q} just got my first house plot, Caerwent, come visit
+A: finally bought a lot in Caerwent. who wants a housewarming | just got my first house plot, Caerwent, come visit
 B: gz! i will bring a potted plant | grats! what does it look like?
-A: right now it is a very small cottage on a very big lawn | tiny cottage, huge lawn, no furniture
+A: right now its a very small cottage on a very big lawn | tiny cottage, huge lawn, no furniture
 C: i can make you furniture if you pay for the wood | furniture orders open, i will give you the neighbor discount
 D: houses are a coin sink. that gold could be spellcraft gems | a house is just gold that could have gone into your template
-B: some of us like having somewhere to sit that is not a camp | not everything has to make you stronger, sometimes you want a porch
+B: some of us like having somewhere to sit thats not a camp | not everything has to make you stronger, sometimes you want a porch
 ~ 30
 E: where is the best neighborhood? i like Old Sarum myself | Old Sarum is the prettiest housing zone, not even close
 A: Caerwent was what i could afford lol | i picked the one where i could find a free lot
@@ -556,9 +556,9 @@ B: i still love just hanging around Camelot after a long night of leveling | som
 E: the city at night with all the torches lit, best place in the game | Camelot at night is the best view in albion
 ?D: until the lag hits when everyone is shopping | until a hundred people are in the same street and you lag out
 A: ok so housewarming saturday. bring furniture | saturday night, my lot. bring something to put in the house
-C: bringing a table, you are paying for the chairs
-B: i will bring my guild, they love a party | count me and the guild in
-D: fine, i will come. but i am telling you about spellcraft while i am there | i will come and quietly judge your template choices
+C: bringing a table, youre paying for the chairs
+B: i will bring my guild, they love a party | my guild would love that
+D: fine, but if i visit im telling you about spellcraft | if i visit i will quietly judge your template choices
 ~ 20
 A: deal. dress code is your best dye job | wear your best dye, we take a group screenshot
 E: i will find the way there eventually | if i get lost, someone send a search party
@@ -572,28 +572,28 @@ B: see you all saturday :)
 @role D class=Cleric,Friar
 @role E type=Leveler levels=30-49
 @role F class=Armsman,Paladin
-A: {q} why does it feel like every night one of our keeps gets hit and nobody is home | {q} anyone else notice our keeps fall while the whole realm is leveling
+A: {q} why does it feel like every night one of our keeps gets hit and nobody is home? | {q} anyone else notice our keeps fall while the whole realm is leveling?
 B: keeps fall all the time and half the realm never even notices | a keep flips, the claim goes with it, and nobody blinks
-C: i notice. i am usually the only one there | i have been the only one at a door before. it was a long minute
+C: i notice. im usually the only one there | i have been the only one at a door before. it was a long minute
 ~ 25
 D: we need a keep defense group. who is on | we should keep a standing defense group for the evening, who is in
-E: i would but i am leveling, two bubbles to go | after this level maybe, i am close
+E: i would but im leveling, two bubbles to go | after this level maybe, im close
 B: everyone is always one level away | the realm is full of people one level away from helping
-E: hey, levels matter too | i will come, i promise. right after the ding
+E: hey, levels matter too | levels first, doors after the ding
 ~ 30
 F: i can hold a door. who has heals | ready to hold the door, need heals and someone with a bow on the wall
 D: me, i will stand behind the door with you | i will heal the door team
 C: i will go out and hunt their siege before it gets set up | i will ride out and find their rams before they find us
-?B: ride out alone? you remember last time
+B: ride out alone? you remember last time
 C: last time was a learning experience | last time i learned a lot about their stealthers
 ~ 25
 A: if we can hold what we have for one night, then we push | hold our own keeps first, then we can dream about theirs
 B: one thing at a time. hold first | first we hold, then we dream
 ?F: holding is my favorite thing to do anyway
 ~ 20
-E: ding! ok i am free, omw | DING, ok where is this defense group
+E: ding! ok, that one is done | DING, finally
 D: gz! now hurry | grats, and run
-C: ok enough talk, who is heading out to the keeps? | anyway, our keeps need bodies more than they need this thread
+C: ok, less typing, more riding. who is coming | anyway, the doors arent going to hold themselves
 F: door team, form up on me | anyone who wants door duty, group with me
 B: here we go | about time someone said it
 
@@ -605,28 +605,28 @@ B: here we go | about time someone said it
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
-A: {q} why do relic raids always happen at five am, who is awake for that | {q} the mids love a dawn relic raid, have you noticed
+A: {q} why do relic raids always happen at five am, who is awake for that? | {q} the mids love a dawn relic raid, have you noticed?
 B: they come when nobody is online to stop them | dawn raids work because every defender is asleep
 C: classic. nobody defends at five | of course they came at dawn. they always come at dawn
 D: the worst is hearing about it from your guild over coffee | finding out over breakfast is the worst part
 ~ 25
 E: does it even matter? i barely notice the relic bonus while leveling | honest question, does losing one relic change my leveling at all
 B: it matters in the frontier. every bonus matters | it matters to the people fighting. it matters to me
-C: it matters because it is our relic, that is enough | it is ours. that is the whole point
+C: it matters because its our relic, thats enough | its ours. thats the whole point
 ?D: pride is a bonus too
 ~ 30
 A: so do we guard the relic castles all night or just retake at prime time | is it worth keeping a night watch on the relic castles
 B: a night watch gets bored and logs. retaking is easier | nobody sits a night watch for long, trust me
 C: prime time with a full realm beats any night watch | then you hit back at eight o'clock, everyone
-D: and i would post it in every guild chat i am in | i would spread the word in my guild and alliance channels
-?E: i can come after dinner, i want to see a relic raid once
+D: and i would post it in every guild chat im in | i would spread the word in my guild and alliance channels
+?E: i want to see a relic raid once, just once
 ~ 25
 B: a relic sits deep in the castle. you need rams and a lot of healers | any relic raid needs rams, siege and every cleric that can log in
 C: and someone to scout their numbers before you commit | i always scout ahead and count heads
 D: you just want to go ahead alone again
 C: alone is how i scout best | i scout better alone, everyone else is loud
 ~ 20
-A: ok enough, who is heading out tonight? | anyway, this argument wont hold a single door
+A: ok, who is actually going out tonight | anyway, talking never held a door
 E: i still have never seen a relic raid, what do you even bring | first relic raid for me whenever it happens, what do i bring
 B: potions, patience and a bind point near the front | bring potions and a lot of patience
 ?D: and snacks. relic raids take forever
@@ -641,15 +641,15 @@ A: see everyone out there | albion wakes up eventually
 @role D type=Daredevil
 @role E type=Socialite
 @role F type=Crafter
-A: Golestandt raid sunday, how many are we so far | {q} head count for the dragon on sunday, who is in
+A: Golestandt raid sunday, how many are we so far | {q} head count for the dragon on sunday, who is in?
 B: i count thirty-one confirmed, we need more healers | around thirty so far. short on clerics as always
-C: cleric, i am in. i will bring two more from my guild | count me and two rejuv clerics from my guild
+C: cleric, im in. i will bring two more from my guild | me and two rejuv clerics from my guild, maybe
 D: i have never seen the dragon. is it as bad as people say | first dragon for me. what am i walking into
 B: worse. the breath alone will wipe anyone in front | the worst fight in albion. stay off the front of it
 ~ 30
-E: hey, just logged, what did i miss? dragon talk? | evening all, is this the golestandt thread
+E: hey, just logged, what did i miss? dragon talk? | hi all, is this the golestandt thread
 A: sunday raid, we need healers and casters with resists | yes. sunday, bring resists and patience
-E: i will come. i have died to that dragon more than anyone | i am in, and i promise to die less this time
+E: i might go. i have died to that dragon more than anyone | im in, and i promise to die less this time
 ?D: how many times have you died to it
 E: i stopped counting after the second raid | lost count. a lot
 ~ 25
@@ -662,10 +662,10 @@ C: rule for healers: stay together, stay back, stay alive | healers group up beh
 D: and the melee? | where do the fighters stand
 B: on the sides, never the front | flanks only. the head is bad news
 ?D: so where is the safe spot
-B: there is no safe spot. there is just less dangerous | at home. there is no safe spot on a dragon
+B: theres no safe spot. theres just less dangerous | at home. theres no safe spot on a dragon
 ~ 20
 E: last time someone pulled before the leader called it | remember last time? one wizard started early and we all died
-?C: we do not talk about last time
+?C: we dont talk about last time
 A: nobody casts until the call. nobody. | and this time nobody touches it until i say go
 D: understood, waiting for the call | got it. hands off till the call
 B: sunday then. log in early, buffs at the gate | sunday, gather early, we leave on time
@@ -677,30 +677,30 @@ B: sunday then. log in early, buffs at the gate | sunday, gather early, we leave
 @role C type=NoLifer
 @role D type=Explorer levels=30-38
 @role E type=Daredevil
-A: {q} how do you even tell if DF is open for us | {q} anyone know how albion keeps Darkness Falls open
-B: walk to the entrance and see if it lets you in, that is the test | it opens when we hold enough keeps, go while it lasts
-C: and when it is open, thank whoever held the keeps | it stays open because someone holds the keeps all day, thank them
+A: {q} how do you even tell if DF is open for us? | {q} anyone know how albion keeps Darkness Falls open?
+B: type /realm, or walk to the entrance and see if it lets you in | /realm shows who holds it. it opens when we hold the most keeps, go while it lasts
+C: and when its open, thank whoever held the keeps | it stays open because someone holds the keeps all day, thank them
 A: thank you keep people | heroes of the frontier
 ~ 25
-D: first time going down there soon. what do i hunt in the low 30s | low 30s here, what is safe in DF for me
+D: first time going down there soon. what do i hunt in the low 30s | low 30s here, whats safe in DF for me
 B: the familiars and apprentice necyomancers near the entrance | stay near the entrance, the demoniac familiars are your speed
-E: and do not wander deeper alone. the plated fiends will flatten you | go too deep and a plated fiend will introduce itself
+E: and dont wander deeper alone. the plated fiends will flatten you | go too deep and a plated fiend will introduce itself
 ?D: noted. no plated anything
 ~ 30
-C: honestly DF is the best reason to fight in the frontier | the keeps matter because of DF, that is my opinion
+C: honestly DF is the best reason to fight in the frontier | the keeps matter because of DF, thats my opinion
 B: or the frontier matters for its own sake and DF is a bonus | some of us fight for fun, DF is just the reward
-C: fun does not give you levels in a crowded dungeon | fun is great, xp is better
+C: fun doesnt give you levels in a crowded dungeon | fun is great, xp is better
 ~ 25
-E: anyone want to try the Grand Summoner Govannon this week? | who is up for Govannon in Summoner's Hall
-B: that is a raid, not a casual evening | that is a big raid. we need a lot of people
-E: so we get a lot of people | so let us get a lot of people
-?C: i am in if it is after prime time
-D: i will be the one dying near the entrance meanwhile | i will be at the entrance learning
+E: different dungeon, but anyone want to try govannon in summoner's hall this week? | off topic, who is up for govannon in summoner's hall
+B: thats a raid, not a casual evening | thats a big raid. we need a lot of people
+E: so we get a lot of people | so lets get a lot of people
+?C: im in if its after prime time
+D: i will be the one dying near the df entrance meanwhile | i will be at the df entrance learning
 ~ 20
-A: careful though, if the mids take the keeps tonight we get kicked out | it closes the second we lose the keep count, remember
-B: then everyone leveling in DF should go defend once in a while | that is the deal. we level here, we defend there
+A: careful though, if the mids take the keeps tonight we lose the door | the door shuts on us the moment we lose the keep count, remember
+B: then everyone leveling in DF should go defend once in a while | thats the deal. we level here, we defend there
 ?E: or at least stop complaining when DF closes
-D: next time it is open i am going down. wish me luck | next time we have it i am going in, wave if you see me
+D: next time it is open im going down. wish me luck | next time we have it im going in, wave if you see me
 B: good luck, watch out for the deamhaness
 
 @topic guild_recruiting
@@ -710,7 +710,7 @@ B: good luck, watch out for the deamhaness
 @role C type=NoLifer
 @role D type=Leveler
 @role E type=Crafter
-A: small family guild looking for a few more, all levels welcome | {q} our guild is recruiting, small and relaxed, all classes
+A: small family guild looking for a few more, all levels welcome | our guild is recruiting, small and relaxed, all classes
 B: we are big and active and we raid the frontier every night. pst | recruiting for a big rvr guild, nightly raids, everyone welcome
 C: big guilds are machines. small guilds are friends | i have done both. small guilds are where you remember names
 B: big guilds are where you take relics | big guilds are how albion holds the keeps
@@ -730,11 +730,11 @@ B: we do, and someone is always online there | ours is up and usually crowded
 ?C: i joined a guild once just for the house
 ~ 20
 E: ok i think the small one fits me, i like being needed | i will try the small guild, being the only crafter sounds nice
-A: welcome! sending an invite now | sending you an invite, glad to have you
+A: welcome! pst me and we sort it out | send me a tell, glad to have you
 D: can i join too? | room for a leveler too?
-A: always | of course, invite coming
+A: always, pst me too | of course, send a tell
 B: fine, take them, we will get the next ones | our loss. offer stands if you ever want to raid
-C: and that is how recruiting actually works. one person at a time | this is why small guilds survive
+C: and thats how recruiting actually works. one person at a time | this is why small guilds survive
 
 @topic crafting
 @levels 20-50
@@ -743,7 +743,8 @@ C: and that is how recruiting actually works. one person at a time | this is why
 @role C type=Crafter
 @role D type=NoLifer
 @role E type=Leveler levels=20-49
-A: hit legendary armorcraft tonight. took months | {q} finally legendary in armorcraft, my bank account is crying
+@role A type=Crafter
+A: hit legendary armorcraft tonight. took months | finally legendary in armorcraft, my bank account is crying
 B: gz! that is a huge grind | congrats, i remember that feeling. and that empty purse
 C: welcome to the poor house, population all of us crafters | grats. now begins the part where you try to earn it back
 A: i just want a masterpiece now, one day
@@ -751,22 +752,22 @@ A: i just want a masterpiece now, one day
 D: masterpieces are nice but spellcraft is where the real power is | the real game is spellcrafting. armor without gems is half finished
 C: spellcraft is a whole second grind on top | spellcraft is another money pit on top of the first one
 D: and worth every coin when the template comes together
-E: honestly i just buy whatever drops at my level and i am fine | i am leveling in dropped gear and doing fine, is crafted really worth it
+E: honestly i just buy whatever drops at my level and im fine | im leveling in dropped gear and doing fine, is crafted really worth it
 B: at 50 for the frontier, yes. while leveling, not really | for leveling, drops are fine. for the frontier you want crafted
 ~ 30
 ?E: so i should wait until 50 to care
 A: what are the crafters doing for income anyway | how do you all make the coin back
-B: selling to the people who just hit 50 | sell full suits to new 50s, that is the market
+B: selling to the people who just hit 50 | sell full suits to new 50s, thats the market
 C: alchemy. everyone needs potions | alchemy. dyes and potions sell every day
 ?B: and poisons, the infils keep me in business
 ~ 25
-D: what is the hardest crafting line, really | which tradeskill is the worst to level
+D: whats the hardest crafting line, really | which tradeskill is the worst to level
 A: armorcraft. ask my wallet | armorcraft, ask my wallet again
 C: tailoring. so much leather | tailoring is the long road, nobody talks about it
 B: fletching. nobody needs that many arrows | fletching, i made enough arrows for a war
 ~ 20
-E: ok i am convinced, at 50 i will order a suit from one of you | when i hit 50, i will pick one of you for my armor
-A: i am doing guild orders now | i will be ready, send a tell when you ding
+E: ok im convinced, at 50 i will order a suit from one of you | when i hit 50, i will pick one of you for my armor
+A: im doing guild orders now | i will be ready, send a tell when you ding
 C: and i will make the potions to keep you alive in it | i will sell you the potions to go with it
 ?D: and then you spend a week on gems
 E: one thing at a time lol
@@ -779,9 +780,9 @@ E: one thing at a time lol
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
-A: 3am and still on. anyone else awake | {q} who else is up this late
+A: still on at this hour. anyone else awake | {q} who else is up this late?
 B: here. sitting in the barrows waiting for a respawn | awake and on a slow camp
-C: here. ran from a red con for twenty minutes, too wired to sleep | still up. just survived something i should not have
+C: here. ran from a red con for twenty minutes, too wired to sleep | still up. just survived something i shouldnt have
 D: tell the story! | ok you have to tell us now
 C: a red giant spider in black mtns north, chased me halfway to a guard town | black mtns north, a red spider decided i was dinner. i ran forever
 ?E: did you make it
@@ -796,12 +797,12 @@ A: anyone else hear the rumor about a named in Campacorentin that only spawns at
 B: i spent three nights looking for that | i looked for it for a week. nothing
 D: half the fun was looking | the looking was the best part honestly
 ~ 25
-E: ok i am fading. night all | heading to bed, night everyone
+E: ok im fading. night all | heading to bed, night everyone
 D: night! | sleep well
-C: one more pull and i am out too
+C: one more pull and im out too
 B: the respawn just popped, back to it | my spawn is back, catch you later
-?A: this is my favorite hour on the server
-D: same. quiet, friendly, everyone a little silly | it is the nicest time of night, everyone is relaxed
+A: this is my favorite hour on the server
+D: same. quiet, friendly, everyone a little silly | its the nicest time of night, everyone is relaxed
 ?C: and nobody steals your camp
 ~ 25
 A: ok, i should sleep too | i suppose i should log as well
@@ -815,27 +816,27 @@ D: night all :)
 @role C type=NoLifer
 @role D class=Wizard,Sorcerer,Theurgist,Cabalist
 @role E class=Armsman,Paladin
-A: why do the mids always roll in with twice our numbers | {q} serious question, where do the mids keep finding all these people
+A: why do the mids always roll in with twice our numbers | {q} where do the mids keep finding all these people?
 B: they clone them in Jordheim | they grow them in the snow, everyone knows that
 C: they have more people, we have better casters, it evens out | numbers versus casters, it has always been that way
 D: correct. one well placed spell and their numbers are a lot smaller | albion casters, the great equalizer
-E: and someone in plate has to stand in front of the casters | casters are great until the berserkers reach them. then it is my turn
+E: and someone in plate has to stand in front of the casters | casters are great until the berserkers reach them. then its my turn
 ~ 25
 ?D: we appreciate you. from a distance
 A: and the hibs? | and what about hibernia
 B: the hibs mez us, then the bards sing about it | hibernia is all mez and pretty music
-C: and their druids heal through everything | do not forget the druids, they never stop healing
+C: and their druids heal through everything | dont forget the druids, they never stop healing
 E: i have been mezzed in Emain Macha for what felt like a whole patch | i once stood mezzed in emain long enough to finish a sandwich
 ~ 30
 D: at least we have the best city. Camelot beats Tir na Nog and Jordheim | nobody has a capital like Camelot, sorry everyone else
 B: Jordheim is too cold and Tir na Nog is too fancy | jordheim is freezing and tir na nog is too pleased with itself
 ?C: fancy is one word for it
-A: and we have Golestandt. their dragons are just big lizards | our dragon is the scariest one, i will not be taking questions
+A: and we have Golestandt. their dragons are just big lizards | our dragon is the scariest one and thats final
 E: we have the best armor too. plate shines | plate armor, shiny and proud, albion style
 ~ 20
-C: honestly all three realms think they are the best. that is the fun of it | every realm thinks it is the best, and every realm is right on a good night
-B: deep words for 11pm
-?D: i am still right about the casters
+C: honestly all three realms think theyre the best. thats the fun of it | every realm thinks it is the best, and every realm is right on a good night
+B: deep words for faction chat
+?D: im still right about the casters
 A: ok so we agree. albion is best and the others are just jealous | consensus: albion first, the rest are fans
 E: put it on a banner and hang it on Caer Benowyc | someone carve that above the door of Caer Benowyc
 B: and spell Albion right this time | and spell it right this time, last banner had a typo

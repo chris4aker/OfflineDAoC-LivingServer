@@ -119,6 +119,7 @@ static func make_animated(model: int) -> Node3D:
 	var holder := Node3D.new()
 	holder.name = "Siege_%d" % model
 	holder.add_child(p.instantiate())
+	CacheTrim.track("weapon", path, holder)
 	return holder
 
 
@@ -127,6 +128,8 @@ static func pack(path: String) -> PackedScene:
 	var state := GLTFState.new()
 	if doc.append_from_file(ProjectSettings.globalize_path(path), state) != OK:
 		return null
+	CacheTrim.share_textures(state, path)                 # (one copy of each texture file across all weapons)
+	GpuJobs.ready_materials(Array(state.get_materials()))   # (made on the main thread: NPC views prepare weapons on a worker)
 	var scene := doc.generate_scene(state)
 	var packed := PackedScene.new()
 	var ok := packed.pack(scene) == OK
@@ -160,23 +163,41 @@ static func dye(w: Node3D, color: int) -> void:
 		if mi.mesh == null:
 			continue
 		for i in mi.mesh.get_surface_count():
-			var m := mi.get_active_material(i)
-			if m is ShaderMaterial:
-				var d := (m as ShaderMaterial).duplicate() as ShaderMaterial
-				var t = d.get_shader_parameter("tint")
-				var base: Color = t if t is Color else Color.WHITE
-				d.set_shader_parameter("tint", Color(base.r * c.r, base.g * c.g, base.b * c.b))
+			var d := dyed_material(mi.get_active_material(i), c)
+			if d:
 				mi.set_surface_override_material(i, d)
-			elif m is BaseMaterial3D:
-				var s := (m as BaseMaterial3D).duplicate() as BaseMaterial3D
-				s.albedo_color = s.albedo_color * c
-				mi.set_surface_override_material(i, s)
+
+
+## A material in an item's dye, shared by every copy with the same material and dye (2026-10-30: a new copy per dressing -
+## the server dresses you twice as you log in - was made and freed in one frame, and the renderer met an instance
+## whose material was gone: "Parameter 'material' is null" x4 at every login and quit; also one material, not one a copy).
+static var _dyed := {}
+
+
+static func dyed_material(m: Material, c: Color) -> Material:
+	if m == null or c == Color.WHITE:
+		return null
+	var key := "%d|%s" % [m.get_instance_id(), c.to_html()]
+	if _dyed.has(key) and is_instance_valid(_dyed[key]):
+		return _dyed[key]
+	var d: Material = null
+	if m is ShaderMaterial:
+		d = (m as ShaderMaterial).duplicate() as ShaderMaterial
+		var t = (d as ShaderMaterial).get_shader_parameter("tint")
+		var base: Color = t if t is Color else Color.WHITE
+		(d as ShaderMaterial).set_shader_parameter("tint", Color(base.r * c.r, base.g * c.g, base.b * c.b))
+	elif m is BaseMaterial3D:
+		d = (m as BaseMaterial3D).duplicate() as BaseMaterial3D
+		(d as BaseMaterial3D).albedo_color = (d as BaseMaterial3D).albedo_color * c
+	if d:
+		_dyed[key] = d
+	return d
 
 
 ## left: hung on a left-hand bone (Bip01 L Held / L Shield) - gripped by its NIF's HELD2 node when it has one, as the
 ## client (game.dll 0x47296a; weapons.json "held2", pipeline/add_weapon_held2.py): the claw greaves' HELD2 is turned
 ## 180 degrees, so the off-hand claw faces the same way as the main hand's (owner 2026-10-17, the Savage)
-static func make(model: int, drawn := false, left := false) -> Node3D:
+static func make(model: int, drawn := false, left := false, sheath := "") -> Node3D:
 	var i := info(model)
 	if i.is_empty():
 		return null
@@ -189,10 +210,17 @@ static func make(model: int, drawn := false, left := false) -> Node3D:
 	var holder := Node3D.new()
 	holder.name = "Weapon_%d" % model
 	var w := p.instantiate() as Node3D
+	CacheTrim.track("weapon", path, w)
 	for c in w.find_children("collision*", "", true, false):
 		c.queue_free()                                    # the NIF's collidee shapes: not part of the held model
 	w.transform = TO_NIF
-	if left and i.has("held2"):
+	if sheath != "" and i.has(sheath + "_frame"):
+		# hung by the NIF's own BELT / BACK node, as game.dll sheathes (pipeline/add_sheath_frames.py; owner 2026-10-19:
+		# a two-hander hung out across the cloak by its grip)
+		var f: Array = i[sheath + "_frame"]
+		w.transform = Transform3D(Basis(Vector3(f[0], f[1], f[2]), Vector3(f[3], f[4], f[5]), Vector3(f[6], f[7], f[8])),
+				Vector3(f[9], f[10], f[11])) * TO_NIF
+	elif left and i.has("held2"):
 		var h2: Array = i.held2
 		w.transform = Transform3D(Basis(Vector3(h2[0], h2[1], h2[2]), Vector3(h2[3], h2[4], h2[5]), Vector3(h2[6], h2[7], h2[8])),
 				Vector3(h2[9], h2[10], h2[11])) * TO_NIF
@@ -246,6 +274,11 @@ static func add_effect(holder: Node3D, effect: int) -> Node3D:
 		return null
 	fx.name = "WeaponEffect"
 	fx.transform = (holder.get_child(0) as Node3D).transform   # the weapon's own frame (TO_NIF / its grip)
+	# the glow rides the blade: its particles live in the weapon's space (owner 2026-10-20: an abomination's and the
+	# gamebots' weapon glows trailed far behind the sword - emitted in world space, each particle stayed where it was
+	# born for its whole life while the blade swung on)
+	for ps in fx.find_children("*", "GPUParticles3D", true, false):
+		(ps as GPUParticles3D).local_coords = true
 	holder.add_child(fx)
 	AnimLod.keep_on_main(fx)                              # (its particles and timeline: the main thread)
 	NifParticles.fit_to_scale(fx)

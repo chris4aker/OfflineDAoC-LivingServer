@@ -1,0 +1,81 @@
+{
+  "id": "webweaver",
+  "name": "Webweaver",
+  "npcNames": [
+    "Webweaver"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Webweaver: level 43, a spider body (model 117), size 63, at about 28,020/30,580 (z 13,962) alone in the western dark among arachnites (28-31), arachnids (39), lair worms and troglodytes (36-43); no other named spawn within 2,500; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the Webweaver's webs are why the thralls of Treibh Caillte do not run west.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The western dark of Treibh Caillte has no ursine in it. Their patrols stop where the tunnels turn west, and their warriors do not stand guard there, and a thrall who has worked the eastern tunnels for twenty winters knows, without anyone saying, that the western dark is the one way out of the caves nobody is watching.\n\nThat is the Webweaver's doing. She is the eldest spinner of the caves, larger than the arachnids of her kind, and her webs hang across the passages the troglodytes use, and the troglodytes go round them. The few who have gone west and come back, the firbolg say, came back with stories of old collars hanging in the silk, dozens of them, worn thin by the years, swinging a little in a draught that comes from somewhere further west. Nobody has followed the draught.\n\nThe ursine do not need to guard the west. The Webweaver guards it for them, and asks nothing for it but what comes. Hervelina, who keeps the caves' list, says that is the cleverest thing the ursine have ever done and that they did not do it: the spider was there first, and the ursine only noticed what it was good for. The thralls of the east, if anyone asks them about the west, look at the floor.",
+  "legend": "Webweaver (43) is a big named spider alone in the western dark of Treibh Caillte (about 28.0k/30.6k, z 13,960), among arachnites (28-31), arachnids (39), lair worms and troglodytes (36-43). No other named near her. Not part of a quest. A group of low to mid 40s; clear the arachnids first. Plain spawn, no script, 3-minute respawn. The arachnids (37-43) are the ones that hurt; the arachnites are only around 30.",
+  "yells": {
+    "aggro": [
+      "(silk drops from the dark above you)",
+      "(the Webweaver comes down her thread)"
+    ],
+    "phases": [],
+    "death": [
+      "(the old collars in the web swing and are still)"
+    ],
+    "slay": [
+      "(another bundle for the silk)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Old collars hang in the silk, swinging."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Webweaver of the western dark is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "webweaver is 43, alone in the west with arachnids and troglodytes",
+      "no quest for her, just a named spider"
+    ],
+    "aftermathWin": [
+      "webweaver down. [the west is open|grats]",
+      "so many collars in that web. [grim|creepy]"
+    ],
+    "aftermathLoss": [
+      "troglodytes joined. [rip|ouch]",
+      "arachnids from the ceiling. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] webweaver's web is full of old thrall collars",
+      "the ursine never guard the west in treibh. the spider does it for them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Webweaver",
+    "text": "The eldest spinner of Treibh Caillte, alone in the western dark where the ursine do not go. Her webs are hung with old thrall collars, and they are why the thralls of the east do not run."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Webweaver in Treibh Caillte in {minutes} minutes.",
+    "loss": "Webweaver turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "treibh-caillte",
+      "relation": "the thralls who do not run"
+    }
+  ]
+}

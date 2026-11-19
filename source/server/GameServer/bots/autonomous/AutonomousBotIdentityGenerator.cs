@@ -66,9 +66,8 @@ namespace DOL.GS
                     new(eCharacterClass.Ranger, eRace.Celt, eRace.Elf, eRace.Lurikeen),
                     new(eCharacterClass.Animist, eRace.Celt, eRace.Firbolg, eRace.Sylvan),
                     new(eCharacterClass.Valewalker, eRace.Celt, eRace.Firbolg, eRace.Sylvan),
-                    // Experimental Sluaghbinder: the isolated class has the
-                    // same two legal races as its player character creator.
-                    new(eCharacterClass.Sluaghbinder, eRace.Celt, eRace.Firbolg),
+                    // No Sluaghbinder: bots never play the custom class, in any edition (owner 2026-11-17,
+                    // BotCustomClassRule). Players keep it in the 0.37b edition.
                 ],
             };
 
@@ -117,7 +116,7 @@ namespace DOL.GS
 
             random ??= Random.Shared;
             realmChoices = ActiveChoices(realmChoices);
-            ClassChoice classChoice = realmChoices[random.Next(realmChoices.Length)];
+            ClassChoice classChoice = DrawClass(realm, realmChoices, random);
             eRace race = classChoice.Races[random.Next(classChoice.Races.Length)];
             string name = GenerateUniqueName(realm, gender, classChoice.CharacterClass, reservedNames, random);
             return new Identity(name, realm, gender, classChoice.CharacterClass, race);
@@ -132,6 +131,8 @@ namespace DOL.GS
         {
             if (!Choices.TryGetValue(realm, out ClassChoice[] realmChoices))
                 throw new ArgumentOutOfRangeException(nameof(realm));
+            if (!BotCustomClassRule.BotsMayPlay((int)characterClass))
+                throw new ArgumentException(BotCustomClassRule.RefusedMessage, nameof(characterClass));
             ClassChoice choice = ActiveChoices(realmChoices).FirstOrDefault(entry => entry.CharacterClass == characterClass);
             if (choice == null)
                 throw new ArgumentException($"{characterClass} is not a Classic + SI {GlobalConstants.RealmToName(realm)} class.", nameof(characterClass));
@@ -153,16 +154,31 @@ namespace DOL.GS
                 ? ActiveChoices(choices).Select(choice => choice.CharacterClass).ToArray()
                 : Array.Empty<eCharacterClass>();
 
-        /// <summary>False only for the Sluaghbinder in the 0.33 "no custom class" edition.</summary>
+        /// <summary>False only for the Sluaghbinder, in every edition: bots never play the custom class (owner 2026-11-17).
+        /// The edition switch (classes/enable_sluaghbinder) is for players only.</summary>
         public static bool IsClassAvailable(eCharacterClass characterClass) =>
-            characterClass != eCharacterClass.Sluaghbinder || ServerProperties.Properties.ENABLE_SLUAGHBINDER;
+            BotCustomClassRule.BotsMayPlay((int)characterClass);
 
-        // With the custom class enabled (0.33b, the default) the original array is used unchanged,
-        // so bot rolls are identical to the Claude version build.
         private static ClassChoice[] ActiveChoices(ClassChoice[] choices) =>
-            ServerProperties.Properties.ENABLE_SLUAGHBINDER
-                ? choices
-                : choices.Where(choice => IsClassAvailable(choice.CharacterClass)).ToArray();
+            choices.Where(choice => IsClassAvailable(choice.CharacterClass)).ToArray();
+
+        /// <summary>
+        /// Era builds 1.2 (WP2): with bots/bot_era_class_shares on (the default) a new gamebot's class comes from its realm's
+        /// 2003 share (EraBuildCatalog, the same table the launcher's batches use); off, or without era data for the realm,
+        /// every class is equally likely, as before.
+        /// </summary>
+        private static ClassChoice DrawClass(eRealm realm, ClassChoice[] choices, Random random)
+        {
+            if (ServerProperties.Properties.BOT_ERA_CLASS_SHARES)
+            {
+                EraClassShare share = EraBuildCatalog.Default.DrawClass((int)realm, random);
+                ClassChoice drawn = share == null ? null
+                    : choices.FirstOrDefault(choice => (int)choice.CharacterClass == share.ClassId);
+                if (drawn != null)
+                    return drawn;
+            }
+            return choices[random.Next(choices.Length)];
+        }
 
         public static IReadOnlyCollection<eRace> GetEligibleRaces(eCharacterClass characterClass) =>
             Choices.Values.SelectMany(value => value)

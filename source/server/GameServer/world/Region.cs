@@ -241,15 +241,26 @@ namespace DOL.GS
                 }
             }
 
-            list = Util.SplitCSV(ServerProperties.Properties.DISABLED_EXPANSIONS, true);
-            foreach (string expansion in list)
+            if (IsExpansionDisabled(m_regionData.Expansion, ServerProperties.Properties.DISABLED_EXPANSIONS))
+                m_isDisabled = true;
+        }
+
+        /// <summary>
+        /// disabled_expansions is written in client expansion numbers (eClientExpansion: Classic 1, Shrouded Isles 2,
+        /// Trials of Atlantis 3, Catacombs 4, Darkness Rising 5, Labyrinth 6), as GlobalConstants.IsExpansionEnabled reads
+        /// it, but the Regions table counts from 0 (Classic 0, Shrouded Isles 1, Trials of Atlantis 2...). Comparing the two
+        /// directly left every Trials of Atlantis region loaded with "3;4;5;6" (owner 2026-10-30), so the region's number
+        /// is moved onto the client scale first.
+        /// </summary>
+        public static bool IsExpansionDisabled(int regionExpansion, string disabledExpansions)
+        {
+            string clientExpansion = (regionExpansion + 1).ToString();
+            foreach (string expansion in Util.SplitCSV(disabledExpansions ?? string.Empty, true))
             {
-                if (expansion.ToString() == m_regionData.Expansion.ToString())
-                {
-                    m_isDisabled = true;
-                    break;
-                }
+                if (expansion.Trim() == clientExpansion)
+                    return true;
             }
+            return false;
         }
 
 

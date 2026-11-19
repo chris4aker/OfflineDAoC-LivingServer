@@ -1,0 +1,117 @@
+{
+  "id": "ixthiar-broodmother",
+  "name": "Ixthiar Broodmother",
+  "npcNames": [
+    "Ixthiar Broodmother"
+  ],
+  "locationId": "vale-of-balor",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Ixthiar Broodmother: level 51, model 686 (the ixthiar body), size 60, at about 284,400/345,900 in the Vale of Balor; respawn 5 minutes; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Fylara's Armor (Fylara MacKieran, Aalid Feie, armor-maker for Comor Mac Gwion and her father Lughaidh MacKieran): 'Clear an entire ixthiar nest before it respawns to make the broodmother appear, and kill her.'",
+      "provenance": "game",
+      "source": "DataQuest \"Fylara's Armor\" (world data)"
+    },
+    {
+      "text": "The Ixthiar Swarm of the vale (world data): callers, clippers, decimaters, doomcallers, plaguebringers, reapers and ruinaters (level 28-50), with Monger (54) and Xrrxrax (36).",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the swarm came up through the ash of Gleann Glas; the broodmother rises when a nest is emptied; the Aalid Feie armorers' trade in her carapace.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "When the eye in Tur Suil looked once at Gleann Glas and the Sylvan village burned, the ash lay so thick on the valley floor that nothing grew in it for a generation. Then the ixthiar came up through it. The Sylvan of Aalid Feie say the swarm was always under the vale, asleep in the old ground as the octonoid mothers sleep under the edge, and that the burning woke it the way a fire in a meadow wakes the ants. The Domnann wardens say the swarm came over the hills from the gorge, following the smell of the ash. Either way, the vale has been theirs since.\n\nThey nest in the low ground west of the camp, and they keep ranks the way the Sylvan keep seasons: clippers and ruinaters at the edges, reapers and decimaters further in, callers whose cry brings the rest, doomcallers who hold the nests' hearts and plaguebringers who carry the swarm's sickness from nest to nest. Above all of them is the mother. The Ixthiar Broodmother is larger than any reaper, a swollen shining thing with a carapace like wet slate, and she does not show herself while her nests are full. The armorers of Aalid Feie, who have hunted the swarm for its shell since the first summer of the isles, say she rises only when a nest is emptied, as if the silence of it called her up to see what had gone wrong.\n\nThat is how Fylara MacKieran came to her trade. She is the daughter of Lughaidh MacKieran, the armorer, and makes armor for Comor Mac Gwion, and her finest work is ixthiar: carapace, wing and eye. She will tell any young Hibernian at the camp that the shell of a reaper is good and the shell of the mother is better, and that the only way to the mother is through a whole nest, quickly, before the swarm fills it again. The broodmother's own forager, Monger, works the vale's western side and feeds her. The Sylvan of Aalid Feie think that if the two were ever brought down together the swarm would be leaderless for a season, and have never seen it happen.",
+  "legend": "Ixthiar Broodmother, level 51, in the ixthiar nests of the Vale of Balor (about 284k/346k). The quest text for Fylara's Armor (Fylara MacKieran in Aalid Feie) says she appears when you clear an entire ixthiar nest before it respawns; in this world's data she also stands as a plain spawn with a 5-minute respawn, so look for her at the nest. No script: plain melee, but the nest around her is reapers, decimaters and doomcallers in the 40s, so clear around her first. A 45-50 group does it. The armorers say her carapace makes the best leggings in the vale.",
+  "yells": {
+    "aggro": [
+      "(the broodmother's carapace clicks open)",
+      "(a shrill hum rises from the empty nest)",
+      "(she rears, shining like wet slate)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(the broodmother shrieks for a nest that does not answer)"
+      }
+    ],
+    "death": [
+      "(the hum of the nest falls silent)",
+      "(the broodmother folds her wings over the empty nest)"
+    ],
+    "slay": [
+      "(the swarm's mother feeds)",
+      "(the carapace clicks shut)",
+      "(she turns to the next intruder)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An emptied nest. Something is coming up to look.",
+      "Ash under the nests. Gleann Glas burned here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The broodmother shrieks over her empty nest!"
+      }
+    ],
+    "realmFirstKill": "The Ixthiar Broodmother is dead. The swarm falters."
+  },
+  "botLines": {
+    "briefing": [
+      "broodmother is 51, in the ixthiar nests west of aalid feie. [clear the nest|fylara's armor]",
+      "quest says clear a whole nest and she shows up. [shes also just there sometimes|check the nest]",
+      "reapers and doomcallers around her are 40s. [clear first|dont pull the nest]",
+      "no script, plain melee. [tank and burn|45-50 group]"
+    ],
+    "aftermathWin": [
+      "broodmother down. [fylara gets her shell|leggings time]",
+      "cleared the nest and she came right up. [like the armorers said|nice]",
+      "the swarm will be leaderless for a bit",
+      "monger next? [west side|sure]"
+    ],
+    "aftermathLoss": [
+      "pulled the whole nest with her. [doomcallers|ugh]",
+      "callers brought the rest of the swarm. [kill callers first|oops]",
+      "group too low for the nest. [40s mobs everywhere|need 45+]",
+      "healer pulled aggro from the reapers"
+    ],
+    "rumour": [
+      "[heard|someone said] the ixthiar came up through the ash of gleann glas",
+      "fylara mackieran in aalid feie makes armor out of ixthiar shell. [best leggings in the vale|good stuff]",
+      "[word is|heard] the broodmother only comes up when a nest goes quiet",
+      "[heard|someone said] if monger and the broodmother died together the swarm would fall apart"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Broodmother",
+    "text": "The mother of the ixthiar swarm of the [Vale of Balor], which came up through the ash of Gleann Glas. She rises when a nest is emptied. Fylara MacKieran of Aalid Feie makes armor from her shell."
+  },
+  "bookPage": "Tieru of Aalid Feie: the ixthiar came up through the ash. Nothing grew in the vale for a generation after the eye looked at Gleann Glas, and then one spring the ground was moving. They keep ranks, clippers at the edges, reapers inside, callers to bring the rest, doomcallers at the heart of each nest. The mother shows herself when a nest goes quiet, as if the silence called her up. Fylara MacKieran, Lughaidh's daughter, makes her finest leggings from that shell and tells the young the only road to the mother is through a whole nest, quickly.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Ixthiar Broodmother in the ixthiar nests of the Vale of Balor in {minutes} minutes.",
+    "loss": "Ixthiar Broodmother turned back {realm}'s band under {raidLeader} in the ixthiar nests of the Vale of Balor after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "monger",
+      "relation": "her forager"
+    },
+    {
+      "id": "spindler-broodmother",
+      "relation": "another mother of a brood, under Galladoria"
+    }
+  ]
+}

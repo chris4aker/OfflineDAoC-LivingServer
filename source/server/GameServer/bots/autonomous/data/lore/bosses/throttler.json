@@ -1,0 +1,120 @@
+{
+  "id": "throttler",
+  "name": "Throttler",
+  "npcNames": [
+    "Throttler"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the eldest strangler"
+  ],
+  "facts": [
+    {
+      "text": "Throttler: class Strangler (scripts/mobs/Strangler.cs), template 60167055, level 50, the stranglers' model, at 404317, 435808 west of the hall of making; aggro level 200 within 500, no faction, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Strangler.cs gives it a brain that, every three seconds, plays a spell effect on it for every player in sight: a flicker that shows where it is. It has no other scripted behaviour.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/Strangler.cs"
+    },
+    {
+      "text": "About forty stranglers (38-43, no faction) lie in the dales round the hall; a scorcher stands about 400 from it.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The stranglers as the master's binding-cords, Throttler as the first of them, the knot that tightens and the flicker as the old master's tell are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Not every servant of the hall of making was built of oak and iron. Some were built of cord. The old master needed bindings that would hold a load without a hand to tie them, and he made them, long living lengths of something like rope that coiled about whatever was set before them and held. The households called them the stranglers, as a joke, because they held so well. Nobody calls it a joke now. There are forty and more of them lying in the grass west of the hall, and they have learned to hold things the master never set before them.\n\nThrottler was the first. The master's mark-book, the leaf of it that Adelon carried out, calls it the first cord and says it held too well, that it did not let go when told to, and that he kept it for that reason, because a binding that would not let go might be useful one day. He put a light in it, so that he could see it in the dark of the yard and know where it lay before he stepped on it. That light runs over it still, a flicker every few breaths, and the fort's registrar says it is the one kindness left in the hall: you can see Throttler before you are in reach of it.\n\nIt does not obey the drakoran who wears the master's name, and it has no gang; the other stranglers lie where they lie, and none of them comes to it, and it calls none. A cord has no fellows. It lies in the grass at the hall's west side and waits for something to be set before it, and anything that walks near enough is set before it. The young of the realm who go for the hall say it tightens as it is hurt, and the households say no, it only holds on, and that is what it feels like.\n\nWhen it is broken it lies in the grass again almost at once, coiled, flickering, because there is always cord in the hall, and the first cord was made to be made again.",
+  "legend": "Throttler is a level 50 strangler, the named one, in the grass west of Meical's Hall in the Dales of Devwy. It is aggressive from about 500 away and has no faction, so the stranglers and scorchers around it do not join unless they aggro on their own. Its script only plays a flickering effect on it every three seconds for anyone who can see it, which makes it easy to spot before you are in range. No spells or styles in the data: a melee kill for a strong duo or a small group of fifties. Watch the other stranglers in the grass as you walk in. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Hold.",
+      "Set before me. Held.",
+      "Tighter."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hold on. Hold on. Hold on."
+      }
+    ],
+    "death": [
+      "Let... go...",
+      "The knot... slips..."
+    ],
+    "slay": [
+      "Held.",
+      "Tied off.",
+      "Never let go."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something in the grass flickers, coils and waits.",
+      "Cords lie in the grass, too still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Throttler pulls tight."
+      }
+    ],
+    "realmFirstKill": "Throttler has let go. The first cord is cut."
+  },
+  "botLines": {
+    "briefing": [
+      "throttler, 50 named strangler in the grass west of meical's hall. aggros at 500",
+      "it flickers every few seconds so you see it first. no faction, the other stranglers wont come to it",
+      "watch the regular stranglers in the grass on the way in. plain melee, small group",
+      "80 sec respawn"
+    ],
+    "aftermathWin": [
+      "first cord's cut, throttler down",
+      "saw it flicker from way off, perfect pull",
+      "only one strangler woke up on the way in",
+      "80 sec, go"
+    ],
+    "aftermathLoss": [
+      "walked through the grass and pulled three stranglers first",
+      "duo at 46 vs a 50, nope",
+      "lost it in the grass between flickers",
+      "it was back before we got out of the grass"
+    ],
+    "rumour": [
+      "[heard|someone said] throttler was the first of the old master's binding cords and wouldnt let go",
+      "heard the master put a light in throttler so he wouldnt step on it",
+      "[heard|someone said] throttler tightens the more you hurt it. the households say it just holds on",
+      "heard the stranglers were a joke name once, because they held so well"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "throttler",
+    "text": "The first of the stranglers, the living binding-cords the old master of the hall of [meical] made to hold loads without hands. It held too well and would not let go, so he kept it, and put a light in it so he would not step on it in the dark; the flicker still runs over it. It has no fellows: the other stranglers in the grass do not come to it. The households say it does not tighten as it is hurt; it only holds on."
+  },
+  "bookPage": "Another leaf of the old master's mark-book, carried out of the hall by Adelon. Cord, the first. Holds a load of three hundredweight without hands, coils of itself, tightens to the shape. Fault: does not release when told. Released only by cutting, and grows back the cut. Kept, as a binding that will not let go may be wanted one day. Have put a small light in it so I see it in the yard after dark; stepped on it twice. The second time it held my ankle until the sun came up. It was not angry. It did not know how to stop.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} cut Throttler, the first cord, in {minutes} minutes.",
+    "loss": "Throttler held {raidLeader}'s company of {realm} and did not let go."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "heavy-metal-mark-i",
+      "relation": "another first of the old master's mark-book with a fault he kept"
+    },
+    {
+      "id": "adelon",
+      "relation": "carried the mark-book leaf that describes it out of the hall"
+    }
+  ]
+}

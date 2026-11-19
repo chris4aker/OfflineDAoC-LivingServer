@@ -1,0 +1,112 @@
+{
+  "id": "morbax",
+  "name": "Morbax",
+  "npcNames": [
+    "Morbax"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "shredclaw",
+      "relation": "the young render whose ground lies close to Morbax's"
+    },
+    {
+      "id": "dyranapur",
+      "relation": "the swarm-queen of the old one's lair, of the same insect kind"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Morbax is a level-56 giant insect on the cicada model in the north-east of Faraheim (407670, 336279), with giant cicadas (42-47) and a cicada-killer (57) about a thousand units off.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template puts it in the Swarm of Aegir faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Swarm of Aegir into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164170)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Giant cicadas sing in Faraheim's woods all summer, so loud that Hagall's guards stop their ears, and the cicada-killers hunt them. The dwarves of the Remnants, who keep slates on everything, say the cicadas spend most of their lives under the ground and come up only to sing and breed and die, and that the length of time they spend under the ground is different for every brood, and that one brood in the north-east of Faraheim has not been seen to come up in living memory, except for one of them.\n\nThat one is Morbax. The dwarves think he came up too early. He is larger than any cicada of the western woods and heavier, and he does not sing; the slates say he has never been heard to make a sound. He lives in the north-east near the ground where Shredclaw's young render pack hunts, alone among a few lesser cicadas that came up after him, and the render pack, which eats everything else in that part of Faraheim, does not eat him. The dwarves have watched the renders walk round him.\n\nThe skogsra have a story that the Remnants find more frightening than the slates. They say Morbax is waiting for his brood. Somewhere under the north-east woods, the skogsra say, the rest of his kind are still in the ground, a brood the size of a forest, and they are coming up, slowly, a year at a time, and Morbax came first to see whether the world was ready for them. When they come, the skogsra say, Faraheim will not hear itself think.\n\nHe is a creature of the swarm, like the cicada-killers and the gnats of the south, and the swarm comes when he is struck. The Remnants' slate on him ends with a line that the slate-keepers have copied for every slate since: count the cicadas in spring. If there are more than last year, tell Hagall.",
+  "legend": "Morbax is a level 56 named giant cicada (insect) in the north-east of Faraheim, near Shredclaw's render ground. He's Swarm of Aegir, so when you hit him the swarm insects nearby can come too (bring-a-friend); the lesser giant cicadas (42-47) and a cicada-killer (57) stand about a thousand away, so pull him toward the west and you'll usually get him alone. No abilities, not CC-immune, small for a named. Mind Shredclaw's renders: their ground is close, and his bleeds and poison on top of Morbax is a bad mix. No quest. He is small for a named and easy to lose behind the trees, so keep him targeted.",
+  "yells": {
+    "aggro": [
+      "(The great cicada makes no sound at all.)",
+      "(Morbax spreads wings that do not sing.)",
+      "(The ground beneath you hums, very faintly.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Somewhere under the woods, something answers Morbax.)"
+      }
+    ],
+    "death": [
+      "(Morbax folds, still silent.)",
+      "(The ground hums, and stops.)"
+    ],
+    "slay": [
+      "(Morbax settles on what is left.)",
+      "(Silence.)",
+      "(The swarm drifts back.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great cicada. It has never been heard to sing.",
+      "The renders walk round this one."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The ground under Morbax hums faintly."
+      }
+    ],
+    "realmFirstKill": "Morbax falls. Count the cicadas in spring."
+  },
+  "botLines": {
+    "briefing": [
+      "morbax is a 56 giant cicada, swarm of aegir faction",
+      "pull him west, the other cicadas are 1000 away",
+      "shredclaws renders are close, dont mix them",
+      "no tricks"
+    ],
+    "aftermathWin": [
+      "morbax down, alone",
+      "easy named",
+      "didnt make a sound the whole fight",
+      "renders stayed away"
+    ],
+    "aftermathLoss": [
+      "the cicada killer joined",
+      "renders wandered in",
+      "pulled the whole swarm",
+      "bad pull east"
+    ],
+    "rumour": [
+      "morbax never sings, the dwarves have never heard him make a sound",
+      "the renders walk around morbax and dont eat him",
+      "the skogsra say morbax is waiting for a brood the size of a forest",
+      "count the cicadas in spring, if theres more tell hagall"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Morbax",
+    "text": "A great cicada of the north-east that came up out of the ground long before its brood, and has never sung. [Shredclaw]'s renders walk round him. The [Remnants] count the cicadas every spring."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: the north-east is loud in summer and Morbax is the quiet in the middle of it. I came on him once in a clearing, a cicada the size of a pony, sitting on a stump, and the cicadas around him were singing so loud my teeth hurt, and he was not. I stayed to watch. After a while I noticed the others were not singing at me, or at each other. They were singing at him, all of them, facing him. I left. That summer I counted them, as the slate says. There were more.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed Morbax the silent in Faraheim in {minutes} minutes.",
+    "loss": "Morbax and the swarm drove off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

@@ -30,7 +30,7 @@ internal sealed partial class MainForm
         panel.Controls.Add(_rvrUpdated, 0, 0);
         var filters = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, WrapContents = true };
         _eventRealm.Items.AddRange(["All realms", "Albion", "Midgard", "Hibernia"]);
-        _eventKind.Items.AddRange(["All events", "Keep", "Relic keep", "Relic", "Dragon", "Epic dungeon", "Neutral raid"]);
+        _eventKind.Items.AddRange(["All events", "Keep", "Relic keep", "Relic", "Dragon", "Open-world boss", "Epic dungeon", "Neutral raid"]);
         _eventActingRealm.Items.AddRange(["Albion", "Midgard", "Hibernia"]);
         _eventRealm.SelectedIndex = _eventKind.SelectedIndex = _eventActingRealm.SelectedIndex = 0;
         filters.Controls.AddRange([_eventRealm, _eventKind, _eventSearch, _eventActiveOnly,
@@ -208,7 +208,7 @@ internal sealed partial class MainForm
         if (_eventStart != null) _eventStart.Enabled = enabled;
         if (_eventReset != null) _eventReset.Enabled = enabled;
         // Stop event: dragon and epic dungeon expeditions that are running (forced or automatic).
-        if (_eventStop != null) _eventStop.Enabled = enabled && selected!.IsActiveEvent && selected.Kind is "Dragon" or "Epic dungeon" or "Neutral raid";
+        if (_eventStop != null) _eventStop.Enabled = enabled && selected!.IsActiveEvent && selected.Kind is "Dragon" or "Open-world boss" or "Epic dungeon" or "Neutral raid";
     }
 
     private sealed record EventCommandResult(string Id, bool Success, string Message, DateTime UpdatedUtc);
@@ -232,9 +232,9 @@ internal sealed partial class MainForm
     private async Task SendEventCommandAsync(string action)
     {
         if (_eventRequestPending || !_rvrServerRunning || _rvrObjectivesGrid.CurrentRow?.DataBoundItem is not RvrObjective target || target.IsCatalogOnly || string.IsNullOrEmpty(target.Id)) return;
-        if (action == "start" && target.Kind is "Dragon" or "Epic dungeon" or "Neutral raid" && MessageBox.Show(this,
+        if (action == "start" && target.Kind is "Dragon" or "Open-world boss" or "Epic dungeon" or "Neutral raid" && MessageBox.Show(this,
             "Force this expedition? This requires 300 available level-50 autonomous bots and reassigns their ordinary tasks. Bots already assigned or reserved for another expedition or siege are protected. Departure requires 200 individually present bots; late arrivals join directly.\n\n" +
-            "The closest available bots are chosen first. Everyone travels to a safe service hub together, then formed parties advance to the encounter. The attack starts as soon as 200 have arrived (and a dragon has landed); after 15 minutes of waiting 180 will do, after 30 minutes half, and the rest follow. A forced expedition has no time limit: it runs until the encounter is defeated or you press STOP EVENT.\n\n" +
+            "The closest available bots are chosen first. Everyone travels to a safe service hub together, then formed parties advance to the encounter. The attack starts as soon as 200 have arrived (and a dragon has landed); after 15 minutes of waiting 180 will do, after 30 minutes half, and the rest follow. A forced expedition has no clock: it runs until the encounter is defeated, until you press STOP EVENT, or until 3 hours pass with no progress.\n\n" +
             "A forced expedition may run alongside another event in this realm, but cannot duplicate the same encounter. This explicit order can override the Bot Goals Setting percentages for its participants. Players, companions and mixed-level parties are excluded.",
             "Force level-50 realm expedition", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
         if (action == "stop" && MessageBox.Show(this,

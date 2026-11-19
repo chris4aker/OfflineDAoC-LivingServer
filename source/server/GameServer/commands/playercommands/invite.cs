@@ -12,7 +12,8 @@ namespace DOL.GS.Commands
         {
             if (client.Player.Group != null && client.Player.Group.Leader != client.Player)
             {
-                client.Out.SendMessage("You are not the leader of your group.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                // Bot-led groups: a gamebot leads; /lead takes over (docs/BOT-LED-GROUPS.md, B2).
+                client.Out.SendMessage(BotLedGroups.BotLeadsMessageFor(client.Player) ?? "You are not the leader of your group.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
             }
 

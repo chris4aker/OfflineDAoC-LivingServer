@@ -1,0 +1,103 @@
+{
+  "id": "tawi-shon",
+  "name": "Tawi Shon",
+  "npcNames": [
+    "Tawi Shon"
+  ],
+  "locationId": "cliffs-of-moher",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Tawi Shon: level 55, a ghost (flag 1), model 1390, size 137, at about 244,800/450,500 on the Cliffs of Moher; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Tawi Shon as the drowned cliff-watcher whose lamp still turns ships onto the rocks; the Tir Urphost custom of the covered lamp.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The fishers of Tir Urphost keep their lamps covered on the cliff path at night, and every child of the coast knows why: Tawi Shon. In the old days, before the koalinth came up and before the isle rose in the west, the Cliffs of Moher had a watcher, a man of the cliff-dweller families who kept a fire on the highest point of the cliffs so the boats coming home in the dark would know where the rocks were. His name was Tawi Shon, which the coast folk say was a cliff-dwellers' name and means nothing in the speech of Tir Urphost, and he kept the fire for forty winters.\n\nThe story differs on why he stopped. The fishers say he fell asleep one night in a storm and the fire went out and his own sons' boat broke on the rocks below him, and in the morning he walked off the cliff. The cliff dwellers, who are not on good terms with Tir Urphost, say the fishers put the fire out themselves to wreck a Midgard trader for its cargo, and his sons were aboard it, and he walked off the cliff in the morning rather than live among them. Both stories end in the same place, on the rocks under the highest point of the cliffs.\n\nHe walks there still. The coast folk see a light on the cliff-top on storm nights, swinging as a lamp swings in a man's hand, and the boats that steer by it break on the rocks. That is why the lamps of Tir Urphost are covered on the cliff path: a lamp seen from the sea on a storm night might be taken for his, and a lamp seen by Tawi Shon might be taken for the one that put his fire out. The druids of Tir Urphost, Tobryn among them, have tried to lay him more than once. He is very large, for a ghost, the druids say, as if grief had stretched him, and he does not listen to anyone who comes to the cliff-top with a light.",
+  "legend": "Tawi Shon is a level 55 ghost on the highest point of the Cliffs of Moher (about 245k/450k). Plain mob, no script, 80-second respawn; a strong 50s group handles him. The cliff dwellers' camps along the path are a different faction and can get in the way, so come along the top. Mind the edge: falling off the Cliffs of Moher is its own fight. Tir Urphost fishers keep their lamps covered on the cliff path at night, and the bot-chat superstition is the same: do not bring a lit lamp up to him. Tobryn of Tir Urphost, the Broken Seal druid, is a little way inland if you need a break.",
+  "yells": {
+    "aggro": [
+      "Who lit that? WHO LIT THAT?",
+      "The rocks. Steer for the rocks.",
+      "My fire. You put out my fire."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Forty winters I kept it. Forty."
+      }
+    ],
+    "death": [
+      "The boats... are home...",
+      "Cover the lamp... cover it..."
+    ],
+    "slay": [
+      "On the rocks.",
+      "Another boat broken.",
+      "The fire is out. Again."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A light swings on the cliff-top in the storm.",
+      "Lamps on the cliff path are kept covered."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tawi Shon's lamp swings wildly on the cliff-top!"
+      }
+    ],
+    "realmFirstKill": "Tawi Shon is laid. The cliff-top is dark tonight."
+  },
+  "botLines": {
+    "briefing": [
+      "tawi shon is a 55 ghost on top of the cliffs of moher. [plain mob|no script]",
+      "come along the top, not through the cliff dweller camps",
+      "mind the edge. [long way down|dont get knocked off]",
+      "strong 50s group"
+    ],
+    "aftermathWin": [
+      "tawi shon laid. [the cliff top is dark|got him]",
+      "nobody fell off. [miracle|lol]",
+      "tir urphost can uncover its lamps tonight",
+      "big ghost, easy kill"
+    ],
+    "aftermathLoss": [
+      "fell off the cliffs. [ouch|again]",
+      "pulled the cliff dwellers. [wrong path|oops]",
+      "group too low. [55 ghost|need more]",
+      "brought a lit lamp. [superstition says no|joking]"
+    ],
+    "rumour": [
+      "[heard|someone said] tawi shon kept a fire on the cliffs for forty winters",
+      "tir urphost fishers keep their lamps covered on the cliff path at night. [tawi shon|old custom]",
+      "[word is|heard] the cliff dwellers say the fishers put out tawi shon's fire to wreck a trader",
+      "boats that steer by the light on the cliff top break on the rocks"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tawi Shon",
+    "text": "The drowned-light ghost of the Cliffs of Moher, a cliff-dweller who kept the boats' fire for forty winters until it went out and his sons broke on the rocks. Tir Urphost covers its lamps on the cliff path."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the Cliffs of Moher on a storm night, when a light swings on the top. That is Tawi Shon, who kept the fire for the boats for forty winters until it went out and his sons broke on the rocks under him. My grandmother said the fishers let it go out; the cliff folk say the fishers put it out to wreck a trader. Either way he walked off the cliff in the morning and walks there still with his lamp, and the boats that steer by it break. Cover your lamp on the cliff path. He does not like other lights.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Tawi Shon in the Cliffs of Moher in {minutes} minutes.",
+    "loss": "Tawi Shon turned back {realm}'s band under {raidLeader} in the Cliffs of Moher after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "restless-dead"
+  ],
+  "related": [
+    {
+      "id": "uafas-capall",
+      "relation": "another terror of the western coast roads"
+    }
+  ]
+}

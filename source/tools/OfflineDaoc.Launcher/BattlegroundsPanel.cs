@@ -74,7 +74,7 @@ internal sealed class BattlegroundsPanel : UserControl
             AutoSize = true, MaximumSize = new Size(1100, 0), Margin = new Padding(6, 8, 6, 6), ForeColor = DaocTheme.Text,
             Text = "Bots with a battleground goal take a realm teleporter's [Battlegrounds] choice to the battleground of their level, " +
                    "then roam it and attack or defend its central keep. Set how many bots do this with Battlegrounds % on the Bot Goals Setting tab " +
-                   "(0% by default). Players reach the same battlegrounds from any realm teleporter.",
+                   "(15% of levels 20–49 by default). Players reach the same battlegrounds from any realm teleporter.",
         }, 0, 2);
         Controls.Add(layout);
         Show(null, false);

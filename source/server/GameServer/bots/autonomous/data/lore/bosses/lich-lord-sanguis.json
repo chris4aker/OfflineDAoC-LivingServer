@@ -1,0 +1,132 @@
+{
+  "id": "lich-lord-sanguis",
+  "name": "Lich Lord Sanguis",
+  "catalogKey": "caer-sidi/lichlordsanguis",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 81, 100,000 health. Rises six seconds after Lord Sanguis dies; at 5% health he becomes almost untouchable 'in his last act of agony'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "Lich Lord Sanguis: spawns 6 s after Lord Sanguis dies; level 81, 100,000 health, tether 2,000, GetResist 40 melee / 70 other; at 5% health he sets CANTTARGET until the fight resets, and bots do not fight CANTTARGET NPCs (BotBrain.IsUntargetable).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs"
+    },
+    {
+      "text": "The debt with no man around it, its names (Marcus of the Second Legion, Gwenno the eel-seller), the candle in the sun, 'a debt you cannot see is paid by what is already owed', and the name said at the chapel floor are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Lich Lord Sanguis is what stands up out of the red floor of the chapel in Caer Sidi when Lord Sanguis falls: the debt itself, three lifetimes of years the magistrate of Venta bought with other men's blood, standing up at once with no man left around it. The magistrate's body lies where it fell. The thing beside it is gaunt where he was soft, has no manners where he was courteous, and remembers every death he died and resents each. The Church calls it a lich, from the old word for a corpse; the Inconnu say the corpse is the part that does not walk. It takes a sword as the magistrate did, and spells sink into it.\n\nThe debt is made of names: the condemned of Venta, then the poor of the basilica steps and the river quarter, then anyone met after dark. Every one of those lives was taken before its time and holds on, which is why the thing is so angry and why it clings at the end as nothing else in the gaol does. Brother Cadoc keeps the names the Inconnu know, among them Marcus, a deserter of the Second Legion, and Gwenno who sold eels.\n\nDame Ysolde's company wore it down, and at the very end it went out of every eye, still there and still striking but impossible to look at, like a candle held up to the sun. Her swordsmen could not find it. What finished it was the wasting her priests had already laid in it and the fire her wizards spread over the whole red floor: a debt you cannot see is paid by what is already owed, and by fire on the whole field.\n\nThe debt comes due again; Arawn's accounts are exact, and three lifetimes are owed. When a Caer Gothwaite company comes down past the chapel, its youngest says the eel-girl's name aloud at the edge of the floor.",
+  "legend": "Six seconds after Lord Sanguis dies, Lich Lord Sanguis stands up at full strength: level 81, 100,000 health, crowd-control immune, 40% less from melee and 70% less from everything else, so melee carries again. Keep him inside his 2,000 leash. The catch is the end. At 5% health he goes untargetable for the rest of the fight: you cannot click him and the bots will not fight him. Get your damage-over-time spells on him well before 5% so they keep ticking, and have area damage ready (point-blank and ground-targeted area spells on the spot where he stands) to burn off the last 5,000. If nothing is ticking and nobody has area damage, the fight can stall and reset, so plan for it. Keep the same tanks as on the first Sanguis and fresh healers. Old hands say the eel-girl's name on the way down.",
+  "yells": {
+    "aggro": [
+      "Again. Always again.",
+      "I have died before. I did not like it.",
+      "My years. Mine!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=5",
+        "text": "No... I paid... I paid for this life!"
+      },
+      {
+        "trigger": "partnerDead",
+        "text": "The man is gone. The debt remains."
+      }
+    ],
+    "death": [
+      "The debt... is... paid...",
+      "So many years... spent..."
+    ],
+    "slay": [
+      "Your blood. My years.",
+      "Another year bought.",
+      "I will live on you a while."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is red. It has been red a long time.",
+      "The red floor stirs. Something is getting up."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=5",
+        "text": "Sanguis clings to his stolen life!"
+      }
+    ],
+    "realmFirstKill": "The blood-debt of Sanguis is paid. The floor is stone."
+  },
+  "botLines": {
+    "briefing": [
+      "lich lord stands up 6 sec after sanguis. melee kill again",
+      "at 5% he goes untargetable, get dots on him early",
+      "area spells on his spot to finish the last 5%, nobody can click him",
+      "same tanks as the first sanguis, healers stay fresh"
+    ],
+    "aftermathWin": [
+      "sanguis really dead this time",
+      "the floor stopped being red. creepy",
+      "got him through the 5% wall",
+      "two sanguis kills, one night"
+    ],
+    "aftermathLoss": [
+      "he went untargetable at 5% and nobody had a dot on him",
+      "no area damage for the last 5%, it reset",
+      "we looted the first body and he stood up on the healers",
+      "the healers sat down after sanguis and the lich caught them"
+    ],
+    "rumour": [
+      "heard lich lord sanguis gets almost unkillable at the very end",
+      "[someone said|heard] you kill sanguis twice in caer sidi",
+      "heard the floor goes grey when sanguis is really dead",
+      "the priests say pray for the people whose years he spent",
+      "heard caer gothwaite groups say a girl's name at the red chapel on the way out",
+      "[heard|someone said] the lich lord goes untargetable at the very end, bring dots"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lich lord sanguis",
+    "text": "What stands up from the red floor of [Caer Sidi] when [Lord Sanguis] falls: the debt of three lifetimes bought with other men's blood, with no man left around it. At the end it clings so hard no eye can fix on it. [Dame Ysolde]'s company finished it with what was already in it and fire on the whole floor."
+  },
+  "bookPage": "The second Sanguis was worse than the first, because the first had been a man who wanted to live and the second was only the wanting. It fought as nothing in that fortress had fought us, as though each of our blows were a creditor. At the very end it clung to the world so hard that our swords seemed to slide off it, and for a long moment I thought we had been wrong and it could not be killed. Then it let go. The floor of the chapel went grey. Our priests said a prayer for the people whose years it had spent.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} paid off the blood-debt of Sanguis for good in {minutes} minutes.",
+    "loss": "Lich Lord Sanguis outlasted {realm}'s raid; {raidLeader} stopped one breath too soon."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "lord-sanguis",
+      "relation": "the man it was"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "What Stands Up Out of the Floor",
+      "text": "What stands up out of the red floor when Lord Sanguis falls is what Sanguis really is: the debt, three lifetimes of borrowed years, with no man left around it.\n\nThe Inconnu say it is not a second body. The magistrate's body lies where it fell. What rises is the thing the magistrate made of himself in Venta, the years he bought with other men's blood, standing up at once now that the man who held them is gone. It stands at the full height of a man and is not one. It is gaunt where the magistrate was soft, and it does not ask what charge the company brings, because it is not a judge. It is what the judge owed.\n\nIt remembers every death the magistrate has died and resents each of them. That is the first thing every account of it says, from the dead of the galleries to Brother Cadoc: that it fights as a thing fights that has nothing left to lose, which is true, and that it is angrier than anything else in Caer Sidi. The magistrate was courteous. The debt has no manners at all.\n\nThe Church of Camelot has a word for it from the old books: a lich, a corpse that walks, which the Church's translators took from the old English word for a body. The Inconnu say the word is wrong, because the corpse is the part that does not walk; it lies on the floor beside the thing. The companies of Albion use the Church's word anyway, because it is short, and because when the thing stands up there is no time for a longer one.\n\nIt takes a sword no better and no worse than the magistrate did, the knights of Caer Gothwaite say. It is the same debt in a harder coin: the spells of the galleries' sorcerers sink into it as they sank into him, and steel is what it feels."
+    },
+    {
+      "title": "Three Lifetimes",
+      "text": "The debt is made of names, the Inconnu say, and the dead of Caer Sidi know some of them.\n\nThe first lifetime Sanguis bought was paid for by the condemned of Venta, thieves and deserters and a woman who had poisoned her husband, men and women the town would have killed anyway. The second was paid for by the poor: the beggars at the basilica steps, the slaves no one asked after, the children of the river quarter. The third, the Inconnu say, was paid for by anyone the magistrate met after dark, and that is why Caerwent's old women will not sit on a red step. Each of them is in the debt. When the thing stands up out of the floor, it stands up made of them.\n\nThe Inconnu say that is why it is so angry. It is not one man's resentment but the resentment of every life the magistrate spent, turned not against the magistrate, who is beyond its reach, but against the next living thing in the room. And it is why it clings at the end as nothing else in the gaol clings. Every one of those lives was taken before its time, and every one of them holds on.\n\nThe Church's priests at Caer Gothwaite have tried to pray for the debt's names, and the Inconnu have tried to tell them the ones they know: a deserter of the Second Legion called Marcus, a basket-weaver of the river quarter, a girl called Gwenno who sold eels. Brother Cadoc keeps the list in his breviary beside the hawthorn of the marches. He says he does not know whether a prayer for a debt reaches anyone, but that the eel-girl had a name, and that the magistrate never once asked it."
+    },
+    {
+      "title": "The Last Act of Agony",
+      "text": "Dame Ysolde's company killed the thing that stood up out of the red floor, and Brother Cadoc wrote that it was the only kill in Caer Sidi that had to be finished by people who could not see what they were killing.\n\nIt fought for a long time, longer than the magistrate had. The knights held it and wore it down, and the company killed the last of the blood mages about the chapel, and the thing grew weaker and angrier, and at the very end, when there was almost nothing left of it, it went out of every eye in the chapel. It did not vanish. Cadoc could hear it, and feel it, and the knights in front of it could feel its blows; but no one could fix an eye on it, any more than an eye can fix on a candle flame held up to the sun. It was clinging, the Inconnu said afterwards, with every stolen life it had, and a thing that clings that hard cannot be looked at.\n\nYsolde's swordsmen struck at where it had been and could not find it. What finished it was what was already in it and what fell on the whole floor. The wasting the company's priests had laid on it earlier went on working in it, unseen, and the company's wizards, at Ysolde's word, gave up looking for it and burned the floor of the chapel, the whole red floor, where it stood and everywhere else. Cadoc said it was like burning a field to kill one hare. It worked. Something fell in the fire that none of them saw fall, and the floor was only stone.\n\nThe priests of Caer Gothwaite say a saying over the dead of the red chapel now, which they say came from Ysolde on the stair: a debt you cannot see is paid by what is already owed, and by fire on the whole field."
+    },
+    {
+      "title": "The Floor Is Only Stone",
+      "text": "When the debt is paid, the Inconnu say, the floor of the red chapel is only stone, and it stays that way until the debt comes due again.\n\nIt does come due again. Sanguis sits at his altar again when the next company climbs, with his clerks about him, and asks what charge it brings, and the floor is red. The Inconnu say Arawn's accounts are exact: the magistrate owes three lifetimes, and a single paying, however hard, is one payment of three. The Church says the debt is infinite, as all sin is, and that only grace could cancel it, and grace is not offered in Caer Sidi. The bards of Caerwent say the judge will pay until the last of his victims forgives him, and that the eel-girl never will.\n\nWhat the debt wants, the Inconnu think, is what every debt wants: to be collected from the right man. It cannot reach the magistrate, who lies beside it on the floor, and so it takes whatever is nearest instead, and it will go on doing so until someone finds a way to put the debt and the debtor in the same room with no one else between them. Nobody in Albion knows how that would be done, and Ennyn, asked, said that he hoped no one ever would, because he did not know which of them would win.\n\nThe custom that Caer Gothwaite keeps for the red chapel is a small one. When a company comes down past it, after both halves of Sanguis have fallen, the youngest of the company walks to the edge of the stone floor and says the eel-girl's name aloud, once, and then the company goes on. Cadoc began it. He says that the magistrate never asked her name, and that someone in the chapel ought to say it, and that the floor, he has noticed, stays stone a little longer when someone does."
+    }
+  ]
+}

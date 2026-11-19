@@ -1,0 +1,255 @@
+{
+  "id": "raumarik",
+  "name": "Raumarik",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    108
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "dishonoured-dead",
+    "fenris-brood",
+    "lokis-mischief",
+    "hibernian-invaders",
+    "raumarik-giants"
+  ],
+  "summary": "Midgard's high wild north-west, home of foul beasts, the undead fortress of the Revenant and the Wretch of Winter.",
+  "facts": [
+    {
+      "text": "Allakhazam: Raumarik is home to foul beasts, an extremely high-level zone with a handful of slow-respawning monsters, some needing more than one group.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=16"
+    },
+    {
+      "text": "Its named include Hugi, Kelic and his servants, Loken, Oona, the Raumarik Revenant, Runil and the Wretch of Winter.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=16"
+    },
+    {
+      "text": "Three Midgard epic quests end here: Loken (Healer, Shaman), Oona (Hunter, Shadowblade) and Kelic (the mystics).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/"
+    },
+    {
+      "text": "Bot chat lists fenrir soldiers, mystics and prophets, a wolf of Loki, winter wolves and sleipneirssons in the cold north.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Raumarik's world data: frost bound bears, savage winterwolves, winter and white wolves, icestrider chillers, frostweavers and interceptors (Frozen Web), windswept wraiths, chillsome wights and frore liches, fenrir soldiers and mystics, greater fenrir, dire wolverines, sleipneirssons, frost stallions (Frost Giants), frost cyclopes, mature and savage wyverns, frigid broadleafs, fylgjur (Guardians of Midgard), enhorning, two wolves of Loki, bounty hunters and their leaders (Bounty Hunters), Red Daggers with Hagall the Red Dagger and Red Hagen, three Servants of Kelic, an Undead Patrol and Runemistress Shayla.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 100, Raumarik zone 108; 0.37b world data)"
+    },
+    {
+      "text": "The nine Wretch of Winter spawns stand across the zone from the north-west fortress to the south-west; Oona's undead soldiers stand with her at the river fork; Hugi stands among the frost cyclopes in the south-west.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob table (region 100, Raumarik zone 108; 0.37b world data)"
+    },
+    {
+      "text": "Swedish enhorning reads as 'unicorn'; a fylgja in Norse belief is a guardian spirit that follows a person or a family (to verify).",
+      "provenance": "myth",
+      "source": "Swedish glossary and Norse folklore, to verify"
+    },
+    {
+      "text": "Thyri of Galplen, the cold-iron caskets' custom, the fork's green light and the deserters' road are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Raumarik is where Midgard keeps the things it does not want to think about. It lies high in the north-west, past the swamp and the forest, a country of snow and black water and wide rivers that divide and meet again, and nothing there is in a hurry. Galplen's tellers say it was the first land the sun touched when the gods hung it in the sky, and that is why it is so cold now: it was touched first and forgotten first.\n\nThe oldest thing in it is a splinter of that sun. When the wolf Fenrir was young, before the gods bound him, he snapped at the sun as it rose over Raumarik and took a splinter of it in his teeth, and spat it out because it burned. Snow will not put out the sun. The dead of the cold land came to its warmth as the living come to a hearth, and the greatest of them walled it into a fortress on the north-western heights, and keeps it there. Ever since, Raumarik has been a country of the dead who are cold and want to be warm: wraiths on the windward slopes, wights and frore liches in the high passes, and the Wretch of Winter, which has no body of its own and borrows whatever has died in the snow.\n\nThe wolf's own people are here too. The fenrir soldiers and mystics walk the middle valleys under their greater kin, prophets of the day the chain breaks, and the winter wolves and winterwolves run with them. Sleipnir's sons graze the white slopes, eight-legged or near enough, and the frost stallions run for the cyclopes of the south-west, among whom stands Hugi, who is named for thought itself and does not seem to mind. Fylgjur, the guardian spirits of old Norse families, wander the eastern edge looking for families that have died out, and the unicorns of the north keep away from everyone.\n\nEvery war reaches here. A Hibernian champion named Oona holds the river fork in the south with a guard of the Norse dead. When the bowl over bound Loki is emptied and he writhes, a part of him gets loose in the east as Loken, fire-handed, with two of the wolves of Loki at his heels. At the snowline in the north a clansman named Kelic, who cursed his own people through a totem, stands dead where deserters carried him, with his servants round him; one of the deserters, Runil, stands alone further east, still facing home. And in the south-middle, by the bounty hunters' fires, the Red Daggers keep a hold of their own under Hagall the Red Dagger, whose name Midgard's warriors are sent to end.\n\nMidgard sends its best here when they are nearly ready, to finish their training: seers for Loken, hunters and shadowblades for Oona, mystics for Kelic, warriors for the Daggers. The ones who bring home a splinter of the sun carry it in a casket of cold iron that the smith Gris of Jordheim makes for the purpose, and the menders say a heart that has held such a splinter never quite goes cold again. Most of them come back. Raumarik keeps the rest, and the Wretch tries them on.",
+  "legend": "Nobody goes to Raumarik for quick experience. It's the far north-west, past Vanern, and everything here is high fifties to seventies with slow respawns and big hits. People go for their epic: Loken in the east for healers and shamans, Oona at the river fork in the south for hunters and shadowblades, Kelic at the northern snowline for the mystics, and the Red Daggers by the bounty hunters' camp for the viking classes. Or they go for the nine Wretches of Winter, which make a good guild night: hunt all nine and see who drops. The Raumarik Revenant is up in the fortress in the far north-west and resists spells more than steel, so bring melee. Hugi is in the south-west among the frost cyclopes. The icestriders in the north-east are Frozen Web and come in numbers. Loken, Oona and Kelic can't be hurt from far away: fight them close to where they stand. The old hands tell new groups about the Wretch of Winter to scare them. Follow the river south to find Oona. And never take a sun-splinter out of Raumarik without a cold-iron casket, or so the Galplen folk say.",
+  "atmosphere": {
+    "firstEntry": [
+      "Raumarik. The snow here is in no hurry.",
+      "Foul beasts and old cold. Midgard's north is awake.",
+      "The wind carries a voice that is not quite a voice.",
+      "Black water runs between white banks."
+    ],
+    "areas": [
+      {
+        "name": "the undead fortress",
+        "x": 601367,
+        "y": 748425,
+        "z": 8296,
+        "radius": 1800,
+        "lines": [
+          "Frost-walls of the dead. Something warm within.",
+          "The dead crowd the walls toward a light they cannot touch."
+        ]
+      },
+      {
+        "name": "the river fork",
+        "x": 607233,
+        "y": 786850,
+        "z": 4384,
+        "radius": 1400,
+        "lines": [
+          "The rivers divide. A green light flickers.",
+          "Norse dead stand guard for a Hibernian queen."
+        ]
+      },
+      {
+        "name": "Loken's scorched snow",
+        "x": 638000,
+        "y": 763500,
+        "z": 4600,
+        "radius": 1500,
+        "lines": [
+          "The snow is scorched in footprints.",
+          "Two wolves of Loki lie by the scorch, watching."
+        ]
+      },
+      {
+        "name": "the snowline trees",
+        "x": 621520,
+        "y": 745815,
+        "z": 4597,
+        "radius": 1500,
+        "lines": [
+          "A stand of trees at the snowline. A curse hangs here.",
+          "Servants wait for a master the deserters left dead.",
+          "Three Servant of Kelic, ash in their hands."
+        ]
+      },
+      {
+        "name": "the deserters' road",
+        "x": 642897,
+        "y": 757070,
+        "z": 4514,
+        "radius": 1200,
+        "lines": [
+          "One dead man stands alone, facing the way home.",
+          "Wolves circle the deserter. They do not come close."
+        ]
+      },
+      {
+        "name": "the cyclopes' heights",
+        "x": 599500,
+        "y": 791800,
+        "z": 6200,
+        "radius": 2500,
+        "lines": [
+          "One-eyed giants and frost stallions on the heights.",
+          "Huge footprints, filled with hoarfrost."
+        ]
+      },
+      {
+        "name": "the bounty hunters' fires",
+        "x": 620000,
+        "y": 778300,
+        "z": 4640,
+        "radius": 2500,
+        "lines": [
+          "Bounty hunters warm their hands. Red Daggers nearby.",
+          "A red-hilted dagger stuck in a stump. A warning.",
+          "Each Red Dagger here wears the band's red."
+        ]
+      },
+      {
+        "name": "the frozen web",
+        "x": 644000,
+        "y": 755000,
+        "z": 5500,
+        "radius": 3000,
+        "lines": [
+          "Icestriders weave frost between the rocks.",
+          "The web here is made of ice. It hums."
+        ]
+      },
+      {
+        "name": "the wraiths' slopes",
+        "x": 621691,
+        "y": 764857,
+        "z": 6927,
+        "radius": 3000,
+        "lines": [
+          "Windswept wraiths ride the wind down the slopes.",
+          "Wights and liches walk the high passes, cold and wanting."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "raumarik is where three of our epics end. loken, oona and kelic",
+      "the revenant in raumarik guards a piece of the sun fenrir spat out",
+      "theres a hib champion called oona at the river fork in raumarik. [she raises our dead|turns norsemen into her soldiers]",
+      "galplen tellers say raumarik was the first land the sun touched. touched first, forgotten first",
+      "the dead of raumarik are cold and want to be warm. thats why they crowd the fortress",
+      "the wretch of winter borrows whatever died in the snow",
+      "fylgjur in raumarik are family guardians looking for families that died out",
+      "the fenrir mystics are prophets of the day the chain breaks",
+      "the red daggers keep a hold by the bounty hunters fires. hagall the red dagger runs it",
+      "runil stands alone facing home. the other deserters are gone",
+      "gris in jordheim makes cold iron caskets for sun splinters",
+      "hugi stands with the frost cyclopes in the south west. named for thought, the skalds say"
+    ],
+    "rumour": [
+      "they tell new groups about the wretch of winter to scare them. [it worked on me|works every time]",
+      "raumarik is good xp but the revenant sits up in the north west. watch your back",
+      "loken is a piece of loki that gets out when the venom bowl spills",
+      "three servant of kelic wait under the snowline trees for their master",
+      "a servant of kelic carries ash from kelics totem",
+      "the red dagger cutthroats sell the back roads to albion",
+      "a red dagger in a stump is the band's warning",
+      "a heart that held a sun splinter never goes cold, the menders say",
+      "dont carry a sun splinter without a cold iron casket. [it burns through|galplen folk say]",
+      "the unicorns in raumarik run from everyone. [never got close|beautiful though]",
+      "the frozen web icestriders come in numbers. dont pull near the web",
+      "oona, loken and kelic cant be hurt from range. fight them close"
+    ],
+    "tell": [
+      "raumarik is the far northwest. big nameds, slow spawns, three epics end there",
+      "raumarik? wretches of winter, the revenant, oona, loken, kelic. bring a group",
+      "its a high level zone, not a camping zone. you go for an epic or a named",
+      "the servants of kelic are at the snowline trees, 48 to 52",
+      "four red daggers stand by the bounty hunters fires in mid raumarik, 46",
+      "is raumarik hard? everything is high fifties to seventies. full group",
+      "oona is at the river fork in the south, loken in the east, kelic at the northern snowline",
+      "the revenant's fortress is in the far north west up high"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Raumarik. Where Midgard keeps what it would rather not think about: the [Revenant]'s fortress, the [Wretch], and three [epics] that end there.\"",
+    "topics": {
+      "Revenant": "He walls in a splinter of the sun that Fenrir spat out in the snow. Win it back in [cold iron], and bring blades, not spells.",
+      "Wretch": "The Wretch of Winter has no shape of its own and borrows nine. The old hands rank them, but they are all the one hunger.",
+      "epics": "Healers and shamans hunt [Loken], a bit of Loki loose in the snow. Hunters and shadowblades hunt [Oona] of Hibernia at the river fork. The mystics hunt [Kelic], who cursed his own clan. Warriors hunt the [Red Daggers].",
+      "Servant of Kelic": "Three dead servants under the trees at the snowline, waiting for the master the deserters left dead: Kelic, whose household they were. The Galplen tellers say the servants carry his totem's ash in their hands and that they will wait until he comes back, which he does, now and then. They fight anyone who comes to the trees, and they fight beside Kelic when he is there.",
+      "Red Dagger": "The cutthroats of [Hagall]'s band, the Red Daggers, four of them in their red by the bounty hunters' fires, who sell the back roads of the frontier to Albion. A red-hilted dagger stuck in a stump is their warning. The viking epic sends Midgard's young against their chief and his second; the Daggers by the fires are what stands in the way.",
+      "cold iron": "Caskets of cold iron, made by Gris of Jordheim, to carry a splinter of the sun out of Raumarik. Galplen's tellers say nothing else will hold it.",
+      "Red Daggers": "A band who keep a hold by the bounty hunters' fires in the south-middle of Raumarik, under [Hagall] the Red Dagger; [Red Hagen], his second, keeps their map in the east. Midgard's viking epic means to end them.",
+      "fylgjur": "Guardian spirits of the old Norse families. In Raumarik they wander the eastern edge, looking for families that have died out.",
+      "wolf's people": "The fenrir soldiers, mystics and greater fenrir of the middle valleys, prophets of the day the wolf's chain breaks. See the [Revenant] for the wolf's folly.",
+      "frozen web": "The icestriders of the north-east, chillers and frostweavers and interceptors, who weave webs of ice between the rocks.",
+      "Thyri": "Thyri of Galplen, a teller of the old tales, who wrote down Raumarik as Galplen tells it. See the [Revenant] and [cold iron]."
+    }
+  },
+  "book": {
+    "title": "Fenrir's Folly, as told in Galplen",
+    "pages": [
+      "Written down by Thyri of Galplen, teller of the old tales. When the wolf was young, before the gods bound him, he was hungry all the time and afraid of nothing. One morning he saw the sun come up over Raumarik and thought it was a fat red bird, and he leapt for it and snapped, and got a splinter of it in his teeth before the chariot drew away. It burned. He spat it into the snow and ran yelping to his father, who laughed until the mountains shook. That is why the wolf hates the sun, they say in Galplen, and why one day he will swallow it whole.",
+      "The splinter did not go out. Snow will not put out the sun. It lay in Raumarik and was warm, and the dead of that cold land came to it as the living come to a hearth, and the greatest of them built a fortress round it so the others would have to ask. He is still there. The old smith Gris of Jordheim has made caskets of cold iron to carry such splinters in, for those who brought him the makings, and the menders say a heart that has held a splinter of the sun never quite goes cold again.",
+      "The dead who could not get into the fortress went on wanting to be warm. The wraiths ride the wind down the slopes hoping it will carry them somewhere warmer. The wights stand in the passes with their hands out. And the Wretch of Winter, which is no one in particular, puts on whatever has died in the snow, a scorpion's shell, a jotun's hide, an ogre's bulk, and goes about in it until it wears out, and then finds another. My grandmother said it is the cold itself, tired of waiting for things to die. She told it to frighten us. It worked.",
+      "When the gods bound Loki they set a serpent over his face to drip venom, and his wife holds a bowl to catch it. When the bowl is full she must empty it, and the venom falls, and he writhes, and the earth shakes. In Raumarik, the Galplen folk say, a little of him gets out each time, and walks the east as a slim fire-handed thing with two wolves at its heels. It does not go far from the place it got out. The young seers of the realm are sent to put it back. They come home singed and proud.",
+      "At the river fork in the south there is a green light at night, and the Galplen folk do not go near it. A woman of Hibernia stands there, named for a fairy queen of the west, with Norse dead in a ring round her. Every Norseman who falls to her stands up again in the ring. My uncle went to the fork once to see the light, and came back, and would not say what he saw, except that one of the dead in the ring had worn a Galplen brooch. Years later he told me whose, and I have written it down elsewhere, because his mother is still alive.",
+      "At the northern snowline, under a stand of trees, a clansman named Kelic stands dead where his own people's deserters carried him, because he had cursed the clan through a totem and nobody could break it while he lived. They thought death would be enough. It was not; he stands there still with his servants, holding the totem. One of the deserters, Runil, never got home. He stands further east, alone, facing the way he meant to go. The wolves leave him be. Galplen says even wolves know a man who has already been punished."
+    ]
+  },
+  "bosses": [
+    "raumarik-revenant",
+    "wretch-of-winter",
+    "loken",
+    "oona",
+    "kelic",
+    "runil",
+    "hugi",
+    "hagall-the-red-dagger",
+    "red-hagen",
+    "runemistress-shayla",
+    "undead-patrol"
+  ]
+}

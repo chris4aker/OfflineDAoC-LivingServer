@@ -110,7 +110,10 @@ namespace DOL.GS
             try { _listener = new GcListener(); }
             catch (Exception exception) { Log.Warn("GC event listener could not start; SERVER_GC_PAUSE lines are off", exception); }
             Log.Info($"SERVER_MEMORY_DIAGNOSTICS started allocationSampling={_detailed} heapSnapshots={_detailed && GcdumpPath() != null && File.Exists(Path.Combine(AppContext.BaseDirectory, SnapshotEnableFileName))} " +
-                $"serverGc={System.Runtime.GCSettings.IsServerGC} latency={System.Runtime.GCSettings.LatencyMode}");
+                $"serverGc={System.Runtime.GCSettings.IsServerGC} latency={System.Runtime.GCSettings.LatencyMode} " +
+                // The launcher's "Lean server memory" option sets these two (Living Server 1.2); "default" when unset.
+                $"gcHeapCount={Environment.GetEnvironmentVariable("DOTNET_GCHeapCount") ?? "default"} " +
+                $"gcConserveMemory={Environment.GetEnvironmentVariable("DOTNET_GCConserveMemory") ?? "default"}");
         }
 
         /// <summary>Called once a minute from the game loop's work report.</summary>

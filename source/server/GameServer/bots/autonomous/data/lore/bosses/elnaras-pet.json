@@ -1,0 +1,102 @@
+{
+  "id": "elnaras-pet",
+  "name": "Elnara's Pet",
+  "npcNames": [
+    "Elnara's Pet"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Elnara's Pet: level 51, model 946 (the treant body), size 155 (half again a normal treant), at about 335,000/313,800 beside Elnara Erea on the western edge of Altan Garran; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the treant raised from a cutting of Treal in the first bad year of the worts, never named.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "In the first bad year of the worts, when Tachtwort first put its tendrils into the south wall of Altan Garran and the outlanders understood that garda with knives would not be enough, Elnara Erea went to Treal, the old tree the town is built around, and asked him for a cutting. The Ereas have kept Treal since the town was founded, and they do not ask him for much. He gave it. She planted it on the western edge of the town, where the ledge is widest, and sang to it every evening for a season, as the Sylvan sing to a seed-tree, and it grew.\n\nIt has not stopped growing. The town's bards say Elnara put too much into the song, or that a cutting of Treal has more of the old forest in it than any sapling of the gorge, or that the worts' rot in the soil fed it as it feeds them. Whatever the reason, it stands half again the height of any treant in Cothrom now, with bark as thick as a door, and it follows Elnara along the western edge as a hound follows its keeper. It has never been given a name. Elnara says a tree that size does not need one, and the outlanders call it simply Elnara's.\n\nIt does not speak, as Treal does, or not to anyone but her. The garda of the western wall say that at dusk, when Elnara sings to it still, it leans down until its crown is over her and stays like that until she has finished, and that nothing in the gorge, worts or shrillers or the riders of the deep gorge, comes near the western edge while it is bending. Strangers who come to the western edge meet it before they meet her. The Domnann wardens, who have seen it from the ledge above, say it is the largest thing the Sylvan never made.",
+  "legend": "Elnara's Pet is a level 51 treant of enormous size (155) right beside Elnara Erea (55) on the western edge of Altan Garran. You fight both together: one tank on the treant, one on Elnara. No script; plain melee with a lot of body for its level. Count it as part of the Elnara Erea fight rather than its own pull. The town is set aggressive, so pull from the outside of the western edge and keep away from the garda in the square. A full group of 50s does it, and the kill counts as the treant's own, so it is worth taking for anyone collecting the town.",
+  "yells": {
+    "aggro": [
+      "(the great treant straightens, and the ledge creaks)",
+      "(bark like a door turns toward you)",
+      "(it steps between you and Elnara)"
+    ],
+    "phases": [],
+    "death": [
+      "(the great treant falls across the ledge)",
+      "(a cutting of Treal, uprooted)"
+    ],
+    "slay": [
+      "(it stands over the fallen, still)",
+      "(the ledge shakes)",
+      "(it turns back to Elnara)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A treant half again the height of any other.",
+      "Its crown bends over someone, at dusk."
+    ],
+    "phases": [],
+    "realmFirstKill": "Elnara's great treant has fallen across the ledge."
+  },
+  "botLines": {
+    "briefing": [
+      "elnaras pet is a huge 51 treant next to elnara. [same fight|two tanks]",
+      "plain melee, lots of health",
+      "pull from outside the west edge. [not the square|garda]",
+      "count it as part of the elnara fight"
+    ],
+    "aftermathWin": [
+      "the big treant is down. [timber|huge]",
+      "two tanks held both. [nice|grats]",
+      "it fell across the whole ledge lol",
+      "elnara next if shes still up"
+    ],
+    "aftermathLoss": [
+      "the treant ate the healer. [huge reach|ouch]",
+      "one tank for both. [nope|wipe]",
+      "garda came out of the square. [aggro town|ugh]",
+      "underestimated a 51. [size 155 is a lot of tree|lesson]"
+    ],
+    "rumour": [
+      "[heard|someone said] elnara's treant was cut from treal",
+      "the garda say elnara's treant bends over her when she sings at dusk",
+      "[word is|heard] nothing comes near the west edge of altan garran while the big treant bends",
+      "elnara's treant has no name. [she says it doesnt need one|elnara's]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Elnara's",
+    "text": "The great treant of [Elnara] Erea, raised from a cutting of Treal in the first bad year of the worts, half again the height of any treant in Cothrom. It has no name. It follows her like a hound."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: Elnara asked Treal for a cutting in the first bad year, when we understood that knives on the walls would not hold the worts, and he gave it. She sang to it every evening for a season and it grew, and has not stopped. It is half again the height of any treant in the gorge and follows her as a hound does. At dusk, when she still sings to it, it bends until its crown is over her. Nothing comes near the western edge while it bends. The wardens call it the largest thing the Sylvan never made.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Elnara's Pet in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Elnara's Pet turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "elnara-erea",
+      "relation": "its keeper"
+    },
+    {
+      "id": "treal",
+      "relation": "the tree it was cut from"
+    }
+  ]
+}

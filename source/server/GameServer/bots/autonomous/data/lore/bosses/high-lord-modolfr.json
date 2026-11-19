@@ -1,0 +1,71 @@
+{
+  "id": "high-lord-modolfr",
+  "name": "High Lord Modolfr",
+  "npcNames": [
+    "High Lord Modolfr"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "High Lord Modolfr is a level-44 werewolf lord (faction Varulv) in his wing of Varulvhamn (26,047/32,746) among werewolf advisors, frukta wargs, wolfaur lunarians, a scavenger and an elite guard; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Modolfr as the high lord who wants war later is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Old Norse modr is 'courage, wrath' and ulfr 'wolf'; the name would read 'wrath-wolf' or 'brave wolf'.",
+      "provenance": "myth",
+      "source": "Old Norse/Swedish (to verify)"
+    }
+  ],
+  "story": "Modolfr wants war too, later. He is the patient one of the three high lords, the wrath-wolf of the old name who keeps his wrath in a box, and he holds the wing where the wolfaur lunarians walk, the old moon-watchers who count the nights to every change. Modolfr counts with them. The court says he has a night picked, a night when the moon and the season and the realm's troubles will all be right, and that he will not say which, because a war announced is a war half lost.\n\nHallkel Thorvaldsson of Skona, who wrote down what he could of the court's arguments, says Modolfr and Athulf have the same quarrel every season and both enjoy it. The king lets them. The young Midgard sends for the lords' essences find Modolfr waiting in his wing among his advisors and moon-watchers as if he had picked that night too, and perhaps he had.",
+  "legend": "High Lord Modolfr is a level 44 Varulv high lord in his wing of Varulvhamn among advisors, frukta wargs and wolfaur lunarians. One of the three Werewolf Bane essences. Varulv faction, so his wing fights with him. A full mid-40s group handles it. His wing is west of Athulf's, past the lower halls. Watch the lunarians at the edge of his wing.",
+  "yells": {
+    "aggro": [
+      "Tonight? No. But you will do.",
+      "The moon was not right for you."
+    ],
+    "death": [
+      "Not... the night I chose..."
+    ],
+    "slay": [
+      "Patience."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Moon-watchers count the nights. A high lord waits."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "modolfr is the 44 high lord with the lunarians, werewolf bane essence",
+      "varulv faction, his wing joins"
+    ],
+    "aftermathWin": [
+      "modolfr down, essence two",
+      "lunarians hit harder than they look"
+    ],
+    "rumour": [
+      "modolfr has picked the night for the werewolves war and wont say which",
+      "modolfr and athulf have the same argument every season and both enjoy it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "High Lord Modolfr",
+    "text": "The patient high lord of Varulvhamn who wants war on a night of his own choosing, and counts the nights with the wolfaur moon-watchers. See [high lords]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took High Lord Modolfr's essence in Varulvhamn in {minutes} minutes."
+  }
+}

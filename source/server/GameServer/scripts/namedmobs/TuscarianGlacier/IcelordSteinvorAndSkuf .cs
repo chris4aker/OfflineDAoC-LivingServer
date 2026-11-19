@@ -48,10 +48,10 @@ namespace DOL.GS
         {
             get { return 100000; }
         }
-        public override void Die(GameObject killer) //on kill generate orbs
+        public override void ProcessDeath(GameObject killer) //on kill generate orbs
         {
             SpawnSeers();
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public void SpawnSeers()
         {
@@ -211,8 +211,8 @@ namespace DOL.AI.Brain
             base.Think();
         }
 
-        public static GamePlayer randomtarget = null;
-        public static GamePlayer RandomTarget
+        public static GameLiving randomtarget = null;
+        public static GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -227,11 +227,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 List<GameLiving> enemies = AggroList.Keys.ToList();
-                foreach (GamePlayer player in Body.GetPlayersInRadius(1100))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 1100))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new());
                     }
                 }
@@ -250,21 +250,21 @@ namespace DOL.AI.Brain
                             continue;
                         GameLiving living = null;
                         living = enemies[i] as GameLiving;
-                        if (living.IsVisibleTo(Body) && Body.TargetInView && living is GamePlayer)
+                        if (living.IsVisibleTo(Body) && Body.TargetInView && EncounterTargets.IsRaider(living))
                         {
                             damage_enemies.Add(enemies[i] as GameLiving);
                         }
                     }
                     if (damage_enemies.Count > 0)
                     {
-                        GamePlayer PortTarget = (GamePlayer)damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
+                        GameLiving PortTarget = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
                         RandomTarget = PortTarget;
                         PlayerX = RandomTarget.X;
                         PlayerY = RandomTarget.Y;
                         PlayerZ = RandomTarget.Z;
                         SpawnEffectMob();
                         BroadcastMessage(String.Format(Body.Name + " says, '" + RandomTarget.Name +" you are not going anywhere'"));
-                        new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(EffectTimer), 8000);
+                        new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(EffectTimer), EffectMob.LifetimeMilliseconds);
                     }
                 }
             }
@@ -487,6 +487,9 @@ namespace DOL.GS
 {
     public class HrimthursaSeer : GameEpicNPC
     {
+        private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+        private const int DESPAWN_RETRY_INTERVAL = 30000;
+
         public HrimthursaSeer() : base()
         {
         }
@@ -542,12 +545,28 @@ namespace DOL.GS
             Realm = eRealm.None;
             RespawnInterval = -1;
 
-            HrimthursaSeerBrain.walkto_point = false;
             HrimthursaSeerBrain adds = new HrimthursaSeerBrain();
             SetOwnBrain(adds);
             LoadedFromScript = false;
+
+            if (PackageID == "SteinvorDeathAdds")
+                new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
+
             base.AddToWorld();
             return true;
+        }
+
+        private int Despawn(ECSGameTimer timer)
+        {
+            if (!IsAlive)
+                return 0;
+
+            // Don't despawn mid fight.
+            if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+                return DESPAWN_RETRY_INTERVAL;
+
+            RemoveFromWorld();
+            return 0;
         }
     }
 }
@@ -566,7 +585,7 @@ namespace DOL.AI.Brain
             ThinkInterval = 1000;
         }
 
-        public static bool walkto_point = false;
+        private bool _walkedToRoom = false;
         public void Walk_To_Room()
         {
             Point3D point1 = new Point3D();
@@ -578,10 +597,10 @@ namespace DOL.AI.Brain
             {
                 if (Body.CurrentRegionID == 160) //TG
                 {
-                    if (!Body.IsWithinRadius(point1, 30) && walkto_point == false)
-                        Body.WalkTo(point1, 100);
+                    if (!Body.IsWithinRadius(point1, 30) && _walkedToRoom == false)
+                        Body.PathTo(point1, 100);
                     else
-                        walkto_point = true;
+                        _walkedToRoom = true;
                 }
             }
         }
@@ -651,8 +670,25 @@ namespace DOL.GS
             if (success)
             {
                 new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(Show_Effect), 3000);
+                // Offline DAoC 1.2 (sweep 7c, P-1): the pillar leaves on its own timer too. Steinvor's EffectTimer removed it
+                // only while he lived, so a pillar raised just before his death stood for good (owner's PC, build 9a173f4,
+                // 2026-11-19: his last pillar at 02:25:54, his death at 02:26:00, and 73 raiders stepped out of it until 03:48).
+                // Same moment as his own removal; its one Pillar of Frost (3.5 s in) is unchanged.
+                new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(Expire), LifetimeMilliseconds);
             }
             return success;
+        }
+
+        /// <summary>How long a Pillar of Ice stands: Steinvor's EffectTimer removes it this long after he raises it, and the
+        /// pillar's own timer removes it then whether he lives or not.</summary>
+        public const int LifetimeMilliseconds = 8000;
+
+        /// <summary>The pillar leaves the world (its own timer; Steinvor's state does not matter). Nothing when it already left.</summary>
+        public int Expire(ECSGameTimer timer)
+        {
+            if (ObjectState == eObjectState.Active)
+                RemoveFromWorld();
+            return 0;
         }
 
         private Spell m_Icelord_Gtaoe;
@@ -704,11 +740,11 @@ namespace DOL.AI.Brain
         {
             if (Body.IsAlive)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new(100));
                     }
                 }

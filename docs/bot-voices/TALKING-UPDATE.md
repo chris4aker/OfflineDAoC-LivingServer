@@ -1,5 +1,11 @@
 # The talking update (Living Server Beta 1.1)
 
+> **Beta 1.1 as shipped.** This page describes the talking update as it was in Beta 1.1. Several numbers and rules here
+> have changed since: the chat rate defaults to 2 (not 1.0), how often bots talk is set by the chat budget
+> ([CHAT-BUDGETS.md](CHAT-BUDGETS.md); gaps are no longer held to 40 seconds), every Living Server part is on by
+> default since 1.2, and bot-led groups invite players (`bot_group_invite_player`). For the current rules read
+> [DESIGN.md](DESIGN.md), [CHAT-BUDGETS.md](CHAT-BUDGETS.md) and [../LIVING-SERVER.md](../LIVING-SERVER.md).
+
 Bot chat in Beta 1.0 had three problems. Bots said things that weren't true: a Hibernian in Ardee asked about an
 Albion dungeon, "heading into myrkwood" came from anywhere in Midgard, and Darkness Falls lines came from inside Tomb
 of Mithra. Every line also stood alone: a player who answered a bot's question got no reply, and a "why?" got nothing.
@@ -206,7 +212,8 @@ To measure a new blind set: `TALK_AUDIT_IN=<lines.json> TALK_AUDIT_OUT=<misses.t
 Researched from the era (patch notes up to 1.65, the last before Trials of Atlantis; zone lore; Allakhazam comments from
 2002-2003), with each item labelled documented, player rumour or invented. Bots state documented facts plainly and frame
 rumours and inventions as rumour ("heard that...", "my old guild swore..."). Only monsters that exist in this world are
-named (checked against the world database: not Yar, Apocalypse, Morgana as a monster, Flame or Beliathan); Legion,
+named (checked against the world database: not Morgana as a monster, Flame or Beliathan; Yar and Apocalypse, absent
+when this was written, now exist and are named by the 1.2 tales); Legion,
 Behemoth, Govannon and the dragons are lore only, and no bot claims to have killed a raid boss.
 
 - `lore_albion.lines`, `lore_midgard.lines`, `lore_hibernia.lines`: each realm's legends, named monsters, dungeon stories,
@@ -217,7 +224,10 @@ Behemoth, Govannon and the dragons are lore only, and no bot claims to have kill
 - `lore_shared.lines`: Darkness Falls (Legion's court, the imps and seals, Behemoth, Govannon), the tunnels under all three
   frontiers and "the third power", the three dragons compared, con colours that lie, drop superstitions, the world finding
   itself (passes out of mist, new islands), swimming to the edge, old maps; 12 debates.
-- Lore by weight per realm: 357 / 385 / 356 (alb / mid / hib); all realm talk 1,327 / 1,303 / 1,283.
+- Lore by weight per realm when written: 357 / 385 / 356 (alb / mid / hib); all realm talk 1,327 / 1,303 / 1,283. Since
+  round 5 none of the ambient lore lines is said unprompted (`AutonomousChatFiller` drops topic lore; CHAT-BUDGETS: lore
+  is never recited unasked). They are heard as answers to a question that names their place or boss
+  (`LoreChat.TryAnswer`, 1.2 chat audit LORE-001) and the debates still play.
 - **Second pass** (the owner found the first debates thin): every lore debate rewritten as a full conversation, 19-30
   beats with 5 speakers, concrete lore in nearly every line, evidence against counter-evidence, the old legend the game
   drew on (Arthurian, Norse, Irish) set against what the game shows, a newcomer who asks "wait, who is that?", and an
@@ -275,25 +285,42 @@ lines (`beggars.lines`, kind `beggar`, 19 topics), spiced the way the dunces are
 `bot_living_deeds` (on by default; `AutonomousPlayerDeeds`). When you do something a gamebot of your realm sees (a
 groupmate first, else any bot within 3,000 units), it tells /faction 2-10 minutes later and one to three bots react:
 
-- **Named kills:** a named monster (capitalised name, no realm) you kill alone (`named_solo`) or with your group
-  (`named_group`) at blue or harder. (Solo needed yellow until 2026-10-27.)
+- **Named kills:** a named monster (capitalised name, no realm) you kill alone (`named_solo`: no groupmate near and 90%
+  of the damage yours or your pet's) or with your group (`named_group`) at blue or harder. (Solo needed yellow until
+  2026-10-27.) Lines of awe ("i thought that thing needed a full group") need yellow or harder (`hard_kill`).
 - **Kill streaks:** three or more enemies killed within ten minutes (`rvr_streak`).
 - **Your deaths:** zerged by three or more enemies (`ganked`; four until 2026-10-27), killed by a green or grey monster (`silly_death`), or a
-  fall or drowning (`fell`).
+  fall (`fell`) or drowning (`drowned`).
 
 Only what a bot saw counts: an unseen deed, an ordinary enemy kill included, is not told and does not count toward
 reputation. Each kind is told at most every 15 minutes per player; a solo named kill once per monster in 15 minutes and
 at most one every 5 minutes. Deeds add up in
 `offline_player_reputation` (an optional progress table, emptied in release builds). Every 50-100 minutes a bot who was
-not there brings up an online player's reputation ("isnt Kaelith the one who soloed Grimwold?", `rep_named`, `rep_rvr`,
-`rep_silly`). Three solo named kills, 25 enemy kills or four silly deaths earn a nickname ("Kaelith the Slayer",
+not there brings up an online player's reputation ("isnt Kaelith the one who soloed Grimwold?", `rep_named`, `rep_rvr` from 50
+enemy kills, `rep_silly`). Three solo named kills, 25 enemy kills or four silly deaths earn a nickname ("Kaelith the Slayer",
 "Kaelith Facefloor"), announced in /faction; a heroic nickname replaces a silly one and is then for good.
 `deeds.lines`: about 1,800 lines.
 
 ### 13. Storylines
 
-`bot_living_storylines` (on by default; `AutonomousBotStorylines`). Four four-episode dramas per realm, played in
-/faction through the debate engine: `killsteal`, `guildsplit`, `romance` and `ninjaloot` (`storylines.lines`, 24 scenes).
+`bot_living_storylines` (on by default; `AutonomousBotStorylines`). Fifteen four-episode dramas per realm, played in
+/faction through the debate engine: `killsteal`, `guildsplit`, `romance` and `ninjaloot` (`storylines.lines`, 24 scenes),
+the crafters' `pricewar` (`craft_drama.lines`), and since 1.2 ten more in `storylines_more.lines` (60 scenes, 18-24
+beats each; owner 2026-11-18: "10 new arcs added to 1.2"; tests only):
+- `mentor`: a veteran (A, 40-50) and the apprentice (B, 10-39) who joins a bigger RvR group and calls the lessons old school.
+- `bounty`: a realm member puts gold on an enemy stealther ganking the mile gate; two archers (Scout, Hunter, Ranger)
+  race to be first to drop it and fight over whose kill it was.
+- `ballad`: a Minstrel, Skald or Bard sings "the ballad of {name_b}" about B's drowning; B answers with a song of their own.
+- `masterpiece`: a crafter made B a masterpiece chest piece, and B sold it to a merchant by mistake.
+- `mistell`: A's tell about B's slow heals goes to B (a healer: Cleric, Friar, Healer, Shaman, Druid, Bard, Warden), and
+  B pays it back with a "mistell" of A's secret into faction.
+- `buffbot`: B tells the realm that A (Cleric, Healer, Shaman, Druid) is somebody's buffbot; A goes on a buff strike.
+- `keepgrudge`: the melee leader (A) and the caster leader (B) blame each other for nearly losing the arc's keep: door or wall.
+- `loan`: A lent B gold for armor; B pays in silver, then swears it was all paid in a trade at the bank.
+- `gimped`: a group leader kicks A for playing the class the boards called gimped (Friar, Warrior, Warden); one run decides it.
+- `campspot`: two strangers share one camp, draw a border at a rock, and end up friends.
+They are realm-neutral, and a letter C-H is one side character for the whole arc (the newbie, the scorekeeper, the
+rival crafter, the third camper).
 The same two bots (roles A and B, saved in `offline_bot_storylines`) play every episode and name each other; the other
 roles are cast fresh. A realm plays at most one episode every 45 minutes, an arc's episodes are 3-10 hours apart, a new
 arc starts at most every two hours, and a finished arc starts again with a new pair a week later. The first /faction scene
@@ -307,7 +334,11 @@ Take a side by naming one of the two in /faction during an episode or up to ten 
 right"). An episode (or any debate) pauses while nobody of the realm is in the game, as when a player releases or changes
 zone, and ends only after two minutes of that.
 The one you backed thanks you by tell, the other tells you off, and the last episode plays that side's ending (`_4a` or
-`_4b`; plain `_4` when nobody took a side), naming you. Storyline scenes never play as ordinary debates.
+`_4b`; plain `_4` when nobody took a side, or when you are offline then), naming you. An arc's keep and its zone are fixed
+the first time an episode plays, so every episode names the same keep. A side character (roles C to H) is the same bot
+in every episode it can play (the referee of the duel, the judge of the trial). The guild split is cast from a bot guild's
+leader and one of its officers when such a pair is free. Storyline scenes never play as ordinary debates. A dunce scene
+is one ordinary scene draw in eight, at most once in three hours per realm (WRITING-GUIDE.md, "Storyline arcs").
 
 ### 14. Gold spammers and roleplayers
 
@@ -321,7 +352,8 @@ The one you backed thanks you by tell, the other tells you off, and the last epi
 - **Roleplayers** (`AutonomousRoleplayers`): about 4% of the Socialite and Explorer personalities (about 1.6% of all
   bots) roleplay. Everything they say, in every channel, comes out in thee and thou ("art thou well? aye, forsooth").
   The first comes 6-18 minutes into a play session, then every 20-45 minutes one posts an in-character line in /faction; other bots mock them ("/rp off plz") and they answer in
-  character.
+  character. They name the enemy as a people ("the Hibernians"), and a mock or answer that quotes a word ("forsooth?
+  FORSOOTH?") is said only after a line that had it.
 
 `spammers.lines` and `roleplayers.lines`: about 3,000 lines.
 
@@ -333,15 +365,16 @@ The one you backed thanks you by tell, the other tells you off, and the last epi
   while a player of that realm within ten levels under to five over it is online. One to four minutes later, if it is
   still alive, a bot says so vaguely ("heard Grimwold is up again in Black Mountains South").
 - **A thin keep:** an enemy frontier keep with four or more guards meant to be up (in the world or respawning; a captured
-  keep's guards above its new level don't count), under 30% of them alive ("scout says Caer Benowyc is
-  wide open"). Checked every five minutes.
+  keep's guards above its new level don't count), under 30% of them alive ("free rps at beno. guards are down"). Never a
+  portal keep, a keep under siege, one that changed hands in the last 30 minutes, or one with a living player or gamebot of
+  its owner within 3,000 units. Checked every five minutes. Keeps and zones are named as chat wrote them ("hlid").
 
 A realm hears at most one rumour every 20 minutes, a monster at most every six hours, a keep at most every two.
 `rumours.lines`: about 370 lines.
 
 ## Content
 
-The corpus went from 2,326 to about 3,820 lines (`talking_audit.lines` holds the audit's reply sets, `replies_pools.lines`
+The corpus went from 2,326 to about 3,820 lines (the audit's reply sets were in `talking_audit.lines`, since 1.2 in `followups.lines`, `replies_player.lines`, `replies_more.lines`, `closings_more.lines` and `combat_calls.lines`; `replies_pools.lines`
 the month simulation's). These files are new: `news.lines`, `news_replies.lines`, `tells.lines`,
 `memory_more.lines`, `combat_calls.lines`, `lfg_real.lines`, `followups.lines`, `closings_more.lines`, `camp_more.lines`,
 `guild_more.lines` and `experience.lines`. The existing files were annotated with place, news, xp and role flags,

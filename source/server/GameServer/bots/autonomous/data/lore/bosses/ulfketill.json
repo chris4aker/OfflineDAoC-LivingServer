@@ -1,0 +1,130 @@
+{
+  "id": "ulfketill",
+  "name": "Ulfketill",
+  "catalogKey": "midgard-named-mobs-classic-zones/ulfketill",
+  "locationId": "vanern-swamp",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "jotuns-of-vanern",
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "mokkurvalve",
+      "relation": "fellow clay-builder of the Vanern jotuns"
+    },
+    {
+      "id": "loken",
+      "relation": "fellow servant of Loki's mischief"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Ulfketill is a level-65 giant with 30,000 health in the west of Vanern Swamp who keeps up to three clay jotun guards around him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is a step of the Healer and Shaman epic 'The Desire of a God' (level 48), sent by Lyngheid at Fort Atla after word that Loki seeks to cause trouble.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/720"
+    },
+    {
+      "text": "Allakhazam says he travels with several guards; Ulfketill is an Old Norse personal name, ulfr wolf and ketill cauldron (to verify).",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/12112"
+    },
+    {
+      "text": "Ulfketill keeps up to three clay jotun guards (level 50-55, 5,000 health each). He makes new ones only while nobody is fighting him: in the fight, a guard that dies is not replaced. Idle guards follow him; when he or a guard is attacked, the others join. Guards do not walk home after a fight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ulfketill.cs"
+    },
+    {
+      "text": "He is CC-immune, reaches 350 with his blows, takes 20% less melee and 30% less magic damage, and walks home at full health when no one is left fighting him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Ulfketill.cs"
+    }
+  ],
+  "story": "A kettle-pit is a hole in the ground lined with stones and filled with fire, and the jotuns of Vanern fire their clay in them. Ulfketill got his name, the wolf-kettle, because his pit never went out, and because the clay that came out of it bit. He was a potter first. He made the best clay guards in the swamp, and he made them slowly, in the quiet of the evening, after he had eaten, because a pot made in anger cracks in the firing and every potter knows it.\n\nHe was a potter with a grievance. The jotuns of Vanern were cast down out of the mountains, and Ulfketill never forgave the gods for the mountains or the mud. When the bound god began whispering up through the low places of Midgard, Ulfketill was the first jotun of the swamp to answer. Loki promised him what Loki promises everyone: that the gods would be sorry. Since then, when the bound god wants mischief in Midgard, Ulfketill is one of the hands that makes it, and the seers' halls at Fort Atla send their young after him, by Lyngheid's word, when the whispering gets loud.\n\nHe keeps three guards. Never more, because a potter with more than three pots in the kiln loses one, and never fewer if he can help it. They follow him about the west bank like dogs, and like dogs they come running when anyone lays a hand on him, or on any one of them. But he will not make clay while he is roused. Break one of his guards while he is angry and it stays broken until he has calmed and eaten; the ferrymen say that is the only mercy the wolf-kettle has ever shown, and he does not mean it as one.\n\nHe is not easily held. Rope slides off him and spells of sleep and binding find nothing to hold to, as if he had been fired in his own pit. His arm is long. He does not chase anyone far; when the swamp is quiet again he goes back to his pit and his supper, and the next evening he is whole, and so, soon after, is his household of clay. Around his pit, on the broken bank, limp the guards that came out wrong over the years. He will not unmake them. He is a jotun, and they are his.",
+  "legend": "Ulfketill is the healer and shaman epic target in the west of Vanern Swamp. He starts with three clay jotun guards around him. The thing to know: he only makes new guards when nobody is fighting him. Once the fight starts, every guard you kill stays dead, so kill the three first (5,000 health each, level 50-55) and then you're fighting him alone. Touch him or any guard and all of them come. He's CC-immune, so don't bother rooting or mezzing him, and his reach is long, 350, so casters stand back. 30,000 health, 20% melee and 30% magic resist. If everyone dies or runs, he walks home at full health and refills to three guards. The broken and crippled jotuns nearby are separate mobs; clear them first so they don't wander in. Bring a full group.",
+  "yells": {
+    "aggro": [
+      "The god's work is not done. Clay, rise!",
+      "Clay, to me! Someone has come to break pots.",
+      "The god's work is not done. Neither is mine."
+    ],
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "Mud again, all of them. Then I will do it with my own hands."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "You crack me in the firing! The bound god will hear of this!"
+      }
+    ],
+    "death": [
+      "The kettle... boils over...",
+      "Let the pit go out... at last."
+    ],
+    "slay": [
+      "Back into the swamp.",
+      "Another for the broken bank.",
+      "You will make good clay."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Clay figures stand in the bog, half-made.",
+      "A kettle-pit smoulders. Clay guards stand round it."
+    ],
+    "realmFirstKill": "Ulfketill the wolf-kettle has boiled dry.",
+    "phases": [
+      {
+        "trigger": "addsDead",
+        "text": "The last clay guard slumps back into the bog."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "Ulfketill cracks like a pot in a hot kiln."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ulfketill only makes guards out of combat. kill his three and they stay dead",
+      "hit him or any guard and all four come, so be ready",
+      "hes cc immune, dont waste roots or mez",
+      "his reach is 350, casters stand well back",
+      "clear the broken jotuns first or they wander in"
+    ],
+    "aftermathWin": [
+      "ulfketill down, epic step done",
+      "kettle's cold. epic step done",
+      "three guards down and none came back, like they said",
+      "the pit went out when he died. weird"
+    ],
+    "aftermathLoss": [
+      "we wiped and he walked home full with three new guards",
+      "someone rooted him. didnt work. never does",
+      "a broken jotun walked into the middle of it",
+      "stood too close, his reach is huge"
+    ],
+    "rumour": [
+      "heard ulfketill works for loki. [makes his own guards out of mud|swamp jotun]",
+      "ulfketill makes his guards after supper, the ferrymen say. never when hes angry",
+      "the broken jotuns on the bank are his. he wont unmake them",
+      "[heard|i heard] loki talks to him through the mud"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ulfketill",
+    "text": "The wolf-kettle of the Vanern jotuns, who serves Loki's mischief and makes his own guards from swamp clay."
+  },
+  "bookPage": "From the count of Arnkel the ferryman: the wolf-kettle is a potter, and keeps a potter's habits. Three in the kiln and never more, or one is lost. Nothing made in anger, because it cracks. A kobold who carried his water told me that when men from Fort Atla came for him and broke two of his three guards, he did not make more while they fought; he could not, he said, with his blood up. He went home after, ate, and was whole by morning, and the two were back by the next night, the clay still warm. The kobold said Ulfketill was sorry about the two. Not the men. The pots.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cooled Ulfketill's kettle in {minutes} minutes.",
+    "loss": "Ulfketill's clay guards drove off {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

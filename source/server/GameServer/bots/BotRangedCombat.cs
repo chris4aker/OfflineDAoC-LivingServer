@@ -205,6 +205,33 @@ namespace DOL.GS
             };
         }
 
+        /// <summary>
+        /// The distance weapon a class is known for, when it can use more than one kind (1.2, epic wave 3): a mercenary's
+        /// short bow, an armsman's and an infiltrator's crossbow. The era's classes trained these (and Caer Sidi's Funus takes
+        /// damage from exactly these), so a bot of the class starts with that kind before any other it could use. Null: the
+        /// realm's bow order decides.
+        /// </summary>
+        public static eObjectType? PreferredRangedType(eCharacterClass characterClass) => characterClass switch
+        {
+            eCharacterClass.Mercenary => eObjectType.Fired,
+            eCharacterClass.Armsman or eCharacterClass.Infiltrator => eObjectType.Crossbow,
+            _ => null,
+        };
+
+        /// <summary>The kinds of distance weapon a starter is tried in, first usable wins (pure): the class's own kind, then
+        /// the realm's bow, then every other.</summary>
+        public static eObjectType[] StarterOrder(eRealm realm, eCharacterClass characterClass)
+        {
+            eObjectType realmBow = realm == eRealm.Midgard ? eObjectType.CompositeBow :
+                realm == eRealm.Hibernia ? eObjectType.RecurvedBow : eObjectType.Longbow;
+            var order = new System.Collections.Generic.List<eObjectType>();
+            if (PreferredRangedType(characterClass) is eObjectType own) order.Add(own);
+            foreach (eObjectType type in new[] { realmBow, eObjectType.Longbow, eObjectType.CompositeBow,
+                eObjectType.RecurvedBow, eObjectType.Crossbow, eObjectType.Fired, eObjectType.Thrown })
+                if (!order.Contains(type)) order.Add(type);
+            return order.ToArray();
+        }
+
         public static bool EnsureStarter(GameBot bot)
         {
             if (bot.Inventory == null || bot.CharacterClass == null) return false;
@@ -246,10 +273,7 @@ namespace DOL.GS
                     return false;
             }
 
-            eObjectType realmBow = bot.Realm == eRealm.Midgard ? eObjectType.CompositeBow :
-                bot.Realm == eRealm.Hibernia ? eObjectType.RecurvedBow : eObjectType.Longbow;
-            foreach (eObjectType type in new[] { realmBow, eObjectType.Longbow, eObjectType.CompositeBow,
-                eObjectType.RecurvedBow, eObjectType.Crossbow, eObjectType.Fired, eObjectType.Thrown })
+            foreach (eObjectType type in StarterOrder(bot.Realm, (eCharacterClass)bot.CharacterClass.ID))
             {
                 DbItemTemplate starter = CreateStarter(bot.Realm, (eCharacterClass)bot.CharacterClass.ID, type);
                 if (!bot.HasAbilityToUseItem(starter)) continue;

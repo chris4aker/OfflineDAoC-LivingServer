@@ -22,7 +22,6 @@ public static class AutonomousBotGroupChatter
 
     private sealed class Next
     {
-        public long At;
         public long LastPlayerReply;
     }
 
@@ -72,9 +71,9 @@ public static class AutonomousBotGroupChatter
     {
         string where = string.IsNullOrEmpty(zone) ? "the other side of the realm" : zone;
         if (sameRegion && distance <= 3_000)
-            return random.Next(3) switch { 0 => "right behind you", 1 => "here", _ => "coming" };
+            return random.Next(3) switch { 0 => "right behind you", 1 => "here", _ => "coming" };   // promise: true (a groupmate follows the player in its region)
         if (sameRegion)
-            return random.Next(2) == 0 ? "omw" : $"omw, im over in {where}, give me a few";
+            return random.Next(2) == 0 ? "omw" : $"omw, im over in {where}, give me a few";   // promise: true (a groupmate follows the player in its region)
         return random.Next(2) == 0 ? $"im over in {where}, cant get to you from here. come find me?" : $"stuck over in {where} for now, meet up later?";
     }
 
@@ -201,7 +200,7 @@ public static class AutonomousBotGroupChatter
             int size = group.MemberCount;
             bool away = AutonomousChatEngagement.WasAway(mate.DatabaseID, GameLoop.GameLoopTime, mate.IsReturningAfterRelease);
             if (!AutonomousBotVoices.TryLine(mate, "reply", out VC.Picked reply, answers: answers, slots: slots,
-                    filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
+                    filter: line => AutonomousBotVoices.ShapedFits(answers, opener.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
                 continue;
             int delay = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared);
             AutonomousLivingServer.Later(mate, delay, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, reply.Text));
@@ -268,6 +267,11 @@ public static class AutonomousBotGroupChatter
             return;
         }
         eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+        // Chat audit CORPUS-C-012: a bare "gz" in /group was thanked ("ty, off to the trainer now") by a groupmate that had not
+        // levelled. Only a bot that just levelled takes congratulations.
+        pool = CongratulatedOnly(intent, pool, AutonomousBotVoices.JustLeveled);
+        if (pool.Length == 0)
+            return;
         // The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A
         // groupmate takes the warning ("got it", "on it").
         if (AutonomousChatReplyBudget.IsAlarm(message, intent))
@@ -324,13 +328,19 @@ public static class AutonomousBotGroupChatter
                 count == 0 ? $"a line like this ({intent}) draws no answer" : "no reply fits it", player.Name);
     }
 
+    /// <summary>For a congratulation, only the groupmates that just levelled (anyone else would not know what for); any other
+    /// line keeps the whole pool. Pure.</summary>
+    public static T[] CongratulatedOnly<T>(eAutonomousChatIntent intent, T[] pool, Func<T, bool> justLeveled) =>
+        intent == eAutonomousChatIntent.Congrats ? pool.Where(justLeveled).ToArray() : pool;
+
     /// <summary>A bot's line in /group. The talking update: remembered in the group's thread (with what it invites, and the
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>
     internal static void Send(GameBot bot, string text, string invites = "", string to = null, bool remember = true)
     {
         // 1.1.3, after RC6: the time-of-day pass every bot line takes (AutonomousBotVoiceCorpus.ForNow).
         text = AutonomousBotVoiceCorpus.ForNow(text);
-        if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group))
+        // A formal companion (its Speech option) says only its own companion lines (CompanionChat165): one voice.
+        if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group) && !CompanionChat165.IsFormal(bot))
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
             BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);

@@ -1,0 +1,81 @@
+{
+  "id": "tiomoid",
+  "name": "Tiomoid",
+  "npcNames": [
+    "Tiomoid"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Tiomoid: level 39, a siabra body (model 337), faction Siabras, at about 293,800/735,300 in the south-west hills among the gurite camps; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Lost Townfolk of Bran Llyr: 'Talk to Tiomoid in Lough Gur. (whisper: sympathy)', bring him three curmudgeon puggard noses, then proof for Chief Bran Llyr.",
+      "provenance": "game",
+      "source": "DataQuest 'Lost Townfolk of Bran Llyr' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Tiomoid is a siabra of the gurite camps in the south-west hills of Lough Gur, and the only one of them the people of Culraid have ever spoken to. Chief Bran Llyr's townsfolk have been going missing into the lake country for years, and when Bran Llyr finally sent someone into the hills to ask the siabra about it, the one who listened was Tiomoid. He wanted sympathy first, the Culraid folk say; a siabra who has been insulted by every Hibernian he has ever met will talk only to one who asks him how he is.\n\nThen he wanted curmudgeon noses, three of them, from the puggards of Cruachan Gorge, because the curmudgeons are the gurites' old enemies and a nose is a siabra's proof. What he told after that, Bran Llyr has not shared. The realm's young say Tiomoid is pleasant enough until the errand is done, and then he is a siabra again.",
+  "legend": "Tiomoid (39) is a siabra in the south-west gurite hills of Lough Gur (about 294k/735k). In Lost Townfolk of Bran Llyr you talk to him first (say [sympathy]) and bring him three curmudgeon puggard noses from Cruachan Gorge, so do not kill him before the quest is done. He is hostile otherwise, with gurite camps (30-49) around. Plain spawn, 80-second respawn.",
+  "yells": {
+    "aggro": [
+      "Nobody asks a siabra how he is.",
+      "You did not say the word."
+    ],
+    "phases": [],
+    "death": [
+      "I was... being reasonable..."
+    ],
+    "slay": [
+      "That is what sympathy gets you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A siabra in the hills who wants to be asked."
+    ],
+    "phases": [],
+    "realmFirstKill": "Tiomoid of the gurites has fallen in the hills."
+  },
+  "botLines": {
+    "briefing": [
+      "tiomoid is 39 in the south west gurite hills",
+      "lost townfolk: talk first, say sympathy. dont kill him yet"
+    ],
+    "aftermathWin": [
+      "tiomoid down. [after the quest|grats]",
+      "got his noses. [lol|puggards]"
+    ],
+    "aftermathLoss": [
+      "gurites joined. [rip|ouch]",
+      "someone killed him mid quest. [ugh|why]"
+    ],
+    "rumour": [
+      "[heard|someone said] tiomoid only talks to hibs who ask him how he is",
+      "tiomoid wants curmudgeon noses as proof. siabra thing"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tiomoid",
+    "text": "The one siabra of Lough Gur's gurite camps who will talk to Culraid, if asked with sympathy first. He wants curmudgeon noses as proof before he tells what became of Bran Llyr's people."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Tiomoid in Lough Gur in {minutes} minutes.",
+    "loss": "Tiomoid turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "curmie",
+      "relation": "of the rival hill-folk"
+    }
+  ]
+}

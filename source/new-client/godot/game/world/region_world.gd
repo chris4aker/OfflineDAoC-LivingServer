@@ -25,7 +25,7 @@ var texture_set := "x4plus"
 var _index := {}
 var _building := -1                          # the zone id on the worker now
 var _built: ZoneLoader
-var _task := -1
+var _task: Thread                            # the zone building now (its own thread: GpuJobs.start_job)
 var _check_left := 0.0
 var _failed := {}                            # zone ids that didn't build (not retried)
 var _loading_now := false                    # load_around is building behind the loading screen: no streaming meanwhile
@@ -144,9 +144,9 @@ func cross(id: int) -> Vector3:
 func _process(delta: float) -> void:
 	if current == null:
 		return
-	if _task >= 0 and WorkerThreadPool.is_task_completed(_task):
-		WorkerThreadPool.wait_for_task_completion(_task)
-		_task = -1
+	if _task != null and GpuJobs.job_done(_task):
+		GpuJobs.finish_job(_task)
+		_task = null
 		_place_built()
 	_check_left -= delta
 	if _check_left > 0.0 or _loading_now:
@@ -161,7 +161,7 @@ func _process(delta: float) -> void:
 	for id in zones.keys():
 		if int(id) != int(current.info.id) and distance_to(int(id), p) > maxf(KEEP_M * _view(), reach + 300.0):
 			_release(int(id))
-	if _task >= 0:
+	if _task != null:
 		return
 	var best := -1
 	var best_d := INF
@@ -186,7 +186,7 @@ func _start_build(id: int) -> void:
 	var nm: NpcManager = viewer.get("npcs")
 	var skip := _known_models(nm)
 	var info: Dictionary = nm.models if nm else {}
-	_task = WorkerThreadPool.add_task(_build.bind(id, skip, info), false, "zone %d" % id)
+	_task = GpuJobs.start_job(_build.bind(id, skip, info))
 
 
 ## The model paths already packed - names only: a copy of the cache itself would let the worker hold the last
@@ -256,7 +256,7 @@ func load_around(p: Vector3) -> void:
 	var skip := _known_models(nm)
 	var info: Dictionary = nm.models if nm else {}
 	for id in want:
-		tasks.append(WorkerThreadPool.add_task(func():
+		tasks.append(GpuJobs.start_job(func():
 			var z := ZoneLoader.new()
 			z.name = "Zone%d" % id
 			z.load_zone("res://content/zones/zone%03d" % id, terrain_set, texture_set)
@@ -264,17 +264,17 @@ func load_around(p: Vector3) -> void:
 			lock.lock()
 			built[id] = z
 			packed.merge(pm)
-			lock.unlock(), false, "zone %d" % id))
+			lock.unlock()))
 	while true:
 		var done := true
 		for t in tasks:
-			if not WorkerThreadPool.is_task_completed(t):
+			if not GpuJobs.job_done(t):
 				done = false
 		if done:
 			break
 		await get_tree().process_frame
 	for t in tasks:
-		WorkerThreadPool.wait_for_task_completion(t)
+		GpuJobs.finish_job(t)
 	if nm:
 		nm.adopt_models(packed)
 	for id in built:
@@ -290,9 +290,9 @@ func load_around(p: Vector3) -> void:
 
 
 func _exit_tree() -> void:
-	if _task >= 0:
-		WorkerThreadPool.wait_for_task_completion(_task)
-		_task = -1
+	if _task != null:
+		GpuJobs.wait_job(_task)                        # (running the GPU steps it may wait on)
+		_task = null
 		if _built:
 			_built.free()
 			_built = null

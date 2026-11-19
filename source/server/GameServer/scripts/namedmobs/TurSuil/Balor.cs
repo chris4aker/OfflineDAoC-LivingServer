@@ -214,20 +214,20 @@ namespace DOL.AI.Brain
 			}
 			base.Think();
 		}
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Enemys_To_DD = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DD = new List<GameLiving>();
 		public void PickRandomTarget()
 		{
-			foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+			foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
 			{
 				if (player != null)
 				{
-					if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+					if (player.IsAlive && EncounterTargets.NotGm(player))
 					{
 						if (!Enemys_To_DD.Contains(player) && !AggroList.ContainsKey(player))
 						{
@@ -239,8 +239,10 @@ namespace DOL.AI.Brain
 			}
 			if (Enemys_To_DD.Count > 0)
 			{
-				GamePlayer Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
+				GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 				RandomTarget = Target;//set random target to static RandomTarget
+				// Living Server 1.2: the raid hears the pick (EncounterSignals, radius 0: only the healers react, it first).
+				EncounterSignals.Raise(Body, EncounterSignals.Glare, Target, 0, true, 3000, 15_200);
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartCast), 3000);
 			}
 		}
@@ -291,10 +293,10 @@ namespace DOL.GS
         {
         }
 		public static int EyeCount = 0;
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			--EyeCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
 		{

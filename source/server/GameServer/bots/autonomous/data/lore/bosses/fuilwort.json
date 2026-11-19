@@ -1,0 +1,121 @@
+{
+  "id": "fuilwort",
+  "name": "Fuilwort",
+  "npcNames": [
+    "Fuilwort"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Fuilwort: level 75, model 903, size 62, west of Altan Garran at about 328,500/319,100; respawn 600 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
+    },
+    {
+      "text": "Irish fuil 'blood' (Fuilwort: blood-wort).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Living Server lore: Fuilwort as the blood-wort on the west road to Altan Garran, said to have grown where Dremcis first fed.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The outlanders of Altan Garran, the walled town on the eastern ledges of Cothrom Gorge, have a name for what is killing them: the writhing death. It is the worts. The rot of the gorge grows in flower-shapes everywhere in Cothrom, but the worts are something more, great weeds with minds, and in the town's lifetime they have come up closer to its walls every summer. The outlanders know what the Domnann wardens only suspect. Noirin the enchanter of Altan Garran, who has cut a piece out of each of them and studied it, says the worts are all one growth, runners sent out by the killer-plant Marfoirwort at the head of the gorge, and that cutting a wort is cutting a finger of something that has a great many fingers.\n\nFuilwort grows on the west road into the town, where the gorge path comes down off the ledges, and the outlanders say it grew there out of blood. The town's oldest story is that Dremcis Fuiloltair, the blood-drinker, fed for the first time on that spot, on a garda of Altan Garran who had gone out alone after a stag, and that the blood soaked into the gorge floor and the gorge sent up a wort to drink it. The Domnann wardens call that an outlander story. The outlanders point at the wort's leaves, which are the colour of a fresh cut, and at its name, which means blood-wort, and say that the gorge does not waste anything.\n\nIt is quieter than Tachtwort. It does not reach into the walls. It waits by the road, and what passes close to it, it takes, and the west road is the road the outlanders' traders use to reach Domnann's markets, so every season some trader does not come home. The town keeps a pole on the west wall with a rag tied to it for each, and the pole is full. Fedail asks the strangers who come to Altan Garran to cut Fuilwort with the others and bring him what is left, and the rag-pole is the first thing he shows them.",
+  "legend": "Fuilwort is a level 75 wort on the west road into Altan Garran, about 8,000 units west of the town, one of the three wort kills for Writhing Death. No script: a plain, very heavy melee mob, so a full high group. It has a 10-minute respawn, unlike Tachtwort's 80 seconds, so you get a clean window after the kill. Dremcis Fuiloltair rides the gorge nearby; check your path. The outlanders' rag-pole on the west wall counts the traders it has taken. Bring its remains to Fedail with Tachtwort's and Cronwort's, then go up the gorge to the bare ring for Marfoirwort itself.",
+  "yells": {
+    "aggro": [
+      "(red leaves turn toward you)",
+      "(Fuilwort drinks the air, and the road goes quiet)",
+      "(a wet sound, under the leaves)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(the blood-red leaves curl and bleed)"
+      }
+    ],
+    "death": [
+      "(the red leaves fall)",
+      "(Fuilwort sinks into the road)"
+    ],
+    "slay": [
+      "(the road takes another)",
+      "(Fuilwort drinks)",
+      "(a rag for the pole)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Leaves the colour of a fresh cut.",
+      "A pole of rags on the west wall. One for each."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fuilwort's leaves bleed red!"
+      }
+    ],
+    "realmFirstKill": "Fuilwort is cut down. The west road is safe a while."
+  },
+  "botLines": {
+    "briefing": [
+      "fuilwort is 75, on the west road into altan garran. [writhing death|full high group]",
+      "plain melee, no script. [heavy|hits hard]",
+      "10 min respawn so you get a window",
+      "dremcis rides near there. [check the path|dont pull him too]"
+    ],
+    "aftermathWin": [
+      "fuilwort down. [one rag less for the pole|nice]",
+      "two worts done. [cronwort next|then marfoirwort]",
+      "fedail gets his piece",
+      "west road is safe for the traders a while"
+    ],
+    "aftermathLoss": [
+      "dremcis wandered in. [blood blobs everywhere|ugh]",
+      "too few people for a 75. [wipe|need more]",
+      "the healer stood too close to the road. [it took her|sorry]",
+      "ran out of mana halfway"
+    ],
+    "rumour": [
+      "[heard|someone said] fuilwort grew where dremcis first fed",
+      "altan garran ties a rag on a pole for every trader fuilwort takes. [the pole is full|grim]",
+      "[word is|heard] fuilwort's leaves are the colour of a fresh cut",
+      "the outlanders say the gorge does not waste anything"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fuilwort",
+    "text": "The blood-wort on the west road into Altan Garran in [Cothrom Gorge], said to have grown where Dremcis first fed. A pole on the town's west wall holds a rag for each trader it took."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: our oldest story is that Dremcis fed for the first time on the west road, on one of our garda who went out alone after a stag, and the gorge sent up Fuilwort to drink the spilled blood. The wardens call it an outlander story. The leaves are the colour of a fresh cut. It does not reach into the walls as Tachtwort does; it waits by the road, and every season a trader on the way to Domnann does not come home. There is a pole on our west wall with a rag for each of them. It is full.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Fuilwort in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Fuilwort turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "marfoirwort",
+      "relation": "the source of the worts"
+    },
+    {
+      "id": "tachtwort",
+      "relation": "its sister runner"
+    },
+    {
+      "id": "dremcis-fuiloltair",
+      "relation": "the other blood-drinker of the gorge"
+    }
+  ]
+}

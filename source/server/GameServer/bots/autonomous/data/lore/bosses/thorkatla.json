@@ -1,0 +1,127 @@
+{
+  "id": "thorkatla",
+  "name": "Thorkatla",
+  "npcNames": [
+    "Thorkatla"
+  ],
+  "locationId": "uppland",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "lokis-mischief",
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "loken",
+      "relation": "the other vessel of the bound god's mischief, in Raumarik"
+    },
+    {
+      "id": "storslange",
+      "relation": "the serpent the same epic sends the seers against in Skona"
+    },
+    {
+      "id": "fjall",
+      "relation": "the fenrir of Yggdra whose dancing flame the same epic seeks"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Thorkatla is a level-53 undead (body type undead, the model of Uppland's ghoulish dead) in the south-middle of Uppland (749417, 647580), with icy wisps around her.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167025)"
+    },
+    {
+      "text": "In the seer epic 'The Desire of a God', Inaksha's seers defeat Thorkatla and her forces in Uppland and return with a note and two flames.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive (200 at range 500). Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Thorkatla (Thorketill's feminine, 'Thor's cauldron') is an attested Old Norse woman's name; to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists, to verify"
+    }
+  ],
+  "story": "Miri of Jordheim has visions of Loki, and she does not like them. They began, she says, the season the bowl over the bound god's face last spilled and the earth shook, and in them she sees the snow of Uppland and a woman standing in it with her head on one side, listening to something under the snow that is not the dead.\n\nThe woman's name was Thorkatla, and she was a seeress of Midgard, the seers of Jordheim say, who went up into the high country alone after a vision of her own. Nobody knows what she saw. She was found in the spring among the snow-dead of the west of Uppland, dead herself, standing, and when the huscarls of Fensalir came to bring her body home she turned her head and looked at them with eyes that were not hers, and laughed, and it was not her laugh. The seers say Loki speaks through her. The bound god seeks trouble and always has, and a seeress is a door that is already half open; he had only to push.\n\nShe has moved north since, away from the keeps, to a drift where the wind is never still and the wisps hang in the air like lamps, and the seers say she is gathering. The note the seers bring back from her is a list in a hand none of them will admit to reading, and the two flames are Loki's own, burning on nothing, of the kind the bound god kindles when he wants to be seen. Inaksha keeps them. She says that what the god wants in Uppland is the same thing everything else in Uppland wants: the hammer at Mjollner, Thor's own, the one thing in Midgard he would most like to see broken. The snow-dead walk toward it already. Thorkatla is teaching them to walk together.\n\nWhen strangers come up to her drift she turns her head and listens to them as she listens to the snow, and then comes at them, a dead woman of Midgard with someone else's purpose, alone except for the wisps; she has not yet finished gathering. The huscarls of Mjollner say that when the wind is from the north they hear her laugh from the walls. Ketilbjorn wrote that it is the worst sound in the high country, because it is happy.",
+  "legend": "Thorkatla is a level 53 undead woman in the south-middle of Uppland, the target of the seer epic The Desire of a God: Inaksha sends you to Miri in Jordheim, to Vagn and his fellows in Yggdra (Vagn isn't actually spawned in this world), then to defeat Thorkatla 'and her forces' for a note and two flames. In this world her forces are a few icy wisps (31-34) standing near her; she has no faction, so nothing else gets called. No special abilities, not CC-immune. A group at the epic level handles her easily. Watch for frontier warbands passing through Uppland while you're there.",
+  "yells": {
+    "aggro": [
+      "(She tilts her head, listening.) Ah. You. He said you would come.",
+      "The hammer. Do you have the hammer? No. Then die.",
+      "My voice? No. Not my voice."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Someone else's laugh comes out of her.) Break it and he only finds another door."
+      }
+    ],
+    "death": [
+      "Let me... go... let me...",
+      "(Her own voice, at last.) Tell Fensalir... I am sorry..."
+    ],
+    "slay": [
+      "One more for the snow.",
+      "Walk with the others now.",
+      "(The laugh again, not hers.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Wisps hang like lamps. A dead woman listens.",
+      "The wind here is never still. Neither is she."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Thorkatla laughs, and it is not her laugh."
+      }
+    ],
+    "realmFirstKill": "Thorkatla is silent. The bound god has one door fewer."
+  },
+  "botLines": {
+    "briefing": [
+      "thorkatla is the seer epic undead in south uppland, 53",
+      "her forces are a few icy wisps, no faction",
+      "no tricks, easy for the epic group",
+      "vagn in yggdra isnt spawned, skip that step"
+    ],
+    "aftermathWin": [
+      "got the note and the two flames",
+      "easy enough",
+      "she laughed the whole time, creepy",
+      "back to inaksha"
+    ],
+    "aftermathLoss": [
+      "a frontier warband rolled through",
+      "the wisps pulled more wisps",
+      "too few of us",
+      "walked into the snow dead on the way"
+    ],
+    "rumour": [
+      "thorkatla was a seeress who came back from the snow with loki in her",
+      "the two flames from thorkatla burn on nothing",
+      "thorkatla is teaching the snow dead to walk together",
+      "the mjollner huscarls hear thorkatla laugh when the wind is north"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Thorkatla",
+    "text": "A seeress of Midgard who went up into the snow after a vision and came back dead with Loki speaking through her. The seers bring back [the two flames] from her. She gathers [the snow-dead] toward the [hammer]."
+  },
+  "bookPage": "From A Winter on Mjollner's Wall, by Ketilbjorn, huscarl: the seers who came up from Fort Atla told me Thorkatla's name before they went north, and one of them said she had been his teacher, and that she had been the kindest seeress in Fort Atla and the best. When they came back he was the one shaking. I asked him if it had been her. He said her hands were hers, and her face was hers, and she had called him by the name she used to call him when he was a boy, and then she had laughed. He said it was the laugh he could not bear.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Thorkatla in Uppland's snow in {minutes} minutes and took the two flames.",
+    "loss": "Thorkatla laughed {raidLeader}'s party from {realm} out of her drift after {minutes} minutes."
+  }
+}

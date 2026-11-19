@@ -1,0 +1,95 @@
+{
+  "id": "emperor-seleucus",
+  "name": "Emperor Seleucus",
+  "npcNames": [
+    "Emperor Seleucus"
+  ],
+  "locationId": "catacombs-of-cardova",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Emperor Seleucus: NPC template 12906, level 40, model 107, faction Spirits of Rome, aggro 200 (range 200), no spells, respawn 300 s, in the emperor's hall at 33073, 35408 with Taras, the Forgotten Emperor, the Spirit of the Emperor and praetorian guards.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 23 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Fall of an Emperor: after Olivarius, Taras, Crotus and Amminus, kill Emperor Seleucus in the chamber with the snakes, bring his book of deeds to Iohannes Aldar and tell Grindan Halig the name: Seleucus.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Seleucus as the general who took the chair, his Book of Deeds and his plea for release are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Seleucus was the general of the legion that marched its emperor west, and when the emperor died at the edge of the world he took the chair. He did not take the dead man's name. The name was struck out, and Seleucus wrote it nowhere, as the law required; whether he made that law or only obeyed it is the whole quarrel of the Cornish scholars.\n\nHe governed the legion underground as an emperor governs. He fed it when the ships did not come, gave it halls when the ground was too hard for a city, and wrote a Book of Deeds, plain as the Romans wrote them, so that the reader might judge. In it he set down the oath of his four generals, Olivarius, Taras, Crotus and Amminus, to stand by him in life and after it. They kept it. He sits in the chair still with Taras at his side, and the last leaves of his book, in a shaking hand, ask whoever reads them for release: theirs, and his.\n\nIohannes Aldar says he is a usurper confessing. Grindan Halig says he is a soldier who obeyed. The minstrels say his name is Greek, and a pretender's. The Spirit of the Emperor, who stands a few paces from his chair, has never once spoken to him.",
+  "legend": "Emperor Seleucus, level 40, in the emperor's hall of Cardova with Taras, the Forgotten Emperor and the praetorian guards (all Spirits of Rome; clear the guards, they help). The Spirit of the Emperor next to him is peaceful. For Fall of an Emperor he is last: Olivarius, Taras, Crotus, Amminus first, with their foci and the amulet offered, then Seleucus, and loot his book of deeds. Plain melee. Respawns in about five minutes.",
+  "yells": {
+    "aggro": [
+      "You come to my hall armed. State your legion.",
+      "Guard! The chair is threatened!"
+    ],
+    "phases": [],
+    "death": [
+      "Released... at last... and them...?"
+    ],
+    "slay": [
+      "Another deed for the book.",
+      "Dismissed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The chair of the emperor of the west. Occupied."
+    ],
+    "phases": [],
+    "realmFirstKill": "Emperor Seleucus has fallen. The chair stands empty."
+  },
+  "botLines": {
+    "briefing": [
+      "seleucus is last for fall of an emperor. generals first, then him",
+      "clear the praetorians in the hall first, they help him",
+      "dont hit the spirit of the emperor, its peaceful and it talks"
+    ],
+    "aftermathWin": [
+      "seleucus down. grab the book of deeds for iohannes",
+      "emperor down. tell grindan his name, seleucus"
+    ],
+    "aftermathLoss": [
+      "the praetorians came in from both doors"
+    ],
+    "rumour": [
+      "[heard|someone said] seleucus wrote his own book of deeds and the last page begs for release",
+      "heard seleucus is a greek name and he was never a real emperor"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "seleucus",
+    "text": "Emperor Seleucus of [cardova], the general who took the chair when the emperor of the west died, and wrote a Book of Deeds whose last leaves ask for release. His four generals keep their oath to him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} released Emperor Seleucus from his chair in Cardova in {minutes} minutes.",
+    "loss": "The chair of Cardova kept its emperor; {raidLeader} of {realm} withdrew from the emperor's hall."
+  },
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "taras-princep-praetorii",
+      "relation": "the general at his side"
+    },
+    {
+      "id": "amminus-pilus",
+      "relation": "first spear, keeps the crypt"
+    },
+    {
+      "id": "forgotten-emperor",
+      "relation": "the emperor whose chair he took, or whom he obeyed"
+    }
+  ],
+  "tier": "minor"
+}

@@ -1,0 +1,81 @@
+{
+  "id": "aoife",
+  "name": "Aoife",
+  "npcNames": [
+    "Aoife"
+  ],
+  "locationId": "cliffs-of-moher",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Aoife: level 35, a greater zephyr (model 605, the body of the deamhan aeir), size 62, at about 267,000/457,300 on the hill south-east of Doran's camp; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The West Wind: 'Find the crazy lurikeen Doran', 'Kill Aoife, the greater zephyr on the hill southeast of Doran (clear the zephyrs to make her appear)', then 'the person you seek has gone home'.",
+      "provenance": "game",
+      "source": "DataQuest 'The West Wind' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "The winds of the Cliffs of Moher come in a mob, and the village children of Tir Urphost say the mob has a mother. She is the greater zephyr on the hill south-east of the crazy lurikeen Doran's camp, and the children named her Aoife, after a woman of the old tales who could not keep still. She comes only when the lesser airs around her hill are cleared away, as if she were the wind that is left when the small winds are spent.\n\nDoran the lurikeen says she carried someone off once, a traveller he was meant to meet, and set him down at home on the far side of the realm, which is why the realm's young who come looking for that traveller are told, when they have cleared her hill, that the person they seek has gone home. Brother Esras in his hermitage says he has never met her, but he has heard her, and that she sounds like someone saying a name over and over, and that the name is not hers.",
+  "legend": "Aoife (35) is a greater zephyr on the hill south-east of Doran in the Cliffs of Moher (about 267k/457k). She only appears once you clear the zephyrs on her hill. The West Wind (Bairfhionn in Tir na Nog, via Tiarnan, Guard Dooley and Doran) needs her killed. A group of mid 30s. Plain spawn, 80-second respawn. Be ready when she appears; she comes in fast once the small winds are gone.",
+  "yells": {
+    "aggro": [
+      "(a great wind gathers on the hill)",
+      "(the air itself turns on you)"
+    ],
+    "phases": [],
+    "death": [
+      "(the wind falls, and the hill is very still)"
+    ],
+    "slay": [
+      "(a gust carries the fallen's cloak away)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A hill of small winds, and a great one waiting."
+    ],
+    "phases": [],
+    "realmFirstKill": "Aoife, the greater zephyr, has blown herself out."
+  },
+  "botLines": {
+    "briefing": [
+      "aoife is a 35 greater zephyr on the hill south east of doran",
+      "clear the zephyrs on the hill and she appears. the west wind"
+    ],
+    "aftermathWin": [
+      "aoife down. [the person has gone home|lol]",
+      "cleared the zephyrs. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "zephyrs plus aoife. [rip|ouch]",
+      "blown off the hill. [lol|literally]"
+    ],
+    "rumour": [
+      "[heard|someone said] aoife the zephyr carried a traveller home across the realm",
+      "esras says aoife sounds like someone saying a name over and over"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Aoife",
+    "text": "The greater zephyr of the hill south-east of Doran's camp, the mother of the cliff-top winds, who comes when the small winds are spent. She carried a traveller home once."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Aoife in the Cliffs of Moher in {minutes} minutes.",
+    "loss": "Aoife turned back {realm}'s band under {raidLeader} in the Cliffs of Moher after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "cliffs-of-moher",
+      "relation": "the winds she leads"
+    }
+  ]
+}

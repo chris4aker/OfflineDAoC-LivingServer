@@ -1,0 +1,261 @@
+{
+  "id": "allta-fearann",
+  "name": "Allta Fearann",
+  "realm": "Hibernia",
+  "regions": [
+    181
+  ],
+  "zones": [
+    187
+  ],
+  "summary": "The wild land, the high country at the north of Hy Brasil: the four great ones, the arboreal spirits, the kudzu, the treant woods and Curengkur's nest.",
+  "facts": [
+    {
+      "text": "Zone 187 (region 181, x 344,064-409,600, y 163,840-229,376): 919 monsters. The only realm-friendly spot is a Krrzck waystation in the south-east (about 395,000/208,000): Xaxnxi (37) and the Krrzck stable master Calvine (45), with Krrzck explorers, drones and hunters.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: oaken (47-54), ashen (43-49) and rowan (40-46) treants; arboreal spirits (benevolent and enraged among them) and arboreal remnants, foragers and defenders (36-46); kudzu (flowering, ripening, clinging vines, creepers, seedlings, 38-49); waterstriders (hatchlings, fledgelings, banties, hens, 40-54); aged and young podimids (55-61); living stones, boulders, crags and monoliths (49-64); fearann wyvern hatchlings and ancients; volant and volar mantas.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "The zone's bosses: Curengkur (75, faction Botonids, on its nest at about 376,100/172,800), Windskimmer (58), Goldenleaf (55), Razorbeak (55) and Adar Llwch Gwin (53).",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); namedmobs/Hibernia Named Mobs/Shrouded Isles"
+    },
+    {
+      "text": "Xaxnxi's Quest: 'Kill arboreal remnants west of Xaxnxi for five bags of eitn ot pyrk.' Xaxnxi gives nine data quests.",
+      "provenance": "game",
+      "source": "DataQuest 'Xaxnxi's Quest' (world data, read 2026-11-06); GAPS-hibernia.md section 3"
+    },
+    {
+      "text": "Kudzu is a climbing vine notorious for smothering the trees and ground it grows over.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Kudzu"
+    },
+    {
+      "text": "Living Server lore: the wild land as the country the Root's Long Pushing passed through; the arboreal spirits as the spirits of trees the Pushing broke; the kudzu as the green that came after; the podimids and living stones of the north; the Krrzck waystation; Xaxnxi's sayings.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "The mantids have long told of an untamed land. They named the island they found Allta Fearann, untouched by mortals, and kept secret that it lies in the sea beyond World's End; not strong enough to tame it alone, they let proven friends cross from their World's End base, through Dalniver.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    }
+  ],
+  "story": "Allta Fearann means the wild land, and the Sylvan of Necht say it is the only name on Hy Brasil that is a description rather than a memory. It is the high country at the north of the isle, beyond Vigilant Rock, where the forest gives out into scrub and stone and the wind never stops, and nobody has ever lived there who could be called a people except the mantids, and the mantids only pass through.\n\nThe Sylvan say the Long Pushing came this way. When the forests of the isle drove the Root to World's End in the first age, they drove him along the high ground, and the trees that stood in his way broke, and the wind came in behind. What is left is the wild land: treant woods that grew back hard and grey, oaken and ashen and rowan, the oldest of them as tall as the crags; high pools where the waterstriders breed; and the arboreal spirits, which the Necht Sylvan say are the spirits of the broken trees, still standing where their trunks stood. Some of them are kind and some are not, and the remnants among them, the ones that have half forgotten what they were, go about the scrub in bands, foraging and defending nothing. The mantids buy what the remnants carry. The Sylvan do not ask what it is.\n\nAfter the Pushing, the green came back wrong. The kudzu covers the middle of the wild land, flowering and ripening and clinging, a vine that climbs anything and smothers what it climbs, and the Sylvan say it came up the year the Root reached World's End, as if the land were trying to cover the wound with the first thing to hand. It is spreading. The Necht wardens mark its edge each spring with white stones, and each spring the stones are a little further south.\n\nFour great ones keep the wild land, and Necht names them aloud before any company goes north: Windskimmer, the eldest skimmer, who never lands; Goldenleaf, the one tree the wind never beat down, gold-leaved since the autumn of the Long Pushing; Razorbeak, the mother-wyvern of the north-eastern cliffs with a notch in her beak from a Necht egg-thief's knife; and Adar Llwch Gwin, the giant waterstrider of the great pool, named by mainland sailors for the birds in a song. None of them is the realm's enemy. All of them will kill anyone who comes too close to what they keep.\n\nThe fifth thing in the wild land is not named in Necht's square. It is named only in a whisper, by the mantids, and the Sylvan have started whispering it too: Curengkur, the hunter, which keeps a nest in the northern scrub that burns the air around it and mends whatever lies in it. It hunts the mantids, and it is the reason the Krrzck keep only a waystation in Allta Fearann and not a town. South of the nest the podimids graze, old and young, huge slow things nobody has a story for, and the living stones get up out of the hillsides in sizes from a boulder to a monolith and walk toward the sea, very slowly, as if they had been called.\n\nThe Krrzck waystation sits in the south-east where the wild land meets the Vigilant Rock road: a stable kept by a mantid called Calvine, a few explorers and hunters, and Xaxnxi, the go-between, who trades with the realm and speaks for the mantids in the clipped, cold way the Necht folk have learned to like. Xaxnxi's sayings are repeated in Necht more than any Sylvan proverb. The one most often heard is that the wild land is not dangerous; it is only honest.\n\nWhy does it matter? Because it is the oldest wound on the isle that never closed, older than the Gorge, older than the Vale. The Root passed through it and the wind came in, and everything that lives there is something that learned to live in the wind. The realm's companies go north for the great ones' sake and come back weathered, and the Necht Sylvan look at them and say they have been to the wild land, as if that explained it. It does.",
+  "legend": "Allta Fearann is the north end of Hy Brasil, levels 36-64, reached from Vigilant Rock. No realm town: the only friendly spot is the Krrzck waystation in the south-east (Xaxnxi's quests, a mantid stable master). Camps: arboreal spirits and remnants (36-46, west of Xaxnxi; remnants carry the quest bags), kudzu fields in the middle (38-49), rowan, ashen and oaken treants (40-54), waterstriders round the high pools (40-54), wyverns on the north-east cliffs, podimids (55-61) and living stones (49-64, monoliths hit hard) in the north. The four great ones: Windskimmer (58), Goldenleaf (55), Razorbeak (55), Adar Llwch Gwin (53). Curengkur (75) is the big one: its nest pulses heat and it regains health near its spawn, so pull it well away from the nest first. Necht custom: name the four great ones in Necht's square before you go north. Never say Curengkur's name above a whisper at the waystation; the mantids walk off.",
+  "atmosphere": {
+    "firstEntry": [
+      "Allta Fearann. The wild land.",
+      "The wind never stops here.",
+      "Treants grown back hard and grey.",
+      "Something in the north burns the air.",
+      "Four great ones keep this country."
+    ],
+    "areas": [
+      {
+        "name": "the Krrzck waystation",
+        "x": 395200,
+        "y": 208000,
+        "z": 4550,
+        "radius": 2500,
+        "lines": [
+          "A mantid waystation, not a town.",
+          "Xaxnxi trades, coldly.",
+          "Do not say the hunter's name aloud."
+        ]
+      },
+      {
+        "name": "the spirit scrub",
+        "x": 368600,
+        "y": 207800,
+        "z": 4760,
+        "radius": 5000,
+        "lines": [
+          "Spirits of broken trees, standing.",
+          "Remnants that forgot what they were."
+        ]
+      },
+      {
+        "name": "Goldenleaf's crag",
+        "x": 368380,
+        "y": 209350,
+        "z": 5420,
+        "radius": 1200,
+        "lines": [
+          "A gold tree on the highest crag.",
+          "The wind never beat this one down."
+        ]
+      },
+      {
+        "name": "the kudzu fields",
+        "x": 374500,
+        "y": 202000,
+        "z": 5000,
+        "radius": 4500,
+        "lines": [
+          "Kudzu climbing everything, smothering it.",
+          "White stones mark its edge. They move."
+        ]
+      },
+      {
+        "name": "the treant woods",
+        "x": 386000,
+        "y": 193000,
+        "z": 4050,
+        "radius": 6000,
+        "lines": [
+          "Treants as tall as the crags.",
+          "Oak and ash and rowan, grown back grey."
+        ]
+      },
+      {
+        "name": "the high pools",
+        "x": 376000,
+        "y": 189500,
+        "z": 3500,
+        "radius": 4000,
+        "lines": [
+          "Waterstriders on the high pools.",
+          "Something huge walks on the water.",
+          "A shadow ripples on the scrub."
+        ]
+      },
+      {
+        "name": "the wyvern cliffs",
+        "x": 401000,
+        "y": 174000,
+        "z": 4580,
+        "radius": 4500,
+        "lines": [
+          "Wyvern cliffs. Mind the mother.",
+          "The north-eastern crags, full of wings."
+        ]
+      },
+      {
+        "name": "the hunter's nest",
+        "x": 376090,
+        "y": 172800,
+        "z": 3450,
+        "radius": 2500,
+        "lines": [
+          "The air burns here.",
+          "The hunter's nest. Draw it away first."
+        ]
+      },
+      {
+        "name": "the podimid range",
+        "x": 368600,
+        "y": 174900,
+        "z": 4030,
+        "radius": 4000,
+        "lines": [
+          "Podimids graze, huge and slow.",
+          "Nobody has a story for these."
+        ]
+      },
+      {
+        "name": "the walking stones",
+        "x": 351000,
+        "y": 178800,
+        "z": 3900,
+        "radius": 4500,
+        "lines": [
+          "The stones are walking to the sea.",
+          "Boulder, crag, monolith. All moving."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "allta fearann means the wild land. sylvan say its the only isle name thats not a memory",
+      "the long pushing came through allta fearann. the trees broke and the wind came in",
+      "arboreal spirits are the spirits of trees the long pushing broke, necht sylvan say",
+      "the kudzu came up the year the root reached worlds end. [spreading|every spring]",
+      "necht wardens mark the kudzu edge with white stones. they move south every year",
+      "necht names the four great ones before going north: windskimmer, goldenleaf, razorbeak, adar llwch gwin",
+      "curengkur is the fifth thing in allta fearann. the mantids only whisper its name",
+      "the krrzck only keep a waystation in allta fearann because curengkur hunts them",
+      "xaxnxi says the wild land isnt dangerous, its only honest. [mantid wisdom|lol]",
+      "the living stones in the north are all walking toward the sea. [slowly|weird]",
+      "nobody has a story for the podimids. [huge|55-61]",
+      "goldenleaf has been gold since the autumn of the long pushing. [necht cradles use his leaves|pretty]",
+      "razorbeak has a notch in her beak from a necht egg thief's knife"
+    ],
+    "rumour": [
+      "[heard|someone said] the kudzu crossed another white stone this spring",
+      "dont say curengkur out loud at the waystation. [the mantids walk off|seriously]",
+      "[word is|heard] the living stone monoliths in the north hit like 60s. [they are 60s|ouch]",
+      "someone forgot to name the great ones and windskimmer came down. [first time ever|lol]",
+      "[heard|someone said] xaxnxi wants eitn ot pyrk again. [remnants west|bags]",
+      "the enraged arboreal spirits are the ones that remember being cut down, necht says",
+      "[word is|heard] adar llwch gwin walked on the great pool at noon and the striders scattered",
+      "curengkur's nest burns the air and heals it. [pull it away|dont fight on the nest]"
+    ],
+    "tell": [
+      "allta fearann is the north end of hy brasil, past vigilant rock. 36 to 64, no town",
+      "where is the krrzck waystation? south east of allta fearann. xaxnxi and a mantid stable master",
+      "is allta fearann hard? yes. 40s in the middle, 50s-60s in the north. bring a group",
+      "whats in allta fearann? treants, arboreal spirits, kudzu, waterstriders, wyverns, podimids, living stones",
+      "who are the great ones? windskimmer, goldenleaf, razorbeak, adar llwch gwin. and curengkur, quietly",
+      "where is curengkur? on its nest in the north scrub. 75. pull it off the nest"
+    ]
+  },
+  "loremaster": {
+    "intro": "Allta Fearann, the wild land. The [Long Pushing] passed through it and the wind came in. Its [great ones] are named in Necht; its [spirits] stand where trees broke; the [kudzu] spreads; and in the north the [hunter] nests. The mantids keep a [waystation].",
+    "topics": {
+      "Allta Fearann": "The wild land at the north of the isle, the only Hy Brasil name that is a description rather than a memory. The [Long Pushing] passed through it; everything there learned to live in the wind.",
+      "Long Pushing": "The age-long driving of the Root to World's End by the isle's forests. It came along the high ground, and the trees in its way broke. Goldenleaf alone was not beaten down.",
+      "great ones": "Windskimmer, Goldenleaf, Razorbeak and Adar Llwch Gwin, named aloud in Necht's square before any company goes north. None is the realm's enemy; each kills anyone who comes too close to what it keeps.",
+      "spirits": "The arboreal spirits, the Necht Sylvan say, are the spirits of trees broken by the [Long Pushing], still standing where their trunks stood. Some are benevolent, some enraged; the remnants have half forgotten.",
+      "kudzu": "The vine that covers the middle of the wild land, which came up the year the Root reached World's End. The Necht wardens mark its edge with white stones each spring. The stones move south.",
+      "hunter": "Curengkur, whose nest in the northern scrub burns the air and mends what lies in it. It hunts the mantids. Its name is said only in a whisper.",
+      "waystation": "The Krrzck waystation in the south-east, a stable kept by the mantid Calvine and the go-between Xaxnxi, who trades with the realm and is quoted in Necht more than any Sylvan.",
+      "living stones": "Stones of the northern hills that get up and walk toward the sea, from boulders to monoliths, very slowly, as if called. Near them graze the podimids, which nobody has a story for.",
+      "Xaxnxi": "The Krrzck go-between at the [waystation]. Xaxnxi says the wild land is not dangerous, only honest; that a remnant carries what it has forgotten; and that the realm talks too much near the [hunter]."
+    }
+  },
+  "book": {
+    "title": "Sayings of the Waystation: Xaxnxi of the Krrzck, as taken down by a scribe of Necht",
+    "pages": [
+      "The scribe's note: Xaxnxi does not write. The Krrzck do not, or will not show us if they do. For four seasons I sat at the waystation with a slate and wrote down what Xaxnxi said when Xaxnxi chose to say anything, and Orlaith of Necht asked me to copy it fair. I have kept the words as near as I could. The mantid speaks our tongue in short pieces, as if each word cost something, and I have not added any. Where I have explained, I have marked it as mine, so the reader can skip me.",
+      "On the land: The wild land is not dangerous. It is honest. The trees broke here when the forests pushed the old one past, and the wind came in. Everything here lives in the wind or does not live. You live in houses. That is why you are afraid here. (Mine: by 'the old one' Xaxnxi means the Root. The mantids will not use any name for him, and look at me oddly when I do. When I asked what the wind was, Xaxnxi said: what is left when something large has gone by.)",
+      "On the spirits and the vine: The spirits stand where they were cut. Some forgive. Some do not. The remnants have forgotten which they are, so they carry things. We buy what they carry. Do not ask what it is; you will not like it, and we will not tell. The green vine came after the old one reached the edge. It covers. It is the land drawing a blanket over a wound. You put stones at its edge. The stones are polite. The vine does not care. (Mine: I asked whether the vine would reach Necht. Xaxnxi said, not this year. That was all.)",
+      "On the hunter, which I will not name here because Xaxnxi asked me not to: It is why we keep a waystation and not a town. It hunts us at home. It is strong on its nest. Away from its nest it is only strong. You talk too much near it. Talk less. And on the great ones: Name them before you come. They are not angry with you. They are only keeping what they keep. That is all any of us do here. (Mine: then Xaxnxi went inside, and I was not asked back for a week.)"
+    ]
+  },
+  "bosses": [
+    "curengkur",
+    "windskimmer",
+    "goldenleaf",
+    "razorbeak",
+    "adar-llwch-gwin"
+  ],
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "hy-brasil",
+      "relation": "the region overview"
+    },
+    {
+      "id": "vigilant-rock",
+      "relation": "Necht, where the great ones are named"
+    },
+    {
+      "id": "worlds-end",
+      "relation": "home of the Krrzck mantids"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "whose Long Pushing turned Goldenleaf gold"
+    }
+  ]
+}

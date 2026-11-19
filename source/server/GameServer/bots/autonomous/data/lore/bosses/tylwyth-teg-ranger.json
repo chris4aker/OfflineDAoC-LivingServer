@@ -1,0 +1,85 @@
+{
+  "id": "tylwyth-teg-ranger",
+  "name": "Tylwyth Teg Ranger",
+  "npcNames": [
+    "Tylwyth Teg Ranger"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Tylwyth Teg Ranger: NPC template 60167343, level 46-47, faction Tylwyth Teg, aggro level 51 (range 500), no spells, respawn 300 s, alone at 584383, 370496; tylwyth teg rovers (41) range the woods to the west.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Feast of the Decadent (Arly Camden, Caelin Finan, Elvinia Dareal): get Tylwyth Teg brew from one of their rangers and bring it to Elvinia.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Welsh folklore, not game canon: the Tylwyth Teg ('the fair family') are the fairies of Wales.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Tylwyth_Teg"
+    },
+    {
+      "text": "The ranger's brew and the fair folk's hospitality are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The Tylwyth Teg, the fair family, hunt the high woods of the Pennines and do not like to be seen, and the riders of the tops know them by their bows and by nothing else. Their rangers walk furthest from the rovers' woods, alone, and carry the family's brew in a horn at their belts.\n\nThe brew is the fair folk's oldest courtesy. A ranger who meets a traveller on the tops, the shepherds say, may offer it, and a traveller who drinks is the family's guest for a night and a day, and a traveller who refuses has insulted the whole family; and a traveller who drinks too much forgets the way home, and is found in the spring dancing in a ring that nobody else can see. Elvinia Dareal of Caer Witrin wants a horn of it for the Feast of the Decadent, and she has not said whether she means to drink it or to learn what is in it.\n\nThe ranger is not quick to start a quarrel. Rangers rarely are. They have bows, and time, and a long memory for anyone who takes the family's brew without being offered it.",
+  "legend": "Tylwyth Teg Ranger, level 46-47, walks alone in the Pennine woods east of the rovers' ground. Aggro level 51, so he often lets you be. Plain melee in the data. Kill one for the Tylwyth Teg brew in Feast of the Decadent and take it to Elvinia Dareal in Caer Witrin. Do not drink it on the way. Respawn five minutes.",
+  "yells": {
+    "aggro": [
+      "You were not offered.",
+      "The family will hear of this."
+    ],
+    "phases": [],
+    "death": [
+      "The brew... goes back to the woods..."
+    ],
+    "slay": [
+      "Forget the way home.",
+      "Dance, then."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A fair-folk ranger with a horn at the belt."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Tylwyth Teg Ranger has fallen. The family will remember."
+  },
+  "botLines": {
+    "briefing": [
+      "tylwyth teg ranger, 46, alone, often doesnt aggro",
+      "kill him for the brew, feast of the decadent"
+    ],
+    "aftermathWin": [
+      "got the brew. dont drink it",
+      "ranger down, off to elvinia"
+    ],
+    "aftermathLoss": [
+      "he had more friends in the trees than we thought"
+    ],
+    "rumour": [
+      "[heard|someone said] if you drink too much tylwyth teg brew you forget the way home",
+      "heard the fair folk never forget who took their brew"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "tylwyth teg ranger",
+    "text": "A ranger of the fair family who walks the high Pennine woods alone with the family's brew in a horn. Elvinia Dareal wants a horn of it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} took the brew from a Tylwyth Teg Ranger in the Pennines in {minutes} minutes.",
+    "loss": "The Tylwyth Teg Ranger kept the brew; {raidLeader} of {realm} went home without it."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

@@ -1,0 +1,87 @@
+{
+  "id": "nalsor",
+  "name": "Nalsor",
+  "npcNames": [
+    "Nalsor"
+  ],
+  "locationId": "avalon-isle",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Nalsor: NPC template 60164372, level 35, the drakoran elite model, faction Drakoran Legion, aggro 200 (range 500), no spells, respawn 80 s, in Afal Dyffryn north of Wearyall at 441696, 453344 among undead apple harvesters and about twenty drakoran sawbones and looters.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Spirits of the Orchard (Madilen Anglesey, Karayan): go to Afal Dyffryn north of Wearyall and kill Nalsor; give Karayan's potion to Tomos, who appears when Nalsor dies, and return Brent's, Lenor's, Andryw's and Tomos's seeds to their orchards.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Nalsor's reason for carrying off the seed, and Tomos standing behind him, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Afal Dyffryn, the apple valley north of Wearyall, had the oldest trees on the isle, and four keepers, Brent, Lenor, Andryw and Tomos, who were buried among them as the colleges' gardeners always were, so that they could go on keeping. The trees burned. The keepers did not rest. The dead harvesters still walk the rows picking fruit that is not there.\n\nNalsor is the drakoran who carried off their seed. He gathered it from the four orchards the spring after the burning, every pip and kernel the keepers had saved for the next planting, and he holds it in the valley with a legion camp round him, and he will not say what for. The garrison of Wearyall says the drakoran mean to plant Avalon's apples in their own Avalon below. Madilen Anglesey says Nalsor only wants the keepers to stay awake, because keepers who are waiting for their seed will never lie down and leave the valley empty for anyone else.\n\nTomos, the youngest of the keepers, stands behind Nalsor, the cider-man says, always just out of sight, and waits. He will come out when Nalsor falls, and not before.",
+  "legend": "Nalsor, level 35, Drakoran Legion, in Afal Dyffryn north of Wearyall. About twenty sawbones and looters plus a pile of undead apple harvesters are in the valley: Nalsor's faction will come with him, so pull him to the edge. Plain melee. For Spirits of the Orchard kill him, then give Karayan's potion to Tomos, who shows up when Nalsor dies, and tell him to pour it over the seeds. Respawn 80 seconds.",
+  "yells": {
+    "aggro": [
+      "The seed is held.",
+      "Legion! The orchard!"
+    ],
+    "phases": [],
+    "death": [
+      "The seed... goes back... to the ground..."
+    ],
+    "slay": [
+      "Plant that.",
+      "The valley keeps."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Nalsor guards stolen seed. Tomos waits behind him."
+    ],
+    "phases": [],
+    "realmFirstKill": "Nalsor has fallen. The keepers have their seed."
+  },
+  "botLines": {
+    "briefing": [
+      "nalsor in afal dyffryn, his legion lot in the valley come with him, pull to the edge",
+      "kill nalsor, then tomos appears. give him the potion"
+    ],
+    "aftermathWin": [
+      "nalsor down, tomos is here. pour it over the seeds",
+      "seeds back to the orchards"
+    ],
+    "aftermathLoss": [
+      "half the orchard came with him"
+    ],
+    "rumour": [
+      "[heard|someone said] tomos only shows up once nalsor is dead",
+      "heard nalsor wants the orchard keepers to stay awake forever"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "nalsor",
+    "text": "The drakoran who carried off the seed of the four orchards of Afal Dyffryn on [avalon isle] and holds it in the valley. Tomos, youngest of the keepers, waits behind him."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} took the seed back from Nalsor in Afal Dyffryn in {minutes} minutes.",
+    "loss": "Nalsor held the seed of Afal Dyffryn; {raidLeader} of {realm} left the orchard keepers waiting."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "kovos",
+      "relation": "the same legion"
+    }
+  ],
+  "tier": "minor"
+}

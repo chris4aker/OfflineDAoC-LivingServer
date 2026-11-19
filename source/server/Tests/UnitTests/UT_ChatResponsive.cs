@@ -88,10 +88,11 @@ public class UT_ChatResponsive
             Assert.That(Context("cya all next week, going out of town", Facts("guild"), seed)?.Text,
                 Does.Contain("trip").Or.Contain("get back").Or.Contain("next week").Or.Contain("enjoy"));
             Assert.That(Context("inc 3 albs", Facts(), seed)?.Text, Does.Contain("where").Or.Contain("how many"), "no place: a question");
-            Assert.That(Context("inc 3 albs at amg", Facts(level: 45), seed)?.Text, Does.Contain("omw").Or.Contain("coming").Or.Contain("on my way"));
+            // 1.2 chat audit (DESIGN-006): no "omw" unless the promise gate sends the bot (ChatPromises); it asks or reacts.
+            Assert.That(Context("inc 3 albs at amg", Facts(level: 45), seed)?.Text, Does.Not.Contain("omw").And.Not.Contain("coming").And.Not.Contain("on my way"));
             Assert.That(Context("help please, this mob is killing me", Facts("say", near: true), seed)?.Route, Is.EqualTo("context help"));
-            Assert.That(Context("need heals here!!", Facts("group", near: true, heals: true), seed)?.Text,
-                Does.Contain("heal").Or.Contain("got u").Or.Contain("on it"));
+            Assert.That(Context("need heals here!!", Facts("group", near: true, heals: true), seed)?.Text, Does.Contain("where"),
+                "1.2 chat audit: a healer asks where, it doesn't promise to heal");
             Assert.That(Context("im lost in the forest can someone help", Facts(), seed)?.Text, Does.Contain("where").Or.Contain("zone"));
             Assert.That(Context("DF is ours again", Facts(), seed)?.Route, Is.EqualTo("context rvr"));
             Assert.That(Context("wtb str buffed armor lvl 30, pst", Facts("trade"), seed)?.Route, Is.EqualTo("context wtb"));

@@ -1,0 +1,174 @@
+{
+  "id": "issorden",
+  "name": "Issorden",
+  "catalogKey": "tuscaran-glacier/issorden",
+  "locationId": "tuscaran-glacier",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "hrimthursa",
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "queen-kula",
+      "relation": "the queen who froze his army and gave it orders"
+    },
+    {
+      "id": "elder-icelord-suttung",
+      "relation": "who fought his vanguard hand to hand"
+    },
+    {
+      "id": "elder-council-guthlac",
+      "relation": "whose warning about the western caves was ignored the winter he came"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Issorden is a level-78 undead with 100,000 health; seven icebound skeletons come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He turns a frosty stare on one attacker as blue mist crawls from the ice, then roots everyone around (Issorden Root, 1,500 radius) and casts Frost Sphere bolts.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs"
+    },
+    {
+      "text": "Allakhazam lists him as undead, level 78; he drops dragon crystals.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6070"
+    },
+    {
+      "text": "Swedish is means ice and orden order: perhaps 'the order of the ice' (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "When engaged Issorden brings the seven icebound skeletons of the IssordenBaf package in from the whole region. With a 10% chance per tick he casts Issorden Root (99%, 60 s, radius 1,500 round his target, recast 30 s). Every 25-35 s he turns his frosty stare on a random player or grouped level-50 bot within 1,800 (EpicEncounterActors.Nearby, so bots can be chosen) and 2 s later casts Frost Sphere (400 cold bolt, 2 s, uninterruptible) on that one. 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs"
+    },
+    {
+      "text": "Swedish is 'ice' + orden 'order' (to verify). The vanguard Suttung fought and Kula's word of standing are Living Server lore.",
+      "provenance": "original",
+      "source": "Swedish, to verify"
+    }
+  ],
+  "story": "Before Kula held the glacier, before the citadel was finished, an army of bone came up out of the south of Aegir to take Delling's Crater and the dragon-bones under it. Its leader was a dead king even then, a lord of bone of some old people of the island whose name nobody now remembers, and his men were bone too. What he wanted with the dragon nobody knows; the iarn dwarves say dead things are drawn to dead things, and the dragon was the largest death on Aegir.\n\nSuttung met the vanguard on the eastern ice with a handful of the Ice Lords' house and broke it with his hands, and came home with the bone army's sickness in him. Behind the vanguard came the rest, too many for a handful. Kula met them on the eastern ice and did not fight them. She was not yet strong enough to fight an army and too proud to be seen losing, so she froze them, standing, every skeleton with its weapon raised and its foot lifted for the next stride, and then she walked among them and gave them an order. The dead obey the one who binds them. The order was: stand still. They are still standing.\n\nThe king she named Issorden, the order of the ice, and left him seven of his own guard. When strangers come onto the eastern ice now he and his seven wake together, from wherever they stand. He keeps Kula's order the only way he knows: the ice takes the feet of everyone round the one he faces, so that they stand as his army stands; and when he turns his frosty stare on anyone near him, blue mist crawls out of the cracks at his feet, and a breath later the frost flies at that one. The giants say the dead are not careful whom they look at. Kula's word is in him. It will be in anyone he looks at long enough.",
+  "chapters": [
+    {
+      "title": "The King of Bone",
+      "text": "Aegir had people before the iarn dwarves, the Faraheim slates say, and before the morvalt came over the rim of anything, and most of them are gone without a name. One of them buried its kings in the south of the island, under mounds that the drakulv still will not dig, and one of those kings did not stay buried. The slates do not say why. They say only that in the winter Kula's giants were cutting the western caves, there was an army of bone on the road north from the mounds, and a king at the head of it.\n\nHe was a dead king even then. The iarn dwarves who watched the army pass the edge of the Iarnwood wrote that it did not stop to eat or sleep, because it did not need to, and that it walked in step, which no living army does for long, and that its king rode a horse that was also bone and looked straight ahead. The dwarves did not know what he wanted. They wrote that dead things are drawn to dead things, and that the largest death on Aegir lay under Delling's ice.\n\nThe svartalfar of Svarhamr, who watch for dragons, have their own account. They say the bone king came to the crater because the dragon under it was not as dead as it looked, and that the dead can hear such things where the living cannot. They do not say this often, and never to the giants.\n\nThe giants heard he was coming from the drakulv, who fled north ahead of the army, and Kula's citadel was half finished, and the western caves were cut in a month against Guthlac's warning so that the queen would have a way out if the dead came in at the east."
+    },
+    {
+      "title": "The Eastern Ice",
+      "text": "Suttung did not wait for the Council's vote. He went out onto the eastern ice with a handful of the Ice Lords' house and met the army's vanguard there, hand to hand, and the dead broke on him the way surf breaks on a skerry. He came home with the bone army's sickness in him and has carried it since. But the vanguard was only the vanguard. Behind it, coming up out of the south across the crater floor in step, was the rest, more of the dead than the giants had numbers for, and a handful could not hold them.\n\nKula went out onto the eastern ice alone. The cast-out sculptors are sure of that, though nobody saw what she did; the giants were watching from the half-built walls. They say she was not yet strong enough to fight an army, and far too proud to be seen losing to one, and so she did not fight it.\n\nShe froze it. The giants on the walls saw the cold go out from her across the eastern ice like a wind, and where it passed, the dead stopped, mid-stride, every skeleton with its weapon raised and its foot lifted for the next step, and the frost grew up their bones and held them. The bone king stopped at the head of them on his bone horse, looking straight ahead.\n\nThen she walked among them. The sculptors say she went from one to the next across the eastern ice, the whole army of them, and said one word to each. The dead obey the one who binds them, and the queen had bound them. The word was the giants' word for stand still. They are still standing."
+    },
+    {
+      "title": "The Order of the Ice",
+      "text": "She came to the king last. The sculptors say she stood in front of him for a long time, and then took him down off his horse with her own hands and gave him a name, because he had none any more that anyone could say. She called him Issorden, the order of the ice. She gave him seven of his own guard to keep, icebound as he was, and set him at the eastern edge of the glacier, and told him to keep her order there.\n\nHe has kept it. The eastern ice is the quietest part of Tuscaran; the giants do not go there unless they must, and nothing that lives crosses it if it can go round. The dead stand on it in their hundreds, frozen mid-stride, and Issorden and his seven stand among them, and nothing moves.\n\nWhen something does, they all move at once. The seven come to their king from wherever they stand on the eastern ice, the companies say, as soon as he wakes, and they come quickly for the dead. And the king keeps Kula's order the only way he has. The ice under the feet of everyone near the one he faces takes hold of them, the frost growing up their boots as it grew up the bones of his army, so that they stand still as his army stands still, for a long while, until it lets go.\n\nThe sculptors say he does not mean anything by it. It is the order, they say. It was given to him once, and it is in him, and he gives it to anything that comes near, because he does not know how to give anything else."
+    },
+    {
+      "title": "The Frosty Stare",
+      "text": "He has one more thing, and the Valkyn scout on Delling's rim was the first to write it down. Now and then the bone king turns his head, slowly, and looks at someone. It is not the one in front of him, necessarily, and it is not the strongest or the weakest. The scout wrote that it seemed to be anyone at all who happened to be near, the living and the dead alike, and that the dead are not careful whom they look at.\n\nWhen he looks, his hands begin to glow, and blue mist crawls out of the small cracks in the ice at his feet, and the one he is looking at has a breath, no more, before the frost leaves the king's hands and flies at them. The companies of Midgard know the mist now. They say it is the only warning the eastern ice gives.\n\nThe iarn dwarves of Faraheim say the stare is the queen's word looking out of him: that Kula's order is in the bone king so deeply that it has to go somewhere, and that it goes into anything he looks at long enough. The sculptors say that is a dwarf's way of putting it, and that the king is only angry, in the slow cold way the dead are angry, that he was stopped a stride short.\n\nWhen he falls his army does not move. The companies who have put him down say they half expected the dead of the eastern ice to take their next step, and that they did not. The order holds without him. In a season he is standing at the head of them again, looking straight ahead, and the mist is gone from the cracks at his feet."
+    }
+  ],
+  "legend": "Issorden is undead, out on the eastern ice away from the main climb, and he brings his seven icebound skeletons with him from the whole area the moment he's engaged, so clear them first or pull from the edge. Two things to watch. His root: every so often everyone within 1,500 of his TARGET is rooted for up to a minute, so keep the healers spread and have purge or root-break ready. And his frosty stare: every 25 to 35 seconds you'll see 'Issorden turns his frosty stare on X', blue mist rises, and two seconds later X takes a 400 cold Frost Sphere that can't be interrupted. It can pick anyone near him, bots included, so whoever's named gets a heal. 100,000 health, 40% melee and 70% magic resists, CC-immune. Undead banes and spirit damage do well. Dragon crystals drop here, so everyone wants him.",
+  "yells": {
+    "aggro": [
+      "The order of the ice. None pass.",
+      "From the south you come. As I came.",
+      "She froze us so. Be frozen.",
+      "Stand still. She told us to stand still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stand still. As we stood, when she froze us."
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Her order holds me. It will hold you."
+      }
+    ],
+    "death": [
+      "Released... at last... from her order...",
+      "My army... stand down...",
+      "One more stride... only one..."
+    ],
+    "slay": [
+      "Stand with us now.",
+      "Another in the ranks.",
+      "Frozen in your stride.",
+      "Stand. Stand forever."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Skeletons stand frozen mid-stride, weapons raised.",
+      "A dead king's army keeps the queen's order.",
+      "The dead stand frozen mid-stride across the ice.",
+      "A bone horse stands riderless at the head of them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Issorden turns his frosty stare on someone!"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "Issorden's root takes everyone near his target."
+      }
+    ],
+    "realmFirstKill": "Issorden falls. His army does not take its next step."
+  },
+  "botLines": {
+    "briefing": [
+      "issorden roots everyone, purge ready. kill the 7 skellies first",
+      "spread the healers on issorden, his root is 1500 round the tank",
+      "blue mist under issorden means a bolt on someone in 2 sec",
+      "pull issorden from the edge, skellies come with him",
+      "issordens 7 skellies come from the whole area when you pull, clear or pull from the edge",
+      "his root is 1500 round the tank, healers spread, purge ready",
+      "frosty stare = 400 cold bolt on that person in 2 sec, heal them",
+      "the stare can pick bots too, not just you"
+    ],
+    "aftermathWin": [
+      "issorden dropped a dragon crystal!! [grats|gz]",
+      "red dragon crystal dropped!! [huge|grats]",
+      "issorden released lol. his skellies didnt move",
+      "issorden down and the root never caught the healers",
+      "dragon crystal!!",
+      "the army didnt move when he died. creepy",
+      "nobody got caught in the root this time"
+    ],
+    "aftermathLoss": [
+      "got rooted and the skellies did the rest",
+      "all the healers rooted together",
+      "we pulled him with the skellies up",
+      "seven skellies and the mist, we never stood a chance",
+      "healers all rooted together",
+      "pulled him with the skellies up and everything came"
+    ],
+    "rumour": [
+      "heard issorden was a dead king who came to take the glacier. kula froze him and kept him as a guard",
+      "issorden came from the south to take the dragon bones before kula",
+      "the skeletons by issorden dont move even after he dies. [still under her order?|weird]",
+      "kula froze issorden's army before the citadel was even finished",
+      "kula froze a whole army of bone on the eastern ice and told them to stand still. they still are",
+      "issorden was a dead king from the south of aegir",
+      "blue mist at issordens feet means someones getting frosted"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Issorden",
+    "text": "The bone king who brought an army up out of the south of Aegir to take the dragon-bones. [Suttung] broke the vanguard; Kula froze the rest standing on the eastern ice and told them to stand still, and named the king the order of the ice. His seven guard wake with him. The ice holds those near the one he faces, and blue mist rises before his stare."
+  },
+  "bookPage": "A song of the iarn dwarves, translated badly by me, Thorgrim of Faraheim. From the south came the dead king, bone upon bone, to drink from the great death in the crater. The ice-queen met him on the white road. She did not raise her axe. She raised her hand, and the dead stood still, every one, with their feet lifted. She walked among them. She gave them a word. They keep it yet. Do not go to the eastern ice, little ones, the song ends, for the dead are keeping a word there, and they will give it to you.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} released Issorden from the order of the ice in {minutes} minutes.",
+    "loss": "Issorden froze {raidLeader}'s raid from {realm} in place for {minutes} minutes."
+  }
+}

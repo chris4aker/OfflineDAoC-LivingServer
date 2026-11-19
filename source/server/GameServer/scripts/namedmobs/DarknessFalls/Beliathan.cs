@@ -98,7 +98,7 @@ namespace DOL.AI.Brain
             {
                 foreach (GameNPC npc in princeStatus)
                 {
-                    if (!npc.Name.ToLower().Contains("prince")) continue;
+                    if (!WakesBeliathanWhenGone(npc.Name)) continue;
                     princeCount++;
                 }
 
@@ -110,6 +110,14 @@ namespace DOL.AI.Brain
 
             base.Think();
         }
+
+        /// <summary>
+        /// Beliathan wakes (this check runs every 10 minutes) once no NPC named like a prince is in Darkness Falls: Princes
+        /// Abdin, Asmoien and Ba'alorien and Princess Nahemah ("prince" is in "princess") all dead. The raid route takes him as
+        /// an objective once he is up (RealmRaidNeutralEvents.Objectives).
+        /// </summary>
+        public static bool WakesBeliathanWhenGone(string name) =>
+            name != null && name.ToLowerInvariant().Contains("prince");
 
         public void SpawnBeliathan()
         {
@@ -209,10 +217,8 @@ namespace DOL.GS
             return true;
         }
 
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
-            base.Die(killer);
-
             foreach (GameNPC npc in GetNPCsInRadius(4000))
             {
                 if (npc.Brain is BeliathanMinionBrain)
@@ -220,10 +226,12 @@ namespace DOL.GS
                     npc.RemoveFromWorld();
                 }
             }
+
+            base.ProcessDeath(killer);
         }
         private static void PlayerKilledByBeliathan(DOLEvent e, object sender, EventArgs args)
         {
-            GamePlayer player = sender as GamePlayer;
+            GameLiving player = EncounterTargets.AsRaider(sender as GameObject);
 
             if (player == null)
                 return;
@@ -236,6 +244,14 @@ namespace DOL.GS
             GameNPC beliathan = eArgs.Killer as GameNPC;
 
             if (beliathan == null)
+                return;
+
+            // Flood guard (1.2): at most the period raid's count of live minions (EncounterFloodGuard).
+            int alive = 0;
+            foreach (GameNPC npc in beliathan.GetNPCsInRadius(4000))
+                if (npc.IsAlive && npc.Brain is BeliathanMinionBrain)
+                    alive++;
+            if (!EncounterFloodGuard.MayAdd("Beliathan.Minions", alive))
                 return;
 
             BeliathanMinion sMinion = new BeliathanMinion();

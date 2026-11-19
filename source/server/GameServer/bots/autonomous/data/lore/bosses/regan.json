@@ -1,0 +1,81 @@
+{
+  "id": "regan",
+  "name": "Regan",
+  "npcNames": [
+    "Regan"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Regan: level 38, a treant body (model 946, size 125), faction The Watcher, at about 411,800/318,900 beside Paud; respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Regan as the Watcher who saw the Fomorian boat and could not move.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Regan is the second of the eldest Watchers, a little smaller than Paud and a little nearer the water, and the Necht Sylvan say it was Regan who saw the Fomorian boat first, the night the eye came west: a dark hull on the water, drawn toward Gleann Glas's watch-fire, and Regan watching it all the way in and unable to so much as creak. When the valley burned, Regan saw the light of it over the hills, and that, the Sylvan say, is when the Watchers began to turn their eyes on anything that comes up from the shore.\n\nThe fishers of Necht leave bread at Regan's roots on the anniversary of the burning, and the bread is gone in the morning, and the fishers do not ask where. They say Regan is still sorry. They say a tree that is sorry is dangerous to stand near. Some of the Necht fishers say the bread is only taken by the beach shrouders. The others say a shrouder has never yet eaten bread.",
+  "legend": "Regan (38) stands beside Paud (39) below the vigilant-one rows, about 412k/319k. Both are Watcher treants; fight them as a pair or not at all. 10-minute respawn. Killing them costs faction with the vigilant ones. Regan and Paud are plain spawns with no script, but treant hits are slow and heavy, so keep the tank topped up and the casters at range. Pull them toward the open shelf so the vigilant ones on the slope above stay out of it.",
+  "yells": {
+    "aggro": [
+      "(the treant creaks, at last)",
+      "Up from the shore. Always up from the shore."
+    ],
+    "phases": [],
+    "death": [
+      "(Regan's eyes turn to the hills, to the old light)"
+    ],
+    "slay": [
+      "(bark groans; Regan watches the sea again)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A treant nearer the water, bread at its roots."
+    ],
+    "phases": [],
+    "realmFirstKill": "Regan the Watcher has fallen below the rows."
+  },
+  "botLines": {
+    "briefing": [
+      "regan is 38, next to paud. two treants together",
+      "watcher faction"
+    ],
+    "aftermathWin": [
+      "regan and paud down. [timber|grats]",
+      "the eldest watchers are quiet. [for now|10 min]"
+    ],
+    "aftermathLoss": [
+      "two treants. [rip|ouch]",
+      "pulled the vigilant ones too. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] regan saw the fomorian boat come in and couldnt move",
+      "necht fishers leave bread at regan's roots on the anniversary of the burning"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Regan",
+    "text": "The second eldest Watcher, nearer the water, who saw the Fomorian boat come in the night the eye came west and could not move. Necht's fishers leave it bread on the anniversary."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Regan in Vigilant Rock in {minutes} minutes.",
+    "loss": "Regan turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "paud",
+      "relation": "the other eldest Watcher"
+    }
+  ]
+}

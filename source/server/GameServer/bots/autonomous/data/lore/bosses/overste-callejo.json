@@ -1,0 +1,113 @@
+{
+  "id": "overste-callejo",
+  "name": "Overste Callejo",
+  "npcNames": [
+    "Overste Callejo"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "alchemist-phorzbreg",
+      "relation": "the alchemist whose still-room opens off the hall of weapons"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Overste Callejo is a level-65 morvalt in Trollheim (37326, 46384) among the Fathers' animated weapons: animate skold, yxa, svard, spjut and slagga (shield, axe, sword, spear and sledge-hammer, level 50-54).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Template: aggressive at range 200, no faction (no bring-a-friend), wears an equipment template.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164804)"
+    },
+    {
+      "text": "The animated weapons around him have aggro level 0: they do not attack first.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish överste means 'colonel'; Callejo is not Swedish (a Spanish surname); to verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    }
+  ],
+  "story": "The Fathers hung their weapons on the walls of every hall and sealed a word of warding into each, a word the runemasters of Jordheim read as stay. In one long hall south of the hall of counsel the weapons hang thicker than anywhere else in the city, shields and axes and swords and spears and the great sledges of the Fathers' quarries, and in the middle of them stands a morvalt who calls himself the colonel.\n\nOverste Callejo came to the hall of weapons in the first days, the Valkyn say, with a company of warriors under him, to strip the walls. The weapons came down off their hooks when his warriors laid hands on them, and fought, and most of his company died there. Callejo did not run. He stood in the middle of the hall with the weapons hanging in the air around him, and they did not touch him, because he had not touched them; and the morvalt who came after found their colonel standing among the Fathers' weapons as a war-chief stands among his own, and believed he had tamed them.\n\nHe believes it too. He has stood there ever since, giving orders to the shields and the spears in the morvalt tongue, and the weapons hang where they hang and do nothing, which he takes for obedience. The Valkyn say the truth is plainer: the Fathers' word means stay, and the weapons are staying, and they would have stayed whether Callejo was there or not. A stranger who walks through the hall and keeps his hands to himself passes them as the colonel does. A stranger who strikes one has woken it.\n\nThe colonel himself is another matter, and he is quick to anger at any stranger in his hall. The name is a puzzle; it is no morvalt word and no Fathers' word, and the Valkyn think he heard it somewhere and liked it, the way the drakulv take names they hear. Alchemist Phorzbreg keeps the still-room at the far end of the hall, and the two do not speak. Callejo says the alchemist's fumes make the weapons restless.",
+  "legend": "Overste Callejo is a level 65 morvalt standing in the hall of animated weapons in Trollheim, south of the hall of counsel. The weapons around him (animate shields, axes, swords, spears and sledges, 50-54) are PASSIVE: they don't attack unless you hit them, so don't AoE in there. Callejo himself is aggressive at short range (200), has no faction (no friends called), no special abilities and isn't CC-immune. Pull him out of the weapons with range and single-target him. Alchemist Phorzbreg stands about 1,400 units away, also passive. If a weapon does wake, kill it before Callejo; they're weak. Pets with AoE are the usual way it goes wrong.",
+  "yells": {
+    "aggro": [
+      "Shields! Spears! Your colonel commands you!",
+      "You walk in my hall. On my orders, you die.",
+      "Attention! A stranger!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Why do they not move? MOVE!"
+      }
+    ],
+    "death": [
+      "They... never obeyed...",
+      "Stay... they only... stay..."
+    ],
+    "slay": [
+      "Dismissed.",
+      "The hall is mine.",
+      "Another for the walls."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The Fathers' weapons hang thick in the air here.",
+      "A morvalt gives orders to shields that do not answer."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The weapons hang still. The colonel shouts at them."
+      }
+    ],
+    "realmFirstKill": "Overste Callejo falls. The weapons stay."
+  },
+  "botLines": {
+    "briefing": [
+      "callejo is in the weapon hall, the weapons are passive dont aoe",
+      "pull callejo out with range",
+      "no faction, no tricks, mez works",
+      "phorzbreg is passive too, leave him unless you want him"
+    ],
+    "aftermathWin": [
+      "colonel down, didnt touch a single weapon",
+      "single target only, worked",
+      "the weapons never moved",
+      "easy once he was out"
+    ],
+    "aftermathLoss": [
+      "someone aoed and woke every weapon in the hall",
+      "hit a shield by accident",
+      "pulled him into the axes",
+      "65 hurts"
+    ],
+    "rumour": [
+      "callejo thinks he tamed the fathers weapons, they just stay",
+      "the weapons only fight if you lay a hand on them",
+      "overste means colonel",
+      "callejo says phorzbregs fumes make the weapons restless"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Overste Callejo",
+    "text": "The colonel who stands among the Fathers' hanging weapons and believes they obey him. They only stay, as [the weapons] were made to. [Alchemist Phorzbreg] keeps the still-room beyond."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: we went through the hall of weapons with our hands under our arms. The Valkyn guide made me do it, and did it herself, and we walked down the middle of that hall between spears hanging in the air like fish in a still pool, and not one of them turned. At the far end a morvalt was shouting at a shield. My guide said he has been shouting at it since her grandmother's time. I said he must be very patient. She said no; the shield is.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} relieved Overste Callejo of his command in Trollheim in {minutes} minutes.",
+    "loss": "Overste Callejo held his hall of weapons against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

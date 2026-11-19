@@ -1,0 +1,369 @@
+{
+  "id": "myrkwood-forest",
+  "name": "Myrkwood Forest",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    105
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves",
+    "arachites",
+    "svartalfar",
+    "houses-of-midgard"
+  ],
+  "summary": "The dark wood between the Svealands and the south: Galplen of the singers, Gna Faste on the lake, the werewolf fort of Askheim, the arachites and the door to Spindelhalla in the west, and the svartalfar in the south.",
+  "facts": [
+    {
+      "text": "Myrkwood Forest is zone 105 of region 100. Its towns (Areas): Galplen in the north-east (797,304/893,426, radius 2,500), a training town with troll flayers at the gate, and Gna Faste in the middle (787,865/904,821) with its guard tower and its own trainers. Spindelhalla opens in the west (757,745/883,978).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "Its folk: weeping and shrieking willows, tinglers, great tinglers and the arachites (greensilk, shadowslinkers, weblashers, priests), mora dancers and riders, haunts, spooks and undead woodcarvers (The Condemned), decaying trolls and norsemen, myrk shadows, gray and ridgeback worgs, werewolves and minor werewolf nobles (Varulv) with Haglion's minions, svartalf watchers, predators and sorcerers, svartalf outcasts, myrkcats, venomspitters, soul sinkers and hobgoblins of Clan Smyg.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 105 (0.37b world data)"
+    },
+    {
+      "text": "Njessi (class Njessi), an envy drake, roams a path round the lake between Gna Faste and Galplen and never returns to a spawn point; her blows may burst into a heat blast round her target or poison it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/MidgardMobs/Njessi.cs"
+    },
+    {
+      "text": "Alina (class Alina) on the shore east of Askheim takes a woman's shape by day and a werewolf's by night ('Confront Alina after sunset, when she wanders as a werewolf'; 'Kill Baron Falwur in the werewolf fort of Askheim and take the crown').",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/Alina.cs; runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Gunflor (level 45) is 'the svartalf Gunflor in the building on the little island with the well east of Gna Faste', the kill in 'Dark Places of the Soul', which begins with Jytal in the Gna Faste hut and runs through Idona of Fort Veldon, Yver of Haggerfel and Blackpaw in Jordheim ('the werewolves have allied').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Myrkwood's quest dead: Morana's spirit to be returned 'to her god' (Sentry Dwarn); the spirit of Taldos, who walks at night for the amulet Arakane took; the spirit of Coplin Alfevson, whose kinsman Ove wears a piece of the Grenlock crest within the walls of Fort Askheim.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "'A War of Old' sends players against 'Lieutenant Salurn and his armsmen raiding southern Myrkwood', undead of Albion.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Kobold Dirge (a ghost of the kobold kind, level 11) is the answer to 'Prove Kobold Helen's Innocence': 'Find Helen's twin south of the guard tower'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 105 (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Myrkvidr (Mirkwood) is the dark forest that divides lands; Gna is Frigg's messenger who rides through air and sea.",
+      "provenance": "myth",
+      "source": "Poetic Edda, Lokasenna and Atlakvida; Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "Galplen as the town that keeps the dragon song, the lake's drake, the island well and Asgeir's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The skalds call it Myrkwood after the dark wood of the old poems, the forest that lies between lands and belongs to none of them, and the name fits. It is the last great wood of the mainland before the south: willows that weep and willows that shriek, pines so close that the light comes down green, a lake in the middle, and on every side someone who was here first. Two towns hold it for the realm. Galplen stands in the north-east where the road comes down out of Gotar, a training town of trolls and kobolds and Norsemen with troll flayers at its gate. Gna Faste stands in the middle on the lake, a fort with a guard tower, named for Frigg's messenger who rides through air and sea, because its first garrison said that was the only way to get through the wood alive.\n\nGalplen is the realm's singing town. It was a skald of Galplen, Ragnhild, who walked south with Hallbjorn's eighty against the dragon of Malmohus and came back with the oldest account of her court, and the Galplen twenty-seven who knew that song by heart who first killed the dragon twice in one day. Every year the svartalfar of Svarhamr send a sledge north with grey stone and the newest marks of their beam, and Galplen sings them into Ragnhild's song. Galplen's tellers tell the tale of Fenrir's sun-splinter too. When a story of the south is finished, Galplen is where it is finished.\n\nThe wood was not empty for the towns. The werewolves hold its west in a fort of their own, Askheim, under a baron who wears a crown taken from someone else; they are the same varulv as Skona's and Varulvhamn's, the gothi say, and their nobles walk as men by day as often as not. The arachites keep the far west, round the door that goes down into Spindelhalla, the hall of lamps the svartalfar dug and lost, and their tinglers spin the western pines together. The svartalfar keep the south, watchers and predators and sorcerers who serve the spiders or trade with them, and the outcasts the svartalfar themselves drove out keep a camp of their own near the lake. The three of them are allies when it suits them. Lately it has suited them more often, and the shamans of Gna Faste say that is a darker thing than any of them alone.\n\nAnd the wood has its dead. Mora dancers and mora riders in the south, the mare of the old stories that sits on a sleeper's chest, though the Gna Faste watch says these ride travellers, not dreams. Decaying trolls and Norsemen, haunts and spooks and woodcarvers who carve still with dead hands, and a lieutenant out of Albion who harries the south of the wood with his armsmen for an army that died long ago. The spirits of Myrkwood's own walk at night asking for what was taken from them: Taldos for his amulet, Morana for her god, Coplin Alfevson for his house's crest. The wood keeps them because it keeps everything; the trolls of Galplen say Myrkwood has never let go of a thing it was given.\n\nIn the middle of the lake east of Gna Faste there is a little island with a well and a house beside it, and something lives in the house that was a svartalf once. The shamans call the well one of the dark places of the soul, and say that when the arachites and the werewolves made their bargain in the west of Skona, it was from that house that the word went out. A drake of the envy kind swims the lake round it and has never gone back to her nest; the fishermen of Galplen say she is guarding it, and the fishermen of Gna Faste say she is only hungry.\n\nMyrkwood matters because it is the gate to the south. The warbands bound for Malmohus come down through it, past Galplen's singers and Gna Faste's tower and the door to Spindelhalla, and every one of them stops at Galplen on the way home to have its story sung into the dragon song or to hear it was not good enough. The wood between lands belongs to none of them. It lets them pass, the trolls say, because it wants to hear how it ends.",
+  "legend": "Myrkwood is the 20-30 zone south of Gotar. Galplen in the north-east is the bigger town (most trainers, bonedancer and spiritmaster too), Gna Faste in the middle by the lake is the other (vault keeper, warrior, thane, berserker, shadowblade, hunter, healer trainers, Jytal). The Spindelhalla entrance is far west among the arachites and tinglers. The werewolf fort of Askheim is west too, with Baron Falwur (Tale of Two Trolls) and the nobles, and Alina on the shore east of it turns werewolf after sunset. Njessi the envy drake swims the lake between Gna Faste and Galplen and never resets to a spawn, and her hits can burst heat on everyone round her target, so don't bunch up. Lieutenant Salurn and his armsmen are the Albion undead in the far south-east (A War of Old). The 45 svartalf Gunflor in the house on the well island east of Gna Faste is the Dark Places of the Soul kill. Troll saying: Myrkwood never lets go of a thing it was given.",
+  "atmosphere": {
+    "firstEntry": [
+      "Myrkwood. The wood between lands, belonging to none.",
+      "The light comes down green and tired.",
+      "Somewhere a willow shrieks. Then it weeps.",
+      "Everyone in this wood was here first."
+    ],
+    "areas": [
+      {
+        "name": "Galplen",
+        "x": 797304,
+        "y": 893426,
+        "z": 4700,
+        "radius": 2500,
+        "lines": [
+          "Galplen, the singing town. The dragon song is kept here.",
+          "Every southern story is finished in Galplen.",
+          "Troll flayers at the gate, and a skald inside."
+        ]
+      },
+      {
+        "name": "Gna Faste",
+        "x": 787865,
+        "y": 904821,
+        "z": 4800,
+        "radius": 1500,
+        "lines": [
+          "Gna Faste, named for the messenger of air and sea.",
+          "Hyua hides behind the merchants. She has a diary.",
+          "Jytal's hut. Say the right name."
+        ]
+      },
+      {
+        "name": "the lake",
+        "x": 790000,
+        "y": 893000,
+        "z": 4600,
+        "radius": 4000,
+        "lines": [
+          "Njessi swims the lake and never goes home.",
+          "Fishermen keep their boats close to the shore."
+        ]
+      },
+      {
+        "name": "the well island",
+        "x": 798571,
+        "y": 901258,
+        "z": 4747,
+        "radius": 800,
+        "lines": [
+          "A little island, a well, a house. A dark place.",
+          "Something that was a svartalf lives here."
+        ]
+      },
+      {
+        "name": "Askheim",
+        "x": 769000,
+        "y": 912000,
+        "z": 5700,
+        "radius": 2500,
+        "lines": [
+          "Askheim. Baron Falwur wears a crown not his.",
+          "Ove Alfevson walks the walls with a crest-piece.",
+          "Anakol waits outside the walls. For whom?"
+        ]
+      },
+      {
+        "name": "the Askheim tower",
+        "x": 775680,
+        "y": 911366,
+        "z": 5252,
+        "radius": 1000,
+        "lines": [
+          "Fasolt guards the tower. His spirit rises after.",
+          "Noble werewolf Alina walks the slope below."
+        ]
+      },
+      {
+        "name": "the Askheim shore",
+        "x": 777385,
+        "y": 917857,
+        "z": 5157,
+        "radius": 1200,
+        "lines": [
+          "A woman on the shore. After sunset, a wolf.",
+          "Alina waits for the halves of a book."
+        ]
+      },
+      {
+        "name": "the worg slopes",
+        "x": 784000,
+        "y": 910000,
+        "z": 4800,
+        "radius": 3000,
+        "lines": [
+          "Worgs south of Gna Faste. The Great Worg leads.",
+          "Joseph Domr hides here with a red dagger."
+        ]
+      },
+      {
+        "name": "the arachite west",
+        "x": 762000,
+        "y": 892000,
+        "z": 5000,
+        "radius": 6000,
+        "lines": [
+          "Tinglers spin the western pines together.",
+          "Priest Thaxtix pays svartalfar for his work.",
+          "The Tingler Webmother, larger than she should be.",
+          "Arakane has a dead man's amulet."
+        ]
+      },
+      {
+        "name": "the Spindelhalla door",
+        "x": 757745,
+        "y": 883978,
+        "z": 4800,
+        "radius": 1500,
+        "lines": [
+          "The door down to Spindelhalla, the hall of lamps.",
+          "Priestess Araxia keeps the arachites at the door."
+        ]
+      },
+      {
+        "name": "the svartalf camp",
+        "x": 756974,
+        "y": 869142,
+        "z": 5568,
+        "radius": 2000,
+        "lines": [
+          "Te'Delna's camp. Both the wolves and spiders want her.",
+          "Svartalf hunters at the edge of the wood."
+        ]
+      },
+      {
+        "name": "the northern wood",
+        "x": 769000,
+        "y": 873000,
+        "z": 4800,
+        "radius": 4000,
+        "lines": [
+          "Sorrow walks here. The dirges keep away.",
+          "The Kobold Dirge wanders south of the guard tower."
+        ]
+      },
+      {
+        "name": "the north-east road",
+        "x": 803972,
+        "y": 876241,
+        "z": 4744,
+        "radius": 2500,
+        "lines": [
+          "Bjorn the archer shoots from the trees.",
+          "Niswen keeps his brother's map close."
+        ]
+      },
+      {
+        "name": "the mora south",
+        "x": 789000,
+        "y": 924000,
+        "z": 5300,
+        "radius": 4000,
+        "lines": [
+          "Mora dancers and riders. They ride travellers here.",
+          "Morana waits by the hill for her god."
+        ]
+      },
+      {
+        "name": "the Albion raiders",
+        "x": 814364,
+        "y": 931552,
+        "z": 5555,
+        "radius": 2500,
+        "lines": [
+          "Lieutenant Salurn raids for an army long dead.",
+          "Albion armsmen, rusted, still on the march."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "myrkwood is named for the dark wood of the old poems, the forest between lands",
+      "gna faste is named for friggs messenger who rides through air and sea",
+      "galplen is the singing town, ragnhild who sang the dragons court was from galplen",
+      "every year svarhamr sends a sledge to galplen and galplen sings the new marks into the dragon song",
+      "the galplen twenty seven killed the dragon twice in one day, they knew the song by heart",
+      "the werewolves of myrkwood hold askheim, same varulv as skona and varulvhamn",
+      "the arachites hold the west of myrkwood round the door down to spindelhalla",
+      "the svartalfar of the south serve the spiders or trade with them",
+      "the arachites, the werewolves and the svartalfar are allies when it suits them, lately it suits them",
+      "the mora of myrkwood ride travellers, not dreams, the gna faste watch says",
+      "myrkwood never lets go of a thing it was given, the galplen trolls say",
+      "the warbands bound for malmohus come home through galplen to hear their story sung"
+    ],
+    "rumour": [
+      "the well on the island east of gna faste is one of the dark places of the soul",
+      "the fishermen of galplen say njessi guards the well island. gna faste says shes just hungry",
+      "ove alfevson touches the crest piece at his throat when he fights",
+      "noble werewolf alina never leaves the slope below the askheim lookout",
+      "priestess araxia is gentler with her younglings than with anything else",
+      "joseph domr carries the red daggers mark in myrkwood",
+      "anakol stands by askheim and wont say who he was waiting for",
+      "baron falwur wears a crown that isnt his, darrius wants it back",
+      "hyua hides behind a tree at gna faste and has lord lauurs secret in her diary",
+      "priest thaxtix pays svartalfs to do the arachites dirty work",
+      "njessi never goes home, she just swims the lake between gna faste and galplen",
+      "bjorn the archer in the north east shoots at anyone. nobody knows whose side he was on",
+      "ove alfevson wears a piece of the grenlock crest inside askheims walls",
+      "sorrow is a ghost in the north woods. even the dirges keep away from him",
+      "kill fasolt at the askheim lookout and his spirit gets up after",
+      "alina by the askheim shore is a woman by day and a werewolf after sunset",
+      "noble werewolf alina and the shore woman alina, same name, the werewolves say same blood",
+      "niswen is fressens brother and wont give up the map without a fight",
+      "priestess araxia keeps the arachites west of galplen near spindelhalla",
+      "te'delna the svartalf sorceress, dunfjall wants her blood for the werewolves and the arachites both",
+      "the tingler webmother is bigger than any spider should be",
+      "morana is a ghost by the mountain. sentry dwarn will tell you her tale",
+      "the great worg is the oldest of the worgs south of gna faste",
+      "lieutenant salurn is albion undead raiding the south of myrkwood",
+      "joseph domr carries the red dagger. the quest says tomte hill but hes by gna faste",
+      "the kobold dirge is kobold helens twin. dead. it was her doing the robbing",
+      "arakane took taldos amulet. taldos only comes out at night to ask for it"
+    ],
+    "tell": [
+      "myrkwood is 20 to 30, galplen north east and gna faste in the middle",
+      "spindelhalla door is far west of myrkwood among the arachites",
+      "ove alfevson walks the askheim walls, fallen warrior from anrid",
+      "noble werewolf alina is on the slope below the askheim lookout, 21",
+      "priestess araxia is at the spindelhalla door, 20",
+      "joseph domr is on the worg slopes south of gna faste, the red dagger",
+      "anakol is a 32 by the askheim fort, west",
+      "baron falwur is in the werewolf fort of askheim, tale of two trolls",
+      "hyua is behind the merchants at gna faste, lord lauurs wife",
+      "njessi roams the lake between gna faste and galplen, silent death bounty from bork",
+      "bjorn is in the north east near the road, 23",
+      "fasolt is at the lookout outside askheim, helping the svartalfar",
+      "alina is on the shore east of askheim, see her after sunset",
+      "niswen is north of gna faste, decoding the map",
+      "araxia and te'delna are far west near the spindelhalla door",
+      "tingler webmother is west among the tinglers",
+      "morana is south west by the hill at the foot of the mountain",
+      "lieutenant salurn is far south east, a war of old",
+      "kobold dirge is south of the first guard post, prove kobold helens innocence",
+      "arakane is west, taldos amulet from katla",
+      "sorrow is north, great worg south of gna faste, priest thaxtix west, ove inside askheim",
+      "gunflor is the 45 svartalf in the house on the well island east of gna faste"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Myrkwood, the wood between lands. [Galplen] keeps the dragon song, [Gna Faste] keeps the lake, the werewolves keep [Askheim], the [arachites] the west and its door, and the [svartalfar] the south. On the lake there is an [island] with a well. Do not drink from it.\"",
+    "topics": {
+      "Galplen": "The singing town of the north-east. Ragnhild of Galplen sang the dragon's court; the Galplen twenty-seven killed the dragon twice in a day; every year the Svarhamr sledge brings grey stone and the beam's newest marks, and Galplen sings them in.",
+      "Gna Faste": "The fort on the lake, named for Frigg's messenger. Its guard tower watches the wood; [Hyua] hides behind its merchants; Jytal in the hut knows what stirs in the dark places of the soul.",
+      "Askheim": "The werewolves' fort in the west, under [Baron Falwur], with its nobles and its tower where [Fasolt] stands. [Ove Alfevson] walks its walls with a piece of the Grenlock crest.",
+      "arachites": "The spider-folk of the far west, round the door down to Spindelhalla, with tinglers in the pines and priests among them: [Priestess Araxia], [Priest Thaxtix], [Arakane]. The [Tingler Webmother] is theirs.",
+      "svartalfar": "The dark elves of the south, watchers, predators and sorcerers who serve the spiders or trade with them. Their outcasts keep a camp near the lake. [Te'Delna] is a sorceress of theirs.",
+      "island": "A little island in the lake east of Gna Faste with a well and a house beside it, where [Gunflor] lives. The shamans call the well one of the dark places of the soul. [Njessi] swims round it.",
+      "the dead of Myrkwood": "Mora riders in the south, decaying trolls and Norsemen, haunts and woodcarvers, and the spirits who walk at night for what was taken from them: Taldos for his amulet, [Morana] for her god, Coplin Alfevson for his crest.",
+      "Asgeir": "Asgeir, a fisherman of Galplen who keeps a boat on the lake and wrote The Lake Book for the singers, who wanted to know what the wood is like from the water.",
+      "Anakol": "A tall dead-eyed man outside the walls of [Askheim], dressed like the dirges and the marooned men of the coasts, alone. The werewolves let him stand there. The Gna Faste watch says he came to Askheim to buy something from the baron and has been waiting for the baron to come out ever since, and that he will take anyone who comes near for the baron's messenger.",
+      "Baron Falwur": "The werewolf baron of [Askheim], a great varulv of the royal guard's kind, who wears a crown that was not made for him. Darrius of Fort Atla, who gave up his studies to sit with his wife, sends the young after two halves of a book and, through [Alina], after the baron and the crown. The nobles of Askheim fight beside him.",
+      "Hyua": "A troll who hides behind a tree behind the merchants of [Gna Faste], and tries to kill anyone who comes to ask her about Lord Lauur of Gotar's wife Lene. She keeps a diary that says where the svartalfar and the arachites hold Lene's spirit. Galplen's trolls say she was paid to keep it, and did not ask by whom.",
+      "Priest Thaxtix": "An arachite priest in the far west, smaller than most of his kind and cleverer. Thrand of Mularn thinks his brother Halvor works for the svartalfar, and the trail runs to Thaxtix, who pays svartalfar to do what the arachites will not be seen doing. He strikes anyone who comes into his part of the pines. Thrand would like his brother back. Thaxtix would like more brothers.",
+      "Njessi": "An envy drake who swims a long round of the lake between Gna Faste and Galplen and never goes back to her nest. Bork of Huginfel has a bounty on her for terrorizing the lake. The fishermen say her bite poisons and her blows burst like a dropped lamp on everyone standing near, so they never fish two to a boat.",
+      "Bjorn": "An archer by the north-east road out of Galplen who shoots at everyone, alone. He is dressed like a viking archer of the keeps, and the Galplen watch says he was posted there in a war nobody remembers and was never relieved. He has not noticed. Travellers on that road keep their shields on the side away from the trees.",
+      "Ove Alfevson": "A werewolf of [Askheim] who was an Alfevson once, of the family that kept a piece of the Grenlock crest. He wears it within Askheim's walls. Anrid of Jordheim, who is putting the crest together again, wants it back; Siv and Coplin Alfevson, his kin, do not talk about him. He fights for the fort. The crest-piece hangs on a thong at his throat, and he touches it when he fights.",
+      "Sorrow": "A ghost of the north wood, pale and dressed like a dirge, whom even the nordic dirges keep away from. The trolls of Galplen say that when the singers finish a sad verse, Sorrow is what is left over, and that he has been walking the wood since the first dragon song. He comes at anyone who hears him. The singers will not end a song on him.",
+      "Fasolt": "A werewolf of the wolfaur kind who guards the tower outside [Askheim]. Dunfjall, who bargains with the svartalfar, wants his blood; and when Fasolt falls, his spirit rises after him, which the gothi say is the price Askheim pays for its baron's bargains. The werewolves say his name is older than the fort, and that he is not the first Fasolt to guard that tower.",
+      "Noble Werewolf Alina": "A noble werewolf of [Askheim] who walks the slope below the tower, and shares a name with the woman on the shore. The werewolves say they share more than a name. She fights like the nobles fight, for the fort. The Gna Faste watch thinks she is the shore woman's sister, given to the fort when the shore woman was not, and that the baron keeps the two of them apart on purpose. Neither of them will say. She does not leave the slope.",
+      "Alina": "A woman on the shore east of [Askheim] who takes the halves of Darrius's book and asks for the baron's crown. After sunset she wanders as a werewolf. By day she does not fight anyone. The Gna Faste watch says she is the baron's prisoner in the only way that matters, and wants out. Nobody has asked her why she needs the book.",
+      "Niswen": "Fressen of Nalliten's brother, a man of the north wood near the road, who keeps a copy of Fressen's map of the elves and Gashir and will not give it up. Inaksha's seers take it from him, and from his friend Raslen, by force. Fressen says his brother was always like that. Raslen goes where Niswen goes, and fights at his side.",
+      "Priestess Araxia": "An arachite priestess who keeps the door down to Spindelhalla in the far west, with the younglings round her. The svartalf thralls below pray, Odell's list says, that she will forget to watch the door one night. She has not yet, and comes at anyone who stands in it. The younglings at her feet are her own, the arachites say, and she is gentler with them than with anything else.",
+      "Te'Delna": "A svartalf priestess and sorceress near the svartalf camp in the far west of the wood, west of the first guard tower. Dunfjall sends the young after her blood for the werewolves' sword and again for the arachites' favour, which tells you what both of them think of her. She is kin of Te'Bui of Spindelhalla, the camp says. Her camp guards her closely.",
+      "Tingler Webmother": "The mother of the tinglers in the west, twice the size of a great tingler, who spins the pines together into halls. The arachites keep her as a farmer keeps a prize ewe. Her young are everywhere in the western wood; she stays in the middle of her web and comes down for anyone who touches it. Galplen's tailors would pay well for her silk.",
+      "Morana": "A ghost to the south-west, near the hill at the foot of the mountain, a woman who died far from her god's house and cannot find her way to it. Sentry Dwarn of Gna Faste tells her tale and sends the young to return her spirit to her god, which the gothi say can only be done the hard way. She fights them until it is.",
+      "Great Worg": "The greatest of the worgs on the slopes south of Gna Faste, a grey wolf the size of a pony. The gray and ridgeback worgs follow where it goes. The Gna Faste watch counts its howls at night to know how many travellers the pack has seen. It comes at anyone on its slope. The pack is thinner after a hard winter; the Great Worg never is.",
+      "Lieutenant Salurn": "An undead officer out of Albion who leads his armsmen raiding the far south-east of Myrkwood, for an army that died in Midgard's hills long ago. Masrim of Fort Atla sends word through Keapi of Nalliten; the young of Loki's and Skadi's houses break him, and report to the barkeep in Galplen. His armsmen keep step behind him even in the trees.",
+      "Joseph Domr": "A rogue on the worg slopes south of Gna Faste who carries a red dagger, the mark of the Red Daggers of Raumarik. Karl Gat of Vasudheim sends the young after him, and the quest tells them to look near the tomte hill of East Svealand; he is not there, he is here, which Karl Gat says is the most Red Dagger thing about him.",
+      "Kobold Dirge": "A kobold ghost south of the first guard post of the wood, the dead twin of Kobold Helen of Nalliten. Helen is accused of attacking travellers on the road at night; it was her twin all along, and the young who find the dirge bring back proof for the escort sentry. Helen does not talk about her sister. The escort sentries leave a light on the road for her.",
+      "Arakane": "A small arachite of the west who took the amulet of Taldos, a dead man who walks only at night to ask for it back. Katla of Thor's house in Jordheim sends the young to take it from Arakane. The arachites, asked, say Taldos had no further use for it. Arakane keeps it in its web and bites for it."
+    }
+  },
+  "book": {
+    "title": "The Lake Book",
+    "pages": [
+      "Asgeir, who fishes the lake between Gna Faste and Galplen, wrote this for the singers of Galplen, who asked him what the wood looks like from the water. It looks quieter. That is the first thing. On the shore the willows shriek and the worgs answer them, and in the boat you hear only the oars and the drake. The drake is the second thing. She swims the long way round the lake, all day and all night, and she does not go back to any nest. We fish one to a boat because of her. When she strikes, it is like a lamp dropped in straw, and everyone close burns.",
+      "The third thing is the island. There is a little one east of Gna Faste with a well on it and a house beside the well, and lights in the house at night. My father would not land there, nor his father. The shamans call the well one of the dark places of the soul. Jytal in the fort says that when the spiders and the wolves made their bargain in the west of Skona, word went out from that house first, and that the one who lives there was a svartalf once. I have heard him. He does not sing. Galplen's fishermen say the drake guards him. Gna Faste's say she is hungry. I think both.",
+      "From the water you can see the whole of the west: Askheim's walls among the pines, and the tower outside it, and on the shore below a woman who sits by day and is not there at night, or is, but on four feet. The werewolves have a baron in Askheim who wears a crown that was made for another head. Darrius of Fort Atla says it was a troll's. The trolls of Galplen say it was a troll's and a half. They laugh, but they want it back, and the young of every house go into Askheim for it and some of them come out wearing it, for an evening.",
+      "Past Askheim is the spiders' country, which I do not fish near. The pines there are spun together into halls, and somewhere in the middle is a mother of them as big as my boat. Past that is the door down into Spindelhalla. The svartalfar keep the south, and their own outcasts keep fires by our shore and buy fish from me and pay in coin from Malmohus. I do not ask. Galplen's singers taught me that a fisherman who asks where coin comes from ends up in a song, and not a long one.",
+      "At night the dead of the wood come down to the water to drink, or to look at themselves in it. The mora riders in the south, the Albion men with their lieutenant, a kobold child who is a ghost and a woman named Morana who wants her god and cannot find his house. Taldos comes too, asking for his amulet. I tell him the spiders have it. He thanks me every time and comes back the next night. That is Myrkwood, singers. It never lets go of anything. It only asks you how the story ends, and listens."
+    ]
+  },
+  "bosses": [
+    "gunflor"
+  ]
+}

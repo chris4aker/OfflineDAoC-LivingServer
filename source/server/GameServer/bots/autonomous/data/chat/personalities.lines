@@ -4,34 +4,66 @@
 @topic leveler
 @who Leveler
 @levels 1-50
+@levels 1-49
 xp per hour matters more than anything
+@levels 1-50
 @invites boast
+@levels 1-49
+@needs at_camp
 i timed it: {monsters} at {camp} are the best xp for my level
+@needs
+@levels 1-50
 @invites joke
 no fun, just efficiency
 the trainer is my favorite npc
 @invites
+@levels 1-49
 bubbles per kill, that is my metric
+@levels 1-50
 ran the numbers, grouping beats solo by a lot
+@levels 1-49
+@needs !day
 i log in, i grind, i log out. perfect night
+@needs
+@levels 1-50
+@levels 1-49
 anyone else track how long each level takes?
+@levels 1-50
+@levels 1-49
 camp bonus is free xp, never skip it
+@levels 1-50
 @needs !day
 @invites joke
+@levels 1-49
 one more level, then sleep. i say that every night
+@levels 1-50
 @needs
 @invites
+@levels 1-49
 i pick camps by respawn speed, nothing else matters
-already planning which camp to hit at {level}
+@levels 1-50
+@levels 1-49
+already planning which camp to hit next level
+@levels 1-50
 @needs !day
 @invites boast
+@levels 1-49
 spent the evening at {camp}, got exactly what i wanted
+@levels 1-50
 @needs
 @invites joke
+@levels 1-49
 i skip the scenery, the scenery doesnt give xp
+@levels 1-50
+@levels 1-49
 whoever invented the camp bonus deserves a statue
+@levels 1-50
 @invites
+@levels 1-49
+@needs !day
 another night, another level, another trainer visit
+@needs
+@levels 1-50
 
 @kind ambient
 @topic crafter
@@ -50,7 +82,6 @@ crafting tip: buy materials in bulk, the merchants never run out
 @invites boast
 i know every merchant price in {capital} by heart
 @invites complaint
-failed three times in a row, the forge hates me tonight
 @invites
 my favorite sound is a successful craft
 @invites joke
@@ -60,7 +91,6 @@ my bank is half materials, half regret
 @invites
 spellcrafting makes me nervous every single time
 @invites joke
-i craft, therefore i am poor
 @invites trade
 somebody please order something, i need the skill points
 @invites joke
@@ -132,13 +162,15 @@ the realm is so much bigger than people think
 anyone ever climbed the hills behind {zone}?
 @needs
 i keep a journal of every camp i find
-got lost on purpose tonight, best night in a while
+got lost on purpose tonight, best time in a while
 @needs outdoors
 @invites news
 there is a ruin past {zone} that nobody talks about
 @needs
 @invites
+@levels 1-49
 i explore first and level later, it works for me
+@levels 1-50
 @invites boast
 found a hidden camp with {monsters}, telling only my friends
 @invites
@@ -169,7 +201,9 @@ if the healer is not nervous, i am not pulling hard enough
 my bind point knows me well
 @invites
 anyone want to see something stupid and brave?
+@levels 1-49
 the best xp is on the edge of disaster
+@levels 1-50
 @invites boast
 nearly died three times, best hour all week
 i pull what others walk around
@@ -209,7 +243,9 @@ farming seals in darkness falls again, the grind never ends
 @invites boast
 i have the frontier map memorized
 @invites
+@levels 20-49
 when this one hits 50 i start the next
+@levels 20-50
 anyone want to talk group setups with me?
 @invites joke
 the respawn is the real enemy
@@ -273,6 +309,20 @@ you get spec points every level, spend them at your trainer
 you can save points up, but visit the trainer often
 yes, go see your trainer when you ding, points add up fast
 you dont have to, but unspent points do nothing for you
+# 1.2 chat audit (CORPUS-A-008): "can i lose a level if i die?", "what does oom mean?", "what does pst mean?"
+@answers ask_delevel
+no, you lose some xp and a bit of con, never the level
+nope, just xp. you can buy the con back at a healer
+you only lose xp, the level stays
+no, but the xp hurts enough
+@answers ask_oom
+out of mana, means they need to sit
+oom is out of power, they cant cast till they med
+out of mana. sit and it comes back
+@answers ask_pst
+send me a tell
+means send them a private message, /send name
+pst = send a tell
 @answers ask_camps
 ask around, someone always knows a spot
 look for monsters that con blue or yellow and settle in
@@ -287,7 +337,7 @@ fine if you ask and dont steal their pulls
 sell the junk to any merchant, keep only upgrades
 keep quest items and gear upgrades, sell the rest
 anything good, try the exchange, the rest goes to a merchant
-drop the grey loot, it adds up fast
+sell the junk loot, it adds up fast
 @answers ask_guards
 guards attack monsters near them, run to them when in trouble
 thats their job, free help when you are dying
@@ -349,6 +399,7 @@ the road to {zone} is longer every time i walk it
 somebody tell my healer i am sorry
 @needs
 @class Cabalist,Theurgist,Necromancer,Spiritmaster,Bonedancer,Hunter,Druid,Enchanter,Animist
+@invites joke
 my pet has better gear than me
 
 # Answers to "how is everyone tonight?" (0.36-se.4).
@@ -366,7 +417,7 @@ doing ok, just trying not to die
 @topic humor
 @who *
 @realm *
-@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer,Cleric,Friar,Minstrel,Healer,Shaman,Runemaster,Spiritmaster,Bonedancer,Skald,Eldritch,Enchanter,Mentalist,Animist,Druid,Bard,Warden
+@class Wizard,Theurgist,Sorcerer,Cabalist,Necromancer,Cleric,Friar,Minstrel,Healer,Shaman,Runemaster,Spiritmaster,Bonedancer,Skald,Eldritch,Enchanter,Mentalist,Animist,Druid,Bard,Warden,Thane,Champion,Reaver,Valewalker
 @levels 1-50
 @invites joke
 i swear the monsters respawn faster when i am oom

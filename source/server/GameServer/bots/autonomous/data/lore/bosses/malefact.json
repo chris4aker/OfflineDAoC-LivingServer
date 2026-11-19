@@ -1,0 +1,126 @@
+{
+  "id": "malefact",
+  "name": "Malefact",
+  "npcNames": [
+    "Malefact"
+  ],
+  "locationId": "krondon",
+  "realm": "Albion",
+  "aliases": [
+    "the way-finder",
+    "the door-ward of krondon"
+  ],
+  "facts": [
+    {
+      "text": "Malefact: level 50, a thrawn ogre near Krondon's entrance at 31628, 36021; faction Followers of Orylle (the faction of Orylle and her champions), aggro level 200 within only 150, no spells or styles, respawn 300 seconds; a quest spawn (ClassicQuest package).",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The thrawn ogre ceorls around him (46-53) are of another faction and do not attack on sight.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Ogre's Might (Master Xavier, Caer Diogel): kill Malefact near the entrance for the map to the star channeler's chamber, follow his directions through the citadel taking a key piece at each turning, and defeat Scurceol Hyrde, the star channeler.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Latin malefactum, 'an evil deed'; English malefactor, 'evildoer'. The name as the Academy's for him, not the ogres'.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/malefactor"
+    },
+    {
+      "text": "Malefact as the queen's way-finder, the marks he draws because the ogres cannot read the hall-folk's words, the storm-keeper's key broken into pieces along the way, the churls at the door and Master Xavier's name for the storm-keeper are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Krondon was built by the hall-folk, and the hall-folk built it to be lived in by people who knew the way. Its passages turn and turn back, its doors are carved with words in the old tongue telling where each one goes, and the thrawn ogres who took the hall in Morgana's war could not read one of them. The ghost of Wynflaed, the hall-folk's last teacher, translates their titles for Orylle; it has never translated the doors. So the queen needed someone who could find the way, and the ogres found him among themselves, an ogre of her own household who could not read either but could remember, and draw what he remembered.\n\nThe Academy calls him Malefact. It is not his name. Master Xavier of Caer Diogel, who has been trying to get into the hall for years, gave him the word out of an old law-book because he needed something to write in his reports, and the word stuck. What the ogres call him, the hall-folk's ghosts say, is a word that means the one who goes first. He keeps the door, near the entrance, among the churls who thresh and carry there; they are not the queen's own and he is, and he stands among them as a steward stands among the hands. He lets a stranger come close before he looks up. Then he does not stop.\n\nHe carries the way. Every turning from the door to the storm-keeper's chamber he has drawn, in marks the ogres made up because they had no letters, on a hide he keeps on him: left after the door, straight, right, the first left, and so on to the worked stone and the end of the passage and the chamber where the four lights burn. The storm-keeper's bargain with the queen was his storm for his hall, and the queen did not trust it; she had the key to his chamber broken and its pieces hidden one at each turning of Malefact's way, so that nobody who did not have the way could ever put it together. Only Malefact knows where every piece lies. He has never needed to use them. The storm-keeper has never tried to leave.\n\nThe bundle of ogre-copied curses at Caer Gothwaite has a drawn ogre hand on its last leaf, the first writing any ogre of Krondon ever made. Wenna of Caer Gothwaite believed it was Malefact's. Master Xavier believes the orb that the realm's young bring back from the storm-keeper's chamber is a weapon against the shamans of Midgard. Malefact believes nothing anyone knows of. When he is killed and his hide taken, the door has another one who goes first before long, with another hide, and the same marks on it.",
+  "legend": "Malefact is a level 50 thrawn ogre of Orylle's own household standing among the ogre ceorls near Krondon's entrance. He is aggressive but only notices you inside about 150, so you can walk quite close. The ceorls round him (46 to 53) are another faction and do not attack on sight; clear the closest ones anyway, since the data does not say whether they would join him. No spells or styles: a melee kill for a small group of fifties. He drops the map for Ogre's Might (Master Xavier in Caer Diogel): follow his directions through Krondon, take a key piece at each turning, and the trail ends at Scurceol Hyrde, the storm-keeper, whose four lights you deal with first. Malefact respawns in about five minutes.",
+  "yells": {
+    "aggro": [
+      "Malefact goes first. You go nowhere.",
+      "Close enough. Too close.",
+      "The queen's way is not for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The way is mine! Left, straight, right..."
+      }
+    ],
+    "death": [
+      "The way... goes on... without me...",
+      "First left... the worked stone..."
+    ],
+    "slay": [
+      "Not that way.",
+      "Lost.",
+      "The door is kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Churls thresh by the door. One ogre stands apart.",
+      "Marks scratched on a hide: left, straight, right."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Malefact clutches the hide with the queen's way on it."
+      }
+    ],
+    "realmFirstKill": "Malefact has fallen. The way to the storm-keeper is drawn."
+  },
+  "botLines": {
+    "briefing": [
+      "malefact, 50 ogre by krondon's entrance among the ceorls. aggros but only from like 150",
+      "ceorls round him dont aggro, clear the close ones anyway, not sure they stay out of it",
+      "no spells, melee. small group of 50s. ogre's might people grab the map",
+      "map = directions through krondon, key piece at each turn, ends at the storm keeper. 5 min respawn"
+    ],
+    "aftermathWin": [
+      "got the map. left after the door, here we go",
+      "malefact down, ceorls never moved",
+      "easy one, the storm keeper's the hard part",
+      "five minutes and the next group can have him"
+    ],
+    "aftermathLoss": [
+      "aoe'd the ceorls and everything came",
+      "walked right up to him because he didnt react, then he did",
+      "lost the map in the wipe",
+      "he was back before we found the first key piece"
+    ],
+    "rumour": [
+      "[heard|someone said] malefact draws the way through krondon because the ogres cant read the old doors",
+      "heard the storm keeper's key was broken into pieces along malefact's way",
+      "[heard|someone said] malefact is an academy name. the ogres call him the one who goes first",
+      "heard master xavier thinks the orb from the storm keeper beats midgard shamans"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "malefact",
+    "text": "The thrawn ogre of [orylle]'s own household who keeps the door of [krondon] among the churls and carries the queen's way to the storm-keeper's chamber, drawn on a hide in marks the ogres made up because they could not read the hall-folk's doors. The key to the chamber of the [storm-keeper] was broken and its pieces hidden at each turning of his way. The Academy calls him Malefact; the ogres call him the one who goes first."
+  },
+  "bookPage": "From the reports of Master Xavier of Caer Diogel to the Academy. The ogre at the door, whom I have called Malefact in these reports for want of anything better, carries a hide with marks on it. I had one brought to me. The marks are not letters. They are the way: a stroke bent left for left, a straight stroke for straight, a ring for the worked stone. At each bend there is a small cut, and at each small cut, my young friends tell me, there lies a piece of a key. I believe it is the key to the chamber of the one the hall-folk called the storm-keeper. I have called him the star channeler in my reports, for the lights. I may have been wrong about that too.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the queen's way from Malefact at Krondon's door in {minutes} minutes.",
+    "loss": "Malefact went first, and {raidLeader}'s company of {realm} went nowhere."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "scurceol-hyrde",
+      "relation": "the storm-keeper at the end of his way, whose chamber key lies in pieces along it"
+    },
+    {
+      "id": "orylle",
+      "relation": "the queen whose household he belongs to and whose way he carries"
+    }
+  ]
+}

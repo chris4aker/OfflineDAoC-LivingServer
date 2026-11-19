@@ -5,18 +5,21 @@ go looking for trouble, and each one writes in its own style. These are the "Liv
 features, alongside [BOT-GUILDS.md](BOT-GUILDS.md).
 
 They affect only **autonomous gamebots**. Companion bots (`/spawn`, `/raid`) and real players keep
-today's behavior. Every part shipped **off** until Beta 1.1, which turns bot voices on (personalities stay off). With all of it off, bots behave as in stock 0.36, apart
+today's behavior. Every part shipped **off** until Beta 1.1, which turned bot voices on; since 1.2 every part, personalities included, is on by default (owner 2026-11-16). With all of it off, bots behave as in stock 0.36, apart
 from the always-on changes listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 ## 1. Switches
 
 | Setting (`ServerProperty`, category `bots`) | Default | What it does |
 |---|---|---|
-| `bot_personalities_enabled` | False | Personality types and traits tilt how bots spend their time (section 2). |
+| `bot_personalities_enabled` | True (since 1.2; False before) | Personality types and traits tilt how bots spend their time (section 2). |
 | `bot_voices_enabled` | True (since Beta 1.1) | Bots say lines from the bot-voices corpus in their own writing style (section 3). |
 | `bot_voices_debates` | True | When voices are on, bots hold debates and long threads in /faction (section 4). |
 | `bot_voices_tells` | True | When voices and memory are on, a bot now and then starts a tell with you ([bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md)). |
 | `bot_voices_chat_rate` | 2.0 | How much bots talk unprompted, 0 (only answers) to 3 (1.0 before 1.1.2). |
+| `bot_nolifer_buffbots` | True (1.2) | Some No Lifers run a level-50 buffbot (section 2.3). Works whether personalities are on or off. |
+| `bot_nolifer_buffbot_percent` | 30 | The percent of No Lifers that have one. |
+| `bot_nolifer_buffbot_era_conc_range` | True | Buffbots' concentration buffs have no range (the 2003 rule; section 2.3). |
 
 To change them, use the launcher's **Living Server** tab (with the server stopped; it applies at the next start). The same switches are in a script, for those who prefer it: close the
 server, launcher and game, then run (Python 3):
@@ -47,7 +50,12 @@ needs no new saved data.
 | Daredevil | 20% | dungeons, the harder cons of its legal range |
 | Explorer | 16% | new zones, prefers solo |
 | Crafter | 12% | long town breaks, avoids RvR, easy camps |
-| NoLifer | 4% | barely stops, wants groups, dungeons |
+| No Lifer | 4% | barely stops, wants groups, dungeons |
+
+These are the shares of bots created before Crafting 2.0's stored types. With `bot_crafters` on (the default), a bot
+created later is typed from a table with the Crafter share set by `bot_crafter_share_percent` (7 by default) and the
+rest spread in proportion: Leveler 30%, Socialite 21%, Daredevil 21%, Explorer 17%, Crafter 7%, No Lifer 4%. A release
+world ships without bots, so on a fresh install every bot is typed that way.
 
 Each bot also has five traits from 0 to 9 (curiosity, risk, sociability, patience, chattiness),
 drawn within its type's range, so two Daredevils still differ.
@@ -61,12 +69,12 @@ never bypassed.
 | Choice | Today | With personalities |
 |---|---|---|
 | Town break at a task boundary | 15% for every bot | about 4–37.5% by type, scaled by sociability (the realm average is about 16–17%) |
-| Town break length | 15–30 minutes | ×0.7 (Leveler, NoLifer) to ×1.5 (Socialite), at least 5 minutes |
+| Town break length | 15–30 minutes | ×0.7 (Leveler, No Lifer) to ×1.5 (Socialite), at least 5 minutes |
 | Goal (solo, group, RvR...) | the allocator fills the mix's slots with bots in random order | the mix still decides **how many** bots get each goal; personality decides **who** (below) |
 | Dungeon or outdoors | the configured dungeon preference | 60% (Crafter) to 170% (Daredevil) of it; a group uses its leader's |
 | Which outdoor camp | weighted by live spawns | also weighted by taste: Daredevils like yellow and orange cons, Explorers like zones they haven't visited in 6 hours, Levelers like full camps. Every legal camp keeps at least 10% weight |
 | How often it chats | the normal rate | ×0.25 to ×1.56 by chattiness (the realm average stays about the same) |
-| How fast it answers a player's attack (`bot_incoming_fire_reaction`) | a 0.3–2.5 s reaction delay by kind of hit and class | ×1.3 (risk 0) to ×0.75 (risk 9) of that delay, so Daredevils and No-lifers turn first and Crafters last |
+| How fast it answers a player's attack (`bot_incoming_fire_reaction`) | a 0.3–2.5 s reaction delay by kind of hit and class | ×1.3 (risk 0) to ×0.75 (risk 9) of that delay, so Daredevils and No Lifers turn first and Crafters last |
 
 Zone memory is kept in memory only (32 zones per bot, forgotten when the server restarts).
 
@@ -89,17 +97,68 @@ In a test of 1,000 bots with a 40% solo, 40% group and 20% RvR mix:
 | Daredevil | 21% | 28% | 52% |
 | Explorer | 61% | 21% | 19% |
 | Crafter | 70% | 25% | 5% |
-| No-lifer | 3% | 47% | 50% |
+| No Lifer | 3% | 47% | 50% |
 
 Personality doesn't choose goals in two cases:
 - A bot given a new goal between passes (for example when its group breaks up) uses the older re-draw rule, and
   only when a Bot Goals setting is saved.
 - A bot left over once every open slot in its pass is filled gets the allocator's usual over-quota goal.
 
+### 2.3 No Lifer buffbots (Living Server 1.2)
+
+In 2003 "everybody has a buffbot": a second paid account of a Cleric, Shaman or Druid, parked AFK in the portal keep or a
+town, or following its main around. The research and sources are in [research/BUFFBOTS-2003.md](research/BUFFBOTS-2003.md).
+
+**Who has one.** 30% of the No Lifers (`bot_nolifer_buffbot_percent`). The choice is a fixed roll from the main's roster
+id, so the same mains keep theirs across restarts. Existing rosters get theirs at the next start, and new No Lifers too; nothing
+is written to the database. With about 4% No Lifers, that is roughly 1 bot in 80: about 11 per realm at 900 bots a realm.
+
+**The buffbot.**
+- **Class and build:** Albion Cleric, Enhancement 50. Midgard Shaman, Augmentation 50 (the Shaman, not the Healer, has
+  Midgard's spec stat buffs and acuity). Hibernia Druid, Nurture 50. The rest of the points go to the healing line.
+- **Level and gear:** level 50 and trained on arrival. It wears what the launcher's level-50 bots wear: the best plain
+  merchant item of its realm for its level in each slot. It has no coin and takes no loot.
+- **Identity:** its name, race and gender are fixed from its main. About one in three is named after the main
+  ("Thorgrimbuff"). It wears the main's guild tag.
+- **Lives in memory only, like the Epic Special Forces:** never saved, never in the launcher roster or the population
+  count, never in any group or raid. It logs in when its main is online and logs out with it. `/who`, `/send`, `/target`
+  and `/invite` find it.
+
+**What it does.**
+- **Follows** its main at about 450 units in the main's own realm's PvE land, and stays at least 900 away from the main's
+  fights.
+- **Parks** where 2003 players left theirs:
+  - the frontier: the nearest bind of its realm (the portal keep or a keep)
+  - a dungeon, a battleground or a raid: the main's own bind, or the capital
+- **Waits** where it is while its main rides a stable route or lies dead.
+- If its main is in another region or more than 12,000 units away, it **logs in again** next to it (a move, logged as
+  `BUFFBOT_RELOCATED`).
+- **Never fights.** Attacked, it runs to the bind. Killed, it releases and goes back. In the frontier it is a real target,
+  as parked buffbots were.
+- **Keeps its main buffed** with every single-target buff its class has. Concentration buffs come first: spec AF,
+  str/con, dex/qui, base AF, strength, constitution, dexterity. Then acuity for power users, and haste, damage add and
+  endurance regen for weapon users. Then damage shield and health regen. It recasts whatever is missing (expiry, the
+  main's death) whenever it is within 950 units. Group-only buffs (resists, procs) need a group, so it doesn't give them.
+- **Range:** with `bot_nolifer_buffbot_era_conc_range` on, its concentration buffs follow the 2003 rule and have no
+  range, so a parked buffbot keeps its main buffed. Mythic added the 5,000-unit limit with its Classic servers in July
+  2005. This server's own rule (5,000 units, and 1,500 for endurance regen) still applies to everyone else.
+- **Talks** almost not at all. A tell gets "afk buffbot" or "buffbot, msg <main>". An invite gets "sry buffbot, cant group".
+
+**Log lines** (the owner's PC log shows them):
+- `BUFFBOT_CREATED`, `BUFFBOT_GEAR`, `BUFFBOT_LOGOUT`
+- `BUFFBOT_FOLLOW`, `BUFFBOT_PARKED`, `BUFFBOT_WAIT`, `BUFFBOT_FLEE`, `BUFFBOT_RELOCATE` / `BUFFBOT_RELOCATED`
+- `BUFFBOT_BUFFED` (one per cast), `BUFFBOT_BUFFED_ALL` (the full set is up)
+- `BUFFBOT_DIED`, `BUFFBOT_INVITE_DECLINED`
+
+Launcher: the Living Server tab's **No Lifer buffbots** switch (`bot_nolifer_buffbots`). The percent and the range rule
+are server settings.
+
+Status: **tests only** (`UT_NoLiferBuffBots`). Nothing about buffbots has been seen in game yet.
+
 ## 3. Voices
 
 When voices are on, a bot's chat comes from the corpus in
-`source/server/GameServer/bots/autonomous/data/chat/` (979 lines and 296 scenes, written for
+`source/server/GameServer/bots/autonomous/data/chat/` (about 35,000 lines and 450 scenes, written for
 2002–2003; see [bot-voices/DESIGN.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/bot-voices/DESIGN.md)). The corpus is built into
 `GameServer.dll`. Nothing is generated freely.
 
@@ -110,10 +169,10 @@ When voices are on, a bot's chat comes from the corpus in
 - lines written for a personality type are three times as likely for that type and never used by
   other types
 - replies to you match the intent the chat model reads from your message
-- no line is repeated in a realm within 6 hours
+- no line is repeated in a realm within three days (six hours once a kind of line runs short)
 
-**Writing styles** (fixed from the bot's id): plain 35%, terse 25%, chatty 20%, proper 15%,
-typo-prone 5%.
+**Writing styles** (fixed from the bot's id): plain 46%, terse 25%, chatty 20%, typo-prone 5%,
+proper 4%.
 
 **Where voices are heard:**
 - ambient chat that a bot starts, in /say or /faction
@@ -121,7 +180,7 @@ typo-prone 5%.
   answers)
 - "ding" (35% chance) and death (25% chance) lines in /say, only when you are nearby
 
-When no corpus line fits, the bot uses its old line.
+When no corpus line fits, the bot stays quiet.
 
 **Lines that name you,** a place you met or your class (`{player}`, `{place}`, `{player_class}`) need
 bot memory of the player. They're used by server life's "Bots remember you" part (greetings,
@@ -161,7 +220,7 @@ While a scene runs, bots don't start other /faction chatter in that realm.
   7, patience 5, chattiness 9); writes chatty".
   - A Python copy of `AutonomousBotPersonality.For` gives exactly that for id 6.
   - Over the 50-bot roster it gives every type: Leveler 18, Daredevil 9, Explorer 9,
-    Socialite 7, Crafter 6, NoLifer 1. The variety comes from that calculation; only one bot
+    Socialite 7, Crafter 6, No Lifer 1. The variety comes from that calculation; only one bot
     was read in game.
 - **Debate:** `BOT_DEBATE_START scene=camp_etiquette speakers=3` 5½ minutes after start. It
   showed in `/faction` ("someone just walked into our camp and started pulling haha", "first

@@ -30,6 +30,12 @@ namespace DOL.Network
         /// closing.
         /// </summary>
         public bool IsLoopbackConnection { get; }
+        /// <summary>
+        /// This PC, the home network or Tailscale (<see cref="NetworkTrust.IsTrusted(IPAddress)"/>), captured with
+        /// <see cref="IsLoopbackConnection"/>. Living Server 1.2 (play with friends): such a client gets the loopback
+        /// client's idle time-out exemptions. A public address never does.
+        /// </summary>
+        public bool IsTrustedNetworkConnection { get; }
         public SessionId SessionId { get; private set; }
         protected byte[] ReceiveBuffer { get; }
         protected int ReceiveBufferOffset { get; set; }
@@ -59,8 +65,12 @@ namespace DOL.Network
                 Socket = socket;
                 try
                 {
-                    IsLoopbackConnection = socket.RemoteEndPoint is IPEndPoint endpoint &&
-                        IPAddress.IsLoopback(endpoint.Address);
+                    if (socket.RemoteEndPoint is IPEndPoint endpoint)
+                    {
+                        IPAddress remote = NetworkTrust.Normalize(endpoint.Address);
+                        IsLoopbackConnection = IPAddress.IsLoopback(remote);
+                        IsTrustedNetworkConnection = NetworkTrust.IsTrusted(remote);
+                    }
                 }
                 catch (ObjectDisposedException) { }
                 catch (SocketException) { }

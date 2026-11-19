@@ -1,0 +1,171 @@
+{
+  "id": "thane-dyggve",
+  "name": "Thane Dyggve",
+  "catalogKey": "dodens-gruva/thanedyggve",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "jarl-ormarr",
+      "relation": "his jarl"
+    },
+    {
+      "id": "mistress-of-runes",
+      "relation": "the runecarver he obeyed once, over the jarl"
+    },
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "who bound him on the stair"
+    },
+    {
+      "id": "dodens-gruva",
+      "relation": "the hill he split"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Thane Dyggve is a level-66 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He casts Command Mjollnir from the start of the fight and about every 30 seconds after: a 4-second cast that cannot be interrupted, 500 energy damage to everyone within 350 of his target (range 1,500). The 'energy drain' in his announcements is flavour text; no drain spell exists. He is CC-immune and reaches 350 in melee. His linked pack (PackageID ThaneDyggveBaf) has no members in the world database, and he does not bring friends.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs"
+    },
+    {
+      "text": "A May 2003 Allakhazam comment describes him as a big troll with a two-handed hammer in thane epic armour, easy for one group if meleed quickly, and warns his area hammers hurt more than Mjollnir.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/mob/4107"
+    },
+    {
+      "text": "In the Ynglinga saga, Dyggvi is a Swedish king who died of sickness rather than in battle (to verify).",
+      "provenance": "myth",
+      "source": "Ynglinga saga (public domain), to verify"
+    },
+    {
+      "text": "The Ynglinga saga tells of King Dyggvi, who died of sickness, and quotes a verse in which Loki's daughter, Hel, takes him (to verify against the saga text).",
+      "provenance": "myth",
+      "source": "Ynglinga saga and Ynglingatal (public domain), to verify"
+    },
+    {
+      "text": "Sigvald, the fight below Kjartan's second fort and the thanes' saying 'the sky has already heard' are Living Server lore; they tell the uninterruptible hammer that falls round his target in-world.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/ThaneDyggve.cs"
+    }
+  ],
+  "story": "Dyggve was a troll of the Jamtland heights who served Thor as a thane and served Jarl Ormarr with the same hammer. He made the hammer himself. The name was given to him as a mockery: the human huscarls of his first hall called the slow, gentle troll after King Dyggvi of the Ynglings, the king who died in his bed and was taken by Hel instead of falling in battle. Dyggve kept the name and swore an oath on it, that he would not die in bed, and he made it a name the frontier feared.\n\nBelow Kjartan's second fort, when Kjartan came to take it back, the thane raised his hammer at Kjartan's standard. Kjartan's men ran at him to stop the calling and struck him while he called, and the sky came down regardless; the thanes still say that once the hammer is raised, the sky has already heard. The lightning fell on the standard-bearer the thane was looking at, and in a ring around him, and it took Sigvald, the jarl's youngest huscarl, who had run in to wrestle the standard down. After that day no huscarl of Ormarr's stood near Dyggve in battle, and the thane fought alone.\n\nHe split Jarnhaug open in an afternoon and called the thunder every working day after, slow and steady, until the haulers timed their loads by it. Once only he refused the jarl: when the Mistress of Runes cut her last mark, she asked the thane not to split the northern face, and he did not. The picks did it instead. When the jarl went down after the shift, Dyggve went with him, and died on the stair, in battle as he had sworn, and was bound there by Aros before Hel or Thor could have him.\n\nHe keeps a gallery of his own now, its walls streaked by his lightning, and he calls the sky from the moment he lifts his hammer to a stranger. It answers him yet, slower and colder, as if from a sky he can no longer see. When he falls, the steadings hear thunder far off on a cloudless night and say the sky has taken its thane home for a season.",
+  "chapters": [
+    {
+      "title": "A Name Given in Mockery",
+      "text": "Dyggve came down off the Jamtland heights as a young troll to serve in a jarl's hall, as trolls of the high steadings sometimes did, and he was the slowest thing in it. He was not stupid. The skalds are careful to say so. He thought before he spoke, and before he moved, and before he struck, and in a hall of quick human huscarls who did all three at once that made him a joke.\n\nThey gave him his name. In the old stories of the Ynglings, the kings of the Swedes, there was a king called Dyggvi who never fell in battle but died in his bed of a sickness, and the saga's verse says that Hel, Loki's daughter, came for him there and took him for her own. It was the worst death a king could have, and the huscarls thought it a fine name for a troll who would surely be the last man into every battle and the last out of every bed. He answered to it. He never once complained of it.\n\nInstead he went up to the thanes of Thor and asked to be taught. A thane serves the thunder: he calls Thor's hammer down out of the sky on the god's enemies, and the god answers those he trusts. The thanes say Thor likes a slow man, because a slow man means what he asks for. Dyggve made his own hammer at the thanes' forge, a two-handed thing of iron and ash that no human in that hall could lift to his shoulder, and wore the thane's harness from then on.\n\nThen he swore an oath on the name, in front of the hall that had given it to him: that Hel would not have him in bed as she had had the king, and that he would die standing, with the hammer in his hands. The huscarls stopped laughing at the name after that. It became a name the frontier was afraid of, and when Jarl Ormarr began to take the high pastures, he took the troll thane into his own hall and gave him the seat at his right hand."
+    },
+    {
+      "title": "Below the Second Fort",
+      "text": "Kjartan of the Eastern Pastures came back for his second hill-fort in the spring after Ormarr took it, with every spear he had left. The jarl met him in the field below the gate, and Dyggve stood out in front of the shield-wall with his hammer raised, and called.\n\nKjartan's men had heard of the thane. They knew the hammer must be called and that the calling takes time, and a dozen of them broke from their line and ran at him to strike him down before it was done. They reached him. The skalds say three spears went into the troll's hide while he stood with his eyes on the sky, and he did not lower the hammer, and the sky came down regardless. Once the hammer is raised, the thanes of Jamtland still say, the sky has already heard. Nothing that is done to the thane after that will call it back.\n\nThe lightning fell where Dyggve was looking, on Kjartan's standard-bearer in the middle of the field, and in a wide ring all round him. It took the standard-bearer and the men at his sides. It also took Sigvald, the jarl's youngest huscarl, who had run out alone to wrestle the standard down and had his arms round the pole when the sky arrived. Kjartan's line broke. The fort was Ormarr's for good.\n\nDyggve carried Sigvald back up to the fort himself and sat with him all night, and was not heard to speak for a month. The frontier kept two things from that day. The first is a saying, never close with the thane's mark: whatever the thane is looking at when the sky comes down, the sky comes down on everything near it too. The second is a custom. No huscarl of Ormarr's ever stood near Dyggve in battle again, and the thane never asked one to. From that spring he fought alone, out in front, with a space around him that nobody would step into."
+    },
+    {
+      "title": "The One Refusal",
+      "text": "When the jarl chose Jarnhaug for his mine, it was Dyggve who opened it. The skalds have sung that afternoon so often that the frontier knows the song better than it knows the hill: the thane on the southern slope, the hammer raised, the sky coming down in a white stroke, the rock split from the turf to the roots, the miners cheering that the mountain had opened for him like a door.\n\nHe called it every working day after that, to split the faces the picks could not, and the mine grew used to his thunder. It came at his call from the moment the hammer went up, and then again and again for as long as he stood at the face, never hurried and never two strokes close together, so that the haulers took to timing their loads between them. The gallery where he worked is streaked with the marks of it still, wall and ceiling, in long scorched lines.\n\nIn all the years of the mine he refused the jarl once. When the Mistress of Runes cut her last mark at the northern face, she did not go to the jarl first. She went to the thane. She asked him not to split the northern face, and he looked at her mark for a long time, in his slow way, and said he would not. The jarl was angry and the thane did not move. The steadings say it was the only time anyone ever saw the two of them stand facing each other.\n\nThe picks did it instead. Hamar's shift cut through to the cold seam without the thunder, at midday, and did not come up. When the jarl went down after them, Dyggve went with him and did not say that he had been right. He walked at the jarl's right hand through the seam and onto the floor of the hall below, and when the jarl turned back up the stair behind Aros's voice, the thane turned with him, and somewhere on the stair he died standing, with the hammer in his hands, as he had sworn. Aros bound him there with the forty, before Hel or Thor could reach him."
+    },
+    {
+      "title": "Not in Bed",
+      "text": "He keeps his gallery still, in his thane's harness, the hammer in both hands. He does not walk the rounds with the forty, and they do not come to him. He stands alone, as he has stood since the field below the second fort, with a space round him that nothing in the mine will step into, and when a stranger comes into that space he lifts the hammer and calls the sky.\n\nIt still answers. The companies who have come back from his gallery say it answers slower and colder than any thane's thunder in Jordheim, and harder, as if it had to come a long way down to reach him and gathered weight on the way. The thanes of Jordheim say it comes from a sky the troll can no longer see, and that Thor has never stopped answering him because Dyggve has never stopped meaning it.\n\nThe gothar argue about what he is owed. Their account is that the troll kept his oath and was cheated anyway. He did not die in bed; he died in battle, standing, as he swore, and should have gone to Thor's hall or at the least to Valhalla's benches. But Aros bound him on the stair before any god could have him, and so the name came true after all in a crueller way: like King Dyggvi, the thane was taken by someone who was not the god he served. The spiritmasters say Aros kept a thane in the mine because the mine needed one, and that Dyggve, of all the bound, would have agreed.\n\nThe young thanes of Jordheim who go down to him come back quiet. Some of them leave a hammer-mark on the stone at Glenlock's muster stone on the way out, a small thing scratched with the head of a hammer, and the oldest of those marks are worn almost smooth. When he falls, the steadings of Jamtland hear thunder far off on a cloudless night, one long roll from the direction of the hill, and they say the sky has taken its thane home for a season. In a season he is standing in his gallery again, and the sky is listening."
+    }
+  ],
+  "legend": "Thane Dyggve is a melee fight with one spell that matters: Command Mjollnir. It starts a couple of seconds after the pull and comes about every 30 seconds after that, a 4-second cast that CANNOT be interrupted (ignore every old guide that says interrupt it). It hits everyone within 350 of whoever he's targeting for 500 energy, so the trick is spacing: the tank holds him, the rest of the melee stagger round him instead of crowding the tank's back, and casters and healers stay well off the tank. Energy resist helps. The 'energy drain' line in his announcements is only flavour; there's no drain. He's CC-immune, reaches about 350, has 30,000 health and around 20% melee and 30% magic resists. He doesn't bring friends, so clear around him and he's yours alone. The shimmering icebound warhammer is the drop every thane wants, and most of them like to bring their own Mjollnir for the story.",
+  "yells": {
+    "aggro": [
+      "Thor! Split the rock one more time!",
+      "The mountain opened for me once!",
+      "Thor, hear your thane!",
+      "Stand clear of my mark, little one.",
+      "The sky is already listening!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Hammers, come down! Come down!"
+      }
+    ],
+    "death": [
+      "The thunder... is so far away...",
+      "Not in bed... not in bed... in battle...",
+      "Standing... I am still standing..."
+    ],
+    "slay": [
+      "Split like the rock.",
+      "Thunder answers me still.",
+      "Down, like the hill.",
+      "Sigvald stood too close as well."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Scorch-marks of lightning streak the gallery walls.",
+      "A troll in a thane's harness waits with a hammer.",
+      "Lightning scars run in long lines along the walls.",
+      "Nothing in the mine will step near the troll."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=95",
+        "text": "Thane Dyggve calls down lightning hammers!"
+      },
+      {
+        "trigger": "death",
+        "text": "Thane Dyggve falls. The thunder goes quiet."
+      }
+    ],
+    "realmFirstKill": "Far thunder rolls over Jamtland. The thane is taken home."
+  },
+  "botLines": {
+    "briefing": [
+      "dyggve: melee him fast. hammers cant be interrupted, 500 round whoever hes hitting",
+      "fast melee on dyggve, long fights go bad",
+      "dyggve's mjollnir cant be interrupted, 4 sec cast, dont even try",
+      "hammer is 500 energy in 350 round his target, every 30s or so",
+      "melee stagger round him, nobody stands on the tank",
+      "casters and heals stay well off the tank on dyggve"
+    ],
+    "aftermathWin": [
+      "dyggve down, [glowy hammer!|anyone get the hammer]",
+      "shimmering icebound warhammer!!",
+      "dyggve down, thunder stopped",
+      "got him before the second hammer",
+      "thanes and their own mjollnir lol",
+      "got the warhammer!",
+      "far thunder. the steadings say thats him going home"
+    ],
+    "aftermathLoss": [
+      "half the group stood on the tank when the hammer came. [ow|everyone died]",
+      "the hammers hit the whole group",
+      "we all bunched on the tank and the hammer took the lot",
+      "someone kept trying to interrupt. its uninterruptible",
+      "stood behind the tank like a huscarl. bad idea"
+    ],
+    "rumour": [
+      "theres a troll thane in dodens gruva who still calls lightning. [old frontier days|from before the keeps]",
+      "dyggve split the hill with lightning to start the mine",
+      "an old yngling king called dyggvi died in his bed. the thane wont have that",
+      "dyggve's hammers hurt more than real mjollnir, the old thanes say",
+      "the old guides say interrupt dyggve. you cant, the sky has already heard",
+      "dyggve swore he wouldnt die in bed like the old king. didnt, still got bound",
+      "no huscarl ever stood next to dyggve after he hit his own man with the lightning"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dyggve",
+    "text": "Jarl [Ormarr]'s troll thane, named in mockery after a king of the Ynglings who died in his bed. He swore he would die standing, and did, on the stair of Dodens Gruva. Below Kjartan's fort his lightning took the man he looked at and the young huscarl Sigvald beside him, and the thanes say once the hammer is raised, the sky has already heard. He refused the jarl once, for the [Mistress of Runes]."
+  },
+  "bookPage": "From the songs of the Jamtland thanes, as a thane of Jordheim taught them to me. When Ormarr wanted iron, Dyggve called the sky. The sky came down. The hill split. The thanes sing that this was the greatest calling of Thor any troll ever made, and that the god must have been pleased, because he answered at once. The song does not say whether the god was pleased with what was under the hill. The thane who sang it to me stopped there and said that every thane prays, before calling the lightning, that it will not open anything that should stay shut.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} stilled Thane Dyggve's hammer in {minutes} minutes.",
+    "loss": "Thane Dyggve's lightning broke {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

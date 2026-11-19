@@ -1,0 +1,189 @@
+{
+  "id": "uppland",
+  "name": "Uppland",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    111
+  ],
+  "era": "mid-era-realm-war",
+  "factions": [
+    "realm-enemies",
+    "dishonoured-dead",
+    "lokis-mischief"
+  ],
+  "summary": "Midgard's eastern frontier of snow and old dead: Svasud Faste at the gate, Fensalir Faste, and Mjollner Faste where the hammer relic is kept.",
+  "facts": [
+    {
+      "text": "Uppland is zone 111 of region 100, an Old Frontiers zone: Svasud Faste (an Area) at its south-east, Fensalir Faste (keep 80, level 5) in its middle and Mjollner Faste (keep 198, level 10, a relic keep) in its north-east.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Keep and Area tables (0.37b world data)"
+    },
+    {
+      "text": "The world data fills Uppland with the dead of the realm war: ghostly Hibernian invaders, ghastly Albion invaders, undead vikings, ghoulish warriors, miserable zombies and frost spectres, mostly in the west of the zone.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The snow-folk of Uppland: chiselers, snow imps, cold lights, frosty scuttlebugs, abominable snowmen, northern ettins, snow giants, frostbite wildlings, boreal cockatrices, young wyverns, snowshoe bandits and half-frozen madmen.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The seer epic 'The Desire of a God' sends players to Miri in Jordheim about the visions of Loki, to Vagn and his fellows in Yggdra, and then to defeat Thorkatla and her forces in Uppland for a note and two flames. Vagn is not spawned in the world data.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The rogue epic 'The War Continues' sends players to find a hidden woman near Mjollner Faste, learn her name and remove her.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Living Server sends frontier warbands of gamebots through the Old Frontiers zones; the keeps here are captured and held in the realm war.",
+      "provenance": "game",
+      "source": "docs/RELEASE-TRAIN.md (origin/plan/rvr-builds); source/server/GameServer/bots/autonomous"
+    },
+    {
+      "text": "In Norse myth Fensalir is Frigg's hall and Mjollnir Thor's hammer.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "The snow-dead's story, the hammer's watch and Ketilbjorn's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Uppland is the high country, the eastern of Midgard's frontiers, and it is white for most of the year and grey for the rest. The skalds say Odin gave the north-east of the realm to the frost on purpose, so that anyone who came at Midgard from that side would have to cross the snow first and arrive tired. It worked for a long age. The giants of the snow, the ettins and the snowmen and the chiselers and imps of the drifts, kept the high country empty, and the jarls of Midgard kept their halls further south and let it.\n\nThen the realms went to war, after Arthur's death left a hole that all three tried to fill, and the frontier became the war. Midgard built its keeps in the snow: Fensalir Faste in the middle of the high country, named for Frigg's hall, and in the north-east, on the highest ground, Mjollner Faste, which holds the realm's hammer, the relic the skalds say carries something of Thor's own. Svasud Faste at the south-eastern gate is where Midgard's companies come up into the frontier and the last place in Uppland with a roof that nobody is trying to take.\n\nThe war left its dead in the snow. The west of Uppland is full of them, and they did not lie down: Hibernians who died coming at Mjollner, Albion men who died coming at Fensalir, vikings of Midgard who died holding both, all of them still walking the drifts where they fell, frost spectres and ghoulish warriors and miserable dead who do not remember which side they were on and attack everyone. The gothi of Svasud say the snow keeps them because nobody came back for them; the huscarls of Mjollner say the snow keeps them because they have not finished.\n\nAmong them walks something worse. Thorkatla was a woman of Midgard once, the seers say, a seeress who went up into the snow after a vision and came back dead and full of someone else's purpose. The seers of Jordheim say Loki speaks through her, the bound god who seeks trouble, and that the dead she gathers round her in the south of the high country are his first company for a war that is not the realms'. Inaksha sends the seers to break her, and they bring back a note in a hand no one admits to reading, and two flames that do not go out.\n\nStrangers come through Uppland who are not dead. Hibernia's people slip through the snow toward the hammer, and the rogues of Midgard have found more than one woman near Mjollner who had no business being there. The keeps change hands. Midgard's frontier warbands go up from Svasud and come back down. The snowshoe bandits sell to whichever realm holds the keeps that season, and the half-frozen madmen who wander the east were huscarls once, the gothi say, who stood too many winters on a wall. Uppland matters because the hammer is there, and because everything that wants the hammer has to cross the snow to reach it, and the snow is full of those who tried.",
+  "legend": "Uppland is Midgard's eastern Old Frontiers zone: you come up from Svasud Faste in the south-east, Fensalir Faste is in the middle and Mjollner Faste, the relic keep with Midgard's strength relic, is up in the north-east. The west half is full of undead in the mid 40s (ghostly Hibernian and ghastly Albion invaders, undead vikings, ghoulish warriors, frost spectres up to 51), good xp if you're in your 40s and don't mind the frontier traffic. The east is lower, 20s and 30s, snow critters and ettins. Thorkatla, a 53 undead, stands in the south-middle for the seer epic The Desire of a God. The rogue epic sends you to find a hidden woman near Mjollner. Frontier warbands of gamebots go through here, and the keeps change hands, so watch the realm war messages. The huscarls say the snow-dead haven't finished, and that you can hear them counting in a blizzard.",
+  "atmosphere": {
+    "firstEntry": [
+      "The high country. Snow, and the dead of the war in it.",
+      "Somewhere north-east, the hammer is kept.",
+      "Footprints in the drift, and no one making them.",
+      "The frost was put here on purpose, the skalds say."
+    ],
+    "areas": [
+      {
+        "name": "Svasud Faste",
+        "x": 766235,
+        "y": 669173,
+        "z": 4800,
+        "radius": 2500,
+        "lines": [
+          "Svasud Faste. The last roof nobody is fighting for.",
+          "The gate to the frontier. Companies muster here."
+        ]
+      },
+      {
+        "name": "Fensalir Faste",
+        "x": 739828,
+        "y": 657113,
+        "z": 4900,
+        "radius": 2500,
+        "lines": [
+          "Fensalir Faste, named for Frigg's hall.",
+          "The middle keep of the high country. It has changed hands."
+        ]
+      },
+      {
+        "name": "Mjollner Faste",
+        "x": 771929,
+        "y": 626751,
+        "z": 5000,
+        "radius": 3000,
+        "lines": [
+          "Mjollner Faste. The hammer is kept here.",
+          "Every realm wants what this keep holds.",
+          "The highest ground in Uppland, and the coldest."
+        ]
+      },
+      {
+        "name": "the snow-dead",
+        "x": 727000,
+        "y": 645000,
+        "z": 4800,
+        "radius": 9000,
+        "lines": [
+          "The dead of three realms walk the drifts here.",
+          "Hibernian, Albion, Midgard: the snow forgot which.",
+          "They have not finished, the huscarls say."
+        ]
+      },
+      {
+        "name": "Thorkatla's drift",
+        "x": 749417,
+        "y": 647580,
+        "z": 4996,
+        "radius": 2000,
+        "lines": [
+          "Wisps hang in the air. A dead seeress waits.",
+          "Someone else's purpose walks in a woman's shape."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the skalds say odin gave uppland to the frost so attackers arrive tired",
+      "mjollner faste holds the hammer relic, something of thors own the skalds say",
+      "fensalir faste is named for friggs hall",
+      "svasud faste is the last roof in uppland nobody is trying to take",
+      "the west of uppland is the war dead of all three realms, still walking",
+      "the snow dead dont remember which side they were on, they attack everyone",
+      "thorkatla was a seeress who went into the snow after a vision and came back dead",
+      "the seers say loki speaks through thorkatla",
+      "thorkatlas dead are lokis first company for a war that isnt the realms",
+      "inaksha sends the seers to break thorkatla, they bring back a note and two flames",
+      "hibernians slip through the uppland snow toward the hammer",
+      "the gothi say the snow keeps the dead because nobody came back for them"
+    ],
+    "rumour": [
+      "you can hear the snow dead counting in a blizzard",
+      "the two flames from thorkatla never go out",
+      "nobody admits to reading thorkatlas note",
+      "there was a hibernian woman hiding near mjollner, the rogues found her",
+      "half frozen madmen in uppland were huscarls once",
+      "the huscarls of mjollner say the dead havent finished",
+      "the snowshoe bandits sell to whoever holds the keeps",
+      "frost spectres only walk where someone died cold"
+    ],
+    "tell": [
+      "uppland is the east frontier, come up from svasud faste",
+      "uppland west is undead mid 40s, east is snow critters 20s and 30s",
+      "mjollner faste is the relic keep in north east uppland",
+      "thorkatla is in south middle uppland, seer epic, 53 undead",
+      "fensalir faste is the keep in the middle of uppland",
+      "frontier warbands run through uppland, watch the keep messages"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Uppland. The high country, white most of the year. You come up through [Svasud Faste]. The [hammer] is kept at Mjollner, and between the gate and the hammer the snow is full of [the snow-dead]. And [Thorkatla].\"",
+    "topics": {
+      "Svasud Faste": "The south-eastern gate of the frontier, where Midgard's companies come up into Uppland: the last roof in the high country that no realm is fighting for.",
+      "Fensalir Faste": "The keep in the middle of Uppland, named for Frigg's hall in the skalds' tales. It has changed hands more often than the huscarls like to count.",
+      "hammer": "Mjollner Faste in the north-east holds Midgard's hammer relic, which the skalds say carries something of Thor's own. Every realm wants it; everything that wants it crosses [the snow-dead].",
+      "the snow-dead": "The dead of the realm war in Uppland's west, Hibernian and Albion invaders and the vikings who held against them, frost spectres and ghoulish warriors, walking where they fell and attacking everyone. See [Ketilbjorn].",
+      "snow-folk": "Uppland's own: ettins and abominable snowmen, chiselers and snow imps of the drifts, cold lights and wisps, and the frostbite wildlings. They held the high country empty for an age before the keeps.",
+      "the hidden woman": "The rogues' epic sends Midgard's shadows to a woman hiding near the [hammer]'s keep, to learn her name and remove her. The rogues say she was Hibernia's, and was not the first.",
+      "the two flames": "What the seers bring back from [Thorkatla], with a note in a hand nobody admits to reading. Inaksha keeps them. They do not go out.",
+      "Ketilbjorn": "Ketilbjorn, a huscarl of Mjollner Faste who stood a winter on its walls and wrote down what the high country looks like from the hammer's keep. He says [the snow-dead] have not finished.",
+      "the frost's purpose": "The skalds say Odin gave the north-east to the frost so that an enemy would arrive tired. The war proved him half right: they arrive tired, and stay."
+    }
+  },
+  "book": {
+    "title": "A Winter on Mjollner's Wall",
+    "pages": [
+      "Ketilbjorn, huscarl of Mjollner Faste, wrote this in the winter his company held the hammer's keep, for his sister in Jordheim, who asked what the frontier was like. Sister, it is like this. The wall is high and the wind is higher. From the top you can see all of Uppland, white to the edges, and Svasud's smoke in the south-east, and Fensalir in the middle like a fist. You can see the dead, too. They walk in the west of the high country, slowly, and on clear days you can count them. I have stopped counting them. They do not stop counting us.",
+      "The dead are of all three realms. I know the vikings by their helms. The Hibernians wear what they died in, and some of it is very fine, and the Albion men walk in rank even dead, which is the most Albion thing I have ever seen. They do not fight each other. They come at whatever is alive. The gothi at Svasud told me the snow keeps them because nobody came back for them. My captain says the snow keeps them because they have not finished. I asked him finished what. He said: taking the hammer. All of them. Even ours.",
+      "There is a woman among the dead in the south who is not like the others. The seers call her Thorkatla. She stands among the wisps with her head on one side, listening, and when the wind is from the north I have heard her laugh, and it is not her laugh. The seers who came up from Fort Atla to break her said the bound god speaks through her. They came back with two flames in a jar, burning on nothing, and a folded note, and would not let me read it. One of them was shaking. I gave him my bread.",
+      "We caught a woman near the keep in the middle of the winter, hiding in the rocks below the wall, with good boots and a sidhe brooch inside her cloak. The rogues came up from Jordheim and took her name and took her away, and my captain said she was the third that winter, and that Hibernia wants the hammer more than the dead do. I do not know about that, Sister. The dead have been here longer. Come up in summer to see it. It is grey then. Bring a good cloak. Bring two."
+    ]
+  },
+  "bosses": [
+    "thorkatla"
+  ]
+}

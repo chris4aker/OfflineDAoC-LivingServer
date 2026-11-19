@@ -42,6 +42,8 @@ namespace DOL.GS
 				int minLoot = ServerProperties.Properties.SMALLCHEST_MULTIPLIER * (lvl * lvl); 
 				long moneyCount = minLoot + Util.Random(minLoot >> 1);
 				moneyCount = (long)((double)moneyCount * ServerProperties.Properties.MONEY_DROP);
+				// Crafting 2.0 (WP3), player_coin_by_level (see LootGeneratorMoney).
+				moneyCount = DOL.GS.Crafting.PlayerCraftingRules.CoinForKiller(moneyCount, killer);
 				DbItemTemplate money = new DbItemTemplate();
 				money.Model = 488;
 				money.Name = "small chest";
@@ -56,6 +58,7 @@ namespace DOL.GS
 				int minLoot = ServerProperties.Properties.LARGECHEST_MULTIPLIER * (lvl * lvl); 
 				long moneyCount = minLoot + Util.Random(minLoot >> 1);
 				moneyCount = (long)((double)moneyCount * ServerProperties.Properties.MONEY_DROP);
+				moneyCount = DOL.GS.Crafting.PlayerCraftingRules.CoinForKiller(moneyCount, killer);
 				DbItemTemplate money = new DbItemTemplate();
 				money.Model = 488;
 				money.Name = "large chest";

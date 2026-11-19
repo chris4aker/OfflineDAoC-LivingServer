@@ -1,0 +1,81 @@
+{
+  "id": "coimirceoir",
+  "name": "Coimirceoir",
+  "npcNames": [
+    "Coimirceoir"
+  ],
+  "locationId": "cliffs-of-moher",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Coimirceoir: level 43, a basilisk body (model 455, the cockatrice kind), size 100, at about 242,100/458,100 on the cliff-top near the vehement guardians; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Coimirceoir is Irish for a protector or guardian.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/coimirceoir"
+    }
+  ],
+  "story": "The druids of Tir Urphost named it Coimirceoir, the protector, and say the name is a joke the cliffs are playing on them. It is a basilisk, a great scaled thing of the cockatrice kind, and it keeps the cliff-top south of the village near the vehement guardians, and what it protects nobody knows, because nobody has ever got past it to see.\n\nDruid Tobryn has a theory: that the cliffs had a guardian set on them long ago, before Tawi Shon kept his fire, to watch the sea as the Watchers of Vigilant Rock watch theirs across the water, and that Coimirceoir is what is left of it, or what came after it. The fishers do not care what it protects. They take the long way round, and they tell their children never to look it in the eye. The village children dare each other to touch its scales while it sleeps. None ever has.",
+  "legend": "Coimirceoir (43) is a big named basilisk on the cliff-top south of Tir Urphost (about 242k/458k), near the vehement guardians (40-41). A group of low to mid 40s. Plain spawn, 80-second respawn. Not part of a quest. Mind the cliff edge and the vehement guardians close by. It is a plain spawn with no script; treat it as a big 43 with heavy hits. Fight it away from the edge so nobody is knocked off the cliff while running.",
+  "yells": {
+    "aggro": [
+      "(the basilisk's gaze settles on you)",
+      "(scales rattle on the cliff-top)"
+    ],
+    "phases": [],
+    "death": [
+      "(Coimirceoir's eyes dull, still facing the sea)"
+    ],
+    "slay": [
+      "(the basilisk turns its gaze back to the sea)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A basilisk on the cliff-top, guarding nothing you can see."
+    ],
+    "phases": [],
+    "realmFirstKill": "Coimirceoir, the protector of the cliffs, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "coimirceoir is a 43 basilisk on the cliff top south of tir urphost",
+      "vehement guardians nearby, watch the edge"
+    ],
+    "aftermathWin": [
+      "coimirceoir down. [the protector|grats]",
+      "didnt fall off. [miracle|lol]"
+    ],
+    "aftermathLoss": [
+      "guardians joined. [rip|ouch]",
+      "fell off the cliff. [lol|again]"
+    ],
+    "rumour": [
+      "[heard|someone said] coimirceoir means protector. nobody knows what it protects",
+      "tir urphost kids are told never to look coimirceoir in the eye"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Coimirceoir",
+    "text": "A great basilisk on the cliff-top south of Tir Urphost, named the protector by the druids. Tobryn thinks it is what is left of a guardian set on the cliffs to watch the sea."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Coimirceoir in the Cliffs of Moher in {minutes} minutes.",
+    "loss": "Coimirceoir turned back {realm}'s band under {raidLeader} in the Cliffs of Moher after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "tawi-shon",
+      "relation": "the ghost of the cliff-top"
+    }
+  ]
+}

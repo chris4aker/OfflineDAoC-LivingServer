@@ -19,11 +19,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Thidranki Skirmishes";
 		private const int minimumLevel = 20;
 		private const int maximumLevel = 24;
 
-		private static GameNPC PazzHib = null; // Start NPC
+		private static GameNPC CaptainHib = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -65,42 +65,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Hibernia);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 252, 18658, 18710))
-					{
-						PazzHib = npc;
-						break;
-					}
-				}
-
-			if (PazzHib == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find PazzHib, creating it ...");
-				PazzHib = new GameNPC();
-				PazzHib.Model = 26;
-				PazzHib.Name = "Pazz";
-				PazzHib.GuildName = "Bone Collector";
-				PazzHib.Realm = eRealm.Hibernia;
-				//Druim Ligen Location
-				PazzHib.CurrentRegionID = 252;
-				PazzHib.Size = 40;
-				PazzHib.Level = 59;
-				PazzHib.X = 18658;
-				PazzHib.Y = 18710;
-				PazzHib.Z = 4320;
-				PazzHib.Heading = 1424;
-				PazzHib.Flags |= GameNPC.eFlags.PEACE;
-				PazzHib.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					PazzHib.SaveIntoDatabase();
-				}
-			}
+			CaptainHib = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Hibernia, 252); // Captain Cody, the Thidranki portal keep
 
 			#endregion
 
@@ -113,11 +78,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(PazzHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToPazz));
-			GameEventMgr.AddHandler(PazzHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToPazz));
+			GameEventMgr.AddHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			PazzHib.AddQuestToGive(typeof (ThidKillQuestHib));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainHib.AddQuestToGive(typeof (ThidKillQuestHib));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -127,27 +92,27 @@ namespace DOL.GS.DailyQuest.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (PazzHib == null)
+			if (CaptainHib == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(PazzHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToPazz));
-			GameEventMgr.RemoveHandler(PazzHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToPazz));
+			GameEventMgr.RemoveHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			PazzHib.RemoveQuestToGive(typeof (ThidKillQuestHib));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainHib.RemoveQuestToGive(typeof (ThidKillQuestHib));
 		}
 
-		private static void TalkToPazz(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(PazzHib.CanGiveQuest(typeof (ThidKillQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (ThidKillQuestHib), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -160,18 +125,18 @@ namespace DOL.GS.DailyQuest.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							PazzHib.SayTo(player, "You will find suitable players in the battlegrounds.");
+							CaptainHib.SayTo(player, "The enemy is out on the fields of Thidranki. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							PazzHib.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainHib.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					PazzHib.SayTo(player, "Hello "+ player.Name +", I am Pazz. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                     "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                     "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainHib.SayTo(player, "Well met, " + player.Name + ". I am Captain Cody, and I hold this keep for Hibernia. " +
+					                     "Albion and Midgard send their young fighters into Thidranki day after day, and every one we turn back is one fewer at our gates. " +
+					                     "Will you [take the field] for Hibernia?");
 				}
 			}
 				// The player whispered to the NPC
@@ -182,8 +147,8 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(PazzHib, QuestMgr.GetIDForQuestType(typeof(ThidKillQuestHib)), "Will you undertake " + questTitle + "?");
+						case "take the field":
+							player.Out.SendQuestSubscribeCommand(CaptainHib, QuestMgr.GetIDForQuestType(typeof(ThidKillQuestHib)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -191,10 +156,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Hibernia holds Thidranki a while longer. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -276,7 +241,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(PazzHib.CanGiveQuest(typeof (ThidKillQuestHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (ThidKillQuestHib), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (ThidKillQuestHib)) != null)
@@ -284,15 +249,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!PazzHib.GiveQuest(typeof (ThidKillQuestHib), player, 1))
+				if (!CaptainHib.GiveQuest(typeof (ThidKillQuestHib), player, 1))
 					return;
 
-				PazzHib.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainHib.SayTo(player, "Go, then. The enemy is out on the fields of Thidranki.");
 
 			}
 		}
@@ -311,9 +276,9 @@ namespace DOL.GS.DailyQuest.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in Thidranki. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Pazz in the Thidranki Portal Keep for your Reward.";
+						return "Return to Captain Cody in the Thidranki portal keep for your reward.";
 				}
 				return base.Description;
 			}
@@ -332,15 +297,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 			if (Step != 1 || e != GameLivingEvent.EnemyKilled) return;
 			EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
 
-			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || gArgs.Target is not GamePlayer ||
+			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}

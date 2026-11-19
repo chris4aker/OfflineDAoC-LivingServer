@@ -1,0 +1,124 @@
+{
+  "id": "veena",
+  "name": "Veena",
+  "npcNames": [
+    "Veena"
+  ],
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "aliases": [
+    "the poisoner of the south-east shore"
+  ],
+  "facts": [
+    {
+      "text": "Veena: template 60167548, level 52, a lammia on the south-east shore of Inishail at 279117, 475105; no faction, aggro level 200 within 500, crushing melee, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "She gives Evening the Odds (levels 36-50: sea slime vials, inishail fly venom, tidal mongrel saliva) and Orcs with Spellbooks (49-50: the soothsayers' Avalonian tome, a buzzing nuisance's stinger, Chieftain Toca).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A quest giver leaves players in its quests' level range alone (and their companions, judged by their owner); outside it, and for bots with no player owner, she has no such truce.",
+      "provenance": "game",
+      "source": "source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC that gives a quest leaves a player in its level range alone; companions are judged by their owner)"
+    },
+    {
+      "text": "Veena as the keeper of the tomes for a reader of Avalon, her poisons to even the odds, the margins she reads and ThousandEyes as her watcher are Living Server writing; that she lives alone making poisons and wants the tomes back is from the Inishail file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Veena lives alone on the south-east shore of Inishail and makes poisons. The lammia of Clifton know of her and do not speak of her, and the lammia camp in the south-west of the island has nothing to do with her; she is not of either, and belongs to no one's reckoning but her own. The realm's young who come to her shore find a lammia among her jars and vials with the island's flies buzzing round her, and a small many-eyed thing called ThousandEyes watching from the hollow behind, and a list of what she needs.\n\nWhat she needs, first, is the odds evened. She says so: the island is full of things larger and older than any of the realm's young, and a poison is how the small take on the large, and she will teach anyone who brings her the makings. Slime from the beach, venom from the flies, the spittle of the tidal mongrels in the strait. She mixes, and gives the vials away.\n\nWhat she wants, after, is her books. The tomes the orcs of Toca's village took were in her keeping. Whose they were before, she does not say; the readers of Caer Gothwaite think they came out of the college of law in Avalon the night it burned, carried to the islands by someone who meant them to be kept, and that someone gave them to Veena because a lammia lives long and does not burn. The orcs stole them and read them for the words that will free them from the dead lord's tenancy, and Veena has read what they wrote in the margins and says the orcs understood one passage exactly and the rest not at all. She sends the realm's young for the tome, and then for Toca.\n\nShe is kind to the young, after her fashion. The ones who come to her shore while they are still learning the islands she lets be, and teaches. The seasoned and the strong she has no patience for at all; she says they have no odds to even, and comes at them as she would at anything large on her shore. Nor does she trust anything that walks without someone to answer for it. ThousandEyes, the lammia say, tells her who is coming, and how old they are.",
+  "legend": "Veena is a level 52 lammia alone on the south-east shore of Inishail, the quest giver for Evening the Odds (levels 36 to 50) and Orcs with Spellbooks (49 to 50). She has aggro on and no faction, and the server only keeps her off you while you are in her quests' level range (companions count as their owner). Above 50 she attacks you, and she attacks autonomous gamebots of any level. If you fight her, it is a plain melee fight with a 52 (no spells in the data). There is no quest to kill her, and killing her stops the quests for about 80 seconds. ThousandEyes (48) hangs around her shore.",
+  "yells": {
+    "aggro": [
+      "You have no odds to even.",
+      "Too old for my shore.",
+      "Off. I teach the young."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Vials! Where are my vials!"
+      }
+    ],
+    "death": [
+      "The books... get them back...",
+      "Even... the odds..."
+    ],
+    "slay": [
+      "Evened.",
+      "The odds were not in your favour.",
+      "Into the jar with you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Jars and vials on a lonely shore.",
+      "Something with many eyes watches from the hollow."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Veena reaches for a vial that is not there."
+      }
+    ],
+    "realmFirstKill": "Veena has fallen. No one will want the tomes back now."
+  },
+  "botLines": {
+    "briefing": [
+      "veena, 52 lammia on the se shore of inishail. quest giver for evening the odds and orcs with spellbooks",
+      "she leaves you alone only in her quest level range, 36-50. at 51+ she aggros",
+      "she also aggros gamebots of any level. no spells, melee if it comes to it",
+      "dont kill her, the quests stop. thousandeyes is near her"
+    ],
+    "aftermathWin": [
+      "veena down. why. the quests are gone for a minute",
+      "she aggroed my 55, had to",
+      "easy for a 52",
+      "the orcs keep the books now lol"
+    ],
+    "aftermathLoss": [
+      "came to turn in at 51 and she attacked",
+      "pulled thousandeyes too",
+      "duo at 50 fighting her by mistake",
+      "she's 52 and we were 46, wrong idea"
+    ],
+    "rumour": [
+      "[heard|someone said] veena lets the young come to her shore and attacks anyone older",
+      "heard the tomes the orcs stole were in veena's keeping",
+      "[heard|someone said] veena says the orcs understood one line of the books exactly",
+      "heard thousandeyes tells veena who's coming"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "veena",
+    "text": "A lammia who lives alone on the south-east shore of [inishail-island] making poisons to even the odds for the small against the large, and teaching the young who bring her the makings. The tomes of Avalon that [chieftain toca]'s orcs stole were in her keeping; she reads the orcs' margins and wants the books back. She has no patience for the seasoned and strong, and ThousandEyes tells her who is coming."
+  },
+  "bookPage": "From the notes Veena keeps on the south-east shore, copied for the readers at Caer Gothwaite at her own request. You ask how I came by the books. A reader of Avalon brought them across in a fishing boat the summer after the burning and asked me to keep them, because I would outlive her and I would not burn. She was right about both. You ask why I let only the young come to me. Because the young still believe the odds can be evened, and so they can; the old know better, and come to take. You ask what I will do with the books when I have them back. Read them, again. The orcs were right about one line. I would like to know if they were right about the rest.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Veena on her shore in {minutes} minutes.",
+    "loss": "Veena evened the odds against {raidLeader}'s company of {realm}."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "chieftain-toca",
+      "relation": "whose orcs stole the tomes in her keeping"
+    },
+    {
+      "id": "pester",
+      "relation": "the venom she has not finished learning"
+    },
+    {
+      "id": "avalon-city",
+      "relation": "the college of law whose books the tomes may be"
+    }
+  ]
+}

@@ -1058,11 +1058,11 @@ namespace DOL.GS.Quests
 
 			foreach (AbstractQuest quest in finishedQuests)
 			{
-				if (quest is DataQuest dataQuest && dataQuest.ID == ID)
-				{
-					if (quest.IsDoingQuest() == true || (dataQuest.Count >= MaxQuestCount && MaxQuestCount >= 0))
-						return false; // player has done this quest the max number of times
-				}
+				// QUESTING.md defect 5 (1.2): a finished data quest is at step 0, and AbstractQuest.IsDoingQuest() is true
+				// for any step but -1, so a quest with MaxCount 2 or more was refused after its first finish. MaxCount 0
+				// and 1 stay offered once, as before (QuestRepeats).
+				if (quest is DataQuest dataQuest && dataQuest.ID == ID && !QuestRepeats.OffersAgain(dataQuest.Step, dataQuest.Count, m_dataQuest.MaxCount))
+					return false; // player has done this quest the max number of times
 			}
 
 			// check to see if this quest requires another to be done first
@@ -2380,7 +2380,10 @@ namespace DOL.GS.Quests
 			//log.DebugFormat("Checking collection quests: '{0}' of type '{1}', wants item '{2}'", Name, (eStartType)DBDataQuest.StartType, DBDataQuest.CollectItemTemplate == null ? "" : DBDataQuest.CollectItemTemplate);
 			// check to see if this object has a collection quest and if so accept the item and generate the reward
 			// collection quests do not go into the GamePlayer quest lists
-			if (StartType == eStartType.Collection && item.Id_nb.Equals(DBDataQuest.CollectItemTemplate))
+			// Ids compare without case, as the server finds item templates (its pre-cache is case-insensitive): quest 401
+			// Human Leg XP Item collects "Human_Leg" and its template is "Human_leg", so the leg dropped but Dera never
+			// took it (quest harness world report, 2026-11-04).
+			if (StartType == eStartType.Collection && string.Equals(item.Id_nb, DBDataQuest.CollectItemTemplate, StringComparison.OrdinalIgnoreCase))
 			{
 				DbCharacterXDataQuest charQuest = GetCharacterQuest(player, ID, true);
 
@@ -2643,7 +2646,10 @@ namespace DOL.GS.Quests
 		/// <param name="item"></param>
 		protected virtual void OnPlayerGiveItem(GamePlayer player, GameObject obj, DbInventoryItem item)
 		{
-			if (item == null || item.OwnerID == null || m_collectItems.Count == 0)
+			// QUESTING.md defect 7 (1.2): a row with no CollectItemTemplate at all returned here, so its delivery steps
+			// (the item named in StepItemTemplates, the branch below) could never be handed in. The collect branch
+			// checks for its own entry.
+			if (item == null || item.OwnerID == null)
 				return;
 
 			// Owner 2026-10-30: no level window here. This is a step of a quest the player already holds, and a player who

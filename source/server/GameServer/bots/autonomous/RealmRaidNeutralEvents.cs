@@ -77,6 +77,9 @@ public static class RealmRaidNeutralEvents
     /// The named encounters, final boss last. Summoner's Hall: the three summoners, then Grand
     /// Summoner Govannon. Darkness Falls: the four High Lords, the three Princes, Princess Nahemah,
     /// then Legion. An encounter the raid cannot reach or damage is set aside by the route.
+    /// Beliathan (1.2) is fought when he is up: he wakes within ten minutes of the princes' and Princess Nahemah's deaths
+    /// (BeliathanInitBrain.WakesBeliathanWhenGone) and is not in the world before, so the route has nothing to take
+    /// until then; the raid's final stays Legion.
     /// </summary>
     public static string[] Objectives(ushort region) => region switch
     {
@@ -84,7 +87,7 @@ public static class RealmRaidNeutralEvents
         DarknessFalls =>
         [
             "High Lord Baln", "High Lord Oro", "High Lord Saeor", "High Lord Baelerdoth",
-            "Prince Asmoien", "Prince Abdin", "Prince Ba'alorien", "Princess Nahemah", "Legion"
+            "Prince Asmoien", "Prince Abdin", "Prince Ba'alorien", "Princess Nahemah", "Beliathan", "Legion"
         ],
         _ => null
     };

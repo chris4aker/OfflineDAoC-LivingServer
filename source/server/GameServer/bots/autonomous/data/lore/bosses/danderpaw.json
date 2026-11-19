@@ -1,0 +1,81 @@
+{
+  "id": "danderpaw",
+  "name": "Danderpaw",
+  "npcNames": [
+    "Danderpaw"
+  ],
+  "locationId": "shannon-estuary",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Danderpaw: level 36, a wolf body (model 647, the worg kind), at about 338,000/676,000 near the high road east of Ceannoi; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Danderpaw as the wolf of the Ceannoi road that follows travellers.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Danderpaw is the wolf of the Ceannoi road, a great grey thing of the worg kind that the merchants of Ceannoi have known by name for three generations, though it cannot be the same wolf, they say, and it always is. It follows travellers. It does not attack at first; it walks behind them on the high road, a long way back, and when they stop it stops, and when they hurry it hurries, and somewhere east of Ceannoi, where the road dips, it closes.\n\nThe merchants named it for the way it walks, a little lame in one paw and never slower for it. They say it was a hound of a house on the high road that was burned in the old families' wars, and that it has been looking for its master on the road ever since, and that every traveller it follows is, for a while, him.",
+  "legend": "Danderpaw (36) is a named worg-type wolf near the high road east of Ceannoi in the Shannon Estuary (about 338k/676k). It hits hard for a 36 and follows you along the road before it closes. A group of mid 30s handles it; solo 40s can. Plain spawn, 80-second respawn. Ceannoi custom: do not stop on the high road where it dips.",
+  "yells": {
+    "aggro": [
+      "(the grey wolf that has been following you closes)",
+      "(a limp, and then a lunge)"
+    ],
+    "phases": [],
+    "death": [
+      "(Danderpaw lies down on the road, as if waiting)"
+    ],
+    "slay": [
+      "(the wolf sniffs the fallen, and walks on)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A grey wolf, a long way back on the road."
+    ],
+    "phases": [],
+    "realmFirstKill": "Danderpaw, the wolf of the Ceannoi road, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "danderpaw is a 36 wolf near the ceannoi road",
+      "it follows you first, then closes. hits hard"
+    ],
+    "aftermathWin": [
+      "danderpaw down. [the road's clear|grats]",
+      "it followed us for ages first. [creepy|lol]"
+    ],
+    "aftermathLoss": [
+      "didnt notice it following. [rip|oops]",
+      "hits hard for 36. [ouch|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] danderpaw follows travellers on the ceannoi road looking for its dead master",
+      "dont stop where the ceannoi road dips. danderpaw"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Danderpaw",
+    "text": "The lame grey wolf of the Ceannoi road, said to be a burned house's hound looking for its master. It follows travellers a long way back before it closes."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Danderpaw in the Shannon Estuary in {minutes} minutes.",
+    "loss": "Danderpaw turned back {realm}'s band under {raidLeader} in the Shannon Estuary after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "shannon-estuary",
+      "relation": "the high road it haunts"
+    }
+  ]
+}

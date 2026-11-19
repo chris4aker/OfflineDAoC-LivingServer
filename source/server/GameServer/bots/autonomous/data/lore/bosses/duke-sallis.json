@@ -1,0 +1,173 @@
+{
+ "id": "duke-sallis",
+ "name": "Duke Sallis",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Sallis"
+ ],
+ "aliases": [
+  "sallis",
+  "the steward",
+  "the three cup duke"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-oro",
+   "relation": "his lord; serves all three bodies"
+  },
+  {
+   "id": "duke-eligar",
+   "relation": "will not speak to him"
+  },
+  {
+   "id": "duke-bimure",
+   "relation": "stood with him at the Chancellor's table"
+  },
+  {
+   "id": "earl-mercur",
+   "relation": "stands with him at Oro's door"
+  },
+  {
+   "id": "marquis-sabonach",
+   "relation": "stands with him at Oro's door"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "accepted his argument"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Sallis is a level 68 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands outside High Lord Oro's hall in the north-east, near Earl Mercur and Marquis Sabonach.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Sallis among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Below level 70, Duke Sallis is an ordinary grind target for gamebots, not a raid-reserved demon.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Sallos (19) is a duke of hell; Duke Sallis reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "High Lord Oro spawns with two clones (30,000 health each against Oro's 100,000).",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The peaceful duke",
+   "text": "Duke Sallis is the only peer of the court who has never killed another demon of rank. He is not weak. He is the most careful demon in the east, and in the Uncounted Age, when every lord of the hollow held only what it could keep that night, Sallis kept himself alive by being useful to whoever was strongest nearby, and by never once being the one to strike first. He served High Lord Oro in those days, as a steward and not a champion: he kept Oro's hall, settled his followers' quarrels and carried his offers of peace to the halls of Saeor and Baelerdoth, which were always refused. The court says Sallis has carried more refused offers than any demon in the history of the hollow, and that he keeps a list of them.\n\nAt the Feast of Thrones he stood behind Oro and watched the Master eat. He said afterwards, to the few demons who would listen, that it was the first peace he had ever seen: a peace made by appetite instead of agreement, and the only kind of peace the hollow had ever been able to keep. When Oro knelt, Sallis knelt with a kind of relief. The First Roll wrote him as Duke, of High Lord Oro's household, Steward of Oro's hall. Of all the peers on that Roll, he is the only one whose line has never been moved, argued or challenged, and he means to keep it that way. The list of refused offers he keeps on a cord of knots, one knot for each refusal, and it is long enough now to go three times round Oro's hall."
+  },
+  {
+   "title": "The three Oros",
+   "text": "In the Third Roll High Lord Oro went down into the deep fires below his hall, alone, for reasons he did not explain to his steward, and was gone for the length of a long dark. When he came back up he was three. Three high lords of the same shape walked out of the fire-crack into Oro's hall and sat down together, and they spoke with one voice, and when Sallis brought them each a cup they each drank. Two of the three are weaker than the first; anyone who fights them learns that. But it is not clear to any demon in the court, and least of all to Sallis, which of them is the high lord and which two are something else.\n\nSallis made his decision on the first night. He would serve all three, exactly alike, since he could not be sure, and a steward who serves the wrong one is no steward. He brings three cups. He bows three times. When the three disagree, which they do not often do, he waits until they agree again. The court thinks him a fool or a saint, and has never decided which. Visitors to Oro's hall since the doors opened have said what the court will not: three high lords sit there, and two are not real. Sallis has heard that said. He has never asked which two. The cups are of black glass from the fire-crack under Oro's hall, the same crack the three came out of, and Sallis made them himself on the night they came. He made a fourth, and broke it, and has never said for whom it was meant."
+  },
+  {
+   "title": "The Chancellor's table",
+   "text": "The three Oros caused the worst quarrel the east has known since the First Roll. High Lords Saeor and Baelerdoth each sent to the East Ward to claim one of the extra bodies for its own household, and Duke Bimure, the warden, refused to carry either claim. Then Duke Eligar, from Baln's hall in the south, went to the approach and put it to the Chancellor that Oro had fallen from his place by becoming three demons where the Roll had written one, and that his line should be struck and the seat given to the strongest duke, by which he meant himself.\n\nSallis went to the approach the next day. It was the first time he had ever walked down it, and he went alone, past the Gate where Dommel charged him and past the Marshal's war table where Nebir counted him, to stand at Adremal's table and argue for his lord. His argument was short. The Roll counts names. All three of the high lords in Oro's hall answer to Oro. Therefore the Roll still holds one Oro, and Oro has not fallen; he has only increased. The Chancellor considered it for the length of a Roll's cutting and then wrote that the Roll counts names. Oro kept all three bodies. Eligar lost his seat before he had it.\n\nSallis has not spoken to Eligar since. It is the only grudge he has ever held, and the court regards it as a sign of how much the case cost him, since it was the only time he has ever had to win anything."
+  },
+  {
+   "title": "The steward and the visitors",
+   "text": "Since the doors opened, mortals have come into Oro's hall as they have come into every hall in the hollow, armed and many. The first of them, a Hibernian company down the eastern stair in the first winter after the doors opened, found Sallis waiting before the three high lords, as a steward waits at the door of a hall, and killed him there, because he stood in their way. He does not take it personally. He has explained to the Ward's knights and Mutilators that the mortals cannot be offered peace because they are not on the Roll and so have no place to keep, and that it is a great sadness to him. He meets them with the patience of a demon who has never in his long life struck first and does not intend to start now.\n\nThe realms each make him into something. Albion's knights say the peaceful duke is the most dangerous demon in the east, because he is sincere, and a sincere demon is a demon whose reasons you cannot argue with. Midgard's huscarls say he is a lord's man, plain and simple, and that a man who serves three lords at once without asking which is real is a man whose loyalty is worth more than gold. Hibernia's bards say he is like a man in love with a woman he can never tell from her reflections, and sing a song about the three cups that ends badly.\n\nSallis wants peace in the east, which he has never had and never will. He has asked the Chancellor every Roll for the yield to be extended to the high lords. Every Roll, Adremal writes it down."
+  }
+ ],
+ "story": "Duke Sallis is the steward of High Lord Oro's hall and the only peer of the court who has never killed a demon of rank. In the Uncounted Age he survived by being useful and never striking first; he kept Oro's hall and carried his offers of peace to Saeor and Baelerdoth, which were always refused. At the Feast of Thrones he called the Master's eating the first peace he had ever seen, a peace made by appetite, and knelt with relief. His line on the First Roll has never been moved, argued or challenged.\n\nIn the Third Roll Oro went down into the deep fires alone and came back as three high lords of one shape, speaking with one voice. Two are weaker than the first, and nobody, least of all Sallis, knows which is real. Sallis decided on the first night to serve all three exactly alike: three cups, three bows. Visitors say two of the three are not real; he has never asked which two.\n\nThe three Oros started the worst quarrel in the east. Saeor and Baelerdoth each claimed a body, and Warden Bimure refused to carry either claim. Duke Eligar argued that Oro had fallen by becoming three and that his seat should go to the strongest duke. Sallis walked down the approach for the first time, alone, and argued at Adremal's table that the Roll counts names and all three answer to Oro. The Chancellor agreed. Sallis has not spoken to Eligar since, the only grudge he has held.\n\nHe has met the realms' companies before the three high lords and died in their way without taking it personally. Albion's knights call him dangerous because he is sincere; Midgard's huscarls call him a lord's man; Hibernia's bards sing of the three cups, and of the fourth he broke.",
+ "legend": "Sallis stands just outside High Lord Oro's hall in the north-east, with Earl Mercur and Marquis Sabonach close by. He is level 68 with no script, the softest of the dukes, and he is in the way of Oro, who brings two clones of himself into the fight. Kill Sallis, Mercur and Sabonach one at a time before anyone goes near the three Oros, then fight the real Oro with the clones held off by a tank each. Players say Sallis never hits first; that is a joke, he aggros like anything else. Hibernians call him the three-cup duke and sing about him at wakes.",
+ "yells": {
+  "aggro": [
+   "You did not knock. Visitors knock.",
+   "There is no peace I can offer you. I am sorry for it.",
+   "Not one step nearer my lords."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Three cups, three bows. I will not let you near them."
+   }
+  ],
+  "death": [
+   "Serve them... all alike.",
+   "I never struck first. Remember that."
+  ],
+  "slay": [
+   "I am sorry. You stood in the way.",
+   "Rest. It is the only peace there is.",
+   "One fewer visitor at the door."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Three cups stand on a table, filled.",
+   "A steward waits at the door of a high lord's hall.",
+   "Beyond, three voices speak as one."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The steward of Oro's hall stands his ground."
+   }
+  ],
+  "realmFirstKill": "Duke Sallis has fallen. Oro's hall has no steward."
+ },
+ "botLines": {
+  "briefing": [
+   "sallis first, outside oros hall. then mercur, then sabonach, [one at a time|single pulls]",
+   "68 no tricks, softest duke. [easy|quick one]",
+   "dont touch oro till those three are down. [oro brings two clones|three oros at once is bad]",
+   "after sallis, tanks pick up oros clones. [one each|a tank per clone]"
+  ],
+  "aftermathWin": [
+   "sallis down. [the steward's done|oros door is open]",
+   "duke sallis dead, [mercur next|on to mercur]",
+   "sallis done. [easy one|quick]",
+   "steward down. [now the three oros|clones next]"
+  ],
+  "aftermathLoss": [
+   "pulled oro with sallis. [three oros and a duke|bad]",
+   "sallis plus mercur at once, [wipe|oops]",
+   "we lost the clones on sallis. [regroup|rez]",
+   "too close to oros hall. [back up next time|pull sallis back]"
+  ],
+  "rumour": [
+   "[heard|word is] sallis never killed another demon. [the peaceful duke|weird for a demon]",
+   "sallis serves all three oros the same because he cant tell [which is real|which two are fake]",
+   "[someone said|my guildie says] sallis and eligar hate each other. [over oros clones|eligar wanted oros seat]",
+   "the hibs call sallis the three cup duke. [theres a song|they sing about it]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "sallis",
+  "text": "The steward of High Lord [Oro]'s hall, the only peer who never killed a demon of rank. When Oro came back from the deep fires as three, Sallis chose to serve all three alike, and argued at the Chancellor's table that the Roll counts names. Duke [Eligar] lost his chance at a seat, and Sallis has not spoken to him since."
+ },
+ "bookPage": "From The Three Cups, as the bards of Tir na Nog sing it, set down in prose for a Midgard friend: The steward brought the cups, three of them, of black glass, and set one before each of the high lords, and bowed to each, and the three drank together and set the cups down together. The steward filled them again. He did not look to see which drank first. A woman of our company, a bard herself, asked him why he served all three when two were not real. He said that a steward does not choose his lord; a steward is chosen. Then we killed him, because he stood in our way.",
+ "bookPages": [
+  "From The Three Cups, as the bards of Tir na Nog sing it, set down in prose for a Midgard friend: The steward brought the cups, three of them, of black glass, and set one before each of the high lords, and bowed to each, and the three drank together and set the cups down together. The steward filled them again. He did not look to see which drank first. A woman of our company, a bard herself, asked him why he served all three when two were not real. He said that a steward does not choose his lord; a steward is chosen. Then we killed him, because he stood in our way.",
+  "The prose goes on: When the high lords were dead, all three of them, we looked at the cups. Two were empty and dry, as if nothing had ever been in them. The third was empty too, but wet, and the bard who had asked the question picked it up and looked at it for a long time. She would not say what she thought it meant. She sang the song for the first time that night at Tir na Nog, and in every version since, the steward is told at the end which of the three was real, and in every version he puts his hands over his ears."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} passed the steward of Oro's hall, Duke Sallis, in {minutes} minutes.",
+  "loss": "Duke Sallis kept the door of Oro's hall against {realm}'s raid under {raidLeader}, without once striking first."
+ }
+}

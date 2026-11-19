@@ -115,7 +115,10 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public static bool IsPulled = false;
+        // Per brain: as a static it was cleared only in the 30-35 s after a fight that Vifil survived, so once he was
+        // killed his respawn was pulled with the flag still set and his tunnel guardians never came again until some
+        // later fight ended without a kill (epic-bosses M6 kind). A respawned Vifil gets a new brain.
+        private bool IsPulled = false;
 
         public override void OnAttackedByEnemy(AttackData ad)
         {
@@ -130,11 +133,11 @@ namespace DOL.AI.Brain
         public void TeleportPlayer()
         {
             List<GameLiving> enemies = AggroList.Keys.ToList();
-            foreach (GamePlayer player in Body.GetPlayersInRadius(1100))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 1100))
             {
                 if (player != null)
                 {
-                    if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                    if (player.IsAlive && EncounterTargets.NotGm(player))
                         AggroList.TryAdd(player, new());
                 }
             }
@@ -153,18 +156,18 @@ namespace DOL.AI.Brain
                         continue;
                     GameLiving living = null;
                     living = enemies[i] as GameLiving;
-                    if (living.IsVisibleTo(Body) && Body.TargetInView && living is GamePlayer)
+                    if (living.IsVisibleTo(Body) && Body.TargetInView && (living is GamePlayer || EncounterTargets.DisplacesBots(Body) && living is GameBot))
                     {
                         damage_enemies.Add(enemies[i] as GameLiving);
                     }
                 }
                 if (damage_enemies.Count > 0)
                 {
-                    GamePlayer PortTarget = (GamePlayer) damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
+                    GameLiving PortTarget = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
                     if (PortTarget.IsVisibleTo(Body) && Body.TargetInView && PortTarget != null && PortTarget.IsAlive)
                     {
                         AggroList.TryRemove(PortTarget, out _);
-                        if (EpicEncounterMechanics.AllowDisplacement) PortTarget.MoveTo(Body.CurrentRegionID, 16631, 58683, 10858, 2191);
+                        if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, 16631, 58683, 10858, 2191, DisplacementKind.Jail, Body);
                         PortTarget = null;
                     }
                 }

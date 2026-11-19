@@ -1,0 +1,71 @@
+{
+  "id": "kampestein",
+  "name": "Kampestein",
+  "npcNames": [
+    "Kampestein"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "caldera-elements"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Kampestein is a level-45 golem (faction Elements of the Caldera; the living stones' model) in Delling's caldera (365,508/313,383) among obsidian golems (45-49), basalt golems and noxious fumes; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Gem of the Dwarven King' (Abjorn Onefoot of Hagall): find Ornulf by a rock outside Dellingstad, read the note, kill the golems Smastein, Klippe and Kampestein, then use the three keys on the box in the caldera's steam vent.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Swedish/Norwegian kampestein is 'boulder'.",
+      "provenance": "myth",
+      "source": "Swedish (to verify)"
+    }
+  ],
+  "story": "Kampestein is the boulder, the largest of the three golems of the caldera who keep the keys to the dwarven king's box. The dwarf king, the story Ornulf of Dellingstad keeps says, gave the third and heaviest key to the heaviest keeper, a boulder of the caldera that had got up and walked when the crater burned, and told it to sit on the key until someone stubborn came.\n\nKampestein has been sitting on it since, among the obsidian golems and the fumes in the hottest part of the floor. The dwellers of Dellingstad say he has not moved a pace in all that time except to fight, and that the ground round him is worn smooth by the young who have come and gone. He does not distinguish between stubborn and merely foolish. He crushes both. Dellingstad's soothsayers leave him alone, and lay a stone at the edge of his ground each spring.",
+  "legend": "Kampestein is a level 45 caldera golem (Elements of the Caldera faction) among obsidian golems (45-49), basalt golems and noxious fumes; the third key for Gem of the Dwarven King. The caldera faction is all round him. The obsidian golems round him are higher than he is, and the noxious fumes drift in. It's the third key and the hardest of the three.",
+  "yells": {
+    "aggro": [
+      "(Stone grinds on stone.)",
+      "(The boulder rises from the key it sits on.)"
+    ],
+    "death": [
+      "(The boulder cracks. A key glints inside.)"
+    ],
+    "slay": [
+      "(It sits down again.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A boulder sits in the caldera, heavier than it looks."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "kampestein is the 45 golem in the caldera, third key for the gem quest",
+      "obsidian golems round him are higher"
+    ],
+    "aftermathWin": [
+      "got kampesteins key",
+      "two to go, or done"
+    ],
+    "rumour": [
+      "kampestein has sat on the dwarven kings third key since the crater burned",
+      "kampestein doesnt tell stubborn from foolish, he crushes both"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kampestein",
+    "text": "The boulder, the heaviest of the three caldera golems who keep the keys to the dwarven king's box. See [caldera]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cracked Kampestein for his key in Delling's caldera in {minutes} minutes."
+  }
+}

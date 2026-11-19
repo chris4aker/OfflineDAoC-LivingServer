@@ -1,0 +1,279 @@
+{
+  "id": "hibernia-wilds",
+  "name": "The Wilds of Hibernia",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "summary": "Region overview of old Hibernia's haunted places; each zone (Cursed Forest, Bog of Cullen, Lough Gur, Breifine and the rest) has its own file.",
+  "facts": [
+    {
+      "text": "Region 200's named epics stand in four zones: twelve in the Cursed Forest, Badb and Queen Cliodna in the Bog of Cullen, the Melancholic Fairy Queen at Lough Gur, and Evern in Breifine.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Badb and the Melancholic Fairy Queen appear only at night; Develin appears at night once enough pookas have been slain; Giant Caithor's ghost appears after five far dorocha die.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/Badb.cs, MelancholicFairyQueen.cs, Develin.cs, Caithor.cs"
+    },
+    {
+      "text": "When the Fairy Queen comes, the server says: 'You hear the sound of trumpets in the distance.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/MelancholicFairyQueen.cs"
+    },
+    {
+      "text": "Badb is a war goddess who takes the shape of a crow; Clíodhna is a queen of the sídhe whose birds sing the sick to sleep; the púca is a shape-changing spirit; the fear dorcha is the 'dark man'.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Badb"
+    },
+    {
+      "text": "Bot chat: skeaghshee means fairy thorn, uafas capall the horror horse; the court steps around Juggernaut; fairies landing on Evern's stones heal him; Evern is older than the frontier keeps.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The Cursed Forest as a wood the courts abandoned is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Region 200 holds fourteen zones: Lough Derg, Silvermine Mts., Shannon Estuary, Cliffs of Moher, Lough Gur, Bog of Cullen, Valley of Bri Leith, Connacht, Cursed Forest, Mount Collory, Cruachan Gorge, Breifine, Emain Macha and Sheeroe Hills.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Mount Collory, Cruachan Gorge, Breifine and Emain Macha are Hibernia's old frontier, where the keeps stand.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; docs/RAID-SIZES.md"
+    },
+    {
+      "text": "The Catacombs-era Herald lore says the elves raised the Veil and withdrew into the Otherworld after quarrels with the firbolg, and that the Lurikeens helped them.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/node/461"
+    },
+    {
+      "text": "Clíodhna is a queen of the Tuatha Dé Danann in Irish myth; the púca a shape-changer; the bean sídhe a keening fairy woman.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Banshee"
+    }
+  ],
+  "story": "Hibernia is a kind country by day. The old people say that is because it is so careful at night. Every family knows the places the realm does not go after dark, and they are not hidden: they are on every map, with names that nobody bothered to soften.\n\nThe worst is the Cursed Forest. It was a wood of the courts once, the Sylvan say, a place where the Seelie and the Unseelie met to bargain, and something was spilled there that neither court would take back. Now its trees walk and rot. Its fires burn without fuel. A blight climbs out of its earth in four shapes. A horror horse grazes under the moon, the fairy thorn grows in the shape of a man, a dark man's ghost waits for his servants to die, and a thing called Juggernaut walks through all of it as though it were an open field. Even the courts step around him.\n\nThe Bog of Cullen has its own: Badb, the crow of war, who wakes at dusk and smells battle coming, and Queen Cliodna, whose birds once sang the sick to sleep and now sing the healthy to death. At Lough Gur a fairy queen sits by the water at night, weeping, and trumpets sound when she comes. And on the frontier in Breifine, where the keeps went up long after, a ring of stones stands round Evern, whom the fairies keep alive.\n\nNone of them is the realm's enemy, exactly. They were here first. Hibernia has learned to live beside them, and now and then, with a hosting at its back, to remind them it is there.\n\nEach of these places has its own story, and the realm's loremasters keep them separately now: the Cursed Forest, the Bog of Cullen, Lough Gur, Breifine and the others each have their own telling. What they share is older than any of them. Hibernia was the elves' country before it was anyone's, the sages of Tir na Nog say, and when the firbolg and the Celts came, the elves quarrelled with them and raised the Veil, and withdrew behind it into the Otherworld, the Lurikeens helping. The Veil was never a wall. It was a cloth, and cloth wears thin. Wherever it wore thin, something stayed on this side or came back through: a court that met in a wood, a queen by a lake, a ring of stones on a hill.\n\nThe courts are the heart of it. The bright court and the dark court, Seelie and Unseelie, were never at peace, but they bargained, and their bargaining ground was the wood the realm now calls Cursed. When a bargain broke there, the wood went bad, and the creatures of the broken wood are its legacy: the blight that climbs out of its earth, the trees that walk, the fires that burn on nothing, the horror horse and the fairy thorn and the thing called Juggernaut. The dark court went on to take the mines of Silvermine. The bright court went quiet and watched. Some of its people lost their way home: the Melancholic Fairy Queen at Lough Gur weeps beside a door that will not open, and Evern in Breifine keeps a ring of stones the frontier keeps were built around.\n\nOlder still are the powers of the bogs and lakes, which were never anyone's courtiers. Badb, the crow of war, wakes at dusk in the Bog of Cullen and smells battles coming. Queen Cliodna holds court among its reeds with a song that once healed. Hibernians have lived beside all of these for as long as there have been Hibernians. The old grandmothers' lists of places not to go after dark are, in the end, a map of where the Veil is thin.",
+  "legend": "Learn the hours: half the old named come only at night, and some only after you have killed their servants. In the Cursed Forest pull one thing at a time, because everything there has friends. Fairies first at Evern's stones. Steel, not spells, for the fairy thorn. And never whistle on the Cullen road after dark. Players call region 200 'the old country' and the frontier 'the hills'. Most of the realm's named old ones keep hours, the veterans say: Badb and the fairy queen only by night, Develin only after his pookas suffer. Every guild has a grandmother's list. Ours says: the Cursed Forest never, the Cullen road not after dusk. Never whistle on any of these roads after dark.",
+  "atmosphere": {
+    "firstEntry": [
+      "Hibernia is kind by day. Mind the night.",
+      "The old places of the realm are watching.",
+      "Old stones, old lakes, and older neighbours.",
+      "The Veil is thin here, the druids say."
+    ],
+    "areas": [
+      {
+        "name": "the Cursed Forest",
+        "x": 490000,
+        "y": 515000,
+        "z": 2600,
+        "radius": 24000,
+        "lines": [
+          "The trees here walk, and some of them rot.",
+          "Something was spilled in this wood. It stayed.",
+          "Fires burn on nothing between the trees."
+        ]
+      },
+      {
+        "name": "the Bog of Cullen",
+        "x": 386000,
+        "y": 748500,
+        "z": 5600,
+        "radius": 9000,
+        "lines": [
+          "Crows on every post, all facing the same way.",
+          "Reeds whisper with a queen's voice.",
+          "The road is safe by day. Only by day."
+        ]
+      },
+      {
+        "name": "Lough Gur at night",
+        "x": 309089,
+        "y": 733925,
+        "z": 6599,
+        "radius": 3000,
+        "lines": [
+          "Someone is weeping by the water.",
+          "Trumpets, faint, from no instrument at all."
+        ]
+      },
+      {
+        "name": "Evern's stones",
+        "x": 429883,
+        "y": 380409,
+        "z": 2328,
+        "radius": 2500,
+        "lines": [
+          "A ring of stones. Small lights land and rise.",
+          "The keeps were built around these stones.",
+          "Fairies settle on the stones, and rise mended."
+        ]
+      },
+      {
+        "name": "the blighted hollow",
+        "x": 475928,
+        "y": 503020,
+        "z": 5259,
+        "radius": 2000,
+        "lines": [
+          "The ground is sick here, and it is spreading.",
+          "Fire, rot, flesh, then bone. In that order."
+        ]
+      },
+      {
+        "name": "the dark man's clearing",
+        "x": 470547,
+        "y": 531497,
+        "z": 4984,
+        "radius": 1800,
+        "lines": [
+          "Dark men stand in a circle, waiting for someone.",
+          "A giant's ghost is bound to their bodies."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the cursed forest was a court wood once. [something got spilled there|neither court will go back]",
+      "half the old named in hibernia only come out at night. [badb, the fairy queen, develin|learn the hours]",
+      "even the courts step around juggernaut. [i am not testing it|me too]",
+      "when you hear trumpets at lough gur after dark, the [fairy queen|melancholic queen] is up",
+      "the elves raised the veil after quarrels with the firbolg. [the lurikeens helped|so the sages say]",
+      "the veil was never a wall, more like cloth. [cloth wears thin|thats why we have neighbours]",
+      "the seelie and unseelie bargained in the cursed forest until a bargain broke. [now look at it|the wood went bad]",
+      "the unseelie took the silvermine after the wood broke. [coruscating mine|slaves and silver]",
+      "the grandmothers' lists of places not to go after dark are a map of where the veil is thin",
+      "badb and cliodna were never anyone's courtiers. [older than the courts|bog powers]",
+      "evern's stones were there before the frontier keeps. [the keeps went up round them|nobody could move them]",
+      "the melancholic fairy queen is bright court, locked out. [lost her way home|door wont open]"
+    ],
+    "rumour": [
+      "[heard|someone said] the blight in the cursed forest is spreading [again|toward the road]",
+      "crows all over the cullen road tonight. [badb must be up|something is coming]",
+      "[heard|someone said] the veil is thinner this year. more trumpets at lough gur",
+      "[word is|heard] the courts are bargaining again somewhere. [nobody knows where|not the cursed forest]",
+      "the cullen road had crows on every post [last night|tonight]. badb",
+      "[heard|someone said] the blight in the cursed forest reached the road again",
+      "[word is|heard] a lurikeen in tir na nog says the elves will come back through the veil one day",
+      "someone saw evern's fairies [flying west|leaving the stones]. [bad sign|never happens]"
+    ],
+    "tell": [
+      "the cursed forest is full of old named. juggernaut, the horror horse, the fairy thorn, the blight. one at a time",
+      "bog of cullen has badb and queen cliodna, lough gur has the fairy queen at night, evern is in breifine",
+      "old named in hibernia? cursed forest has most, bog of cullen has badb and cliodna, lough gur the fairy queen, evern in breifine",
+      "is the cursed forest hard? everything there has friends. one pull at a time, bring a full group",
+      "what are the night named? badb in the bog, the melancholic fairy queen at lough gur, develin in the cursed forest",
+      "whats on the frontier? mount collory, cruachan gorge, breifine and emain macha. keeps, evern, and marfach under breifine"
+    ]
+  },
+  "loremaster": {
+    "intro": "The realm has old places it does not go after dark: the [Cursed Forest], the [Bog of Cullen], [Lough Gur] at night, and the [stones] in Breifine. They were here before us.",
+    "topics": {
+      "Cursed Forest": "A wood of the courts once, where Seelie and Unseelie bargained until something was spilled. Its trees walk, its fires burn on nothing, and [Juggernaut] walks through it.",
+      "Juggernaut": "The courts step around him. So should you, unless you have a raid behind you.",
+      "Bog of Cullen": "Badb the war-crow nests there and wakes at dusk. Queen Cliodna holds court among the reeds.",
+      "Lough Gur": "A fairy queen weeps by the water at night. Trumpets sound when she comes. Her guards come with her.",
+      "stones": "Evern's ring, older than the frontier keeps. The fairies that land on his stones keep him alive.",
+      "Veil": "The cloth the elves raised between this world and the Otherworld when they withdrew. It wears thin, and where it is thin, neighbours stay.",
+      "courts": "The bright court and the dark court, Seelie and Unseelie. They bargained in the [Cursed Forest] until a bargain broke.",
+      "frontier": "Mount Collory, Cruachan Gorge, Breifine and Emain Macha, the hills where the keeps stand. [stones] older than any keep stand there too."
+    }
+  },
+  "book": {
+    "title": "Places the Realm Does Not Go After Dark",
+    "pages": [
+      "Kept by Derbáil, a grandmother of Ardee, and copied by her granddaughter for the library at Tir na Nog. My own grandmother kept a list, as every grandmother in Hibernia does, and I have kept it after her and added to it. The Cursed Forest, at any hour. The Cullen road after dusk, because the crows wake and the queen of the bog does not like company. Lough Gur after dark, if you hear trumpets. The stones in Breifine, always. She did not say these places were evil. She said they were occupied, and that the occupants were there first.",
+      "Of the Cursed Forest she said more. It was a court wood, where the bright folk and the dark folk met to bargain, and one night a bargain broke and something was spilled that neither court would take back. The trees went bad from the root. The ground grew blight, and the blight climbs out in four shapes. Things came to live there that the courts themselves will not name, a horse that is a horror and a thorn that is a man, and one walks through the wood as if it were a meadow. Even the courts give Juggernaut the road.",
+      "Of the bog she said: the crow was there first. Badb wakes at dusk and smells battles coming, and she has been restless every evening since the keeps on the frontier began to change hands. And among the reeds the old queen keeps her court. Her birds once sang the sick to sleep and woke them well. They sing still. My grandmother said you should never let a song in the Bog of Cullen finish, if you can help it. Walk faster, she said, and hum something of your own.",
+      "Of the lake and the stones she said: some of the Good Folk lost their way home when the Veil came down. The Melancholic Fairy Queen sits by a door at Lough Gur that will not open for her, and weeps, and trumpets play when she comes. Evern stands in his ring in Breifine, and the little fairies of the frontier keep him alive. When the realm built its keeps on those hills, it built around the stones because nobody could move them. Nobody, said my grandmother, ever asked Evern whether he minded.",
+      "I asked her once why we let them stay. She looked at me a long time. Child, she said, we are the ones who came later. The crow was in the bog before the first Hibernian built a fire. The stones stood in Breifine before anyone thought of a keep. We do not let them stay. They let us live beside them, and now and then the realm goes out with its swords to remind them we are good neighbours. That, she said, is what a good neighbour does in Hibernia. I have never heard it put better, so I have written it here."
+    ]
+  },
+  "bosses": [],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe",
+    "cursed-wood"
+  ],
+  "related": [
+    {
+      "id": "sheeroe-hills",
+      "relation": "the zone the Glimmer King holds"
+    },
+    {
+      "id": "marfach-caverns",
+      "relation": "the caves under Breifine"
+    },
+    {
+      "id": "muire-tomb",
+      "relation": "the tomb near Ardee"
+    },
+    {
+      "id": "coruscating-mine",
+      "relation": "the Unseelie mine under Silvermine"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "the isle in the west"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "silvermine-mountains",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "shannon-estuary",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cliffs-of-moher",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "lough-gur",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "bog-of-cullen",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "valley-of-bri-leith",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "connacht",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cursed-forest",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "mount-collory",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "cruachan-gorge",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "breifine",
+      "relation": "a zone of the region, with its own file"
+    },
+    {
+      "id": "emain-macha",
+      "relation": "a zone of the region, with its own file"
+    }
+  ]
+}

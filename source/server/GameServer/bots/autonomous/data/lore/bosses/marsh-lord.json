@@ -1,0 +1,78 @@
+{
+  "id": "marsh-lord",
+  "name": "Marsh Lord",
+  "npcNames": [
+    "Marsh Lord"
+  ],
+  "locationId": "avalon-marsh",
+  "realm": "Albion",
+  "aliases": [
+    "lord of the marsh"
+  ],
+  "facts": [
+    {
+      "text": "The Marsh Lord: NPC template 12025, level 32-35, the shamblers' and moss sheeries' model (571) at size 98, aggro level 0, no spells or styles, respawn interval 80, in the south-western meres at 429723, 668702.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 1 zone 9 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The Marsh Lord as the marsh's memory standing up, the herons on its shoulders and its patience with passers-by are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The bogmen say the shamblers are the marsh standing up: moss and mud and the roots of the reeds, bound round something underneath that the reed-folk do not name. The greatest of them stands in the south-western meres, taller than a house, with the water to its knees and herons on its shoulders, and the bogmen call it the lord of the marsh. The Camelot loremasters call it the Marsh Lord too, though they mean less by it.\n\nWhat it is lord of is the oldest question in the marsh. The bogmen say it is the marsh's own memory, grown so heavy over the ages of sea and lake and fen that it had to stand up to carry it; the readers of Avalon, before the mist, wrote that every marsh in the west remembers the sea it was, and that this one remembered more than most. The Church says it is a heap of rot and should be burned.\n\nIt has never once raised a hand to anyone who did not raise one first. The bogmen fish in its shadow and cut reeds around its feet. Knights of Camelot ride past it with their swords out, and it lets them go by too. When a blade does bite it, it answers slowly and heavily, as the marsh answers everything, and the bogmen say that the lord of the marsh has never yet lost a quarrel it did not start. They also say that each time it falls, the meres are quiet for a little while, and then it is standing in them again.",
+  "legend": "The Marsh Lord is a big shambler in the south-western meres of Avalon Marsh, level 32 to 35, and it never starts a fight: you can walk right past it. If you want it, it is a plain melee mob with no spells, so a group of low thirties handles it easily; the risk is the shamblers around it, which do aggro, so clear them first. It respawns fast (the data says 80 seconds), so do not sit in the mere afterwards. Good for a group passing through, not worth a trip on its own.",
+  "yells": {
+    "aggro": [
+      "The mere heaves. Something tall turns toward you.",
+      "Herons lift from the Marsh Lord's shoulders."
+    ],
+    "phases": [],
+    "death": [
+      "The Marsh Lord sinks back into the mere."
+    ],
+    "slay": [
+      "The marsh takes another one."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A shape taller than a house stands in the mere.",
+      "Herons on its shoulders. It lets you pass."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Marsh Lord sinks. The meres go quiet."
+  },
+  "botLines": {
+    "briefing": [
+      "marsh lord, sw meres, low to mid 30s. wont aggro, plain melee",
+      "clear the shamblers round it first, those do aggro"
+    ],
+    "aftermathWin": [
+      "marsh lord down, now get out of the mere before it stands up again",
+      "easy, it doesnt even cast"
+    ],
+    "aftermathLoss": [
+      "pulled three shamblers with it, my bad"
+    ],
+    "rumour": [
+      "[heard|someone said] the marsh lord has never started a fight in its life",
+      "heard the bogmen fish right under the marsh lord"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "marsh lord",
+    "text": "The greatest of the shamblers of Avalon Marsh, taller than a house, standing in the south-western meres with herons on its shoulders. The bogmen say it is the marsh's memory standing up. It has never raised a hand to anyone who did not raise one first, and it does not stay down long."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought the Marsh Lord down in the meres in {minutes} minutes.",
+    "loss": "The Marsh Lord still stands in the meres; {raidLeader} of {realm} waded out without it."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

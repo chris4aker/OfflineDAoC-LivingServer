@@ -3,99 +3,157 @@
 # pass the news on. Each topic uses only the slots its event supplies (docs/bot-voices/TALKING-UPDATE-CONTENT.md).
 # New writing (see docs/bot-voices).
 
+# ---- siege_warning: {enemy} is marching on our {keep}, the battle has not begun (keep, enemy) ------------
+# The defenders' muster and march notices (scouts saw the army, the defense rally marches). Nothing is at the walls yet.
+@kind news
+@topic siege_warning
+@who *
+@realm *
+@invites news_siege_warning
+@needs witness
+gathering to defend {keep}, come help
+on the way to {keep}, {enemy} are marching on it
+heading to {keep} with the defense, need more
+[forming up|getting a group] to defend {keep}, [who is in?|come along|bring heals]
+@needs !witness
+scouts say {enemy} marching on {keep}
+{enemy_mod} army heading for {keep}, defenders needed
+heads up, {enemy} coming for {keep}
+anyone near {keep}? {enemy_mod} army on the way
+[{enemy} are|a big {enemy_mod} army is] [marching on|heading for|going for] {keep}, [get there first|defend it|who can go?]
+[heads up|warning|psa], {keep} [is next|is their target|is where they are going]. [get to the walls|defenders needed|go help]
+@who Daredevil,NoLifer
+{enemy} want {keep}? lets meet them there
+@who *
+@needs !witness,newbie
+it says {enemy} are coming for {keep}? is that one ours?
+@needs !witness,veteran
+{enemy} going for {keep}, everyone who is 40+ please go
+
 # ---- siege_defend: {enemy} is attacking our {keep} now (keep, enemy) ----------------------------------
+# The battle has begun (or the keep is under attack). No claims of doors, rams, oil or a head count: nothing checks them.
 @kind news
 @topic siege_defend
 @who *
 @realm *
 @invites news_siege_defend
 @needs witness
-they are on the door at {keep}, need bodies now
-{enemy} rams on the outer door at {keep}, get here
-inner door at {keep} is going, anyone??
-holding {keep} with like four people, we need more
-oil is up at {keep} but the rams keep coming, help
+fighting at {keep} now, need defenders
+{keep} is getting hit hard, get here
+we need bodies at {keep}, now
+on the walls at {keep}, could use healers
+[fighting|holding] at {keep}, [need more people|get here|healers please]
 @who Daredevil,NoLifer
 {keep} is full of {enemy}, come get some rp
 @who *
 @needs !witness
 {keep} under attack by {enemy}, anyone close?
-heard {enemy} is hitting {keep}, defenders needed
+heard {enemy} hitting {keep}, defenders needed
 {keep} is getting sieged, who can go?
-{enemy} at {keep} again, they never leave it alone
-defend {keep}! {enemy} on the doors
-@who Leveler
-@who *
+defend {keep}! {enemy} are on it
+[{keep} is under attack|{enemy} are hitting {keep}|{keep} is getting hit], [anyone close?|who can go?|defenders needed]
+[go|get to|everyone to] {keep}, [{enemy} are on it|its under attack|they need defenders]
 @needs !witness,newbie
 it says {keep} is under attack? is that one ours?
 @needs !witness,veteran
-{enemy} on {keep} again, everyone who is 40+ please go
+{enemy} on {keep}, everyone who is 40+ please go
+
+# ---- siege_muster: our army is forming up to hit {keep}, an {enemy} keep; the battle has not begun ---------
+@kind news
+@topic siege_muster
+@who *
+@realm *
+@invites news_siege_muster
+@needs witness
+forming up to hit {keep}, meet at the siege camp
+at the siege camp for {keep}, need more bodies
+waiting at the camp for {keep}, come join
+[forming|gathering] for {keep}, [need more|healers please|come to the siege camp]
+@needs !witness
+army is forming up for {keep}, who wants in?
+heard we are going for {keep}, siege camp is the place
+{keep} attack forming, get to the siege camp
+who is coming to {keep}? they are forming up now
+[army|zerg|our side] [forming for|going for|gathering for] {keep}, [anyone want in?|siege camp|need more]
+[want rp?|bored?|need rp?] [we are going for|army is forming for] {keep}. [siege camp|come along|get there]
+@who Daredevil
+finally a keep fight. {keep}, siege camp, go
+@who *
+@needs !witness,veteran
+{keep} attack forming, everyone 40+ please go
 
 # ---- siege_attack: our army is hitting {keep}, an {enemy} keep (keep, enemy) ---------------------------
+# The battle has begun. No claims of doors, rams, the lord room or how many defend.
 @kind news
 @topic siege_attack
 @who *
 @realm *
 @invites news_siege_attack
 @needs witness
-rams on the door at {keep}, need more people hitting it
-outer door at {keep} is down, push in
-we are at {keep}, {enemy} barely defending, come get rp
+we are hitting {keep}, need more people
+fighting at {keep} now, come help
 sieging {keep}, could use a few healers up here
-lord room at {keep} soon, hurry
+at {keep} with the army, bring heals
+[hitting|fighting at|sieging] {keep}, [need more|come help|need heals]
 @needs !witness
 zerg is hitting {keep}, go go
-our army is on {keep}, anyone want in?
-heard we have rams on {keep}, free rp if you hurry
+our army is parked on {keep}, who is coming?
+heard our army is at {keep}, free rp if you hurry
 big push on {keep} right now
-{keep} is under our siege, the {enemy} are slow to show
+{keep} is under our siege, come help
+[our army|the zerg|our side] [is on|is hitting|is at] {keep}, [anyone want in?|go go|free rp]
 @who Daredevil
 whole realm on {keep}, finally some action
 @who *
 @needs !witness,veteran
-taking {keep} from the {enemy} again, how many times is this now
+{keep} siege going, everyone 40+ please go
 
 # ---- siege_held: we held {keep} against {enemy} (keep, enemy) ------------------------------------------
+# Also when the attackers only ran out of time: no claims of doors, rams or how they broke.
 @kind news
 @topic siege_held
 @who *
 @realm *
 @invites news_siege_held
 @needs witness
-held {keep}! {enemy} gave up and ran
+held {keep}! {enemy} gave up
 we held {keep}, gj everyone who came
-door held at {keep}, ty to the healers
-{enemy} broke on the inner door at {keep}, gg
-their rams are all dead at {keep}, they are pulling back
+{keep} held, ty to the healers
+{enemy} couldnt take {keep}, gg
+{keep} is still ours, they are pulling back
+[held|we held|kept] {keep}[!|, gj all|, ty for coming]
 @needs !witness
 heard we held {keep} vs {enemy}, nice
 {keep} held, {enemy} went home empty
-{keep} still ours, the {enemy} zerg fell apart
-good news, {keep} held
+{keep} still ours, {enemy} went home
+{keep} held, good news for once
+[heard|good news,] {keep} [held|is still ours][, nice|, gj whoever was there|]
 @who Socialite
 whoever held {keep}, you guys rock
 @who *
 @needs !witness,veteran
-{enemy} tried {keep} again and bounced, every single time
+{enemy} tried {keep} and bounced. good
 
 # ---- siege_failed: our attack on {keep} failed (keep, enemy) -------------------------------------------
+# Also when the siege only ran out of time: no claims of wipes, doors, rams or casters.
 @kind news
 @topic siege_failed
 @who *
 @realm *
 @invites news_siege_failed
 @needs witness
-we got pushed off {keep}, too many {enemy} defenders
-wiped at the door of {keep}, releasing
-{keep} attack is over, they had casters on the walls the whole time
-lost the rams at {keep}, back to the portal keep
-{enemy} zerg showed up at {keep} and that was that
+{keep} didnt happen, calling it
+{keep} attack is over, didnt get it
+no {keep} tonight, back to the portal keep
+{enemy} held {keep}, that was that
+[{keep} is off|calling {keep}|no luck at {keep}], [next time|maybe later|oh well]
 @needs !witness
 heard the {keep} push failed
 attack on {keep} fell apart, {enemy} held it
 {keep} siege is done, didnt work out
 so much for taking {keep}
-{enemy} still has {keep}, our guys got wiped
+{enemy} kept {keep}, oh well
+[{keep} attack|the {keep} push|{keep} siege] [failed|is over|didnt work], [next time|oh well|too bad]
 @who Leveler
 {keep} raid failed, back to xp i guess
 
@@ -114,11 +172,13 @@ we took {keep}, gj all
 @needs !witness
 we took {keep} from {loser}!
 {keep} is ours now, nice work whoever was there
-heard we have {keep} again
+so {keep} is ours now, nice
 {loser} lost {keep} to us, gj realm
 {keep} flipped to us, finally
+[we took|we got|just took] {keep}[!|, gj realm|, ty all who went]
+[heard|word is] we [took|have] {keep} now
 @who NoLifer
-{keep} back where it belongs
+{keep} is ours, the way it should be
 @who Socialite
 we took {keep}!! go realm
 
@@ -133,12 +193,14 @@ we took {keep}!! go realm
 lost {keep}, there were too many of them
 {keep} fell, {winner} got through both doors
 we lost {keep}, i died on the inner door
-{winner} has {keep}, sorry all, we couldnt hold it
+{winner} got {keep}, sorry all, we couldnt hold it
 @needs !witness
-heard {winner} took {keep}
-we lost {keep} to {winner}
-{keep} is gone, {winner} has it now
-{winner} took {keep}, again
+heard {keep} went to {winner}
+{keep} fell to {winner}, figures
+{keep} is gone, {winner} got it
+{winner} took {keep}
+[lost|we lost] {keep} to {winner}[, ugh|. take it back?|]
+[heard|word is] {winner} [took|got] {keep}[, ugh|. anyone forming?|]
 {keep} lost... anyone know how many they had?
 @who NoLifer
 {winner} on {keep} the minute nobody is looking, every time
@@ -157,12 +219,13 @@ um, it says {winner} took {keep}? is that bad?
 saw {winner} take {keep} from {loser}, big zerg
 {loser} lost {keep} to {winner}, i was hiding by the walls lol
 @needs !witness
-{winner} took {keep} from {loser}
+{keep} went from {loser} to {winner}
 heard {loser} lost {keep} to {winner}
 {winner} and {loser} fighting over {keep}, let them
 {keep} went to {winner}, {loser} must be busy elsewhere
-{winner} has {keep} now, they are getting big
-keep map shows {keep} as {winner} now, {loser} lost it
+{winner} took {keep} too, they are getting big
+/realm shows {keep} as {winner} now, {loser} lost it
+[{winner} took|{winner} got] {keep} [from|off] {loser}[. let them fight|. good|]
 @who Daredevil
 {loser} lost {keep}, somebody should go clean up what is left
 @who *
@@ -178,24 +241,28 @@ keep map shows {keep} as {winner} now, {loser} lost it
 @needs witness
 {enemy} just walked off with {relic}, we couldnt stop them
 they got {relic} out the door, i saw the carrier run
-relic keep fell, {enemy} has {relic}
+relic keep fell, {enemy} got {relic}
 @needs !witness
 {enemy} took {relic}!
 we lost {relic} to {enemy}
-{relic} is gone, {enemy} has it now
+{relic} is gone, {enemy} got it
 heard {enemy} got {relic}, how
-{relic} is in {enemy} hands, relic raid anyone?
+{enemy} have {relic} now, relic raid anyone?
+[we lost|lost] {relic} [to {enemy}|]. [relic raid when?|we need it back|ugh]
 @who NoLifer
 lost {relic}, nobody was watching the relic keep
 @who Leveler
-{enemy} has {relic}, there goes our bonus
+{enemy} got {relic}, there goes our bonus
 @who *
 @realm alb
 @about place
 {enemy} took {relic}, camelot is going to be grumpy for a week
 @realm hib
 @about place
-{enemy} has {relic}, tir na nog will be all doom and gloom
+{enemy} got {relic}, tir na nog will be all doom and gloom
+@realm mid
+@about place
+{enemy} got {relic}, jordheim will be drinking angry tonight
 @about
 @realm *
 
@@ -206,15 +273,16 @@ lost {relic}, nobody was watching the relic keep
 @realm *
 @invites news_relic_won
 @needs witness
-we have {relic}! carrier made it home
-{relic} is ours, i ran it back myself
-took {relic} from {loser}, carrier is on the way home
+we have {relic}! the carrier made it home
+{relic} is ours, watched the carrier bring it in
+took {relic} from {loser}, its in our shrine
 @needs !witness
 we took {relic} from {loser}!
 {relic} is ours now, gj realm
 heard we grabbed {relic} off {loser}
 {loser} lost {relic} to us, wow
 relic raid worked, {relic} is ours
+[we got|we took|we have] {relic}[!|, gj realm|, ty carriers]
 @who Daredevil
 {relic} taken, {loser} will come for it, be ready
 @who Socialite
@@ -228,9 +296,9 @@ relic raid worked, {relic} is ours
 @invites news_relic_back
 @needs witness
 {relic} is back in its keep, i saw it go in
-carried {relic} home myself, hands still shaking
+saw {relic} carried home, the whole escort was cheering
 {relic} is home, gj everyone on the escort
-walked {relic} in the gate with half the realm behind me
+{relic} came in the gate with half the realm behind it
 @needs !witness
 {relic} is back home
 we got {relic} back
@@ -238,8 +306,9 @@ we got {relic} back
 heard {relic} is home, finally
 {relic} home again, bonus is back
 {relic} made it back, someone tell the guards to stay awake this time
+[{relic} is home|{relic} is back][!|, gj all|, ty to the escort]
 @who Leveler
-{relic} back, good, my damage was sad without it
+{relic} back, good, kills will go faster now
 
 # ---- df_won: Darkness Falls is ours (no slots) ---------------------------------------------------------
 @kind news
@@ -248,16 +317,13 @@ heard {relic} is home, finally
 @realm *
 @invites news_df_won
 @about place
-@needs witness
-we have df! watched the keep count tip just now
-df is ours, saw it flip while i was out at the keeps
-@needs !witness
 darkness falls is ours, go farm seals
 df is ours again
 heard we have df, anyone want to go?
 df open! who wants a group
 we got darkness falls back, nice
 df open again, the keep count finally went our way
+[df is ours|we have df][!|, go farm seals|, lfg df]
 @who Explorer
 df is ours, finally get to see the lower levels
 @who Crafter
@@ -274,18 +340,14 @@ everyone says df is ours, what is df?
 @realm *
 @invites news_df_lost
 @about place
-@needs witness
-{winner} has df now, got kicked out mid pull
-just got ported out of df, {winner} has it
-{winner} took df, we all got booted out
-@needs !witness
-{winner} has darkness falls now
+{winner} got darkness falls
 lost df to {winner}
-df is gone, {winner} has it
+df is gone, {winner} got it
 heard {winner} got df
-{winner} owns df now, there go my seals
+{winner} got df, there go my seals
+[lost df|df is gone][, ugh|, back to the old camps|. need more keeps]
 @who NoLifer
-{winner} has df, we need more keeps
+{winner} got df, we need more keeps
 @who Leveler
 df lost, back to the old camps
 @about
@@ -297,8 +359,8 @@ df lost, back to the old camps
 @realm *
 @invites news_raid_forming
 @needs witness
-forming for {raid} at the zone in, need more
-raid for {raid} at the entrance, pst the leader for an invite
+forming for {raid}, need more 50s
+{raid} raid forming, pst the leader for an invite
 we are gathering for {raid}, healers please
 @needs !witness
 raid forming for {raid}, anyone?
@@ -306,7 +368,8 @@ raid forming for {raid}, anyone?
 someone is putting together {raid}, pst the leader
 heard there is a {raid} raid forming
 {raid} raid going up, bring buffs and patience
-anyone 45+ want a {raid} spot? they are short a few
+anyone 50 want a {raid} spot? they are short a few
+[{raid} raid|raid for {raid}] [forming|going up][, need 50s|, healers wanted|, pst the leader]
 @who Leveler
 {raid} raid? only if the loot is good
 @who *
@@ -331,6 +394,7 @@ heard the raid killed {boss}
 {boss} is dead, wonder what dropped
 the raid finally put {boss} down, {raid} is clear
 realm killed {boss} in {raid}, good stuff
+[{boss} is down|{boss} died][!|, gz raid|, nice]
 @who Socialite
 they killed {boss}!! gz all
 
@@ -351,31 +415,9 @@ heard {boss} wiped the raid
 {raid} raid wipe, {boss} won that one
 {boss} 1, raid 0
 {raid} went bad, wiped on {boss}
+[raid wiped on|the raid lost to] {boss}[, ugh|. next time|]
 @who Daredevil
 wiped on {boss}? i want in on the next try
-
-# ---- enemy_seen: a {size}-strong {enemy} group seen in {zone} (enemy, zone, size) ----------------------
-# {zone} needs a place flag: lines that name the zone are said from RvR; a relay from elsewhere leaves it out.
-@kind news
-@topic enemy_seen
-@who *
-@realm *
-@invites news_enemy_seen
-@needs witness,in_rvr
-inc {size} {enemy} in {zone}
-{size} {enemy} just ran past me in {zone}
-{enemy} group in {zone}, about {size}, careful
-i see {size} {enemy} in {zone}, they are moving fast
-@needs !witness,in_rvr
-{size} {enemy} seen in {zone}, watch out
-heard {size} {enemy} are roaming {zone}
-{enemy} zerg in {zone}, {size} or so
-heads up, {size} {enemy} spotted in {zone}
-@needs !witness
-{size} {enemy} out roaming, stay sharp
-{enemy} group of {size} out there, careful
-@who Daredevil
-{size} {enemy}? lets go find them
 
 # The talking update audit: only a bot at a camp is stuck at one
 @kind news

@@ -1,0 +1,66 @@
+{
+  "id": "fisk",
+  "name": "Fisk",
+  "npcNames": [
+    "Fisk"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "sjoalf"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Fisk is a level-42 sjoalf (faction Sjoalf) on the coast of Modernagrav (435,126/338,778) among sjoalf breakers and waverunners (36-41); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish fisk is 'fish'; Fisk as the waverunners' leader is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines; Swedish (to verify)"
+    }
+  ],
+  "story": "Fisk leads the waverunners. The sjoalf of Modernagrav's coast have breakers who stand in the surf and waverunners who run on it, and Fisk is the fastest of them, the island folk say, a sea-elf who can cross the bay on the backs of the waves before a boat could be launched. His name is only fish, in the north tongue; the Remnants gave it to him, because nobody could catch him.\n\nHe carries the cult's word along the coast between Pirmin's tide-line and the strange sjoalf in the north whom Shiake will not name, and Orri of Hagall thought he was the one who brought the order to roll the great rib into the sea. He fights strangers in the shallows with the breakers round him, and when he falls the waverunners go still, the slate-writers say, as if the sea had stopped. The sjoalf say the sea taught him to run.",
+  "legend": "Fisk is a level 42 sjoalf on Modernagrav's coast with sjoalf breakers and waverunners (36-41) round him. Sjoalf faction. The breakers and waverunners round him are close to his level, so it's a camp fight. The breakers stand in the surf, so you end up fighting in the water. Pull Fisk up the beach if you can. The camp is close to Pirmin's beachcombers, so don't run north along the tide-line while you fight. A mid-40s group does it fine.",
+  "yells": {
+    "aggro": [
+      "Catch me? Nobody catches Fisk.",
+      "Breakers! Waverunners!"
+    ],
+    "death": [
+      "Caught..."
+    ],
+    "slay": [
+      "Too slow."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sea-elves run on the waves. One runs faster."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "fisk is the 42 sjoalf with the breakers and waverunners on the modernagrav coast",
+      "sjoalf faction, camp fight"
+    ],
+    "aftermathWin": [
+      "fisk down",
+      "caught the fish"
+    ],
+    "rumour": [
+      "fisk carries the sjoalf cults word along the modernagrav coast",
+      "the remnants named fisk fish because nobody could catch him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fisk",
+    "text": "The fastest of the sjoalf waverunners on Modernagrav's coast, named fish by the Remnants because nobody could catch him. He carries the cult's word. See [Orri]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} caught Fisk in the shallows of Modernagrav in {minutes} minutes."
+  }
+}

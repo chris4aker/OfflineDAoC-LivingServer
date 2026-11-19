@@ -34,7 +34,7 @@ namespace DOL.GS
             if (EpicEncounterActors.IsCombatant(source))
             {
                 Point3D spawn = new Point3D(SpawnPoint.X, SpawnPoint.Y, SpawnPoint.Z);
-                if (EpicEncounterMechanics.AllowPositionPuzzle && !source.IsWithinRadius(spawn,800))//dont take any dmg 
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(this) && !source.IsWithinRadius(spawn,800))//dont take any dmg 
                 {
                     if (damageType == eDamageType.Body || damageType == eDamageType.Cold || damageType == eDamageType.Energy || damageType == eDamageType.Heat
                         || damageType == eDamageType.Matter || damageType == eDamageType.Spirit || damageType == eDamageType.Crush || damageType == eDamageType.Thrust
@@ -63,12 +63,12 @@ namespace DOL.GS
             INpcTemplate npcTemplate = NpcTemplateMgr.GetTemplate(60159351);
             LoadTemplate(npcTemplate);
 
-            ConservatorBrain.spampoison = false;
-            ConservatorBrain.spamaoe = false;
             RespawnInterval = ServerProperties.Properties.SET_SI_EPIC_ENCOUNTER_RESPAWNINTERVAL * 60000; //1min is 60000 miliseconds
             Faction = FactionMgr.GetFactionByID(96);
 
             ConservatorBrain sBrain = new ConservatorBrain();
+            sBrain.spampoison = false;
+            sBrain.spamaoe = false;
             SetOwnBrain(sBrain);
             LoadedFromScript = false; //load from database
             SaveIntoDatabase();
@@ -195,8 +195,8 @@ namespace DOL.AI.Brain
             }
             return 0;
         }
-        public static bool spampoison = false;
-        public static bool spamaoe = false;
+        public bool spampoison = false;
+        public bool spamaoe = false;
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))

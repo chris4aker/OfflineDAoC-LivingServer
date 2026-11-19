@@ -1,0 +1,71 @@
+{
+  "id": "smastein",
+  "name": "Smastein",
+  "npcNames": [
+    "Smastein"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "caldera-elements"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Smastein is a level-37 golem (faction Elements of the Caldera; the living stones' model) in Delling's caldera (362,486/306,489) among pumice golems (37), noxious fumes, a vapor element and a sulphur-stained skeleton; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Gem of the Dwarven King' (Abjorn Onefoot of Hagall): find Ornulf by a rock outside Dellingstad, read the note, kill the golems Smastein, Klippe and Kampestein, then use the three keys on the box in the caldera's steam vent.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Swedish sma sten is 'small stones'.",
+      "provenance": "myth",
+      "source": "Swedish (to verify)"
+    }
+  ],
+  "story": "Smastein is the small stones, the least of the three golems of the caldera who keep the dwarven king's keys. Ornulf's note says the dwarf king gave the first key to the smallest keeper so that those who came for the gem would be tempted to think the rest would be as easy. The dwellers of Dellingstad say this is the cleverest part of the story and the only part the dwarf king meant as a joke.\n\nSmastein is pumice and pebble held together by the caldera's heat, a heap of little stones that walks, among the pumice golems in the fumes of the southern floor. It is the first key every seeker takes. The soothsayers say it rattles when it moves, and that the young who hear the rattle and laugh are the ones who end up beside Klippe. Nobody in the town has ever seen it sit still.",
+  "legend": "Smastein is a level 37 caldera golem among pumice golems (37) and noxious fumes on the south of the caldera floor; the first and easiest key for Gem of the Dwarven King. Elements of the Caldera faction. He's the easiest of the three golem keys, so most groups start with him. The noxious fumes drift around the floor and hit hard for their level. Pumice golems are its level.",
+  "yells": {
+    "aggro": [
+      "(A rattle of small stones.)",
+      "(The little golem clatters toward you.)"
+    ],
+    "death": [
+      "(The stones scatter. A key among them.)"
+    ],
+    "slay": [
+      "(Rattle.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A heap of small stones walks in the fumes."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "smastein is the 37 golem, first and easiest key",
+      "pumice golems and fumes round it"
+    ],
+    "aftermathWin": [
+      "got smasteins key",
+      "easy, now the hard two"
+    ],
+    "rumour": [
+      "smastein is the dwarf kings joke, the first key is easy so you think the rest will be",
+      "the ones who laugh at smasteins rattle end up next to klippe"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Smastein",
+    "text": "The small stones, the least of the three caldera golems who keep the dwarven king's keys: the dwarf king's one joke. See [caldera]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} scattered Smastein for its key in Delling's caldera in {minutes} minutes."
+  }
+}

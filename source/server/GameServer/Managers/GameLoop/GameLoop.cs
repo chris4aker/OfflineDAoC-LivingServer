@@ -109,6 +109,8 @@ namespace DOL.GS
         private static void TickServices()
         {
             Diagnostics.StartPerfCounter(THREAD_NAME);
+            // Living Server 1.2: AI_PROFILE times the whole tick for its per-minute percentiles (measures only).
+            AiProfile.BeginTick();
 
             for (int i = 0; i < _tickSequence.Count; i++)
             {
@@ -116,6 +118,7 @@ namespace DOL.GS
                 ExecutionContext.Run(tickStep.Context, TickCallback, tickStep.State);
             }
 
+            AiProfile.EndTick();
             Diagnostics.StopPerfCounter(THREAD_NAME);
             Diagnostics.Tick();
 

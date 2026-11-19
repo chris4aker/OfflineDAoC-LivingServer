@@ -1,0 +1,127 @@
+{
+  "id": "leorcelis-grant",
+  "name": "Leorcelis Grant",
+  "npcNames": [
+    "Leorcelis Grant"
+  ],
+  "locationId": "black-mountains-north",
+  "realm": "Albion",
+  "aliases": [
+    "the necromancer of the cemetery",
+    "leorcelis"
+  ],
+  "facts": [
+    {
+      "text": "Leorcelis Grant: template 12114, level 51-52, a human model with an equipment template, in the druids' cemetery west of Snowdonia Station at 495297, 408074; aggro level 0, no faction, no spells or styles, parry 5 and evade 5, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Sir Gerenth (228 away) and Sergeant Cosworth (559 away) of the druids of southern Albion lie beside him, with undead druids and filidh of the Salisbury Undead between 322 and 610 away; he shares a faction with none of them.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A template with ReplaceMobValues sets the spawn's faction and aggro; an NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Albion's necromancers are priests of Arawn, lord of the underworld, in the Temple of Arawn (the necromancer trainer's text).",
+      "provenance": "game",
+      "source": "source/server/GameServer/trainer/albion/NecromancerTrainer.cs"
+    },
+    {
+      "text": "His name is unglossed (an invented hill-folk name; 'Grant' is an English surname). The register of the burying ground, the quarrel of Arawn's craft with Morgana's raising, his answers at Swanton's gate and the three readings of him are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "West of Snowdonia Station the druids of the south keep a burying ground, and in the years after Arthur they buried their own there and some of the realm's dead besides. Then Morgana came through it on her way to somewhere else, and left Sir Gerenth, a knight of Albion, standing up in his grave with his sergeant Cosworth beside him, and handed them to the druids to keep. The stones have not been quiet since. The druids' own dead and their poets walk among them at night, and a necromancer walks with them whom the hill-folk call Leorcelis Grant.\n\nHe came up the road from the south some years after Morgana, through Swanton's gate. Cadwgan the gate-warden asked him the keep's three questions and wrote down the answers: who sent him (his lord), what he carried (the names) and who would answer for him (the dead). His lord is Arawn. He does not deny it. The necromancers of Albion hold the old teaching that the dead are the Lord of the Underworld's, to be lent and not taken, and that a raising made without leave is a theft from him. Morgana raised Sir Gerenth without asking anyone. Leorcelis Grant came to the burying ground to find out how she did it, and he has been reading it ever since.\n\nHe keeps a register. Every stone, every name the druids cut, every dead poet that gets up and walks: he takes their rubbings and writes them in a book. He raises nothing himself. The living he does not look at unless they lay a hand on him, and the farmers who cut through the burying ground on the way to market say he has stood aside on the path for them. But the dead in that ground are not his, and when he is troubled not one of them raises a hand for him. Sir Gerenth stands a few paces off and watches him read; nobody knows what the knight thinks of it.\n\nThree readings of him are given. Lieutenant Brude of the frontier, who wants Sir Gerenth laid and his bone dagger brought home, says Leorcelis is Morgana's watchman and the register a list of what she may call on. The druids say he is a guest of the ground and the only one who has ever written their dead down. The Church at Ludlow says a man who keeps a register of the dead for a god is the same as a clerk in Camelot, and is to be prayed for, not feared. What none of them knows is what he does when the register is complete. He has been seen at the station at dusk, asking the cold lad his name. The lad would not give it, and his books went into the horse-pond.",
+  "legend": "Leorcelis Grant is a level 51-52 necromancer walking the druids' cemetery west of Snowdonia Station in Black Mountains North. He never aggros and has no faction, so the undead druids and filidh around him will not join if you hit him, and neither will Sir Gerenth or Sergeant Cosworth (they bring their own skeletons only if YOU hit them, so do not clip them with area spells). The data gives him no spells and no styles, only a crushing weapon and a little parry and evade: a plain melee kill for two or three fifties. He wanders a few paces among the stones. He respawns in about 80 seconds. Leave him alone below fifty; the lowbies doing Departed Hero for Lieutenant Brude can walk right past him.",
+  "yells": {
+    "aggro": [
+      "You are not in the register.",
+      "Stand still. I am writing.",
+      "My lord will want your name."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Not one of you will rise for me? No. You are hers."
+      }
+    ],
+    "death": [
+      "Write it... down... someone...",
+      "The register... is not... complete..."
+    ],
+    "slay": [
+      "Entered.",
+      "A name for my lord.",
+      "Lent, not taken."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The druids' stones lean. Something reads them at night.",
+      "A book lies open on a gravestone."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The dead of the burying ground watch. None come."
+      }
+    ],
+    "realmFirstKill": "Leorcelis Grant is struck from his own register."
+  },
+  "botLines": {
+    "briefing": [
+      "leorcelis grant, 51-52 necro in the cemetery west of the station. never aggros, no spells, no faction",
+      "the undead druids round him wont join. dont aoe gerenth or cosworth though, they bring skellies",
+      "plain melee kill. two or three 50s. he wanders a bit between the stones",
+      "respawn is about 80 sec. kill him and clear out so the lowbies can do their quest"
+    ],
+    "aftermathWin": [
+      "necro down, register closed",
+      "nobody came for him, like the druids said",
+      "clean, kept the aoe off gerenth",
+      "80 sec respawn, move"
+    ],
+    "aftermathLoss": [
+      "somebody pbaoe'd and pulled gerenth and all his skellies",
+      "hes 52, not a lowbie mob, should have conned",
+      "lost the tank to the cemetery skellies, not to him",
+      "we chased him into the stones and pulled druids"
+    ],
+    "rumour": [
+      "[heard|someone said] leorcelis grant keeps a register of every stone in that cemetery",
+      "heard he's arawn's man and hates that morgana raised gerenth without asking",
+      "[heard|someone said] the cold lad threw the necromancer's books in the horse pond",
+      "heard he told the swanton gate the dead would answer for him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "leorcelis grant",
+    "text": "A necromancer of Arawn who walks the druids' [cemetery] west of [snowdonia station]. He came to learn how Morgana raised [sir gerenth] without the Lord of the Underworld's leave, and keeps a register of every stone and every dead thing that walks. He raises nothing and does not look at the living unless they touch him. The dead there are not his and will not stand for him. He once asked the [cauld lad] his name."
+  },
+  "bookPage": "From the Gate-Book of Swanton Keep, in the hand of Cadwgan, gate-warden. A man came to the gate in a dark coat with a satchel of books, and I asked him our three questions. Who sent you? My lord. What do you carry? The names. Who will answer for you? The dead. I let him through, because the answers were honest and because nobody in the keep would stand in his way. He went down to the druids' burying ground and he is there still. The farmers say he steps aside for them on the path. I have asked myself since whether the dead have ever answered for him, and the farmers say no. I wrote his answers in this book so that the next warden knows I asked.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} closed Leorcelis Grant's register in the druids' cemetery in {minutes} minutes.",
+    "loss": "Leorcelis Grant wrote {raidLeader}'s company of {realm} into his register."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn",
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "cauld-lad",
+      "relation": "asked the cold lad his name; his books went into the horse-pond"
+    },
+    {
+      "id": "black-mountains-north",
+      "relation": "walks the druids' cemetery where Morgana raised Sir Gerenth"
+    }
+  ]
+}

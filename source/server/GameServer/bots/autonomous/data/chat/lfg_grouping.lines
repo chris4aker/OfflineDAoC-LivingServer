@@ -11,7 +11,6 @@ lfg, {level} {class}, will travel
 @invites lfg
 any groups need a {level} {class}?
 @invites
-{level} {class} looking for a group, can be on in a minute
 lfg {camp} or anywhere with xp
 lf group, {class} {level}, have potions and patience
 lfg for a few hours, {level} {class}
@@ -39,21 +38,18 @@ tank lfg, {level}, i hold aggro and complain about it
 @who *
 @needs in_group
 @levels 1-50
-lfm at {camp}, {count} spots open
-group at {camp} needs a healer, pst
-lf tank for {camp}, we have heals and dps
-lfm {dungeon}, need {count} more
 @invites lfg
 anyone want to join us at {camp}? xp is steady
 @invites
-lf puller for {camp}, ours just logged
 @needs in_group,outdoors
 group has room near {zone}, all classes welcome
 @needs in_group
+lfm at {camp}, pst
+group at {camp} has room, pst
+lfm {dungeon}, pst
+{camp} group looking for more, pst
+lfm for {camp}, send a tell
+@needs in_group
 need one more for {camp}, pst
-lfm, healer and tank found, need dps
-group forming for {dungeon}, meet at the entrance
 @levels 20-50
-lf mezzer for {dungeon}, adds are killing us
-lf main assist, our last one was asleep at the keyboard
 lfm {dungeon} run, should take about an hour

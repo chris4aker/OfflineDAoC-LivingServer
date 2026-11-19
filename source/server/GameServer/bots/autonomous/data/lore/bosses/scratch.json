@@ -1,0 +1,85 @@
+{
+  "id": "scratch",
+  "name": "Scratch",
+  "npcNames": [
+    "Scratch"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Scratch: level 39, a small imp body (model 606, size 37) shared with the tunnel imps of the mine, at about 29,750/31,600 in the upper workings among gemclickers (35-40), gem-dusted skeletons and a rockbiter; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore (the mine's collar book): Scratch was taken from Ardagh; 'the collar did not make him cruel. It let him.'",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The collar book says Scratch was taken from Ardagh on a night like the night the groom was taken, and that this is the part nobody can understand: the collar did not make him cruel, it let him. The Ardagh folk who knew him remember a carter, a big man, loud in the silver market and quick with his fists. Nobody in the mine would know him by that. He is small now, thin and quick and grey in the skin, like the tunnel imps that live in the walls of the galleries, and the captives argue over whether the mine made him so or whether he made himself so, to please it.\n\nHe drives the hands in the upper workings, among the gemclickers that eat the spoil, and he has an ear for one sound above all others. The captives write to each other on the insides of their collars, small, where the overmen will not see, and the scratch of a nail on a collar is the one thing in the mine Scratch will cross a gallery to hear. The name is the captives' joke, and the only one they have.\n\nIn Ardagh his sister keeps his cart in her yard, its shafts down, and will not sell it. When the Howth miners ask her why, she says he will want it when he comes home, and the Howth miners do not tell her what they have heard.",
+  "legend": "Scratch (39) is a small, imp-bodied driver in the upper workings of Coruscating Mine (about 29.8k/31.6k), with gemclickers (35-40), gem-dusted skeletons and a rockbiter round him. Underviewer Treeal (42) is about 900 away. A group of high 30s. He is a small target and easy to lose among the gemclickers: clear round him first. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "I heard that. I hear all of it.",
+      "Back to the seam!"
+    ],
+    "phases": [],
+    "death": [
+      "Ardagh... the cart..."
+    ],
+    "slay": [
+      "Quiet now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something small and quick listens for scratching."
+    ],
+    "phases": [],
+    "realmFirstKill": "Scratch, the driver from Ardagh, is down."
+  },
+  "botLines": {
+    "briefing": [
+      "scratch is 39, small imp looking thing in the upper workings",
+      "gemclickers all round him, treeal is close"
+    ],
+    "aftermathWin": [
+      "scratch down. [tiny|grats]",
+      "lost him in the gemclickers twice lol"
+    ],
+    "aftermathLoss": [
+      "treeal joined. [rip|ouch]",
+      "couldnt see him in the gemclickers. [lol|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] scratch was a big carter from ardagh before the mine shrank him",
+      "his sister in ardagh still keeps his cart and wont sell it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Scratch",
+    "text": "The driver of the Coruscating Mine's upper workings, once a carter of Ardagh, now small and grey like the tunnel imps. The collar did not make him cruel, the captives say: it let him. He listens for nails on collars."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Scratch in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Scratch turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "underviewer-treeal",
+      "relation": "whose pace he drives"
+    },
+    {
+      "id": "silvermine-mountains",
+      "relation": "Ardagh, where he was taken"
+    }
+  ]
+}

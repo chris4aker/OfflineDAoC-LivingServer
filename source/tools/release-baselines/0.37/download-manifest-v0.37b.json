@@ -1,0 +1,57 @@
+{
+  "Version": "0.37b",
+  "Mode": "patch",
+  "Title": "Offline DAoC 0.37b (with the Sluaghbinder)",
+  "PatchVersion": "0.37",
+  "BaseVersions": [
+    "0.36"
+  ],
+  "NewInstallBase": "0.36b",
+  "GamePatch": {
+    "Release": "0.37b",
+    "RootFolder": "OfflineDAoC-v0.37-game-patch",
+    "Identity": {
+      "Path": "runtime/OfflineDAoC.dll",
+      "To": "673b5a75770cb7573e73f61ff5b03643078af71b6bec9af45b9660580c1de8f3",
+      "From": [
+        "49ba9c0b2475b35ca3abbe0ea6e123ccc5c97ef24123ac00978e6f5b5e2e3981"
+      ]
+    },
+    "Parts": [
+      {
+        "Name": "OfflineDAoC-v0.37-game-patch.zip",
+        "Bytes": 38084367,
+        "SHA256": "48FD6482433C4E66748BEE4842CB811DF87A16E8B82B65FD017B91DD46D769C1",
+        "UnpackedBytes": 179043029,
+        "Files": 216
+      }
+    ]
+  },
+  "ClientPatch": {
+    "Release": "0.37c",
+    "RootFolder": "OfflineDAoC-v0.37c-client-patch",
+    "Identity": {
+      "Path": "new-client/VERSION.txt",
+      "To": "230e6013e920273c7a399b892b92ab91cfa1381e61e845cb8f89b1692b283244",
+      "From": [
+        "3f368dfe5927bcc1e874ebe276d568b16d881a497907d69b37ce9d38aae4f029"
+      ]
+    },
+    "Parts": [
+      {
+        "Name": "OfflineDAoC-v0.37c-client-patch-part01.zip",
+        "Bytes": 904068156,
+        "SHA256": "1D9B5796B1594D0C798CABB7D443DCE7B7E25FC609BB4AC852805B94293CC49A",
+        "UnpackedBytes": 1846785882,
+        "Files": 967
+      },
+      {
+        "Name": "OfflineDAoC-v0.37c-client-patch-part02.zip",
+        "Bytes": 762980382,
+        "SHA256": "E5DCE62ABEA6BCA8516FD353BE588C0004E53FEC476416B13BE2EFCAEF1705D9",
+        "UnpackedBytes": 1730545573,
+        "Files": 976
+      }
+    ]
+  }
+}

@@ -1,17 +1,25 @@
 """Checks that the README, the build name and the changelog name the same Living Server release.
 
     python tools/release/check_versions.py            # exit 0 when they agree, 1 with a list of what disagrees
+    python tools/release/check_versions.py --tag v1.2 # also: this tag is the newest release, and BuildName is its build
 
 What has to agree (audit 2026-11-03, section 8.6: main said Beta 1.1 after Beta 1.1.1 was out):
-- the newest released CHANGELOG-LIVING-SERVER.md heading ("## Beta 1.1.1 — 2026-10-31"). A heading marked
-  "(in development)" is not released yet;
-- README.md's "**Beta X is out.**" sentence, every link to one of this repository's release tags, the release file
-  names it quotes (LivingServer-Setup-<build>.exe, OfflineDAoC-LivingServer-<build>.zip) and its FORK_BUILD name;
-- ForkBuildInfo.BuildName: the released build, or the "(in development)" one while the next release is being built;
+- the newest released CHANGELOG-LIVING-SERVER.md heading. Up to 1.1.4 the releases were betas ("## Beta 1.1.4 —
+  2026-11-12": build 1.1.4-beta, tag v1.1.4-beta); from 1.2 on they are final releases (owner, 2026-11-19: "1.2" final,
+  not "Beta 1.2"), written without "Beta" ("## 1.2 — 2026-11-DD": build 1.2, tag v1.2). A heading marked
+  "(in development)" is not released yet ("## 1.2 (in development)"), and there can be more than one above the newest
+  release (1.2.1's and 1.2's on integration/1.2). "## 0.37-se.1 — ..." and other 0.x headings are not Living Server
+  releases;
+- README.md's "**Beta X is out.**" sentence for a beta, "**X is out.**" or "**Living Server X is out.**" for a final
+  release, every link to one of this repository's release tags, the release file names it quotes
+  (LivingServer-Setup-<build>.exe, OfflineDAoC-LivingServer-<build>.zip) and its FORK_BUILD name;
+- ForkBuildInfo.BuildName: the released build, or one of the "(in development)" ones while the next release is being
+  built ("X" or "X-beta" for "## X (in development)", only "X-beta" for "## Beta X (in development)");
 - MainForm.DisplayVersion: the launcher shows Offline DAoC's version there ("0.37"), so it must be one of
   ForkBuildInfo.BaseRelease's releases; if it ever holds a Living Server version, it follows BuildName's rule.
 
-Standard library only; CI runs it on every push and pull request (.github/workflows/build-and-test.yml).
+Standard library only; CI runs it on every push and pull request (.github/workflows/build-and-test.yml), and
+publish-release runs it with --tag before it publishes anything.
 """
 import argparse
 import os
@@ -28,30 +36,58 @@ FORK_BUILD_INFO = "source/server/GameServer/gameutils/ForkBuildInfo.cs"
 MAIN_FORM = "source/tools/OfflineDaoc.Launcher/MainForm.cs"
 
 VERSION = r"\d+(?:\.\d+)+"
-HEADING = re.compile(rf"^## Beta ({VERSION})\b(.*)$", re.MULTILINE)
-IS_OUT = re.compile(rf"\*\*Beta ({VERSION}) is out\.\*\*")
-RELEASE_LINK = re.compile(rf"github\.com/{re.escape(REPO)}/releases/(?:tag|download)/v({VERSION})-beta\b", re.IGNORECASE)
-FILE_NAME = re.compile(rf"\b(?:LivingServer-Setup|OfflineDAoC-LivingServer)-({VERSION})-beta\.(?:exe|zip)\b")
-FORK_BUILD_NAME = re.compile(rf"FORK_BUILD name=({VERSION})-beta\b")
+BUILD = rf"{VERSION}(?:-beta)?"
+END = r"(?![\w.-])"   # the build name ends here: "v1.2" in ".../tag/v1.2)" but not in "v1.2-rc1" or "v1.2.3"
+HEADING = re.compile(rf"^## (Beta )?({VERSION})\b(.*)$", re.MULTILINE)
+RELEASED_FINAL = re.compile(r"^\s+—\s")   # "## 1.2 — 2026-11-20", not "## 0.37-se.1 — ..." or "## 1.2 (in development)"
+IS_OUT = re.compile(rf"\*\*(?:(Beta|Living Server) )?({VERSION}) is out\.\*\*")
+RELEASE_LINK = re.compile(rf"github\.com/{re.escape(REPO)}/releases/(?:tag|download)/v({BUILD}){END}", re.IGNORECASE)
+FILE_NAME = re.compile(rf"\b(?:LivingServer-Setup|OfflineDAoC-LivingServer)-({BUILD})\.(?:exe|zip)\b")
+FORK_BUILD_NAME = re.compile(rf"FORK_BUILD name=({BUILD}){END}")
 BUILD_NAME = re.compile(r'const string BuildName = "([^"]+)"')
 BASE_RELEASE = re.compile(r'const string BaseRelease = "([^"]+)"')
 DISPLAY_VERSION = re.compile(r'const string DisplayVersion = "([^"]+)"')
+
+
+def build_name(version, beta):
+    """The build a release of this version is: "1.1.4-beta" for Beta 1.1.4, "1.2" for the final 1.2."""
+    return f"{version}-beta" if beta else version
+
+
+def display(build):
+    """How the release pages name a build: "Beta 1.1.4" for 1.1.4-beta, "1.2" for 1.2."""
+    return f"Beta {build[:-len('-beta')]}" if build.endswith("-beta") else build
+
+
+def is_living_server(version):
+    return int(version.split(".")[0]) >= 1
 
 
 def read(root, relative):
     return (root / relative).read_text(encoding="utf-8-sig")
 
 
-def changelog_versions(text):
-    """(newest released version, version in development or None) from the changelog's '## Beta' headings."""
-    released = development = None
+def changelog_headings(text):
+    """(newest released build, [builds allowed while in development above it, newest first]) from the changelog.
+
+    A released heading is "## Beta X — <date>" (build X-beta, up to 1.1.4) or "## X — <date>" (build X, from 1.2).
+    A heading in development is "## Beta X (in development)" (build X-beta) or, as the 1.2 line writes them,
+    "## X (in development)" (X or X-beta: the 1.2 candidates were built as 1.2-beta before the release was named).
+    Other "## X..." headings (0.37-se.1 and the like) are not releases.
+    """
+    released, development = None, []
     for match in HEADING.finditer(text):
-        version, rest = match.group(1), match.group(2)
-        if "in development" in rest.lower():
-            if released is None and development is None:
-                development = version
+        beta, version, rest = match.group(1), match.group(2), match.group(3)
+        if not is_living_server(version):
             continue
-        released = version
+        if "in development" in rest.lower():
+            for build in ([build_name(version, True)] if beta else [version, build_name(version, True)]):
+                if build not in development:
+                    development.append(build)
+            continue
+        if not beta and not RELEASED_FINAL.match(rest):
+            continue
+        released = build_name(version, bool(beta))
         break
     return released, development
 
@@ -60,34 +96,37 @@ def line_of(text, index):
     return text.count("\n", 0, index) + 1
 
 
-def check(root=ROOT):
-    """A list of problems (empty when everything agrees)."""
+def check(root=ROOT, tag=None):
+    """A list of problems (empty when everything agrees). With tag, also that the tag is the newest release's."""
     problems = []
     changelog = read(root, CHANGELOG)
     readme = read(root, README)
     fork = read(root, FORK_BUILD_INFO)
     form = read(root, MAIN_FORM)
 
-    released, development = changelog_versions(changelog)
-    if released is None:
-        return [f"{CHANGELOG}: no released '## Beta X' heading"]
-    build = f"{released}-beta"
+    build, development = changelog_headings(changelog)
+    if build is None:
+        return [f"{CHANGELOG}: no released '## X — <date>' or '## Beta X — <date>' heading"]
+    beta = build.endswith("-beta")
+    released = build[:-len("-beta")] if beta else build
 
     out = IS_OUT.findall(readme)
     if not out:
-        problems.append(f"{README}: no \"**Beta X is out.**\" sentence (the newest release is Beta {released})")
-    for version in out:
-        if version != released:
-            problems.append(f"{README}: says \"Beta {version} is out\", but the newest release in {CHANGELOG} is Beta {released}")
+        problems.append(f"{README}: no \"**{display(build)} is out.**\" sentence (the newest release is {display(build)})")
+    for prefix, version in out:
+        said = build_name(version, prefix == "Beta")
+        if said != build:
+            problems.append(f"{README}: says \"{(prefix + ' ') if prefix else ''}{version} is out\", but the newest "
+                            f"release in {CHANGELOG} is {display(build)}")
 
     for pattern, what in ((RELEASE_LINK, "links release"), (FILE_NAME, "names the file of release"),
                           (FORK_BUILD_NAME, "quotes the FORK_BUILD name of")):
         for match in pattern.finditer(readme):
-            if match.group(1) != released:
-                problems.append(f"{README}:{line_of(readme, match.start())}: {what} {match.group(1)}-beta "
+            if match.group(1).lower() != build:
+                problems.append(f"{README}:{line_of(readme, match.start())}: {what} {match.group(1)} "
                                 f"({match.group(0)}), not the newest release {build}")
 
-    allowed = [build] + ([f"{development}-beta"] if development else [])
+    allowed = [build] + [b for b in development if b != build]
     name = BUILD_NAME.search(fork)
     if not name:
         problems.append(f"{FORK_BUILD_INFO}: no BuildName")
@@ -95,11 +134,18 @@ def check(root=ROOT):
         problems.append(f"{FORK_BUILD_INFO}: BuildName is {name.group(1)}, expected {' or '.join(allowed)} "
                         f"(the newest released or in-development heading of {CHANGELOG})")
 
+    if tag is not None:
+        if tag != f"v{build}":
+            problems.append(f"the tag {tag} is not the newest release in {CHANGELOG}: {display(build)} is tagged v{build}")
+        elif name and name.group(1) != build:
+            problems.append(f"{FORK_BUILD_INFO}: BuildName is {name.group(1)}, but the release {tag} needs {build} "
+                            "(its package folder, zip and BUILD-INFO.txt are named from it)")
+
     base = BASE_RELEASE.search(fork)
     bases = [b.strip() for b in base.group(1).split(",")] if base else []
-    display = DISPLAY_VERSION.search(form)
-    if display:
-        value = display.group(1)
+    display_version = DISPLAY_VERSION.search(form)
+    if display_version:
+        value = display_version.group(1)
         if value.split(".")[0] not in ("", "0"):   # a Living Server version (1.x and later), not Offline DAoC's 0.x
             if value not in allowed and value + "-beta" not in allowed:
                 problems.append(f"{MAIN_FORM}: DisplayVersion is {value}, expected {' or '.join(allowed)}")
@@ -112,17 +158,18 @@ def check(root=ROOT):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", default=str(ROOT), help="repository root (default: this checkout)")
+    ap.add_argument("--tag", help="the tag about to be published: it must be the newest release's (v1.2, v1.1.4-beta)")
     a = ap.parse_args(argv)
     root = Path(a.root)
-    problems = check(root)
-    released, development = changelog_versions(read(root, CHANGELOG))
+    problems = check(root, a.tag)
+    build, development = changelog_headings(read(root, CHANGELOG))
     if problems:
         for p in problems:
             print(f"::error title=Release versions disagree::{p}" if "GITHUB_ACTIONS" in os.environ else p)
         print(f"{len(problems)} problem(s). Update README.md and the build name together with the changelog.")
         return 1
-    print(f"Release versions agree: Beta {released} released"
-          + (f", Beta {development} in development" if development else "") + ".")
+    print(f"Release versions agree: {display(build)} released (build {build}, tag v{build})"
+          + (f", {' and '.join(development)} in development" if development else "") + ".")
     return 0
 
 

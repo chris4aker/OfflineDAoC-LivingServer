@@ -87,11 +87,8 @@ namespace DOL.AI.Brain
 			}
 			if (HasAggro && Body.TargetObject != null)
 			{
-				foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(3500))
-				{
-					if (npc != null && npc.IsAlive && npc.PackageID == "DurosBaf")
-						AddAggroListTo(npc.Brain as StandardMobBrain);
-				}
+				// 1.2: the guards within 3,500 join (the call passed 3,500 as a region id, so the link never fired).
+				EncounterPacks.LinkInRadius(this, "DurosBaf", 3500);
 				if (!Body.IsCasting && Util.Chance(30))
 				{
 					Body.SetGroundTarget(Body.X, Body.Y, Body.Z);

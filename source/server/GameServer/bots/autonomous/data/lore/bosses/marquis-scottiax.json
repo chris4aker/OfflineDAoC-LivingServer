@@ -1,0 +1,140 @@
+{
+ "id": "marquis-scottiax",
+ "name": "Marquis Scottiax",
+ "npcNames": [
+  "Marquis Scottiax"
+ ],
+ "aliases": [
+  "scottiax"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls",
+  "picullus-imps"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baelerdoth",
+   "relation": "his lord"
+  },
+  {
+   "id": "duke-aypol",
+   "relation": "wants him struck off for receiving the court's metal"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "once bought the cushion from the Queen's chair"
+  },
+  {
+   "id": "duke-bimure",
+   "relation": "his seat is on the edge of the Ward"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Scottiax is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands between the halls of High Lords Oro and Baelerdoth in the east.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Scottiax among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Scottiax is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Shax (44) is a marquis; Scottiax may read as Shax (also spelled Scox in some lists, to verify).",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Mythic: the imps take revenge on the larger demons by stealing from their hoards.",
+   "provenance": "mythic",
+   "source": "https://www.gamebanshee.com/3d68"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "The imps steal from the great demons of the court, and something has to happen to what they steal. Most of it goes to Marquis Scottiax. He is a marquis of High Lord Baelerdoth's household, with a seat between Baelerdoth's hall and Oro's, and for ten Rolls he has been the fence for the bottom of the Roll: he buys from the imps what they cannot keep, Duke Aypol's green and blue and white metal, the hoard-pieces of dukes and earls, once the cushion of the Queen's chair, and he pays them in the one thing imps want, which is to be left alone. A demon under his protection is not stepped on. He is the richest marquis in the court and the only peer the imps call friend.\n\nHe came to it by being robbed himself. In the Second Roll the imps took his whole hoard in a night, and instead of going to the Chancellor, as Aypol later did, Scottiax went down to the bottom of the Roll and asked the imps what they wanted for it back. They had never been asked before. He paid, and they returned it, and he asked them what else they had. By the Fourth Roll he was buying everything they took.\n\nAypol has asked the Chancellor many times to strike Scottiax off for receiving the court's own metal. Adremal has ruled every time that a marquis who buys is not a marquis who falls. When the imps set up their seal stalls in the realms' entrance halls after the doors opened, the court noticed that their stock was very good and very large, and that Scottiax had supplied it. Mystemas, who knows everything the imps know, says Scottiax is the only demon on the Roll he would not sell out, because Scottiax would buy him first.",
+ "legend": "Scottiax stands between High Lord Oro's hall and Baelerdoth's in the east, a little apart from both, with East Ward camps not far off. Level 73, no script. Pull him out toward open ground, away from the Ward camps and from Duke Bimure. Players say he is the demon the imps sell their loot to, which is why the seal merchants are so well stocked, and that he is the only big demon the imps cheer for. His drops are ordinary. The imps' prices are not. Kill him where you pulled him to: drift back between the halls and you are fighting a Ward camp as well. Some Midgard groups swear the seal merchants raise their prices the day after he dies.",
+ "yells": {
+  "aggro": [
+   "What are you selling? No? Then what are you worth?",
+   "Everything here was someone else's first.",
+   "I buy. I do not lose."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Name your price. Everyone has one."
+   }
+  ],
+  "death": [
+   "Tell the imps... the account is closed.",
+   "Sold. Finally, sold."
+  ],
+  "slay": [
+   "Bought cheap.",
+   "I will have your things by morning.",
+   "The imps will find what you dropped."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Crates and chests, none of them his, all of them his.",
+   "Somewhere near, imps are laughing."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The fence of the court makes an offer. Too late."
+   }
+  ],
+  "realmFirstKill": "Marquis Scottiax has fallen. The imps have lost a friend."
+ },
+ "botLines": {
+  "briefing": [
+   "scottiax is between oro and baelerdoth. [pull him away from the ward camps|away from the camps]",
+   "73 no tricks. keep him off bimure. [one at a time|single pull]",
+   "scottiax then baelerdoth's room. [mana check|rebuff]",
+   "his drops are normal, [dont get excited|nothing special]"
+  ],
+  "aftermathWin": [
+   "scottiax down. [the imps will be sad|imps lost their fence]",
+   "marquis scottiax dead. [on to baelerdoth|baelerdoth's room next]",
+   "scottiax done, [kept him off the camps|good pull]",
+   "the fence is dead. [prices go up now lol|seal prices up]"
+  ],
+  "aftermathLoss": [
+   "drifted scottiax into a ward camp. [bad timing|wipe]",
+   "pulled bimure with scottiax. [too much|mess]",
+   "scottiax got us. [regroup|rez]",
+   "lost the pull between the halls. [slower|watch the camps]"
+  ],
+  "rumour": [
+   "[heard|word is] scottiax buys everything the imps steal. [thats where the seal stock comes from|the merchants get it from him]",
+   "the imps call scottiax a friend. [only demon they like|weird]",
+   "[someone said|my guildie says] scottiax once bought the cushion off the queens chair",
+   "aypol hates scottiax. [receiving stolen seals|hes the fence]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "scottiax",
+  "text": "A marquis of High Lord [Baelerdoth]'s household and the fence of the court, who buys what the imps steal and pays them by keeping them from being stepped on. Duke [Aypol] wants him struck off; the imps call him friend."
+ },
+ "bookPage": "From the account book of an Albion merchant who traded at the imp stalls: The imp Kodo sold me a dented sapphire plate at a fair price and told me, unasked, where it came from. A knight of their court lost it to a fiend, the fiend lost it to a family of imps, the imps sold it to a marquis between the eastern halls, and the marquis sold it back to the stall. I asked why the marquis did not keep it. Kodo said the marquis never keeps anything; he only buys it, and that buying is a kind of keeping in that place, since a thing bought is a thing nobody else can steal.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} closed Marquis Scottiax's account in {minutes} minutes.",
+  "loss": "Marquis Scottiax bought {realm}'s raid under {raidLeader} cheap, and kept everything they dropped."
+ }
+}

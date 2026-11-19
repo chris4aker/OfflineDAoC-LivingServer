@@ -1,0 +1,85 @@
+{
+  "id": "overman-regnal",
+  "name": "Overman Regnal",
+  "npcNames": [
+    "Overman Regnal"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Overman Regnal: level 49, at about 28,900/25,600 (z 14,211) at the west end of the deep workings, about 1,100 from the Overseer of the Silver Hand; a body (model 373) shared with mainland Hibernian townsfolk, not the pook body of the other unseelie overmen; no faction; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Regnal as the Howth shift's own overman, who went down to learn why the vein rang.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Regnal is the overman of the Coruscating Mine, the officer who sets the shifts, and the captives say he is the only one of the court's officers who looks like them. He has a man's face and a man's height, nothing of the pook or the goblin about him, and the collared hands who come down from Mag Mell and Ardagh look at him on their first day with something like hope. It does not last the week.\n\nThe Howth miners have an account of him that the court has never troubled to deny. In the days when Howth still dug the Glitter, their own overman was a man named Regnal, who kept the shift-board and knew every seam by its sound, and who went down one evening to learn why the vein rang when nobody struck it, and did not come up. When the court took the mine and the picks began again below the sealed door, the old men say, the shift-board was still being kept, in the same hand.\n\nHe keeps his post in the deep workings now, at the west end, where the coerced groovers dig nearest to the chamber of the Overseer of the Silver Hand, and Howth says he is the one officer the overseer speaks to. What they say to each other nobody knows. The groovers keep their pace when he is by, and the collars do not need to hum.",
+  "legend": "Overman Regnal (49) stands at the west end of the deep workings in Coruscating Mine (about 28.9k/25.6k), only about 1,100 from the Overseer of the Silver Hand's chamber, with coerced groovers (45-48) and an unseelie viewer (48) round him. Viewer Etol (49) is close too. A group of high 40s. Clear the groovers, then fight him on the east side, away from the overseer and his three guardians. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "The shift is not finished.",
+      "You are not on my board."
+    ],
+    "phases": [],
+    "death": [
+      "Mark the board... one hand short..."
+    ],
+    "slay": [
+      "Strike the name. Keep the hand."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The overman keeps the board. The shift goes on."
+    ],
+    "phases": [],
+    "realmFirstKill": "Overman Regnal is down. The shift-board stops."
+  },
+  "botLines": {
+    "briefing": [
+      "regnal is 49 at the west end of the deep, close to the overseer's room",
+      "clear the groovers and fight him east, away from the overseer"
+    ],
+    "aftermathWin": [
+      "regnal down. [the shift stops|grats]",
+      "didnt wake the overseer. [nice|close one]"
+    ],
+    "aftermathLoss": [
+      "pulled the overseer too. [rip|four fifties lol]",
+      "groovers joined. [ouch|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] regnal was howth's own overman before the court took the mine",
+      "the howth men say the shift board down there is kept in the same hand it always was"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Overman Regnal",
+    "text": "The overman of the Coruscating Mine, who sets the shifts in the deep workings by the Overseer's chamber. He looks like a man, and Howth says its own overman of that name went down to learn why the vein rang and never came up."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Overman Regnal in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Overman Regnal turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "overseer-of-the-silver-hand",
+      "relation": "the officer he answers to"
+    },
+    {
+      "id": "viewer-etol",
+      "relation": "the viewer who works beside him"
+    }
+  ]
+}

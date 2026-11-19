@@ -1,0 +1,80 @@
+{
+  "id": "kalnraw",
+  "name": "Kalnraw",
+  "npcNames": [
+    "Kalnraw"
+  ],
+  "locationId": "cornwall",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Kalnraw: NPC template 12826, level 40-45, the hill cats' and lions' model at size 57, aggro level 0 (it does not start fights), no spells or styles, respawn interval 80, at 392925, 653904 in Cornwall.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 6 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Kalnraw's age, the drovers' and hunters' account of it and its watch over the road are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Kalnraw is a great cat of the beech woods on the high ground above the north road of Cornwall, and the drovers of the Cornish road have watched it watching them for longer than any of them has driven cattle. It lies up in the beeches with its paws over the edge of a branch and its yellow eyes on the road, and it does not blink, and it does not come down. Tamsin Hext's road-book says every Hext has written the same thing about it: Kalnraw was there.\n\nThe hunters of Cornwall Station say it is the last of the great cats that hunted the west before Rome, the cats the tinners carved on their stones, and that it has outlived its kind by keeping still. The muryans of the woods, who are spiteful to everything else, leave milk at the foot of its tree. The Church says it is only a lion that has grown old and lazy.\n\nIt has never been known to come down for a drover, a herd or a hunter who left it alone. A young man of the Station went up after it one spring with a spear and a story he meant to tell. The Hexts drove past the place in the autumn. Kalnraw was still there, and so was the spear, wedged in the fork of the branch below it, as if the cat had kept it for him.",
+  "legend": "Kalnraw is a great cat in the north woods of Cornwall above the road, level 40 to 45. It never aggros, so you can ride right under its tree. If you want it, it is a plain melee animal with no spells: a group in the low forties kills it, a strong duo can. Fight it where it lies; the moor wolves and bears nearby do aggro, so mind your back. It comes back fast (the data says 80 seconds), so do not hang around under the tree.",
+  "yells": {
+    "aggro": [
+      "Yellow eyes. Then the whole cat comes down.",
+      "Kalnraw drops from the branch without a sound."
+    ],
+    "phases": [],
+    "death": [
+      "Kalnraw lies down in the leaves and is still."
+    ],
+    "slay": [
+      "The great cat goes back up its tree."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Yellow eyes in the beeches. They do not blink."
+    ],
+    "phases": [],
+    "realmFirstKill": "Kalnraw has come down from its tree at last."
+  },
+  "botLines": {
+    "briefing": [
+      "kalnraw, north woods above the road. 40 to 45, wont aggro, plain melee",
+      "watch for wolves and bears while we fight it"
+    ],
+    "aftermathWin": [
+      "kalnraw down. the hexts will need a new line in their book",
+      "easy enough, it doesnt cast anything"
+    ],
+    "aftermathLoss": [
+      "a wolf pack joined in halfway"
+    ],
+    "rumour": [
+      "[heard|someone said] the muryans leave milk at the foot of kalnraw's tree",
+      "heard kalnraw kept some guy's spear for him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "kalnraw",
+    "text": "A great cat of the beech woods above the north road of Cornwall, older than any drover's memory, that lies up in its tree and watches the herds go by and never comes down for anyone who leaves it alone. The hunters say it is the last of the cats that hunted the west before Rome."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought down Kalnraw in Cornwall in {minutes} minutes.",
+    "loss": "Kalnraw is still in the Cornish woods; {raidLeader} of {realm} came away without it."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "tusker",
+      "relation": "the other old beast of the Cornish woods; the drovers name them together"
+    }
+  ],
+  "tier": "minor"
+}

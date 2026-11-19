@@ -1,0 +1,85 @@
+{
+  "id": "frat",
+  "name": "Frat",
+  "npcNames": [
+    "Frat"
+  ],
+  "locationId": "coruscating-mine",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Frat: level 38, a small body (model 224, size 38), at about 32,250/31,150 near the mine mouth, about 560 from Allyn, among silvermine knockers, enthralled silviers and gemclickers; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    },
+    {
+      "text": "Frit (level 38, peaceful, region 220) sits about 3,700 away in a side passage of the upper workings; her body is the small grey rat body (model 567, size 25) of the mine's shaft rats and the luch.",
+      "provenance": "game",
+      "source": "world data Mob table, region 220 (read 2026-11-06)"
+    }
+  ],
+  "story": "Frat and his sister Frit were the brother and sister from the farm next to the groom's in Mag Mell, taken the same night by the riders on black horses. The collar book says what happened after. Frit sat down in the side passage on the first day and has not got up. Frat took up the driving the same week, and says nothing at all, and drives the hands harder than Scratch or Allyn, and never once goes near the side passage.\n\nThe captives have worked out why, or think they have. A driver the overmen trust is a driver whose kin the overmen leave alone, and Frat drives so hard so that nobody will have a reason to look at his sister. If that is the bargain, it has been kept on both sides. Frit sits in her passage, small and grey now, in a shape that is not the one she was taken in, and the overmen walk past her as if she were a lamp.\n\nHe keeps the shift near the mine mouth, as far from her passage as the upper workings run, and the knockers of the gallery, who hear everything, say that at the end of a shift he stands and faces the way she is, for about as long as it takes to say a name, and then turns back to the seam. In Mag Mell their mother still sets two places.",
+  "legend": "Frat (38) works near the mouth of Coruscating Mine (about 32.2k/31.1k), with Allyn (36) about 560 away and silvermine knockers, enthralled silviers and gemclickers round them: expect the pair together. A group of high 30s. Frit (38, peaceful) is his sister in the lore; she sits in a side passage deeper in, and you leave her alone. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "Work. Just work.",
+      "Do not look down that passage."
+    ],
+    "phases": [],
+    "death": [
+      "Frit... I kept it... I kept..."
+    ],
+    "slay": [
+      "Better you than her."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A driver who will not look toward the side passage."
+    ],
+    "phases": [],
+    "realmFirstKill": "Frat has fallen near the mine mouth."
+  },
+  "botLines": {
+    "briefing": [
+      "frat is 38 near the mouth, allyn is right next to him",
+      "take both, theyre close. dont touch frit later"
+    ],
+    "aftermathWin": [
+      "frat down. [and allyn|grats]",
+      "left frit alone. [good|right]"
+    ],
+    "aftermathLoss": [
+      "allyn and the knockers joined. [rip|ouch]",
+      "pulled half the mouth. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] frat drives so hard so the overmen never look at his sister",
+      "frit is frats sister. the court changed her into something small and grey"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Frat",
+    "text": "The driver near the Coruscating Mine's mouth, taken from Mag Mell with his sister Frit. He drives harder than anyone so the overmen will leave her alone in her passage, small and grey in a shape not her own."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Frat in the Coruscating Mine in {minutes} minutes.",
+    "loss": "Frat turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "unseelie-court"
+  ],
+  "related": [
+    {
+      "id": "allyn",
+      "relation": "the driver who works beside him"
+    },
+    {
+      "id": "lough-derg",
+      "relation": "Mag Mell, the farm he was taken from"
+    }
+  ]
+}

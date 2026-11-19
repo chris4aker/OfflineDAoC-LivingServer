@@ -129,7 +129,7 @@ namespace DOL.AI.Brain
 		//private bool CanAddJunk = false;
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			if (Util.Chance(40) && ad != null /*&& !CanAddJunk*/ && ad.Attacker is GamePlayer && ad.Attacker != null)
+			if (Util.Chance(40) && ad != null /*&& !CanAddJunk*/ && EncounterTargets.IsRaider(ad.Attacker) && ad.Attacker != null)
 			{
 				//ItemTemplate sackJunk = GameServer.Database.FindObjectByKey<ItemTemplate>("sack_of_decaying_junk");
 				//InventoryItem item = GameInventoryItem.Create(sackJunk);
@@ -359,9 +359,9 @@ namespace DOL.AI.Brain
             {
 				if(!CanSpawnProvisioner)
                 {
-					foreach(GamePlayer player in Body.GetPlayersInRadius(500))
+					foreach (GameLiving player in EncounterTargets.InRadius(Body, 500))
                     {
-						if(player != null && player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if(player != null && player.IsAlive && EncounterTargets.NotGm(player))
                         {
 							SpawnSpectralProvisioner(player);
 							CanSpawnProvisioner = true;
@@ -371,7 +371,7 @@ namespace DOL.AI.Brain
             }
 			base.Think();
 		}
-		public void SpawnSpectralProvisioner(GamePlayer player)
+		public void SpawnSpectralProvisioner(GameLiving player)
 		{
 			foreach (GameNPC npc in Body.GetNPCsInRadius(8000))
 			{

@@ -44,7 +44,8 @@ public class UT_ChatWhy
     public void ADecisionReadsAsOneLine()
     {
         string line = AutonomousChatWhy.Describe(Said(7, "Aldwin", 1_000, "lol same", to: "Wynn"), 6_000);
-        Assert.That(line, Does.StartWith("5s ago [faction] Aldwin said (ambient)"));
+        // 1.2: the reason code follows the outcome.
+        Assert.That(line, Does.StartWith("5s ago [faction] Aldwin said [ambient] (ambient)"));
         Assert.That(line, Does.Contain("rule ambient/general score 2"));
         Assert.That(line, Does.Contain(": its turn"));
         Assert.That(line, Does.EndWith("-> \"lol same\""));

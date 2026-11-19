@@ -1,0 +1,85 @@
+{
+  "id": "gunflor",
+  "name": "Gunflor",
+  "npcNames": [
+    "Gunflor"
+  ],
+  "locationId": "myrkwood-forest",
+  "realm": "Midgard",
+  "era": "mid-era-present",
+  "factions": [
+    "svartalfar",
+    "werewolves",
+    "arachites"
+  ],
+  "related": [
+    {
+      "id": "tebui",
+      "relation": "the svartalf of Spindelhalla who holds a stolen spirit, of the same alliance (file to come)"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Gunflor is a level-45 dead svartalf (body type undead, ghost flag) in the building on the little island with the well east of Gna Faste (798,571/901,258), among svartalf outcasts. No faction of his own; aggressive (200 at range 500); no spells or styles.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 105 (0.37b world data)"
+    },
+    {
+      "text": "'Dark Places of the Soul' (Idona Tiu of Fort Veldon): Jytal in Gna Faste, the arachites going into the building with the werewolves in west Skona, then 'Kill the svartalf Gunflor in the building on the little island with the well east of Gna Faste. Hand Gunflor's head to Jytal.' Later steps: Yver's cure, Blackpaw in Jordheim ('the werewolves have allied'), a stone bowl, Errick at Galplen.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Gunflor as the house where the bargain's word went out, and the well, are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Gunflor was a svartalf of the south of Myrkwood, a go-between: the kind of dark elf who carries a spider's word to a wolf and a wolf's word to a spider and keeps a little of each for himself. He took the house on the island because nobody else would, and the well beside it because it went down further than any well should, and when he looked into it long enough, the shamans of Gna Faste say, something looked back and made him an offer.\n\nHe died in that house, and did not stop. What lives there now is pale and cold and speaks with his voice, and the outcasts of the svartalfar gather round it as if round a fire. When the arachites and the werewolves met in a building in the west of Skona and came out allies, it was Gunflor's word that had brought them there; Jytal of Gna Faste is sure of it, and Idona of Fort Veldon, who feels such things stir, is surer. A dead go-between does not tire and does not need paying. The alliance he made reaches as far as Jordheim, where a werewolf named Blackpaw keeps a corner of the city.\n\nHe fights alone. He has no house to call on but his own, and the outcasts round him answer only for themselves. The fishermen of Galplen say the lights in his window go out for a while when someone takes his head to Jytal, and come back on.",
+  "legend": "Gunflor is a level 45 dead svartalf in the house on the little island with the well, in the lake east of Gna Faste: the kill for Dark Places of the Soul (Idona Tiu in Fort Veldon, via Jytal in Gna Faste; take his head to Jytal). Plain hitter, no spells, no faction of his own, but the svartalf outcasts (28-31) stand right round the island and are hostile, so clear them or come in from the side away from their camp. Respawns quickly. A solid group in the 40s takes him easily.",
+  "yells": {
+    "aggro": [
+      "(A cold voice from the well.) Another messenger. Whose word do you carry?",
+      "The bargain is kept. You are not part of it."
+    ],
+    "death": [
+      "The word is already given... it does not die with me..."
+    ],
+    "slay": [
+      "Tell the wolves. Tell the spiders. Tell no one."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A house by a well. The window is lit. Someone waits."
+    ],
+    "realmFirstKill": "Gunflor's lights go out. For a while."
+  },
+  "botLines": {
+    "briefing": [
+      "gunflor is the 45 dead svartalf in the well island house east of gna faste",
+      "clear the outcasts round the island first, they stand right on top of him"
+    ],
+    "aftermathWin": [
+      "got the head, back to jytal",
+      "easy once the outcasts were down"
+    ],
+    "aftermathLoss": [
+      "pulled the whole outcast camp"
+    ],
+    "rumour": [
+      "gunflor carried the word between the spiders and the wolves and he still does, dead",
+      "the well by gunflors house goes down further than any well should"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Gunflor",
+    "text": "A svartalf go-between who took the house on the [island] in the lake, looked too long into its well and died there without stopping. The shamans say the alliance of the [arachites] and the werewolves went out from his house."
+  },
+  "bookPage": "From The Lake Book, by Asgeir of Galplen: I rowed close to the island once, on a dare, when I was young. The house has a door on the side away from the shore and a window on the side toward it, and someone stood in the window and watched me, and I knew he was dead because he did not blink in the wind. He called out, not loudly. He asked whose word I carried. I said nobody's, and he laughed and said then I was the only free man on the lake. I rowed home. The outcasts bought my fish that week for twice what it was worth, and did not say why.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Gunflor's head from the well island of Myrkwood in {minutes} minutes.",
+    "loss": "Gunflor's well kept {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

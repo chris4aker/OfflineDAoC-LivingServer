@@ -1,0 +1,125 @@
+{
+  "id": "giant-sporite-cluster",
+  "name": "Giant Sporite Cluster",
+  "catalogKey": "galladoria/giantsporitecluster",
+  "locationId": "galladoria",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 79, 100,000 health; seven more clusters spawn with it and all join the fight together.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Its spell is a 200-radius cold blast named 'Xaga Staff Bomb'.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs"
+    },
+    {
+      "text": "Sporites (blue cattail, virulent) grow throughout Galladoria.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    }
+  ],
+  "story": "Nothing in the hollow grows alone, and the sporites least of all. The Giant Sporite Cluster is a colony grown so old and so large that it has become one creature with eight bodies, every one of them answering when any is touched. The cold it spits is not its own: the Sylvan say the first spores were shaken from the staff of Xaga, who walks the halls nearby, and the colony still uses her magic as a child uses its mother's words. Strike one bloom and the whole garden turns.\n\nThe colony began, the Sylvan say, as a handful of spores shaken from Xaga's staff when she first came down into the hollow, testing what would grow there. Everything grew. The sporites took to the wet walls of one gallery and spread until they were a single garden, and then a single creature, eight great blooms joined below the floor by threads too fine to see.\n\nTouch one and all of them answer, because there is only one of them. Its cold is borrowed: it bursts out of the blooms in freezing clouds, and the Sylvan who have studied it say the burst is the same spell Xaga carries on her staff, learned the way a child learns its mother's words. The colony is not cruel and not clever. It simply wants the gallery, and the warm bodies that walk into the gallery are good soil. The blue cattail sporites and the virulent ones elsewhere in the hollow are its seedlings, gone wandering.\n\nXaga shook a dull World's End spore-cap from her staff in the wet gallery and it grew into one creature with eight blooms that uses her cold; the Grey Field outside Domnann is why the Sylvan burn the dust off every boot at the hollow's mouth. It grows a few galleries from Xaga's door.",
+  "legend": "It is eight, not one: all the clusters come when you pull. Spread out against the cold bursts, AoE helps, and keep the healers back from the bloom. Do it before Xaga, so her garden is not at your back. Pull the whole garden at once on purpose, because it comes anyway; tanks spread across the blooms, casters AoE from the edge, and healers stay out of the burst radius. Do it before Xaga so her garden is never at your back. The Sylvan say to burn the spore-dust off your boots before you leave the hollow, or the colony grows a little further every raid. Most raiders forget. The colony does not.",
+  "yells": {
+    "aggro": [
+      "The blooms shiver all at once.",
+      "Eight blooms tremble at once.",
+      "Spores rise like breath on a cold morning."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Spores rise in a freezing cloud."
+      }
+    ],
+    "death": [
+      "The colony withers, bloom by bloom.",
+      "The threads below the floor go slack."
+    ],
+    "slay": [
+      "Something new will grow there.",
+      "Good soil.",
+      "Something will grow there."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The blooms turn toward you. All of them.",
+      "Cold spores hang in the air like breath."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The whole garden wakes at once!"
+      }
+    ],
+    "realmFirstKill": "The great sporite colony is dead to the root."
+  },
+  "botLines": {
+    "briefing": [
+      "sporite cluster brings seven friends. [spread out|dont stack], the cold bursts hit everyone close",
+      "sporite cluster is eight blooms, all come at once. [tanks spread over them|everyone pick one]",
+      "healers out of the cold bursts. [stand back|edge of the room]",
+      "do the garden before xaga so its never behind us. [order matters|garden first]"
+    ],
+    "aftermathWin": [
+      "garden weeded. [next|on to xaga]",
+      "garden weeded, xaga next. [on we go|good]",
+      "all eight down together, [nice aoe|lovely]",
+      "nobody froze to death. [new record|grats]"
+    ],
+    "aftermathLoss": [
+      "we stacked on the sporites and the cold [ate the healers|did the rest]",
+      "stacked in the middle of the blooms and [froze|the bursts got us]",
+      "pulled xaga's room with the garden. [never again|oops]",
+      "healers stood in the spores. [move|outside the bursts]"
+    ],
+    "rumour": [
+      "[heard|someone said] the sporites in galladoria use xaga's magic. her staff or something",
+      "[heard|someone said] the sporite colony grew from spores off xaga's staff",
+      "[word is|heard] all eight blooms are one creature joined under the floor",
+      "the wandering sporites in galladoria are its seedlings, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "sporites",
+    "text": "A colony so old it is one creature with eight bodies. Its cold is borrowed from Xaga's staff. Touch one bloom and all of them answer."
+  },
+  "bookPage": "Aodhan writes: I asked whether the great sporite garden in the hollow was evil, and the Sylvan gardener I asked laughed at me, which they rarely do. A garden is not evil, she said. It is hungry. Xaga shook the first spores from her staff to see what would grow, and everything did, and now there is one great colony with eight blooms and one mind, and it wants its gallery and whatever walks into it. It uses her cold because it heard her use it. You would do the same, she said, if your mother were Xaga. I was not sure whether that was a joke.",
+  "chronicle": {
+    "win": "{realm} cut through Galladoria to the Giant Sporite Cluster; {raidLeader}'s raid finished it in {minutes} minutes.",
+    "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Giant Sporite Cluster after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root"
+  ],
+  "related": [
+    {
+      "id": "xaga",
+      "relation": "the seed-keeper whose staff sowed it"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Spores from a Staff",
+      "text": "When Xaga the seed-keeper first went down into the hollow, she went as a keeper of seeds goes into any new country: testing what would grow. She carried a staff of her own making, and the Sylvan say the head of it was hung with little pouches of seed and spore from every corner of the isle, and that she shook it at every new wall she came to, to see what took. Most of what she shook out died in the dark. In one gallery, the wet one in the middle of Galladoria's rings where the walls weep with the Root's sap, something took.\n\nThe Sylvan know exactly what it was, because Xaga told them, in the one message she ever sent back up: a pale spore-cap of the World's End shore, a little thing that grows on driftwood, that she had always thought dull. In the wet gallery it did not stay little. The spores drank the sap and spread over the walls in a single season, and then over the floor, and then into the cracks of the stone, and the threads they put down joined below the floor into one web. By the time the Sylvan learned of it, the gallery held eight great blooms and one creature.\n\nXaga's message ended, Lisín said, with a sentence the fire-keepers still argue about: that it was the first thing in the hollow that had grown for her rather than for the Root. The fire-keepers keep the message itself, cut on a strip of driftwood."
+    },
+    {
+      "title": "One Garden, Eight Blooms",
+      "text": "Touch one bloom and all eight answer, because there is only one of them. A band of the three hundred and forty found this out when they tried to cut a way through the gallery one bloom at a time; the whole garden turned at once, and the band ran. The Sylvan say a garden is one thing with many faces, and that it is folly to greet only one of them. The band left two of their number in that gallery, and the Sylvan planted two rowan saplings for them at the hollow's mouth, which have never grown.\n\nIts cold is borrowed. When the garden is struck the blooms burst in freezing clouds that fall on everyone close, and the Sylvan who have studied it say the burst is the same spell Xaga carries on her staff. The colony heard her use it, they say, in the season she lived beside it, and learned it the way a child learns its mother's words. The realm's scholars who have taken the spell apart have given it a plain name that makes the Sylvan wince: the staff bomb, after its source.\n\nThe wandering sporites elsewhere in the hollow, the blue cattail sporites in the side passages and the virulent sporite that the wardens have met in the deep halls, are its seedlings, the Sylvan say: pieces of the web that broke away and grew on their own. They are weaker. They are also a sign that the garden is spreading, slowly, ring by ring, toward the mouth of Galladoria. The band that ran was led by a Tir na Nog mender of wounds named Eithne Óg."
+    },
+    {
+      "title": "Burn Your Boots",
+      "text": "The Sylvan have a custom for anyone who comes up out of Galladoria: the spore-dust is burned off their boots before they walk on the isle. The fire-keepers keep a ring of embers at the mouth of the hollow for the purpose, and every Hibernian who comes up past it is expected to step through. Most forget. The colony, the Sylvan say, does not.\n\nThe rule dates from a single event, which the Sylvan call the Grey Field. In the second summer of the isles a Connacht company came up from the hollow tired and careless and walked straight back to Domnann without stopping at the embers. By autumn a field outside the village, where they had camped, was grey with pale spore-caps of a kind the World's End shore had never grown, and the Sylvan burned it to the soil. Nothing has been planted there since. Lisín's mother was the fire-keeper who burned it, and she made the ring of embers the next day.\n\nThe druids of Tir na Nog doubt the Grey Field was the colony's work and think a wet autumn did it. The Sylvan point out that the spore-caps in the field were the same pale kind as the garden's, and that wet autumns had come to Domnann for an age without turning a field grey. The embers are still kept. Anyone who forgets is made to tend the embers for a night. It is not a punishment, the fire-keepers insist; it is a lesson in what the embers are for."
+    },
+    {
+      "title": "The Garden's Mother",
+      "text": "The garden lies a few galleries from the room where Xaga keeps her two bound spirits, and the Sylvan say she chose the place so that her garden would always stand between her door and the way in. The Sylvan say the order matters for another reason too: the garden knows its mother, and when Xaga is threatened the blooms stir, as plants turn toward light.\n\nWhat the garden wants is what any garden wants: the gallery, and the warm bodies that walk into the gallery, which are good soil. It is not cruel and not clever. That is why the Sylvan fear it in a different way from the other things in the hollow. Aroon chose; Xaga chose; the Conservator was taught. The garden simply grows, and nothing in Galladoria has ever told it to stop.\n\nXaga's sentence, that it was the first thing in the hollow that grew for her rather than for the Root, has two readings among the fire-keepers. One says it is a boast: Xaga claiming a power of her own down there, apart from her master. The other says it is a plea: that even in the Root's hollow, something could still grow for a Sylvan, and that she wanted her people to know it. Lisín held the second reading. She said so the night the realm first cleared the garden, and then went out and checked the embers at the mouth of the hollow herself. The embers have never once gone out. She has asked the realm to keep it so, whatever else changes."
+    }
+  ]
+}

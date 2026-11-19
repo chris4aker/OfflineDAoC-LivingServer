@@ -1,0 +1,275 @@
+{
+  "id": "malmohus",
+  "name": "Malmohus (Gjalpinulva's lair)",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    116
+  ],
+  "aliases": [
+    "gjalpinulva's lair",
+    "the edge of the world"
+  ],
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood",
+    "svartalfar"
+  ],
+  "tier": "epic",
+  "summary": "The frozen ruins at Midgard's southern edge where Gjalpinulva, the wolf-headed dragon, lies with her drakulv brood.",
+  "facts": [
+    {
+      "text": "Malmohus is a Midgard zone for levels 35-50, called an epic zone meant to be crossed by large groups of high-level players; it borders Skona Ravine and the Labyrinth.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=60"
+    },
+    {
+      "text": "Gjalpinulva's lair is in Malmohus: the dragon spawns at region 100, 708811, 1021459, inside the Malmohus zone of the zone table. The encounter catalog labels it Myrkwood in error.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Its bestiary lists drakulv of many ranks (armguard, axehand, disciple, executioner, soultrapper, sacrificer, priest), svartalfar of Svarhamr, scaled vargs, enraged mara and adolescent dragons.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
+    },
+    {
+      "text": "Svarhamr is a svartalf town in Malmohus; its people include the Dragonbane Svartalfar.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/13216"
+    },
+    {
+      "text": "Bot chat says Skona's werewolves will not set foot in Malmohus, that the drakulv were bred by the dragon, and that the svartalfar watch the ruins from the edges.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Fourteen further named creatures stand in Malmohus in the world data: twelve named drakulv (several names held by two spawns at once) and the svartalfar Kariig (two), Desukva and Eildird; Eildird's template puts her in Pack Drakulv.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The Dragonslayer quest and Dragon Myths & Legends both send Midgard players after Gjalpinulva in Malmohus.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/quest/3822"
+    },
+    {
+      "text": "Malmohus's bestiary lists adolescent dragons (Jarkkonith, Ljoridkorith) at level 60, and the svartalf dragonbane town of Svarhamr with Kiaja and Raxnathor.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
+    },
+    {
+      "text": "Post-period Camelot Herald text says the Varulv were once Gjalpinulva's allies.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dragons-curse-campaign-chapter-5"
+    },
+    {
+      "text": "Malmohus's bestiary names the svartalf townsfolk of Svarhamr: Dagna the healer, Gudrun the enchanter, Lunt the recharger, Odell the vault keeper, Stig and Streya the merchants, Hamar the channeler, and Svarhamr guards.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
+    },
+    {
+      "text": "Swedish malm means ore and hus house (the name to verify; Malmohus is also a historical castle name in Sweden).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Enraged mara (undead) haunt Malmohus; in Scandinavian folklore a mara rides sleepers and gives them nightmares.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (public domain)"
+    },
+    {
+      "text": "Midgard's hunters reported the svartalfar sending their best scouts and infiltrators out of Skona Ravine into Malmohus, a little-explored country south of Skona Ridge that Mythic's notes call a woodland; the werewolves of Skona shun it as if it were cursed.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "Following the svartalfar, the hunters met scaled vargs: wolves with scales and a lizard's tail.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Malmohus is the white broken country at the southern edge of Midgard, past Skona Ravine. Its grey ruins, cut from a stone found nowhere else in the realm, are older than Jordheim, and their builders are argued over: the svartalfar say they were ore-miners who saw the frost come south and left, the skalds of Jordheim say they were a people the gods drove out, and the grandmothers say they are still under the ruins, asleep. The name itself may mean the ore-house.\n\nWhen Gjalpinulva came down in the south-eastern hollow, the cold went out from her like a spring and Malmohus has had no summer since. Her drakulv fill the ruins in ranked camps, from missionaries at the edges to the klok, prast and riddare who carry her magic; Yar the firstborn hunts the south-west; her adolescent young, Jarkkonith and Ljoridkorith, keep the ridges; enraged mara ride the dreams of anyone who sleeps in the ruins. The svartalfar of Svarhamr, a whole town with its menders and enchanters, merchants and vault keeper, watch her and keep the beam of her wakings; their dragonbane send Midgard's warriors after the firstborn. At the northern edge, the werewolves of Skona stand and look south and never cross, and the seeresses of the Seithkona Circle prophesy about her.\n\nMidgard's road south runs from Gotar through Myrkwood and Skona, and Midgard's warbands have gone down it whenever she wakes. Jordheim pays for her scale. The svartalfar say the country is the waiting room of the end of the world: when the chain on her father breaks, the north's ending will begin here, and the ruins' builders, wherever they went, saw it coming first. Between those two ends of the country walk the mara, whose dreams they are nobody agrees, and under Myrkwood some svartalfar, the thralls of Spindelhalla and the free clans who believe their story, would rather the dragon lived and the end came.",
+  "chapters": [
+    {
+      "title": "The Ore-House",
+      "text": "Malmohus means, in the old northern tongue, something close to the ore-house, and the name is older than the dragon. Before she came the south of Midgard was a country of grey stone, a stone that rings like a bell when struck and holds enchantment better than iron, and someone built a city out of it at the edge of the world. Its ruins are still there: broken walls, fallen towers, stairs that go up into nothing, all cut from that grey stone and all older than Jordheim. Nobody in Midgard remembers the builders. Three accounts explain why.\n\nThe svartalfar of Svarhamr, who came south to mine the same stone, say the builders were ore-miners like themselves, a people who dug the grey stone out of the hills and built their houses from it, and that they were the first people in the world to see the frost come south. They saw it a long time before it arrived, the svartalfar say, the way a sailor sees weather, and they packed their tools and left, and that is why the ruins have no bones in them.\n\nThe skalds of Jordheim say the builders were a people the gods drove south, in the age when the gods were setting the world in order, because they had built too well and too high, and that the city was broken by the gods before the frost ever came. They point to the stairs that go up into nothing and say those were towers that reached for Asgard.\n\nThe grandmothers of Gotar say the builders never left at all. They say they are under the ruins, asleep in the grey stone, and that the cold keeps them sleeping, and that the dragon lay down in their city because she knew they were there and wanted company that would not talk. The grandmothers tell children not to sleep in Malmohus. The mara of the ruins, they say, are the builders' dreams, gone sour."
+    },
+    {
+      "title": "The Country Without Summer",
+      "text": "When Gjalpinulva came down in the hollow on the south-eastern edge of the ruins, the cold went out from her like water from a spring, and it has not stopped. The svartalfar keep a record of what it did to the country, cut on the walls of Svarhamr's oldest houses.\n\nThe first winter, the rivers of the south froze to the bottom and did not thaw in spring. The second, the grey stone of the ruins took a frost that never lifted, so that the walls are white now and the old carvings on them can only be read by touch. The third, the farms that had crept south along the Skona road were abandoned; the people of the last steading, the svartalfar say, walked north to Gotar with their cattle and their doors on their backs, and settled near Fort Atla, and their descendants still keep the doors. By the tenth winter there was no summer in Malmohus at all, and there has been none since.\n\nThe cold changed the creatures of the country. The wolves of the south grew scales, and their pups run through the ruins in packs, the scaled vargs, that the drakulv keep as hunting dogs. The svartalf miners who came south for the grey stone and looked too long at the dragon still stand frozen in the ruins, and the frost on them is so old it has turned blue. In the ruins at night the enraged mara walk: the mares of the old tales, spirits that ride sleepers and give them nightmares, grown wild in the cold. Travellers who sleep in Malmohus wake exhausted, with frost on their eyelashes, having dreamed of grey towers.\n\nMidgard's scouts called the country the edge of the world in the years before Midgard went south against the dragon, little known and less explored, and young warriors of Gotar were told that if they went far enough south they would fall off. The svartalfar, hearing this, laughed, and said that the young warriors were not far wrong."
+    },
+    {
+      "title": "The Mara of the Grey City",
+      "text": "The mara are older in the north than the dragon. In the old tales a mara is a spirit that comes in the night and sits on a sleeper's chest, rides them through bad dreams, and leaves them in the morning worn out and frightened, with knots in their hair and their horses lathered in the stable. Every farm in Midgard has a charm against them, a knife under the pillow or a shoe turned toe-out by the bed. In Malmohus the mara are not riders of single sleepers. They walk the ruins in the open, enraged, and nobody in the north agrees what made them so.\n\nThe grandmothers of Gotar say they are the builders' dreams, gone sour in the cold: the people asleep under the grey stone dream, and the dreams get out, and they are angry because they have been dreaming the same city for so long. The svartalfar of Svarhamr say that is nonsense. They say the mara are the dreams of the frozen, of Sviga and the miners who stand in the ruins with blue frost on their eyes; the frozen cannot wake, so their dreams walk for them, and they are enraged because they know what they are dreaming in front of. The dragonbane point out that the mara grow thicker in the ruins nearest the hollow, where the frozen stand closest together.\n\nThe Seithkona Circle tried once to settle it. A seeress of the circle named Astrid went south to Malmohus with two women to hold her high seat, meaning to sing the mara close and ask them whose they were. She sang on the steps of a fallen tower for a night and a day. The women who held her seat came back to Skona; Astrid did not. They said the mara came to her song in such numbers that the steps were grey with them, and that before the end she had stopped singing questions and was only listening, and that her last words to them were that the mara were not anyone's dreams. They were the dragon's. The circle has not sent anyone since.\n\nMidgard's warbands have their own answer, which is to travel through the ruins by day, sleep at Svarhamr or not at all, and kill any mara that comes near the fires. The skalds' only contribution is a line in Ragnhild's song, where Hallbjorn's eighty sleep a night in the ruins on the way south and wake, every one, with frost on their eyelashes, having dreamed of grey towers. Ragnhild does not say whose dream it was."
+    },
+    {
+      "title": "The Camps of the Drakulv",
+      "text": "The drakulv fill the ruins. They are the dragon's own people, two-legged dragon-wolves with scaled backs and wolves' grins, and they live in camps among the broken walls, each camp kept by a rank of her court. The svartalfar, who have watched them longest, describe the order.\n\nAt the edges of her country are the missionaries, the lowest and youngest, who go out to the borders of Malmohus to preach the wolf's daughter to whatever will listen, and who are the first drakulv any traveller meets. Patrolling drakulv walk the roads between the camps. Sacrificers keep her altars in the old courtyards of the ruins, and soultrappers stand beside them to catch what the sacrificers set free. Armguards and axehands hold the camps; guardians and protectors stand nearest her hollow; executioners carry out her justice, and the svartalfar say they have seen drakulv executed by drakulv for failing her. Disciples study her ways, and above them all are three orders that carry her own cold magic: the klok, the wise ones, the prast, her priests, and the riddare, her knights.\n\nThe drakulv have names, as a people does. The svartalfar know some of them: Gunnolf of the drakulv, who keeps one of the western camps, and others whose names the dragonbane carve on Svarhamr's beam when they die. The drakulv know the svartalfar too, and leave them alone mostly, because the svartalfar were there first and the dragon has not told them otherwise.\n\nYar the firstborn, the oldest and strongest of them, hunts the south-west corner of the ruins with his kin, and the camps there are his. A drakulv who runs from the dragon's hollow runs to the nearest camp and comes back with others; the svartalfar say the camps are her court's outer rooms, and that her hollow is a house with all its doors open."
+    },
+    {
+      "title": "Svarhamr",
+      "text": "At the edge of the dragon's country, at a distance the svartalfar measured by their frozen dead, stands Svarhamr, the svartalf town. It was a mining camp once, when the clan came south for the grey stone, and after the dragon froze their foreman it became a town, because the clan swore not to leave until she was dead. It has everything a town needs: Dagna who tends the sick and Gudrun the enchanter, Lunt who restores the charms the dragon's cold has drained, Odell who keeps the vault, Stig and Streya who sell to travellers, Svarhamr's guards on the walls. Its people call themselves the Dragonbane Svartalfar, and their friendship is earned the old way: kill what they hate, and they will open their doors to you.\n\nThe meeting hall has a beam across its ceiling, carved from end to end. Every waking of the dragon is cut into it, and every warband that has gone into her hollow, and every death of hers, and the dragonbane add a mark whenever one of her brood they know by name is killed. Children of Svarhamr are taken to the beam to learn the dragon's history before they learn their own.\n\nKiaja keeps the dragonbane's trust. A friend of the svartalfar who has proved himself will be sent by her after Yar the firstborn, the most powerful of all the werewolves, with a warning to bring an adequate force, because a dragon in grief breathes less carefully. Raxnathor rewards those who come back. Skipta, who earned their trust years before, speaks with the ones who return, and the dragonbane keep a list of everyone who has killed the firstborn and dreamed of the mother afterwards.\n\nHamar, a channeler of Svarhamr, is the town's link to the deep places of the svartalfar under Myrkwood, and the clan's elders say the Dragonbane are not the only svartalfar who care what happens in Malmohus. There are other svartalfar, under Myrkwood and in Spindelhalla, who would rather she lived."
+    },
+    {
+      "title": "The Svartalfar Who Want Her Alive",
+      "text": "The Dragonbane of Svarhamr are not the only svartalfar who care about Malmohus, and the clan's elders do not like to say so. The svartalfar are many clans under Midgard, and the ones in Myrkwood's deep places keep their own counsel and their own grudges. Some of them, the Dragonbane admit when pressed, would rather the dragon lived.\n\nThe reason, as the Dragonbane tell it, lies under Myrkwood, in Spindelhalla, where the arachites farm silk and the svartalf thralls bend over the strands under a svartalf foreman who has been a slave so long he has forgotten to mind it. The thralls have a story that the Dragonbane have heard repeated by runaways. It says that when the wolf breaks his chain and the end of the north comes, the cold from the south will go down into every hall under the world, and the spiders will freeze in their webs, and the arachite prelates will freeze at their prayers, and the thralls will walk up out of Spindelhalla over the frozen bodies of their masters. In that story the wolf's daughter is not the end of the world. She is the end of the spiders.\n\nThere are svartalfar under Myrkwood, free ones, who have heard the thralls' story and believe it, and the Dragonbane say some of them have gone further: that they trade with the drakulv, carry them word of Midgard's warbands on the road south, and leave the ruins' grey stone for the dragon's court to use. Odell, Svarhamr's vault keeper, keeps a list of names. Hamar the channeler, whose work ties Svarhamr to the deep places, is said to have argued with the clan's elders about whether to show it to Jordheim, and lost.\n\nThe Dragonbane's own answer to the thralls is short. A svartalf of Svarhamr asked about it said that a world frozen to free the thralls would also freeze the thralls, and that they had all seen what freezing does: it does not end anything, it only makes it stand still forever, the way Sviga stands in the ruins with his face turned south. The thralls, she said, have not seen Sviga. If they had, they would want their spiders back."
+    },
+    {
+      "title": "The Watchers at the Ravine",
+      "text": "Malmohus's northern border is Skona Ravine, and the werewolves of Skona stand along it. They do not cross. The varulv answer to the pack and never to a master, and they will not set foot in the country of a dragon who is half wolf, because she once summoned their lords to her hollow and named terms, and their king, Hresvelgr of Varulvhamn, refused her. They watch the south instead, from the ravine's edge, the way a pack watches a rival's territory.\n\nIn Skona, not far from the border, is the Seithkona Circle, where the seeresses of the north sit on their high seats and sing the spirits close and tell what will be. The circle's seeresses have prophesied about the dragon for as long as there has been a circle, and their prophecies disagree. One school holds that she will fly north at the end to meet her father when he breaks free, with her brood behind her, and that the werewolves of Skona will have to choose a side that day. The other school holds that she will die in her hollow before the end, and that her death will finish the chain, and the end will be put off for an age. Neither school will say which prophecy the Dragonbane want.\n\nTravellers going south to Malmohus pass between the werewolf camps and the circle, and the werewolves let them pass. The varulv have no quarrel with the warbands Midgard sends south. An old wolfaur of Varulvhamn once told a Midgard scout that every warband that goes south is doing the werewolves' work for them, and that the werewolves are grateful, and that they will not say so in front of the young ones, who are less philosophical."
+    },
+    {
+      "title": "The Young Ones on the Ridges",
+      "text": "Gjalpinulva's younger children are dragons. They are not yet grown. The svartalfar call them the adolescents, and two of them have names that the realm's bestiaries record, Jarkkonith and Ljoridkorith, each as strong as a war-band of Svarhamr's guards. They sun themselves on the ridges of the ruins on the rare clear days and burn anything that comes close; their breath is not their mother's winter but something younger and less patient.\n\nNobody knows how many there are. The svartalfar count the ones they see on the ridges and have never seen the same number twice. Nobody knows either what they will be when they are grown. The Dragonbane fear that the young ones are what the dragon is waiting for, more than her father's chain: that she means to raise a brood of dragons in Malmohus and send them north when they are ready, and that the realm will have not one dragon in the south but many. Each generation of svartalfar says the young ones on the ridges are harder to kill than the last, and takes it as confirmation.\n\nMidgard's warbands leave the adolescents alone where they can. They are hard to kill and carry little worth taking, and every jarl who has sent a warband south knows its strength is for the mother. But the svartalfar of Svarhamr hunt them when they can, quietly, with poison and patience, and carve each death deep on the beam. They say it is the most important work in Malmohus, and that the realm will thank them for it one day, when the young ones would have been grown."
+    },
+    {
+      "title": "The Road South",
+      "text": "Midgard's road to the dragon runs south from Gotar. Warbands muster at Fort Atla, where Hallbjorn's eighty mustered in the first year the realm went south, and go down the old road past Nalliten and the bone bridge, through Myrkwood's werewolf and spider country to Galplen, where the skald Ragnhild came home and sang. From Galplen the road crosses Skona Ravine between the werewolf camps and the Seithkona Circle, and then the ground goes white, and the warbands are in Malmohus.\n\nThe realm pays for the dragon's death in several coins. Jordheim has kept a bounty on her head since Hallbjorn's day. Brohd of Jordheim, who makes the dragon mythirians, sets her scales in Atlantean glass. Svarhamr remembers its friends. And every company that kills her comes home through Galplen and Myrkwood and Gotar with a scale in a cart, and the farms along the road come out to see it, because every family in the south has someone on Svarhamr's beam or in Ragnhild's song.\n\nThe road has its customs. Warbands going south stop at the bone bridge and leave a stone on the cairn there, one stone for each spear, and warbands coming north take their stones back. The cairn is very large. The farmers of Gotar say they can tell how a warband fared by how many stones are left on it after it has passed going home.\n\nThe road runs the other way too. Once a year, when the snow on the Skona road is hard enough to bear it, a sledge comes north from Svarhamr to Galplen with a load of grey stone and a copy of the newest marks on the beam. The skalds of Galplen sing the marks into Ragnhild's song, a verse for every waking, so that the song is longer every year and nobody alive can sing all of it. The stone goes on to Jordheim, where the runemasters pay well for it, because it holds a rune better than iron and the hills it came from are frozen now."
+    },
+    {
+      "title": "The Waiting Room",
+      "text": "The svartalfar of Svarhamr call Malmohus the waiting room of the end of the world. The phrase is theirs, and they mean it plainly. The old songs say that at the end the Fenris wolf will break his chain and run, and his kin will swallow the sun and the moon, and Hel will come with her host. The dragon in the hollow is his daughter. If she flies north to meet him, the ending of the north will begin here, in this white country, and Svarhamr will be the first town to see it.\n\nThat is why the Dragonbane stay. They could have gone home under Myrkwood a hundred times; the stone they came for has long since been mined from the easy walls, and the cold is worse every generation. They stay because someone must count the wakings, and keep the beam, and send the realm's warriors after the firstborn, and be there when she flies, to send word north. The clan's elders say the builders of the grey city saw the frost come south and left. The svartalfar saw the dragon come south and stayed. They are not sure, they say, which people was wiser.\n\nMidgard's skalds see it differently. To them Malmohus is not a waiting room but a battlefield, and the realm's warbands are the reason the end has not come: every time Midgard kills the dragon, the skalds sing, the chain holds a little longer, and the farms of Gotar have one more summer. The grandmothers of Gotar see it differently again. They say the builders are still asleep under the ruins, and that the dragon chose their city because she is waiting for them to wake, and that whatever the builders saw coming before they slept, the dragon wants to see too."
+    }
+  ],
+  "legend": "When people were new they thought Malmohus was the edge of the world. Raid leaders call the lair the court: fight her in it or not at all, because outside it she can't be hurt and she knows it. Cold resists up and keep them up; every breath strips them. When she stares at someone, that someone runs. Stun breaks for the long roar. Kill her babies before they reach the healers. Never say her name inside the ruins, the healers insist; she answers. The werewolves won't come here, and they know something. Yar first, the old raid leaders say, for luck, and because a Dec 2002 comment swore it made her breathe less. Corpses in Malmohus hear her talk; release fast if you don't want to listen. Nicknames: the wolf, the court (her lair), the edge.",
+  "atmosphere": {
+    "firstEntry": [
+      "The edge of the world, they called it. It is colder.",
+      "Frost lies on the ruins like a held breath.",
+      "Somewhere south, a wolf's head lies on its paws.",
+      "Drakulv tracks. Two legs, wolf feet."
+    ],
+    "areas": [
+      {
+        "name": "Gjalpinulva's court",
+        "x": 708811,
+        "y": 1021459,
+        "z": 3014,
+        "radius": 2400,
+        "lines": [
+          "The dragon's court. Frost hangs in the air like smoke.",
+          "Bones of old raids lie in the frost.",
+          "Do not say her name here."
+        ]
+      },
+      {
+        "name": "the firstborn's hunt",
+        "x": 695353,
+        "y": 1022775,
+        "z": 2824,
+        "radius": 1500,
+        "lines": [
+          "Old claw-marks on the stones. The firstborn hunts here.",
+          "The drakulv's eldest walks these ruins."
+        ]
+      },
+      {
+        "name": "the frozen ruins",
+        "x": 720896,
+        "y": 999424,
+        "z": 0,
+        "radius": 20000,
+        "lines": [
+          "Ruins of a people nobody remembers.",
+          "Drakulv camps smoke among the broken walls.",
+          "The svartalfar watch from the edges."
+        ]
+      }
+    ],
+    "raidForming": [
+      "Midgard marches south to face the wolf's daughter."
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "gjalpinulva is a daughter of the fenris wolf, the skalds say. thats why the wolf head",
+      "the drakulvs in malmohus were bred by the dragon. two legs, scales, wolf faces. [nobody asked for that|her kids]",
+      "the svartalfar in svarhamr want the dragon dead. [help them|they pay well]",
+      "gjalpinulva calls the keeper of niflheim her aunt. [think about that|if shes fenris's daughter thats hel]",
+      "the gods bound fenris with a chain of things that dont exist. before it closed he had a daughter",
+      "gjalpinulva is named for gjalp, the giantess who raised a river against thor, the skalds say",
+      "the drakulv are gjalpinulva's own people. missionaries, sacrificers, priests, the lot",
+      "yar is the firstborn of the drakulv. oldest and strongest of her brood",
+      "the svartalfar of svarhamr are dragonbane. they want her dead and pay for help",
+      "nobody knows who built the ruins in malmohus. older than jordheim",
+      "the adolescent dragons on the malmohus ridges are hers too. young ones",
+      "gjalpinulva can't be hurt outside her lair. fight her in the court or not at all"
+    ],
+    "rumour": [
+      "skona's werewolves wont set foot in malmohus. [think about that|ask yourself why]",
+      "never say the dragon's name inside malmohus. bad luck, my healer insists",
+      "[heard|they say] she's waiting for her father's chain to break. [hope it holds|lets hope]",
+      "half the named drakulv in malmohus come in pairs, two bjornvargs two klengs two gunnolfs two arnulvs",
+      "steinolf the runner never respawns where he died",
+      "the svartalf camps in east malmohus arent friendly, dragonbane or not",
+      "the gunnolf in malmohus is not the epic one, thats the trainer in vindsaul faste",
+      "the heralds say the varulv were once gjalpinulva's allies. thats why skona's werewolves stay out",
+      "if she's fenris's daughter then her aunt is hel. thats what she means by niflheim",
+      "gjalpinulva's waiting for her father's chain to break, the svartalfar say",
+      "the frost in malmohus never lifts. not even in summer",
+      "you can hear her talk to the dead if you dont release. [creepy|dont]"
+    ],
+    "tell": [
+      "malmohus is way south past skona. drakulv everywhere and gjalpinulva in her lair. bring the realm",
+      "its the dragon's land. ruins, drakulv, svartalfar in svarhamr, and the wolf-headed dragon herself",
+      "malmohus? gjalpinulva. 70 people, cold resists, fight her in the lair and nowhere else",
+      "named drakulv all over malmohus, bring a group, most of them bring their camp",
+      "is the dragon hard? 70 people, cold resists, fight her only in the lair, and run when she stares",
+      "where is gjalpinulva? malmohus, far south past skona. her court is in the southeast ruins",
+      "whats in malmohus? drakulv everywhere, svartalfar at svarhamr, yar the firstborn and the wolf herself"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Malmohus. We called it the edge of the world when I was young. Now it is the [dragon]'s land, and her [drakulv]'s, and the [svartalfar] watch it from Svarhamr.\"",
+    "topics": {
+      "dragon": "Gjalpinulva, the Fenris wolf's daughter, the skalds say. She calls Niflheim's keeper her aunt. Out of her lair she cannot be wounded; inside it she breathes winter at every tenth of her strength. Do not say her name in the ruins.",
+      "drakulv": "Her people: dragon-wolves on two legs. Yar was the first of them, her firstborn, and he hunts the southwest still. The old raid leaders kill him on the way, for luck.",
+      "svartalfar": "Dark elves of Svarhamr, who have watched her since she came. Some have sworn to kill her. They say she is waiting for her father's chain to break, and that she will be the first to know.",
+      "the names": "The [svartalfar] say a drakulv is born nameless and the hollow gives it a name with its work; when it dies, Svarhamr's beam-cutters cut the name and another takes the work. Some names are held twice: the bear-wolves [Bjornvarg], the two [Kleng], the two [Gunnolf] since the refusal, and the eagle-wolf [Arnulv]. Most are wolf and something; [Ulf] is only wolf.",
+      "the eastern camps": "Svartalf camps of bloodbinders, foisters and infiltrators in the east of [the ruins], held by the twins [Kariig], with [Desukva] the reckoner on the height above. Svarhamr's elders call them the outer watch; Odell, in drink, calls them the free clans who trade with the [drakulv].",
+      "the chain": "The gods bound the Fenris wolf with a fetter made of things that are not: a cat's footfall, a mountain's roots, a fish's breath. Before it closed he had a daughter. If it ever breaks, she will know first.",
+      "the ruins": "Older than Jordheim and silent. Nobody knows who built them. The frost on them never lifts.",
+      "the werewolves": "Skona's werewolves answer to no master and will not set foot in Malmohus. The heralds of a later age said they were once her allies.",
+      "Svarhamr": "The svartalf town at the edge of her land, where the dragonbane watch her. Kiaja and Raxnathor there will send you after [Yar] first.",
+      "the young dragons": "Her adolescent young, on the ridges, not yet grown. They burn whoever comes close. Some say they are what the chain is waiting for."
+    }
+  },
+  "book": {
+    "title": "The Edge of the World, by Sveinn of Gotar",
+    "pages": [
+      "When I was a boy in Gotar, my uncle said Malmohus was the edge of the world, and that a man who walked far enough south past Skona would find the ground end under him and fall into the sea of mist where the serpent sleeps. I believed him until I was twenty. Then I walked there. The ground did not end. It went white instead, and broken, and full of ruins that nobody could tell me the builders of, and on the third day I saw a wolf's head on a ridge as long as a longship, resting on its paws, and I understood that my uncle had been kind.",
+      "The svartalfar of Svarhamr took me in. They live at the edge of her land and watch her the way fishermen watch weather. One of them told me the drakulv are her children, every one, and that the first of them, Yar, still hunts the southwest with his kin. She told me the werewolves of Skona answer to no master and will not come here, because a dragon who is half wolf would make them answer to her. Then she told me never to say the dragon's name aloud in the ruins. I asked why. She said: because she answers.",
+      "I asked the svartalf about the chain. She said the gods made it of six things that are not: the sound of a cat walking, the beard of a woman, the roots of a mountain, the sinews of a bear, the breath of a fish, the spittle of a bird. She said that is why there are no more of those things in the world. She said the wolf's daughter flew south before the last of them was used, and that the dragonbane believe that while she lives, the chain is not finished. I asked what would finish it. She said: her death, or her father's. I did not ask which the dragonbane hoped for.",
+      "The svartalf who took me in showed me the beam in the meeting hall of Svarhamr. It runs the whole length of the ceiling and is carved from end to end, and at the oldest end the marks are so worn I could not read them. She read them for me with her fingers. The dragon woke; the dragon slept; the foreman was frozen; the dragon woke. Further along there were names of warbands, and I found Hallbjorn's, and beside it a small mark she said meant one came home. Near the newest end was a long row of marks close together, and she said that was a winter when the dragon woke every few days and the realm sent warband after warband, and that the town did not sleep.",
+      "I went with the svartalfar to the edge of the hollow one clear day, as far as the frozen foreman, and no further. He stands with his head turned south and his hands at his sides, and there is frost on his open eyes, blue with age. The svartalf children of Svarhamr are brought to him once and told his name, Sviga, and told why he is standing there. My guide said that if I looked past him into the hollow I would see her, and that if she was looking back I would not be coming home. I did not look past him. I have regretted it every day since, and I would not do it again.",
+      "On the way north I slept a night in the ruins, against the advice of everyone in Svarhamr, because I was tired and stubborn. I dreamed of grey towers going up into the sky, and people on the stairs carrying tools, and a cold light coming from the south that made them turn and look. I woke with frost on my eyelashes and so tired I could barely stand, and there were marks in the snow around me, small ones, like the feet of a horse or a woman. The svartalfar said it was the mara. They said I was lucky it was only one.",
+      "At the bone bridge in Gotar I left a stone on the cairn going south, as everyone does, and when I came back I took it off again. The farmer who keeps the bridge watched me do it and said he could always tell which ones had been to the dragon's country, because they held the stone a long time before they put it in their pocket. I asked how many stones were left on the cairn from warbands that did not come back. He said: count them yourself. I did not. My uncle was right about Malmohus. It is the edge of the world. It is only that the world goes on a little way past it, for those who have to live there.",
+      "Last page, written on the road home. A warband from Jordheim passed me going south, seventy strong, singing. Two days later it passed me going north, fewer, not singing, but they had a scale in a cart and they were laughing in the quiet way of men who did not expect to be alive. One of them told me she had talked to him while he lay dead on the frost, before his friends raised him. I asked what she said. He said: that his soul was hers now, and that there would be no valkyries."
+    ]
+  },
+  "bosses": [
+    "gjalpinulva",
+    "yar",
+    "bjornvarg",
+    "hrolleif",
+    "kleng",
+    "ulf",
+    "wyulv",
+    "steinolf",
+    "eildird",
+    "kariig",
+    "desukva",
+    "ingardild",
+    "geirolf",
+    "arnulv",
+    "ljornrn",
+    "gunnolf",
+    "rana",
+    "burr",
+    "eiorharn",
+    "esulv"
+  ]
+}

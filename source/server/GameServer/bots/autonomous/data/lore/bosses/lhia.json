@@ -1,0 +1,107 @@
+{
+  "id": "lhia",
+  "name": "Lhia",
+  "npcNames": [
+    "Lhia"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Lhia: level 53, model 2095, size 52, at about 316,700/709,900 in Lough Gur; respawn 300 seconds; a plain spawn. Piaras and Lhia (Piaras of Howth): '...Kill Lhia in Lough Gur (night spawn). Return to Piaras in Howth.'",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); DataQuest 'Piaras and Lhia'"
+    },
+    {
+      "text": "Living Server lore: Lhia as the lake-maiden who promised herself to Piaras of Howth and came back wrong; why she walks only at night.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Piaras of Howth is an old man now, and still sends the young of the realm to Lough Gur at night, and the young come back and tell him it is done, and he thanks them and pays them and says nothing else, and in a season or two he sends someone else. The druids of Lough Gur know why. Lhia is not finished with him, and he is not finished with her.\n\nWhen Piaras was young he went down to Lough Gur on a summer night after the trumpets that the lake is famous for, the music of the court under the water, and he met a woman on the shore who said she was of that court. Her name was Lhia. She promised herself to him on the condition every lake-court maiden asks of a mortal: that he come back to the shore every night for a year and a day, and never once by daylight. He came back every night for a year. On the last day he could not wait for dusk, and he came down to the shore in the afternoon to see her face in the light, and saw it.\n\nNobody knows what he saw. Piaras has never told. The druids of Lough Gur say the lake-court's maidens have faces made for moonlight, and that the sun shows what the moon kindly does not. What is known is that Lhia has walked the shore of Lough Gur at night ever since, and only at night, and that she is no longer of the court. The court under the water closed its door to her when Piaras broke the condition, and she has been waiting on the shore for him since, and anyone else who comes in his place she takes for him at first and then, when she sees the face, does not forgive.\n\nPiaras sends the young to lay her. She comes back. The druids think she will keep coming back until Piaras himself goes down to the shore after dark one last time, and they think he knows it.",
+  "legend": "Lhia is a level 53 on the shore of Lough Gur (about 317k/710k). The quest text calls her a night spawn, but in this world's data she is a plain spawn (GameNPC, no time-of-day script) with a 5-minute respawn, so she can be up by day too. Plain mob, no script; a 50 group handles her. She is the last kill of Piaras and Lhia, from Piaras in Howth (cliff dweller spearman, bog crawler, tidal sheerie seaweed, breaker roane companion, then Lhia, then back to Howth). If she is not there, she is on her 5-minute respawn. The Melancholic Fairy Queen and the Lough Gur trumpets are in the same lake country; do not mix the pulls.",
+  "yells": {
+    "aggro": [
+      "Piaras? Is it you? It is not you.",
+      "Not by daylight. Never by daylight.",
+      "You have his footstep. Not his face."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A year and a day, and he came in the afternoon!"
+      }
+    ],
+    "death": [
+      "Tell Piaras... tell him to come himself...",
+      "The door under the water... is shut..."
+    ],
+    "slay": [
+      "Not him.",
+      "Not him either.",
+      "I will wait. I am good at waiting."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A woman on the shore of Lough Gur, after dark.",
+      "She looks up at every footstep, and away."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Lhia cries out for Piaras across the lake."
+      }
+    ],
+    "realmFirstKill": "Lhia is laid on the shore of Lough Gur. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "lhia is a 53 on the lough gur shore. [quest says night spawn|here shes just there]",
+      "piaras and lhia quest, last kill. [then back to howth|piaras]",
+      "plain mob, 50 group fine",
+      "dont pull the lough gur fairy stuff with her"
+    ],
+    "aftermathWin": [
+      "lhia down. [back to piaras in howth|done]",
+      "quest said night spawn but she was up at noon. [easy|lol]",
+      "piaras will pay and say nothing. [like always|lol]",
+      "she'll be back. [5 min|she always is]"
+    ],
+    "aftermathLoss": [
+      "camped her respawn too long. [5 min|patience]",
+      "pulled the fairy queen's lot too. [wrong lake bit|ugh]",
+      "group too small. [53|need 3-4]",
+      "she nuked the healer. [ouch|sorry]"
+    ],
+    "rumour": [
+      "[heard|someone said] piaras of howth met lhia on the shore of lough gur when he was young",
+      "lhia only walks at night because piaras came to see her by daylight. [broke the condition|sad]",
+      "[word is|heard] lhia will keep coming back until piaras goes down to the shore himself",
+      "the lough gur druids say the lake court shut its door on lhia"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Lhia",
+    "text": "The lake-maiden of Lough Gur who promised herself to Piaras of Howth on the court's condition, a year and a day and never by daylight. He came in the afternoon. She walks the shore only at night now."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the shore of Lough Gur after dark, if a woman looks up at your footstep and then away. That is Lhia. She promised herself to Piaras of Howth when he was young, on the lake court's condition: every night for a year and a day, and never once by daylight. On the last day he came in the afternoon to see her face. Nobody knows what he saw. The court shut its door on her, and she waits on the shore, and takes everyone for him at first. Piaras sends the young. She comes back.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Lhia in Lough Gur in {minutes} minutes.",
+    "loss": "Lhia turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "melancholic-fairy-queen",
+      "relation": "the sad queen of the same lake"
+    },
+    {
+      "id": "queen-cliodna",
+      "relation": "another singer of the Veil"
+    }
+  ]
+}

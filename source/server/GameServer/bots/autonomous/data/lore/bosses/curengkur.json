@@ -1,0 +1,110 @@
+{
+  "id": "curengkur",
+  "name": "Curengkur",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/curengkur",
+  "locationId": "allta-fearann",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Bot chat: Curengkur stalks Allta Fearann and the mantids only say the name in a whisper.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Curengkur: level 75, 30,000 health, resists 20% melee and 30% other, no tether. While it is within 800 of its spawn point it gains 200 health every think (about 1.5 s). It casts Curengkur's Strike (400, 3 s cast, range 1,500) and Poison ('An acidic cloud surrounds you!', 100 every 3 s for 30 s, range 500). Its nest, 'Curengkur's Nest Radiation' (level 70, at its spawn), casts Curengkur's Radiation (200 heat, radius 800 around the nest, every 4 s) while it shares Curengkur's target; the nest is removed when Curengkur dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Curengkur.cs (integration/1.2)"
+    },
+    {
+      "text": "Curengkur stands at about 376,100/172,800 in Allta Fearann.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "The mantids of Allta Fearann are not afraid of much. Allta Fearann is the wild land, the high country north of Vigilant Rock where the forest gives out into scrub and stone, and the mantids have held it since before the Sylvan named it, a hard, busy, unfriendly people who are not enemies of the Sylvan and not friends either. They are afraid of Curengkur. It hunts them, the Sylvan say, and it hunts them where they nest, and they will not say its name above a whisper; the Sylvan have started doing the same.\n\nCurengkur has a nest of its own, and its nest is what the mantids fear most. It sits in a hollow on the high ground of the wild land, and the air above it burns. Whatever lies there, the Sylvan have never seen it plainly, only the shimmer and the scorched stone, but whenever Curengkur is roused the nest wakes with it and the air for a long stone's throw around it sears whatever is standing in it, again and again, as long as the hunter is fighting. Curengkur itself spits an acid that hangs about its prey in a cloud and eats through shell and skin alike, and strikes from further off than any mantid can reach.\n\nAnd the nest feeds it. The mantids' oldest warning, which the Sylvan of Vigilant Rock learned from them in the first years and passed to the Hibernian swords, is that Curengkur is never wounded at home. A hurt that would kill it in the open closes while it stands on its nest, as if the burning hollow were mending it. The mantids do not fight it there. When they must fight it at all, their old hunters go up to the hollow, sting it, and run, and draw it away down the slope until the shimmer is far behind them and the air is cool, and only then turn. Most of the hunters who do it die. The mantids say it is still better than the nest.\n\nWhen Curengkur dies the nest goes cold, and the mantids of the wild land dare to speak again for a while, and the Sylvan say you can hear them for the first time, a dry clicking all over the high country. It never lasts. Curengkur comes back, and the air over the hollow burns again, and Allta Fearann goes quiet. The Sylvan's rule for travellers in the wild land is the one the mantids taught them: if the mantids go quiet, turn round.",
+  "legend": "Pull it off its nest. Within 800 of its spawn Curengkur heals 200 every second and a half, and the nest radiation burns everyone within 800 of the nest for 200 heat every 4 seconds. Neither works once the fight is more than 800 from the spawn, and it has no tether, so the puller tags it and runs it well down the slope before anyone engages. Then it is a straight fight: Curengkur's Strike (400, 3-second cast, reaches 1,500) on its target and an acid cloud DoT (100 every 3 seconds for 30 seconds): cure poison and heal. Kill it and the nest disappears. If the mantids go quiet, turn round, the old hibs say.",
+  "yells": {
+    "aggro": [
+      "(the air over the hollow begins to shimmer)",
+      "(a dry hiss, and the clicking of the mantids stops)",
+      "(Curengkur rises from its burning nest)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(acid hangs thick in the air around its prey)"
+      }
+    ],
+    "death": [
+      "(the shimmer over the hollow fades)",
+      "(somewhere, a mantid clicks)"
+    ],
+    "slay": [
+      "(acid hisses on the fallen)",
+      "(Curengkur turns toward the next)",
+      "(the hollow burns brighter)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The mantids have gone quiet. Something hunts here.",
+      "The air over the hollow shimmers and burns."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Acid hangs in the air around Curengkur's prey."
+      },
+      {
+        "trigger": "death",
+        "text": "The nest goes cold. The mantids dare to speak."
+      }
+    ],
+    "realmFirstKill": "Curengkur is dead. The mantids dare to speak again."
+  },
+  "botLines": {
+    "briefing": [
+      "pull curengkur off its nest. [800 from spawn|well down the slope] before we engage",
+      "on the nest it heals 200 every 1.5 sec and the nest burns everyone in 800. [never fight it at home|move it]",
+      "no tether, it follows. [puller runs it out|kite it away first]",
+      "acid dot, cure poison. strike hits 400 from range"
+    ],
+    "aftermathWin": [
+      "curengkur down. [the mantids can talk again|listen to them click]",
+      "pulled it way off the nest. [no healing|clean]",
+      "nest went cold when it died. [nice|gone]",
+      "allta fearann is loud for once"
+    ],
+    "aftermathLoss": [
+      "fought it on the nest. [it healed faster than we hit|radiation wiped us]",
+      "puller died before we got it off the nest",
+      "nobody cured the acid. [dots everywhere|ugh]",
+      "didnt pull it far enough, still in the shimmer. [800 is further than it looks|move more]"
+    ],
+    "rumour": [
+      "[heard|someone said] the mantids wont say curengkur out loud",
+      "the mantid hunters sting curengkur and run to draw it off the nest. [most die|brave bugs]",
+      "[word is|heard] allta fearann goes quiet when curengkur is back",
+      "nobody has seen what's in curengkur's nest. [just the shimmer|scorched stone]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Curengkur",
+    "text": "The hunter of the mantids of [Allta Fearann], whose nest burns the air and mends it. The mantids never fight it at home: they draw it down the slope first. They only whisper its name."
+  },
+  "bookPage": "From Coll of the Domnann guides: we wrote the name down so that you need not say it: Curengkur. The mantids taught the Sylvan of Vigilant Rock one thing about it, in the first years, and we pass it on. It is never wounded at home. Its nest burns the air for a stone's throw round, and while it stands there its hurts close. The old mantid hunters go up to the hollow, sting it, and run, and draw it down the slope until the air is cool, and turn there. Most of them die doing it. They say it is better than the nest. If the mantids go quiet, turn round.",
+  "chronicle": {
+    "win": "{realm} rode out to Allta Fearann under {raidLeader} and killed Curengkur in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Allta Fearann by Curengkur after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "elro-the-ancient",
+      "relation": "another old power of the isle's edges"
+    }
+  ]
+}

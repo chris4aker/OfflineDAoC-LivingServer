@@ -1,0 +1,81 @@
+{
+  "id": "fanged-sinach",
+  "name": "Fanged Sinach",
+  "npcNames": [
+    "Fanged Sinach"
+  ],
+  "locationId": "cliffs-of-moher",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Fanged Sinach: level 43, a great sea-beast body (model 586, shared with the peallaidh and giant lusus), size 151, faction sinach, at about 224,900/431,800 on the beach at sea level; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Catch of the Day (Larylle of Ardee): Aessa the named tidal sheerie, two cliff dweller camps, 'Kill the fanged sinach on the beach south of Aessa', 'Deal with the koalinth on the beach south-southeast'.",
+      "provenance": "game",
+      "source": "DataQuest 'Catch of the Day' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "On the strand at the foot of the Cliffs of Moher, north of where the tidal sheerie Aessa keeps her pool, there is a thing the cliff dwellers call the fanged sinach. It is a sea-beast with too many teeth that comes up out of the shallows at the tide's turn and lies in the wet sand, and the cliff dwellers, who have hunted that strand longer than Tir Urphost has had boats, will not hunt within sight of it.\n\nThe cliff dwellers say it came up the spring the koalinth did, the spring the isle in the west rose out of the mist and the sea ran cold. The fishers of Tir Urphost say it was always there and the cliff dwellers are only trying to blame the isle for everything. Larylle of Ardee sends the realm's young down the strand to it with a necklace that the cliff dwellers recognise, so that they come too.",
+  "legend": "The Fanged Sinach (43) is a big sea-beast on the beach north of Aessa at the foot of the Cliffs of Moher (about 225k/432k, sea level). Part of Catch of the Day (Larylle in Ardee). The cliff dwellers on the strand (34-44) are social and recognise the quest necklace, so expect them too. A group of low to mid 40s. 5-minute respawn.",
+  "yells": {
+    "aggro": [
+      "(teeth, rows of them, rise out of the wet sand)",
+      "(the sinach surges up the strand)"
+    ],
+    "phases": [],
+    "death": [
+      "(the fanged sinach sinks back into the shallows)"
+    ],
+    "slay": [
+      "(the tide washes over the fallen)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Teeth in the wet sand at the tide's turn."
+    ],
+    "phases": [],
+    "realmFirstKill": "The fanged sinach of the strand is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "fanged sinach is 43 on the beach north of aessa",
+      "catch of the day. cliff dwellers come too"
+    ],
+    "aftermathWin": [
+      "fanged sinach down. [catch of the day|grats]",
+      "the koalinth next. [south south east|go]"
+    ],
+    "aftermathLoss": [
+      "cliff dwellers piled in. [rip|necklace]",
+      "too many teeth. [ouch|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] the cliff dwellers wont hunt within sight of the fanged sinach",
+      "the fanged sinach came up the spring the koalinth did, cliff dwellers say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fanged Sinach",
+    "text": "A many-toothed sea-beast of the strand under the Cliffs of Moher, north of Aessa's pool. The cliff dwellers say it came up the spring the isle rose; Tir Urphost says it was always there."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Fanged Sinach in the Cliffs of Moher in {minutes} minutes.",
+    "loss": "Fanged Sinach turned back {realm}'s band under {raidLeader} in the Cliffs of Moher after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "cliffs-of-moher",
+      "relation": "the strand it hunts"
+    }
+  ]
+}

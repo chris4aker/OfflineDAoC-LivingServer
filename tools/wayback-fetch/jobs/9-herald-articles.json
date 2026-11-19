@@ -1,0 +1,24 @@
+{
+    "name": "9-herald-articles",
+    "note": "The Herald's article store /more/<id>.php (2002-2003) and /more/<id>.shtml (2003-2005): 1,940 distinct article ids in the site map, numbered news items behind the front page's 'more' links (developer letters, patch and event news, lore). One save per id (the latest form). Runs after the spells because it is long (about 1.6 hours of requests). Its content is a GUESS from the URL forms until the first pages are read.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 1950,
+    "targets": [
+        {
+            "url": "camelotherald.com/more/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Seen in the map: /more/N.php and /more/N.shtml, ids 2 to 2304.",
+            "collapse": "digest",
+            "pick": "latest",
+            "dedupeKey": "/more/(\\d+)\\.(?:php|shtml)$",
+            "cdxPageSize": 1000,
+            "cdxMaxPages": 4,
+            "maxCaptures": 1950
+        }
+    ]
+}

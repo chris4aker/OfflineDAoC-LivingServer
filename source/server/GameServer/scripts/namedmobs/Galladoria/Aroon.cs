@@ -409,8 +409,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer) //slash resist
         {
-            Aroon.Aroon_slash = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_slash = true;
+            base.ProcessDeath(killer);
         }
 
         public override bool AddToWorld()
@@ -458,15 +463,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -495,11 +500,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -574,8 +579,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_thrust = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_thrust = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -638,13 +648,13 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
-        private GamePlayer RandomTarget
+        private GameLiving randomtarget = null;
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
         public int RandomAttackTarget(ECSGameTimer timer)
         {
             //IList enemies = new ArrayList(AggroTable.Keys);
@@ -671,11 +681,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -747,8 +757,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_crush = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_crush = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -811,15 +826,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -848,11 +863,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -926,8 +941,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_body = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_body = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -990,15 +1010,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1027,11 +1047,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1105,8 +1125,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_cold = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_cold = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -1169,15 +1194,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1207,11 +1232,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1285,8 +1310,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_energy = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_energy = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -1349,15 +1379,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1387,11 +1417,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1465,8 +1495,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_heat = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_heat = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -1529,15 +1564,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1567,11 +1602,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1645,8 +1680,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_matter = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_matter = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -1709,15 +1749,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1747,11 +1787,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {
@@ -1825,8 +1865,13 @@ namespace DOL.GS
 
         public override void Die(GameObject killer)
         {
-            Aroon.Aroon_spirit = true;
             base.Die(null); // null to not gain experience
+        }
+
+        public override void ProcessDeath(GameObject killer)
+        {
+            Aroon.Aroon_spirit = true;
+            base.ProcessDeath(killer);
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
@@ -1889,15 +1934,15 @@ namespace DOL.AI.Brain
             }
         }
         public static bool switch_target = false;
-        private GamePlayer randomtarget = null;
+        private GameLiving randomtarget = null;
 
-        private GamePlayer RandomTarget
+        private GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
         }
 
-        public List<GamePlayer> PlayersToAttack = new List<GamePlayer>();
+        public List<GameLiving> PlayersToAttack = new List<GameLiving>();
 
         public int RandomAttackTarget(ECSGameTimer timer)
         {
@@ -1927,11 +1972,11 @@ namespace DOL.AI.Brain
             }
             if (Body.InCombat)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius((ushort) AggroRange))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort) AggroRange))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!PlayersToAttack.Contains(player))
                             {

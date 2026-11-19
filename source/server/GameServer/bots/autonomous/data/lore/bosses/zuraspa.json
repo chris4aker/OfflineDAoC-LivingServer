@@ -1,0 +1,85 @@
+{
+  "id": "zuraspa",
+  "name": "Zuraspa",
+  "npcNames": [
+    "Zuraspa"
+  ],
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Zuraspa: level 46, a mantid of Krrzck (model 711), faction Krrzck, aggro 99, at about 367,600/261,200 inside the town; respawn 120 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Krrzck, the mantid town of World's End (about 367,500/262,500): Krrzck saoranach and maor, Eimear, and the stable master Dalniver.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Zuraspa is the wall-steward of Krrzck, the mantid who decides, each morning, whether the town's shut gate stays shut. The answer has been the same every morning for as long as the Sylvan have kept count, with one exception: the morning Zuraspa let in Eimear, the outlander girl who had sat outside the wall for a season and a half. The other stewards have never asked why. Eimear has, and says Zuraspa told her only that a proper asking should be answered.\n\nZuraspa does not like the realm, and does not dislike it. The Necht scribes who have dealt with the town through Eimear say Zuraspa counts the Hibernian companies that walk past the wall toward the mouth of Galladoria, and that the count is kept on the inside of the gate, in scratches, beside a much older count that nobody has explained. It does not let anyone stand at the gate long.",
+  "legend": "Zuraspa (46) is a named Krrzck mantid inside the shut town of Krrzck in World's End (about 368k/261k). Krrzck mantids are not aggressive to everyone (aggro 99), but they are a faction and they defend each other. Killing Zuraspa brings the stewards (maor, 50) and citizens. Plain spawn, 2-minute respawn. Most groups leave the town alone. If you need anything from Krrzck, it goes through Eimear, not the gate.",
+  "yells": {
+    "aggro": [
+      "(the steward's forelegs lift)",
+      "The gate stays shut."
+    ],
+    "phases": [],
+    "death": [
+      "(Zuraspa folds, and the gate creaks)"
+    ],
+    "slay": [
+      "(a new scratch on the inside of the gate)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A mantid at the shut gate, counting."
+    ],
+    "phases": [],
+    "realmFirstKill": "Zuraspa, the wall-steward of Krrzck, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "zuraspa is a 46 krrzck mantid inside the town",
+      "the stewards and citizens help each other. [careful|leave it]"
+    ],
+    "aftermathWin": [
+      "zuraspa down. [the gate steward|grats]",
+      "only pulled one maor. [lucky|nice]"
+    ],
+    "aftermathLoss": [
+      "the whole town came. [rip|lol]",
+      "maor are 50. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] zuraspa let eimear in. nobody knows why",
+      "the krrzck count hib companies on the inside of their gate"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Zuraspa",
+    "text": "The wall-steward of Krrzck, who decides each morning whether the shut gate stays shut, and opened it once, for Eimear. It counts the realm's companies on the inside of the gate."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Zuraspa in World's End in {minutes} minutes.",
+    "loss": "Zuraspa turned back {realm}'s band under {raidLeader} in World's End after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "eimear",
+      "relation": "who speaks for the town"
+    },
+    {
+      "id": "xcrzrk",
+      "relation": "the mantid outside the wall"
+    }
+  ]
+}

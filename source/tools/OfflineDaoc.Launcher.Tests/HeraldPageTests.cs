@@ -109,11 +109,83 @@ public class HeraldPageTests
             "a bot guild is counted as before");
     }
 
+    /// <summary>
+    /// Crafting 2.0 (WP9, design facet E): the Herald lists the top crafters of each order, players (per account and realm,
+    /// named by the account's highest-level character there) and gamebots alike, with the title their skill gives.
+    /// </summary>
+    [Test] public void TheHeraldListsTheTopCraftersOfEachOrder()
+    {
+        Exec("""
+            CREATE TABLE DOLCharacters (Name TEXT, AccountName TEXT, Realm INT, Class INT, Level INT, RealmPoints INT, GuildID TEXT);
+            CREATE TABLE AccountXCrafting (AccountId TEXT, Realm INT, SerializedCraftingSkills TEXT, CraftingPrimarySkill INT);
+            CREATE TABLE offline_world_bots (BotId INTEGER PRIMARY KEY, Name TEXT, Realm INT, ClassName TEXT, Level INT, RealmPoints INT,
+                IsRetired INT, SerializedCraftingSkills TEXT);
+            CREATE TABLE offline_bot_crafters (BotId INT, Realm INT, PrimaryCraft INT);
+            INSERT INTO DOLCharacters VALUES ('Lowalt', 'chris', 1, 1, 10, 0, '');
+            INSERT INTO DOLCharacters VALUES ('Chrisplays', 'CHRIS', 1, 1, 50, 0, '');
+            INSERT INTO AccountXCrafting VALUES ('chris', 1, '11|1012;12|640;1|300', 11);
+            INSERT INTO AccountXCrafting VALUES ('chris', 2, '13|500', 13);
+            INSERT INTO AccountXCrafting VALUES ('basic', 1, '15|200', 15);
+            INSERT INTO offline_world_bots VALUES (1, 'Needles', 1, 'Cleric', 40, 0, 0, '11|850;12|400');
+            INSERT INTO offline_world_bots VALUES (2, 'Gone', 1, 'Cleric', 40, 0, 1, '11|999');
+            INSERT INTO offline_world_bots VALUES (3, 'Forgeheart', 2, 'Warrior', 30, 0, 0, '2|120;1|90');
+            INSERT INTO offline_world_bots VALUES (4, 'Plain', 3, 'Hero', 30, 0, 0, '');
+            INSERT INTO offline_bot_crafters VALUES (3, 2, 1);
+            """);
+        string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
+        Assert.That(html, Does.Contain("Master Crafters"));
+        Assert.That(html, Does.Contain("Chrisplays <span class=\"muted\">Legendary Tailor</span>"), "named by the account's highest character");
+        Assert.That(html, Does.Contain("Needles <span class=\"muted\">Master Tailor</span>"));
+        Assert.That(html.IndexOf("Chrisplays <span", StringComparison.Ordinal), Is.LessThan(html.IndexOf("Needles <span", StringComparison.Ordinal)), "highest skill first");
+        Assert.That(html, Does.Contain("Forgeheart <span class=\"muted\">Weaponcrafter&#39;s Helper</span>"), "the crafter row's order wins");
+        Assert.That(html, Does.Not.Contain("Gone <span"), "retired bots are not listed");
+        Assert.That(html, Does.Not.Contain("Lowalt"));
+        Assert.That(html, Does.Contain("economy.html"), "the Herald links to the economy page");
+
+        Assert.That(HeraldPage.CraftTitle(0, "Tailor"), Is.EqualTo("Tailor's Helper"));
+        Assert.That(HeraldPage.CraftTitle(999, "Fletcher"), Is.EqualTo("Grandmaster Fletcher"));
+        Assert.That(HeraldPage.CraftTitle(1100, "Alchemist"), Is.EqualTo("Legendary Alchemist"), "no Legendary Grandmaster in the era");
+        Assert.That(HeraldPage.CraftSkills("11|5;x;11|9;0|4;12|0;13|7"), Is.EqualTo(new[] { (11, 5), (13, 7) }));
+    }
+
+    /// <summary>
+    /// Bots as people (1.2, WP6): Milestones of the Realm lists the last 40 reached arcs of gamebots still playing, newest
+    /// first, with the trophy and its boss; active and dropped arcs and retired bots are not news, and names are escaped.
+    /// </summary>
+    [Test] public void TheHeraldListsTheMilestonesOfTheRealm()
+    {
+        Seed();
+        Exec("""
+            CREATE TABLE offline_bot_milestones (PersonKey TEXT, CharacterId INT, Realm INT, Name TEXT, ClassName TEXT, Arc TEXT, State TEXT,
+                StartedUtc TEXT, ReachedUtc TEXT, LastTalkUtc TEXT, TalkPoint INT, Count INT, Trophy TEXT, Source TEXT);
+            INSERT INTO offline_bot_milestones VALUES ('c:1', 1, 3, 'Brannoc', 'Champion', 'ding50', 'reached', '', '2026-11-17T10:00:00Z', '', 90, 0, '', '');
+            INSERT INTO offline_bot_milestones VALUES ('c:1', 1, 3, 'Brannoc', 'Champion', 'dragon_trophy', 'reached', '', '2026-11-17T12:00:00Z', '', 50, 3,
+                'Glimmering Ring', 'Cuuldurach the Glimmer King');
+            INSERT INTO offline_bot_milestones VALUES ('c:4', 4, 1, 'Aldwin', 'Cleric', 'rr5', 'reached', '', '2026-11-17T11:00:00Z', '', 90, 0, '', '');
+            INSERT INTO offline_bot_milestones VALUES ('c:5', 5, 1, 'Waiting', 'Cleric', 'rr5', 'active', '', '', '', 50, 0, '', '');
+            INSERT INTO offline_bot_milestones VALUES ('c:2', 2, 2, 'Retiredguy', 'Warrior', 'rr5', 'reached', '', '2026-11-17T13:00:00Z', '', 90, 0, '', '');
+            INSERT INTO offline_bot_milestones VALUES ('c:3', 3, 2, '<b>x</b>', 'Healer', 'ding50', 'reached', '', '2026-11-17T09:00:00Z', '', 90, 0, '', '');
+            INSERT INTO offline_world_bots VALUES (4, 'Aldwin', 1, 'Cleric', 50, 600000, 0);
+            """);
+        string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
+        Assert.That(html, Does.Contain("Milestones of the Realms"), "three realms on one page (chat audit TEXT-050)");
+        Assert.That(html, Does.Contain("Won Glimmering Ring from Cuuldurach the Glimmer King"));
+        Assert.That(html, Does.Contain("Earned realm rank 5").And.Contain("Reached level 50"));
+        Assert.That(html, Does.Not.Contain("Waiting"), "an arc still being chased is not news");
+        Assert.That(html, Does.Not.Contain("Retiredguy"), "a retired bot is not news");
+        Assert.That(html, Does.Contain("&lt;b&gt;x&lt;/b&gt;").And.Not.Contain("<b>x</b>"), "names are escaped");
+        int trophy = html.IndexOf("Won Glimmering Ring", StringComparison.Ordinal), rank = html.IndexOf("Earned realm rank 5", StringComparison.Ordinal);
+        Assert.That(trophy, Is.LessThan(rank), "newest first");
+        Assert.That(HeraldPage.MilestoneText("dragon_trophy", "", ""), Is.EqualTo("Won a trophy in a great raid"));
+        Assert.That(HeraldPage.MilestoneText("epic_armour", "", ""), Is.Empty, "no epic armour in 1.2 (owner decision 2)");
+    }
+
     [Test] public void AnEmptyOrOldDatabaseStillMakesAPage()
     {
         Exec("CREATE TABLE ServerProperty (Key TEXT)");
         string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
         Assert.That(html, Does.Contain("No firsts recorded yet").And.Contain("No one has earned realm points yet"));
+        Assert.That(html, Does.Contain("No milestones told yet"));
     }
 
     [Test] public void WritesOneSelfContainedFileAndLeavesTheDatabaseUnchanged()

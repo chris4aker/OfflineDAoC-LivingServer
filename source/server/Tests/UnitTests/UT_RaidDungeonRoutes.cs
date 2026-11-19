@@ -26,7 +26,9 @@ namespace DOL.UnitTests
                 Assert.That(RealmRaidMuster.Hubs.Where(h => h.Event == dungeon.Id), Is.Not.Empty, $"{dungeon.Name} has a muster hub");
                 string realm = dungeon.Realm switch { eRealm.Albion => "albion", eRealm.Midgard => "midgard", _ => "hibernia" };
                 Assert.That(dungeon.Id, Does.StartWith($"dungeon-{realm}-"));
-                Assert.That(AutonomousRealmRaid.SlowRespawnRegions, Does.Contain(dungeon.Region), dungeon.Name);
+                // Neutral raids only (owner, 2026-11-15): a realm raid dungeon keeps its monsters' own respawn timers.
+                Assert.That(AutonomousRealmRaid.SlowRespawnRegions, Does.Not.Contain(dungeon.Region),
+                    $"{dungeon.Name}: no ten-minute raid respawn hold");
                 foreach (string type in dungeon.Finals)
                     Assert.That(typeof(GameServer).Assembly.GetTypes().Any(t => t.Name == type && typeof(GameNPC).IsAssignableFrom(t)),
                         Is.True, $"{dungeon.Name}: boss script {type}");

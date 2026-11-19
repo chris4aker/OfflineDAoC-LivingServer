@@ -1,0 +1,66 @@
+{
+    "name": "5-lore",
+    "note": "Period lore and in-game text, 2002-2005: realm and class backstory, the Herald's lore and story pages, quest text and in-game books. The Herald's article.php pages are fetched by 2-patch-notes and serve lore too.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 260,
+    "targets": [
+        {
+            "url": "camelotherald.com/beginnersguide",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: the Herald's beginner's guide (realm and class introductions of the time).",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "camelotherald.com/lore",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: a lore section (one cheap lookup; the map's 'l' range shows the truth).",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "camelotherald.com/realm",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: realm pages (realms..., realmwar...).",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "camelot.allakhazam.com/db/quests.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam quest pages with their quest text (db/quests.html?cquest=N on today's site); GUESS for the era.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 80
+        },
+        {
+            "url": "camelot.allakhazam.com/quests.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "The same quest pages under the older quests.html?cquest=N address; GUESS for the era.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "darkageofcamelot.com/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: a first sample of Mythic's official site (realm and class story pages); narrow it once 1-site-map lists its paths.",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        }
+    ]
+}

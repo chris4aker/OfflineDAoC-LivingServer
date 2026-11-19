@@ -37,6 +37,9 @@ namespace DOL.GS
 
         public GamePlayer Owner { get; private set; }
         public GamePlayer PlayerGroupLeader { get; private set; }
+
+        /// <summary>Set by the brain only around the pet focus shield's own cast (BotBrain.TryStartPetFocusShield).</summary>
+        internal bool PetFocusShieldApproved { get; set; }
         public bool IsPlayerLedGroup => PlayerGroupLeader != null;
         public string ClassName { get; private set; }
         public new string InternalID { get; set; }
@@ -45,6 +48,12 @@ namespace DOL.GS
         public byte GenderId { get; set; }
         public long DatabaseID { get; set; }
         public bool IsAutonomousWorldBot { get; private set; }
+        /// <summary>
+        /// The NPC Size that draws like a player of that height (1 Short, 2 Average, 3 Tall): 48 / 50 / 52, the new client's
+        /// player scale. No bot is drawn bigger than a Tall player (owner 2026-10-31).
+        /// </summary>
+        public static byte SizeForHeight(int height) => height switch { 1 => 48, 3 => 52, _ => 50 };
+
         public bool IsTemporaryGroupHelper { get; private set; }
         /// <summary>
         /// A member of a realm's Epic Special Forces (AutonomousEpicSpecialForces): a level-50 gamebot made for one raid
@@ -52,9 +61,36 @@ namespace DOL.GS
         /// armor. It lives in memory only: nothing about it is ever saved, and it leaves when the raid ends.
         /// </summary>
         public bool IsEpicSpecialForce { get; private set; }
+        /// <summary>
+        /// A No Lifer's buffbot (NoLiferBuffBots, Living Server 1.2): a level-50 Cleric, Shaman or Druid "second account" that
+        /// follows its main or parks at the nearest bind and keeps it buffed. It lives in memory only (never saved, never in the
+        /// roster, the population count or any group), logs in and out with its main, and never fights or loots.
+        /// </summary>
+        public bool IsNoLiferBuffBot => BuffBotMainId > 0;
+        /// <summary>The main's roster id for a buffbot (0 for every other bot).</summary>
+        public long BuffBotMainId { get; private set; }
+        /// <summary>Kept in memory only: never written to the database (the Epic Special Forces and the No Lifers' buffbots).</summary>
+        public bool IsInMemoryOnly => IsEpicSpecialForce || IsNoLiferBuffBot;
         public bool IsEndgameCompanion => TemporaryCompanionBalance.IsEndgame(IsTemporaryGroupHelper || IsEpicSpecialForce, Level);
         /// <summary>Equipment is generated from the companion endgame kit (temporary helpers and the Special Forces).</summary>
         public bool UsesCompanionKit => IsTemporaryGroupHelper || IsEpicSpecialForce;
+
+        /// <summary>
+        /// A player's own companion (a /spawn helper, or a hired companion; never a world bot with goals): the companion
+        /// follow, buff, song, stealth and PvP rules apply to it. Hired companions (from True 1.65, HiredCompanions165)
+        /// are persistent bots, but their player's (owner 2026-10-31 in True 1.65: hired Shamans and Bards buffed instead of
+        /// following a walking player).
+        /// </summary>
+        public bool IsPlayerCompanion => IsTemporaryGroupHelper && !IsAutonomousWorldBot || IsHiredCompanion;
+
+        /// <summary>A player's hired companion (HiredCompanions165, the hired_companions switch): a persistent bot row
+        /// owned by one player character. Never a gamebot with goals, never a /spawn helper.</summary>
+        public bool IsHiredCompanion => IsAutonomousWorldBot && DatabaseID > 0 && HiredCompanions165.IsHired(this);
+
+        /// <summary>The player a companion works for: a /spawn helper's owner, or a hired companion's player when it is in
+        /// that player's group (null otherwise).</summary>
+        public GamePlayer CompanionPlayer => IsTemporaryGroupHelper ? Owner :
+            IsHiredCompanion ? PlayerGroupLeader ?? HiredCompanions165.OwnerOf(this) : null;
         private bool _endgameCompanionEquipped;
         public bool SuppressLootAndProgress => IsTemporaryGroupHelper;
         internal int EquipmentLevelFloor { get; private set; }
@@ -62,7 +98,9 @@ namespace DOL.GS
         public OfflineWorldBotRecord PersistentRecord { get; private set; }
         internal AutonomousGoalAttempt GoalDiagnosticAttempt;
         private byte _lastAutonomousTrainedLevel = 1;
-        public bool HasPendingAutonomousTraining => IsAutonomousWorldBot && _lastAutonomousTrainedLevel < Level;
+        // Living Server 1.2: this gamebot has had its starter gear (AutonomousStarterGear), saved as "|starter-gear|1".
+        private bool _starterGearGiven;
+        public bool HasPendingAutonomousTraining => IsAutonomousWorldBot && !IsHiredCompanion && _lastAutonomousTrainedLevel < Level;
         /// <summary>
         /// Spec points to spend, or enough realm ability points to be worth the trip (both at the class
         /// trainer; a few realm points are spent at the next level-up visit instead).
@@ -76,12 +114,13 @@ namespace DOL.GS
                 if (!HasPendingAutonomousTraining || BotSpec == null || IsTemporaryGroupHelper)
                     return false;
                 int points = m_leftOverSpecPoints;
-                bool catchingUp = Level - _lastAutonomousTrainedLevel > 1;
                 for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
-                    points += GetSpecPointsForLevel(level, catchingUp);
-                return BotSpec.SpecLines.Any(line => (line.levelRatio > 0 || Level >= 50) &&
+                    points += GetSpecPointsForLevel(level) + AutoTrainRefundAtLevel(level);
+                return BotSpec.SpecLines.Any(line =>
+                    (line.levelRatio > 0 || Level >= 50 || !string.IsNullOrEmpty(BotSpec.EraBuildId)) &&
                     GetSpecializationByName(line.Spec) is Specialization spec && spec.Trainable &&
-                    spec.Level < Math.Min(Level, line.SpecCap) && points >= spec.Level + 1);
+                    spec.Level < Math.Min(Level, line.SpecCap) &&
+                    points >= NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec)));
             }
         }
         public long Experience { get; private set; }
@@ -147,6 +186,11 @@ namespace DOL.GS
         public GameClient Client => _dummyClient;
 
         #endregion
+
+        /// <summary>A tactic's melee position order (EncounterMeleeStations: Govannon's demon) sets how close the bot follows
+        /// the target it fights; otherwise the NPC default.</summary>
+        public override int StickMinimumRange =>
+            EncounterMeleeStations.MinimumFollowFor(this, TargetObject, GameLoop.GameLoopTime) ?? base.StickMinimumRange;
 
         #region IGamePlayer — CharacterClass
 
@@ -250,20 +294,38 @@ namespace DOL.GS
 
         /// <summary>A player drags an item onto the bot: only a beggar takes it (AutonomousBeggars), into its own saved pack.</summary>
         public override bool ReceiveItem(GameLiving source, DbInventoryItem item) =>
-            AutonomousBeggars.TryReceiveItem(this, source as GamePlayer, item) || base.ReceiveItem(source, item);
+            // A hired companion takes what its own player hands it: worn when it can, otherwise into its 10-slot bag.
+            HiredCompanions165.TryReceiveItem(this, source as GamePlayer, item) ||
+            AutonomousBeggars.TryReceiveItem(this, source as GamePlayer, item) ||
+            // A seam (Crafting 2.0 WP0): crafter commerce (WP8) after the beggars; it takes nothing by default.
+            CraftingEconomy.BotCommerceSeams.ReceiveItem(this, source as GamePlayer, item) ||
+            base.ReceiveItem(source, item);
 
         /// <summary>A player drags coin onto the bot: only a beggar takes it, into its own saved purse.</summary>
         public override bool ReceiveMoney(GameLiving source, long money) =>
-            AutonomousBeggars.TryReceiveMoney(this, source as GamePlayer, money) || base.ReceiveMoney(source, money);
+            AutonomousBeggars.TryReceiveMoney(this, source as GamePlayer, money) ||
+            CraftingEconomy.BotCommerceSeams.ReceiveMoney(this, source as GamePlayer, money) ||
+            base.ReceiveMoney(source, money);
 
         /// <summary>A bot's /say, recorded in the chat transcript (CHAT_LINE) when a player is near enough to hear it.</summary>
         public override bool Say(string str)
         {
-            str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou
+            str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou (never a hired companion)
+            str = ChatPromises.BeforeSend(Name, Realm, str);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
             bool said = base.Say(str);
+            if (said)
+                ChatPromises.NoteSaid(this, str);   // chat 1.2 follow-up: a promise's line said, heard by a player or not
             if (said && AutonomousLivingServer.PlayerHears(this))
-                BotChatTranscript.Bot("say", Name, Realm, str);
+                BotChatTranscript.Bot("say", Name, Realm, str, who: this);
             return said;
+        }
+
+        /// <summary>A bot's emote, recorded (CHAT_EMOTE) when a player is near enough to see it (chat audit TEXT-051).</summary>
+        public override void Emote(eEmote emote)
+        {
+            base.Emote(emote);
+            if (AutonomousLivingServer.PlayerHears(this))
+                BotChatTranscript.Emote(this, emote);
         }
 
         public override int MaxConcentration => GetModified(eProperty.MaxConcentration);
@@ -289,6 +351,61 @@ namespace DOL.GS
                 if (oldPercent != EndurancePercent)
                     Group?.UpdateMember(this, false, false);
             }
+        }
+
+        #endregion
+
+        #region Resting seated (visual)
+
+        // Bots sit down to rest, visibly (owner 2026-10-31). The NPC packets carry no sit state, so a seated bot is shown by
+        // emote 0xF0 (sit down, then sit-idle) and stood up by 0xF1, sent on each change to the players who see it and
+        // again by SendNPCCreate to a player who first sees it seated. Visual only: recovery and its timing are unchanged.
+        internal const eEmote SitEmote = (eEmote)0xF0;
+        internal const eEmote StandEmote = (eEmote)0xF1;
+        private bool _seatedForClients;
+
+        public bool IsSeatedForClients => _seatedForClients;
+
+        private void SetSeatedForClients(bool seated)
+        {
+            if (!seated)
+                _seatedByHabit = false;
+            if (_seatedForClients == seated)
+                return;
+            _seatedForClients = seated;
+            if (ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                player.Out.SendEmoteAnimation(this, seated ? SitEmote : StandEmote);
+        }
+
+        // Bots as people for 1.2, work package 5 (BotMovementHabits): an autonomous gamebot also sits while it waits (for
+        // its group, at a rendezvous, at the bank, on a held keep's wall). The same emote, visual only, and outside rest:
+        // it stands at once when it moves (NpcMovementComponent.WalkToInternal), casts (CastSpell), attacks (StartAttack),
+        // dies or is moved; a rest that begins takes the seat over. Only BotMovementHabitsRuntime sits a bot this way.
+        private bool _seatedByHabit;
+
+        /// <summary>Seated by a movement habit (not by resting).</summary>
+        public bool IsSeatedByHabit => _seatedByHabit;
+
+        /// <summary>Sits a standing, idle autonomous gamebot down by habit. False (nothing sent) when it may not sit now.</summary>
+        internal bool SitByHabit()
+        {
+            if (_seatedForClients || !IsAlive || !IsAutonomousWorldBot || IsTemporaryGroupHelper || IsMoving || IsCasting ||
+                IsAttacking || InCombat || IsStealthed || IsRecoveryResting || IsOnStableMasterRoute ||
+                ObjectState != eObjectState.Active)
+                return false;
+            SetSeatedForClients(true);
+            _seatedByHabit = true;
+            return true;
+        }
+
+        /// <summary>Stands a bot seated by habit (0xF1); a resting bot keeps its seat.</summary>
+        internal void StandFromHabit()
+        {
+            if (_seatedByHabit && !_recoveryRestLocked)
+                SetSeatedForClients(false);
+            _seatedByHabit = false;
         }
 
         #endregion
@@ -572,6 +689,15 @@ namespace DOL.GS
 
         public ushort CreationModel => _creationModel == 0 ? Model : _creationModel;
 
+        /// <summary>A hired companion wears the classic look its player chose in the hire window (from True 1.65).</summary>
+        public void SetLookModel(ushort model)
+        {
+            if (model == 0)
+                return;
+            _creationModel = model;
+            Model = model;
+        }
+
         public ushort ShadeModel
         {
             get
@@ -737,7 +863,7 @@ namespace DOL.GS
             finally
             {
                 // A companion's pet rejoins it at the end of the ride (it could not keep up with the horse).
-                if (wasStableTravel && IsTemporaryGroupHelper && ControlledBrain?.Body is { IsAlive: true } pet &&
+                if (wasStableTravel && (IsTemporaryGroupHelper || IsHiredCompanion) && ControlledBrain?.Body is { IsAlive: true } pet &&
                     pet.ObjectState == eObjectState.Active && pet.CurrentRegionID == CurrentRegionID && pet.MaxSpeedBase > 0 &&
                     !IsWithinRadius(pet, 400))
                 {
@@ -969,6 +1095,7 @@ namespace DOL.GS
 
         public override void ProcessDeath(GameObject killer)
         {
+            SetSeatedForClients(false);
             AutonomousPetSupport.CancelPendingCharm(this);
             _deathTick = GameLoop.GameLoopTime;
             _deathRegionId = CurrentRegionID;
@@ -976,10 +1103,14 @@ namespace DOL.GS
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
+            BotDutyLeases.OnDied(this); // a battleground rally drops its dead (BotDutyLeaseRules.EndsOnDeath)
             // 1.1.3, after RC6: how many were on it, read before the death clears the tracker, for how the death is told.
             int attackers = IsAutonomousWorldBot ? AutonomousDeathDiagnostics.Attackers(this) : 0;
 
-            if (IsAutonomousWorldBot && PersistentRecord != null)
+            // A buffbot (NoLiferBuffBots) dies quietly: no record, no chat, no nemesis; it releases to a bind and goes back.
+            if (IsNoLiferBuffBot)
+                NoLiferBuffBots.OnDied(this, killer);
+            else if (IsAutonomousWorldBot && PersistentRecord != null)
             {
                 AutonomousDeathDiagnostics.Record(this, killer, PersistentRecord.Activity);
                 PersistentRecord.DeathCount++;
@@ -991,14 +1122,24 @@ namespace DOL.GS
             }
 
             base.ProcessDeath(killer);
-            if (IsAutonomousWorldBot)
+            if (IsAutonomousWorldBot && !IsNoLiferBuffBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);
-                AutonomousBotGuildSocial.OnBotDeath(this);
-                AutonomousBotVoices.OnBotDeath(this, killer, attackers);
+                // A hired companion has its death lines, rez asks and nemesis like any gamebot (owner 2026-11-18 09:14: the
+                // same chat framework); it has no guild to grieve and no skill profile.
+                if (!IsHiredCompanion)
+                {
+                    AutonomousBotGuildSocial.OnBotDeath(this);
+                    BotSkill.OnDied(this); // Bots as people WP1: a death is a lesson (at most one in 10 minutes)
+                }
+                if (!CompanionChat165.IsFormal(this))
+                    AutonomousBotVoices.OnBotDeath(this, killer, attackers);
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
+            // a hired companion's player sees it DEAD in the roster at once (True 1.65, 2026-11-01)
+            if (IsHiredCompanion && HiredCompanions165.OwnerOf(this) is { } hirer)
+                Hire165.SendRosterNumbers(hirer);
         }
 
         private void StartDeathRecoveryTimer()
@@ -1024,6 +1165,15 @@ namespace DOL.GS
             }
 
             long deadFor = GameLoop.GameLoopTime - _deathTick;
+            // A hired companion's body stays where it fell, then fades to wait for a healer (HiredCompanions165; it never
+            // releases to a bind as a gamebot does).
+            int hiredNext = HiredCompanions165.DeathTick(this, deadFor);
+            if (hiredNext >= 0)
+            {
+                if (hiredNext == 0)
+                    _deathRecoveryTimer = null;
+                return hiredNext;
+            }
             AutonomousBotGroupCoordinator.PveCorpseDisposition groupDisposition =
                 AutonomousBotGroupCoordinator.PveCorpseRecovery(this);
             if (groupDisposition == AutonomousBotGroupCoordinator.PveCorpseDisposition.HoldForResurrection)
@@ -1115,7 +1265,7 @@ namespace DOL.GS
                 StopCurrentSpellcast();
                 (Brain as BotBrain)?.PrepareForTankPull();
                 StopMoving();
-                if (!MoveTo(Owner.CurrentRegionID, (int)Math.Round(destination.X),
+                if (!MoveCorpseForRelease(Owner.CurrentRegionID, (int)Math.Round(destination.X),
                     (int)Math.Round(destination.Y), (int)Math.Round(destination.Z), Owner.Heading))
                     return;
 
@@ -1127,6 +1277,7 @@ namespace DOL.GS
                 EnterPlayerLedGroup(Owner);
                 Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
                 Brain?.Start();
+                ShowStandingToViewers();
                 return;
             }
 
@@ -1163,17 +1314,7 @@ namespace DOL.GS
             bool toldGroup = IsAutonomousWorldBot && AutonomousLivingServer.OnBotReleasing(this);
             // Transfer the corpse first: a failed MoveTo must not revive the bot
             // at its killer or cause HandleDeathRecovery to discard its timer.
-            bool moved;
-            _releasingCorpse = true;
-            try
-            {
-                moved = MoveTo(releaseRegion, release.X, release.Y, release.Z, Heading);
-            }
-            finally
-            {
-                _releasingCorpse = false;
-            }
-            if (!moved)
+            if (!MoveCorpseForRelease(releaseRegion, release.X, release.Y, release.Z, Heading))
                 return;
             BotGroupRelease.NoteRelease(this, releaseRegion, release, returnToParty); // Fork: a release in a player's group shows in the log
             Health = Math.Max(1, MaxHealth / 3);
@@ -1184,6 +1325,7 @@ namespace DOL.GS
             _nextReturnRoleplayTick = GameLoop.GameLoopTime + Util.Random(45_000, 90_000);
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
+            ShowStandingToViewers();
             if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
@@ -1199,6 +1341,24 @@ namespace DOL.GS
 
         /// <summary>How far from a repeat-death spot a release bind must be when there is a choice.</summary>
         public const float ReleaseClearanceFromDeathSpot = 6_000;
+        /// <summary>
+        /// A release moves the corpse first and raises it after: the move re-created the bot for every viewer while it
+        /// was still dead, and a client keeps an NPC created dead lying down whatever its health says later, so it showed
+        /// as a second dead body (owner 2026-10-30). Re-send it standing.
+        /// </summary>
+        private void ShowStandingToViewers()
+        {
+            if (!IsAlive || ObjectState != eObjectState.Active)
+                return;
+            foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            {
+                if (viewer.Client?.ClientState is not GameClient.eClientState.Playing || !viewer.CanDetect(this))
+                    continue;
+                viewer.Out.SendObjectRemove(this);
+                ClientService.CreateObjectForPlayer(viewer, this);
+                viewer.Out.SendLivingEquipmentUpdate(this);
+            }
+        }
 
         private Point3D? FindNearestBindPoint()
         {
@@ -1222,6 +1382,7 @@ namespace DOL.GS
             CompleteStableMasterRoute();
             if (IsTemporaryGroupHelper)
                 TryReturnTemporaryCompanionToLeader(true);
+            HiredCompanions165.OnRaised(this);   // back in its player's group and at their side
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             if (IsAutonomousWorldBot && AutonomousLivingServer.OnBotResurrected(this, caster))
@@ -1455,12 +1616,14 @@ namespace DOL.GS
                 return;
             text = AutonomousRoleplayers.Voice(this, text);
             Group.SendMessageToGroupMembers(this, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-            BotChatTranscript.Bot("group", Name, Realm, text);
+            BotChatTranscript.Bot("group", Name, Realm, text, who: this);
         }
 
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
         // the companion bots' formal voice. A gamebot talks like a player.
-        private string ReturnDialogue(string stage) => IsAutonomousWorldBot
+        // A hired companion talks as any gamebot (owner 2026-11-18 09:14); with its Speech option on Formal it keeps the
+        // True 1.65 companion's return lines.
+        private string ReturnDialogue(string stage) => IsAutonomousWorldBot && !(IsHiredCompanion && CompanionChat165.IsFormal(this))
             ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
             : CompanionReturnDialogue(stage);
 
@@ -1470,11 +1633,11 @@ namespace DOL.GS
             "release" => random.Next(3) switch
             {
                 0 => "released, running back",
-                1 => "at bind, omw back",
-                _ => "no rez, released. coming back to you",
+                1 => "at bind, omw back",   // promise: true (its real walk back to the group)
+                _ => "no rez, released. coming back to you",   // promise: true (its real walk back to the group)
             },
             "stable" => "grabbing a horse, faster",
-            "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
+            "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",   // promise: true (its real ride back to the group)
             "dismount" => "off the horse, almost there",
             "arrive_walk" => random.Next(3) switch
             {
@@ -1490,9 +1653,9 @@ namespace DOL.GS
             },
             _ => random.Next(3) switch
             {
-                0 => "still omw",
+                0 => "still omw",   // promise: true (its real walk back to the group)
                 1 => "taking the long way round some mobs, almost there",
-                _ => string.IsNullOrEmpty(zone) ? "omw back" : $"in {zone}, omw back",
+                _ => string.IsNullOrEmpty(zone) ? "omw back" : $"in {zone}, omw back",   // promise: true (its real walk back to the group)
             },
         };
 
@@ -1500,7 +1663,7 @@ namespace DOL.GS
         {
             "release" => Random.Shared.Next(3) switch
             {
-                0 => "No resurrection is coming. I have released, and I am making my way back.",
+                0 => "No resurrection is coming. I have released, and I am making my way back.",   // promise: none (a companion says no rez is coming)
                 1 => "I woke at the bindstone. Hold the road; I will return on foot.",
                 _ => "The healers could not reach me. I am alive again and starting the journey back."
             },
@@ -1588,15 +1751,59 @@ namespace DOL.GS
 
         #region IGamePlayer — Equipment / Armor
 
+        // Bot armor works exactly like a player's (owner 2026-10-31, major): the piece that is hit is chosen with the
+        // player's odds (or the style's fixed location), its AF is capped by level and armor type, quality and condition
+        // count, and its absorb comes from the armor type. Before this a bot defended like a monster of its level and
+        // its worn armor did nothing. Copies of GamePlayer.CalculateArmorHitLocation / GetArmorFactorCap / GetArmorAF /
+        // GetArmorAbsorb.
         public virtual eArmorSlot CalculateArmorHitLocation(AttackData ad)
         {
-            int random = Util.Random(99);
-            if (random < 35) return eArmorSlot.TORSO;
-            if (random < 55) return eArmorSlot.LEGS;
-            if (random < 70) return eArmorSlot.ARMS;
-            if (random < 82) return eArmorSlot.HEAD;
-            if (random < 91) return eArmorSlot.HAND;
+            if (ad?.Style != null && ad.Style.ArmorHitLocation != eArmorSlot.NOTSET)
+                return ad.Style.ArmorHitLocation;
+            int chance = Util.Random(1, 100);
+            if (chance <= 40) return eArmorSlot.TORSO;
+            if (chance <= 65) return eArmorSlot.LEGS;
+            if (chance <= 80) return eArmorSlot.ARMS;
+            if (chance <= 90) return eArmorSlot.HEAD;
+            if (chance <= 95) return eArmorSlot.HAND;
             return eArmorSlot.FEET;
+        }
+
+        public int GetArmorFactorCap(eObjectType type, out int itemArmorFactorCap)
+        {
+            int modifiedCharacterLevel = Level;
+            if (RealmLevel > 39)
+                modifiedCharacterLevel++;
+            int playerArmorFactorCap = modifiedCharacterLevel * 2;
+            itemArmorFactorCap = type is eObjectType.Cloth ? modifiedCharacterLevel : playerArmorFactorCap;
+            return playerArmorFactorCap;
+        }
+
+        public override double GetArmorAF(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null || !GlobalConstants.IsArmor(item.Object_Type))
+                return 0;
+            int armorFactorCap = GetArmorFactorCap((eObjectType)item.Object_Type, out int itemArmorFactorCap);
+            double armorFactor = Math.Min(item.DPS_AF, itemArmorFactorCap);
+            armorFactor += BaseBuffBonusCategory[eProperty.ArmorFactor] / 5.0;
+            armorFactor *= item.Quality * 0.01 * item.ConditionPercent * 0.01;
+            armorFactor = Math.Min(armorFactor, armorFactorCap);
+            armorFactor += GetModified(eProperty.ArmorFactor) / 5.0;
+            return Math.Max(0, armorFactor);
+        }
+
+        public override double GetArmorAbsorb(eArmorSlot slot)
+        {
+            if (slot is eArmorSlot.NOTSET)
+                return 0;
+            DbInventoryItem item = Inventory?.GetItem((eInventorySlot)slot);
+            if (item == null)
+                return 0;
+            double absorb = item.SPD_ABS * 0.01 * (1 + GetModified(eProperty.ArmorAbsorption) * 0.01);
+            return Math.Clamp(absorb, 0, 1);
         }
 
         public double WeaponDamageWithoutQualityAndCondition(DbInventoryItem weapon)
@@ -1680,7 +1887,7 @@ namespace DOL.GS
             long share = AutonomousBotGuildEconomy.ShareAfterDues(this, money.Value, out long dues, out Guild duesGuild);
             // The whole coin must fit in the purse before it is split, so returned dues can never be lost (audit 2026-10-16).
             // The Epic Special Forces take nothing: the realm's own raiders keep every coin and drop.
-            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce || DatabaseID <= 0 ||
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly || DatabaseID <= 0 ||
                 PersistentRecord != null && PersistentRecord.MoneyCopper > long.MaxValue - money.Value ||
                 !AutonomousBotEconomy.AddMoney(DatabaseID, share))
                 return TryPickUpResult.DoesNotWant;
@@ -1699,7 +1906,7 @@ namespace DOL.GS
         public TryPickUpResult TryAutoPickUpItem(WorldInventoryItem item)
         {
             item.AssertLockAcquisition();
-            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsEpicSpecialForce)
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly)
                 return TryPickUpResult.DoesNotWant;
             if (Inventory == null)
             {
@@ -1719,6 +1926,7 @@ namespace DOL.GS
 
             item.RemoveFromWorld();
             _reportedLootRejection = null;
+            BotMilestoneLife.OnItemReceived(this, item.Item); // Bots as people WP6: in a high-end raid kill's loot, a dragon trophy
             AutonomousBotEconomy.MarkInventoryChanged(this);
             // Queue owned loot for the existing asynchronous save before appraisal.
             // This is not a synchronous commit; /spawn helpers never enter this path.
@@ -1781,6 +1989,7 @@ namespace DOL.GS
             RealmLevel = Math.Max(RealmLevel, AutonomousBotRealmPointRewards.RealmLevelFor(AutonomousRealmPoints));
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.RealmPoints);
             MarkAutonomousStateDirty();
+            BotMilestoneLife.OnRealmPoints(this); // Bots as people WP6: realm rank 5 (its talk points and the moment)
             if (RealmLevel != previousRealmLevel)
             {
                 // Realm ranks earn the bot's guild merit points as a player's do (GuildEvents.RealmRankUp).
@@ -1796,6 +2005,9 @@ namespace DOL.GS
             base.EnemyKilled(enemy);
             if (IsAutonomousWorldBot)
                 AutonomousLivingServer.OnBotKilled(this, enemy);
+            if (IsAutonomousWorldBot)
+                BotSkill.OnFightWon(this, enemy); // Bots as people WP1: it and its groupmates near it learn
+            DOL.GS.CraftingEconomy.BotPotions.AfterKill(this); // Crafting 2.0 WP7: a draught with an add still on (bot_upkeep)
         }
 
         public override void GainExperience(GainedExperienceEventArgs arguments, bool notify = true)
@@ -1813,6 +2025,8 @@ namespace DOL.GS
 
             long experienceGained = arguments.ExpTotal;
             long baseExperience = arguments.ExpBase;
+            // A hired companion earns at its player's XP rate, other bots at the gamebot rate (True 1.65, owner 2026-11-10).
+            bool hiredCompanion = IsHiredCompanion;
             if (arguments.AllowMultiply)
             {
                 experienceGained -= baseExperience;
@@ -1821,11 +2035,11 @@ namespace DOL.GS
                 {
                     long zoneBonus = baseExperience * CurrentZone.BonusExperience / 100;
                     if (zoneBonus > 0)
-                        experienceGained += ScaleAutonomousExperience(zoneBonus, false, Level);
+                        experienceGained += ScaleExperienceFor(zoneBonus, false, Level, hiredCompanion);
                 }
 
-                baseExperience = ScaleAutonomousExperience(baseExperience,
-                    CurrentRegion?.IsRvR == true || CurrentZone?.IsRvR == true, Level);
+                baseExperience = ScaleExperienceFor(baseExperience,
+                    CurrentRegion?.IsRvR == true || CurrentZone?.IsRvR == true, Level, hiredCompanion);
 
                 long itemExperienceBonus = GetModified(eProperty.XpPoints);
                 if (itemExperienceBonus != 0)
@@ -1833,6 +2047,11 @@ namespace DOL.GS
 
                 experienceGained += baseExperience;
             }
+
+            // A hired companion never passes its player's level (True 1.65, owner 2026-10-31): at the player's level it fills
+            // its bar and waits; once the player levels, its next experience levels it too.
+            byte? hiredCap = hiredCompanion ? HiredCompanionLevelCap() : null;
+            experienceGained = HiredCompanions165.CappedExperience(experienceGained, Experience, Level, hiredCap);
 
             if (experienceGained <= 0)
                 return;
@@ -1842,7 +2061,8 @@ namespace DOL.GS
             Experience += experienceGained;
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.Experience);
             bool leveled = false;
-            while (Level < MaxLevel && Experience >= GamePlayer.GetExperienceAmountForLevel(Level))
+            while (Level < MaxLevel && Experience >= GamePlayer.GetExperienceAmountForLevel(Level) &&
+                   !(hiredCap is byte cap && Level >= cap))
             {
                 Level++;
                 ApplyLevelStatGrowth(Level);
@@ -1861,7 +2081,15 @@ namespace DOL.GS
                 Mana = MaxMana;
                 Endurance = MaxEndurance;
                 AutonomousBotStatusPersistence.Queue(this, true);
-                if (IsAutonomousWorldBot)
+                LogCompanionSkills($"level {Level}");
+                if (hiredCompanion)
+                {
+                    // the group window and the roster show the new level (True 1.65, GitHub issue #7)
+                    Group?.UpdateGroupWindow();
+                    if (HiredCompanions165.OwnerOf(this) is { } hirer)
+                        Hire165.Refresh(hirer);
+                }
+                else if (IsAutonomousWorldBot)
                 {
                     AutonomousBotGuildEconomy.OnBotLevelsGained(this, previousLevel);
                     AutonomousBotGuildSocial.OnBotLevelUp(this);
@@ -1875,12 +2103,33 @@ namespace DOL.GS
                 // XP is a real progression event, so coalesce it into the next
                 // status batch instead of waiting for a server-wide save.
                 AutonomousBotStatusPersistence.Queue(this);
+                // A hired companion's x.5 points come at its second stage, as a player's do (CompanionSpecPoints).
+                if (hiredCompanion && !ReachedSecondStage(Level, previousExperience) && ReachedSecondStage(Level, Experience) &&
+                    HiredCompanions165.OwnerOf(this) is { } hirer)
+                    Hire165.Refresh(hirer);
             }
+            if (!hiredCompanion)
+                BotMilestoneLife.OnExperience(this); // Bots as people WP6: the ding to 50 (its talk points and the moment)
             if (previousExperience == 0 || previousLevel != Level)
             {
                 log.Info($"AUTONOMOUS_XP_PROGRESS bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" " +
                          $"amount={experienceGained} xp={previousExperience}->{Experience} level={previousLevel}->{Level}");
             }
+        }
+
+        /// <summary>A hired companion's level cap: its player's level (null when the player is not online).</summary>
+        private byte? HiredCompanionLevelCap() => CompanionPlayer is { } player ? player.Level : null;
+
+        private static long ScaleExperienceFor(long experience, bool isRvR, int level, bool hiredCompanion) =>
+            hiredCompanion ? ScaleHiredCompanionExperience(experience, isRvR, level) : ScaleAutonomousExperience(experience, isRvR, level);
+
+        /// <summary>A hired companion earns at the player rate (xp_rate, or xp_rate_by_level), as its player does (True 1.65).</summary>
+        private static long ScaleHiredCompanionExperience(long experience, bool isRvR, int level)
+        {
+            double rate = LevelRangeXpRates.PlayerRate(level);
+            if (isRvR)
+                rate *= ServerProperties.Properties.RvR_XP_RATE;
+            return (long)(experience * rate);
         }
 
         private static long ScaleAutonomousExperience(long experience, bool isRvR, int level)
@@ -1903,6 +2152,10 @@ namespace DOL.GS
 
             if (goStealth)
             {
+                // A relic carrier cannot hide: the relic would fall at once (2026-10-30 livestream).
+                if (GameRelic.IsPlayerCarryingRelic(this))
+                    return;
+
                 // Songs and pulsing spells are mutually exclusive with stealth.
                 // Keep the same legality rule without using GamePlayer-only effects.
                 if (effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
@@ -2455,7 +2708,8 @@ namespace DOL.GS
             byte genderId = 0,
             bool temporaryGroupHelper = false,
             byte equipmentLevel = 0,
-            byte botLevel = 0)
+            byte botLevel = 0,
+            BotSpec chosenSpec = null)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             IsTemporaryGroupHelper = temporaryGroupHelper;
@@ -2480,11 +2734,12 @@ namespace DOL.GS
             // Stat and spec initialization — order matters
             InitializeBotStats();
             eCharacterClass temporaryClass = (eCharacterClass)ClassId;
-            BotSpec = temporaryClass == eCharacterClass.Bonedancer
+            // /spawn <class> <spec> picks one of the class's existing builds (TemporaryGroupSpecCatalog); otherwise random.
+            BotSpec = chosenSpec ?? (temporaryClass == eCharacterClass.Bonedancer
                 ? new BonedancerBotSpec(BotSpec.ChooseRandomSpecialization(temporaryClass), 0, false)
                 : temporaryClass == eCharacterClass.Sluaghbinder
                     ? new SluaghbinderBotSpec(BotSpec.ChooseRandomSpecialization(temporaryClass), 0, false)
-                : BotSpec.GetSpec(temporaryClass, BotSpec.ChooseRandomSpecialization(temporaryClass));
+                : BotSpec.GetSpec(temporaryClass, BotSpec.ChooseRandomSpecialization(temporaryClass)));
             LoadClassSpecializations(false);
             SpendSpecPoints(Level, 0);
             RefreshSpecDependantSkills(false);
@@ -2526,14 +2781,20 @@ namespace DOL.GS
         /// <summary>An Epic Special Forces member from an in-memory record (never saved; see <see cref="IsEpicSpecialForce"/>).</summary>
         public static GameBot CreateEpicSpecialForce(OfflineWorldBotRecord record) => new(record, null, true);
 
+        /// <summary>A No Lifer's buffbot from an in-memory record (never saved; see <see cref="IsNoLiferBuffBot"/>).</summary>
+        public static GameBot CreateNoLiferBuffBot(OfflineWorldBotRecord record, long mainId) =>
+            mainId > 0 ? new(record, null, false, mainId) : throw new ArgumentOutOfRangeException(nameof(mainId));
+
         public GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory) : this(record, preparedInventory, false)
         {
         }
 
-        private GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory, bool epicSpecialForce)
+        private GameBot(OfflineWorldBotRecord record, System.Collections.IList preparedInventory, bool epicSpecialForce,
+            long buffBotMainId = 0)
         {
             PersistentRecord = record ?? throw new ArgumentNullException(nameof(record));
             IsEpicSpecialForce = epicSpecialForce;
+            BuffBotMainId = Math.Max(0, buffBotMainId);
             AutonomousBotGoalPolicy.ReconcileSavedAssignment(record);
             // Autonomous Group instances are process-local and are rebuilt
             // after every server start. Never expose a former process's leader,
@@ -2565,7 +2826,7 @@ namespace DOL.GS
 
             InitializeBotStats();
             eCharacterClass persistentClass = (eCharacterClass)ClassId;
-            BotSpec = persistentClass switch
+            BotSpec = IsNoLiferBuffBot ? NoLiferBuffBotSpec.For(persistentClass) : persistentClass switch
             {
                 eCharacterClass.Bonedancer => new BonedancerBotSpec(
                     BotSpec.ChoosePersistentSpecialization(persistentClass, record.BotId), record.BotId, true),
@@ -2578,25 +2839,68 @@ namespace DOL.GS
                     BotSpec.ChoosePersistentSpecialization(persistentClass, record.BotId)),
             };
             LoadClassSpecializations(false);
-            if (IsEpicSpecialForce)
-                SpendSpecPoints(Level, 0); // fully trained on arrival, like a level-50 /spawn companion
+            if (IsInMemoryOnly)
+                SpendSpecPoints(Level, 0); // fully trained on arrival, like a level-50 /spawn companion (a buffbot: its buff spec)
             else
                 LoadPersistedSpecs(record.SerializedSpecs);
-            bool buildLocked = IsEpicSpecialForce || BotLifetimeBuild.Restore(BotSpec, record.SerializedBuildPlan);
-            if (!buildLocked)
+            bool buildLocked = IsInMemoryOnly || BotLifetimeBuild.Restore(BotSpec, record.SerializedBuildPlan);
+            bool hiredCompanion = HiredCompanions165.IsHired(record.BotId);
+            // Era builds 1.2 (WP3, docs/ERA-BUILDS-1.2.md "The build draw"): a gamebot with no saved plan takes an era build
+            // for life (or the nearest one to the lines it already trained). A saved plan was restored above and is never
+            // re-drawn (D1). Epic Special Forces and buffbots (in memory only), hired companions and the custom class keep
+            // today's plans; /spawn and /bot companions use the other constructor.
+            EraBuildDecision eraBuild = null;
+            if (!buildLocked && EraLifetimeBuild.Applies(ServerProperties.Properties.BOT_ERA_BUILDS, ClassId, IsInMemoryOnly,
+                    hiredCompanion, OfflineDaoc.Shared.EraBuildCatalog.Default))
+            {
+                eraBuild = EraLifetimeBuild.Choose(OfflineDaoc.Shared.EraBuildCatalog.Default, persistentClass, record.BotId,
+                    TrainedSpecLevels(), ServerProperties.Properties.BOT_ERA_OFFMETA_PERCENT);
+                if (eraBuild.Plan != null)
+                    BotSpec = eraBuild.Plan;
+            }
+            if (!buildLocked && eraBuild?.Plan == null)
                 BotLifetimeBuild.AlignWithInvestedWeapons(BotSpec, GetBaseSpecLevel);
             // A saved build can predate the Savage's trained weapon line. Its
             // old weapon field must not override the specialization restored
             // from the character record.
-            bool savagePlanCorrected = !IsEpicSpecialForce && persistentClass == eCharacterClass.Savage &&
+            bool savagePlanCorrected = !IsInMemoryOnly && persistentClass == eCharacterClass.Savage &&
                 SavageBotSpec.AlignWithPersistedSpecs(BotSpec, record.SerializedSpecs);
             if (!buildLocked || savagePlanCorrected)
             {
                 record.SerializedBuildPlan = BotLifetimeBuild.Encode(BotSpec);
                 MarkAutonomousStateDirty();
             }
-            m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
-            _lastAutonomousTrainedLevel = IsEpicSpecialForce ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            if (eraBuild != null)
+                log.Info(EraLifetimeBuild.AssignedLine(Name, DatabaseID, ClassName, Level, BotSpec, eraBuild));
+            // An Epic Special Force or buffbot keeps what its training above left unspent (a player's total, all of it
+            // counted); a saved bot takes its saved count.
+            if (!IsInMemoryOnly)
+                m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
+            _lastAutonomousTrainedLevel = IsInMemoryOnly ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
+            // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
+            // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
+            // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
+            // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
+            // Living Server 1.2: so does one the launcher made for the Thidranki battleground ("+ Lv.20", levels 20-24), which would
+            // otherwise fight its battleground with every line at 1 (it trains only at a break between PvE tasks).
+            // A hired companion's points stay unspent: its player places them (True 1.65 owner rule).
+            bool arrivedTrained = !IsInMemoryOnly && !hiredCompanion &&
+                ArrivesTrained(Level, _lastAutonomousTrainedLevel, string.IsNullOrWhiteSpace(record.LastSavedUtc));
+            if (arrivedTrained)
+            {
+                byte arrivalTrainedFrom = _lastAutonomousTrainedLevel;
+                SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
+                _lastAutonomousTrainedLevel = Level;
+                MarkAutonomousStateDirty();
+                if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, arrivalTrainedFrom, Level))
+                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
+                if (AutonomousDiagnosticsProperties.Training)
+                    log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                             $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
+                             $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
+            }
+            else if (!IsInMemoryOnly && !hiredCompanion && _lastAutonomousTrainedLevel > 1)
+                ApplySavedSpecPointRefund();
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -2604,6 +2908,19 @@ namespace DOL.GS
 
             if (IsEpicSpecialForce)
                 EquipBot(50); // the endgame kit, in an inventory that is never saved
+            else if (IsNoLiferBuffBot)
+            {
+                // The launcher's level-50 rule (AutonomousStarterGear): it arrives trained, so it wears the best plain merchant
+                // item of its realm for its level in each slot, free, in an inventory that is never saved. No coin, no loot.
+                Inventory = new BotInventory(InternalID);
+                Inventory.LoadInventory(InternalID, new System.Collections.ArrayList());
+                AutonomousStarterGear.Result gear = PlanAndGiveStarterGear();
+                EnsureAutonomousStarterWeapon();
+                RefreshItemBonuses();
+                log.Info($"BUFFBOT_GEAR bot=\"{record.Name}\" main={buffBotMainId} class=\"{ClassName}\" level={Level} " +
+                         $"pieces={gear.Pieces.Count} items=\"{AutonomousStarterGear.Describe(gear.Pieces)}\"" +
+                         (gear.Given ? string.Empty : $" reason=\"{gear.Reason}\""));
+            }
             else
             {
                 Inventory = new BotInventory(InternalID);
@@ -2611,12 +2928,15 @@ namespace DOL.GS
                     Inventory.LoadFromDatabase(InternalID);
                 else
                     Inventory.LoadInventory(InternalID, preparedInventory);
+                // Before the starter weapon, so a bot that gets starter gear holds a merchant weapon in an empty weapon slot
+                // and the server makes its own starter weapon only where none fitted.
+                bool starterGearGiven = TryGiveStarterGear(record, arrivedTrained);
                 bool starterWeaponAdded = EnsureAutonomousStarterWeapon();
                 starterWeaponAdded |= BotRangedCombat.EnsureStarter(this);
                 starterWeaponAdded |= BotStarterInstruments.Ensure(this);
                 RefreshItemBonuses();
-                if (starterWeaponAdded || !buildLocked)
-                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded);
+                if (starterWeaponAdded || !buildLocked || arrivedTrained || starterGearGiven)
+                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained || starterGearGiven);
             }
             Experience = Math.Max(0, record.Experience);
             AutonomousRealmPoints = Math.Max(0, record.RealmPoints);
@@ -2626,9 +2946,9 @@ namespace DOL.GS
             X = record.X;
             Y = record.Y;
             Z = record.Z;
-            Health = IsEpicSpecialForce ? MaxHealth : Math.Clamp(record.Health, 1, MaxHealth);
-            Mana = IsEpicSpecialForce ? MaxMana : Math.Clamp(record.Mana, 0, MaxMana);
-            Endurance = IsEpicSpecialForce ? MaxEndurance : Math.Clamp(record.Endurance, 0, MaxEndurance);
+            Health = IsInMemoryOnly ? MaxHealth : Math.Clamp(record.Health, 1, MaxHealth);
+            Mana = IsInMemoryOnly ? MaxMana : Math.Clamp(record.Mana, 0, MaxMana);
+            Endurance = IsInMemoryOnly ? MaxEndurance : Math.Clamp(record.Endurance, 0, MaxEndurance);
             RespawnInterval = -1;
 
             var brain = persistentClass == eCharacterClass.Sluaghbinder
@@ -2636,6 +2956,71 @@ namespace DOL.GS
                 : new DOL.AI.Brain.BotBrain { IsHealer = IsHealerClass() };
             SetOwnBrain(brain);
             InitControlledBrainArray(1);
+        }
+
+        /// <summary>
+        /// Living Server 1.2 (owner 2026-11-15, "Arrive with starter gear"): a gamebot that arrives already trained above
+        /// level 1, or a "+ Lv.20" bot saved before this rule that still wears no armour, gets the best plain merchant item
+        /// of its realm for its level in each empty armour slot and its build's empty weapon and shield slots, free, once
+        /// (AutonomousStarterGear.Qualifies). Level-1 starters, gamebots that wear armour, Epic Special Forces (never
+        /// saved, the constructor's other branch), /spawn companions and players never get here.
+        /// </summary>
+        private bool TryGiveStarterGear(OfflineWorldBotRecord record, bool arrivedTrained)
+        {
+            _starterGearGiven = AutonomousStarterGear.HasMarker(record.SerializedAbilities);
+            // a hired companion comes with a training weapon and nothing else (True 1.65 owner rule)
+            if (IsEpicSpecialForce || IsTemporaryGroupHelper || Inventory == null || HiredCompanions165.IsHired(record.BotId) ||
+                !AutonomousStarterGear.Qualifies(Level, arrivedTrained, _starterGearGiven,
+                    AutonomousStarterGear.ArmorPiecesWorn(Inventory.GetItem), Realm, record.BindRegionId))
+                return false;
+
+            AutonomousStarterGear.Result result;
+            try
+            {
+                result = PlanAndGiveStarterGearCore();
+            }
+            catch (Exception exception)
+            {
+                log.Error($"AUTONOMOUS_STARTER_GEAR bot=\"{Name}\" id={DatabaseID} failed; it keeps what it has and tries again next login", exception);
+                return false;
+            }
+
+            string path = arrivedTrained ? "arrived-trained" : "earlier-launcher-bot";
+            log.Info($"AUTONOMOUS_STARTER_GEAR bot=\"{Name}\" id={DatabaseID} level={Level} class=\"{ClassName}\" " +
+                     $"realm={GlobalConstants.RealmToName(Realm)} path={path} pieces={result.Pieces.Count} " +
+                     $"items=\"{AutonomousStarterGear.Describe(result.Pieces)}\"" +
+                     (result.Given ? " coin=unchanged" : $" reason=\"{result.Reason}\" retry=next-login"));
+            if (!result.Given)
+                return false;
+            _starterGearGiven = true;
+            MarkAutonomousStateDirty();
+            AutonomousBotEconomy.MarkInventoryChanged(this);
+            return true;
+        }
+
+        /// <summary>The best plain merchant item of its realm for its level in each empty slot of its build (AutonomousStarterGear).</summary>
+        private AutonomousStarterGear.Result PlanAndGiveStarterGearCore()
+        {
+            bool savage = CharacterClass?.ID == (int)eCharacterClass.Savage;
+            eInventorySlot primarySlot = PrimaryWeaponUsesTwoHands ? eInventorySlot.TwoHandWeapon : eInventorySlot.RightHandWeapon;
+            bool shieldBuild = !RequiresMeleeOffhand && !SluaghbinderUsesScythe && BestShieldLevel > 0;
+            var wants = AutonomousStarterGear.PlanSlots(slot => Inventory.GetItem(slot) != null, primarySlot,
+                PreferredPrimaryWeaponType, RequiresMeleeOffhand ? PreferredOffhandWeaponType : 0, shieldBuild, savage);
+            return AutonomousStarterGear.Give(this, wants);
+        }
+
+        /// <summary>A buffbot's gear on arrival; a failure leaves it in what it has (it never fights).</summary>
+        private AutonomousStarterGear.Result PlanAndGiveStarterGear()
+        {
+            try
+            {
+                return PlanAndGiveStarterGearCore();
+            }
+            catch (Exception exception)
+            {
+                log.Error($"BUFFBOT_GEAR bot=\"{Name}\" failed; it arrives in what it has", exception);
+                return new AutonomousStarterGear.Result(false, [], "error");
+            }
         }
 
         private bool IsHealerClass()
@@ -2665,8 +3050,14 @@ namespace DOL.GS
         {
             if (leader == null || leader.Realm != Realm)
                 return false;
+            // Play with friends (1.2): a companion follows its owner and nobody else (BotHumanBinding). Another human's
+            // /pull, pilot or leadership change never takes it.
+            if (Owner != null && leader != Owner)
+                return false;
 
             PlayerGroupLeader = leader;
+            // The player now has this gamebot's time: no raid, siege, RvR event or rally takes it (docs/DUTY-LEASE.md).
+            BotDutyLeases.Claim(this, eDutyLeaseKind.PlayerGroup, leader.Name, DutyLeaseReason.PlayerGroup, leader.Name);
             if (Brain is BotBrain brain)
             {
                 brain.RebindAssistedPlayer();
@@ -2680,8 +3071,10 @@ namespace DOL.GS
             if (IsTemporaryGroupHelper)
                 CompleteStableMasterRoute();
             PlayerGroupLeader = null;
+            BotDutyLeases.Release(this, eDutyLeaseKind.PlayerGroup);
             if (Brain is BotBrain brain)
                 brain.RebindAssistedPlayer();
+            HiredCompanions165.OnLeftPlayerGroup(this);   // a hired companion goes back to wait, it doesn't roam
         }
 
         private bool _recoveryRestLocked;
@@ -2703,7 +3096,12 @@ namespace DOL.GS
                 return false;
 
             if (_recoveryRestLocked)
+            {
+                // stood up for a song while resting: sits back down once it's done
+                if (!_seatedForClients && !IsCasting && !IsMoving && !InCombat)
+                    SetSeatedForClients(true);
                 return true;
+            }
 
             // Harmless mobile songs are allowed to continue during logical
             // recovery. Ordinary casts are cancelled so recovery still owns
@@ -2717,8 +3115,8 @@ namespace DOL.GS
             StopMovingOnPath();
             StopMoving();
             _recoveryRestLocked = true;
-            // GameBots remain standing NPC actors. Recovery has no IsSitting,
-            // emote, player packet, model swap, or client-facing stance state.
+            _seatedByHabit = false;         // the rest takes over a seat taken by habit (WP5)
+            SetSeatedForClients(true);      // sits down for the rest, visibly (0xF0)
             UpdateHealthManaEndu();
             StartEnhancedRecoveryTimers();
             return true;
@@ -2731,13 +3129,35 @@ namespace DOL.GS
 
         public void WakeTemporaryCompanionRest()
         {
-            if (IsTemporaryGroupHelper)
+            // hired companions too (True 1.65 audit 2026-11-03): /pull or an attack order left them seated and frozen
+            if (IsTemporaryGroupHelper || IsHiredCompanion)
                 WakeRecoveryRest();
         }
+
+        /// <summary>Right-clicking your own hired companion opens the hire window on its roster row (from True 1.65).</summary>
+        public override bool Interact(GamePlayer player)
+        {
+            if (player != null && IsHiredCompanion &&
+                HiredCompanions165.RosterOf(player).FirstOrDefault(h => h.BotId == DatabaseID) is { } hired)
+            {
+                if (!IsWithinRadius(player, WorldMgr.VISIBILITY_DISTANCE))
+                    return false;
+                Hire165.OpenForCompanion(player, hired.Row);
+                HireDialog165.ShowCompanion(player, this);   // the original client's own dialog, with links
+                return true;
+            }
+            return base.Interact(player);
+        }
+
+        /// <summary>A link clicked in one's own hired companion's dialog (HireDialog165).</summary>
+        public override bool WhisperReceive(GameLiving source, string text) =>
+            source is GamePlayer player && HireDialog165.CompanionWhisper(this, player, text) || base.WhisperReceive(source, text);
 
         public void WakeRecoveryRest()
         {
             _recoveryRestLocked = false;
+            if (!_seatedByHabit)            // a seat taken by habit (WP5) stands on the bot's own move, cast or attack
+                SetSeatedForClients(false); // stands up before it moves, casts or fights (0xF1)
         }
 
         /// <summary>
@@ -2760,10 +3180,18 @@ namespace DOL.GS
         public override bool CastSpell(Spell spell, SpellLine line, ISpellCastingAbilityHandler spellCastingAbilityHandler = null, bool checkLos = true)
         {
             if (CompanionFollowPolicy.DeferBuff(this, spell)) return false;
+            // A hired companion's AI Options (CompanionSpellOptions165; false for every other bot).
+            if (CompanionSpellOptions165.Blocks(this, spell)) return false;
+            // Darkness Falls (1.2): no pet or turret near a fighting prince who eats it (autonomous gamebots only).
+            if (EpicEncounterTactics.SummonFeedsPrince(this, spell)) return false;
+            // A cast reveals the caster: a companion hidden with its player casts only heals until a fight starts.
+            if (spell?.IsHealing != true && CompanionStealth.SuppressesCasting(this)) return false;
             if (AutonomousGroupFormationFollow.DeferBuff(this, spell)) return false;
             // Final boundary as well as selection filtering: no rank of the
             // disabled shield can keep a Cabalist/Enchanter bot channeling.
-            if (AutonomousPetSupport.IsDisabledBotDamageShield(this, spell) ||
+            // The pet focus shield is cast only by its own decision (BotBrain.TryStartPetFocusShield), never by upkeep.
+            bool approvedPetShield = PetFocusShieldApproved && BotPetFocusShieldPolicy.IsPetFocusShield(spell);
+            if (AutonomousPetSupport.IsDisabledBotDamageShield(this, spell) && !approvedPetShield ||
                 BotSpellPower.BlocksAttackerRotation(this, spell) ||
                 !AnimistSingleTargetPolicy.AllowsAutomatedSpell(this, spell) ||
                 !BotAnimistPolicy.MayPlant(this, spell))
@@ -2774,7 +3202,7 @@ namespace DOL.GS
 
             if (spell == null || !CanAffordConcentration(spell) || Mana < BotSpellPower.Cost(this, spell, line) ||
                 castingComponent.HasPendingSkillRequests ||
-                BotSpellPower.IsOffensiveCaster(this) && castingComponent.IsCasting)
+                BotSpellPower.IsOffensiveCaster(this) && castingComponent.IsCasting && !castingComponent.IsFocusChanneling)
             {
                 CabalistRestDiagnostics.Attempt(this, spell, false);
                 return false;
@@ -2801,6 +3229,9 @@ namespace DOL.GS
             if (IsRecoveryResting && !IsTemporaryGroupHelper &&
                 !BotSongTwistPolicy.IsMobileSong(this, spell))
                 WakeRecoveryRest();
+            // a seated bot stands to cast, as a player does (a song keeps the rest; it sits again after)
+            if (_seatedForClients)
+                SetSeatedForClients(false);
             bool started = base.CastSpell(spell, line, spellCastingAbilityHandler, checkLos);
             CabalistRestDiagnostics.Attempt(this, spell, started);
             if (started && CharacterClass?.ID == (int)eCharacterClass.Animist)
@@ -2820,6 +3251,19 @@ namespace DOL.GS
             // parked party is still recovering.
             if (target != null && IsRecoveryResting)
                 return;
+            if (target != null && _seatedByHabit)
+                StandFromHabit();           // stands to fight (WP5 sitting habit)
+
+            // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
+            // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
+            // Play test duo14: reavers he turned on fought back in melee (40 of his 110 heals).
+            if (target is GameLiving living && EpicEncounterTactics.MustNotHit(this, living))
+            {
+                if (RefusesAttackOn(this, living))
+                    return;
+                if (ActiveWeaponSlot != eActiveWeaponSlot.Distance)
+                    SwitchWeapon(eActiveWeaponSlot.Distance);
+            }
 
             // A ranged shot owns its aim/release animation.  Reissuing the
             // same target every think pulse used to reset that state, producing
@@ -2834,6 +3278,11 @@ namespace DOL.GS
 
             base.StartAttack(target);
         }
+
+        /// <summary>The bot must not hit <paramref name="target"/> at all and has no distance weapon it may fight it with (an
+        /// epic rule: Funus while his puzzle is on, for a class he takes no damage from), so it starts no attack on it.</summary>
+        public static bool RefusesAttackOn(GameBot bot, GameLiving target) =>
+            EpicEncounterTactics.MustNotHit(bot, target) && !EpicEncounterTactics.FightsAtRange(bot, target);
 
         public override bool AddToWorld()
         {
@@ -2864,46 +3313,43 @@ namespace DOL.GS
         /// The ordinary RemoveFromWorld pet release is retained, allowing the
         /// pet manager to re-summon a legal pet in the destination region.
         /// </summary>
-        private long _deadMoveLoggedForDeath = -1;
+        private int _corpseReleaseMove;
+
+        /// <summary>The release's own corpse move (the bot is raised right after): the one move a dead bot may make.</summary>
+        private bool MoveCorpseForRelease(ushort regionID, int x, int y, int z, ushort heading)
+        {
+            _corpseReleaseMove++;
+            try { return MoveTo(regionID, x, y, z, heading); }
+            finally { _corpseReleaseMove--; }
+        }
+
+        /// <summary>
+        /// A body stays where it fell until it is raised or released (owner 2026-10-30: a companion killed outside an inn
+        /// showed up dead beside the innkeeper 6 seconds later, by an in-region teleport). Any other move of a dead bot is
+        /// refused and logged with its caller.
+        /// </summary>
+        private bool RefuseCorpseMove(string kind, ushort regionID, int x, int y, int z)
+        {
+            if (Health > 0 || ObjectState != eObjectState.Active || _corpseReleaseMove > 0)
+                return false;
+            if (log.IsWarnEnabled)
+                log.Warn($"BOT_CORPSE_MOVE_REFUSED {kind} bot=\"{Name}\" id={DatabaseID} from={CurrentRegionID}:{X},{Y},{Z} " +
+                     $"to={regionID}:{x},{y},{z}{Environment.NewLine}{Environment.StackTrace}");
+            return true;
+        }
 
         public override bool MoveInRegion(ushort regionID, int x, int y, int z, ushort heading, bool forceMove)
         {
-            LogDeadMove(regionID, x, y, z, "MoveInRegion");
+            if (RefuseCorpseMove("MoveInRegion", regionID, x, y, z))
+                return false;
             return base.MoveInRegion(regionID, x, y, z, heading, forceMove);
-        }
-
-        // True only while this bot's own release (ReleaseToNearestBindAndReturn) moves its corpse to the bind.
-        private bool _releasingCorpse;
-
-        private void LogDeadMove(ushort regionID, int x, int y, int z, string how)
-        {
-            // Audit 2026-10-17: this ran on every gamebot death with every feature off and captured a stack trace
-            // each time. It now logs only with the Living Server death part on, and the normal release (the move
-            // expected on every death) is named instead of walking the stack.
-            // Playtest 2026-10-18: 2,951 lines in three hours, almost all the normal release. That one is expected on
-            // every death, so it is Debug now; any other move of a dead gamebot (the bug this line is for) stays Info.
-            if (!AutonomousLivingServer.DeathOn || !IsAutonomousWorldBot || IsAlive || _deadMoveLoggedForDeath == _deathTick ||
-                !(_releasingCorpse ? log.IsDebugEnabled : log.IsInfoEnabled))
-                return;
-            _deadMoveLoggedForDeath = _deathTick;
-            string stack = _releasingCorpse
-                ? $"{nameof(GameBot)}.{nameof(ReleaseToNearestBindAndReturn)}"
-                : string.Join(" <- ", new System.Diagnostics.StackTrace(2, false).GetFrames()
-                    .Take(8).Select(frame => frame.GetMethod() is { } method ? $"{method.DeclaringType?.Name}.{method.Name}" : "?"));
-            string line = $"LIVING_SERVER_DEAD_MOVE bot=\"{Name}\" id={DatabaseID} how={how} deadMs={GameLoop.GameLoopTime - _deathTick} " +
-                          $"from={CurrentRegionID}:{X},{Y},{Z} to={regionID}:{x},{y},{z} by={stack}";
-            if (_releasingCorpse)
-                log.Debug(line);
-            else
-                log.Info(line);
         }
 
         public override bool MoveTo(ushort regionID, int x, int y, int z, ushort heading)
         {
-            // In game 2026-10-17 dead gamebots were found near their bind within seconds of dying, still dead, so
-            // nobody could rez them. LogDeadMove says once per death who moves a dead gamebot (a normal release
-            // moves the corpse before reviving it, so it shows up here too, about 20 s or 90 s after the death).
-            LogDeadMove(regionID, x, y, z, "MoveTo");
+            if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
+                return false;
+            SetSeatedForClients(false);     // never arrives seated
             // Owner 2026-10-07: travelling the old frontiers, the pets of the player's /spawn and /raid companions died
             // on every move (the move removes the bot from the world, which released its pet) and their pet classes kept
             // re-summoning. Within a region a companion's pet now comes along and is placed behind it, as a player's pet
@@ -3023,7 +3469,7 @@ namespace DOL.GS
             // this removal is classified after it has begun.
             bool intentionalWorldMove = IsIntentionalWorldMove;
             if (!intentionalWorldMove)
-                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this);
+                TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(this, "bot-removed");
             if (IsAutonomousWorldBot && !intentionalWorldMove)
                 SaveAutonomousState(true);
             // A charm cast can have created its tagged candidate before the
@@ -3042,16 +3488,28 @@ namespace DOL.GS
             {
                 AutonomousStuckWatchdog.Unregister(this);
                 AutonomousBotRegistry.Unregister(this);
-                if (PersistentRecord != null && !IsEpicSpecialForce)
-                {
-                    PersistentRecord.IsOnline = false;
-                    PersistentRecord.Activity = "Offline";
-                    PersistentRecord.LastUpdateUtc = DateTime.UtcNow.ToString("O");
-                    PersistentRecord.Dirty = true;
-                    GameServer.Database.SaveObject(PersistentRecord);
-                }
+                SaveOfflineAtRemoval();
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// At a gamebot's removal from the world: its roster row is marked offline and saved; true when it was. An in-memory
+        /// bot (an Epic Special Force or a No Lifer's buffbot, IsInMemoryOnly) has no roster row and saves nothing. Owner's PC,
+        /// build b1b6846, 2026-11-18: seven "Error saving data object (0 rows affected) in table offline_world_bots", each
+        /// in the second of a BUFFBOT_LOGOUT, because this save skipped only the Special Forces (#334 fixed
+        /// SaveAutonomousState only).
+        /// </summary>
+        public bool SaveOfflineAtRemoval()
+        {
+            if (PersistentRecord == null || IsInMemoryOnly)
+                return false;
+            PersistentRecord.IsOnline = false;
+            PersistentRecord.Activity = "Offline";
+            PersistentRecord.LastUpdateUtc = DateTime.UtcNow.ToString("O");
+            PersistentRecord.Dirty = true;
+            GameServer.Database.SaveObject(PersistentRecord);
             return true;
         }
 
@@ -3069,6 +3527,8 @@ namespace DOL.GS
             BotBrain.NotifyNearbyGroupBots(this, ad);
             AutonomousBotSchedule.OnAttacked(this);
             base.OnAttackedByEnemy(ad);
+            if (HealthPercent <= DOL.GS.CraftingEconomy.BotPotions.HealWhenHitPercent)
+                DOL.GS.CraftingEconomy.BotPotions.OnAttacked(this); // Crafting 2.0 WP7: an emergency heal draught (bot_upkeep)
         }
 
         #endregion
@@ -3127,7 +3587,9 @@ namespace DOL.GS
                 }
             }
 
-            Size = (byte)Util.Random(45, 60);
+            // A player's height, Short / Average / Tall, never bigger than a real player model (owner 2026-10-31: a
+            // companion Bard stood far above its player; it was a random 45-60).
+            Size = SizeForHeight(Util.Random(1, 3));
         }
 
         #endregion
@@ -3266,6 +3728,10 @@ namespace DOL.GS
             if (Mana > maximumMana) Mana = maximumMana;
         }
 
+        /// <summary>The trainable lines and their levels now (the era draw's "no trained line above 1" and nearest build).</summary>
+        private List<KeyValuePair<string, int>> TrainedSpecLevels() =>
+            GetSpecList().Where(spec => spec.Trainable).Select(spec => new KeyValuePair<string, int>(spec.KeyName, spec.Level)).ToList();
+
         private void LoadPersistedSpecs(string serialized)
         {
             if (string.IsNullOrWhiteSpace(serialized))
@@ -3290,6 +3756,12 @@ namespace DOL.GS
             return string.IsNullOrWhiteSpace(serializedSpecs) ? (byte)1 : currentLevel;
         }
 
+        /// <summary>A bot that leveled up trains on its way. One that never trained arrives trained in its lifetime build
+        /// when the launcher made it above level 1: at level 50 ("+ Lv.50"), or at any level above 1 when it has never been
+        /// saved ("+ Lv.20" makes levels 20-24; a saved bot above 1 got there by playing, and keeps visiting its trainer). Pure.</summary>
+        public static bool ArrivesTrained(int level, int trainedLevel, bool neverSaved = false) =>
+            trainedLevel <= 1 && (level >= 50 || neverSaved && level > 1);
+
         /// <summary>"trained-level|N|realm-points|M": realm ability points already spent at a trainer (0 when absent).</summary>
         public static int ParseTrainedRealmPoints(string serialized)
         {
@@ -3300,8 +3772,166 @@ namespace DOL.GS
             return 0;
         }
 
+        // ---- hired companions: their player trains their specs (from True 1.65, owner 2026-10-30)
+
+        /// <summary>
+        /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
+        /// player of its class has earned at its level - levels 2-5, each level above 5, each half level 40.5-49.5 it has
+        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost a
+        /// player: the class's autotrain lines are free up to a quarter of its level (LineCost).
+        /// Owner 2026-11-17: "companions and bots should be the same as a player". Before Living Server 1.2 a hired
+        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0) and paid for its autotrain
+        /// levels (77 points a line at 50); counting from its level gives a saved companion those points to spend, and
+        /// never takes a trained point away.
+        /// <para>
+        /// A hired companion never trains as a gamebot again, so a half level its player has spent is not earned twice by
+        /// SpendSpecPoints at a later level: dismissing only parks it (it stays hired), releasing deletes its record
+        /// (HiredCompanions165.AskRelease; a delete that fails retires it, and a retired bot never logs in), and the
+        /// launcher deletes a hire row only together with its bot (BotPurge).
+        /// </para>
+        /// </summary>
+        public int CompanionSpecPoints => Math.Max(0, CompanionEarnedSpecPoints - TrainedSpecPointCost());
+
+        /// <summary>Every spec point a player of this class has earned at this level and experience.</summary>
+        private int CompanionEarnedSpecPoints =>
+            PlayerSpecPointTotal(CharacterClass.SpecPointsMultiplier, Level, ReachedSecondStage(Level, Experience));
+
+        /// <summary>What the trainable lines cost a player of this class and level to train from 1 to their levels now.</summary>
+        private int TrainedSpecPointCost() =>
+            GetSpecList().Where(spec => spec.Trainable).Sum(spec => LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
+
+        // ---- autotrain, as a player's (GamePlayer.GetAutoTrainPoints, VerifySpecPoints and /train): the class's autotrain
+        // lines (ICharacterClass.GetAutotrainableSkills: Slash and Thrust for an Armsman, Stealth for the assassins...) are
+        // free up to a quarter of the character's level, whenever they are trained. This server's rule is the later
+        // "autotrain refund" (its code says patch 1.87): nothing is raised by itself and nothing is lost by training early.
+        // In 1.65 itself only a line left untrained got the free levels; the most a 1.65 player could have is what every
+        // player has here, 77 points a line at 50.
+
+        /// <summary>One of this class's autotrain lines (the player's own list and comparison).</summary>
+        public bool IsAutoTrainLine(Specialization spec) =>
+            spec != null && CharacterClass?.GetAutotrainableSkills() is { Count: > 0 } lines && lines.Contains(spec.KeyName);
+
+        /// <summary>The level an autotrain line is free up to: a quarter of the character's level, at least 1. Pure.</summary>
+        public static int AutoTrainLevel(int characterLevel) => Math.Max(1, characterLevel / 4);
+
+        /// <summary>What a line at <paramref name="specLevel"/> costs a player of <paramref name="characterLevel"/>: the
+        /// points to train it, less the autotrain levels of an autotrain line (GamePlayer.VerifySpecPoints). Pure.</summary>
+        public static int LineCost(int specLevel, int characterLevel, bool autoTrain) =>
+            PointsToTrain(specLevel) - (autoTrain ? PointsToTrain(Math.Min(AutoTrainLevel(characterLevel), specLevel)) : 0);
+
+        /// <summary>What the next level of a line costs a player of <paramref name="characterLevel"/>: nothing while an
+        /// autotrain line is below a quarter of the level (/train), else the new level. Pure.</summary>
+        public static int NextLevelCost(int specLevel, int characterLevel, bool autoTrain) =>
+            autoTrain && specLevel < characterLevel / 4 ? 0 : specLevel + 1;
+
+        /// <summary>The points an autotrain line already at <paramref name="specLevel"/> gets back on reaching
+        /// <paramref name="characterLevel"/>: at every fourth level the free level rises by one, and a line already there
+        /// has paid for it (the step in GamePlayer.GetAutoTrainPoints mode 0 from one level to the next). Pure.</summary>
+        public static int AutoTrainRefundAtLevel(int specLevel, int characterLevel) =>
+            LineCost(specLevel, characterLevel - 1, true) - LineCost(specLevel, characterLevel, true);
+
+        /// <summary>The points this bot's autotrain lines get back on reaching <paramref name="characterLevel"/>.</summary>
+        private int AutoTrainRefundAtLevel(int characterLevel) =>
+            characterLevel < 2 || CharacterClass?.GetAutotrainableSkills() is not { Count: > 0 } ? 0 :
+                GetSpecList().Where(spec => spec.Trainable && IsAutoTrainLine(spec))
+                    .Sum(spec => AutoTrainRefundAtLevel(spec.Level, characterLevel));
+
+        /// <summary>What the next level of this line costs the companion (0 for a free autotrain level).</summary>
+        public int CompanionTrainCost(Specialization spec) => NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec));
+
+        /// <summary>What raising this line to <paramref name="specLevel"/> costs the companion.</summary>
+        public int CompanionTrainCost(Specialization spec, int specLevel) =>
+            Math.Max(0, LineCost(specLevel, Level, IsAutoTrainLine(spec)) - LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
+
+        /// <summary>The points to train a line from 1 to <paramref name="specLevel"/> (2 + 3 + ... + level), as
+        /// GamePlayer.VerifySpecPoints counts them. Pure.</summary>
+        public static int PointsToTrain(int specLevel) => specLevel <= 1 ? 0 : specLevel * (specLevel + 1) / 2 - 1;
+
+        /// <summary>The spec points a player earns by <paramref name="level"/> (GamePlayer.OnLevelUp, OnLevelSecondStage):
+        /// with <paramref name="secondStage"/>, the half level <paramref name="level"/>.5 too (levels 40-49). Pure.</summary>
+        public static int PlayerSpecPointTotal(int multiplier, int level, bool secondStage)
+        {
+            int total = 0;
+            for (int reached = 2; reached <= level; reached++)
+                total += SpecPointsForLevel(multiplier, reached, true);
+            if (secondStage && level >= 40 && level < 50)
+                total += multiplier * level / 20;
+            return total;
+        }
+
+        /// <summary>A player of <paramref name="level"/> with this experience is at the level's second stage ("x.5", levels
+        /// 40-49; GamePlayer.ExperienceForCurrentLevelSecondStage, whose bar the bot's levels share). Pure.</summary>
+        public static bool ReachedSecondStage(int level, long experience)
+        {
+            if (level < 40 || level >= 50)
+                return false;
+            long current = GamePlayer.GetExperienceAmountForLevel(level - 1);
+            long next = GamePlayer.GetExperienceAmountForLevel(level);
+            return experience >= 1 + current + (next - current) / 2;
+        }
+
+        /// <summary>Raises one spec line by one level, as the player chose. Returns the problem, or null.</summary>
+        public string CompanionTrain(Specialization spec)
+        {
+            if (spec == null || !spec.Trainable)
+                return "That line can't be trained.";
+            if (spec.Level >= Level)
+                return $"{spec.Name} can't go above {Name}'s level ({Level}).";
+            m_leftOverSpecPoints = CompanionSpecPoints;
+            _lastAutonomousTrainedLevel = Level;
+            int cost = CompanionTrainCost(spec);
+            if (m_leftOverSpecPoints < cost)
+                return $"{spec.Name} {spec.Level + 1} needs {cost} points; {Name} has {m_leftOverSpecPoints}.";
+            m_leftOverSpecPoints -= cost;
+            spec.Level++;
+            AfterCompanionTraining();
+            return null;
+        }
+
+        /// <summary>The free respec (owner rule): every trained line back to 1 - an autotrain line to its free level from
+        /// level 8, as a player's respec leaves it (GamePlayer.RespecSingleLine; a line still at 1 is left alone, as
+        /// RespecAllLines leaves it) - and all the points back to spend: a player's total for the level, half levels
+        /// included.</summary>
+        public void CompanionRespec()
+        {
+            foreach (Specialization spec in GetSpecList().Where(s => s.Trainable && s.Level >= 2))
+                spec.Level = Level >= 8 && IsAutoTrainLine(spec) ? Level / 4 : 1;
+            m_leftOverSpecPoints = CompanionSpecPoints;
+            _lastAutonomousTrainedLevel = Level;
+            AfterCompanionTraining();
+        }
+
+        private void AfterCompanionTraining()
+        {
+            RefreshSpecDependantSkills(false);
+            SetBotSpells();
+            SortStyles();
+            SortSpells();
+            BotRangedCombat.EnsureStarter(this);
+            BotStarterInstruments.Ensure(this);
+            MarkAutonomousStateDirty();
+            AutonomousBotStatusPersistence.Queue(this, true);
+            LogCompanionSkills("trained");
+        }
+
+        /// <summary>COMPANION_SKILLS_165: what a hired companion can use after training or a level (True 1.65, owner
+        /// 2026-10-30: a level 5 Hunter trained Beastcraft 5 and seemed to use none of it).</summary>
+        internal void LogCompanionSkills(string why)
+        {
+            if (!IsHiredCompanion || !log.IsInfoEnabled)
+                return;
+            static string Names<T>(IEnumerable<T> list, Func<T, string> name) =>
+                list == null ? "-" : string.Join(", ", list.Where(x => x != null).Select(name).Distinct());
+            log.Info($"COMPANION_SKILLS_165 {why} bot=\"{Name}\" id={DatabaseID} {ClassName} {Level} specs=[" +
+                     string.Join(", ", GetSpecList().Select(sp => $"{sp.KeyName} {sp.Level}")) + "] spells=[" +
+                     Names(Spells, sp => $"{sp.Name} ({sp.SpellType})") + "] styles=[" + Names(Styles, st => st.Name) + "]");
+        }
+
         public bool TrainPendingSpecializations(GameTrainer trainer)
         {
+            // A hired companion's player trains it (CompanionTrain); it never spends points at a trainer on its own.
+            if (IsHiredCompanion)
+                return false;
             if (!HasPendingAutonomousTraining && !AutonomousBotRealmAbilities.HasPurchase(this))
                 return false;
             if (trainer == null ||
@@ -3326,6 +3956,8 @@ namespace DOL.GS
             int abilitiesBefore = GetAllAbilities().Count;
             SpendSpecPoints(Level, previous);
             _lastAutonomousTrainedLevel = Level;
+            if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, previous, Level))
+                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -3378,9 +4010,13 @@ namespace DOL.GS
 
         public bool SaveAutonomousState(bool includeInventory)
         {
-            if (IsEpicSpecialForce)
+            if (IsInMemoryOnly)
             {
-                AutonomousStateDirty = false; // nothing about a Special Forces member is ever saved
+                // Nothing about a Special Forces member or a No Lifer's buffbot is ever saved. A buffbot's record is not a
+                // roster row, so saving it would insert one: on 5378dbe every BUFFBOT_LOGOUT added a new gamebot with the
+                // buffbot's name, class and level (BUFFBOT_LOGOUT "Eilriorrin" 22:26:05, then roster row 5876
+                // "Eilriorrin" logging in with ERA_BUILD_ASSIGNED at 22:26:34).
+                AutonomousStateDirty = false;
                 return true;
             }
             OfflineWorldBotRecord record = PrepareAutonomousStateSnapshot();
@@ -3388,11 +4024,11 @@ namespace DOL.GS
                 return false;
 
             bool saved;
-            lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+            using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 saved = record.IsPersisted ? GameServer.Database.SaveObject(record) : GameServer.Database.AddObject(record);
             if (includeInventory && Inventory is BotInventory persistentInventory)
             {
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                     saved &= persistentInventory.SaveIntoDatabase(InternalID);
             }
             if (saved)
@@ -3418,10 +4054,11 @@ namespace DOL.GS
             record.Health = Math.Max(1, Health);
             record.Mana = Math.Max(0, Mana);
             record.Endurance = Math.Max(0, Endurance);
-            record.IsAlive = IsAlive;
+            record.IsAlive = SavedAlive(ObjectState == eObjectState.Active, IsAlive, Health);
             record.IsOnline = ObjectState == eObjectState.Active;
             record.SerializedSpecs = string.Join(';', GetSpecList().Where(spec => spec.Trainable).Select(spec => $"{spec.KeyName}|{spec.Level}"));
-            record.SerializedAbilities = $"trained-level|{_lastAutonomousTrainedLevel}|realm-points|{AutonomousBotRealmAbilities.TrainedPoints(this)}";
+            record.SerializedAbilities = $"trained-level|{_lastAutonomousTrainedLevel}|realm-points|{AutonomousBotRealmAbilities.TrainedPoints(this)}" +
+                                         AutonomousStarterGear.MarkerSuffix(_starterGearGiven);
             record.UnspentSpecPoints = m_leftOverSpecPoints;
             record.LastSavedUtc = DateTime.UtcNow.ToString("O");
             record.LastUpdateUtc = record.LastSavedUtc;
@@ -3429,6 +4066,14 @@ namespace DOL.GS
             record.Dirty = true;
             return record;
         }
+
+        /// <summary>
+        /// Pure: the alive flag a status save writes. GameLiving.IsAlive is false for anything out of the world, and the
+        /// status queue can save a bot after it left the world (a hired companion parked by /hire dismiss or its player's
+        /// logout, owner's PC 2026-11-17 on 5ddd003: IsAlive=0 with Health=116, so summon and login said "dead"). Out of
+        /// the world, health decides. True 1.65 (f68cc75) has the same rule; the port in #287 missed it.
+        /// </summary>
+        public static bool SavedAlive(bool inWorld, bool aliveInWorld, int health) => inWorld ? aliveInWorld : health > 0;
 
         public void MarkAutonomousStateSaved() => AutonomousStateDirty = false;
 
@@ -3568,7 +4213,106 @@ namespace DOL.GS
             }
         }
 
-        public void SpendSpecPoints(byte level, byte previousLevel)
+        /// <summary>
+        /// A saved gamebot's points are counted again as a player's are, from the level it last trained at
+        /// (GamePlayer.VerifySpecPoints; owner 2026-11-17: "companions and bots should be the same as a player"): every point
+        /// a player of its class has earned there - half levels included - less what its lines cost a player there, with
+        /// the autotrain levels free. When that is more than it saved (a bot trained before the autotrain refund, or before
+        /// the half levels, #326), it gets the difference; a trained point is never taken away. A bot standing at the level
+        /// it trained at spends the points now, as it would at the trainer (gamebots at 50 never train again); one with
+        /// levels still to train spends them at its next trainer visit.
+        /// </summary>
+        private void ApplySavedSpecPointRefund()
+        {
+            int trainedAt = _lastAutonomousTrainedLevel;
+            int owed = SavedSpecPointsOwed(CharacterClass.SpecPointsMultiplier, trainedAt,
+                GetSpecList().Where(spec => spec.Trainable).Select(spec => (spec.Level, IsAutoTrainLine(spec))));
+            if (owed <= m_leftOverSpecPoints)
+                return;
+            int saved = m_leftOverSpecPoints;
+            m_leftOverSpecPoints = owed;
+            if (trainedAt == Level && BotSpec != null)
+                SpendSpecPoints(Level, Level, addLevelPoints: false);
+            MarkAutonomousStateDirty();
+            SpecRefundLog.Record(ClassName, owed - saved,
+                $"{SpecRefundLog.Tag} bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                $"trainedAt={trainedAt} saved={saved} owed={owed} unspent={m_leftOverSpecPoints}");
+        }
+
+        /// <summary>
+        /// AUTONOMOUS_SPEC_REFUND without a flood on a world's first load after the update (thousands of bots): one line
+        /// each for the first <see cref="PerBotLines"/> bots refunded, then <see cref="Summary"/> once the start-up ramp
+        /// has finished, and again for any refunded later: <c>AUTONOMOUS_SPEC_REFUND_SUMMARY bots=812 points=61234
+        /// shown=30 classes="Armsman:90/9810,Warrior:85/..."</c> (bots/points by class).
+        /// </summary>
+        public static class SpecRefundLog
+        {
+            public const string Tag = "AUTONOMOUS_SPEC_REFUND";
+            public const int PerBotLines = 30;
+            private static readonly object Gate = new();
+            private static readonly Dictionary<string, (int Bots, long Points)> ByClass = new(StringComparer.Ordinal);
+            private static int _shown;
+
+            public static void Record(string className, int points, string line)
+            {
+                bool show;
+                lock (Gate)
+                {
+                    ByClass[className ?? "?"] = ByClass.TryGetValue(className ?? "?", out var seen)
+                        ? (seen.Bots + 1, seen.Points + points) : (1, points);
+                    show = _shown < PerBotLines;
+                    if (show)
+                        _shown++;
+                }
+                if (show)
+                    log.Info(line);
+            }
+
+            /// <summary>The summary of the refunds since the last one, or null when there were none. Pure but for the
+            /// counts it resets.</summary>
+            public static string Summary()
+            {
+                lock (Gate)
+                {
+                    if (ByClass.Count == 0)
+                        return null;
+                    int bots = ByClass.Values.Sum(entry => entry.Bots);
+                    long points = ByClass.Values.Sum(entry => entry.Points);
+                    string classes = string.Join(",", ByClass.OrderByDescending(entry => entry.Value.Points)
+                        .ThenBy(entry => entry.Key, StringComparer.Ordinal)
+                        .Select(entry => $"{entry.Key}:{entry.Value.Bots}/{entry.Value.Points}"));
+                    string line = $"{Tag}_SUMMARY bots={bots} points={points} shown={_shown} classes=\"{classes}\"";
+                    ByClass.Clear();
+                    return line;
+                }
+            }
+
+            /// <summary>Logs the summary, if there is one.</summary>
+            public static void Flush()
+            {
+                if (Summary() is { } line)
+                    log.Info(line);
+            }
+
+            public static void ResetForTests()
+            {
+                lock (Gate)
+                {
+                    ByClass.Clear();
+                    _shown = 0;
+                }
+            }
+        }
+
+        /// <summary>The points a player of <paramref name="trainedAt"/> has left with these lines: earned less their cost
+        /// (autotrain lines free up to a quarter of the level). Pure.</summary>
+        public static int SavedSpecPointsOwed(int multiplier, int trainedAt, IEnumerable<(int Level, bool AutoTrain)> lines) =>
+            PlayerSpecPointTotal(multiplier, trainedAt, false) - lines.Sum(line => LineCost(line.Level, trainedAt, line.AutoTrain));
+
+        /// <summary>Spends the points of levels <paramref name="previousLevel"/>+1 to <paramref name="level"/> (and what is
+        /// left over) along the bot's plan. With <paramref name="addLevelPoints"/> false and the two levels equal, it spends
+        /// only what is left over, at the bot's level (a saved bot's refund).</summary>
+        public void SpendSpecPoints(byte level, byte previousLevel, bool addLevelPoints = true)
         {
             if (BotSpec == null)
                 return;
@@ -3578,7 +4322,7 @@ namespace DOL.GS
             int leftOverSpecPoints = m_leftOverSpecPoints;
             bool spentPoints = true;
             bool spendLeftOverPoints = false;
-            bool botCreation = level - previousLevel > 1;
+            bool trainsEveryPoint = !string.IsNullOrEmpty(BotSpec.EraBuildId);
 
             byte index = (byte)(previousLevel + 1);
 
@@ -3590,7 +4334,14 @@ namespace DOL.GS
                 spentPoints = true;
                 spendLeftOverPoints = false;
 
-                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i, botCreation) + leftOverSpecPoints;
+                // The level's points, and what a player's autotrain lines get back at this level (every fourth).
+                int totalSpecPointsThisLevel = (addLevelPoints ? GetSpecPointsForLevel(i) + AutoTrainRefundAtLevel(i) : 0) +
+                    leftOverSpecPoints;
+                // Every autotrain line at its free level, trained or not: a player pays nothing for it (GamePlayer
+                // .GetAutoTrainPoints), and 1.65 trained it by itself (research finding 1, review of 1f3dcefe2 item 3).
+                foreach (Specialization autoTrain in GetSpecList())
+                    if (autoTrain.Trainable && IsAutoTrainLine(autoTrain) && autoTrain.Level < AutoTrainLevel(i) && i >= 8)
+                        autoTrain.Level = AutoTrainLevel(i);
 
                 while (spentPoints)
                 {
@@ -3598,7 +4349,11 @@ namespace DOL.GS
 
                     foreach (BotSpecLine specLine in BotSpec.SpecLines)
                     {
-                        if (specLine.levelRatio <= 0 && Level < 50)
+                        // A line with no levelling share waits for level 50 - except in an era build, whose lines are
+                        // capped at the build's points: there the points nothing else can take go into it at once, so
+                        // the bot is always as trained as its points allow, as a player following a template is (owner
+                        // 2026-11-17 18:59). The build still ends at its points: no line passes its cap.
+                        if (specLine.levelRatio <= 0 && Level < 50 && !(spendLeftOverPoints && trainsEveryPoint))
                             continue;
 
                         Specialization spec = GetSpecializationByName(specLine.Spec);
@@ -3612,7 +4367,8 @@ namespace DOL.GS
                                 if (!spendLeftOverPoints && spec.Level >= specRatio)
                                     continue;
 
-                                int totalCost = spec.Level + 1;
+                                // A player's cost at this level: an autotrain line is free below a quarter of it.
+                                int totalCost = NextLevelCost(spec.Level, i, IsAutoTrainLine(spec));
 
                                 if (totalSpecPointsThisLevel >= totalCost)
                                 {
@@ -3635,16 +4391,30 @@ namespace DOL.GS
             }
         }
 
-        private int GetSpecPointsForLevel(int level, bool botCreation)
+        /// <summary>
+        /// Every bot earns the half-level points above level 40, whether it trains every level or catches up several at
+        /// once (owner 2026-11-17: "companions and bots should be the same as a player"). Players get them at each "x.5"
+        /// second stage (GamePlayer.OnLevelSecondStage, multiplier x level / 20); a bot that trains here gets the half level
+        /// before each level with that level, so at every whole level it has a player's total. Before 1.2 only a bot catching
+        /// up more than one level (or made above level 1) was given them: a gamebot that trained every level reached 50 with
+        /// 220/330/445 points fewer (x1.0, x1.5, x2.0; review of era builds WP0-2, fixed in #326), and a /spawn helper
+        /// promoted from 49 to 50 missed the 49.5 points. Hired companions count as a player does (CompanionSpecPoints).
+        /// </summary>
+        private int GetSpecPointsForLevel(int level) =>
+            SpecPointsForLevel(CharacterClass.SpecPointsMultiplier, level, true);
+
+        /// <summary>The spec points for reaching <paramref name="level"/>; with <paramref name="halfLevel"/>, above level 40,
+        /// also the half level before it (level - 1).5. Pure; the sum over levels 2-50 with half levels is
+        /// OfflineDaoc.Shared.EraBuildCatalog.PointBudget.</summary>
+        public static int SpecPointsForLevel(int multiplier, int level, bool halfLevel)
         {
             int specpoints = 0;
 
-            if (botCreation)
-                if (level > 40)
-                    specpoints += CharacterClass.SpecPointsMultiplier * (level - 1) / 20;
+            if (halfLevel && level > 40)
+                specpoints += multiplier * (level - 1) / 20;
 
             if (level > 5)
-                specpoints += CharacterClass.SpecPointsMultiplier * level / 10;
+                specpoints += multiplier * level / 10;
             else if (level >= 2)
                 specpoints = level;
 
@@ -3927,6 +4697,12 @@ namespace DOL.GS
                 SetSluaghbinderSpells();
                 return;
             }
+
+            // The usable-skill lists are cached: rebuild them from the current specs and level first. Read from the cache,
+            // a bot trained or levelled in the field kept its old spells until it was created again (owner 2026-10-30:
+            // a level 5 Hunter trained to Beastcraft 5 used none of the new buffs until dismissed and summoned at the inn).
+            GetAllUsableSkills(true);
+            GetAllUsableListSpells(true);
 
             // Casters use list spells (highest level per type), hybrids use all usable skills
             if (CharacterClass.ClassType == eClassType.ListCaster)
@@ -4736,6 +5512,11 @@ namespace DOL.GS
 
         private void SetRanged()
         {
+            // The class's own kind first when it trains more than one (a mercenary's short bow, an armsman's crossbow):
+            // SetRangedWeapon fills only an empty slot, so the ability order below no longer decides it.
+            if (CharacterClass != null && BotRangedCombat.PreferredRangedType((eCharacterClass)CharacterClass.ID) is eObjectType own &&
+                HasAbility(BotRangedCombat.AbilityFor(own)))
+                BotEquipment.SetRangedWeapon(this, own);
             foreach (Ability ability in GetAllAbilities())
             {
                 switch (ability.KeyName)
@@ -4851,6 +5632,11 @@ namespace DOL.GS
 
         public override void SwitchWeapon(eActiveWeaponSlot slot)
         {
+            // Play test diagnostic (Funus): who puts the melee weapon in hand of a bot that may fight its target only
+            // with its distance weapon. Once per bot every ten minutes, the call path.
+            if (slot != eActiveWeaponSlot.Distance && ActiveWeaponSlot == eActiveWeaponSlot.Distance &&
+                TargetObject is GameLiving rangedOnly && EpicEncounterTactics.FightsAtRange(this, rangedOnly))
+                EpicEncounterRestores.NoteMeleeSwitch(this, rangedOnly);
             // GameNPC.SwitchWeapon intentionally stops and restarts an active
             // attack, even when the requested slot is already selected. That
             // is useful for scripted NPCs, but inventory/equipment refreshes
@@ -4957,7 +5743,23 @@ namespace DOL.GS
         {
             if (target != null && IsRecoveryResting)
                 return;
-            base.Follow(target, minDistance, maxDistance);
+            base.Follow(target, MeleeStandOff(target, minDistance), maxDistance);
+        }
+
+        /// <summary>
+        /// Living Server 1.2, "arrive slightly short": an autonomous gamebot's melee approach to a monster stops 0-20 units
+        /// short of the stick distance, the same for the same bot every fight (BotCombatMovement.StandOff), so bots don't all
+        /// stand on one exact ring. Not for companions, player-led groups, dragons, epic encounters or raid dungeons.
+        /// </summary>
+        private int MeleeStandOff(GameObject target, int minDistance)
+        {
+            if (!IsAutonomousWorldBot || IsTemporaryGroupHelper || IsInMemoryOnly || IsPlayerLedGroup ||
+                target == null || target != TargetObject || target is not GameNPC monster || monster is GameBot ||
+                minDistance != StickMinimumRange || ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                DragonCombatGeometry.TargetReach(monster) > 0 || EpicEncounterTactics.For(monster) != null ||
+                EpicEncounterTactics.IsTacticPart(monster) || AutonomousRealmRaid.IsRaidDungeon(CurrentRegionID))
+                return minDistance;
+            return BotCombatMovement.StandOff(minDistance, DatabaseID > 0 ? DatabaseID : ObjectID);
         }
 
         public new void StopFollowing()

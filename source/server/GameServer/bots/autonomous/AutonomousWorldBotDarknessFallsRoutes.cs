@@ -326,8 +326,13 @@ public sealed partial class AutonomousWorldBotController
                     _darknessFallsRaidChainFailPosition, current, now, _darknessFallsRaidChainRetryTick, RaidChainRetryDistance))
                 return false;
             if (AutonomousDarknessFallsNavigation.HasStrictSegment(nav, zone, current, post)) return false;
-            if (!RealmRaidDungeonRoute.TryDarknessFallsChain(nav, zone, bot.Realm, post, out Vector3[] chain) ||
-                !StartDarknessFallsRoute(bot, key, chain, RaidChainJoinCandidates))
+            // The certified chain first; where it has none (the High Lords' and Legion's floor has no grind spawn to build
+            // one from), the way the raid itself walked (AutonomousDarknessFallsRaidTrail, 1.2 DF raid wave).
+            bool joined = RealmRaidDungeonRoute.TryDarknessFallsChain(nav, zone, bot.Realm, post, out Vector3[] chain) &&
+                          StartDarknessFallsRoute(bot, key, chain, RaidChainJoinCandidates);
+            if (!joined && AutonomousDarknessFallsRaidTrail.TryChainTo(bot.Realm, post, out Vector3[] trail))
+                joined = StartDarknessFallsRoute(bot, key, trail, RaidChainJoinCandidates);
+            if (!joined)
             {
                 _darknessFallsRaidChainFailKey = key;
                 _darknessFallsRaidChainFailPosition = current;
@@ -337,6 +342,22 @@ public sealed partial class AutonomousWorldBotController
             _darknessFallsRaidChainFailKey = null;
         }
         return AdvanceDarknessFallsRoute(bot, status);
+    }
+
+    /// <summary>How many waypoints past an unwalkable one a raid member's chain looks for one it can walk to.</summary>
+    public const int RaidChainSkipAhead = 3;
+
+    /// <summary>The route key of a raid member's chain (FollowDarknessFallsRaidChain), not a solo grind's or an exit's.</summary>
+    public static bool IsRaidChainKey(string key) => key != null && key.StartsWith("raid:", StringComparison.Ordinal);
+
+    /// <summary>The first waypoint after <paramref name="next"/>, at most <paramref name="ahead"/> on, that
+    /// <paramref name="walkable"/> accepts (pure), or null.</summary>
+    public static int? NextWalkableWaypoint(IReadOnlyList<Vector3> waypoints, int next, int ahead, Func<Vector3, bool> walkable)
+    {
+        if (waypoints == null || walkable == null) return null;
+        for (int k = next + 1; k < waypoints.Count && k <= next + ahead; k++)
+            if (walkable(waypoints[k])) return k;
+        return null;
     }
 
     private bool StartDarknessFallsRoute(GameBot bot, string key, Vector3[] waypoints, int maxLegs = int.MaxValue)
@@ -411,7 +432,19 @@ public sealed partial class AutonomousWorldBotController
         // pathfinder independently guards every queued DF path. Re-query only
         // before a new movement order (or after movement stalls), not on
         // every brain tick while the bot is visibly progressing.
-        if (!AutonomousDarknessFallsNavigation.HasStrictSegment(nav, zone, current, target))
+        // A raid member's chain (certified or the raid's own trail) may go round a leg it can't walk from here: up to
+        // RaidChainSkipAhead waypoints further on, the first one with a strict leg is next (1.2 DF raid wave). Solo grinds
+        // and exits keep their certified order exactly.
+        bool walkable = AutonomousDarknessFallsNavigation.HasStrictSegment(nav, zone, current, target);
+        if (!walkable && IsRaidChainKey(_darknessFallsRouteKey) &&
+            NextWalkableWaypoint(waypoints, _darknessFallsNextWaypoint, RaidChainSkipAhead,
+                to => AutonomousDarknessFallsNavigation.HasStrictSegment(nav, zone, current, to)) is int ahead)
+        {
+            _darknessFallsNextWaypoint = ahead;
+            target = waypoints[ahead];
+            walkable = true;
+        }
+        if (!walkable)
         {
             bot.StopMovingOnPath();
             bot.StopMoving();

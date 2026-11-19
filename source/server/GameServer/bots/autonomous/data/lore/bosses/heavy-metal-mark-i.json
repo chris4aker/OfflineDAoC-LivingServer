@@ -1,0 +1,121 @@
+{
+  "id": "heavy-metal-mark-i",
+  "name": "Heavy Metal Mark I",
+  "npcNames": [
+    "Heavy Metal Mark I"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the first heavy",
+    "mark one"
+  ],
+  "facts": [
+    {
+      "text": "Heavy Metal Mark I: template 60162060, level 52, a construct at size 54, at 406573, 437142 by the hall of making; aggro level 200 within 500, faction Chaotic Constructs, slashing melee, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Frazzled assemblies (44-49) stand 480 to 860 from it and a crafted keeper 878; the lesser 'heavy metal' constructs (44-46) work across the hall.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Mark I as the first of the heavy servants, the master's mark-book, its edge and the workshop's rejects as its brood are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The old master of the school of making numbered what he made. His sentries he marked one to four, each a little better than the last, and they still stand in their line west of the hall in that order. His heavy servants, the ones built to lift what the oak servants could not, he marked too, and the first of them he called Heavy Metal, Mark the First, in his mark-book, and never made a second with the same care. The heavy metals that work across the hall now are its children in the way a sword is the child of the first sword cast in a mould. They came after it and from it, and are worse.\n\nMark I was the master's pride and his mistake. He built it to lift, and gave it arms of iron with an edge on them for cutting the bindings of loads, and it lifted well. The households of the dales say the trouble was that it could not tell a binding from anything else that held something together, and the master spent a summer teaching it the difference, and was never sure it had learned. He kept it close by the hall where he could watch it. It is there still, cutting at things that are not bindings.\n\nWhen the colleges burned and the drakoran came to the empty hall and set the servants going again from the master's books, Mark I woke with the rest. It does not obey the one who wears the master's name; nothing in the hall obeys him well. But it has kept the habit of a foreman. The frazzled assemblies and the crafted things of the workshop that work near it come to it when it is troubled, the way a gang comes to its ganger, and the farther ones come only if the trouble is large enough to hear. Gracien Adamson at the fort says the hall's rejects follow Mark I about as if it were the master, which is the saddest thing he knows about the place.\n\nIt is broken often enough by the young of the realm going for the hall, and is back on its feet before the dust is down, because whatever else the new Meical has failed to understand in the master's mark-book, he has understood how to make Mark I again.",
+  "legend": "Heavy Metal Mark I is a level 52 construct just outside Meical's Hall in the south of the Dales of Devwy. It is aggressive from about 500 away and shares the Chaotic Constructs faction with the frazzled assemblies and crafted keeper working near it (about 480 to 880 away), so a big group drags them in; a small group often gets it alone. It hits with a slashing edge and has no spells or styles in the data: a straight melee fight for a group of fifties. Pull it away from the hall wall before you start. Respawn about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "BINDING. CUT.",
+      "Load detected. Lifting.",
+      "Mark the first. Working."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Gang! To the ganger!"
+      }
+    ],
+    "death": [
+      "Mark... the first... stopped...",
+      "Load... dropped..."
+    ],
+    "slay": [
+      "Binding cut.",
+      "Lifted.",
+      "Load cleared."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A heavy construct cuts at things that are not ropes.",
+      "Rejects of the workshop trail after it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The workshop's rejects gather round Mark I."
+      }
+    ],
+    "realmFirstKill": "Heavy Metal Mark I is broken. The rejects scatter."
+  },
+  "botLines": {
+    "briefing": [
+      "heavy metal mark i, 52 construct just outside meical's hall. aggros at 500, slashing hits",
+      "frazzled assemblies and a crafted keeper near it are its faction. small group, pull it off the wall",
+      "no spells, melee. group of 50s",
+      "80 sec respawn"
+    ],
+    "aftermathWin": [
+      "mark one down. the junk scattered",
+      "pulled it clean off the wall",
+      "nice, only one assembly came",
+      "back in 80, move"
+    ],
+    "aftermathLoss": [
+      "two full groups and every assembly in the yard came",
+      "fought it against the wall and pulled the hall",
+      "tank had no slash armor on lol",
+      "came back while we were arguing about the drop"
+    ],
+    "rumour": [
+      "[heard|someone said] heavy metal mark i was the old master's first heavy servant and the rest are copies",
+      "heard mark one cant tell a rope from anything else holding something together",
+      "[heard|someone said] the workshop junk follows mark one around like it was the master",
+      "heard the drakoran meical can rebuild mark one but nothing else as good"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "heavy metal mark i",
+    "text": "The first of the old master's heavy servants at the hall of [meical], built to lift and given an edge to cut the bindings of loads; it never quite learned what was a binding and what was not. The lesser heavy metals came after it and are worse. The workshop's rejects work near it and come to it like a gang to its ganger. It does not obey the drakoran who wears the master's name."
+  },
+  "bookPage": "A leaf of the old master's mark-book from the hall of making, carried out by Adelon and copied for Lady Lurlei. Heavy, mark the first. Lifts nine hundredweight clean. Edge on both arms for cutting load-bindings. Fault: will not tell a binding from a seam, a strap, a hinge, a belt or a man's arm in a sleeve; cut my apron strings twice this week and the gate-hinges once. Taught it ropes all summer. Believe it has learned. Not certain. Keep it near the hall where it can be watched. Do not make a second until the fault is understood. Below, in another hand, newer: made a second.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} broke Heavy Metal Mark I outside the hall of making in {minutes} minutes.",
+    "loss": "Heavy Metal Mark I cut {raidLeader}'s company of {realm} like a load-binding."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "tower-guardian",
+      "relation": "works the yard round the Guardian's feet"
+    },
+    {
+      "id": "cabalist-meical",
+      "relation": "rebuilt from the master's mark-book by the one who wears his name"
+    }
+  ]
+}

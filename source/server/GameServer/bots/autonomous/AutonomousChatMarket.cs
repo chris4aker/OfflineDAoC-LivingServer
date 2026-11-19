@@ -9,7 +9,7 @@ namespace DOL.GS
     /// Visible replies to /lfg and /trade posts (1.1.3, after RC5). On the owner's PC (RC3, 2026-11-09) 260 /lfg posts and 213
     /// /trade posts drew no reply at all: the channels read as monologues. In 2003 most of this went by /send, so most posts stay
     /// unanswered here too, but a share get a short public answer from a bot it is true for: "x" or "still need a healer?" from a
-    /// solo bot of the role and levels asked for, "how much?" from a bot that could wear the armour, "/t me, have one" from a bot
+    /// solo bot of the role and levels asked for, "how much?" from a bot that could wear the armour, "/send me, have one" from a bot
     /// that carries what is wanted. The poster then says what is true of it: its real spec, its asking price, "ya, 1 spot" only
     /// while its party is still recruiting (<see cref="SpotFor"/>), and a while later "nvm full", "got a grp" or "sold" only
     /// when that happened. Pure; the coordinator (AutonomousBotChatCoordinator.ScheduleMarketReply) reads the live bots and
@@ -69,7 +69,8 @@ namespace DOL.GS
         {
             string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
             string role = Regex.IsMatch(t, " (heal|healer|heals) ") ? "healer" : Regex.IsMatch(t, " tank ") ? "tank" :
-                Regex.IsMatch(t, " (cc|mezzer|mez) ") ? "cc" : Regex.IsMatch(t, " dps ") ? "dps" : Regex.IsMatch(t, " caster ") ? "caster" :
+                Regex.IsMatch(t, " (cc|mezzer|mez) ") ? "cc" : Regex.IsMatch(t, " dps ") ? "dps" : Regex.IsMatch(t, " nuker ") ? "nuker" :   // chat-check: input
+                Regex.IsMatch(t, " caster ") ? "caster" :
                 Regex.IsMatch(t, " puller ") ? "puller" : Regex.IsMatch(t, " support ") ? "support" : null;
             Match band = Regex.Match(text ?? string.Empty, @"\b(\d{1,2})-(\d{1,2})\b");
             if (band.Success && int.TryParse(band.Groups[1].Value, out int low) && int.TryParse(band.Groups[2].Value, out int high) && low <= high)
@@ -146,10 +147,37 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// A reply and what it asks of the poster ("price", "room", "spec", "have", "level", or null for nothing), and for a "room"
-        /// question the role it asks about ("still need a healer?": "healer"), or null for a seat of any kind.
+        /// A reply and what it asks of the poster ("price", "room", "spec", "level", "place", "count", "range", or null for nothing),
+        /// and for a "room" question the role it asks about ("still need a healer?": "healer"), or null for a seat of any kind.
         /// </summary>
         public readonly record struct Reply(string Text, string Asks, string Role = null);
+
+        /// <summary>
+        /// The posters asked something lately (chat 1.2, LOG-034, owner's PC: Rebecca was asked "what spec?" three times in twelve
+        /// minutes): a poster is asked at most once an hour; a reply that would ask again isn't said.
+        /// </summary>
+        public sealed class AskedPosters
+        {
+            public const long RestMs = 60 * 60_000;
+            private readonly Dictionary<long, long> _asked = new();
+
+            /// <summary>True (and remembered) when the poster wasn't asked anything in the last hour.</summary>
+            public bool TryAsk(long posterId, long now)
+            {
+                lock (_asked)
+                {
+                    if (_asked.TryGetValue(posterId, out long at) && now >= at && now - at < RestMs)
+                        return false;
+                    if (_asked.Count > 4096)
+                        _asked.Clear();
+                    _asked[posterId] = now;
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>The live record of who was asked (AutonomousBotChatCoordinator.ScheduleMarketReply).</summary>
+        public static readonly AskedPosters Asked = new();
 
         /// <summary>
         /// A bot's reply to a post, from its own state: <paramref name="solo"/> whether it is without a group, <paramref name="hasWanted"/>
@@ -165,14 +193,19 @@ namespace DOL.GS
             switch (post)
             {
                 case Post.Lfm:
-                    return random.Next(6) switch
+                    // Chat 1.2 (LOG-034): more than one way to answer a group post, each answered truly by the poster. TEXT-012:
+                    // "still need a nuker?", not "dps". "what lvl range?" only to a post that names none.
+                    bool band = Regex.IsMatch(postText ?? string.Empty, @"\b\d{1,2}-\d{1,2}\b");
+                    return random.Next(8) switch
                     {
                         0 => new Reply("x", null),
                         1 => new Reply("x me", null),
                         2 => new Reply($"{lvl} {cls} x", null),
-                        3 => role is null or "support" ? new Reply("still need ppl?", "room") : new Reply($"still need a {role}?", "room", role),
+                        3 => role is null or "support" ? new Reply("still need ppl?", "room") : new Reply($"still need a {(role == "dps" ? "nuker" : role)}?", "room", role),
                         4 => new Reply($"{cls} {lvl}, room?", "room"),
-                        _ => new Reply("/t me", null),
+                        5 => new Reply("how many u got?", "count"),
+                        6 when !band => new Reply("what lvl range?", "range"),
+                        _ => new Reply("/send me", null),
                     };
                 case Post.Lfg:
                     return solo
@@ -182,20 +215,26 @@ namespace DOL.GS
                             1 => new Reply($"same, {lvl} {cls} lfg too", null),
                             _ => new Reply("me too, duo?", "duo"),
                         }
-                        : random.Next(2) == 0 || !AsksXp(postText, posterLevel) ? new Reply("what spec?", "spec") : new Reply("how many bubbles?", "bubbles");
+                        : random.Next(3) switch
+                        {
+                            0 => new Reply("what spec?", "spec"),
+                            1 => new Reply("where at?", "place"),
+                            _ => AsksXp(postText, posterLevel) ? new Reply("how many bubbles?", "bubbles") : new Reply("where u at?", "place"),
+                        };
                 case Post.Wts:
-                    return random.Next(5) switch
+                    // LOG-009: no "still have it?" seconds after the ad.
+                    return random.Next(4) switch
                     {
                         0 => new Reply("how much?", "price"),
                         1 => new Reply("pst price?", "price"),
                         2 => new Reply("price?", "price"),
-                        3 => new Reply("still have it?", "have"),
                         _ => new Reply("what stats?", "stats"),
                     };
                 case Post.Wtb:
+                    // TEXT-026: "/send", the 2003 command. LOG-010: "what lvl?" only to a post that names no level.
                     if (hasWanted)
-                        return random.Next(2) == 0 ? new Reply("/t me, have one", "paying") : new Reply("have one, how much u paying?", "paying");
-                    return random.Next(2) == 0 ? new Reply("how much u paying?", "paying") : new Reply("what lvl?", "level");
+                        return random.Next(2) == 0 ? new Reply("/send me, have one", "paying") : new Reply("have one, how much u paying?", "paying");
+                    return random.Next(2) == 0 || LevelNamed(postText) > 0 ? new Reply("how much u paying?", "paying") : new Reply("what lvl?", "level");
                 default:
                     return new Reply(null, null);
             }
@@ -251,7 +290,7 @@ namespace DOL.GS
             bool stillHas, Random random, string roleFilled = null)
         {
             if (asks == null || poster == null)
-                return random.NextDouble() < 0.4 ? Pick(random, "/t me", "pst", "k pst") : null;
+                return random.NextDouble() < 0.4 ? Pick(random, "/send me", "pst", "k pst") : null;
             string named = Regex.Match(postText ?? string.Empty, @"\b\d+ ?(p|g|s)\b").Value;
             switch (asks)
             {
@@ -268,7 +307,8 @@ namespace DOL.GS
                 case "have":
                     return stillHas ? Pick(random, "ya", "ya still have it", "yep, pst") : Pick(random, "nope sold", "sold sry");
                 case "stats":
-                    return stillHas ? Pick(random, "/t me, ill link it", "pst, ill show u") : Pick(random, "sold sry");
+                    // TEXT-014: the 1.65 client has no item links.
+                    return stillHas ? Pick(random, "pst, ill tell u the stats", "pst, ill show u") : Pick(random, "sold sry");
                 case "spec":
                     return string.IsNullOrWhiteSpace(spec) ? null : spec;
                 case "bubbles":
@@ -276,7 +316,19 @@ namespace DOL.GS
                 case "duo":
                     return Pick(random, "sure, pst", "k, where u at?", "sure");
                 case "paying":
-                    return Pick(random, "make an offer", "pst, depends on stats", "offers, pst");
+                    // LOG-008 (owner's PC: "wtb dye" "how much u paying?" "offers, pst"): the buyer says what it pays.
+                    return BuyerOffer(postText, poster.Level, random);
+                case "place":
+                    return string.IsNullOrWhiteSpace(poster.Zone) ? null
+                        : poster.InDungeon ? Pick(random, $"in {AutonomousChatFieldTalk.ShortZone(poster.Zone)}", AutonomousChatFieldTalk.ShortZone(poster.Zone))
+                        : Pick(random, $"in {AutonomousChatFieldTalk.ShortZone(poster.Zone)}", $"{AutonomousChatFieldTalk.ShortZone(poster.Zone)}, can come to u");
+                case "count":
+                    return poster.GroupSize > 1 ? Pick(random, $"{poster.GroupSize} so far", $"{poster.GroupSize} of us", $"{poster.GroupSize}, need {Math.Max(1, 8 - poster.GroupSize)} more") : null;
+                case "range":
+                {
+                    Need need = NeedOf(postText, poster.Level);
+                    return Pick(random, $"{need.Low}-{need.High}", $"{need.Low}-{need.High}ish", $"around {poster.Level}");
+                }
                 case "level":
                     return post == Post.Wtb ? Pick(random, $"for {poster.Level}", $"{poster.Level}", $"{poster.Level}, any quality") : null;
                 default:
@@ -298,6 +350,19 @@ namespace DOL.GS
             Post.Wts when !stillHas => Pick(random, "sold ty", "sold", "nvm sold"),
             _ => null,
         };
+
+        /// <summary>
+        /// What a buyer pays for what its wtb post wants (chat 1.2, LOG-008): a top price for gear by the poster's level ("3p tops"),
+        /// "depends on stats", and for pots, dye and arrows the going rate. Never the seller's "make an offer". Pure but for the draw.
+        /// </summary>
+        public static string BuyerOffer(string postText, int level, Random random)
+        {
+            string t = " " + AutonomousChatQuestions.Normalize(postText ?? string.Empty) + " ";
+            if (Regex.IsMatch(t, " (pots|dye|arrows|potion|potions) "))
+                return Pick(random, "merchant price, pst", "pst, depends how many", "normal price, pst");
+            string price = AutonomousChatFieldTalk.PriceFor(level, random);
+            return Pick(random, $"{price} tops", "pst, depends on stats", $"{price}, more for good stats", $"up to {price}, pst");
+        }
 
         private static string Pick(Random random, params string[] options) => options[random.Next(options.Length)];
     }

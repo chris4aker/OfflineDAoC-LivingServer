@@ -18,8 +18,8 @@ namespace DOL.GS
             eCharacterClass.Armsman or eCharacterClass.Mercenary or eCharacterClass.Paladin or eCharacterClass.Reaver or eCharacterClass.Scout or
             eCharacterClass.Warrior or eCharacterClass.Berserker or eCharacterClass.Savage or eCharacterClass.Thane or
             eCharacterClass.Hero or eCharacterClass.Champion or eCharacterClass.Blademaster or eCharacterClass.Ranger or eCharacterClass.Valewalker;
-        public static bool Eligible(GameBot bot) => bot is { IsAutonomousWorldBot: true, IsPlayerLedGroup: false, IsAlive: true } &&
-            bot.CharacterClass != null && CanOperate((eCharacterClass)bot.CharacterClass.ID);
+        public static bool Eligible(GameBot bot) => bot is { IsAutonomousWorldBot: true, IsAlive: true } &&
+            !BotDutyLeases.IsSpokenForByPlayer(bot) && bot.CharacterClass != null && CanOperate((eCharacterClass)bot.CharacterClass.ID);
 
         /// <summary>Attackers: two rams, the trebuchet (triple damage against doors), a catapult, ballistas.
         /// Defenders: ballistas against siege, catapults on the attackers; never a trebuchet, whose 2,000 minimum

@@ -1,0 +1,114 @@
+{
+  "id": "balere",
+  "name": "Balere",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/balere",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Balere: level 65, 30,000 health, cannot be crowd-controlled, resists 20% melee and 30% other damage, reach 350, tether 2,600; when she is engaged 7-8 young octonoids (level 38-44, 2,000 health) appear around her; they are removed when she dies or resets (resets heal her to full).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Balere.cs (integration/1.2)"
+    },
+    {
+      "text": "Balere stands at about 387,600/239,700 on the northern World's End shore.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Balere is the eldest of the three octonoid mothers of the World's End shore, and the Sylvan fishers of the edge say the northern shallows belong to her by right of age. She lies half in the water and half on the black rocks below the headland, a great soft bulk with arms like ships' cables, and the fishers have never seen her further than a long cast from the tide-line in all the generations they have counted.\n\nWhere the mothers came from, the edge tells three ways. The fishers say they crawled up out of the Underneath, the deep places below the isle that the falls of Galladoria also drink from, the year the forests pushed the Root to World's End, because the land there was suddenly sour and the sea beside it warm. The druids of Tir na Nog who came with the first Hibernian swords think they are simply old, octonoids of the open sea that grew too big to go back into it. The Fomorians of the shore stair, asked by Fiachra of Howth, said they were there when the Fomorians came, and that the Fomorians left them a share of every catch.\n\nBalere is past her best breeding, and the fishers can tell it: her young are the smallest on the shore, a tangle of soft arms the size of dogs. When anything comes at her they come off her in a wave and curl over the rocks toward it, and when she is finished, one way or the other, they go back into the sea with her as if a cord had drawn them. No fisher has ever found a young octonoid on the shore without its mother. The Sylvan have a word for a family that cannot be separated, and it is her name.\n\nShe cannot be sung to sleep, the edge says, or held, or frightened off, because nothing that works on a mind works on a mother with her children round her. The fishers have tried, in bad years, when the shore had to be walked. The ones who came back say that the thing to do, if one must cross her shallows, is to cross them once and quickly, and never with the tide coming in.\n\nHer sisters keep the shore south of her: Zytka, the youngest, restless in the middle shallows, and Mollunero, the strongest, in the deep pool under the cliffs. The three have never been seen together. The fishers think they would not survive it.",
+  "legend": "Easiest of the three mothers: 65, melee only, and her 7-8 young are only 38-44 with 2,000 health each. They appear the moment she is engaged. You do not have to kill them: when Balere dies (or resets) every young octonoid vanishes, so a group with AoE kills the brood and a group without just tanks them and burns her. No mezz, root or stun on her (CC immune), and she shrugs off a bit more magic (30%) than steel (20%). Tether 2,600: drag her far up the beach and she walks home at full health with a fresh brood. Her sisters Zytka and Mollunero are up the shore; do not chain them.",
+  "yells": {
+    "aggro": [
+      "The shallows are mine. Mine.",
+      "Children, wake.",
+      "You stand in my water."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Up, children. Up out of the weed."
+      }
+    ],
+    "death": [
+      "Back... into the sea... all of you...",
+      "The shore... was ours..."
+    ],
+    "slay": [
+      "The tide will take you.",
+      "Feed, children.",
+      "Another for the shallows."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The shallows are full of soft, curling shapes.",
+      "Black rocks, and something soft lying on them."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Balere's brood pours over the rocks!"
+      },
+      {
+        "trigger": "death",
+        "text": "The brood slides back into the sea with her."
+      }
+    ],
+    "realmFirstKill": "Balere, eldest mother of the shore, is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "balere first, shes the easy mother. [young are only 38-44|small brood]",
+      "kill her and the whole brood vanishes. [dont waste time on the young|burn the mother]",
+      "no cc on her. tank her by the water, [dont drag her|she resets if dragged]",
+      "aoe the young if you have it, otherwise [tank them|just burn balere]"
+    ],
+    "aftermathWin": [
+      "balere down, brood gone. [like a cord pulled them|poof]",
+      "eldest mother dead. [two to go|zytka next?]",
+      "never touched the young and they vanished anyway. [told you|nice]",
+      "easy one. the fishers can walk the shore"
+    ],
+    "aftermathLoss": [
+      "dragged her up the beach and she [reset|went home full]",
+      "brood ate the casters. [should have aoed|ouch]",
+      "pulled zytka too. [two mothers|bad idea]",
+      "someone tried to mezz her. [cc immune|doesnt work]"
+    ],
+    "rumour": [
+      "[heard|someone said] balere is the oldest thing on the world's end shore",
+      "the sylvan fishers say the mothers came up from the underneath. [same dark as the falls|creepy]",
+      "[word is|heard] the fomorians used to leave balere a share of the catch",
+      "nobody has ever seen a young octonoid without its mother. [they go back with her|weird]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Balere",
+    "text": "Eldest of the three [octonoid mothers] of the World's End shore. Her young are the smallest and never leave her: they go back into the sea with her. Nothing that works on a mind works on her."
+  },
+  "bookPage": "From Coll of the Domnann guides: Balere's shallows are the first thing every Hibernian company asks me about, because the brood looks worse than it is. The young are small, and they come off her all at once, and they are only hers. When she goes back into the sea, one way or the other, they go with her; I have watched it, a whole shore of curling arms sliding into the water in the same breath. The fishers say you cannot sing a mother to sleep with her children round her, and they are right. Cross her water once, quickly, and not on a rising tide, they say. Or do not cross it at all.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Balere in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Balere after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "mollunero",
+      "relation": "sister mother of the shore"
+    },
+    {
+      "id": "zytka",
+      "relation": "sister mother of the shore"
+    }
+  ]
+}

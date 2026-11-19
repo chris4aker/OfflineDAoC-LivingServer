@@ -398,6 +398,17 @@ public partial class DaocClient : Node
 		Send(0x79, w);
 	}
 
+	// PlayerAppraiseItemRequestHandler (0xE0): the merchant you target says what it would pay for the item in a slot
+	// (the merchant window's APPRAISE button; owner 2026-10-29). Same body as the sell request.
+	public void AppraiseItem(int x, int y, int slot)
+	{
+		var w = new Writer();
+		w.Int((uint)x); w.Int((uint)y);
+		w.Short((ushort)SessionId);
+		w.Short((ushort)slot);
+		Send(0xE0, w);
+	}
+
 	// PlayerBuyRequestHandler: buy from the merchant window (its page / slot), count.
 	public void BuyItem(int x, int y, int itemSlot, int count, int menu)
 	{
@@ -516,6 +527,15 @@ public partial class DaocClient : Node
 		var w = new Writer();
 		w.Short(0);
 		Send(0xC8, w);
+	}
+
+	// MakeProductHandler (0xED): make a recipe (CraftedItem.CraftedItemID); asked again while making one, it cancels
+	// that one (the server's only cancel). 2026-10-30, the crafting window.
+	public void Craft(int recipeId)
+	{
+		var w = new Writer();
+		w.Short((ushort)recipeId);
+		Send(0xED, w);
 	}
 
 	// DetailDisplayHandler: ask for an information text (1 inventory slot, 2 list spell line*100+level, 4 merchant
@@ -731,6 +751,14 @@ public partial class DaocClient : Node
 		switch (code)
 		{
 			case 0x21:                                    // DebugMode - or the companion raid window (CompanionRaid.Send:
+				if (r.Left >= 44 && r.At(1) == 0x48)      // the server's companion messages (marker 'H', version 1,
+				{                                          // 128 bytes): the body as it is, read by the game (op 30 stance)
+					var body = new byte[r.Left];
+					for (int i = 0; i < body.Length; i++) body[i] = r.Byte();
+					d["kind"] = "companion";
+					d["body"] = body;
+					return d;
+				}
 				if (r.Left >= 44)                         // 128 bytes, marker 0x52, version 1)
 				{
 					r.Byte();
@@ -974,6 +1002,10 @@ public partial class DaocClient : Node
 				d["kind"] = "door_state";                 // relic temples, every zone door) - the client's door id
 				d["door_id"] = (long)r.Int(); d["open"] = r.Byte() == 1; d["flag"] = (int)r.Byte();
 				return d;
+			case 0x8D:                                    // PlayerModelTypeChange (168): 3 you went into stealth, 2 you came
+				d["kind"] = "model_type";                 // out (StealthECSGameEffect); 1 / 0 the GM wireframe
+				d["oid"] = r.Short(); d["type"] = (int)r.Byte(); r.Byte();
+				return d;
 			case 0xF6:                                    // ChangeTarget (168): the server picks your target - /target <name>,
 				d["kind"] = "change_target";              // /assist; 0 = none (the client answers with its own Target packet)
 				d["oid"] = (int)r.Short(); r.Short();
@@ -1084,7 +1116,8 @@ public partial class DaocClient : Node
 				for (int i = 0; i < n; i++)
 				{
 					var e = new Godot.Collections.Dictionary();
-					e["index"] = (int)r.Byte(); r.Byte();
+					// its second byte: 0xFF = an ability's icon (icons.csv: Stealth, Sprint ...), else a spell's
+					e["index"] = (int)r.Byte(); e["ability_icon"] = r.Byte() == 0xFF;
 					e["immune"] = (int)r.Byte();
 					e["icon"] = r.Short(); e["seconds"] = r.Short(); e["tooltip"] = r.Short();
 					e["negative"] = (int)r.Byte();
@@ -1583,6 +1616,20 @@ public partial class DaocClient : Node
 				if (r.Left > 0) { r.Byte(); d["craft_skill"] = r.Pascal(); }
 				if (r.Left > 0) { r.Byte(); d["craft_title"] = r.Pascal(); }
 				if (r.Left > 0) { r.Byte(); d["ml_title"] = r.Pascal(); }
+				return d;
+			}
+			case 8:
+			{                                             // SendUpdateCraftingSkills (PacketLib168 2372): every tradeskill -
+				d["kind"] = "craft_skills";               // points, the eCraftingSkill id (its icon), 1, the name
+				var list = new Godot.Collections.Array();
+				for (int i = 0; i < count && r.Left > 0; i++)
+				{
+					int points = r.Short();
+					int id = r.Byte();
+					r.Int();
+					list.Add(new Godot.Collections.Dictionary { ["id"] = id, ["points"] = points, ["name"] = r.Pascal() });
+				}
+				d["skills"] = list;
 				return d;
 			}
 			case 5:

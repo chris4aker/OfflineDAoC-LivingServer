@@ -1,0 +1,281 @@
+{
+  "id": "marfach-caverns",
+  "name": "Marfach Caverns",
+  "realm": "Hibernia",
+  "regions": [
+    276
+  ],
+  "summary": "The deadly caves under Breifine where three keening Ladies hold a dead chieftain's court on the road to the Summoners.",
+  "facts": [
+    {
+      "text": "A classic Hibernian dungeon for levels 40-50, entered from Breifine at about 60K, 40K; Allakhazam marks it as gone after New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "Passage of Conflict later 'replaces the original three dungeons that led to Summoner's Hall', with entrances in Jamtland, Pennine and Breifine; Allakhazam's Marfach page links a Summoner's Hall map. Marfach was Hibernia's road to the Summoners.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Patch 1.66zd (Nov 2003) made the withered oaks of Marfach a plant type.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/k69yq"
+    },
+    {
+      "text": "Players in 2002-2003: the Blue Lady summons about five swords, and if the pulling group dies the swords roam the whole dungeon; groups farmed Living Dead on the upper level.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "Region 276 holds living dead, reanimated guardians, bloodless wolfhounds, withered oaks and enthralled dead; the realm raid's finals are the Black Lady, Chieftain Caimheul and Avartack the Champion.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Irish marfach means 'deadly, mortal' (as in peaca marfach, 'mortal sin').",
+      "provenance": "original",
+      "source": "https://www.wiktionary.com/wiki/marfach"
+    },
+    {
+      "text": "Bot chat says the caverns serve some power that wants all three realms on its knees, and that nobody admits to carving them.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "'Caimheul' may echo Gaelic Caimbeul, 'crooked mouth'; to verify. The keening-women story is Living Server lore.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Region 276 has two entrances in the navigation data, an upper mouth (32915, 29238) and a lower road (32125, 43898).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Living Server raid notes: on 2026-11-04/05 the Hibernian Marfach raid timed out; on 2026-11-05 the 'dies with' tactic sent the raid to the Black Lady and Hibernia won with no wipe.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json; docs/NIGHT-SIEGES-AND-MARFACH.md"
+    },
+    {
+      "text": "Patch 1.76 let each realm's sages shield their people from the Summoner's wards at their own frontier entrance to Passage of Conflict, the dungeon that replaced Marfach's road; wards in Summoner's Hall stayed dangerous.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "An Oct 2002 group reported a Brilliant Lightbound focus staff from Marfach, thought a rare drop.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "Bot chat ties Marfach to Evern: 'maybe evern and his stones are a seal on top of it'. Kept as hearsay.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Breifine's four frontier keeps in the world data: Dun Bolg, Dun Crimthain, Dun Da Behnn and Dun nGed.",
+      "provenance": "game",
+      "source": "keep table (GAPS-hibernia.md, world data read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the Uaigheanna (the graves; Irish uaigheanna 'graves', to verify) and the hill's burial customs; keeners walking Evern's ring sunwise; Fionnghuala the cowherd who heard the keen turn; the stones pushed out of the mouth; the generation without keeners and Nóra's great-grandmother; the frontier custom of laying the dead facing east; the going-down, the low-road muster and one night's torches; 'in Marfach nothing bleeds off its own ground'; Sinech ni Riain's stone in the Ardee barracks; the three things Breifine children are taught.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Marfach is the hill under the Breifine heights where the old families buried their chieftains: water-cut caves older than any family, each line with its chamber, the household dead laid round the lord in the order of their service, three nights of keening, the fourth for the dead, the stone on the fifth day. The chieftains' dún stood where the four frontier keeps stand now, and above the deepest cave stands Evern's ring of stones, which the keeners walked sunwise going down and coming up.\n\nBelow the graves runs a road no Hibernian cut, smooth and even, rising from the hall of the Summoners; the druids of Tir na Nog believe it is one of three roads, with others under the Pennines and the Jamtland mountains, and that it reached the bottom of the hill on the very night three keeners were singing at Caimheul's open grave. A cowherd named Fionnghuala heard the keen stop in the middle of a verse on the fourth night and start again going the other way. The hill's hounds ran down to the caves; the stones the families piled at the mouth were found pushed out and laid in a row; for a generation nobody in Breifine hired a keener, until Nóra's great-grandmother sang for nothing, facing forward.\n\nThe household stayed: the living dead walking the way they were carried, the bloodless hounds by the doors, the war-band at the turns of the road, the enthralled dead of the frontier who heard the keen and turned round, the hungry withered oaks, and below them the three Ladies, the chieftain, his champion and the black tree. When the frontier keeps were raised on the dún's stones, the keen came up through their floors; it is loudest when the keeps change hands, and the menders of Breifine lay their dead facing east.\n\nThe keeps asked for the companies that began the going-down: a muster on the low road where the old women sing the yard verse, torches enough for one night, and the soldiers' saying that in Marfach nothing bleeds off its own ground. The keeners' daughters sing the names of those who ended a song, and Sinech ni Riain's company went on down the road to the Summoner's Hall and brought back a stone for the Ardee barracks. The soldiers fear the oak will one day come up through Evern's ring. The hill country says only that Marfach is Hibernia's own wound, and teaches its children: never answer the singing, take nothing that was not carried down, and sing with the hill at your back.",
+  "legend": "Three Ladies and a dead chieftain, and every one of them can end a raid. Kill the Black Lady, not her oak: the oak dies with her and never fights you unless you hit it. Her ogresses go for the healers, so the tanks peel them. The Blue Lady's swords used to roam the halls after a wipe; now her blades vanish when she resets, but a wipe is still a wipe. Keep the fights at home; drag a Lady out of her room and nothing touches her. Nicknames: the Ladies are 'the three sisters' or 'the choir', the chieftain is 'Crooked Mouth', and the Oak is 'the tree you don't hit'. Old frontier hands swear the keening is louder when a realm's keeps are falling. Superstitions: never sing in Marfach; never take a sword you find lying loose in the halls, because the Blue Lady will want it back; and if you hear the keen from the Breifine road, say a dead friend's name aloud so the song has something true in it.",
+  "atmosphere": {
+    "firstEntry": [
+      "Somewhere below, three women are keening.",
+      "The dead here were sung back, not on.",
+      "Marfach. The deadly place. The name is honest.",
+      "Bloodless hounds lift their heads and watch you pass.",
+      "The road goes down past the graves. It was not theirs.",
+      "Withered oaks lean in the dark, waiting to be fed."
+    ],
+    "areas": [
+      {
+        "name": "the upper mouth",
+        "x": 32915,
+        "y": 29238,
+        "z": 16268,
+        "radius": 1200,
+        "lines": [
+          "Bloodless hounds lie by the door, waiting.",
+          "The living dead walk the way they were carried."
+        ]
+      },
+      {
+        "name": "the lower road",
+        "x": 32125,
+        "y": 43898,
+        "z": 14725,
+        "radius": 1200,
+        "lines": [
+          "The road goes down further than any grave.",
+          "Smooth old stone, cut by no Hibernian hand.",
+          "Far below, someone is summoning."
+        ]
+      },
+      {
+        "name": "the grave of the black oak",
+        "x": 30086,
+        "y": 37378,
+        "z": 15001,
+        "radius": 1400,
+        "lines": [
+          "A black oak grows through the roof of the world.",
+          "Its roots are wrapped around a chieftain's bones.",
+          "A woman in black sings, and the tree listens."
+        ]
+      },
+      {
+        "name": "the chieftain's hall",
+        "x": 32597,
+        "y": 38903,
+        "z": 15061,
+        "radius": 1200,
+        "lines": [
+          "Three weapons hang ready. Their owner stands.",
+          "A shield, a sword, a long spear, all ready.",
+          "Stand where he wants you, and you die."
+        ]
+      },
+      {
+        "name": "the champion's floor",
+        "x": 28896,
+        "y": 35752,
+        "z": 15065,
+        "radius": 1100,
+        "lines": [
+          "A champion stands guard for a dead lord.",
+          "He stands where a ford once was, in his mind.",
+          "No one passes. His lord is resting."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "marfach means deadly in the old tongue. [whoever named it knew|fair enough]",
+      "the three ladies in marfach were keeners once. [they sang the chieftain back up|now they sing the dead back]",
+      "marfach was hibernia's road down to the summoners. [the ladies keep it for them|thats who they work for]",
+      "the black lady's oak is bog oak, black as peat. [it grew from the chieftain's grave|its roots are in his bones]",
+      "the red lady sings for the innocent dead and they [come back sick|come back]. thats why the little ones in marfach have disease",
+      "the blue lady sings for broken weapons. [the swords rise with no hands|thats where the swords come from]",
+      "caimheul reads where you stand. [front is shield, side is spear|stand behind him]",
+      "avartack was caimheul's champion. [he still holds the ford|still guarding his lord]",
+      "there were three roads to the summoners. [marfach is ours|one per realm]. the ladies keep it",
+      "the bloodless wolfhounds in marfach were the chieftain's hounds. [still waiting for a whistle|sad really]",
+      "the withered oaks upstairs are the black oak's seedlings. [plants, and hungry|dont stand under them]",
+      "the old families of breifine light a candle when a lady falls. [nice tradition|i saw one once]"
+    ],
+    "rumour": [
+      "[heard|someone said] if a group wiped on the blue lady her swords [roamed the halls|got loose]. [not anymore|they vanish now]",
+      "[my guild says|word is] you can hear the keening from the breifine road at night",
+      "[heard|someone said] the keening in marfach gets louder when our keeps are falling",
+      "[word is|heard] somebody took a loose sword from the marfach halls and [the blue lady came for it|it walked off]",
+      "someone swears evern's stones are a seal on top of marfach. [the druids wont say|nobody knows]",
+      "[heard|someone said] the marfach raid timed out last night. [the black lady again|she leashed home]",
+      "[word is|heard] the keeners' daughters in the hills still sing the right keen for the dead",
+      "[heard|someone swore] they walked the lower road to the end and [heard summoning|saw a hall of light]"
+    ],
+    "tell": [
+      "marfach caverns, under breifine. three ladies, a dead chieftain, his champion. bring a full raid",
+      "undead, bloodless hounds and the three ladies. kill the black lady not the oak, and peel her ogresses off the healers",
+      "is marfach hard? hard if you hit the wrong things. kill the black lady not the oak, peel ogresses, dont wipe on the blue lady",
+      "where is marfach? under breifine on the frontier. two ways in, the upper mouth and the lower road",
+      "who is in marfach? three ladies, the black, red and blue, chieftain caimheul and his champion avartack",
+      "what is marfach for? it was hibernia's road down to the summoners hall. the ladies guard it"
+    ]
+  },
+  "loremaster": {
+    "intro": "Marfach, the deadly place under Breifine. A chieftain called [Caimheul] was laid there with his household, and [three women] were paid to keen him on. They kept singing, but the song changed. Below them runs the [road] to the [Summoners], and above them stands [Evern].",
+    "topics": {
+      "Caimheul": "A hard chieftain of the old hills, master of sword and shield and the long spear. He was sung back up, and he stands in his hall with his champion [Avartack] beside him.",
+      "Avartack": "Caimheul's champion, who swore to stand before his lord in life and keeps the oath in death. He strikes with a force that bypasses armour.",
+      "three women": "The [Black Lady], the [Red Lady] and the [Blue Lady]. Keeners, once. A keen is sung so the dead go on. Theirs is sung so the dead come back.",
+      "Black Lady": "The eldest, who planted the black oak on the grave. The oak lives as long as she does. Kill her and leave the tree.",
+      "Red Lady": "She keens for the innocent, and the innocent come, carrying sickness. Her song drains the soul of whoever stands close.",
+      "Blue Lady": "She keens for the weapons of the fallen, and swords and axes rise without hands. In the first seasons, if a company fell in her room, they wandered the caves; now they lie down when no one is left.",
+      "road": "Under Breifine the caves go down to the hall of the Summoners, who wanted a door into every realm. Marfach was Hibernia's. The Ladies keep it for them.",
+      "Evern": "His ring of stones stands in Breifine above the caves. Some say he is a seal on the lid. The druids say nothing.",
+      "Summoners": "The power at the end of the [road]. They dug a door into every realm. Marfach is Hibernia's, and the Ladies keep it for them."
+    }
+  },
+  "book": {
+    "title": "The Keen of Caimheul",
+    "pages": [
+      "Set down by Nóra, a keener's daughter of the Breifine hills. I know the rule as my mother knew it and hers before her. You are paid to cry the dead on, past the door, so that they do not turn round. My mother sang for forty years and never once looked back over her shoulder at a grave. She said the three who sang for Caimheul under Breifine did look back, and that is the whole story of Marfach, if you want it short. They looked back, and something in the dark looked back at them, and was glad of the company.",
+      "The long way. Caimheul was a hard chieftain of the hills before there were keeps, a crooked-mouthed man who never stood in the wrong place in a battle. When he died his people carried him under the hill with his hounds and his champion Avartack and all his household, as the old families did, and they hired three keeners. The black one planted an oak on him, as was done for great men. The red one sang for the innocent who had died in his wars. The blue one sang for the weapons broken in his service. They sang three nights.",
+      "On the fourth night a voice from below the grave asked them why they should ever stop. My mother said it was a kind voice. That was the worst of it. It said the dead need not go on; it said grief need not end; it said there was a road below, and those who kept the road would keep their dead forever. The three could not think of a reason to say no. A keener's whole life is spent letting go, my mother said, and nobody had ever offered them the other thing.",
+      "The oak went black that winter, black as the bog oak the turf-cutters dig from the peat, and its roots went down through the bones and further. The chieftain stood up. The hounds stood up bloodless, and did not bark, which my mother said was the worst of it. The innocent came back sick, and the swords came back without hands. The champion took his post again before his lord. And the road under it all, the road the voice was digging toward every realm at once, reached Breifine. The Ladies keep it still for the ones at the bottom.",
+      "The caves were the old families' before they were the Ladies'. My mother took me as far as the upper mouth once, in daylight, and showed me the stones the families of the heights piled there the summer after the fourth night, laid out in a row on the slope where they were pushed. She said a keener of our line walks Evern's ring sunwise before she sings in Breifine, and again after, and that the three who went down for Caimheul walked it only once. I asked her what Evern was. She said nobody knows, and that it is enough to know the ring is older than the trouble, and has never yet let go.",
+      "The champion was the eldest's fosterling too, a ferryman's son from the Erne, raised beside the chieftain in her house by the lake. My mother said that is why the eldest sang him back with his lord: she could not choose between them. He died standing in the grave-chamber before the fourth night, so he never looked back at anything; he was facing the door. The ferrymen of the Erne call the old word that ends a watch across the water at night, for him. My mother called it too, once, from the upper mouth. She said she did not expect it to work. She said it was rude not to.",
+      "The middle sister sang for the nine children of the lakes who died of the coughing sickness in the chieftain's hostage-house, and she buried them herself on the hill above the dún, with names in their own tongue. My grandmother knew the place. There is nothing there now but grass and a thorn. When word comes that the middle sister has fallen we say the nine names at the window, and then we stop. My mother said that is the hardest part of any keen to sing: the part at the end where the singer stops, and lets the names go on without her.",
+      "The youngest sang for iron, and she had the sweetest voice in the hills. My mother heard her once as a girl, before the trouble was very old: the keen came up through the floor of a smithy in the valley, and the broken blades on the smith's wall rang with it. The smiths of Howth leave a bent blade on the anvil when she falls. A smith's widow of Howth went down to her once with her husband's sword in a bundle, and came home without it. My mother said she would have done the same, and that she hoped the youngest sang it properly.",
+      "Below the graves there is a road no Hibernian cut. My mother would not go near it. She said the keen is not the worst sound under the hill; the worst is the one further down, which is voices calling in more than one tongue. The druids of Tir na Nog say the road goes down to a hall where the dead of every realm are called. A ranger of Ardee went to the end of it after the eldest fell and came back with a stone from it. My mother touched that stone once, in the wall of the Ardee barracks, and said it was warm, and washed her hand in the river after.",
+      "When the realm's companies began to go down, my mother would not ask them to kill the Ladies. She asked them to end the song. It is the same thing, but she said it mattered which words you used. Now when word comes over the hills that a Lady has fallen, the old families light a candle in the window, and the keeners' daughters sing the old keen in the night, the right way, facing forward. I have sung it twice. I did not look back. I would like to tell the Ladies that it can be done."
+    ]
+  },
+  "bosses": [
+    "black-lady",
+    "ancient-black-oak",
+    "red-lady",
+    "blue-lady",
+    "chieftain-caimheul",
+    "avartack-the-champion",
+    "tinka"
+  ],
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "summoners-hall",
+      "relation": "the hall the road leads down to"
+    },
+    {
+      "id": "hibernia-wilds",
+      "relation": "Evern's stones in Breifine sit above it"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the voice from below, as the keeners' daughters tell it"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Hill Before the Keeps",
+      "text": "Breifine was hill country before it was frontier, and the hill country buried its chieftains in the hill. The caves under the Breifine heights are older than any family that used them: water cut them, the druids of Lough Gur say, in the age when the hills were still being made, long passages and round chambers in the grey rock, dry in their upper reaches and wet below. The first chieftains of the heights found them and took them for what they needed most, which was somewhere to put the dead where the wolves could not reach them and the living would not forget them.\n\nEach line of chieftains had its chamber, and each chamber its customs. The dead lord was laid on a bier of oak with his weapons at his side. His hounds were laid at his feet if they would lie down, and left beside him if they would not, which the hill country thought a kindness to the hounds. His household's dead lay in the chambers round his in the order of their service, the cup-bearer nearest and the cowherds furthest off. The passages were lit for three nights while the keeners sang, the fourth belonged to the dead and the women who sent them, and on the fifth day the chamber was closed with a stone. The hill country called the caves the Uaigheanna, the graves, and later just the hill.\n\nThe chieftains' dún stood on the heights above, where the four keeps of the frontier now stand: Dun Bolg and Dun Crimthain, Dun Da Behnn and Dun nGed. The masons who raised the keeps found old hearths under the floors and a well that still had water in it, and the druids of Lough Gur say some of the dún's stones are in the keeps' walls. The soldiers who hold those keeps today are standing, every one of them, on the roof of a grave.\n\nThere is one more thing on the heights, older than the dún: Evern's ring of stones, on the high ground above the deepest of the caves, which the old families never touched. Nobody in the hill country now knows who raised it. The keeners of Breifine had a custom about it that Nóra's family keep still: a keener going down into the hill to sing walked the ring once, sunwise, before she went, and once again when she came up. The three who sang for Caimheul walked it going down. Nobody saw them walk it coming up, Nóra's mother said, because they never came up.\n\nThe Hibernians of the realm named the caves Marfach, the deadly place, after what happened in them. The hill country still mostly calls it the hill."
+    },
+    {
+      "title": "The Road Under the Graves",
+      "text": "The graves were not the bottom of the hill. Below the last of the chieftains' chambers, past a place where the water-cut passages narrow and the rock turns from grey to black, the caves go on down, and below them there is a road. The first companies of the realm to walk it said it was the strangest thing under Breifine, stranger than the singing: a road of smooth, close-fitted stone, broad enough for a cart, running down at an even slope into the dark with no turn in it that did not need to be there. No Hibernian hand cut it. The old families never knew it was there. Its stones were laid by people who did not dig graves.\n\nThe druids of Tir na Nog have spent longer on the road than on anything else in Marfach, and they say it was not cut toward Breifine at all. It was cut from below, upward, from a hall far under the borders of the realms, and it reached the bottom of the hill only a little before the night Caimheul died. They believe it is one of three. The scholars of Albion speak of another road under the Pennines, and the skalds of Midgard of a third under the mountains of Jamtland, and all three run down to the same place: the hall of the Summoners, the old meeting place under the borders that the Grand Summoner Govannon took for his own, from which his voices called the dead of every realm in the tongue each realm would answer.\n\nThe druids' account is that the Summoners wanted a door into each realm, and that a door must have a keeper on the realm's side. Under the Pennines and the Jamtland mountains, they say, the Summoners had to bring their keepers with them. Under Breifine they found keepers already there: three women singing at an open grave who could be persuaded to turn round. Nóra's mother said that was the cruellest thing in the whole story, crueller than the voice itself: that the road arrived on the right night.\n\nThe road is still there below the Ladies' rooms, and it still runs down. Those who have gone to the end of it say it never stops sloping, never turns aside, and grows warmer as it goes, and that somewhere along it the keen above falls away behind and another sound begins ahead, voices summoning in more than one tongue. In later years the Summoners opened a newer way between the realms, the Passage, where all three meet in one place, and the old roads under the frontiers grew quieter. They did not close. The Ladies keep Hibernia's door still, the druids say, whether or not anyone below still needs it kept."
+    },
+    {
+      "title": "The Night the Hill Heard",
+      "text": "The hill country did not see what happened in the grave-chamber on the fourth night; it heard it. A cowherd on the heights above the caves, a girl named Fionnghuala who was minding the dún's cattle at the summer booley, told it to her family the next morning, and her family have told it since. The keen had come up out of the hill for three nights, faint and steady, as a keen should, the sound of a road being sung. On the fourth night it stopped in the middle of a verse. There was a silence long enough for the girl to count the cattle. Then it began again, the same voices and the same words, and it was going the other way.\n\nShe could not say how she knew. Nobody who has heard the keen of Marfach can. The hill country's way of putting it is that a keen sung forward sounds like a door closing gently, and the keen of Marfach sounds like a door being held open.\n\nEvery dog on the heights howled that night, and the dún's hounds that had not gone under the hill with their master broke their ropes and ran down the slope toward the caves and were not seen again. The torch-bearers who came back on the fifth day to close the chamber came up the passage running. By midsummer the families of the heights had blocked the upper mouth of the caves with stones, as many as they could carry, and the druids of Lough Gur came and cut warding marks on the stones and went away again without saying much.\n\nThe stones did not hold. The hill country says they were found pushed outward one spring, from inside, and laid neatly on the slope in a row, as a household lays out what it means to use again. Nobody has blocked the mouth since.\n\nFor a generation after, no family in Breifine would hire a keener. The dead were buried in silence, or with a priest's words from the lowlands, and the keeners of the hills went hungry. It was Nóra's great-grandmother who brought the trade back. She went from house to house in the valleys and asked to sing for any family's dead without a fee, facing forward, the old way, so that the hills would hear a keen sung right again; in time the families let her. Nóra's line has sung in Breifine from that day, and every keener of the line learns before anything else to sing with her back to the hill."
+    },
+    {
+      "title": "The Household That Stayed",
+      "text": "The upper caves of Marfach hold the chieftain's household, and the druids of Lough Gur, who have counted them as nobody else would want to, say that every one of them can be accounted for by the old customs of the hill.\n\nThe living dead who walk the upper passages are the household dead of many generations, the cup-bearers and cowherds laid in the outer chambers long before Caimheul, and the later dead the families of the heights went on carrying down after him, because custom is harder to break than fear. They walk the way they were carried, the druids say, up and down the passages between the mouth and their own chambers, over and over, with the slow step of a bier going down.\n\nThe bloodless wolfhounds lie by the doors. They are the hounds that would not lie down at the bier and the ones that broke their ropes on the fourth night, and they lie as they lay by the dún's hearth, heads on their paws, waiting for a whistle. They do not bark. Nóra's mother said that of everything under the hill it was the hounds' silence she could not forgive.\n\nThe reanimated guardians at the turns of the road are the war-band that went down with their lord, as the oldest custom allowed. They stand in pairs where they were posted, as a war-band posts sentries in hostile country, and let nothing they do not know pass toward their chieftain's hall. The enthralled dead are the strangers: men and women of the frontier who died on the heights in later years and were carried down by nobody. They walked down on their own, the druids say, because they heard the keen and turned round, and they stopped wherever it stopped being loud enough to draw them further, and they stand there still. The household takes no notice of them.\n\nThe withered oaks lean in the upper halls, the black tree's seedlings, grown from acorns the dead carried up the passages. The druids of Lough Gur looked at them closely in the realm's first years under the hill and wrote, with some surprise, that they are plants, and hungry, and the only things in Marfach alive in the ordinary way. The hill country does not find that a comfort.\n\nBelow all of them, in the deep halls, the household's great ones keep their places: the three Ladies each in her own room, singing; the chieftain in his hall with his three weapons on the wall; his champion on the floor before it; and the black tree in the grove over the grave, doing nothing at all."
+    },
+    {
+      "title": "The Frontier on the Roof",
+      "text": "When the realms' war came to the borders and the frontier keeps were raised, Hibernia raised four of them on the Breifine heights, on the old dún's stones, and garrisoned them with soldiers from every part of the realm who had never heard of Caimheul. The old families of the heights watched the masons work and said nothing. They had stopped expecting anyone to listen.\n\nThe soldiers learned. The first thing a new spearman at Dun Crimthain is told by the old hands is not where the walls are weak but that the singing at night has nothing to do with him, and that he is not to answer it. The keen of Marfach comes up through the floors of the keeps on still nights, faint and steady, and the hill country's old warning has become the frontier's: a man who hears the keen and turns round has started walking. More than one sentry, the old hands say, has been found at dawn at the upper mouth of the caves, standing with his back to the keep, and had to be led home like a sleepwalker.\n\nThe old soldiers swear the keen is louder in the seasons when the Breifine keeps are taken and retaken, and the druids do not argue. A keep taken is a keep's dead, they say, lying on the roof of a grave, and the Ladies are singing to them. The dead of Albion and Midgard who fall on the Breifine heights do not walk down; the keen is in the hill country's tongue and they do not answer to it. The Hibernian dead sometimes do. The menders at the Breifine keeps lay their own dead with their faces turned east, away from the hill, a custom the keeps learned from the keeners' daughters and kept.\n\nThe frontier changed the hill country too. The old families of the heights are fewer now and live in the valleys, and the booleys on the heights are the keeps' grazing. Fionnghuala's descendants keep an alehouse at the foot of the low road and will tell her story to anyone who buys a cup. The families still light a candle in the window when word comes that a Lady has fallen, and the keeners' daughters still sing at the keeps' gates when they are asked. The soldiers of Dun Bolg ask most often. Their keep stands nearest the upper mouth, and on the nights after a Lady falls, they say, the floors are quiet."
+    },
+    {
+      "title": "The Going-Down",
+      "text": "The realm's companies began to go down under Breifine in the first years of the frontier, and not for treasure. The keeps on the heights asked for it. Too many of their sentries were being led home from the upper mouth in the mornings, and the captains of the Breifine keeps wanted the singing stopped.\n\nThe hill country calls a company's descent a going-down, as the Sylvan do of Galladoria, and its customs grew up quickly. A company musters outside the hills on the low road, where the old women of Breifine come to sing the yard verse of the keen of Caimheul to anyone who will stop. It carries torches enough for one night and no more, because the hill country holds that a night under Breifine is shorter than a night anywhere else, and a company still under the hill when its torches burn down comes up with whatever it has not finished left undone. It goes in by the upper mouth, past the hounds, and down through the household, and the Ladies' rooms and the chieftain's hall come last, if they come at all.\n\nThe old soldiers have a saying from the first companies, learned from the Black Lady and then from every one of the household in turn: in Marfach, nothing bleeds off its own ground. Everything under the hill shares the grave-peace of the fourth night. A Lady drawn out of her room, or the champion off his floor, goes back whole, and the soldiers call that walking her home, and say the company that does it is a night older for nothing.\n\nThe keeners' daughters keep the names of the companies that ended a song and sing them at the candle: Sinech ni Riain of Ardee, who ended the eldest's; Cróchnat of Howth, who listened to the yard verse; Echna of Ardee, who said the word over the champion; Gobnait of Howth, who carried a bent sword down to the youngest; and the company with a herb-wife of Breifine in each of its bands, which ended the middle sister's song and whose captain asked not to be named.\n\nSinech's is the one the druids of Tir na Nog count as the realm's own. When the eldest fell, her company did not come up. They went on down the road past the Ladies' rooms, as far as the road goes, and came to the hall of the Summoners by Hibernia's own door, and the realm tells as its own history that the sidhe of that hall stood aside for them and that they saw the Grand Summoner die. Sinech brought one thing back: a stone from the road, smooth and close-cut, which she set in the wall of the Ardee barracks beside the door. The rangers of Ardee touch it on the way out."
+    },
+    {
+      "title": "What the Hill Wants",
+      "text": "The druids of Tir na Nog say Marfach wants nothing, because a door does not want anything; it is opened or it is shut. The keeners' daughters say that is a druid's answer, and that the hill wants what the eldest was promised, a grief that never has to end, and will go on wanting it for as long as there are Hibernian dead in the hills to sing to.\n\nThe old soldiers of Breifine have the darkest account, and it is about the oak. Its roots went down through the chieftain's bones toward the road, but its crown went up, through the roof of the grave-chamber and on through the rock, and the soldiers say it is now just below Evern's ring of stones. They say the ring was raised as a seal on the lid of the hill by someone who knew what the caves would one day hold, and that it has held the black tree down from the night it was planted, and that if the eldest is ever left to sing long enough the tree will come up through the ring. Then the keen will be heard in every valley of the hills at once. The druids will neither confirm it nor deny it, which the soldiers take for an answer.\n\nThe hill country has a quieter account. It says Marfach is the realm's own wound, and that Hibernia keeps going down into it the way a tongue keeps going to a sore tooth, because it is ours. Every other realm's frontier dungeon was done to it from outside. Caimheul was a Hibernian chieftain, the keeners were Hibernian women, the household are Hibernian dead, and the song they sing under the hill was the hill country's own before it was turned. Nobody brought this to Breifine. Breifine made it, with its own customs, out of its own grief.\n\nThat is why the keeners' daughters still sing. Nóra wrote at the end of her book that the keen of Caimheul is not a weapon against the Ladies and never was. It is the keen the three were singing, the same words and the same tune; the only difference is which way the singer faces. Each time a Lady falls and the candles are lit in the valleys, the keeners' daughters sing it facing forward, to show the hill that it can still be done.\n\nThe children of Breifine are taught three things about the hill before anything else, and they are the whole of what the hill country knows: never answer the singing; never take anything from under the hill that was not carried down; and when singing for the dead, sing with the hill at your back."
+    }
+  ]
+}

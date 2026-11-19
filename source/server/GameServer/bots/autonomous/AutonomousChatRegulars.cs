@@ -44,7 +44,10 @@ public static class AutonomousChatRegulars
         _ => 1.0,
     };
 
-    /// <summary>The average weight over the six personalities, which are spread evenly.</summary>
+    /// <summary>
+    /// The average weight over the six personalities, taken as if they were spread evenly (1.417). They are not (28/20/20/16/12/4
+    /// for older bots), but the weighted mean is 1.42, the same within half a percent (chat audit DESIGN-025).
+    /// </summary>
     private const double MeanWeight = (3.0 + 1.5 + 4 * 1.0) / 6;
 
     /// <summary>Whether a bot is one of its realm's regulars now.</summary>
@@ -93,8 +96,8 @@ public static class AutonomousChatRegulars
 
     private static readonly string[] JokerBits =
     [
-        "if anyone needs me ill be face down in a bog somewhere", "i solo for the challenge. the challenge is staying alive", "my horse has better gear than me",
-        "pretty sure that last mob was lagging on purpose", "achievement unlocked: died to a rabbit again", "i dont run from fights, i strategically relocate",
+        "if anyone needs me ill be face down in a bog somewhere", "i solo for the challenge. the challenge is staying alive", "the stablemaster's horse has better gear than me",
+        "pretty sure that last mob was lagging on purpose", "died to a rabbit again. third one this week", "i dont run from fights, i strategically relocate",
     ];
 
     private static readonly string[] ComplainerBits =

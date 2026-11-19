@@ -1,0 +1,168 @@
+{
+  "id": "duraek-the-empowered",
+  "name": "Dura'ek the Empowered",
+  "catalogKey": "avalon-city/duraekempowered",
+  "locationId": "avalon-city",
+  "realm": "Albion",
+  "aliases": [
+    "duraek",
+    "the empowered"
+  ],
+  "facts": [
+    {
+      "text": "Level 71, 30,000 health; Avalon City's raid final. Heat and Cold damage heal him instead of hurting him. Casts Flames of Dura'ek. Pulling him brings six dry'ak avowry.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs"
+    },
+    {
+      "text": "The drakoran of the city come in five clans whose names echo their lords': drau'gyn (Dra'argus), dry'ak (Dura'ek), syhr'phint (Sys'sro), vyr'em (Vera'erius) and wi'voron (Weno'iak); the lords' linked packs are of their own clan. The clan reading is inferred from names and packs.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "An avowry is a patron or protector (Middle English); to verify.",
+      "provenance": "original",
+      "source": "Middle English dictionaries (to verify)"
+    },
+    {
+      "text": "The drakoran's competing origins, the avowry custom, the two-breaths reading, Talwen, Sir Kenrick of the Isle of Glass and the forbidden name are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Xanxicar's script has a stomp, a glare and a throw but no breath attack.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
+    }
+  ],
+  "story": "Dura'ek is the Empowered, lord of the dry'ak, the drakoran clan that holds doors, and the ruler of occupied Avalon City. Where the drakoran came from is disputed: they say across the western sea at Morgana's call, the readers of Avalon say up out of the isle's ground, the Inconnu say both. Before the burning Dura'ek was one war-lord among five, set apart only by his strict keeping of the dry'ak avowry: more sworn protectors than any other lord keeps, every one bound to die before he does.\n\nMorgana gave the dry'ak the doors when Avalon burned, and Dura'ek took the chancellors' court at the city's heart, where Elowen of Caer Gothwaite saw him standing on the steps listening to the paving. Under it lay the stair to the Crystal Cave. On the third night, when the readers saw a cold light rise from the city, he went down alone. The clans say Xanxicar gave him a gift; dry'ak prisoners of the Inconnu say he stole from a sleeper; the readers say he touched something the dragon lay on. He came up at dawn burning.\n\nXanxicar has two heads and no breath; Dura'ek has two. Fire and frost feed him rather than harm him, and he throws the Flames of Dura'ek, though he has not yet learned to throw frost. The other four lords bow to him, each in their own way, and he rules the drakoran as citizens of the city they burned. The Inconnu mage Talwen died finding that out; Sir Kenrick of the Isle of Glass brought him down to the cry of 'no fire, no frost', and his six avowries died before him, as they had sworn. He wants to be a lord in his own right, not the dragon's servant, and forbids the dragon's name in his court, while every sentry on the stair below says it.",
+  "legend": "Heat and cold heal him. Leave the fire and ice wizards on his avowries, and bring every other damage type to him: steel, matter, body, spirit, energy. Kill the six protectors first. Empowered by whom? Ask the dragon under the city.\n\nSteel, body, spirit, matter and energy all hurt him; it is only the dragon's two breaths he drinks. The raids that lost to Dura'ek in 2003 lost because a wizard forgot. Fight him in the court, not the street outside, where the whole dry'ak clan waits. His Flames land in the ranks every few seconds; spread out and keep the casters well back from the chair.",
+  "yells": {
+    "aggro": [
+      "Avowries! The scholars' children have come home!",
+      "This court is mine. The city is mine.",
+      "Burn me. Please. Burn me."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Burn me, freeze me. I drink it all!"
+      }
+    ],
+    "death": [
+      "The power... was never... mine...",
+      "Below... he will remember..."
+    ],
+    "slay": [
+      "Ash, like the libraries.",
+      "Another reader for the fire.",
+      "Swept from my court."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The heart of the burned city. Its lord is empowered.",
+      "The chancellors' court. A drakoran sits in the chair."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fire and frost only feed Dura'ek!"
+      }
+    ],
+    "realmFirstKill": "Dura'ek the Empowered has fallen. Avalon remembers."
+  },
+  "botLines": {
+    "briefing": [
+      "heat and cold heal duraek. wizards on the adds, everyone else on him",
+      "six avowries linked, kill them first",
+      "heat and cold heal duraek. wizards on the adds, everyone else on him",
+      "fight in the court, not the street",
+      "melee and matter or body casters on him"
+    ],
+    "aftermathWin": [
+      "empowered, sure. dead now",
+      "no fire on him the whole fight, well done",
+      "avalon's heart is ours tonight",
+      "six avowries and their lord"
+    ],
+    "aftermathLoss": [
+      "somebody kept fireballing him. it heals him",
+      "the avowries got the healers",
+      "frost mage on autopilot again",
+      "pulled the street with him"
+    ],
+    "rumour": [
+      "dura'ek the empowered leads the drakoran in avalon city, they say. empowered by whom is the question",
+      "[heard|word is] fire and frost heal dura'ek. bring something else",
+      "heard duraek went down to the crystal cave on the third night",
+      "the other drakoran lords bowed to duraek the morning after the burning, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "dura'ek",
+    "text": "The Empowered. He rules the city from its heart, and fire and frost only feed him. The clans whisper that his power is not his own. I think they are right, and I think I know whose it is."
+  },
+  "bookPage": "My fishermen say the greatest of the dragon-men's lords sits in the court of our chancellors and is called the Empowered, and that his own people do not believe the power is his. They say he went down the stair under the court on the third night of the burning, when we saw the light rise, and came up at dawn changed. One of them saw a wizard of the Inconnu throw fire at him in the street and watched the drakoran lord stand in the flame and grow stronger. Frost the same. Steel, the fisherman said, steel he did not like at all.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} starved Dura'ek the Empowered of fire and frost and took back Avalon's heart in {minutes} minutes.",
+    "loss": "Dura'ek drank the fire {realm}'s raid threw at him; {raidLeader} fell back from the chancellors' court."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "xanxicar",
+      "relation": "the source of his power"
+    },
+    {
+      "id": "draargus-the-mighty",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "syssro-the-ruthless",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "veraerius-the-brave",
+      "relation": "a lord who bows to him"
+    },
+    {
+      "id": "wenoiak-the-enlightened",
+      "relation": "a lord who bows to him"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Doorkeepers",
+      "text": "The drakoran are not one people but five clans, and each clan has a work. The dry'ak hold doors.\n\nWhere the clans came from is disputed. The drakoran themselves say they crossed the western sea at Morgana's call from a coast of burnt mountains that no Albion ship has found. The readers of Avalon, who watched them come, say they did not cross any sea: they came up out of the ground on Avalon Isle, in the season before the burning, as though the isle had been holding them. The Inconnu say both are true, and will not say how.\n\nOn the clans' work everyone agrees. The drau'gyn carry fire and eat what it leaves. The syhr'phint set tasks and keep order. The vyr'em fight at the front. The wi'voron advise and ride. And the dry'ak hold doors: halberdiers and doorkeepers, gannekers who keep the alehouses and lorimers who keep the harness, joiners and tranters, the clan that keeps a place once the others have taken it. A dry'ak at a door is a door that does not open.\n\nDura'ek was a war-lord of the dry'ak when the clans came to the isles, no greater than the other four lords and, the vyr'em say, a good deal less brave. What set him apart before the burning was a custom of his clan that he kept more strictly than any dry'ak before him: the avowry. A dry'ak lord chooses a handful of his clan to swear that they will die before he does, and they become his avowries, his sworn protectors, and are never more than a step from him. Most dry'ak lords keep two. Dura'ek kept six. The other lords mocked him for it. They do not mock him now, and the six are still a step from him."
+    },
+    {
+      "title": "The Burning of the Colleges",
+      "text": "Morgana gave each clan its part in the burning of Avalon, and gave the dry'ak the doors.\n\nThe drau'gyn went first, because the witch knew where the libraries were; she had read in every one of them. Their flamethrowers burned the college of stars on the first night, and the law and the healing on the second. The syhr'phint went through the streets behind them taking the readers who had not fled and setting them to carry the books out to the fires. The vyr'em met the city's few defenders at the bridges. The wi'voron rode the yards. The dry'ak followed all of them and took the doors.\n\nElowen of Caer Gothwaite, the last reader of the college of the old tongues, watched from a boat on the second night as the dry'ak took the doors of the chancellors' court, the heart of the city, where the readers' governors had sat. She wrote that a drakoran lord with six guards close around him stood on the court steps while the halberdiers closed the great doors behind him, and that he did not look at the burning at all. He was looking down, at the paving of the court, as if listening.\n\nThe readers were driven out to Caer Gothwaite and the Isle of Glass. The clans divided the quarters as Morgana had promised: the drau'gyn the tall college by the way down, the syhr'phint the cloister, the vyr'em the old schools, the wi'voron the observatory and the yards. The dry'ak got the chancellors' court, and under the court's paving, though none of the other clans knew it yet, lay the stair to the Crystal Cave."
+    },
+    {
+      "title": "The Third Night",
+      "text": "On the third night of the burning the readers saw a light rise out of the ground at the city's heart, cold and many-coloured, as if the earth there were glass. That was the night Dura'ek went down the stair.\n\nWhat happened below, nobody who was there will say, and the three accounts that exist all come from people who were not. The clans' account, which the dry'ak tell proudly and the other four repeat because they must, is that Dura'ek went down alone past the Xanxicarian sentries who had already taken the stair, knelt before the dragon on his mound, and was given a gift. The Inconnu, who fight the drakoran in Avalon's streets and have taken prisoners, say the dry'ak prisoners tell it differently when they are frightened enough: that Dura'ek did not kneel, that the dragon was still half asleep, and that the lord of the doorkeepers took what he wanted from a sleeper and ran.\n\nThe readers of Caer Gothwaite tell a third version, and Elowen wrote it down with great reluctance. The light they saw on the third night, her master of stars believed, was not the dragon waking. It was something the dragon had been lying on, something buried under Avalon long before the readers came, and Dura'ek had found it and touched it. The master of stars would not say what he thought the thing was. Elowen has an old map of the isle with a two-headed beast drawn at its heart, and she keeps it locked away.\n\nAll three accounts agree on the dawn. Dura'ek came up the stair alone, with his six avowries waiting at the top, and he was burning."
+    },
+    {
+      "title": "Two Heads, Two Breaths",
+      "text": "Xanxicar has two heads, and he does not breathe. Lady Branwen's company, the first of Albion to see him wake, remarked on it: a dragon that fights by weight and stomp and never once opens either mouth to burn.\n\nThe Camelot loremasters think they know why, and the knowledge came from Dura'ek. A dragon of two heads, they reason, should have two breaths, and the dragon under Avalon has none. Dura'ek has two. Since the third night, fire and frost, the two breaths of a dragon, have not harmed him. They feed him: when a wizard of the Inconnu threw fire at him in the street, Elowen's fishermen watched him stand in the flame and grow stronger, and frost did the same. The fire in him comes out when he fights, the Flames of Dura'ek, that he throws into the ranks of his enemies. He has no frost to throw. The loremasters think he has not yet learned how.\n\nThe clans' account says the dragon gave his breaths to his chosen servant, which is why Xanxicar's elites bow to Dura'ek and why Dura'ek rules the other lords. The Inconnu's account says Dura'ek stole them, which is why Xanxicar wakes in a rage and stomps the ground under Avalon until the city's cobbles crack. Either way, the dry'ak have had a saying since that night: whatever is fire or frost, the Empowered drinks.\n\nSteel he does not drink, nor the withering, crushing and lightning spells of Albion's other schools. The dry'ak prisoners say their lord hates steel more than any other thing, because it is the one thing in the city he did not take from someone."
+    },
+    {
+      "title": "The Court of the Chancellors",
+      "text": "The other four lords bowed to Dura'ek on the morning after the third night, and they have not stopped bowing.\n\nEach bows differently, the readers' fishermen say. Weno'iak of the wi'voron bows and then advises, and Dura'ek takes his counsel more often than he admits; the loremasters think the Enlightened is the only lord who could unseat him and the only one who does not want to. Sys'sro of the syhr'phint bows low and keeps the city's order, and Dura'ek despises him and needs him. Vera'erius of the vyr'em bows exactly as far as courtesy requires, fights at the front of his clan, and has never once spoken of the Empowered's borrowed power aloud, which the knights of Albion count as his only cowardice. Dra'argus of the drau'gyn bows and watches the stair from his burned college; he believes he should have gone down first.\n\nDura'ek rules the occupied city from the chancellors' court as though he had been born to it. Under him the drakoran have become citizens of the place they burned: dry'ak doorkeepers on every door of consequence, reeves and sutlers of the wi'voron, syhr'phint catchpoles in the streets, physicians in the old hospital. He sits in the chair where the readers' chancellors sat. His six avowries stand round it, close enough to touch, as they have stood since before the burning, and they are the first thing any company must deal with in his court, because they will die before he does and mean it. Under the paving of the court the Xanxicarian sentries hold the stair, and the dry'ak doorkeepers hold the doors above it, and nothing goes down or comes up without the Empowered's leave."
+    },
+    {
+      "title": "The War in the Streets",
+      "text": "Arawn's Inconnu fight in the streets of Avalon because Morgana steals their lord's dead, and the drakoran are the witch's friends. The Inconnu have fought Dura'ek longer than Albion has.\n\nTheir first meeting with him cost them a wizard. An Inconnu mage named Talwen met the Empowered in the street before the chancellors' court in the first season of the war and threw the hottest fire she had at him, and he walked through it toward her growing stronger with every step. The readers' fisherman who saw it said she threw frost next, and that was worse. The Inconnu learned what the readers' fishermen learned that day. Steel.\n\nAlbion learned it from them. The first company of Albion to bring Dura'ek down was led by Sir Kenrick of the Isle of Glass, with Inconnu guides and an order that Kenrick had cried at the muster on the earthen wall: no fire, no frost, not a spark, not a flake. The wizards of the Academy who went with him left their books of fire at the wall and carried only the old crushing and withering spells, and Kenrick wrote that he had never heard a company so quiet. The avowries died first, as their oath required. Kenrick wrote that each of the six died standing in front of his lord with his halberd raised, and that Dura'ek did not look at any of them as they fell.\n\nWhen the Empowered fell, he said that the power had never been his. Kenrick reported the words to the Constable. The Constable's office sent them to the readers of Caer Gothwaite, and Elowen wrote back a single line: she knew."
+    },
+    {
+      "title": "Keeping the Breaths",
+      "text": "Dura'ek rises again, as the masters of Avalon all rise, and every time he rises he has the two breaths still.\n\nThe loremasters do not know why the breaths stay with him when he falls, and the three accounts of the third night give three answers. If the dragon gave them, he has not taken them back, and the Empowered is still his chosen. If Dura'ek stole them, the dragon has not been able to take them back, and the stomping under the city is Xanxicar trying. If the readers are right and the breaths came from the thing the dragon lay on, then neither the dragon nor the lord is really their keeper, and the readers will not guess what is.\n\nWhat Dura'ek wants is plainer than what he has. He wants to be a lord in his own right and not the dragon's servant, and he wants it known. The dry'ak prisoners say he forbids anyone in the court to say the dragon's name, while every sentry on the stair below says it over and over as soldiers say the name of their king. He wants the other four lords to bow to him because he is Dura'ek and not because of what he carries, and he knows that they do not.\n\nIf he has his way, the loremasters say, Avalon will never be Albion's again: the clans will stop being an army occupying a city and become the city, generation after generation of drakoran reeves and doorkeepers who have never known it was anyone else's. Caer Gothwaite would be next, and after it the Isle of Glass. The readers keep their list of the colleges against that day, so that someone will still know which ruin was which."
+    }
+  ]
+}

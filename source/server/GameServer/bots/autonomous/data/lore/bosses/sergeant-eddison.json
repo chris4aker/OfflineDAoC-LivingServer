@@ -1,0 +1,141 @@
+{
+  "id": "sergeant-eddison",
+  "name": "Sergeant Eddison",
+  "catalogKey": "hall-of-the-corrupt/sergeanteddison",
+  "locationId": "hall-of-the-corrupt",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Sergeant Eddison, 5,000 health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Eddison slams a target that is not stunned or stun-immune and, when the slam lands, switches to a ranged weapon at Strength 250 for about 9.5 s; his aggro range is 800; level 50, 5,000 health, template tether 1,600 and parry 50.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs"
+    },
+    {
+      "text": "In the world data two wizard apprentices, two widow claws and restless watchmen stand within about 700 of Sergeant Eddison's post.",
+      "provenance": "game",
+      "source": "OfflineDAoC 0.37b world database, Mob table (region 277)"
+    },
+    {
+      "text": "Eddison's Sauvage tally, Eddison's step, the bow on the peg, the matching of the wizard's names and the company that counted one over are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Sergeant Eddison was a forester's son of Forest Sauvage who held the tally-stick at the spring deer count from the high stands; at twelve he counted a herd from the stand at Caer Renaris right to the beast, one more than the verderer. He learned the bow on the stands and came north as a Sauvage bowman in Lord Gildas's seventh year. Within four winters he kept the watch's duty roster in his head, and by the sixth he was the sergeant of the middle of the hall, where the corridors met and a man could see the most posts. His dawn count, Eddison's tally, was a count of stones, because men could lie about where they had been.\n\nHe fought as a forester hunts: in close behind the shield, the rim at a man's head, and while the man lay dazed he stepped back to the bow on its peg and put heavy arrows into him until he could stand. The sergeants called the pause Eddison's step, and said a man who could not be dazed never saw the bow come off the peg. From the middle he saw further than any other man, and strangers were never strangers for long.\n\nHe drew up the doubled roster overnight, and the wizard Aidon wrote a list of names at its foot that were no man's of the watch. Eddison folded it into his tunic; Sir Hamon's riders took it to the Academy, which has matched every name since to something seen on the road, all but the last, which the Camelot loremasters call the name of what cut Atwell. Summons (the Church) or warning (the Academy), Eddison read it every night and was the first to stop sleeping.\n\nOn the last morning his count came out one over. Death, say the sisters; Vibius's lamp-boy, say the dalesmen; a stone with a mark of its own, say the Inconnu. He keeps the middle still, among apprentices, widow claws and watchmen, and companies coming up the road count themselves before Long Dale will feed them.",
+  "legend": "Eddison is the sergeant in the middle of the hall, level 50, 5,000 health, and he sees you from twice as far as the other sergeants (800), so he joins early if the group wanders. Two wizard apprentices, a pair of widow claws and the restless watchmen stand around his post: clear them first, then fight him on his stone. He slams to stun whoever he is on, and when the stun lands he switches to his bow for about ten seconds and shoots very hard at the stunned target before going back to melee. A stun-immune tank (or a purge the moment the stun lands) takes that away; against a stun-immune target he only uses his taunt style. He parries well and takes a third less from melee, so casters finish him. Drawn off his post he takes no damage and walks back whole. Old hands count the group at the top of the road after. Nobody laughs.",
+  "yells": {
+    "aggro": [
+      "You are not on the roster.",
+      "I see you. I saw you at the door.",
+      "Name and post! Name and post!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "One over. Always one over."
+      }
+    ],
+    "death": [
+      "Roster... incomplete...",
+      "Who will... keep the count..."
+    ],
+    "slay": [
+      "Back to your post. Forever.",
+      "Struck from the roster.",
+      "Post vacated.",
+      "Recorded."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A bow hangs on a peg beside a post-stone.",
+      "Someone is counting. The count is wrong."
+    ],
+    "phases": [],
+    "realmFirstKill": "Sergeant Eddison is released from the watch."
+  },
+  "botLines": {
+    "briefing": [
+      "eddison sees you from 800, twice the other sergeants. dont wander near the middle",
+      "he slams to stun then shoots the stunned guy hard for 10 sec. stun immune tank or purge",
+      "clear the apprentices, widow claws and watchmen round his post first",
+      "fight him on his stone, off it hes immune",
+      "5k hp, parries a lot, casters finish"
+    ],
+    "aftermathWin": [
+      "sergeant eddison down, one less on the watch",
+      "eddison down. off the roster",
+      "quick and quiet",
+      "nobody else woke up",
+      "middle of the hall is clear"
+    ],
+    "aftermathLoss": [
+      "someone dragged him off his post again. immune out there",
+      "he saw us from way off and came in with the apprentices",
+      "tank got stunned and shot to bits",
+      "too slow on him, the watchmen piled in"
+    ],
+    "rumour": [
+      "heard eddison knows every post in the hall by heart",
+      "[someone said|heard] eddison's last count came out one over",
+      "heard eddison still carries the doubled roster in his tunic",
+      "the long dale folks wont feed you till youve counted your group, [heard|they say]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "eddison",
+    "text": "Sergeant Eddison was the Sauvage forester's son who kept the roster of the Pennine watch and counted its post-stones every dawn. The wizard wrote the [visitors]' names at the foot of his doubled roster; on the last morning his count came out [one over]. See also [Aidon] and [Atwell]."
+  },
+  "bookPage": "Sergeant Eddison drew up the doubled roster in a single night, as Master Aidon asked. Every man has two posts now, and some three, and Eddison knows them all by heart. He brought the roster to Lord Gildas this morning, and Lord Gildas signed it, and then the wizard asked to see it and wrote something at the bottom in his own hand and gave it back. Eddison showed me afterwards. The wizard had written a list of names. None of them is a man of the watch. When I asked Eddison who they were, he said they were the visitors, and folded it away.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} released Sergeant Eddison from the Pennine watch in {minutes} minutes.",
+    "loss": "Sergeant Eddison held the post against {realm}'s raid; {raidLeader} fell back."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "pennine-watch"
+  ],
+  "related": [
+    {
+      "id": "aidon-the-archwizard",
+      "relation": "wrote the visitors' names on his roster"
+    },
+    {
+      "id": "captain-atwell",
+      "relation": "the one unmatched name, the loremasters say, cut him"
+    },
+    {
+      "id": "lord-gildas",
+      "relation": "signed the doubled roster without reading the bottom"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Forester's Tally",
+      "text": "Sergeant Eddison was a forester's son of Forest Sauvage, and he could count before he could read, because a forester of Sauvage counted the king's deer every spring and his son held the tally-stick.\n\nThe Sauvage count was done from the high stands at the edge of the clearings at first light, the forester calling the beasts and the boy cutting a notch for each, and a boy who lost his place was sent down to walk the clearing and start again. Eddison never lost his place. The castle's verderers' rolls record that at twelve he counted a herd of a hundred and nine from the stand at Caer Renaris and was right to the beast, and that the verderer, who had counted a hundred and eight, had the boy beaten for insolence and then went down and counted again.\n\nHe learned the bow on the stands as well, because a forester's son shot what the count did not keep, and he went to the Pennines in Lord Gildas's seventh year as a bowman of the Sauvage draft. The watch found a better use for him within the year. Its duty roster, which said who stood which post on which watch, was kept by a sergeant who could not hold it in his head, and the roster was always wrong. Eddison held the whole of it in his head by the second winter. By the fourth he kept it, and by the sixth he was the sergeant of the middle of the hall, where the corridors met, because from there a man could see the most posts at once.\n\nHe did not count men. The Hall of the Corrupt's own history tells how his dawn count was a count of stones: he walked the hall at first light and looked down at every post-stone, and a stone with feet on it was a post kept. He said that men could lie about where they had been, and stones could not. The dalesmen of the watch called the count Eddison's tally, and Long Dale's shepherds, who never saw the hall, still call the morning count of a fold by that name."
+    },
+    {
+      "title": "The Bow on the Peg",
+      "text": "Eddison kept his bow at his post in the middle of the hall, on a peg cut into the wall beside his stone, and the sergeants who wrestled him at the harvest learned why.\n\nHe fought, the dalesmen said, as a forester hunts. A forester of Sauvage did not chase a stag; he put it down, and then he stood off and finished it from a distance where its antlers could not reach him. Eddison's way with a man was the same. He came in close behind his shield and struck with its rim, hard, at the head, and when the man was down and dazed and could not tell which way he faced, Eddison stepped back to his peg, took the bow, and put arrows into him while he lay, heavy arrows drawn to the ear, as many as he could loose before the man was on his feet again. Then he hung up the bow and came back with the sword. The sergeants called the pause between the rim and the bow Eddison's step, and the wise ones learned to keep their heads clear of the rim; a man who could not be dazed, they said, never saw the bow come off the peg at all.\n\nHis eyes were the other thing. From the middle of the hall, where the corridors met, Eddison could see further than any man at any other post, and he saw everything. A watchman at the far end of the lieutenants' corridor who leaned on the wall would hear his name before he had finished leaning. Strangers in the hall, the clerk Tobias wrote, were never strangers for long, because Eddison saw them before anyone else did and had their names out of them before they reached his stone.\n\nHe was proud of his roster, proud of his eyes and proud of his bow, and the watch liked him less than it liked Darryn, who was only loud. Tobias, who sat beside him at the cards for eleven years, wrote that Eddison was the only man in the hall who knew everything that happened in it, and that it did not make him happy."
+    },
+    {
+      "title": "The Names at the Bottom",
+      "text": "When the wizard Aidon asked Lord Gildas to double the watch, Sergeant Eddison drew up the doubled roster in a single night, and in the morning the wizard wrote at the bottom of it, in his own hand, a list of names that were not the names of any man of the watch.\n\nEddison showed the clerk. Asked who they were, he said that they were the visitors, and folded the roster away in his tunic, and the clerk did not see it again. Sir Hamon Brede's riders took it from his tunic in the spring, still folded, and carried it to Camelot, and the Academy has had it ever since. It has been read more often than any other page of the Pennine watch's papers, and most of the Academy's readers have been sorry they read it.\n\nThe names are not in any tongue the Academy knows, and they are written in the wizard's careful hand as if he had taken them down from dictation. Over the years since, the Academy's readers have matched them, one by one, to things that companies of Albion have seen in the Hall of the Corrupt or below it on the Summoners' road, where a thing that answers to its name can be named. All but one. The last name on the list has never been matched to anything, and the Camelot loremasters, who hold that Captain Atwell was cut by the first of the visitors to come up the road, say that it is the name of the thing that cut him.\n\nThe Church says the list is a summons, and that the wizard called the visitors by writing their names on the watch's own roster, so that the watch would hold the door for them without knowing it. The Academy says that the list is a warning, that Aidon wrote down what was coming so that the watch would know it, and that Eddison folded it away because he did not want to frighten the men. Eddison never said which he believed. Tobias wrote that the sergeant read the list every night after the count, and that he was the first man in the hall to stop sleeping."
+    },
+    {
+      "title": "One Over",
+      "text": "On the last morning, the clerk Tobias wrote, Sergeant Eddison's dawn count came out one over: one more pair of feet on the stones than there were men in the hall. He counted three times. The extra one was never found.\n\nThe Church's sisters say the extra post was Death's, come to stand the watch before the watch was over. The dalesmen of Long Dale say it was Vibius's lamp-boy, who walked the road first and was asked his name from below, and came back up at last to stand where the road had been given away. The Inconnu, asked once by a reader of Caer Gothwaite, said only that Eddison counted stones, and that the stones are honest; and the reader wrote that she understood them to mean that the extra one was standing on a stone of its own, and that someone of the watch had cut a mark for it.\n\nEddison is in the middle of the hall still, with the wizard's apprentices and the widow claws and the restless watchmen keeping the posts around him, and his bow on its peg. The companies who have faced him say that he sees them before any other officer does, from further off than they expect, and calls them by names that are not theirs. They say that his shield rim comes for the head, and that a man it dazes finds the sergeant stepped back and the bow in his hands, and the arrows coming heavy, until the man can stand. And they say that when he falls he is counting.\n\nEvery company that comes back up the Pennine road counts itself at the top, man by man, before it goes on to the dales; the dalesmen will not feed a company that has not. Most companies come out right. The dalesmen keep a story about one that came out one over, in the summer after Sir Hamon's riders, and say that the company went on down to Long Dale anyway and was fed, and that nobody in it could ever afterwards say which of them was the one. They say it as a joke. They count."
+    }
+  ]
+}

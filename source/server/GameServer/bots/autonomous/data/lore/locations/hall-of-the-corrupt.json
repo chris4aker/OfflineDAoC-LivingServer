@@ -1,0 +1,312 @@
+{
+  "id": "hall-of-the-corrupt",
+  "name": "Hall of the Corrupt",
+  "realm": "Albion",
+  "regions": [
+    277
+  ],
+  "aliases": [
+    "hotc",
+    "the pennine watch"
+  ],
+  "summary": "The hall of Albion's old watch on the road to the Summoner's Hall, where the watch died at its posts and kept watching for the wrong master.",
+  "facts": [
+    {
+      "text": "Passage of Conflict replaced three older dungeons that led to the Summoner's Hall from the old frontier zones, entered from the Pennine Mountains, Jamtland Mountains and Breifine; the Summoners' wards guarded the way.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Marfach Caverns was a classic Hibernian dungeon entered from Breifine and removed by New Frontiers.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
+    },
+    {
+      "text": "That the Hall of the Corrupt was Albion's old road to the Summoner's Hall, from the Pennine Mountains, is inferred from the two facts above (to verify).",
+      "provenance": "original",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=156"
+    },
+    {
+      "text": "Region 277 holds ghostly knights, restless watchmen, watchman lieutenants, spectral paladins, wizard apprentices and widow claws.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Its named: Aidon the Archwizard and Lord Gildas (the raid's two finals), Lady Darra, Captains Atwell, Bardalph and Heathyr, Lieutenants Elva, Meade and Saxe, Sergeants Darryn, Eddison and Reede.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Every named of the Hall takes no damage once drawn past its tether, and walks back to its post.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The stock world database has Aidon both here (region 277) and in a later Summoner's Hall (region 233), which is why some bot chat puts him there.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "A February 2003 Albion guide rated the Archwizard 'good for about two groups'; an April 2003 thread is titled 'The Halls of the Corrupt'.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Its watch's named ranks bleed (the captains), poison (Elva) and sap the will to fight (Meade's Aching Curse, 21% less melee damage); Lady Darra's four spectral paladins heal her (350 every 5 s); she heals no one else.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs"
+    },
+    {
+      "text": "Grand Summoner Govannon keeps the Summoner's Hall (region 248) at the bottom of the road; the Midgard writer's Summoner's Hall entry calls it the cellar under the Hall of the Corrupt in Albion's telling.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/lore/locations/summoners-hall.json (feature/lore-mid)"
+    },
+    {
+      "text": "Sextus Vibius and his lead gallery, the lamp-boy and the miners' saying 'never answer a question asked from below', Leofric, captain of Albion's first watch, and the headless spear (tied to lore-mid's Shade of Aelfgar, a warrior of Albion before Arthur), the master mason Wystan and his clerk Iestyn, the post-stones, the dalesmen of Long Dale and Hob the carrier, the 'Corrupt cut', Col of the upper gate, Sir Hamon Brede's riders, the Church hospice at Caer Ulfwych and its office of the four corners, Sir Cynan of Ludlow and Darra's four knights, Father Bennet, the sergeants' card table, Elva's inventory, the 'Scribes' Stair', and the Constable's unclosed pay roll are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "The Romans mined lead in the Pennines and cast it into stamped pigs; used here only as background for the Roman gallery.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Mining_in_Roman_Britain"
+    },
+    {
+      "text": "The Hall's officers each take no damage while drawn past their tether, return to full health past it, and return to full health once nobody is fighting them (the post-stones and Hamon's riders). The captains' blows can bleed (65 body damage every few seconds for 30 s); Lieutenant Meade's Aching Curse falls on everyone within 350 of him (21% less melee damage).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/"
+    }
+  ],
+  "story": "The road under the Pennines was found by Roman lead-miners. The overseer Sextus Vibius broke into it in the province's centuries: dry, smooth, sloping down to a lit hall where someone asked his lamp-boy his name. Vibius walled it up and gave it to the gods below on a tablet that now hangs in the captains' hall, and the Pennine miners kept one saying from it: never answer a question asked from below.\n\nAfter Camlann Albion found that the road met two others, from Midgard under the Jamtland hills and from Hibernia under Breifine, on the floor of the Summoner's Hall. Its first watch, twelve spearmen under the Saxon-born Leofric, lasted until Leofric went down to answer the Summoners and a headless spear came back in his place: the spear, Camelot's priests say, of Aelfgar, the warrior before Arthur whose shade the Summoners still call. The master mason Wystan then built the hall at the head of the road as a throat of three doors, a sickroom at the top of the sergeants' stair and the lowest point at the bottom, and set a post-stone at every post. Each man of the watch cut his mark on his stone and stood on it; the dalesmen say now that a watchman can bleed only on his own stone, and that every stone draws its man home whole.\n\nThe carrier Hob of Long Dale saw the watch dead at the upper gate in the last winter, breath that did not smoke, men who all turned at once, and his reeve's letter sent Sir Hamon Brede's riders north. Hamon found the widow claws in the stores, struck a watchman off his stone to no effect, and learned on Reede's stair that the hall will not leave a wound open that nobody is busy with. Lady Darra's four Church knights, sworn to stand the corners of her sickbed, now stand the corners and mend her; the corners are kept four or none. The sergeants' card table shows how Meade's despair lay on everyone within his reach; Elva's blades still carry the old frontier poisons, and the sickroom's bitter cup and the dale's linen are still carried down.\n\nThe other realms' old roads are kept by their own dead; Albion's alone by its own soldiers, a promise half kept that the Inconnu will not walk past. The Constable's roll was never closed: the watch is still paid each quarter, at its posts, and the last name on the roll is the clerk Tobias's, in his own hand.",
+  "legend": "Two groups for the Archwizard, the 2003 Albion guide said, if they know the trick, and six groups is plenty for the whole Hall. The trick with Aidon is famous: when the fight starts he splits into four reflections, fire, ice, air and earth; break three, and leave the fourth standing, because he only calls a fresh set when all four are broken. The Hall's own rule is just as famous: never drag anything off its post. Every officer of the dead watch is bound to where his captain stood him and cannot be harmed one step past it. The captains' cuts bleed; cure the bleed or heal through it. Elva poisons. Meade saps your arm. Darra's four paladins heal her, so they die before she does. Gildas fights behind his shield until half, then takes up the poleaxe, and the old hands say that is when you learn whether your healers are any good. Some Albion bards call the place the Pennine watch and refuse to call it corrupt. The watch kept its orders, they say. The orders were what went bad. People still argue whether Aidon is really in the Summoner's Hall; the answer is that he is seen in both.",
+  "atmosphere": {
+    "firstEntry": [
+      "Every man is at his post. Every man is dead.",
+      "The watch is still kept here. Not for Albion.",
+      "A road runs on below, to a hall that is no realm's.",
+      "Reports to Camelot lie unsent on a table.",
+      "The watch is doubled. The wizard expected visitors."
+    ],
+    "areas": [
+      {
+        "name": "the archwizard's hall",
+        "x": 31353,
+        "y": 37634,
+        "z": 14873,
+        "radius": 900,
+        "lines": [
+          "Four of him, in four colours. The air hisses.",
+          "Fight him here. Past the floor's edge, nothing lands."
+        ]
+      },
+      {
+        "name": "Lord Gildas' last post",
+        "x": 29015,
+        "y": 41910,
+        "z": 12933,
+        "radius": 900,
+        "lines": [
+          "The old lord stands his post. His shield is up.",
+          "The lowest point of Albion's road."
+        ]
+      },
+      {
+        "name": "the lady's chamber",
+        "x": 29551,
+        "y": 31554,
+        "z": 13941,
+        "radius": 800,
+        "lines": [
+          "A lady's chamber. Her paladins still guard the door.",
+          "Empty cots in rows. She is still tending them."
+        ]
+      },
+      {
+        "name": "the captains' hall",
+        "x": 34200,
+        "y": 36800,
+        "z": 14400,
+        "radius": 1200,
+        "lines": [
+          "Captains at their table. Their wounds never closed.",
+          "A clerk at the table, his pen still in his hand."
+        ]
+      },
+      {
+        "name": "the upper gate",
+        "x": 32395,
+        "y": 31847,
+        "z": 16158,
+        "radius": 900,
+        "lines": [
+          "A watchman turns his head as you pass.",
+          "The gate is held. It is held the wrong way."
+        ]
+      },
+      {
+        "name": "the lower road",
+        "x": 26428,
+        "y": 37869,
+        "z": 13478,
+        "radius": 900,
+        "lines": [
+          "The road goes on down. Something calls from below.",
+          "The Summoners' wards hum in the stone."
+        ]
+      },
+      {
+        "name": "the lieutenants' corridor",
+        "x": 31873,
+        "y": 34970,
+        "z": 15366,
+        "radius": 800,
+        "lines": [
+          "The air is heavy. Your arms feel tired.",
+          "An armoury, its racks still full."
+        ]
+      },
+      {
+        "name": "the sergeants' stair",
+        "x": 32371,
+        "y": 34757,
+        "z": 15366,
+        "radius": 700,
+        "lines": [
+          "A narrow stair. Someone guards it from both ends.",
+          "A sergeant's voice echoes down the passage."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the hall of the corrupt was albion's watch on the old road to the summoner's hall. [the watch is still there|they never left]",
+      "every man in the hall of the corrupt died at his post and kept watching. [just facing the other way now|wrong way round]",
+      "aidon was sent to study the summoners' wards. [studied them too well|he found what he was looking for]",
+      "lady darra's four knights still keep her. [even dead|dead and all]",
+      "aidon gets seen in the summoner's hall too, [they say|people swear]. the hall of the corrupt is his road there",
+      "the hall of the corrupt has a table with the watch's last reports on it. [nobody sent them|never sent]",
+      "aidon told camelot the summoners' wards were built out of promises. [and promises can be read|he read them]",
+      "the captains in the hall of the corrupt still bleed from cuts that never closed",
+      "lord gildas ordered nobody leave their post. [they still havent|dead and still at their posts]",
+      "some bards wont call it the hall of the corrupt. they call it the pennine watch. [the watch did its duty|the orders went bad not the men]",
+      "the road under the hall of the corrupt goes down to the summoner's hall. [aidon guards it now|its the summoners road]",
+      "lieutenant meade wrote the men lost the will to fight. [then he got it too|now he gives it to you]",
+      "captain bardalph warned them about the wizard. [nobody listened|overruled]",
+      "lady darra sat up every night with the wounded that last winter. [still does|she never stopped]",
+      "sergeant reede carried the wounded up her stair to darra. [she still guards it|still on the stair]"
+    ],
+    "rumour": [
+      "[heard|someone said] the archwizard is good for about two groups if you know the trick",
+      "never pull anything in the hall of the corrupt off its post. [they cant be hurt away from it|immune off their post]",
+      "[heard|word is] gildas drops his shield at half and picks up a polearm",
+      "[heard|someone said] the old guide said six groups is plenty for the whole hall",
+      "[heard|word is] theres a new way down to the summoners now but the old hall is still down there",
+      "[heard|someone said] darra's paladins die first or she never does",
+      "heard if you read the last report out loud the watchmen stop and listen",
+      "[heard|someone said] aidon is in both places. the hall and the summoner's hall"
+    ],
+    "tell": [
+      "hall of the corrupt? albion's old frontier dungeon on the road to the summoner's hall. dead watchmen, aidon the archwizard and lord gildas",
+      "ghost knights and a dead watch. two bosses at the end, aidon with his four copies and gildas at the bottom. six groups is plenty",
+      "the dead albion watch. dont drag anything off its post, it goes immune",
+      "is the hall of the corrupt hard? aidon is two groups if you know the trick, the whole place is about six. dont drag anything off its post",
+      "where is the hall of the corrupt? the old albion road to the summoner's hall, under the pennines",
+      "what drops there? aidon and gildas are the end. the captains bleed you, darra's paladins heal her, kill them first"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Hall of the Corrupt was Albion's [watch] on the road to the Summoner's Hall. The watch is still there. It answers to [Aidon] now, and to the Summoners beyond him, and [Lord Gildas] still holds his last post.",
+    "topics": {
+      "watch": "Captains, lieutenants, sergeants, knights and watchmen, every one at the post his captain gave him. They died there, and the corruption bound them to those posts so tightly that nothing harms them away from them. Fight each where it stands.",
+      "aidon": "The realm sent him to study the Summoners' wards. He studied them too well. Four reflections attend him, fire, ice, air and earth. Break three and leave one; he calls them anew only when the last is broken. He is seen in the [Summoner's Hall] as well, as a servant is seen at his master's table.",
+      "lord gildas": "He held the Hall for Albion with his lady, [Darra]. He holds it still, the other way about. He fights behind his shield until he knows he is losing, then takes up his poleaxe and hits twice as hard.",
+      "darra": "Lord Gildas' lady. She kept the Hall's sickroom in life; now four spectral paladins, the knights of her household, stand at the corners of her room and mend her. Break the knights before the lady.",
+      "summoner's hall": "Where the three realms met under the old frontier, and where Grand Summoner Govannon keeps his court. The Hall of the Corrupt was Albion's door to it. Some say Aidon still holds the key.",
+      "reports": "The watch's last reports to the Constable survive, and tell it plain: candles, promises, a doubled watch, a cut that would not close, men who could not leave their posts. Then silence.",
+      "posts": "Every officer of the watch is bound to where his captain stood him. A step past it, no blow lands. Fight each where it stands.",
+      "captains": "Atwell, first cut on the road; Bardalph, who warned against the wizard; Heathyr, who held the door. Their wounds never closed, and they make yours bleed the same.",
+      "lieutenants": "Elva of the armoury and her poisons; Meade, who wrote that the men had lost the will to fight; Saxe, who never left a post in his life.",
+      "sergeants": "Darryn of the west passage, Eddison who kept the roster, Reede who carried the wounded up her stair. Each keeps a corner as if Lord Gildas might come on inspection.",
+      "pennine road": "The road under the Pennines down to the [Summoner's Hall]. The Hall of the Corrupt is its Albion end. Aidon keeps it now.",
+      "post-stones": "Master Wystan set a stone at every post of the [watch], and each man cut his mark on his. The dalesmen say a watchman can bleed only on his own stone, and that every stone draws its man home whole. See [posts].",
+      "smooth road": "The road under the Pennines, found by the Roman overseer Sextus Vibius, who walled it and gave it to the gods below. The miners' saying from it: never answer a question asked from below. See [pennine road].",
+      "aelfgar": "A warrior of Albion before Arthur who went under the hills to kill a summoner and died shouting; his shade is part of the Summoners' price in the [Summoner's Hall]. When Leofric, captain of Albion's first [watch], went down to answer the Summoners, they sent up Aelfgar's headless spear in his place.",
+      "four corners": "The Church hospice's custom: a sister on the frontier goes with four knights, one at each corner of her bed. Lady [darra]'s four stand the corners still, and mend her. The corners are kept four or none.",
+      "pay roll": "The Constable still pays the Pennine [watch], 'at his post', every quarter, because Lord Gildas sealed no man relieved or dead. The last name on the roll is the clerk Tobias's, in his own hand. See [reports]."
+    }
+  },
+  "book": {
+    "title": "The Last Report of the Pennine Watch",
+    "pages": [
+      "To the Constable at Camelot, from the Hall under the Pennines, in the hand of Tobias, clerk of the watch. The road is quiet. The Summoners keep their wards as ever, and none of their servants has come up the road this season. Lord Gildas is well. The Lady Darra has had little to do but bind the sergeants' knuckles after their games. Captain Heathyr has had the upper gate rehung. The wizard Aidon keeps to his tower and asks for more candles. We ask, again, for more candles, and for a cooper; the casks in the stores are leaking.",
+      "To the Constable at Camelot. Master Aidon reports progress with the wards. He says the Summoners do not build their wards of stone but of promises, and that a promise can be read if one has the patience. He has had the patience. His apprentices say he has stopped sleeping. He has asked that the watch be doubled on the road, because he expects visitors. Lord Gildas has done as he asks. Captain Bardalph does not like it and told the wizard so at table, and the wizard smiled at her. Nor do I like it. I set it down here so that someone knows.",
+      "To the Constable. Captain Atwell was cut on the road by something none of us saw, and the cut will not close. The Lady Darra has bound it four times. Lieutenant Meade says the men have lost the will to fight and cannot say why; he says he feels it himself. Lieutenant Elva has had the armoury poisons brought out, as for the old wars. The wizard says it will pass. Lord Gildas has ordered that no man leave his post for any reason. The men say they could not leave if they wanted to. Sergeant Reede carries the wounded up to the sickroom every night.",
+      "To the Constable. I do not know if this will reach you. The wizard came down from his tower tonight with four of himself walking beside him, one in fire, one in ice, one in air and one in stone, and he said that the visitors had come and that we should stand to. We stood to. Nothing came up the road. Then Captain Heathyr, at the door, said that she could not feel her hands, and Captain Bardalph said that she had told us so, and the Lady Darra began to pray, and I find that I cannot put down this pen.",
+      "No report was sent this season. This page was found by the riders from Camelot on the Constable's own instruction, on the table of the captains' hall, beside a captain still sitting at it. The ink was dry. The watch was at its posts, every man, and every man was dead, and every man turned his head when the riders came in. The clerk Tobias was at the table, his pen still in his hand. The riders did not stay to read further. The Constable ordered the road sealed at the Albion end. The order was never carried out. No one would go back to carry it.",
+      "The tablet in the captains' hall, as read for Master Wystan by his clerk, Iestyn of Camelot. The letters are Roman and well cut. Sextus Vibius, freedman, overseer of the emperor's lead, to the gods below: this road was not made by me nor by my men. I have walled it. I give it to you and ask you to keep it, and to keep what is at the bottom of it at the bottom of it. Below, smaller and in a worse hand, as if added later by another: the boy came back. The master ordered the tablet set in the wall at eye height, so that every man of the watch would read it on his first day. I asked him whether he believed it. He said he believed the second line.",
+      "The reeve of Long Dale to the Constable at Camelot, an extract. Hob the carrier, a sober man, came to me on the eve of the new moon and would not sit down. He says the watch at the upper gate took his load and paid for it fair, and that their breath did not smoke, and that they all stood looking down the road and turned to him together when he spoke, as a flock turns. He says the man who paid him, one Col of this dale, told him the watch would keep. Col's mother is living. I have not told her. I ask your lordship to send someone who is not a carrier, and soon, and to tell me what I should say to her.",
+      "Sir Hamon Brede to the Constable, on his return from the Pennine road. My lord, the watch is at its posts. I struck one of them in the corridor, off his stone, and my sword passed through him as it would through the smoke of a lamp. On his stone it did not. We wounded the sergeant of the stair and stopped to bind our own, and when we went up again he was whole. I have two dead and the clerk's page, which I copied and did not finish. I will not go back to seal the road. I ask your lordship to accept my sword in place of my obedience, and to send somebody who has not seen it.",
+      "From the book of the hospice of the sisters at Caer Ulfwych: the office of the four corners. When a sister goes out to a frontier house, four knights of the Church go with her and swear, at this altar, to keep her as she keeps the sick, one at each corner of the bed she tends, and to leave no corner empty. If one falls, the others shall send for a fourth before the next watch; the corners are kept four or none. Written below, in a later hand: Sister Darra went to the Pennines with Sir Cynan, Sir Elis, Sir Peredur and Sir Owain. None has been sent for since. None has been needed.",
+      "The Constable's pay roll, the Pennine watch, entry for the quarter, in the paymaster's hand. Gildas of Penhallow, lord, at his post. Darra his lady, at her post. Atwell, Bardalph, Heathyr, captains, at their posts. Elva, Meade, Saxe, lieutenants, at their posts. Darryn, Eddison, Reede, sergeants, at their posts. The knights and the watchmen of the dales, by name, as overleaf, at their posts. Aidon of the Academy, not of this roll. Tobias, clerk of the watch, at his post: entered in his own hand, not mine, and I have not struck it. Pay carried to the chest. One box of candles, as is customary. Chest full. A new chest is requested."
+    ]
+  },
+  "bosses": [
+    "aidon-the-archwizard",
+    "lord-gildas",
+    "lady-darra",
+    "captain-atwell",
+    "captain-bardalph",
+    "captain-heathyr",
+    "lieutenant-elva",
+    "lieutenant-meade",
+    "lieutenant-saxe",
+    "sergeant-darryn",
+    "sergeant-eddison",
+    "sergeant-reede"
+  ],
+  "era": "alb-the-dark-age",
+  "factions": [
+    "summoners",
+    "pennine-watch"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Lead and the Smooth Road",
+      "text": "The road under the Pennines was found by men looking for lead, and the first of them to walk it was a slave whose name nobody wrote down.\n\nRome wanted the lead of the hills for its pipes and its roofs and its coffins, and in the centuries of the province the legions' miners drove their galleries deep into the Pennine limestone and sent the metal south in pigs stamped with the emperor's name. The deepest workings belonged to an overseer called Sextus Vibius, a freedman who had bought his own liberty with lead and meant to buy a great deal more. His men followed a vein down past the depth where the other overseers stopped, and in the third year the vein ran out against a wall that no miner had built. Behind it was a road.\n\nIt was dry, which nothing under the Pennines is, and smooth, and wide enough for two carts to pass, and it sloped down and away into the dark at the same gentle fall for as far as a lamp would show. There were no tool marks on it that the miners knew. Vibius sent a slave down it with a lamp and a coil of cord. The boy came back the next day without the lamp or the cord and said that the road went down a very long way, that at the bottom there were lights and a hall, and that someone in the hall had asked him his name.\n\nVibius walled the gallery up. He set a tablet in the wall, cut in good letters, giving the road to the gods below and asking them to keep it, and he moved his workings a mile to the west. The tablet is in the Hall of the Corrupt today. Camelot's masons found it when they cut the foundations of the hall, and set it into the wall of the captains' hall, where it was the first thing a new man of the watch was shown.\n\nThree accounts of the road have come down from that wall, and nobody in Albion has settled between them. The Academy's readers say the road was the Summoners' own, dug up toward all three realms at once from the hall at its foot. The Church says the Romans built it themselves to their dead gods and lied about it on the tablet. The Inconnu, asked, say only that it was there before the Romans and before the Summoners, and that the Summoners found it as Vibius did.\n\nThe Pennine miners kept one thing from the lamp-boy's story, though they had long forgotten where it came from. It was the first thing a boy was told when he went down a shaft: never answer a question asked from below."
+    },
+    {
+      "title": "Three Roads to One Door",
+      "text": "After Camlann, when the realms went to war and the frontier ran through the Pennines, Albion went down the smooth road and found that it was not the only one.\n\nAt its foot, past the stair where the road ends, it met two others: a road coming in under the Jamtland hills from Midgard, and a road coming up from under Breifine, past the caves where the Hibernians' keening women sing their dead backwards. The three met on the floor of a hall that belonged to none of the realms and answered to all three: the Summoner's Hall. The Summoners received every envoy with courtesy and made each of them an offer.\n\nThe first watch Albion kept on the road was twelve spearmen in a cold camp at the Roman wall, under a Saxon-born captain called Leofric. In the second year of the watch Leofric went down the stair under a green bough to answer the Summoners' offer, and did not come back. The Summoners sent up a spear in his place: not his, but a shaft of a make two hundred years older, without its head. The priests of Camelot know whose it was. Long before Arthur, they say, a warrior of Albion called Aelfgar, elf-spear, went under the hills to kill a summoner and died there shouting his war-cry, and his ghost was part of the price of the Summoners' first bargain; the Shade of Aelfgar still answers in the deepest room of their hall. The spearmen understood the message. Their captain had been asked a question, and had gone to stand with the last man of Albion who answered it.\n\nAfter Leofric the Constable at Camelot decided that a camp would not do. He sent the master mason Wystan north with three hundred men, and in three summers they raised the hall at the head of the road that Albion still calls the Pennine watch. Wystan built it as a long throat with three doors in it: the outer gate on the road below, the inner gate within, and the door of the captains' hall above them, with the corridors and stores and the armoury between, the sergeants' stair climbing to a sickroom at the top, and at the bottom, where Albion's floor gave way to the Summoners' road, a stretch of fitted paving that the masons called the lowest point.\n\nWystan's clerk wrote that the master took particular care over the doors, because a door was the only thing in the hall the Summoners would ever see. The Midgard skalds, who have heard the story from Albion prisoners, say that Albion built a door so well that the door ended by keeping itself."
+    },
+    {
+      "title": "The Post-Stones",
+      "text": "Master Wystan's last work on the hall was the smallest. Into the floor at every post in the watch he set a flat stone the size of a man's two feet, and on each stone he cut a mark for the post: a gate, a stair, a cup for the stores, a lamp for the corridors.\n\nThe watch made the stones its own. A man who took a post cut his mark beside the post's mark on the day he took it, and stood on that stone through every hour of his watch; when he was relieved or died, the next man cut his mark beside the last. The stone at the outer gate carries twenty-two marks. The stone at the lowest point carries two, and the second is Lord Gildas's. To step off one's stone during a watch was the gravest thing a man of the Pennines could do, graver than sleeping at it, because a sleeping man was at least where he had been put. Sergeant Eddison's dawn count was a count of stones, not of men: he walked the hall and looked down, not up.\n\nNot everyone at the posts was a Pennine man by choice. The ghostly knights who walk the hall now were knights of Camelot seconded to the watch for a season at a time, and they hated it; the clerk Tobias's earlier reports complain of their dice and their singing and the way they called the stones 'the paving'. The restless watchmen were the common soldiers of the north, dalesmen mostly, who signed on for the pay and stayed for twenty years because their fathers had. It was the dalesmen who began the custom, still kept by their grandchildren in the dales below, of rubbing the post-stone with the heel before a watch, for luck.\n\nThe stones outlived the watch, and the dalesmen tell stranger things about them now than they did when the watch was alive. A watchman's stone is the only place he can bleed, they say. Lead him off it and nothing you carry will touch him, and every stone draws its man home again, whole, as a hearth draws a cat. The Church's priests call this superstition. The companies of Albion who have been down the road do not argue with the dalesmen.\n\nThe marks on the stones are kept fresh. Every company that has gone down has found them clean-edged and newly cut, in the same hands as the old, and none has ever found the chips."
+    },
+    {
+      "title": "The Carrier's Last Load",
+      "text": "The last living man to speak to the Pennine watch was a carrier called Hob of Long Dale, and the realm owes its knowledge of the watch's death to his fright.\n\nHob drove the hall's supplies up from the dales for eleven years: flour and salt, oil and candles, ale for the sergeants, and the Church's linen for the sickroom, which came north in bales from the sisters' house at Caer Ulfwych. He knew every man at the upper gate by name, and the watchmen knew his mules. In the last winter his loads changed. The candles went up in boxes of a hundred, for the wizard. The linen went up in bales twice the size, because the captains' cuts would not close, and the sisters at Caer Ulfwych sent word that they could spare no more. The cooper the clerk had asked for never came; Hob carried the request south three times, and it was never answered.\n\nThe dalesmen have a phrase from that winter, which they use still: a Corrupt cut, for a wound that keeps opening after it should have stopped. Hob's wife, who rolled the linen, taught the dale's children what the sickroom's sisters had written down the road: a Corrupt cut is bound the moment it is made, or it runs. The children of Long Dale still carry a strip of linen at the wrist when they go up past the old track.\n\nHob's last load went up in the deep of the winter. The upper gate was answered by a watchman he knew, a dalesman called Col, who took the load and paid for it in the right coin and said nothing at all. Hob noticed three things, and told them afterwards in the same order every time he told it. Col's breath did not smoke in the cold. Every man at the gate stood facing down the road, away from him, until he spoke, and then they all turned at once. And when he said that he would be back at the new moon, Col said that the watch would be glad to see him, and that it would keep.\n\nHob drove down to Long Dale without stopping and went to the reeve, and the reeve, who could write, sent a letter to Camelot that spring. The Constable's office keeps it with the clerk Tobias's reports. It is the only document in that drawer written by somebody who was frightened, and it is the reason the riders went north. Hob never went back up the track. The dale's carriers still leave a bale of linen at the foot of it every new moon. It is always gone by morning."
+    },
+    {
+      "title": "Sir Hamon's Riders",
+      "text": "The Constable sent Sir Hamon Brede of Camelot Hills north with twenty riders in the spring, with orders to find out why the watch had stopped reporting and to bring its lord's explanation home.\n\nThey found the upper gate open and Col at his stone. They found the stores full of widow claws, the long-legged spiders of the deep Pennine caves, which had come up into the hall with the damp from the leaking casks and spun their nests between them; the dalesmen say they are drawn to any place where nothing living moves, and the stores had been that place since the winter. They found the wizard's apprentices on the stair of his tower, carrying candles up, and none of them would look at the riders. They heard Sergeant Eddison counting. They found the captains' hall, and the clerk at the table with his pen in his hand, and the last page, which Hamon had copied and did not read to the end.\n\nHamon's own report, which the Constable's office keeps beside the reeve's letter, tells two things the clerk's page does not. The first is that one of the watchmen came at the riders off his stone into the corridor, and Hamon struck him, and the blade went through him as through smoke. The watchman walked back to his stone without a mark on him. When Hamon followed and struck him there, the blade bit. Hamon wrote that he understood then what the dalesmen meant about the stones, and that he did not like understanding it.\n\nThe second is the stair. The riders wounded the sergeant who kept it, a young man by the look of him, and fell back down to bind their own hurts before they went up again. When they climbed the stair a second time, he was standing at the top of it whole, as if the hall would not leave open any wound that nobody was busy with. The riders had a saying about the Pennine road afterwards, which the companies of Camelot Hills still use for any work that must not be left half done: you do not stop for breath on Reede's stair.\n\nHamon did not go up to the sickroom. He brought his riders out with two dead and the clerk's page, and when the Constable ordered him back north to seal the road at the Albion end, he asked to be relieved of his command instead. The Constable relieved him. The order to seal the road was given twice more, to other knights, and never carried out."
+    },
+    {
+      "title": "The Lady's Household",
+      "text": "Lady Darra came to the Pennines as a sister of the Church from the hospice at Caer Ulfwych, and she came, as the Church's sisters always came to the frontier, with four knights sworn to keep her.\n\nThe custom is older than the watch. The sisters of the hospice nurse the dying, and the Church holds that no sister should be left alone with death in a strange place; so every sister sent to a frontier hall goes with four paladins of the Church, one for each corner of the bed she tends. While she works, they stand the corners. Their oath, which the hospice still administers, is to keep her as she keeps the sick, and to leave no corner empty. Darra's four were led by Sir Cynan of Ludlow, the eldest, who had stood the corners of three sisters before her and buried two. When she married Lord Gildas in the eighth year of his watch, the four did not leave her. They stood the corners of the sickroom at the top of Sergeant Reede's stair for twelve more years.\n\nIn the last winter they stood them every night, while she bound the captains' cuts and the cuts reopened, until the sisters at Caer Ulfwych had no more linen to send. Then the watch died, and the sickroom turned inside out. The lady is in the middle of the room now, where the bed was, and the four knights stand the corners as they always did. But it is she they mend. The Church's sisters say the knights are only keeping their oath, the only way it can still be kept. The bards say the Summoners did it as a jest: they took the one woman in the hall who had spent herself on others, and made her the one thing in it that others spend themselves on.\n\nThose who have been up the stair agree on what follows from it. While the four corners stand, the lady does not tire; and the corners are kept four or none. The sisters at Caer Ulfwych say a corner left empty is filled again by the next watch, and the companies who have gone up and come down again without finishing say the same: when they climbed the stair a second time, all four knights were at their corners, though they had left fewer.\n\nThe Church sent a priest north once, Father Bennet of Caer Ulfwych, to read the hospice's office of release at the sickroom door, the prayer a sister says over a bed when there is no more to be done. Sir Cynan barred the door against him. Father Bennet read the office through the door anyway, and wrote that he heard the lady inside say the responses."
+    },
+    {
+      "title": "The Card Table and the Armoury",
+      "text": "The watch's sergeants played cards every night of the twenty years at a table in the lieutenants' corridor, and the clerk Tobias, who did not play, wrote down who sat where. It is from his seating that the realm knows how the despair of the last winter spread.\n\nLieutenant Meade was the first to feel it, and he sat at the head of the table, as the senior officer who played. The men who sat beside him felt it next, and then the men beside them, a little more faintly; by the turn of the year the clerk was recording that the sergeants at Meade's end of the table could not lift their cups without both hands. Lieutenant Saxe, who never played and kept to his corridor at the far end, kept the strength of his arm until the last night. The Camelot loremasters, reading the seating, say the despair lay on Meade like a cloak and on everyone who stood within reach of the cloak, and that what saved Saxe was not courage but distance. The dalesmen put it more shortly. Never sit at Meade's end, they say, of any man who has lost heart.\n\nLieutenant Elva kept the armoury along the same corridor, and her account of the winter survives in her own hand, an inventory she began on the night Captain Atwell was cut and never finished. The armoury of the Pennine watch held the poisons of the old frontier wars: the recipes of Castle Sauvage, black paste for blades and a grey oil for arrowheads, made against the things that came up the Summoners' road in the early years and would not stop for an honest cut. Elva had them brought out and the blades dressed. Every blade in her racks still carries its dressing, the companies say, and so does hers. The sickroom's sisters had a bitter cup for the black paste, which the hospice at Caer Ulfwych still brews; the companies who go down the road carry it as the dalesmen carry linen.\n\nElva's inventory stops in the middle of a line. The last item is a blade from the rack by the door, entered as 'half dressed'. It is still on the rack. The Academy once asked for it, to study the paste; the company that went for it brought back a report that the blade could not be lifted from its pegs, and a second report, from its captain, that nobody had wanted to try very hard."
+    },
+    {
+      "title": "Three Realms on the Stair",
+      "text": "In the years after the frontier was redrawn, the realms broke a new passage to the Summoners' door from the contested lands, and their old roads under the hills fell out of use. Two of them were taken over by the dead they had always held. Albion's is the only one still kept by the realm's own soldiers.\n\nThe other realms have opinions about this. The Hibernians' road under Breifine is kept by the three keening women and the chieftain they sang back, and the bards of Hibernia, who know grief, pity the Pennine watch as a household that cannot be keened because it does not know it is dead. Midgard's skalds are less kind. They tell the story of the door that kept itself, and they have a verse about Albion's habit of writing everything down, which ends, in the version sung in Jordheim, with a clerk at a table recording his own death in the third person. Midgard war-bands that once tried Albion's way out by the old road still call it the Scribes' Stair.\n\nThe Summoners have sent nothing up the road since the last winter. They do not need to. A watch facing the wrong way, the Inconnu say, is worth more to the Summoners than any army, because it is a promise half kept: Albion built it to keep the road, and it keeps the road. The Inconnu go down to the Summoner's Hall by ways of their own when they go at all, and they will not pass the post-stones of the Pennine watch. Ennyn of the Inconnu, who guided Dame Ysolde's company through Caer Sidi, told the Camelot readers why. To walk past a man at his post, he said, is to agree that he is at his post.\n\nAt the foot of the stair, in the Summoners' deepest room, the Shade of Aelfgar still answers when it is called. The companies of Albion that have fought their way down from the Pennine watch to the Summoners' floor have taken up a custom no priest taught them. Before they go into that room, the oldest soldier among them calls the shade by his name and calls him a man of Albion, as a sergeant calls a man to his post, and then calls Leofric's name after it, in case. The priests of Camelot say he cannot hear it. The soldiers say that is not the point.\n\nAidon keeps the head of that stair, between the two halls, and is seen in both. The Midgard skalds, who have met him on the Summoners' floor, have no verse for him. They say a skald does not make songs about a door."
+    },
+    {
+      "title": "The Roll That Was Never Closed",
+      "text": "The Constable at Camelot still pays the Pennine watch.\n\nEvery man of the watch was entered on the Constable's roll on the day he cut his mark on a post-stone, and the frontier's custom says that a name can come off the roll in only two ways: by the seal of the lord of the watch beside the word relieved, or by the seal beside the word dead. Lord Gildas sealed neither for any man of the last winter. He was at his post. So the roll stands open, and the paymaster's clerks, who are not permitted to strike a name without a seal, enter the watch's pay against every name each quarter, with the words at his post. The pay is carried to the chest in the Constable's vault and locked there. The chest has been replaced twice for size.\n\nNobody in Camelot agrees on what should be done with it, any more than with the hall. The Church wants the roll closed by a bishop's seal and the hall blessed and walled, as Vibius walled his gallery, and has asked the Constable for it at every council for a generation. The Academy wants the hall left open until Aidon's letters have been read to the end, and points out that the last bishop's party to go north turned back at Col's gate. The house of Penhallow will not hear of any seal but a Penhallow's, and Dame Morwen says she is working on it. The dalesmen leave linen at the foot of the track and keep out of the argument.\n\nThe Constable's office has one answer of its own, which it gives to every party that asks. The watch was put there to hold the road, and it holds the road, and the realm does not stop paying soldiers for doing as they were told. The Camelot loremasters call this the most honest sentence the Constable's office has ever written, and the most frightening.\n\nThere is one name on the roll in a hand that is not the paymaster's. It is the last name, entered in the last winter's quarter, and it is the clerk Tobias's own: clerk of the watch, at his post, in the clerk's small square hand and the ink of the Pennines, which is browner than Camelot's. Nobody knows how it came to Camelot. The paymaster's clerks enter his pay with the rest, and every quarter one of them, by a custom the office does not record, puts a box of candles in to the chest."
+    }
+  ]
+}

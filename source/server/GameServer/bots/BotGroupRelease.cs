@@ -263,7 +263,9 @@ public static class BotGroupRelease
     private static bool CanJoin(GameBot bot, GamePlayer leader) =>
         leader != null && CanJoinLeader(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper,
             bot.Group != null && bot.Group == leader.Group, bot.Realm == leader.Realm, leader.IsAlive,
-            leader.ObjectState == GameObject.eObjectState.Active && leader.CurrentZone != null);
+            leader.ObjectState == GameObject.eObjectState.Active && leader.CurrentZone != null) &&
+        // Owner 2026-11-15: a released gamebot does not rejoin a leader standing in another realm's territory; it waits.
+        !RealmTerritory.IsEnemyRealmTerritoryFor(bot, leader);
 
     private static bool JoinLeader(GameBot bot, GamePlayer leader, string logMarker, string detail = "")
     {

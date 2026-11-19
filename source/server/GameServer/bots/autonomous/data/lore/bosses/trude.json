@@ -1,0 +1,126 @@
+{
+  "id": "trude",
+  "name": "Trude",
+  "npcNames": [
+    "Trude"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "cronk",
+      "relation": "the chief at whose side she stands; his wife or his sister, as the teller prefers"
+    },
+    {
+      "id": "uppsala",
+      "relation": "the third of Cronk's household, who will not say what she is"
+    },
+    {
+      "id": "bokko",
+      "relation": "the chief of the southern trunks, who wants her brother's fire"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Trude is a level-54 tradklan in the north-west of Faraheim (370282, 336796), about 840 units from Cronk and 185 from Uppsala, with Unne close by and tradklan darters and medicine men round them.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her spawn carries PackageID CronkBaf: whenever Cronk is fighting, his brain pulls every living CronkBaf NPC within 2,500 into it.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Cronk.cs"
+    },
+    {
+      "text": "Its template puts it in the Tradklan Tribe faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Tradklan Tribe into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167305)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Thrudr ('strength') is Thor's daughter in Norse myth; Trude is a Scandinavian form of the name.",
+      "provenance": "myth",
+      "source": "Snorri, Skaldskaparmal (public domain)"
+    }
+  ],
+  "story": "Cronk has Trude and Unne at his side, his two wives or his two sisters depending on who tells it. The tradklan themselves say sisters, and say it loudly, because in a tree-clan the chief's sisters matter more than his wives: the right of fire passes through the sisters' children, and a chief who burns carelessly is replaced by one of them, out of the ashes of his houses.\n\nTrude is the elder. Her name is old, a name for strength that the tradklan say they took from a god's daughter, and she has the heaviest arm in the clan after Cronk's. When the clan's chiefs before Cronk burned the clan's houses, it was Trude, a girl then, who dragged the children out of the burning trunks, and she has stood between her brother and everything since. The iarn dwarves think it is not loyalty but watchfulness. A sister whose son may one day take the fire watches the chief's hands.\n\nShe does not carry fire. Only one tradklan may, and that one is Cronk. What she carries is the clan's oldest grudge, against Bokko of the southern trunks, who holds that the right of fire should have passed to him on the night the houses burned and did not because Trude dragged Cronk out of the ashes first. The southern trunks call her the hand that chose. She has never denied it.\n\nWhen anyone so much as touches Cronk, his household comes, all of it, from wherever it is standing within the sound of his voice; and Trude comes first. When anyone touches Trude, Cronk comes, because a chief who will not come for his sister is no chief. The dwarves of Hagall have stopped trying to separate them. They say that in the tradklan's trunks a quarrel with one is a quarrel with the clan, and that the clan is very small and very loud and has fire.",
+  "legend": "Trude is one of Cronk's household in the tradklan trunks of north-west Faraheim, level 54, standing with Uppsala (185 away) and Unne, 840 from Cronk. She's in Cronk's CronkBaf pack: whenever Cronk is in a fight, every living CronkBaf NPC within 2,500 joins it, and she's Tradklan Tribe so hitting her can bring the tribe too. In practice you can't fight Trude without fighting Cronk, his fire and his slow, so plan the Cronk fight and kill her as part of it. She has no abilities herself and isn't CC-immune: mez her and Uppsala while you work Cronk, or burn the household first if your group can take the fire. No quest needs her.",
+  "yells": {
+    "aggro": [
+      "Brother! They are at the trunks!",
+      "Touch the clan and the fire comes.",
+      "I pulled him from the ashes. I will put you in them."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Cronk! Your sister bleeds!"
+      }
+    ],
+    "death": [
+      "The fire... passes through the sisters...",
+      "Watch his hands... someone..."
+    ],
+    "slay": [
+      "Ash.",
+      "Out of the trunks with you.",
+      "The clan stands."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Hollow trunks, loud voices. The chief's sister watches.",
+      "A tradklan woman stands between the chief and the wood."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Trude calls her brother's name."
+      }
+    ],
+    "realmFirstKill": "Trude of the tree-clan falls. Cronk will not forgive it."
+  },
+  "botLines": {
+    "briefing": [
+      "trude is cronks pack, if you fight her you fight cronk",
+      "mez trude and uppsala while you work cronk",
+      "54, no tricks herself",
+      "tradklan tribe, the darters can come too"
+    ],
+    "aftermathWin": [
+      "trude down with cronk",
+      "mez on the sisters held",
+      "the whole household down, nice",
+      "cronk got slower without trude"
+    ],
+    "aftermathLoss": [
+      "pulled trude and the whole household came",
+      "mez broke on trude",
+      "cronks fire plus three of them, no",
+      "forgot she brings cronk"
+    ],
+    "rumour": [
+      "trude pulled the children out when the old chiefs burned the trunks",
+      "the tradklan say trude and unne are cronks sisters, loudly",
+      "the right of fire passes through the chiefs sisters children",
+      "bokko says trude chose cronk and stole his fire"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Trude",
+    "text": "The elder of [Cronk]'s two sisters, or wives, who pulled the children out of the burning trunks and chose Cronk out of the ashes. The southern chief [Bokko] calls her the hand that chose. See [tree-clan]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: I set lines along the edge of the tradklan trunks for two winters and never once saw Cronk alone. Where he goes, the woman Trude goes a step behind and to the left, like a shield-bearer, and the other one, Uppsala, stands off a little way and watches both of them. I asked a kobold trader who deals with the clan which of them was the wife. He said that was a question for a man who wanted his traps burned, and I let it alone. The clan is small. It remembers everything.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut down Trude of the tree-clan in Faraheim in {minutes} minutes.",
+    "loss": "Trude and her brother's household drove {raidLeader}'s party from {realm} out of the trunks after {minutes} minutes."
+  }
+}

@@ -244,10 +244,11 @@ namespace DOL.GS.Tests
             for (int i = 0; i < 20; i++)
             {
                 Dictionary<string, string> chat = Spoken.ChatSlots(slots, random);
-                Assert.That(chat["keep"], Is.AnyOf("ailinne", "aili", "ailin"));
-                Assert.That(chat["enemy"], Is.AnyOf("hib", "hibs"));
-                Assert.That(chat["winner"], Is.AnyOf("mid", "mids"));
-                Assert.That(chat["loser"], Is.AnyOf("alb", "albs"));
+                // Chat 1.2 (TEXT-018, TEXT-021): one name per keep, a realm's people every time.
+                Assert.That(chat["keep"], Is.EqualTo("ail"));
+                Assert.That(chat["enemy"], Is.EqualTo("hibs"));
+                Assert.That(chat["winner"], Is.EqualTo("mids"));
+                Assert.That(chat["loser"], Is.EqualTo("albs"));
                 Assert.That(chat["raid"], Is.AnyOf("sh", "summoners hall", "summoners"));
                 Assert.That(chat["boss"], Is.EqualTo("govannon"));
                 Assert.That(chat["zone"], Does.StartWith("black m"));
@@ -441,8 +442,10 @@ namespace DOL.GS.Tests
                                 foreach (Match m in Regex.Matches(piece, @"[.!?] ([A-Z][a-z']*)"))
                                     if (m.Groups[1].Value != "I" && !m.Groups[1].Value.StartsWith("I'", StringComparison.Ordinal))
                                         Assert.That(filled, Does.Contain(m.Groups[1].Value), "a capital the scene didn't write: " + where);
+                                // 1.2 chat audit (CORPUS-B1-028): a terse writer types no stop, but a sentence break stays a comma
+                                // ("i do both, zerg when i want points", not "i do both zerg when...").
                                 if (Speech.IsTerse(voice))
-                                    Assert.That(piece.Contains(',') || Regex.IsMatch(piece, @"(?<!\.)\. "), Is.False, where);
+                                    Assert.That(Regex.IsMatch(piece, @"(?<!\.)\. "), Is.False, where);
                                 Assert.That(Spoken.SystemVoice(piece), Is.False, where);
                             }
                         }

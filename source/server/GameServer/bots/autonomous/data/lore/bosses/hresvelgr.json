@@ -1,0 +1,88 @@
+{
+  "id": "hresvelgr",
+  "name": "Hresvelgr",
+  "npcNames": [
+    "King Hresvelgr",
+    "Hresvelgr",
+    "Hresveigr"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "aliases": [
+    "King Hresvelgr",
+    "Hresveigr"
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "related": [
+    {
+      "id": "gjalpinulva",
+      "relation": "the dragon whose envoy he refused at the outer wall"
+    }
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Three spawns stand at one spot in Varulvhamn's regal chamber (about 16,000/24,690): 'King Hresvelgr' (level 46, faction Varulv, a great werewolf's model, very large), 'Hresvelgr' (level 46, no faction) and 'Hresveigr' (level 45, no faction, a man's model), among thirteen werewolf royal guards and nine advisors (42).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Werewolf Bane' (Gothi of the Juton, via Averrius in Gna Faste): kill the three werewolf lords and take their essences, then 'Kill the werewolf king Hresveigr in his regal chamber'; the reward is whispered to King Hresvelgr.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table, 'Werewolf Bane' (0.37b world data)"
+    },
+    {
+      "text": "In Norse myth Hraesvelgr, 'corpse-swallower', is the giant in eagle's shape at the end of the sky whose wings make the wind.",
+      "provenance": "myth",
+      "source": "Vafthrudnismal 37; Snorri, Gylfaginning (public domain)"
+    },
+    {
+      "text": "The three spawns as the king's three natures follow Living Server's Varulvhamn lore ('three names').",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The werewolf king took the name of the eagle-giant whose wings make the wind, and the wind goes where it likes, and so does he. His heralds call him by three names, one after another, Hresvelgr, King Hresvelgr and Hresveigr, and the wolfaur say it is because he has three natures, wolf and man and the thing between, and each must be greeted. In his regal chamber all three of them stand: a great wolf crowned, a wolf-man without a crown, and a man in a man's shape, side by side among the royal guard and the advisors, and nobody in the haven ever speaks to only one.\n\nHe answered the dragon of Malmohus with the one law of his people, that a wolf answers to the pack and never to a master, when Gjalpinulva's envoy came to the outer wall, and no werewolf has set foot in Malmohus since. Midgard's gothi send the realm's young into the haven to take the three high lords' essences and then to kill the king, and give them the weapons that bite werewolves for it; the wolfaur say it is the man the hunters kill, and that the wolf and the thing between go on.",
+  "legend": "Hresvelgr is the werewolf king of Varulvhamn, and he's three spawns at the same spot: King Hresvelgr (46, Varulv faction, the big crowned wolf), Hresvelgr (46) and Hresveigr (45, man form), with 13 royal guards and 9 advisors (42) in the regal chamber. Werewolf Bane: kill the three high lords for their essences first, then kill the king. The Varulv-faction king and the guards round him mean it's a big pull. All three are 45-46, so it's a real fight for a mid-40s group with the guards. He's also the quest NPC you whisper for the Varulbane weapon at the end.",
+  "yells": {
+    "aggro": [
+      "Greet all three of us, or none.",
+      "The wind goes where it likes. So do I."
+    ],
+    "death": [
+      "The man dies. The wolf... goes on..."
+    ],
+    "slay": [
+      "Answer to the pack."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The regal chamber. Three kings who are one king."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "the werewolf king is three spawns at one spot, king hresvelgr, hresvelgr, hresveigr",
+      "13 royal guards and 9 advisors in the room, bring a full group"
+    ],
+    "aftermathWin": [
+      "the king is down, all three of him",
+      "go whisper the king for the varulbane weapon"
+    ],
+    "rumour": [
+      "hresvelgr has three natures, wolf, man and the thing between, so the heralds call him three times",
+      "hresvelgr told the dragons envoy a wolf answers to the pack and never to a master"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hresvelgr",
+    "text": "The werewolf king, three natures in three shapes in one chamber, named for the eagle-giant whose wings make the wind. He refused the dragon with the [one law]. See [three names]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down all three of King Hresvelgr in Varulvhamn in {minutes} minutes."
+  }
+}

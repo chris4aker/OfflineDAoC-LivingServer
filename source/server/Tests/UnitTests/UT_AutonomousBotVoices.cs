@@ -14,7 +14,7 @@ namespace DOL.GS.Tests
     {
         // Slots the server fills (AutonomousBotVoices.SlotsFor and SharedSlots).
         private static readonly string[] KnownSlots =
-            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp", "monsters", "destination",
+            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "enemy_mod", "enemy_realm", "capital", "dungeon", "camp", "monsters", "destination",
              // The talking update: the xp bubbles, what a recruiting group needs, and the names in a piece of news.
              "bubbles", "need", "relic", "raid", "boss", "winner", "loser"];
 
@@ -29,7 +29,13 @@ namespace DOL.GS.Tests
             // Deeds, storylines and gold spammers (AutonomousPlayerDeeds, AutonomousBotStorylines, AutonomousGoldSpammers)
             "nickname", "name_a", "name_b", "site",
             // Bonds (AutonomousBotBonds): the other gamebot and its class
-            "other", "other_class"];
+            "other", "other_class",
+            // Crafter gamebots (Crafting 2.0 WP4, BotCrafterVoice): the real piece it holds, its quality and price; a title and its skill
+            "stock", "quality", "price", "title", "skill",
+            // Crafter commerce and the price-war storyline (Crafting 2.0 WP8): the crafter's craft, when a piece is ready, how it is paid
+            "recipe", "when", "terms",
+            // The full bot trade (WP8, BotTrades): a gamebot's want-to-buy in /trade names the most it would pay
+            "budget"];
 
         private static readonly string[] OutOfEra =
             ["world of warcraft", "discord", "twitch", "youtube", "lmao", "covid", "smh", "tbh", "ngl", "yeet"];
@@ -55,7 +61,7 @@ namespace DOL.GS.Tests
         {
             ["me"] = "Aldwin", ["class"] = "armsman", ["level"] = "20", ["realm"] = "Albion", ["zone"] = "Black Mountains South",
             ["monster"] = "bwca", ["item"] = "Bloodied Sword", ["count"] = "3", ["q"] = q, ["keep"] = "Caer Benowyc",
-            ["frontier"] = "Pennine Mountains", ["enemy"] = "Midgard", ["capital"] = "Camelot", ["dungeon"] = "Tomb of Mithra",
+            ["frontier"] = "Pennine Mountains", ["enemy"] = "mids", ["enemy_mod"] = "mid", ["enemy_realm"] = "Midgard", ["capital"] = "Camelot", ["dungeon"] = "Tomb of Mithra",
             ["camp"] = "Tomb of Mithra",
         };
 
@@ -122,7 +128,10 @@ namespace DOL.GS.Tests
         public void Runtime_LoadsTheSameCorpus()
         {
             Assert.That(AutonomousBotVoices.Corpus, Is.Not.Null, "The server finds the embedded corpus.");
-            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length));
+            // Living Server 1.2: the server adds the lore bible's lore and rumour lines (LoreChat.CorpusLines) to the built corpus.
+            int lore = LoreChat.CorpusLines(LoreBible.Current).Count(line => Corpus.LineById(line.Id) == null);
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Length, Is.EqualTo(Corpus.Lines.Length + lore));
+            Assert.That(AutonomousBotVoices.Corpus.Lines.Take(Corpus.Lines.Length).Select(line => line.Id), Is.EqualTo(Corpus.Lines.Select(line => line.Id)));
         }
 
         [Test]
@@ -192,7 +201,14 @@ namespace DOL.GS.Tests
             Dictionary<string, string> slots = FullSlots();
             // A storyline episode also gets its two protagonists' names and, for an ending, the player who took a side.
             var story = new Dictionary<string, string>(slots) { ["name_a"] = "Aelwyn", ["name_b"] = "Brannoc", ["player"] = "Kaelith" };
-            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) ? story : slots))
+            // Crafting 2.0 WP8: the price-war arc also gets its pair's real craft and the first one's title (CraftingDrama.AddSlots).
+            story["recipe"] = "armorcraft";
+            story["title"] = "Master Armorer";
+            // A tale gets its storyteller's name ({name_b}) and the asker's (AutonomousTales).
+            // A live scene also gets its news's relic (AutonomousBotDebates.LiveSlots; 1.2).
+            var live = new Dictionary<string, string>(slots) { ["relic"] = "the Scabbard of Excalibur" };
+            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story
+                    : Debates.IsLive(scene) ? live : slots))
                 .Select(scene => scene.Id), Is.Empty);
         }
 

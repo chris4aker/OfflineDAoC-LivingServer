@@ -53,7 +53,7 @@ public static class AutonomousBotRageQuits
                 DateTime now = DateTime.UtcNow;
                 var stale = new List<DataObject>();
                 int restored = 0;
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
                     foreach (OfflineBotRageQuitRecord row in database.SelectAllObjects<OfflineBotRageQuitRecord>())
                     {
@@ -89,7 +89,7 @@ public static class AutonomousBotRageQuits
         {
             try
             {
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
                     var row = database.FindObjectByKey<OfflineBotRageQuitRecord>(KeyOf(botId));
                     if (row == null)
@@ -118,7 +118,7 @@ public static class AutonomousBotRageQuits
         {
             try
             {
-                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 {
                     var row = database.FindObjectByKey<OfflineBotRageQuitRecord>(KeyOf(botId));
                     if (row != null)

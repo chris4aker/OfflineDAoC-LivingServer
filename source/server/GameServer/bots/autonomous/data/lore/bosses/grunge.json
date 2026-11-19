@@ -1,0 +1,75 @@
+{
+  "id": "grunge",
+  "name": "Grunge",
+  "npcNames": [
+    "Grunge"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Grunge: NPC template 60161715, level 36, the boar model at size 100, no faction, aggro 200 (range 500), no spells, respawn 600 s, in Snowdonia's middle valley at 524712, 339104.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Grunge's wallow and the fortress cooks' wager are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Grunge is a boar the size of a cart who roots in the middle valley of Snowdonia, and the cooks of Snowdonia Fortress have been promising the garrison his hams for three winters running. The garrison has stopped believing them.\n\nHe was a boar of the ordinary kind once, the shepherds say, a sow's runt that would not stop eating, and the valley gave him everything he asked of it: acorns, roots, a shepherd's whole store of turnips, a shepherd. He grew, and kept growing, and his temper grew with him, and by the time he was large enough to notice he was not afraid of anything in the valley he had stopped being able to remember a time he had been. He wallows in a black pool of his own making in the middle of the valley, and the reek of it can be smelled from the road.\n\nThe cyclopes leave him alone. The scrags leave him alone. Shaman Saelonna, reading to the dead not far away, has never once looked up when he passes. The cooks keep a pot of salt ready by the fortress kitchen door, and say it is only a matter of time. The garrison says it is a matter of a great deal of time, and a better company than the last three.",
+  "legend": "Grunge, level 36 boar, very big, in the middle valley of Snowdonia. Alone, plain melee, no spells, aggressive. A group in the mid thirties kills him; he hits harder than a normal boar his level looks. Respawn ten minutes. The fortress cooks would like the hams, but there is no quest for them. Fight him away from the middle valley cyclopes.",
+  "yells": {
+    "aggro": [
+      "The wallow is mine.",
+      "Snort and charge!"
+    ],
+    "phases": [],
+    "death": [
+      "The valley... was mine..."
+    ],
+    "slay": [
+      "Into the wallow.",
+      "Rooted out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A boar the size of a cart, in a very bad mood."
+    ],
+    "phases": [],
+    "realmFirstKill": "Grunge has fallen. The fortress cooks will be pleased."
+  },
+  "botLines": {
+    "briefing": [
+      "grunge, 36 boar in the middle valley, alone, hits hard for his level",
+      "plain melee, mid thirties group kills grunge"
+    ],
+    "aftermathWin": [
+      "grunge down. somebody tell the fortress cooks",
+      "hams for the garrison at last"
+    ],
+    "aftermathLoss": [
+      "grunge charged straight through our caster"
+    ],
+    "rumour": [
+      "[heard|someone said] the snowdonia fortress cooks have been promising grunge's hams for years",
+      "heard grunge ate a shepherd's whole winter turnips. and the shepherd"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "grunge",
+    "text": "A boar the size of a cart who roots in [snowdonia]'s middle valley. The fortress cooks have promised the garrison his hams for three winters."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} brought the hams of Grunge to the fortress kitchen in {minutes} minutes.",
+    "loss": "Grunge rooted {raidLeader}'s company of {realm} out of the middle valley."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "tier": "minor"
+}

@@ -1,0 +1,66 @@
+{
+  "id": "sha-ra",
+  "name": "Sha-Ra",
+  "npcNames": [
+    "Sha-Ra"
+  ],
+  "locationId": "gripklosa-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Sha-Ra is a level-45 sabre-toothed cat (the sabre cats' model) in the Gripklosa Mountains (333,280/271,024) among cave lions (40-44) and lionesses, near a venerable mammoth and a herdguard; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Sha-Ra as the lions' old queen of Mammoth Valley is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The cave lions of Gripklosa hunt the mammoths of the valley, and the bergklan say they hunt them under a queen. She is not a lion. Sha-Ra is a sabre-tooth, the last of the long-fanged cats that hunted the mammoths before the lions came over from Delling, and the lions keep her as their eldest the way the clan-folk keep a grandmother: she eats first, she sleeps in the warm place, and when she moves, they move.\n\nThe bergklan call her Sha-Ra for the sound she makes, a dry rasp that carries down the valley on a still day, and they say the mammoths know it and draw in their calves. The Remnants' slate-writers have a scratched line about her: that the old one of the herd and the old one of the hunters have watched each other across Mammoth Valley for longer than any slate has been kept, and that neither has ever crossed. She fights strangers on her grounds with the pride round her, and the pride fights for her.",
+  "legend": "Sha-Ra is a level 45 sabre-tooth cat in the Gripklosa Mountains among cave lions (40-44) and lionesses, near the mammoth herd's road. No faction on her, no spells. Pull her to the edge of the lion grounds; the venerable mammoth and the herdguard nearby will not thank you for fighting in the middle of the herd's road. The lions are aggressive.",
+  "yells": {
+    "aggro": [
+      "(A dry rasp carries down the valley.)",
+      "(The old sabre-tooth rises from the warm place.)"
+    ],
+    "death": [
+      "(The rasp stops. The valley listens.)"
+    ],
+    "slay": [
+      "(The pride closes round her.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Cave lions, and an old sabre-tooth among them."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "sha-ra is a 45 sabre tooth among the cave lions in gripklosa",
+      "lions all round her, pull to the edge"
+    ],
+    "aftermathWin": [
+      "sha-ra down",
+      "the lions scattered"
+    ],
+    "rumour": [
+      "the cave lions of gripklosa keep sha-ra as their eldest, she eats first",
+      "sha-ra and the old one of the mammoths have watched each other across the valley for ever"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Sha-Ra",
+    "text": "The last of the sabre-tooths of Gripklosa, kept by the cave lions as their eldest. She and the herd's old one watch each other across [Mammoth Valley]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} silenced Sha-Ra's rasp in Gripklosa in {minutes} minutes."
+  }
+}

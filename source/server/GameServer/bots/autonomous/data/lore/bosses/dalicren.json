@@ -1,0 +1,112 @@
+{
+  "id": "dalicren",
+  "name": "Dalicren",
+  "npcNames": [
+    "Dalicren"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "skogsra"
+  ],
+  "related": [
+    {
+      "id": "dalgo",
+      "relation": "the warden of the deep wood, whose paths Dalicren's people move nearer Hagall"
+    },
+    {
+      "id": "boligar",
+      "relation": "the shade-seeker who leads strangers astray in the east"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Dalicren is a level-59 skogsra in a low wood of southern Faraheim (387219, 371317, well below the country around), with eleven skogsra greenhands within a few paces and seven woodsmen close by.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Her template gives her no faction (the greenhands and woodsmen around her are Skogsra Shade Seekers): she brings no one herself, but they stand close enough to see any fight.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60159634)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Boligar leads strangers astray and Dalgo keeps the paths closing behind them, and both of them live in the deep woods of the east, far from Hagall. Dalicren is closer. She keeps a low wood in the south of Faraheim, down in a fold of the land between Hagall's rise and the skogsra's eastern country, and the woodcutters of Hagall know her better than any other of the forest folk, because it is her paths they walk when they go out for timber.\n\nThe skogsra say every wood has a hostess, and the low wood's is Dalicren. She has more greenhands about her than Dalgo has, all close, the way a farmwife keeps her best hens near the door, and they move the low wood's paths at night with a care the skogsra of the east do not bother with. A path in Dalgo's wood is somewhere else by morning. A path in Dalicren's is somewhere else by a hand's breadth, every night, so that a woodcutter who walks it every day for a season ends the season in a place he does not recognise without ever having felt himself turn. Hagall has lost more woodcutters that way than to anything else in Faraheim, and the skogsra are puzzled when anyone complains. The woodcutters were guests. The wood kept them.\n\nShe is beautiful from the front, as all the skogsra are, and hollow behind, and the cruelty of her low wood, the woodcutters say, is that she always lets a man see her from the front. She has never been seen leaving. She does not call her people when she is threatened; she has no need to, because they are already standing round her, close enough to touch, and they do not wait to be called.\n\nThe iarn dwarves fly high over the low wood, as they fly high over Dalgo's. Hagall's woodcutters have a custom now: they tie a red cord to the first tree they cut on each path and look back for it every hundred paces. Dalicren's greenhands have taken to moving the trees with the cords.",
+  "legend": "Dalicren is a level 59 skogsra in a low wood in southern Faraheim, between Hagall and the eastern skogsra country. She has eleven skogsra greenhands (48-53) standing practically on top of her and seven woodsmen close by. Her own template has no faction, so she doesn't bring friends, but the greenhands and woodsmen are Shade Seekers and aggressive and will see the fight anyway. Clear the greenhands from the edges first (AoE helps, they're close together), then take her. No special abilities, not CC-immune, no quest. The low wood sits in a fold below the surrounding country, so watch your line of sight when you pull: casters on the rim often can't see what they're targeting.",
+  "yells": {
+    "aggro": [
+      "Welcome, guest. Stay.",
+      "Greenhands. A visitor.",
+      "You came down my path. All paths come here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Look at me. Only at me. From the front."
+      }
+    ],
+    "death": [
+      "Do not... look behind me...",
+      "The wood... keeps..."
+    ],
+    "slay": [
+      "Kept.",
+      "The wood thanks you.",
+      "Another guest stays."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A low wood. The path bends a little, every night.",
+      "Forest folk stand close, like hens by a door."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dalicren turns to face you. Always to face you."
+      }
+    ],
+    "realmFirstKill": "Dalicren of the low wood falls. Hagall's paths run straight."
+  },
+  "botLines": {
+    "briefing": [
+      "dalicren is 59, eleven greenhands right on top of her",
+      "she has no faction but the greenhands are aggro anyway",
+      "aoe the greenhands from the edge",
+      "no tricks on her"
+    ],
+    "aftermathWin": [
+      "dalicren down, greenhands cleared",
+      "aoe did the work",
+      "the low wood is quiet",
+      "hagall woodcutters can breathe"
+    ],
+    "aftermathLoss": [
+      "pulled all eleven greenhands",
+      "woodsmen joined",
+      "not enough aoe",
+      "she hit harder than expected"
+    ],
+    "rumour": [
+      "dalicrens paths move a hands breadth every night",
+      "hagall has lost more woodcutters to dalicren than to anything",
+      "the woodcutters tie red cords to trees, the greenhands move the trees",
+      "dalicren always lets you see her from the front"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dalicren",
+    "text": "Hostess of the low wood between Hagall and the east, whose [skogsra] move her paths a hand's breadth a night. [Hagall]'s woodcutters tie red cords to the trees. See [Dalgo]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: my father cut timber in the low wood for nine seasons and swore it never moved. In the tenth he came home and said the stream by his felling place was on the wrong side. We went out together with a rope and staked it from the gate to the stream, and in the morning the stake at the stream end was in a different stream. He did not cut there again. He said he had seen her once, at the edge of the clearing, smiling, and that he had never seen her back.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} drove Dalicren from her low wood in Faraheim in {minutes} minutes.",
+    "loss": "Dalicren kept {raidLeader}'s party from {realm} as guests of the low wood after {minutes} minutes."
+  }
+}

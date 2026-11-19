@@ -146,6 +146,17 @@ namespace DOL.GS
                     yield return bot;
         }
 
+        /// <summary>
+        /// Crafting 2.0 WP8: the guild a crafter gamebot makes pieces for at material cost: the player's guild it was
+        /// invited into, else its own bot guild. Null for a companion (a /bot helper crafts for nobody).
+        /// </summary>
+        public static Guild CraftingGuildOf(GameBot bot) =>
+            bot == null || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper ? null : GuildOf(bot.DatabaseID) ?? bot.Guild;
+
+        /// <summary>WP8: the real player is in the crafter gamebot's guild (guild crafter access: materials only).</summary>
+        public static bool IsGuildmate(GameBot crafter, GamePlayer player) =>
+            player?.Guild != null && ReferenceEquals(CraftingGuildOf(crafter), player.Guild);
+
         /// <summary>A member of <paramref name="guild"/> by name (for /gc remove).</summary>
         public static OfflineWorldBotGuildRecord FindMember(Guild guild, string name) =>
             guild == null || string.IsNullOrWhiteSpace(name) ? null :
@@ -270,7 +281,8 @@ namespace DOL.GS
 
         /// <summary>The guild name before the bot enters the world (no broadcast needed).</summary>
         public static string GuildNameFor(GameBot bot) =>
-            bot?.IsEpicSpecialForce == true ? AutonomousEpicSpecialForces.GuildName : ShownGuild(bot)?.Name ?? string.Empty;
+            bot?.IsEpicSpecialForce == true ? AutonomousEpicSpecialForces.GuildName :
+            bot?.IsNoLiferBuffBot == true ? NoLiferBuffBots.MainGuildName(bot) : ShownGuild(bot)?.Name ?? string.Empty;
 
         #region Guild chat
 
@@ -295,7 +307,7 @@ namespace DOL.GS
 
         private static readonly string[] GuildReplies =
         [
-            "doing ok, ty", "out hunting myself", "could join in a bit", "same, all quiet here", "count me in if a grp forms",
+            "doing ok, ty", "out hunting myself", "could join in a bit", "same, all quiet here", "count me in if a grp forms",   // promise: none (only if a group forms later)
             "busy for now, maybe later", "sounds good", "lmk where u end up",
         ];
 
@@ -358,11 +370,20 @@ namespace DOL.GS
             if (LastGuildReply.TryGetValue(guild.GuildID, out long last) && now - last < 10_000) return;
             LastGuildReply[guild.GuildID] = now;
             GameBot[] talkers = OnlineMembers(guild).Where(CanTalk).ToArray();
+            // Crafting 2.0 WP8 (bot_crafting_social): "anyone craft?" is answered by the guild's best real crafter gamebot.
+            if (CraftingEconomy.CraftingDrama.On && CraftingEconomy.CraftingDrama.AsksWhoCrafts(message) &&
+                CraftingEconomy.CrafterCommerce.GuildCrafterReply(talkers, guild, Random.Shared) is { } crafterReply)
+            {
+                ScheduleReply(crafterReply.Bot, guild, crafterReply.Text, 1_600 + Random.Shared.Next(1_500));
+                return;
+            }
             GameBot named = talkers.FirstOrDefault(bot => AutonomousBotChatCoordinator.ContainsMention(message, bot.Name));
             if (named != null)
             {
-                ScheduleReply(named, guild, AutonomousBotGuildSocial.VoicedPlayerGuildReply(named, player, message) ??
-                    AutonomousBotChatCoordinator.GenerateFactionReply(message), 1_400);
+                string answer = PlayerReplyOrFallback(AutonomousBotVoices.Enabled, AutonomousBotGuildSocial.VoicedPlayerGuildReply(named, player, message),
+                    message);
+                if (answer != null)
+                    ScheduleReply(named, guild, answer, 1_400);
                 return;
             }
             ScheduleReplies(guild, null, message, AutonomousBotChatCoordinator.RollResponseCount(Math.Min(2, talkers.Length)), player: player);
@@ -378,8 +399,8 @@ namespace DOL.GS
             {
                 // Living Server: with bot voices on, corpus answers (AutonomousBotGuildSocial); else the base game's lines.
                 string reply = incoming != null
-                    ? AutonomousBotGuildSocial.VoicedPlayerGuildReply(talkers[index], player, incoming) ??
-                      AutonomousBotChatCoordinator.GenerateFactionReply(incoming)
+                    ? PlayerReplyOrFallback(AutonomousBotVoices.Enabled, AutonomousBotGuildSocial.VoicedPlayerGuildReply(talkers[index], player, incoming),
+                        incoming)
                     : opener != null
                         ? AutonomousBotGuildSocial.VoicedPlayerGuildAnswer(talkers[index], opener, invites)
                         : FreshFallback(guild, talkers[index], GuildReplies, GameLoop.GameLoopTime);
@@ -388,6 +409,14 @@ namespace DOL.GS
                 ScheduleReply(talkers[index], guild, reply, 1_800 + index * 2_000 + Random.Shared.Next(1_200));
             }
         }
+
+        /// <summary>
+        /// A gamebot's /gu answer to a player: the voiced reply, or with bot voices on nothing (chat audit TEXT-022: the pre-voices
+        /// formal lines, "Let us keep faction chat focused on the realm.", came out in /gu when no corpus reply fitted; /faction and
+        /// /say dropped that fallback in 1.1.3). With voices off the base game's line stays. Pure.
+        /// </summary>
+        public static string PlayerReplyOrFallback(bool voicesOn, string voiced, string message) =>
+            voiced ?? (voicesOn ? null : AutonomousBotChatCoordinator.GenerateFactionReply(message));
 
         private static void ScheduleReply(GameBot bot, Guild guild, string reply, int delay)
         {

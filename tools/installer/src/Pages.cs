@@ -79,7 +79,7 @@ namespace LivingServerSetup
                 g.FillRectangle(lb, shade);
             Theme.DrawShadowText(g, "Your single-player Camelot, alive like a 2003 server.", Theme.Serif(14f, FontStyle.Italic), R(48, 462, 600, 30), Theme.Parchment, TextFormatFlags.Left | TextFormatFlags.Top);
             Theme.DrawShadowText(g,
-                "Setup installs everything you need: Offline DAoC by shadowofze, and the Living Server add-on on top. " +
+                "Setup installs everything you need: Offline DAoC, and the Living Server add-on on top. " +
                 "Already playing Offline DAoC? It finds your game and adds Living Server, and your characters stay.",
                 Theme.Serif(9.75f), R(49, 496, 600, 48), Theme.Text);
             Theme.DrawText(g, "Living Server " + Payload.DisplayName + " for Offline DAoC " + Payload.FitsLabel +
@@ -178,7 +178,7 @@ namespace LivingServerSetup
             var fresh = new ChoiceCard
             {
                 Title = "New install",
-                Body = "Download Offline DAoC " + Payload.BaseRelease + " by shadowofze into a new folder, and add Living Server. " +
+                Body = "Download Offline DAoC " + Payload.BaseRelease + " into a new folder, and add Living Server. " +
                        "About " + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch) + " to download" +
                        (Offers.NewClient ? " (" + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch + Manifests.NewClient + Manifests.ClientPatch) + " with the new client)." : "."),
                 Stripe = Theme.Hibernia,
@@ -244,7 +244,7 @@ namespace LivingServerSetup
             }
             else if (g.IsUpdatable)
             {
-                c.Lines.Add(("Setup first updates it to " + Payload.BaseRelease + " with shadowofze's official update (characters, bots and settings stay), then adds Living Server.", Theme.GoldLight));
+                c.Lines.Add(("Setup first updates it to " + Payload.BaseRelease + " with the Offline DAoC update (characters, bots and settings stay), then adds Living Server.", Theme.GoldLight));
                 if (g.Ls == LsState.OtherBuild) c.Lines.Add(("Its " + Wizard.BuildLabel(g.LsBuild) + " build comes off for the update; Living Server replaces it.", Theme.Muted));
                 if (g.Ls == LsState.Modified || g.Ls == LsState.Unknown) c.Lines.Add(("Its server or launcher files were changed by hand: Setup asks before it replaces them.", Theme.Warning));
                 c.Badge = "UPDATE"; c.BadgeColor = Theme.Warning;
@@ -326,7 +326,7 @@ namespace LivingServerSetup
             if (game == null)
             {
                 Title = "Prepare your new game";
-                Subtitle = "Offline DAoC " + Payload.BaseRelease + " by shadowofze, original classes and client. Every file is checked as it downloads.";
+                Subtitle = "Offline DAoC " + Payload.BaseRelease + ", original classes and client. Every file is checked as it downloads.";
                 folder.Text = prev?.NewInstall == true ? prev.Destination : Wizard.DefaultFolder();
                 Put(folder, 40, y + 18, 386, 34);
                 var browse = Put(new GoldButton("BROWSE"), 434, y + 18, 92, 34);
@@ -337,7 +337,7 @@ namespace LivingServerSetup
                 if (Offers.Editions)
                 {
                 editionB = Toggle(new OptionToggle(Payload.BaseRelease + "b + Sluaghbinder",
-                    "Adds shadowofze's custom Hibernia class.", true, "ed"), ref y, 236);
+                    "Adds the custom Hibernia class.", true, "ed"), ref y, 236);
                 float y1 = y;
                 y = y0;
                 editionClassic = Toggle(new OptionToggle(Payload.BaseRelease + " original classes",
@@ -351,7 +351,7 @@ namespace LivingServerSetup
                 if (Offers.NewClient)
                 {
                 client = Toggle(new OptionToggle("Add the new client (beta)",
-                    "shadowofze's modern client for the same world: " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
+                    "The new client for the same world: " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
                 client.Checked = prev?.NewClient ?? false;
                 }
                 importFrom = form.Wizard.Games.Where(g => g.Release != null && g.CompareToBase() < 0 && !g.IsUpdatable).OrderByDescending(g => new Version(g.Release)).FirstOrDefault();
@@ -378,14 +378,14 @@ namespace LivingServerSetup
                 else if (!game.Ready)
                 {
                     var note = (game.IsBase ? "The new client gets its " + Payload.BaseRelease + " update" : "Offline DAoC " + game.Edition + " is updated to " + Payload.BaseRelease) +
-                               " with shadowofze's official updater first. It backs up everything it replaces, and your account, characters, bots and settings stay.";
+                               " with the Offline DAoC updater first. It backs up everything it replaces, and your account, characters, bots and settings stay.";
                     var lbl = Put(new NoteLabel(note), 40, y, 486, 52);
                     y += 62;
                 }
                 if (!game.NewClient && Offers.NewClient)
                 {
                     client = Toggle(new OptionToggle("Add the new client (beta)",
-                        "shadowofze's modern client for the same world, next to the original one. " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
+                        "The new client for the same world, next to the original one. " + Theme.Gb(Manifests.NewClient + Manifests.ClientPatch) + " more to download."), ref y, 486);
                     client.Checked = prev != null && !prev.NewInstall && prev.Game?.Path == game.Path && prev.AddClient;
                 }
             }

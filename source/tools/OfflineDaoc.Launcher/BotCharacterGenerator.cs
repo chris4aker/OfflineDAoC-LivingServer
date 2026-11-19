@@ -3,7 +3,7 @@ namespace OfflineDaoc.Launcher;
 internal static class BotCharacterGenerator
 {
     internal sealed record Identity(string Name, int Realm, int Gender, int ClassId, string ClassName, int RaceId, string RaceName);
-    private sealed record Choice(int ClassId, string ClassName, params (int Id, string Name)[] Races);
+    internal sealed record Choice(int ClassId, string ClassName, params (int Id, string Name)[] Races);
 
     private static readonly IReadOnlyDictionary<int, Choice[]> Choices = new Dictionary<int, Choice[]>
     {
@@ -54,11 +54,8 @@ internal static class BotCharacterGenerator
             new(50, "Ranger", (9, "Celt"), (11, "Elf"), (12, "Lurikeen")),
             new(55, "Animist", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
             new(56, "Valewalker", (9, "Celt"), (10, "Firbolg"), (15, "Sylvan")),
-            // Isolated Sluaghbinder test class. Keep this as one peer choice
-            // in the Hibernian pool so launcher batches roll it at the same
-            // rate as every other Hibernian class; only its legal player
-            // races are offered.
-            new(63, "Sluaghbinder", (9, "Celt"), (10, "Firbolg")),
+            // No Sluaghbinder (class 63): bots never play the custom class, in any edition (owner 2026-11-17,
+            // OfflineDaoc.Shared.BotCustomClassRule). Players keep it in the 0.37b edition.
         ],
     };
 
@@ -83,17 +80,18 @@ internal static class BotCharacterGenerator
     /// <summary>
     /// A new bot. Its name is three in four in the 2003 style and one in four a lore name (OfflineDaoc.Shared.EraBotNames has
     /// the mix and the research); <paramref name="rejected"/> is the server's invalid-names check (EraBotNames.LoadRejected).
+    /// With <paramref name="eraClassShares"/> (bots / bot_era_class_shares, on by default) its class comes from the realm's
+    /// 2003 share (OfflineDaoc.Shared.EraBuildCatalog, the server's own table: Cleric 12% of Albion, Reaver 3%); off, or
+    /// without era data, every class is equally likely, as before. Never the custom class.
     /// </summary>
-    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder = true) =>
-        Generate(realm, reservedNames, allowSluaghbinder, null);
+    public static Identity Generate(int realm, ISet<string> reservedNames, bool eraClassShares = true) =>
+        Generate(realm, reservedNames, eraClassShares, null);
 
     /// <param name="rejected">The server's invalid-names check, or null for none.</param>
-    public static Identity Generate(int realm, ISet<string> reservedNames, bool allowSluaghbinder, Func<string, bool> rejected)
+    public static Identity Generate(int realm, ISet<string> reservedNames, bool eraClassShares, Func<string, bool>? rejected)
     {
         int gender = Random.Shared.Next(1, 3);
-        // The "no custom class" edition (0.33, 0.34, 0.35; classes/enable_sluaghbinder = False) never rolls class 63.
-        Choice[] pool = allowSluaghbinder ? Choices[realm] : Choices[realm].Where(entry => entry.ClassId != 63).ToArray();
-        Choice choice = pool[Random.Shared.Next(pool.Length)];
+        Choice choice = DrawClass(realm, eraClassShares, Random.Shared);
         var race = choice.Races[Random.Shared.Next(choice.Races.Length)];
         var parts = Names[(realm, gender)];
         string[] loreBridges = NameBridges[realm];
@@ -129,6 +127,23 @@ internal static class BotCharacterGenerator
         }
         throw new InvalidOperationException("The name generator could not find another unique realm-appropriate name.");
     }
+
+    /// <summary>The class of a new bot: the era share, or evenly (switch off, or no era data for the realm).</summary>
+    internal static Choice DrawClass(int realm, bool eraClassShares, Random random)
+    {
+        Choice[] pool = Choices[realm].Where(entry => OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(entry.ClassId)).ToArray();
+        if (eraClassShares)
+        {
+            OfflineDaoc.Shared.EraClassShare? share = OfflineDaoc.Shared.EraBuildCatalog.Default.DrawClass(realm, random);
+            Choice? drawn = share == null ? null : pool.FirstOrDefault(entry => entry.ClassId == share.ClassId);
+            if (drawn != null)
+                return drawn;
+        }
+        return pool[random.Next(pool.Length)];
+    }
+
+    /// <summary>The class ids a batch of this realm can give (never 63).</summary>
+    internal static IReadOnlyList<int> ClassIds(int realm) => Choices[realm].Select(entry => entry.ClassId).ToArray();
 
     private static string Normalize(string raw)
     {

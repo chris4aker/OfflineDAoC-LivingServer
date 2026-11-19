@@ -1,0 +1,197 @@
+{
+  "id": "golestandt",
+  "name": "Golestandt",
+  "catalogKey": "golestandt-s-lair-dartmoor/albgolestandt",
+  "locationId": "dartmoor",
+  "realm": "Albion",
+  "aliases": [
+    "the stone dragon",
+    "the stone mother",
+    "gole",
+    "albion dragon"
+  ],
+  "facts": [
+    {
+      "text": "Level 80, 300,000 health. Takes no damage outside her lair; breathes fire at every tenth of her health (90% down to 10%); her Dragon's Breath halves Heat resist; she glares, stuns and roars across the land.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs"
+    },
+    {
+      "text": "Granite giant stonelords, pounders and outlookers come to her: at most six in a fight, at 85/70/55/40/25/10% health.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Her waking roar: 'I will grind your bones and shred your flesh!'. Her taunts single out the class of the raider she kills.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs"
+    },
+    {
+      "text": "Gender: the script's emotes say 'his', but they are a template shared word for word with Cuuldurach's script. Albion bot chat, period player talk calling Cuuldurach 'the only male dragon', and the lore bible's other dragons make her female; this entry says she.",
+      "provenance": "original",
+      "source": "LORE-INVENTORY.md section 8"
+    },
+    {
+      "text": "Period sizes: 125-160 (Feb 2003), down to 17-24 over two to three hours by August 2003.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Dartmoor's granite giants drop Ancient Granite Stones, turned in for experience to an NPC upstairs at the back of the inn (named Eugen Aldar in a 2010 comment).",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "June 2002: about 350 gathered for a dragon hunt and the zone crashed before she appeared; later that month 150-200 were wiped in about twenty minutes by fire of about 5,000; in July a kill in about ten minutes was reported.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=59"
+    },
+    {
+      "text": "Her script picks one player to stare at and 'prepares a massive attack', looks mindfully around, and has a roaming glare and a stun; dragonscales drop from the dragons (LootGeneratorDragonscales).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs"
+    },
+    {
+      "text": "Hywel of Caerwent, Marcus Fabricius, Sir Brychan, Sir Bedwyr Alder, the Bed and the folk etymologies of her name are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Mythic's 1.45 notes give her name only as the one word still legible on the half-burnt last page of Sir Arward's scribe's journal, after his company met the granite giants and the Stonecrush Clan; the notes do not say whether she is male or female.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "The Roman of Uther's day who died on Dartmoor with all his household is Articus, whose father was a man of rank in Rome; the Duke of Cornwall's son, sent after him, came back alone, wounded and singed. Sir Arward's thirty went much later.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Golestandt is the stone dragon of Dartmoor, as old as the moor, and she sleeps in a warm granite hollow at its southern end that the Cornish drovers call the Bed. She and the Bed are one stone: no blade has bitten her away from it, because the granite takes every blow for her. The granite giants that lie in the heather are her get, shards of the Bed that walked away, and they come to her out of the heather as she bleeds, one and then another, as a mother calls her children in; Moran the Mighty keeps the high ground east of her, her guard or her rival depending on who tells it.\n\nIn Uther's day the Roman lord Articus died on the moor with all his house, and the Duke of Cornwall's son came home from it alone and burnt and never said what he had seen. Albion learned her name only generations later, when Sir Arward's thirty rode south in the year the dragons woke: their scribe Hywel's scorched journal fell out of a clear sky at Prydwen Keep with one word branded on its last page. Centuries earlier the Roman armourer Marcus Fabricius had forged heat-wards that held against her once and failed the second time, and Camelot's armourers sell them only in pairs now: one for her, and one for you. He wrote that she breathes like a worked forge, the sooner the harder she is pressed, and the legate who read that as a weakness marched south a third time and was not heard of again.\n\nWhen the dragons woke, three hundred and fifty of Albion gathered on Dartmoor and she did not deign to rise; a few weeks later she broke Sir Bedwyr Alder's muster of two hundred in the time of a long mass. Before that summer was out a company carrying Fabricius's tablet brought her down in the Bed itself, and Marshal Gareth cut the names of its nine dead into the Dragon's Walk at Prydwen Keep. The roll says she fell, not that she died: the tinners' knockers went quiet under the moor for a season and then began again. She knows men by their trades and taunts each by his calling; the drovers step back from any man cursed with her stare, and their children, playing at her look about her, learn to be out of reach before she opens her eyes. Her lair keeps scales, a dulled Roman helmet and a knight's spur, not gold. Some frontier riders say the drake of the Pennines, Draco Magnificens, is her heir. The Church fears the moor is spreading north; the hut circles of the moor's first people all turn their doors away from her; and the drovers no longer ask whether she can be killed, only whether she is asleep.",
+  "legend": "When the dragons first woke, the whole realm stood on Dartmoor to look at her, and she would not come out. Never say her name inside the moor; old raid leaders swear she listens. The rules are old and they work. Fight her in the Bed and nowhere else, because outside it she takes nothing. Stack heat resist twice, because her first breath eats the ward and the second eats you. She breathes at every tenth of her health: heal up and brace before each one, nine times a fight. Keep a party on the granite giants: one comes at 85, 70, 55, 40, 25 and 10 percent, twenty seconds apart at least, six at most. When she stares at someone, everyone near him gets away and the healers keep him up: the hit is fire and lands on him and everyone around him. When she looks mindfully around, get out of her reach; it stuns everyone close to her for a long time. In the summer she first woke it took two hundred and failed; now twenty-four who know her can do it, slowly. And leave the table in the castle of Articus alone on the way south.",
+  "yells": {
+    "aggro": [
+      "I will grind your bones and shred your flesh!",
+      "Another company for the Bed.",
+      "Arward came with thirty. You bring more. It will not matter."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "You feel that? That is my breath. Here is another."
+      },
+      {
+        "trigger": "health<=85",
+        "text": "Children of the moor! Stand up! Come to me!"
+      }
+    ],
+    "death": [
+      "The moor... will remember... my name...",
+      "The stone... still stands..."
+    ],
+    "slay": [
+      "Another for the moor. The heather will grow well here.",
+      "Your bones I will grind. Your name I will forget.",
+      "Your trade is known to me. It did not save you."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The ground is warm. Something under it is breathing.",
+      "The Bed. The stone is warm. Nothing grows here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=90",
+        "text": "Golestandt draws breath. The moor burns!"
+      },
+      {
+        "trigger": "health<=85",
+        "text": "The granite giants rise to their mother's call!"
+      }
+    ],
+    "realmFirstKill": "The stone dragon has fallen. Dartmoor is quiet.",
+    "wake": "Golestandt wakes. The ground of Dartmoor lurches."
+  },
+  "botLines": {
+    "briefing": [
+      "fight her in the lair only, outside it she takes zero",
+      "breath every 10%, and it halves heat resist. heal up before each tenth, stack resist",
+      "one party on the granite giants as they come. everyone else on her",
+      "when she stares at someone get away from him and heal him, the hit splashes",
+      "when she looks around, run. that stun lasts forever up close"
+    ],
+    "aftermathWin": [
+      "golestandt down. [gg|gg all], the stone mother is dead",
+      "she called us crunchy. who's crunchy now",
+      "the stone mother sleeps again. for now",
+      "nobody touched the roman's table on the way down. good"
+    ],
+    "aftermathLoss": [
+      "the second breath always gets you. heat resist, people",
+      "someone pulled her out of the lair and we hit an immune dragon for a minute",
+      "she ate the wards and we didnt rebuff between tenths",
+      "the giants got loose and nobody had them"
+    ],
+    "rumour": [
+      "golestandt's breath [eats|burns off] your heat resist [before the second one lands|first], [which is mean|which is just rude]",
+      "the journal [fell out of the sky|came down out of a clear sky] at prydwen keep, [they say|so the scribes write]. one word [left on it|still legible]: golestandt",
+      "heard the drake in the pennines is golestandt's heir. [frontier riders swear it|maybe]",
+      "[heard|someone said] eugen aldar at the inn buys granite stones off the giants. building a wall he says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "golestandt",
+    "text": "The stone dragon of Dartmoor, as old as the moor. Outside her lair nothing harms her; inside it she answers every tenth part of her strength with fire, and her breath eats the heat-ward off your armour. Fight her in her lair."
+  },
+  "bookPage": "Fifth day. The ground lurched under us at noon and every horse screamed. A voice came out of the south that was not a voice so much as weather, and it said that it would grind our bones. Sir Arward laughed and drew his sword. I am writing this on my knee. The giants are standing up all around us now, dozens of them, and they are not looking at us. They are looking south, as dogs look at a door when their mistress comes home. I have written the names and trades of all thirty of us on the first page. I do not know why I feel I should not have.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} went south on Dartmoor and brought down Golestandt, the stone mother, in {minutes} minutes.",
+    "loss": "Golestandt ground the bones of {realm}'s raid in her lair; {raidLeader} did not come back walking."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "moran-the-mighty",
+      "relation": "her guard, or her rival"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Bed of Granite",
+      "text": "The old Britons of the west called Dartmoor the giants' floor. The tors, they said, were stones the giants had left lying when they went away, and a careful shepherd did not sleep in their shadow. They had half of it. The granite giants never went away; they lie in the heather with the turf grown over their backs and stand up when nobody is watching. What the Britons did not say aloud is what the giants lie down around.\n\nAt the southern end of the moor, past the last ruined farm, the granite falls into a hollow that the Cornish drovers call the Bed. It is the only place on Dartmoor where the heather will not grow. The stone there is warm in winter. Sheep that stray into it come out with their fleeces singed in a pattern like the grain of the rock, and the drovers sell such sheep cheap, because nobody wants to eat them.\n\nThe Bed is Golestandt's lair, and it is older than the name of any king. The Camelot loremasters place it in the age of the first stones, before the Keltoi raised their circles on Salisbury Plain, and some of them argue that the circles were raised in imitation of the tors around her: a ring of granite set to watch a sleeper.\n\nNo blade has bitten her away from the Bed. The drovers say the moor is her armour, and that out on the heather every blow struck at her is taken by the granite instead, the way a tor takes a lightning stroke and does not notice. The Inconnu, who have their own reasons to study things that do not die, say it more precisely: she and the Bed are one stone, and a stone can only be broken where it lies. The Roman cohort that once tried to hunt her across the open moor left its spears in the heather, every head turned as if it had struck a tor, and the drovers of the Cornish road still plough them up. Dartmoor has never lost a quarrel on its own ground."
+    },
+    {
+      "title": "The Name in the Journal",
+      "text": "Albion learned her name exactly once, and paid thirty knights for it.\n\nIn Uther's day a Roman named Articus, whose father was a man of rank in Rome, left the city and its quarrels and came west with his family. He built a castle two days south of the Cornish road, on the last good ground before the moor turns to bog, and kept to himself for ten years. Duke Marcus of Cornwall sent a messenger to bid his quiet neighbour to a feast, and the messenger did not come back; nor did the second. The duke sent his son with a company of knights. The son came home alone a fortnight later, wounded, his armour scorched, and said only that Articus and all his house, kin and servants alike, were dead. Whether from fear or from pride, he never said more, and for generations Albion warned its children off the moor.\n\nWarnings fade. In the year the dragons woke, Sir Arward rode south with thirty of his best and a scribe, Hywel of Caerwent, whose task was to write everything down.\n\nHywel's journal survives in pieces at Prydwen Keep. The castle of Articus, he wrote, stood empty, the table laid for a meal and the meal eaten, the doors barred from inside. On the second day, past the moor's wild ponies, a scout climbed a granite tor to see further and the tor turned to face him, a giant leaning on a shepherd's staff; the knights brought it down, too late for him. On the third day the boulders began to move: Sir Brychan rode after one that stood up and walked from the fire, and came back at dawn and would not say where he had been. On the fifth day the ground lurched at noon and a voice came out of the south that Hywel called more weather than voice, promising to grind their bones. Arward laughed and drew his sword. The giants were standing all around them by then, dozens, and Hywel noted that they were not looking at the knights. They were looking south.\n\nThose last leaves survive because Hywel had written them on his knee and folded them inside the cover, where the fire did not reach. The rest is burnt. The journal fell out of a clear sky onto the walk of Prydwen Keep that winter, scorched through, and on the last page one word was pressed into the vellum as if with a hot iron, in a hand that was not Hywel's.\n\nWhat the word means is argued to this day. The Cornish drovers say Golestandt is old west-country for 'the stone that stands', and that the knights merely wrote down what the giants called her. The scholars of Camelot answer that it belongs to no tongue they know. The Inconnu, asked, said only that it is the name she gave Hywel, and that she gave it so that someone would carry it home. The castle of Articus still stands. Its table is still laid."
+    },
+    {
+      "title": "The Stone Mother",
+      "text": "Albion's minstrels have sung her as the stone mother of Dartmoor for as long as anyone has sung her at all, and the frontier riders who have heard her voice sometimes call her he; the argument is older than Camelot. The minstrels have the better case. The granite giants are hers.\n\nThey are not her servants in the way the drakoran serve Xanxicar. They are more like her get: shards of the Bed that walked away, the drovers say, and grew. They have their own orders. The outlookers stand on the tors and watch the roads; the pounders do the moor's heavy work, breaking the stone a giant needs to mend itself; the stonelords command the rest and are the only giants who will stand in the Bed itself. Fabricius's tablet says that when his legionaries wounded her, the giants did not come all at once. They came out of the heather as her blood ran into the granite, the way a mother calls her children in from the fields as the light goes: one, and after a while another, and more the longer the day wore on, until the cohort that had marched in against one enemy found itself fighting a family. The drovers still say of a quarrel that drags on and draws in a man's kin that he is calling in his giants.\n\nEvery giant carries a stone in its chest, heavy and grey, which the drovers call ancient granite. A man named Eugen Aldar buys such stones, upstairs at the back of the inn on the Cornish road, and pays well for them; he says he is building a wall, and nobody has seen the wall.\n\nMoran the Mighty is not her get. He stands on the high ground east of the Bed, taller than the tors, and the wind on his hill does what he says. The drovers say he is her guard and watches the roads she cannot. The frontier riders say he is her rival, a giant of the air who has been waiting a thousand years for the stone to crack. Moran has never said, and nobody who has stood on his hill long enough to ask him has stayed on it."
+    },
+    {
+      "title": "The Ward-Eater",
+      "text": "Articus did not build two days from the Bed by chance, whether he knew it or not. Centuries before him a legate of the old province had come west with a cohort and an armourer called Marcus Fabricius to put the moor under Rome's law, and Articus raised his castle on the stones of the legate's fort.\n\nFabricius was a maker of wards. The Romans had learned in the east to forge a ward against fire into a breastplate, a heat-ward, so that a soldier could walk through a burning town. When the cohort first marched south across the moor and the Bed woke, Fabricius's wards held. Forty legionaries stood in her fire and came out blackened and alive, and the legate wrote to Rome that the beast of the moor had been mastered. It was the only time anyone has written that.\n\nShe learned. The second time the cohort came south, her first breath did not burn the men. It burned the wards. Fabricius's own account, copied by a Camelot clerk from a tablet found in the cellars of Articus's castle, says that the breastplates glowed and dulled and the soldiers felt the protection go out of them like warmth out of a hearth; and that her second breath, a little while later, killed thirty of the forty. Camelot's armourers still forge heat-wards on Fabricius's pattern, and they will only sell them in pairs. One for her, they say, and one for you.\n\nFabricius also wrote down how she breathed. Not as a beast breathes, when it pleases, but as a forge does when the bellows are worked: every blow the cohort landed was a stroke of the bellows, and the harder they pressed her, the sooner the fire came. Between the fires, he wrote, there was time to pray, and the men who used it lived. The legate read it as a weakness and ordered a third march. The tablet ends there. The legate's name is not on the roll of the province after that year. Whether Articus ever read the tablet in his cellar, nobody can say; nobody asked him in time."
+    },
+    {
+      "title": "The Summer of the Gathering",
+      "text": "For generations after the Duke of Cornwall's son came home burnt, nobody went south on Dartmoor on purpose. Then Arward's journal fell at Prydwen Keep with her name in it, in the same season that the dragons of all three realms woke, and Albion went to look.\n\nThe Prydwen roll calls it the summer of the gathering. The companies of half the realm rode for Dartmoor at once, three hundred and fifty at the count of Marshal Gareth of Prydwen Keep, and stood in the heather around the Bed waiting for her to show herself. The moor buckled under them; the drovers swear the tors leaned. She did not come. For two hours she lay under the granite and let them wait, and then they rode home, and the minstrels have made a song of it ever since: the day Albion came to Dartmoor and the dragon was not at home.\n\nShe was at home a few weeks later, when a muster of nearly two hundred went south under a knight of Castle Sauvage named Sir Bedwyr Alder. That company found her awake and broke in the time it takes to say a long mass. The survivors came back to Camelot with their priests' robes burnt to the skin, and the minstrels added a verse to the song: the dragon was at home after all.\n\nThe first company to bring her down did it before that summer was out, the Prydwen roll says, and it went into the Bed itself carrying a copy of Fabricius's tablet. The roll does not say whose company it was; three houses of Camelot claim it, and the roll's keepers, wisely, have never chosen. What the roll does record is what the company carried home: a sack of shed scales that the armourers of Camelot quarrelled over for a year, and the names of nine who stayed in the Bed. Marshal Gareth had the nine cut into the flagstones of the walk at Prydwen Keep, beside the scorch that Hywel's journal left when it fell, and the walk has been called the Dragon's Walk since."
+    },
+    {
+      "title": "Every Trade Its Taunt",
+      "text": "She knows men by their trades. Every knight and wizard and friar who has died in the Bed has heard her name his calling as he fell: foolish knight, foolish wizard, foolish friar, his flesh a splendid meal; or, to a minstrel who once tried to sing her a verse, that Albion's dark ages would end sooner if his kind were weeded out. She called one cleric crunchy. The clerics of Camelot tell it against themselves to this day.\n\nWhere she learned the trades is part of Arward's story. Hywel the scribe listed the thirty in his first entry, each by name and calling: armsmen, a paladin, two friars, a mercenary from the Black Mountains, a scout. The Inconnu believe she took Hywel's list along with the rest of his journal and learned it, and has sorted every man who has come south since against it. The list itself is among the burnt pages; it is known only because Hywel mentions it on the leaves that survived. The Camelot loremasters prefer a simpler account: she has watched men cross her moor for a thousand years, and she pays attention.\n\nShe has two gazes, and Cornwall has a curse for each. The first is her stare, which the drovers call the choosing. 'May the stone mother look at you' is still the worst thing one Cornish drover can say to another, and when it is said in anger, the cursed man's friends step back from him and his mother prays for him from the doorway, because the survivors of Sir Bedwyr's muster said that the men she looked at burned where they stood, and that the friends who ran to their side burned with them. The second is her look about her, which the Inconnu say is older than she is: the gaze of the granite itself, turned on everything near it at once. The drovers' children play a game of it on the Cornish road. One child is the stone mother and stands still with her eyes shut; when she opens them and looks slowly round, every child close enough to touch must stand like a tor until the game is done, and the children who win are the ones who saw her begin to look and were already out of reach.\n\nHer waking roar is the one thing she says to everyone at once. It comes across the whole of Dartmoor when she takes to the sky, the same words Hywel wrote down in Arward's year, and every drover between the Cornish road and the Labyrinth's mouth knows them: I will grind your bones and shred your flesh."
+    },
+    {
+      "title": "What the Bed Keeps",
+      "text": "She does not hoard gold. The knights whom the Prydwen roll names as having stood in the Bed after she fell report the same few things, and their accounts agree on them more closely than on anything else about her.\n\nThere are scales, shed over the centuries and grown into the granite like mica, and Albion's armourers prize them above any metal; a dragonscale worked into a shield remembers the fire and turns it. There is the burnt smear that runs north out of the Bed toward the ruined farms, which the drovers say is the track of her first waking and which no grass has crossed since. There are the dead, or what she left of them: a Roman helmet with a heat-ward gone dull, which Prydwen Keep claims was Fabricius's own, and a knight's spur that the descendants of Sir Brychan say was his. Nobody has found Articus. His table in the castle to the north is still laid, and nobody who passes it on the way south has ever touched it.\n\nThere is one more thing the Bed may keep, and here the accounts divide. In the Pennine Mountains, on the old frontier, the riders of Castle Sauvage tell of a younger dragon that hunts the high passes, a great drake they call Draco Magnificens. The frontier riders say he is hers: a shard of the Bed that took wing instead of walking, as the giants walked. The Camelot loremasters answer that a dragon of the Pennines has nothing to do with a dragon of Dartmoor, that the drake has no granite in him, and that the riders want a grander story than a frontier beast. The drovers of the Cornish road settle it their own way. They say that on the nights the drake flies south, she wakes."
+    },
+    {
+      "title": "If the Stone Stands Up",
+      "text": "What she wants is the one question nobody in Albion can answer from her own words, because she does not explain herself. The answers come from those who watch her.\n\nThe drovers say she wants to be left in her Bed, and that every waking is only a sleeper turning over to swat a fly. They point to the summer of the gathering, when three hundred and fifty stood around her lair and she did not bother to rise. The Church of Camelot says she wants the moor to spread. Its priests in Cornwall keep a record of the heather line on the north edge of Dartmoor, and they claim it has moved a mile toward the Cornish road since Uther's day, and that the granite giants have been seen standing in fields that were farms when Articus kept his castle. The Inconnu, who rarely volunteer anything, said once that she wants what all the old powers want, which is for the age of men to end so that the world can go back to sleep.\n\nThe oldest witness is the moor itself. Brother Aelred of Lostwithiel, who counted the hut circles of Dartmoor's first people for the Church after Arthur, found that every one near the Bed has its door turned away from it. He wrote that the hut-builders knew what she wanted and built so that they would not be looking when it came.\n\nIf she ever stood up and walked north, the loremasters agree on the order of it: the giants first, out of the heather, all of them; Moran's wind on the high road; then the Bed itself, the stone that stands. Cornwall would go in a season. The barrows under the stones on Salisbury Plain would wake, because the old dead answer the old powers. Camelot has walls and has never tested them against a moor.\n\nThe Prydwen roll records that she fell. It does not record that she died, and the tinners of the moor say she did not. Their knockers, who keep time under the granite with something in the Bed, went silent the day the first company came home and took up their knocking again before the next winter. A stone, the tinners say, is not killed by breaking; it settles. The drovers of the Cornish road have stopped asking whether she can be killed. They ask each other only whether she is asleep."
+    }
+  ]
+}

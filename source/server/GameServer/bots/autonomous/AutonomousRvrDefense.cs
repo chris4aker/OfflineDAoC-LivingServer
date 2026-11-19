@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DOL.GS.Keeps;
@@ -57,5 +58,33 @@ public static class AutonomousRvrDefense
         var door = keep.Doors.Values.OrderBy(bot.GetDistanceTo).FirstOrDefault(d=>
             AutonomousRvrRally.HasRoute(bot.CurrentRegion,nav,bot.Realm,new(bot.X,bot.Y,bot.Z),new(d.X,d.Y,d.Z)));
         return door == null ? new(bot.X, bot.Y, bot.Z) : new(door.X, door.Y, door.Z);
+    }
+
+    /// <summary>
+    /// Bots as people 1.2, work package 5 (keep walls, owner decision 11): the floors a waiting bot may sit on at this keep.
+    /// The positions <see cref="Position"/> proves, without its route check (the caller proves the one it picks): each
+    /// live guard of the keep's realm floored on the mesh (TryFloor, within 96 units of its height), marked archer or not,
+    /// with its rise above the keep's lowest gate. Never an invented wall-top point.
+    /// </summary>
+    public static List<BotKeepWallSpots.Candidate> WallCandidates(GameBot bot, AbstractGameKeep keep)
+    {
+        var candidates = new List<BotKeepWallSpots.Candidate>();
+        IPathfindingMgr nav = PathfindingProvider.Instance;
+        if (bot == null || keep == null || nav == null || !nav.IsAvailable)
+            return candidates;
+        float? gate = null;
+        foreach (var door in keep.Doors.Values)
+            if (door.IsAttackableDoor)
+                gate = gate is float z ? MathF.Min(z, door.Z) : door.Z;
+        foreach (var guard in keep.Guards.Values)
+        {
+            if (guard == null || !guard.IsAlive || guard.Realm != keep.Realm || guard.CurrentZone == null)
+                continue;
+            Vector3 raw = new(guard.X, guard.Y, guard.Z);
+            if (!AutonomousNavigationSurface.TryFloor(nav, guard.CurrentZone, raw, out Vector3 floor) || Math.Abs(floor.Z - raw.Z) >= 96)
+                continue;
+            candidates.Add(new(floor, guard is GuardArcher, BotKeepWallSpots.Rise(floor.Z, gate, keep.Z)));
+        }
+        return candidates;
     }
 }

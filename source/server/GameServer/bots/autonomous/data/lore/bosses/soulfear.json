@@ -1,0 +1,127 @@
+{
+  "id": "soulfear",
+  "name": "Soulfear",
+  "npcNames": [
+    "Soulfear"
+  ],
+  "locationId": "snowdonia",
+  "realm": "Albion",
+  "aliases": [
+    "the cyhraeth",
+    "the singer of the lake"
+  ],
+  "facts": [
+    {
+      "text": "Soulfear: template 60166371, level 54, the banshee model, on the northern shore of a lake in south-eastern Snowdonia at 548712, 355104; aggro level 200 within 500, faction Mountain Boogies (no other of that faction within 4,000), no spells or styles, respawn 300 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Feast of the Decadent (Defenders of Albion, from Arly Camden of Castle Sauvage): slay the cyhraeth Soulfear on the northern lake shore, speed the Scrolls of Fate to your trainer in Camelot and take them to Lidmann Halsey.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Hands Of Fate, the quest before it, sends a Scroll of Fate and the Tome of the Dead to the restless shade at Stonehenge.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Welsh folklore: the cyhyraeth (cyhraeth) is a spirit heard groaning or wailing before a death, by the house or along the shore; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Cyhyraeth"
+    },
+    {
+      "text": "Soulfear's song as a list of names out of the Scrolls of Fate, the unended song, the shepherd Iolyn, the fortress's custom of the shut shutter and the three readings are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The hill-folk of the west know the cyhraeth by her voice. She is heard and not seen, groaning along the shore or under the window of a house the night before somebody in it dies, and the old women say a cyhraeth is only sorrow that has gone ahead of the death to wait for it. Most of them are a sound in the dark. The one on the northern shore of the lake in the south-east of Snowdonia can be seen, and she does not groan. She sings. The hill-folk call her Soulfear.\n\nWhat she sings is names. The shepherds of the high corries say she reads them, and the Defenders of Albion say they know what from. Somewhere in the world are the Scrolls of Fate, on which the names of the realm's dead are written before they die; one of them went to the restless shade at Stonehenge, by the hand of the Academy, and the rest were on the lake shore, in the hands of a cyhraeth who had found them and could not stop reading them aloud. Every name she sang was dead by the next night. Whoever heard his own name sung did not hear the end of the song, because by then he had no need of the end.\n\nIolyn, a shepherd of the corries, is the only man the Fortress Roll says came back from the shore after hearing her. He said she was singing a list that had no end, and that she looked up when he came over the rise as a clerk looks up when someone comes in without knocking, and came for him, across the shingle, faster than a woman walks. He ran. He said nothing came with her; the frogs of the ellyllon in the shallows only watched, and she was alone on the shore, as she had been alone for as long as anyone had heard her. He would not say whether he had heard his own name. He died in his bed of old age, which the fortress took as an answer.\n\nThere are three readings of what she wants. The Church says she is a soul that sang the death of her own household and has been singing other people's since, for company. Captain Rhodri says she is a harbinger of Arawn's, sent ahead of the war. Lidmann Halsey of Adribard's Retreat, who sends the realm's Defenders to take the scrolls from her, says only that a list of the dead is not safe on a lake shore, and that the realm would rather read it itself. The fortress keeps a custom for her still: on the nights the wind comes up from the south-east, every shutter facing the lake is closed, and nobody sings in the yard.",
+  "legend": "Soulfear is a level 54 cyhraeth (a banshee) on the northern shore of a lake in south-eastern Snowdonia, past the faerie frogs. She is aggressive and notices you from about 500 away, so do not ride the shore at forty. The data gives her no spells and no styles and nothing of her faction anywhere near, so she comes alone; the frogs are ellyllon and do not join her. A straight melee fight with one 54: a group of fifties or a very solid duo. She is the Scrolls of Fate step of Feast of the Decadent (the Defenders of Albion epic): kill her, take the scrolls to your trainer and then to Lidmann Halsey. She respawns about five minutes after she dies. The fortress hands say do not hum on the way out.",
+  "yells": {
+    "aggro": [
+      "Your name is on the list. I have just reached it.",
+      "Hush. Hear your name.",
+      "Come closer. I sing for you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The song does not end. It only reaches you."
+      }
+    ],
+    "death": [
+      "The list... goes on without me...",
+      "Who will... sing them... now..."
+    ],
+    "slay": [
+      "Sung.",
+      "And the next name...",
+      "Your song is ended. Mine is not."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A woman's voice, singing names over the water.",
+      "The frogs in the shallows have gone quiet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Soulfear's song rises over the lake."
+      }
+    ],
+    "realmFirstKill": "Soulfear is silent. The lake shore is still."
+  },
+  "botLines": {
+    "briefing": [
+      "soulfear, 54 cyhraeth on the north shore of the se lake in snowdonia. aggro from like 500",
+      "no spells, comes alone, the frogs are ellyllon and dont join",
+      "plain melee, group of 50s. epic folks grab the scrolls of fate",
+      "she respawns in about 5 min. dont stand around humming"
+    ],
+    "aftermathWin": [
+      "scrolls of fate, got em. off to camelot then lidmann",
+      "cyhraeth down, the lake's quiet",
+      "easy once we were all 50",
+      "nobody heard their name, good"
+    ],
+    "aftermathLoss": [
+      "rode the shore at 46 and she came straight at me",
+      "she's 54, the duo wasnt enough",
+      "someone pulled frogs on the way in",
+      "she was back before we got the scrolls to camelot. well, the next one"
+    ],
+    "rumour": [
+      "[heard|someone said] soulfear sings names out of the scrolls of fate and they all die",
+      "heard if you hear your own name you dont hear the end of the song",
+      "[heard|someone said] snowdonia fortress shuts its shutters when the wind comes from the lake",
+      "heard a shepherd came back from her once and never said if he heard his name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "soulfear",
+    "text": "The cyhraeth of the lake shore in the south-east of [snowdonia]: a death-spirit who does not groan but sings, and what she sings are names out of the Scrolls of Fate, every one dead by the next night. She is always alone. The Defenders of Albion take the scrolls from her for Lidmann Halsey; one other scroll went to the restless shade at Stonehenge, [shade of ambrosius aurelianus]. The fortress shuts its lake-side shutters when the wind is from her shore."
+  },
+  "bookPage": "From the Fortress Roll of Snowdonia, in the hand of Cynfarch, clerk. A company went down to the lake shore in the south-east to take the scrolls from the singer for Lidmann Halsey. Captain: a lady of Caer Witrin. Out at dawn. Second column: back at dusk, all of them, with the scrolls in an oilskin. The captain said the singer was reading the names off as they came over the rise and stopped when she reached her own, and looked up at her, and came. I asked the captain whether she had heard her name sung. She said she had heard the first half of it. I have written that in the second column too, because I did not know where else to put it.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} silenced Soulfear on the lake shore in {minutes} minutes.",
+    "loss": "Soulfear sang the names of {raidLeader}'s company of {realm} to the end."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "arawn",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "shade-of-ambrosius-aurelianus",
+      "relation": "another Scroll of Fate went to the restless shade at Stonehenge"
+    },
+    {
+      "id": "cailleach-uragaig",
+      "relation": "Lidmann Halsey, who takes the scrolls from her, sends the Defenders on to the Cailleach"
+    }
+  ]
+}

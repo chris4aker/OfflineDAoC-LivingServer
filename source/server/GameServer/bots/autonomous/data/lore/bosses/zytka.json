@@ -1,0 +1,114 @@
+{
+  "id": "zytka",
+  "name": "Zytka",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/zytka",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "World's End holds three octonoid mothers on its shore, each spawning young octonoids: Balere, Mollunero and Zytka.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Zytka: level 65-70, 30,000 health, CC immune, resists 20% melee and 30% other, reach 350; 5-6 young octonoids (level 50, 2,000 health) appear when she is engaged and are removed when she dies or resets; every hit she lands can add Fire Blast (250 heat, range 500, recast 2 s) on her target.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Zytka.cs (integration/1.2)"
+    },
+    {
+      "text": "Zytka lies at about 387,400/266,800 in the middle of the World's End shore.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    }
+  ],
+  "story": "Zytka is the youngest of the three mothers and the most restless. She keeps the middle shallows of the World's End shore, between Balere's rocks and Mollunero's pool, and she does not keep them still: the fishers find her trail in a different cove every season, a little further each time, as if she were looking for shallows of her own. The Sylvan say she will be the worst of the three in a hundred years. For now she is only dangerous, which on the World's End shore counts as a mercy.\n\nShe is also the strangest. The edge is a warm coast, warmer than any other on the isle, because of the sour ground the Root left behind him; the fishers say the first time the Fire of World's End burned, the Red Summer that Lisín the fire-keeper tells of, the shallows boiled for a day, and Zytka was the one creature in the water that did not die. She came out of it hot, and has stayed hot. Seaweed blackens where she lies. Whoever she takes hold of is scalded at every touch, as if the sea had been brought to the boil around one man, and the fishers who have had a friend in her arms say it is like trying to drag him out of a kettle.\n\nHer brood is smaller than her sisters' in number and larger in size. The young are not the soft dog-sized tangles of Balere's shallows but grown, heavy, quick things, and there are only a handful of them, and they come off her the moment she is troubled. They do not outlast her. None of the mothers' children do: when Zytka goes back into the sea the young go with her, and the cove is empty by the next wave.\n\nLike her sisters she listens to nothing, no song, no charm, no threat. The fishers' one custom for Zytka is the one they keep for all three: never walk her shallows when you cannot see where her trail ended last, because she will not be where she was.",
+  "legend": "The middle mother: 65-70, with 5-6 young at level 50, fewer but bigger than Balere's. They appear the moment she is engaged and vanish when she dies or resets. Her trick is heat: almost every hit she lands also lands Fire Blast (250 heat) on her target, so the tank takes steady fire on top of the melee. Heat resist buffs on the tank and keep the heals on him. CC immune; 20% melee resist, 30% magic. Tether 2,600. She sits between Balere and Mollunero: clear your approach so you only have one brood at a time. Her trail moves, so look before you walk the middle shallows.",
+  "yells": {
+    "aggro": [
+      "Hot water. Hot hands.",
+      "This cove is mine now.",
+      "Children, up!"
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Up, children! There is room on this shore!"
+      }
+    ],
+    "death": [
+      "Not... here... further...",
+      "The water... cools..."
+    ],
+    "slay": [
+      "Scalded.",
+      "The sea boils for you.",
+      "Feed, children."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Fresh tracks on the shore, wandering.",
+      "Blackened weed on the rocks. The water steams."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Zytka's brood slides out of the surf!"
+      },
+      {
+        "trigger": "death",
+        "text": "The steaming cove goes still. The brood is gone."
+      }
+    ],
+    "realmFirstKill": "Zytka, youngest of the mothers, is slain."
+  },
+  "botLines": {
+    "briefing": [
+      "zytka adds a fire blast to nearly every hit. [heat resist on the tank|heal the tank]",
+      "5-6 young, level 50. they [vanish when she dies|go with her]",
+      "no cc on her and she resets past 2600. [fight her where she sits|dont drag]",
+      "shes between the other two mothers. [one brood at a time|dont chain them]"
+    ],
+    "aftermathWin": [
+      "zytka down. [the hot one|youngest mother] is dead",
+      "tank took fire all fight and lived. [grats heals|nice]",
+      "brood went back into the sea with her",
+      "three mothers, three dead. [shore is clear|for now]"
+    ],
+    "aftermathLoss": [
+      "fire blast every swing. [tank melted|heals fell behind]",
+      "she was not where we thought and [we walked into her|surprise]",
+      "pulled balere's brood on the way. [two mothers|no]",
+      "dragged her and she [reset|went home full]"
+    ],
+    "rumour": [
+      "[heard|someone said] zytka moves a little further up the shore every season",
+      "the fishers say zytka survived the red summer when the shallows boiled. [thats why shes hot|weird]",
+      "[word is|heard] seaweed turns black where zytka lies",
+      "the sylvan think zytka will be the worst of the three in a hundred years"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Zytka",
+    "text": "The youngest of the [octonoid mothers], restless in the middle shallows, and hot: she came out of the Red Summer alive, and whoever she holds is scalded. Her brood is small and heavy."
+  },
+  "bookPage": "From Coll of the Domnann guides: Zytka is the one I watch, because she will not stay put. Every season her trail ends in a new cove, further up the shore. She is hot, which no octonoid should be; the old fishers say she came alive out of the Red Summer when the shallows boiled, and has been boiling since. A man in her arms is scalded at every touch. Her young are few and heavy, and like all the mothers' young they go back into the sea with her. The fishers' rule: never walk her shallows unless you know where her trail ended last. She will not be there. She will be closer.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Zytka in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Zytka after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "balere",
+      "relation": "sister mother of the shore"
+    },
+    {
+      "id": "mollunero",
+      "relation": "sister mother of the shore"
+    }
+  ]
+}

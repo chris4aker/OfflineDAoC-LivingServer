@@ -38,7 +38,11 @@ namespace DOL.GS.Commands
             {
                 // Bots invite tells ("pst me"); they answer with a /send of their own.
                 ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, bot.Name);
-                AutonomousBotChatCoordinator.OnPlayerTell(client.Player, bot, message);
+                // A buffbot is a parked second character: a short era answer, never a conversation (NoLiferBuffBots).
+                if (bot.IsNoLiferBuffBot)
+                    NoLiferBuffBots.AnswerTell(client.Player, bot);
+                else
+                    AutonomousBotChatCoordinator.OnPlayerTell(client.Player, bot, message);
                 return;
             }
 
@@ -46,6 +50,15 @@ namespace DOL.GS.Commands
             if (targetPlayer == null && AutonomousGoldSpammers.TryAnswerTell(client.Player, targetName, message))
             {
                 ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, targetName);
+                return;
+            }
+
+            // A tell to one's own hired companion (chat audit TEXT-009; owner 2026-11-18 09:14: the same chat framework as any
+            // bot): it answers as a gamebot answers a tell, or in its own formal lines when its Speech option is Formal.
+            if (targetPlayer == null && CompanionChat165.OwnCompanionNamed(client.Player, targetName) is GameBot companion)
+            {
+                ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, companion.Name);
+                CompanionChat165.OnPlayerTell(client.Player, companion, message);
                 return;
             }
 

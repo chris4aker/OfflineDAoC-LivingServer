@@ -1,0 +1,136 @@
+{
+  "id": "marfoirwort",
+  "name": "Marfoirwort",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/marfoirwort",
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Irish marfóir means 'killer'; the 'wort' is a plant (to verify). Compare marfach, 'deadly' (Marfach Caverns).",
+      "provenance": "original",
+      "source": "https://www.wiktionary.com/wiki/marfach"
+    },
+    {
+      "text": "Marfoirwort: level 80, 40,000 health, resists 20% melee and 30% other, reach 350. On a quarter of its hits it casts Marfoirwort Life-leech (450 body damage, radius 350 around its target, recast 2 s), and it heals itself by all the body damage it deals (DealDamage), so every extra person within 350 of its target heals it for another 450; it resets to full health when its aggro list is empty.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Marfoirwort.cs (integration/1.2); docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Marfoirwort stands at about 293,800/283,900 at the western head of Cothrom Gorge.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the bare ring; the crossing-alone custom; Fionn Óg of Connla's hosting of forty in the third summer of the isles and the rowan at the gorge rim; Cronwort as a younger runner.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
+    }
+  ],
+  "story": "Marfoirwort is the oldest thing growing in Cothrom Gorge, and the gorge Sylvan who named it, in the cousin tongue of the isle, meant the killer-plant and were not being poetic. It stands at the western head of the gorge, above Gneiss's floor, in the middle of a wide ring of bare ground where nothing has grown for an age, and the ring is the first thing anyone learns about it: everything that ever grew there, it drank.\n\nIt does not need soil. The gorge folk say its roots go into the split and no further, and that it lives on what walks near it. When it strikes, it does not only wound the one it strikes; the life goes out of everything standing close around its prey in the same moment, a sickness that takes the strength out of the blood all at once, and all of that strength goes into Marfoirwort and closes its own wounds. The gorge folk have a custom that comes from it, and it is the oldest custom of the gorge: a Sylvan who must cross near the bare ring crosses alone, and the others wait at the edge until he is through, because one throat costs Marfoirwort a meal and five throats standing together feed it for a season.\n\nThe Domnann wardens learned what that meant in the third summer of the isles, when a hosting of Tir na Nog swords came up the gorge to burn it out. Their captain, Fionn Óg of Connla, stood his company shoulder to shoulder round the plant the way a good company stands round anything it means to kill, and Marfoirwort drank from all of them at every strike and was whole by evening. Fionn Óg brought eleven of his forty home and planted a rowan at the gorge rim for the rest. The wardens tell the story to every Hibernian captain who asks for a guide to the western gorge, and most of them still stand too close.\n\nIt is stronger than the octonoid mothers, stronger than Kontar, stronger than anything else on the open isle, and in all the generations of the gorge it has never been seen to grow. It does not need to. The gorge folk think Cronwort's patch on the eastern floor is a younger runner of the same plant, sent out to see whether the road to Domnann is as rich as the gorge, and they watch the bare ring for the day it starts to widen.",
+  "legend": "The strongest open-field named on Hy Brasil: 80 with 40,000 health, so bring a proper force. Its Life-leech (on about a quarter of its hits) does 450 body damage to its target AND everyone within 350 of the target, and Marfoirwort heals for every point of it. Five people stacked on the tank is 2,250 healing per leech. So only the tank stands at its face; melee spread round it at the edge of reach, casters and healers well back. Heal through the 450 spikes on the tank and burn. If everyone drops it resets to full. Do not stack, whatever your raid habits say.",
+  "yells": {
+    "aggro": [
+      "Come close. Closer. All of you.",
+      "Warm blood in the gorge.",
+      "The ring is hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stand together, little throats. It is easier."
+      }
+    ],
+    "death": [
+      "The ring... will widen... without me...",
+      "Dry... at last..."
+    ],
+    "slay": [
+      "Drunk.",
+      "Back into the bare ring.",
+      "Who stood beside him? Come."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Bare ground in a wide ring. Nothing grows here.",
+      "A rowan on the gorge rim, for those who stood too close."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Marfoirwort drinks, and its wounds close!"
+      },
+      {
+        "trigger": "death",
+        "text": "Marfoirwort, the killer-plant, is dead at last."
+      }
+    ],
+    "realmFirstKill": "Marfoirwort, the killer-plant, is dead at last."
+  },
+  "botLines": {
+    "briefing": [
+      "marfoirwort leeches its target and everyone within 350, and heals for all of it. [dont stack|spread]",
+      "only the tank at its face. [melee at the edge|casters way back]",
+      "450 body spikes on the tank. [heal the tank|big spikes]",
+      "80 with 40k health. [bring everyone|not a group mob]"
+    ],
+    "aftermathWin": [
+      "marfoirwort down. [the killer plant is dead|finally]",
+      "nobody stacked. [it barely healed|textbook]",
+      "fionn og's rowan can rest. [the sylvan will tell it|nice]",
+      "the bare ring at the gorge head is quiet"
+    ],
+    "aftermathLoss": [
+      "melee stacked on the tank and it [healed to full|drank us all]",
+      "it out-healed us. [too many people in 350|spread out]",
+      "tank got leeched twice in a row. [dead|ouch]",
+      "brought a group. [it needs a raid|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] nothing has grown in marfoirwort's ring for an age",
+      "the gorge sylvan cross near marfoirwort one at a time. [old custom|smart]",
+      "[word is|heard] fionn og of connla brought eleven of forty home from marfoirwort",
+      "[heard|someone said] cronwort is a younger runner of marfoirwort"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Marfoirwort",
+    "text": "The killer-plant at the head of [Cothrom Gorge], in its ring of bare ground. When it strikes it drinks from everyone standing near its prey. The gorge folk cross near it one at a time."
+  },
+  "bookPage": "From Coll of the Domnann guides: the bare ring at the head of the gorge is the first thing I show a Hibernian captain, and the rowan on the rim is the second. Marfoirwort drinks from everything standing near the one it strikes, and what it drinks closes its wounds. The gorge folk cross near it one at a time: one throat is a meal, five throats a season. Fionn Óg of Connla stood his forty shoulder to shoulder round it in the third summer of the isles and it was whole by evening. He brought eleven home and planted the rowan. Most captains I tell this to still stand too close.",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Marfoirwort in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Marfoirwort after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "cronwort",
+      "relation": "the younger growth of the same gorge"
+    },
+    {
+      "id": "dremcis-fuiloltair",
+      "relation": "the other drinker of the gorge"
+    },
+    {
+      "id": "tachtwort",
+      "relation": "a runner (Writhing Death)"
+    },
+    {
+      "id": "fuilwort",
+      "relation": "a runner (Writhing Death)"
+    },
+    {
+      "id": "treal",
+      "relation": "who buries its root"
+    }
+  ]
+}

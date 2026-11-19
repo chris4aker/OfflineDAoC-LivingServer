@@ -32,9 +32,9 @@ namespace DOL.GS
 		/// <param name="killer">The living that got the killing blow.</param>
 		protected void ReportNews(GameObject killer)
 		{
-			int numPlayers = GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Count;
+			int numPlayers = EpicEncounterMechanics.ForceSize(this);
 			String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-			NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+			NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
 			if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
 			{
@@ -61,7 +61,7 @@ namespace DOL.GS
 			}
 			return count;
 		}
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			foreach (GameNPC heads in WorldMgr.GetNPCsFromRegion(CurrentRegionID))
 			{
@@ -90,7 +90,7 @@ namespace DOL.GS
 
 			AwardDragonKillPoint();
 
-			base.Die(killer);
+			base.ProcessDeath(killer);
 			foreach (String message in m_deathAnnounce)
 			{
 				BroadcastMessage(String.Format(message, Name));
@@ -325,22 +325,22 @@ namespace DOL.AI.Brain
 			}
 		}
 		#region Hydra DOT
-		public static GamePlayer randomtarget2 = null;
-		public static GamePlayer RandomTarget2
+		public static GameLiving randomtarget2 = null;
+		public static GameLiving RandomTarget2
 		{
 			get { return randomtarget2; }
 			set { randomtarget2 = value; }
 		}
-		List<GamePlayer> Enemys_To_DOT = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DOT = new List<GameLiving>();
 		public int PickRandomTarget2(ECSGameTimer timer)
 		{
 			if (HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Enemys_To_DOT.Contains(player))
 								Enemys_To_DOT.Add(player);
@@ -351,7 +351,7 @@ namespace DOL.AI.Brain
 				{
 					if (CanCast2 == false)
 					{
-						GamePlayer Target = (GamePlayer)Enemys_To_DOT[Util.Random(0, Enemys_To_DOT.Count - 1)];//pick random target from list
+						GameLiving Target = Enemys_To_DOT[Util.Random(0, Enemys_To_DOT.Count - 1)];//pick random target from list
 						RandomTarget2 = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDOT), 2000);
 						CanCast2 = true;
@@ -385,22 +385,22 @@ namespace DOL.AI.Brain
 		}
 		#endregion
 		#region Hydra DD
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
 		}
-		List<GamePlayer> Enemys_To_DD = new List<GamePlayer>();
+		List<GameLiving> Enemys_To_DD = new List<GameLiving>();
 		public int PickRandomTarget(ECSGameTimer timer)
 		{
 			if (HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2000))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2000))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Enemys_To_DD.Contains(player))
 								Enemys_To_DD.Add(player);
@@ -411,7 +411,7 @@ namespace DOL.AI.Brain
 				{
 					if (CanCast == false)
 					{
-						GamePlayer Target = (GamePlayer)Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
+						GameLiving Target = Enemys_To_DD[Util.Random(0, Enemys_To_DD.Count - 1)];//pick random target from list
 						RandomTarget = Target;//set random target to static RandomTarget
 						new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(CastDD), 5000);
 						BroadcastMessage(String.Format(Body.Name + " taking a big flame breath at " + RandomTarget.Name + "."));
@@ -853,10 +853,10 @@ namespace DOL.GS
 			get { return 40000; }
 		}
 		public static int SecondHeadCount = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			--SecondHeadCount;
-			base.Die(killer);
+			base.ProcessDeath(killer);
 		}
         public override void DealDamage(AttackData ad)
         {
@@ -1056,10 +1056,10 @@ namespace DOL.GS
 			get { return 40000; }
 		}
 		public static int ThirdHeadCount = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			--ThirdHeadCount;
-			base.Die(killer);
+			base.ProcessDeath(killer);
 		}
 		public override void DealDamage(AttackData ad)
 		{
@@ -1260,10 +1260,10 @@ namespace DOL.GS
 			get { return 40000; }
 		}
 		public static int FourthHeadCount = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			--FourthHeadCount;
-			base.Die(killer);
+			base.ProcessDeath(killer);
 		}
 		public override void DealDamage(AttackData ad)
 		{
@@ -1464,10 +1464,10 @@ namespace DOL.GS
 			get { return 40000; }
 		}
 		public static int FifthHeadCount = 0;
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
 			--FifthHeadCount;
-			base.Die(killer);
+			base.ProcessDeath(killer);
 		}
 		public override void DealDamage(AttackData ad)
 		{

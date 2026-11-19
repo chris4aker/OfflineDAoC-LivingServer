@@ -1,0 +1,127 @@
+{
+  "id": "the-lindon-household",
+  "name": "The Lindon household",
+  "npcNames": [
+    "Toly Lindon",
+    "Rose Lindon",
+    "Cecilia Lindon",
+    "Lina Lindon"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "the lindons",
+    "lindon family",
+    "toly lindon",
+    "rose lindon",
+    "cecilia lindon",
+    "lina lindon"
+  ],
+  "facts": [
+    {
+      "text": "The Lindons are four ghosts in the far west of the Dales, about 1,300 south of the Hoges, all aggro level 200 within 500, no faction, no spells or styles, respawn 80 seconds: Toly (55, a man, 382794, 426839), Rose (54, a woman, 110 from him), Cecilia (52, a woman, 380 from him) and Lina (52, a woman, 120 from Cecilia).",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An NPC with no faction never calls friends when attacked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Toly and Rose as the married pair, the twin girls Cecilia and Lina, the door-stone, the Lindons' silence where the Hoges give names and the quarrel over the hedge are Living Server writing; that they are the Hoges' neighbours and as hard to leave as to speak to is from the Dales file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "South of the Hoges' garden, across a hedge that Hamon Hoges laid and the Lindons always said was a yard too far their way, stood the Lindons' house: Toly, who was the tenant of record, and Rose, who was the reason the colleges' reeve never had to come twice, and their two girls, Cecilia and Lina, born the same night and never more than a step apart afterwards. They kept geese in the beginning and gave it up for the orchard, and the orchard was the best in the west of the dales.\n\nThe Hoges give their names to anyone who asks. The Lindons do not. When the registrar of Fort Gwyntell came out to the western houses to ask, Idonea Hoges answered him across her garden, in order, and the Lindons stood at their door and looked at him and said nothing at all, and he wrote their names from the Hoges' telling and from the colleges' old tithe book, which he keeps at the fort. The households say the Lindons were always like that with officials. The Priest of Arawn says it is worse: that the Hoges are held and know it, and give their names to be let go, and the Lindons are held and do not know it, and are still keeping the door against whoever came that night.\n\nWhat came that night came out of the old burying ground, which the two houses shared the use of and quarrelled over as they quarrelled over the hedge. The Lindons died at their door, Toly in front and Rose a step behind him, as close as the twins; and the girls together a little way off, as they had always been. That is how they keep the house still. Toly and Rose at the door-stone, the girls together by the orchard wall, and any stranger who walks up the path is a stranger coming in the night. None of them calls the others; there is no need. It is a small house, and a short path.\n\nThey are the hardest of the dales' dead to leave, the households say, as hard as they are to speak to. The registrar puts it differently. He says the Lindons are the only household in his second book who have never once given him a name, and the only one he is certain he has written down correctly.",
+  "legend": "The Lindon household are four named ghosts (52 to 55) at their house in the far west of the Dales of Devwy, about 1,300 south of the Hoges. All are aggressive from about 500 away, none has a faction, and they stand in two tight pairs: Toly (55) and Rose (54) about 110 apart at the door, Cecilia and Lina (52) about 120 apart by the wall, roughly 380 from the door. So you always get a pair: pull Cecilia and Lina first, then Toly and Rose. No spells or styles in the data, melee ghosts, a group of fifties. Respawn about 80 seconds. Do not chain it into the Hoges' garden or north into Valnir Mordeth's pit.",
+  "yells": {
+    "aggro": [
+      "...",
+      "Off the path.",
+      "Not you. It was not you that night. It does not matter."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The door. Keep the door."
+      }
+    ],
+    "death": [
+      "Together...",
+      "The door... is open..."
+    ],
+    "slay": [
+      "Off the path.",
+      "Not again.",
+      "Kept."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A door-stone. A man and a woman stand at it.",
+      "Two girls by the orchard wall, a step apart."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Lindons close ranks at their door."
+      }
+    ],
+    "realmFirstKill": "The Lindon household is laid. The door stands open."
+  },
+  "botLines": {
+    "briefing": [
+      "lindon house, 4 named ghosts 52-55, far west dales, 1300 south of the hoges. all aggro at 500",
+      "two tight pairs, you always get two. girls by the wall first, then toly and rose at the door",
+      "no faction, no spells, melee ghosts. group of 50s",
+      "80 sec respawns. dont chain into the hoges or valnir's pit"
+    ],
+    "aftermathWin": [
+      "lindons laid. they never said a word",
+      "pairs worked, girls first",
+      "toly hits hard for a ghost",
+      "80 sec, keep moving"
+    ],
+    "aftermathLoss": [
+      "pulled the door pair and the girls came while we were busy",
+      "chained into the hoges garden, bad times",
+      "wandered north into valnir",
+      "respawned on us mid fight"
+    ],
+    "rumour": [
+      "[heard|someone said] the lindons have never given the registrar a single name",
+      "heard the lindons think every stranger is whatever came out of the burying ground that night",
+      "[heard|someone said] the lindons and hoges argued forever over whose side the hedge was on",
+      "heard the lindon twins are never more than a step apart, even dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lindon",
+    "text": "The [hoges]'s neighbours in the far west of the [dales of devwy]: Toly and Rose at their door-stone, a step apart, and their twin girls Cecilia and Lina by the orchard wall. Where the Hoges give their names, the Lindons never have; they still keep the door against whatever came out of the shared burying ground that night. The two houses quarrelled over a hedge. The registrar wrote their names from the old tithe book."
+  },
+  "bookPage": "From the second book of Gracien Adamson, name registrar of Fort Gwyntell. Toly Lindon, tenant of record. Rose Lindon, his wife. Cecilia and Lina Lindon, their daughters, twins. Not given: copied from the colleges' tithe book of the last year before the war, in the reeve's hand, with a note in the margin that the Lindons' orchard was the best in the west and their hedge a yard too far south. I stood on their path and asked. They looked at me. The two girls looked at me together. Nobody spoke. I have put a mark beside each name, and no second mark, because I am more certain of these four than of anyone in this book.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} laid the Lindon household at their door in {minutes} minutes.",
+    "loss": "The Lindon household kept their door against {raidLeader}'s company of {realm}, without a word."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana"
+  ],
+  "related": [
+    {
+      "id": "the-hoges-household",
+      "relation": "their neighbours across the disputed hedge"
+    },
+    {
+      "id": "valnir-mordeth",
+      "relation": "his larder lies to the north"
+    },
+    {
+      "id": "beath",
+      "relation": "the Priest of Arawn says his craft keeps them at their door"
+    }
+  ]
+}

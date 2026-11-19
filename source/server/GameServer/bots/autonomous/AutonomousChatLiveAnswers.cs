@@ -85,8 +85,11 @@ public static class AutonomousChatLiveAnswers
         if (bot == null)
             return null;
         ChatNewsItem latest = AutonomousChatNews.Board.EnemySightings(bot.Realm, DateTime.UtcNow).FirstOrDefault();
+        // Chat 1.2 (LOG-019, owner's PC 01:55: "saw a couple mids at hadrian's wall just now" from a bot in Avalon City): the board
+        // is what the realm heard; only a bot in that zone says it saw them.
         if (latest != null)
-            return SightingText(latest, DateTime.UtcNow, random);
+            return SightingText(latest, DateTime.UtcNow, random,
+                saw: string.Equals(bot.CurrentZone?.Description, latest.Zone, StringComparison.OrdinalIgnoreCase));
         // Only watchers in the frontier can see enemies there (review 2026-10-26: all bots against all enemies was millions of
         // distance checks with a 9,000-bot roster).
         ILookup<ushort, GameLiving> watchers = AutonomousBotRegistry.Snapshot()
@@ -107,13 +110,16 @@ public static class AutonomousChatLiveAnswers
         if (seen == null)
             return random.Next(2) == 0 ? "havent seen any, quiet out there right now" : "quiet atm, no enemies that i know of";
         string enemy = seen.Key.Realm switch { eRealm.Albion => "albs", eRealm.Midgard => "mids", _ => "hibs" };
+        // LOG-033: a place as chat writes it, lower case. LOG-019: "saw" only from a bot in that zone.
+        string zone = AutonomousChatFieldTalk.ShortZone(seen.Key.Zone);
+        bool there = string.Equals(bot.CurrentZone?.Description, seen.Key.Zone, StringComparison.OrdinalIgnoreCase);
         // All of them home in their own frontier: say so, rather than "zerg in Uppland" as if they were coming.
         if (seen.Key.ZoneRealm == seen.Key.Realm)
-            return random.Next(2) == 0 ? $"{enemy} are sitting in their own frontier, around {seen.Key.Zone}"
-                : $"none on our side, {enemy} are back home in {seen.Key.Zone}";
+            return random.Next(2) == 0 ? $"{enemy} are sitting in their own frontier, around {zone}"
+                : $"none on our side, {enemy} are back home in {zone}";
         return seen.Count() >= 8
-            ? random.Next(2) == 0 ? $"big group of {enemy} in {seen.Key.Zone}" : $"{enemy} zerg in {seen.Key.Zone} last i heard"
-            : random.Next(2) == 0 ? $"saw some {enemy} around {seen.Key.Zone}" : $"a few {enemy} in {seen.Key.Zone}";
+            ? random.Next(2) == 0 ? $"big group of {enemy} in {zone}" : $"{enemy} zerg in {zone} last i heard"
+            : random.Next(2) == 0 && there ? $"saw some {enemy} around {zone}" : $"a few {enemy} in {zone}";
     }
 
     /// <summary>How far a bot or player of the realm sees an enemy for "where are the mids?".</summary>
@@ -128,10 +134,13 @@ public static class AutonomousChatLiveAnswers
     /// the frontier now ("saw an inf near hadrian's wall"), else that none was seen. Only what the realm could see, as for
     /// <see cref="EnemySighting"/>.
     /// </summary>
-    public static string StealthSighting(GameBot bot, Random random)
+    public static string StealthSighting(GameBot bot, Random random, int askerLevel = 0)
     {
         if (bot == null)
             return null;
+        // Chat 1.2 (LOG-019, owner's PC 07:25: a level-50 necromancer's "any stealthers out?" drew "ya, 6 or so around murdaigean",
+        // the 25-29 battleground): a battleground's stealthers only for an asker who could go there.
+        bool Reachable(string zone) => askerLevel <= 0 || BattlegroundLevels(zone) is not { } band || askerLevel >= band.Low && askerLevel <= band.High;
         ILookup<ushort, GameLiving> watchers = AutonomousBotRegistry.Snapshot()
             .Where(other => other.Realm == bot.Realm && other.IsAlive && (other.CurrentZone?.IsRvR == true || other.CurrentRegion?.IsRvR == true))
             .Concat<GameLiving>(ClientService.Instance.GetPlayersOfRealm(bot.Realm))
@@ -140,7 +149,7 @@ public static class AutonomousChatLiveAnswers
             .Where(other => other.Realm != bot.Realm && other.Realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && other.IsAlive &&
                             other.CharacterClass != null && IsStealther((eCharacterClass)other.CharacterClass.ID) &&
                             other.CurrentZone != null && (other.CurrentZone.IsRvR || other.CurrentRegion?.IsRvR == true) &&
-                            !string.IsNullOrWhiteSpace(other.CurrentZone.Description) &&
+                            !string.IsNullOrWhiteSpace(other.CurrentZone.Description) && Reachable(other.CurrentZone.Description) &&
                             watchers[other.CurrentRegionID].Any(watcher => watcher.IsWithinRadius(other, SightRadius)))
             .ToArray();
         if (seen.Length == 0)
@@ -151,7 +160,7 @@ public static class AutonomousChatLiveAnswers
                 _ => "not that i saw, still watch ur back",
             };
         GameBot one = seen[random.Next(seen.Length)];
-        string cls = AutonomousChatFieldTalk.ShortClass(one.CharacterClass.Name, random), zone = one.CurrentZone.Description.ToLowerInvariant();
+        string cls = AutonomousChatFieldTalk.ShortClass(one.CharacterClass.Name, random), zone = AutonomousChatFieldTalk.ShortZone(one.CurrentZone.Description);
         return seen.Length >= 3
             ? random.Next(2) == 0 ? $"ya, {seen.Length} or so around {zone}" : $"few of them, saw a {cls} near {zone}"
             : random.Next(2) == 0 ? $"saw a {cls} near {zone}" : $"ya, a {cls} around {zone}";
@@ -211,15 +220,29 @@ public static class AutonomousChatLiveAnswers
 
     private static string Pick(Random random, params string[] options) => options[random.Next(options.Length)];
 
-    /// <summary>A sighting off the news board in chat words: "6 mids in Emain Macha, couple min ago". Pure.</summary>
-    public static string SightingText(ChatNewsItem item, DateTime now, Random random)
+    /// <summary>
+    /// A sighting off the news board in chat words: "6 mids in emain macha, couple min ago". "saw ..." only when the teller
+    /// <paramref name="saw"/> them (is in that zone); otherwise what it heard (chat 1.2, LOG-019). Pure.
+    /// </summary>
+    public static string SightingText(ChatNewsItem item, DateTime now, Random random, bool saw = false)
     {
         string enemy = item.Enemy switch { eRealm.Albion => "albs", eRealm.Midgard => "mids", _ => "hibs" };
         double minutes = Math.Max(0, (now - item.When).TotalMinutes);
         string when = minutes < 2 ? "just now" : minutes < 6 ? "couple min ago" : $"{(int)minutes} min ago";
         string size = item.Size >= 8 ? "big group of" : item.Size >= 3 ? $"{item.Size}" : "a couple";
-        return random.Next(2) == 0 ? $"{size} {enemy} in {item.Zone}, {when}" : $"saw {size} {enemy} at {item.Zone} {when}";
+        string zone = AutonomousChatFieldTalk.ShortZone(item.Zone);
+        return random.Next(2) == 0 ? $"{size} {enemy} in {zone}, {when}" : saw ? $"saw {size} {enemy} at {zone} {when}" : $"heard {size} {enemy} at {zone}, {when}";
     }
+
+    /// <summary>The levels a battleground is for (Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35), or null. Pure.</summary>
+    public static (int Low, int High)? BattlegroundLevels(string zone) => zone?.Trim().ToLowerInvariant() switch
+    {
+        "abermenai" => (15, 19),
+        "thidranki" => (20, 24),
+        "murdaigean" => (25, 29),
+        "caledonia" => (30, 35),
+        _ => null,
+    };
 
     /// <summary>
     /// Whose side of the frontier a zone is (the world data leaves every zone's realm at 0): Albion's Forest Sauvage, Snowdonia,

@@ -15,6 +15,9 @@ namespace DOL.Network
         void ForwardPort(int internalPort, int externalPort, ProtocolType protocol, string description, IPAddress internalIp);
         void DeleteForwardingRule(int port, ProtocolType protocol);
         IPAddress GetExternalIP();
+
+        /// <summary>This PC's address on the router's network; null when unknown (Living Server 1.2).</summary>
+        IPAddress LocalAddress => null;
     }
 
     /// <summary>The upstream UpnpNat client behind <see cref="IUpnpGateway"/>.</summary>
@@ -36,6 +39,21 @@ namespace DOL.Network
         public void DeleteForwardingRule(int port, ProtocolType protocol) => _nat.DeleteForwardingRule(port, protocol);
 
         public IPAddress GetExternalIP() => _nat.GetExternalIP();
+
+        public IPAddress LocalAddress
+        {
+            get
+            {
+                try
+                {
+                    return _nat.LocalAddress;
+                }
+                catch (SocketException)
+                {
+                    return null;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -64,6 +82,9 @@ namespace DOL.Network
         }
 
         /// <summary>Asks the router for the UDP and TCP ports (and the external address with DetectRegionIP). Never throws.</summary>
+        /// <summary>GameServer's PassportDesk.PortOffset (CoreBase can't see GameServer; UT_PassportLock keeps them equal).</summary>
+        public const int PassportDeskPortOffset = 10;
+
         public void Open(BaseServerConfig configuration)
         {
             try
@@ -79,9 +100,15 @@ namespace DOL.Network
                         log.Debug($"[UPNP] {mapping}");
                 }
 
-                IPAddress localAddress = configuration.IP;
-                Forward(configuration.UDPPort, ProtocolType.Udp, "DOL UDP", localAddress);
-                Forward(configuration.Port, ProtocolType.Tcp, "DOL TCP", localAddress);
+                // Listening on every network (Host for Friends): map to this PC's address on the router's network, not
+                // 0.0.0.0. Each port is asked for on its own, so one the router refuses doesn't stop the other.
+                // Both from rambodolphin13/DividedRealms (6f22a7a, ec0e456), Living Server 1.2.
+                IPAddress localAddress = MappingAddress(configuration.IP, _gateway.LocalAddress);
+                TryForward(configuration.UDPPort, ProtocolType.Udp, $"Offline DAoC UDP {configuration.UDPPort}", localAddress);
+                TryForward(configuration.Port, ProtocolType.Tcp, $"Offline DAoC TCP {configuration.Port}", localAddress);
+                // The Passport Desk listens on the login port + 10 while hosting (PassportDesk.PortOffset).
+                TryForward(configuration.Port + PassportDeskPortOffset, ProtocolType.Tcp,
+                    $"Offline DAoC passport TCP {configuration.Port + PassportDeskPortOffset}", localAddress);
 
                 if (configuration.DetectRegionIP)
                 {
@@ -98,6 +125,22 @@ namespace DOL.Network
                             log.Error("[UPNP] Unable to detect the RegionIP, It is possible that no mappings exist yet", e);
                     }
                 }
+                else if (configuration.PublicIP == null)
+                {
+                    // The region address stays per client (this PC, home network, Tailscale); internet clients get this one.
+                    try
+                    {
+                        configuration.PublicIP = _gateway.GetExternalIP();
+
+                        if (log.IsInfoEnabled)
+                            log.Info($"[UPNP] Internet address for friends: {configuration.PublicIP}");
+                    }
+                    catch (Exception e)
+                    {
+                        if (log.IsErrorEnabled)
+                            log.Error("[UPNP] Unable to read the router's internet address; set PublicIP in serverconfig.xml", e);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -106,14 +149,28 @@ namespace DOL.Network
             }
         }
 
-        private void Forward(int port, ProtocolType protocol, string description, IPAddress localAddress)
+        /// <summary>The address a mapping points at: the configured one, or this PC's router-side address when it is 0.0.0.0.</summary>
+        public static IPAddress MappingAddress(IPAddress configured, IPAddress routerSide) =>
+            configured == null || configured.Equals(IPAddress.Any) ? routerSide ?? configured : configured;
+
+        private void TryForward(int port, ProtocolType protocol, string description, IPAddress localAddress)
         {
-            _gateway.ForwardPort(port, port, protocol, description, localAddress);
+            try
+            {
+                _gateway.ForwardPort(port, port, protocol, description, localAddress);
+            }
+            catch (Exception e)
+            {
+                if (log.IsWarnEnabled)
+                    log.Warn($"UPNP_MAPPING the router refused {protocol.ToString().ToUpperInvariant()} {port}; forward it by hand if friends can't join.", e);
+                return;
+            }
+
             lock (_sync)
                 _added.Add((port, protocol));
 
             if (log.IsInfoEnabled)
-                log.Info($"UPNP_MAPPING added {protocol.ToString().ToUpperInvariant()} {port} (removed again when the server stops)");
+                log.Info($"UPNP_MAPPING added {protocol.ToString().ToUpperInvariant()} {port} to {localAddress} (removed again when the server stops)");
         }
 
         /// <summary>Removes every mapping <see cref="Open"/> added. Returns how many were removed. Never throws.</summary>

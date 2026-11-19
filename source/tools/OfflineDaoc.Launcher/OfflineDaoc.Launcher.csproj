@@ -30,6 +30,27 @@
     <!-- Living Server: 2003-style bot names, the same mix as the server's own bots. -->
     <Compile Include="../../server/GameServer/bots/autonomous/EraBotNames.cs" Link="SocialExpansion/EraBotNames.cs" />
     <Compile Include="../../server/GameServer/bots/autonomous/EraBotNameWords.cs" Link="SocialExpansion/EraBotNameWords.cs" />
+    <!-- Living Server 1.2: the era builds catalog and its data, the same ones the server reads (docs/ERA-BUILDS-1.2.md). -->
+    <Compile Include="../../server/GameServer/bots/autonomous/EraBuildCatalog.cs" Link="SocialExpansion/EraBuildCatalog.cs" />
+    <!-- Living Server 1.2: the Activity marker of a retired buffbot copy (shown as kept, not as a deletion). -->
+    <Compile Include="../../server/GameServer/bots/autonomous/BuffBotCopyMarker.cs" Link="SocialExpansion/BuffBotCopyMarker.cs" />
+    <EmbeddedResource Include="../../server/GameServer/bots/autonomous/data/era-builds-165.json" LogicalName="OfflineDaoc.era-builds-165.json" />
+    <!-- Living Server 1.2: the lore bible's channels shared with the server (the Herald's chronicle and bestiary), and the
+         lore files themselves, the same ones the server embeds (LauncherLore). -->
+    <Compile Include="../../server/GameServer/lorechannels/LoreChannelData.cs" Link="Lore/LoreChannelData.cs" />
+    <Compile Include="../../server/GameServer/lorechannels/LoreHerald.cs" Link="Lore/LoreHerald.cs" />
+    <!-- Living Server 1.2, play with friends: the server's own address rules, host password hash and router client, so
+         Host for Friends and the server agree (from rambodolphin13/DividedRealms). -->
+    <Compile Include="../../server/CoreBase/Network/NetworkTrust.cs" Link="Friends/NetworkTrust.cs" />
+    <Compile Include="../../server/CoreBase/Network/UpnpNat.cs" Link="Friends/UpnpNat.cs" />
+    <Compile Include="../../server/GameServer/packets/Client/168/HostPassword.cs" Link="Friends/HostPassword.cs" />
+    <EmbeddedResource Include="../../server/GameServer/bots/autonomous/data/lore/**/*.json" LogicalName="OfflineDaoc/lore/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- Character passport (from rambodolphin13/DividedRealms): taking a character to a friend's world, by the same rules as
+         the server's Passport Desk. -->
+    <Compile Include="../OfflineDaoc.Passport/PassportDatabase.cs" Link="Passport/PassportDatabase.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportEngine.cs" Link="Passport/PassportEngine.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportFile.cs" Link="Passport/PassportFile.cs" />
+    <Compile Include="../OfflineDaoc.Passport/PassportTravel.cs" Link="Passport/PassportTravel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\offline-daoc-header.png"

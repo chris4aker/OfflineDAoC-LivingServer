@@ -1,0 +1,255 @@
+{
+  "id": "sheeroe-hills",
+  "name": "Sheeroe Hills",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "summary": "The grey hills above the Bog of Cullen, where Cuuldurach the Glimmer King keeps his court of light.",
+  "facts": [
+    {
+      "text": "Cuuldurach is a level-80 dragon whose home is the Sheeroe Hills.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "Official dragon-campaign text (2010s, after the period) says Sheeroe was green and lush before the Glimmer King darkened its skies, and that the Glimmer were his.",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dark-destiny"
+    },
+    {
+      "text": "Later campaign text places a rift in the Veil in Sheeroe (post-period).",
+      "provenance": "mythic",
+      "source": "https://www.camelotherald.com/article/dragons-curse-campaign-chapter-5"
+    },
+    {
+      "text": "Sheeroe Hills is a zone of region 200; Cuuldurach's lair is at 408646, 706432 and Maldahar the Glimmer Prince roams at 388276, 696824.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "When Cuuldurach dies the server says: 'The hills seem to weep for the loss of their king.'",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs"
+    },
+    {
+      "text": "Bot chat already tells that the Sheeroe pass came out of the Cullen mist one day, that Sheeroe is an otherworld kingdom, and that the Azure (firbolg kin) crusade against the Glimmer.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In May 2003, 120 Hibernians killed him by holding the four entrances of the lair against his adds.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "'Sheeroe' may render Irish sí rua, 'red fairy mound'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Sheeroe Hills is zone 216 of region 200, between the Bog of Cullen to the south and Lough Gur to the west.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "The dragon raid has its own fight logic (RealmRaidDragonFight); the dragon's messengers are retired, and at most six adds come in a fight, one every 20 seconds at most.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Bot chat: the Azure, firbolg kin who pray to the sky, crusade against the Glimmer; glimmer dust is said to make a dye that glows; the Glimmer King drops respec stones.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Players fought him in 2004 in about ten minutes using mushroom buffs, by one Allakhazam comment.",
+      "provenance": "legend",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmob=3606"
+    },
+    {
+      "text": "Bog of Cullen towns in the world data: Alainn Bin and Siopa; Connacht's: Ardee, Basar and Druim Ligen. The Voice of the Azure (six spawns, Order of the Azure) and Bas and Windaille (quest Destructive Forces) are in Connacht; the lesser Glimmer Orist, Xaquira, Meldun (two spawns) and Mianed are on Sheeroe.",
+      "provenance": "game",
+      "source": "GAPS-hibernia.md (world data read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the bog's lost summer and Siopa's turf market; the grey grass sheep will not eat; nothing on the hills rots; the turf roofs taken down; Xaquira's dust and the glimmer-dust shawl of Alainn Bin; roles of Orist (door-ward), Xaquira, Meldun (two lights, one name) and Mianed (outrider); the Voices of the Azure in Basar and below Druim Ligen; the Cullen watch-house, its tally book and bell; the hostings camp on the green side of the last wall; the single stroke.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Rangers on a routine pass along the Bog of Cullen's northern edge found the land changed: a pass that had not been there came out of a heavy blanket of mist. Small glimmering spirits attacked them, which they took for a siabra trick, then larger and much stronger ones.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "The ancient elven sage Tyldifyl told the rangers that the Otherworld is divided into realms with their own rulers and laws, some wishing to stay unseen, and that the Sheeroe Hills are one, where Cuuldurach the Glimmer King, an ancient and powerful being, rules absolutely.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    },
+    {
+      "text": "Followers of the Great Azure, an old kin of the firbolg who put their faith in a cloudless sky, sent strong expeditions into the hills and hold close-guarded strongholds there; to them the glimmers are wicked things tainted with death, and clearing the land of them is a holy duty.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+    }
+  ],
+  "story": "Sheeroe is understood from the bog. The Bog of Cullen below it, with Alainn Bin and Siopa and the farms between, used the hills as its summer until the pass opened and the grass went grey; half its flocks were sold the first autumn and Siopa's market turned from hill wool to turf. The bog people speak of the hills as something taken, not lost, teach their grandchildren the summer slopes' names, and look at the clouds over Sheeroe each morning before anything else.\n\nThe grey grass stands up soft and sheep will not eat it. Nothing on the hills rots: the sheep that fell in the first summer lie whole in the gullies, the shepherds took the green turf roofs off the folds themselves, and water does not ripple. The sages say the far side's stillness spreads out from the rift in the Veil at the heart of the lair. The glowing dust is the one thing that comes down, and glimmer-dust dye is bad luck in the Cullen country.\n\nThe lesser court is what the bog sees: Orist the door-ward by the last fold, Xaquira who raises the dust, Meldun who is two lights with one name, Mianed the outrider watching the Azure. They attend, let most blows pass, and turn together on a ridge harried too hard, and Fergal's story is why nobody counts them aloud. The Azure send their Voices down into Connacht to preach in Basar and below Druim Ligen; their young followers burn anything that glows; Dsaldor forbids his people to go against the prince.\n\nAt the foot of the pass the Cullen watch keeps a tally of the days the clouds stop, rings a bell of three slow strokes when they do, and tends the brazier on the Cullen road that Ethne's argument put there, past which the lower glimmers never come. The hostings' customs grew from Conaing's forty, who slept in the highest roofless fold, Ethne, Dubthach's hundred and twenty and the unlearning stones, Gormflaith and the Ardee six, the herb-woman's mushrooms and Fergal grown up: camp on the green side of the last wall, touch the brazier, count nothing, and the single stroke of the bell when the king is down. Sheeroe is a door someone else opened; the realm keeps telling the far side this side is occupied, and the shepherds keep the names of the summer slopes for the day the grass comes back.",
+  "legend": "Hold the four doors and he is only a dragon; lose one and you are fighting Sheeroe. Never chase him out of the lair, because out there no blade bites him and he is only drawing you away. Fight close, keep the healers spread against the breath, and count his wounds in tenths. Old hands say never count the glimmers aloud on the ridge: it brings the prince down on you. Nicknames: the King, the Light, 'the only he'. Superstitions: never count the glimmers aloud on the ridge; never sleep in a roofless sheepfold; dye made from glimmer dust glows in the dark and brings bad luck to whoever wears it. The raids say the four doors are north, east, west and south and that the weakest party always draws the one the court likes best.",
+  "atmosphere": {
+    "firstEntry": [
+      "The grass of Sheeroe is grey. Something is watching.",
+      "The clouds over Sheeroe do not move.",
+      "Cold lights walk the ridges, in no hurry at all.",
+      "Roofless sheepfolds, their stones too heavy to carry.",
+      "The Azure preach at the lights. The lights keep glowing.",
+      "A pass that was not here once. It is here now."
+    ],
+    "areas": [
+      {
+        "name": "the Glimmer King's lair",
+        "x": 408646,
+        "y": 706432,
+        "z": 2965,
+        "radius": 2200,
+        "lines": [
+          "Four ways lead in. The court will use all four.",
+          "The ground here is warm, and the air hums.",
+          "Courtiers of light drift at the doors, attending."
+        ]
+      },
+      {
+        "name": "the prince's road",
+        "x": 388276,
+        "y": 696824,
+        "z": 2557,
+        "radius": 1500,
+        "lines": [
+          "Hoofprints of light, fading as you watch.",
+          "A rider of cold light passes, unhurried.",
+          "The Glimmer part for someone you cannot see."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "cuuldurach warns you once, from the clouds. [thats all the warning|thats the only warning] you get",
+      "the [bards|old hibs] say hes the only male of the three dragons. [explains the temper|explains a lot]",
+      "[they say|word is] the trick at sheeroe is the four doors. hold those and the glimmer king is only a dragon",
+      "the shepherds used to summer their flocks up there before the pass opened. [now look at it|grey as ash now]",
+      "the azure have been preaching at the glimmers since the pass opened. [neither side has given an inch|stubborn lot]",
+      "the old shepherds' sheepfolds are still up on sheeroe. [roofless|nobody can carry the stones away]",
+      "when the clouds over sheeroe stop moving the glimmer king is [restless|waking]. everyone in the cullen country knows it",
+      "the glimmers barely fight back until a dozen of them are hurt [at once|together]. then the court notices",
+      "the druids say sheeroe proves the doors under the hills are real. [and doors open both ways|mind that]",
+      "glimmer dust dye glows in the dark. [bad luck to wear it|my aunt swears by it]",
+      "the dragon raid goes up with seventy. [the songs say more|four doors need four parties]",
+      "maldahar rides the borders for his father. [no charm holds him|leave him to the raid]"
+    ],
+    "rumour": [
+      "[heard|someone said] the glimmer king is [restless|awake] again. the clouds over sheeroe [stopped|went still]",
+      "a [ranger|scout] swore he saw maldahar riding the ridge [last night|at dusk]. [nobody believes him|i do]",
+      "[heard|someone said] the clouds over sheeroe stopped moving at noon today",
+      "the azure burned another glimmer camp [and the lights just came back|and nothing burned]",
+      "[word is|heard] somebody slept in the old sheepfolds on sheeroe and [woke up grey|has not been right since]",
+      "[heard|someone said] a glimmer egg was found [near the lair|on the ridge]. probably nonsense",
+      "someone counted glimmers aloud on the ridge [again|this morning] and maldahar came down",
+      "[word is|heard] the realm is mustering for the glimmer king this week"
+    ],
+    "tell": [
+      "sheeroe? the glimmer king and his court. take a raid, hold the four doors, never chase him outside",
+      "grey grass, glimmers, azure preaching, and cuuldurach at the top. bring [fire|heat] and a lot of friends",
+      "is the glimmer king hard? the fight is the four doors. hold all four and its a dragon. lose one and its sheeroe",
+      "where is cuuldurach? top of the sheeroe hills, up the pass from the bog of cullen",
+      "what lives on sheeroe? the glimmer court, the azure camps, maldahar the prince, and the king in his lair",
+      "sheeroe at our level? glimmer camps are good xp if you pull carefully, the king is a raid"
+    ]
+  },
+  "loremaster": {
+    "intro": "You ask after [Sheeroe]? Then you ask after its [king]. Sheeroe was always a hidden kingdom; Cuuldurach showed it through a [tear in the sky], and the hills have not been green since. He keeps the [Glimmer] as a lord keeps a court, the [Azure] preach against them, and his son [Maldahar] rides the hills in his name. If you go up there with the realm behind you, remember the [four doors]. And spare a thought for the [sheepfolds].",
+    "topics": {
+      "tear in the sky": "The rangers say the pass was simply there one morning. The sages say the Veil wore thin over the Bog of Cullen and a corner of the otherworld leaned through. Both may be right.",
+      "Glimmer": "Cold bright things, courtiers of light. The [Azure] say they are death given a glow. The Glimmer say nothing at all, and keep glowing.",
+      "Azure": "Firbolg kin who pray to the open sky. They came up the pass to put out the Glimmer and have been at it ever since. Kin are kin, but I would not lend them a torch.",
+      "Maldahar": "The Glimmer Prince. No charm holds him and no sleep takes him, and he does not tire of a chase. If he has not been fought for a minute, he is whole again. Fight him all at once or not at all.",
+      "four doors": "His courtiers come to him by four ways. Every raid that held all four came home with a story. The others came home as stories.",
+      "Sheeroe": "A corner of the otherworld that leaned through the Veil above the Bog of Cullen. Its grass is grey and its [king] keeps a court of light.",
+      "king": "Cuuldurach, the [Glimmer King]. He warns once from the clouds. He is only male among the three realm dragons, the bards say.",
+      "sheepfolds": "The shepherds of the Cullen country summered their flocks on those hills. The folds stand roofless still."
+    }
+  },
+  "book": {
+    "title": "A Shepherd's Account of Sheeroe",
+    "pages": [
+      "As told by Eoghan the shepherd of the Cullen country to a scribe of Tir na Nog. My grandmother drove sheep on Sheeroe when it was green, and I did after her, until the summer the sky came apart. It did not thunder. It tore, quietly, the way old linen tears, and through the tear came wings wider than the valley. The flock ran into the bog and I did not stop them. That night lights walked the ridges, small and cold and in no hurry, and in the morning the grass where they had walked was grey. My father said they were the Good Folk. He was wrong. They were the King's.",
+      "We went back once, my brother and I, for the sheepfold stones. A rider came down the ridge toward us on a horse made of the same cold light, and he did not hurry either. My brother threw a stone at him. It passed through the horse's shoulder and the rider turned his head, only that, and looked at us. We left the stones. My brother has never thrown anything since, not even dice. They call the rider the prince now, Maldahar. I did not know he had a name. I knew he had a father, from the way he looked back over his shoulder toward the top of the hills.",
+      "The blue folk came up the pass the next spring, the Azure, singing to the sky, and they burned what they could. The lights did not burn. I watched one of their priests stand in front of a glimmer and pray at it for an hour. The glimmer did nothing. At the end of the hour the priest wept, and I did not know whether it was rage or something else. The Azure are our kin, the firbolg say, and I do not doubt it. But I have never seen a kinsman of mine pray at a light that long, and I have never wanted to.",
+      "The king spoke once that year from the clouds, a voice like weather, and told all who trespassed that he would seek them out and cast them into the arms of Death. The Azure sang louder. My mother covered my ears. Since then I have heard him perhaps a dozen times, always the same words, always when the clouds over the hills stop moving. You learn to watch the clouds in the Cullen country. When they stop, you bring the flock in, and you do not look up the pass, and you wait for them to start again.",
+      "In my grandmother's time the hills were the bog's summer. Every family with a flock went up in the month the bog flies came and lived in the high summering until the first frost. When the grass went grey we sold half the flocks in the first autumn, and kept the rest thin on the bog edge, and the families with nothing but sheep went into Connacht and did not come back. Siopa had a market for hill wool when I was a boy. It sells turf now. We do not hate the king for it. We are careful to say so.",
+      "Nothing on the hills rots. The ewes that ran from the tear and fell in the high gullies are lying there still, white and whole. I saw them in the third summer when we went up to take the turf roofs off the folds, because the roofs stood green on the grey hill and none of us could bear it. We left the stones. The druids of Lough Gur told us the hills are held, the way a breath is held. I asked who was holding it. They did not say, and I did not ask twice.",
+      "The blue folk preach in Connacht now. I heard them in the market at Basar, a little company singing to the open sky, telling the stall-keepers the lights on the hills are the stolen light of the dead. Nobody went with them. Their young followers burned the lamps in a farmhouse near Druim Ligen one winter because the lamps glowed, and the realm's spears went out after them. My wife gave them water at our door once and they blessed her for it, very loudly, in front of the neighbours. The Azure hate the king more than any shepherd ever did. It has not made them any wiser.",
+      "There is a watch-house at the foot of the pass now, and a bell in it. When the clouds over the hills stop, the watch rings it, three slow strokes and a pause, and the bog brings the flocks in. When a hosting comes down past it with the king fallen, the watch rings it once. I have heard the single stroke a few times in my life. Each time I went out to the yard and watched the clouds over Sheeroe until they moved, and then I went to bed.",
+      "I have heard that the realm sent a hosting up at last, and that it held four doors, and that when the king fell the hills wept. I believe it. I heard them weep when he came. I have heard too that he came back, as kings do in the old stories, and that the chieftains send their spears up the pass again whenever he rises. I am an old man now. I would like, once before I die, to see the grass of Sheeroe green, the way my grandmother told it. The sages say it may never be. I tell them grass is patient. So are shepherds."
+    ]
+  },
+  "bosses": [
+    "cuuldurach-the-glimmer-king",
+    "maldahar-the-glimmer-prince",
+    "glimmer-lords",
+    "azure-dsaldor",
+    "azure-coseal",
+    "azure-thror"
+  ],
+  "zones": [
+    216
+  ],
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the Bog of Cullen below its pass"
+    },
+    {
+      "id": "dartmoor",
+      "relation": "Albion's dragon country"
+    },
+    {
+      "id": "malmohus",
+      "relation": "Midgard's dragon country"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Bog Below the Hills",
+      "text": "Sheeroe cannot be understood from the hills, the people of the Cullen country say; it has to be understood from the bog. The Bog of Cullen lies below the hills on the Connacht side, a wide brown country of turf and black water and causeways, and its villages, Alainn Bin and Siopa and the scattered farms between, have lived beside the hills for as long as there have been villages. In the old days the hills were the bog's summer. Every family with a flock drove it up the long slopes in the month the bog flies came, and lived in the high summering until the first frost, and came down brown and well fed and full of songs.\n\nThe bog lost its summer in a single season. When the pass opened and the grass beyond it went grey, the flocks stopped going up, and the families of the Cullen country found out how much of their lives the hills had held. There was no grazing on the bog for the flocks the hills had fed. Half the flocks of the Cullen country were sold in the first autumn, and the rest were kept thin on the bog edge, and the families that had nothing but sheep went into Connacht to look for work and did not come back. Siopa had a market for hill wool before the pass opened. It has a market for turf now.\n\nThe bog people do not hate the king for it. They are careful to say so, because they think he might hear. They speak of the hills now as a family speaks of a field that a neighbour's flood has ruined: something taken, not something lost, which might one day be given back. The old shepherds still give their grandchildren the names of the summer slopes, which were never written down and which no stranger has ever learned, so that the names will be there to use when the grass comes back.\n\nAnd the bog keeps watch. Every farm in the Cullen country can see the hills, and every one of them looks at the clouds over Sheeroe first thing in the morning, before the weather, before the cows. When the clouds over the hills are moving the day is an ordinary day. When they have stopped, the bog people bring the flocks in close to the houses, and keep the children off the causeways, and do not look up the pass, and wait for the clouds to start again. Eoghan the shepherd said it was the first thing he ever learned, before his letters: watch the clouds."
+    },
+    {
+      "title": "What the Grey Did to the Ground",
+      "text": "The grass of Sheeroe went grey in the first summer and it has not changed since, and the people of the Cullen country who have gone up to look at it closely, which are few, say the grey is not death. Grass that dies goes brown and falls. The grass of Sheeroe stands up, and is soft underfoot, and sheep will not eat it; a starving ewe driven up the slope in the second summer to see whether she would, stood among it all day with her head up, and came down at evening and ate turf.\n\nNothing on the hills rots. That is the strangest thing the shepherds found, and the thing they least like to talk about. The sheep that ran from the tear in the first summer and fell in the high gullies are lying there still, the old shepherds say, white and whole, as if they fell last week. The roofs of the high sheepfolds were turf, and the turf did not rot either; the shepherds took it down themselves in the third summer, because they could not bear to see it standing green on the grey hill when nothing else was, and the folds have stood roofless from that summer, their stones too heavy for anyone to carry away. Water on the hills does not ripple. Frost does not form. The druids of Lough Gur who went up to look in the first years said the hills are not dead but held, the way a breath is held, and that everything on them is waiting for the breath to be let go.\n\nThe sages of Tir na Nog say the reason lies at the heart of the king's lair, where the Veil is torn. There is a rift there, they say, a place where this world and the far side touch, and through it comes something of the far side's stillness, which spreads out over the hills like cold from an open door. The grey grass and the stopped clouds and the sheep that do not rot are the far side's weather. The Azure on the northern slopes believe the same thing and call it a blasphemy; the sages call it an observation.\n\nThe dust of the grey grass is the one thing that comes down off the hills. It is fine and pale and it glows a little in the dark, and the dyers of Connacht found in the first years that it made a cloth that shone at night. The Cullen country will not wear it. A woman of Alainn Bin who made herself a shawl of it, the story goes, was found on the pass one morning walking uphill in her sleep, and she wore brown for the rest of her life. Glimmer-dust dye is bad luck in the Cullen country, and the dyers of Connacht have mostly stopped asking why."
+    },
+    {
+      "title": "The Lesser Court",
+      "text": "The realm knows the names of the great courtiers of Sheeroe, the chamberlain on the high ground and the lords of the slopes. The Cullen country knows the lesser court too, because the lesser court is what the bog sees. They are the glimmers of the lower camps, nearer the pass, and the shepherds who used to watch their flocks from the folds named them as they named their own dogs, by what they did.\n\nOrist keeps the western slope, by the last of the sheepfolds, and the shepherds call him the door-ward, because he stands where the old track from the bog came up and has stood there from the first summer, facing down the hill. Xaquira keeps the dust. The shepherds say she drifts across the grey grass at evening and the dust rises behind her and settles, and that it is she who makes the hills glow faintly on dark nights; the dyers of Connacht call the best of the glimmer-dust Xaquira's, and pay more for it, and the Cullen country thinks that is exactly the kind of thing dyers would do. Meldun is two, and has always been two: two lights that answer to one name and keep the same camp, and the shepherds never learned which of them was which, and say the glimmers do not know either. Mianed is the outrider, furthest north of all the court, alone at the edge of the Azure's country, and the shepherds think she is the one the court sends to watch the blue folk.\n\nThey behave as courtiers behave in the next room from a throne. They attend. A glimmer of the lesser court struck on the ridge will often let the blow pass, as the Cullen folk say of the whole court, and drift on; and a ridge that has been harried too hard in a single evening turns on the harriers all at once. The Connacht trappers who hunt the lower camps for dust have learned to take a few lights at a time and go home, and to stay off the high ground altogether.\n\nThe shepherds' oldest rule about the court is the one the realm still keeps: never count the glimmers aloud on the ridge. A herder's boy named Fergal did it in the first summer, standing in the highest fold with his crook, counting lights; the prince came down the ridge on his horse of cold light before the boy had reached the end of his counting. Fergal lived, and later went up the pass with a company of the realm to fight the prince himself. He never counted anything aloud again, the Cullen country says, not even sheep."
+    },
+    {
+      "title": "The Voices of the Azure",
+      "text": "The Azure did not stay on the hills. Their camps lie on the northern slopes of Sheeroe, below the glimmer camps, where their leaders preach at the light all day; but in the years after the pass opened the Order of the Azure began to send its preachers down into Connacht, and the Cullen country and the towns beyond it have heard them on every road since. The realm calls them the Voices of the Azure. There are never many of them at once; they walk in a little company, blue-painted, singing to the open sky, and they stop in the market at Basar and on the road below Druim Ligen and preach to anyone who will listen about the light that does not burn.\n\nWhat they preach is the Order's teaching: that the Glimmer are the light of the dead, stolen through the tear, and that the open sky is the only thing in the world that cannot be stolen, and that the realm should come up the pass and burn the court out. The towns of Connacht listen politely and do not come. The Azure are firbolg kin, and the firbolg of Connacht say so, and the realm's people do not doubt it. But the Voices' fervour frightens the towns, and in Connacht their younger followers, Bas and Windaille and the others who joined them from the farms, have taken to burning anything that glows, lamps and marsh-lights and glimmer-dye alike, and the realm has had to go out after them more than once to stop it.\n\nOn the hills the Order's leaders keep their crusade as they always have: Dsaldor in the highest camp, Coseal preaching, Thror the arm. One thing they do not do, and forbid their people to do, is go against the prince. Dsaldor has never explained why. The Cullen country thinks the Azure tried once, in the first spring, and that what happened is the one thing the Order does not preach about.\n\nThe Cullen country has its own view of the Azure, which is the view of a people who have lived next to a quarrel for a long time without belonging to it. The bog people give the Voices water when they ask, and do not stay to listen, and do not let their children follow them up the road. Eoghan the shepherd said the Azure were the only people he ever met who hated the king more than the shepherds did, and that it had not made them any wiser."
+    },
+    {
+      "title": "The Cullen Watch",
+      "text": "Where the old track from the bog meets the foot of the pass there is a watch-house now, a squat stone tower with a bell in it, and the soldiers who keep it are the Cullen watch. The chieftains of Connacht set it there in the first autumn after the pass opened, when it was clear that whatever lived on the hills was not going away, and it has been kept in every season since by soldiers who mostly come from the bog villages and know the hills better than any stranger could.\n\nThe watch keeps a tally. On a slate by the door, and later in a book, the watch has marked every day the clouds over Sheeroe stopped moving, every time the king's voice rolled across the hills from the sky warning trespassers that he would find them, and every time he rose from his lair and settled again. The book is the only record of the king's restlessness the realm has, and the sages of Tir na Nog send to the watch-house for a copy every year. It shows no pattern anyone has been able to find. The watch says that is the pattern: a king does not tell his servants when he will rise.\n\nWhen the clouds stop, the watch rings the bell. The bog villages hear it and bring the flocks in. The bell has a particular stroke, three slow and then a pause, that every child of the Cullen country knows, and the watch has never rung it for anything else. A Cullen saying for any danger that everyone can see coming and nobody can stop is that the watch has rung the bell.\n\nAnd the watch keeps the brazier. On the Cullen road below the watch-house a brazier burns every winter, kept by the fire-priests of Lough Gur, because Ethne the eldritch of Tir na Nog argued in the second winter that light from the cold side of the Veil sickens in heat as frost does, and the realm believed her. The watch tends the coals. The soldiers say the glimmers of the lower camps never come down the pass as far as the brazier, though they come down a long way on some nights, and that the old shepherds who used to bring their flocks in past it would warm their hands at it and look up the hill, and say the old prayer for the grass.\n\nThe watch's own saying about the king is the one that went to every realm: he is the only he of the three, and he acts like it."
+    },
+    {
+      "title": "The Hostings Up the Pass",
+      "text": "When the realm goes up the pass it goes as a hosting, the old word for a chieftains' levy, and the hostings of Sheeroe have their own customs, which the Cullen watch has seen grow up one by one at the foot of the pass.\n\nThe first was Conaing of Howth's company of forty, in the first autumn. They camped the night before in the highest of the roofless sheepfolds, below the bare ridge, because it was the only shelter on the hill, and they went up in the morning, and seven of them came home. The Cullen country has never slept in a roofless sheepfold since, and the hostings camp below the folds, on the bog side of the last wall, where the grass is still green. Conaing never went to war again; he kept the gate of the Howth barracks until he died and would not let a Sheeroe song be sung inside it.\n\nThe second winter brought Ethne up the pass behind a company of Connacht spears, to watch rather than fight, and with her the brazier. The third spring brought the great hosting of a hundred and twenty under Dubthach of Ardee, from Connacht and Howth and Ardee together, the largest the realm had put on one hill since the old families fought each other, and the four doors held, and the king fell, and the hills wept. The Cullen watch heard it from the watch-house: a sound out of the ground, low and long, that the bog villages heard in their houses. On the mound where he had lain, Dubthach's people found the grey stones that the realm now calls the unlearning stones.\n\nThe prince was later. Gormflaith of Druim Ligen's company found that he mends when he is left alone, and the six of Ardee before her that no charm holds him, and a herb-woman of Bri Leith brought a sack of mushrooms up the pass for one hosting and would never say where they grew. Fergal the herder's boy who counted the glimmers went up the pass a grown man with a company of the realm and faced the prince he had called down as a child.\n\nThe customs grew from those names. A hosting camps on the green side of the last wall. It passes the brazier on the way up, and every one of them puts a hand to its warmth. Nobody counts the glimmers aloud. And when a hosting comes back down past the watch-house, the watch rings the bell once, a single stroke, which it rings for nothing else either, so that the bog villages know the king is down and the clouds will move tomorrow."
+    },
+    {
+      "title": "A Door Someone Else Opened",
+      "text": "Every other corner of Hibernia the realm has lived beside for generations. Sheeroe arrived in a single summer, out of the mist, with a king already sitting in it. That is the thing about it the realm has never got used to, and the three accounts of where it came from all begin there.\n\nThe rangers of Ardee say the pass appeared overnight; Fiadh, who found it, swore to the end of her life that she had walked that ridge a week before and there was nothing there but rock. The druids of Lough Gur say the Veil wore thin over the hills after the old court bargain broke in the Cursed Forest, when the Seelie and the Unseelie stopped keeping their agreements, and that a kingdom of the far side leaned through the thin place as a man leans through a weak fence. The sages of Tir na Nog, after the ancient elven sage Tyldifyl whom the rangers asked first, say the far side has its kingdoms as men's lands do, some of them unwilling to be seen, and that the hills were always there and always the king's, hidden as Hy Brasil was hidden, and that what opened in that summer was not a pass but an eye.\n\nThey agree on what it means. The druids of Lough Gur say Sheeroe proves the doors under the hills are real, and that a door which opens one way can open the other. The sages say that is exactly why the Glimmer King must be fought down whenever he rises: not to win the hills, which may never be green again, but to remind whatever is on the far side of the Veil that this side is occupied. The Cullen watch say only that the king is a neighbour, and that a neighbour who has taken a field has to be told, every year, that it is still yours.\n\nThe bog has the last word, as it usually does. Eoghan the shepherd, whose grandmother summered on the hills forty years and whose own account the scribes of Tir na Nog copied out, said at the end of it that he would like once before he died to see the grass of Sheeroe green, the way his grandmother told it. The sages told him it might never be. He told them grass is patient, and so are shepherds.\n\nThe old shepherds of the Cullen country still teach their grandchildren the names of the summer slopes, every one, though nobody has used them in a lifetime: the long meadow, the wet hollow, the high fold, the ridge with nothing on the other side. They say the names are for the day the clouds start moving and do not stop. They say someone should know what to call the hills when they come back."
+    }
+  ]
+}

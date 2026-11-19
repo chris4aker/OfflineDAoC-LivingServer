@@ -1,0 +1,91 @@
+{
+  "id": "isolationist-courier",
+  "name": "Isolationist Courier",
+  "npcNames": [
+    "Isolationist Courier"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Isolationist Courier: NPC template 60162534, level 46, faction Isolationists of Albion, aggro level 51 (range 500), no spells, respawn 300 s, alone in the western folds of the Pennines at 578748, 381756; the isolationists' own camp (clerics, mercenaries, scouts, 46-48) lies far to the east.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lord of Deceit (Master Arenis, Captain Rhodri): slay the isolationist courier in Pennine and take his documents; then the Ravenclan giant Belgrik's Book of Lore.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The courier's road between the isolationist camp and the mine, and the riders' name for him, are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The isolationists are Albion's own folk who will not have Albion: deserters, refusers, the sons of farms the war emptied, who pay no tithe and kill the realm's riders for the colour of their cloaks. They keep their camp far out on the eastern folds, and they would be nothing but a nuisance to the caers if they did not write letters.\n\nThe courier carries them. He walks between the isolationists' camp and the western folds, alone, in a plain coat, with a satchel he never puts down, and the frontier riders of Castle Sauvage call him the postman, which he does not like. He is not quick to quarrel. He lets riders pass him, and expects to be let pass. The riders let him, as a rule, because a man who walks alone across the tops for years and is never robbed is a man someone important wants left alone.\n\nCaptain Rhodri of the Snowdonia border keep does not want him left alone. Rhodri has read what came out of Overseer Tepok's sack, and believes the courier's satchel holds the other half of the same correspondence: the isolationists' half, and the giants' half, and whoever pays for both. Rhodri wants the satchel. The courier would very much like to finish his round.",
+  "legend": "Isolationist Courier, level 46, walks alone in the western folds of the Pennines; the isolationist camp is far east, so he has no friends nearby. Aggro level 51: he often lets you walk past, so you choose the pull. Plain melee, no spells. Kill him and take his documents for Lord of Deceit (Captain Rhodri, then Belgrik's Book of Lore). Respawn five minutes.",
+  "yells": {
+    "aggro": [
+      "I am only the post. Stand aside.",
+      "The satchel stays with me."
+    ],
+    "phases": [],
+    "death": [
+      "Deliver... it... anyway..."
+    ],
+    "slay": [
+      "Undeliverable.",
+      "Return to sender."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A man alone on the tops with a satchel."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Isolationist Courier has fallen. The post is late."
+  },
+  "botLines": {
+    "briefing": [
+      "isolationist courier is alone in the west folds, 46, often doesnt aggro",
+      "kill him and loot the documents for rhodri"
+    ],
+    "aftermathWin": [
+      "got the courier's documents",
+      "the postman is down. rhodri will be pleased"
+    ],
+    "aftermathLoss": [
+      "he fought harder than a postman should"
+    ],
+    "rumour": [
+      "[heard|someone said] the isolationist courier carries letters for the goblins too",
+      "heard the sauvage riders call the isolationist courier the postman"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "isolationist courier",
+    "text": "A courier of the [isolationists] who walks the western folds of the Pennines alone with a satchel he never puts down. Captain Rhodri believes it holds the other half of Overseer Tepok's letters."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} intercepted the Isolationist Courier on the tops in {minutes} minutes.",
+    "loss": "The Isolationist Courier finished his round; {raidLeader} of {realm} did not stop him."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "realm-of-camelot",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "overseer-tepok",
+      "relation": "the same correspondence, by another road"
+    },
+    {
+      "id": "delfina",
+      "relation": "another courier of the same letters"
+    }
+  ],
+  "tier": "minor"
+}

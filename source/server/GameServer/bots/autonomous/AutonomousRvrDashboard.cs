@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -45,6 +46,7 @@ public static class AutonomousRvrDashboard
                 GameEventMgr.AddHandlerUnique(KeepEvent.KeepTaken, OnKeepTaken);
                 GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicStolen, OnRelicChanged);
                 GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicMounted, OnRelicChanged);
+                GameEventMgr.AddHandlerUnique(RelicPadEvent.RelicReturned, OnRelicChanged);
                 _handlersRegistered = true;
             }
         }
@@ -63,6 +65,7 @@ public static class AutonomousRvrDashboard
                 GameEventMgr.RemoveHandler(KeepEvent.KeepTaken, OnKeepTaken);
                 GameEventMgr.RemoveHandler(RelicPadEvent.RelicStolen, OnRelicChanged);
                 GameEventMgr.RemoveHandler(RelicPadEvent.RelicMounted, OnRelicChanged);
+                GameEventMgr.RemoveHandler(RelicPadEvent.RelicReturned, OnRelicChanged);
                 _handlersRegistered = false;
             }
         }
@@ -113,6 +116,15 @@ public static class AutonomousRvrDashboard
     /// bots of each realm near it (run 2026-10-13: two hours of battleground fighting and no keep changed hands, with
     /// nothing in the log to say how far any assault got).
     /// </summary>
+    /// <summary>"28" or "28-30" for the guards' levels, "none" without guards.</summary>
+    public static string GuardLevelRange(IEnumerable<byte> guardLevels)
+    {
+        byte[] levels = guardLevels.ToArray();
+        if (levels.Length == 0) return "none";
+        byte low = levels.Min(), high = levels.Max();
+        return low == high ? low.ToString() : $"{low}-{high}";
+    }
+
     private static void LogBattlegroundKeep(BattlegroundBrackets.Bracket bracket, AbstractGameKeep central, GameBot[] bots)
     {
         GameKeepDoor[] doors = central.Doors.Values.ToArray();
@@ -126,6 +138,8 @@ public static class AutonomousRvrDashboard
             $"BG_KEEP_STATUS battleground={bracket.Name} keep=\"{central.Name}\" holder={(central.Realm == eRealm.None ? "Neutral" : GlobalConstants.RealmToName(central.Realm))} " +
             $"doors={doors.Count(door => door.IsAlive)}/{doors.Length} doorHealth={(doors.Length == 0 ? 0 : doors.Min(door => door.HealthPercent))} " +
             $"guards={guards.Count(guard => guard.IsAlive)}/{guards.Length} lord={(lord == null ? "none" : lord.IsAlive ? lord.HealthPercent + "%" : "dead")} " +
+            // The keep's level and the levels it gives (a capture used to raise Thidranki from 1 to 4: guards 28 to 33).
+            $"keepLevel={central.Level} guardLevel={GuardLevelRange(guards.Where(guard => guard is not GuardLord).Select(guard => guard.Level))} lordLevel={lord?.Level.ToString() ?? "none"} " +
             $"near={Near(eRealm.Albion)}/{Near(eRealm.Midgard)}/{Near(eRealm.Hibernia)} " +
             // How many bots stand by the lord and how many have him targeted (gates fell for hours, lord never hit).
             $"atLord={(lord == null ? 0 : inside.Count(bot => bot.IsWithinRadius(lord, 800)))} " +
@@ -141,7 +155,9 @@ public static class AutonomousRvrDashboard
             // 1,300-1,500 from the keep centre, the lord 577 above it).
             $"lordAt={(lord == null ? "none" : $"{lord.X},{lord.Y},{lord.Z}")} " +
             $"doorsUp=\"{string.Join(";", doors.Where(door => door.IsAlive).Select(door => $"{door.DoorId}@{door.X},{door.Y},{door.Z}"))}\" " +
-            $"stormNearest={(lord == null ? -1 : inside.Where(bot => bot.PersistentRecord?.Activity?.StartsWith("Storming") == true).Select(bot => (int)bot.GetDistanceTo(lord)).DefaultIfEmpty(-1).Min())}");
+            $"stormNearest={(lord == null ? -1 : inside.Where(bot => bot.PersistentRecord?.Activity?.StartsWith("Storming") == true).Select(bot => (int)bot.GetDistanceTo(lord)).DefaultIfEmpty(-1).Min())} " +
+            // Each realm's rally inside the breach (AutonomousBattlegroundKeepRally): rallying n/needed or storming.
+            $"rally=\"{AutonomousBattlegroundKeepRally.Describe(bracket.RegionId)}\"");
     }
 
     private static void Publish(object state)
@@ -178,7 +194,7 @@ public static class AutonomousRvrDashboard
                     AutonomousRvrEventLayer.RelicCarrierTargetId(relic));
             });
             var forceTargets = AutonomousRvrEventLayer.ForceTargets();
-            var raids = AutonomousRealmRaid.Snapshot().Select(r => new Objective(r.Id.StartsWith("epic-") || r.Id.StartsWith("dungeon-") ? "Epic dungeon" : r.Id.StartsWith("summoners-") || r.Id.StartsWith("darkness-") ? "Neutral raid" : "Dragon", r.Name, r.Realm, r.State,
+            var raids = AutonomousRealmRaid.Snapshot().Select(r => new Objective(r.Id.StartsWith("epic-") || r.Id.StartsWith("dungeon-") ? "Epic dungeon" : r.Id.StartsWith("summoners-") || r.Id.StartsWith("darkness-") ? "Neutral raid" : RealmRaidOpenWorld.Is(r.Id) ? RealmRaidOpenWorld.Kind : "Dragon", r.Name, r.Realm, r.State,
                 r.Name, "", $"Assigned: {r.Assigned}/{RealmRaidRecruitmentPolicy.MaximumBots} · Present: {r.Present} · Start requires: {r.Suggested}" +
                     (r.Phase == "Waiting" ? " · Holding for arrivals / dragon landing (not attacking)" : ""),
                 r.Id, r.State is "Respawning" or "Event cooldown" ? r.Remaining : 0,
@@ -252,7 +268,15 @@ public static class AutonomousRvrDashboard
         {
             AutonomousRvrEventLayer.EndTarget(
                 AutonomousRvrEventLayer.RelicCarrierTargetId(changed.Relic), GameLoop.GameLoopTime,
-                sender is GameRelicPad destination ? destination.Realm : eRealm.None);
+                sender is GameRelicPad destination ? destination.Realm : eRealm.None, "captured");
+            return;
+        }
+        // Relic audit 2026-10-31 (L5): a relic that goes back to its pad by itself ends its carrier event too (it lived on
+        // for hours and blocked every new siege).
+        if (e == RelicPadEvent.RelicReturned)
+        {
+            AutonomousRvrEventLayer.EndTarget(AutonomousRvrEventLayer.RelicCarrierTargetId(changed.Relic), GameLoop.GameLoopTime,
+                eRealm.None, "returned");
             return;
         }
         if (e != RelicPadEvent.RelicStolen || sender is not GameRelicPad pad)

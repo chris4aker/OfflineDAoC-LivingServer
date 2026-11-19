@@ -41,7 +41,7 @@ namespace DOL.GS
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.WoodWorking) < subSkillCap)
                 {
-                    player.GainCraftingSkill(eCraftingSkill.WoodWorking, 1);
+                    GainRatedPoints(player, eCraftingSkill.WoodWorking, subSkillCap);
                 }
 				player.Out.SendUpdateCraftingSkills();
 			}

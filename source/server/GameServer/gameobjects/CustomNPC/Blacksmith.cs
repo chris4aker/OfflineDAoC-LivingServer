@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DOL.Database;
 using DOL.Events;
+using DOL.GS.Crafting;
 using DOL.GS.PacketHandler;
 using DOL.Language;
 
@@ -72,6 +73,11 @@ public class Blacksmith : GameNPC
         SayTo(player, eChatLoc.CL_PopupWindow,
             $"If you're in a hurry, I can also [repair all] your items for an additional {REPAIR_ALL_TAX * 100}% fee.");
 
+        // Hired companions (from True 1.65): the companions with you get their worn gear repaired in one go (owner
+        // 2026-10-30: never taking each piece off a companion), at the smith's price under player_upkeep.
+        if (HiredCompanionsMode.IsOn && CompanionWindows165.WithPlayer(player) is { Count: > 0 } companions)
+            CompanionWindows165.OfferRepair(player, companions);
+
         return true;
     }
 
@@ -140,7 +146,7 @@ public class Blacksmith : GameNPC
             // Message: It will cost {0} to repair {1}. Do you accept?
             player.Client.Out.SendCustomDialog(LanguageMgr.GetTranslation(player.Client.Account.Language,
                 "GameNPC.Blacksmith.RepairCostAccept",
-                Money.GetString(item.RepairCost), item.GetName(0, false)), BlacksmithDialogResponse);
+                Money.GetString(RepairCost(item)), item.GetName(0, false)), BlacksmithDialogResponse);
         }
         else
         {
@@ -187,14 +193,15 @@ public class Blacksmith : GameNPC
         }
 
         var ToRecoverCond = item.MaxCondition - item.Condition;
+        long cost = RepairCost(item);
 
-        if (!player.RemoveMoney(item.RepairCost))
+        if (!player.RemoveMoney(cost))
         {
-            InventoryLogging.LogInventoryAction(player, this, eInventoryActionType.Merchant, item.RepairCost);
+            InventoryLogging.LogInventoryAction(player, this, eInventoryActionType.Merchant, cost);
             // Message: {0} says, "It costs {1} to repair {2}. You don't have that much."
             ChatUtil.SendSayMessage(player, "GameNPC.Blacksmith.NotEnoughMoney",
                 GetName(0, true),
-                Money.GetString(item.RepairCost),
+                Money.GetString(cost),
                 item.GetName(0, false));
 
             return;
@@ -202,7 +209,7 @@ public class Blacksmith : GameNPC
 
         // Message: You pay {0} {1}.
         ChatUtil.SendSystemMessage(player, "GameNPC.Blacksmith.YouPay", GetName(0, false),
-            Money.GetString(item.RepairCost));
+            Money.GetString(cost));
 
         Repair(item, player);
     }
@@ -225,7 +232,7 @@ public class Blacksmith : GameNPC
             cost += inventoryItem.RepairCost;
         }
 
-        cost = (long) (cost * (1 + REPAIR_ALL_TAX));
+        cost = PlayerCraftingRules.SmithCost((long) (cost * (1 + REPAIR_ALL_TAX)));
 
         if (foundItemToRepair)
             player.Client.Out.SendCustomDialog($"It will cost {Money.GetString(cost)} to repair everything. Do you accept?", RepairAll);
@@ -259,7 +266,7 @@ public class Blacksmith : GameNPC
             cost += inventoryItem.RepairCost;
         }
 
-        cost = (long) (cost * (1 + REPAIR_ALL_TAX));
+        cost = PlayerCraftingRules.SmithCost((long) (cost * (1 + REPAIR_ALL_TAX)));
 
         if (!player.RemoveMoney(cost))
         {
@@ -278,8 +285,15 @@ public class Blacksmith : GameNPC
             Repair(inventoryItem, player);
     }
 
+    /// <summary>
+    /// Crafting 2.0 (WP3), player_upkeep: the smith's price for one item. Classic is the item's own repair cost; light (the
+    /// default) half of it, rounded up; free nothing. The 20% "repair all" surcharge is added before the setting applies.
+    /// </summary>
+    private static long RepairCost(DbInventoryItem item) => PlayerCraftingRules.SmithCost(item.RepairCost);
+
     private void Repair(DbInventoryItem item, GamePlayer player)
     {
+        // player_upkeep (WP1's Repair rule): classic spends durability equal to the condition restored, light and free none.
         if (!GS.Repair.ModifyConditionAndDurability(item))
             return;
 

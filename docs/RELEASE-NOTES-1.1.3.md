@@ -19,7 +19,7 @@ didn't sound like a real server, and what still went wrong in a long raid, and t
 **Conversations that hold together.** An answer no longer comes before its question, nobody thanks an answer that never
 came, and a bot answers a call for a tank, a healer or its own class only if that's what it plays, near the level asked
 for. A bot's good or bad moment draws one or two replies, big realm news a few, and the same short "oof" or "rip"
-isn't heard twice in ten minutes. A dunce's scene, a debate or a story keeps its speakers to the end.
+isn't heard twice in ten minutes. A scene, a debate or a story keeps its speakers to the end.
 
 **Questions get answers.** Most questions bots asked in /faction used to hang there unanswered. Now someone answers,
 and the answer is true where the game knows it: the real trainer and where to find them, the usual spec, where bots of
@@ -121,13 +121,13 @@ one small fix, named below.
 - Chat, RC10 (the fixes for those): 49 minutes. A friend's answer was true ("in a grp in Pennine Mountains atm"), a solo
   bot in the player's zone answered /lfg within 14 seconds, and an invite from too far drew "im in snowdonia come find me
   and inv", true of where the bot was by then. 26 of 27 bot questions were answered within a minute. Reading the lines
-  found nine more slips (a roleplayer's question losing its "?", a meeting point named as if it were a monster, "is Manawatch on
-  today?" while the player was on, a scene's frontier newcomer who was grinding in Avalon, "which stable for master
+  found nine more slips (a question losing its "?", a meeting point named as if it were a monster, a bot asking whether
+  the player was on today while the player was on, a scene's frontier newcomer who was grinding in Avalon, "which stable for master
   visur?", "grinding city of camelot", a bot asked after a group it had said it found, "pennine mountains? thats in
   albion"), all fixed.
 - Chat, RC11: 41 minutes, the checker passed, 34 of 35 bot questions answered within a minute. "how do i get to cornwall
   from here?" drew "Cornwall is its own zone, a stable master can get u close", and a friend who'd grouped with the player
-  asked "Manawatch, u around? want to group again". Two small slips (an /lfg offer asking the level the player had just
+  asked them by name whether they were around to group again. Two small slips (an /lfg offer asking the level the player had just
   posted, "city of camelot anyone") are fixed.
 - Chat, RC12 (the build that ships but one small fix): 21 minutes, the checker passed, every bot question answered
   within a minute. The player's "50 lf xp grp" drew offers that no longer asked the level it gave, and nothing was said
@@ -136,7 +136,7 @@ one small fix, named below.
 - Not yet seen: a bot answering the player's own /trade post (no reply in three tries, RC7-RC11; bots answer a post a
   little under half the time).
 - Seen without prompting on those builds: a guild invite and a recruiter in /say, a bot that grouped with the player
-  remembering it and greeting them hours later ("look who it is, hey Manawatch"), a tell from a bot that really had
+  remembering it and greeting them by name hours later ("look who it is"), a tell from a bot that really had
   grouped with the player, an answer in /faction to the player's question about a camp, and a solo bot answering the
   player's /lfg with an offer to group, then joining.
 - Scurceol on RC3: one Albion raid of 200, started from the launcher, shot all four orbs from the floor in 10 minutes and

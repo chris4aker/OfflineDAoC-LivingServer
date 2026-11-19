@@ -1,0 +1,66 @@
+{
+    "name": "4-vocab",
+    "note": "How players actually talked, 2002-2005: LFG and trade posts, RvR and raid calls, guild recruitment, class slang, server community boards. The listings a-raid-sizes already saved count too, and MAKE-THREAD-JOBS.cmd turns saved listings into raid, build and talk thread jobs.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 200,
+    "targets": [
+        {
+            "url": "camelot.allakhazam.com/forum.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam forum THREAD pages (forum.html?...&mid=N); a-raid-sizes saved the board listings. GUESS for the era path.",
+            "cdxFilters": [
+                "urlkey:.*[?&]mid=[0-9]+.*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "vnboards.ign.com/dark_age_of_camelot",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: VN Boards server, trade, guild and RvR boards named Dark_Age_of_Camelot_<...>.",
+            "cdxFilters": [
+                "urlkey:.*(trad|guild|recruit|lfg|rvr|merlin|percival|lancelot|guinevere|morgan|community|general).*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 50
+        },
+        {
+            "url": "boards.ign.com/dark_age_of_camelot",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: IGN's later boards.ign.com address for the same boards.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "camelotherald.com/archives.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: archives.php?t=community (the Herald's community news: events, fan sites, player stories).",
+            "cdxFilters": [
+                "urlkey:.*[?&]t=community(&.*)?"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "camelotherald.com/guilds/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: a very small sample of the guild database, for guild-recruitment wording and rank names only (no roster use).",
+            "cdxPageSize": 20,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        }
+    ]
+}

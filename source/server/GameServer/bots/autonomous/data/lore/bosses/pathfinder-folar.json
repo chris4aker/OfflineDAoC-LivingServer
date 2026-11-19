@@ -1,0 +1,117 @@
+{
+  "id": "pathfinder-folar",
+  "name": "Pathfinder Folar",
+  "npcNames": [
+    "Pathfinder Folar"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "skogsra"
+  ],
+  "related": [
+    {
+      "id": "boligar",
+      "relation": "the shade-seeker of the order she guides for"
+    },
+    {
+      "id": "iarnvidiur",
+      "relation": "the old one, from whose shadow the lost dead come"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Pathfinder Folar is a level-50 skogsra in southern Faraheim (401575, 377942), with skogsra woodsmen and a greenhand right beside her and a forest skrat nearby, west of Boligar's clearing.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template puts it in the Skogsra Shade Seekers faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Skogsra Shade Seekers into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60164851)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Existing Living Server lore: the Shade Seekers lead the lost dead of the wood home.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The Shade Seekers of the skogsra go after the lost dead of the wood and lead them home, as the skogsra lead the living away. Boligar is the best known of them, in his clearing near the Iarnwood border. The order's pathfinder is Folar, and the dwarves of the Remnants' post, who live nearest her, say she is the only skogsra on Aegir who has ever led anyone in the right direction.\n\nIt is her office. A shade does not know its way, the skogsra say, any more than a stranger does, and the Shade Seekers cannot lead it home until someone has found home: the place in the wood where that shade belongs, which is never where it died. Folar finds it. She walks the south of Faraheim, from the edge of the Iarnwood's shadow where the dead come up out of the old one's country, cold and confused, to wherever each of them is going, and comes back and tells the seekers the way. She is never wrong, and the skogsra say that is why she is so dangerous: a forest folk who always knows the way can lead anyone anywhere.\n\nThe Remnants tell a story about her. After the winter of the nine children, when Hrefna walked out of Droom's hollow led by a narfi, a skogsra was seen walking beside the child at the edge of the Iarnwood, on the side away from the dwarves, and turned back into the trees before anyone could reach her. The slate-keepers of Faraheim have argued ever since whether the skogsra was leading Hrefna home or leading her away. Hrefna said, when she was old, that it was neither: that the skogsra was walking with her to see where she would go.\n\nFolar keeps woodsmen by her, and the Shade Seekers answer her as they answer each other. A stranger who troubles the pathfinder troubles her order. The dwarves say it is a poor trade in any case: kill the one skogsra who knows the way, and the lost dead of the south will wander until another finds it, and they will wander toward Hagall.",
+  "legend": "Pathfinder Folar is a level 50 skogsra of the Shade Seekers in southern Faraheim, west of Boligar's clearing and near the Remnants' post. She has a couple of skogsra woodsmen and a greenhand standing right beside her, and she's Skogsra Shade Seekers faction, the same as the woodsmen, so expect them all when you hit her (bring-a-friend). A forest skrat stands about 900 away. No abilities of her own, not CC-immune, the lowest-level named skogsra: a good first named in the skogsra woods for a group at 50. Keep clear of Boligar's clearing to the east; his mez and port make a small fight a bad one.",
+  "yells": {
+    "aggro": [
+      "Lost? No. I know exactly where you are going.",
+      "Seekers! A stranger on the path!",
+      "I will show you the way. Down."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "This way. Always this way."
+      }
+    ],
+    "death": [
+      "Who will... find the way now...",
+      "The dead... will wander..."
+    ],
+    "slay": [
+      "Found your place.",
+      "Home. Of a kind.",
+      "The seekers will lead you from here."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A skogsra stands at the crossing of many paths.",
+      "The pathfinder. She knows exactly where you are."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Folar's woodsmen close the paths around her."
+      }
+    ],
+    "realmFirstKill": "Pathfinder Folar falls. The lost dead of the south wander."
+  },
+  "botLines": {
+    "briefing": [
+      "folar is 50, shade seekers, her woodsmen come with her",
+      "lowest named skogsra, good warmup",
+      "stay away from boligars clearing east",
+      "no tricks"
+    ],
+    "aftermathWin": [
+      "folar down with the woodsmen",
+      "easy for a 50 group",
+      "boligar stayed put, good",
+      "the pathfinder is lost now"
+    ],
+    "aftermathLoss": [
+      "drifted east into boligar",
+      "skrat joined",
+      "woodsmen hit hard",
+      "pulled extra greenhands"
+    ],
+    "rumour": [
+      "folar is the only skogsra who ever led anyone the right way",
+      "folar finds home for the lost dead so the shade seekers can lead them",
+      "a skogsra walked with hrefna when she came out of the iarnwood, maybe folar",
+      "kill folar and the lost dead wander toward hagall"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Pathfinder Folar",
+    "text": "The Shade Seekers' pathfinder, who finds where each lost dead of the south belongs so that [Boligar]'s order can lead it home. The [Remnants] tell of a skogsra who walked beside Hrefna. See [skogsra]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: I got lost in the south once, properly lost, in the cold that comes up out of the Iarnwood, and walked in circles until dark. Then a woman stepped out of the trees ahead of me and said, in our tongue, that Hagall was that way, and pointed. I went that way and was home by midnight. I have told no one this but my wife. She said I was a fool to follow a skogsra. I said she had been right. My wife said: that is what frightens me.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed Pathfinder Folar of the Shade Seekers in Faraheim in {minutes} minutes.",
+    "loss": "Pathfinder Folar led {raidLeader}'s party from {realm} the wrong way after {minutes} minutes."
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "id": "kleng",
+  "name": "Kleng",
+  "npcNames": [
+    "Kleng"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "related": [
+    {
+      "id": "ulf",
+      "relation": "the old drakulv who keeps the ground beside the southern Kleng"
+    },
+    {
+      "id": "gjalpinulva",
+      "relation": "the court whose attendants he keeps"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Two drakulv named Kleng stand in the south-east of Malmohus at once: one near Ulf (736760, 1024511), one among drakulv attendants (735650, 1011681). Their template gives a level of 52 or 56 at random, so either may be the stronger.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template puts it in the Pack Drakulv faction, so when a player, a player's pet or a companion bot attacks it, it can bring other Pack Drakulv standing near it into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60162929)"
+    },
+    {
+      "text": "A plain world spawn with no script of its own: no special abilities beyond its template, not CC-immune; it fights like any other monster of its level.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Klaengr is an attested Old Norse personal name (Bishop Klaengr Thorsteinsson of Skalholt); its meaning is uncertain, to verify.",
+      "provenance": "original",
+      "source": "Old Norse name lists (Landnamabok, the sagas), to verify"
+    }
+  ],
+  "story": "The drakulv attendants are the servants of the dragon's court, the ones who carry and fetch, and the svartalfar say they are the only drakulv allowed into her hollow without being sent for. They are kept by a captain called Kleng. There are two of him, and that is a story the drakulv themselves seem to find funny.\n\nWhen the first Kleng grew old, the svartalfar say, he chose his heir himself, as no drakulv captain is supposed to do: the name is the hollow's to give. He chose a young drakulv of his own attendants and taught him the work, the order of the court, who goes in first and who is fed last, and then he did not die. He kept on not dying for so many winters that the heir grew as large as he was, and larger, and the court began to call them both by the name, the old Kleng and the young one. Then the old one died at last, and the young one took the work, and within a moon there was another young one at his side, chosen the same way. The beam-cutters say it has gone on like that ever since. There is always a Kleng and the Kleng who will be.\n\nWhich is which is anyone's guess. The svartalfar who watch the attendants say that some winters the heir is the larger and some winters the keeper, and that a traveller who meets one Kleng in the south-east has no way of telling by looking whether he has met the stronger. One stands among the attendants on the road to the hollow. The other stands further south, near the old drakulv called Ulf, as if learning from him too.\n\nBoth are of the pack, and both call it when struck. Brisa the beam-cutter says the attendants come to a Kleng faster than any holding comes to its captain, because they are servants, and a servant who is slow to answer is no longer a servant in that court.",
+  "legend": "Two Klengs are up in south-east Malmohus: one with three drakulv attendants on the road toward the dragon's hollow, one further south near Ulf. Each rolls level 52 or 56 when it spawns, so check the con before you commit. Plain drakulv otherwise, no abilities, not CC-immune, but Pack Drakulv: hit him and the attendants next to him (51-53) can come along. Pull the attendants' Kleng from range or mez the attendants; the southern Kleng is easier, just don't let it run into Ulf's patch. Both Klengs are big drakulv with a hard swing, so let the tank hold him and keep casters out of the attendants' reach.",
+  "yells": {
+    "aggro": [
+      "Attendants! A guest for the court!",
+      "Who sent for you? Nobody sent for you.",
+      "The young one will remember your face. So will I."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Heir! Watch how this is done. Watch!"
+      }
+    ],
+    "death": [
+      "The other... has the work now...",
+      "Chosen... well..."
+    ],
+    "slay": [
+      "Fetched.",
+      "Carry that one to the hollow.",
+      "Served."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The road to the hollow. Attendants come and go.",
+      "A Kleng stands here. There is always another."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The attendants hurry to Kleng's side."
+      }
+    ],
+    "realmFirstKill": "A Kleng is cut on the beam. The heir takes the work."
+  },
+  "botLines": {
+    "briefing": [
+      "two klengs, each rolls 52 or 56, con before you go",
+      "the one with the attendants brings them, pull from range",
+      "mez the attendants if they come",
+      "southern kleng is easier, keep it off ulf"
+    ],
+    "aftermathWin": [
+      "kleng down, the heir will be up soon enough",
+      "that was the 56 one, felt it",
+      "attendants mezzed, clean",
+      "one kleng less, for a while"
+    ],
+    "aftermathLoss": [
+      "three attendants and a 56 kleng, nope",
+      "thought it was the 52",
+      "it ran into ulf",
+      "attendants came faster than i thought"
+    ],
+    "rumour": [
+      "the old kleng chose his own heir and then didnt die for years",
+      "there is always a kleng and the kleng who will be",
+      "attendants are the only drakulv allowed into her hollow unasked",
+      "nobody can tell which kleng is the stronger by looking"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kleng",
+    "text": "Keeper of the dragon's attendants, and always two: the Kleng and the Kleng who will be, since an old keeper chose his own heir. One stands near [Ulf]. See [the names]."
+  },
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: on the beam the name Kleng is cut once, at the beginning, and then it runs on as a line of dots with no gap in it, because the work has never once been without a keeper. My teacher said it was the only line on the beam that made her feel anything like respect. A drakulv who chooses his own heir is breaking his court's custom; a drakulv who then teaches the heir so well that the court cannot tell them apart has made a new custom. She said we svartalfar have fewer customs than that.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} killed a Kleng among the attendants of Malmohus in {minutes} minutes.",
+    "loss": "Kleng's attendants answered faster than {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

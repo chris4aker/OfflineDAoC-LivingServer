@@ -1,4 +1,4 @@
-# When shadowofze publishes a new Offline DAoC release
+# Taking in an earlier Offline DAoC base release (history)
 
 Living Server is a server build (`GameServer.dll`) plus the launcher, installed over a released Offline DAoC game.
 Each new upstream release changes that game's own server, so a Living Server build must carry the new release's
@@ -7,11 +7,13 @@ checklist for that day, written for 0.38.
 
 ## State as of 2026-10-31
 
-- **shadowofze has stopped.** His README (commit `f630845`, 2026-10-31) says the project is on hold and will not
-  receive any more updates; the 0.37 / 0.37b / 0.37c downloads stay; he has moved to a separate "True 1.65" version
-  that uses only the new client, with no release promised. The checklist below still applies, read with "his final
-  `main`" wherever it says the `v0.38` tag; the "0.37 → official 0.38 update → Living Server" test path no longer
-  exists.
+- **No new base release is expected.** Offline DAoC with Living Server is maintained in this repository now. The
+  original base README (commit `f630845`, 2026-10-31) put the base project on hold with no more updates; the 0.37 /
+  0.37b / 0.37c downloads stay (Living Server keeps copies in `chris4aker/OfflineDAoC-base-files`). The True 1.65
+  project ([zomboden/OfflineDAoC-True165](https://github.com/zomboden/OfflineDAoC-True165)) is a different version that
+  Living Server borrows some code and ideas from, not a base release. The checklist below is kept as history, read with
+  "the final base `main`" wherever it says the `v0.38` tag; the "0.37 → official 0.38 update → Living Server" test path
+  no longer exists.
 - **Released upstream:** 0.37 / 0.37b / 0.37c (tag `v0.37`, `ab4df02`). There is no `v0.38` tag; his changelog
   says "0.38 (not released yet)" and describes it as one download with the new client only, the original client
   unsupported and the Sluaghbinder discontinued (the class code is still there, it is no longer offered; a script
@@ -49,6 +51,12 @@ checklist for that day, written for 0.38.
    - For each file the update changed: if shadowofze's version already has the fix (0.38c slides portcullises
      too), drop the patch. If it doesn't, make a patch against the 0.38 file with `make_content_patch.py` and keep
      both entries.
+   - The classic client's loading screen (`pregame/splash.mpk`, Living Server 1.2) is marked "Keep": ROLLBACK.cmd and
+     PREPARE-FOR-UPDATE.cmd leave Living Server's in place (owner 2026-11-07). The patcher checks only the files an
+     update lists (`OfflineDaoc.Patcher`, step 3), and 0.37 doesn't list it (same SHA-256 in the 0.36b and 0.37b
+     baselines). If a new update lists it, its patcher stops on it as a changed file: run the update with its
+     overwrite option (the patcher backs it up), then INSTALL.cmd, whose entry would need that release's file as
+     "Released".
 5. **All-in-one installer** (`installer/all-in-one`, PR #26). It pins shadowofze's `Get-OfflineDAoC.ps1` by
    SHA-256 and knows the 0.37 and 0.36 starting points. It already reads a `BaseRelease` list (2026-10-28): a game
    on any listed release takes Living Server as it is, and new installs and updates go to the newest listed. For

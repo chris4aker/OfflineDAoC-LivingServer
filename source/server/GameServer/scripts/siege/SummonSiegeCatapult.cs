@@ -11,7 +11,7 @@ namespace DOL.GS.Spells
 
         public override bool StartSpell(GameLiving target)
         {
-            if (!Caster.CurrentZone.IsOF || Caster.CurrentRegion.IsDungeon)
+            if (!(Caster.CurrentZone.IsOF || Caster.CurrentZone.IsBG) || Caster.CurrentRegion.IsDungeon)
             {
 			    MessageToCaster("You cannot use siege weapons here!", PacketHandler.eChatType.CT_SpellResisted);
 			    return false;
@@ -46,7 +46,7 @@ namespace DOL.GS.Spells
 	    public override void ApplyEffectOnTarget(GameLiving target)
         {
 	        
-	        if (!Caster.CurrentZone.IsOF || Caster.CurrentRegion.IsDungeon){
+	        if (!(Caster.CurrentZone.IsOF || Caster.CurrentZone.IsBG) || Caster.CurrentRegion.IsDungeon){
 		        MessageToCaster("You cannot use siege weapons here!", PacketHandler.eChatType.CT_SpellResisted);
 		        return;
 	        }
@@ -71,7 +71,7 @@ namespace DOL.GS.Spells
 
         public override bool CheckBeginCast(GameLiving selectedTarget)
         {
-	        if (!Caster.CurrentZone.IsOF || Caster.CurrentRegion.IsDungeon){
+	        if (!(Caster.CurrentZone.IsOF || Caster.CurrentZone.IsBG) || Caster.CurrentRegion.IsDungeon){
 		        MessageToCaster("You cannot use siege weapons here!", PacketHandler.eChatType.CT_SpellResisted);
 		        return false;
 	        }

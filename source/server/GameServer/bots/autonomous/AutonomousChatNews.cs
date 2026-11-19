@@ -44,7 +44,14 @@ public sealed record ChatNewsItem(string Topic, eRealm Realm, DateTime When)
         Add("raid", Raid);
         Add("boss", Boss);
         Add("zone", Zone);
-        if (Enemy != eRealm.None) Add("enemy", GlobalConstants.RealmToName(Enemy));
+        // TEXT-018: {enemy} is the people ("hibs"), {enemy_mod} the word before a noun ("hib"), {enemy_realm} the name.
+        if (Enemy != eRealm.None)
+        {
+            (string people, string mod, string name) = AutonomousBotVoices.EnemySlots(Enemy);
+            Add("enemy", people);
+            Add("enemy_mod", mod);
+            Add("enemy_realm", name);
+        }
         if (Winner != eRealm.None) Add("winner", GlobalConstants.RealmToName(Winner));
         if (Loser != eRealm.None) Add("loser", GlobalConstants.RealmToName(Loser));
         if (Size > 0) Add("size", Size.ToString());
@@ -442,8 +449,14 @@ public static class AutonomousChatNews
             var slots = new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 ["keep"] = AutonomousRvrEventLayer.Place(siege.KeepName),
-                ["enemy"] = GlobalConstants.RealmToName(enemy),
             };
+            (string people, string mod, string name) = AutonomousBotVoices.EnemySlots(enemy);
+            if (people != null)
+            {
+                slots["enemy"] = people;
+                slots["enemy_mod"] = mod;
+                slots["enemy_realm"] = name;
+            }
             string zone = zoneOf?.Invoke(siege.RegionId, siege.X, siege.Y);
             if (!string.IsNullOrWhiteSpace(zone))
                 slots["frontier"] = zone;

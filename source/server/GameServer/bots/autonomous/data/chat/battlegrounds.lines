@@ -1,6 +1,6 @@
-# Battleground talk by bracket: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35,
-# Cathal Valley 45-49 (world database). "We're there now" lines need in_rvr; the rest are plans and
-# memories. Adds to rvr.lines (topic battlegrounds). New writing (see docs/bot-voices).
+# Battleground talk by bracket: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35
+# (world database). Cathal Valley is left out: it came after this era. "We're there now" lines need
+# in_rvr; the rest are plans and memories. Adds to rvr.lines (topic battlegrounds). New writing (see docs/bot-voices).
 
 # ---------------- Abermenai 15-19 ----------------
 @kind rvr
@@ -12,10 +12,9 @@
 first time in abermenai, everyone is tiny and furious
 @needs in_battleground
 @needs in_battleground, at:abermenai
-{enemy} group heading for the abermenai keep, anyone near?
+anyone seen {enemy} near the keep?
 @needs in_battleground
 @needs in_battleground, at:abermenai
-abermenai keep is ours for now, stay close to the door
 @needs in_battleground
 @needs
 @invites lfg
@@ -39,10 +38,9 @@ abermenai twinks in full crafted gear at 18, why
 @levels 20-24
 @needs in_battleground
 @needs in_battleground, at:thidranki
-{enemy} group headed for the keep in thid, anyone near?
+anyone seen {enemy} near the keep in thid?
 @needs in_battleground
 @needs in_battleground, at:thidranki
-thid keep door is down, everyone inside!
 @needs in_battleground
 that twink two shot me, his gear costs more than my house
 @needs in_battleground, at:thidranki
@@ -83,11 +81,14 @@ bards in thid, nobody can catch us
 @needs in_battleground, at:murdaigean
 murdaigean is quiet, everyone must be in thid on alts
 @needs in_battleground
-{enemy} pushing the keep in murd, need bodies
-holding the murd keep with six people, more welcome
+@needs in_battleground,at:murdaigean
+anyone seen {enemy} near the keep in murd?
+@needs in_battleground
 @needs
 @invites lfg
-murd tonight? short a couple for a group
+@about place
+murd tonight? anyone going?
+@about
 @invites
 @about place
 murdaigean is where the twinks go when thid gets old
@@ -110,34 +111,20 @@ just hit 25, goodbye thid, hello murd
 @needs in_battleground, at:caledonia
 caledonia is huge, where is everyone?
 @needs in_battleground
-{enemy} healers in cale are hard to drop, focus them first
-cale keep is ours again, nice work
+@needs in_battleground,at:caledonia
+{enemy_mod} healers in cale are hard to drop, focus them first
+@needs in_battleground
 @needs
 @about place
 anyone still run caledonia?
 @about
+@about place
 cale before the frontier, good practice for the big fights
+@about
 @invites ask_opinion
 @about place
 caledonia at 30, worth it or skip straight to leveling?
 @about
-
-# ---------------- Cathal Valley 45-49 ----------------
-@kind rvr
-@topic battlegrounds
-@who *
-@levels 45-49
-@needs in_battleground
-cathal valley is a real fight, everyone here knows their class
-{enemy} 8man in cathal, stay grouped
-lost my group, anyone near the cathal keep?
-@needs
-@invites lfg
-cathal valley tonight? last chance before 50
-@invites
-cathal is the best rvr nobody talks about
-@invites joke
-47 and still in cathal, i might never leave
 
 # ---------------- Outgrowing a bracket ----------------
 @kind ambient
@@ -156,7 +143,9 @@ dinged 25 and got kicked out of thid, bittersweet
 @about
 @levels 25-26
 @levels 30-31
+@about place
 no more murd for me, 30 came too fast
+@about
 @levels 20-21
 @invites ask_anyone
 @needs just_leveled

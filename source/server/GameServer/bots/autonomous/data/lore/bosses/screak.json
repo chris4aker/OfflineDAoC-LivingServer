@@ -1,0 +1,85 @@
+{
+  "id": "screak",
+  "name": "Screak",
+  "npcNames": [
+    "Screak"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Screak: level 42, a marine shriller body (model 764), at about 425,000/311,500 on the shelf near the ravaging marine shrillers; respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Screak as the shriller whose cry the Necht fishers use as a storm warning.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The marine shrillers of the shelf cry at the sea, and the loudest of them the Necht fishers call Screak, for the sound. It is a cousin of the old shriller of Cothrom Gorge, Tudeg, whose tide-cry the gorge clans told the hour by, and Necht uses Screak the same way, only for weather: when Screak cries in the afternoon, the boats stay in.\n\nThe fishers say it has never been wrong. They also say it cries louder when the realm's companies come down the shelf than it does for any storm, and they have started to wonder which of the two it thinks is worse. When the realm's companies first came to Necht, Screak cried at them for three days without stopping, and the boats stayed in for all three, and the fishers have never quite forgiven the realm for it. Tudeg in the gorge cries at the tide; Screak cries at the weather; the Necht singers say the shrillers of the isle between them keep the only clocks it ever had.",
+  "legend": "Screak (42) is a named marine shriller on the shelf (about 425k/312k) near ravaging marine shrillers (44-46). Pull it away from the ravagers. A group of 40s. 80-second respawn. Its cry is loud; do not mistake it for a storm. Plain spawn with no script. Marine shrillers (38-43) are around it too; they are not a threat to a group of 40s. Fight it on the shelf, not at the water's edge.",
+  "yells": {
+    "aggro": [
+      "(an ear-splitting cry over the water)",
+      "(Screak shrieks at the sky)"
+    ],
+    "phases": [],
+    "death": [
+      "(the cry breaks off)"
+    ],
+    "slay": [
+      "(Screak cries once, triumphant)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A shriller crying at the sea, louder than the rest."
+    ],
+    "phases": [],
+    "realmFirstKill": "Screak the shriller is silent on the shelf."
+  },
+  "botLines": {
+    "briefing": [
+      "screak is a 42 shriller on the shelf",
+      "ravaging shrillers nearby, pull it away"
+    ],
+    "aftermathWin": [
+      "screak quiet. [finally|grats]",
+      "boats can go out lol"
+    ],
+    "aftermathLoss": [
+      "ravagers joined. [rip|ouch]",
+      "pulled the whole shelf. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] necht boats stay in when screak cries in the afternoon. never wrong",
+      "screak cries louder for hib companies than for storms, the fishers say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Screak",
+    "text": "The loudest marine shriller of the shelf, Tudeg's cousin. Necht uses its afternoon cry as a storm warning; it has never been wrong."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Screak in Vigilant Rock in {minutes} minutes.",
+    "loss": "Screak turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "tudeg",
+      "relation": "the eldest shriller, of the gorge"
+    },
+    {
+      "id": "galmar",
+      "relation": "another named thing of the shelf"
+    }
+  ]
+}

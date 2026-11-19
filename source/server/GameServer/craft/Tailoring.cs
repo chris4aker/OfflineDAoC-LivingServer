@@ -17,6 +17,7 @@
  *
  */
 using DOL.Database;
+using DOL.GS.Crafting;
 using DOL.Language;
 using DOL.GS.PacketHandler;
 using System;
@@ -77,22 +78,15 @@ namespace DOL.GS
 
         public override int GetSecondaryCraftingSkillMinimumLevel(Recipe recipe)
         {
-            switch (recipe.Product.Object_Type)
-            {
-                case (int)eObjectType.Cloth:
-                case (int)eObjectType.Leather:
-                case (int)eObjectType.Studded:
-                    return recipe.Level - 30;
-            }
-
-            return base.GetSecondaryCraftingSkillMinimumLevel(recipe);
+            // CraftRules.SecondaryMinimumLevel (Crafting 2.0 WP1): the bot crafter asks the same level.
+            return CraftRules.SecondaryMinimumLevel(eSkill, recipe.Product.Object_Type, recipe.Level);
         }
 
 		public override void GainCraftingSkillPoints(GamePlayer player, Recipe recipe)
         {
             if (Util.Chance(CalculateChanceToGainPoint(player, recipe.Level)))
             {
-                player.GainCraftingSkill(eCraftingSkill.Tailoring, 1);
+                GainRatedPoints(player, eCraftingSkill.Tailoring);
                 base.GainCraftingSkillPoints(player, recipe);
                 player.Out.SendUpdateCraftingSkills();
             }

@@ -1,0 +1,131 @@
+{
+  "id": "ellyll-seer",
+  "name": "Ellyll Seer",
+  "npcNames": [
+    "Ellyll Seer"
+  ],
+  "locationId": "pennine-mountains",
+  "realm": "Albion",
+  "aliases": [
+    "the seer of the ellyllon",
+    "the ellyll seer"
+  ],
+  "facts": [
+    {
+      "text": "Ellyll Seer: template 60160431, level 59, a tiny figure (size 23), in the ellyllon's hollow in the western Pennines at 571971, 401903; aggro level 90 within 500, faction Ellyllon (base hostility 100: aggressive to anyone whose standing with them has not improved), no spells or styles, respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "An ellyll villager (45) stands 934 away and ellyll guards (50) between 1,100 and 1,600 away, all of the Ellyllon.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls aggressive friends within 450, plus 150 for each attacker beyond the first, up to eight.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight)"
+    },
+    {
+      "text": "Lord of Deceit (Master Arenis, Camelot): from Sir Tillian at Castle Sauvage, slay an Ellyll seer in the villages of Pennine and give the journal to Captain Rhodri in Snowdonia Fortress; later the Ravenclan giant Belgrik's Book of Lore.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Welsh folklore: the ellyllon are small elves of the hills and lakes; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Ellyllon"
+    },
+    {
+      "text": "The seer's journal written ahead of the day, the hollow's custom of the late guest, the name Captain Rhodri will not read out and the three readings are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The ellyllon keep a village in a hollow of the western Pennines, small doors in the turf and smoke coming out of the ground, and in the village a seer, the smallest of them and the oldest. The Rider's Book of the Tops says the seer looks at a man as though he were late. The ellyllon say that is exactly what the seer is doing. A seer of their kind does not see what is coming; a seer sees it already come, and is waiting for the rest of the world to arrive at it.\n\nThe seer keeps a journal. The ellyllon say it is written ahead of the day: what the hollow will eat, who will knock, which frog will go missing, which rider of Castle Sauvage will come over the ridge at the wrong hour and what he will say. The seer writes it down in the morning and then watches the day catch up. When a visitor arrives who is in the journal, the seer is not surprised, and is a little annoyed, because the visitor is always late. The custom of the hollow is that a guest who is in the seer's journal is a guest; a guest who is not is a thief. Almost nobody is in the journal. The seer comes at nearly everyone who walks into the hollow, and stops for almost no one.\n\nThe village is close by, but not close. The seer has a voice for calling it, the ellyllon say, and a small trouble at the seer's door is the seer's own; a great crowd of strangers in the hollow is the village's, and the guards come up out of the turf for it.\n\nCaptain Rhodri of Snowdonia Fortress has wanted the journal for a long time, and Sir Tillian of Castle Sauvage sends the realm's young to take it. The riders say there is a name in it, written in a year before the frontier had heard of the deceit that ran through the Isolationists' camps, and that the captain has read the name and not said it. Some of the Academy say the seer saw the lord of that deceit before he was born; the Church says no creature should write a man down before he has done the thing; the ellyllon say nothing at all, because they have read the next page.\n\nWhen the seer is put down, the hollow does not mourn. It waits, and a little while later there is a seer again, with the journal, writing, and looking up at whoever is next as though they were late.",
+  "legend": "The Ellyll Seer is a level 59 ellyll in the ellyllon's hollow village in the western Pennines: tiny, easy to lose in a crowd, and aggressive from about 500 away to anyone the ellyllon do not count as friends (that is faction standing: the Ellyllon start out hostile). No spells and no styles in the data, just a level 59 hitting you. The village is close but not right next to it: a villager is about 930 away and the ellyll guards (50s) 1,100 to 1,600, so a small group usually kills the seer alone, but a big crowd widens the bring-a-friend call and can drag the guards in. Take one group, not a zerg. It is the journal step of Lord of Deceit (Sir Tillian at Castle Sauvage, then Captain Rhodri upstairs in Snowdonia Fortress). Respawn is about ten minutes.",
+  "yells": {
+    "aggro": [
+      "You are late.",
+      "I wrote this hour down this morning.",
+      "Not in the journal. A thief, then."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "This page... I did not write this page..."
+      }
+    ],
+    "death": [
+      "The next page... is already written...",
+      "You were late... even for this..."
+    ],
+    "slay": [
+      "As written.",
+      "Late, and now later.",
+      "Crossed out."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Small doors in the turf. Smoke from the ground.",
+      "Something tiny watches you as if you were late."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The seer's journal falls open in the grass."
+      }
+    ],
+    "realmFirstKill": "The Ellyll Seer is down. The journal lies open."
+  },
+  "botLines": {
+    "briefing": [
+      "ellyll seer, 59, tiny thing in the ellyllon hollow in west pennines. aggros from 500 unless your ellyllon faction is good",
+      "no spells. guards are 1100-1600 out, they only come if we bring a crowd. one group, no more",
+      "kill it fast, grab the journal for rhodri. lord of deceit people",
+      "respawn is about 10 min if we miss the journal"
+    ],
+    "aftermathWin": [
+      "journal's ours. rhodri upstairs in the fortress",
+      "seer down, no guards, told you one group",
+      "tiny thing for a 59",
+      "the ellyllon will have a new one in ten minutes, dont gloat"
+    ],
+    "aftermathLoss": [
+      "brought two groups and the whole village came",
+      "lost the seer in the crowd, its so small",
+      "it's 59, the 50 duo got wrecked",
+      "camped it for the respawn and pulled a guard"
+    ],
+    "rumour": [
+      "[heard|someone said] the ellyll seer writes the day down before it happens",
+      "heard the seer's journal has a name in it that rhodri wont say out loud",
+      "[heard|someone said] if youre in the seer's journal youre a guest and if not youre a thief",
+      "heard the seer looks at everyone like theyre late"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ellyll seer",
+    "text": "The seer of the [ellyllon] in their hollow village in the western [pennine mountains], the smallest and oldest of them, who writes each day in a journal before it happens and is annoyed when the world arrives late. Almost nobody is in the journal, and the seer comes at almost everyone. Captain Rhodri wants it for a name written in it before the Isolationists' deceit was known; the [ravenclan] chief [belgrik] keeps the other half of that story."
+  },
+  "bookPage": "A page of the Ellyll Seer's journal, as Captain Rhodri had it copied by the fortress clerk, the hand very small. Morning. A rider of the castle will come over the ridge after noon, on a grey, with a cut on his chin from shaving in the dark. He will be late. He will say he has come for the journal. He has. Two frogs will be missing at dusk and one will come back. The giants on the crag will write down another payment. A man who is not born yet will be called a lord and will lie, and the frontier will spend three summers finding out. I have written his name at the bottom of this page so that the rider can read it on the way home.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took the Ellyll Seer's journal in the Pennine hollow in {minutes} minutes.",
+    "loss": "The Ellyll Seer wrote {raidLeader}'s company of {realm} down as late, and crossed them out."
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "belgrik",
+      "relation": "the Ravenclan chief whose Book of Lore holds the other half of the deceit the journal names"
+    },
+    {
+      "id": "pennine-mountains",
+      "relation": "the ellyllon hollow village and its seer"
+    }
+  ]
+}

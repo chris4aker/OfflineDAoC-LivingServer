@@ -55,12 +55,15 @@ speaker's own line. A follow-up line may set `@topic` to the family of the line 
 ### File `news.lines` (kind `news`, `@invites news_<topic>`)
 
 One block per topic. Each topic needs at least 8 lines: some `@needs witness` ("we just lost the gate at {keep}, they had
-rams"), most `@needs !witness` ("heard we lost {keep}"). Slots as listed.
+rams"), most `@needs !witness` ("heard we lost {keep}"). Slots as listed. Siege lines claim no door, ram, oil, lord room or
+head count: nothing checks the stage (chat audit 2026-11-18). Enemy sightings are not told (`enemy_seen` has no lines).
 
 | Topic | What happened | Slots |
 |---|---|---|
+| `siege_warning` | `{enemy}` is marching on our `{keep}`; the battle has not begun (no doors, rams or walls yet) | keep, enemy |
 | `siege_defend` | `{enemy}` is attacking our `{keep}` now (call for defenders) | keep, enemy |
-| `siege_attack` | our army is marching on / hitting `{keep}`, an `{enemy}` keep | keep, enemy |
+| `siege_muster` | our army is forming up to hit `{keep}`, an `{enemy}` keep; the battle has not begun | keep, enemy |
+| `siege_attack` | our army is hitting `{keep}`, an `{enemy}` keep (the battle has begun) | keep, enemy |
 | `siege_held` | we held `{keep}` against `{enemy}` | keep, enemy |
 | `siege_failed` | our attack on `{keep}` failed | keep, enemy |
 | `keep_won` | we took `{keep}` from `{loser}` | keep, loser |
@@ -74,7 +77,6 @@ rams"), most `@needs !witness` ("heard we lost {keep}"). Slots as listed.
 | `raid_forming` | a realm raid is forming for `{raid}` | raid |
 | `raid_won` | the realm raid killed `{boss}` in `{raid}` | raid, boss |
 | `raid_wiped` | the raid wiped on `{boss}` in `{raid}` | raid, boss |
-| `enemy_seen` | a `{size}`-strong `{enemy}` group seen in `{zone}` | enemy, zone, size |
 
 ### File `news_replies.lines` (kind `reply`)
 
@@ -96,7 +98,8 @@ so with `@needs in_frontier` or similar.
 ### File `memory_more.lines` (kind `greet`, `@needs knows_player`)
 
 25 greetings that recall the last place or the last group with the player: "{player}! how did {place} go?",
-"hey {player}, still hunting {place}?". `{place}` is where the bot last saw them.
+"hey {player}, still hunting {place}?". `{place}` is where the bot and the player last grouped (it follows the group,
+never a capital), else where the player rezzed it. Lines about a group need `@needs player_grouped`.
 
 ## Combat, groups and follow-ups (second file set)
 

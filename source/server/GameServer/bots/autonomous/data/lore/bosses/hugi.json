@@ -1,0 +1,105 @@
+{
+  "id": "hugi",
+  "name": "Hugi",
+  "catalogKey": "midgard-named-mobs-classic-zones/hugi",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-ice",
+  "factions": [
+    "raumarik-giants"
+  ],
+  "facts": [
+    {
+      "text": "Hugi is a level-74 giant with 30,000 health in southwest Raumarik.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists him as a giant whose drops include Hoarfrost armour and a Frozen Cyclops Eye.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4990"
+    },
+    {
+      "text": "In the old tale of Thor's visit to Utgard-Loki, Hugi ('thought') outran Thor's servant Thjalfi three times, because nothing is faster than thought.",
+      "provenance": "myth",
+      "source": "Snorri, Gylfaginning (public-domain myth); inspiration"
+    },
+    {
+      "text": "Hugi has no spells or adds in this script: 30,000 health, CC-immune, reach 350, 20% melee / 30% magic resist, aggro range 800; he resets at full health. He stands among the frost cyclopes and frost stallions of Raumarik's south-west.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Hugi.cs"
+    }
+  ],
+  "story": "In the old tale Thor went to the hall of Utgard-Loki and was tricked at every game, and his servant Thjalfi raced a lad named Hugi three times and lost all three, and only afterwards was told that Hugi was thought itself, which no runner can outrun. The giants of Utgard laughed about it for an age.\n\nThe giant who walks the south-west of Raumarik is called Hugi too, and the frost cyclopes he stands among say he was given the name as a joke, at his naming, by a father who already knew what he would be. He is not fast. He is huge and one-eyed and slow as a glacier coming down a valley, and he wears hoarfrost like a cloak, and his eye is a lump of blue ice that the cyclopes say sees in the dark and in the past. The joke of his name is lost on him. Or perhaps it is not.\n\nThe hunters who chase him say he is always a step ahead of where they thought: not because he moves quickly, but because he is already there. He stands where they will be. The cyclopes say that is the joke turned round, and that Hugi has spent the long winters of Raumarik thinking, very slowly, about everything, and has arrived at the end of most things before anyone else has started. He does not tell anyone what he arrived at. He has nobody to tell. The frost stallions run for him and the cyclopes keep their distance.\n\nHe has no craft. He does not throw frost or call his kin; he simply hits, with the whole weight of a glacier behind it, and nothing holds him, because rope and charm are things you use on something that might go somewhere, and Hugi is already where he is going.\n\nThe Galplen tellers say that at the end of the world, when the giants march, Hugi will be the last to set out and the first to arrive.",
+  "legend": "Hugi is the big one-eyed frost giant in the south-west of Raumarik among the frost cyclopes, level 74, 30,000 health. No spells, no adds, nothing fancy: he just hits like a landslide, so it's a straight tank and spank. A group of 50s with a good healer and a solid tank can take him. CC-immune, 20% melee and 30% magic resist, aggro range 800, so clear the cyclopes and stallions around him first or they'll come in. He resets full if you leave. People come for the hoarfrost armour and, if they're lucky, his frozen cyclops eye. Don't ask him to race.",
+  "yells": {
+    "aggro": [
+      "Small. Fast. Not fast enough.",
+      "Hugi was already here.",
+      "Hugi thought about you. A long time ago."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hugi thinks... you should run now."
+      }
+    ],
+    "death": [
+      "Hugi... was always... ahead...",
+      "Hugi knew... this part too..."
+    ],
+    "slay": [
+      "Too slow.",
+      "Hugi was there first.",
+      "Think about it. Slowly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Huge footprints, filled with hoarfrost.",
+      "A one-eyed giant stands where you were going."
+    ],
+    "realmFirstKill": "Hugi the giant has fallen in Raumarik.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Hugi's ice eye glows. He has seen how this ends."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "hugi is a big tank and spank giant, healers keep the mt up",
+      "no adds, no spells, just huge hits",
+      "clear the cyclopes first",
+      "cc immune"
+    ],
+    "aftermathWin": [
+      "hugi down, got the cyclops eye!",
+      "straight tank and spank, done",
+      "the cyclopes didnt even react",
+      "hoarfrost armour drop finally"
+    ],
+    "aftermathLoss": [
+      "he hits like a landslide",
+      "pulled the cyclopes too",
+      "tank went down in three hits",
+      "no cold resist, bad idea"
+    ],
+    "rumour": [
+      "hugi was the name of thought itself in the old tale. this hugi isnt very bright though",
+      "the cyclopes say hugi sees the past with his ice eye",
+      "hugi will be the last giant to set out and the first to arrive",
+      "hes always where you were going"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Hugi",
+    "text": "Named for the lad in the old tale who was thought itself and outran Thjalfi. This Hugi is a slow one-eyed giant in hoarfrost. Hunters say he is always a step ahead anyway."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: the frost cyclopes of the south-west told a Galplen trapper that Hugi's father named him for thought as a joke, because the child was so slow. The trapper laughed. The cyclopes did not. They said Hugi had spent every winter since thinking, very slowly, about everything, and had reached the end of most of it, and that when you go up the heights to hunt him you will find him already standing where you meant to stop. The trapper went up. He was. The trapper came down the other way.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Hugi the giant in {minutes} minutes.",
+    "loss": "Hugi stayed a step ahead of {raidLeader}'s party from {realm} for {minutes} minutes, and then turned round."
+  }
+}

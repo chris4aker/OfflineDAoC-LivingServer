@@ -1,0 +1,297 @@
+{
+  "id": "avalon-marsh",
+  "name": "Avalon Marsh",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    9
+  ],
+  "aliases": [
+    "the marsh",
+    "avalon marsh"
+  ],
+  "summary": "The drowned country west of the old wood: the bogmen and the shamblers, Caer Witrin and Adribard's Retreat, Lord Aryon's fallen church and its dead knights, and the Lady on the meres at night.",
+  "facts": [
+    {
+      "text": "Avalon Marsh is zone 9 of region 1, with Adribard's Retreat and Caer Witrin and about 1,000 monsters: bogmen, shamblers, ghoul knights, ghostly knights, mist monsters, mud golems, marsh scrags, wood ogres and swamp beasts.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 1 zone 9 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lidmann Halsey at Adribard's Retreat starts the Defenders of Albion epic, Feast of the Decadent: kill Cailleach Uragaig in Lyonesse.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/epic/Defenders50.cs"
+    },
+    {
+      "text": "Legend of the Lake: 'Find the Lady of the Lake at night in Avalon Marsh.' Bishop Burhoff's Curse: the Dark Bishop haunts the ruins of Lord Aryon's castle in Avalon Marsh at night.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests also name Undead Knight Fiedel (at the ruined church), Dread Lord Aryon (in the broken church ruins), Dooben (a mud golem), Vagdush (a wood ogre seer) and Scraek (a marsh scrag in one of the two towers along the road south-west of the stable).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Vagdush roots and casts a disease, then direct damage, at a target out of melee reach, and calls two ogres at 10% health; Dooben shows a spell effect while idle.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/Vagdush.cs, source/server/GameServer/scripts/mobs/AlbionMobs/Dooben.cs"
+    },
+    {
+      "text": "The ghostly knights, phantom pages and squires and fallen paladins of the church belong to the faction undead knights; the Marsh Lord does not start fights (aggro level 0).",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob tables, region 1 zone 9 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Real-world: Ynys Witrin, the isle of glass, is an old Welsh name for Glastonbury, which medieval writers identified with Avalon; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Glastonbury"
+    },
+    {
+      "text": "Ysbal the reed-cutter's account, the bells across the water, Caer Witrin's two etymologies, Lord Aryon's castle on the southern causeway, Fiedel walking first, the bishop who read all night, the shamblers as the marsh standing up, Dooben's light as the marsh remembering, Scraek's clay and the Lady's 'not yet' are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The drowned country. West of the old wood the land gives up and goes to water: meres and reed-beds, black pools, islands of alder and a few causeways of stone that the Romans laid and the marsh has been eating ever since. The drovers call it Avalon's marsh, and the name is older than anyone's memory of why. The readers of Avalon's college of the old tongues used to say that every marsh in the west remembers the sea it was, and that this one remembers Avalon, because the isle of the colleges was seen from its western edge on clear evenings in the days before the mist came down over the isles. Nobody has seen it from the marsh since. The bogmen who live in the reeds say that on still nights they can hear bells across the water. The bogmen also say a great many things.\n\nThe fort of glass. At the western edge of the marsh, on the last firm ground, stands Caer Witrin, which the old tongue calls the fort of glass; the Academy says the name was given because the fort looked toward the Isle of Glass across the water, and the bogmen say it was given because the marsh round it shines like glass at dawn and drowns whoever believes it. Caer Witrin is a garrison and a market for the reed-folk, and Dugan Advien, the wood carver, keeps his bench there. On the north-eastern edge, where the marsh meets the forest road, the monks of Adribard's Retreat keep a house of prayer and a scriptorium, with Brother Onoloth, who has read every book about the druids, and Scribe Eril, who has copied them. Lidmann Halsey sits on the road nearby and sends the realm's sworn defenders west into Lyonesse after the hag of winter.\n\nWhat went wrong. In the old kingdoms a lord called Aryon held the marsh from a castle on the southern causeway, with a church inside its walls and knights to keep it, and he was a friend of the king; papers written by Lord Aryon and by Arthur himself went into a box that was buried with him. He did not stay buried. The church in his castle fell in, and Lord Aryon rose in its ruins as a dread lord of the dead, and his knights rose with him, Fiedel the first of them, with their pages and squires behind them and two paladins who had come to the church to pray and stayed to fight. The Bishop of Camelot, Burhoff, went to the ruins to lay them, and came back cursed; something of him stayed behind, a dark shadow of the bishop that walks the ruins at night with Lord Aryon's dead, and the clergy of Camelot say the bishop has not been wholly himself since. The marsh filled up with worse after that: ghoul knights and their lords in the north-west, mist that walks, quicksand that waits, the mud golems that the marsh makes out of itself, and the wood ogres who came down from the forest with a seer called Vagdush to hunt in the reeds.\n\nWhat lives there now. The marsh belongs to the bogmen and the shamblers. The bogmen fish, trap and gather, and fight anyone who walks into their reeds; the shamblers are the marsh itself grown up and walking, moss and mud with something under it, and the greatest of them, the Marsh Lord, stands in the south-western meres and lets the traveller pass. A marsh scrag called Scraek keeps one of the two old watch-houses on the road south-west of the stable and trades clay to anyone brave enough to ask. A mud golem called Dooben stands among his kind near Caer Witrin with a light about him when he is at rest. And at night, on the meres, the Lady of the Lake is seen, and the masters of arms of Camelot send their best to find her and ask her where Excalibur lies.\n\nWhy it matters to Albion. Avalon Marsh is the realm's edge toward the old powers of the west: Lyonesse beyond it, the isles behind the mist, and the Lady in the water. The king's sword went into a lake, the songs say, and the realm has been looking for the lake ever since. The bogmen say they know which one. They have never been asked.",
+  "legend": "Avalon Marsh is south-west of Campacorentin, levels 15 to 30. Adribard's Retreat in the north-east has trainers, quests (Aiellana, Brother Onoloth, Anga Weaver) and Lidmann Halsey, who starts the Defenders of Albion epic (kill Cailleach Uragaig in Lyonesse). Caer Witrin in the west has more trainers and Dugan Advien. Bogmen everywhere, ghoul knights in the north-west, ghostly knights at the ruined church in the south where Undead Knight Fiedel and Dread Lord Aryon sit. The Dark Bishop haunts the church ruins at night (Bishop Burhoff's Curse). Mud golems near Caer Witrin, and Dooben among them shows a glow when he is idle. Vagdush the wood ogre seer in the far west roots and nukes if you stay out of melee: disease first, then damage, so get on him; at 10% he calls his two ogres. Scraek is in one of the two watch-houses on the road south-west of the stable. The Marsh Lord in the south-western meres is a big shambler in the mid thirties that never starts a fight. The Lady of the Lake only appears at night for Legend of the Lake. Watch the quicksand.",
+  "atmosphere": {
+    "firstEntry": [
+      "Avalon Marsh. The land gives up and goes to water.",
+      "Reeds, mist and a smell of old rain.",
+      "Bells across the water? No. Surely not.",
+      "The ground moves. It is only the ground.",
+      "Bogmen watch from the reeds. They do not wave."
+    ],
+    "areas": [
+      {
+        "name": "Adribard's Retreat",
+        "x": 473165,
+        "y": 628021,
+        "z": 2048,
+        "radius": 2500,
+        "lines": [
+          "Adribard's Retreat. Prayers, books and a scribe.",
+          "Brother Onoloth knows the druids' places of learning.",
+          "Lidmann Halsey waits for the realm's defenders."
+        ]
+      },
+      {
+        "name": "Caer Witrin",
+        "x": 437031,
+        "y": 650943,
+        "z": 2448,
+        "radius": 1000,
+        "lines": [
+          "Caer Witrin. The fort of glass, on the last firm ground.",
+          "Dugan Advien carves by the gate.",
+          "The marsh shines at dawn here. Do not trust it."
+        ]
+      },
+      {
+        "name": "the ruined church",
+        "x": 458850,
+        "y": 662500,
+        "z": 2400,
+        "radius": 1800,
+        "lines": [
+          "Lord Aryon's church, fallen in. His knights keep it.",
+          "Undead Knight Fiedel stands first, as in life.",
+          "Dread Lord Aryon remembers the king. Badly.",
+          "The Dark Bishop walks here at night."
+        ]
+      },
+      {
+        "name": "the ghoul knights' fen",
+        "x": 431800,
+        "y": 623250,
+        "z": 2400,
+        "radius": 2500,
+        "lines": [
+          "Ghoul knights in the north-west fen.",
+          "The ghoul lords hold court in the mud."
+        ]
+      },
+      {
+        "name": "the shambler meres",
+        "x": 431000,
+        "y": 662000,
+        "z": 2400,
+        "radius": 4500,
+        "lines": [
+          "Shamblers in the meres. The marsh, walking.",
+          "The Marsh Lord stands in the water and lets you pass.",
+          "Moss and mud, and something underneath."
+        ]
+      },
+      {
+        "name": "the mud golem flats",
+        "x": 440000,
+        "y": 656000,
+        "z": 2400,
+        "radius": 3000,
+        "lines": [
+          "Mud golems rise and settle near Caer Witrin.",
+          "Dooben glows faintly when he is at rest."
+        ]
+      },
+      {
+        "name": "the ogre reeds",
+        "x": 421000,
+        "y": 654000,
+        "z": 2400,
+        "radius": 2500,
+        "lines": [
+          "Wood ogres hunting in the western reeds.",
+          "Vagdush the seer roots and curses. Get close."
+        ]
+      },
+      {
+        "name": "the watch-houses on the road",
+        "x": 462584,
+        "y": 655901,
+        "z": 2400,
+        "radius": 1200,
+        "lines": [
+          "Two old watch-houses by the road. Scraek has one.",
+          "Marsh scrags, and a lump of clay worth fighting for."
+        ]
+      },
+      {
+        "name": "the mist pools",
+        "x": 425445,
+        "y": 637156,
+        "z": 2400,
+        "radius": 2000,
+        "lines": [
+          "Mist that moves against the wind.",
+          "Giant wolves hunt the edge of the mist."
+        ]
+      },
+      {
+        "name": "the quicksand",
+        "x": 440042,
+        "y": 636191,
+        "z": 2400,
+        "radius": 1500,
+        "lines": [
+          "The ground is soft here. Softer than it looks.",
+          "Bloody-bones in the reeds, grinning."
+        ]
+      },
+      {
+        "name": "the bogmen's reeds",
+        "x": 472551,
+        "y": 637123,
+        "z": 2400,
+        "radius": 3000,
+        "lines": [
+          "Bogmen fishing, trapping, watching.",
+          "Reed huts and smoke. They do not want visitors."
+        ]
+      },
+      {
+        "name": "Borwyr's mere",
+        "x": 467532,
+        "y": 667885,
+        "z": 2400,
+        "radius": 900,
+        "lines": [
+          "Borwyr the Cursed drifts over the water.",
+          "He does not attack. He only asks you to look."
+        ]
+      },
+      {
+        "name": "the night meres",
+        "x": 450000,
+        "y": 650000,
+        "z": 2300,
+        "radius": 6000,
+        "lines": [
+          "Bells across the water, the bogmen say.",
+          "At night a lady walks the meres. Not every night."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "avalon marsh is the drowned country west of campacorentin",
+      "the bogmen say they can hear bells across the water at night",
+      "caer witrin means fort of glass, [heard|the academy says]",
+      "lord aryon's church fell in and he got up again with his knights",
+      "the dark bishop is burhoff's shade. he went to lay aryon and came back cursed",
+      "shamblers are the marsh standing up, the bogmen say",
+      "the lady of the lake walks the meres at night. not every night",
+      "lidmann halsey at adribard's retreat sends defenders after the cailleach in lyonesse",
+      "the bogmen fight anyone who walks into their reeds",
+      "ghoul knights hold the nw fen of avalon marsh",
+      "dugan advien at caer witrin carves totems if you bring him stuff",
+      "every year camelot sends knights to ask the lady where excalibur is"
+    ],
+    "rumour": [
+      "[heard|someone said] the lady of the lake always asks if anyone's come from camelot yet. then says not yet",
+      "heard fiedel walked out of the grave before his lord did",
+      "[heard|someone said] dread lord aryon talks about arthur to the dead and gets it wrong",
+      "heard dooben the mud golem glows when hes resting",
+      "[heard|someone said] vagdush roots you and curses you if you stay at range. get in his face",
+      "heard vagdush yells for his two big ogres when hes nearly dead",
+      "[heard|someone said] scraek wont trade his clay to anyone",
+      "heard the marsh lord never starts a fight. walk past it",
+      "[heard|someone said] borwyr the cursed made a spell he shouldnt have",
+      "heard the reeds near the ruined church are full of armour"
+    ],
+    "tell": [
+      "avalon marsh? sw of campacorentin. adribard's retreat in the ne, caer witrin in the west",
+      "is it hard? 15 to 30. bogmen everywhere and quicksand. the church in the south is nasty",
+      "whats there? the ruined church with aryon's knights, ghoul knights, mud golems, ogres, the lady at night",
+      "fiedel and dread lord aryon are both at the ruined church in the south",
+      "dooben is with the mud golems near caer witrin",
+      "vagdush is in the far western reeds with the wood ogres",
+      "scraek is in one of the two old watch-houses on the road sw of the stable",
+      "the marsh lord is in the sw meres with the shamblers. mid 30s, wont aggro"
+    ]
+  },
+  "loremaster": {
+    "intro": "Avalon Marsh, the drowned country. Ask of [adribard's retreat] and [lidmann halsey], of [caer witrin] and [dugan advien], of the [bogmen] and the [shamblers], of [lord aryon] and the [dark bishop], of the [lady of the lake], or of the marsh's own: [undead knight fiedel], [dread lord aryon], [dooben], [scraek], [vagdush], [borwyr the cursed] and the [marsh lord].",
+    "topics": {
+      "adribard's retreat": "The monks' house on the north-eastern edge of the marsh, with a scriptorium. Brother Onoloth knows the druids' places of learning, Scribe Eril copies, Aiellana and Anga Weaver have work for the young, and [lidmann halsey] sits on the road nearby.",
+      "lidmann halsey": "A defender of the realm on the road by Adribard's Retreat who sends Albion's sworn defenders west into Lyonesse after Cailleach Uragaig, the hag of winter, and pays them in armour when they come back with proof.",
+      "caer witrin": "The fort of glass on the last firm ground at the marsh's western edge. The Academy says it faced the Isle of Glass; the bogmen say the marsh around it shines like glass at dawn and drowns whoever believes it. [dugan advien] carves there.",
+      "dugan advien": "The wood carver of Caer Witrin, who will make a totem for anyone who brings him ashen wood and Brodecia's eyes, and his carving kit back from Urfgrat the Green.",
+      "bogmen": "The reed-folk of the marsh: fishers, trappers and gatherers who fight anyone who walks into their reeds and talk to no one from Camelot. They say they can hear bells across the water at night.",
+      "shamblers": "The marsh standing up: moss, mud and reed-root with something underneath. The greatest is the [marsh lord].",
+      "lady of the lake": "She walks the meres at night, some nights, and the masters of arms of Camelot send their best to ask her where Excalibur lies. The bogmen say she always asks whether anyone has come from Camelot yet, and always says: not yet.",
+      "lord aryon": "A lord of the old kingdoms and a friend of the king who held the southern causeway; papers written by him and by Arthur were buried with him. See [dread lord aryon].",
+      "dark bishop": "Bishop Burhoff went to lay Lord Aryon's dead and came back cursed, and a dark shadow of him stayed behind; it walks the church ruins at night. Brother Lensar of Camelot wants his skull returned to his grave behind the city church.",
+      "undead knight fiedel": "Undead Knight Fiedel was the first of Lord Aryon's knights in life and is the first of them in death, standing before the broken church door with his sword drawn. He keeps a shard of knowledge that Summer Gram of Adribard's Retreat wants back, part of the heart of Albion that Lady Nimue is gathering. The bogmen say Fiedel always walked first, and that he walked first out of the grave too, before his lord.",
+      "dread lord aryon": "Dread Lord Aryon rose in the ruins of his own church the winter it fell in, and his knights rose with him. He keeps a scroll that unbinds the wards on his box of papers, the box whose key was robbed from his grave by Osric's diggers; Sister Elaydith of Camelot wants both. He remembers the king, the bogmen say, and talks of him to the dead, and gets it wrong.",
+      "dooben": "Dooben is a mud golem of the flats near Caer Witrin, one of the marsh's own, and when no one troubles him a faint light plays about him as if the marsh were thinking through him. He carries a shard of the Sequence that Erstal Furlan the smith knows about, and Lady Nimue wants it forged. The bogmen say Dooben is the oldest golem in the marsh and that the light is the marsh remembering.",
+      "scraek": "Scraek is a marsh scrag who keeps one of the two old watch-houses on the road south-west of the stable, with a lump of fine clay that Lillian Brydger, the smith of West Downs, wants for her forge. Her apprentice Beria sends the young to get it. Scraek trades it to no one; the scrags say clay is the only thing in the marsh that keeps its shape, and that Scraek is sentimental about it.",
+      "vagdush": "Vagdush is a wood ogre seer who came down from the forest with his hunters into the western reeds. He does not chase what runs from him: he stands where he is and sends a wasting sickness after it, and then a worse thing, and stops only when his enemy is close enough to touch. When he is near his end he shouts for his two biggest hunters. Lady Nimue's forging needs him dead.",
+      "borwyr the cursed": "Borwyr drifts over a mere in the south-east, a ghost who harms no one. He was a mage who made a spell he should not have, and Mairi Ralilden of the Lethantis Association makes everyone who fetches his scroll swear not to end up like him. He asks every traveller to look at him. Most look away.",
+      "marsh lord": "The greatest of the shamblers, in the south-western meres. See the loremaster's own page on the [marsh lord]."
+    }
+  },
+  "book": {
+    "title": "A Reed-Cutter's Account of the Marsh",
+    "pages": [
+      "A Reed-Cutter's Account of the Marsh, told by Ysbal of the bogmen's own reeds to Scribe Eril of Adribard's Retreat, who wrote it down in fair hand and asked her to make her mark. She would not. The bogmen do not make marks, she said; the marsh takes them. Scribe Eril has kept her words as she said them. Of the marsh: it was the sea once, and then a lake, and then this, and it remembers all three. On still nights my people hear bells across the water from the west, where the isle of the colleges was. You say the bells are drowned. We say they are waiting.",
+      "Of Lord Aryon. He held the southern causeway from his castle when your king was king, and he was the king's friend, and there was a church inside his walls where his knights prayed. My grandmother's grandmother cut his reeds for thatch. When he died they buried him with a box of papers, and then the church fell in on itself one winter night, and in the morning he was walking. His knights walk with him. Fiedel walks first; he always walked first. We do not cut reeds near the church any more. The reeds there are full of armour.",
+      "Of the bishop. Your bishop came to lay Lord Aryon, with candles and a book and men to carry them, and he read his book in the fallen church all one night. In the morning the men carried him home. He was cursed, he said, and he went back to Camelot, but he left something of himself here, a dark copy of him that stands with the dead he could not lay. You can see it at night by the broken door, reading. He does not turn the pages. Brother Lensar of your city asks after a skull. We have told him where it is.",
+      "Of the shamblers. You call them monsters. They are the marsh, standing up. Moss and mud and the roots of the reeds, and something underneath that holds them together, which my people do not name. The greatest of them stands in the south-western meres, taller than a house, and we call it the lord of the marsh, and it has never once raised a hand to anyone who did not raise one first. We walk past it to fish. Your people walk past it with swords out. It lets them go by too. Once a knight of yours struck it for sport, and it answered him, slowly, and the marsh had him.",
+      "Of the ogres and the golems. The wood ogres came down from the forest to hunt in the western reeds, and their seer Vagdush does not chase you. He stands where he is and sends a sickness after you, and then something worse, and he only stops when you are close enough to touch him. When he is near his end he shouts, and his two biggest come. The mud golems are the marsh's own, like the shamblers. One of them, Dooben, has a light about him when he rests. The smiths ask after a shard he carries.",
+      "Of the Lady. Your knights come every year asking for the Lady of the Lake, because your king's sword went into a lake, and they want it back. She walks on the meres at night, some nights, not every night, and the reeds bow when she passes. My people do not speak to her. She has spoken to my people, twice in my life, and each time she asked the same thing: whether anyone had come from Camelot yet. Each time we said yes. Each time she said, not yet, and went back into the water without a ripple."
+    ]
+  },
+  "bosses": [
+    "marsh-lord"
+  ],
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers",
+    "realm-of-camelot"
+  ]
+}

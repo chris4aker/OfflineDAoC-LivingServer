@@ -72,6 +72,9 @@ says "today").
   (abbreviations, typos, emotes, capitalised "proper" writers), so write the plain middle.
 - SHORT. Reactions 1-4 words ("lol", "gz", "same", "ouch"). Most lines 4-9 words. Rarely more than 14
   words. Hard limit 140 characters.
+- Scenes are the exception (chat audit LORE-026, 2026-11-18): a beat of a debate, a tale or a lore scene
+  may hold up to three short sentences. The engine sends a long beat sentence by sentence, each as its own
+  chat line, so each sentence keeps to about 14 words. Count sentences, not beats.
 - Period chat words are welcome: ty, np, k, kk, lol, heh, gz, grats, gratz, brb, afk, wb, omw, gl, pst,
   lfg, lfm, inc, oom, med, pull, add, mez, rez, buffs, con (yellow/orange/red/purple/blue/green/grey),
   bubble, ding, camp, twink, zerg, gank, buffbot, uber, gimped, nerf, imo, btw, nvm, rofl, lag.
@@ -81,22 +84,72 @@ says "today").
 - Replies must make sense as an answer to MANY different openers of their type: a `boast` reply ("nice,
   gz") must fit any boast. A specific question gets specific answers via `ask_<topic>`.
 
+## What the server will actually say (chat audit, 2026-11-18)
+
+Most unprompted lines are field lines built in code (`AutonomousChatFieldTalk`); a written line gets through only when it passes
+the filters, so write inside them:
+- **Unprompted lines** (`AutonomousChatFiller.IsCrafted`): at most 9 words, not tagged `@invites joke`, no tip, life or narration
+  marker ("if you ", "remember to", " work", "coffee", "feels like", "just saying"...).
+- **Guild lines** (`GuildCorpusFits`): at most **8** words and no "..."; short jokes and life words are fine there, but a life line
+  (every `@topic social` line is one) comes at most every 90 minutes, and any written line at most every 20 minutes a guild.
+- **Replies to a player** (`chat-budget.json` `min_fit` 2): a reply set scored Weak is never said to a player (only bot to bot).
+  Weak today: the topic intents (grinding, travel, dungeon, rvr, trading, help, unknown, ignoreoutofworld), general class talk
+  (a class talk line must name the class asked about), and the shapes `ask_choice`, `ask_advice`, `ask_price`. A banter remark
+  (not a question) is answered by the banter set. Social intents (hello, thanks, gz, ding, brb, back, rez, laugh) and the question
+  shapes answer the player.
+- Reply sets must fit **every** line their trigger catches: the real-life sets fit good and bad news alike (a new pc and a crash).
+- One text once per kind in the whole corpus (the builder): a short answer ("yep", "me") lives in one set; tag it with several
+  `@answers` instead of writing it twice.
+
 ## Never
-- Profanity; insults about real groups; anything sexual; politics or real-world news.
+- Slurs or insults about real groups; anything sexual; politics or real-world news; cruelty. Swearing in 2003 style is fine
+  (owner, 2026-11-18: "Swearing is fine"): "hell", "damn", "crap", "shit", even the odd f-word from a frustrated player, the way
+  people really typed. Keep it in character and occasional; the builder no longer bans it (`tools/bot-voices/banned.txt`).
 - Self-aware bot lines ("i am just a bot", "why do we all say the same thing"). Exception: intent
   `botcheck` replies may joke around the question in character ("lol no", "i wish, id level while asleep").
 - Later internet phrases: change my mind, fight me, vibes, love language, no thoughts, lifestyle, salty,
-  the meta, i felt that, pog, based, no cap, sus, gg ez, main character, "o/" (do not add new ones).
+  the meta, i felt that, pog, based, no cap, sus, gg ez, main character, "o/", "\o/", "o7", "<3", "xd", l2p, toon, imba, "rn",
+  dps as everyday chat, woke up and chose, touch grass, i ship it, love to see it, the grind is real, skill issue, extra steps,
+  hot take, feel attacked, taking questions, toxic. Every banned word, with its reason, is in `tools/bot-voices/banned.txt`
+  (1.2 chat audit); a line that needs one on purpose says `@allow <id>` and why.
+- Jokes and memes from after October 2003 (owner, 2026-11-15): "achievement unlocked", "over 9000", "cool story",
+  "i see what you did there", "ikr", "ftw", "the cake is a lie", the chicken punchline of the 2005 raid video. The builder
+  bans them.
 - Out-of-era content: Trials of Atlantis (Atlantis, artifacts, master levels, ML), New Frontiers (towers,
   Molvik, Leirvik, Proving Grounds, Lion's Den, Hills of Claret, Killaloe, Braemar, Wilton), Catacombs
   (champion levels, CL, catacombs classes), Mythic, real websites, EverQuest by name (the builder bans it),
-  World of Warcraft.
+  World of Warcraft. The one exception is the era rule below.
+
+## The era: Trials of Atlantis and Catacombs as rumours only (owner, 2026-11-15)
+
+Trials of Atlantis and Catacombs may appear **only as rumours, from a lore perspective**: something a bot has heard
+about a sunken land or what lies under the cities, the way a 2003 player heard of a coming expansion. **Never as played
+content.** No bot has been there, levels there, fights there, owns or wants an artifact, has master levels or champion
+levels, or plays a Catacombs class, and no line suggests the player can go. New Frontiers stays out entirely.
+
+The tag is `@topic rumour_atlantis` (the sunken land) or `@topic rumour_below` (what lies under the capitals), on any kind
+or on a debate scene. Only those lines may say `atlantis` or `catacombs` (`build_corpus.py`, `ERA_RUMOUR_TOPICS`); every
+other banned word stays banned in them (`artifact`, master levels, `ml`, the classes and races), and the builder refuses a
+rumour line that claims a trip there ("been to atlantis", "lets go"). The one place "ml" is said outside them is the glossary
+answer to "what does ml mean" (`AutonomousChatKnowledge`): "master level, from the atlantis rumours. nobody here has one". They live in `data/chat/era_rumours.lines`, with the
+storyteller's legend (`tale_atlantis`). Keep them rare: a handful of lines, sceptical or curious, never a theme. Atlantis is
+sailors' and grandmothers' talk (coral-crusted stone in the nets, lights under the water, a dream the three realms shared);
+the desert, the volcano and the city in the sky appear only as dream images inside the legend, never as places. Under the
+capitals there is a shut door: Camelot's bricked-up crypts and the Inconnu who never asked the way down, the kobold miners
+who hear picks below Jordheim, the Dream Trees' roots that go too deep. Ambient rumour lines are musings (rare /faction
+openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`.
 - Promises the server can't keep: a bot must not say it is inviting, trading or coming unless the line is
-  written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead).
+  written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead). "omw", "coming",
+  "on my way", "ill be there", "heading there", "porting", "count me in" and "on it" are said only through the promise
+  gate (`ChatPromises.TryPromiseCome` or `ChatPromises.Gate`, 1.2): saying one gives the bot a real duty to go there, and a
+  bot that can't go gets a line that promises nothing ("how many?", "where are you?", "might make it").
+  Scenes too: a scene line goes through no gate, so it never says "omw", "on my way", "count me in", "inv sent" or "we
+  have a spot". A scene about a live event (a keep under siege, a relic just lost) needs its news flag (`@needs
+  defending`, DESIGN.md 3.1) and says only what the realm can see; it lives in `scenes_live.lines`.
 
 ## World facts you can use
-- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35,
-  Cathal Valley 45-49.
+- Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35.
+  Cathal Valley is in the world database but came after this era: don't write lines about it.
 - Capitals: Camelot (Albion), Jordheim (Midgard), Tir na Nog (Hibernia). Starter towns: Cotswold,
   Prydwen Keep, Humberton (alb); Mularn, Audliten, Huginfell (mid); Mag Mell, Tir na mBeo, Ardee (hib).
 - Dungeons by level (alb) Tomb of Mithra 7-17, Tepok's Mine 16-24, Keltoi Fogou 19-32, Stonehenge Barrows
@@ -115,3 +168,25 @@ says "today").
   A `@realm *` line must not name another realm's class as "ours" (a Midgard bot can't be a wizard).
 
 Every line is new writing; don't copy text from games, forums or other projects.
+
+## Storyline arcs (storylines*.lines)
+
+An arc is four episodes, scenes `story_<arc>_1` to `story_<arc>_4`, with side endings `story_<arc>_4a` (a player sided
+with A) and `_4b` (with B); every scene of an arc has `@topic story_<arc>` (`AutonomousBotStorylines`). Arc names are
+lowercase letters only (`story_pricewar_3`, never `story_price_war_3`).
+- **A and B** are the same two bots in every episode; lines name them `{name_a}` and `{name_b}`. Only episode 1's
+  `@role A` and `@role B` decide who is cast, so put class or type needs the arc relies on there (and repeat them on the
+  later episodes for readers).
+- **Side characters keep their letter.** The bot that first plays a role letter C to H in an arc plays that letter again
+  in every later episode while it is online and free (saved in the story row). So a recurring character (the referee,
+  the judge, the officiant) must have the same letter in every episode where it appears: if the judge is C in episode 2,
+  it is C in 3 and 4. A letter that is a different person in each episode still works (a passer-by), but it will be the
+  same bot each time, so don't give it a line that contradicts an earlier episode. A side character who is busy is
+  played by someone else that episode.
+- `{keep}` and `{frontier}` are fixed for the whole arc the first time an episode plays (a keep the realm held then), so
+  "see you at {keep}" in episode 3 and "ok. {keep}. we're here" in episode 4 name the same keep. Don't say the realm took
+  that keep; it may still hold it ("we held {keep}").
+- `{player}` exists only in `_4a` and `_4b` (the player who took the side, and only while they are online; otherwise the
+  plain `_4` plays). Don't put the player at the scene ("{player} came to watch"): they read it in faction.
+- Episodes are 3 to 10 hours apart: no "last week", "days ago" or "yesterday" about the arc's own events.
+- `@exit X` logs that bot off with the dunce's rage-quit and parting tell: for a rage quit only.

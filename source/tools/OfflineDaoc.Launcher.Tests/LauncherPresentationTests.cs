@@ -99,6 +99,24 @@ public sealed class LauncherPresentationTests
         readinessTimer.Stop();
     }
 
+    [Test]
+    public void ADashboardReadThatNeverReturnsNoLongerHoldsTheRefreshGate()
+    {
+        // PC check 2026-11-19 (build 5154cae): "5 online" and "Bot status updated 6:58:55" for half an hour while 563+ bots
+        // were on. A read that hangs now ends in a TimeoutException, so the refresh gate opens and the next refresh runs.
+        Type mainFormType = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
+        int timeout = (int)mainFormType.GetField("DashboardReadTimeoutMilliseconds", HiddenStatic)!.GetRawConstantValue()!;
+        int autoRefresh = (int)mainFormType.GetField("AutoRefreshMilliseconds", HiddenStatic)!.GetRawConstantValue()!;
+        Assert.That(timeout, Is.LessThan(autoRefresh), "a hung read is given up before the next five-minute refresh");
+
+        MethodInfo within = mainFormType.GetMethod("ReadWithinAsync", BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(typeof(int));
+        var never = new TaskCompletionSource<int>();
+        var hung = (Task<int>)within.Invoke(null, new object[] { never.Task, 50 })!;
+        Assert.That(async () => await hung, Throws.TypeOf<TimeoutException>());
+        var done = (Task<int>)within.Invoke(null, new object[] { Task.FromResult(7), 50 })!;
+        Assert.That(done.Result, Is.EqualTo(7));
+    }
+
     [TestCase(300.0, "5:00")]
     [TestCase(299.1, "5:00")]
     [TestCase(61.0, "1:01")]
@@ -180,6 +198,10 @@ public sealed class LauncherPresentationTests
         var realmButtons = (System.Collections.IEnumerable)mainFormType.GetField("_realmGenerateButtons", HiddenInstance)!.GetValue(form)!;
         Assert.That(realmButtons.Cast<Button>().Count(button => button.Text == "+ Lv.1"), Is.EqualTo(3));
         Assert.That(realmButtons.Cast<Button>().Count(button => button.Text == "+ Lv.50"), Is.EqualTo(3));
+        // Living Server 1.2: "+ Lv.20" (Thidranki 20-24) on every realm card, with its tooltip.
+        Button[] levelTwenty = realmButtons.Cast<Button>().Where(button => button.Text == "+ Lv.20").ToArray();
+        Assert.That(levelTwenty, Has.Length.EqualTo(3));
+        Assert.That(levelTwenty.Select(button => helpTip.GetToolTip(button)), Has.All.Contain("Thidranki battleground bracket"));
     }
 
     [Test]
@@ -200,8 +222,8 @@ public sealed class LauncherPresentationTests
 
         Type snapshotType = mainFormType.GetNestedType("DashboardSnapshot", BindingFlags.NonPublic)!;
         object runningSnapshot = snapshotType.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-            .Single(constructor => constructor.GetParameters().Length == 12)
-            .Invoke(new object[] { "Running", null!, null!, 0, 0d, null!, 1d, 1d, false, null!, true, true });
+            .Single(constructor => constructor.GetParameters().Length == 13)
+            .Invoke(new object[] { "Running", null!, null!, 0, 0d, null!, 1d, 1d, false, null!, true, true, false });
         mainFormType.GetField("_stoppingServer", HiddenInstance)!.SetValue(form, false);
         mainFormType.GetMethod("UpdateXpRateControls", HiddenInstance)!.Invoke(form, new[] { runningSnapshot });
         var playerRate = (ComboBox)mainFormType.GetField("_playerXpRate", HiddenInstance)!.GetValue(form)!;
@@ -210,6 +232,8 @@ public sealed class LauncherPresentationTests
         Assert.That(playerRate.Enabled || botRate.Enabled, Is.False);
         var gm = (CheckBox)mainFormType.GetField("_makeMeGm", HiddenInstance)!.GetValue(form)!;
         Assert.That(gm.Enabled, Is.False);
+        var lean = (CheckBox)mainFormType.GetField("_leanMemory", HiddenInstance)!.GetValue(form)!;
+        Assert.That(lean.Enabled, Is.False, "Lean server memory is locked while the server runs, like the other options.");
         Assert.That(xpStatus.Text, Does.Contain("OPTIONS LOCKED"));
 
         mainFormType.GetMethod("ShowXpRateApplying", HiddenInstance)!.Invoke(form, new object[] { "3×", true });

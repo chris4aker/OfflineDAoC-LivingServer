@@ -35,7 +35,11 @@ public static partial class AutonomousBotGroupCoordinator
     public static double ForcedRecruitDistance(ushort botRegion, float x, float y, ushort hubRegion, Vector3 hub) =>
         botRegion == hubRegion ? Math.Sqrt((x - hub.X) * (double)(x - hub.X) + (y - hub.Y) * (double)(y - hub.Y)) : double.MaxValue;
 
-    public static GameBot[][] PlanForcedRaid(eRealm realm, ushort hubRegion, Vector3 hubCenter)
+    public static GameBot[][] PlanForcedRaid(eRealm realm, ushort hubRegion, Vector3 hubCenter) =>
+        PlanForcedRaid(realm, hubRegion, hubCenter, RealmRaidRecruitmentPolicy.MaximumBots);
+
+    /// <summary>The forced roster, at most <paramref name="cap"/> bots (300 for the launcher; a play-test raid's size).</summary>
+    public static GameBot[][] PlanForcedRaid(eRealm realm, ushort hubRegion, Vector3 hubCenter, int cap)
     {
         var candidates = AutonomousBotRegistry.Snapshot().Where(b => AutonomousRealmRaid.IsEligible(b) &&
             b.Realm == realm && b.PersistentRecord != null && b.CurrentRegion != null &&
@@ -45,7 +49,7 @@ public static partial class AutonomousBotGroupCoordinator
             .OrderBy(b => ForcedRecruitDistance(b.CurrentRegionID, b.X, b.Y, hubRegion, hubCenter))
             .ThenBy(b => b.Group == null ? 0 : 1).ThenBy(_ => Random.Shared.Next()).ToList();
         var parties = new List<GameBot[]>();
-        while (candidates.Count >= 8 && parties.Sum(p => p.Length) + 8 <= RealmRaidRecruitmentPolicy.MaximumBots)
+        while (candidates.Count >= 8 && parties.Sum(p => p.Length) + 8 <= cap)
         {
             GameBot[] chosen = null;
             // The roster builder shuffles its pool, so offer it the closest bots first
@@ -61,7 +65,7 @@ public static partial class AutonomousBotGroupCoordinator
             parties.Add(chosen);
             foreach (var bot in chosen) candidates.Remove(bot);
         }
-        int remaining = RealmRaidRecruitmentPolicy.MaximumBots - parties.Sum(p => p.Length);
+        int remaining = cap - parties.Sum(p => p.Length);
         if (remaining == 4 && candidates.Count >= 4) parties.Add(candidates.Take(4).ToArray());
         return parties.ToArray();
     }
@@ -134,7 +138,7 @@ public static partial class AutonomousBotGroupCoordinator
         if ((refusal = ForcedRaidPartyRefusal(members.Select(Describe).ToArray(), roles, forced)) != null) return false;
         // Validate the raid post before cancelling anybody's work.
         if (!AutonomousRealmRaid.TryGetForcedStaging(eventId, specialForces, members.Length, out SharedCamp staging, out refusal)) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             // Reservations normally exclude these applicants from matchmaking.
             // Still fail closed if one acquired a party before this commit.
@@ -187,7 +191,7 @@ public static partial class AutonomousBotGroupCoordinator
         bool forced, long[] released)
     {
         if (group == null) return false;
-        lock (Sync)
+        using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             if (!Sessions.TryGetValue(group, out Session session) || session.Ending ||
                 session.RaidMusterEvent == null && AutonomousRealmRaid.GetView(group) == null) return false;

@@ -9,7 +9,7 @@ public static class BotGroupInvite
         player?.CurrentRegion != null && bot?.CurrentRegion == player.CurrentRegion && player.IsWithinRadius(bot, InviteByNameRange);
 
     /// <summary>The duty that keeps an autonomous gamebot from answering an invitation (None when it is free).</summary>
-    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper, Begging }
+    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper, Begging, Buffing }
 
     /// <summary>
     /// The first duty that rules out an invitation, in a fixed order. Pure, so the rules are tested without a world.
@@ -37,6 +37,7 @@ public static class BotGroupInvite
         Duty.StableRoute => $"{name} is riding a stable master route right now.",
         Duty.Helper => $"{name} is already helping another player.",
         Duty.Begging => $"{name} won't leave their corner.",
+        Duty.Buffing => $"{name} is a buffbot and never joins a group.",
         _ => null,
     };
 
@@ -45,15 +46,23 @@ public static class BotGroupInvite
     {
         if (bot?.IsAutonomousWorldBot != true)
             return Duty.None;
-        // The force tag is never cleared when an event ends, so it counts only while its event is still running.
+        // An RvR event's lease (a defense response, a siege party) counts while its force is in a running event. A solo
+        // RvR bot's own force joins events through the planner without a lease yet, so its force tag is read too; the
+        // tag is never cleared when an event ends, so it counts only while its event is still running.
+        long now = GameLoop.GameLoopTime;
         string force = bot.TempProperties.GetProperty<string>("RvrEventForce");
+        string leased = BotDutyLeases.Current(bot) is { Kind: eDutyLeaseKind.RvrEvent } lease ? lease.Owner : null;
         Duty duty = DutyOf(bot.IsAlive,
             BotSiegeRuntime.Assigned(bot) || BotSiegeRuntime.HoldingPosition(bot),
             bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
-            !string.IsNullOrEmpty(force) && AutonomousRvrEventLayer.IsEventForce(force, GameLoop.GameLoopTime),
+            leased != null && AutonomousRvrEventLayer.IsEventForce(leased, now) ||
+            !string.IsNullOrEmpty(force) && force != leased && AutonomousRvrEventLayer.IsEventForce(force, now),
             AutonomousRealmRaid.IsReserved(bot),
             bot.IsOnStableMasterRoute,
             bot.IsTemporaryGroupHelper);
+        // A No Lifer's buffbot never groups, whatever else it is doing (NoLiferBuffBots).
+        if (bot.IsNoLiferBuffBot)
+            return Duty.Buffing;
         // A beggar (bot_living_beggars) never groups.
         return duty == Duty.None && AutonomousBeggars.Is(bot) ? Duty.Begging : duty;
     }
@@ -63,13 +72,27 @@ public static class BotGroupInvite
         if (player == null || bot == null || player.Realm != bot.Realm)
         {
             if (player != null)
-                ChatUtil.SendSystemMessage(player, "Only a bot of your realm will accept the invitation.");
+                ChatUtil.SendSystemMessage(player, "Only a gamebot of your realm will accept the invitation.");
+            return false;
+        }
+
+        // Play with friends (1.2): another player's companion follows only its owner (BotHumanBinding).
+        if (bot.Owner != null && bot.Owner != player)
+        {
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is {bot.Owner.Name}'s helper and follows only them.");
+            return false;
+        }
+
+        // Hired companions (from True 1.65): one follows only the player character who hired it.
+        if (bot.IsHiredCompanion && !HiredCompanions165.IsHiredBy(bot, player))
+        {
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is another player's hired companion and follows only them.");
             return false;
         }
 
         if (player.Group != null && player.Group.Leader != player)
         {
-            ChatUtil.SendSystemMessage(player, "You are not the leader of your group.");
+            ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");
             return false;
         }
 
@@ -95,14 +118,14 @@ public static class BotGroupInvite
             bool autonomousGroup = bot.PlayerGroupLeader == null;
             if (!autonomousGroup)
             {
-                ChatUtil.SendSystemMessage(player, $"{bot.Name} is already following another player-led group.");
+                ChatUtil.SendSystemMessage(player, $"{bot.Name} is already in another player's group.");
                 if (bot.IsAutonomousWorldBot && bot.PlayerGroupLeader != player)
                     AutonomousLivingServer.OnInviteDeclined(player, bot, Duty.None, true);
                 return false;
             }
 
             bot.Group.RemoveMember(bot);
-            ChatUtil.SendSystemMessage(player, $"{bot.Name} leaves the autonomous group to answer your invitation.");
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} leaves their group to answer your invitation.");
         }
 
         if (player.Group == null)

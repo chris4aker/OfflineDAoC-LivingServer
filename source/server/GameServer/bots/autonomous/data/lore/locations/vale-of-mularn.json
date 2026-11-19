@@ -1,0 +1,360 @@
+{
+  "id": "vale-of-mularn",
+  "name": "Vale of Mularn",
+  "realm": "Midgard",
+  "regions": [
+    100
+  ],
+  "zones": [
+    100
+  ],
+  "era": "mid-era-jarls",
+  "factions": [
+    "hidden-people",
+    "clan-smyg",
+    "vendo",
+    "houses-of-midgard"
+  ],
+  "summary": "The vale outside Jordheim's gate where Midgard's young choose their gods: Mularn and the dwarves' Haggerfel, Fort Veldon in the north, the huldu and the hobgoblins in the hills, and the mouth of Darkness Falls in the west.",
+  "facts": [
+    {
+      "text": "The Vale of Mularn is zone 100 of region 100. Its towns (Areas): Mularn in the south-east (804,091/724,155), Haggerfel in the east (805,731/701,535), Fort Veldon in the north (798,858/677,593). Jordheim's gates open at its south-east corner.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "The Vale's zone points: Darkness Falls' Midgard entrance in the western hills (760,600/700,475), Vendo Caverns in the north (778,585/678,628), the ship road to the Shrouded Isles beside Mularn (808,830/725,039) and the housing road east of it (814,641/722,026).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "Its folk: hill cats and small hill cats, the hill people, huldu stalkers, hunters, lurkers and outcasts (Hidden People), hobgoblins of Clan Smyg, young grendelorm, vein spiders, phantom hounds and wayward ghouls (Spirits of Midgard), the wood-eaters with their king, queen and royal guard, rabid wolfhounds, little water goblins (Finfoot Goblins), hobyahs, rattling skeletons, and vendo shamans, bone-collectors and stalkers by the northern lake.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 100 (0.37b world data)"
+    },
+    {
+      "text": "Manes demons and a grumoz demon (faction 'lesser demons') stand at the Darkness Falls entrance in the west of the vale.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 100 (0.37b world data)"
+    },
+    {
+      "text": "The base trainers (Skapi the viking trainer and Vigdis the mystic trainer in Mularn; Groa the seer trainer and Glum the rogue trainer in Haggerfel) give 'Knowledge of the Gods': 'Inquire of each of your future guildmasters about the gods; at level 5 you will choose which god to follow.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Epic voices: Danica in Mularn ('Saving the Clan', the mystic epic), Inaksha in Haggerfel ('The Desire of a God' and the visions of the Rod of Mimir), Elizabeth of Mularn, smith and enchanter ('An End to the Daggers': 'Talk to Elizabeth in Mularn').",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Fort Veldon's quests look north: Cornelis the smith wants pieces from Muspelheim; Aegan's 'Evenings Empty Blessing' sends players to Kell and Sydney at the fort, the vendo bone-collectors and their captain Rathis. Viking Karl keeps a guard tower in the western mountains with ten Viking Drengs.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Carr, a hobgoblin in Mularn, says 'I leave hobgoblins' and sends players after Smyga and Anklebiter in the camp between Mularn and Haggerfel.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Scandinavian folklore the huldufolk (hidden people) are fair from the front and hollow behind, and live beside farms unseen.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore (huldra, huldufolk), public domain tradition"
+    },
+    {
+      "text": "The god-choosing at the Vale, the huldu's accounts, the Falls' wind and Thorunn's book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The skalds call the Vale of Mularn the cradle of the realm, and they mean it as a joke and as the truth. It is the green country outside Jordheim's gate, low hills and birch woods and a lake in the north, and every man and woman of Midgard who is going to be anything walks out into it first. In the towns of the vale the young choose their gods. The masters in Mularn and Haggerfel send them round to ask each of the houses what its god wants, and when they have asked enough they choose, and go up to Jordheim to be taught by that house. The old women of Mularn say you can tell a vale child's god by the first thing it hit.\n\nThe vale was not empty when the first farms came. The huldu were there, the hidden people of the old stories, who look like fair folk from the front and are hollow behind like a rotted tree, and who lived beside the first farms unseen and took what was left out for them. The farms stopped leaving things out. The huldu stopped being unseen. Now they keep camps in the west and the middle of the vale, stalkers and hunters and lurkers, and the outcasts they drive off wander by the Jordheim road. The huldu say the vale was theirs and that Mularn is a debt. The farmers say the huldu should have made themselves known sooner. Both are right, which is why it has never been settled.\n\nThe dwarves came to the east of the vale and built Haggerfel, a thegn's town with dwarven guards on its gate, and their smiths still argue about forge plans with apprentices who run off to the huldu. Fort Veldon was built in the north to watch the lake and the hills, because north of the lake are the caves of the vendo, the hairy howling people who came down out of them with their bone-collectors and their shamans and have never gone all the way back. Beyond the fort the land climbs toward Muspelheim's fire, and the smiths of Veldon send the young up the pass for what only the fire grows.\n\nThen the hole opened in the west. Nobody in the vale agrees when. The western hills have a mouth in them now that goes down further than the caves under Jordheim, and a wind comes up out of it that smells of hot stone and old blood, and small demons stand at its lip as if they had been sent up to look and told not to come back without something. The skalds say it is Darkness Falls, the pit under all three realms, and that Albion and Hibernia have mouths of their own. The dead of the vale walk more since it opened: skeletons in the south hills, phantom hounds by the old roads, ghouls that seem to have lost their way. The gothi of Mularn say the mouth is calling them and they are too weak to get there.\n\nBetween the towns are the small troubles that every vale child knows by name. Clan Smyg's hobgoblins strike from their fires between Mularn and Haggerfel, under a chief who takes his name from sneaking; one of them, Carr, left the clan and lives in Mularn now, and will tell anyone who listens that he does not like hobgoblins. The wood-eaters have a king and a queen in the southern hills and are building something under the earth that nobody has seen the bottom of. The hill cats hunt the hill people and the hill people hunt the hill cats, and both of them hunt the young.\n\nThe vale matters because the realm's greatest stories begin in its smallest towns. Danica of Mularn sends the mystics out to save a clan and kill the man who killed their chief. Inaksha of Haggerfel has visions, and sends the seers after the Rod of Mimir and, later, after the god who wants trouble. Elizabeth of Mularn hands a dagger to the young vikings and sends them after the Red Daggers. The ship to the Shrouded Isles leaves from beside Mularn, and the road to the houses of the realm runs east of it. Everything starts here. The skalds say that when the end comes, the last thing the gods will see before the wolf is a child of the vale, choosing.",
+  "legend": "The Vale of Mularn is where every Midgard character starts. Mularn (south-east, by the Jordheim gate) has the viking and mystic base trainers, Haggerfel (east, the dwarf town) the seer and rogue ones, and they send you round the houses with Knowledge of the Gods before you pick your class at 5. Fort Veldon in the north is the 10-20 hub: vendo by the lake, hobyahs, rabid wolfhounds, Cornelis sends you to Muspelheim. Hill cats and small hill cats everywhere (Thordia's Hill Cat Hunt ends with Hrrgyf; Jaakko's savage version too). The huldu camps are west and middle, Clan Smyg's hobgoblin camp is between Mularn and Haggerfel (Carr's quests, Smyga, Anklebiter). The Darkness Falls entrance is in the western hills; the demons standing at it are lowbie trouble, the dungeon is not. The boat to the Shrouded Isles and the housing road are both right by Mularn. Epics start here too: Danica in Mularn (mystics), Inaksha in Haggerfel (seers), Elizabeth in Mularn (vikings, An End to the Daggers). Old players say you can tell a vale child's god by the first thing it hit.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Vale of Mularn. Every road of the realm starts here.",
+      "Birch, hill and lake. The young choose their gods here.",
+      "Something hollow-backed watches from the birches.",
+      "A warm wind from the west smells of old blood.",
+      "Jordheim's gate behind you. Everything ahead."
+    ],
+    "areas": [
+      {
+        "name": "Mularn",
+        "x": 804091,
+        "y": 724155,
+        "z": 4700,
+        "radius": 4000,
+        "lines": [
+          "Mularn. The smallest town with the largest stories.",
+          "The vale's young ask the houses what the gods want.",
+          "Danica watches the north road for her mystics.",
+          "Votan the huldu is no bigger than a hen. He says."
+        ]
+      },
+      {
+        "name": "Haggerfel",
+        "x": 805731,
+        "y": 701535,
+        "z": 4960,
+        "radius": 1500,
+        "lines": [
+          "Haggerfel. A dwarf thegn's town, and his forges.",
+          "Inaksha sees things. She wishes she did not.",
+          "Hilde's forge plans are still in the huldu camp."
+        ]
+      },
+      {
+        "name": "Fort Veldon",
+        "x": 798858,
+        "y": 677593,
+        "z": 5200,
+        "radius": 2500,
+        "lines": [
+          "Fort Veldon watches the lake and the vendo caves.",
+          "Muspelheim's glow on the northern sky.",
+          "Galkvinne walks the Veldon road. Mad, they say."
+        ]
+      },
+      {
+        "name": "the northern peak",
+        "x": 780088,
+        "y": 675340,
+        "z": 8669,
+        "radius": 1500,
+        "lines": [
+          "High above the fort, Asbjom keeps the bones.",
+          "The vendo carry bones up here. Asbjom waits."
+        ]
+      },
+      {
+        "name": "the vendo lake camp",
+        "x": 782300,
+        "y": 687500,
+        "z": 5100,
+        "radius": 2500,
+        "lines": [
+          "The lake vendo. Prugor has a book he cannot read.",
+          "Rathis leads the hunt in the valley below.",
+          "Bone-collectors pick the hills clean."
+        ]
+      },
+      {
+        "name": "the hobyah hills",
+        "x": 790000,
+        "y": 681500,
+        "z": 5000,
+        "radius": 3500,
+        "lines": [
+          "Hobyahs say their names at night. Rasczel loudest.",
+          "Scout Grogor watches the road to Haggerfel."
+        ]
+      },
+      {
+        "name": "the mouth of Darkness Falls",
+        "x": 760600,
+        "y": 700475,
+        "z": 6330,
+        "radius": 2500,
+        "lines": [
+          "A mouth in the hill, and the wind out of it.",
+          "Small demons stand at the lip, sent to look.",
+          "Gors walked up out of the dark and stopped.",
+          "Hrrgyf hunts these hills. The demons avoid her."
+        ]
+      },
+      {
+        "name": "the western birches",
+        "x": 764000,
+        "y": 690000,
+        "z": 4600,
+        "radius": 4500,
+        "lines": [
+          "Birk's ghost stands among the birches he was named for.",
+          "The huldu camp is right at the fork. Quirk is there."
+        ]
+      },
+      {
+        "name": "the middle hills",
+        "x": 780000,
+        "y": 709000,
+        "z": 5300,
+        "radius": 4000,
+        "lines": [
+          "The huldu hunt here, hollow-backed and quiet.",
+          "Vrede stands alone: an anger with no one in it."
+        ]
+      },
+      {
+        "name": "the hobgoblin camp",
+        "x": 792256,
+        "y": 703744,
+        "z": 5046,
+        "radius": 1800,
+        "lines": [
+          "Clan Smyg. Smyga sneaks, and calls it ruling.",
+          "Anklebiter's teeth marks on every post."
+        ]
+      },
+      {
+        "name": "Viking Karl's tower",
+        "x": 771257,
+        "y": 721407,
+        "z": 5193,
+        "radius": 1800,
+        "lines": [
+          "Viking Karl's tower, and his drengs on the wall.",
+          "Scout Haurg counts the drengs from the trees.",
+          "Vasa crawls the low road west of the tower."
+        ]
+      },
+      {
+        "name": "the wood-eater mounds",
+        "x": 786500,
+        "y": 718500,
+        "z": 5500,
+        "radius": 3500,
+        "lines": [
+          "The wood-eaters dig. Their king and queen below.",
+          "Spat the wild cat hunts the wood-eaters' edge."
+        ]
+      },
+      {
+        "name": "the southern road",
+        "x": 790000,
+        "y": 730000,
+        "z": 6000,
+        "radius": 4000,
+        "lines": [
+          "Skeletons in the south hills, rattling.",
+          "Gulak the hobgoblin sits by the road. He does not bite."
+        ]
+      },
+      {
+        "name": "the ship road",
+        "x": 808830,
+        "y": 725039,
+        "z": 4882,
+        "radius": 1200,
+        "lines": [
+          "The road to the ship. Aegir lies beyond the sea.",
+          "Every isle story starts with this quay."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the young choose their gods in the vale. the old women say you can tell a vale childs god by the first thing it hit",
+      "the huldu were in the vale before mularn. fair from the front, hollow behind",
+      "the farms stopped leaving things out for the huldu, and the huldu stopped being hidden",
+      "haggerfel is a dwarf thegns town, the forges there are older than the fort",
+      "fort veldon watches the lake because the vendo caves are north of it",
+      "the mouth in the western hills is darkness falls. a wind comes out of it smelling of hot stone",
+      "the dead of the vale walk more since the falls opened, the gothi say its calling them",
+      "clan smyg is named for sneaking. smyga is their chief",
+      "carr left the hobgoblins and lives in mularn. he does not like hobgoblins",
+      "the wood eaters have a king and a queen down in the southern hills",
+      "the ship to the shrouded isles leaves from beside mularn",
+      "danica of mularn and inaksha of haggerfel, the two biggest stories in midgard start in the two smallest towns"
+    ],
+    "rumour": [
+      "the demons at the falls mouth were sent up to look and told not to come back empty",
+      "asbjom on the peak above veldon was asbjorn once. the snow wore a letter off",
+      "nobody at fort veldon agrees what galkvinne is. her name means mad woman",
+      "the huldu say mularn is a debt. the farmers say they should have spoken up sooner",
+      "the wood eaters are building something under the hills nobody has seen the bottom of",
+      "rasczel the hobyah says his own name all night. sven wants his nose for some reason",
+      "votan the huldu is tiny and harmless and named himself after odin",
+      "vik the carter calls every beast that ever broke his cart by the first name that comes to him",
+      "the vendo carry bones up the peak to asbjom and come down without them",
+      "the veldon smiths go the long way round galkvinne and wont talk about it",
+      "birk the hobgoblin ghost went to look at the falls when it opened and never found his way home",
+      "rathis never comes as far as the haggerfel road. he doesnt need to",
+      "vrede is an anger with nobody in it, the huldu say it used to be theirs",
+      "prugor has the scholars book of the rod of mimir. a vendo with a book, like a cat with a harp",
+      "veldon kids get hushed when the hobyahs are loud. rasczel is the loudest",
+      "the little demons at the falls step back when hrrgyf goes by",
+      "scout grogor knows the haggerfel carters by name. the dwarves stopped hiding the ale carts",
+      "scout haurg has stood under the same pine for three summers watching karls drengs",
+      "smyga says the clan never noticed carr was gone. carr says they will never forgive him",
+      "vasa the big grub on the west road doesnt stop for carts. karls drengs tried to burn it out twice",
+      "spat is older than any cat should be. he doesnt hunt, he holds a grudge",
+      "every dare at the falls mouth ends with gors in the story",
+      "quirk was the best apprentice hilde ever had, thats why shes so angry",
+      "gulak catches the crust the carters throw without getting up",
+      "votan asks every kid who comes back with a god which one, and nods like he gave it"
+    ],
+    "tell": [
+      "mularn and haggerfel are your first towns, viking and mystic in mularn, seer and rogue in haggerfel",
+      "fort veldon in the north is the 10 to 20 hub, vendo by the lake",
+      "darkness falls entrance is in the west of the vale, the dungeon itself is not for lowbies",
+      "hobgoblin camp is between mularn and haggerfel, carr has the quests",
+      "hrrgyf is the hill cat for thordias hunt, she wanders by the falls mouth and the vendo caves",
+      "boat to the shrouded isles and the housing road are both just east of mularn",
+      "huldu camp is west of mularn, right at the fork, quirk is there for hilde",
+      "asbjom is way up the peak above fort veldon, low 20s, alone",
+      "galkvinne is on the road below fort veldon, 22, comes at anyone",
+      "birk is a hobgoblin ghost in the western birches, 14",
+      "rathis is the vendo captain with the hunting party in the valley, evenings empty blessing",
+      "vrede is in the middle hills with the huldu hunters, 12, elemental",
+      "prugor is at the lake vendo camp, inaksha's rod and the scholars quest",
+      "rasczel the hobyah is north near veldon, sven wants his nose",
+      "scout grogor is a vendo in the hills on the haggerfel road, about 9",
+      "scout haurg is in the trees by viking karl's place in the west",
+      "smyga is in the hobgoblin camp between mularn and haggerfel, carrs quest",
+      "vasa is on the low road west of viking karl's place",
+      "spat is a rare one among the hill cats in the vale hills, viks quest",
+      "gors is a skeleton by the darkness falls mouth in the west",
+      "gulak sits by the south road near the jordheim gate, he wont attack",
+      "votan is the tiny huldu near mularn, level 1, harmless"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"The Vale of Mularn. The cradle of the realm, outside Jordheim's gate. The young [choose their gods] in [Mularn] and [Haggerfel]. The [huldu] were there first, the [vendo] came down from the north, and in the west there is a [mouth] in the hills that goes down further than anyone likes.\"",
+    "topics": {
+      "choose their gods": "The masters of the vale send the young round the houses to ask what each god wants, and when they have asked enough they choose, and go up to Jordheim to that house. The old women say you can tell a vale child's god by the first thing it hit.",
+      "Mularn": "The town by Jordheim's gate, with the viking and mystic masters, the healer, the stables, the ship road to Aegir and the road to the houses of the realm. [Danica] and [Elizabeth] are here, and [Carr], and [Votan] is nearby.",
+      "Haggerfel": "A dwarf thegn's town in the east of the vale, with the seer and rogue masters and good forges. [Inaksha] lives here. Hilde the smith wants her forge plans back from [Quirk].",
+      "Fort Veldon": "The fort in the north, built to watch the lake and the [vendo] caves. Its smiths send the young up the pass to Muspelheim. [Galkvinne] walks its road and [Asbjom] keeps the peak above it.",
+      "huldu": "The hidden people, fair from the front and hollow behind, who lived beside the first farms unseen and took what was left out for them. The farms stopped leaving things out. They keep camps west and middle now. See [Vrede] and [Quirk].",
+      "vendo": "A hairy, howling people from the caves north of the lake, who came down with their bone-collectors and shamans and never went all the way back. Their captain [Rathis] hunts the valley; [Prugor] keeps a stolen book.",
+      "mouth": "Darkness Falls' mouth in the western hills: a pit under all three realms, the skalds say. Small demons stand at its lip. The vale's dead walk more since it opened. [Gors] came up out of it. [Hrrgyf] hunts its hills.",
+      "Clan Smyg": "The hobgoblins of the camp between Mularn and Haggerfel, named for sneaking, under [Smyga]. One left: [Carr]. Another, [Gulak], sits by the south road and does not bite. [Birk] was one of them.",
+      "wood-eaters": "Burrowing things of the southern hills with a king and a queen and a royal guard, building something under the earth that nobody has seen the bottom of. [Spat] hunts at their edge.",
+      "Danica": "A mystic of Mularn who sends the mystics out to save the Grenlock clan: a cure from the wyvern Serk for Arnfinn of Vasudheim, the body of Cnute's son from the jotun Valthjof, and at last Jango, who killed the clan's chief, in Vanern Swamp at night.",
+      "Inaksha": "A seeress of Haggerfel who has visions: of the Rod of Mimir first, and the scholars who lost its book to [Prugor], and later of Loki, who wants trouble. She sends the seers to Skona's serpent, the jotun of Vanern and Uppland's dead seeress.",
+      "Elizabeth": "A smith and enchanter of Mularn, who hands the young vikings a dagger and sends them to Lynnleigh on Strider Island at night, and after the Red Daggers of Raumarik.",
+      "Carr": "A hobgoblin of Clan Smyg who left the clan and lives in Mularn now. He says he does not like hobgoblins, and pays to have [Smyga]'s orders stolen. Nobody in Mularn quite trusts him. He has not given them a reason yet.",
+      "Asbjom": "A white vendo-beast on the peak high above Fort Veldon, alone, where the bone-collectors carry bones. The fort's watch says the name was Asbjorn once, the god-bear, and that the snow has worn a letter off it as it wears everything up there. It attacks anyone who climbs that far. The bone-collectors of the lake are said to climb to it with their bundles before the snow comes, and to come down without them.",
+      "Galkvinne": "A lone thing on the road below Fort Veldon whose name, the fort says, means the mad woman. Nobody there agrees what she is: a huldu who forgot her hollow, a seeress who went up the pass and came back wrong, or nothing that ever was a woman. She comes at anyone on her road. The smiths of Veldon, who walk that road to the pass, go round her ground by the long way and do not talk about it.",
+      "Birk": "The ghost of a hobgoblin among the western birches, larger in death than the clan's living. [Clan Smyg] say he went west to look at the [mouth] when it opened and came back like this, and that he stands among the trees he was named for because he cannot find the camp. The huldu leave him alone; the hobgoblins throw stones at the birches to keep him there.",
+      "Rathis": "The captain of the lake [vendo], who leads their hunting party in the valley. The bear mask and the ragged bear skin with runes on it that Fort Veldon's people bring back are his people's; Virge of Huginfel reads the runes. The fort's watch says Rathis is the one vendo who has never come as far as the Haggerfel road, because he does not need to.",
+      "Vrede": "A shape of anger that stands alone in the middle hills among the [huldu] hunters, a ghost-pale elemental thing. The name means wrath. The huldu say their own anger left them when the farms stopped leaving things out, and went to stand by itself. It answers anyone who comes near, as anger does. The gothi of Mularn say it will go when the vale pays its debt, and that nobody has asked them what the debt is.",
+      "Prugor": "A [vendo] of the lake camp who holds the book of lore stolen from the scholars: Gorne of Audliten and Scholar Kjell of Vasudheim, whom [Inaksha]'s visions of the Rod of Mimir send the seers to. He cannot read it. He will not give it back. The scholars say the book tells of the Rod and of Mimir's well, and that a vendo with it is like a cat with a harp.",
+      "Rasczel": "A hobyah of the hills below Fort Veldon. Hobyahs come at night and say their own names, the vale's children are told, and Rasczel says his loudest. Sven the skald of Jordheim pays for his nose, and will not say what he does with it. Fort Veldon's children are sent to bed early on the nights the hobyahs are loud, and the watch counts the names they hear.",
+      "Hrrgyf": "A hill cat, a she, who wanders the western hills by Darkness Falls' [mouth], the vendo caves and the road to the old faste. Thordia and Jaakko of Jordheim send their young after her tooth, and Vik the carter after the book she took from his cart. The small demons at the Falls step back when she passes. The Veldon watch says that is the best thing anyone knows about her.",
+      "Scout Grogor": "A [vendo] scout in the hills on the road to Haggerfel, one of the eyes the lake camp keeps on the dwarves. He watches the road and counts the carts. Haggerfel's guards say he has been watching that road so long that he knows the carters' names better than they do, and the dwarves have stopped hiding which carts carry ale. He runs at nothing and comes at anyone who leaves the road.",
+      "Scout Haurg": "A [vendo] shaman-scout in the trees by Viking Karl's tower in the west, counting the drengs on the wall. The drengs count him back. Viking Karl says Haurg has stood under the same pine for three summers and has worn the bark off it with his back. He shakes bones at the drengs when they change the watch. The drengs have never caught him at it, and say they have never tried.",
+      "Smyga": "The chief of [Clan Smyg], whose name is the clan's: to sneak. He sends his orders through Anklebiter, and [Carr] pays to have them stolen. His camp is between Mularn and Haggerfel. The clan's posts are full of Anklebiter's teeth marks and its fires are always lit small, so that nobody sees them from Haggerfel. Carr says the clan will never forgive him. The clan says it has not noticed he is gone.",
+      "Vasa": "A great larva of the grendelorm kind on the low road west of Viking Karl's tower. Vik the carter wants its tail, or Spat's; he calls every beast that ever broke his cart by whichever name comes first. The carters of the west road say it is slow and hungry and does not stop for a cart. Viking Karl's drengs have tried to burn it out of the low road twice.",
+      "Spat": "A crazy, mean old wild cat that turns up now and then among the hill cats of the vale's hills. Vik the carter says Spat has troubled him before on the Veldon road, and will again. The hill people say Spat is older than any cat should be, and that he does not hunt so much as hold a grudge. He comes and goes, and when he is about the small hill cats keep away from the road.",
+      "Gors": "A skeleton in the western hills by Darkness Falls' [mouth], alone. The gothi of Mularn say he walked up out of the dark and stopped, as if he had forgotten where he was going, and that the dead of the vale are all a little like Gors now. The young who go to look at the Falls' mouth on a dare mostly come back with Gors's bones in their story.",
+      "Quirk": "A [huldu], Hilde of Haggerfel's apprentice once, who stole her plans for a new forge and went back to the huldu camp right at the fork west of Mularn. The huldu have no forges. Hilde says that is the point. The huldu keep the plans in the camp the way a magpie keeps a ring. Haggerfel's dwarves say Quirk was the best apprentice Hilde ever had, which is what makes her so angry.",
+      "Gulak": "A small hobgoblin by the southern road who does not bite: he sits and watches the carts to Jordheim go by. [Clan Smyg] will not have him back and he does not seem to want them. The carters throw him a crust and he catches it without getting up. The vale's children dare each other to sit beside him, and he lets them.",
+      "Votan": "A [huldu] no bigger than a hen who lives by Mularn and has named himself after Odin. He fights nobody. The children of Mularn leave him a crust, the only huldu in the vale who still gets one. When the young of the vale come back with a god, he asks them which, and nods as if it had been his to give.",
+      "Thorunn": "Thorunn, the alewife of Mularn and mother of Barkeep Nognar, who wrote Under the Gate for the young who pass through her door on the way to choosing."
+    }
+  },
+  "book": {
+    "title": "Under the Gate: An Alewife's Book of the Vale",
+    "pages": [
+      "Thorunn, alewife of Mularn, mother of Nognar who keeps the bar now, set this down for the young who come through my door on their way to choosing. I have poured for forty winters of you. You come in with your mothers' bread in your packs and leave with a god. Some of you come back through that door with the god still on you, years later, scarred and famous, and some of you do not come back, and I keep a board behind the bar with your names on it, both kinds. Everyone in the vale chooses. The masters send you round the houses to ask. I say ask the old women instead. We have seen what each god does to a child.",
+      "The huldu were here before us. My grandmother left a bowl of porridge on the step for them every winter and was never troubled, and her neighbour did not, and his cows went dry. When the farms stopped leaving things out the huldu stopped hiding, and now they keep camps in the birches and look at you from the front with fair faces. Never follow one into the trees. If it turns, you will see that it is hollow, like a tree the lightning found, and then it is too close. The little one by the town, Votan, still gets a crust from the children. He has never hurt anybody. He says he is Odin. We let him.",
+      "The dwarves of Haggerfel are good neighbours and poor drinkers. Their thegn keeps a tidy town, and their smiths argue about forges the way skalds argue about kennings. Hilde lost her forge plans to a huldu apprentice and has talked about little else since. Inaksha lives over there too. She sees things. She came in here once and stood at the bar and looked at the wall for a long time and said there would be a serpent, and a jotun, and a dead woman in the snow, and I gave her a cup and did not ask. The seers come through afterwards with the look of people who have met all three.",
+      "Fort Veldon is north, by the lake, because the vendo are north of that. They are hairy and loud and they collect bones, and the children say they carry the bones up the peak to something white that waits there. I do not know about that. I know that every summer a vendo shaman gets as far as the Haggerfel road and is sent back, and every summer the young of the fort come down here with a bear skin with runes on it and ask who can read it, and I send them to Huginfel. The fort smiths send them north instead, up the pass to the fire. They come back singed.",
+      "And the west. I was a girl when the hole opened. It was not there, and then there was a wind from the western hills that smelled like the inside of a forge, and the dogs would not go that way. Now there is a mouth in the hill, and small demons standing round it like boys round a dare, and the old dead of the vale walk more than they used to. The gothi say the hole calls them. The skalds say it goes under all three realms. I say do not go in until you have a god and a good many friends, and come back here afterwards and tell me. I will pour. Your name goes on the board either way."
+    ]
+  },
+  "bosses": []
+}

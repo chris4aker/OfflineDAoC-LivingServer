@@ -28,6 +28,15 @@ namespace DOL.GS
         private bool _townIdleFinished;
         private readonly record struct TownRouteValidation(bool Valid, IdleTown Town, Vector3 Point, double Distance);
         private Task<TownRouteValidation> _townRouteValidation;
+        // Living Server 1.2: the bank and the usual crowd spots (AutonomousTownHangouts).
+        private DateTime? _townHangoutAtUtc;
+        private bool _townHangoutWalking;
+        private AutonomousTownHangouts.Kind _townHangoutKind;
+        private GameObject _townHangoutFocus;
+        private Vector2? _townHangoutFace;
+        // Bots as people 1.2 (WP5): the spot past the hangout an overshooting bot runs to before it steps back.
+        private Vector3? _townHangoutPast;
+        private static long _nextTownHangoutSearch;
 
         private void ResetTownIdle()
         {
@@ -37,6 +46,10 @@ namespace DOL.GS
             _townIdleDestination = null;
             _townIdleUntilUtc = null;
             _townIdleFinished = false;
+            _townHangoutAtUtc = null;
+            _townHangoutWalking = false;
+            _townHangoutFocus = null;
+            _townHangoutFace = null;
         }
 
         public static bool IsIdleTownLevelAppropriate(int level, bool capital, int minimum, int maximum)
@@ -62,6 +75,7 @@ namespace DOL.GS
 
         private bool HandleTownIdle(BotBrain brain, GameBot bot)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.TownIdle); // AI_PROFILE: measures only
             if (_townIdleFinished) return false;
             DateTime now = DateTime.UtcNow;
             if (!DateTime.TryParse(bot.PersistentRecord.ObjectiveExpiresUtc, null,
@@ -75,6 +89,8 @@ namespace DOL.GS
                     return FinishTownIdle(bot, "Town break completed");
                 if (!IsInsideIdleTown(bot, _townIdleDestination))
                     return FinishTownIdle(bot, "Left the selected safe town; cancelling optional break");
+                if (ContinueTownHangoutWalk(bot))
+                    return true;
                 if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), _townIdleDestination.Point) > 96 * 96)
                 {
                     bot.WakeRecoveryRest();
@@ -84,12 +100,17 @@ namespace DOL.GS
                         "Returning after interruption without extending either deadline", string.Empty, _townIdleDestination.Town.Name);
                     return true;
                 }
+                if (TryStartTownHangout(bot, now, _townIdleUntilUtc.Value < deadline ? _townIdleUntilUtc.Value : deadline))
+                    return true;
                 // Body language (Living Server) may take a step or two around the spot; don't cancel it.
                 if (!AutonomousBotBodyLanguage.Idle(bot, BodySpot.Town, _townIdleDestination.Point))
                 {
                     bot.StopMovingOnPath();
                     bot.StopMoving();
                 }
+                // Bots as people 1.2 (WP5): idling at the bank, a long wait ends seated.
+                if (!_townHangoutWalking && _townHangoutFocus is GameVaultKeeper)
+                    BotMovementHabitsRuntime.WaitTurn(bot, BotMovementHabitsRuntime.WaitSpot.Bank);
                 if (brain.CheckHeals()) return true;
                 if (AutonomousRestPolicy.IsFullyRecovered(bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, bot.MaxMana > 0))
                     bot.WakeRecoveryRest();
@@ -191,6 +212,7 @@ namespace DOL.GS
             if (!duration.HasValue)
                 return FinishTownIdle(bot, "Travel left insufficient time for the minimum break");
             _townIdleUntilUtc = arrived.Add(duration.Value);
+            _townHangoutAtUtc = arrived.AddMilliseconds(AutonomousTownHangouts.FirstHopDelay(Random.Shared.NextDouble()));
             bot.StopMovingOnPath();
             bot.StopMoving();
             PublishTownIdleStatus(bot, deadline);
@@ -280,14 +302,247 @@ namespace DOL.GS
                     continue;
                 // Safe PvP areas need not exclude aggressive monsters. Reject a
                 // resting spot that lies in a currently live monster's aggro bubble.
-                bool dangerous = anchor.GetNPCsInRadius(3_500).Any(npc => npc.IsAlive && IsExperienceMonster(npc) && npc.IsAggressive &&
-                    npc.Brain is StandardMobBrain mobBrain &&
-                    Vector3.DistanceSquared(candidate.Value, new(npc.X, npc.Y, npc.Z)) <= (double)mobBrain.AggroRange * mobBrain.AggroRange);
-                if (dangerous) continue;
+                if (InLiveAggroRange(anchor, candidate.Value)) continue;
                 point = candidate.Value;
                 return true;
             }
             return false;
+        }
+
+        private static bool InLiveAggroRange(GameObject around, Vector3 point) =>
+            around.GetNPCsInRadius(3_500).Any(npc => npc.IsAlive && IsExperienceMonster(npc) && npc.IsAggressive &&
+                npc.Brain is StandardMobBrain mobBrain &&
+                Vector3.DistanceSquared(point, new(npc.X, npc.Y, npc.Z)) <= (double)mobBrain.AggroRange * mobBrain.AggroRange);
+
+        /// <summary>
+        /// The walk over to a hangout: true while it walks (the town break's other work waits), false once there or when
+        /// the route fails (then it simply stays where it is). On arrival it turns, in steps, to what it came to.
+        /// </summary>
+        private bool ContinueTownHangoutWalk(GameBot bot)
+        {
+            if (!_townHangoutWalking)
+                return false;
+            Vector3 here = new(bot.X, bot.Y, bot.Z);
+            const float tolerance = AutonomousTownHangouts.ArriveTolerance * AutonomousTownHangouts.ArriveTolerance;
+            Vector2 at = new(here.X, here.Y);
+            bool atSpot = Vector2.DistanceSquared(at, new(_townIdleDestination.Point.X, _townIdleDestination.Point.Y)) <= tolerance;
+            // Bots as people 1.2 (WP5): an overshooting bot walks on past the spot, steps back once, and that step-back is
+            // not routed over (BotMovementHabits.Hangout).
+            bool pending = _townHangoutPast != null && BotMovementHabitsRuntime.OvershootPending(bot);
+            bool atPast = _townHangoutPast is Vector3 past && Vector2.DistanceSquared(at, new(past.X, past.Y)) <= tolerance;
+            BotMovementHabits.HangoutStep step = BotMovementHabits.Hangout(atSpot, pending, atPast, bot.IsMoving,
+                BotMovementHabitsRuntime.SteppingBack(bot));
+            if (step == BotMovementHabits.HangoutStep.SteppingBack)
+                return true;
+            if (step == BotMovementHabits.HangoutStep.StepBack)
+            {
+                _townHangoutPast = null;
+                BotMovementHabitsRuntime.StepBack(bot);
+                return true;
+            }
+            if (step is BotMovementHabits.HangoutStep.WalkPast or BotMovementHabits.HangoutStep.WalkToSpot)
+            {
+                Vector3 aim = step == BotMovementHabits.HangoutStep.WalkPast ? _townHangoutPast.Value : _townIdleDestination.Point;
+                if (IssuePath(bot, aim))
+                {
+                    SetStatus(bot, $"Wandering over to the {AutonomousTownHangouts.Word(_townHangoutKind)}",
+                        $"Idle in {_townIdleDestination.Town.Name}", "Town break: the bank and the usual crowd spots",
+                        _townHangoutFocus?.Name ?? string.Empty, _townIdleDestination.Town.Name);
+                    return true;
+                }
+                // No route after all: stand where it got to.
+                _townIdleDestination = _townIdleDestination with { Point = here };
+            }
+            if (_townHangoutPast != null)
+            {
+                _townHangoutPast = null;
+                BotMovementHabitsRuntime.CancelOvershoot(bot); // stopped at the spot itself, or the walk failed
+            }
+            _townHangoutWalking = false;
+            bot.StopMovingOnPath();
+            bot.StopMoving();
+            if (_townHangoutFocus is { ObjectState: GameObject.eObjectState.Active } focus && focus.CurrentRegion == bot.CurrentRegion)
+                BotTurning.TurnGradually(bot, focus);
+            else if (_townHangoutFace is Vector2 face)
+                BotTurning.TurnGradually(bot, bot.GetHeading((int)face.X, (int)face.Y));
+            AutonomousTownHangouts.Count(_townHangoutKind, arrived: true);
+            return false;
+        }
+
+        /// <summary>
+        /// Now and then during the break the bot wanders over to the bank, a merchant, a trainer or a crowd already standing
+        /// somewhere in town (AutonomousTownHangouts). Only fully recovered and out of a fight, at most four searches a second
+        /// server-wide, and only to a spot with a complete short path on the bot's own zone mesh.
+        /// </summary>
+        private bool TryStartTownHangout(GameBot bot, DateTime now, DateTime breakEnds)
+        {
+            if (!AutonomousTownHangouts.HopDue(now, _townHangoutAtUtc, breakEnds) || bot.InCombat || bot.IsRecoveryResting ||
+                bot.IsMoving || !AutonomousRestPolicy.IsFullyRecovered(bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, bot.MaxMana > 0))
+                return false;
+            long tick = GameLoop.GameLoopTime;
+            long next = Volatile.Read(ref _nextTownHangoutSearch);
+            if (tick < next || Interlocked.CompareExchange(ref _nextTownHangoutSearch, tick + 250, next) != next)
+                return false;
+            using var aiProfile = AiProfile.Scope(AiSystem.TownHangout); // AI_PROFILE: measures only
+            _townHangoutAtUtc = now.AddMilliseconds(AutonomousTownHangouts.RetryMs);
+            IdleDestination current = _townIdleDestination;
+            if (!TryChooseHangout(bot, current.Town, out AutonomousTownHangouts.Kind kind, out GameObject focus,
+                    out Vector2? face, out Vector3 point))
+            {
+                AutonomousTownHangouts.Count(null);
+                return false;
+            }
+            _townHangoutAtUtc = now.AddMilliseconds(AutonomousTownHangouts.NextDwell(Random.Shared.NextDouble()));
+            _townIdleDestination = current with { Point = point };
+            _townHangoutPast = BotMovementHabitsRuntime.Overshoot(bot, point,
+                past => InsideTown(current.Town, past) && !InLiveAggroRange(bot, past));
+            _townHangoutKind = kind;
+            _townHangoutFocus = focus;
+            _townHangoutFace = face;
+            _townHangoutWalking = true;
+            AutonomousTownHangouts.Count(kind);
+            return ContinueTownHangoutWalk(bot);
+        }
+
+        private static bool TryChooseHangout(GameBot bot, IdleTown town, out AutonomousTownHangouts.Kind kind,
+            out GameObject focus, out Vector2? face, out Vector3 point)
+        {
+            kind = default;
+            focus = null;
+            face = null;
+            point = default;
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            Zone zone = bot.CurrentZone;
+            if (zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
+                return false;
+            ushort radius = town.Capital ? AutonomousTownHangouts.CapitalSearchRadius : AutonomousTownHangouts.SearchRadius;
+            var banks = new List<GameNPC>();
+            var merchants = new List<GameNPC>();
+            var trainers = new List<GameNPC>();
+            var standers = new List<Vector2>();
+            foreach (GameNPC npc in bot.GetNPCsInRadius(radius))
+            {
+                if (npc == bot || npc.ObjectState != GameObject.eObjectState.Active || !npc.IsAlive || npc.CurrentZone != zone)
+                    continue;
+                if (npc is GameBot other)
+                {
+                    if (other.Realm == bot.Realm && !other.IsMoving && !other.InCombat)
+                        standers.Add(new(other.X, other.Y));
+                    continue;
+                }
+                if (npc.Realm != bot.Realm && npc.Realm != eRealm.None || !InsideTown(town, new(npc.X, npc.Y, npc.Z)))
+                    continue;
+                if (npc is GameVaultKeeper) banks.Add(npc);
+                else if (npc is GameMerchant) merchants.Add(npc);
+                else if (npc is GameTrainer) trainers.Add(npc);
+            }
+            foreach (GamePlayer player in bot.GetPlayersInRadius(radius))
+                if (player.IsAlive && player.Realm == bot.Realm && !player.IsMoving)
+                    standers.Add(new(player.X, player.Y));
+            // Crafting 2.0 WP4: a crafter gamebot (bot_crafters on) may wander to its craft's station in town.
+            List<GameStaticItem> stations = StationsForHangout(bot, town, zone, radius);
+            Vector2 self = new(bot.X, bot.Y);
+            bool crowd = AutonomousTownHangouts.TryFindCrowd(standers, self, out Vector2 crowdCenter, out _);
+            AutonomousTownHangouts.Kind? chosen = AutonomousTownHangouts.Choose(banks.Count > 0, merchants.Count > 0,
+                trainers.Count > 0, crowd, stations.Count > 0, Random.Shared.NextDouble());
+            if (chosen is not AutonomousTownHangouts.Kind picked)
+                return false;
+            // Bots as people 1.2 (WP5): with a crowd at the vault keeper already, a crowd choice joins the bank's.
+            if (picked == AutonomousTownHangouts.Kind.Crowd && banks.Count > 0 &&
+                BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MovementHabits, out _) == BotPeopleRefusal.None)
+            {
+                int atBank = 0;
+                foreach (GameNPC bank in banks)
+                {
+                    int here = 0;
+                    foreach (Vector2 stander in standers)
+                        if (Vector2.DistanceSquared(stander, new(bank.X, bank.Y)) <= BotMovementHabits.BankCrowdRadius * BotMovementHabits.BankCrowdRadius)
+                            here++;
+                    atBank = Math.Max(atBank, here);
+                }
+                AutonomousTownHangouts.Kind leaned = BotMovementHabits.LeanToBank(picked, atBank, bankHere: true);
+                if (leaned != picked)
+                {
+                    picked = leaned;
+                    BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.BankLeans);
+                }
+            }
+            kind = picked;
+            GameObject target = null;
+            if (picked == AutonomousTownHangouts.Kind.Station)
+                target = stations[Random.Shared.Next(stations.Count)];
+            else if (picked != AutonomousTownHangouts.Kind.Crowd)
+            {
+                List<GameNPC> list = picked switch
+                {
+                    AutonomousTownHangouts.Kind.Bank => banks,
+                    AutonomousTownHangouts.Kind.Merchant => merchants,
+                    _ => trainers,
+                };
+                target = list[Random.Shared.Next(list.Count)];
+            }
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                Vector2 spot = target != null
+                    ? AutonomousTownHangouts.SpotNear(new(target.X, target.Y), target.Heading, picked,
+                        Random.Shared.NextDouble(), Random.Shared.NextDouble())
+                    : AutonomousTownHangouts.SpotInCrowd(crowdCenter, self, Random.Shared.NextDouble(), Random.Shared.NextDouble());
+                if (!AutonomousTownHangouts.HasRoom(spot, standers))
+                    continue;
+                float floorZ = target?.Z ?? bot.Z;
+                if (!TryHangoutSpot(bot, town, nav, zone, spot, floorZ, out point))
+                    continue;
+                focus = target;
+                face = target == null ? crowdCenter : null;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Crafting 2.0 WP4: the stations of a crafter gamebot's craft (forge, lathe or alchemy table) in this town, for the
+        /// station hangout. Empty for every other bot, and while bot_crafters is off.
+        /// </summary>
+        private static List<GameStaticItem> StationsForHangout(GameBot bot, IdleTown town, Zone zone, ushort radius)
+        {
+            var stations = new List<GameStaticItem>();
+            if (!AutonomousBotCrafting.IsCrafter(bot) || !AutonomousBotCrafting.IsTrained(bot))
+                return stations;
+            DOL.GS.Crafting.CraftStation wanted = BotCraftingRules.HangoutStationFor(
+                DOL.GS.CraftingEconomy.BotCraftingSkills.Primary(bot.PersistentRecord.SerializedCraftingSkills));
+            if (wanted == DOL.GS.Crafting.CraftStation.None)
+                return stations;
+            foreach (GameStaticItem item in bot.GetItemsInRadius(radius))
+                if (item != null && item.ObjectState == GameObject.eObjectState.Active && item.CurrentZone == zone &&
+                    BotCraftingRules.StationOf(item.Model, item.Name) == wanted && InsideTown(town, new(item.X, item.Y, item.Z)))
+                    stations.Add(item);
+            return stations;
+        }
+
+        private static bool InsideTown(IdleTown town, Vector3 point) =>
+            town.Capital || town.Area?.IsContaining(new Point3D((int)point.X, (int)point.Y, (int)point.Z), false) == true;
+
+        /// <summary>The spot on the mesh, dry, on the floor of what the bot came to, in town, out of every live monster's
+        /// aggro range, and a short complete walk from the bot.</summary>
+        private static bool TryHangoutSpot(GameBot bot, IdleTown town, IPathfindingMgr nav, Zone zone, Vector2 spot,
+            float floorZ, out Vector3 point)
+        {
+            point = default;
+            if (bot.CurrentRegion?.GetZone((int)spot.X, (int)spot.Y) != zone)
+                return false;
+            Vector3? floor = nav.GetClosestPoint(zone, new(spot.X, spot.Y, floorZ), 24, 24, AutonomousTownHangouts.MaxRise,
+                nav.DefaultFilters);
+            if (floor is not Vector3 f || MathF.Abs(f.Z - floorZ) > AutonomousTownHangouts.MaxRise ||
+                zone.IsUnderwater((int)f.X, (int)f.Y, (int)f.Z) || !InsideTown(town, f) || InLiveAggroRange(bot, f))
+                return false;
+            Vector3 start = new(bot.X, bot.Y, bot.Z);
+            int budget = 4;
+            double length = 0;
+            if (!ValidateTownCorridor(nav, zone, start, f, ref budget, ref length) ||
+                !AutonomousTownHangouts.WalkAcceptable(length, Vector3.Distance(start, f)))
+                return false;
+            point = f;
+            return true;
         }
 
         // Conservative proof of the exact canonical walking itinerary. Stable

@@ -1,0 +1,122 @@
+{
+  "id": "uppat-gungledar",
+  "name": "Uppat gungledar",
+  "npcNames": [
+    "Uppat gungledar"
+  ],
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "troll-fathers"
+  ],
+  "related": [
+    {
+      "id": "nedat-gungledar",
+      "relation": "the other leader, of the stone that hangs down"
+    },
+    {
+      "id": "rotodjur",
+      "relation": "the gardener of the growing halls nearby"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Uppat gungledar is a level-77 creature on the stalactite and stalagmite model (951) in the eastern halls of Trollheim (42567, 34748), standing among nine uppat korkigen (level 56) with stalactites nearby; Nedat gungledar is about 2,900 units away.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its NPC template sets aggro level 0: it does not attack first, but anything standing near it may. The uppat korkigen and stalactites around it are aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167467)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish uppat (uppåt) means 'upward'. 'Gungledar' is not a dictionary word; 'ledare' is 'leader', so the name may mean 'upward leader'. 'Korkigen' is also unknown. To verify.",
+      "provenance": "original",
+      "source": "Swedish dictionary (Svenska Akademiens ordlista), to verify"
+    },
+    {
+      "text": "Bot chat says Trollheim has an up leader and a down leader.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "The Troll Fathers had two orders, the Uppat who kept the living halls and the Nedat who kept the holy ones, and each order had a leader. The Valkyn say the Fathers never gave the leaders names, because a leader was a place in the city and not a person. When the morvalt broke the gates, their war-chiefs went through the upper city looking for the Uppat leader, to kill it and sit in its seat, and found the seat at the head of the ring in the hall of counsel empty. They never found the leader. It was not a Father.\n\nIt stands in the eastern halls of Trollheim, past the hall of counsel, where the floor of the city grows and the roof comes down in teeth. It is a stone, the greatest of the stones that grow upward from the floor, and around it stand lesser ones of its own kind that the Valkyn call by the same word. The trolls of Dyrfjall say the Fathers did not carve it. They found it growing when they first dug the eastern halls, older than the city, and they built the order of the living halls around it the way a steading is built around a spring: the Uppat leader is the thing that grows, and the order that kept the forges and the granaries and the roads to the surface took its name from it.\n\nIt is alive in the way the stone of Trollheim is alive, slowly. It does not move against anything that leaves it alone, and the morvalt, who walk round it, have long since chosen to leave it alone. The lesser stones around it are quicker to anger; the Valkyn guides say a stranger who comes among them unwatchful will have woken the small ones long before the great one turns. The great one is a different matter. Those who have struck it say it is harder than anything else in the eastern halls, and that the growing stone of Trollheim has had longer than the city to grow.\n\nRotodjur keeps the growing halls beyond, and the Valkyn say the gardener and the leader have never troubled each other. One grows the city's floor. The other is what the floor was before there was a city.",
+  "legend": "Uppat gungledar is a level 77 stone creature (the stalagmite/stalactite model) in Trollheim's eastern halls, toward Rotodjur's growing halls, with nine uppat korkigen (56) around it and stalactites close by. It does NOT attack first (aggro 0) and has no faction, so it never brings friends. The danger is the korkigen and stalactites around it: those are aggressive and you'll walk into them first. Clear the small stones, then decide whether you want a level 77 at all: it's no quest target, it has no special abilities, it's simply very high level. Nedat gungledar stands about 2,900 units away, also passive.",
+  "yells": {
+    "aggro": [
+      "The stone turns. Slowly. Completely.",
+      "Grown, not made. Older than your fires.",
+      "You woke the small ones. Now the great one."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Stone breaks. Stone grows back."
+      }
+    ],
+    "death": [
+      "The floor... remembers...",
+      "Grow... again..."
+    ],
+    "slay": [
+      "Under the floor with you.",
+      "Still.",
+      "Stone keeps what falls on it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor grows upward in stone teeth.",
+      "A great stone stands among smaller ones. It is alive."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Uppat leader groans like a settling hill."
+      }
+    ],
+    "realmFirstKill": "The Uppat leader is broken. The floor will grow it back."
+  },
+  "botLines": {
+    "briefing": [
+      "uppat gungledar is 77 but passive, it wont come unless you hit it",
+      "the korkigen round it are aggro, clear them first",
+      "no quest needs it, its just very high level",
+      "no faction, nothing gets called"
+    ],
+    "aftermathWin": [
+      "we killed a 77 rock, why",
+      "korkigen first, then the big one, worked",
+      "took forever but it fell",
+      "nedat next?"
+    ],
+    "aftermathLoss": [
+      "walked into the korkigen",
+      "a 77 is a 77",
+      "should have left it alone",
+      "the stalactites joined"
+    ],
+    "rumour": [
+      "the uppat leader isnt a troll father, its a stone the fathers found growing",
+      "the morvalt never found the uppat leader, the seat is empty",
+      "uppat means upward, the stone that grows up",
+      "the small stones round the uppat leader anger faster than the big one"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Uppat leader",
+    "text": "The leader of the upward order was never a Father: it is the greatest of the growing stones in the eastern halls, and the order took its name from it. The morvalt leave it be. See [Uppat and Nedat] and [Nedat leader]."
+  },
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: I carried a lamp for a Valkyn guide into the eastern halls once, as far as the stones. She stopped me at the edge of the small ones and made me put the lamp down, and we stood in the dark until my eyes were good, and then I saw it, the big one, standing up out of the floor like a tooth in a jaw. She said that was the Uppat leader, and that the Fathers used to come and stand where we stood, and say nothing, and go back to the forges. I asked what it said back. She said: it grows.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the Uppat leader in Trollheim's eastern halls in {minutes} minutes.",
+    "loss": "The Uppat leader stood unbroken against {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

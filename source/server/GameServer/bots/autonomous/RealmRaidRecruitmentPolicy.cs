@@ -24,8 +24,33 @@ public static class RealmRaidRecruitmentPolicy
     public static int MinimumBotsSetting = 0;
 
     [ServerProperty("autonomous", "realm_raid_schedule_minutes",
-        "Each realm opens an automatic realm raid on this schedule, rotating dragon, epic dungeon and neutral raid (0 = no schedule: raids only start when an eight-bot party happens to choose one).", 150)]
-    public static int ScheduleMinutes = 150;
+        "Each realm opens an automatic realm raid on this schedule, rotating dragon, epic dungeon and neutral raid (0 = no schedule: raids only start when an eight-bot party happens to choose one). 240 since 1.2 (it was 150): every raid now has its tale and its call, and four hours leaves the realm quiet time between them.", 240)]
+    public static int ScheduleMinutes = 240;
+
+    // The tale, then the call (the owner's idea, 2026-11-12; AutonomousRealmRaid.Call.cs).
+    [ServerProperty("autonomous", "realm_raid_tale_first",
+        "Before a realm's raid forms, the realm's storyteller tells that boss's tale in /faction; when the tale ends the realm is called (the large line across the screen and a horn) and only then are bots recruited. The realm's own raids and raids forced from the launcher, while a player of that realm is in the game. False: raids form at once.", true)]
+    public static bool TaleFirst = true;
+
+    [ServerProperty("autonomous", "realm_raid_call_horn_sound",
+        "Client sound id played to the realm's players when a raid is called (0 = none). 219 is the horn of a keep's defence.", 219)]
+    public static int CallHornSound = 219;
+
+    /// <summary>A raid's tale that has not started this long after the raid came due is given up: the call goes out without it.</summary>
+    public const long TaleStartPatienceMs = 6 * 60_000L;
+    /// <summary>A raid's tale still running this long after it started does not hold the raid any longer.</summary>
+    public const long TaleMaxMs = 12 * 60_000L;
+
+    public enum RaidCallStep { Wait, CallWithoutTale, CallTaleRanLong }
+
+    /// <summary>What a raid waiting for its tale does now: wait for the tale to start and end, or call the realm anyway.</summary>
+    public static RaidCallStep CallStep(long now, long asked, bool taleStarted, long taleStartedAt) =>
+        !taleStarted ? now - asked >= TaleStartPatienceMs ? RaidCallStep.CallWithoutTale : RaidCallStep.Wait
+        : now - taleStartedAt >= TaleMaxMs ? RaidCallStep.CallTaleRanLong : RaidCallStep.Wait;
+
+    /// <summary>The call across the screen of the realm's players when its raid forms.</summary>
+    public static string CallLine(string realmName, string raidName, string hubName) =>
+        $"The horn sounds: {realmName} marches on {raidName}! Gather at {hubName}.";
 
     public const int MinimumScaledBots = 40;
     /// <summary>
@@ -296,8 +321,21 @@ public static class RealmRaidRecruitmentPolicy
     /// failed with 170 of 200 staged, short of the 180 late start).
     /// </summary>
     public const int DeadlineStartPercent = 50;
+    /// <remarks>
+    /// 2026-11-11 (owner, after his PC's soak on build e17a92b): "go with who came". With the raid sized up after losses
+    /// (145.6% and 165.6%), Midgard's and Hibernia's epic rallies needed 134 and 142, gathered 55 and 69 in 90 minutes,
+    /// never left their hubs (half of what they needed was 67 and 71) and ended "Failed rally" without a fight. An
+    /// automatic raid now goes with whoever came, three parties at least (<see cref="MinimumRaidBots"/>): from its hub
+    /// after the hub's patience, and in from its staging at its deadline. A loss it takes under strength
+    /// (<see cref="UnderStrength"/>) is not a result for its size or the Special Forces, so sizes do not climb on
+    /// raids the realm could not fill.
+    /// </remarks>
     public static bool GoesInShortAtDeadline(bool forced, int present, int required) =>
-        !forced && present >= Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100);
+        !forced && present >= Math.Min(MinimumRaidBots, Math.Max(1, required));
+
+    /// <summary>The raid never had the bots it was sized for: the most it recruited at any time is under what it must
+    /// stage (pure). Its defeat or time-out is then no result for the next raid's size (RealmEventRecordStore.RecordOutcome).</summary>
+    public static bool UnderStrength(int mostRecruited, int required) => mostRecruited < required;
     public static int LateStartMinimum(int required) => required >= AutonomousMinimumPresent
         ? required * AutonomousLateStartMinimumPresent / AutonomousMinimumPresent
         : (required * ScaledLateStartPercent + 99) / 100;
@@ -319,8 +357,7 @@ public static class RealmRaidRecruitmentPolicy
         bool forced = false) =>
         alreadyDeparted || presentBots >= required || forced && ForcedGoesNow(presentBots, required, elapsed) ||
         !forced &&
-        elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(required * HubEarlyDepartureMinimum / AutonomousMinimumPresent,
-            Math.Max(MinimumRaidBots, (required * DeadlineStartPercent + 99) / 100));
+        elapsed >= HubPatienceMilliseconds && presentBots >= Math.Min(MinimumRaidBots, Math.Max(1, required));
 
     public static bool StagingExpired(bool forced, long elapsed, int present = 0, bool landed = true) =>
         !forced && elapsed >= AutonomousStagingLimitMilliseconds &&
@@ -337,7 +374,50 @@ public static class RealmRaidRecruitmentPolicy
         !forced && now >= StagingDeadline(created, departedTick) &&
         !(present >= required && !landed);
 
+    // Owner 2026-10-29: rallies failed with bots still arriving (Albion dragon: 170 there, 84 on the way). A bot that
+    // arrives with less than 10 minutes left gives the rally 10 more minutes, up to 30 minutes past its deadline.
+    public const long ArrivalExtensionMilliseconds = 10 * 60_000L;
+    public const long MaximumExtensionMilliseconds = 30 * 60_000L;
+
+    /// <summary>The staging deadline after arrivals: lastArrival + 10 min when that is later, never past deadline + 30 min.</summary>
+    public static long ExtendedStagingDeadline(long deadline, long lastArrivalTick) =>
+        lastArrivalTick <= 0 ? deadline :
+        Math.Min(deadline + MaximumExtensionMilliseconds, Math.Max(deadline, lastArrivalTick + ArrivalExtensionMilliseconds));
+
+    public static bool StagingExpired(bool forced, long now, long created, long departedTick, int present, bool landed,
+        long lastArrivalTick) =>
+        !forced && now >= ExtendedStagingDeadline(StagingDeadline(created, departedTick), lastArrivalTick) &&
+        !(present >= AutonomousMinimumPresent && !landed);
+
+    // Merge of 2026-11-01: the base's arrival extension and Living Server's scaled raid size (required) together.
+    public static bool StagingExpired(bool forced, long now, long created, long departedTick, int present, bool landed,
+        int required, long lastArrivalTick) =>
+        !forced && now >= ExtendedStagingDeadline(StagingDeadline(created, departedTick), lastArrivalTick) &&
+        !(present >= required && !landed);
+
     public static bool BattleExpired(bool forced, long now, long deadline) => !forced && now >= deadline;
+
+    /// <summary>
+    /// A raid in battle has no time limit (owner 2026-11-13: "if that's what it takes to get through the dungeon, we
+    /// shouldn't have time outs"); it ends when it is beaten, blocked, or stalled: this long with no named or boss kill, no
+    /// new low on the named or boss it fights and no wipe. Before, every automatic raid ended four hours after it went in.
+    /// </summary>
+    public const long StalledMilliseconds = 60 * 60_000L;
+
+    /// <summary>
+    /// A raid forced from the launcher waits longer, but not forever (audit 2026-11-13): a raid truly stuck in one room held
+    /// its 100+ bots until /epictest stop or a restart.
+    /// </summary>
+    public const long ForcedStalledMilliseconds = 3 * 60 * 60_000L;
+
+    public static bool Stalled(bool forced, long now, long lastProgress) =>
+        now - lastProgress >= (forced ? ForcedStalledMilliseconds : StalledMilliseconds);
+
+    /// <summary>Whether the raid moved forward since the last look: a named or boss down, a wipe (the fight goes on), or the
+    /// named or boss it fights lower than it has been in this raid. Pure.</summary>
+    public static bool MadeProgress(int namedBefore, int named, int wipesBefore, int wipes, string targetBefore, string target,
+        int lowestBefore, int healthPercent) =>
+        named > namedBefore || wipes > wipesBefore || target != null && target == targetBefore && healthPercent < lowestBefore;
 
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>
     public static bool NeedsReplacement(int target, int members) => members > 0 && members < target;

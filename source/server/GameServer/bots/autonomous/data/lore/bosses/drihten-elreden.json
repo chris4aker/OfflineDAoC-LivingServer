@@ -1,0 +1,140 @@
+{
+  "id": "drihten-elreden",
+  "name": "Drihten Elreden",
+  "catalogKey": "krondon/drihtenelreden",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 78-80, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800; two-handed crush, evade 50, parry 30, armsman evade styles; Alacrity of the Heavenly Host (+38% attack speed, 25 s, recast 50 s).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs"
+    },
+    {
+      "text": "Every 15-30 s in combat he sets one random 'DrihtenBaf' scribe within 2,500 on his target; 25 thrawn ogre bocere (level 56-64) carry that package in the world database.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/DrihtenElreden.cs"
+    },
+    {
+      "text": "Drihten means 'lord' (and 'the Lord'); bocere 'scribe'; el-reord 'of strange speech, barbarous' is our reading of Elreden, to verify.",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "Drihten's listening through the floor, Wulfhild's order of the long desks, the youngest scribe's copy, the page of the unannounced guest, Brother Tysilio and Sir Bleddyn of the ring-forts are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Drihten listened through the floor. When the tunnels of the Undercroft reached Krondon's cellars he sat for whole seasons with his ear to the stone and came back able to say the hall-folk's words without understanding them; the ogres named him el-reord, of strange speech, and the Camelot loremasters write it Elreden. On the night of the taking he repeated every title after Wynflaed's ghost and sat down at the master's desk of the long room because of the lamps. Father Odo of Camelot asked that the readers find him another name, since drihten means the Lord; the readers answered that the ogre had chosen it off a door.\n\nThe scriptorium keeps the order of Wulfhild, the last master of the long desks. The oldest sit nearest the master and the youngest farthest, and when the master rises the room rises desk by desk down its length, one scribe at a time, for as long as he stands: a body that stands up slowly. The youngest ogre has copied that order since the taking.\n\nDrihten copies in fits, his pen flying faster than an ogre's hand should, then resting; the readers keep one of his pages, the hall-folk's courtesy for an unannounced guest copied over and over. He fights with a maul as an ogre swings a pick, and his scribes say no one has ever touched the master from in front of him.\n\nBrother Tysilio of Caer Gothwaite, who had copied Wenna's Krondon book, led Sir Bleddyn of the ring-forts in at the far end of the long room, where the order says the desks rise last, and they emptied the youngest desks quietly one at a time while the master copied. When Drihten rose the tide after him was short. Bleddyn's knights came at him from behind and gave him room whenever his hand went into a fit. Tysilio brought home the youngest scribe's last copy of the order, which ends in the middle of a line.",
+  "legend": "Drihten is level 78 to 80 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether. He swings a two-handed crusher with evade 50 and parry 30 and armsman evade styles, so melee him from behind, where he cannot evade or parry. Alacrity of the Heavenly Host gives him 38% faster swings for 25 seconds, then it is down for about 25; save the big heals and the tank swap for those windows. His room holds 25 thrawn ogre bocere (level 56 to 64). A few of the nearest may come when he is pulled, and then every 15 to 30 seconds one more scribe gets up and joins him, for as long as he lives. So either kill him fast, or do what Brother Tysilio's raid did: clear the far desks quietly one by one first, so the pool is small when he stands. Area damage on the scribes that do come. Do not drag him past his tether or he walks home full.",
+  "yells": {
+    "aggro": [
+      "Scribes! Put down your pens!",
+      "This is the hall's memory. Leave it.",
+      "Swift as the heavenly host!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Rise, desk by desk! The master stands!"
+      }
+    ],
+    "death": [
+      "Write it down... someone... write it...",
+      "The lamps... keep the lamps lit..."
+    ],
+    "slay": [
+      "Struck from the book.",
+      "Blotted.",
+      "A line through your name."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Scribes at every desk. None of them can write.",
+      "Lamps hang over every desk. The ink is fresh."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Desk by desk, the scriptorium rises."
+      }
+    ],
+    "realmFirstKill": "The lord of Krondon's scribes is dead. The ink is dry."
+  },
+  "botLines": {
+    "briefing": [
+      "drihten has 25 scribes. a few come at the pull, then one more every 15-30 sec",
+      "clear the far desks first if we have time, one scribe at a time",
+      "melee from behind, he evades 50 and parries 30 from the front",
+      "his haste is 25 sec on, 25 off. big heals ready when he speeds up"
+    ],
+    "aftermathWin": [
+      "far desks cleared first, he only got a few scribes. textbook",
+      "drihten down. the scriptorium can go back to copying",
+      "great job staying behind him",
+      "short tide tonight. nice clearing"
+    ],
+    "aftermathLoss": [
+      "we took too long and half the scriptorium joined one by one",
+      "melee stood in front and he evaded everything",
+      "nobody had a heal ready when his haste came up",
+      "chased him past his tether and he walked home full"
+    ],
+    "rumour": [
+      "heard there are ogre scribes in krondon that cant read. they copy the letters anyway",
+      "drihten means lord, [my guildie says|apparently]. lord of a library full of ogres",
+      "heard the scholars want drihten's books",
+      "drihten took the scriptorium because he liked the lamps, [heard|they say]",
+      "heard drihten learned the old words by listening through the floor",
+      "[heard|someone said] the youngest ogre scribe in krondon copies the same page forever"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "scribes",
+    "text": "Drihten Elreden keeps the long desks of [Krondon], a lord over ogre scribes who copy shapes they cannot read. When he rises, his scribes rise after him desk by desk, slowly, for as long as he stands; Brother Tysilio emptied the far desks first. No one has touched the master from in front. See [scribes]."
+  },
+  "bookPage": "By Brother Tysilio of Caer Gothwaite, copyist. The scriptorium of Krondon is the most orderly room I have stood in, and nothing in it tried to kill me until we touched its master. The ogres sit as the hall-folk's order sets them, oldest by the master, youngest under the far lamps. I looked over the youngest one's shoulder. He was copying the order itself, letter by letter, and had been copying it so long the page was nearly worn through. When the master rose, the desks nearest him rose, and then the rest followed him down the room one at a time. We had emptied the far end first. I took the boy's page. It stops in the middle of a line.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} emptied Krondon's scriptorium and struck Drihten Elreden from the book in {minutes} minutes.",
+    "loss": "Drihten Elreden's scribes rose from every desk; {realm}'s raid under {raidLeader} was written off."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "morgus-urgalorg",
+      "relation": "the other keeper of the hall's learning"
+    },
+    {
+      "id": "morgus-urgalorg",
+      "relation": "the other ogre who keeps a room of learners"
+    },
+    {
+      "id": "orylle",
+      "relation": "followed her from door to door repeating the titles"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Lord of Strange Speech",
+      "text": "The ogres of the Undercroft had no letters and wanted none. One of them listened through the floor.\n\nWhen the clan's tunnels reached the cellars of the hall, the ogres say, the diggers heard voices above the rock, and most of them heard nothing in the voices but noise. Drihten heard words. He sat under the hall-folk's floor for whole seasons with his ear to the stone, and when he came back to the seam he could say things in the hall's tongue that none of the clan understood, and neither did he. The ogres gave him a name for it in their own speech that the ghosts of Krondon have since told into the hall's: el-reord, of strange speech. The Camelot loremasters write it Elreden and mark it to be checked.\n\nOn the night of the taking, Drihten walked behind Orylle and Wynflaed's ghost from door to door and repeated every title after the ghost, aloud, perfectly, before the queen had finished hearing it. At the biggest door of the hall, where the lamps of the long desks shone through the crack, the ghost said bocere, scribe, and Drihten said it back and walked in and sat down at the master's desk. Orylle let him have it. The ogres say he had never seen a lamp lit on purpose before and could not stop looking at them.\n\nThe Church of Camelot was scandalised by the other half of his name before it ever heard of the first. Drihten, in the old tongue of the Saxon shore, means a lord, and in the mouths of the shore's priests it means the Lord. Father Odo of Camelot wrote to Caer Gothwaite asking that the readers find some other name for the ogre in their reports. The readers answered that the ogre had chosen it himself, off a door, and that they did not think he knew whom he was offending; and that if they renamed him, he would not answer to it."
+    },
+    {
+      "title": "The Order of the Long Desks",
+      "text": "The last master of the long desks before the taking was a woman the ghosts call Wulfhild, and the scriptorium still keeps her order, though nobody in it knows that it is hers.\n\nShe wrote it down in the first leaf of the scriptorium's own book, and Wenna of Caer Gothwaite read it there. The master's desk stands at the head of the room. The scribes sit in rows below it, the oldest nearest the master and the youngest farthest away, under the far lamps where the light is worst. When the master rises, the room rises: but not together, Wulfhild wrote, because a room of scribes rising together knocks over its ink. The desks nearest the master rise first, and then the next, and so on down the room, one scribe at a time, for as long as the master is on his feet, so that the room empties like a tide going out. A scriptorium is a single body, she wrote over the door, but it is a body that stands up slowly.\n\nThe ogres keep it to the letter. When Drihten leaves his desk the nearest of his scribes are up at once, and then the others follow him one by one down the long room, a desk at a time, never all together, for as long as he stands; and if he sits down again before the farthest desk has risen, the farthest scribe goes on copying. Wenna watched it from the door on her second descent and wrote that she had never seen ogres move so obediently or so slowly at once.\n\nShe also wrote what the ogre scribes copy, because she leaned over the youngest one's shoulder at the farthest desk. It was Wulfhild's order itself. The youngest scribe of every generation of the hall-folk was set to copy the order on his first night, so that he would know his place. The youngest ogre has been copying it since the taking. He has copied it, Wenna thought, a thousand times. His place is the last."
+    },
+    {
+      "title": "The Master's Hand",
+      "text": "Drihten copies too. The ghosts of the scriptorium say he copies faster than any master of the hall ever did, and not for long.\n\nHis hand goes in fits. For a while the pen flies across the page, faster than an ogre's hand should be able to move, and the lamp over the master's desk gutters with the wind of it; and then the hand stops, and rests, and the master sits with his great fist open on the desk and stares at nothing; and then it starts again. Wulfhild's order has a word for the scribe's cramp that comes of copying too fast, and the ghosts told Wenna that the hall-folk's masters were proud of having it. Drihten has it, and is proud too.\n\nThe readers of Caer Gothwaite have one of his pages. It is the only page Wenna ever found in the scriptorium that was copied out of order, and she took it from the master's desk while he was away from it: the hall-folk's book of courtesies, opened at the leaf for a guest who has not been announced, copied over and over down the whole page, the letters running together where the hand was fast and standing apart where it was slow. It was the word he had said to her at the door. She thought he had been practising it.\n\nHe fights as he copies. He carries a great maul in both hands and swings it as the ogres of the seams swing a pick, and his scribes say that no one has ever touched the master from in front of him: whatever comes at his face, he sees it and steps aside from it, and the step brings the maul round. The scribes sit with their backs to the room and their faces to the page. It is the only way, the hall-folk's order says, that a copyist can be sure of not being distracted, and the ogres think that it is also the only way to be safe from their master."
+    },
+    {
+      "title": "Brother Tysilio's Desks",
+      "text": "The first company of Albion to kill Drihten Elreden was led into the scriptorium by a copyist, and it went in from the far end.\n\nBrother Tysilio was a scribe of the readers of Caer Gothwaite, a small man with a bad eye who had copied out Wenna's Krondon book for the Constable, and he had read Wulfhild's order in her notes until he could have recited it. He went down with a company of the Isle of Glass under Sir Bleddyn of the ring-forts, and he made Sir Bleddyn wait at the far door of the long room, under the worst lamps, where the youngest scribes sit. The order said those desks rose last. Tysilio said that meant they could be emptied first, quietly, desk by desk, while the master copied at the head of the room and did not look up.\n\nThey took most of a night about it. Bleddyn's men lifted the youngest scribes off their benches one at a time and killed them in the far passage, and the master's pen did not stop. By the time Drihten rose, half the desks below him were empty, and the tide that went out after him was a short one. Bleddyn's knights came at him from behind while he was turning on the men in front, because Tysilio had read that no one touched the master from in front, and when the master's hand went into one of its fits they gave him room and waited for it to rest. Bleddyn wrote that he had never fought anything that had to stop to catch its breath and was so dangerous when it did not.\n\nTysilio took nothing from the scriptorium but the youngest scribe's last copy of the order, the one he had been working on when Bleddyn's men lifted him from his bench. It ends in the middle of a line. The readers keep it beside Drihten's page of the unannounced guest, and the ghosts say a new youngest scribe was at the farthest desk by the next new moon, copying the first line again."
+    }
+  ]
+}

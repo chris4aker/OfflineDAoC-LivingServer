@@ -1,0 +1,85 @@
+{
+  "id": "helminth",
+  "name": "Helminth",
+  "npcNames": [
+    "Helminth"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Helminth: level 36, the troglodyte body (model 113) at size 102, nearly three times a troglodyte's (38), at about 28,900/34,700 (z 12,573) on the lowest level among troglodytes (37-45) and lair worms; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Helminth is from Greek helmins, a worm; in English it means a parasitic worm.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/helminth"
+    }
+  ],
+  "story": "The ursine call him Helminth, which Hervelina says is a scholar's word for a worm, and they named him for what they hear. Under the king's hall something bores through the rock day and night, and the ursine have never gone down to see what. A worm, they decided, the size of a boat. The lair worms bore through everything else in the caves, so it was not a strange thing to decide.\n\nThose who have gone down to the lowest level and come back say it is no worm. It is a troglodyte, one of the oldest people of the rock, who kept the deep galleries before the ursine came and keep them still in numbers the ursine do not like to count, and Helminth is the greatest of them, grown nearly three times their size. He does not bore. He digs, with his hands, and the troglodytes keep about him like a household round its eldest.\n\nWhat he is digging toward is the troglodytes' own business. Hervelina thinks it is the caves' first floor, the one the stone carried the old tribe up from, and that the troglodytes want it back. The druids think it is simply under the king, and that the troglodytes, who were here before anyone named a king, mean to remind the hall of that. The ursine do not think about it at all. They hear the worm, and they bank the fires a little higher.",
+  "legend": "Helminth (36) is a huge troglodyte (the troglodyte body at nearly three times its size) on the lowest level of Treibh Caillte (about 28.9k/34.7k, z 12,570), with troglodytes (37-45) and lair worms round him. The troglodytes are higher level than he is: clear them carefully. Hursk the Alchemist (43) is about 1,700 away. A group of 40ish. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "(the great troglodyte stops digging)",
+      "(Helminth turns from the rock with dirt to the elbow)"
+    ],
+    "phases": [],
+    "death": [
+      "(the digging stops under the king's hall)"
+    ],
+    "slay": [
+      "(Helminth goes back to the rock)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Something digs under the king's hall. Not a worm."
+    ],
+    "phases": [],
+    "realmFirstKill": "Helminth is down. The digging stops."
+  },
+  "botLines": {
+    "briefing": [
+      "helminth is 36 but the troglodytes round him are 45",
+      "lowest level, hursk is close-ish"
+    ],
+    "aftermathWin": [
+      "helminth down. [not a worm lol|grats]",
+      "the troglodytes were the hard part. [yep|ouch]"
+    ],
+    "aftermathLoss": [
+      "the 45 troglodytes joined. [rip|ouch]",
+      "hursk wandered in. [oops|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] helminth isnt a worm, its a huge troglodyte digging under the king",
+      "the ursine bank their fires higher when they hear helminth digging"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Helminth",
+    "text": "What the ursine of Treibh Caillte call the thing that digs under King Vian's hall. It is no worm but the greatest of the troglodytes, digging with its hands toward something the oldest people of the rock want back."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Helminth in Treibh Caillte in {minutes} minutes.",
+    "loss": "Helminth turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "king-vian",
+      "relation": "the hall he digs under"
+    },
+    {
+      "id": "hursk-the-alchemist",
+      "relation": "his neighbour on the lowest level"
+    }
+  ]
+}

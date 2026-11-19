@@ -1,0 +1,177 @@
+{
+  "id": "jarl-ormarr",
+  "name": "Jarl Ormarr",
+  "catalogKey": "dodens-gruva/jarlormarr",
+  "locationId": "dodens-gruva",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "dodens-gruva-bound"
+  ],
+  "related": [
+    {
+      "id": "aros-the-spiritmaster",
+      "relation": "his spiritmaster"
+    },
+    {
+      "id": "thane-dyggve",
+      "relation": "his thane"
+    },
+    {
+      "id": "mistress-of-runes",
+      "relation": "his runecarver, who warned him"
+    },
+    {
+      "id": "gudlaugr",
+      "relation": "his son's hound"
+    },
+    {
+      "id": "hamar",
+      "relation": "his foreman"
+    },
+    {
+      "id": "dodens-gruva",
+      "relation": "the mine he dug"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Jarl Ormarr is a level-65 named with 30,000 health in Dodens Gruva.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He boasts as he fights: 'You call that a hit? I'll show you a hit!' and 'I am a warrior, you can't kill me!' (a 3% chance on each blow he takes; the lines change nothing). He has no spells, is CC-immune, reaches 350 in melee, and as a faction-779 standard mob he can bring nearby allies of the mine into the fight once.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs"
+    },
+    {
+      "text": "Allakhazam lists him at 55-64; he drops icebound and niveous gear. The bestiary also lists phantom huscarls in the mine.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6440"
+    },
+    {
+      "text": "Ormarr is an Old Norse personal name; ormr means serpent (to verify).",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    },
+    {
+      "text": "Ormarr is an attested Old Norse man's name; the first part is usually read as ormr, serpent (to verify). The cord-round-the-neck birth story is Living Server's.",
+      "provenance": "original",
+      "source": "Old Norse name, to verify"
+    },
+    {
+      "text": "Kjartan of the Eastern Pastures, the spaewife Thordis and the two sayings 'no song holds the jarl' and 'strike the jarl, wake the hall' are Living Server lore; they tell the script's CC immunity and bring-a-friend in-world.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Dodens/JarlOrmarr.cs"
+    }
+  ],
+  "story": "Ormarr was a jarl of Jamtland in the age of the jarls, a big red-bearded man born, the steadings say, with the cord round his neck, which is why his mother named him for the serpent. He grew a reach the frontier made a saying of: Ormarr's arm is longer than his table. With it he took two hill-forts from Kjartan of the Eastern Pastures, the second by calling out Kjartan's champion and killing him from what the champion thought was a safe distance. Two forts need huscarls, huscarls need rings and mail, and all of that needs iron, so when a shepherd's boy showed him the red stream off Jarnhaug, the jarl walked up the hill and said it was his.\n\nHe cut his hall into the mine itself, at the end of the eastern galleries, and held his feasts there to the sound of the picks. In the fourth winter Kjartan sent him a spaewife, Thordis, to sing his fortune at the midwinter board. She sang the whole hall asleep so that Kjartan's men could come down the gallery, and the jarl sat awake through it with his cup in his hand. When the first of Kjartan's men came through the door, the jarl struck him, and at the sound of the blow every huscarl was off his bench. The frontier kept two sayings from that night: no song holds the jarl, and strike the jarl, wake the hall.\n\nHe did not believe the Mistress of Runes when she cut not here, and he sent the shift north. When it did not come up, he went down after it with forty huscarls and his thane, because his son Ulf was on it and because a jarl does not send men where he will not go. Beyond the seam the voices took the forty one by one. Aros came down the stair behind them reading names, and among them the jarl heard his son's, and thought it meant the boy was safe behind him, and turned back. He came up dead and has not noticed.\n\nHe holds his hall still, by a cold hearth, with the forty walking their rounds in the galleries, and he still believes Ulf is up at the hill-forts. He laughs at strangers the way he laughed at the hill. His boasts have never told anyone anything; he made them winning and losing alike. Each company that has put him down has seen the same face at the end, which is surprise, and in a season he is back in his high seat, saying he cannot be killed.",
+  "chapters": [
+    {
+      "title": "Longer Than His Table",
+      "text": "Ormarr was born in a steading on the Jamtland ridges in the years when the jarls of the frontier fought each other for the high pastures, and his mother named him for the serpent, ormr, because he came into the world with the cord wound round his neck and came out fighting it. That is the steadings' story, and it may be no more than a story; Ormarr is an old name, and many men who bore it were never strangled by anything. But the jarl liked the tale and told it at his own board, and the skalds kept it.\n\nHe grew big, and red-bearded, and he grew a reach the frontier made into a saying. His arms were long and his axe-haft longer, and he had a way of standing a stride further off than a man expected and still landing the blow. Ormarr's arm is longer than his table, the steadings said, and they meant it two ways: that his hand reached further than other jarls' into other men's pastures, and that a man who sat across the board from him and spoke out of turn could be struck without the jarl rising from his seat. Stand back from the jarl, his huscarls told new men, and then stand back again.\n\nHe used both reaches against Kjartan of the Eastern Pastures, the old jarl who held the summer grazing between Fensalir's ridge and the Svealand road. In three summers Ormarr took two of Kjartan's hill-forts. The first he took by a night climb. The second he took by walking up to its gate in daylight at the head of his huscarls and calling Kjartan's champion out, and the champion came, and stood off at what he judged a safe distance to take the jarl's measure, and Ormarr killed him from there. Kjartan gave up the fort the same evening.\n\nA jarl with two hill-forts needs huscarls to hold them; huscarls need rings and mail and spears; all of those need iron. Kjartan's third fort sat on the road to the smiths, and Ormarr could not take it with the men he had. So when a shepherd's boy came down off Jarnhaug with his feet stained red and told the jarl about the stream, Ormarr went up the hill that same week with his thane and his runecarver, and kicked over a turf, and looked at the rust beneath it, and said the hill was his."
+    },
+    {
+      "title": "The Spaewife's Song",
+      "text": "In the mine's second year the jarl moved his household under the hill. He had a hall cut at the end of the eastern galleries, where the iron ran thickest: a long room in the living rock with the hearth at one end, the high seat at the other, and the huscarls' benches down both walls. He said he liked to hear the picks while he ate. The skalds who sang at his board said the picks kept better time than they did, and the jarl gave them rings for saying so.\n\nKjartan did not forgive the two forts. In the fourth winter he sent Ormarr a midwinter gift: a spaewife of the Eastern Pastures named Thordis, to sit at the jarl's board and sing his fortune for the year, as the old custom was. Ormarr took her in, because a jarl who turns away a spaewife at midwinter has a bad year, and set her by the hearth and gave her the best of the meat.\n\nShe sang after the feast. It was a long song, and slow, and the huscarls nodded on their benches one by one; the skalds slept with their harps in their laps, the lamp-boys in the straw, the hounds by the fire. Ormarr sat in the high seat with his cup and listened to the end of it and said it was a fine song and asked for another. Whatever she had sung had passed over him like water over a stone. Thordis had left the gallery door unbarred, and Kjartan's men came down it in the dark.\n\nThe jarl stood and roared and struck the first man through the door, and at the sound of that blow the whole hall woke at once, every huscarl off his bench with his spear in his hand, as if they had never slept. Kjartan's men did not get back up the gallery. Ormarr sent Thordis home on a pony with a ring on her arm, saying a spaewife who could sing forty huscarls asleep deserved paying, even if she had been paid already.\n\nTwo sayings came out of that night and the frontier still uses both. No song holds the jarl: nothing sung or cut or cast at Ormarr since has held him for a moment, not a seithkona's sleep nor a runecarver's binding, nor the voice under the hill, which took his life and could not take his feet. And strike the jarl, wake the hall. The forty who walk his galleries in mail are the same forty, and they still come to the sound of him."
+    },
+    {
+      "title": "Forty Through the Seam",
+      "text": "When the Mistress of Runes told him not here, in front of the huscarls, the jarl laughed. He had never been afraid of a hill. He was not afraid of Kjartan, nor of the winter, nor of a mark on a wall; he said the iron ran north and the shift would follow it. His son Ulf, who had been a lamp-boy by his own choice since he was ten and had two fingers fewer for it, went down with the shift that morning, and the jarl clapped him on the shoulder at the shaft-head while Aros read the names.\n\nWhen the shift did not come up, Ormarr did not wait for the families. He went down the next day with forty huscarls in mail and Thane Dyggve at his side, to bring his son and his miners home. The forty were not ordered. The skalds say the jarl asked who would come, and the benches emptied.\n\nBeyond the seam there was a floor older than the hill, and lights moving on it, and the voices. The skalds sing that the jarl answered them. He stood on that floor and told the voices who he was, the jarl of two hill-forts and Jarnhaug, who had killed Kjartan's champion from across a field, and the voices did not answer him back. They took the forty instead, one at a time, from the back of the line, and each man went quietly.\n\nThen Aros came down the stair behind them, reading the names of the shift aloud from his slate, louder than the voices. Among them the jarl heard his son's. He took it to mean that Ulf was safe, back up the stair behind the spiritmaster, and he turned and went after him, and the forty turned with him, and Dyggve. Somewhere on the stair they all stopped being alive. None of them noticed. Ulf was not behind Aros. He was at the face with the rest of the shift, where he still is, and the steadings say his father has never once walked down to it, because he believes the boy is up at the hill-forts, holding them for him."
+    },
+    {
+      "title": "You Call That a Hit?",
+      "text": "He holds his hall still. The hearth is cold and the doors stand open, the benches empty because the forty are out on their rounds, and the jarl sits in his high seat and waits for something to come down the gallery. When something does, he laughs at it, the way he laughed at Kjartan and at the hill, and goes to meet it with the axe.\n\nThe boasts are what the frontier remembers best. You call that a hit? I'll show you a hit! I am a warrior; you cannot kill me. The companies who come back from his hall say them to each other in the yard at Glenlock, in his voice, and laugh. Ashild of Glenlock, who keeps the tally at the keep, wrote down an older thing his huscarls said of him while he lived: that the jarl boasted the same whether he was winning or losing, and nobody in forty years of feasts and wars had ever been able to tell which from his voice. His words, they said, were the one part of him that never meant anything.\n\nMidgard argues about what keeps him. The gothar of Jordheim say he is Hel's joke: the man who would not believe the hill, made into a man who will not believe he is dead. The spiritmasters say the boast is his own rope. Aros teaches that a name said aloud holds a soul to the world, and the jarl says his own name louder than anyone, and so he holds hardest of all. The steadings of the Eastern Pastures, who are Kjartan's people, say only that he has earned it.\n\nEach company that has put him down tells of the same face at the end, and it is not anger. It is surprise. Then the forty stop on their rounds in the galleries, and stand still in their mail, and wait. In a season he is back in his high seat, saying he cannot be killed, and the forty walk again. Glenlock's captains raise a cup to him at the muster stone when a company comes home from his hall: to the jarl, who could not be killed. They say he would want it, and that nobody has the heart to tell him the rest."
+    }
+  ],
+  "legend": "Jarl Ormarr is a straight melee fight with no spells at all, so one solid group handles him. Three things to know. He has a long reach, about 350, so stepping just out of normal melee range won't save your casters; give him real room. He's CC-immune, so don't waste mezzes, roots or stuns on him. And he pulls friends: like the rest of the mine, the phantom huscarls and anything near his hall can come with him, so clear the hall and the galleries around it before you touch him. His lines ('you call that a hit? I'll show you a hit!') are random taunts when he gets hit and mean nothing, no matter what the old guides say about him hitting harder when he boasts. He has decent resists (around 20% to melee, 30% to magic) and 30,000 health, so it's a grind. Icy chain and niveous weapons are the drops people want. Everyone quotes him on the way home.",
+  "yells": {
+    "aggro": [
+      "Haha! Come then! A jarl fears nothing under the hill!",
+      "Haha! You call that a hit? I'll show you a hit!",
+      "I am a warrior, you can't kill me!",
+      "Kjartan sent you? Kjartan always sends too few!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Is that all? I have been killed before. It did not take."
+      }
+    ],
+    "death": [
+      "Huscarls... to me... one last time...",
+      "Dead? Me? I was... only resting...",
+      "Ulf... hold the forts... I am only..."
+    ],
+    "slay": [
+      "Another one who thought a jarl could die.",
+      "Huscarls! Drag that one out!",
+      "Ha! Who's next?",
+      "Stand back from the jarl, they told you. You did not."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A jarl's hall, cut in the rock. The hearth is cold.",
+      "Phantom huscarls stand at the walls in mail.",
+      "A high seat at the end of a cold hall. Someone sits in it."
+    ],
+    "realmFirstKill": "Jarl Ormarr dies surprised. His forty stand still.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jarl Ormarr laughs. He has been killed before."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "jarl ormarr is tank and spank, ignore the trash talk",
+      "clear the phantom huscarls first",
+      "tank ormarr away from the doors",
+      "one group is enough for the jarl",
+      "ormarr reaches like 350, casters give him room",
+      "jarl is cc immune, dont waste mez or stun",
+      "clear his hall first, he brings the huscarls with him",
+      "his boasts are random, they dont mean hes hitting harder"
+    ],
+    "aftermathWin": [
+      "he said we couldnt kill him. [we did|lol]",
+      "icy chain dropped!",
+      "you call that a hit? [lol|every time]",
+      "jarl down. he looked surprised",
+      "you call that a hit? [yes|yes we do]",
+      "jarl down. surprised face again",
+      "to the jarl who could not be killed [lol|cheers]"
+    ],
+    "aftermathLoss": [
+      "pulled two huscarls with the jarl [oops|my bad]",
+      "huscarls added",
+      "he hit harder than he talked",
+      "we pulled him with two phantoms",
+      "caster stood where he thought was safe. it wasnt",
+      "half the hall came with him",
+      "someone tried to root him. cc immune"
+    ],
+    "rumour": [
+      "the jarl down there boasts he cant be killed. [he can|took us 5 min]",
+      "jarl ormarr went down to fetch his miners back and came back dead",
+      "the jarl doesnt know hes dead, they say",
+      "ormarr laughed at the hill. the hill won",
+      "they say a spaewife sang ormarrs whole hall asleep once and he just asked for another song",
+      "ormarr thinks his son is up at the hill forts. hes down at the face with hamar",
+      "the eastern pastures folk still sing ormarrs songs with the words turned"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ormarr",
+    "text": "The jarl who dug Dodens Gruva for iron, to hold two hill-forts he had taken from Kjartan of the Eastern Pastures. A spaewife once sang his whole hall asleep and he sat awake; the frontier says no song holds the jarl, and that to strike him is to wake his hall. He went through the seam after his son and came back up the stair dead, behind [Aros]'s voice, and has not noticed. His [Dyggve] went with him."
+  },
+  "bookPage": "From the songs the skalds sang at Ormarr's board, as the Eastern Pastures still sing them, with the words turned. Ormarr's arm is longer than his table; Ormarr's beard is redder than his hearth; Ormarr's boast is louder than his axe, and his axe is louder than the hill. The jarl of two forts went under the hill for iron, the jarl of two forts went under the hill for his son, the jarl of two forts came up again and does not know it. Kjartan's grandsons sing the last line twice and laugh. Their grandmothers do not laugh. They say Thordis came home from his hall with a ring on her arm and never sang again, and that she said the jarl was the only man she had ever met who had no sleep in him at all.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} proved Jarl Ormarr mortal in {minutes} minutes.",
+    "loss": "Jarl Ormarr's boast held against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -385,9 +385,10 @@ namespace DOL.UnitTests
             var mappings = new UpnpPortMappings(gateway);
             mappings.Open(config);
 
-            Assert.That(gateway.Open, Is.EquivalentTo(new[] { (10400, ProtocolType.Udp), (10300, ProtocolType.Tcp) }));
+            Assert.That(gateway.Open, Is.EquivalentTo(new[] { (10400, ProtocolType.Udp), (10300, ProtocolType.Tcp), (10310, ProtocolType.Tcp) }),
+                "the game's two ports and the Passport Desk's");
             Assert.That(config.RegionIP, Is.EqualTo(IPAddress.Parse("203.0.113.7")));
-            Assert.That(mappings.Close(), Is.EqualTo(2));
+            Assert.That(mappings.Close(), Is.EqualTo(3));
             Assert.That(gateway.Open, Is.Empty);
             Assert.That(mappings.Close(), Is.Zero, "a second stop removes nothing");
 

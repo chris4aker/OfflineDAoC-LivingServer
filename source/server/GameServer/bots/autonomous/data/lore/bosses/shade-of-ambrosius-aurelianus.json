@@ -1,0 +1,128 @@
+{
+  "id": "shade-of-ambrosius-aurelianus",
+  "name": "Shade of Ambrosius Aurelianus",
+  "npcNames": [
+    "Shade of Ambrosius Aurelianus"
+  ],
+  "locationId": "stonehenge-barrows",
+  "realm": "Albion",
+  "aliases": [
+    "ambrosius",
+    "aurelius ambrosius",
+    "the restless shade"
+  ],
+  "facts": [
+    {
+      "text": "Shade of Ambrosius Aurelianus: template 12799, level 54, a ghost, in the west halls of the Stonehenge Barrows at 26035, 32344; aggro level 200 within only 200, no faction (the template overrides the Mob row's Undead), no spells or styles, respawn 180 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A pendragon ardent stands 127 from him, stone sentinels from 271, a pendrake 307 and repentant followers 403; none shares a faction with him.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: only NPCs with a faction call friends)"
+    },
+    {
+      "text": "Hands Of Fate (Loremaster Alain): bring the Scroll of Fate, the Tome of the Dead and the Ebony Collar of the Dead, then 'Find the restless shade at Stonehenge and give him the scroll and the tome'; in the quest data that last step is a kill step on the Shade of Ambrosius Aurelianus, which finishes the quest.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "British legend, not game canon: Aurelius Ambrosius avenges the Britons Hengist's Saxons slew at a feast of peace; Merlin raises the Giants' Dance over them; Ambrosius is buried there, and at his death a dragon-shaped star appears from which his brother Uther takes the name Pendragon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Historia_Regum_Britanniae"
+    },
+    {
+      "text": "Ambrosius waiting to read whether the feast was avenged enough, the scroll as the fate of the slain, the ardents as the feast's dead in Roman harness and the asking are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before Uther there was Ambrosius, his elder brother, the last of the Romans in Albion as the chroniclers tell it, who came back across the sea to a realm the Saxons had taken by treachery. Hengist had invited the lords of the Britons to a feast of peace on the Plains and had his men draw their knives at the table, and the Britons died at the feast, hundreds of them, in their best clothes. Ambrosius avenged them. He broke the Saxons and had Hengist killed, and then, the chroniclers say, he asked Merlin for a monument for the dead of the feast, and Merlin brought the Giants' Dance over the sea and stood it on the Plains, and the dead of the feast were laid beneath it, and in his turn Ambrosius with them.\n\nHe is restless in the west halls of the barrows. The stone sentinels carved for his door stand round him still, and with him are the dead of the Pendragon's household, his brother's little dragons and the ardent dead who carried them, in old Roman harness. They keep their own places. Ambrosius keeps his, and asks. The barrow-keepers say he asks everyone who comes near the same question: whether the scroll has come.\n\nLoremaster Alain of the Academy says he knows which scroll. Somewhere in the world are the Scrolls of Fate, on which the dead are written before they die, and the shade of Ambrosius wants the one that has the dead of the feast on it, to read whether he avenged them enough; whether what he did after the feast was a king's justice or only killing. The Academy has found the scroll, and the Tome of the Dead beside it, and sends the realm's young down with both, and they go into his hall with the scroll in their hands, and he comes for them anyway, because he has asked for so long that he no longer knows how to take an answer. The Academy calls it giving him the scroll. It ends the same way as any other laying.\n\nHe does not look up until the living are close enough to touch. Nothing in his hall comes to his aid; the sentinels were carved to guard his door, not him, and the Pendragon's dead are his brother's. When he is laid he does not stay down long, not even as long as his brother, and the barrow-keepers say that is because he has not read the scroll yet. He only holds it.",
+  "legend": "The Shade of Ambrosius Aurelianus is a level 54 ghost in the west halls of Stonehenge Barrows, the 'restless shade' of Hands Of Fate (Loremaster Alain). The step says give him the Scroll of Fate and the Tome of the Dead, but in the quest data it is a kill step: kill him with the quest active to finish. He only notices you inside about 200 and has no faction, so the pendragon ardent (127 away), stone sentinels and pendrakes around him do not come to help him, though they can aggro on you if you fight next to them; clear them first. No spells or styles in the data: a melee fight with a 54, a group of fifties. Respawn about three minutes.",
+  "yells": {
+    "aggro": [
+      "Has the scroll come?",
+      "You bring it at last? Then give it! Give it!",
+      "The feast is not yet avenged."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Read it to me! Are their names enough?"
+      }
+    ],
+    "death": [
+      "The scroll... let me read...",
+      "Avenged... was it enough..."
+    ],
+    "slay": [
+      "Another who would not give it.",
+      "Lie with the feast.",
+      "Not enough. Never enough."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Stone sentinels stand at a king's door.",
+      "A voice in the west halls asks: has the scroll come?"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The Pendragon's dead stir in the west halls."
+      }
+    ],
+    "realmFirstKill": "The Shade of Ambrosius Aurelianus rests. The scroll is read."
+  },
+  "botLines": {
+    "briefing": [
+      "ambrosius's shade, 54, west halls of the barrows. hands of fate, the restless shade",
+      "the quest says give him the scroll but its a kill. kill him with the quest up",
+      "200 aggro, no faction. the ardent, sentinels and pendrakes dont join him but can aggro you. clear them",
+      "no spells, melee. group of 50s. 3 min respawn"
+    ],
+    "aftermathWin": [
+      "ambrosius down, hands of fate done",
+      "he asked about the scroll the whole fight lol",
+      "cleared the ardent and sentinels first, clean",
+      "3 min respawn, next"
+    ],
+    "aftermathLoss": [
+      "fought next to the sentinels and they joined in on us",
+      "thought it was a give step, got killed holding the scroll",
+      "the ardent was right next to him, should have killed it",
+      "54 ghost, not a pushover"
+    ],
+    "rumour": [
+      "[heard|someone said] ambrosius keeps asking if the scroll has come",
+      "heard he wants the scroll of fate to read if he avenged the feast enough",
+      "[heard|someone said] the hands of fate scroll is the same kind soulfear was singing from",
+      "heard the stone sentinels were carved to guard ambrosius's door, not him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "ambrosius",
+    "text": "Ambrosius Aurelianus, king before his brother [uther], who avenged the Britons slain at Hengist's feast of peace and asked Merlin for the Giants' Dance over them. His shade is restless in the west halls of the [stonehenge barrows] among the stone sentinels and the Pendragon's [dragons], and asks everyone whether the scroll has come: the Scroll of Fate with the feast's dead on it, to read whether he avenged them enough."
+  },
+  "bookPage": "Loremaster Alain of the Academy, to the young he sends to the barrows with the Scroll of Fate and the Tome of the Dead. He will ask you whether the scroll has come. Say yes. Hold it where he can see it. He will not take it; he has asked too long to know how. He will come for you, and you will have to lay him with the scroll in your hand, and that is how he receives it. I have been asked whether that is a cruelty. I do not think so. A king who wants to know whether his vengeance was enough has already been told, by the asking. The scroll only lets him stop.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} gave the Shade of Ambrosius Aurelianus his scroll in {minutes} minutes.",
+    "loss": "The Shade of Ambrosius Aurelianus asked {raidLeader}'s company of {realm} for the scroll, and would not wait for it."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "realm-of-camelot",
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "shade-of-uther-pendragon",
+      "relation": "his younger brother, who took the name Pendragon from the star at his death"
+    },
+    {
+      "id": "soulfear",
+      "relation": "the cyhraeth who sang from the Scrolls of Fate; one of them comes to him"
+    }
+  ]
+}

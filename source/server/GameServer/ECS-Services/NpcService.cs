@@ -25,10 +25,18 @@ namespace DOL.GS
         public override void Tick()
         {
             ProcessPostedActionsParallel();
-            AutonomousBotRegistry.PrepareBrainTick();
-            AutonomousWorldBotController.PrepareRvrPlanningTick();
-            AutonomousBotGroupCoordinator.PrepareCoordinatorTick();
-            AutonomousWorldBotController.PrepareCampPlanningTick();
+            // Living Server 1.2, AI_PROFILE: the serial planning below runs on the game loop before any brain thinks;
+            // its time and each step's are measured (the idea of one scope around it is lometur's fleet scope, #137).
+            long serialStart = AiProfile.Timestamp();
+            using (AiProfile.Scope(AiSystem.SerialBrainRegistry))
+                AutonomousBotRegistry.PrepareBrainTick();
+            using (AiProfile.Scope(AiSystem.SerialRvrPlanning))
+                AutonomousWorldBotController.PrepareRvrPlanningTick();
+            using (AiProfile.Scope(AiSystem.SerialCoordinator))
+                AutonomousBotGroupCoordinator.PrepareCoordinatorTick();
+            using (AiProfile.Scope(AiSystem.SerialCampPlanning))
+                AutonomousWorldBotController.PrepareCampPlanningTick();
+            AiProfile.EndSerial(serialStart);
             int lastValidIndex;
 
             try
@@ -43,7 +51,9 @@ namespace DOL.GS
                 return;
             }
 
+            long parallelStart = AiProfile.Timestamp();
             GameLoop.ExecuteForEach(_list, lastValidIndex + 1, TickInternal);
+            AiProfile.EndParallel(parallelStart);
 
             if (Diagnostics.CheckServiceObjectCount)
                 Diagnostics.PrintServiceObjectCount(ServiceName, ref EntityCount, _list.Count);
@@ -68,7 +78,9 @@ namespace DOL.GS
 
                     long startTick = MonotonicTime.NowMs;
                     NavQueryProfile.Reset();
-                    brain.Think();
+                    // AI_PROFILE: every turn is charged to the kind of its body (gamebot, companion, pet or NPC).
+                    using (AiProfile.Enabled ? AiProfile.Scope(AiProfile.ThinkKind(brain, npc)) : default)
+                        brain.Think();
                     long stopTick = MonotonicTime.NowMs;
 
                     long elapsed = stopTick - startTick;

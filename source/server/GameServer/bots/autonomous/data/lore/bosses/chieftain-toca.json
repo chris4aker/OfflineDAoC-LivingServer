@@ -1,0 +1,126 @@
+{
+  "id": "chieftain-toca",
+  "name": "Chieftain Toca",
+  "npcNames": [
+    "Chieftain Toca"
+  ],
+  "locationId": "inishail-island",
+  "realm": "Albion",
+  "aliases": [
+    "toca",
+    "the chieftain of the ones who ran"
+  ],
+  "facts": [
+    {
+      "text": "Chieftain Toca: template 60159149, level 65, an orc, in the largest central hut of the orc village in the north-west of Inishail at 238724, 439535; faction Kulaclan, aggro level 200 within 500, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Four orc battlers (54) stand about 380 from him and four orc soothsayers (46) about 420, all Kulaclan.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first.",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Orcs with Spellbooks (Veena): the soothsayers' Avalonian tome, a buzzing nuisance's stinger, then kill Chieftain Toca in the largest central hut of the orc village.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The island's runaways still count as Kulaclan in the world data. Toca's flight from Aldland, the reading by firelight, the margins and the three readings are Living Server writing; the split of the orcs and the lord's tenancy are from the Inishail file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "When the thrawn ogres took Krondon and the hall-folk's country with it, the orcs of Aldland split. The Kulaclan stayed, under a chieftain who swore the clan would be hard enough to live beside ogres, and it became so. The rest took to the water and crossed west to the smallest of the isles, and the Kulaclan has called them the ones who ran ever since. Toca led them. He was a young orc then, the chieftain's second son, and the islanders say he took the boats because he could see the clan becoming something he did not want to be.\n\nHe brought them to Inishail and built a village in the north-west, and found that the island already had a lord. The lord had held his land by standing on it, and went on standing on it after he died, and took whoever lived on his ground as his tenants, living or dead. When an orc of Toca's village dies, the island says, it does not go anywhere. It comes back to the lord's door to pay its rent. Toca had run from one master to find another, and this one would keep his people after death.\n\nSo Toca turned to books. Orcs of the isles do not read, but Toca's oracles and soothsayers learned, badly, out of tomes of Avalon that the village took from somewhere in the isles; Veena the lammia, on the south-east shore, says they were hers, or in her keeping. In the largest hut, by firelight, the chieftain sits with his readers and they go through the tomes page by page, looking for the words that will end a tenancy. They write in the margins. Veena has read the margins. They say things like not rest, and she, and all included the dead.\n\nToca is the largest orc on the isles and the strongest, as a chieftain of orcs must be, and he keeps his hut the way a chieftain does: with his battlers at the door and his readers about him. Anyone who comes in at the door has the hut to deal with, and the battlers come running at a shout. The Kulaclan, when they hear that the realm's young have been to Toca's hut again, say that is what comes of running. The ones who ran say nothing. They are reading.",
+  "legend": "Chieftain Toca is a level 65 orc in the largest central hut of the orc village in the north-west of Inishail, the last step of Orcs with Spellbooks (Veena). He is aggressive from about 500 and Kulaclan, like the village: four orc battlers (54) stand about 380 from him and four soothsayers (46) about 420, and they bring-a-friend in when he is hit, more of them the bigger your group. Clear the hut's battlers and soothsayers before you touch him. No spells or styles in the data: a heavy melee fight with a 65, so a full group of fifties with a good tank. The Spirit of Lord Emthoro is just north of the village; do not drag the fight that way. Toca respawns in about 80 seconds.",
+  "yells": {
+    "aggro": [
+      "Out of my hut!",
+      "Battlers! At the door!",
+      "You come for the books? They are ours now."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Readers! Find the words! Find them now!"
+      }
+    ],
+    "death": [
+      "Now I go... to his door...",
+      "Not rest... not... rest..."
+    ],
+    "slay": [
+      "Another tenant for the lord.",
+      "Ran no farther.",
+      "Out of the hut."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The largest hut. Firelight on stolen pages.",
+      "Orcs bent over books they can barely read."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Toca's battlers crowd in at the hut door."
+      }
+    ],
+    "realmFirstKill": "Chieftain Toca has fallen. He goes to the lord's door now."
+  },
+  "botLines": {
+    "briefing": [
+      "toca, 65 orc chief in the big central hut, nw inishail. orcs with spellbooks last step",
+      "kulaclan faction, 4 battlers 54 and 4 soothsayers 46 right round him. clear the hut first",
+      "no spells, but a 65 hitting. full group of 50s, good tank",
+      "emthoro is just north, dont drag it. 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "toca down, back to veena",
+      "cleared the hut first, easy after",
+      "65 hits hard but we had it",
+      "and now he goes to emthoro's door, poor guy"
+    ],
+    "aftermathLoss": [
+      "ran straight at toca and the whole hut came",
+      "dragged it north into emthoro's ground",
+      "underestimated a 65",
+      "respawned on us while we looted the books"
+    ],
+    "rumour": [
+      "[heard|someone said] toca led the orcs who ran from aldland when the ogres took krondon",
+      "heard toca's orcs are reading avalon books to get out of emthoro's tenancy",
+      "[heard|someone said] the margins in the orc books say not rest, she, all included the dead",
+      "heard every inishail orc that dies goes back to the lord's door"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "chieftain toca",
+    "text": "The orc chieftain who led the ones who ran from Aldland to [inishail-island] when the ogres took Krondon, only to find the island's dead lord took them as tenants past death. In the largest hut, by firelight, he and his readers go through stolen tomes of Avalon for the words that end a tenancy, and write in the margins. Veena wants the tomes back. His battlers guard the door."
+  },
+  "bookPage": "A page of one of the Avalonian tomes the orcs of Inishail stole, as Veena copied it for the readers at Caer Gothwaite. The text is a chancellor's treatise of the college of law on the ending of tenancies at the death of the tenant. In the margin, in an orc hand, very large: NOT REST. Further down, by a passage on widows: SHE. At the foot of the page, where the chancellor writes that every tenancy ends with the tenant, someone has scratched out the word every and written, carefully: AL INCLUDED THE DEAD. Veena says it is the only part of the book they have understood exactly.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Chieftain Toca in his hut on Inishail in {minutes} minutes.",
+    "loss": "Chieftain Toca's battlers threw {raidLeader}'s company of {realm} out of the hut."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "old-powers"
+  ],
+  "related": [
+    {
+      "id": "spirit-of-lord-emthoro",
+      "relation": "the dead lord whose tenants his people became"
+    },
+    {
+      "id": "veena",
+      "relation": "the lammia who wants the stolen tomes back and reads the margins"
+    }
+  ]
+}

@@ -25,7 +25,8 @@ public sealed class ChatThreadLog
         public bool Closed => Invites == "none";
     }
 
-    public const int PerChannel = 8;
+    /// <summary>Lines kept per channel. 1.2 chat audit (DESIGN-008): 8 covered about 40 s of a busy /faction; 24 covers the windows.</summary>
+    public const int PerChannel = 24;
     private readonly Dictionary<string, List<Said>> _byChannel = new(StringComparer.Ordinal);
     private readonly Dictionary<long, Said> _byBot = new();
     private readonly HashSet<Said> _closed = new();
@@ -72,6 +73,91 @@ public sealed class ChatThreadLog
         Said last = Last(channel, now, withinMs);
         lock (_byChannel)
             return last != null && last.Asked && !_closed.Contains(last) ? last : null;
+    }
+
+    /// <summary>
+    /// The question a player's line may be answering, in a busy channel (1.2 chat audit, DESIGN-008: after a bot's /faction
+    /// question another bot line came within 10 s 89% of the time, so "the last line" was rarely the one the player read): the
+    /// newest unanswered question in the window that was said to this player, else the newest one that shares a word with the
+    /// player's line, else the newest unanswered question said to nobody in particular. Pure apart from the lock.
+    /// </summary>
+    public Said OpenQuestion(string channel, string player, string message, long now, long withinMs)
+    {
+        lock (_byChannel)
+        {
+            if (!_byChannel.TryGetValue(channel, out var list))
+                return null;
+            Said toPlayer = null, overlapping = null, newest = null;
+            HashSet<string> words = ContentWords(message);
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                Said said = list[i];
+                if (now - said.At > withinMs)
+                    break;
+                if (!said.Asked || _closed.Contains(said))
+                    continue;
+                if (toPlayer == null && player != null && string.Equals(said.To, player, StringComparison.OrdinalIgnoreCase))
+                    toPlayer = said;
+                if (overlapping == null && words.Count > 0 && ContentWords(said.Text).Overlaps(words))
+                    overlapping = said;
+                if (newest == null && (said.To == null || player != null && string.Equals(said.To, player, StringComparison.OrdinalIgnoreCase)))
+                    newest = said;
+            }
+            return toPlayer ?? overlapping ?? newest;
+        }
+    }
+
+    /// <summary>
+    /// The bot line a player's follow-up ("why?", "rly?", "where?") is about (DESIGN-008): the last line said to this player, else
+    /// the newest one that shares a word with it, else the last line said to nobody in particular within 30 s.
+    /// </summary>
+    public Said FollowUpTarget(string channel, string player, string message, long now, long withinMs)
+    {
+        lock (_byChannel)
+        {
+            if (!_byChannel.TryGetValue(channel, out var list) || list.Count == 0)
+                return null;
+            HashSet<string> words = ContentWords(message);
+            Said overlapping = null, opener = null;
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                Said said = list[i];
+                if (now - said.At > withinMs)
+                    break;
+                if (player != null && string.Equals(said.To, player, StringComparison.OrdinalIgnoreCase))
+                    return said;
+                if (overlapping == null && words.Count > 0 && ContentWords(said.Text).Overlaps(words))
+                    overlapping = said;
+                if (opener == null && said.To == null && now - said.At <= OpenerFollowUpMs)
+                    opener = said;
+            }
+            return overlapping ?? opener;
+        }
+    }
+
+    /// <summary>How far back a follow-up said to nobody in particular reaches for the line it is about (DESIGN-008).</summary>
+    public const long OpenerFollowUpMs = 30_000;
+
+    private static readonly HashSet<string> Filler = new(StringComparer.Ordinal)
+    {
+        "the", "that", "this", "you", "your", "and", "for", "are", "was", "with", "what", "where", "when", "why", "how", "who", "which",
+        "any", "anyone", "just", "lol", "yes", "yeah", "nah", "not", "its", "there", "they", "them", "have", "has", "had", "can", "will",
+        "would", "should", "could", "did", "does", "from", "about", "really", "still", "now", "then", "here", "too", "all", "one", "get", "got",
+    };
+
+    /// <summary>The words of a line that carry meaning (three letters or more, no filler).</summary>
+    internal static HashSet<string> ContentWords(string text) =>
+        new(AutonomousChatQuestions.Normalize(text ?? string.Empty).Split(' ').Where(word => word.Length >= 3 && !Filler.Contains(word)),
+            StringComparer.Ordinal);
+
+    /// <summary>
+    /// How many lines were said in the channel after <paramref name="said"/> (DESIGN-042, LOG-040): an answer with other lines
+    /// between it and the question names the asker.
+    /// </summary>
+    public int LinesSince(string channel, long at, ICollection<long> except = null)
+    {
+        lock (_byChannel)
+            return _byChannel.TryGetValue(channel, out var list) ? list.Count(line => line.At > at && (except == null || !except.Contains(line.BotId))) : 0;
     }
 
     /// <summary>The last line in the channel within the time that answered this player, or null.</summary>
@@ -155,7 +241,7 @@ public static class AutonomousChatThreads
 
     /// <summary>A laugh reply the joker itself can say ("heh, it happens", ":)"), not one that praises a joke ("good one"). Pure.</summary>
     public static bool FitsOwnJoke(string reply) =>
-        !Regex.IsMatch(reply ?? string.Empty, @"good one|got me|\bnice\b|oh no|rofl|lolol|hahaha|ikr|lol right", RegexOptions.IgnoreCase);
+        !Regex.IsMatch(reply ?? string.Empty, @"good one|got me|\bnice\b|oh no|rofl|lolol|hahaha|ikr|lol right", RegexOptions.IgnoreCase);   // chat-check: input
 
     /// <summary>How long after a bot answered a player their "ty" is still for that bot, and a laugh for a bot's joke.</summary>
     public const long ThanksWindowMs = 90_000;
@@ -183,8 +269,10 @@ public static class AutonomousChatThreads
         foreach ((Regex pattern, string word) in FollowUps)
             if (pattern.IsMatch(text))
                 return word;
-        // "lfg?", "inv?", "rez?" are requests of their own, not a check on what was said.
+        // "lfg?", "inv?", "rez?" are requests of their own, not a check on what was said; "ready?" asks the group (1.2 chat audit,
+        // DESIGN-005: it was read as a check on the last bot line).
         if (message.TrimEnd().EndsWith('?') && text.Split(' ').Length <= 5 && !QuestionWord.IsMatch(text) &&
+            AutonomousChatShortTalk.QuestionShape(message) is not ("ask_ready" or "ask_next" or "ask_who_pulls" or "ask_plans") &&
             AutonomousChatIntentModel.Predict(message) is eAutonomousChatIntent.Unknown or eAutonomousChatIntent.Dungeon or
                 eAutonomousChatIntent.RvR or eAutonomousChatIntent.Travel or eAutonomousChatIntent.Grinding or eAutonomousChatIntent.Banter)
             return "confirm";
@@ -204,8 +292,9 @@ public static class AutonomousChatThreads
             RegexOptions.IgnoreCase);
         if (!asksBack && FollowUpWord(message) is { } word && word != "y")
             return false;
-        // "i might, what lvl" answers with a question of its own; a plain question is not an answer.
-        if (message.Contains('?') && !asksBack &&
+        // "i might, what lvl" answers with a question of its own; a plain question is not an answer. 1.2 chat audit (DESIGN-002):
+        // a question without its "?" ("where is the cleric trainer", "is df open") is not one either.
+        if ((message.Contains('?') || AutonomousChatQuestions.IsQuestion(message)) && !asksBack &&
             !Regex.IsMatch(message, @"^\s*(yes|yeah|yep|ya|no|nope|nah|maybe|i might|sure|prob|probably)\b", RegexOptions.IgnoreCase))
             return false;
         if (intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Laugh or
@@ -296,10 +385,12 @@ public static class AutonomousChatThreads
         else if (yes == false)
             sets.Add("ask_no");
         string[] kind = ClosingAnswers(question?.Invites);
+        // 1.2 chat audit (CORPUS-C-001): a question about the player ("dinged yet?", "where have you been hiding?") closes with
+        // "oh cool", not with thanks for directions or advice: the personal closings come before the question's own set.
+        if (yes == null && (question?.Invites == "ask_personal" || Regex.IsMatch(AutonomousChatQuestions.Normalize(question?.Text), @"\b(you|u|ur|your|ya|youre|yourself)\b")))
+            sets.Add("ask_personal");
         if (kind.Length > 1)
             sets.Add(kind[0]);
-        if (yes == null && Regex.IsMatch(AutonomousChatQuestions.Normalize(question?.Text), @"\b(you|u|ur|your|ya|youre)\b"))
-            sets.Add("ask_personal");
         sets.AddRange(kind);
         if (yes == false)
             sets.Add("lfg");

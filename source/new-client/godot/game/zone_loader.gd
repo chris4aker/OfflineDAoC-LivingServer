@@ -183,6 +183,7 @@ func _build_terrain() -> void:
 		var img := materials.image(detail_name)                 # (from the file: load_zone runs on a worker)
 		if img:
 			_detail_mean = _mean_luminance(img)
+	var chunks := []                                          # [mesh, cx, cz]
 	for cz in CHUNKS:
 		for cx in CHUNKS:
 			var verts := PackedVector3Array()
@@ -209,25 +210,38 @@ func _build_terrain() -> void:
 			arrays[Mesh.ARRAY_INDEX] = idx
 			var mesh := ArrayMesh.new()
 			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-			var mat := ShaderMaterial.new()
-			mat.shader = TERRAIN_SHADER
-			mat.set_meta("patch", "%d_%d" % [cx, cz])
-			mat.set_shader_parameter("patch_index", Vector2(cx, cz))
-			mat.set_shader_parameter("patches", float(CHUNKS))
-			_terrain_mats.append(mat)
-			mesh.surface_set_material(0, mat)
+			chunks.append([mesh, cx, cz])
 			var mi := MeshInstance3D.new()
 			mi.name = "Terrain_%d_%d" % [cx, cz]
 			mi.mesh = mesh
 			add_child(mi)
+			# its collision from the arrays just built - never create_trimesh_shape(), which reads the mesh back from
+			# the GPU (on the zone worker that ended the frame being drawn: GpuJobs)
+			var faces := PackedVector3Array()
+			faces.resize(idx.size())
+			for k in idx.size():
+				faces[k] = verts[idx[k]]
+			var tri := ConcavePolygonShape3D.new()
+			tri.set_faces(faces)
 			var shape := CollisionShape3D.new()
-			shape.shape = mesh.create_trimesh_shape()
+			shape.shape = tri
 			body.add_child(shape)
+	for c in chunks:
+		var mat := ShaderMaterial.new()
+		mat.shader = TERRAIN_SHADER
+		mat.set_meta("patch", "%d_%d" % [c[1], c[2]])
+		mat.set_shader_parameter("patch_index", Vector2(c[1], c[2]))
+		mat.set_shader_parameter("patches", float(CHUNKS))
+		_terrain_mats.append(mat)
+	GpuJobs.ready_materials(_terrain_mats)                 # (their render-server materials made on the main thread)
+	for i in chunks.size():
+		(chunks[i][0] as ArrayMesh).surface_set_material(0, _terrain_mats[i])
 	set_terrain_set(terrain_set)
 
 
-func set_terrain_set(set_name: String) -> void:
-	terrain_set = set_name
+## The terrain set's textures read and decoded (kept): the painted image, the detail map and, for the blend, every
+## patch's layers and weight maps - on the zone worker, so the materials made on the main thread only bind them.
+func _terrain_texture_cache(set_name: String) -> String:
 	var blend := set_name == "blend"
 	# the painted image: the chosen set, or for the blend the baked ground it fades to in the distance
 	var painted := set_name
@@ -235,6 +249,20 @@ func set_terrain_set(set_name: String) -> void:
 		painted = "lod_x4plus" if texture_set == "x4plus" and info.terrain_sets.has("lod_x4plus") else "lod"
 	if not _terrain_textures.has(painted):
 		_terrain_textures[painted] = _load_texture(dir.path_join(info.terrain_sets[painted]))
+	if blend and info.get("ground_splat"):
+		for patch in (info.ground_splat.patches as Dictionary).values():
+			for l in patch.get("layers", []):
+				materials.texture(String(l.tex))
+			for key in patch.get("weights", []):
+				if not _terrain_textures.has(String(key)):
+					_terrain_textures[String(key)] = ImageTexture.create_from_image(Image.load_from_file(dir.path_join(String(key))))
+	return painted
+
+
+func set_terrain_set(set_name: String) -> void:
+	terrain_set = set_name
+	var blend := set_name == "blend"
+	var painted := _terrain_texture_cache(set_name)
 	var detail_name: String = String(info.get("terrain_detail", "")) if info.get("terrain_detail") != null else ""   # null in some zones
 	var detail := materials.texture(detail_name) if detail_name != "" else null
 	for mat in _terrain_mats:
@@ -263,6 +291,7 @@ func _bind_splat(mat: ShaderMaterial) -> void:
 		tiles.append(float(l.tiles))
 		tileable.append(1.0 if l.tileable else 0.0)
 	mat.set_shader_parameter("layer_tex", texs)
+	mat.set_shader_parameter("layer_tex_clamped", texs)        # (the whole-zone layers: no wrap at the borders)
 	mat.set_shader_parameter("layer_tiles", tiles)
 	mat.set_shader_parameter("layer_tileable", tileable)
 	mat.set_shader_parameter("layer_count", mini(layers.size() - 1, 8))
@@ -286,6 +315,7 @@ func _build_water() -> void:
 	var n := water_mask.get_width()
 	var step := float(info.size_m) / n
 	_water_mats.clear()
+	var bodies := []                                          # [body, mesh, texture name]
 	var ids := PackedByteArray()
 	ids.resize(n * n)
 	for z in n:
@@ -318,39 +348,58 @@ func _build_water() -> void:
 		quads += _water_border(st, border, ids, id, n, step, level)
 		if quads == 0:
 			continue
-		var mat := ShaderMaterial.new()
-		mat.shader = WATER_SHADER
-		var wtex := String(body.get("texture", ""))
-		if wtex == "" and body.get("base_color") == null:    # neither (Cornwall's ocean): the zone's other water
-			for b2 in info.get("water", []):
-				if String(b2.get("texture", "")) != "":
-					wtex = String(b2.texture)
-					break
-		mat.set_meta("texture", wtex)
-		if wtex == "":
-			# the Shrouded Isles' water has no texture - sector.dat base_color (AARRGGBB 5a555040) instead, under the
-			# same ripple and sky reflection (it drew plain white: owner 2026-10-10, Inishail Island / World's End)
-			var bc: Array = body.get("base_color") if body.get("base_color") is Array else [0.3333, 0.3137, 0.251, 0.3529]
-			mat.set_shader_parameter("use_color", true)
-			mat.set_shader_parameter("base_color", Color(bc[0], bc[1], bc[2]))
-			mat.set_shader_parameter("opacity", clampf(float(bc[3]), 0.3, 0.9))   # its own alpha (0x5a = 0.35): the ground
-			mat.set_shader_parameter("env_amount", 0.2)                          # shows through (Inishail's shallow swamp)
-			# deep water darkens to near opaque (the shallows keep the alpha); the open sea takes more of the rippled
-			# sky (owner 2026-10-15: Modernagrav's sea was see-through to the bottom - the client's is dark grey)
-			mat.set_shader_parameter("depth_fade", true)
-			if String(body.get("type", "")) == "OCEAN":
-				mat.set_shader_parameter("env_amount", 0.4)
-		# DAoC flow values run 0..~30; still ponds keep a slow shimmer
-		var speed := 0.004 + float(body.get("flow", 0.0)) * 0.0009
-		mat.set_shader_parameter("drift", Vector2(speed, speed * 0.4))
-		_water_mats.append(mat)
+		var wtex := _water_texture_name(body)
+		if wtex != "":
+			materials.texture(wtex)                          # (decoded here, on the worker)
+		bodies.append([body, st.commit(), wtex])
+	_water_maps_cache()
+	var mats := []
+	for b in bodies:
+		mats.append(_water_material(b[0], b[2]))
+	GpuJobs.ready_materials(mats)                          # (their render-server materials made on the main thread)
+	for i in bodies.size():
 		var mi := MeshInstance3D.new()
-		mi.name = "Water_%s" % body.name
-		mi.mesh = st.commit()
-		mi.material_override = mat
+		mi.name = "Water_%s" % bodies[i][0].name
+		mi.mesh = bodies[i][1]
+		mi.material_override = mats[i]
 		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mi)
 	_bind_water_textures()
+
+
+func _water_texture_name(body: Dictionary) -> String:
+	var wtex := String(body.get("texture", ""))
+	if wtex == "" and body.get("base_color") == null:    # neither (Cornwall's ocean): the zone's other water
+		for b2 in info.get("water", []):
+			if String(b2.get("texture", "")) != "":
+				wtex = String(b2.texture)
+				break
+	return wtex
+
+
+## One water body's material.
+func _water_material(body: Dictionary, wtex: String) -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = WATER_SHADER
+	mat.set_meta("texture", wtex)
+	if wtex == "":
+		# the Shrouded Isles' water has no texture - sector.dat base_color (AARRGGBB 5a555040) instead, under the
+		# same ripple and sky reflection (it drew plain white: owner 2026-10-10, Inishail Island / World's End)
+		var bc: Array = body.get("base_color") if body.get("base_color") is Array else [0.3333, 0.3137, 0.251, 0.3529]
+		mat.set_shader_parameter("use_color", true)
+		mat.set_shader_parameter("base_color", Color(bc[0], bc[1], bc[2]))
+		mat.set_shader_parameter("opacity", clampf(float(bc[3]), 0.3, 0.9))   # its own alpha (0x5a = 0.35): the ground
+		mat.set_shader_parameter("env_amount", 0.2)                          # shows through (Inishail's shallow swamp)
+		# deep water darkens to near opaque (the shallows keep the alpha); the open sea takes more of the rippled
+		# sky (owner 2026-10-15: Modernagrav's sea was see-through to the bottom - the client's is dark grey)
+		mat.set_shader_parameter("depth_fade", true)
+		if String(body.get("type", "")) == "OCEAN":
+			mat.set_shader_parameter("env_amount", 0.4)
+	# DAoC flow values run 0..~30; still ponds keep a slow shimmer
+	var speed := 0.004 + float(body.get("flow", 0.0)) * 0.0009
+	mat.set_shader_parameter("drift", Vector2(speed, speed * 0.4))
+	_water_mats.append(mat)
+	return mat
 
 
 func _water_quad(st: SurfaceTool, x0: float, z0: float, w: float, level: float) -> void:
@@ -422,13 +471,19 @@ func set_water_light(sun_dir: Vector3, sun_color: Color, sky: Color) -> void:
 		mat.set_shader_parameter("sky_color", sky)
 
 
-func _bind_water_textures() -> void:
+## The client's water data maps, read and decoded (kept) - on the zone worker; the materials only bind them.
+func _water_maps_cache() -> void:
 	var maps: Dictionary = info.get("water_maps", {})
 	for key in maps:                                  # client water data maps, loaded as-is (never upscaled)
 		if not _terrain_textures.has(maps[key]):
 			var img := Image.load_from_file(dir.path_join(maps[key]))
 			img.generate_mipmaps()
 			_terrain_textures[maps[key]] = ImageTexture.create_from_image(img)
+
+
+func _bind_water_textures() -> void:
+	var maps: Dictionary = info.get("water_maps", {})
+	_water_maps_cache()
 	for mat in _water_mats:
 		var tex_name: String = mat.get_meta("texture")
 		if tex_name != "":
@@ -543,13 +598,24 @@ func _build_fixtures() -> void:
 			cells[c].append(i)
 		var size := _parts_radius(parts) * 2.0 if not parts.meshes.is_empty() else 2.0
 		var far := clampf(VIEW_RANGE_PER_M * size, VIEW_RANGE_MIN_M, VIEW_RANGE_MAX_M)
+		# the server's world objects baked in (items/...: banners, pennants, barrels) end at the original's far plane,
+		# the region's fog clip (game.dll sets the camera's far to it). A tower's 40 m pennant got the 900 m range of
+		# its height and hung over the treeline from far beyond what the client drew, its pole too thin to see and
+		# the tower hidden by the ridge (owner 2026-10-29: "floating banner at salisbury plains")
+		if str(model.get("nif", "")).begins_with("items/") and info.has("fog"):
+			far = minf(far, maxf(SkySystem.region_fog_clip(self), VIEW_RANGE_MIN_M))
 		if model.has("effect_range_m"):
 			far = float(model.effect_range_m)            # moneffects.csv max visible range
-		for spec in parts.particles:                    # fires, smoke, glows: the NIF's own particle systems
-			for x in xforms:
-				var ps := _make_particles(spec, x, far * view_mult)
-				ps.set_meta("base_far", far)
-				add_child(ps)
+		if not parts.particles.is_empty():              # fires, smoke, glows: the NIF's own particle systems
+			for spec in parts.particles:
+				if String((spec as Dictionary).get("texture", "")) != "":
+					materials.texture(String(spec.texture))  # (decoded here, on the worker)
+			GpuJobs.run(func():                            # their materials on the main thread (GpuJobs)
+				for spec in parts.particles:
+					for x in xforms:
+						var ps := _make_particles(spec, x, far * view_mult)
+						ps.set_meta("base_far", far)
+						add_child(ps), "zone particles")
 		if not parts.doors.is_empty():
 			for i in xforms.size():
 				var fid := int((per_model[m][i] as Dictionary).get("id", -1))
@@ -678,9 +744,7 @@ func _make_doors(parts: Dictionary, at: Transform3D, base := -1) -> void:
 			d.add_panel(mesh)
 		var col: PackedVector3Array = parts.doors[k].collision
 		if col.is_empty():                               # some NIFs have no collision piece for the leaf (Camelot
-			col = PackedVector3Array()                   # Hills' brit_shop): its own panel stops you and takes the click
-			for mesh in parts.doors[k].meshes:
-				col.append_array((mesh as Mesh).get_faces())
+			col = parts.doors[k].panel_faces             # Hills' brit_shop): its own panel stops you and takes the click
 		d.add_collision(col, LAYER_WALL)
 		d.sound_flag = _door_flag()
 		var g := String(spec.get("group", spec.name))
@@ -739,6 +803,9 @@ func _parts_radius(parts: Dictionary) -> float:
 
 ## {meshes: [[Mesh, local Transform3D]], collision: faces, visible_faces: faces} for one converted model.
 ## ambient_only: the zone's nifs.csv "Ambient Only" column - lit by the ambient light alone (NifMaterials).
+## On the zone worker: the file parsed, its textures decoded and its scene made here; every face read from the parsed
+## arrays (never Mesh.get_faces(), a read-back from the GPU), and its materials' render-server materials made on the
+## main thread before they are set on meshes (GpuJobs.ready_materials).
 func _load_model(path: String, ambient_only := false) -> Dictionary:
 	var doc := GLTFDocument.new()
 	var state := GLTFState.new()
@@ -748,11 +815,68 @@ func _load_model(path: String, ambient_only := false) -> Dictionary:
 	var specs: Array = state.json.get("extras", {}).get("nif_materials", [])
 	if ambient_only:
 		specs = specs.map(func(sp): return (sp as Dictionary).merged({"ambient_only": true}, true))
-	var root := doc.generate_scene(state)
+	for sp in specs:
+		for slot in ((sp as Dictionary).get("slots", {}) as Dictionary).values():
+			materials.texture(String(slot.tex))
+	var mesh_faces := []                               # glTF mesh index -> its triangles (mesh space)
+	for gm in state.get_meshes():
+		mesh_faces.append(importer_faces((gm as GLTFMesh).mesh))
+	# the converted materials put in the glTF's own placeholders' places ("nifmat:<n>"), so the scene is made with them:
+	# a placeholder made on its way (a StandardMaterial3D, its shader compiled) was thrown away - 539 of them, ~20 ms
+	# each, in a few zone loads
+	var gmats := state.get_materials()
+	for i in gmats.size():
+		var gname := gmats[i].resource_name if gmats[i] else ""
+		if gname.begins_with("nifmat:") and int(gname.substr(7)) < specs.size():
+			gmats[i] = materials.material(specs[int(gname.substr(7))])
+	state.set_materials(gmats)
+	GpuJobs.ready_materials(Array(gmats))
+	var made := _model_scene(doc, state, specs, path)
 	var out := {"meshes": [], "collision": PackedVector3Array(), "visible_faces": PackedVector3Array(),
 			"climb": PackedVector3Array(),
 			"particles": state.json.get("extras", {}).get("nif_particles", []),
 			"doors": {}, "door_specs": state.json.get("extras", {}).get("nif_doors", [])}
+	for e in made:
+		var mi_name: String = e[0]
+		var local: Transform3D = e[1]
+		var mesh: Mesh = e[2]
+		var gi: int = e[3]
+		var raw: PackedVector3Array = mesh_faces[gi] if gi >= 0 and gi < mesh_faces.size() else PackedVector3Array()
+		# door leaves (nif_doors): panels "door<k>_..." and collision "doorcol<k>_..." in the leaf's own frame,
+		# kept apart from the static batches so they can swing open
+		if mi_name.begins_with("door"):
+			var is_col := mi_name.begins_with("doorcol")
+			var k := int(mi_name.trim_prefix("doorcol" if is_col else "door").get_slice("_", 0))
+			if not out.doors.has(k):
+				out.doors[k] = {"meshes": [], "collision": PackedVector3Array(), "panel_faces": PackedVector3Array()}
+			if is_col:
+				out.doors[k].collision.append_array(raw)
+			else:
+				out.doors[k].meshes.append(mesh)
+				out.doors[k].panel_faces.append_array(raw)
+			continue
+		var faces: PackedVector3Array = local * raw
+		if mi_name.begins_with("collision_"):
+			out.collision.append_array(faces)
+			continue
+		if mi_name.begins_with("climb_"):                  # a ladder's climb wall (nif_static.climb_shapes)
+			out.climb.append_array(faces)
+			continue
+		out.visible_faces.append_array(faces)
+		out.meshes.append([mesh, local])
+	return out
+
+
+## The parsed model's scene made, the converted materials set on its drawn meshes, and each mesh with where it sits in
+## the model and its glTF mesh: [[name, local Transform3D, Mesh, glTF mesh index], ...].
+func _model_scene(doc: GLTFDocument, state: GLTFState, specs: Array, path: String) -> Array:
+	# each node's glTF mesh by its name (unique in the file; the generated mesh nodes keep it - get_scene_node() gives
+	# the importer's nodes, replaced by the time the scene is returned)
+	var mesh_of := {}
+	for g in state.get_nodes():
+		mesh_of[String((g as GLTFNode).resource_name)] = (g as GLTFNode).mesh
+	var root := doc.generate_scene(state)
+	var made := []
 	for node in root.find_children("*", "MeshInstance3D", true, false):
 		var mi := node as MeshInstance3D
 		var local := Transform3D.IDENTITY
@@ -760,44 +884,43 @@ func _load_model(path: String, ambient_only := false) -> Dictionary:
 		while p != root and p is Node3D:
 			local = (p as Node3D).transform * local
 			p = p.get_parent()
-		# door leaves (nif_doors): panels "door<k>_..." and collision "doorcol<k>_..." in the leaf's own frame,
-		# kept apart from the static batches so they can swing open
-		if mi.name.begins_with("door"):
-			var is_col := mi.name.begins_with("doorcol")
-			var k := int(mi.name.trim_prefix("doorcol" if is_col else "door").get_slice("_", 0))
-			if not out.doors.has(k):
-				out.doors[k] = {"meshes": [], "collision": PackedVector3Array()}
-			if is_col:
-				out.doors[k].collision.append_array(mi.mesh.get_faces())
-			else:
-				var dm := mi.mesh
-				for i in dm.get_surface_count():
-					var dsrc := dm.surface_get_material(i)
-					var dname := dsrc.resource_name if dsrc else ""
-					if dname.begins_with("nifmat:") and int(dname.substr(7)) < specs.size():
-						dm.surface_set_material(i, materials.material(specs[int(dname.substr(7))]))
-				out.doors[k].meshes.append(dm)
-			continue
-		var faces := mi.mesh.get_faces()
-		for k in faces.size():
-			faces[k] = local * faces[k]
-		if mi.name.begins_with("collision_"):
-			out.collision.append_array(faces)
-			continue
-		if mi.name.begins_with("climb_"):                  # a ladder's climb wall (nif_static.climb_shapes)
-			out.climb.append_array(faces)
-			continue
-		out.visible_faces.append_array(faces)
-		var mesh := mi.mesh
-		for i in mesh.get_surface_count():
-			var src := mesh.surface_get_material(i)
-			var mat_name := src.resource_name if src else ""
-			if mat_name.begins_with("nifmat:") and int(mat_name.substr(7)) < specs.size():
-				mesh.surface_set_material(i, materials.material(specs[int(mat_name.substr(7))]))
-			else:
-				push_warning("%s: surface %d has no converted material (%s)" % [path, i, mat_name])
-		out.meshes.append([mesh, local])
+		var n := String(mi.name)
+		var drawn := not (n.begins_with("doorcol") or n.begins_with("collision_") or n.begins_with("climb_"))
+		if drawn:
+			var mesh := mi.mesh
+			for i in mesh.get_surface_count():
+				var src := mesh.surface_get_material(i)
+				var mat_name := src.resource_name if src else ""
+				if src and src.has_meta("spec"):           # (already the converted one: _load_model)
+					continue
+				if mat_name.begins_with("nifmat:") and int(mat_name.substr(7)) < specs.size():
+					mesh.surface_set_material(i, materials.material(specs[int(mat_name.substr(7))]))
+				elif not n.begins_with("door"):
+					push_warning("%s: surface %d has no converted material (%s)" % [path, i, mat_name])
+		made.append([n, local, mi.mesh, int(mesh_of.get(n, -1))])
 	root.free()
+	return made
+
+
+## A parsed glTF mesh's triangles from its own arrays, as Mesh.get_faces() gives them - without asking the GPU.
+static func importer_faces(im: ImporterMesh) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	if im == null:
+		return out
+	for s in im.get_surface_count():
+		if im.get_surface_primitive_type(s) != Mesh.PRIMITIVE_TRIANGLES:
+			continue
+		var arr := im.get_surface_arrays(s)
+		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		var ix = arr[Mesh.ARRAY_INDEX]
+		if ix is PackedInt32Array and not (ix as PackedInt32Array).is_empty():
+			var ixs: PackedInt32Array = ix
+			var n0 := out.size()
+			out.resize(n0 + ixs.size())
+			for k in ixs.size():
+				out[n0 + k] = v[ixs[k]]
+		else:
+			out.append_array(v)
 	return out
 
 

@@ -56,7 +56,7 @@ namespace DOL.GS
             SetOwnBrain(sBrain);
             sBrain.AggroLevel = 100;
             sBrain.AggroRange = 500;
-            PrincessNahemahBrain.spawnMinions = true;
+            sBrain.spawnMinions = true;
 
             // demon
             BodyType = 2;
@@ -66,10 +66,8 @@ namespace DOL.GS
             base.AddToWorld();
             return true;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
-            base.Die(killer);
-
             foreach (GameNPC npc in GetNPCsInRadius(4000))
             {
                 if (npc.Brain is NahemahMinionBrain)
@@ -77,6 +75,8 @@ namespace DOL.GS
                     npc.RemoveFromWorld();
                 }
             }
+
+            base.ProcessDeath(killer);
         }
     }
 }
@@ -87,7 +87,7 @@ namespace DOL.AI.Brain
     {
         private static readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool spawnMinions = true;
+        public bool spawnMinions = true;
         private bool RemoveAdds = false;
         public override void Think()
         {

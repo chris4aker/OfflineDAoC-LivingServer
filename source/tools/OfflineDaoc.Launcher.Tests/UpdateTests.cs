@@ -13,11 +13,30 @@ public class UpdateVersionTests
     [TestCase("1.1.1-beta", "1.1.2-beta")]
     [TestCase("1.1.2-beta", "1.2-beta")]
     [TestCase("1.1.1-beta", "1.2-beta")]
+    // 1.2-beta is newer than every 1.1.x: the base 1.1, its numbered test builds, a hotfix and any later patch.
+    [TestCase("1.1-beta", "1.2-beta")]
+    [TestCase("1.1-beta.2", "1.2-beta")]
+    [TestCase("1.1.3-beta", "1.2-beta")]
+    [TestCase("1.1.10-beta", "1.2-beta")]
+    [TestCase("1.1.2-beta.3", "1.2-beta")]
     [TestCase("1.1-beta", "1.1.1-beta")]
     [TestCase("1.9-beta", "1.10-beta")]
     [TestCase("1.2-beta", "1.2")]
     [TestCase("1.1-beta", "1.1-beta.2")]
     [TestCase("v1.1.2-beta", "v2.0-beta")]
+    // 1.2 is a final release (owner, 2026-11-19: tag v1.2, build 1.2): newer than every published 1.1.x beta tag
+    // (v1.1-beta, v1.1.1-beta to v1.1.4-beta) and than the 1.2-beta candidates; 1.2.1's beta comes after it.
+    [TestCase("1.1-beta", "1.2")]
+    [TestCase("1.1.1-beta", "1.2")]
+    [TestCase("1.1.2-beta", "1.2")]
+    [TestCase("1.1.3-beta", "1.2")]
+    [TestCase("v1.1.4-beta", "v1.2")]
+    [TestCase("1.1.4-beta.2", "1.2")]
+    [TestCase("1.1.10-beta", "1.2")]
+    [TestCase("1.2-beta.7", "1.2")]
+    [TestCase("1.2", "1.2.1-beta")]
+    [TestCase("1.2", "1.2.1")]
+    [TestCase("1.2", "1.10")]
     public void LaterBuildsCompareAsNewer(string older, string newer)
     {
         BuildVersion a = BuildVersion.Parse(older)!, b = BuildVersion.Parse(newer)!;
@@ -35,6 +54,20 @@ public class UpdateVersionTests
         Assert.That(BuildVersion.Parse("1.1.2-beta")!.Tag, Is.EqualTo("v1.1.2-beta"));
         Assert.That(BuildVersion.Parse("1.1.2-beta")!.DisplayName, Is.EqualTo("Beta 1.1.2"));
         Assert.That(BuildVersion.Parse("1.1-beta.3")!.DisplayName, Is.EqualTo("Beta 1.1 (build 3)"));
+    }
+
+    [Test]
+    public void TheFinal12ReadsAsItsOwnBuild()
+    {
+        BuildVersion final = BuildVersion.Parse("v1.2")!;
+        Assert.That(final.Name, Is.EqualTo("1.2"));
+        Assert.That(final.Tag, Is.EqualTo("v1.2"));
+        Assert.That(final.IsBeta, Is.False);
+        Assert.That(final.DisplayName, Is.EqualTo("1.2"), "the launcher shows LIVING SERVER 1.2");
+        Assert.That(final.SameBuildAs(BuildVersion.Parse("1.2.0")), Is.True);
+        Assert.That(final.SameBuildAs(BuildVersion.Parse("1.2-beta")), Is.False, "the candidates' 1.2-beta is another build");
+        Assert.That(ReleaseInfo.PackageName(final), Is.EqualTo("OfflineDAoC-LivingServer-1.2.zip"));
+        Assert.That(PackageCheck.TopFolderFor(final), Is.EqualTo("LivingServer-1.2"));
     }
 
     [TestCase(null)]
@@ -223,6 +256,54 @@ public class UpdatePolicyTests
     }
 
     [Test]
+    public void Version12BetaIsOfferedToEvery11xLauncher()
+    {
+        // The rule for every 1.1.x build (only launchers from 1.1.2 on run the check; each knows its build from
+        // ForkBuildInfo.BuildName).
+        foreach (string build in new[] { "1.1-beta", "1.1.1-beta", "1.1.2-beta", "1.1.3-beta" })
+            Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse(build), new UpdateSettings(), asked: false),
+                Is.True, build);
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse("1.2-beta"), new UpdateSettings(), asked: true),
+            Is.False, "a 1.2-beta launcher isn't offered its own build");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.1.2-beta"), BuildVersion.Parse("1.2-beta"), new UpdateSettings(), asked: true),
+            Is.False, "nor an older one");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2-beta"), BuildVersion.Parse("1.1.2-beta"),
+            new UpdateSettings { SkippedVersion = "1.1.3-beta" }, asked: false), Is.True, "skipping 1.1.3 doesn't skip 1.2");
+    }
+
+    [Test]
+    public void TheFinal12IsOfferedToEvery11xLauncher()
+    {
+        // v1.2 is what releases/latest names once 1.2 is published (owner, 2026-11-19: "1.2" final, not v1.2-beta).
+        // Launchers from 1.1.2 on run the check; 1.1.4 is the newest published one, and 1.2-beta is what the 1.2
+        // candidates (CI builds and the owner's test copy) were built as before the release was named.
+        foreach (string build in new[] { "1.1-beta", "1.1.1-beta", "1.1.2-beta", "1.1.3-beta", "1.1.4-beta", "1.2-beta" })
+            Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2"), BuildVersion.Parse(build), new UpdateSettings(), asked: false),
+                Is.True, build);
+        Assert.That(Release("v1.2").Package!.Name, Is.EqualTo("OfflineDAoC-LivingServer-1.2.zip"));
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2"), BuildVersion.Parse("1.2"), new UpdateSettings(), asked: true),
+            Is.False, "a 1.2 launcher isn't offered its own build");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.1.4-beta"), BuildVersion.Parse("1.2"), new UpdateSettings(), asked: true),
+            Is.False, "nor the last beta");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2.1-beta"), BuildVersion.Parse("1.2"), new UpdateSettings(), asked: false),
+            Is.True, "a later 1.2.1 is offered to 1.2");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2"), BuildVersion.Parse("1.1.4-beta"),
+            new UpdateSettings { SkippedVersion = "1.2-beta" }, asked: false), Is.True, "skipping 1.2-beta doesn't skip 1.2");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2"), BuildVersion.Parse("1.1.4-beta"),
+            new UpdateSettings { SkippedVersion = "1.2" }, asked: false), Is.False, "but skipping 1.2 does");
+    }
+
+    [Test]
+    public void APrereleaseOf12BetaIsNotOffered()
+    {
+        // GitHub's /releases/latest leaves pre-releases out, and a pre-release is never offered: v1.2-beta must be
+        // published as a final release (Latest) for 1.1.x launchers to see it.
+        ReleaseInfo release = ReleaseInfo.Parse(UpdateFixtures.ReleaseJson("v1.2-beta", [1], prerelease: true))!;
+        Assert.That(release.Prerelease, Is.True, "the fixture is a pre-release");
+        Assert.That(UpdatePolicy.ShouldOffer(release, BuildVersion.Parse("1.1.2-beta"), new UpdateSettings(), asked: true), Is.False);
+    }
+
+    [Test]
     public void ASkippedVersionIsOfferedAgainOnlyWhenAskedOrWhenANewerOneComes()
     {
         var installed = BuildVersion.Parse("1.1.1-beta");
@@ -365,6 +446,22 @@ public class UpdatePackageTests
         Assert.That(() => PackageCheck.Inspect(zip, Build), Throws.TypeOf<PackageRefusedException>().With.Message.Contains("LivingServer-1.1.2-beta folder"));
     }
 
+    [Test]
+    public void TheFinal12PackageMustBeBuiltAs12()
+    {
+        // The release zip a 1.1.x launcher downloads for v1.2: one LivingServer-1.2 folder, BUILD-INFO BuildName=1.2.
+        BuildVersion final = BuildVersion.Parse("v1.2")!;
+        PackageContents contents = PackageCheck.Inspect(Write(UpdateFixtures.Package("1.2")), final);
+        Assert.That(contents.TopFolder, Is.EqualTo("LivingServer-1.2"));
+        Assert.That(contents.BuildName, Is.EqualTo("1.2"));
+        // A candidate still named 1.2-beta, put in the v1.2 release, is refused by every launcher, not installed.
+        Assert.That(() => PackageCheck.Inspect(Write(UpdateFixtures.Package("1.2-beta")), final),
+            Throws.TypeOf<PackageRefusedException>().With.Message.Contains("LivingServer-1.2 folder"));
+        Assert.That(() => PackageCheck.Inspect(Write(UpdateFixtures.Package("1.2", files => files["BUILD-INFO.txt"] =
+                System.Text.Encoding.UTF8.GetBytes(System.Text.Encoding.UTF8.GetString(files["BUILD-INFO.txt"]).Replace("BuildName=1.2", "BuildName=1.2-beta")))), final),
+            Throws.TypeOf<PackageRefusedException>().With.Message.Contains("names build 1.2-beta"));
+    }
+
     [TestCase("BUILD-INFO.txt")]
     [TestCase("INSTALL.cmd")]
     [TestCase("ROLLBACK.cmd")]
@@ -430,6 +527,24 @@ public class UpdateDownloadTests
         // A second time uses the verified file instead of downloading again.
         updater.PrepareFromRelease(release, null, CancellationToken.None);
         Assert.That(web.Downloads, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void A114LauncherChecksAndPreparesTheFinal12()
+    {
+        // The 1.1.4 → 1.2 path end to end without the window: releases/latest names v1.2, the check offers it, and
+        // its OfflineDAoC-LivingServer-1.2.zip is verified and moved into the game folder as LivingServer-1.2.
+        byte[] package = UpdateFixtures.Package("1.2");
+        var web = new FakeReleaseWeb { Json = UpdateFixtures.ReleaseJson("v1.2", package), File = package };
+        var updater = new LauncherUpdater(_game, web);
+        ReleaseInfo? offered = updater.Check(BuildVersion.Parse("1.1.4-beta"), false, DateTime.UtcNow, out string? problem);
+        Assert.That(problem, Is.Null);
+        Assert.That(offered?.TagName, Is.EqualTo("v1.2"));
+        PreparedUpdate prepared = updater.PrepareFromRelease(offered!, null, CancellationToken.None);
+        Assert.That(prepared.Build.Name, Is.EqualTo("1.2"));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.zip")));
+        Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2")));
+        Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2\r\n"));
     }
 
     [Test]

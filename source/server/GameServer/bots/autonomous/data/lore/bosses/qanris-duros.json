@@ -1,0 +1,123 @@
+{
+  "id": "qanris-duros",
+  "name": "Qan'ris Duros",
+  "catalogKey": "albion-named-mobs-shrouded-isles/qanrisduros",
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "qanris"
+  ],
+  "facts": [
+    {
+      "text": "Level 68, 30,000 health, crowd-control immune, armour factor 350 with 20% absorb; resists 20% of melee and 30% of everything else; melee reach 350.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs"
+    },
+    {
+      "text": "Thunder Stomp: 400 energy damage in a radius of 1,000 around himself, 3 s cast, uninterruptible, recast 8-18 s, tried on 30% of his thinks while he is not casting.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs"
+    },
+    {
+      "text": "Five drakoran guardsmen (PackageID DurosBaf) stand within about 450 of him. The script's call to them uses WorldMgr.GetNPCsFromRegion(3500), a region id rather than a radius, so it finds nobody; they join through ordinary faction bring-a-friend and their own aggro.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Shrouded Isles/QanrisDuros.cs; world data Mob.PackageID"
+    },
+    {
+      "text": "With nobody left on his aggro list he walks home at full health; respawn is the epic-encounter interval.",
+      "provenance": "game",
+      "source": "source/server/GameServer/serverproperty/ServerProperties.cs (set_epic_game_encounter_respawninterval, default 60)"
+    },
+    {
+      "text": "His sworn guard as an avowry, the stamp that orders the line, his view of Gwyntell's fires and his quarrel with the war-priest are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Qan'ris Duros commands the drakoran in the Dales of Devwy, and he chose his ground before he chose anything else. The high ground in the north-east looks down the whole length of the dales to the winnowing hill, and on a clear night he can count the fires of Fort Gwyntell from his camp. The Legion's own soldiers say he counts them every night, and that the night the number changes he will move.\n\nHe is of the Legion, but he keeps a custom of the dry'ak, the clan whose lords in Avalon City keep an avowry: sworn guards who stand at their lord's shoulder and die before him. His guard is small and stands close, near enough to touch, and in the dales nobody has yet reached the commander without first meeting the men at his shoulder. Albion's scouts say the guard does not wait for an order. The fort says that is what sworn means.\n\nThe drakoran order a line with the foot. A sergeant stamps, and the file closes; a captain stamps, and the company turns. When Qan'ris Duros stamps, the ground answers for a long way round him, and those who stand near him are thrown down whether they are his enemies or not. His own soldiers keep their distance when he is angry. The archers of Gwyntell have a saying they took from the drakoran prisoners: the commander's foot reaches as far as a man can throw a spear, and not one step farther. His arm reaches farther than his blade looks, and he has never been seen to sleep in the field, or to stand still because anyone told him to.\n\nHe does not chase. When the field is clear he walks back to his fire and is whole again by the time he sits down, and the Legion rebuilds whatever was burned. Albion's garrison has broken his camp more than once. He has always been there again by the next season, counting the fires.\n\nHe has no use for his war-priest. Ris'nir Cruss keeps the field above the dyers' hamlet and keeps what he kills, and Qan'ris Duros will not have the kept dead in his camp. The drakoran prisoners at Gwyntell say the two do not speak, and that the commander once had the priest's apparitions driven out of the camp with torches. The priest has never forgiven it. The commander has never noticed.",
+  "legend": "Qan'ris Duros, level 68, 30k health, on the high ground in the north-east of the Dales of Devwy. Five drakoran guardsmen stand right next to him; the script's link to them is broken, so whether they all come is down to normal bring-a-friend and their own aggro, but plan for all five and kill them first. He cannot be mezzed or stunned. His Thunder Stomp is the whole fight: 400 energy to everyone within 1,000 of him, a 3 second uninterruptible cast, every 8 to 18 seconds. Spreading out does not help inside that radius; casters and healers stand past 1,000 and only the melee eat it, so melee keep their health topped before each cast. He has a long melee reach. He resists magic a little more than melee. If everyone drops off him he walks home at full health, and he respawns about an hour after he dies.",
+  "yells": {
+    "aggro": [
+      "Guard! To me!",
+      "Stand to. We have visitors on the high ground.",
+      "You came up the hill. Few go down it."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Line! Close the line! The commander does not fall!"
+      }
+    ],
+    "death": [
+      "The camp... will be rebuilt...",
+      "Count the fires... for me..."
+    ],
+    "slay": [
+      "Off my ground.",
+      "One fewer fire at Gwyntell tonight.",
+      "Throw it down the hill."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The commander's ground. His guard stands close.",
+      "Gwyntell's fires are small from up here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Qan'ris Duros stamps. The high ground shakes!"
+      }
+    ],
+    "realmFirstKill": "Qan'ris Duros has fallen. The high ground is Albion's."
+  },
+  "botLines": {
+    "briefing": [
+      "qanris duros, 68, 30k. five guardsmen stand right on him, kill those first",
+      "his stomp is 400 to everyone within 1000 of him. casters and healers stay past 1000",
+      "melee stay topped, the stomp has a 3 sec cast and you cant interrupt it",
+      "cant mez or stun him. he has long reach, dont stand at the edge thinking youre safe"
+    ],
+    "aftermathWin": [
+      "qanris down. tell gwyntell to light another fire",
+      "commander's dead, the guard went first like we said",
+      "nobody stood inside the stomp who didnt have to. clean",
+      "the legion will rebuild that camp in an hour. gg anyway"
+    ],
+    "aftermathLoss": [
+      "the healers were inside the stomp radius. thats the wipe",
+      "we left two guardsmen up and they ate the cloth",
+      "melee went in low on health and the stomp finished them",
+      "tried to mez him. he doesnt mez"
+    ],
+    "rumour": [
+      "[heard|someone said] qanris counts gwyntell's fires every night from his camp",
+      "heard his guard is sworn like the dry'ak lords' avowry in avalon city",
+      "[heard|someone said] qanris had ris'nir's ghosts driven out of the camp with torches",
+      "heard the drakoran say the commander's foot reaches as far as a spear throw"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "qan'ris duros",
+    "text": "The drakoran commander of the [dales of devwy], on the high ground in the north-east, where he can count the fires of Fort Gwyntell. He keeps the dry'ak custom of the avowry: a sworn guard at his shoulder. His stamp throws down everyone near him, as far as a spear can be thrown. He will not have [ris'nir cruss]'s kept dead in his camp."
+  },
+  "bookPage": "From the dispatches of Major Fenn of Fort Gwyntell to General Wystan at Caer Gothwaite. Sir, the commander on the high ground is where he was. We burned his camp in the spring and he was back by midsummer. The prisoners say he counts our fires; I have ordered the same number lit every night, so that he has nothing to count. His guard stood at his shoulder and died there, all of them, before our men reached him, and the prisoners told me that is the custom and not courage. The archers stood off from him at a spear's throw and lost nobody. The swordsmen went in and came out bruised from heel to crown, though he never touched most of them. He stamped. I ask for more archers.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} took Qan'ris Duros's high ground in the Dales of Devwy in {minutes} minutes.",
+    "loss": "Qan'ris Duros held the high ground; {raidLeader}'s company of {realm} went back down the hill."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "risnir-cruss",
+      "relation": "his war-priest, whose keeping of the dead he will not allow in his camp"
+    },
+    {
+      "id": "duraek-the-empowered",
+      "relation": "keeps the dry'ak custom of the avowry that Dura'ek keeps in Avalon City"
+    }
+  ]
+}

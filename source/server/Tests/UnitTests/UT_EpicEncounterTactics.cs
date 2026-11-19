@@ -311,6 +311,21 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void RaidersWalkingBackAfterAWipeStillCountAsTheRaid()
+        {
+            // Caer Sidi, 2026-11-12 (owner's PC): 152 raiders, 141 alive after the first wipe at Host but only a handful back
+            // inside; eight pulled Host early and six fell. Measured against the few inside that was the raid's last attempt.
+            Assert.That(RealmRaidDungeonRoute.IsWipe(8, 6, 100, 99, 12), Is.True, "against the 12 inside it was half the raid");
+            int raid = RealmRaidDungeonRoute.AttemptRaidSize(livingInside: 12, livingAnywhere: 141);
+            Assert.That(raid, Is.EqualTo(141));
+            Assert.That(RealmRaidDungeonRoute.IsWipe(8, 6, 100, 99, raid), Is.False, "against the living raid it is a lost skirmish: no attempt used");
+            // A real second attempt still counts: most of the raid in it and half of them down.
+            Assert.That(RealmRaidDungeonRoute.IsWipe(97, 61, 19, 19, RealmRaidDungeonRoute.AttemptRaidSize(100, 104)), Is.True);
+            // Everybody inside: nothing changes.
+            Assert.That(RealmRaidDungeonRoute.AttemptRaidSize(80, 80), Is.EqualTo(80));
+        }
+
+        [Test]
         public void AWipeIsTheRaidsOnlyWhenHalfOfItWasThereOrFell()
         {
             Assert.That(RealmRaidDungeonRoute.IsWipe(31, 31, 100, 99, 87), Is.False, "Aidon 2026-11-05: a lost skirmish");
@@ -380,6 +395,90 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void WithRaidLearningSeededAPlayersOwnGroupKeepsTodaysCall()
+        {
+            // Bots as people WP2R, seeding done and the blast learned: outside a running realm raid (a player's own group at
+            // the boss, as here: no raid) the call is today's, timed from the record's familiarity, and nobody is credited.
+            EpicEncounterTactics.CallBlastForTests("TacticGiant");
+            RaidDiscipline.LearnForTests("TacticGiant/blast");
+            RaidLearning.ResetForTests(RaidLearning.SeedingState.Done);
+            int rows = BotPeopleStore.Current.MechanicsSeen.Count;
+            try
+            {
+                var giant = Npc<TacticGiant>(31577, 35305, 14551);
+                var tank = Npc<Raider>(31600, 35305, 14551);
+                var caster = Npc<Raider>(32577, 35305, 14551);
+                giant.TargetObject = tank;
+                var live = new List<GameNPC> { giant };
+                EpicEncounterTactics.ResetBlastForTests();
+                giant.Fighting = true;
+                giant.Hp = 82;
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                giant.Hp = 79;
+                var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 0); // familiarity 0: no record for a test boss
+                long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
+                if (callAt > 3_000)
+                    Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, Math.Max(callAt, 3_000) + 250).Action,
+                    Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "out on today's call");
+                Assert.That(BotPeopleStore.Current.MechanicsSeen.Count, Is.EqualTo(rows), "nobody credited");
+                Assert.That(RaidLearning.RosterOf(null, "TacticGiant/blast"), Is.Null);
+            }
+            finally
+            {
+                EpicEncounterTactics.UncallBlastForTests("TacticGiant");
+                RaidDiscipline.LearnForTests(null);
+                RaidLearning.ResetForTests(RaidLearning.SeedingState.Pending);
+                EpicEncounterTactics.ResetBlastForTests();
+            }
+        }
+
+        [Test]
+        public void ACalledBlastWaitsForTheRaidsCallNotForHisHealth()
+        {
+            // 1.2 raid discipline: the window opens as before, but nobody moves until the caller has called it, a lead
+            // before it lands (Xanxicar's stomp; a test giant here).
+            EpicEncounterTactics.CallBlastForTests("TacticGiant");
+            RaidDiscipline.FamiliarityOverride = 1;
+            try
+            {
+                var giant = Npc<TacticGiant>(31577, 35305, 14551);
+                var tank = Npc<Raider>(31600, 35305, 14551);
+                var caster = Npc<Raider>(32577, 35305, 14551);
+                giant.TargetObject = tank;
+                var live = new List<GameNPC> { giant };
+                EpicEncounterTactics.ResetBlastForTests();
+                giant.Fighting = true;
+                giant.Hp = 82; // in the window, but he is not losing health: no call yet
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 2_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the window is open but nobody has called it");
+                giant.Hp = 79; // crossed at 3,000: it lands BlastLandsAfterCrossSeconds later
+                var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 1);
+                long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
+                if (callAt > 3_000)
+                    Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                        $"called {call.LeadSeconds:0.0} s before it lands");
+                var w = EpicEncounterTactics.Decide(caster, giant, live, 0, true, Math.Max(callAt, 3_000) + 250);
+                Assert.That(w.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "out on the call");
+                Assert.That(EpicEncounterTactics.Decide(tank, giant, live, 0, false, Math.Max(callAt, 3_000) + 500).Action,
+                    Is.EqualTo(EpicEncounterTactics.BotAction.None), "the party it fights stays in");
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 13_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None),
+                    "the stomp is over: back in");
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0.5, -1), Is.EqualTo(16.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(85, 80, 0, -1), Is.EqualTo(double.PositiveInfinity));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000), Is.EqualTo(4.8).Within(1e-9));
+                Assert.That(EpicEncounterTactics.BlastEtaSeconds(79, 80, 0.5, 2_000, 4_000), Is.EqualTo(4).Within(1e-9), "the cast says when");
+            }
+            finally
+            {
+                EpicEncounterTactics.UncallBlastForTests("TacticGiant");
+                RaidDiscipline.FamiliarityOverride = null;
+                EpicEncounterTactics.ResetBlastForTests();
+            }
+        }
+
+        [Test]
         public void NosdodensWavesAreFoughtBeforeHim()
         {
             var nosdoden = EpicEncounterTactics.All.Single(t => t.Boss == "Nosdoden");
@@ -392,15 +491,39 @@ namespace DOL.UnitTests
 
         // ---- restored mechanics ------------------------------------------------------------------------------------
 
+        /// <summary>The restore switches on by default since 1.2 (the one list; the dungeons' tests check their own). Off until
+        /// the owner confirms after a played check: AllowFullFirePatches (keeps his 2026-10-19 nerf) and AllowGovannonFullHealth.</summary>
+        internal static readonly string[] OnSince12 =
+        [
+            nameof(EpicEncounterMechanics.AllowEarthmenderClassPuzzle),
+            // Epic wave 2, Galladoria (UT_EpicWaveTwo.GalladoriaRestoresOn).
+            nameof(EpicEncounterMechanics.AllowAroonDamageOrder), nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
+            nameof(EpicEncounterMechanics.AllowEarthmendersPassive),
+            nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset),
+            // (The Earthmenders' mutual heal is off by default: the owner's call, 2026-11-18.)
+            nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowFairyFlight),
+            // Tuscaran Glacier and Summoner's Hall (UT_EpicWave2MidHib).
+            nameof(EpicEncounterMechanics.AllowTuscarTwinHeal), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
+            // Caer Sidi (UT_EpicWave2Albion).
+            // (Funus's weapon puzzle is off by default in 1.2: the owner's call, 2026-11-08.)
+            nameof(EpicEncounterMechanics.AllowHorsemenTetherHeal),
+            nameof(EpicEncounterMechanics.AllowSacristanPatrol), nameof(EpicEncounterMechanics.AllowSoulReckonerFullShield),
+            nameof(EpicEncounterMechanics.AllowSoulReckonerSmallRoom),
+        ];
+
         [Test]
-        public void EveryRestoredMechanicIsOffByDefault()
+        public void EveryRestoredMechanicIsOffByDefaultUntilTheRaidPlaysIt()
         {
-            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(17));
+            Assert.That(EpicEncounterMechanics.RestoreSwitches, Has.Length.EqualTo(19),
+                "1.2 play tests: + AllowEasmarachEndlessFallsHeal (off), + AllowGovannonFullHeal (off, owner 2026-11-11)");
             foreach (string name in EpicEncounterMechanics.RestoreSwitches)
             {
                 PropertyInfo p = typeof(EpicEncounterMechanics).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
                 Assert.That(p, Is.Not.Null, name);
-                Assert.That((bool)p.GetValue(null), Is.False, name);
+                // 1.2: the Earthmenders' class rule is on; the raid assigns classes to it (UT_EpicEncounterTactics3). Epic wave 2:
+                // Galladoria's (UT_EpicWaveTwo), Tuscaran's and Summoner's Hall's (UT_EpicWave2MidHib), Caer Sidi's five
+                // (UT_EpicWave2Albion), each with its tactic.
+                Assert.That((bool)p.GetValue(null), Is.EqualTo(OnSince12.Contains(name)), name);
             }
         }
 

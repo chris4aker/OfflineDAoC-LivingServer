@@ -762,6 +762,13 @@ namespace DOL.GS.ServerProperties
 		public static bool QUEST_XP_BY_LEVEL;
 
 		/// <summary>
+		/// The epic chains, linked by quest ID as the server reads the quest rows (Living Server 1.2, EpicChainLinks):
+		/// epic_chains.py's changes, made in memory, never written to the world.
+		/// </summary>
+		[ServerProperty("quest", "epic_chains_linked", "The epic chains are linked by quest ID as the server reads the quest rows (Living Server 1.2): the Guild of Shadows steps 7 to 48 in order with their period dialogue, and every other guild's epic steps pinned in order (tools/claude-version/epic_chains.py's changes). They are made in memory each time the rows are read and never written to the world database, so removing Living Server leaves the released quests as they were. False is a kill switch: the rows are read as they are.", true)]
+		public static bool EPIC_CHAINS_LINKED = true;
+
+		/// <summary>
 		/// The CL Experience Rate
 		/// </summary>
 		[ServerProperty("rates", "cl_xp_rate", "The Champion Level Experience Points Rate Modifier - Edit this to change the rate at which you gain CL experience points e.g 1.5 is 50% more 2.0 is twice the amount (100%) 0.5 is half the amount (50%)", 1.0)]
@@ -889,7 +896,7 @@ namespace DOL.GS.ServerProperties
 		/// rate is the pre-1.87 one (patch 1.87 doubled it, about 23 per tick at level 50 instead of 12), so 1.5 is a middle ground.
 		/// Worlds that still had the old untouched default (1) get 1.5 once (LivingServerSettingsUpgrade).
 		/// </summary>
-		[ServerProperty("rates", "mana_regen_amount_modifier", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab.", 1.5)]
+		[ServerProperty("rates", "mana_regen_amount_modifier", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground.", 1.5)]
 		public static double MANA_REGEN_AMOUNT_MODIFIER;
 
 		/// <summary>
@@ -1229,6 +1236,102 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("npc", "set_epic_encounter_weapon_damage_cap", "Maximum damage cap multipler for epic encounters that use melee weapons", 1.5)]
 		public static double SET_EPIC_ENCOUNTER_WEAPON_DAMAGE_CAP;
+
+		/// <summary>
+		/// Epic encounters (1.2): a boss's throw, teleport or jail does not take your companions and pet along
+		/// (EncounterDisplacement.MovePlayer). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_companions_stay_when_thrown", "Epic encounters: when a boss throws, teleports or jails you, your /spawn companions and your pet stay at the fight and keep fighting (True, the 1.2 default) or are moved along with you as by a portal (False, as most throws did before 1.2; Legion's throw kept them at the fight before too). Bots the boss throws themselves find their way back either way.", true)]
+		public static bool EPIC_COMPANIONS_STAY_WHEN_THROWN = true;
+
+		/// <summary>
+		/// The dragons' wing-gust throw (1.2, DragonEncounterThrow): how high above the thrown raider each dragon may hurl.
+		/// 0 keeps the original lair spots (OpenDAoC-Core 3513bad: up to about 1,400 units, about 60% of a raider's health
+		/// without Safe Fall). Owner default 2026-11-06, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_dragon_throw_height_golestandt", "Golestandt's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (up to about 1,400 units: about 60% of a raider's health from the fall). 712 is the fork's old half throw (about 34%); lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GOLESTANDT = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_gjalpinulva", "Gjalpinulva's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_GJALPINULVA = 0;
+
+		[ServerProperty("npc", "epic_dragon_throw_height_cuuldurach", "Cuuldurach's wing-gust throw: the highest a raider is hurled above where they stood, in units. 0 = the original lair spots (about 60% of a raider's health from the fall). 712 is about 34%; lower is gentler.", 0)]
+		public static int EPIC_DRAGON_THROW_HEIGHT_CUULDURACH = 0;
+
+		/// <summary>
+		/// Epic encounters (1.2, epic wave 2): the restored original mechanics, each its own setting so the owner can turn one
+		/// off or on without a rebuild (EpicEncounterMechanics reads them live; a boss's health and a spell take the value
+		/// when they are next read or built). Owner defaults 2026-11-07, to confirm.
+		/// </summary>
+		[ServerProperty("npc", "epic_horsemen_tether_heal", "Caer Sidi: Fames, Morbus and Funus heal to full when drawn past their tether, as in the original (True, 1.2). The raid fights each horseman near his room and leads him back.", true)]
+		public static bool EPIC_HORSEMEN_TETHER_HEAL = true;
+
+		[ServerProperty("npc", "epic_funus_weapon_puzzle", "Caer Sidi: Funus takes damage only from clerics, and from mercenaries, armsmen, infiltrators and scouts with their listed weapon; any other hit (pets too) heals him to full (True). Off by default in 1.2. Do not turn it on yet: the tactic is not finished (owner 2026-11-08: off until the bots clear it with no heals). False (default): everyone hurts him, as in 1.1.", false)]
+		public static bool EPIC_FUNUS_WEAPON_PUZZLE = false;
+
+		[ServerProperty("npc", "epic_funus_bot_shield_guard", "Caer Sidi: while Funus's weapon puzzle is on, the sting of a damage shield on a bot he hits neither heals nor hurts him (True, 1.2): a bot can't take a shield off, and its sting would heal him to full. False: as the original, the sting of a bot of a class he doesn't take damage from heals him to full. Real players keep the original either way.", true)]
+		public static bool EPIC_FUNUS_BOT_SHIELD_GUARD = true;
+
+		[ServerProperty("npc", "epic_sacristan_patrol", "Caer Sidi: the Skeletal Sacristan walks his loop at full speed and never stops, with 70% magic resists (True, 1.2). The raid waits along his loop and hits him as he passes.", true)]
+		public static bool EPIC_SACRISTAN_PATROL = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_full_shield", "Caer Sidi: Soul Reckoner takes no damage at all while a reckoned soul lives (True, 1.2; False: a quarter).", true)]
+		public static bool EPIC_SOUL_RECKONER_FULL_SHIELD = true;
+
+		[ServerProperty("npc", "epic_soul_reckoner_small_room", "Caer Sidi: Soul Reckoner takes damage only within 900 of his room's middle (True, 1.2; False: 1,500, the 1.1 change).", true)]
+		public static bool EPIC_SOUL_RECKONER_SMALL_ROOM = true;
+
+		[ServerProperty("npc", "epic_aroon_damage_order", "Galladoria: Aroon's Scaiths die in order, each immune until the one before is dead, and Aroon takes only the damage types whose Scaith is dead (True, 1.2).", true)]
+		public static bool EPIC_AROON_DAMAGE_ORDER = true;
+
+		[ServerProperty("npc", "epic_galladoria_bridge_spot", "Galladoria: the primals come when a raider (bots too) stands on the waterfall bridge spot (True, 1.2); a bot raid that waited on the bridge three minutes starts it anyway.", true)]
+		public static bool EPIC_GALLADORIA_BRIDGE_SPOT = true;
+
+		[ServerProperty("npc", "epic_full_fire_patches", "Galladoria: the Fire primal's trail of fire hits 220 in a 450 radius, as in the original (True), or 120 in 300 (False: the owner's 2026-10-19 nerf, kept as the 1.2 default until a played check).", false)]
+		public static bool EPIC_FULL_FIRE_PATCHES = false;
+
+		[ServerProperty("npc", "epic_earthmender_class_puzzle", "Galladoria: each Earthmender takes damage only from its own class group (True, 1.2). The raid sends each raider to one its class hurts.", true)]
+		public static bool EPIC_EARTHMENDER_CLASS_PUZZLE = true;
+
+		[ServerProperty("npc", "epic_earthmenders_passive", "Galladoria: Earthmenders never attack, they only heal (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDERS_PASSIVE = true;
+
+		[ServerProperty("npc", "epic_earthmender_quick_reset", "Galladoria: an Earthmender heals to full 30 s after its last fight even with raiders in the room (True, 1.2, as in the original).", true)]
+		public static bool EPIC_EARTHMENDER_QUICK_RESET = true;
+
+		[ServerProperty("npc", "epic_earthmender_mutual_heal", "Galladoria: Earthmenders heal each other as well as the Earth primal (as in the original). False by default (owner 2026-11-18): with it on the bot raid can't kill them.", false)]
+		public static bool EPIC_EARTHMENDER_MUTUAL_HEAL = false;
+
+		[ServerProperty("npc", "epic_beatha_heals_xaga", "Galladoria: damage to Beatha heals Xaga by twice the amount (True, 1.2). The raid kills Beatha, then Tine, then Xaga.", true)]
+		public static bool EPIC_BEATHA_HEALS_XAGA = true;
+
+		[ServerProperty("npc", "epic_fairy_flight", "Galladoria: Beatha and Tine circle the room even while they are fought (True, 1.2, as in the original).", true)]
+		public static bool EPIC_FAIRY_FLIGHT = true;
+
+		[ServerProperty("npc", "epic_govannon_full_health", "Summoner's Hall: Grand Summoner Govannon has 300,000 health, as in the original (True), or 200,000 (False, the 1.2 default until a played check: a 60-bot raid took him about 1% a minute).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEALTH = false;
+
+		[ServerProperty("npc", "epic_govannon_full_heal", "Summoner's Hall: when Grand Summoner Govannon turns into his demon at 50% health he heals to full, as in the original (True), or to 75% (False, the 1.2 default: owner 2026-11-11, after bot raids that stepped out of his Shroud still lost with the demon at 29% to 42%).", false)]
+		public static bool EPIC_GOVANNON_FULL_HEAL = false;
+
+		[ServerProperty("npc", "epic_easmarach_endless_falls_heal", "Galladoria: Easmarach heals an eighth on the waterfall top every time he falls to 30% and stays up there, as in the original (True), or heals there once a fight and then comes back down to fight on (False, the 1.2 default: a bot raid can only shoot him up there, about 1% a minute, and never finished him; play test 2026-11-07).", false)]
+		public static bool EPIC_EASMARACH_ENDLESS_FALLS_HEAL = false;
+
+		[ServerProperty("npc", "epic_kvasir_cold_heal", "Tuscaran Glacier: cold damage heals Icelord Kvasir by a fifth of his health and does no damage (True, 1.2). No bot casts cold at him.", true)]
+		public static bool EPIC_KVASIR_COLD_HEAL = true;
+
+		[ServerProperty("npc", "epic_tuscar_twin_heal", "Tuscaran Glacier: damage to King Tuscar heals Queen Kula and damage to her heals him while the other is hurt (True, 1.2). The raid kills Kula first; only the King's own tank fights him. Test first.", true)]
+		public static bool EPIC_TUSCAR_TWIN_HEAL = true;
+
+		[ServerProperty("npc", "epic_dragon_messengers", "The dragons: from half health every 80-90 s four to six messengers run out of the lair and each calls four to six adds (True, 1.2). The raid's casters and archers run them down. False: no messengers at any dragon.", true)]
+		public static bool EPIC_DRAGON_MESSENGERS = true;
+
+		/// <summary>
+		/// Epic encounters (1.2): per-encounter switch values that replace the shipped ones (EpicEncounterMechanics.
+		/// ShippedPerEncounter), for any boss and any of its switches, without a rebuild.
+		/// </summary>
+		[ServerProperty("npc", "epic_encounter_switches", "Epic encounters: per-boss switch values that replace what ships, as Switch@Boss=True or False, separated by commas or semicolons. Example: AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False. Switches: AllowDisplacement, AllowPositionPuzzle, AllowInvulnerableHazards, AllowAddShield, AllowGlacierGriffonPatrol, AllowBotDisplacement, AllowDragonThrow, AllowDragonMessengers. Boss = the script's class name (the catalog docs/encounters/EPIC-ENCOUNTERS.md lists them). Empty: what ships.", "")]
+		public static string EPIC_ENCOUNTER_SWITCHES = "";
 
 		/// <summary>
 		/// Allow Roam
@@ -2159,11 +2262,39 @@ namespace DOL.GS.ServerProperties
 
 		/// <summary>
 		/// Offline DAoC 0.33 editions: the custom Hibernian Sluaghbinder class (0.33b keeps it on,
-		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot,
-		/// no Sluaghbinder autonomous bots and no Sluaghbinder temporary helpers.
+		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot.
+		/// Bots never play the class in either edition (owner 2026-11-17, BotCustomClassRule): no gamebot, companion,
+		/// helper or hired companion is made as one, and a gamebot that already is one is kept but never logged in.
 		/// </summary>
 		[ServerProperty("classes", "enable_sluaghbinder", "Allow the custom Hibernian Sluaghbinder class (player creation, autonomous bots and helpers). False leaves only the Classic + SI classes.", true)]
 		public static bool ENABLE_SLUAGHBINDER = true;
+
+		/// <summary>
+		/// Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md, WP2): the launcher's + Lv.1, + Lv.20 and + Lv.50 batches (and
+		/// AutonomousBotIdentityGenerator.Generate) draw each new gamebot's class from its realm's 2003 share
+		/// (OfflineDaoc.Shared.EraBuildCatalog: Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.
+		/// The launcher reads the row (a missing row is on); bots never play the custom class either way (owner 2026-11-17).
+		/// </summary>
+		[ServerProperty("bots", "bot_era_class_shares", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.", true)]
+		public static bool BOT_ERA_CLASS_SHARES = true;
+
+		/// <summary>
+		/// Era builds 1.2 (docs/ERA-BUILDS-1.2.md, WP3): a new gamebot takes its lifetime build from the era data at its first
+		/// load. Saved builds are never re-drawn; companions, hired companions, Epic Special Forces and buffbots are untouched.
+		/// </summary>
+		[ServerProperty("bots", "bot_era_builds", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep the standard builds. Off: new bots get the standard builds too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS.", true)]
+		public static bool BOT_ERA_BUILDS = true;
+
+		/// <summary>Era builds 1.2 (WP3): percent of new gamebots that take one of today's class-file builds instead (the odd spec).</summary>
+		[ServerProperty("bots", "bot_era_offmeta_percent", "Era builds: percent (0 to 100) of new gamebots that take one of today's class-file builds instead of an era build, the odd spec every server had. 0: era builds only. Which bots are off-meta is fixed by each bot's roster id. Needs bot_era_builds.", 10)]
+		public static int BOT_ERA_OFFMETA_PERCENT = 10;
+
+		/// <summary>
+		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters
+		/// through the Passport Desk. False refuses new visitors; visitors already here can still go home.
+		/// </summary>
+		[ServerProperty("passport", "passport_visitors", "While hosting, let friends bring their own characters to this world (Character passport). False refuses new visitors; visitors already here can still go home.", true)]
+		public static bool PASSPORT_VISITORS = true;
 
 		/// <summary>
 		/// Disable some races from being created
@@ -2367,7 +2498,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Autonomous gamebots form realm guilds, carry guild names and can be invited into a player's guild.
 		/// </summary>
-		[ServerProperty("guild", "bot_guilds_enabled", "Autonomous gamebots form and join realm guilds (see docs/BOT-GUILDS.md), and players can /ginvite them. False keeps every gamebot guildless; saved memberships are kept.", false)]
+		[ServerProperty("guild", "bot_guilds_enabled", "Autonomous gamebots form and join realm guilds (see docs/BOT-GUILDS.md), and players can /ginvite them. False keeps every gamebot guildless; saved memberships are kept.", true)]
 		public static bool BOT_GUILDS_ENABLED;
 
 		/// <summary>
@@ -2395,9 +2526,9 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_GUILD_RECRUIT_PLAYER;
 
 		/// <summary>
-		/// Bot guilds claim keeps and towers their realm takes, under the usual claim rules.
+		/// Bot guilds claim keeps their realm takes, under the usual claim rules.
 		/// </summary>
-		[ServerProperty("guild", "bot_guild_claims_keeps", "When bot guilds are on: after a realm takes a keep or tower, a bot guild with enough members inside claims it (claim_num, half for towers; guilds_claim_limit), never while a real player of that realm is inside. Its warbands answer first when that keep is attacked.", true)]
+		[ServerProperty("guild", "bot_guild_claims_keeps", "When bot guilds are on: after a realm takes a keep, a bot guild with enough members inside claims it (claim_num; guilds_claim_limit), never while a real player of that realm is inside. Its members answer first when that keep is attacked.", true)]
 		public static bool BOT_GUILD_CLAIMS_KEEPS;
 
 		/// <summary>
@@ -2422,7 +2553,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Autonomous gamebots have personality types and traits that tilt how they spend their time.
 		/// </summary>
-		[ServerProperty("bots", "bot_personalities_enabled", "Autonomous gamebots get a personality (Leveler, Socialite, Daredevil, Explorer, Crafter, No-lifer) and traits, fixed from their id, that tilt town breaks, solo versus group goals, dungeon choice, camp choice and how often they talk (see docs/BOT-PERSONALITIES.md). Hard rules never change. False keeps today's behavior.", false)]
+		[ServerProperty("bots", "bot_personalities_enabled", "Autonomous gamebots get a personality (Leveler, Socialite, Daredevil, Explorer, Crafter, No Lifer) and traits, fixed from their id, that tilt town breaks, solo versus group goals, dungeon choice, camp choice and how often they talk (see docs/BOT-PERSONALITIES.md). Hard rules never change. False: no personalities.", true)]
 		public static bool BOT_PERSONALITIES_ENABLED;
 
 		/// <summary>
@@ -2432,9 +2563,221 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_INCOMING_FIRE_REACTION;
 
 		/// <summary>
+		/// RvR perception (owner 2026-11-01): autonomous gamebots notice enemy players in RvR by chance, react after a moment and call it to their group.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance: always within 1,000 units, never beyond 3,500; one bot looking on its own takes about 1.5 s at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the median), less when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, more when it stands still. At most 3 bots of a realm look for the same enemy group each second; the others learn of it from their call. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots are noticed the same way when rvr_bot_perception_bots is on; siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
+		public static bool RVR_BOT_PERCEPTION;
+
+		/// <summary>
+		/// How sharp autonomous gamebots are at spotting enemy players in RvR: easy, normal or veteran.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_awareness", "When rvr_bot_perception is on: easy (sure sighting within 700, never beyond 2,500, twice the normal time to notice, slower reactions, 2 lookers per enemy each second), normal (like players in 2003: 1,000 / 3,500, 0.5-2 s, 3 lookers) or veteran (1,300 / 4,500, half the normal time to notice, faster reactions, a wider call radius, 5 lookers).", "normal")]
+		public static string RVR_BOT_AWARENESS;
+
+		/// <summary>
+		/// A gamebot that notices an enemy player tells its group and warband, who react after their own moment.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_spotters", "When rvr_bot_perception is on: the gamebot that notices an enemy player tells its group mates within 2,500 units, who engage after their own reaction delay; each other group of its warband hears it relayed half the time, 4 s later. A bot on a realm raid, in a battleground assault or in a player's group doesn't leave it to answer. With bot voices on it calls it in /group (\"inc 3 north\") when you are in that group. False: every bot has to notice for itself.", true)]
+		public static bool RVR_BOT_SPOTTERS;
+
+		/// <summary>
+		/// Open-field RvR overhaul for 1.2 (owner 2026-11-16; docs/RVR-FIELD-1.2.md): the master switch of the bot groups' open-field tactics.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_field_tactics", "The master switch of the open-field RvR tactics for autonomous gamebots (docs/RVR-FIELD-1.2.md): a bot-only group, or a solo gamebot, away from keeps shares one fight plan. It never applies to realm raids, battleground keep assaults, keep defenders and siege fighters, siege engine operators, relic carriers, companions, or any group you lead or are in. False turns every rvr_bot_*, rvr_march_* and rvr_roam_* tactics switch below off at once. In this build it changes nothing by itself: the tactics arrive with 1.2 work packages 1 to 6, each behind its own switch.", true)]
+		public static bool RVR_BOT_FIELD_TACTICS;
+
+		/// <summary>
+		/// 1.2 work package 1 (eyes): bots notice enemy bots by the player rule, scan only as far as noticing reaches, and may notice a stealther close up.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_perception_bots", "Open-field RvR (1.2): away from keeps, autonomous gamebots notice enemy gamebots and their pets the way they notice you (rvr_bot_perception: by chance, after a reaction delay, called to the group), instead of at once at 5,000 units; noticing one enemy notices its group mates within 1,500 units of it, and a bot looks only as far as noticing reaches (3,500 on normal, never less than 2,600). A bot may also notice a stealthed enemy, player or bot, close up by chance (about 50% a second at point blank, none beyond 350 units or beyond what a player in its place could see, never while fighting someone else). Bots at a keep they hold or besiege, raids, battleground assaults and groups with a player are unchanged, and a bot or group under attack fights back at once. Log: RVR_NOTICE (kind, party), RVR_SPOT, RVR_SCAN_BUDGET. Needs rvr_bot_perception and rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_PERCEPTION_BOTS;
+
+		/// <summary>
+		/// 1.2 work package 1 (eyes): two lookers per group.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_group_lookers", "Open-field RvR (1.2): away from keeps, two members of each gamebot group take turns (every 10 s) looking for enemies, you included; soloers look for themselves. The others look only once a mate calls an enemy, a group mate is fighting or the group's plan has a target. Bots at a keep they hold or besiege, raids, battleground assaults and groups with a player are unchanged. Log: RVR_SCAN_BUDGET (lookers, woken, idle). Needs rvr_bot_perception and rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_GROUP_LOOKERS;
+
+		/// <summary>
+		/// 1.2 work package 2 (assist): a main assist and a called target.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_assist", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, one fighter (a tank first) is the main assist and the group's target is called by the 2003 kill order (casters, healers, bladeturn casters, crowd controllers, tanks last; versus Midgard the Shaman first, versus Hibernia the Bard, the Eldritch, then the Druids). A call is held 4-8 s; an enemy using Mastery of Concentration or just resurrected becomes the call; one the group cannot reach is never called. Members follow after their own delay by the group's skill tier, and some tunnel. Log: RVR_ASSIST_CALL, RVR_ASSIST_SWITCH. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_ASSIST;
+
+		/// <summary>
+		/// 1.2 work package 2 (assist): the group's crowd-control plan.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_cc_plan", "Open-field RvR (1.2): a bot group's mezzers, stunners and rooters each hold one enemy that is not the kill target, from the charge on; the kill target is never mezzed, a resisted mez is cast again and the server's crowd-control immunity is respected. Human errors by skill tier: area damage sometimes breaks a mez, and a mezzed crowd controller is not covered for 2-4 s. Log: RVR_CC_ASSIGN. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_CC_PLAN;
+
+		/// <summary>
+		/// 1.2 work package 2 (assist): interrupt duty.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_interrupts", "Open-field RvR (1.2): each enemy healer or caster that is not the kill target gets one bot of the group (an archer, a caster with an instant or fast spell, a pet class, or a melee fighter in reach; at most half the group) that keeps hitting it; it looks again every 1.5-3 s by skill tier. Our design, not a 2003 rotation; the server's 1.65 interrupt rules are unchanged. Log: RVR_INTERRUPT. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_INTERRUPTS;
+
+		/// <summary>
+		/// 1.2 work package 3 (protect): tanks guard their healers against players and bots.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_peel", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, the plan names one tank per healer (then casters) as its guard; peeling now triggers when a player or a bot, not only a monster, hits a healer or caster. A guard keeps Protect and, with a shield, Guard on his charge, Intercepts for it below half health, pulls off only the enemies on his own charge (so the tanks do not all chase one attacker) and slams it with a stun style when his class has one usable (the server's 1.65 stun immunity applies). Human errors by skill tier: tanks over-extend and leave the healer (Casual 35%, Average 15%, Veteran 5% of the time; design values). Log: RVR_PEEL. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_PEEL;
+
+		/// <summary>
+		/// 1.2 work package 3 (protect): backline, spread and kiting.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_positioning", "Open-field RvR (1.2): in a fight against players or bots, a bot-only group's casters and healers stand behind the tanks relative to the enemy and keep more than 350 units apart, so one mez cannot catch two healers (450 on incoming); a guard stays beside his charge; a healer with an enemy melee fighter on it kites (runs a bit, then heals). In the Kite stance (a bigger or melee-heavy enemy) the group fights while backing away: casters, healers and archers keep about 1,200 units from the nearest enemy melee fighter by stepping back in short legs (150-300 units) away from the enemy, then cast or shoot for 2-3.5 s; they never step toward another enemy group, into an enemy keep's guards (2,500 units) or onto a blocked leg, and hold and fight when no leg is safe; melee members screen the backline and fight only what reaches it. Every walk is proven on dry ground on the bot's own floor first. Human errors by skill tier (design values): healers too close together (Casual 30%, Average 10%, Veteran 3%), healers charging with the tanks (15% / 4% / 1%), a healer that does not kite (60% / 30% / 10%), a ragged spread; kiting late (35% / 15% / 5%), the wrong way (20% / 8% / 2%) or too far (25% / 10% / 3%), melee charging anyway (25% / 10% / 3%). Log: RVR_BACKLINE, RVR_KITE. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_POSITIONING;
+
+		/// <summary>
+		/// 1.2 work package 4 (stances, RvrEngagement): watch and size up before engaging.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_size_up", "Open-field RvR (1.2): size-up. A bot-only group in the open field that notices an enemy group, or a fight between the other two realms, stops and watches first (about 6 s casual, 9 s average, 12 s veteran, shorter for an impatient leader) and counts heads, healers, levels, health and power; then it engages at fair odds, kites or retreats. A bot that is hit always fights back. Raids, battleground assaults, keep fights and groups with a player keep today's rules. Needs rvr_bot_field_tactics. Log: RVR_SIZE_UP, RVR_WATCH, RVR_STANCE.", true)]
+		public static bool RVR_BOT_SIZE_UP;
+
+		/// <summary>
+		/// 1.2 work package 4 (stances, RvrEngagement): kite and retreat from bad odds (needs bot_veteran_retreat for the retreat).
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_disengage", "Open-field RvR (1.2): disengage. A bot-only group facing bad odds or losing its fight kites (fights while backing away) or retreats: drops its targets, sprints and runs, raggedly (members react 0.3-2 s apart, some never run, and one caught in melee fights back). Half of the warband's other groups hear of a retreat 4 s later. The retreat uses the group retreat, so bot_veteran_retreat off also turns the RvR retreat off (kiting stays). Needs rvr_bot_field_tactics. Log: RVR_RETREAT, RVR_STANCE.", true)]
+		public static bool RVR_BOT_DISENGAGE;
+
+		/// <summary>
+		/// 1.2 work package 4 (stances, RvrEngagement): hold, regroup and rest, the chase leash, wipe memory.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_regroup", "Open-field RvR (1.2): regroup. After a retreat, or after a fight that left it hurt, a bot-only group meets at a rally point, rests and goes back out; veteran groups leave the fight's spot to rest, casual ones rest where they fought. Members strung out when an enemy is noticed wait for the rest. A member gives up a chase past its leash (bold bots chase much further). A group remembers its wipes; after three in ten minutes it roams before it hunts again. Needs rvr_bot_field_tactics. Log: RVR_REGROUP, RVR_CHASE, RVR_STANCE.", true)]
+		public static bool RVR_BOT_REGROUP;
+
+		/// <summary>
+		/// 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
+		/// </summary>
+		[ServerProperty("bots", "rvr_march_lanes", "Open-field RvR (1.2): a siege army leaves on up to three proven lanes instead of one line: from a portal keep everyone takes the one road to its milegate, then the groups split 50/25/25 across the main lane and up to two alternates the server re-walked at start (67/33 with one). A lane that passes near a keep the enemy holds now, or a march hazard, is left out; with no lane left everyone takes today's route. The march leader keeps the pace on the main lane, the other groups keep level with him on theirs, and the army gathers again at the siege camp as today. Groups you lead or are in march as today. Log: RVR_LANE_LOADED, RVR_LANE_REJECTED, RVR_LANE_ASSIGN, RVR_LANE_FALLBACK. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_MARCH_LANES;
+
+		/// <summary>
+		/// 1.2 work package 5 (lanes): roaming groups may travel on the proven lanes between catalog objectives.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_lanes", "Open-field RvR (1.2): roaming bot groups that travel between two catalog objectives (keeps, milegates, border keeps) may take one of the proven lanes instead of the one main route, by group. Used by the roaming groups of work package 6; groups you lead or are in are never changed. Log: RVR_LANE_ASSIGN, RVR_LANE_FALLBACK (by work package 6's callers). Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_ROAM_LANES;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the population split and role-built eight-man groups.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roaming_parties", "Open-field RvR (1.2): Autonomous gamebots split their RvR population (siege parties form first and are not counted) into warbands, role-built eight-man groups and soloers, duos and stealthers, by rvr_roam_population_split. An eight is built to its realm's 2003 skeleton: two main healers, a crowd controller, a shield tank, a speed class, two who can cure mez, a Shaman (Midgard) or Theurgist (Albion), the rest damage; a missing role goes to the next best class and the group still forms, and rvr_group_pet_cap holds. Eights roam; they do not open sieges. Groups you lead or join are never changed. Needs rvr_bot_field_tactics. Log: RVR_PARTY_FORMED.", true)]
+		public static bool RVR_ROAMING_PARTIES;
+
+		/// <summary>Era builds 1.2 (WP5, decision D9): the RvR eight's crowd-control slot prefers a crowd-control build.</summary>
+		[ServerProperty("bots", "rvr_roster_build_roles", "Era builds in RvR (1.2): when a role-built eight fills its crowd-control slot it first takes a member or bot whose era build is a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard; roles healer-cc and cc-mezzer), then the classes as before. Bots without an era build rank as before. Groups you lead or join are never changed. Needs rvr_roaming_parties. Log: RVR_PARTY_FORMED cc=.", true)]
+		public static bool RVR_ROSTER_BUILD_ROLES = true;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): circuits and check spots.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_checks", "Open-field RvR (1.2): A roaming eight walks one of its realm's patrol circuits in order (the check-spot catalog, re-walked on the navmesh at server start) and checks each milegate, levelling camp, dungeon door or named monster for 30 to 60 seconds, then moves on. Circuits are weighted toward where enemy levelling bots are by a live count every 3 minutes; Forest Sauvage, Snowdonia, Mount Collory and Cruachan Gorge are walked only when nothing else has prey. Enemy levelling bots at a spot are hunted, and after a kill the group moves on (rvr_roam_move_on_minutes). Soloers and duos work chokepoints and camps; stealthers camp milegates and crossings in loose packs. Needs rvr_bot_field_tactics. Log: RVR_ROAM_CHECK, RVR_ROAM_HUNT, RVR_ROAM_MOVE_ON, RVR_CHECKSPOT_LOADED.", true)]
+		public static bool RVR_ROAM_CHECKS;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): stealth openers and the soloer's odds.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_stealth_openers", "Open-field RvR (1.2): A gamebot Infiltrator, Nightshade or Shadowblade still in stealth opens a fight with its own stealth style (Backstab, Perforate Artery and the like), once per target, and a soloer, duo or stealther opens only when the odds allow it: the target alone or weaker, no enemy group near it, its own health and power up (casual bots misjudge more often). A bot that is hit always fights back. Needs rvr_bot_field_tactics. Log: RVR_STEALTH_OPEN.", true)]
+		public static bool RVR_BOT_STEALTH_OPENERS;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the population split of RvR gamebots not in a siege (owner decision 2, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_population_split", "Of the RvR gamebots not in a siege, the percent in warbands / role-built eight-man groups / soloers, duos and stealthers (owner decision 2026-11-16: 55/30/15; an assumption, no source gives the 2003 proportions). Three numbers; anything else reads as 55/30/15. Needs rvr_roaming_parties.", "55/30/15")]
+		public static string RVR_ROAM_POPULATION_SPLIT;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the move-on rule (owner decision 4, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_move_on_minutes", "The move-on rule: after a kill at a check spot a roaming bot group, soloer or stealther leaves within this many minutes (veteran groups sooner, casual ones later); no corpse camping. 0 leaves right after the kill. Needs rvr_roam_checks.", 3)]
+		public static int RVR_ROAM_MOVE_ON_MINUTES;
+
+		/// <summary>
+		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.
+		/// </summary>
+		[ServerProperty("bots", "rvr_group_pet_cap", "When gamebots form an RvR group (a roaming warband or a siege party), at most this many pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five or more, and half as many (at least 1) a group of four or fewer. The others wait for the next group. Groups you lead or join are never changed. 0 turns the cap off.", 2)]
+		public static int RVR_GROUP_PET_CAP;
+
+		// ---- Bots as people (docs/BOTS-AS-PEOPLE-1.2.md; 1.2 work package 0 declares every switch, each package fills its own).
+		// All on by default (owner 2026-11-16): new keys, so a world from an earlier build has no row and takes the code default
+		// (no LivingServerSettingsUpgrade line). Each starts at its default so code that runs before InitProperties sees it.
+
+		/// <summary>
+		/// Bots as people, item 2's master switch (work packages 1 and 2).
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. Mistakes: Casual pulls an add in 10% of party pulls (Average 5%, Veteran 1.5%), lets 25% of expired buffs stay off 20-90 s (12%, 4%), casts its dearest nuke in 30% of casts (15%, 5%) and rests at 25% power (35%, 45%), circles into a monster's face in 12% of steps (6%, 2%), reacts x1.3 slower (x1.0, x0.75) and in open-field RvR steps out of an area effect after 2-5 s (1-3 s, 0.5-1.5 s; an RvR group keeps its group tier) and follows its group's call after a delay inside the group tier's band, sooner with better reactions.", true)]
+		public static bool BOT_SKILL_PROFILES = true;
+
+		/// <summary>
+		/// Bots as people, work package 1.
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_growth", "Bots as people (1.2): a gamebot's skill grows with play: every fight it or a groupmate near it wins teaches all six facets (the time since its last fight, at most 3 minutes), and a death teaches positioning, standing in fire and reactions. One tier at most in 1.2 (about 40 hours of fighting from the bottom of Casual to Average), and it never falls. Saved in offline_bot_skill every 5 minutes and soon after a logout. Needs bot_skill_profiles. Log: BOT_SKILL_GROWTH, BOT_SKILL_BUDGET.", true)]
+		public static bool BOT_SKILL_GROWTH = true;
+
+		/// <summary>
+		/// Bots as people, work package 2.
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_spare_player_group", "Bots as people (1.2): in a group with you, a gamebot makes its mistakes at a quarter of its own rate (owner decision 4, 2026-11-17); its reactions are not quickened, so it still plays like a person, a careful one. Needs bot_skill_profiles. Log: BOT_SKILL_MISTAKE spared=true, BOT_SKILL_MISTAKES (rate_in against rate_out).", true)]
+		public static bool BOT_SKILL_SPARE_PLAYER_GROUP = true;
+
+		/// <summary>
+		/// Bots as people, work package 2R.
+		/// </summary>
+		[ServerProperty("bots", "raid_learns_from_raiders", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything; companions and buffbots are not counted, and a raid with a real player in it (or a player's own group) keeps the record's familiarity. Wired for Xanxicar's stomp. A played world is seeded once at its first start with the switch (each level 50 of a realm with a counted attempt, with a chance of the record's familiarity but at least 80%), so its familiarity stays the same on average. False: the record's familiarity alone, as before. Log: RAID_LEARN, RAID_MECHANIC_SEEN.", true)]
+		public static bool RAID_LEARNS_FROM_RAIDERS = true;
+
+		/// <summary>
+		/// Bots as people, item 4's master switch (work packages 3 and 4).
+		/// </summary>
+		[ServerProperty("bots", "bot_place_knowledge", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level (and their towns) and, from level 20, its border keep. Dungeons, the frontier and the next zones are new ground until it goes there; it learns a place on arrival. Saved per bot; /lswhy way lists them. On its own it changes no route and no camp: asking the way and wrong roads read it. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET.", true)]
+		public static bool BOT_PLACE_KNOWLEDGE = true;
+
+		/// <summary>
+		/// Bots as people, work package 4.
+		/// </summary>
+		[ServerProperty("bots", "bot_ask_the_way", "Bots as people (1.2): a gamebot going somewhere it does not know may ask the way in /say near you or in /faction (at most one ask in /faction per realm every 10 minutes); only a bot of its realm that knows the place answers, truthfully, and the asker then half knows it. Or it tags along behind a realm-mate of about its level (2 levels at most) going there, and leaves it at the zone line, when the leader stops, or when a monster yellow or worse to it is on the way. Needs bot_place_knowledge. Log: BOT_WAY_ASK, BOT_WAY_TOLD, BOT_WAY_FOLLOW, BOT_WAY_SUMMARY.", true)]
+		public static bool BOT_ASK_THE_WAY = true;
+
+		/// <summary>
+		/// Bots as people, work package 4.
+		/// </summary>
+		[ServerProperty("bots", "bot_wrong_roads", "Bots as people (1.2): a gamebot going somewhere it does not know may take a wrong road for 600 to 1,500 units, look around and come back to its route. A wrong road follows the proven walking legs of the route network, which may cross open ground rather than a painted road. At most once a trip and 3 minutes; never on a stable ride, in a group, in a frontier, in a dungeon or near monsters more than 2 levels above it, and it turns back when a monster yellow or worse to it is on the way. Needs bot_place_knowledge. Log: BOT_WAY_WRONG_ROAD, BOT_WAY_SUMMARY.", true)]
+		public static bool BOT_WRONG_ROADS = true;
+
+		/// <summary>
+		/// Bots as people, item 5's master switch (work package 5).
+		/// </summary>
+		[ServerProperty("bots", "bot_movement_habits", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS.", true)]
+		public static bool BOT_MOVEMENT_HABITS = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_strafe", "Bots as people (1.2): in an open-field RvR fight, melee gamebots circle-strafe their target and casters and healers face the enemy and back off in an arc, more often the better the bot. Needs bot_movement_habits and rvr_bot_field_tactics. Log: BOT_MOVE_STRAFE.", true)]
+		public static bool BOT_MOVE_STRAFE = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_stick_line", "Bots as people (1.2): bot-only groups travelling in the open world run on /stick, each member following the one above it, so the group runs as a strung-out line; now and then one loses stick and catches up. Not on stable rides, raids, battleground waves or sieges. Needs bot_movement_habits. Log: BOT_MOVE_STICK_LOST.", true)]
+		public static bool BOT_MOVE_STICK_LINE = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL.", true)]
+		public static bool BOT_MOVE_SIT_AND_WALLS = true;
+
+		/// <summary>
+		/// Bots as people, item 6 (work package 6).
+		/// </summary>
+		[ServerProperty("bots", "bot_living_milestones", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): autonomous gamebots chase a personal goal (the ding to 50 from level 45; at 50 realm rank 5 if they lean to RvR, or a dragon trophy, an item really won from a dragon or epic boss raid's loot, if they lean to raids) and say so as they get close, in their group, in /say near you, in their guild or in /faction, within the chat budgets; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's plans (fewer town breaks near 50, more RvR near realm rank 5). Log: BOT_MILESTONE_ARC, BOT_MILESTONE_PROGRESS, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED, BOT_MILESTONE_SUMMARY.", true)]
+		public static bool BOT_LIVING_MILESTONES = true;
+
+		/// <summary>
 		/// Autonomous gamebots speak lines from the bot-voices corpus in their own writing style.
 		/// </summary>
-		[ServerProperty("bots", "bot_voices_enabled", "Autonomous gamebots say pre-written, period lines (docs/bot-voices/DESIGN.md) chosen by personality, level, realm, class and situation, each in its own writing style, without repeating a line in a realm within 6 hours. On by default since Beta 1.1 (the talking update). False keeps the old lines.", true)]
+		[ServerProperty("bots", "bot_voices_enabled", "Autonomous gamebots say pre-written, period lines (docs/bot-voices/DESIGN.md) chosen by personality, level, realm, class and situation, each in its own writing style, without repeating a line in a realm for three days (six hours once a kind of line runs short). False keeps the old lines.", true)]
 		public static bool BOT_VOICES_ENABLED;
 
 		/// <summary>
@@ -2462,47 +2805,67 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", LIVING_SERVER_SETTINGS_VERSION_KEY, "Living Server: the build whose new defaults were last applied to this world's saved settings (set by the server; leave it alone).", "")]
 		public static string LIVING_SERVER_SETTINGS_VERSION;
 
-		// ---- Server life (docs/LIVING-SERVER.md). Every part is off by default. ----
+		public const string LIVING_SERVER_WORLD_REPAIRS_KEY = "living_server_world_repairs";
+
+		/// <summary>The one-time world repairs that already ran on this world, comma-separated (BuffBotCopyRetirement: "buffbot-copies").</summary>
+		[ServerProperty("bots", LIVING_SERVER_WORLD_REPAIRS_KEY, "Living Server: the one-time repairs of saved world data that already ran on this world (set by the server; leave it alone).", "")]
+		public static string LIVING_SERVER_WORLD_REPAIRS;
+
+		// ---- Server life (docs/LIVING-SERVER.md). Every part is on by default since Living Server 1.2 (owner 2026-11-16: "all our
+		// living server features should be in by default if someone downloads our installer"); worlds that ran an earlier build
+		// move once where the row still holds the untouched old default (LivingServerSettingsUpgrade). ----
 
 		/// <summary>Bots remember the player: greetings by name, thanks for a rez or a group, gossip, grudges.</summary>
-		[ServerProperty("bots", "bot_living_memory", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. On by default since Beta 1.1. False keeps today's bots.", true)]
+		[ServerProperty("bots", "bot_living_memory", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. False: bots do not remember you.", true)]
 		public static bool BOT_LIVING_MEMORY;
 
 		/// <summary>Grats from nearby, grouped and guilded bots when a character dings; /faction grats for a 50.</summary>
-		[ServerProperty("bots", "bot_living_grats", "Server life: when you or a bot gains a level, groupmates say grats in /group and bots nearby in /say, and a realm's bots cheer a new level 50 in /faction. On by default since Beta 1.1.", true)]
+		[ServerProperty("bots", "bot_living_grats", "Server life: when you or a bot gains a level, groupmates say grats in /group and bots nearby in /say, and a realm's bots cheer a new level 50 in /faction.", true)]
 		public static bool BOT_LIVING_GRATS;
 
 		/// <summary>Realm-wide announcements of server firsts, recorded for the Herald.</summary>
-		[ServerProperty("bots", "bot_living_firsts", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald.", false)]
+		[ServerProperty("bots", "bot_living_firsts", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald.", true)]
 		public static bool BOT_LIVING_FIRSTS;
 
 		/// <summary>Rez requests and thanks, bots rezzing you, corpse runs and resurrection sickness chatter.</summary>
-		[ServerProperty("bots", "bot_living_death", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness.", false)]
+		[ServerProperty("bots", "bot_living_death", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness.", true)]
 		public static bool BOT_LIVING_DEATH;
 
 		/// <summary>Player-style enemy sightings in /faction from bots in the frontier.</summary>
-		[ServerProperty("bots", "bot_living_alarms", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes.", false)]
+		[ServerProperty("bots", "bot_living_alarms", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes.", true)]
 		public static bool BOT_LIVING_ALARMS;
 
 		/// <summary>Bots remember who killed them in RvR, call them out and celebrate revenge.</summary>
-		[ServerProperty("bots", "bot_living_nemesis", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted.", false)]
+		[ServerProperty("bots", "bot_living_nemesis", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted.", true)]
 		public static bool BOT_LIVING_NEMESIS;
 
 		/// <summary>When bots are online: the whole roster (off), shaped around your session, or by the real clock.</summary>
-		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off = the whole roster (today's behavior); session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "off")]
+		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "clock")]
 		public static string BOT_SCHEDULE_MODE;
 
 		/// <summary>Bots take short breaks (brb) and now and then go linkdead and come back.</summary>
-		[ServerProperty("bots", "bot_living_breaks", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march.", false)]
+		[ServerProperty("bots", "bot_living_breaks", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march.", true)]
 		public static bool BOT_LIVING_BREAKS;
 
 		/// <summary>Idle bots look around, emote, shift their feet, wave at you and cheer a ding nearby.</summary>
-		[ServerProperty("bots", "bot_living_body_language", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them).", false)]
+		[ServerProperty("bots", "bot_living_body_language", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits).", true)]
 		public static bool BOT_LIVING_BODY_LANGUAGE;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>
 		[ServerProperty("bots", "bot_living_beggars", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight.", true)]
 		public static bool BOT_LIVING_BEGGARS;
+
+		/// <summary>Living Server 1.2: a share of the No Lifer bots run a level-50 buffbot (NoLiferBuffBots, docs/BOT-PERSONALITIES.md).</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off.", true)]
+		public static bool BOT_NOLIFER_BUFFBOTS;
+
+		/// <summary>Percent (0-100) of the No Lifer bots that have a buffbot, fixed per main from its roster id.</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbot_percent", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts.", 30)]
+		public static int BOT_NOLIFER_BUFFBOT_PERCENT;
+
+		/// <summary>The 2003 rule for buffbots' concentration buffs: no range limit (the 5,000-unit limit came with the July 2005 Classic servers).</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbot_era_conc_range", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range.", true)]
+		public static bool BOT_NOLIFER_BUFFBOT_ERA_CONC_RANGE;
 
 		/// <summary>Bots that saw the player do something tell the realm; reputation and nicknames (AutonomousPlayerDeeds).</summary>
 		[ServerProperty("bots", "bot_living_deeds", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname.", true)]
@@ -2512,6 +2875,38 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_group_bonds", "Server life: gamebots remember the bots they grouped with. Good runs make friends who look for each other when forming a party; bots who never showed up or wiped the group too often are kept apart until a long wait makes them take anyone.", true)]
 		public static bool BOT_GROUP_BONDS;
 
+		/// <summary>Bot-led groups (docs/BOT-LED-GROUPS.md): the leader of a gamebot party may invite you, and you can just follow.</summary>
+		[ServerProperty("bots", "bot_group_invite_player", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one.", true)]
+		public static bool BOT_GROUP_INVITE_PLAYER;
+
+		/// <summary>How many members the real player counts as in the loot of a group with gamebots (owner 2026-11-04).</summary>
+		[ServerProperty("bots", "bot_group_player_loot_weight", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8.", 2)]
+		public static int BOT_GROUP_PLAYER_LOOT_WEIGHT;
+
+		/// <summary>Bot cosmetics (owner 2026-11-12): gamebots spend coin on dyes and weapon lusters (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics", "Gamebots spend their coin on their looks as well as their gear: at a merchant between tasks, a bot with coin above its reserve buys the game's own dyes, enamels and weapon lusters, at their own prices, in its own colours (each bot has its own, leaning on its realm's; guild members often wear the guild's). Glowing weapons come only from epic bosses, dragons and Darkness Falls seal merchants, as in 1.65. New gear comes in its plain colour, so they pay again. Some bots never bother. False: no bot buys dyes.", true)]
+		public static bool BOT_COSMETICS;
+
+		/// <summary>Bot cosmetics: what dyes and lusters cost bots, in percent (AutonomousBotCosmetics).</summary>
+		[ServerProperty("bots", "bot_cosmetics_price_percent", "What dyes and weapon lusters cost gamebots, in percent of the game's own price (100: as the dye items cost, from 50 copper for a light shade to over 16 gold for royal and black ones and about 196 gold for a weapon luster). 1 to 1000.", 100)]
+		public static int BOT_COSMETICS_PRICE_PERCENT;
+
+		/// <summary>Bot-led groups, B2: what saying yes to a gamebot leader's invite does (follow or lead).</summary>
+		[ServerProperty("bots", "bot_led_group_join_mode", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back).", "follow")]
+		public static string BOT_LED_GROUP_JOIN_MODE;
+
+		/// <summary>Play with friends (1.2, CompanionBudget): /spawn and /raid companions on the whole server while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_total", "Play with friends: while more than one real player is online, the most /spawn and /raid companions the whole server may have out together (each player also has companion_budget_per_player). With one player online neither applies, so a /raid 80 (79 companions) works as always. 0 turns the server total off.", 160)]
+		public static int COMPANION_BUDGET_TOTAL;
+
+		/// <summary>Play with friends (1.2, CompanionBudget): one player's share of the companions while more than one real player is online.</summary>
+		[ServerProperty("bots", "companion_budget_per_player", "Play with friends: while more than one real player is online, the most /spawn and /raid companions one player may have out (79 = a full /raid 80). The server total, companion_budget_total, still applies. With one player online this doesn't apply. 0 turns the per-player share off.", 79)]
+		public static int COMPANION_BUDGET_PER_PLAYER;
+
+		/// <summary>Bot-led groups, B3: a realm raid's leader may invite a level-50 player.</summary>
+		[ServerProperty("bots", "bot_raid_invite_player", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too.", true)]
+		public static bool BOT_RAID_INVITE_PLAYER;
+
 		/// <summary>Multi-day dramas between pairs of bots, played as /faction episodes (AutonomousBotStorylines).</summary>
 		[ServerProperty("bots", "bot_living_storylines", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you.", true)]
 		public static bool BOT_LIVING_STORYLINES;
@@ -2519,6 +2914,14 @@ namespace DOL.GS.ServerProperties
 		/// <summary>Gold spammers and roleplayers (AutonomousGoldSpammers, AutonomousRoleplayers).</summary>
 		[ServerProperty("bots", "bot_living_characters", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them.", true)]
 		public static bool BOT_LIVING_CHARACTERS;
+
+		/// <summary>Tales: the realm's storyteller in /faction, fireside tales in a group (AutonomousTales).</summary>
+		[ServerProperty("bots", "bot_living_tales", "Server life: now and then a bot asks the realm's storyteller for the tale of a dragon or a boss in /faction, others hush the channel, and it is told in a dozen lines; you can ask for one too (\"tell the one about legion\"). Resting in a boss's place with a gamebot in your group, a groupmate tells the short version. Needs bot voices and debates.", true)]
+		public static bool BOT_LIVING_TALES;
+
+		/// <summary>The rumour after a tale may be true: the realm's raid on that boss forms a few minutes later.</summary>
+		[ServerProperty("bots", "bot_living_tale_raids", "Server life: about half the time, the rumour that follows a tale is true: the realm's own automatic raid on that boss forms a few minutes later (only when one could form anyway). Off: the rumour is always just lore.", true)]
+		public static bool BOT_LIVING_TALE_RAIDS;
 
 		/// <summary>True rumours: real rare spawns and undefended enemy keeps (AutonomousRumours).</summary>
 		[ServerProperty("bots", "bot_living_rumours", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see.", true)]
@@ -2528,9 +2931,23 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_holidays", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes.", true)]
 		public static bool BOT_LIVING_HOLIDAYS;
 
+		/// <summary>Which Thanksgiving holiday chatter marks (AutonomousHolidays; owner 2026-11-18: a non-US option).</summary>
+		[ServerProperty("bots", "bot_living_holidays_thanksgiving", "Server life: which Thanksgiving the holiday chatter marks: us (the fourth Thursday of November, the default), canada (the second Monday of October) or off.", "us")]
+		public static string BOT_LIVING_HOLIDAYS_THANKSGIVING;
+
 		/// <summary>Now and then a raider charges the final boss early (AutonomousRaidLeeroy).</summary>
 		[ServerProperty("bots", "bot_living_leeroy", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in.", true)]
 		public static bool BOT_LIVING_LEEROY;
+
+		/// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, LoreAtmosphere, docs/LORE.md).</summary>
+		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
+		public static bool LIVING_ATMOSPHERE_LINES;
+
+		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count when an epic boss's or epic NPC's armor drops with the number of attackers, at epic_armor_bot_strength_percent of a player: by default each bot takes off half a player's step (0.02 instead of 0.04), and bots alone take off at most half of the full range (an epic boss from 1.6 to 1.0, never to the 0.4 floor). Real players and pets keep their own rule on top, down to 0.4. False is the stock rule: only players and pets count.", true)]
+		public static bool EPIC_ARMOR_COUNTS_BOTS = true;
+
+		[ServerProperty("bots", "epic_armor_bot_strength_percent", "When epic_armor_counts_bots is on: a gamebot's share of a real player's epic armor drop, in percent (0 to 100), which sets both its step (a player's is 0.04) and how much of the armor range bots alone can take off. 50 (the default): 0.02 a bot, an epic boss down to 1.0 at most from bots. 100 counts a bot as a player.", 50)]
+		public static int EPIC_ARMOR_BOT_STRENGTH_PERCENT = 50;
 
 
 

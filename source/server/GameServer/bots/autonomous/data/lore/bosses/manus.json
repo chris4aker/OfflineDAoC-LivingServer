@@ -1,0 +1,86 @@
+{
+  "id": "manus",
+  "name": "Manus",
+  "npcNames": [
+    "Manus"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Manus: level 48, a tree dervish body (model 844), faction The Tree Dervishes, at about 427,100/335,300 in the high north-eastern clearing; respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Manus as the eldest dervish, who spins slowest and remembers why the dervishes began.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Manus is the eldest of the tree dervishes of Vigilant Rock, and spins the slowest, alone in the highest clearing in the north-east. The Necht singers say the dervishes began with him: a young tree that heard the wind of the Long Pushing go over the isle and turned to follow it, and kept turning, and taught the others. The young ones below him spin fast, as children spin to make themselves dizzy. Manus spins as if he were trying to remember something.\n\nHe will not go south. None of the dervishes will go into Cothrom Gorge, because they hear the laughter of the fallen wood there and recognise themselves in it, and Manus, the singers say, hears it best of all. He has been spinning slower every season, and the Necht folk wonder aloud what will happen when he stops. The children of Necht are told that if they spin round and round in the square they will become dervishes, and none of them quite believes it.",
+  "legend": "Manus (48) is the eldest tree dervish, alone in the high clearing north-east of the dervish woods (about 427k/335k). He hits hard for a 48 and spins into you; a solid group of mid 40s handles him. 80-second respawn, so clear and move on. Twirl (35) and Whirl (31) are lower down. Pull him out of the clearing toward the coast so the watchful dervishes (33-39) below do not join. Plain spawn, no script.",
+  "yells": {
+    "aggro": [
+      "(the eldest dervish turns, slowly, toward you)",
+      "The wind went this way. Follow it."
+    ],
+    "phases": [],
+    "death": [
+      "(Manus stops turning, at last)"
+    ],
+    "slay": [
+      "(he spins on, slower)",
+      "Dizzy now."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tree turning slowly, alone, high up."
+    ],
+    "phases": [],
+    "realmFirstKill": "Manus, eldest of the dervishes, has stopped turning."
+  },
+  "botLines": {
+    "briefing": [
+      "manus is the eldest dervish, 48, high clearing north east",
+      "mid 40s group, 80 sec respawn"
+    ],
+    "aftermathWin": [
+      "manus stopped spinning. [nice|grats]",
+      "eldest dervish down. [timber|lol]"
+    ],
+    "aftermathLoss": [
+      "he spun into the healer. [ouch|rip]",
+      "too low for a 48. [more people|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] manus started the dervishes spinning when the long pushing wind went over",
+      "manus spins slower every season. necht wonders what happens when he stops"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Manus",
+    "text": "Eldest of the tree dervishes, alone in the high north-eastern clearing, spinning slowest. The dervishes began with him, following the wind of the Long Pushing."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Manus in Vigilant Rock in {minutes} minutes.",
+    "loss": "Manus turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "twirl",
+      "relation": "a dancer below him"
+    },
+    {
+      "id": "thuxra-the-cackler",
+      "relation": "whose laugh he will not hear"
+    }
+  ]
+}

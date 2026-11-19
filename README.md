@@ -15,235 +15,195 @@
 
 # Offline DAoC: Living Server
 
-### Your single-player Camelot, alive like a 2003 server. **Beta 1.1.4 is out.**
+### Where Legends Wake and the Realms are Alive. Offline. Never alone.
 
-![Offline DAoC: Living Server](tools/installer/src/Assets/hero.jpg)
+**1.2 is out.**
 
-It's eight o'clock and the realm is already busy. A guildmate types "wb". A level 12 asks where the
-trainer is. Two clerics are arguing smite against rejuv in /faction while an officer calls the keep
-under attack, and somewhere a raid is forming for Darkness Falls. None of them are people, and all of
-them are playing.
+![Living Server](tools/installer/src/Assets/hero.jpg)
 
-**Living Server** is a free add-on built on shadowofze's Offline DAoC,
-the single-player Classic + Shrouded Isles server. Its bots already level, group and fight. Living
-Server gives them a life: personalities, guilds, memories, opinions and a voice, and an endgame they
-run themselves, whether or not you come along.
+It's a weeknight in Camelot and the bank is packed. Someone is selling a breastplate they made themselves. A guild
+you've never heard of is arguing about Paladin specs. Past the wall, Midgard just took a keep, and a horn is about to
+tell your whole realm what happens next. All of it is running on your PC.
 
-> **November 2026:** shadowofze's Offline DAoC repository is no longer online. Living Server keeps the 0.37 game files
-> itself, so Setup still installs everything you need. His current project is
-> [Offline DAoC True 1.65](https://github.com/shadowofze/OfflineDAoC-True165).
+**Offline DAoC** is single-player Classic and Shrouded Isles with 1.65 rules, on your own PC, with bots who level, group
+and fight. **Living Server** is the part of it, maintained by [chris4aker](https://github.com/chris4aker), that gives those bots a life: they talk like 2003 players, keep their own hours, join guilds,
+remember you, craft and trade, call their own raids, take each other's keeps, and invite you along.
 
-> **[Download Beta 1.1.4](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)**:
-> one Setup installs Offline DAoC and Living Server from nothing, or adds Living Server to the 0.36 or 0.37
-> game you have (0.37 or 0.37b, with or without the 0.37c new client). Free, every part has its own
-> switch, and one click rolls it back. Formerly the **Social Expansion**: if you had it, install over it
-> and keep everything. [What's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) ·
-> [Known issues](docs/KNOWN-ISSUES.md)
+> **[Download Living Server 1.2](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)**: one Setup
+> installs Offline DAoC 0.37 and Living Server from nothing, or adds Living Server to the 0.37 game you have.
+> [What's new in 1.2](docs/RELEASE-NOTES-1.2.md) · [Known issues](docs/KNOWN-ISSUES.md)
 
-## New in Beta 1.1.4
+Formerly the **Social Expansion** (0.36-se.1 to 0.37-se.2). Install over any earlier build and keep everything.
 
-Setup works again for new players. It now downloads Offline DAoC 0.37 from Living Server's own copy of the game files,
-because shadowofze's repository is no longer online. Nothing in the game changes: if you already play 1.1.3 you can skip
-this one ([what's new](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta)).
+## What Living Server adds
 
-## New in Beta 1.1.2
+The tag says which release brought each part. **Offline DAoC** marks what the game already did before Living Server, listed only where Living Server
+builds on it. **Tests only** means it is in the release but hasn't been seen working on the owner's PC yet.
 
-A realm that talks like a full server on a busy evening, raids the size they were in 2002-2004 with their first boss
-tactics, quests that work with your bot group, gamebots that pull their weight in your guild, and a world that opens
-in a crash-safe mode and is backed up every day
-([what's new](docs/RELEASE-NOTES-1.1.2.md)).
+### A realm full of people
 
-## New in Beta 1.1
+- **Personalities** *(1.0)*. Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, with five traits. Target a
+  gamebot and type `/personality`.
+- **They talk like 2003** *(1.0; rewritten 1.1; tuned since)*. Hand-written period chat in five writing styles, in every
+  channel, chosen by realm, class, level, zone, time and what is really happening. About 5 to 7 /faction lines a minute
+  on a full realm *(1.2)*.
+- **They answer you** *(1.0; first, on their own budget, in 1.2)*. A tell, or a line that names a bot, always gets an
+  answer. A bot that says "omw" is coming *(1.2)*.
+- **Bot guilds** *(1.0)*: names over their heads, /gu, recruiting, dues, merit, buffs, alliances and keep claims; guild
+  crafters who make for guildmates at cost *(1.2)*.
+- **They remember you** *(1.0; 1.1.3)*: your rezzes, your insults, your dings.
+- **Server life** *(1.0)*: grats, server firsts, rezzes and corpse runs, frontier alarms, nemeses, breaks, body language,
+  and a real-clock schedule so the capital is busiest in the evening.
+- **Names like a 2003 server** *(1.1)* and **the Herald** *(1.0)*, your world's news page.
+- **They dress up** *(1.2)*: dyes and weapon lusters at the merchants' prices. Never glows.
+- **Arguments that run for days** in /faction *(1.1; ten more in 1.2)*.
 
-- **One-click Setup.** No game yet? It downloads Offline DAoC with shadowofze's own downloader. On 0.36? It
-  updates you to 0.37 with his official updater and keeps your saves. Then it adds Living Server.
-- **The bots talk.** About 34,000 lines and 393 /faction scenes. Reply to a bot's line and it answers; tells
-  carry on as conversations.
-- **They only say what's true.** Keep, relic and raid news, and "where are the mids?", come from the live
-  world.
-- **They remember.** Bots remember who they grouped with, you included, and each other.
-- **Names like a 2003 server**, built from research into about 700 real names from 2001-2004
-  ([the write-up](docs/research/BOT-NAMES-2003.md)).
-- **A few things you'll have to find yourself.** Spend some time in your capital, keep /faction open, and
-  don't count on every raid going to plan.
+### Bots that play the game, and play with you
 
-## Features
+- **Levelling like people** *(Offline DAoC; improved from 1.0)*. Gamebots start without armor and earn it.
+- **Talk to bots by name** *(1.0)*: `/send` any online bot of your realm; `/invite` or `/target` a nearby one.
+- **Bot leaders invite you** *(1.1.3; 1.2)*. Say yes and the bot leads the camp, the pulls and the breaks. `/lead`,
+  `/lead bot`, `/invites off` *(1.2)*. Raid leaders offer level 50s a spot *(1.2)*.
+- **Quests with your bot group** *(1.1, 1.1.2)*; epic chains linked on every install *(1.2)*.
+- **XP by level range** *(1.0)*.
+- **Bots as people** *(1.2; mostly tests only)*: skill that grows, mistakes mostly on strangers, knowing the way, moving
+  like people, personal milestones.
+- **Built like 2003** *(1.2; tests only)*: new bots come in each realm's 2003 class mix with a period build for life.
+  Bots already in your world keep theirs.
 
 ### The endgame runs itself
-- **Raids on their own schedule.** Every realm draws its next raid from 17 targets: its dragon, its epic
-  dungeon, Summoner's Hall, Darkness Falls and nine raid dungeons from Krondon to Marfach Caverns. It
-  rallies, musters at the nearest town and clears its way to the final boss.
-- **Wipe, regroup, go again.** A wiped raid rests, rebuffs, walks back in and tries once more, and up to 24
-  geared level 50s of the **Epic Special Forces** answer the call.
-- **Contested raids.** Two realms in Darkness Falls fight each other on the way. Whoever does the most damage
-  to the final boss takes the kill and the loot.
-- **Keep sieges with a fight on both sides.** Warbands open sieges, defenders turn out to match the attacking
-  army, and attackers break off to save their own keep. For now attackers still take most keeps.
-- **Parties go for the boss.** A party grinding a dungeon goes after its named boss when a quest or its loot
-  makes the fight worth it.
 
-### Bots that talk like 2003
-- **About 34,000 lines of period chat** written for the game from launch to patch 1.65, chosen by realm, class,
-  level, zone, time of day, situation and personality, in five writing styles (one of them typo-prone,
-  "*fixes" and all). Most lines don't repeat for hours.
-- **393 /faction scenes and debates.** Smite versus rejuv, buffbots, zergs, relic panic, dragon raids. A new cast plays
-  one every 30 to 45 minutes while you're online.
-- **They read what you type.** "ty", "inc", "rez pls", "lfg 24 cleric" and "is friar good?" are read for what
-  they are, and the answers come from the live world: ask "where are the mids?" and you're told where they
-  really are.
+- **Realm raids** *(1.0)*: the dragon, the epic dungeon, Summoner's Hall, Darkness Falls and the raid dungeons, on each
+  realm's own schedule. **The tale, then the horn** *(1.2)*: the boss's story in /faction, a call across the screen,
+  then the muster. One raid every four hours; no clock inside the dungeon *(1.2)*.
+- **The epics at full strength** *(1.2)*: the bosses' own rules back on, each a server setting, and their throws and
+  glares pick bots too. Raid sizes from the period and the first tactics *(1.1.2)*; a plan for the real puzzles *(1.2)*.
+  **Still being tuned:** the bots lose some of the hardest fights. The notes name them.
+- **The frontier** *(1.0; 1.2)*: keep sieges with a defence; enemies who notice you by chance and distance; groups that
+  call targets, mez and peel; battleground waves and storms.
 
-### Bots with lives
-- **Personalities.** Every bot is a Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, with five
-  traits that decide who grinds, who parks in town, who hunts orange cons and who lives in the frontier.
-  Target one and type `/personality`.
-- **Bot guilds.** Leveling, social, RvR, raiding and crafting guilds that recruit you, talk in /gu, claim
-  and defend keeps, pay dues, earn merit, buy guild buffs and form alliances.
-- **Server life.** Bots remember you (your rezzes, and your insults), say grats, announce server firsts,
-  ask you for a rez, call incoming zergs, hold grudges against their killers, take "brb" breaks, go
-  linkdead, and wave when you walk up. The **Camelot Herald** prints your world's news.
+### Somebody made that
 
-### Smarter, safer bots
-- Levelling bots bend their road around monsters far above them, remember where bots keep dying, and bind
-  somewhere else when one spot keeps killing them.
-- New bots level in their realm's classic zones first, melee bots stop standing under flying monsters,
-  parties walk around epic monsters they didn't come for, and warbands ride their porter instead of
-  walking past Aidon.
-- A bot looking for a group stands at its camp between pulls like a player with /lfg on.
+- **The Realm Exchange and real loot** *(Offline DAoC, kept)*; bots sell only at natural task breaks.
+- **Bot crafters** *(1.2)* at the forges: titles, craft orders, haggling, and sales on the Exchange. **Join an order**
+  yourself at a crafting master, as in 1.65 *(1.2; original client; tests only)*.
 
-### And more
-- **Talk to bots by name:** `/send` any bot of your realm, and `/invite` or `/target` a nearby one.
-- **XP by level range:** separate rates for you and the bots, so levels 1 to 34 stay worth playing and 35
-  to 50 goes faster.
-- **Fixes:** keep gates that never opened in the new client, Lord Gildas's room in Hall of the Corrupt, a
-  boss spell chain that could stop the server, and memory leaks found in overnight soak tests.
+### Every place has its story
 
-## Safe to try
+- **Lore** *(1.1; 1.2)*: 108 places, 578 bosses and four realm histories, checked against 832 archived Camelot Herald
+  articles. Loremasters in each capital, lore books, the Bestiary in **Realm Records**, `/lore` in either client, bosses
+  that speak, and **Atmosphere lines** on screen.
 
-- **Your rules stay.** Real loot, the Realm Exchange, stablemaster routes and bots that earn their armor are
-  untouched.
-- **Every part has its own switch.** Chat, personalities, guilds, server life and XP rates each have a
-  switch in the launcher's **Living Server** tab. Setup's first install turns them on at our suggested
-  settings unless you untick that option; the manual install leaves them off. The bots' own endgame and
-  safer routes are always on.
-- **Undo any time.** The installer checks your game version, backs up every file it replaces and verifies
-  each copy. `ROLLBACK.cmd` puts the originals back.
-- **Tested hard.** The full automated server suite on every build, Windows installer tests with real downloads,
-  and two days of play with up to about 1,000 bots online. It's a beta: what hasn't been seen in game yet is
-  listed in [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
+### Company
 
-## How to get it
+- **Companions** *(Offline DAoC; more in 1.2)*: `/spawn` a helper of any class and spec. They stay at the fight when a boss
+  throws you *(1.2)*.
+- **Hired companions** *(1.2)*: up to seven of your own, hired beside a healer of your realm with `/hire`; you gear and
+  train them. Some of the code is borrowed from the True 1.65 project.
+- **Play with friends** *(1.2, experimental)*: **HOST FOR FRIENDS**, **JOIN FRIEND** and the **CHARACTER PASSPORT…**.
+  Original client only.
 
-**The easy way: Setup.**
+### Yours to run
 
-1. Download `LivingServer-Setup-1.1.4-beta.exe` from the
-   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta) and run it.
-   - No game yet? It downloads Offline DAoC 0.37 (original classes, original client) from Living Server's own copy of
-     shadowofze's release files, and checks every file.
-   - On 0.36? It updates the game to 0.37 with his official updater, keeping your saves.
-   - Then it adds Living Server.
-2. Windows SmartScreen may say "Windows protected your PC", because the exe isn't code-signed. Click
-   **More info**, then **Run anyway**.
-3. Open the launcher as usual. It now has a **Living Server** tab.
+- **The Living Server tab** *(1.0)*: a switch for every part, every part on from the start *(1.2)*. **ALL OFF** gives
+  you the plain server.
+- **One Setup** *(1.1; 1.1.4)*, **updates from the launcher** *(1.1.2)*, **backups and `ROLLBACK.cmd`** *(1.0; daily
+  copies 1.1.2)*.
+- **The rules that never change:** real loot, the Realm Exchange, stablemaster routes, selling at natural breaks, bots
+  that earn their armor, and Darkness Falls open to solo bots.
 
-**By hand:**
+## Seen, and tests only
 
-1. Install Offline DAoC 0.37 with the downloader on the [0.37 files page](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37),
-   or update your 0.36 game to it (below).
-2. Download `OfflineDAoC-LivingServer-1.1.4-beta.zip` from the
-   [Beta 1.1.4 release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/v1.1.4-beta),
-   unzip it and put its folder in your game folder.
-3. Close the game and server, then double-click `INSTALL.cmd` in that folder.
-4. Open the launcher as usual. It now has a **Living Server** tab.
+A feature counts as working only once it has been seen working on the owner's PC. 1.2's notes say, feature by feature,
+what has been seen and on which build, and what is still tests only. The parts still tests only include most of Bots as
+people, era builds on a fresh world, crafting as a player, a session played with a friend, and every fix made after the
+last test build the owner ran. See [the 1.2 notes](docs/RELEASE-NOTES-1.2.md#3-seen-and-tests-only).
 
-**Had Beta 1.1.2, 1.1.1, 1.1, 1.0 or the Social Expansion?** Either way installs over it. Your characters, bots, bot guilds,
-bot memory and settings stay as they were.
+## What you need
 
-**Still on 0.36 with the Social Expansion?** The 0.37 update only applies to the game's own files, so put
-them back first: put the Beta 1.1.4 folder in your game folder and double-click `PREPARE-FOR-UPDATE.cmd` (it
-restores the released 0.36 server and launcher from the installer's backups and checks each one). Then
-update the game to 0.37 with its downloader (choice 1, Update), and run `INSTALL.cmd`. If you install 0.37
-fresh instead and bring your progress over, see the package's README.txt for the one extra step.
+- A 64-bit Windows 10 or 11 PC with a CPU that supports AVX2.
+- 16 GB of memory recommended. More bots need more; start small.
+- About 20 GB free for a new install of 0.37 or 0.37b (about 60 GB while 0.37c installs).
+- For the original client: the Windows feature **.NET Framework 3.5** ([how](docs/PLAY.md#before-you-start)).
 
-## Updating
+## Install
 
-From Beta 1.1.2 the launcher looks for a new Living Server when it opens (at most once a day), or when you click
-**Check for updates** beside its version. When one is out, **START SERVER** reads **GET UPDATE**: click it and choose
-**Install**, **Later** or **Skip this version**.
+**With Setup.**
+1. Download `LivingServer-Setup-1.2.exe` from the [release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)
+   and run it. No game yet? It downloads Offline DAoC 0.37 from the project's own copy of the 0.37 release files
+   and checks every file. Have the game? It adds Living Server.
+2. Windows SmartScreen may say "Windows protected your PC", because the exe isn't code-signed. Click **More info**, then
+   **Run anyway**.
+3. Open the launcher. It has a **Living Server** tab.
 
-- **Your characters and world are kept.** The update runs the new package's own `INSTALL.cmd`, with the same checks
-  and backups as a manual install, and `ROLLBACK.cmd` in its folder undoes it.
-- **Nothing happens on its own.** It installs only when you click Install, with the server and the game closed. The
-  package is used only if it matches the SHA-256 digest GitHub publishes for it.
-- **Private.** The check is one request to GitHub's releases API that sends nothing about you or your game. Untick
-  **Check automatically** to turn it off. The steps are logged in `runtime\logs\launcher-updates.log`.
-- **Setup** also installs the newest release's package when it is newer than the one inside it.
+**By hand.** Have Offline DAoC 0.37 or 0.37b ([0.37 files](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37)),
+unzip `OfflineDAoC-LivingServer-1.2.zip` into your game folder, close the game and server, and run `INSTALL.cmd`.
 
-Beta 1.1.1 and earlier have no update check: install Beta 1.1.4 once by hand or with Setup.
+**On 0.36, 0.36b or 0.36c?** Setup updates the game to 0.37, keeping your saves, then adds Living Server (**tests only** for 1.2: not yet run on the owner's PC). On 0.36 with the Social Expansion, run `PREPARE-FOR-UPDATE.cmd` from this package first.
 
-## Getting started
+## Update
 
-A fresh world has no bots yet, and most of these features need some.
+- **From 1.1.2 or later:** **Check for updates** in the launcher; START SERVER then reads **GET UPDATE** (Install, Later
+  or Skip this version).
+- **From anything earlier:** run Setup, or install by hand. Characters, bots, guilds, bot memory and settings stay.
+- A world from an earlier build turns on each feature it still had at the old default; your own switches stay.
 
-1. **Make bots.** On the launcher's main screen, use the **+ Lv.1** and **+ Lv.50** buttons for each
-   realm. Raids need level 50s, and a realm needs 8 bots of level 5 or higher before it forms a guild.
-2. **Switch features on.** With the server stopped, open the **Living Server** tab, tick what you want
-   and click **Save settings**. Good first picks: Bot voices with /faction debates, Bot personalities and
-   the Server life parts. Add Bot guilds once you have enough bots.
-3. **Start the server and play.** Settings apply at the next server start. A session starts when you log
-   in, or come back after half an hour away, and the first /faction scenes come within about its first
-   half hour.
-4. **Check it's running.** The server log (`runtime\server\logs\server.log`) has a line starting
-   `FORK_BUILD name=1.1.4-beta` that lists which features are on.
+## Your first evening
 
-## Undo and uninstall
+1. **Make your realms.** On the launcher's main screen use **+ Lv.1**, **+ Lv.20** and **+ Lv.50** for each realm (Shift
+   adds 10, Ctrl adds 100). Raids need level 50s; a realm needs 8 bots of level 5 or higher before it forms a guild.
+2. **START SERVER**, then **ENTER REALM**. Your local account is made the first time.
+3. Stand in your capital in the evening with /faction open. Type `/lfg`. Ask a bot something.
+4. `runtime\server\logs\server.log` has a `FORK_BUILD name=1.2` line listing what's on.
 
-- **Turn a feature off:** untick it in the Living Server tab (or click **ALL OFF**), save, and restart the
-  server.
-- **Remove bot guilds from your world:** turning bot guilds off keeps the guilds, their alliances and any
-  keeps they claimed. To remove them, close the game and server and run
-  `python tools\claude-version\set_bot_guilds.py --purge --apply` in your game folder (Python 3). It backs
-  up your database first, releases keeps claimed by bot guilds, removes bot guilds and their alliances, and
-  moves any of your characters in a bot guild back to the starting guild.
-- **Uninstall:** after the steps above, double-click `ROLLBACK.cmd`. It restores the server, launcher and
-  game files the install replaced or fixed. If you installed more than one build, run it once per build.
-  The new tables and settings stay in your database; the original server ignores them.
+## Handy commands
 
-## Backups (from 1.1.2)
+| Command | What it does |
+|---|---|
+| `/personality` | The personality of the gamebot you have targeted |
+| `/send <name>` | Talk to any online bot of your realm |
+| `/lfg <message>` | Look for a group; bot leaders may invite you sooner |
+| `/lead`, `/lead bot [name]` | Take the lead of a bot-led group, or hand it to a gamebot |
+| `/invites on`, `/invites off` | Bot leaders' unasked group and raid invites |
+| `/lore`, `/lore <place or boss> [page]` | Your realm's places and bosses, and whether your realm has slain them |
+| `/lswhy`, `/lswhy <name>`, `/lswhy me` | Why a bot spoke, or why bots answered your lines, or didn't |
+| `/hire`, `/hire list`, `/hire help` | Hire and manage your companions, beside a healer of your realm |
+| `/spawn` | A helper of any class and spec |
+| `/tele <bot>`, `/tc`, `/stables` | Travel helpers from Offline DAoC |
 
-- **Where they are:**
-  - **Daily copies:** while the server runs, it copies your world once a day to
-    `runtime\data\backups\opendaoc-<date>-<time>-daily.sqlite3.db`. The time in the name is UTC. The last 7 are
-    kept (server setting `db_backup_keep`; 0 turns them off).
-  - **Before each install:** `INSTALL.cmd` copies the world to
-    `runtime\server\deployment-backups\fork-build-<time>\data\`. The newest 3 installs keep that copy.
-- **To restore one:**
-  1. Close the launcher, the game and the server.
-  2. In `runtime\data`, rename `opendaoc.sqlite3.db` to keep it, and delete `opendaoc.sqlite3.db-wal` and
-     `opendaoc.sqlite3.db-shm` if they're there.
-  3. Copy the backup into `runtime\data` and name it `opendaoc.sqlite3.db`. An installer copy may come with its own
-     `-wal` file: copy it too, renamed to match.
-  4. Start the server. The log's `DB_INTEGRITY ... result=ok` line confirms the restored world is sound.
-- **The server only listens on this PC.** If your `serverconfig.xml` lets other computers in, or has UPnP on, the
-  log warns at each start (`NETWORK_EXPOSURE`) and says how to turn it off. See
-  [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
+Every command: [QUICK COMMANDS.txt](QUICK%20COMMANDS.txt) and [ALL SERVER COMMANDS.txt](ALL%20SERVER%20COMMANDS.txt).
 
-## Details
+## Undo and backups
 
-- [Known issues and what's not tested yet](docs/KNOWN-ISSUES.md)
-- [Every change, with its numbers](CHANGELOG-LIVING-SERVER.md)
-- [Bot guilds: design and status](docs/BOT-GUILDS.md)
-- [Bot personalities, voices and debates](docs/BOT-PERSONALITIES.md)
-- [Server life and the Camelot Herald](docs/LIVING-SERVER.md)
-- [XP by level range](docs/XP-BY-LEVEL-RANGE.md)
+- **Turn a part off:** untick it in the Living Server tab (or **ALL OFF**), save, restart the server.
+- **Remove bot guilds:** with the game and server closed, run `python tools\claude-version\set_bot_guilds.py --purge --apply`
+  in your game folder. It backs up your database first.
+- **Uninstall:** `ROLLBACK.cmd` puts back every file the install replaced. It never puts your world back.
+- **Daily backups** go to `runtime\data\backups` (the last 7 are kept), and every install copies your world first.
+- **The server listens only on this PC** unless you host for friends; the log warns at each start if it doesn't
+  (`NETWORK_EXPOSURE`).
+
+## More
+
+[Known issues](docs/KNOWN-ISSUES.md) · [Every change](CHANGELOG-LIVING-SERVER.md) · [Server life and the Herald](docs/LIVING-SERVER.md) ·
+[Bot guilds](docs/BOT-GUILDS.md) · [Personalities and voices](docs/BOT-PERSONALITIES.md) · [Lore](docs/LORE.md) ·
+[Crafting](docs/CRAFTING.md) · [Play with friends](docs/PLAY-WITH-FRIENDS.md) · [XP by level range](docs/XP-BY-LEVEL-RANGE.md)
+
+Report a problem on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the `FORK_BUILD` line
+from `runtime\server\logs\server.log`.
 
 ## Credits
 
-[shadowofze](https://github.com/shadowofze) made Offline DAoC, and everything here builds on it.
-[OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core) is the server underneath. Bot-guild membership, route
-bends and danger memory are adapted from [stefanrows' fork](https://github.com/stefanrows/OfflineDAoC).
-Beta 1.1 also takes fixes from shadowofze's 0.38 work, rambodolphin13's fork and lometur's HearthDAoC, and
-the lag fix for large populations came from Krolgosh-web's report (issue #25). Living Server is directed and play-tested by [chris4aker](https://github.com/chris4aker) and coded with
-Claude (Anthropic). Same license as the original: GPL-3.0.
+Offline DAoC with Living Server is maintained by [chris4aker](https://github.com/chris4aker). Offline DAoC was created by
+[shadowofze](https://github.com/shadowofze), and [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core) is the server
+underneath. Some code and ideas are borrowed from the [True 1.65 project](https://github.com/zomboden/OfflineDAoC-True165)
+(zomboden/OfflineDAoC-True165): hired companions and several boss and camp fixes in 1.2. Bot-guild membership, route bends and
+danger memory are adapted from [stefanrows' fork](https://github.com/stefanrows/OfflineDAoC). Fixes and ideas also come
+from rambodolphin13's DividedRealms, lometur's HearthDAoC (the save-safety design among them), Cancain (bots returning
+from battlegrounds, `/friend` with gamebots, `/allrelease`), Nikse77, Rmarcoux86, MoomoocowPlus and shadowofze's 0.38
+work; the lag fix for large
+populations came from Krolgosh-web's report (issue #25). Thanks to everyone on GitHub and r/daoc who reported what they
+found. The code is written with Claude (Anthropic). Same license as the original: GPL-3.0. Third-party notices: [THIRD_PARTY.md](THIRD_PARTY.md).
 
 ---
 
@@ -256,10 +216,11 @@ that runs entirely on your own PC. The world is filled with autonomous gamebots 
 group, trade and fight on their own, and you can recruit companion bots to adventure with you.
 
 It is a community project built on the open-source [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core)
-server. The customizations were developed with AI tools (Codex, then Claude) and directed and
-play-tested by the project owner. It is not an official DAoC product and is not for sale.
+server. Everything it adds to OpenDAoC, and the whole new client, was written by AI tools (Codex, then Claude). The
+project owner, who has no game development or coding experience, directed and play-tested it. It is not an official
+DAoC product and is not for sale.
 
-## Current release: 0.37
+## Last release: 0.37
 
 0.37 carries on from 0.36: you can form your own guild and bring gamebots into it, bot armies attack together and
 raise their fallen at sieges, groups travel as one pack, raids get further in Caer Sidi and Galladoria, there is far
@@ -271,8 +232,8 @@ game) and your account, characters, bots and settings stay as they are. If you a
 complete game for you.
 
 Living Server installs one edition for new players: **0.37**, the original DAoC client with the Classic + Shrouded Isles
-classes ([0.37 files](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37)). The other two editions shadowofze made are no longer offered: 0.37b (his custom
-Sluaghbinder class) and 0.37c (his new Godot client, which he continues in Offline DAoC True 1.65). If you already play
+classes ([0.37 files](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37)). The other two 0.37 editions are no longer offered for new installs: 0.37b (the custom
+Sluaghbinder class) and 0.37c (the new Godot client). If you already play
 0.37b or 0.37c, your game keeps working with Living Server and keeps getting its updates.
 
 **Handy commands:** [QUICK COMMANDS.txt](QUICK%20COMMANDS.txt) lists the in-game commands and launcher shortcuts: teleport to a bot (`/tele`), find monsters of a level (`/mobs`), add 10 or 100 bots at once (Shift or Ctrl + click), and more. Every command is in [ALL SERVER COMMANDS.txt](ALL%20SERVER%20COMMANDS.txt), and both files are in your game folder too.
@@ -331,11 +292,11 @@ builds. In 0.37c, both clients then have your progress. See [docs/TRANSFER-PROGR
 
 ## Older versions
 
-Earlier releases (v0.3 to v0.36c) were published in shadowofze's repository, which is no longer online. Living Server
-keeps the 0.36 and 0.37 download files in [OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases).
+Earlier releases (v0.3 to v0.36c) were first published in the original Offline DAoC repository, which is no longer
+online. This project keeps the 0.36 and 0.37 download files in [OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases).
 
 Their notes are in [docs/history/](docs/history/). The download helpers in [older-versions/](older-versions/) point at
-his repository and no longer download anything.
+that repository and no longer download anything.
 
 ## For developers and AI assistants
 

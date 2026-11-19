@@ -67,6 +67,31 @@ public static class AutonomousDarknessFallsPolicy
         return realm == currentOwner;
     }
 
+    /// <summary>
+    /// Who holds Darkness Falls after a keep count change: the realm with strictly
+    /// the most keeps; on a tie for most keeps the current holder keeps it if it
+    /// is one of the tied leaders, otherwise nobody holds it (None stays None, so
+    /// a fresh 7:7:7 world stays closed until a realm leads). Called at start-up
+    /// and after every keep capture, so a realm that lost its lead to a third
+    /// realm's capture loses Darkness Falls at once, and a capture never hands it
+    /// to a realm that still has fewer keeps than another.
+    /// </summary>
+    public static eRealm NextOwner(eRealm currentOwner, int albionKeeps, int midgardKeeps, int hiberniaKeeps)
+    {
+        if (albionKeeps > midgardKeeps && albionKeeps > hiberniaKeeps) return eRealm.Albion;
+        if (midgardKeeps > albionKeeps && midgardKeeps > hiberniaKeeps) return eRealm.Midgard;
+        if (hiberniaKeeps > albionKeeps && hiberniaKeeps > midgardKeeps) return eRealm.Hibernia;
+        int most = Math.Max(albionKeeps, Math.Max(midgardKeeps, hiberniaKeeps));
+        int held = currentOwner switch
+        {
+            eRealm.Albion => albionKeeps,
+            eRealm.Midgard => midgardKeeps,
+            eRealm.Hibernia => hiberniaKeeps,
+            _ => -1,
+        };
+        return held == most ? currentOwner : eRealm.None;
+    }
+
     public static bool CanUseRegionEdge(eRealm realm, ushort sourceRegion, ushort targetRegion, Func<eRealm, bool> canEnter)
     {
         if (sourceRegion == RegionId && targetRegion != RegionId)

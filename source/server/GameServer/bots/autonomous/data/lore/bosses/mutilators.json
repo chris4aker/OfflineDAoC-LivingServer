@@ -1,0 +1,866 @@
+{
+ "id": "mutilators",
+ "name": "The Mutilators",
+ "tier": "order",
+ "npcNames": [
+  "Mutilator Xagalith",
+  "Mutilator Vorazax",
+  "Mutilator Vozoaz",
+  "Mutilator Yooginroth",
+  "Mutilator Xazbalor",
+  "Mutilator Namox",
+  "Mutilator Marbozer",
+  "Mutilator Xaabaro",
+  "Mutilator Phaxazis",
+  "Mutilator Oronor",
+  "Mutilator Taboku",
+  "Mutilator Konapher",
+  "Mutilator Oprionach",
+  "Mutilator Samiol",
+  "Mutilator Felrath",
+  "Mutilator Ezerak",
+  "Mutilator Odius",
+  "Mutilator Laicanroth",
+  "Mutilator Lazorous",
+  "Mutilator Nianax",
+  "Mutilator Novinrac",
+  "Mutilator Uxybab",
+  "Mutilator Xakanos",
+  "Mutilator Axtanax",
+  "Mutilator Okabi",
+  "Mutilator Zurabo"
+ ],
+ "aliases": [
+  "the flayers",
+  "the hook"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "mutilators-pit"
+ ],
+ "related": [
+  {
+   "id": "prince-asmoien",
+   "relation": "their prince; they are his Hook"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "their enemy of the feud"
+  },
+  {
+   "id": "marquis-haurian",
+   "relation": "one of theirs, the Master's Carver"
+  },
+  {
+   "id": "earl-ipostian",
+   "relation": "hangs over their pit"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "ended their feud at the crossing"
+  },
+  {
+   "id": "lecherous-gress",
+   "relation": "lives above their stair"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "the step before them"
+  }
+ ],
+ "facts": [
+  {
+   "text": "The Mutilators are 26 named GameEpicNPCs of levels 60 to 77 in Darkness Falls, all using model 635, with no scripts, paths or template spells.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "About half the Mutilators deal crush damage (Xagalith among them) and the rest slash.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key places Mutilators in the pit beside Prince Asmoien, at the Gate and with Legion's Own on the approach, and lists Mutilator Xagalith in its bestiary.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Lecherous Gress, a quest target of Midgard's Black Plague, lives above the rocot rooms near Mutilator Namox.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "Most respawn in 180 seconds; Xagalith, Asmoien's guard, Konapher, Oprionach and Samiol in 1,800; Felrath, Ezerak and Odius in 1,080-1,140.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "No demonology source found for the Mutilators' names.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "The Hook, the pit and the feud are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "The Mutilators are Prince Asmoien's order, the Hook, and the court's last step before the Master. When Grand Chancellor Adremal made striking-off a procedure in the First Roll, he gave the unmaking to Asmoien, who had always been the one lord in the west who understood how things come apart, and Asmoien founded the order in the pit at the western end of the hollow. A demon struck from the Roll cannot simply be eaten. It must first be made into something the Master can take, and that is the Hook's craft: patient, ugly and exact. The Mutilators fight with what they work with, hooks and heavy mauls, and the realms who have met them say a Mutilator's blows either tear or break, and the old ones mostly break.\n\nThe order's first master was Xagalith, who keeps the pit still. He taught the craft to every Mutilator of the west, among them a flayer called Haurian, who walked from the pit to the Master's door in the Second Roll to do the first unmaking there and was raised to marquis for it. The pit regards the Carver as its saint. The Chthonic Knights regard him as the worst of a bad order.\n\nThe quarrel between the Hook and the Blade began with a line on the Roll. Asmoien and Prince Abdin both claimed to have knelt second at the Feast of Thrones, and the Chancellor wrote them on one line, and neither prince has forgiven the other or the Chancellor. Their orders fought it out for three Rolls in tunnels and on stairs, and in the Fourth Roll they met in the central crossing, where Gatekeeper Dommel closed every road and let them kill each other until neither order mattered. The Hook came out with fewer than the Blade, and has never admitted it. Earl Ipostian, Asmoien's winged messenger, watched the whole of it from the air above the crossing and has not landed since; he hangs over the pit now, and Xagalith wants him down.\n\nSince the feud the Hook has spread with the court. Mutilators stand at the Gate beside knights and Inquisitors, sworn to draw nothing there. The Master took the strongest of the order to stand on the approach as Legion's Own, so that the Hook and the Blade would stand on the slope in equal strength and neither could claim his favour; one of them was not taken but simply walked up and stood there. Duke Bimure keeps Mutilators in the East Ward to unmake the dead of the high lords' quarrels before any lord can claim them. And at the far south end of the pit the order keeps its own way out, a long passage through which the Hook goes to fetch whatever will not come to it.\n\nAbove the pit, past the rocot rooms, lives Lecherous Gress, and the Mutilators of the stair know what he sends down. They do not say. The realms have their own names for the order: Albion's Church calls them the butchers below; Midgard's skalds call them the flayers, and say the dead the flayers have touched do not go to any hall; Hibernia's druids say the Hook does the one work in the court that is honest about what the court is.",
+ "legend": "Mutilators are everywhere in Darkness Falls: Xagalith (77) at the head of the western pit, Asmoien's guard of four by the prince's hall (Vorazax, Vozoaz, Yooginroth, Xazbalor), three in the pit (Marbozer, Xaabaro, Phaxazis) and Namox at the stair up to Lecherous Gress, two at the pit's far south passage (Oronor, Taboku), six of Legion's Own on the approach (Konapher, Oprionach and Samiol at 74, plus Felrath, Ezerak, Odius), six in the East Ward camps and three at the Gate. Levels 60 to 77, no scripts, no template spells; about half of them deal crush damage and half slash, so bring armour that handles both. They stand in fixed posts. Most respawn in three minutes; Xagalith, the prince's guard and the three big ones on the approach take half an hour. Players call them the flayers.",
+ "yells": {
+  "aggro": [
+   "Hold still.",
+   "The Hook takes everything apart.",
+   "You will be ready for the Master."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Not finished. I am not finished with you."
+   }
+  ],
+  "death": [
+   "Unmade... by someone else...",
+   "Tell the pit... to clean my hooks..."
+  ],
+  "slay": [
+   "Apart.",
+   "Ready for the table.",
+   "The Hook is patient."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Racks of hooks and mauls line the walls, very clean.",
+   "Something is being taken apart, slowly, nearby."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The flayer's hooks work faster now."
+   }
+  ],
+  "realmFirstKill": "The Mutilators have been unmade by the realms."
+ },
+ "botLines": {
+  "briefing": [
+   "mutilators hit crush or slash, [check your armour|bring both]. no tricks",
+   "xagalith is 77, biggest in the pit. [last in the west|after the guard]",
+   "legions own mutilators are 74 on the approach. [one at a time|careful near the door]",
+   "namox is at the stair up to gress. [mids on the plague quest|plague quest goes past him]"
+  ],
+  "aftermathWin": [
+   "mutilator camp down. [next|on we go]",
+   "xagalith dead. [master of the pit down|pit's done]",
+   "the prince's guard is down. [asmoien next|on to the prince]",
+   "gate flayers done. [crossing clear|on through]"
+  ],
+  "aftermathLoss": [
+   "pulled half the pit. [wipe|too many]",
+   "xagalith and the guard together. [gg|mess]",
+   "the flayers got us. [regroup|rez]",
+   "respawned on us in the ward. [three minutes|move faster]"
+  ],
+  "rumour": [
+   "[heard|word is] the mutilators cut up demons so legion can eat them",
+   "the mutilators and the knights had a war. [gatekeeper ended it|the gate one]",
+   "[someone said|my guildie says] one mutilator on the approach just walked up and stood there. [samiol|nobody sent it back]",
+   "the flying earl over the pit wont land. [the mutilators hate it|ipostian]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "mutilators",
+  "text": "Prince [Asmoien]'s order, the Hook, which unmakes every demon struck from the Roll so that the Master can eat it. Its master is Xagalith of the western pit; its saint is Marquis [Haurian]; its enemy is the [Chthonic Knights]."
+ },
+ "bookPage": "From a Hibernian druid's letter to her grove, written at Tir na Nog: I have seen the pit in the west. I wish to tell you about it plainly, because the bards will not. It is a workshop. There are racks of hooks and knives and heavy mauls along the walls, cleaned and hung in order, and the flayers work on the floor below them with great care, and what they work on is one of their own, who was alive and on their great list a little while ago. They do not hate it. They are careful with it. That is the worst thing I have seen under the world, and I have seen the Master.",
+ "bookPages": [
+  "From a Hibernian druid's letter to her grove, written at Tir na Nog: I have seen the pit in the west. I wish to tell you about it plainly, because the bards will not. It is a workshop. There are racks of hooks and knives and heavy mauls along the walls, cleaned and hung in order, and the flayers work on the floor below them with great care, and what they work on is one of their own, who was alive and on their great list a little while ago. They do not hate it. They are careful with it. That is the worst thing I have seen under the world, and I have seen the Master.",
+  "The druid went on: A winged thing hung in the air over the pit the whole time and never came down, and the great flayer at the head of the pit looked up at it from time to time with an expression I would call, in a man, resentment. Our guide, an imp we had paid, said that the winged one had seen the flayers lose a war once, and had never forgiven the ground for it. I asked what the flayers would do to it if it landed. The imp laughed and said that was the whole point."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the Hook of Prince Asmoien in {minutes} minutes.",
+  "loss": "The Mutilators took {realm}'s raid under {raidLeader} apart, carefully."
+ },
+ "members": [
+  {
+   "name": "Mutilator Xagalith",
+   "level": 77,
+   "post": "master of the pit, the west",
+   "story": "Xagalith is the master of the Mutilators and the strongest of the order, the demon who keeps the western pit and decides how each condemned thing is unmade. He was Prince Asmoien's first Mutilator and taught the Hook its craft, Marquis Haurian among the rest. He has complained to the prince, every Roll since the feud, that Earl Ipostian watches the pit from the air and will not come down to it. Asmoien has never once answered him.",
+   "yells": {
+    "aggro": [
+     "The pit is mine. You are in it.",
+     "Hold still. I teach by example."
+    ],
+    "death": [
+     "The Hook... teach them... the Hook..."
+    ],
+    "slay": [
+     "Unmade, and well."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "At the head of the pit a great flayer waits with his hooks."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "xagalith",
+    "text": "Xagalith is the master of the Mutilators and the strongest of the order, the demon who keeps the western pit and decides how each condemned thing is unmade. He was Prince Asmoien's first Mutilator and taught the Hook its craft, Marquis Haurian among the rest."
+   }
+  },
+  {
+   "name": "Mutilator Vorazax",
+   "level": 72,
+   "post": "Prince Asmoien's guard, the west",
+   "story": "Vorazax stands nearest Prince Asmoien's hall, the first of the prince's guard and its loudest. He fought at the crossing in the Fourth Roll and came out of it when the roads opened, one of the few of the Hook who did. He has carried a grudge against the Gatekeeper since, and calls every knight he meets by the name of one he killed there.",
+   "yells": {
+    "aggro": [
+     "I came out of the crossing. You will not come out of here."
+    ],
+    "death": [
+     "The crossing... again..."
+    ],
+    "slay": [
+     "Another knight's name for you."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Before the prince's hall stands a flayer with old scars."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "vorazax",
+    "text": "Vorazax stands nearest Prince Asmoien's hall, the first of the prince's guard and its loudest. He fought at the crossing in the Fourth Roll and came out of it when the roads opened, one of the few of the Hook who did."
+   }
+  },
+  {
+   "name": "Mutilator Vozoaz",
+   "level": 72,
+   "post": "Prince Asmoien's guard, the west",
+   "story": "Vozoaz keeps the western end of the prince's guard, toward the pit, and is Xagalith's eyes on the prince's door. The guard say he reports every visitor to the master of the pit before he reports it to the prince, and Asmoien knows, and keeps him there because a guard who reports twice is a guard who watches twice.",
+   "yells": {
+    "aggro": [
+     "Reported. Twice."
+    ],
+    "death": [
+     "Tell the master... first..."
+    ],
+    "slay": [
+     "Seen, and reported."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer of the guard looks to the pit, then at you."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "vozoaz",
+    "text": "Vozoaz keeps the western end of the prince's guard, toward the pit, and is Xagalith's eyes on the prince's door. The guard say he reports every visitor to the master of the pit before he reports it to the prince, and Asmoien knows, and keeps him there because a guard who reports twice is a guard who watches twice."
+   }
+  },
+  {
+   "name": "Mutilator Yooginroth",
+   "level": 72,
+   "post": "Prince Asmoien's guard, the west",
+   "story": "Yooginroth is the guard's eldest, so old the order cannot say when it was sworn. It speaks a tongue nobody else in the west uses, which the imps say is the tongue of the Uncounted Age, and it stands between Vozoaz and Xazbalor with its hooks crossed on its chest, the old form of the Hook's salute that no other Mutilator still makes.",
+   "yells": {
+    "aggro": [
+     "Grr'nakh. Hook. Hook."
+    ],
+    "death": [
+     "Old... older than the Roll..."
+    ],
+    "slay": [
+     "Hooked."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "An ancient flayer stands with its hooks crossed."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "yooginroth",
+    "text": "Yooginroth is the guard's eldest, so old the order cannot say when it was sworn. It speaks a tongue nobody else in the west uses, which the imps say is the tongue of the Uncounted Age, and it stands between Vozoaz and Xazbalor with its hooks crossed on its chest, the old form of the Hook's salute that no other Mutilator still makes."
+   }
+  },
+  {
+   "name": "Mutilator Xazbalor",
+   "level": 70,
+   "post": "Prince Asmoien's guard, the west",
+   "story": "Xazbalor is the youngest of the prince's guard and the one Earl Ipostian hangs over most, since its post is on the lip of the pit. It has never once looked up. The guard say it has decided that a thing which will not come down to the floor is not worth looking at, and that this is the most Mutilator opinion anyone has ever held.",
+   "yells": {
+    "aggro": [
+     "Up there is the earl. Down here is me. Choose."
+    ],
+    "death": [
+     "Never... looked up..."
+    ],
+    "slay": [
+     "Down where you belong."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "On the lip of the pit a flayer refuses to look up."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "xazbalor",
+    "text": "Xazbalor is the youngest of the prince's guard and the one Earl Ipostian hangs over most, since its post is on the lip of the pit. It has never once looked up."
+   }
+  },
+  {
+   "name": "Mutilator Namox",
+   "level": 60,
+   "post": "the pit, the west",
+   "story": "Namox keeps the stair from the pit up toward the rocot rooms and Lecherous Gress, and so is the Mutilator who sees what Gress sends down and what goes up to him. Namox will not say what that is. The pit calls Namox the stair-keeper and does not ask, and Namox is the only Mutilator who has ever turned down an unmaking because of the smell.",
+   "yells": {
+    "aggro": [
+     "Nothing goes up this stair without me."
+    ],
+    "death": [
+     "The stair... keep it..."
+    ],
+    "slay": [
+     "Not up. Down."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A stair climbs from the pit. A flayer stands at its foot."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "namox",
+    "text": "Namox keeps the stair from the pit up toward the rocot rooms and Lecherous Gress, and so is the Mutilator who sees what Gress sends down and what goes up to him. Namox will not say what that is."
+   }
+  },
+  {
+   "name": "Mutilator Marbozer",
+   "level": 68,
+   "post": "the pit, the west",
+   "story": "Marbozer works the pit's western floor with Xaabaro and keeps the pit's tools: the hooks, the knives, the heavy mauls for the pieces that will not come apart. Each Mutilator of the west takes its tools from Marbozer and gives them back clean, and the order says Marbozer can tell from a hook's edge whose hand used it last.",
+   "yells": {
+    "aggro": [
+     "Your edge is dull. Mine is not."
+    ],
+    "death": [
+     "Clean... give them back clean..."
+    ],
+    "slay": [
+     "Taken apart."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Racks of hooks and mauls line the pit wall, cleaned."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "marbozer",
+    "text": "Marbozer works the pit's western floor with Xaabaro and keeps the pit's tools: the hooks, the knives, the heavy mauls for the pieces that will not come apart. Each Mutilator of the west takes its tools from Marbozer and gives them back clean, and the order says Marbozer can tell from a hook's edge whose hand used it last."
+   }
+  },
+  {
+   "name": "Mutilator Xaabaro",
+   "level": 68,
+   "post": "the pit, the west",
+   "story": "Xaabaro works beside Marbozer on the pit's western floor, and is the order's best at the slow work, the unmaking that has to be done in a particular order so that the Master receives the condemned thing whole in all its parts. Marquis Haurian learned the slow work from Xaabaro before he went to the door. Xaabaro says he was a quick study.",
+   "yells": {
+    "aggro": [
+     "Slowly. This will be done slowly."
+    ],
+    "death": [
+     "Out of order... I am coming apart out of order..."
+    ],
+    "slay": [
+     "In order."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer works the pit floor with great patience."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "xaabaro",
+    "text": "Xaabaro works beside Marbozer on the pit's western floor, and is the order's best at the slow work, the unmaking that has to be done in a particular order so that the Master receives the condemned thing whole in all its parts. Marquis Haurian learned the slow work from Xaabaro before he went to the door."
+   }
+  },
+  {
+   "name": "Mutilator Phaxazis",
+   "level": 68,
+   "post": "the pit, the west",
+   "story": "Phaxazis keeps the pit's lower end, where the floor slopes down toward the far south of the west and the order's way out. He is the pit's judge of the finished work: nothing leaves the pit for the Master's table until Phaxazis has looked at it and nodded. He has nodded at everything the pit has ever sent, which the order takes as proof of its standards.",
+   "yells": {
+    "aggro": [
+     "Let me see the finished work. Ah. You."
+    ],
+    "death": [
+     "Not finished... not yet..."
+    ],
+    "slay": [
+     "Finished. Good."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "At the bottom of the pit a flayer inspects something."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "phaxazis",
+    "text": "Phaxazis keeps the pit's lower end, where the floor slopes down toward the far south of the west and the order's way out. He is the pit's judge of the finished work: nothing leaves the pit for the Master's table until Phaxazis has looked at it and nodded."
+   }
+  },
+  {
+   "name": "Mutilator Oronor",
+   "level": 66,
+   "post": "the far south of the pit, the order's way out",
+   "story": "Oronor keeps the order's way out of the west, the long passage at the far south end of the pit, with Taboku. When the Hook goes out to unmake for the rest of the court, it goes that way, and Oronor counts it out and back. The order says Oronor has counted every Mutilator who ever went out, and that the count has never once come back even.",
+   "yells": {
+    "aggro": [
+     "Out, or back? You are going neither."
+    ],
+    "death": [
+     "The count... uneven..."
+    ],
+    "slay": [
+     "Counted out."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A passage leads out of the pit. Two flayers keep it."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "oronor",
+    "text": "Oronor keeps the order's way out of the west, the long passage at the far south end of the pit, with Taboku. When the Hook goes out to unmake for the rest of the court, it goes that way, and Oronor counts it out and back."
+   }
+  },
+  {
+   "name": "Mutilator Taboku",
+   "level": 66,
+   "post": "the far south of the pit, the order's way out",
+   "story": "Taboku keeps the passage at the pit's far south end with Oronor, and is the Mutilator sent to fetch condemned demons who will not come to the pit on their own. The order calls it the Hook's long arm. It has fetched a duke's follower out of the East Ward and a marquis's clerk off the approach, and the court lowers its voice when Taboku walks past.",
+   "yells": {
+    "aggro": [
+     "You were sent for."
+    ],
+    "death": [
+     "Fetch... someone fetch me..."
+    ],
+    "slay": [
+     "Fetched."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer waits by the passage, as if to be sent."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "taboku",
+    "text": "Taboku keeps the passage at the pit's far south end with Oronor, and is the Mutilator sent to fetch condemned demons who will not come to the pit on their own. The order calls it the Hook's long arm."
+   }
+  },
+  {
+   "name": "Mutilator Konapher",
+   "level": 74,
+   "post": "Legion's Own, the approach",
+   "story": "Konapher is the strongest Mutilator of Legion's Own and stands lowest on the approach, near Earl Amagin and the door. The Master took the four strongest of the Hook as the Chancellor took the four best of the Blade, so that the two orders would stand on the slope in equal number and neither could claim the Master's favour. Konapher claims it anyway.",
+   "yells": {
+    "aggro": [
+     "The Master prefers the Hook. Ask him."
+    ],
+    "death": [
+     "Tell the Master... I was his..."
+    ],
+    "slay": [
+     "For the Master."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Near the Master's door one flayer stands tallest."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "konapher",
+    "text": "Konapher is the strongest Mutilator of Legion's Own and stands lowest on the approach, near Earl Amagin and the door. The Master took the four strongest of the Hook as the Chancellor took the four best of the Blade, so that the two orders would stand on the slope in equal number and neither could claim the Master's favour."
+   }
+  },
+  {
+   "name": "Mutilator Oprionach",
+   "level": 74,
+   "post": "Legion's Own, the approach",
+   "story": "Oprionach stands with Samiol on the middle of the approach, near the knight Olov, and has stood within a sword's length of that knight for ten Rolls without either of them drawing. The court regards the two as the best proof that the Gate oath works even away from the Gate. Oprionach says it is not the oath; it is that Olov has never yet given it a reason.",
+   "yells": {
+    "aggro": [
+     "Give me a reason. Olov never has."
+    ],
+    "death": [
+     "A reason... at last..."
+    ],
+    "slay": [
+     "Reason enough."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer and a knight stand a sword's length apart."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "oprionach",
+    "text": "Oprionach stands with Samiol on the middle of the approach, near the knight Olov, and has stood within a sword's length of that knight for ten Rolls without either of them drawing. The court regards the two as the best proof that the Gate oath works even away from the Gate."
+   }
+  },
+  {
+   "name": "Mutilator Samiol",
+   "level": 74,
+   "post": "Legion's Own, the approach",
+   "story": "Samiol keeps the approach beside Oprionach and is the one Mutilator of Legion's Own who was not chosen. In the First Roll Samiol simply walked up the approach from the pit and stood among the Master's demons, and nobody has ever dared to send it back. The Chancellor wrote its line afterwards, to fit where it stood.",
+   "yells": {
+    "aggro": [
+     "I chose this place. Nobody chose me."
+    ],
+    "death": [
+     "Nobody... sent me..."
+    ],
+    "slay": [
+     "Chosen."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer stands on the slope as if it has always been there."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "samiol",
+    "text": "Samiol keeps the approach beside Oprionach and is the one Mutilator of Legion's Own who was not chosen. In the First Roll Samiol simply walked up the approach from the pit and stood among the Master's demons, and nobody has ever dared to send it back."
+   }
+  },
+  {
+   "name": "Mutilator Felrath",
+   "level": 67,
+   "post": "Legion's Own, the approach",
+   "story": "Felrath keeps the lower slope beside Konapher and Ezerak, and is Marquis Haurian's assistant at the door: it holds what the Carver is working on. Felrath does not speak and has never been heard to, and the imps say the Carver chose it for that, since the Master's door is the one place in the hollow where nobody wants to be told what is happening.",
+   "yells": {
+    "aggro": [
+     "..."
+    ],
+    "death": [
+     "..."
+    ],
+    "slay": [
+     "..."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A silent flayer stands ready near the Master's door."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "felrath",
+    "text": "Felrath keeps the lower slope beside Konapher and Ezerak, and is Marquis Haurian's assistant at the door: it holds what the Carver is working on. Felrath does not speak and has never been heard to, and the imps say the Carver chose it for that, since the Master's door is the one place in the hollow where nobody wants to be told what is happening."
+   }
+  },
+  {
+   "name": "Mutilator Ezerak",
+   "level": 65,
+   "post": "Legion's Own, the approach",
+   "story": "Ezerak is the smallest Mutilator of Legion's Own, half a head shorter than the rest, and the quickest. It stands closest to the Behemoth's ledge and is said to be the only demon on the approach that the Behemoth has ever looked at. Ezerak does not say what it saw in the look. It stands a little closer to the cliff every Roll.",
+   "yells": {
+    "aggro": [
+     "Small. Quick. Behind you."
+    ],
+    "death": [
+     "The ledge... it looked at me..."
+    ],
+    "slay": [
+     "Too slow."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A small flayer stands under the ledge, looking up."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "ezerak",
+    "text": "Ezerak is the smallest Mutilator of Legion's Own, half a head shorter than the rest, and the quickest. It stands closest to the Behemoth's ledge and is said to be the only demon on the approach that the Behemoth has ever looked at."
+   }
+  },
+  {
+   "name": "Mutilator Odius",
+   "level": 66,
+   "post": "Legion's Own, the approach",
+   "story": "Odius is the smallest of all the Mutilators and keeps the approach nearest Marquis Haurian, whom it worships. It was in the pit when the Carver walked out of it to the door, and followed him up the slope, and has been at his elbow since. The Carver tolerates it. The pit says Odius is waiting for the Carver's hooks.",
+   "yells": {
+    "aggro": [
+     "The Carver will want to see you."
+    ],
+    "death": [
+     "Carver... I tried..."
+    ],
+    "slay": [
+     "For the Carver."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A very small flayer waits at the Carver's elbow."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "odius",
+    "text": "Odius is the smallest of all the Mutilators and keeps the approach nearest Marquis Haurian, whom it worships. It was in the pit when the Carver walked out of it to the door, and followed him up the slope, and has been at his elbow since."
+   }
+  },
+  {
+   "name": "Mutilator Laicanroth",
+   "level": 67,
+   "post": "the East Ward",
+   "story": "Laicanroth is the senior Mutilator of the East Ward and keeps its northern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it. Duke Bimure considers it the most useful demon in the Ward and has never thanked it.",
+   "yells": {
+    "aggro": [
+     "Before your lord claims you. Now."
+    ],
+    "death": [
+     "Nobody... claims me..."
+    ],
+    "slay": [
+     "Unclaimed."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer of the Ward stands where the quarrels end."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "laicanroth",
+    "text": "Laicanroth is the senior Mutilator of the East Ward and keeps its northern camp, near High Lord Baelerdoth's road. It unmakes for Duke Bimure: when a quarrel between the halls ends in a death, Laicanroth takes the body to pieces before any high lord can claim it."
+   }
+  },
+  {
+   "name": "Mutilator Lazorous",
+   "level": 64,
+   "post": "the East Ward",
+   "story": "Lazorous keeps the Ward's eastern camp, toward Baelerdoth's hall and Marquis Scottiax, and is the Mutilator who sells to Scottiax what the Ward's unmaking leaves over. The pit does not know. Scottiax does, and pays in the coin he always pays in, which is keeping the imps off Lazorous's back. The Ward has noticed that Lazorous is never robbed.",
+   "yells": {
+    "aggro": [
+     "Everything has a price. Even the pieces."
+    ],
+    "death": [
+     "Sold... to the fence..."
+    ],
+    "slay": [
+     "Leftovers."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer in the Ward counts something into a bag."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "lazorous",
+    "text": "Lazorous keeps the Ward's eastern camp, toward Baelerdoth's hall and Marquis Scottiax, and is the Mutilator who sells to Scottiax what the Ward's unmaking leaves over. The pit does not know."
+   }
+  },
+  {
+   "name": "Mutilator Nianax",
+   "level": 65,
+   "post": "the East Ward",
+   "story": "Nianax keeps the Ward's western camp, toward the Gate road, with Inquisitor Hellos and Knight Ain. It is the Ward's newest Mutilator, sent from the pit in the Ninth Roll, and has not yet unmade anything in the Ward. The Ward is not sure whether that is because nothing has died near it or because Nianax is waiting for something worth the effort.",
+   "yells": {
+    "aggro": [
+     "Worth the effort? Let us see."
+    ],
+    "death": [
+     "Not... worth it..."
+    ],
+    "slay": [
+     "Worth it, after all."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer in the Ward stands idle, hooks clean."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "nianax",
+    "text": "Nianax keeps the Ward's western camp, toward the Gate road, with Inquisitor Hellos and Knight Ain. It is the Ward's newest Mutilator, sent from the pit in the Ninth Roll, and has not yet unmade anything in the Ward."
+   }
+  },
+  {
+   "name": "Mutilator Novinrac",
+   "level": 64,
+   "post": "the East Ward",
+   "story": "Novinrac keeps the Ward's north-eastern camp, nearest High Lord Oro's hall, and is the Mutilator the Ward sends whenever the three Oros' followers quarrel among themselves. It has unmade followers of all three Oros and reports that they come apart exactly alike, which the Inquisitor Morrian has filed under her one unfinished case.",
+   "yells": {
+    "aggro": [
+     "Three lords, one way to come apart."
+    ],
+    "death": [
+     "Alike... all alike..."
+    ],
+    "slay": [
+     "Like the others."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "By the three-fold hall a flayer cleans three hooks."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "novinrac",
+    "text": "Novinrac keeps the Ward's north-eastern camp, nearest High Lord Oro's hall, and is the Mutilator the Ward sends whenever the three Oros' followers quarrel among themselves. It has unmade followers of all three Oros and reports that they come apart exactly alike, which the Inquisitor Morrian has filed under her one unfinished case."
+   }
+  },
+  {
+   "name": "Mutilator Uxybab",
+   "level": 62,
+   "post": "the East Ward",
+   "story": "Uxybab is the lowest Mutilator of the Ward and keeps the road where it climbs out of the Ward toward the high chambers. It is Duke Bimure's errand-runner to the pit, carrying word of what needs unmaking in the east, and so the Ward knows it as the one Mutilator that has walked the whole width of the hollow more often than any knight.",
+   "yells": {
+    "aggro": [
+     "Running. Always running. Not from you."
+    ],
+    "death": [
+     "Tell the pit... the east needs..."
+    ],
+    "slay": [
+     "Run down."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer waits where the road climbs out of the Ward."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "uxybab",
+    "text": "Uxybab is the lowest Mutilator of the Ward and keeps the road where it climbs out of the Ward toward the high chambers. It is Duke Bimure's errand-runner to the pit, carrying word of what needs unmaking in the east, and so the Ward knows it as the one Mutilator that has walked the whole width of the hollow more often than any knight."
+   }
+  },
+  {
+   "name": "Mutilator Xakanos",
+   "level": 64,
+   "post": "the East Ward",
+   "story": "Xakanos keeps the Ward's central camp with Knight Prosel, and the two of them have the strangest custom in the Ward: Prosel carries the fallen to Xakanos, and stands watch while Xakanos works, and neither speaks. The Ward says they are the only knight and Mutilator in the hollow who have made peace without an oath, and that they would both deny it.",
+   "yells": {
+    "aggro": [
+     "The knight brings them. I finish them."
+    ],
+    "death": [
+     "Prosel... watch..."
+    ],
+    "slay": [
+     "Finished."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer works in silence while a knight stands guard."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "xakanos",
+    "text": "Xakanos keeps the Ward's central camp with Knight Prosel, and the two of them have the strangest custom in the Ward: Prosel carries the fallen to Xakanos, and stands watch while Xakanos works, and neither speaks. The Ward says they are the only knight and Mutilator in the hollow who have made peace without an oath, and that they would both deny it."
+   }
+  },
+  {
+   "name": "Mutilator Axtanax",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Axtanax keeps the Gate's northern road with Lokis and Ibeko, and is the watch Mutilator Ibeko most hates, because Axtanax was in the crossing in the Fourth Roll on the other side. The two of them have stood side by side ever since. Axtanax says it does not remember Ibeko at all, which Lokis believes is the only lie it has ever told.",
+   "yells": {
+    "aggro": [
+     "I do not remember you. I will not remember this."
+    ],
+    "death": [
+     "Ibeko... I remember..."
+    ],
+    "slay": [
+     "Forgotten already."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer of the watch stands beside a knight who hates it."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "axtanax",
+    "text": "Axtanax keeps the Gate's northern road with Lokis and Ibeko, and is the watch Mutilator Ibeko most hates, because Axtanax was in the crossing in the Fourth Roll on the other side. The two of them have stood side by side ever since."
+   }
+  },
+  {
+   "name": "Mutilator Okabi",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Okabi keeps the Gate's western road beside Knight Exte, who tells it every day how hard he finds the Gate oath. Okabi listens. The watch says Okabi has heard Exte's complaint more times than any demon has heard anything, and has never once answered it, and that this is the real peace of the Gate.",
+   "yells": {
+    "aggro": [
+     "The toll first. Then we talk."
+    ],
+    "death": [
+     "Tell Exte... I listened..."
+    ],
+    "slay": [
+     "Toll paid."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "At the Gate a flayer listens to a knight complain."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "okabi",
+    "text": "Okabi keeps the Gate's western road beside Knight Exte, who tells it every day how hard he finds the Gate oath. Okabi listens."
+   }
+  },
+  {
+   "name": "Mutilator Zurabo",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Zurabo keeps the Gate's south-eastern side, toward the East Ward road, and is the watch's collector: it is Zurabo who takes from the dead at the crossing what the Gatekeeper counts as toll. It hands everything to Dommel and keeps nothing, and the imps have never once caught it skimming, which they consider unnatural.",
+   "yells": {
+    "aggro": [
+     "Toll. All of it."
+    ],
+    "death": [
+     "Count it... for the Gatekeeper..."
+    ],
+    "slay": [
+     "Collected."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A flayer at the Gate gathers what the fallen leave."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zurabo",
+    "text": "Zurabo keeps the Gate's south-eastern side, toward the East Ward road, and is the watch's collector: it is Zurabo who takes from the dead at the crossing what the Gatekeeper counts as toll. It hands everything to Dommel and keeps nothing, and the imps have never once caught it skimming, which they consider unnatural."
+   }
+  }
+ ]
+}

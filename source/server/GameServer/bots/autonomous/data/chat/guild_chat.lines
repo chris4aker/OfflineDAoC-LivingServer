@@ -15,26 +15,24 @@ anyone else stuck in the slow levels?
 @invites lfg
 {dungeon} anyone? heard its good at our level
 @invites
-anyone free to heal for a couple hours of xp?
+anyone free to heal for some xp?
 @invites ask_anyone
-guild group in 20 at {camp}?
-half a level to go, anyone want to help me push?
+half a level to go, help me push?
 @invites ask
 what level is everyone at now?
 @invites chat
-{camp} was good xp for me, worth a look around {level}
-whoever told me about {camp}, ty
-at {camp}, room for one more if you want the xp
+{camp} was good xp around {level}
+at {camp}, room for one more
 @needs xp_high, solo
-need two bubbles to ding, grinding solo till then
+two bubbles to ding, soloing till then
 @needs
 leveling an alt tonight, dont mind me
-leveling with you lot makes the slow nights go faster
+leveling goes faster with you lot
 @invites complaint
-i swear this level is twice as long as the last one
+this level takes twice as long, i swear
 solo xp is crawling tonight
 @invites boast
-got a full bubble on one pull, best camp yet
+full bubble on one pull, best camp yet
 new camp, everything cons yellow, xp is great
 @needs just_leveled
 dinged {level}, slowly getting there
@@ -44,28 +42,26 @@ dinged {level}, slowly getting there
 @topic social
 @who *
 @invites ask
-hey all, how is everyone?
+hey all, hows it going?
 what is everyone doing tonight?
-best thing that happened to you this week? go
+best thing that happened this week? go
 need a name for my next alt, ideas?
 @invites ask_anyone
 anyone want to do something silly tonight?
 who wants to race to {capital} on foot?
 @invites chat
-quiet in here tonight
-this guild is the best part of my week, just saying
-hi everyone, long day, glad to be on
-guild chat is the best channel in the game
-i missed you all, it was a long week
-just watched someone run a train through a whole camp, poor group
-met a friendly {enemy} out there, he bowed and walked off
+this guild is the best, honestly
+guild chat is the best channel going
+good to be back with you lot
+someone just trained a whole camp, poor group
+met a friendly {enemy}, he bowed and left
 @invites joke
-who has the worst luck with drops? pretty sure its me
-my cat walked on the keyboard and nearly pulled a red con
+worst luck with drops? pretty sure its me
+my cat nearly pulled a red con
 @invites chat
-our healers carried us again last night, just saying
+our healers carried us again last night
 @invites joke
-remember when we wiped three times at {camp}? good times
+remember wiping three times at {camp}? good times
 @invites none
 somebody tell a joke, too quiet in here
 @invites joke
@@ -73,16 +69,15 @@ somebody tell a joke, too quiet in here
 brb food
 @invites chat
 @needs evening
-evening all, what did i miss
+evening all, anything happen?
 @needs night
-gn all, see you tomorrow
-@invites ask_anyone
+@invites ask_on
 who else is still up?
 @invites chat
 @needs day
-morning all, coffee first then xp
+hey all, xp time
 @needs outdoors
-just sat down in {zone} to enjoy the view for a bit
+sat down in {zone} to enjoy the view
 @needs in_capital
 hanging around {capital} chatting, come say hi
 
@@ -94,36 +89,38 @@ hanging around {capital} chatting, come say hi
 @invites ask_anyone
 who is up for the frontier tonight?
 anyone heard which keeps we hold right now?
-anyone want to run a small group out to {frontier}?
+small group to {frontier}, anyone?
 realm points were good last night, again tonight?
 need more healers for rvr, any volunteers?
-relic raid this weekend, who is in?
+relic raid soon, who is in?
+@invites ask_who
 who has their first realm ability yet?
-8man practice tonight? we keep losing to the same group
+@invites ask_anyone
+we keep losing to the same group, practice?
 @needs !df_ours
 @about place
-who wants darkness falls if we get it back?
+who wants df if we get it back?
 @needs
 @about
 @invites ask_opinion
-we need a guild claim on a keep, thoughts?
+we need a guild keep claim, thoughts?
 @invites chat
 @needs keep_news
 {keep} changed hands again, i think
 @needs
 @needs !defending, !attacking
-frontier is quiet, might be a good time to try for a keep
+frontier is quiet, good time for a keep?
 @needs
 @needs keep_lost_recent
-lost {keep}, we should take it back this week
+we should take {keep} back this week
 @needs
 @invites complaint
-got ganked at the mile gate again, stealthers everywhere
+ganked at the mile gate again, stealthers everywhere
 the {enemy} were everywhere last night
 @invites joke
-stealthers had a good night, my corpse can confirm
+stealthers had a good night, my corpse agrees
 @invites news
-{enemy} relic raid rumors again, keep an eye out
+{enemy_mod} relic raid rumors again, watch out
 @invites boast
 just got a realm rank, so happy
 @invites chat
@@ -132,7 +129,7 @@ just got a realm rank, so happy
 out by {keep}, quiet so far
 @needs in_frontier
 @needs in_frontier,in_group
-small group out in {frontier}, room for a healer if anyone is on
+room for a healer out in {frontier}
 
 # ---------------- Raiding guilds ----------------
 @kind guild
@@ -140,38 +137,43 @@ small group out in {frontier}, room for a healer if anyone is on
 @who *
 @levels 30-50
 @invites ask_anyone
-{dungeon} run this weekend, who is in?
+{dungeon} run sometime, who is in?
 need a puller who knows {dungeon}, any volunteers?
-raid sign ups for saturday, who is in?
-we need two more healers for the dragon, any takers?
+two more healers for the dragon, any takers?
 @needs df_ours
 @about place
 who still needs seals from darkness falls?
 @needs
 @about
-who has decent fire resists for the dragon?
-need a main assist for the next raid, volunteers?
+@realm alb
+who has decent heat resists for golestandt?
+@realm mid
+who has decent cold resists for gjalpinulva?
+@realm hib
+who has decent spirit resists for cuuldurach?
+@realm *
+who wants main assist next raid?
 @needs df_ours
 @about place
-who is up for a darkness falls run tonight?
+who is up for df tonight?
 @needs
 @about
 anyone have notes on the named in {dungeon}?
 @invites ask_opinion
-loot rules for the raid, need before greed ok?
+raid loot, need before greed ok?
 @invites chat
 dragon raid soon, start saving potions
-last raid was a mess, lets plan better this time
-the named in {dungeon} drops a nice ring, i hear
-with eight more we could try the big room in {dungeon}
+last raid was a mess, lets plan better
+heard the named in {dungeon} drops a ring
+eight more and we could try {dungeon}
 lets do a practice run in {dungeon} first
-bring every rez class we have, we will need them
+bring every rezzer we have
 @invites boast
-raid recap: two wipes, one kill, i call that a win
+two wipes, one kill, still a win
 @invites complaint
-we wiped on the named but we were so close
+wiped on the named, so close though
 @invites chat
-the last dragon raid was the most fun i have had in months
+that last dragon raid was a blast
 @invites ask_anyone
 who has a full crafted suit for raids?
 
@@ -179,27 +181,26 @@ who has a full crafted suit for raids?
 @kind guild
 @topic crafting
 @who *
-skilling up tonight if anyone wants to keep me company
+skilling up tonight, company welcome
 hit a new skill tier, finally
 found a dye color i actually like, finally
-fletching is quiet work, good for chatting
-making {level} gear to skill up, the merchants get most of it
+fletching is quiet, good for chatting
+making {level} gear to skill, merchants get most
 alchemy is finally paying off
-sold a full suit today, guild discount of course
+sold a full suit, guild discount of course
 i need metal bars, lots of them
 anyone else grinding tailoring? misery loves company
-anyone near a forge? i could use the company while i grind
-anyone know what spellcraft gems sell for these days?
+anyone near a forge? grinding skill here
+what do spellcraft gems sell for now?
 @invites boast
 masterpiece! first one in weeks
 @invites complaint
 spellcraft is eating all my gold
 99 percent quality again, so close
-the merchants raised leather prices again
-crafting is a money pit but i love it
+crafting is a money pit, i love it
 @invites joke
-anyone want a slightly ugly helm? the dye went wrong
-two skill points in an hour, legendary by retirement at this rate
+anyone want a helm? the dye went wrong
+two skill points an hour, legendary by retirement
 @invites ask_anyone
 anyone have spare cloth lying around?
 @invites chat
@@ -209,31 +210,32 @@ making arrows all night, my fingers hurt
 @kind guild
 @topic general
 @who *
+@invites ask_on
 anyone on?
+@invites
 hey guild
-slow night, anyone doing anything?
+slow in here, anyone doing anything?
 anyone heading to {capital}?
 anybody seen {keep} change hands lately?
-anyone know a good spot for a {class} at {level}?
-nothing beats a quiet night with the guild
+good spot for a {class} at {level}?
+nothing beats a quiet hour with the guild
 my {class} is finally starting to feel strong
 saving up for new armor, slowly
-ty all for the help earlier
 new spec feels good, glad i changed it
-found a named nobody was camping, best surprise all week
+found a named nobody was camping, lucky
 @invites ask
 {class} at {level}, bored, ideas?
-how is everyone's night going?
-what are we doing this weekend?
+how is the guild doing tonight?
+what are we doing this week?
 @invites ask_anyone
-who is around {level}? want to try {dungeon} at some point
-need a break from xp, anyone want to just chat?
-who wants to help a guildie with a named?
+who is around {level}? up for {dungeon}?
+taking a break from xp, chat anyone?
+anyone up for a named?
 @invites ask_opinion
-is it just me or is the lag bad tonight?
+lag bad for anyone else tonight?
 @invites joke
 how does everyone have so much money
-got a nice drop, of course its for another class
+nice drop, of course its for another class
 @invites none
 brb, someone at the door
 @invites chat
@@ -243,15 +245,15 @@ running around {zone} looking for trouble
 @invites ask_anyone
 anyone near {zone}? could use a hand
 @needs outdoors,just_died
-need a rez in {zone} if anyone is near, no rush
+anyone near {zone} with a rez? no rush
 @invites chat
 @needs bag_full
 bags full again, off to sell
 @needs just_leveled
-just dinged, ty for all the tips everyone
+just dinged
 @needs just_died
 @invites complaint
-lost a chunk of xp on that death, ugh
+lost a chunk of xp on that death
 
 # The talking update audit: said only right after the bot died
 @kind guild
@@ -261,7 +263,7 @@ lost a chunk of xp on that death, ugh
 @levels 1-50
 @needs just_died
 @invites joke
-just died to a grey con, dont ask
+died to a grey con, dont ask
 
 # The talking update audit: only a bot with full bags heads to sell
 @kind guild

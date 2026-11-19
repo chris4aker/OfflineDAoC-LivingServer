@@ -1,0 +1,107 @@
+{
+  "id": "tudeg",
+  "name": "Tudeg",
+  "npcNames": [
+    "Tudeg"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Tudeg: level 64, model 764 (the shriller body: gorge shrillers 42-48, hungry, marine and ravaging marine shrillers), size 77, at about 288,000/270,000 in the far north-west of Cothrom Gorge; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Tudeg as the eldest shriller, whose cry the gorge folk use to tell the hour of the tide.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The shrillers are the gorge's hunters, long-bodied burrowing things with a cry like a saw on wet stone, and they have lived in the split earth of Cothrom since it split. The gorge shrillers keep the ledges, the marine shrillers the river-mouth where the gorge reaches the northern sea, and the hungry ones, the young, swarm the floor in spring until the old ones eat enough of them. The Sylvan of the gorge clans have always lived alongside them the way coastal folk live alongside gulls: badly, and with a great many proverbs.\n\nTudeg is the eldest. He lies in the far north-west of the gorge, where the split opens out toward the sea, in a burrow so old that the stone around it has worn smooth, and he is three times the length of any shriller on the ledges. He does not hunt the floor any more. The gorge folk say he does not need to: the young bring him what they catch, as the ixthiar bring their dead to their mother in the vale, and he takes a share and sends them out again with a cry.\n\nThe cry is the thing about Tudeg. It carries the whole length of the gorge, and it comes at the turn of every tide, as regular as the sea, so that the gorge clans and the outlanders of Altan Garran tell the hour by it the way Domnann tells it by the wardens' bell. The gorge folk have a word for a long wait that means 'until Tudeg calls'. When he is brought down the gorge is silent at the tide's turn for a season, and the clans say the whole of Cothrom feels wrong until he is back, even those who hate him.\n\nThe Domnann wardens think the shrillers came up the river from the sea in the first place, and that Tudeg came first and called the others after him. The gorge clans think the shrillers were in the split from the start, and that Tudeg is simply what a shriller becomes if nothing eats it for long enough.",
+  "legend": "Tudeg is a level 64 shriller in the far north-west of Cothrom Gorge (about 288k/270k), well north of Gneiss. Plain melee, no script, 80-second respawn. At 64 he needs a strong full group; the gorge shrillers (42-48) and marine shrillers around the river-mouth are easy but can join if you pull through them, so clear a path. Fight him away from his burrow mouth and do not rest on the spot afterwards. Gorge folk tell the tide by his cry; you will hear it before you see him. The marine shrillers by the river-mouth are the ones most likely to wander in.",
+  "yells": {
+    "aggro": [
+      "(a cry like a saw on wet stone)",
+      "(Tudeg uncoils from his smooth-worn burrow)",
+      "(the gorge goes silent, then shrieks)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Tudeg's cry rolls the length of the gorge)"
+      }
+    ],
+    "death": [
+      "(the gorge is silent at the turn of the tide)",
+      "(the long body goes still in the burrow)"
+    ],
+    "slay": [
+      "(the young will eat well)",
+      "(Tudeg cries the hour)",
+      "(he coils back into the stone)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A burrow worn smooth by an age of coming and going.",
+      "The tide turns. Something cries the hour."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Tudeg cries, and the gorge answers!"
+      }
+    ],
+    "realmFirstKill": "Tudeg is dead. Cothrom is silent at the turn of the tide."
+  },
+  "botLines": {
+    "briefing": [
+      "tudeg is 64, far north west of cothrom gorge. [strong group|plain melee]",
+      "clear the shrillers on the way. [they join if you pull through|path]",
+      "fight him off his burrow mouth",
+      "80 sec respawn. [dont rest there|move off after]"
+    ],
+    "aftermathWin": [
+      "tudeg down. [the gorge is quiet|no more tide cry]",
+      "cleared the path first and it was clean",
+      "the gorge folk will miss the cry lol",
+      "big shriller, big kill"
+    ],
+    "aftermathLoss": [
+      "pulled through the shrillers. [too many|oops]",
+      "64 hits hard. [need more|ouch]",
+      "rested on his spot and he respawned on us",
+      "tank lost him to the healer. [aggro|sorry]"
+    ],
+    "rumour": [
+      "[heard|someone said] the gorge folk tell the tide by tudeg's cry",
+      "'until tudeg calls' means a long wait, in the gorge. [old saying|lol]",
+      "[word is|heard] the young shrillers bring tudeg what they catch",
+      "the wardens think tudeg came up from the sea first and called the others"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Tudeg",
+    "text": "The eldest shriller of [Cothrom Gorge], in a smooth-worn burrow where the gorge opens to the northern sea. His cry at each turn of the tide carries the length of the gorge, and the gorge folk tell the hour by it."
+  },
+  "bookPage": "From Coll of the Domnann guides: the gorge clans tell the hour by Tudeg. He lies where the split opens toward the northern sea, three times the length of any shriller on the ledges, and at every turn of the tide he cries, a sound like a saw on wet stone, and the whole gorge hears it. The young shrillers bring him a share of what they catch. The gorge folk say 'until Tudeg calls' for a long wait. When he has been brought down the gorge is silent at the tide for a season, and the clans say it feels wrong, even to those who hate him.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Tudeg in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Tudeg turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "gneiss",
+      "relation": "neighbour in the western gorge"
+    },
+    {
+      "id": "ixthiar-broodmother",
+      "relation": "whose vale the gorge shrillers hunt into"
+    }
+  ]
+}

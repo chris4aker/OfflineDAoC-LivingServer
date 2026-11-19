@@ -8,11 +8,15 @@
 # Restores the GameServer.dll/.pdb files, the server libraries (CoreBase, CoreDatabase, CoreServer), the launcher files, helper scripts and game files the last install replaced or
 # fixed, from its backup, and checks every restored file by SHA-256. It refuses if the installed files changed since
 # (unless -Force). Run it again to undo the install before that one.
+# Living Server's own loading screen (content-patches.json "Keep", 1.2, owner 2026-11-07) is the exception: the
+# previous Living Server loading screen comes back, but never the released one, so after a first install it stays.
 #
 # -ToRelease puts back the game's released server and launcher files whatever was installed over them (fork builds,
 # copies by hand): for each one it finds, among every backup in runtime\server\deployment-backups, a copy with the
 # fingerprint the game's PACKAGE MANIFEST.sha256 gives it. An Offline DAoC update (0.37 and on) applies only to released
 # files, and it tells the game's version by the launcher, so run this before updating; install this build again after.
+# Game files an install fixed go back to the released copy found in any install's backup; the loading screen stays (the
+# update doesn't need it: fork-build-common.ps1, Get-ContentPatchMap).
 param(
     [string]$GameFolder = '',
     [switch]$DryRun,
@@ -33,6 +37,20 @@ function Stop-RestoreFailed([string]$Message) {
 $game = Find-GameFolder $GameFolder $PSScriptRoot
 Write-Host "Game folder: $game"
 Assert-GameClosed
+
+# The epic chains (Living Server 1.2): the server links them in memory as it reads the quests and never writes them to
+# the world, so a rollback has nothing to undo there. A world that epic_chains.py --apply wrote them into (as Beta 1.1
+# asked) still holds them, and the released server reads those links as quest names: it would never offer the Guild
+# of Shadows again. epic_chains.py and the server leave this note beside the server for such a world.
+$epicNote = Join-Path $game 'runtime\server\epic-chains-in-world.txt'
+if (Test-Path -LiteralPath $epicNote) {
+    if (!$Force) {
+        Stop-WithMessage ("This world's quest rows hold the epic chain links that epic_chains.py wrote into them. The released server " +
+            "reads them as quest names, so the Guild of Shadows would never be offered after this. Put them back first (Python " +
+            "needed): python tools\claude-version\epic_chains.py rollback --apply - then run this again. -Force rolls back anyway.")
+    }
+    Write-Host 'The epic chain links stay written into this world (-Force); the Guild of Shadows will not be offered by the released server.' -ForegroundColor Yellow
+}
 
 if ($ToRelease) {
     $manifest = Read-PackageManifest $game
@@ -65,19 +83,45 @@ if ($ToRelease) {
         if ($copies.ContainsKey($released)) { $restore += [pscustomobject]@{ Path = $rel; From = $copies[$released]; Hash = $released } }
         else { $missing += $rel }
     }
-    # Game files an install fixed in place (content-patches.json) go back to the released copy it backed up.
-    foreach ($record in Get-InstallRecords $game) {
+    # Game files an install fixed in place (content-patches.json) go back to the released file, if what is there now is
+    # one an install put there. An install may have replaced an earlier Living Server version (an entry's Replaces), so
+    # the newest install's backup may hold that one: the released copy is looked for in every install's backup.
+    # Living Server's own kept files (Keep: the loading screen) stay as they are.
+    $buildPatches = Get-ContentPatchMap $PSScriptRoot
+    $records = @(Get-InstallRecords $game)
+    $fixed = @()
+    foreach ($record in $records) {
         foreach ($entry in @($record.ContentFiles)) {
-            if ($null -eq $entry) { continue }
-            $path = Get-ContentPath $game $entry.Path
-            if (!(Test-Path -LiteralPath $path) -or (Get-Sha256 $path) -ne $entry.NewHash) { continue }
-            $saved = Join-Path (Join-Path $record.BackupFolder 'content') ($entry.Path.Replace('/', [IO.Path]::DirectorySeparatorChar))
-            if ((Test-Path -LiteralPath $saved) -and (Get-Sha256 $saved) -eq $entry.OldHash) {
-                if (!($restore | Where-Object { $_.Path -eq $entry.Path })) {
-                    $restore += [pscustomobject]@{ Path = $entry.Path; From = $saved; Hash = $entry.OldHash }
-                }
-            } else { $missing += $entry.Path }
+            if ($entry) { $fixed += [pscustomobject]@{ Entry = $entry; Backup = $record.BackupFolder } }
         }
+    }
+    foreach ($rel in @($fixed | ForEach-Object { [string]$_.Entry.Path } | Select-Object -Unique)) {
+        $entries = @($fixed | Where-Object { $_.Entry.Path -eq $rel })
+        if (@($entries | Where-Object { Test-ContentKeep $_.Entry $buildPatches }).Count -gt 0) {
+            Write-Host "  $($rel): Living Server's own file, kept"
+            continue
+        }
+        $ours = @($entries | ForEach-Object { ([string]$_.Entry.NewHash).ToLowerInvariant() })
+        $patch = $buildPatches[$rel]
+        if ($patch) { $ours += ([string]$patch.Fixed).ToLowerInvariant(); $ours += Get-ContentPatchReplaces $patch }
+        $released = $null
+        foreach ($item in $entries) { $released = Get-ContentReleased $item.Entry $buildPatches; if ($released) { break } }
+        if (!$released) {
+            # Records before 1.2 don't name it: the oldest file an install replaced that no install put there.
+            $first = $entries | Where-Object { $ours -notcontains ([string]$_.Entry.OldHash).ToLowerInvariant() } | Select-Object -First 1
+            if ($first) { $released = ([string]$first.Entry.OldHash).ToLowerInvariant() }
+        }
+        $path = Get-ContentPath $game $rel
+        $current = if (Test-Path -LiteralPath $path) { Get-Sha256 $path } else { '' }
+        if ($current -eq $released -or $ours -notcontains $current) { continue }   # released already, or not ours: left alone
+        $from = $null
+        foreach ($item in $entries) {
+            if (!$released) { break }
+            $saved = Join-Path (Join-Path $item.Backup 'content') ($rel.Replace('/', [IO.Path]::DirectorySeparatorChar))
+            if ((Test-Path -LiteralPath $saved) -and (Get-Sha256 $saved) -eq $released) { $from = $saved; break }
+        }
+        if ($from) { $restore += [pscustomobject]@{ Path = $rel; From = $from; Hash = $released } }
+        else { $missing += $rel }
     }
     if ($missing.Count -gt 0) {
         Stop-WithMessage ("No backup holds the released copy of:`n  " + ($missing -join "`n  ") +
@@ -139,12 +183,18 @@ foreach ($entry in @($record.LauncherFolders)) {
     }
 }
 $contentRestore = @()
+$buildPatches = Get-ContentPatchMap $PSScriptRoot
 foreach ($entry in @($record.ContentFiles)) {
     if ($null -eq $entry) { continue }
     $path = Get-ContentPath $game $entry.Path
     $current = if (Test-Path -LiteralPath $path) { Get-Sha256 $path } else { '' }
     if ($current -eq $entry.OldHash) { continue }
     if ($current -ne $entry.NewHash) { Write-Host "  $($entry.Path) changed since that install; left as it is." -ForegroundColor Yellow; continue }
+    # Living Server's own loading screen (Keep): the earlier Living Server one comes back, the released one never does.
+    if ((Test-ContentKeep $entry $buildPatches) -and $entry.OldHash -eq (Get-ContentReleased $entry $buildPatches)) {
+        Write-Host "  $($entry.Path): Living Server's own file, kept (the released one is not put back)."
+        continue
+    }
     $saved = Join-Path (Join-Path $record.BackupFolder 'content') ($entry.Path.Replace('/', [IO.Path]::DirectorySeparatorChar))
     if (!(Test-Path -LiteralPath $saved) -or (Get-Sha256 $saved) -ne $entry.OldHash) { Stop-WithMessage "The backup of $($entry.Path) is damaged." }
     $contentRestore += [pscustomobject]@{ Entry = $entry; Path = $path; Saved = $saved }

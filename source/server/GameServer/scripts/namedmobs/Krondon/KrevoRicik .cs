@@ -77,7 +77,7 @@ namespace DOL.GS
 			base.AddToWorld();
 			return true;
 		}
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			foreach (GameNPC add in GetNPCsInRadius(4000))
 			{
@@ -85,7 +85,7 @@ namespace DOL.GS
 				if (add.IsAlive && add.Brain is KrevoAddBrain)
 					add.Die(this);
 			}
-			base.Die(killer);
+			base.ProcessDeath(killer);
         }
     }
 }
@@ -103,10 +103,10 @@ namespace DOL.AI.Brain
 		}
         public override void OnAttackedByEnemy(AttackData ad)
         {
-			if(ad != null && ad.Attacker is GamePlayer && ad.Damage > 0)
+			if(ad != null && EncounterTargets.IsRaider(ad.Attacker) && ad.Damage > 0)
             {
-				if(Util.Chance(10))
-					ad.Attacker.MoveTo(Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading);
+				if((ad.Attacker is GamePlayer || EncounterTargets.DisplacesBots(Body)) && Util.Chance(10))
+					EncounterDisplacement.Move(ad.Attacker, Body.CurrentRegionID, Body.X, Body.Y, Body.Z + 400, Body.Heading, DisplacementKind.Throw, Body);
 				if (Util.Chance(15))
 					SpawnGhost();
             }

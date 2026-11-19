@@ -65,6 +65,11 @@ def _raw(zone_id):
     return terrain * cp.getfloat('terrain', 'scalefactor') + offset * cp.getfloat('terrain', 'offsetfactor')
 
 
+# the points around one, nearest first (the order fixed: every zone picks the same one)
+_NEAR = sorted(((dx, dy) for dx in range(-3, 4) for dy in range(-3, 4) if (dx, dy) != (0, 0)),
+               key=lambda d: (max(abs(d[0]), abs(d[1])), abs(d[0]) + abs(d[1]), d[1], d[0]))
+
+
 class Region:
     """One region's terrain as a single height function on the 256-unit sample lattice."""
 
@@ -89,6 +94,15 @@ class Region:
         if corner is not None:
             cx, cy = corner
             return self.cells[corner][sy - cy, sx - cx]
+        # a point past the region's terrain next to a covered one takes that one's height, the same whichever zone
+        # asks (2026-10-29, owner: "white lines for every zone boundry"): each zone fell back to its own nearest
+        # sample, so where two zones' edges end at the region's border (Black Mtns. South / North: 53 m) they gave
+        # their shared corner different heights - a torn corner
+        for dx, dy in _NEAR:
+            c2 = self.blocks.get(((sx + dx) * CELL // BLOCK, (sy + dy) * CELL // BLOCK))
+            if c2 is not None:
+                cx, cy = c2
+                return self.cells[c2][sy + dy - cy, sx + dx - cx]
         hx, hy, hg = home
         return hg[min(max(sy - hy, 0), N - 1), min(max(sx - hx, 0), N - 1)]
 

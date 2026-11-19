@@ -10,6 +10,26 @@ namespace DOL.GS.Tests;
 public class UT_AutonomousDarknessFallsPolicy
 {
     [Test]
+    public void DoorRule_RealmWithMostKeepsHoldsDarknessFalls_TiesKeepATiedHolder()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.None, 7, 7, 7), Is.EqualTo(eRealm.None),
+                "A fresh 7:7:7 world stays closed until a realm leads.");
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.None, 8, 7, 6), Is.EqualTo(eRealm.Albion));
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.Albion, 8, 8, 5), Is.EqualTo(eRealm.Albion),
+                "A challenger must have more keeps than the holder, not as many.");
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.None, 7, 8, 6), Is.EqualTo(eRealm.Midgard),
+                "With no holder, a capture by Hibernia (6 keeps) must not hand it to Hibernia while Midgard has 8.");
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.Albion, 7, 8, 6), Is.EqualTo(eRealm.Midgard),
+                "Albion lost a keep to Hibernia; Midgard, which took nothing, now leads.");
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.Albion, 6, 7, 7), Is.EqualTo(eRealm.None),
+                "A holder with fewer keeps than two tied realms loses it; neither of them leads.");
+            Assert.That(AutonomousDarknessFallsPolicy.NextOwner(eRealm.Hibernia, 6, 7, 7), Is.EqualTo(eRealm.Hibernia));
+        });
+    }
+
+    [Test]
     public void EntranceAuthority_UsesOwnerAndFifteenMinutePreviousOwnerGrace()
     {
         const long grace = 900_000;

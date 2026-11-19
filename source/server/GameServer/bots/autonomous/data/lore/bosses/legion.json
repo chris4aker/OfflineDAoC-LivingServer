@@ -1,0 +1,204 @@
+{
+  "id": "legion",
+  "name": "Legion",
+  "catalogKey": "darkness-falls/legion",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "The arch-demon who dominates Darkness Falls.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+    },
+    {
+      "text": "April 2002: Mythic fixed Legion's resists, made it reclaim souls more often, fixed its reach on distant players and kept Behemoth to its own area.",
+      "provenance": "mythic",
+      "source": "https://gamebanshee.com/news/68454-beware-of-legion.html"
+    },
+    {
+      "text": "Level 83, 300,000 health. Takes no damage from attackers more than 1,400 away. Heals 2.5% of its health for every player it kills ('Your soul give me new strength'), and a quarter of the Body damage it deals.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "It destroys bladeturn bubbles, and after consuming five releases a soul-consuming blast; graspering souls join it at every 5% of its health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs"
+    },
+    {
+      "text": "'4 fg took him out' (Feb 2004); 'as few as about three groups' (Feb 2003).",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "The first meal, the Choir, the Glutton's belch, Ansel the friar, Sir Aldous Fenn, Thane Hrolf the Tall, Ealadhach the bard and the three-realm company are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Legion is the king of the demon court under the three realms, and a court in a single body. The imps who will talk for a candle-end say that in the beginning two princes stood equal at the court's top. One killed the other and ate him and kept his voice, and he ate every demon who challenged him after, until he spoke with a hundred voices and the court called him Legion. Albion's priests read him as the many-voiced thing of the gospel, Midgard's skalds call his lair the Glutton-hall, and Hibernia's druids call him a lord made of his own subjects.\n\nHis kingdom has three doors, in Camelot Hills, above Mularn and in Connacht, and they open only for the realm that holds the most frontier keeps. He heals by eating: every mortal who dies in his lair mends him, his withering blows draw life back, and as he weakens the newest-eaten souls tear loose from him. He swallows the turning shells of protection the realms' priests wrap around their fighters, and after a handful he pours out a soul-consuming blast; the Albion friar Ansel, whose prayer he ate, never prayed a ward again. He cannot be harmed from beyond the Choir, the ring where all his voices can hear each other.\n\nHe once called the Behemoth down from its ledge to fight beside him, until it came down and did not stop at the enemy; since then it stays on its ledge and Legion has grown stronger instead. Albion's roll names Sir Aldous Fenn, Midgard's Thane Hrolf the Tall and Hibernia's Ealadhach the bard as the first to break him; the imps say the true first was a company of all three realms trapped below. He wants more voices, and wins whenever anyone dies. The realms disagree only on what he would do with enough of them: open every door at once, break the kingdom below, or simply never stop eating.",
+  "legend": "Three or four groups who stand close and do not die, the old talk said, and a hundred who did not know the fight could not do it. Everyone fights within fourteen hundred of him, casters too, or they hit nothing. Every player he kills heals him by two and a half percent, so a careless raid gives him back his health in a few deaths; and his body damage heals him a quarter of what it deals. He eats bladeturns, and after five he blasts everyone near him, so healers do not bubble the tank. Kill each graspering soul as it tears loose, one at every five percent. He resets a minute after the fight leaves him. The Behemoth on the ledge used to come down in the early days and end raids; now it stays up there. Do not go up to it. Darkness Falls has no raid tactics in our raid AI yet.",
+  "yells": {
+    "aggro": [
+      "More voices for the choir.",
+      "Come into the ring. All of you.",
+      "We are hungry. We are always hungry."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "We are many. You are few. Soon you will be us."
+      },
+      {
+        "trigger": "health<=75",
+        "text": "Your little shields are delicious."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "One of us breaks loose. It will not get far."
+      }
+    ],
+    "death": [
+      "We... are... free...",
+      "So quiet... so quiet..."
+    ],
+    "slay": [
+      "Your soul give me new strength.",
+      "Another voice. Sing with us.",
+      "Swallowed."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Many voices speak at once. All of them are hungry.",
+      "The Choir. Every voice in it is listening to you."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The souls inside Legion claw to get out!"
+      },
+      {
+        "trigger": "health<=75",
+        "text": "Legion swallows the wards and pours out its hunger!"
+      }
+    ],
+    "realmFirstKill": "Legion is broken. A thousand voices fall silent."
+  },
+  "botLines": {
+    "briefing": [
+      "everyone within 1400 of legion, casters too, or you do no damage",
+      "every death heals it. dont die. healers, thats on you and on us",
+      "it eats bladeturns and blasts after five. no bubbles on the tank",
+      "kill the graspering souls as they come, one every 5%",
+      "dont fight outside 1400, everyone in"
+    ],
+    "aftermathWin": [
+      "legion down. [gg|gg all]. all those voices and none of them ours",
+      "nobody died for ten minutes. thats the whole trick",
+      "the voices went quiet all at once. creepy",
+      "zero deaths in the choir. textbook"
+    ],
+    "aftermathLoss": [
+      "we fed it six deaths and it healed back to full",
+      "casters stood back and did nothing. its immune from range",
+      "someone bubbled the tank five times and the blast took the healers",
+      "too many deaths, he just healed back"
+    ],
+    "rumour": [
+      "legion keeps a court down there like a king. princes, high lords, dukes, earls, marquises, and every demon knows its rank",
+      "[heard|someone said] legion speaks with the voice of everyone it ever ate",
+      "[heard|someone said] legion ate the first prince and kept his voice",
+      "heard legion used to call the behemoth down until it ate half the court"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "legion",
+    "text": "Not one demon but many, a court in one body, and it feeds on souls. Every soul it takes mends it. Stand close to it, for it cannot be hurt from afar, and do not die, for each death makes it stronger."
+  },
+  "bookPage": "The imp would not say what Legion is. It said only that Legion is everyone, and that when a demon of the court dies badly, Legion takes what is left, and it is not seen again but is somehow there, in the voice. It said that the first king ate the other prince and kept him, and that every voice in Legion is someone who lost to him. It said Legion speaks with every voice it has ever eaten. It said this was an honour. It did not look honoured. I gave it a second candle-end and it told me about the ledge.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} stood close, did not die, and broke Legion in {minutes} minutes.",
+    "loss": "Legion took {realm}'s fallen and grew strong on them; {raidLeader}'s raid became more voices in the choir."
+  },
+  "realmTakes": {
+    "albion": {
+      "botLines": {
+        "briefing": [
+          "the priests say pray for the souls inside it. pray later, stand close now"
+        ],
+        "aftermathWin": [
+          "for albion! legion is down. the church will ring every bell in camelot"
+        ],
+        "rumour": [
+          "camelot's priests say legion is the thing in the gospel that named itself for its number"
+        ]
+      }
+    },
+    "midgard": {
+      "botLines": {
+        "briefing": [
+          "die to legion and you get no seat in any hall. so dont die"
+        ],
+        "aftermathWin": [
+          "thats a whole saga right there. legion is dead, skald"
+        ],
+        "rumour": [
+          "the skalds call legion the glutton-hall. it eats its guests"
+        ]
+      }
+    },
+    "hibernia": {
+      "botLines": {
+        "briefing": [
+          "the bards wont sing legion. lets give them something to sing"
+        ],
+        "aftermathWin": [
+          "legion is dead. now the bards have to sing it"
+        ],
+        "rumour": [
+          "the druids say legion is what the otherworld becomes with no law. a lord made of its own subjects"
+        ]
+      }
+    }
+  },
+  "era": "alb-the-dark-age",
+  "factions": [
+    "dark-ones"
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The First Meal",
+      "text": "Before there was a Legion there was a court, and before the court had a king it had two princes who hated each other.\n\nThe demons of the kingdom under the realms keep their order by rank, as every account agrees: princes and high lords, dukes and earls and marquises, a chancellor and a queen, down to the Picullus imps who live by theft because they are too weak to live by anything else, and every demon would kill for the next rank up. The imps of the court, who will talk to anyone for a candle-end, say that in the beginning the two greatest princes were equal, and that the court could not be ordered while two stood at its top. One of them settled it. He killed the other, and then, because he was hungry and because no one had ever done it, he ate what was left.\n\nHe kept the voice. That is the whole of what the imps mean when they say Legion is everyone: the first prince ate his rival and found that the rival was still in him, speaking, and that he was stronger for it. He ate the next demon who challenged him, and the next. By the time the court had a king, the king spoke with a hundred voices and had stopped answering to the name he had been born with. The court called him Legion, for the many.\n\nThe three realms above read him through their own books. Camelot's priests say he is the many-voiced thing of the gospel that named itself for its number. Midgard's skalds call his lair the Glutton-hall, a hall of the dead that eats its guests instead of feasting them. Hibernia's druids say he is what an otherworld becomes when it has no law: a lord made of his own subjects. The imps say all three are right and that the realms should stop arguing and bring more candles."
+    },
+    {
+      "title": "The Three Doors",
+      "text": "The kingdom under the realms has three doors, and they open for strength alone.\n\nOne door lies in the ruins of an old castle in Albion's Camelot Hills, an hour's ride from the king's seat. One lies in the snow above the Vale of Mularn in Midgard, near the Huldu camps. One lies in Connacht in Hibernia. Whichever of the three realms holds more of the frontier's keeps than both others finds its door unbarred; the others find theirs shut. A company already below when the doors change hands may stay as long as it does not give up its dead and release them to the world above.\n\nWhy the doors answer to the frontier is the kind of question the court enjoys being asked. The imps say it is the court's own law turned outward: the kingdom below is ordered by rank, and it will only admit visitors from whichever realm above is strongest, because only the strongest are worth the court's attention. The Camelot loremasters think it is older than the court and was laid on the doors by whatever sealed them, as a lock that the realms themselves would keep. The druids of Hibernia say the doors were never meant to open at all and that the realms' war on the frontier has worn them thin.\n\nThe court watches the frontier as a gambler watches dice. Its princes keep wagers on which realm will come down next, and the imps say one prince lost heavily on Albion one season and has never forgiven it. Legion does not wager. He only waits at the bottom of his kingdom for whichever realm is strong enough to come down to him, and eats what comes."
+    },
+    {
+      "title": "Your Soul Gives Me Strength",
+      "text": "Legion heals by eating, and every account of him that has come up from the kingdom below begins and ends there.\n\nWhen a mortal dies in his lair, Legion takes what is left of them, as he took his first rival, and the voice goes into the choir, and the wound that mortal gave him closes a little. Your soul give me new strength, he says, in a voice that is several voices badly matched, every time it happens. The imps keep the tally in candle-ends: a death for a voice, and a company's worth of voices to make him whole again, so that a company which leaves enough dead in his lair has given him back everything it took.\n\nHe also feeds as he strikes. His blows that wither the body draw life back into him as they land. The Midgard skalds say that is why his hall has no bones in it: he wastes nothing.\n\nAnd as he weakens, the voices try to leave. Each time a wound in him goes deep enough, a graspering soul tears loose from him and flails at the living, unable to escape the lair and unwilling to go back. The Hibernian druids call them the half-freed. The Camelot priests pray for them as they cut them down. The imps say the graspering souls are the demons and mortals Legion has eaten most recently, who have not yet learned to sing with the rest, and that they always come out in the order they went in.\n\nAlbion's priests have a prayer for the eaten, said over the broken door in the castle ruins of Camelot Hills: that the dead of the kingdom below be given back their own voices. Midgard's skalds say the prayer is wasted, because a voice in the Choir is not a prisoner but a meal, and a meal does not ask to be given back."
+    },
+    {
+      "title": "The Eaten Wards",
+      "text": "The first wards the realms raised against Legion were their priests' prayers, and he learned to eat them.\n\nThe priests of the three realms each have a way to wrap a fighter in a turning shell of protection that takes the first blow aimed at him: Albion's clerics and friars, Midgard's shamans and temple-priests, Hibernia's druids and wardens all know some form of it. When the first companies went down to Legion, they wrapped their foremost fighters in those shells, and the imps say Legion was delighted. He did not break the shells. He swallowed them, one at a time, before they could turn his blow, and the voices in him grew louder with each one, as if a prayer were a richer meal than a soul.\n\nWhen he has swallowed a handful, he cannot hold them. He opens, and pours out a hunger that drinks the life of everyone near him at once, a soul-consuming blast that the Midgard skalds call the Glutton's belch and the Camelot priests call by a longer and holier name. Then he closes again and begins to gather more.\n\nThe druids of Hibernia were the first to understand what the shells were to him, the bards of Tir na Nog say, after a company of theirs lost every warden it had in a single breath. The Camelot loremasters give the honour to an Albion friar named Ansel, who wrote that Legion ate his prayer and thanked him for it, and who never prayed a ward again. His letter is kept at the friary in Camelot, with its last line scored through in his own hand; nobody has been able to read what it said."
+    },
+    {
+      "title": "The Ledge",
+      "text": "Above Legion's lair is a ledge, and on the ledge lives something that is not of the court at all.\n\nThe Behemoth is older than the court and larger than anything in it, the imps say, and it was in the kingdom under the realms before there was a kingdom. The court keeps it on its ledge the way a man keeps a chained bear: for show, and for fear. It breathes like a forge. It does not speak. It has killed more mortals with single blows than any other creature under the three realms.\n\nOnce, the imps say, Legion would call the Behemoth down from its ledge to fight beside him, and in the first seasons after the doors opened, companies of all three realms who reached the bottom of the kingdom met both of them at once. Then something changed. The imps tell it as a story about a feast: Legion called the Behemoth down against a company of the realms, and the Behemoth came down, and did not stop at the enemy. It went on into the court. The imps will not say how many of the court it killed before it went back up. They say only that Legion has never called it down again, and that the Behemoth stays on its ledge now and does not come into his lair.\n\nThe realms' own records agree that the Behemoth stopped coming down at about the same time Legion grew harder to kill: his voices louder, his reclaiming of souls more frequent, his reach longer, as if the court had decided it would rather have a stronger king than a dangerous ally. Albion's priests say that is the first sign of wisdom ever recorded of the court below. The skalds of Midgard say it is the first sign of fear."
+    },
+    {
+      "title": "The Choir",
+      "text": "Legion cannot be harmed from far away. It is the oldest thing the imps say of him.\n\nHis lair is a ring, and the imps call it the Choir: the space within which all his voices can be heard. Inside it he is wholly present, every voice in him at once, and he can be wounded. Outside it, a little more than a long bowshot from him, he is not quite there. Arrows and spells that reach him from beyond the ring strike something that is only partly Legion and find nothing to wound, and the imps say he laughs at them in a dozen voices.\n\nThe Hibernian druids give the origin. The voices in Legion are the eaten, they say, and the eaten can only hold together where they can all hear each other; beyond the ring the choir thins, and what remains is a shadow that cannot bleed. The Camelot loremasters prefer a plainer account: Legion sits at the bottom of his kingdom so that whoever would harm him must come close enough to be eaten.\n\nNo arrow loosed from beyond the ring has ever drawn his blood; every wound he has carried was given from within reach of his mouths, and in the Choir every death is close enough to feed him. Midgard's runemasters, who prefer to stand back from any battle, complained of it for a generation. The skalds made a verse of their complaint and the verse is still sung in Jordheim's halls, about the runemaster who stood outside the Choir all night and was the only man of his company to come home, and was never allowed to forget it."
+    },
+    {
+      "title": "Three Firsts",
+      "text": "Every realm's roll records its own first company to break Legion, and the three records do not agree on whose was first of all.\n\nAlbion's roll at Camelot names Sir Aldous Fenn of Camelot Hills, whose company went down through the castle ruins the first season Albion held the keeps long enough to reach the bottom. Fenn took four companies. The roll says he lost three men, and that he had their bodies carried out of the Choir before they were cold, so that Legion took back nothing of them. Fenn reported that the voices in Legion fell silent all at once when he fell, and that the silence was the loudest thing he had ever heard.\n\nMidgard's roll at Jordheim names Thane Hrolf the Tall, whose company came down from the snow above Mularn, and who the skalds say killed the graspering souls himself, each with a single blow, singing the name of each as he struck because he wanted the souls to be remembered by someone other than Legion. Hibernia's roll at Tir na Nog names Ealadhach the bard, who led a company of wardens and druids, and who is said to have come home from the first descent with no wardens left, and gone down again with none.\n\nThe court below has its own record, and the imps will recite it for two candle-ends. According to the imps, the first mortals ever to break Legion were none of these three but a company of all three realms together, trapped below when the doors changed hands twice in one night, who had no way out but through him. None of the three rolls has ever recorded such a company. The imps say that is because none of them came home to report it."
+    },
+    {
+      "title": "What the Many Want",
+      "text": "Legion wants more voices. On that one thing the court below, the three realms and the imps all agree.\n\nHe does not want the realms above, the imps say, any more than a man wants the field his dinner grew in. He wants what comes down from them. Everyone who comes down through any of the three doors and dies in his Choir becomes a voice in him, and when the frontier changes hands the doors open for another realm and the meal changes. The princes wager on which realm will come down next because they enjoy the game. Legion does not wager because he wins every time anyone dies.\n\nWhat would happen if he ever had enough is where the realms divide. Albion's priests believe that a Legion with enough voices would no longer need the doors to answer to strength: he would open all three at once and the court would rise under the realms' feet, rank by rank, princes first. Midgard's skalds believe he would simply grow so full that the kingdom below could no longer hold him, and would break, and that what came up through the cracks would be Legion himself, everyone at once. Hibernia's druids believe there is no such thing as enough for a lord made of his subjects, and that the only end of Legion is the one his first rival found.\n\nWhen Legion falls, the imps say, the voices go quiet all at once, and the court below spends the season after listening for which voices come back first. They say they have never yet listened in vain."
+    }
+  ]
+}

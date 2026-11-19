@@ -135,7 +135,7 @@ public static class AutonomousChatEngagement
         string line = canDuo
             ? Pick(random, $"hey {player}! on tonight? want to duo in a bit?", $"{player}! perfect timing, wanna group up?",
                 $"oh hey {player}, im solo atm if u want company")
-            : Pick(random, $"hey {player}! good to see u on", $"{player}! o/", greeting, $"oh hey {player}, welcome back",
+            : Pick(random, $"hey {player}! good to see u on", $"{player}! hey", greeting, $"oh hey {player}, welcome back",
                 $"look who logged in, hi {player}");
         return AutonomousBotVoiceCorpus.ForTimeOfDay(line, localHour);
     }
@@ -148,16 +148,16 @@ public static class AutonomousChatEngagement
 
     /// <summary>A bot standing near the player when they die, not in their group (the groupmates have their own lines).</summary>
     public static string DeathSympathy(string player, bool friend, Random random) => friend
-        ? Pick(random, $"ouch {player}, u ok?", $"rip {player}, that looked nasty", $"{player} noooo, u alright?", "aw man, that sucked to watch")
-        : Pick(random, "ouch, that looked nasty", "that mob hit hard, u ok?", "rip, saw that one coming too late", "ugh, sorry man");
+        ? Pick(random, $"ouch {player}, u ok?", $"ouch {player}, that looked nasty", $"{player} noooo, u alright?", "aw man, that sucked to watch")
+        : Pick(random, "ouch, that looked nasty", "that mob hit hard, u ok?", "ugh, saw that one coming too late", "ugh, sorry man");   // promise: none (the mob it saw)
 
     /// <summary>
     /// A healer near the player's body that has really set out to rez them (BotBrain claimed the corpse): "need a rez? omw".
     /// <paramref name="close"/>: within /say range.
     /// </summary>
     public static string RezOffer(string player, bool friend, Random random) => friend
-        ? Pick(random, $"hang on {player}, coming to rez u", $"dont release {player}, omw with a rez", $"{player} need a rez? omw")
-        : Pick(random, "need a rez? omw", "hold on, ill rez u", "dont release, rez coming", "sec, coming to rez");
+        ? Pick(random, $"hang on {player}, coming to rez u", $"dont release {player}, omw with a rez", $"{player} need a rez? omw")   // promise: true (BotBrain has claimed the corpse: the rezzer is on its way)
+        : Pick(random, "need a rez? omw", "hold on, ill rez u", "dont release, rez coming", "sec, coming to rez");   // promise: true (BotBrain has claimed the corpse: the rezzer is on its way)
 
     /// <summary>A friend in the zone the player just arrived in (one not standing next to them). <paramref name="where"/>: its own place in the zone, or null.</summary>
     public static string ZoneTell(string player, string zone, Random random) =>
@@ -223,7 +223,7 @@ public static class AutonomousChatEngagement
     {
         string hello = Pick(random, $"hey {player}!", $"{player}!", $"oh hey {player}", $"heya {player}");
         string what = doing.Grouped && doing.Zone != null ? Pick(random, $"in a grp in {doing.Zone} atm", $"grouped up in {doing.Zone}, its going ok")
-            : doing.Destination != null ? Pick(random, $"heading to {doing.Destination}", $"on my way to {doing.Destination}")
+            : doing.Destination != null ? Pick(random, $"heading to {doing.Destination}", $"on my way to {doing.Destination}")   // promise: true (its real destination)
             : doing.InRvR && doing.Zone != null ? Pick(random, $"out in {doing.Zone} looking for fights", $"rvr in {doing.Zone}, its busy")
             : doing.InTown ? Pick(random, "in town sorting my bags", "in town, selling junk lol")
             : doing.Monster != null && doing.Zone != null ? Pick(random, $"killing {Plural(doing.Monster)} in {doing.Zone}", $"hunting {Plural(doing.Monster)} out in {doing.Zone}")

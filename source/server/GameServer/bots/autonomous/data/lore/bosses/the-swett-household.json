@@ -1,0 +1,109 @@
+{
+  "id": "the-swett-household",
+  "name": "Swett household",
+  "npcNames": [
+    "Avice Swett",
+    "Beneger Swett",
+    "Hawis Swett",
+    "Beatrix Swett",
+    "Bartholomew Swett"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "avice swett",
+    "beneger swett",
+    "hawis swett",
+    "beatrix swett",
+    "bartholomew swett"
+  ],
+  "facts": [
+    {
+      "text": "The Swett household: Beneger (40), Hawis (40), Avice (39), Beatrix (38) and Bartholomew (37) Swett, ghosts, no faction, no spells, respawn 80 s, by the fort road near Fort Gwyntell (~420.0-420.7k, 408.1-408.4k).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Zombies, Ghosts, and Necromancers: talk to Avice Swett in the apparition houses near Fort Gwyntell, kill an Avalonian apparition, see the Priest of Arawn, kill the drakoran necromancer's apprentice across the wooden bridge and bring his rod of necromancy to Avice.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The bees, the last open door and each member's habit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Swetts kept the colleges' bees by the fort road, and theirs was one of the last doors opened to the Avalonians fleeing the burning.\n\nAvice Swett speaks to the living, which the others will not, and sends them to the Priest of Arawn, and wants the drakoran rod brought to her so that the household can choose whether to stay.\n\nBeneger Swett, the father, still walks out to hives that are empty.\n\nHawis Swett took the bees' honey to the colleges' kitchens and still sets out a jar for guests.\n\nBeatrix Swett let the Avalonians in on the last night, and they are still drifting round the house.\n\nBartholomew Swett, the youngest, was stung so often he swore the bees were his friends, and waits for them.",
+  "legend": "The Swett household: Beneger (40), Hawis (40), Avice (39), Beatrix (38) and Bartholomew (37) Swett, ghosts by the fort road near Fort Gwyntell, with the Avalonian apparitions drifting round. Avice starts Zombies, Ghosts, and Necromancers. They aggro on sight; pull singles, mind the apparitions. Plain melee, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "yells": {
+    "aggro": [
+      "You let the cold in.",
+      "Shut the door behind you."
+    ],
+    "phases": [],
+    "death": [
+      "The hives... empty..."
+    ],
+    "slay": [
+      "Stung.",
+      "The door is open. Go through it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Avice Swett, at the door of the house.",
+      "Beneger Swett is still at home.",
+      "Hawis Swett is still at home.",
+      "Beatrix Swett is still at home.",
+      "Bartholomew Swett is still at home."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Swett house falls quiet. The bees do not come back."
+  },
+  "botLines": {
+    "briefing": [
+      "swett house by the fort road, avice is the quest one, apparitions drift round it",
+      "pull singles"
+    ],
+    "aftermathWin": [
+      "cleared the swetts",
+      "avice sends you to the priest of arawn, dont kill her first"
+    ],
+    "aftermathLoss": [
+      "the apparitions joined in"
+    ],
+    "rumour": [
+      "[heard|someone said] avice swett wants the drakoran rod so the family can choose to go",
+      "heard beneger swett still walks out to his empty hives",
+      "[heard|someone said] hawis swett sets out honey for guests that never come",
+      "heard beatrix swett let the avalonians in on the last night",
+      "[heard|someone said] bartholomew swett is waiting for the bees to come back"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "swett",
+    "text": "The Swetts kept the colleges' bees by the fort road in the [dales of devwy]: Avice who talks to the living, Beneger at his empty hives, Hawis with her honey, Beatrix who let the fleeing Avalonians in, and young Bartholomew who waits for the bees."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} gave the Swett household their rest for a while, in {minutes} minutes.",
+    "loss": "The Swett household kept house; {raidLeader} of {realm} was shown the door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "related": [
+    {
+      "id": "the-grym-household",
+      "relation": "neighbours a field away"
+    },
+    {
+      "id": "necromantic-apprentice",
+      "relation": "carries the rod Avice wants"
+    }
+  ],
+  "tier": "minor"
+}

@@ -1,0 +1,140 @@
+{
+  "id": "high-lord-baln",
+  "name": "High Lord Baln",
+  "catalogKey": "darkness-falls/highlordbaln",
+  "locationId": "darkness-falls",
+  "realm": "Neutral",
+  "facts": [
+    {
+      "text": "Level 70, 100,000 health, immune to crowd control. Every 20-35 seconds he calls eight to twelve Baln minions (level 58).",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
+    },
+    {
+      "text": "High Lord Baln: NPC template 60162130 (level 70), 100,000 health, GetResist 40 melee / 70 other, CC immune. The first time he is attacked out of combat, every idle NPC within 3,000 attacks the attacker; every 20-35 s in combat 8-12 minions (level 58, 800 health, Strength 300) appear and are removed only when he resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
+    },
+    {
+      "text": "About 99 mobs stand within 3,000 of Baln's spawn, including Duke Aypol, Duke Alloc, Earl Zh'alzhak and a Marquis Chaosmar.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Baln born of the split wall, 'born of the wall', 'a wall that walks', the hall's barracks custom, the quarrel with Nebir, the knight's tally on the eastern arch and Captain Gruffudd Fras's night are Living Server writing; the wall-brood and the hall that grows are from the Darkness Falls file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "High Lord Baln was not born in the hollow; he was cut out of it. He is the eldest of the wall-brood, the demons the hollow's own rock gives up when struck hard enough: in the Uncounted Age a lord split a wall of the south hall in a rage, and Baln stepped out of the split, killed him, and sat on the rubble. Born of the wall, the court says of a demon that owes no one. He knelt at the Feast last but one, and the First Roll gave him the south, where Field Marshal Nebir keeps his war table and the court's host musters. A hall full of soldiers, Baln said, is only a wall that walks.\n\nThe Albion companies call it the hall that grows, for two reasons. The longer Baln is fought, the more of his brood the walls give up at his side, a crowd at a time, weak but hitting harder than their size; when he is driven off the walls take them back, but when he is killed the ones already out stay out. And the hall is the court's barracks, full of dukes and necyomancers and plated fiends idle at the Marshal's table, and its custom is a barracks custom: when its lord is struck, every demon in it not already fighting turns on the one who struck him, from every corner at once. The first Albion company to put an arrow into him from the door did not come back.\n\nBaln and Nebir have hated each other since the First Roll, which the Chancellor wrote so that neither can act without the other; the imps call the court's army a quarrel that has learned to stand in ranks. They agree only that the hall rises when its lord is struck.\n\nCaptain Gruffudd Fras of Camelot Hills emptied the hall seat by seat along its edge for most of a night, ranks first and the dukes one by one, while the high lord watched unstruck. Then he struck him, burned each crowd of brood as it stepped from the wall, and when Baln fell did not cheer, but finished the brood first.",
+  "legend": "High Lord Baln is level 70 with 100,000 health, CC immune, 40% melee / 70% other reduction. Two things make him. First, the very first hit on him (when he is not already fighting) sets every idle mob within 3,000 on whoever hit him, and his Hall of War holds about 99 of them: Dukes Aypol and Alloc, Earl Zh'alzhak, a Marquis Chaosmar, necyomancers, plated fiends, quasits. So clear the hall first, edge to edge, before anyone touches Baln, as Captain Fras did. Second, every 20 to 35 seconds while he fights, 8 to 12 Minions (level 58, 800 health, but Strength 300 so they hit hard) step out beside him. Area damage on every wave, tanks hold Baln, and do not let waves stack. When he dies the minions already out do NOT vanish; kill them before you sit. If he resets they do vanish. Do not drop out of the fight.",
+  "yells": {
+    "aggro": [
+      "To me, my household! All of you!",
+      "The hall rises!",
+      "Strike me and you strike the wall."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "More! I have more!"
+      }
+    ],
+    "death": [
+      "My household... scatters...",
+      "The wall... takes me back...",
+      "My brood... finish them..."
+    ],
+    "slay": [
+      "Join my household.",
+      "Back into the stone.",
+      "The hall grows."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A high lord, and his servants, and theirs.",
+      "The walls of this hall are warm, and they shift."
+    ],
+    "phases": [
+      {
+        "trigger": "addSpawn",
+        "text": "High Lord Baln calls his household!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The walls give up another crowd of brood!"
+      }
+    ],
+    "realmFirstKill": "High Lord Baln has fallen. His household scatters."
+  },
+  "botLines": {
+    "briefing": [
+      "first hit on baln sets every idle mob within 3000 on us. thats about 99. clear the hall first",
+      "every 20-35 sec 8-12 minions, 800 hp but they hit hard. aoe every wave",
+      "tanks hold baln, everyone else on the minions",
+      "minions stay up after he dies. kill them before you sit"
+    ],
+    "aftermathWin": [
+      "aoe groups earned their keep",
+      "baln down. his household is out of work",
+      "cleared the hall seat by seat, then the lord. fras would be proud",
+      "the hall that grows has stopped growing"
+    ],
+    "aftermathLoss": [
+      "three waves at once. we drowned",
+      "someone hit baln with the hall still full. the whole hall came",
+      "we cheered and his minions killed the healers",
+      "two waves stacked"
+    ],
+    "rumour": [
+      "heard high lord baln never fights alone",
+      "[someone said|heard] baln has more minions than wit. dont tell him",
+      "heard baln stepped out of a split in the wall and killed the lord who split it",
+      "[heard|someone said] hit baln once and the whole hall of war gets up"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "baln",
+    "text": "The high lord of the south of [Darkness Falls], eldest of the wall-brood, whose Hall of War is the court's barracks. Strike him and every idle demon in the hall rises at once; fight him and the walls give up his brood. Captain Fras emptied the hall seat by seat before he touched him. See [nebir]."
+  },
+  "bookPage": "From Brother Odran's Door-Book, the account of Captain Gruffudd Fras of the garrison of Camelot Hills. I did not need to know what became of the company that struck the high lord from the door to know what not to do. We came in along the edge of his hall and took his host as it sat, a rank at a time, then the dukes one by one; the marquis took an hour. All night the lord watched from his throne, unstruck. When the hall was empty I struck him. Nothing rose but his brood out of the walls, and we burned each crowd as it came. When he fell we did not cheer. We finished the brood first.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} cut through High Lord Baln's household wave by wave in {minutes} minutes.",
+    "loss": "High Lord Baln's household buried {realm}'s raid; {raidLeader} let the waves stack."
+  },
+  "era": "neu-the-three-doors",
+  "factions": [
+    "dark-ones",
+    "host-of-the-marshal"
+  ],
+  "related": [
+    {
+      "id": "legion",
+      "relation": "felt the Master through the wall at the Feast and knelt"
+    },
+    {
+      "id": "high-lord-saeor",
+      "relation": "the high lords' rivalry over which hall is worst"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "Cut from the Rock",
+      "text": "High Lord Baln was not born in the hollow. He was cut out of it.\n\nIn the Uncounted Age, the court says, some of its lords were things that had come into the dark from elsewhere and some were things the dark had made of itself, and Baln is the eldest of the second kind: a lord of the wall-brood, the demons that the hollow's own rock gives up when it is struck hard enough. The court's chroniclers say he was the first. A lord of the old age split a wall of the south hall with his fist in a rage, and Baln stepped out of the split, and killed him, and sat down on the rubble, and the rubble was his throne until the Feast. The court has a saying for a demon that owes nothing to anyone: born of the wall.\n\nHe knelt at the Feast of Thrones among the eleven, last but one, the court says, and only because the wall behind him was the wall of the deepest chamber and he could feel the Master through it. The First Roll made him a High Lord and gave him the south, and the Master gave the south to the court's host: the Hall of War, where Field Marshal Nebir keeps his war table and the court's army musters. Baln did not object. A hall full of soldiers, he is supposed to have said, is only a wall that walks.\n\nThe Church of Camelot says the wall-brood are proof that the hollow is cursed to its foundations, and its priests will not touch the stone of the south halls with a bare hand. The Midgard skalds compare Baln to the giants of their own frost, who were also born of what they stood on. The druids of Tir na Nog say the hollow is a wound, that the wall-brood are its proud flesh, and that Baln is the scar."
+    },
+    {
+      "title": "The Hall That Grows",
+      "text": "The Albion companies call the Hall of War the hall that grows, and they have two reasons.\n\nThe first is the walls. The longer Baln is fought in his own hall, the more of his kin the walls give up, small versions of himself that step out of the stone at his side in a crowd, a crowd at a time, and then another crowd, for as long as he is fighting. They are weak, the companies say, but they hit far harder than their size, and there are always more. When the lord is driven off and the fighting stops, the walls take them back. When he is killed, the walls do not; the ones already out stay out, and look about them, and the Door-Book records more than one company that cheered the high lord's fall and was then set upon by his brood.\n\nThe second is the hall itself. The Hall of War is the court's barracks, and it is full: the dukes who hold its seats, Aypol with his hoard and Alloc with his standard and Earl Zh'alzhak, the Marquis Chaosmar who is also elsewhere, and around them the host, necyomancers in their ranks and plated fiends and the court's lesser kind, all of them idle at the Marshal's table between wars. The custom of the hall is the custom of any barracks. When its lord is struck, the whole hall gets up. Every demon in it that is not already fighting turns on the one who struck him, at once, from every corner of the hall, and the Field Marshal's lieutenants say that is not a custom but the whole reason for having a hall.\n\nThe companies of the realms learned it the way companies learn most things in the hollow. The Door-Book records the first Albion company that walked into the Hall of War and put an arrow into the high lord from the door, and records nothing else about it, because nobody came back to say anything else."
+    },
+    {
+      "title": "The Marshal's Table",
+      "text": "Field Marshal Nebir keeps his war table in Baln's hall, and the high lord and the Marshal have hated each other since the First Roll.\n\nThe Roll is plain about precedence. A High Lord stands above a great officer, and Baln above Nebir. But the host is Nebir's, and the hall is Baln's, and the Chancellor, who wrote both lines, wrote them so that each of them would need the other's leave to do anything at all. Nebir cannot muster without the hall. Baln cannot fight without the host. The imps say the two have spent ten Rolls waiting for the other to be struck off, and that the court's whole army is only a quarrel that has learned to stand in ranks.\n\nThey agree on one thing. When the hall's lord is struck, the hall rises, and the Marshal's lieutenants see to it that it does. Lieutenant Gargantan, who keeps the near ranks, says it is the only order he has ever given that the host obeyed at once. Nebir's war table has the hall drawn on it in the court's script, every seat and every rank, and the Chthonic Knight who stands at its eastern arch keeps a tally, scratched into the arch, of the companies that walked in and struck the lord without first emptying the room.\n\nThe realms have their readings. The Church of Camelot says the hall shows what the court is: a host that answers to no one but its own fear, and fights only when its lord is touched. The Midgard skalds, who admire the Hall of War more than they should, say it is the only room in the hollow built the way a hall should be built, with every man in it ready to stand at once. The druids say that a hall which rises all together falls all together too, and that this is the only good news about it."
+    },
+    {
+      "title": "Seat by Seat",
+      "text": "The first Albion company to kill High Lord Baln did not touch him for most of a night. It emptied his hall first, seat by seat.\n\nIt was led by Captain Gruffudd Fras of the garrison of Camelot Hills, who had read the Door-Book's entry on the company that put an arrow into the lord from the door, and who said that he did not need to know what had happened to it to know what not to do. His company came into the Hall of War along its edge and took the host as it sat: a rank of necyomancers at a time, drawn away to the walls and killed there, then the plated fiends, then the quasits, then, one by one and with great care, the dukes. The Marquis Chaosmar took them an hour. Duke Aypol's hoard, Fras wrote, they did not touch, because they had not come for seals. All night the high lord sat on his throne in the middle of an emptying hall and watched, because no one had struck him.\n\nWhen the hall was empty, Fras struck him. Nothing rose but the brood. His company had brought every caster it could find who could strike many at once, and they burned each crowd of the brood as it stepped out of the wall, while the knights held the lord, and when Baln fell at last they did not cheer. Fras had read that part of the Door-Book too. They finished the brood that was still standing, and only then sat down.\n\nMidgard's bands say they took the Hall of War first, by storming it all at once, and the skalds count the dead of that night as a glory. Hibernia's bards say a druid company did it the same way as Fras, a season before him. Each capital keeps its own count. The Chthonic Knight at the eastern arch, the imps say, scratched no line for Fras's company. He scratched a different mark, which they have never seen him use before, and will not say what it means."
+    }
+  ]
+}

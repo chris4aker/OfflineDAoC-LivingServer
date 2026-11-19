@@ -1,0 +1,296 @@
+{
+  "id": "tur-suil",
+  "name": "Tur Suil",
+  "realm": "Hibernia",
+  "regions": [
+    190
+  ],
+  "summary": "Balor's tower on Hy Brasil, raised by the Fomorians around the eye that would not close.",
+  "facts": [
+    {
+      "text": "Tur Suil's bestiary: Balor (81), Queen Qunilaria, Norsob the Annihilator, Sargan the Conqueror, Kierac the Destroyer, the Master of Pain, Abomos the Soultrapper, the Balorians, spectral and tortured Sylvan spirits, burrowing monstrosities, tunneling horrors, wall spikes and a rack of spikes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "The Balorians bear old Irish hero names: Conall, Ferdiad, Conlaoch, Aonghus, Donogh, Huon, Sluaghan, Meisceoir and others.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "Region 190; the realm raid's final is Balor. The Vale of Balor is a zone of Hy Brasil (region 181).",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Shrouded Isles set the Fomorians against the Sylvan of Hy Brasil, who asked Hibernia for help.",
+      "provenance": "mythic",
+      "source": "https://archive.rpgamer.com/news/Q3-2002/080502g.html"
+    },
+    {
+      "text": "Balor, Fomorian king, had an eye that destroyed what it looked on; his grandson Lugh killed him at the second battle of Mag Tuired; folklore sets his tower on Tory Island, where he shut away his daughter.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "A Dec 2003 Balor raid: 'you only need 2fg's'; the raid brought three groups.",
+      "provenance": "legend",
+      "source": "https://forums.freddyshouse.com/threads/balor-quest-raid-today-friday.163060/ (via docs/RAID-SIZES.md)"
+    },
+    {
+      "text": "Bot chat: his eye once opened over Hy Brasil and burned the valley now called the Vale of Balor; never meet his eye.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Tur Suil may be Irish túr súl, 'tower of the eye'; to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Tur Suil's raid is dungeon-hibernia-tursuil, suggested size 40; its entrance in the navigation data is at 38038, 27675.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Every Tur Suil named takes 20-30% less from slash, crush and thrust and cannot be hurt outside its tether.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/TurSuil/"
+    },
+    {
+      "text": "Allakhazam lists a Rack of Spikes at level 99 and Wall Spikes at level 90 in Tur Suil: traps, not foes.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
+    },
+    {
+      "text": "Folklore says Balor shut his daughter Eithne in a tower on Tory Island so that the prophecy of his death by his grandson could not come true.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "In the folk tale Balor shut his daughter Eithne in a tower on Tory Island; Cian reached her with the help of the druidess Biróg, and their son Lugh later killed Balor at Mag Tuired.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Living Server lore: Carraig na Faire ('rock of the watch', to verify) and Gleann Glas's watch-fire that drew the Fomorian boat; Mainchín the captive stone-cutter and the masons' hall-stones (the household bound to its halls); the coast watchers, Taise's three customs and the cairn for Gleann Glas; the bards' order of climbs; the tower and the city as two Fomorian peoples.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Before the tower there was a fire. The Sylvan of Gleann Glas lit a watch-fire on the black crag they called Carraig na Faire, the rock of the watch, so their boats could find the shore in the mist; on the night the Fomorians came lost out of the mist they steered for it, and when the hides slipped on the beach the eye's first sight was the village that had brought it home. No watch-fire has been lit on that coast since. The Fomorians chose the crag because it was the highest ground, looked down on the Vale the eye had burned, and already held a light.\n\nThey cut the long stair down into the black rock and built the walls from what came out, with Sylvan captives among the masons. Mainchín, a captive stone-cutter who escaped before the window was set, told how the masons set a marked stone in each finished hall and bound its keeper to it: the tower lets nothing that keeps a hall be wounded anywhere but at its post. The realm has found it true of every great one in the tower.\n\nThe tower is mostly its lesser household: the Balorians, the king's own soldiers, who wear the names of slain heroes that the realm never reads aloud; bugbear scavengers; the torturer's spikes and rack, which are furniture, not foes; spectral Sylvan of the Burning still walking the stair; the cries in the cells; and the clicking of the queen's brood far below. The coast's wardens watch the Vale from the headlands for the red glow that means the king has returned, and the forays out of Fomor follow it by weeks. Taise's customs are theirs, and the cairn for Gleann Glas at the Vale's edge is very large now.\n\nThe realm has climbed from its first winter: Eochaidh's three bands, Fiachna's smooth stone on the sill, Neasa, Fearghal's mistake, Seanán, Bréanainn and Ciarán, and the customs of the climb grew from their names. The tower and the city under the shore are both Fomorian but have little to do with each other, except that the city waits on the eye. Muirgen ended her book with Eithne's tower on Tory: towers do not hold everything. The realm keeps climbing so that the eye does not finish its own story first, and the old Sylvan of the coast say the crag was a good place for a fire.",
+  "legend": "Two or three groups if they are good. Every ten percent of his health, if no eye is open, an Eye of Balor opens over the room, picks one random person and burns them with heat until it closes; you cannot target it and spreading does not help. Heat resists on, heal whoever the eye picks, keep grinding. Clear the queen and the warlords first, and mind the spikes in the walls. Nicknames: 'the Eye', 'the one-window tower', and for Balor himself 'Grandad', because of Lugh, which the old hibs think is in poor taste. Superstitions: never read the Balorians' names aloud; never look up through the window of the king's chamber; carry a smooth stone in your pack for luck, as Lugh did. Raid leaders say two or three groups is enough, but bring a fourth for the stair.",
+  "atmosphere": {
+    "firstEntry": [
+      "The tower of the eye. Do not look up.",
+      "The walls are full of spikes, and the spikes are full.",
+      "Somewhere above, a lid is lifting.",
+      "The soldiers wear the names of dead heroes.",
+      "A tower with one window. Something looks out.",
+      "Somewhere below, digging, and it does not stop."
+    ],
+    "areas": [
+      {
+        "name": "the gate of Tur Suil",
+        "x": 38038,
+        "y": 27675,
+        "z": 13251,
+        "radius": 1200,
+        "lines": [
+          "The soldiers wear the names of dead heroes.",
+          "Bugbears pick over what the soldiers leave."
+        ]
+      },
+      {
+        "name": "Balor's chamber",
+        "x": 32032,
+        "y": 31048,
+        "z": 15984,
+        "radius": 1600,
+        "lines": [
+          "An eye the size of a shield turns toward you.",
+          "Meet his eye and you will not meet anything again.",
+          "One window. Something looks out of it.",
+          "Lugh is not here. Only you."
+        ]
+      },
+      {
+        "name": "the soul-trapper's cells",
+        "x": 31471,
+        "y": 21474,
+        "z": 11612,
+        "radius": 1100,
+        "lines": [
+          "Sylvan voices, very faint, behind the walls.",
+          "Spectral Sylvan drift, looking for a way out.",
+          "The cells are full, and someone is still collecting."
+        ]
+      },
+      {
+        "name": "the burrowers' nest",
+        "x": 31066,
+        "y": 16596,
+        "z": 11951,
+        "radius": 1300,
+        "lines": [
+          "The floor is hollow. Something is digging.",
+          "Tunnels lead down toward the roots of the isle.",
+          "The clicking never stops."
+        ]
+      },
+      {
+        "name": "the torturer's hall",
+        "x": 28439,
+        "y": 28150,
+        "z": 13246,
+        "radius": 1100,
+        "lines": [
+          "Racks, spikes, and someone humming.",
+          "A rack no warrior has ever outgrown.",
+          "Spikes in the walls, and the walls are full."
+        ]
+      },
+      {
+        "name": "the west hall",
+        "x": 25033,
+        "y": 31235,
+        "z": 14109,
+        "radius": 1100,
+        "lines": [
+          "The west hall smells of old fires.",
+          "Norsob holds here. Sargan is not welcome."
+        ]
+      },
+      {
+        "name": "the far west hall",
+        "x": 25249,
+        "y": 38173,
+        "z": 14109,
+        "radius": 1100,
+        "lines": [
+          "Banners of conquered clans hang in rows.",
+          "Sargan keeps his conquests tidy."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "lugh put a stone through balor's eye at mag tuired. [nobody told the one in tur suil|the fomorians took the eye west]",
+      "tur suil means the eye's keep, [i think|my guild says]. balor shut his daughter up in one once too",
+      "the balorians wear the names of heroes. conall, ferdiad, aonghus. [trophies|like scalps]",
+      "the sylvan spirits in tur suil are the ones who tried to burn it. [abomos keeps them|still screaming]",
+      "sargan named the balorians after heroes the fomorians killed. [dont read the names out|creepy trophies]",
+      "norsob and sargan hate each other. [balor keeps them in separate halls|thats why theyre apart]",
+      "the rack of spikes in tur suil is level ninety nine. [its furniture|dont attack it]",
+      "the eye of balor opened over the vale once. [nothing has grown since|ash valley]",
+      "qunilaria's brood digs toward the roots of hy brasil. [what is balor looking for down there|nobody knows]",
+      "kierac has the master of pain inside him. [kill kierac and he comes out|worm in an apple]",
+      "the tortured sylvan in tur suil are the ones who tried to burn it. [abomos keeps them|the burning that failed] [abomos keeps them|free them]",
+      "everyone in tur suil is immune off their own floor. [fight them at home|their floor protects them]"
+    ],
+    "rumour": [
+      "[heard|someone swears] the eye in tur suil opened [last night|again] and the vale glowed red for a minute",
+      "[word is|heard] a sylvan scout went into tur suil to free the spirits. [didnt come out|nobody has seen him]",
+      "[heard|someone said] a sylvan scout went into tur suil to free the spirits. [never came out|nobody has seen him]",
+      "[word is|heard] the vale of balor glowed red last night. [the eye again|probably a campfire]",
+      "someone read the balorian names aloud on the stair and [the whole stair aggroed|got killed]. or so they say",
+      "[heard|someone said] the burrowers in tur suil broke into a cave full of roots. [galladoria's roots|olcasgean]",
+      "carry a smooth stone into tur suil for luck. [like lugh|old hib habit]",
+      "[word is|heard] norsob and sargan nearly fought each other last week. [shame they didnt|balor stopped it]"
+    ],
+    "tell": [
+      "tur suil is balor's keep on hy brasil. two or three groups, heal whoever the eye picks, never meet his gaze",
+      "fomorians, spikes in the walls, a bug queen, two warlords, a torturer, and balor on top. fun place",
+      "is tur suil hard? two or three groups if the healers watch the eye. the stair is the long part",
+      "where is tur suil? on a crag above the vale of balor on hy brasil",
+      "whats in tur suil? balorians, a bug queen, two warlords, a torturer, a soul trapper, and balor at the top",
+      "tur suil order: clear the stair, kill the household one hall at a time, balor last"
+    ]
+  },
+  "loremaster": {
+    "intro": "Tur Suil, the tower of the eye. You know how [Balor] died at Mag Tuired, and who his grandson [Lugh] was. Ask instead what became of the [eye], and why the [Vale] below the crag is ash. The Fomorians built this tower and filled it with [his household]: the [Balorians] on the stair, and his great ones in their halls.",
+    "topics": {
+      "Balor": "King of the Fomorians, whose single eye burned whatever it looked on. Lugh, his grandson, put it out with a sling-stone. Or so we sing.",
+      "eye": "It fell open and burned the Fomorian host. They wrapped it in hides and carried it west, walking backwards, and it opened once on Hy Brasil. That valley is the Vale of Balor now.",
+      "his household": "Soldiers wearing the names of our dead heroes; a soul-trapper; a torturer called the [Master of Pain]; two warlords; and a queen of burrowing things.",
+      "Master of Pain": "He lived inside Kierac the Destroyer, the Sylvan say, as a worm lives in an apple. When Kierac falls the worm goes home: the Master is suddenly in his own room below, by the cells.",
+      "Balorians": "The king's soldiers, named by [Sargan] for heroes the Fomorians killed. Do not read the names aloud.",
+      "Vale": "The valley below the crag, ash since the eye looked on it. The Sylvan named Tur Suil first when they asked for swords.",
+      "Lugh": "Balor's grandson, who put a sling-stone through the eye at Mag Tuired. Carry a smooth stone into the tower for luck.",
+      "Eithne": "In the old tale, Balor's daughter, shut in a tower so the prophecy could not come true. It came true. Towers do not hold everything."
+    }
+  },
+  "book": {
+    "title": "The Tower of the Eye",
+    "pages": [
+      "Written by Muirgen, a druid of Tir na Nog who went to Hy Brasil with the first of the realm's swords. The bards sing that Lugh drove the eye of Balor out through the back of his head, and that it fell facing the Fomorian host, and that their own king's gaze destroyed them. The Sylvan of Hy Brasil have a second verse. They say the Fomorians who lived were the ones who had been walking backwards, as the eye's bearers always walked, and that they wrapped the eye in seven hides of seven beasts and carried it to the sea without once turning round.",
+      "The Sylvan say the boat came to Hy Brasil in a mist, as all boats come there, and that the hides slipped on the shore. The eye looked at one valley for as long as it takes to draw breath. Nothing has grown there since; the Sylvan call it by Balor's name now, and walk round it. The Fomorians built a tower on the crag above it, a tower with one window, as Balor in the old tale built a tower on Tory to shut his daughter away. They put the eye behind the window, and they began, slowly, to grow a king around it again.",
+      "The household came after. A soul-trapper for the Sylvan who came to burn the tower. A torturer, already dead, who filled the walls with spikes and lived inside the best thing he ever made. Two warlords who could not stand each other, kept in separate halls. A queen of burrowing things, set to dig. And soldiers, many soldiers, given the names of heroes the Fomorians had killed, so that every one of them is a boast. I counted the names on the stair and stopped at forty. I will not write them here.",
+      "When Hibernia's first companies climbed to the top of Tur Suil they found him there: Balor, or what the eye remembers of Balor. He bleeds, and he can die. But as his strength falls an eye opens in the roof, high up where no sword can reach, and chooses one of those below, and burns them until it shuts, and opens again. Those who came down alive said they learned to watch the roof, and to run to whoever it chose. One of them, a young bard, carried a smooth stone in his pack all the way up, for Lugh's sake. He told me afterward he had not needed it. He had been glad of it anyway.",
+      "The Sylvan of the coast told me why there is no watch-fire on their shore. Their village of Gleann Glas lit one on the black crag for their boats on nights of mist, as they had always done, and on the night the Fomorians came out of the mist lost, they steered for it. The eye's first sight on Hy Brasil was the village that had lit its way. The boats of the coast come home now by the sound of the surf, and are lost more often. I asked whether they blamed the Fomorians or the fire. They said they did not think that was the question.",
+      "A Sylvan stone-cutter named Mainchín was a captive at the building of the tower and escaped down the stair before the window was set. He told the coast that the masons laid a marked stone in the floor of each hall when it was done, and sang over it, and its keeper stood on it, and that the stone bound the keeper to the hall. The companies who have climbed since say the household cannot be wounded away from their halls. I believe Mainchín. The Sylvan cut a mark on a new house's doorstep for the same reason, they say, turned to a kindness.",
+      "The wardens of the coast keep watch on the headlands for the Vale's glow, a dull red under the ash, as embers glow under a banked fire. It means the king is back. The forays out of Fomor follow it by a few weeks. Taise, who kept that watch for most of her life, taught the watchers three things: never look at the glow for long, because it looks back; never cross the Vale alone or by its middle; and leave a stone for Gleann Glas on the cairn at the edge. I left one. The cairn is taller than I am.",
+      "The tower and the city under the shore are both Fomorian, but the Sylvan told me they are not one people. The city has households and no king. The tower has a king and no households: its soldiers and great ones are his alone. The city's war-leader does not climb the stair, and the tower's soldiers never go on a foray. Yet the Vale glows, and the bellers call. I think the city has been waiting on the tower since Mag Tuired, and I do not think the tower has noticed.",
+      "A note in another hand, beside these pages in the library at Tir na Nog: the eye was never his. He was always the eye's. I believe that is right. In the old tale the prophecy said Balor would die by his grandson, and he shut his daughter in a tower, and it did not help. Towers do not hold everything. The Fomorians built another tower for the eye, and filled it with soldiers, and set a queen to dig beneath it. I do not think it will help them either. But I think we will have to keep climbing it, every generation, to make sure."
+    ]
+  },
+  "bosses": [
+    "balor",
+    "queen-qunilaria",
+    "norsob-the-annihilator",
+    "sargan-the-conqueror",
+    "kierac-the-destroyer",
+    "master-of-pain",
+    "abomos-the-soultrapper"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "fomor",
+      "relation": "the Fomorian city on the same isle"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "the isle; the Vale of Balor below the crag"
+    },
+    {
+      "id": "galladoria",
+      "relation": "the Root's hollow, the isle's other wound"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Watch-Fire on the Crag",
+      "text": "Before there was a tower on the crag above the western coast of Hy Brasil, there was a fire. The Sylvan of the coast called the crag Carraig na Faire, the rock of the watch, and on nights of sea-mist the people of the green valley below it, the village of Gleann Glas, climbed the crag and lit a fire on its top so that their fishing boats could find the shore. Hy Brasil is an isle of mists; it hides even from its own people's boats. The fire on the rock of the watch was the oldest custom of the coast, and the Sylvan of Gleann Glas were proud of it.\n\nThe Sylvan of the coast still tell the next part with their eyes on the ground. On the night the Fomorians came, the mist was on the water and the watch-fire was lit, and a boat that was not a fishing boat came in out of the mist toward it. Hy Brasil hides from those who search for it, the Sylvan say, and the Fomorians were not searching; they were lost, and they steered for a light. They came ashore under the crag because Gleann Glas had lit them a fire. When the hides slipped on the beach and the eye looked at the valley, the first thing it saw was the village that had brought it home.\n\nThe Sylvan have not lit a watch-fire on that coast since. The boats of the western villages come in by the sound of the surf and the smell of the land, and are lost more often, and the Sylvan accept it. A Sylvan child of the coast who asks why there is no fire is told the name of Gleann Glas, which the Sylvan still say at their own fires, and that is the whole answer.\n\nThe crag itself is black rock, harder than the grey stone of the rest of the coast, and it goes down a long way. The Sylvan say it was always strange: nothing rooted on it, and the fire on its top burned brighter than the same wood burned anywhere else, as if the rock liked heat. The Fomorians chose it for their tower for the plainest of reasons, the druids of Tir na Nog think. It was the highest ground on that coast, it looked down on the valley the eye had already burned, and it was the one place on Hy Brasil where someone had already built a light."
+    },
+    {
+      "title": "The Masons and the Hall-Stones",
+      "text": "The Fomorians built the tower out of the crag. They cut the stair down into the black rock first, the long stair that climbs from the gate to the chamber at the top, and built the tower's walls out of what came out of the stair, so that the tower is the crag turned inside out, the masons' saying went, and every stone in its walls came from under its own floor. The work was done by Fomorian masons and by Sylvan of the coast taken in the first forays, and the Sylvan say it took longer than any of their lives.\n\nOne of the captives, a young Sylvan stone-cutter named Mainchín, escaped down the stair in the last year of the work, before the window was set, and came home to the western villages, and his account is the only one the Sylvan have of how the tower was made. He said the masons did a thing at each hall that he did not understand. When a hall was finished they set one stone in its floor with a mark cut on it, the mark of whoever was to keep that hall, and they sang over it, and the keeper stood on it. The masons told him the stone bound the keeper to the hall and the hall to the keeper: that the tower would let nothing that kept a hall be wounded anywhere but at its post, as a sentry who leaves his post is no longer guarded by it.\n\nThe realm has found Mainchín's hall-stones true in every hall of Tur Suil. Every one of the household is bound to its own hall, the king in his chamber and the warlords in the west and far west, the torturer, the soul-trapper and the queen of the nest, and beyond its own floor no blade or word has ever drawn its blood. Those who have tried to lead one of them out of its hall found it walked in a peace no weapon entered and went home whole. The stone-cutters of the western villages still cut a mark on the doorstep of a new house for the family that will keep it, and say it is the same thing turned to a kindness.\n\nMainchín saw the window set, from below, as he ran: one window, at the top, looking west over the isle. He said the masons set it last because the eye had to be carried up the stair before the room was closed, and that they carried it up walking backwards, as its bearers always had, with the seven hides over it. He did not see the king. He said there was no king yet. There was only the eye, and a room built around it, and a great deal of meat carried up the stair every day."
+    },
+    {
+      "title": "The Lesser Household",
+      "text": "The great ones of Tur Suil have their halls, and the realm's songs are about them. But a tower is not only its great ones, and those who have climbed it say the tower is mostly something else: the people and things who live on the stair.\n\nThe Balorians are the king's soldiers, the tower's own, not the city's; they do not belong to any household of Fomor and they do not go on the forays. They stand at the gate and on the long stair in watches, and each one wears the name of a hero the Fomorians once killed, by Sargan's order, so that every soldier is a boast. The Hibernians who climb the stair try not to read the names aloud, and the realm's custom against it is older than most of the realm's customs on Hy Brasil.\n\nThe bugbears are the tower's scavengers. They came up the crag uninvited, the Sylvan say, in the years when the building made the most waste, and they stayed because the Balorians leave a great deal behind; they pick through the leavings of the watches and the halls, and they are tolerated as rats are tolerated in a granary, because nobody has the time to be rid of them.\n\nThe walls are set with spikes. They are the torturer's work, and so is the rack in his hall, and neither is a foe; they are the furniture of a house that has a questioner in it. The scouts who first drew the tower's halls drew the spikes as carefully as the doors, and the realm has never found a soldier who could break the rack, or one foolish enough to try twice.\n\nAnd there are the Sylvan. Spectral Sylvan drift in the lower halls, pale and quiet, the dead of the Burning That Failed whom Abomos did not catch, the Sylvan believe, still walking the stair they died on. Behind the walls of the soul-trapper's cells the others, the ones he did catch, cry in voices too faint to make out. The druids of Lough Gur who have climbed the tower say the lower halls are the saddest place they have ever stood, sadder than Marfach, because in Marfach the dead were sung back by their own people, and in Tur Suil they were simply kept.\n\nFar below the lowest of the halls there is a clicking, the brood of Queen Qunilaria at work in the nest, and the Balorians on the lowest watch, the Sylvan say, are the only Fomorians in the tower who ever look afraid."
+    },
+    {
+      "title": "The Watchers of the Coast",
+      "text": "The Sylvan of the western coast have watched the tower from the day its walls rose above the crag, and they have never stopped. Their watch is not a fire now but a pair of eyes, on the headlands north and south of the Vale, and it is kept by the coast's wardens in turns, in all weathers, the way the old watch-fire was kept. What they watch for is the Vale.\n\nThe Vale of Balor is grey under the grass that has crept in at its edges, and on most nights it is dark. But when the king in the tower has returned after a death, the Vale glows. Not brightly: a dull red under the ash, as embers glow under a turf fire that has been banked for the night, and the watchers say it rises out of the ground in the middle of the Vale where the eye looked longest. When they see it they send word to Domnann, because the forays out of Fomor follow the glow by a few weeks, as if the city under the shore could see it too; and in the years since the realm came to Hy Brasil they send word to Tir na Nog as well, because the realm will want to climb.\n\nTaise, the warden of the western coast who first saw a burrowing thing come up wrapped in Galladoria's roots, kept that watch for most of her life, and the watchers' customs are hers: never look at the glow for long, because it looks back; never cross the Vale alone, and never by its middle; leave a stone on the cairn at the Vale's edge on the way past, for Gleann Glas. The cairn is very large now.\n\nMuirgen of Tir na Nog came to the coast with the first of the realm's swords, when the isle was found again and the Sylvan came down to the shore to ask Hibernia for help. She said the first thing the Sylvan did was not to show the realm's captains Fomor or the woods or the Root. It was to bring them by night to the headland above the Vale and show them the glow, and say the name of the village, and wait. She wrote that the realm's captains understood it better than any speech. When the Sylvan came for swords, the tower was the first thing they named."
+    },
+    {
+      "title": "The Climbing",
+      "text": "The realm has been climbing Tur Suil from its first winter on the isle, and the bards of Tir na Nog keep the climbs in order, as the Sylvan keep the names of the dead.\n\nEochaidh of Ardee led the first three bands up the stair in that first winter and reached the chamber at the top, and found out what happens when the king is wounded; he was chosen at the last, when there was no one left to run to him. Fiachna of Howth, a bard who had studied every account of Eochaidh's bands, led the first company to bring the king down the next spring, carrying a smooth stone in his pack for Lugh's sake, and left it on the sill of the one window on his way down. Every Hibernian company that has climbed since has carried a smooth stone.\n\nThe household came down one hall at a time over the seasons that followed, and each has its name in the bards' order. Neasa of Ardee, a warden, first ended the queen of the nest. Fearghal of Connacht woke both warlords at once by mistake and brought four of his company home, and the realm has not repeated his mistake since. Seanán of Tir na Nog brought down the conqueror and carried a Sylvan clan's banner out of his hall to hang in Domnann. Bréanainn of Howth ended Kierac and met the torturer below with nothing left, and brought four of twelve out. Ciarán of Bri Leith, a druid, ended the soul-trapper and heard the spirits of the Burning answer in Domnann.\n\nThe customs of the climb grew out of those names. A company carries a smooth stone. It does not read the names on the stair aloud. It takes the halls in the order the bards keep, the far ones first, so that nothing of the household is behind it on the stair when it reaches the top. And when it comes down, it stops at the cairn at the Vale's edge and leaves a stone there for Gleann Glas, beside the Sylvan's.\n\nNone of it is ever finished. The household returns, the king returns, and the Vale glows red again, and the bards add another name to the order. The Sylvan watchers on the headlands say they have stopped thinking of the climbing as a war. They think of it as a watch, like their own: kept in turns, in all weathers, by people who know it will never be relieved, and keep it anyway."
+    },
+    {
+      "title": "The Tower and the City",
+      "text": "The tower on the crag and the city under the shore are both Fomorian, and the realm tends to speak of them as one enemy. The Sylvan, who have watched both longest, say that is a mistake, and that the two have less to do with each other than the realm thinks.\n\nThe city has no king; it has its great ones and their households and their quarrels. The tower has a king and no households at all: its soldiers are the king's, its great ones are the king's servants, and nobody in it belongs to anyone but him. The city's war-leader goes down to ask the beast in the cistern for its blessing before a foray; he does not go to the tower, and the tower does not send for him. The Balorians on the stair have never gone on a foray, and the households of Fomor have never climbed the stair. The eldest of the city, by her hearth under the shore, is said to speak of the king in the tower as she speaks of the weather.\n\nAnd yet the Vale glows red, and a few weeks later the bellers of Fomor are calling through the halls. The city watches the tower as closely as the Sylvan do, and the druids of Tir na Nog believe the city's whole life is a waiting on it: that the Fomorians of the shore dug their city as a waiting-room, and that what they are waiting for is in the chamber at the top of the crag, behind the one window. The eye in the roof of the king's chamber opens when he is wounded and chooses one at a time. The city's story is that one day the great eye in his face will open fully, and on that day the city will climb its own stair, and the tower will open its gate, and the two will be one people again.\n\nThere are two ways of reading that, the druids say, and the realm has to keep both in mind. Either the tower is the city's hope, and every time the realm brings the king down it is putting off the day the city has waited for since Mag Tuired; or the tower is the city's master, and the city has been waiting so long only because the eye has not yet decided what it wants. Muirgen of Tir na Nog believed the second. She said the eye was never Balor's, and that it is not the city's either. The Sylvan say she was right, and that the city does not know it."
+    },
+    {
+      "title": "Towers Do Not Hold Everything",
+      "text": "Every child of Hibernia knows the first tower. In the old tale Balor was told by a druid that he would die by the hand of his grandson, and he had one child, a daughter named Eithne, and he shut her in a tower on Tory so that no man would ever come to her and no grandson would ever be born. A man came to her anyway, with a druidess's help and in a disguise, and the grandson was born, and Balor tried to drown him, and failed. The grandson was Lugh, and at Mag Tuired the stone from his sling went through the eye.\n\nMuirgen ended her book with that tale, and the realm has adopted her ending as its own: towers do not hold everything. The Fomorians built a second tower, on a crag on an isle that hides, and put the eye in it, and filled it with soldiers and servants and a queen to dig beneath it, and bound every one of them to its hall with a stone. The bards of Tir na Nog say every one of those things is a Fomorian trying once more to make a tower hold.\n\nWhat the tower is for depends on who is asked. The Fomorians of the city say it is a cradle, and that something is growing in it that will one day come down the stair. The Sylvan of the coast say it is a lamp, the one light on the western shore since their own watch-fire went out, and that it is looking for something to burn. The druids of Tir na Nog say it is a question that has not been answered yet: what an eye that was put out once wants, now that it has a king's body and a window and a queen digging toward the roots of the isle. The bards say it is the end of a story that Lugh began, and that every company that climbs the stair and brings the king down is finishing it again.\n\nMuirgen's note in the margin of her book, in another hand, says the eye was never his; he was always the eye's. The realm keeps climbing, every generation, to make sure the eye does not finish its own story first. And when the Vale is dark and the household is down and the smooth stones lie on the sill of the one window, the Sylvan of the coast go up to the headland above the Vale and look at the black crag in the starlight, and some of them, the old ones, say that it was a good place for a fire."
+    }
+  ]
+}

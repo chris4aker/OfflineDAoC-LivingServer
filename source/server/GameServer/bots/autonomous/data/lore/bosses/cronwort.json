@@ -1,0 +1,124 @@
+{
+  "id": "cronwort",
+  "name": "Cronwort",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/cronwort",
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Irish bréan means 'putrid, stinking'; 'cron' is unglossed (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Cronwort: level 68, 30,000 health, resists 20% melee and 30% other, reach 350, tether 2,600. Six Breanworts (level 61-62, 4,000 health) are created with it around its spot; when Cronwort is engaged every Breanwort within 5,000 joins; on a quarter of its hits it casts Energy Shock (400 energy, range 500) at its target; all Breanworts within 8,000 are removed when it dies, and they return only when Cronwort itself returns.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/Cronwort.cs (integration/1.2)"
+    },
+    {
+      "text": "Cronwort stands at about 335,300/312,000 in Cothrom Gorge; the gap list's Breanwort (level 65-71 in the world data) is its add.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Irish cothrom: 'balance, equality, fair play' (to verify).",
+      "provenance": "original",
+      "source": "to verify"
+    },
+    {
+      "text": "Writhing Death (Dolph): 'The Outland residents are attacked by a writhing, swarming mass.' Speak to Fedail (or Hedierna) in the outlander town of Altan Garran in Cothrom Gorge; kill Cronwort, Fuilwort and Tachtwort; return their remains to Fedail; kill Marfoirwort, 'the source of the worts'; bring the root to Treal.",
+      "provenance": "game",
+      "source": "DataQuest 'Writhing Death' (world data)"
+    }
+  ],
+  "story": "Cothrom means balance, or fairness, in the old tongue of Hibernia, and the Sylvan who named the gorge meant it bitterly: it is where the earth split in the Long Pushing, when the forests leaned on the Root so hard that the isle cracked, and the split was the price. Things fell into it that should not have, and some of them grew. The rot of the gorge grows in flower-shapes, fat and bright and stinking, and Cronwort is the biggest of them, a great weed with a stem like a tree and a smell like a battlefield in high summer.\n\nIt never grows alone. Around its patch on the gorge's eastern floor stand the breanworts, the stinking weeds, a ring of them as tall as a man, rooted when Cronwort roots and not before, and the Sylvan who have watched the patch say they are not separate plants at all but runners of the one. Touch Cronwort and every breanwort in the patch turns toward you at once, and they come with it, the whole stand swaying in after you as nettles lean into a hand. Lay into a breanwort and Cronwort answers through its stem with a jolt that the gorge's Sylvan say feels like being struck by a summer storm while standing in a bog.\n\nThe Sylvan of the gorge have a saying for a quarrel with many heads and one cause: weed the mother, not the children. They mean Cronwort. Whenever it has been cut down, the breanworts in its patch have withered on their feet within the hour and fallen into a black slime that the gorge rain carries off, and no new breanwort has come up in the patch until Cronwort itself grew back. The Sylvan have torn its seedlings out of every cleft in the gorge for as long as there have been Sylvan. They have never found where it sends its root. Some of the gorge folk think there is only one plant in the whole of Cothrom, and that Cronwort, the breanworts and the killer-weed Marfoirwort further up the gorge are the same thing under three names; the Domnann wardens think that is gorge talk, and burn the seedlings anyway.\n\nFor Domnann it matters because the gorge is the only road from the Sylvan forest to the southern coast, and every summer Cronwort's patch is a little nearer the road.",
+  "legend": "Cronwort comes with all six Breanworts (61-62, 4,000 health each): they are already standing round it and they all join as soon as it is engaged. They die the moment Cronwort dies, and they do not come back on a reset until Cronwort itself respawns. So the usual plan is tank the Breanworts, burn Cronwort. If you wipe, every Breanwort you killed stays dead for the next try. On a quarter of its hits Cronwort adds Energy Shock, 400 energy, on its target: heal the tank. Resists 20% melee, 30% magic. Tether 2,600. Bring AoE if you want to clear the patch first; it is a lot of health.",
+  "yells": {
+    "aggro": [
+      "Rooted. All of us, rooted.",
+      "Smell it? That is the gorge.",
+      "My runners rise."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "The patch turns as one!"
+      }
+    ],
+    "death": [
+      "The patch... withers...",
+      "Root... deeper... again..."
+    ],
+    "slay": [
+      "Compost.",
+      "The gorge feeds.",
+      "Another in the slime."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The gorge smells of rot and flowers.",
+      "Six tall weeds lean toward you."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Cronwort's breanworts crowd in!"
+      },
+      {
+        "trigger": "death",
+        "text": "The breanworts wither where they stand."
+      }
+    ],
+    "realmFirstKill": "Cronwort is uprooted. The gorge smells sweeter."
+  },
+  "botLines": {
+    "briefing": [
+      "six breanworts come with cronwort. [they all die when it dies|weed the mother]",
+      "burn cronwort, tank the breanworts. [dont waste time on weeds|they wither anyway]",
+      "cronwort energy shocks its target for 400 sometimes. [heal the tank|watch the tank]",
+      "breanworts you kill stay dead if we wipe. [until cronwort respawns|progress]"
+    ],
+    "aftermathWin": [
+      "cronwort down, every breanwort withered. [weed the mother|told you]",
+      "the patch is black slime now. [gross|nice]",
+      "never killed a single breanwort. [didnt need to|clean]",
+      "gorge road is safe for a summer"
+    ],
+    "aftermathLoss": [
+      "tried to kill all six breanworts first and [ran out of mana|took forever]",
+      "energy shocks on the tank [two in a row|dead tank]",
+      "dragged cronwort too far and [it reset|went home full]",
+      "breanworts on the casters. [need more tanks|ugh]"
+    ],
+    "rumour": [
+      "[heard|someone said] cronwort, the breanworts and marfoirwort are [one plant|the same thing]",
+      "the sylvan say weed the mother, not the children. [cronwort|good advice]",
+      "[word is|heard] cronwort's patch is closer to the gorge road every summer",
+      "nobody has ever found cronwort's root. [the sylvan looked|its down there somewhere]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Cronwort",
+    "text": "The great weed of [Cothrom Gorge], with its breanworts round it like runners of one plant. Cut it and the patch withers: weed the mother, not the children, the gorge folk say."
+  },
+  "bookPage": "From Coll of the Domnann guides: Cothrom means fairness, and the gorge was the price the isle paid for the Long Pushing. Cronwort grows on its eastern floor with the breanworts standing round it, and they are not separate plants, whatever they look like. Touch it and the whole patch leans in. The gorge folk say weed the mother, not the children, and I have seen why: when Cronwort was cut the breanworts withered on their feet within the hour, and none came back until it did. The wardens burn its seedlings every spring. The patch is nearer the road every summer anyway.",
+  "chronicle": {
+    "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Cronwort in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Cronwort after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "marfoirwort",
+      "relation": "the older growth of the same gorge"
+    },
+    {
+      "id": "gneiss",
+      "relation": "neighbour in Cothrom Gorge"
+    }
+  ]
+}

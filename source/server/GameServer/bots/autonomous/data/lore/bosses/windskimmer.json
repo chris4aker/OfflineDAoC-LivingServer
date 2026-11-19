@@ -1,0 +1,107 @@
+{
+  "id": "windskimmer",
+  "name": "Windskimmer",
+  "npcNames": [
+    "Windskimmer"
+  ],
+  "locationId": "allta-fearann",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Windskimmer: level 58, model 816 (the skimmer and manta body: mature skimmers 43-48, soaring and flying mantas, flying devil rays 60-64), at about 365,700/189,700 in Allta Fearann; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the four great ones of the wild land and the Necht custom of naming them; Windskimmer as the eldest skimmer, who never lands.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Allta Fearann, the wild land, is the high country north of Vigilant Rock where the forest gives out into scrub and stone and the wind never stops. The mantids hold the ground, and the sky belongs to the things that nest on the crags: skimmers and mantas that ride the updraughts, the fearann wyverns of the northern cliffs, the long-legged waterstrider birds of the high pools. The Sylvan of Necht keep a custom for travellers going north: name the four great ones of the wild land before you go, so that they know you know them. Windskimmer, Goldenleaf, Razorbeak, and the bird the Sylvan call by a name they say came over the sea with the mist.\n\nWindskimmer is the first of them, and the one most travellers see first, because he is always in the air. He is the eldest of the skimmers, the flat, wide, sky-swimming things that ride the wild land's winds the way rays ride the sea, and the Sylvan of Necht say he has not landed since before they were born. The young skimmers and the mantas follow him in long, slow loops over the scrub, and the devil rays of the northern cliffs, which are bigger and meaner, give him the high air without a quarrel.\n\nThe mantids say he was the first of his kind to leave the sea. The Sylvan fishers of the north coast, who still net the skimmers' cousins in the shallows, tell it the other way: that the sky was the skimmers' first, and they learned to swim only after the wind went quiet one summer long ago and they fell. Either way, Windskimmer has the sea in him. His shadow on the scrub ripples like water, and the mantids' children chase it.\n\nHe is the gentlest of the four, the Sylvan say, until something comes up the cliffs toward the high pools where the skimmers feed. Then he comes down, low and fast, flat as a blade, and the Necht traders who have seen it say it is like being struck by a sail. Curengkur hunts the mantids on the ground below him. Windskimmer has never come down for the hunter, and the mantids, who keep long memories, have not forgiven him for it.",
+  "legend": "Windskimmer is a level 58 skimmer flying over Allta Fearann (about 366k/190k). Plain mob, no script, 80-second respawn: a strong 50s group handles him. The flying devil rays (60-64) nearby are tougher than he is, so do not pull them by accident while you chase him; mature skimmers and mantas (43-50) are easy. Name the four great ones before you go north, the Necht Sylvan say: Windskimmer, Goldenleaf, Razorbeak and Adar Llwch Gwin. He loops over the scrub, so wait for him to come round to your group rather than chasing him across the zone into other camps. Curengkur's nest is in the same zone; keep well clear of the shimmering hollow.",
+  "yells": {
+    "aggro": [
+      "(a shadow like rippling water falls over you)",
+      "(Windskimmer comes down, flat as a blade)",
+      "(the wind changes)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Windskimmer climbs, and dives again)"
+      }
+    ],
+    "death": [
+      "(the great skimmer falls, and the wind goes quiet)",
+      "(a sail of skin settles on the scrub)"
+    ],
+    "slay": [
+      "(Windskimmer rises back into the high air)",
+      "(the shadow ripples on)",
+      "(the mantas loop overhead)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A shadow on the scrub that ripples like water.",
+      "Long, slow loops over the wild land."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Windskimmer climbs high and dives!"
+      }
+    ],
+    "realmFirstKill": "Windskimmer has fallen out of the sky over Allta Fearann."
+  },
+  "botLines": {
+    "briefing": [
+      "windskimmer is 58, flying over allta fearann. [plain mob|no script]",
+      "dont pull the devil rays. [60-64|tougher than him]",
+      "strong 50s group fine",
+      "80 sec respawn. [move off after|dont rest there]"
+    ],
+    "aftermathWin": [
+      "windskimmer down. [out of the sky|got him]",
+      "no devil rays. [clean pull|nice]",
+      "one of the four great ones done",
+      "razorbeak next? [north cliffs|sure]"
+    ],
+    "aftermathLoss": [
+      "pulled a devil ray. [64|ouch]",
+      "chased him into the mantas. [too many|oops]",
+      "group too low for 58",
+      "he hit the healer like a sail lol"
+    ],
+    "rumour": [
+      "[heard|someone said] windskimmer hasnt landed since before the necht sylvan were born",
+      "the mantids never forgave windskimmer for not fighting curengkur",
+      "[word is|heard] the sylvan of necht name the four great ones before going north",
+      "the north coast fishers say skimmers belonged to the sky before the sea"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Windskimmer",
+    "text": "The eldest skimmer of [Allta Fearann], first of the wild land's four great ones, who never lands. His shadow ripples on the scrub like water. He comes down only for what climbs to the high pools."
+  },
+  "bookPage": "From Coll of the Domnann guides: before you go north into the wild land, the Necht Sylvan say, name the four great ones so that they know you know them. Windskimmer first, because you will see him first: the eldest skimmer, always in the air, with the young skimmers and mantas looping after him. His shadow on the scrub ripples like water. He is gentle until something climbs toward the high pools; then he comes down flat as a blade. He has never come down for the hunter of the mantids, and the mantids have not forgotten.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Windskimmer in Allta Fearann in {minutes} minutes.",
+    "loss": "Windskimmer turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "old-troubles"
+  ],
+  "related": [
+    {
+      "id": "razorbeak",
+      "relation": "another of the four great ones of the wild land"
+    },
+    {
+      "id": "curengkur",
+      "relation": "the hunter below"
+    }
+  ]
+}

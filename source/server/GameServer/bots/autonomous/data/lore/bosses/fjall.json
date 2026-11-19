@@ -1,0 +1,123 @@
+{
+  "id": "fjall",
+  "name": "Fjall",
+  "npcNames": [
+    "Fjall"
+  ],
+  "locationId": "yggdra-forest",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "werewolves",
+    "lokis-mischief"
+  ],
+  "related": [
+    {
+      "id": "geyra",
+      "relation": "the messenger who runs alone beside his pack"
+    },
+    {
+      "id": "thorkatla",
+      "relation": "another of those the bound god means to use, in Uppland"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Fjall is a level-56 fenrir (the fenrir model) in the far west of Yggdra Forest (663290, 725854), with fenrir shredders (46), prophets (44-45) and a tracker (41) within a few paces.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60160899)"
+    },
+    {
+      "text": "In the seer epic 'The Desire of a God', Jana in Vasudheim is asked about Fjall and the fenrir, and players search out Fjall and his fellows in Yggdra and give Inaksha the dancing flame.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Fjall's template gives him no faction; the fenrir around him are aggressive and stand close enough to join.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Fjall is Old Norse/Icelandic for 'mountain, fell'.",
+      "provenance": "original",
+      "source": "Old Norse glossary, to verify"
+    }
+  ],
+  "story": "The fenrir of Yggdra are wolf-folk who walk on two legs and take their name from the great wolf, and Fjall leads them. His name means the fell, the bare mountain, and Jana of Vasudheim, who has studied the pack longer than anyone in Midgard, says it was given to him because he does not move: he stands in the far west of the forest among his shredders and prophets the way a mountain stands among trees, and the pack goes round him.\n\nThe fenrir prophets teach that they are the great wolf's children in spirit, and that when the chain breaks they will run beside him to the end of the world. Fjall believes it. What Jana told the seers of Midgard, and what sent them to him on Inaksha's word, is that Fjall has stopped waiting. A season after the bowl last spilled over the bound god's face and the earth shook, a flame came to Fjall in the forest, dancing on nothing, burning without wood among the trees that do not burn, and it has stayed with him since. Loki gives such flames to those he means to use, Jana says. The god who seeks trouble wants the wolf free as much as the fenrir do, and an army of wolf-folk who will run when the chain breaks is a thing he would value; a pack that could be persuaded to help break it, more.\n\nSo the seers go into the far west to take the flame. The prophets around Fjall see them coming and come at them, and the shredders, and Fjall stands where he stands until the struggle reaches him, and then he is not a mountain any more. He has no following that he calls, Jana says; the pack is around him because it is always around him, and it fights because a pack does. Geyra, who runs alone near the pack and carries its messages, is the one fenrir he does not keep close, and the viking captains think that is because she carries messages for others too.\n\nJana says the worst of it is that Fjall knows what the flame is. She asked him once, through a prophet, why he kept a thing the bound god had given him. He said: because it is warm.",
+  "legend": "Fjall is the seer epic fenrir in the far west of Yggdra Forest, level 56. Jana in Vasudheim tells you about him and the fenrir; you find Fjall 'and his fellows' and bring Inaksha the dancing flame. His fellows are right there: two fenrir shredders (46), four prophets (44-45) and a tracker within a few paces, all aggressive. Fjall himself has no faction, so he doesn't call anyone, but the pack is standing on top of him. Clear the prophets and shredders first, or mez them, then Fjall: no special abilities, not CC-immune. A group at the epic level does it. Geyra stands alone about 3,300 away; she's a different epic.",
+  "yells": {
+    "aggro": [
+      "The mountain does not move. You moved.",
+      "Pack! Strangers in the ash wood!",
+      "You want the flame. Everyone wants the flame."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The chain will break. With me or without me."
+      }
+    ],
+    "death": [
+      "Keep it... warm...",
+      "Run with him... for me..."
+    ],
+    "slay": [
+      "The fell stands.",
+      "Down, like snow off a mountain.",
+      "The pack eats."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The fenrir's wood. A great wolf-man stands unmoving.",
+      "A flame dances on nothing among the trees that do not burn."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The dancing flame flares beside Fjall."
+      }
+    ],
+    "realmFirstKill": "Fjall falls. The dancing flame goes to Inaksha."
+  },
+  "botLines": {
+    "briefing": [
+      "fjall is 56 with the fenrir right on top of him",
+      "kill or mez the prophets and shredders first",
+      "fjall has no faction, the pack is just there",
+      "geyra is 3300 away, separate"
+    ],
+    "aftermathWin": [
+      "got the dancing flame",
+      "pack first then fjall, fine",
+      "easy for the epic group",
+      "inaksha will be pleased"
+    ],
+    "aftermathLoss": [
+      "prophets and shredders at once",
+      "pulled fjall with the whole pack",
+      "too few",
+      "geyra wandered over"
+    ],
+    "rumour": [
+      "fjall keeps a flame loki gave him",
+      "fjall means mountain, he never moves",
+      "the fenrir will run with fenrir when the chain breaks",
+      "fjall keeps the flame because its warm"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fjall",
+    "text": "Leader of the [fenrir], named for the bare fell because he does not move. A flame the bound god gave him dances beside him; the seers take it for Inaksha. [Jana] has studied him. See [Geyra]."
+  },
+  "bookPage": "From The Wind Through the Ash, by Arnhild of Grallarhorn: my father took me once to the edge of the fenrir's wood, as far as the huscarls ever go, and from behind a tree I saw Fjall. He was standing in the snow with his pack moving round him, and beside him in the air was a little flame, bright as a candle, with nothing under it. The snow around his feet was melted in a ring. My father said: that is what the bound god pays with. I asked what Fjall had sold. My father said: nothing yet. That is why the god keeps him warm.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took the dancing flame from Fjall in Yggdra in {minutes} minutes.",
+    "loss": "Fjall and the fenrir kept the dancing flame from {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

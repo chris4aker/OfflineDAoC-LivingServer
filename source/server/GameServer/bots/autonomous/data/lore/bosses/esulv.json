@@ -1,0 +1,66 @@
+{
+  "id": "esulv",
+  "name": "Esulv",
+  "npcNames": [
+    "Esulv"
+  ],
+  "locationId": "malmohus",
+  "realm": "Midgard",
+  "era": "mid-era-binding",
+  "factions": [
+    "fenris-brood"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Esulv is a level-47 named drakulv (Pack Drakulv faction) alone in the west of Malmohus (693,154/991,448); aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Esulv as the ash-wolf of the western camps is Living Server lore; the name's meaning is to verify.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Esulv is the ash-wolf. The beam-cutters of Svarhamr read the name as ash and wolf, after the grey of the western camps where the drakulv burn what they do not eat, and the drakulv who holds it keeps those fires. He stands alone on the west side of the ruins, away from the patrols, and the smoke of the camps goes past him to the north, toward Skona, where the werewolves can smell it.\n\nBrisa of Svarhamr says the western fires were lit after the werewolves' king refused the dragon, so that the varulv would know every night that the drakulv were still there. Esulv keeps them lit. He does not hunt with the others. He feeds the fires, and he fights all who come to put them out, which is to say all who come. The svartalfar cut his name on the beam with a mark beside it that means smoke.",
+  "legend": "Esulv is a level 47 named drakulv alone in west Malmohus, near the western camps. Pack Drakulv faction, but nothing of his pack stands right next to him, so he's usually a clean pull. No spells. Good warm-up named for a group heading deeper into Malmohus. The western camps behind him are full of drakulv, so don't chase him into the smoke. Respawn is the usual named timer.",
+  "yells": {
+    "aggro": [
+      "(Smoke and teeth.)",
+      "(Esulv steps out of the haze.)"
+    ],
+    "death": [
+      "(The smoke thins.)"
+    ],
+    "slay": [
+      "(He goes back to the fires.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Smoke from the western camps. A drakulv keeps it."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "esulv is the 47 named drakulv alone in west malmohus",
+      "clean pull, no camp next to him"
+    ],
+    "aftermathWin": [
+      "esulv down",
+      "the fires will be lit again by tonight"
+    ],
+    "rumour": [
+      "esulv keeps the western fires lit so the werewolves smell the drakulv every night",
+      "the svartalfar cut a mark that means smoke beside esulvs name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Esulv",
+    "text": "The ash-wolf, the drakulv who keeps the western camps' fires lit so that Skona's werewolves smell the drakulv every night. See [the werewolves]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} put out Esulv's fires in Malmohus in {minutes} minutes."
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "id": "glimmer-lords",
+  "name": "The Glimmer Lords of Sheeroe",
+  "npcNames": [
+    "Glimmer Saumer",
+    "Glimmer Venlar",
+    "Glimmer Kelegur",
+    "Glimmer Zeit",
+    "Glimmer Arios",
+    "Glimmer Zanllvi",
+    "Glimmer Orist",
+    "Glimmer Xaquira",
+    "Glimmer Meldun",
+    "Glimmer Mianed"
+  ],
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The named Glimmer of Sheeroe Hills (faction Glimmer Spirits): Saumer 68 (385,300/707,800, nearest the lair), Venlar 57 (east, 413,000/670,100), Kelegur 55 (west, 370,700/669,500), Zeit 54, Arios 53, Zanllvi 51 (380,700/693,300), Orist 49 (359,100/672,400), Xaquira 49, Meldun 47-48 (two spawns at 369,300-369,900/672,400-673,200) and Mianed 47 (362,400/652,800, the furthest north); all plain spawns with an 80-second respawn, among glimmer geists, knights and deathwatchers (up to 69).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Cuuldurach ch.3 (Living Server) names Saumer the chamberlain, Venlar and Kelegur the eastern and western slopes, Zeit and Arios the lower camps and Zanllvi the edge of the prince's road; the Sheeroe place chapters name Orist the door-ward, Xaquira the dust, Meldun 'two lights, one name' and Mianed the outrider.",
+      "provenance": "original",
+      "source": "bosses/cuuldurach-the-glimmer-king.json; locations/sheeroe-hills.json"
+    },
+    {
+      "text": "This one file covers the audit's 'Glimmer group' cluster (ten names, tier A and B) with a paragraph, bot lines and an atmosphere line per lord, as GAPS-hibernia.md allows for clusters.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Glimmer King keeps a court, and a court has lords. The shepherds of the Cullen country learned their names one at a time, from a distance, over the summers since the sky tore over the ridge, and Eoghan's grandmother said that knowing them was the only protection a shepherd on Sheeroe had: you could tell from which light was on the slope what kind of evening it would be.\n\nSaumer is the eldest, the chamberlain, stronger than many a dragon's kin, on the high ground nearest the lair; nothing reaches the king without passing him, and the court's cold is coldest where he stands.\n\nVenlar keeps the eastern slopes and Kelegur the western, and the shepherds say they never look at each other, as two stewards of one house do not.\n\nZeit and Arios watch the lower camps, where the court's lesser lights gather at dusk; Zeit is the quick one, and Arios the one who lingers.\n\nZanllvi, the least of the high lords, keeps the edge of the prince's road, and bows when Maldahar rides by.\n\nThe lesser court is the one the bog can see. Orist the door-ward has stood by the last sheepfold on the western slope since the first summer, facing down the old track from the bog. Xaquira keeps the dust: she drifts across the grey grass at evening and the glimmer-dust rises behind her, and the dyers of Connacht pay most for hers. Meldun is two lights that answer to one name and keep one camp, and nobody, the glimmers included, knows which is which. Mianed is the outrider, furthest north of all, alone at the edge of the Azure's country, watching the blue folk for the king.\n\nThe Order of the Azure burns them when it can. The Cullen watch counts them, in its tally book, every evening from the watch-house at the foot of the pass. When a lord's light goes out on the slope, the watch strikes nothing and writes it down, because it will be back.",
+  "legend": "The named Glimmer are plain spawns with no scripts and 80-second respawns, spread over Sheeroe Hills among glimmer geists, knights and deathwatchers (50s-60s): Glimmer Saumer (68) on the high ground nearest Cuuldurach's lair is the dangerous one and wants a strong group; Venlar (57, east) and Kelegur (55, west) are solid 50s fights; Zeit (54) and Arios (53) in the lower camps; Zanllvi (51) by Maldahar's road; the lesser court, Orist (49, by the last fold on the west), Xaquira (49), Meldun (two spawns, 47-48, together) and Mianed (47, far north by the Azure), are good for high 40s. Clear the geists around each before pulling. Never count glimmers aloud, the shepherds say.",
+  "yells": {
+    "aggro": [
+      "The court receives you. Coldly.",
+      "The king's light is not for you.",
+      "(a cold light turns on the slope)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Saumer will hear of this. The king will hear."
+      }
+    ],
+    "death": [
+      "(the light goes out on the slope, for now)",
+      "The court... remembers..."
+    ],
+    "slay": [
+      "Grey, like the grass.",
+      "Another for the king's tally.",
+      "(the cold light drifts on)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Cold lights on the grey slopes. Do not count them.",
+      "The court of the Glimmer King keeps its ground."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "A lord of the Glimmer court flares and dims!"
+      }
+    ],
+    "realmFirstKill": "A lord of the Glimmer court has gone out on Sheeroe."
+  },
+  "botLines": {
+    "briefing": [
+      "saumer is 68 near the lair. [strong group|not a duo]",
+      "venlar east 57, kelegur west 55. [solid 50s fights|plain mobs]",
+      "orist, xaquira, meldun and mianed are high 40s. [lesser court|good xp]",
+      "clear the geists around each named first. [80 sec respawns|move fast]"
+    ],
+    "aftermathWin": [
+      "saumer down. [the chamberlain|nothing reaches the king now lol]",
+      "meldun down. [both of them|which one was which]",
+      "xaquira's dust. [the dyers will pay|nice]",
+      "a lord's light went out. [the watch will write it down|grats]"
+    ],
+    "aftermathLoss": [
+      "pulled saumer with the geists. [68 plus|wipe]",
+      "counted the glimmers out loud. [shepherds warned us|lol]",
+      "mianed was closer to the azure than we thought. [blue folk joined|oops]",
+      "geists respawned on us. [80 sec|move]"
+    ],
+    "rumour": [
+      "[heard|someone said] saumer is stronger than some dragons' kin",
+      "venlar and kelegur never look at each other, the shepherds say",
+      "[word is|heard] meldun is two lights with one name and they dont know which is which",
+      "the connacht dyers pay most for xaquira's glimmer dust"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Glimmer lords",
+    "text": "The named lords of the Glimmer court on [Sheeroe]: Saumer the chamberlain, Venlar and Kelegur of the slopes, Zeit and Arios of the lower camps, Zanllvi of the prince's road, and the lesser court: Orist the door-ward, Xaquira of the dust, Meldun who is two, Mianed the outrider."
+  },
+  "bookPage": "From Eoghan's account of Sheeroe: my grandmother said knowing their names was the only protection a shepherd had. Saumer on the high ground, nearest the king, the chamberlain; when his light is out on the slope the evening is warmer. Venlar east and Kelegur west, who never look at each other. Zeit and Arios in the lower camps. Zanllvi by the prince's road, bowing. And the lesser court we see from the bog: Orist at the last fold, Xaquira raising the dust, Meldun who is two, Mianed alone in the north watching the Azure. Never count them aloud.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down The Glimmer Lords of Sheeroe in Sheeroe Hills in {minutes} minutes.",
+    "loss": "The Glimmer Lords of Sheeroe turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "glimmer-court"
+  ],
+  "related": [
+    {
+      "id": "cuuldurach-the-glimmer-king",
+      "relation": "their king"
+    },
+    {
+      "id": "maldahar-the-glimmer-prince",
+      "relation": "the prince whose road Zanllvi keeps"
+    },
+    {
+      "id": "azure-dsaldor",
+      "relation": "the Azure crusade against them"
+    }
+  ],
+  "aliases": [
+    "Glimmer group",
+    "Saumer",
+    "Venlar",
+    "Kelegur",
+    "Zeit",
+    "Arios",
+    "Zanllvi",
+    "Orist",
+    "Xaquira",
+    "Meldun",
+    "Mianed"
+  ]
+}

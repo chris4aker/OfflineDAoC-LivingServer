@@ -1,0 +1,81 @@
+{
+  "id": "muroi",
+  "name": "Muroi",
+  "npcNames": [
+    "Muroi"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Muroi: level 40, a woman's body of the sidhe kind (model 347, shared with Queen Cliodna and the siabra mireguards), at about 365,200/725,800 in the north-west of the bog; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Muroi as a lady of Cliodna's court who left it.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Muroi was a lady of Queen Cliodna's court among the reeds, the bog folk say, in the days when the queen's birds sang the sick to sleep and healed them. When the song changed and the birds began to sing the healthy to sleep and not wake them, Muroi left the court. She went north-west, as far from the queen's reeds as the bog would let her, and stands there now among the siabra mireguards, who do not trouble her and whom she does not trouble.\n\nThe Alainn Bin folk say she is the only one of the court who remembers the old song, the healing one, and that she hums it under her breath when she thinks no one is near. They say if anyone could sing the queen back to healing, it would be Muroi. They also say she would not, because she has heard what the queen sings now.",
+  "legend": "Muroi (40) stands in the north-west of the Bog of Cullen (about 365k/726k) among siabra mireguards (38-41), which are social. Pull her clear. Group of 40ish. Plain spawn, 80-second respawn. Queen Cliodna (70) is far to the east in her reeds; no link between them in the game. She is a plain spawn with no script. Come in from the Cullen road side, where the mireguards are thinnest, and do not drag her east toward the queen's reeds.",
+  "yells": {
+    "aggro": [
+      "You come from the queen's reeds. I can smell the song.",
+      "Leave me my corner of the bog."
+    ],
+    "phases": [],
+    "death": [
+      "The old song... someone remember it..."
+    ],
+    "slay": [
+      "Sleep. The kind sleep."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A lady of the reeds, humming something old."
+    ],
+    "phases": [],
+    "realmFirstKill": "Muroi, who left Cliodna's court, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "muroi is 40 in the north west bog among mireguards",
+      "pull her clear of the mireguards"
+    ],
+    "aftermathWin": [
+      "muroi down. [the lady|grats]",
+      "no mireguards. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "mireguards joined. [rip|ouch]",
+      "too many siabra. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] muroi left queen cliodna's court when the song changed",
+      "muroi hums the old healing song when she thinks nobody hears"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Muroi",
+    "text": "A lady of Queen Cliodna's court who left it when the song changed from healing to harm, and stands in the north-west bog humming the old song under her breath."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Muroi in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Muroi turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "queen-cliodna",
+      "relation": "the queen she left"
+    }
+  ]
+}

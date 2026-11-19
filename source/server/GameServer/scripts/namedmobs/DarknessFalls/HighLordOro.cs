@@ -74,7 +74,7 @@ namespace DOL.GS
 
             return base.HasAbility(keyName);
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC npc in GetNPCsInRadius(5000))
             {
@@ -83,7 +83,7 @@ namespace DOL.GS
                     npc.Die(killer);
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
     }
 }
@@ -130,7 +130,7 @@ namespace DOL.AI.Brain
             }
             else
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(350))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 350))
                 {
                     player.Mana -= (int) (player.MaxMana * 0.05);
                     player.UpdateHealthManaEndu();
@@ -251,7 +251,7 @@ namespace DOL.AI.Brain
             }
             else
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(350))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 350))
                 {
                     player.Mana -= (int) (player.MaxMana * 0.05);
                     player.UpdateHealthManaEndu();

@@ -155,7 +155,7 @@ namespace DOL.GS.Commands
 
             static void AddArmorInfo(List<string> info, GameLiving target)
             {
-                eArmorSlot armorSlot = target is GamePlayer ? eArmorSlot.TORSO : eArmorSlot.NOTSET;
+                eArmorSlot armorSlot = target is GamePlayer or GameBot ? eArmorSlot.TORSO : eArmorSlot.NOTSET;
                 string armorSlotString = armorSlot is not eArmorSlot.NOTSET ? $" ({armorSlot.ToString().ToLower()})" : string.Empty;
 
                 info.Add("");

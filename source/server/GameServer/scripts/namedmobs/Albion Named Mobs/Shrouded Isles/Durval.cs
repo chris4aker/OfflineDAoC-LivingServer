@@ -101,11 +101,8 @@ namespace DOL.AI.Brain
 			}
 			if (HasAggro)
 			{
-				foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(3500))
-				{
-					if (npc != null && npc.IsAlive && npc.PackageID == "DurvalBaf")
-						AddAggroListTo(npc.Brain as StandardMobBrain);
-				}
+				// 1.2: the pack within 3,500 joins (the call passed 3,500 as a region id, so the link never fired).
+				EncounterPacks.LinkInRadius(this, "DurvalBaf", 3500);
 				if (Body.TargetObject != null)
 				{
 					if (!Body.IsCasting && !Body.IsMoving)

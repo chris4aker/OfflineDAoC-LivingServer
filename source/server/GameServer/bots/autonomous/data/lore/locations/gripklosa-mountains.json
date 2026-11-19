@@ -1,0 +1,255 @@
+{
+  "id": "gripklosa-mountains",
+  "name": "Gripklosa Mountains",
+  "realm": "Midgard",
+  "regions": [
+    151
+  ],
+  "zones": [
+    152
+  ],
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt",
+    "wild-beasts",
+    "troll-fathers"
+  ],
+  "summary": "Aegir's northern mountains: Bjarken, where Kula's crown hangs, the road down into Trollheim, Mammoth Valley, and the morvalt and mylings of the west.",
+  "facts": [
+    {
+      "text": "Gripklosa Mountains is zone 152 of region 151 (Aegir), north of Aegir's Landing; Bjarken (an Area) lies in its south-west (287715, 302919).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data); source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Trollheim's entrance is a zone point in the middle of Gripklosa (304016, 277289).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Area and ZonePoint tables (0.37b world data)"
+    },
+    {
+      "text": "Bjarken has Stor Gothi Tarnat (the Shrouded Isles teleporter), Jaklyr of the quest 'Ancestral Secrets' and Bothrar Hadd of 'Mammoth Hunt'.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "The west of the mountains is the morvalt's: over a hundred morvalt beskydda (Morvalt Samhalle), with streber, slaktman, framkalla, landflyke, vandarare and undead morvalt.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Mammoth Valley in the east holds the Mammoth Migration herd (woolly and venerable mammoths, herdguards, bulls, matriarchs, calves), the Old Matriarch, and a morvalt mammut jagare camp above it.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Other folk of Gripklosa: mylings (hostile and not), the bergklan of the Berklan Tribe (hunters, providers, concocters, pelterers), redcaps of the Blood Reavers in the north (lurkers, skulkers, herbalists, butchers to 61), cave lions and lionesses, griffons, megaloceros, frost dusters, frosty and chilly skelett, woolly serpents.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "The quest 'Mammoth Hunt' (Bothrar Hadd in Bjarken) sends players to Mammoth Valley for bull and matriarch tusks and pelts; Volkstad in Dellingstad sends them to wipe out the morvalt mammut jagare camp above the valley; a last whisker from a matriarch or bull is returned in Dellingstad, to Vorkald.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "In Scandinavian folklore a myling is the ghost of an abandoned child that asks travellers to carry it to a churchyard and grows heavier with every step.",
+      "provenance": "myth",
+      "source": "Scandinavian folklore, public domain collections"
+    },
+    {
+      "text": "Kula's crown at Bjarken, Bergljot Steinsdottir and the Sigvor book are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Gripklosa is the claw of Aegir, the skalds say, because from the sea the mountains look like a hand closing on the island's north. The Troll Fathers dug under them long before anyone else came; their city of Trollheim lies beneath the middle of the range, and its gate opens from a hillside the trolls of Bjarken still call the doorstep. When the Fathers' children went out of the city into the light, the ones who became trolls stayed close, on the mountains' southern skirts, and Bjarken grew where they stayed.\n\nBjarken is Midgard's town on Aegir's north now, and it has more pride than size. In its hall hangs the ice crown of Queen Kula of Tuscaran, taken by Bergljot Steinsdottir's hundred when they killed the queen and her king, and the crown has not melted and the town will not give it back. Ragnheid Grimsdottir brewed the first remedies for the Iarnwood's rot here from iron-tree bark. Stor Gothi Tarnat sends travellers across the isles from its square, Jaklyr keeps the secrets of the ancestors that the trolls ask about, and Bothrar Hadd buys mammoth tusk and pelt from anyone who will go up to the valley and bring them.\n\nThe mountains around the town are not Bjarken's. The west belongs to the morvalt, more of them than anywhere else on Aegir outside Trollheim: their protectors stand in their hundreds on the western slopes, their strivers and butchers between, their callers, and their own dead, and the outcasts they drive out, the landflyke, wandering the edges. The Valkyn of Bjarken say the western morvalt are the ones who never got into Trollheim, and hate the ones who did. The bergklan, the mountain-clan of Aegir's small clan-folk, cousins of Faraheim's tree-clan and the shore's mussel-clan, hunt and pelt and brew in the middle of the range and trust nobody. The redcaps of the north butcher anything that climbs to them.\n\nAnd the mylings walk. They are the ghosts of children, the folk of Bjarken say, left out on the mountains in some hungry winter before the town was a town, and they ask any traveller who passes to carry them down to the graves, and grow heavier with every step; the ones who are refused turn hostile. Nobody in Bjarken will say whose children they were. The trolls say they were not trolls'.\n\nIn the east lies Mammoth Valley, where the great herd of Aegir comes through on its long road round the island, the woolly bulls and the matriarchs and the calves, led by the oldest of them, whom Bjarken calls the Old Matriarch. Above the valley the morvalt mammoth-hunters keep their fires. Bjarken wants the tusks; Dellingstad in the crater wants the hunters gone; the matriarch wants to get her herd through. The griffons of the high ridges and the cave lions of the eastern rocks keep to themselves and are left to. Gripklosa matters because Trollheim's doorstep is here, and the crown, and because every road north on Aegir comes through the claw.",
+  "legend": "Gripklosa Mountains is the north of Aegir: Bjarken in the south-west is the Midgard town (Stor Gothi Tarnat ports you round the isles from here), and Trollheim's entrance is in the middle of the zone. Levels run high 20s to mid 40s mostly. The west is a sea of morvalt beskydda (34-41, social) plus strivers and butchers; the middle has mylings (29-34, and hostile ones to 43) and bergklan hunters (38-46); the north has redcaps up to 61, watch the butchers. Mammoth Valley is east: Bothrar Hadd's Mammoth Hunt sends you for tusks and pelts, then Dellingstad sends you at the morvalt mammut jagare camp above the valley. The Old Matriarch, a 57 mammoth with bulls and matriarchs around her, is in the north-east. Superstitions: if a myling asks you to carry it, say yes, and touch Kula's crown in Bjarken's hall before you go down into Trollheim.",
+  "atmosphere": {
+    "firstEntry": [
+      "The claw of Aegir closes on the island's north.",
+      "Mountains over a city of the Troll Fathers.",
+      "A child's voice on the wind asks to be carried.",
+      "Morvalt fires on the western slopes, many of them."
+    ],
+    "areas": [
+      {
+        "name": "Bjarken",
+        "x": 287715,
+        "y": 302919,
+        "z": 5000,
+        "radius": 2500,
+        "lines": [
+          "Bjarken. Kula's crown hangs in the hall, unmelted.",
+          "Midgard's town on Aegir's north, proud of its crown."
+        ]
+      },
+      {
+        "name": "the doorstep",
+        "x": 304016,
+        "y": 277289,
+        "z": 6990,
+        "radius": 1500,
+        "lines": [
+          "The doorstep. Trollheim's gate opens below.",
+          "The Troll Fathers' city lies under your feet."
+        ]
+      },
+      {
+        "name": "the western slopes",
+        "x": 300940,
+        "y": 266586,
+        "z": 6000,
+        "radius": 6000,
+        "lines": [
+          "Morvalt protectors in their hundreds.",
+          "The ones who never got into Trollheim, and hate it."
+        ]
+      },
+      {
+        "name": "the myling fields",
+        "x": 303398,
+        "y": 290474,
+        "z": 5500,
+        "radius": 4000,
+        "lines": [
+          "Small ghosts in the grass, asking to be carried.",
+          "Whose children were they? Bjarken will not say.",
+          "Idette and Loden each keep half a drowned man's map."
+        ]
+      },
+      {
+        "name": "the pelterers' ledge",
+        "x": 309000,
+        "y": 302500,
+        "z": 7600,
+        "radius": 2500,
+        "lines": [
+          "Vaetild counts the pelts at dawn and dusk.",
+          "Pelterer Blegkrak scrapes hides and trusts nobody."
+        ]
+      },
+      {
+        "name": "the strivers' camp",
+        "x": 282046,
+        "y": 281204,
+        "z": 4239,
+        "radius": 2000,
+        "lines": [
+          "Morvalt strebers, the strivers, under Streber Rengo.",
+          "The ones who still mean to get into Trollheim."
+        ]
+      },
+      {
+        "name": "Mammoth Valley",
+        "x": 338271,
+        "y": 270473,
+        "z": 5000,
+        "radius": 6000,
+        "lines": [
+          "The great herd of Aegir passes through here.",
+          "Tusks taller than a man. The ground shakes."
+        ]
+      },
+      {
+        "name": "the hunters' camp",
+        "x": 314926,
+        "y": 270735,
+        "z": 6000,
+        "radius": 2500,
+        "lines": [
+          "Morvalt mammoth-hunters camp above the valley.",
+          "Tusks stacked like firewood. Bjarken wants them."
+        ]
+      },
+      {
+        "name": "the redcap heights",
+        "x": 316000,
+        "y": 249000,
+        "z": 6500,
+        "radius": 4000,
+        "lines": [
+          "Redcaps on the northern heights. Their caps are wet.",
+          "The Blood Reavers butcher whatever climbs."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "gripklosa means the claw, from the sea the mountains look like a hand closing on aegir",
+      "trollheims gate is in the middle of gripklosa, the bjarken trolls call it the doorstep",
+      "kula's crown hangs in bjarkens hall and never melts",
+      "bergljot steinsdottirs hundred took kula's crown, bjarken wont give it back",
+      "ragnheid grimsdottir brewed the first iarnwood rot remedies in bjarken",
+      "the western morvalt are the ones who never got into trollheim",
+      "the bergklan are the mountain clan, cousins of the tradklan and musslaklan",
+      "mylings are ghosts of children left on the mountains, they ask to be carried",
+      "a myling grows heavier every step you carry it",
+      "the great mammoth herd of aegir comes through mammoth valley",
+      "the old matriarch leads the herd through the valley",
+      "the morvalt mammoth hunters camp above the valley, dellingstad wants them gone"
+    ],
+    "rumour": [
+      "if a myling asks you to carry it, say yes",
+      "touch kula's crown before you go down into trollheim",
+      "the trolls say the mylings werent troll children",
+      "the redcaps of gripklosa dye their caps fresh every day",
+      "bothrar hadd pays well for tusks",
+      "the landflyke are morvalt the other morvalt threw out",
+      "the bergklan trust nobody, not even the tradklan",
+      "the crown in bjarken grows a fingernail a year",
+      "streber rengo still means to get into trollheim, he looks at the gate once a season",
+      "vaetild can tell a stolen pelt by the smell",
+      "pelterer blegkrak makes the best pelts on aegir and has the worst temper",
+      "idette and loden each keep half of modolfs drowned map",
+      "loden and idette were modolfs companions who died on the mountain while he drowned"
+    ],
+    "tell": [
+      "gripklosa is north aegir, bjarken is the town in the southwest",
+      "trollheim entrance is in the middle of gripklosa",
+      "gripklosa is high 20s to mid 40s, redcaps up north go to 61",
+      "mammoth valley is east gripklosa, mammoth hunt quest from bothrar hadd",
+      "the old matriarch is a 57 mammoth in ne gripklosa",
+      "stor gothi tarnat in bjarken ports you round the isles",
+      "streber rengo is in the west with the morvalt strebers, 33",
+      "vaetild and pelterer blegkrak are on the bergklan ledge east of bjarken",
+      "pelterer blegkrak is the pelterer for otas quest",
+      "idette is in the myling fields with the undead morvalt, lost maps",
+      "loden is in the myling fields east of idette, lost maps"
+    ]
+  },
+  "loremaster": {
+    "intro": "Loremaster Sigrun says, \"Gripklosa, the claw of Aegir. [Bjarken] keeps a queen's crown, the [doorstep] opens into Trollheim, the [western morvalt] crowd the slopes, the [mylings] ask to be carried, and in [Mammoth Valley] the [Old Matriarch] leads the herd.\"",
+    "topics": {
+      "Bjarken": "Midgard's town on Aegir's north, grown where the trolls settled when they came out of Trollheim. Kula's ice crown hangs in its hall. Stor Gothi Tarnat, Jaklyr and Bothrar Hadd are here. See [Sigvor].",
+      "doorstep": "The hillside where Trollheim's gate opens, in the middle of the mountains; the Bjarken trolls' word for it. Companies going down touch Kula's crown first, for luck.",
+      "western morvalt": "The morvalt of the western slopes, protectors in their hundreds, strivers, butchers, callers and their own dead. The Valkyn say they never got into Trollheim and hate the ones who did. The landflyke are the outcasts they drive out.",
+      "mylings": "Ghosts of children left out on the mountains in some hungry winter, who ask travellers to carry them to the graves and grow heavier every step. The refused ones turn hostile. Nobody in [Bjarken] will say whose children they were.",
+      "bergklan": "The mountain-clan of Aegir's small clan-folk, cousins of Faraheim's tree-clan and the shore's mussel-clan. They hunt, pelt and brew in the middle of the range, and trust nobody.",
+      "redcaps": "The Blood Reavers of the northern heights, who keep their caps red the way the Iarnwood's redcaps do, by dipping them.",
+      "Mammoth Valley": "Where the great herd of Aegir passes on its road round the island. Bothrar Hadd buys its tusk and pelt; the morvalt mammoth-hunters camp above it; the [Old Matriarch] leads it.",
+      "the crown": "Kula's ice crown in [Bjarken]'s hall, taken by Bergljot Steinsdottir's hundred. It has never melted and grows, the town says, a fingernail's width over the years.",
+      "Sigvor": "Sigvor of Bjarken, keeper of the crown's hall, who wrote 'Under the Claw' for travellers who ask what the mountains are.",
+      "Streber Rengo": "The chief of the morvalt strebers, the strivers, a camp of morvalt in the west of the range who still mean to get into Trollheim when the rest of the [western morvalt] have given up. Bjarken says Rengo goes down to the doorstep once a season and looks at the gate, and comes back angrier. He fights with his strivers round him.",
+      "Vaetild": "A bergklan of the mountain-clan who keeps the clan's providers, pelterers and skinners on a ledge east of Bjarken. The [bergklan] trust nobody, and Vaetild trusts less than that: she counts the pelts at dawn and at dusk, and the pelterers say she can tell a stolen skin by the smell. Ota Yrling of Aegirhamn trades with the pelterers through her, when she allows it.",
+      "Pelterer Blegkrak": "A pelterer of the [bergklan] on the ledge near [Vaetild], who scrapes the hides the hunters bring and is the one Ota Yrling's bag of trade goods goes to. The clan says Blegkrak's pelts are the best on Aegir and his temper the worst. He fights strangers who come to the ledge without trade goods, and some who come with them.",
+      "Idette": "An undead of the myling fields who keeps half of a drowned bergklan's map. Modolf drowned in Munin Sound with the clan's map, and the map was cut in two to be carried; Idette has one half and [Loden] the other, among the undead morvalt. Sinna Redtoes of Aegirhamn wants both halves, and Merja of Bjarken wants to know what Modolf found. Idette fights to keep it.",
+      "Loden": "The other undead of the myling fields with half of Modolf's map, a little east of [Idette], among undead morvalt and a wandering vandarare. The Bjarken folk say Idette and Loden were Modolf's companions, who died on the mountain while he died in the sound, and that each kept the half he gave them. Loden will not give his up without a fight."
+    }
+  },
+  "book": {
+    "title": "Under the Claw",
+    "pages": [
+      "Sigvor of Bjarken, who keeps the hall where the crown hangs, wrote this for the travellers who come through the hall on their way to the doorstep and ask what the mountains are. The mountains are the claw. From the sea they look like a hand closing on the north of the island, and under the knuckles is the Fathers' city, and the hand has never quite closed. My grandmother said it will close at the end, and that Bjarken should be somewhere else by then. My grandfather said Bjarken has been somewhere else before and did not like it.",
+      "The crown hangs from the middle beam on a chain of plain iron, because the town would not put a giant's crown on anything finer. It is ice and it has never melted, not in the warmest summer and not with the hall fire roaring under it. I measure it every midwinter with a knotted cord. It grows. Not much. Bergljot's hundred took it off the queen's head in Tuscaran and carried it north in a fur, and it has been growing ever since, as if the queen's winter went on inside it, patient, waiting to be let out.",
+      "The mylings are the first thing travellers ask about, after the crown. They are children, or were, and they stand in the grass in the middle of the mountains and ask to be carried to the graves. Carry one, and it gets heavier. Refuse it, and it turns. My mother carried one once, all the way to the cairn field below the town, and set it down, and it was gone, and she could not lift her arms for a week. She said it was worth it. She would not say why, and she never refused one after.",
+      "East of us the great herd comes through the valley every year, and the oldest cow leads it, and the town calls her the Old Matriarch. Bothrar Hadd buys tusk, and the young men of Bjarken go up for it, and the morvalt hunters above the valley go down for it too, and the crater folk of Dellingstad pay to have the morvalt cleared. Everyone wants the herd. The herd wants to get through. The matriarch has got it through every year I have been alive. Go down to the doorstep, then, as the travellers do. Touch the crown first, as everyone does, and come back up and tell me what you saw."
+    ]
+  },
+  "bosses": [
+    "old-matriarch",
+    "sha-ra",
+    "beskydda-grundar",
+    "kreg"
+  ]
+}

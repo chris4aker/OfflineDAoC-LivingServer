@@ -81,7 +81,7 @@ public class UT_ChatThirdPass
         Field.Said[] calls = busy.Where(said => said.Kind == "inc").ToArray();
         Assert.That(calls, Is.Not.Empty);
         Assert.That(calls.All(said => said.Text.Contains("beno")), Is.True, "a call names the keep really under attack");
-        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Text.Contains("rena") && !said.Text.Contains("beno")), Is.True);
+        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Text.Contains("ren") && !said.Text.Contains("beno")), Is.True);
         Assert.That(busy.Where(said => said.Family is "keep_who" or "keep_still" or "keep_ours").All(said => said.Answers.All(answer => answer.Contains("mid"))),
             Is.True, "the true owner");
     }
@@ -113,15 +113,17 @@ public class UT_ChatThirdPass
     {
         var random = new Random(3);
         Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortClass("Berserker", random)), Is.All.AnyOf("zerk", "zerker"));
-        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Caer Benowyc", random)), Is.All.AnyOf("benowyc", "beno", "benow"));
-        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Bledmeer Faste", random)), Is.All.AnyOf("bledmeer", "bled", "bledm"));
+        // Chat 1.2 (TEXT-021): one name per keep, never a random cut.
+        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Caer Benowyc", random)), Is.All.EqualTo("beno"));
+        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Bledmeer Faste", random)), Is.All.EqualTo("bled"));
         Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortDungeon("Treibh Caillte", random)), Is.All.AnyOf("tc", "treibh"));
     }
 
     [Test]
     public void MostUnpromptedLinesComeFromTheFieldAndCraftedLinesAreRare()
     {
-        Assert.That(Field.Share("faction"), Is.GreaterThanOrEqualTo(0.85));
+        // Chat 1.2 (owner's decision 6, 2026-11-18): one /faction opener in five goes to the written corpus.
+        Assert.That(Field.Share("faction"), Is.GreaterThanOrEqualTo(0.75));
         Assert.That(Field.Share("lfg"), Is.GreaterThanOrEqualTo(0.85));
         Assert.That(AutonomousChatFiller.CraftedShare, Is.LessThanOrEqualTo(0.15));
         VC.Line Line(string topic, string text, string invites = "chat") => new("x", "ambient", topic, [], "*", [], 1, 50, [], "", invites, 1, text);
@@ -221,7 +223,8 @@ public class UT_ChatThirdPass
     {
         Assert.That(Budget.ReactionKind(text, "intent rvr", AutonomousChatIntentModel.Predict(text)), Is.EqualTo("alarm"));
         for (int seed = 0; seed < 10; seed++)
-            Assert.That(Budget.Rescue(Heard(text), "intent rvr", new SeededYes(seed)), Is.AnyOf("omw", "k", "on it", "otw"), text);
+            // 1.2 chat audit (DESIGN-006): no "omw" without the promise gate.
+            Assert.That(Budget.Rescue(Heard(text), "intent rvr", new SeededYes(seed)), Is.AnyOf("k", "k ty", "ugh, again", "ty", "not again"), text);
     }
 
     [Test]
@@ -250,7 +253,7 @@ public class UT_ChatThirdPass
             string thane = Budget.Rescue(Heard(text, "group"), "not sure", new SeededYes(seed));
             Assert.That(thane, Is.AnyOf("cant heal sry", "use a pot", "thane, no heals", "pot up!"), text);
             string druid = Budget.Rescue(Heard(text, "group", "Druid", heal: true), "not sure", new SeededYes(seed));
-            Assert.That(druid, Is.AnyOf("omw, where?", "where r u?", "on it"), text);
+            Assert.That(druid, Is.AnyOf("where?", "where r u?", "where are you?"), text);
         }
         Assert.That(Budget.ToContent(Tell(text), new Random(1)), Does.Contain("heal").And.Not.Contain("good"), "never 'nah im good ty' to a request");
     }

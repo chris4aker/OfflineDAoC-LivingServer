@@ -48,7 +48,37 @@ public static class AutonomousChatFiller
             return false;
         if (IsMusing(line))
             return musing;
-        return crafted || !IsCrafted(line);
+        // Chat 1.2 (owner, 2026-11-18 09:14: "chat and language should be super polished"): a short written line that is true
+        // where the bot stands passes whatever its topic; the written corpus was 0.6% of what a player heard in /faction.
+        return crafted || !IsCrafted(line) || IsSituated(line);
+    }
+
+    // The flags that tie a line to where the bot stands or what just happened to it.
+    private static readonly HashSet<string> SituatedFlags = new(StringComparer.Ordinal)
+    {
+        "at_camp", "just_died", "bag_full", "in_group", "in_dungeon", "in_rvr", "outdoors", "traveling", "in_town", "in_capital", "just_leveled",
+    };
+
+    /// <summary>The most words a situated line may have (as for any plain written opener).</summary>
+    public const int SituatedMaxWords = 9;
+
+    /// <summary>
+    /// A short written opener that is true where the bot stands (chat 1.2, owner's decision 6): an ambient, rvr or camp line that
+    /// needs one of the place or moment flags (at:place, at_camp, just_died, bag_full, in_group, in_dungeon, in_rvr, outdoors,
+    /// traveling, in_town, in_capital, just_leveled), at most nine words, and no joke, tip, life filler, musing, lore or generic
+    /// agreement. The picker only offers a line whose flags hold, so such a line is about the bot's own moment. Pure.
+    /// </summary>
+    public static bool IsSituated(VC.Line line)
+    {
+        if (line == null || line.Kind is not ("ambient" or "rvr" or "camp") || line.Topic == "lore" || line.Invites == "joke")
+            return false;
+        if (line.Needs == null || !line.Needs.Any(need => SituatedFlags.Contains(need) || need.StartsWith("at:", StringComparison.Ordinal)))
+            return false;
+        string text = line.Text ?? string.Empty;
+        if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > SituatedMaxWords || IsGeneric(text) || IsMusing(line) || IsLife(line))
+            return false;
+        string padded = " " + text.ToLowerInvariant() + " ";
+        return !CraftedMarkers.Any(marker => padded.Contains(marker, StringComparison.Ordinal));
     }
 
     private static readonly string[] LifeMarkers =
@@ -84,8 +114,51 @@ public static class AutonomousChatFiller
     /// written line at most once in 20 minutes. Pure but for the memory read.
     /// </summary>
     public static bool GuildCorpusFits(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now) =>
-        line != null && !IsCrafted(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) && !memory.Seen(Skeleton(line.Text)) &&
-        !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || memory.LifeAllowed(now));
+        line != null && !IsCraftedForGuild(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) && !memory.Seen(Skeleton(line.Text)) &&
+        !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || GuildLifeAllowed(memory, now));
+
+    /// <summary>
+    /// How often a guild hears a life line (weather, work, school, pets, food, family). Chat audit 1.2 (owner, 2026-11-18 09:14:
+    /// "shorten them, then reassess which filters need tweaking"): once in six hours let one of the 289 social guild lines through a
+    /// whole evening; a guild's written lines come at most every 20 minutes, so 90 minutes is about one written line in five.
+    /// </summary>
+    public const long GuildLifeGapMs = 90 * 60_000;
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<AutonomousChatFieldTalk.Memory, System.Runtime.CompilerServices.StrongBox<long>>
+        GuildLife = new();
+
+    /// <summary>Whether this guild may hear a life line now (none in the last <see cref="GuildLifeGapMs"/>).</summary>
+    public static bool GuildLifeAllowed(AutonomousChatFieldTalk.Memory memory, long now)
+    {
+        if (memory == null || !GuildLife.TryGetValue(memory, out var last))
+            return true;
+        lock (last)
+            return now - last.Value >= GuildLifeGapMs || now < last.Value;
+    }
+
+    // Words that make a line "life filler" for the unprompted channels. In guild chat a life line is paced by GuildLifeGapMs
+    // instead, so these alone do not keep a short guild line out (the audit: 400 of 614 guild lines could never be said).
+    private static readonly string[] GuildLifeWords =
+    [
+        " work", " job", "my boss", " kids", "my wife", "my husband", "girlfriend", "boyfriend", "school", "homework", "coffee", "my cat",
+        "my dog", "weekend", "monday", "the wife", "my mom", "my dad", "soda", "snack", "pizza", " beer", " tea ", "baby", " kid ", "asleep",
+        "finals", "exams",
+    ];
+
+    /// <summary>
+    /// <see cref="IsCrafted"/> for a written guild line: at most 8 words and no "...", no tip, sentimental or narration marker, but a
+    /// short joke and the life words are fine (guildmates joke and talk about their day; the life pace is GuildLifeGapMs). Pure.
+    /// </summary>
+    public static bool IsCraftedForGuild(VC.Line line)
+    {
+        if (line == null)
+            return false;
+        string text = line.Text ?? string.Empty;
+        if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 8 || text.Contains("...") || text.Contains('…'))
+            return true;
+        string padded = " " + text.ToLowerInvariant() + " ";
+        return CraftedMarkers.Any(marker => !GuildLifeWords.Contains(marker) && padded.Contains(marker, StringComparison.Ordinal));
+    }
 
     /// <summary>A written guild line was said: its idea rests, the guild's written gap starts, and a life line uses up the evening's one.</summary>
     public static void NoteGuildCorpus(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now)
@@ -96,7 +169,12 @@ public static class AutonomousChatFiller
         memory.Add(Skeleton(line.Text));
         memory.NoteWritten(now);
         if (IsLife(line))
+        {
             memory.NoteLife(now);
+            var last = GuildLife.GetValue(memory, _ => new System.Runtime.CompilerServices.StrongBox<long>(long.MinValue / 2));
+            lock (last)
+                last.Value = now;
+        }
     }
 
     private static readonly (string Concept, string[] Words)[] Concepts =
@@ -219,6 +297,9 @@ public static class AutonomousChatFiller
             return false;
         if (line.Kind is "ambient" or "reply" && line.Topic == "lore")
             return true;
+        // 1.2: a rumour of a sunken land or of what lies under the capital is a musing too, so it is rare (owner, 2026-11-15).
+        if (LoreLegends.IsEraRumour(line))
+            return true;
         string text = line.Text.ToLowerInvariant();
         return MusingMarkers.Any(marker => text.Contains(marker, StringComparison.Ordinal));
     }
@@ -249,7 +330,7 @@ public static class AutonomousChatFiller
         "interesting thought", "good point", "very true", "so true", "lol so true", "true that", "cant disagree", "cant argue there",
         "fair", "i suppose", "i guess so", "maybe maybe not", "if you say so", "you never know", "who knows",
         // Beta 1.1.2, round 5: canned agreement after a musing ("i know right", "yeah its always like that").
-        "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",
+        "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",   // chat-check: input
         "thats how it goes", "that is how it goes", "yep thats how it goes", "story of my life", "tell me about it", "you said it",
         "isnt that the truth", "aint that the truth", "so true lol", "too true", "yep yep", "right there with you", "same here",
         // Beta 1.1.2, round 3: agreement filler between bots in /faction and /say.
@@ -342,7 +423,7 @@ public static class AutonomousChatFiller
         "ha", "haha", "hah", "heh", "hehe", "lol", "lmao", "rofl", "yes", "yep", "yeah", "ya", "yea", "yup", "oh", "hmm", "hm", "ah", "ok", "k", "kk",
         "so", "well", "wow", "man", "dude", "honestly", "tbh", "imo", "hey", "hi", "yo", "and", "but", "just", "really", "pretty", "very",
         // what is left of a smiley (":D", ":P", "XD")
-        "d", "p", "xd",
+        "d", "p", "xd",   // chat-check: input
     };
 
     /// <summary>

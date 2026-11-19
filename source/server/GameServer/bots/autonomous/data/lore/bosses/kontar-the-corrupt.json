@@ -1,0 +1,124 @@
+{
+  "id": "kontar-the-corrupt",
+  "name": "Kontar the Corrupt",
+  "catalogKey": "hibernia-named-mobs-shrouded-isles/kontarcorrupt",
+  "locationId": "worlds-end",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Bot chat mentions corrupt sylvan on the isle who were 'their own kin once'.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Kontar the Corrupt: level 65, 30,000 health, resists 20% melee and 30% other, tether 2,600; when he is engaged 8-10 corruptor bodyguards (level 50-55, 2,000 health) appear around him; each heals Kontar alone (200, every 5 s, within 1,500) whenever he is below full health, and a quarter of their hits add Energy Blast (150, radius 300 around their target); all are removed when he dies or resets.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Shrouded Isles/KontarCorrupt.cs (integration/1.2)"
+    },
+    {
+      "text": "Kontar stands at about 367,900/270,000 in World's End.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: the clans of the edge, the soured springs, Cass's warning, the menders who mend only Kontar, the unburned dead, the mark on Domnann's chieftains' stone.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Kontar was the chieftain of the Sylvan of World's End, the clans who lived along the warm coast at the edge of the isle when the forests drove the Root there in the Long Pushing, and who stayed when the land went sour. They were proud of staying. Every other Sylvan people had a forest; the people of the edge had the hardest ground on Hy Brasil and kept it anyway, and their chieftains were chosen for stubbornness the way Domnann chose its wardens for patience.\n\nThe springs of the edge soured first, a generation before the isle came out of the mist. The Domnann wardens sent word to move inland; Cass of the Domnann wardens carried it herself. Kontar sent her back with the answer his clan still sings in its own version of the story: the edge has been sour before. He drank from the soured springs and called it strength, and for a while it was. He grew. His bark went dark. The drought years that emptied the other coastal villages did not touch his.\n\nHis menders stayed with him, and that is the part the Sylvan of Domnann tell with grief. They were the best his clan ever had, a whole household of bone-setters and sap-menders who had kept the edge alive through every bad year, and they would not leave their chieftain. They drank as he drank. They are his guard now, dark-barked and silent, and they still do the one thing they were raised to do, which is to keep Kontar whole. They do not mend each other. The Domnann wardens noticed that first and it is what convinced them the clan was gone: a household that will spend everything on its chief and nothing on its own is not a household any more. The menders come out of the dark around him the moment he is troubled, and when Kontar falls they fall with him, as if they had never been more than the bark on his trunk.\n\nThe clan of the edge also stopped burning its dead, which the Sylvan of every other village do, and the shrouds of the unburned walk the headland now. The Domnann wardens put that at Kontar's door as well. His kin in Domnann keep his name on the chieftains' stone, with a mark beside it that means the tree is standing and the wood is gone.",
+  "legend": "Kontar himself is only melee. The fight is his 8-10 corruptor bodyguards, who appear around him the moment he is engaged. Each one heals Kontar (and only Kontar) for 200 every 5 seconds while he is hurt, so ten of them out-heal most groups: kill the bodyguards first. They have just 2,000 health each, so AoE shreds them. Their hits sometimes add a 150 energy blast in a 300 radius around their target, so melee should not stack on one spot. When Kontar dies or resets every bodyguard vanishes. Tether 2,600: keep him near his camp. The Sylvan of Domnann do not cheer when he falls.",
+  "yells": {
+    "aggro": [
+      "The edge has been sour before.",
+      "You come to my coast? Drink, then.",
+      "Menders! Your chieftain bleeds."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Keep me whole, my household. Keep me whole."
+      }
+    ],
+    "death": [
+      "The springs... were sweet once...",
+      "Burn me... do not let me walk..."
+    ],
+    "slay": [
+      "Another for the sour ground.",
+      "The edge keeps what it takes.",
+      "Weak roots. Weak blood."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Sylvan in dark bark stand guard. They do not blink.",
+      "A dry spring, black with old sap."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Kontar's corruptors surround him!"
+      },
+      {
+        "trigger": "death",
+        "text": "His household falls with him, like bark."
+      }
+    ],
+    "realmFirstKill": "Kontar the Corrupt is fallen. His kin can mourn."
+  },
+  "botLines": {
+    "briefing": [
+      "kontar's bodyguards heal only him, 200 every 5 sec each. [kill the guards first|aoe the guards]",
+      "8-10 guards with 2k health each. [aoe them down|easy to kill]",
+      "guards energy blast around their target, [spread|dont stack]",
+      "tether 2600, keep kontar at his camp. [no dragging|he resets]"
+    ],
+    "aftermathWin": [
+      "kontar the corrupt down. [guards gone with him|clean]",
+      "aoe ate the guards in seconds. [then he was easy|nice]",
+      "the sylvan in domnann wont thank us. [still|its for the best]",
+      "his menders dropped with him. like bark off a tree"
+    ],
+    "aftermathLoss": [
+      "tried to tank and spank kontar with ten guards healing him. [never dropped below 90|lol no]",
+      "stacked melee and the energy blasts [wiped us|hit everyone]",
+      "dragged him off his camp and he [reset|went home full]",
+      "too many guards, not enough aoe. [bring a bard|need aoe]"
+    ],
+    "rumour": [
+      "[heard|someone said] kontar's guards were the best menders of his clan once",
+      "the domnann wardens keep kontar's name on their chieftains' stone, with a mark",
+      "[word is|heard] the shrouds at world's end are kontar's unburned dead",
+      "[heard|someone said] cass of the wardens warned kontar to move inland. [he didnt|stubborn]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kontar",
+    "text": "Chieftain of the Sylvan of [World's End], who drank from the soured springs and called it strength. His menders stayed and keep only him whole now. His kin in Domnann mark his name as wood gone."
+  },
+  "bookPage": "From Coll of the Domnann guides: I knew Kontar's clan when I was a sapling; my mother traded with them. They were stubborn, and proud of the hardest ground on the isle, and when the springs went sour Cass of the wardens walked to the edge to tell them to come inland. Kontar said the edge had been sour before. His menders were the best on the coast and they would not leave him. Now they come out of the dark round him and mend him and nobody else, not even each other, and when he falls they fall. That is how the wardens knew the clan was gone. A household that spends all of itself on its chief is not a household.",
+  "chronicle": {
+    "win": "{realm} rode out to World's End under {raidLeader} and killed Kontar the Corrupt in {minutes} minutes.",
+    "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Kontar the Corrupt after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "the-root",
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "elro-the-ancient",
+      "relation": "the keeper-tree that watched him go bad"
+    },
+    {
+      "id": "archilus",
+      "relation": "the shrouds of his unburned dead"
+    },
+    {
+      "id": "olcasgean",
+      "relation": "whose soured springs he drank"
+    }
+  ]
+}

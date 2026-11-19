@@ -11,7 +11,7 @@ using DOL.GS.ServerProperties;
 
 namespace DOL.GS.Scripts
 {
-    public class Legion : GameEpicBoss
+    public class Legion : GameEpicBoss, IRaidBossTraits
     {
         private static new readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -82,9 +82,6 @@ namespace DOL.GS.Scripts
             Empathy = npcTemplate.Empathy;
             Piety = npcTemplate.Piety;
             Intelligence = npcTemplate.Intelligence;
-            LegionBrain.CanThrow = false;
-            LegionBrain.RemoveAdds = false;
-            LegionBrain.IsCreatingSouls = false;
 
             // demon
             BodyType = 2;
@@ -107,7 +104,7 @@ namespace DOL.GS.Scripts
 
             return base.HasAbility(keyName);
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC npc in GetNPCsInRadius(5000))
             {
@@ -143,12 +140,12 @@ namespace DOL.GS.Scripts
                 TempProperties.RemoveProperty("legion_castaoe");
             }
 
-            base.Die(killer);
-
             if (canReportNews)
             {
                 ReportNews(killer);
             }
+
+            base.ProcessDeath(killer);
         }
         public void BroadcastMessage(String message)
         {
@@ -159,7 +156,8 @@ namespace DOL.GS.Scripts
         }
         public override void EnemyKilled(GameLiving enemy)
         {
-            if (enemy != null && enemy is GamePlayer)
+            // Flood guard (1.2): at most the period raid's count of kill heals in 5 minutes (EncounterFloodGuard).
+            if (enemy != null && EncounterTargets.IsRaider(enemy) && EncounterFloodGuard.TryRecent(this, "Legion.KillHeal", GameLoop.GameLoopTime))
             {
                 BroadcastMessage("Legion says, \"Your soul give me new strength.\"");
                 Health += MaxHealth / 40; //heals if boss kill enemy player for 2.5% of his max health
@@ -261,9 +259,10 @@ namespace DOL.GS.Scripts
         }
         private void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardLegionKillPoint();
+            AwardLegionKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_LEGION_KILL <= 0) return;
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -290,6 +289,8 @@ namespace DOL.GS.Scripts
                 Health += ad.Damage / 4;
             base.DealDamage(ad);
         }
+        // Raid-boss traits for the bots (bots/RaidBossTraits.cs, from True 1.65): the 1,400 of TakeDamage above.
+        public int RaidMaxDamageRange => 1400;
     }
 }
 
@@ -305,59 +306,20 @@ namespace DOL.AI.Brain
             AggroLevel = 100;
             AggroRange = 850;
         }
-        public static bool RemoveAdds = false;
-        public static bool IsCreatingSouls = false;
-        public static bool CanThrow = false;
-        public static bool CanPbaoe = false;
-        #region Health check bools
-        public static bool adds1 = false;
-        public static bool adds2 = false;
-        public static bool adds3 = false;
-        public static bool adds4 = false;
-        public static bool adds5 = false;
-        public static bool adds6 = false;
-        public static bool adds7 = false;
-        public static bool adds8 = false;
-        public static bool adds9 = false;
-        public static bool adds10 = false;
-        public static bool adds11 = false;
-        public static bool adds12 = false;
-        public static bool adds13 = false;
-        public static bool adds14 = false;
-        public static bool adds15 = false;
-        public static bool adds16 = false;
-        public static bool adds17 = false;
-        public static bool adds18 = false;
-        public static bool adds19 = false;
-        #endregion
+        private bool RemoveAdds = false;
+        private bool CanThrow = false;
+        // The blast lock-out belongs to this brain, not to the class: as a static it outlived a reset or a death that
+        // stopped its 10 s timer, and the blast never fired again until a restart (df-bosses M3). It is cleared
+        // wherever that timer is stopped, and a respawned Legion gets a new brain.
+        private bool CanPbaoe = false;
+        private readonly bool[] addsSpawned = new bool[19];
 
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))
             {
-                IsCreatingSouls = false;
                 CanThrow = false;
-                #region Health check bools
-                adds1 = false;
-                adds2 = false;
-                adds3 = false;
-                adds4 = false;
-                adds5 = false;
-                adds6 = false;
-                adds7 = false;
-                adds8 = false;
-                adds9 = false;
-                adds10 = false;
-                adds11 = false;
-                adds12 = false;
-                adds13 = false;
-                adds14 = false;
-                adds15 = false;
-                adds16 = false;
-                adds17 = false;
-                adds18 = false;
-                adds19 = false;
-                #endregion
+                Array.Clear(addsSpawned, 0, addsSpawned.Length);
 
                 if (Port_Enemys.Count > 0)//clear port players
                     Port_Enemys.Clear();
@@ -376,6 +338,8 @@ namespace DOL.AI.Brain
                     castaoe.Stop();
                     Body.TempProperties.RemoveProperty("legion_castaoe");
                 }
+                CanPbaoe = false;
+                bladeturnConsumed = 0;
             }
             if (Body.InCombatInLast(60 * 1000) == false && Body.InCombatInLast(65 * 1000))
             {
@@ -402,138 +366,15 @@ namespace DOL.AI.Brain
                     CanPbaoe = true;
                 }
                 #region Legion health checks
-                if (Body.HealthPercent <= 95 && Body.HealthPercent > 90 && !adds1)
+                int healthPercent = Body.HealthPercent;
+                for (int i = 0; i < addsSpawned.Length; i++)
                 {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds1 = true;
-                }
-                if (Body.HealthPercent <= 90 && Body.HealthPercent > 85 && !adds2)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds2 = true;
-                }
-                if (Body.HealthPercent <= 85 && Body.HealthPercent > 80 && !adds3)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds3 = true;
-                }
-                if (Body.HealthPercent <= 80 && Body.HealthPercent > 75 && !adds4)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds4 = true;
-                }
-                if (Body.HealthPercent <= 75 && Body.HealthPercent > 70 && !adds5)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds5 = true;
-                }
-                if (Body.HealthPercent <= 70 && Body.HealthPercent > 65 && !adds6)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds6 = true;
-                }
-                if (Body.HealthPercent <= 65 && Body.HealthPercent > 60 && !adds7)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds7 = true;
-                }
-                if (Body.HealthPercent <= 60 && Body.HealthPercent > 55 && !adds8)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds8 = true;
-                }
-                if (Body.HealthPercent <= 55 && Body.HealthPercent > 50 && !adds9)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds9 = true;
-                }
-                if (Body.HealthPercent <= 50 && Body.HealthPercent > 45 && !adds10)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds10 = true;
-                }
-                if (Body.HealthPercent <= 45 && Body.HealthPercent > 40 && !adds11)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds11 = true;
-                }
-                if (Body.HealthPercent <= 40 && Body.HealthPercent > 35 && !adds12)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds12 = true;
-                }
-                if (Body.HealthPercent <= 35 && Body.HealthPercent > 30 && !adds13)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds13 = true;
-                }
-                if (Body.HealthPercent <= 30 && Body.HealthPercent > 25 && !adds14)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds14 = true;
-                }
-                if (Body.HealthPercent <= 25 && Body.HealthPercent > 20 && !adds15)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds15 = true;
-                }
-                if (Body.HealthPercent <= 20 && Body.HealthPercent > 15 && !adds16)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds16 = true;
-                }
-                if (Body.HealthPercent <= 15 && Body.HealthPercent > 10 && !adds17)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds17 = true;
-                }
-                if (Body.HealthPercent <= 10 && Body.HealthPercent > 5 && !adds18)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds18 = true;
-                }
-                if (Body.HealthPercent <= 5 && Body.HealthPercent > 0 && !adds19)
-                {
-                    SpawnAdds();
-                    spawnAmount = 0;
-                    PlayerCountInLegionLair = 0;
-                    adds19 = true;
+                    int upperBound = 95 - i * 5;
+                    if (healthPercent <= upperBound && healthPercent > upperBound - 5 && !addsSpawned[i])
+                    {
+                        SpawnAdds();
+                        addsSpawned[i] = true;
+                    }
                 }
                 #endregion
                 if (!CanThrow)
@@ -591,25 +432,32 @@ namespace DOL.AI.Brain
             CanPbaoe = false;
             return 0;
         }
-        public static int PlayerCountInLegionLair = 0;
-        public static int spawnAmount = 0;
         private void SpawnAdds()
         {
+            int playerCountInLegionLair = 0;
+            int spawnAmount = 0;
             if (Body.InCombat && Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer playerNearby in Body.GetPlayersInRadius(2000))
+                foreach (GameLiving playerNearby in EncounterTargets.InRadius(Body, 2000))
                 {
-                    if (playerNearby != null && playerNearby.Client.Account.PrivLevel == 1)
+                    if (playerNearby != null && EncounterTargets.NotGm(playerNearby))
                     {
-                        PlayerCountInLegionLair++;
+                        playerCountInLegionLair++;
                     }
-                    if (PlayerCountInLegionLair < 4)
+                    if (playerCountInLegionLair < 4)
                         spawnAmount = 1;
-                    if (PlayerCountInLegionLair > 4)
-                        spawnAmount = PlayerCountInLegionLair / 4;
+                    if (playerCountInLegionLair > 4)
+                        spawnAmount = playerCountInLegionLair / 4;
+                }
+                // Flood guard (1.2): he counts at most the period raid (64: 16 adds a step), as a full raid of players.
+                int counted = EncounterFloodGuard.Cap("Legion.Adds", playerCountInLegionLair);
+                if (counted < playerCountInLegionLair)
+                {
+                    playerCountInLegionLair = counted;
+                    spawnAmount = counted < 4 ? 1 : counted / 4;
                 }
             }
-            if (PlayerCountInLegionLair > 0 && spawnAmount > 0)
+            if (playerCountInLegionLair > 0 && spawnAmount > 0)
             {
                 //log.Warn("PlayerCountInLegionLair = " + PlayerCountInLegionLair + " and spawnAmount = "+ spawnAmount);
                 for (int i = 0; i < spawnAmount; i++)
@@ -627,8 +475,8 @@ namespace DOL.AI.Brain
             }
         }
         #region Legion Port
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
-        List<GamePlayer> randomlyPickedPlayers = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
+        List<GameLiving> randomlyPickedPlayers = new List<GameLiving>();
         public void BroadcastMessage(String message)
         {
             foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
@@ -650,7 +498,11 @@ namespace DOL.AI.Brain
                 IOrderedEnumerable<KeyValuePair<GameLiving, AggroAmount>> tempAggroTable = aggroList.OrderByDescending(x => x.Value.Effective).Skip(topPlayersToIngore).OrderBy(x => random.Next());
                 foreach(KeyValuePair<GameLiving, AggroAmount> items in tempAggroTable)
                 {
-                    if (items.Key != null && items.Key.IsAlive && items.Key is GamePlayer player)
+                    // 1.2 (epic wave 3): bots on his aggro list are thrown too when his bot displacement is on (shipped on):
+                    // a thrown bot walks across Behemoth's hall to its zone point, as players do (EpicEncounterTactics.Legion.cs,
+                    // EncounterDisplacementRecovery's way out), and is recalled to its party only when it can't (1.2 Legion).
+                    if (items.Key != null && items.Key.IsAlive &&
+                        (items.Key is GamePlayer || items.Key is GameBot && EncounterTargets.DisplacesBots(Body)) && items.Key is GameLiving player)
                     {
                         if (!Port_Enemys.Contains(player))
                         {
@@ -666,11 +518,14 @@ namespace DOL.AI.Brain
 
                     if (randomlyPickedPlayers.Count > 0)
                     {
-                        foreach (GamePlayer player in randomlyPickedPlayers)
+                        foreach (GameLiving player in randomlyPickedPlayers)
                         {
-                            if (player != null && player.IsAlive && player.Client.Account.PrivLevel == 1 && HasAggro && player.IsWithinRadius(Body, 2500))
+                            if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && player.IsWithinRadius(Body, 2500))
                             {
-                                player.MoveTo(249, 48200, 49566, 20833, 1028);
+                                // An encounter throw, not a party portal: companions stay down fighting Legion instead of
+                                // being dragged up into Behemoth's hall, whose way down is a zone point (bots walk to it)
+                                // (2026-10-30 livestream: "the bots get stuck on the platform once you teleport back").
+                                EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);
                                 //player.BroadcastUpdate();
                             }
                         }

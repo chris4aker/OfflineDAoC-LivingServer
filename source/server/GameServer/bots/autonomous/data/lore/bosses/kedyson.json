@@ -1,0 +1,76 @@
+{
+  "id": "kedyson",
+  "name": "Kedyson",
+  "npcNames": [
+    "Kedyson"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Kedyson: NPC template 60162795, level 38, the skeleton model, no faction, aggro 200 (range 500), no spells, respawn 80 s; two spawns on the middle ground at 406574, 416100 and 407058, 416035, beside the young drakoran Arel Birn and Ra'ris Delum (34).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Kedyson as one dead man raised twice by two rivals is Living Server writing (the zone file's sketch).",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Kedyson was a man of the dales once, and nobody remembers what he did, because he has been a skeleton longer than he was anything else. Two young drakoran of the middle ground, Arel Birn and Ra'ris Delum, both claim to have raised him, and both did.\n\nFort Gwyntell's registrar, Gracien Adamson, tells it like this. Arel Birn raised Kedyson first, badly, from a grave by the training dummies, and was proud of it. Ra'ris Delum said the raising was crooked and raised him again, properly, from the same grave, which should not have been possible and was. Now there are two of Kedyson, standing a few paces apart on the middle ground, one beside each drakoran, each exactly like the other, and neither drakoran will give up theirs or say which is the right one.\n\nThe two Kedysons do not look at each other. The Priest of Arawn says that is the only sensible thing anyone on the middle ground has done.",
+  "legend": "Kedyson, level 38 skeleton, is on the middle ground of the dales twice: two spawns a few paces apart, one next to Arel Birn and one next to Ra'ris Delum (both 34). Pull one Kedyson at a time and expect its drakoran to come along. Crush for the bones, plain melee, respawn 80 seconds. Good for a group in the high thirties.",
+  "yells": {
+    "aggro": [
+      "I was raised properly.",
+      "Which of us do you want?"
+    ],
+    "phases": [],
+    "death": [
+      "Back... into the one grave..."
+    ],
+    "slay": [
+      "Raise that one.",
+      "Crooked."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two skeletons, each the same man, a few paces apart."
+    ],
+    "phases": [],
+    "realmFirstKill": "A Kedyson has fallen. The other one stands."
+  },
+  "botLines": {
+    "briefing": [
+      "two kedysons on the middle ground, pull one at a time",
+      "crush on kedyson, his drakoran comes with him"
+    ],
+    "aftermathWin": [
+      "one kedyson down",
+      "both kedysons down. arel birn and ra'ris delum are furious"
+    ],
+    "aftermathLoss": [
+      "pulled both kedysons and both drakoran"
+    ],
+    "rumour": [
+      "[heard|someone said] arel birn and ra'ris delum both raised the same dead man",
+      "heard the two kedysons never look at each other"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "kedyson",
+    "text": "One dead man of the [dales of devwy] raised twice from the same grave by two rival drakoran, Arel Birn and Ra'ris Delum; there are two of him now on the middle ground."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} laid a Kedyson back in his grave in {minutes} minutes.",
+    "loss": "Both Kedysons stood; {raidLeader} of {realm} left the middle ground."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "arawn"
+  ],
+  "tier": "minor"
+}

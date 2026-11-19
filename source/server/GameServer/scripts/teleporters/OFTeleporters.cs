@@ -162,6 +162,23 @@ namespace DOL.GS.Scripts
 
                 foreach (GamePlayer player in GetPlayersInRadius(500))
                 {
+
+                    // A relic carrier cannot be teleported (relic audit 2026-10-31, L7). Every other teleporter, portal stone
+
+                    // and teleport spell already refused one, and the bots' frontier boarding does; the frontier porter
+
+                    // circle did not, so a player could port a relic home while a bot had to walk it.
+
+                    if (GameRelic.IsPlayerCarryingRelic(player))
+
+                    {
+
+                        player.Out.SendMessage("You cannot teleport while carrying a relic.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+
+                        continue;
+
+                    }
+
                     player.Out.SendMessage(this.Name + " says, \"" + portMessage + "\"", eChatType.CT_Say,
                         eChatLoc.CL_ChatWindow);
                 }

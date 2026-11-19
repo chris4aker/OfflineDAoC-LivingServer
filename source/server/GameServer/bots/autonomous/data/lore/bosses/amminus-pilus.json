@@ -1,0 +1,99 @@
+{
+  "id": "amminus-pilus",
+  "name": "Amminus pilus",
+  "npcNames": [
+    "Amminus pilus"
+  ],
+  "locationId": "catacombs-of-cardova",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Amminus pilus (AmminusPilus.cs, template 12888, level 38-42, model 106, Spirits of Rome, aggro 100 range 400) at 33372, 44197: when he takes a target he says 'I require assistance!' and four centurio princeps preatorii (level 37-39) appear at his side and join him; they are removed when he leaves combat or dies.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/AmminusPilus.cs"
+    },
+    {
+      "text": "An unseen Pilus'Fury on the long hall burns 100-250 heat every few seconds on every real player or summoned pet standing on the hall's middle line ('Smoke seeps up through the cracks in the hall's floor.'); bots are not checked.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/PilusFury.cs"
+    },
+    {
+      "text": "Fall of an Emperor: kill Amminus and offer his amulet in the crypt of the displaced soul.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Amminus as the first spear of the legion and the honour road he keeps are Living Server writing; the primus pilus was the senior centurion of a Roman legion (history, not game canon).",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Amminus was the first spear of the legion, the senior centurion of its first cohort, the man the emperor of the west trusted with his own body when he died. When Seleucus laid the honour road from his chair to the dead man's crypt and heated its floor from below, as the Romans heated their baths, so that the guard should never stand cold, he gave the road and the crypt to Amminus to keep. Amminus was the fourth to swear the oath and has kept it the longest, because his post is the furthest from the chair, and nobody comes to relieve it.\n\nHe keeps the crypt of the displaced soul at the end of the long hall, past the eques and the magister, and he has never once kept it alone. A first spear does not fight; he calls, and his centurions stand up at his side, and when he has no more need of them they are gone. The heat is still in the floor of the road, and down its middle, where the old flues have cracked, the floor smokes; the centurions who walked it in Seleucus's day walked at the walls, and so do the Cornish who come back.\n\nFall of an Emperor asks for his amulet. Brother Teilo thinks the amulet is the dead emperor's, and that Amminus wears it because there was no one else to give it to.",
+  "legend": "Amminus pilus, 38-42, at the very bottom of Cardova, end of the long hall. When he aggros he shouts 'I require assistance!' and four centurions (37-39) pop at his side: kill them or CC them, they vanish when he dies. The long hall burns anyone standing down its middle (smoke message, 100-250 heat every few seconds, pets too), so walk the edges and fight him in the crypt, not on the road. Offer his amulet in the crypt for Fall of an Emperor.",
+  "yells": {
+    "aggro": [
+      "The road is kept. Turn back.",
+      "Centurions! The first cohort stands!"
+    ],
+    "phases": [],
+    "death": [
+      "The crypt... unguarded... forgive me..."
+    ],
+    "slay": [
+      "Carry it to the walls. Not the road.",
+      "Dismissed. Next."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The crypt of the displaced soul. A first spear keeps it.",
+      "The floor of the long hall is warm. It smokes."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=99",
+        "text": "Centurions answer the first spear's call!"
+      }
+    ],
+    "realmFirstKill": "Amminus pilus has fallen. The honour road is cold."
+  },
+  "botLines": {
+    "briefing": [
+      "amminus calls four centurions the moment he aggros, mez them or kill them",
+      "walk the walls of the long hall, the middle burns",
+      "fight amminus in the crypt, not on the road"
+    ],
+    "aftermathWin": [
+      "amminus down and his centurions just vanished",
+      "got the amulet. offer it in the crypt"
+    ],
+    "aftermathLoss": [
+      "someone stood in the middle of the long hall and cooked",
+      "four centurions plus him was too much"
+    ],
+    "rumour": [
+      "[heard|someone said] the long hall in cardova was heated like a roman bath so the guard never got cold",
+      "heard amminus wears the dead emperor's amulet because nobody else would take it"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "amminus",
+    "text": "Amminus the pilus, first spear of the legion of [cardova], keeps the crypt of the dead emperor at the end of the [long hall] and never keeps it alone: his centurions answer his call."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} relieved Amminus pilus of his crypt in Cardova in {minutes} minutes.",
+    "loss": "The first spear of Cardova called his centurions, and {raidLeader} of {realm} fell back up the long hall."
+  },
+  "era": "alb-the-province",
+  "factions": [
+    "dead-legions"
+  ],
+  "related": [
+    {
+      "id": "emperor-seleucus",
+      "relation": "the emperor he swore to"
+    }
+  ],
+  "tier": "minor"
+}

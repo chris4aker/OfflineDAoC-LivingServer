@@ -26,23 +26,16 @@ namespace DOL.GS.Tests
         public void EnabledByDefault()
         {
             Assert.That(_original, Is.True);
-            Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(eRealm.Hibernia), Does.Contain(eCharacterClass.Sluaghbinder));
         }
 
-        [Test]
-        public void EnabledRollsAreUnchanged()
+        // Owner 2026-11-17: "the custom class, that should never be played by bots". The edition switch is for players only:
+        // with it on (0.37b) or off (0.37), no gamebot roll, /spawn or /raid helper, buffbot or Epic Special Force is ever
+        // the Sluaghbinder.
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BotsNeverRollListOrHelpWithTheClassInEitherEdition(bool edition)
         {
-            Properties.ENABLE_SLUAGHBINDER = true;
-            var first = Roll(new Random(4242));
-            var second = Roll(new Random(4242));
-            Assert.That(first, Is.EqualTo(second));
-            Assert.That(first, Does.Contain(eCharacterClass.Sluaghbinder), "an enabled Hibernian pool still rolls the class");
-        }
-
-        [Test]
-        public void DisabledNeverRollsListsOrHelpsWithTheClass()
-        {
-            Properties.ENABLE_SLUAGHBINDER = false;
+            Properties.ENABLE_SLUAGHBINDER = edition;
             Assert.That(Roll(new Random(4242)), Does.Not.Contain(eCharacterClass.Sluaghbinder));
             Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(eRealm.Hibernia), Does.Not.Contain(eCharacterClass.Sluaghbinder));
             Assert.That(AutonomousBotIdentityGenerator.GetEraClasses(eRealm.Hibernia), Has.Count.EqualTo(13));
@@ -50,6 +43,17 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousBotIdentityGenerator.IsClassAvailable(eCharacterClass.Druid), Is.True);
             Assert.Throws<ArgumentException>(() =>
                 AutonomousBotIdentityGenerator.GenerateForClass(eRealm.Hibernia, eGender.Male, eCharacterClass.Sluaghbinder));
+            Assert.That(Commands.TemporaryGroupClassCatalog.ForRealm(eRealm.Hibernia).Select(entry => entry.CharacterClass),
+                Does.Not.Contain(eCharacterClass.Sluaghbinder));
+            Assert.That(Commands.TemporaryGroupClassCatalog.TryResolve(eRealm.Hibernia, "Sluaghbinder", out _), Is.False);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void RollsAreRepeatableInEitherEdition(bool edition)
+        {
+            Properties.ENABLE_SLUAGHBINDER = edition;
+            Assert.That(Roll(new Random(4242)), Is.EqualTo(Roll(new Random(4242))));
         }
 
         [Test]

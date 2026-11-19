@@ -1,0 +1,189 @@
+{
+ "id": "grand-chancellor-adremal",
+ "name": "Grand Chancellor Adremal",
+ "tier": "epic",
+ "npcNames": [
+  "Grand Chancellor Adremal"
+ ],
+ "aliases": [
+  "adremal",
+  "the chancellor",
+  "the grand chancellor"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "offered the bargain; speaks for him"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "wrote his nameless line"
+  },
+  {
+   "id": "earl-vone",
+   "relation": "clerk who carries the chisel"
+  },
+  {
+   "id": "prince-abdin",
+   "relation": "wrote on one line with Asmoien"
+  },
+  {
+   "id": "prince-asmoien",
+   "relation": "wrote on one line with Abdin"
+  },
+  {
+   "id": "ambassador-mannam",
+   "relation": "seals his letters"
+  },
+  {
+   "id": "inquisitors",
+   "relation": "examine for his justice"
+  },
+  {
+   "id": "mutilators",
+   "relation": "unmake those he strikes off"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Grand Chancellor Adremal is level 79 and stands on the approach to Legion's lair, between Earl Vone and the Chamberlain.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Grand Chancellor Adremal at level 79 among the Darkness Falls court.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Collin de Plancy's Dictionnaire Infernal names Adrammelech grand chancellor of hell; Adremal reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
+  },
+  {
+   "text": "He is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "The bot chat already names him in two lines.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/chat (whole-word count, coverage audit)"
+  },
+  {
+   "text": "His walls, the ten Rolls and the Roll of the Visitors are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The lord who counted",
+   "text": "In the Uncounted Age every lord of the hollow kept a hoard, and Adremal kept the strangest. His was a gallery of walls on the south side of the hollow, the stretch the court now calls the approach, and on those walls were marks: the scratches the first lords had cut to show where their thrones stood, the tallies of their kills, the boasts nobody had been able to read since their makers were eaten. Adremal could read them. He was the only lord of that age who could count past the number of his own claws, and he spent the dark centuries learning everything the walls said and adding to them. Other lords thought him harmless. He let them think it.\n\nHe came to the Feast of Thrones unarmed and sat near the door. He watched the hungry lord eat the first of the thirty and listened to the dead lord speak afterwards from the eater's mouth, and he understood before anyone else what was happening, because he had read on his walls what happened to every lord who had ever been the strongest in the hollow: somebody stronger ate him. Here at last was one who could not be eaten, being already made of everyone. When nineteen voices were speaking from one throat, Adremal stood, walked to the middle of the floor, and knelt.\n\nHe offered three terms. The first, that the hungry one be Master of the hollow for as long as there was a hollow. The second, that the Master eat only those who fell from their place, never those who kept it. The third, that the places be written down and that Adremal keep the writing. Legion accepted all three, the court says, because Legion had never been offered anything before and did not know that terms could be refused."
+  },
+  {
+   "title": "The First Roll",
+   "text": "Adremal cut the First Roll of Precedence into the wall of his own gallery, so that no imp could steal it and no lord could burn it. Each line gives a rank, a seat and a master. The Master's line is at the top and has no master. The Queen's line and the Chancellor's own are beside it. The Blood follow, then the High Lords, the great offices, the peers, the three orders and at the very bottom the imps, whom he wrote on last so that every other demon would have something to stand on. A demon who is struck off has its line chiselled out of the wall, and Adremal then cuts the whole Roll again beside the old one, with the gap closed, and that is a new Roll. The approach is lined with them now, ten Rolls side by side, the oldest worn almost smooth.\n\nHe made enemies in the first week. The Blood had knelt in an order, and the order mattered: Ba'alorien had knelt third and accepted it, Nahemah fourth and laughed, but Abdin and Asmoien had knelt at the same moment, each insisting he was second. Adremal heard both and wrote them on the same line, side by side, Abdin on the left because the wall ran that way. Neither prince has forgiven him. Their two orders, the Chthonic Knights and the Mutilators, have been at each other's throats since, and the feud of the Blade and the Hook began with a line of carving that is too long by one name. Adremal says it is the most accurate line on the wall."
+  },
+  {
+   "title": "The Chancellor's justice",
+   "text": "The bargain made striking-off the one punishment that matters, and Adremal made it a procedure. A demon accused of falling from its place is examined first by the Inquisitors of the north cloisters, who say what it has done. The Chancellor alone pronounces whether that amounts to a fall. If it does, the Mutilators of the western pit unmake the demon into a state the Master can eat, and the Master eats it, and the line comes off the wall. The procedure has never been reversed. It has been argued, though, and the arguments are the Chancellor's great works.\n\nThe most famous is the case of Mystemas, in the Ninth Roll. Mystemas had been one of the strongest demons in the Master's army, and had acted on a plan of the Master's before the Master had finished deciding on it. The Inquisitors called it a fall. Adremal ruled that Mystemas had not fallen from his place but leapt above it, and that a leap upward is not covered by the bargain, so the Master could not eat him. Instead the Chancellor moved his line. He cut Mystemas onto the Roll at the bottom, among the imps, and the Mutilators made him small to fit it. Mystemas has hated the court ever since and calls it a kindness that he was not eaten, in a voice that makes it clear he means the opposite.\n\nAdremal's clerk is Earl Vone, who carries the chisel and stands a little below him on the approach, so that every demon walking to the Master's door passes the Chancellor's table first and remembers what is cut on the walls beside it."
+  },
+  {
+   "title": "The Tenth Roll",
+   "text": "When the doors opened in the age of the realm wars, Adremal wrote the Tenth Roll and added a sentence no earlier Roll has: that the court opened the doors on purpose, to feed on the war above rather than wait for the war to come down. The princes dispute this, since none of them remembers deciding it, and the Chancellor answers that the sentence is on the wall and the wall is the court's memory, so they must have decided it. The wagers the princes keep on which realm will hold the frontier next are recorded at his table, and the seals the imps sell in the three entrance halls are struck to his pattern. Ambassador Mannam carries the Chancellor's seal on every letter he takes up to Albion's throne.\n\nHe has begun a new wall. Below the imps, at the very end of the approach, he cuts the visitors: each mortal company that has come down, by realm and number, as the Chamberlain announced it. He calls it the Roll of the Visitors and says it is the only Roll the court has ever kept on which nobody holds a place, since every line on it is cut already struck. He has also written, in the clerk's hand on the newest stone, that whoever kills the Master will find that the Master is not one demon and cannot be killed all at once, so that the bargain will hold even then. The court reads this as a threat. The Chancellor says it is merely accurate. He sits at his table on the approach with the Chamberlain behind him and the Master's door beyond, and he looks up from his writing at whatever comes down the slope, and makes a note."
+  }
+ ],
+ "story": "Grand Chancellor Adremal is the demon who invented the court. In the Uncounted Age he was the only lord of the hollow who could read the scratches the first lords had cut in the walls, and he kept those walls as his hoard: the long gallery on the south side that the court now calls the approach. At the Feast of Thrones he watched Legion eat the first of the thirty lords and understood what he was seeing. When nineteen voices spoke from one throat he knelt first and offered three terms: that Legion be Master forever, that the Master eat only those who fall from their place, and that the places be written down and Adremal keep the writing.\n\nHe cut the First Roll of Precedence into his own wall. A demon struck off has its line chiselled out, and the whole Roll is cut again beside the old one, so the approach is lined with ten Rolls now. He made enemies at once: Princes Abdin and Asmoien each claimed to have knelt second, and Adremal wrote them on the same line, which began the feud of their orders, the Blade and the Hook.\n\nHe also made striking-off a procedure. The Inquisitors examine, the Chancellor alone pronounces, the Mutilators unmake and the Master eats. His most famous ruling was on Mystemas in the Ninth Roll: a demon who had acted on the Master's plan too early had leapt above his place rather than fallen from it, so he could not be eaten, only moved to the bottom of the Roll and made small enough to fit.\n\nOn the Tenth Roll he wrote that the court opened the three doors on purpose. He records the princes' wagers on the frontier, strikes the pattern of the seals, and seals Ambassador Mannam's letters to Albion. He has begun a Roll of the Visitors for the mortal companies, every line cut already struck, and he has written that whoever kills the Master will find he cannot be killed all at once. Earl Vone, his clerk, carries the chisel.",
+ "legend": "Adremal sits on the approach to Legion's lair, below the Chamberlain, with Earl Vone a little further up the slope. He is level 79 with no script: no adds, no trick, just a demon lord's health and damage, and the knights and Mutilators of Legion's Own stand close enough to join if you fight in the open. Pull Vone first and on its own, then the Chancellor, then whatever is left on the approach, and only then the Chamberlain. Players say the walls of the approach are covered in writing, and that if you read your own guild's name on one you will not come back up. The old hands say he always looks up at a raid before he aggros, as if he is counting you.",
+ "yells": {
+  "aggro": [
+   "Rank and seat. You have neither. Noted.",
+   "Stand still. I am writing you down.",
+   "Every visitor is recorded. Few are recorded twice."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Vone! The chisel. This one is going on the wall."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "Strike me off? You cannot read the wall you would strike me from."
+   }
+  ],
+  "death": [
+   "The line... stays. Cut it again beside the old one.",
+   "The Master cannot be killed all at once. I wrote it down."
+  ],
+  "slay": [
+   "Struck. Realm and number, Vone.",
+   "One line, cut already struck.",
+   "There is always room at the bottom of the wall."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The walls here are cut with lines. Ten walls of them.",
+   "A table on the slope. Someone is writing at it.",
+   "Every name on these walls is a demon's. So far."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Chancellor calls for his chisel."
+   },
+   {
+    "trigger": "health<=20",
+    "text": "The Chancellor's hand shakes. His line holds."
+   }
+  ],
+  "realmFirstKill": "Grand Chancellor Adremal is struck. The Rolls are unkept."
+ },
+ "botLines": {
+  "briefing": [
+   "chancellor next. pull vone first and alone, then adremal. dont fight in the middle of legions own",
+   "adremal is 79, no tricks, just [big|huge] health. tanks rotate, keep the healers fed",
+   "the approach is packed. one pull at a time or [we wipe|we eat the whole slope]",
+   "dont read the walls, [just kill|just pull]. we are on the clock"
+  ],
+  "aftermathWin": [
+   "chancellor down. [nobody writes us down today|struck him off]",
+   "adremal dead. [his clerk first was right|vone first worked]",
+   "thats the grand chancellor. [cut that on your wall|put that in the book]",
+   "chancellor down, approach is clear to the doorman"
+  ],
+  "aftermathLoss": [
+   "adremal wiped us. [we pulled half the approach|too many adds on the slope]",
+   "got written on the wall. [lol|not funny]. regroup up top",
+   "the chancellor wont go down, [too much health for us|need another group]",
+   "we went for adremal with vone still up. [mistake|never again]"
+  ],
+  "rumour": [
+   "[heard|word is] the walls on legions approach are the demons' laws. adremal cut them",
+   "adremal wrote the princes abdin and asmoien on the same line, [thats why their orders hate each other|they say]",
+   "the chancellor keeps a wall for raids now. [every line already struck|we are on it somewhere]",
+   "the imp mystemas was demoted by adremal. [for being early|he did the masters plan too soon]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "adremal",
+  "text": "Grand Chancellor of the court below. At the Feast of Thrones he knelt first and offered the bargain the court keeps: [Legion] eats only those who fall from their place. He cut the Rolls into the walls of the approach, wrote two princes on one line, and moved [Mystemas] to the bottom. Earl [Vone] carries his chisel."
+ },
+ "bookPage": "From a rubbing of the approach walls, taken by a Hibernian bard who did not stay to finish: Ten walls stand side by side along the slope, each cut with lines, each line a rank, a seat and a master. On the oldest the lines are worn nearly smooth. On the newest the stone is still pale. Where a line has been struck there is a gouge, and beside it, on the next wall along, the same Roll is cut again with the gap closed. I counted three gouges on the ninth wall and found the third had been cut, not to remove a name, but to move one, from high on the wall to the very bottom. The new line was very small.",
+ "bookPages": [
+  "From a rubbing of the approach walls, taken by a Hibernian bard who did not stay to finish: Ten walls stand side by side along the slope, each cut with lines, each line a rank, a seat and a master. On the oldest the lines are worn nearly smooth. On the newest the stone is still pale. Where a line has been struck there is a gouge, and beside it, on the next wall along, the same Roll is cut again with the gap closed. I counted three gouges on the ninth wall and found the third had been cut, not to remove a name, but to move one, from high on the wall to the very bottom. The new line was very small.",
+  "The bard went on: Below the tenth wall a new one has been started, and its lines are different. They carry no names and no seats, only a realm and a number, and every one of them is already gouged through, as if it had been cut struck. Albion, sixteen. Hibernia, twenty-four. Midgard, thirty-one. I understood what I was reading when I found my own realm's line for the night I came down, with the number of us in it, and the gouge already made. I counted us on the way out. The number on the wall was larger."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} struck Grand Chancellor Adremal from the Roll in {minutes} minutes.",
+  "loss": "Grand Chancellor Adremal wrote {realm}'s raid under {raidLeader} onto the Roll of the Visitors, every line already struck."
+ }
+}

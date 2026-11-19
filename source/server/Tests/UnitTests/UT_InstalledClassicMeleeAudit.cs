@@ -38,7 +38,8 @@ namespace DOL.UnitTests
             }
             foreach (var group in styles.GroupBy(row => row.ClassId).OrderBy(group => group.Key))
             {
-                var eligible = group.Select(row => row.Style).Where(BotMeleeStylePolicy.IsEligible).ToArray();
+                var eligible = group.Select(row => row.Style)
+                    .Where(style => BotMeleeStylePolicy.IsEligible(style) && !BotMeleeStylePolicy.NeedsPosition(style)).ToArray();
                 Assert.That(eligible, Is.Not.Empty, $"class {group.Key}");
                 Assert.That(eligible.All(style => style.Level is >= 1 and <= 50 && style.EnduranceCost >= 0), Is.True);
                 foreach (int level in new[] { 5, 15, 30, 50 })

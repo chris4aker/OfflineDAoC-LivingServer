@@ -1,0 +1,192 @@
+{
+  "id": "black-lady",
+  "name": "Black Lady",
+  "catalogKey": "marfach-caverns/blacklady",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 40,000 health, a realm-raid final. When she spawns she raises the Ancient Black Oak; when she dies the Oak dies with her.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Each brain turn in combat she has a 20% chance to call an Ogress (up to five alive); Ogresses go for healer and caster classes. She casts Void Strike (400 cold, radius 350) whenever she has a target.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "She cannot be hurt outside her tether. On 2026-11-05 the raid drew her 1,618 from her spawn, she leashed home at full health, and the raid turned to the Oak.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Dying with her, the Oak lets the raid win by killing her alone: on 2026-11-05 she died in 1.2 minutes and Hibernia won Marfach with no wipe.",
+      "provenance": "game",
+      "source": "docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "Living Server lore: the eldest keener was Caimheul's foster-mother (muime); her name is not said; Cathal of Howth's raid hacked at the oak and lost the night; Nóra's mother told the realm to end the singer; Sinech ni Riain of Ardee led the first raid to kill her and went on down the road to the Summoner's Hall (as in the Midgard writer's Govannon file); the grave-peace; the five who came down.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Irish caoineadh is the keen or lament for the dead; muime as foster-mother: to verify.",
+      "provenance": "original",
+      "source": "to verify"
+    }
+  ],
+  "story": "The Black Lady was the eldest of the three keeners hired to sing the chieftain Caimheul on, in the hills of Breifine before there were keeps. A keener sings facing the road and never looks back at the grave; the eldest had kept that rule for forty years. She was also Caimheul's foster-mother, who had raised him in her house by the lake, and the family asked her to keen him anyway.\n\nShe planted an acorn in the floor of his grave-chamber on the first night instead of the third, and it sprouted in the dark. On the fourth night a kind voice answered from below, which the druids of Tir na Nog believe was the calling of the Summoners: why should she ever stop? She looked back over her shoulder, and her two sisters, the Red Lady and the Blue, looked where she looked. The voice gave the whole household the grave-peace: on the ground where each was laid they can be wounded, and drawn beyond it no blade touches them and they walk home whole. In the morning the chieftain was standing.\n\nThe oak went black as bog oak and she gave it her breath, so that it stands when she returns and stops the moment she falls. The cold of a grave left open falls on all who crowd her, and her mourners hate menders, who refuse to let anyone go, as she does. The ogre-women of the high bogs who came down to hear her sing wait at the grove's edge and come to her call, one after another while she sings, and go for whoever mends or sings.\n\nCathal of Howth's company drew her off her ground, hacked at the tree until their torches burned down, and lost the night. Nóra's mother, a keener of the hills, told the realm: end the singer, and the grief will go when she does. Sinech ni Riain of Ardee's company did, in less time than a keener takes to draw breath, and went on down the road to the Summoner's Hall. The Black Lady keeps Hibernia's door to that hall still, and her keen is loudest when the frontier keeps fall. If she sings long enough, the hill country says, the oak will break the hill below Evern's stones. When she falls the keeners' daughters sing the keen of Caimheul facing forward, and at the end one voice too many joins in.",
+  "legend": "Kill her, not the tree: the Oak dies the moment she does, and it never starts a fight on its own. Tanks peel her ogresses off the healers and casters, because that is who they hunt. Do not stand clumped near her or the cold hits everyone. Fight her at home: pull her too far and she walks back at full health. Superstition says the Black Lady remembers the healers who outlived her ogresses, and goes for them first the next time. The realm's clerics shrug and stand behind the tanks anyway. Nicknames: the eldest, the black keener, the mother of the oak. The raid leaders call her simply 'the target', so nobody forgets.",
+  "yells": {
+    "aggro": [
+      "You did not come to grieve. Then you will be grieved for.",
+      "The oak and I have waited. You are late.",
+      "Sing, sisters. The living have come again."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Sisters of the hills, the healers first."
+      },
+      {
+        "trigger": "health<=30",
+        "text": "The oak will drink you, as it drank him."
+      },
+      {
+        "trigger": "health<=60",
+        "text": "Sisters, sing! The living have come to close the lid!"
+      }
+    ],
+    "death": [
+      "The keen... ends...",
+      "The tree... the tree first... let it go first..."
+    ],
+    "slay": [
+      "I will sing you back. You will not thank me.",
+      "Another for the keen.",
+      "I will sing you back. You will not thank me."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A black oak grows through the roof of the world.",
+      "A woman in black stands under it, singing.",
+      "Ogresses kneel at the roots, weeping."
+    ],
+    "phases": [
+      {
+        "trigger": "addsSpawn",
+        "text": "Ogresses answer the Black Lady's keen!"
+      },
+      {
+        "trigger": "death",
+        "text": "The black oak shudders and dies with her."
+      }
+    ],
+    "realmFirstKill": "The Black Lady's keen is ended. The oak is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "black lady, not the oak. the oak dies when she does and wont pull itself. [leave the tree alone|nobody hit the tree]",
+      "her ogresses go for healers and casters. tanks [peel them|taunt them off] the second they spawn",
+      "fight her at her spot. drag her out and she [leashes home full|resets]",
+      "her void strike splashes everyone near her target. [dont stand on the tank|give the tank room]",
+      "we have about an hour, [dont waste it on the tree|black lady only]"
+    ],
+    "aftermathWin": [
+      "black lady down and the oak [fell over with her|died on the spot]. told you leave the tree",
+      "ogresses peeled, healers alive, lady dead. [textbook|perfect]",
+      "lady down in a minute and the oak just stopped. [told you|leave the tree]",
+      "every ogress peeled, every healer alive. [beautiful|well tanked]",
+      "breifine will light candles tonight. [nice|good]"
+    ],
+    "aftermathLoss": [
+      "we dragged her out, she went home full, and half the raid [hit the oak|started on the tree]. again tomorrow",
+      "ogresses got the healers. [tanks|need more peels]",
+      "timed out again on the tree. [she is the target|not the oak]",
+      "her void strike hit the clump. [spread|give the tank room]",
+      "she walked home full and we [didnt notice|kept hitting the oak]"
+    ],
+    "rumour": [
+      "[heard|someone said] the black lady planted that oak on the chieftain's grave. bog oak, black right through",
+      "[word is|my guild says] if you kill the black lady the tree just [dies|falls over]. dont waste time on it",
+      "[heard|someone said] the ogresses are ogre women who came down the road in mourning and stayed",
+      "[word is|heard] the black lady goes for the healers who outlived her ogresses last time",
+      "the old families light a candle when the black lady falls. [saw one in breifine|true]",
+      "they say the black lady was caimheul's foster mother. raised him by the lake. that's why she won't let go",
+      "keeners daughter says no more than 5 ogresses are ever up at once cos only 5 came down from the bogs. [they keep coming tho|creepy]"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Black Lady",
+    "text": "The eldest of Marfach's three keeners. She planted the black oak on the chieftain's grave and gave it her life. Kill her and the oak dies too. Her ogresses hunt healers."
+  },
+  "bookPage": "From Nóra's book: my mother said the Black Lady was the best keener of her day, the one the great families sent for when a chieftain died. She planted the oak on Caimheul with her own hands, which is a keener's privilege, and when the voice came she gave the tree her breath. Now they are one grief in two bodies. When the realm's company went down at last and cut her down quickly, the tree did not wait to be felled; it simply stopped. My mother wept when she heard. Not from grief, she said. From relief. The best of us, let go at last.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced the Black Lady in {minutes} minutes. Her black oak died with her.",
+    "loss": "{realm} lost {raidLeader}'s raid to the Black Lady and her ogresses in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "red-lady",
+      "relation": "her sister in the keen"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "her sister in the keen"
+    },
+    {
+      "id": "chieftain-caimheul",
+      "relation": "her foster-son, whom she would not sing on"
+    },
+    {
+      "id": "ancient-black-oak",
+      "relation": "the tree she planted on his grave and gave her breath"
+    },
+    {
+      "id": "grand-summoner-govannon",
+      "relation": "the voice from below that offered her the endless grief"
+    },
+    {
+      "id": "avartack-the-champion",
+      "relation": "the champion she sang back with his lord"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Keening Women",
+      "text": "In the hill country of Breifine, before there were keeps on the frontier, the dead were not left to find their own way. A family that could pay sent for a keener, a woman whose trade was the caoineadh, the cry at the graveside, and she came with her hair unbound and sat at the head of the bier and sang the dead on. The rule of the trade is older than any family in the hills, and Nóra, the keener's daughter who wrote 'The Keen of Caimheul', set it down before anything else: the keen is sung facing the road the dead must take, and the keener never looks back over her shoulder at the grave. A dead man who sees his mourner looking back will turn round to see what she is looking at.\n\nThe three who sang for Caimheul were the best of their day, and the hill country has never agreed who they were to each other. Nóra's family say they were sisters by blood, daughters of one keener of the lake country, and that the eldest taught the two younger everything they knew. The druids of Lough Gur say they were no kin at all, three women of three families hired together, as the great houses always hired three, and called sisters because all keeners call each other so. Both agree that the eldest was the one the great families sent for when a chieftain died, and that she wore black, as the eldest of a keening always did.\n\nKeeners' names are not said over graves. Nóra's mother told her the eldest's name once, on the night the realm first ended the Black Lady's song, and Nóra would not write it down. She wrote only what the hills remembered: that the eldest had sung for forty years; that she could raise the keen so that men in the next valley stopped work and took off their caps; and that she was Caimheul's foster-mother.\n\nIn the old families a lord's son was given to another household to be raised, and the woman who nursed him was his muime, bound to him for life as closely as the mother who bore him. The eldest keener had raised the boy who became Caimheul in her own house by the lake. She had taught him to walk and to stand. When the war-band came to her door to say he was dead and the family wanted her keen, she was being asked to sing her own child on, and every keener in the hills knew that no woman should be asked to do that. The family asked. She went."
+    },
+    {
+      "title": "The Oak on the Grave",
+      "text": "It was the custom of the old families to plant a tree on the grave of a great man, and the planting was the eldest keener's privilege. Most planted a rowan, against what might walk, or a yew, for long remembering. The eldest brought an acorn, and the hill country still argues where she got it. Nóra's family say it came from the oak in the yard of Caimheul's dún, the tree under which he had drawn his lessons in the dust for his sons. The turf-cutters of Breifine say she took it from the bog, from a black oak that had lain in the peat since before the hills had names, and that this was the first wrong thing she did, because a seed from a buried tree remembers being buried.\n\nThe household had laid Caimheul not in a mound in the open but in a chamber of the caves under the hill, as the chieftains of Breifine were laid, with his hounds about him, his three weapons at his side and his household in the chambers round. The eldest planted the acorn in the floor of the grave-chamber itself, in the dark, where no oak should grow at all. The druids of Lough Gur add one more thing: that she planted it on the first night and not the third, as the custom required, because she could not wait to give him something that would stand.\n\nThe torch-bearers who carried the chieftain down were the last of the living to see the grave as it was. They remembered the three keeners at the head of the bier, the black one in the middle, and a green shoot already showing in the chamber floor on the second night, pale as a root in a cellar. On the third morning the household went home, as the custom was, and left the keeners to sing the last night alone, because the fourth night of a keen belongs to the dead and the women who send them.\n\nThe withered oaks that lean in Marfach's upper halls are the black tree's seedlings. The druids looked at them closely after the realm's first companies came back up and named them for what they are, plants, and hungry; the eldest's acorn was the first seed in those caves, and every seed since has come from it."
+    },
+    {
+      "title": "The Fourth Night",
+      "text": "On the fourth night something answered from below the grave. Under Breifine the caves go down past every chamber the old families ever cut, and at the bottom of them, the druids of Tir na Nog believe, lies the hall of the Summoners, the old meeting place under the borders that the Grand Summoner Govannon took for his own. The skalds of Midgard say his calling was heard in their mines as voices in three tongues. In Breifine it was heard as a keen. The summoners call the dead of every realm in the voice each realm will answer, and the hill country of Hibernia answers to a woman singing at a grave.\n\nNóra's mother said it was a kind voice, and that was the worst of it. It asked the eldest why she should ever stop. It said the dead need not go on; it said there was a road below, and those who kept the road would keep their dead. It did not offer the two younger anything. It did not need to. A keening is one song or it is nothing, the trade says, and when the eldest stopped singing forward, her sisters could not carry the keen alone. The eldest turned her head and looked back over her shoulder at the grave of the boy she had raised, and the other two, who had followed her voice for twenty years, looked where she looked.\n\nThe voice made one promise more, and the realm learned it the hard way. It promised the eldest that on the ground of the grave no hand would ever harm her, and it gave the same peace to every one of the household on the ground where they lay: the chieftain in his hall, the champion on his floor, each Lady in her own room. The druids call it the grave-peace. Within it the household can be wounded like anyone. Drawn beyond it, they walk in a peace no blade can enter, and they walk home, and are whole when they arrive. Every company that has gone down into Marfach has found each of them on their own ground, because it is the only ground the voice did not promise.\n\nIn the morning the chieftain was standing. Nobody in the hills saw it happen. The torch-bearers came back on the fifth day to close the chamber, as the custom required, found the door held from inside by a wolfhound with no blood in it, and ran."
+    },
+    {
+      "title": "Bog Oak Standing",
+      "text": "The oak went black that winter, black as the bog oak the turf-cutters dig from the peat, and its roots went down through the chieftain's bones and on, toward the road. It grew through the roof of the grave-chamber and on through the rock. The druids of Lough Gur, who went as far as the upper caves in those years and came back fewer, say it grew the way grief grows, fastest at night and with nothing to feed it.\n\nThe eldest gave it her breath. The hill country tells this plainly and does not explain it: when the voice made its bargain, she breathed into the black sapling the way a keener breathes into the first note, and from then on the tree lived as she lived. When the realm's companies began to go down, they found it was so in the plainest way. When the Black Lady returns to her grove, the oak stands up again beside her. When she falls, it stops, all at once and without a sound, like a held breath.\n\nHer keen has changed in its body too. The keen at an open grave is cold, the keeners say, because the cold comes up out of the grave-mouth while the grave stands open, and a good keener knows to close the keen before the cold reaches the mourners. The Black Lady's grave has never been closed. Whoever stands near her when she sings feels the grave's cold fall on them in one stroke, and those who stand close together feel it together. The keeners' daughters have a saying for it: do not crowd a grave.\n\nAnd her mourners hate menders of wounds above all things. The druids say it is because a mender is a person who refuses to let anyone go. Nóra's mother said that was half of it. The other half, she said, is that the eldest has spent every night since the fourth one refusing to let anyone go herself, and there is no one a person hates like the one who does her own sin in front of her and calls it mercy."
+    },
+    {
+      "title": "The Sisters Who Came Down",
+      "text": "There are other mourners in the hills than the keeners. The families of the high bogs above Breifine, who could never pay a keener's fee, had their dead mourned by the ogre-women of the bog country, great grieving women of an older people who keen without words, rocking where they kneel. The keeners of the valleys despised them as rivals and envied them, Nóra's mother admitted, because an ogre-woman's grief is never sung for a fee.\n\nWhen the Black Lady's keen changed, the ogre-women of the bogs heard it from the hills, and a handful of them came down the road to her. The hill country calls them the sisters who came down. They knelt at the roots of the black oak and they have not left. When the eldest raises her keen they rise and come to her call, one and then another for as long as she sings, but never more than came down to hear her, and the bogs have sent no others since; the families of the high bogs keep their women at home now, and pay the valley keeners at last, out of fear.\n\nThey go for whoever mends and whoever sings. The eldest taught them who to hate, the keeners' daughters say, the way she taught her foster-son where to stand. They pass the armoured spears at the front without a look, as a mourner passes the grave-diggers, and go for the mender at the back, the druid with her hands raised, the bard with his mouth open. The companies of the realm learned in the first season to set their own spears between the mourners and the back rows, and to drag each ogress off the menders as she came. The soldiers call it guarding the mourners, which the keeners' daughters find either very funny or very sad, depending on the night.\n\nNobody in the hills has ever asked the ogre-women of the bogs what their sisters want. Nóra tried, once, at a booley in the high country. The old woman she asked rocked on her heels for a long time and said one thing in the valley tongue: that the eldest had the best voice in the hills, and they had wanted to hear it sung without a fee."
+    },
+    {
+      "title": "The Night Cathal Lost",
+      "text": "The first of the realm's companies to reach the grove did what anyone would do with a black tree as tall as a hall standing over a singing woman: they treated the tree as the danger. They were led by Cathal of Howth, a hard and careful leader who had walked the frontier for years and lost fewer than most. Cathal's company drew the Lady out of her grove to fight her away from the oak's roots, and she walked out of their reach into the grave-peace and back to her grave, whole, while they hacked at the tree. They hacked at it until their torches burned down. The tree did not fall, and when it was struck, it struck back from the floor with its roots. Cathal brought them home before dawn, and the hill country says he never led another company into Marfach, though he lived many years.\n\nNóra's mother was the one who told the realm what it had done wrong. She went to Tir na Nog that spring, which a keener of the hills does not do lightly, and asked to speak to the captain who would lead the next company down. She said: you are cutting at a grief. A grief does not fall. End the singer, and the grief will go when she does.\n\nThe ranger Sinech ni Riain of Ardee led the next company, and she listened. Her company did not go near the oak. They let the Lady come to them in her grove, under the black branches, on the ground the voice had not promised, and they did what the keener had told them, which nobody in the company ever repeated outside it; and they cut her down in less time than a keener takes to draw breath for the second verse. The tree did not wait to be felled. It stopped, the hill country says, without a sound. Nóra's mother wept when she heard. Not from grief, she said. From relief: the best of them, let go at last.\n\nSinech's company went on down the road from Marfach. The druids of Tir na Nog count it as the first Hibernian company to reach the Summoner's Hall by Hibernia's own door, and the realm tells, as its own history, that Sinech's company found the sidhe of that hall willing to stand aside, and saw the Grand Summoner die."
+    },
+    {
+      "title": "What the Eldest Wants",
+      "text": "She returns. Every season since Sinech's company the keen has risen again under Breifine, and the oak has stood up beside her, and the mourners have come back to the grove's edge. The druids say the bargain was made for a grief that never ends, and a bargain is kept to the letter. The keeners' daughters say it more plainly: she was promised she would never have to let him go, and a company of the realm is only a crowd of the living who mean to make the dead lie down. She fights them as a mourner fights a stranger who reaches for the coffin lid.\n\nWhat she does for the voice below is keep Hibernia's door. The druids of Tir na Nog believe the keen of Marfach is the calling of the Summoners, turned into the hill country's own tongue, and that every Hibernian dead who hears it and turns round walks down the road past her grove to the hall below. Old frontier hands swear the keening is louder in the seasons when the realm's keeps are falling in Breifine, and the druids do not argue: the dead of the frontier are near, they say, and she is singing to them. The realm sends its companies down to silence her as much to keep the frontier's dead from the hall as for any treasure.\n\nIf she is ever left to sing for long enough, the keeners' daughters say, the oak will break the hill. Its crown is already in the rock below Evern's ring of stones on the Breifine heights, and some of the old soldiers of Breifine say the stones are a seal on the lid. The druids will neither confirm nor deny it. When the black tree comes through, they say, the keen will be heard in every valley of the hills at once, and the hill country will find out how many of its dead would rather turn round.\n\nWhen word comes over the hills that the Black Lady has fallen, the old families of Breifine light a candle in the window, and the keeners' daughters sing the keen of Caimheul in the night, the right way, facing the road. Nóra wrote that she has sung it twice. Both times, at the end of the last verse, one voice too many joined in, an old woman's, the best voice in the hills, and sang one note facing forward, and stopped."
+    }
+  ]
+}

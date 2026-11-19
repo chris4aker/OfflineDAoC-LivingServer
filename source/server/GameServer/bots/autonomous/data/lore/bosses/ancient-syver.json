@@ -1,0 +1,161 @@
+{
+  "id": "ancient-syver",
+  "name": "Ancient Syver",
+  "catalogKey": "iarnvidiur-s-lair/ancientsyver",
+  "locationId": "iarnvidiurs-lair",
+  "realm": "Midgard",
+  "era": "mid-era-troll-fathers",
+  "factions": [
+    "servants-of-iarnvidiur",
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "stanga",
+      "relation": "the dead wolf who guards its passage"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Ancient Syver is a level-68 reptile with 30,000 health; five syver come with it.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "It strikes the ground around it (Ancient Syver's Strike, 350 in a 350 radius), weakens strength, spreads Black Plague and hastens itself.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists hatchling, young and grown syver in the lair, and says the ancient one procs an area hit of about 300.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/6429"
+    },
+    {
+      "text": "Stanga, an undead wolf, guards the passages to it.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/4667"
+    },
+    {
+      "text": "On 35% of its hits the Ancient Syver casts Ancient Syver's Strike (350 in a 350 radius round its target); with a 15% chance each it casts Black Plague (disease, radius 450 round its target, 210 s), a strength debuff on its target and a combat-speed haste on itself (20 s). Five syver (AncientSyverBaf) join when it is engaged. 30,000 health, 20% melee / 30% magic resists, CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs"
+    },
+    {
+      "text": "The syver as the kennel's deer-park, Stanga's guard and the petrified spear come from the iarnvidiurs-lair file; the shepherd's joke and the seventh spear are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs"
+    }
+  ],
+  "story": "The syver are the old one's other brood, scaled and woolly at once, a thing between a lizard and a sheep, with hooked teeth and a bleating cry. The iarn dwarves say Iarnvidiur keeps them for her wolves to hunt, as a jarl keeps deer in a park: hatchlings and young and grown syver scurry through the passages from the light, and the wolves run them down whenever they are hungry, which is always.\n\nThe oldest of them was never hunted. It grew too big for the wolves and too clever for the old one's traps, and too sick, by the end, to be worth eating; it carries the rot of the lair in its wool, and the rot settles on everything near whatever it strikes, and stays a long while. It lies at the end of the passage Stanga guards, with five of its own kind round it that come when it wakes. When it strikes, it pounds the ground, and the dwarves who have heard it say they felt it in their knees; anything standing close beside its prey is thrown down with the prey. In its anger it quickens, as an old ram quickens when the young ones come at it, and it saps the strength of the one it fights.\n\nThe iarn dwarves make their best spears from the scales of syver that die of age, and the petrified spear of the Ancient Syver's kind is the hardest of all. The Remnants have a joke about it that they tell to Midgard's companies on the way down: the old one's shepherd boy grew too old to be a sheep. They also say a ring from its hoard keeps the rot off, and do not say how they know. Torvald, who taught the Remnants to fly griffons, left a spear in its shoulder in his youth, and it has grown round it.",
+  "chapters": [
+    {
+      "title": "The Deer-Park",
+      "text": "The iarn dwarves call the old one's house a kennel, and every kennel needs meat. The syver are the meat. They are a thing between a lizard and a sheep, scaled on the back and woolly underneath, with hooked teeth and a bleating cry that the dwarves say is the worst sound in the Iarnwood after the howl at the door, and they breed in the warm passages of the lair faster than the wolves can eat them.\n\nThe Remnants say Iarnvidiur keeps them as a jarl keeps deer in a park. She lets them breed and lets them run, and her wolves hunt them through the passages when they are hungry, which is always. The young wolves cut their teeth on the young syver; the dwarves say every wolf of the old one's brood has syver blood in its first teeth. There are hatchlings and young and grown syver in every passage of the lair, scurrying from any light, and the dwarves' war-parties step over the bones of them all the way down.\n\nThe skalds of Jordheim, who call the lair a nursery, say the syver are the pups' first prey, and that the old one breeds them as carefully as she breeds the wolves, because a wolf raised on easy meat is a poor wolf at the end of the world. The iarn dwarves eat syver too, when the war-parties can get one home, and say the meat tastes of the lair, and that it is the only thing out of the old one's house they have ever been able to use."
+    },
+    {
+      "title": "Too Big to Hunt",
+      "text": "One of them was never hunted. It was born in the old one's first winters, the Remnants say, and it was a little larger than the others from the start, and a little cleverer, and it kept out of the passages where the wolves ran. By the time the wolves noticed it, it was too big for them. By the time the old one noticed it, it was too big for her traps.\n\nIt grew old instead. It lies now at the end of a long passage off the hollow, the size of a byre, scaled like an old pine and woolly like a winter ewe, with five of its own kind always round it, and the dwarves call it the Ancient Syver because there is nothing else to call it. The five come with it when it wakes. The dwarves say they are its children, or its flock, or both.\n\nIt was too sick, by the end, to be worth eating. The rot of the lair is in its wool, the old one's own rot, and the dwarves who have fought it say the rot settles on everything near whatever it strikes and stays there for the length of a long meal. The Remnants' wise-women keep a drink against it, as they do against everything in the old one's house, and the war-parties carry it.\n\nThe old one let it live. The skalds say that is the strangest thing in the lair: a thing too big for the hunt, kept alive in the deer-park by a hunter who keeps nothing alive without a purpose. The Remnants' answer is a joke. The old one's shepherd boy, they say, grew too old to be a sheep."
+    },
+    {
+      "title": "The Ground Pound",
+      "text": "When it strikes, it pounds the ground. The dwarves who have heard it from the hollow say they felt it in their knees through the rock, and the ones who have been in the passage say that whatever was standing close beside the syver's prey went down with the prey, thrown off its feet by the floor itself. The Remnants' war-parties fought it spread across the passage, the dwarves say, with the shieldmen far enough apart that the floor could only throw one of them at a time.\n\nIn its anger it quickens. An old ram does the same, the dwarves say, when the young rams come at it: it remembers for a while what it was in its prime, and its blows come faster, and then it forgets again. And it saps the one it fights. The shieldman in front of it comes away weak, his arms like a sick man's, and the dwarves say that is the rot again, the old one's rot, getting into the muscle as well as the wool.\n\nStanga has guarded the passage to it from the first winters. The old one set him there, the dwarves say, so that her other pups would not try their teeth on the old beast and lose. Stanga's head-marks score the passage walls all the way to the syver's end of it, and nothing has gone past him to the Ancient Syver in a long time that did not go past him first. The dwarves say the old syver can hear him butting the wall, and sleeps the better for it."
+    },
+    {
+      "title": "The Seventh Spear",
+      "text": "The iarn dwarves make their best spears from the scales of syver that die of age, which few of them do, because the wolves see to it. A scale from an old syver, worked and tempered and left in the black water of the stream for a winter, turns hard as stone, and the dwarves call such a spear petrified. The petrified spear of the Ancient Syver's own kind, made from the scales its children shed, is the hardest of all.\n\nThe Remnants have made six such spears in the slates' memory. The seventh is in the Ancient Syver. Torvald, who taught the Remnants to fly griffons, put it there in his youth and did not get it back, and the dwarves say it is still there under the scales of the old beast's shoulder, and that the beast has grown round it. The companies of Midgard who have killed the syver say they have felt it, a hard knot under the scales, and that nobody has ever managed to cut it out before the thing was on its feet again.\n\nThe dwarves also say that a ring from its hoard keeps the rot off. They do not say what the Ancient Syver wants with a hoard, or where it got one, or how they know about the ring. The companies who have come home with one say it is an ordinary ring with an extraordinary smell, and that it does work. The Remnants say that is the most a dwarf can ask of anything that comes out of the old one's house."
+    }
+  ],
+  "legend": "The Ancient Syver comes with five syver, so pull it to a corner and handle the pack. Its big hit (350) lands on a third of its swings and hits everyone within 350 of its target, so stagger the melee and keep them spread round it, not stacked on the tank's back. It also diseases everyone within 450 of its target for 3.5 minutes (cure disease), drops a strength debuff on its target (cleanse) and now and then hastes itself for 20 seconds, so the tank needs a heal spike then. 30,000 health, 20% melee and 30% magic resists, CC-immune. It sits at the end of Stanga's passage, so Stanga comes first. Its staff and fang are the drops casters and tanks fight over, and a petrified spear if you're lucky.",
+  "yells": {
+    "aggro": [
+      "(The old beast heaves up out of the muck.)",
+      "(A deep bleat, like a horn underground.)",
+      "(The ground shakes as it rises.)",
+      "(The Ancient Syver bleats, and the floor shakes.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Ancient Syver pounds the ground!)"
+      },
+      {
+        "trigger": "health<=25",
+        "text": "(Ancient Syver's fury quickens its blows!)"
+      }
+    ],
+    "death": [
+      "(The ancient one sinks back into the muck.)",
+      "(Its brood scatters into the passages.)",
+      "(The Ancient Syver folds onto its knees with a long bleat.)"
+    ],
+    "slay": [
+      "(Its brood crowds round the fallen.)",
+      "(The ancient one bleats in triumph.)",
+      "(It pounds the ground over the fallen.)",
+      "(The old beast lies down among its flock.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The floor is churned by something very heavy.",
+      "Something very heavy has churned this floor.",
+      "The floor trembles. Something huge bleats ahead."
+    ],
+    "realmFirstKill": "The Ancient Syver has fallen at last.",
+    "phases": [
+      {
+        "trigger": "health<=25",
+        "text": "The Ancient Syver strikes in a fury!"
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ancient syver has 5 syver with it and a ground pound, stagger melee",
+      "handle the 5 syver before the big one",
+      "heal spike the mt when the syver hastes",
+      "stanga first, then the syver",
+      "ancient syver ground pound hits 350 round the tank, melee spread out",
+      "5 syver come with it",
+      "disease round the tank and a str debuff, cure and cleanse",
+      "heal spike when it hastes itself"
+    ],
+    "aftermathWin": [
+      "syver down. [nice|clean]",
+      "staff of the ancient syver dropped",
+      "petrified syver spear! [nice|grats]",
+      "ring of the syver dropped",
+      "petrified spear!!",
+      "ancient syver down, the shepherd boy is dead lol",
+      "nobody stacked on the tank this time"
+    ],
+    "aftermathLoss": [
+      "pounded flat by the big syver",
+      "melee clumped and the pound did the rest",
+      "haste plus str debuff, mt folded",
+      "stanga and the syver together. never again",
+      "melee all stacked behind the tank and the ground pound took them",
+      "nobody cured the disease"
+    ],
+    "rumour": [
+      "the wolves in the lair hunt syver. the old one got too big to hunt",
+      "the iarn dwarves make spears from syver scales",
+      "the wolves hunt the syver like deer in a park. not the old one though",
+      "the ancient syver is too big for the wolves to hunt",
+      "remnant joke: the old ones shepherd boy grew too old to be a sheep",
+      "theres a dwarf spear stuck in the ancient syvers shoulder, they say",
+      "a ring from the syvers hoard keeps the rot off"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ancient Syver",
+    "text": "The oldest of the syver, the kennel's deer-park, grown too big for the wolves to hunt and too sick to eat. It lies at the end of [Stanga]'s passage with five of its kind. Its strikes pound the floor and throw down whatever stands near its prey. Torvald's spear is still in its shoulder. The Remnants say the old one's shepherd boy grew too old to be a sheep."
+  },
+  "bookPage": "From Thorgrim of Faraheim's notes. The dwarf who told me about the syver had one, a young one, on a lead like a dog. It bleated at me. He said the young ones are sweet and the old ones are not, and that the oldest one in the lair is as big as a longhouse and has never been hunted, because even the old one's wolves are afraid of it. He said its scales would make a dwarf's fortune. I asked why no dwarf had made it. He said because a dead dwarf has no use for a fortune, and patted his syver, and it bleated at me again.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew the Ancient Syver in {minutes} minutes.",
+    "loss": "The Ancient Syver pounded {raidLeader}'s party from {realm} into the muck after {minutes} minutes."
+  }
+}

@@ -172,7 +172,7 @@ namespace DOL.AI.Brain
             if (Body.TargetObject != null && Body.InCombat && Body.Health != Body.MaxHealth && HasAggro)
             {
                 int countPlayer = 0;
-                foreach (GamePlayer player in Body.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, WorldMgr.VISIBILITY_DISTANCE))
                 {
                     countPlayer++;
                 }

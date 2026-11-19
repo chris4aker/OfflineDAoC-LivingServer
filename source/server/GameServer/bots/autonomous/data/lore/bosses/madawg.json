@@ -1,0 +1,116 @@
+{
+  "id": "madawg",
+  "name": "Madawg",
+  "npcNames": [
+    "Madawg"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Madawg: level 55, model 334, faction Siabras (the realm's largest monster faction, 503 spawns), at about 398,300/725,700 in the Bog of Cullen; respawn 80 seconds; a plain spawn with no script.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Unnatural Powers, two forms in the world data: (Torrance) 'Ask the locals of Alainn Binn about Ysberin', 'Slay the siabra magi Madawg who killed Ysberin', bring the staff to Lovernios; (Mavelle) talk to Lovernios the Druid Prince, 'Ask Ide about the dark magic that corrupted her friend', 'Find Saemus and retrieve the crystal', bring the crystal to Lovernios so the Druid Court may study it.",
+      "provenance": "game",
+      "source": "DataQuest 'Unnatural Powers' (world data)"
+    },
+    {
+      "text": "Living Server lore: Madawg as a siabra magus who killed Ysberin of Alainn Binn for her staff, and the Druid Court's interest in his craft.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Bog of Cullen lies under Sheeroe, and the people of Alainn Binn and of the Siopa fruit stand on its edge say the bog has been bad since the sky tore over the ridge, and was bad before that too, only more quietly.\n\nThe siabra are the realm's oldest trouble that is not a monster: the dark folk of the Veil's edge, half of the otherworld and half of the bogs and ruins, who hold more of Hibernia's wild ground than any other people that means the realm harm. Most siabra are reavers and thieves. A few are magi, and the magi are the reason the Druid Court in Tir na Nog keeps a watch on the bogs. Madawg is the worst of them in the Cullen country.\n\nHe killed Ysberin. That is what Alainn Binn remembers him for. Ysberin was the bog's own wise-woman, who kept the paths through the Cullen marsh and a staff of black bog-oak that she said had been cut before the bog was a bog; she guided travellers from Alainn Binn to the foot of Sheeroe and back for forty years and lost nobody. Madawg wanted the staff. He came to her hut on the eastern rise one night with the bog's mist around him, and in the morning the hut was empty and the staff was gone, and the people of Alainn Binn found her on the path she had kept, where the bog had been allowed to have her.\n\nLovernios, the Druid Prince in the palace garden at Tir na Nog, wants the staff back. He says he wants it so the Druid Court may study what Madawg has done with it; the people of Alainn Binn say they want it back because it was hers. Madawg has been working the staff in the bog since, and the bog has changed around him. The paths Ysberin kept have closed. The mist on the eastern rise stands still on windy nights. The druids who have gone to look say that whatever was in the bog-oak before the bog was a bog, Madawg has woken it, and taught it to answer him, and that the siabra of the Cullen country have started to come to him for the same lesson.",
+  "legend": "Madawg is a level 55 siabra magus in the Bog of Cullen (about 398k/726k), Siabras faction, with an 80-second respawn. No script; a caster-style named, so interrupt him and do not stand in a clump. Other siabra camps around the bog are the same faction, so clear your approach. Unnatural Powers (the Torrance version) has you ask the locals of Alainn Binn about Ysberin, kill Madawg and bring his staff to Lovernios in the palace garden. A 50s group with an interrupter is enough. The paths through the eastern bog are poor, so come in from the Alainn Binn side and keep the group together in the mist.",
+  "yells": {
+    "aggro": [
+      "The bog answers me now. Not her.",
+      "You want the staff? Come and take it from the mist.",
+      "Another path-walker."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Wake, old wood. Wake and answer."
+      }
+    ],
+    "death": [
+      "The staff... was older than the bog...",
+      "Ysberin... kept it... better..."
+    ],
+    "slay": [
+      "The bog has you.",
+      "No path through here. Not any more.",
+      "Another for the mist."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The mist on the eastern rise does not move.",
+      "An empty hut. A path the bog has closed."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Madawg's stolen staff wakes the bog!"
+      }
+    ],
+    "realmFirstKill": "Madawg is dead. Ysberin's staff can go home."
+  },
+  "botLines": {
+    "briefing": [
+      "madawg is a 55 siabra caster in the bog of cullen. [interrupt him|caster]",
+      "siabra camps around him are the same faction. [clear the approach|careful]",
+      "unnatural powers: kill madawg, take the staff to lovernios",
+      "50s group with an interrupter"
+    ],
+    "aftermathWin": [
+      "madawg down. [ysberin's staff|back to lovernios]",
+      "interrupted every cast. [nice|clean]",
+      "the eastern rise mist is moving again",
+      "alainn binn will be glad"
+    ],
+    "aftermathLoss": [
+      "stood in a clump and he [nuked us all|aoed us]",
+      "pulled a siabra camp too. [faction|oops]",
+      "no interrupts. [he cast everything|ouch]",
+      "lost the path in the bog lol"
+    ],
+    "rumour": [
+      "[heard|someone said] madawg killed ysberin of alainn binn for her bog oak staff",
+      "the siabra of the cullen country go to madawg to learn his craft now",
+      "[word is|heard] lovernios wants ysberin's staff for the druid court",
+      "ysberin guided people across the bog for forty years and lost nobody"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Madawg",
+    "text": "The siabra magus of the Bog of Cullen who killed Ysberin, the bog's path-keeper, for her staff of black bog-oak. The Druid Prince Lovernios wants the staff. The bog has changed around him."
+  },
+  "bookPage": "From Derbáil of Ardee's list: the eastern rise of the Cullen bog, if the mist stands still on a windy night. That is Madawg. He killed Ysberin, who kept the bog paths for forty years with a staff of black bog-oak cut before the bog was a bog, and lost nobody. He came to her hut with the mist one night, and in the morning the staff was gone and we found her on her own path. The paths she kept have closed since. The druids say he woke what was in the wood. The siabra go to him to learn it.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Madawg in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Madawg turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "kunsgnos",
+      "relation": "his apprentice in the bog"
+    },
+    {
+      "id": "saemus",
+      "relation": "corrupted by the same craft"
+    },
+    {
+      "id": "queen-cliodna",
+      "relation": "another power of the Cullen bog"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "id": "apocalypse",
+  "name": "Apocalypse",
+  "catalogKey": "caer-sidi/apocalypse",
+  "locationId": "caer-sidi",
+  "realm": "Albion",
+  "aliases": [
+    "apoc"
+  ],
+  "facts": [
+    {
+      "text": "Level 87, 300,000 health; Caer Sidi's final encounter, called by Funus.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "At 99% and 50% he clears his aggro and takes to the air; at 50% two Harbingers of Fate join; he calls a Rain of Fire.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "His lines muse on what drives the raid (power, fame, fortune), praise it for besting his harbingers and remark that good harbingers are hard to come by.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs"
+    },
+    {
+      "text": "About a hundred players minimum; the guide author's lowest kill was 105 (Feb 2003). In July 2003, 80-90 was 'possible with good groups, but tough'.",
+      "provenance": "legend",
+      "source": "docs/RAID-SIZES.md"
+    },
+    {
+      "text": "Dame Ysolde of Caer Gothwaite, Ennyn of the Inconnu, Sir Rhun, Sir Geraint of Caerwent, the lich's company, the axle and the four-roads law are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Apocalypse is the end of the world, kept in the first and highest cell of Caer Sidi. The Inconnu say Arawn could not destroy him, because an ending cannot be ended, only kept, so he built the first cell for him and the whole turning gaol beneath it. Before the door he set four riders named in the Roman tongue for the four roads to the dead: Fames, Bellum, Morbus and Funus. They are heralds, not jailers, and Arawn's law binds them: an ending may take only those who come early by choice, so the riders must ask whether the climbers challenge fate, and grant the living time to arrange their affairs.\n\nArthur reached the riders, said no, and came home with six men; that is the bards' seven. When Morgana's theft of the dead set the gaol's prisoners rising, a company of the dead climbed the stair and said yes. Apocalypse ended them and shut his door again from the inside. From the strongest of them he made his Harbingers of Fate, who serve him without will and are made new from the champions who fall before him. His Rain of Fire is the fire that has fallen at the end of every age. Every account says he rises into the fortress's turning axle and comes down having forgotten everyone.\n\nDame Ysolde of Caer Gothwaite led the first company of Albion to bring him down, with Brother Cadoc as one of her priests; seventy-one of eighty came home, and the fortress stopped turning for a breath. Apocalypse is curious, not vengeful: he asks every climber why they came early, and kills while he listens. Arawn walks to the foot of the stair and checks the lock every winter. Brother Cadoc wrote that Ysolde's company were not the end's conquerors but its turnkeys.",
+  "legend": "Bring a hundred, or ninety who know the fight. When he lifts off at the start and again at half, he drops everyone from his hate list: the tanks pick him up fresh as he lands, and nobody else draws him. At half two Harbingers of Fate come; one full group on each, away from the main tank, then everyone back on him. Rain of Fire lands under people; move out of it, do not heal through it. The Horsemen fights before him drain the raid, so rest in every gap and rebuff after Funus: you get five seconds. If you lose heart when he flies, you lose the raid.",
+  "yells": {
+    "aggro": [
+      "Your end is at hand!",
+      "Is it power that brings you? Fame? Fortune?",
+      "Come, then. Everything comes to me in time."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=99",
+        "text": "Is it power? Fame? Fortune? Perhaps it is all three."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "One wonders what drives such an audacious move."
+      },
+      {
+        "trigger": "addsDead",
+        "text": "Well done. You have bested my harbingers."
+      },
+      {
+        "trigger": "addsSpawn",
+        "text": "My harbingers. Do try not to break them."
+      }
+    ],
+    "death": [
+      "Even an ending ends. How very curious.",
+      "Remember this, when your own end comes. I will."
+    ],
+    "slay": [
+      "Your end was at hand. I did say so.",
+      "Early, as everyone is.",
+      "And what drove that one, I wonder?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The last cell. Its door has been open a long time.",
+      "Fire falls here from nowhere. Mind your feet."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=99",
+        "text": "Apocalypse rises into the air!"
+      },
+      {
+        "trigger": "health<=50",
+        "text": "The Harbingers of Fate descend!"
+      }
+    ],
+    "realmFirstKill": "The end of all things has ended. Caer Sidi is still."
+  },
+  "botLines": {
+    "briefing": [
+      "apocalypse lifts off at the start and at half. he wipes his hate list each time, tanks pick him up when he lands",
+      "at half two harbingers come, one group each, kill them fast then back on apoc",
+      "rain of fire, move out of it. we need a hundred and we have [what we have|enough]",
+      "after funus you get five seconds. rebuff instantly",
+      "harbingers at half: groups 1 and 2, one each, away from the mt",
+      "move out of rain of fire, dont stand in it and heal"
+    ],
+    "aftermathWin": [
+      "apocalypse down. [gg all|gg], the end of the world is over",
+      "he said good harbingers are hard to come by. good raids too",
+      "ninety one people and the end of the world is dead",
+      "that was the cleanest landing pickup i've ever seen",
+      "grats everyone, thats albion's epic done"
+    ],
+    "aftermathLoss": [
+      "we lost it when he flew. nobody picked him up on the landing",
+      "the harbingers ate the healers. need two full groups on them",
+      "four riders then apoc is just too long on the mana we had",
+      "the harbingers got loose on the healers again",
+      "rain of fire, people. move your feet"
+    ],
+    "rumour": [
+      "heard apocalypse asks you why you came. power, fame or fortune",
+      "[someone said|heard] apocalypse isnt even angry. just curious",
+      "[heard|someone said] apocalypse says something different to every person in the raid",
+      "heard the whole fortress stops turning for a second when apoc dies"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "apocalypse",
+    "text": "The end of the world, locked in the first cell Arawn ever built. He is not angry. He is curious. He will ask you why you came. Bring a hundred, and clerics, and do not lose heart when he takes to the air."
+  },
+  "bookPage": "He asked us, while we bled, whether it was power that drove us, or fame, or fortune. Nobody answered him. He seemed disappointed. When we broke his harbingers he praised us, plainly and without irony, and then remarked that good harbingers are hard to come by and that we had cost him two. I have fought dragons that hated me. I would sooner fight a dragon. Apocalypse did not hate anyone. He was simply the end, and the end is patient. When he fell, the fortress stopped turning for a breath, and our Inconnu guide, far below, felt it.",
+  "chronicle": {
+    "win": "{realm} answered the question at the top of Caer Sidi: {raidLeader}'s raid ended Apocalypse in {minutes} minutes.",
+    "loss": "Apocalypse asked {realm}'s raid why it came; {raidLeader} had no answer that would hold."
+  },
+  "era": "alb-first-stones",
+  "factions": [
+    "caer-sidi-prisoners",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "fames",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "bellum",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "morbus",
+      "relation": "fellow rider of the four"
+    },
+    {
+      "id": "funus",
+      "relation": "fellow rider of the four"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The First Cell",
+      "text": "Before Arawn built anything else in Caer Sidi, he built one cell, at the top, and put one prisoner in it.\n\nThe Inconnu tell it as the first thing their lord ever made with his own hands. The dead were already coming to Annwn, quietly, in their thousands, and most of them needed nothing but a road and a place to rest. But something else had come with them, walking at the back of every column of the dead since the first man died: the end of each age, the thing that closes a world when it is finished. It was not a demon. It was not a god. The Inconnu call it only the end, and they say that Arawn could not destroy it, because an ending cannot be ended, only kept.\n\nSo Arawn kept it. He raised the first cell out of the pale stone of Annwn on the road between the living world and his own, and set the end of all things inside, and locked it. Then he built the rest of the gaol beneath it, tier on tier, the reckoning hall at the bottom and the crypts and galleries between, so that anything that ever wished to climb to that door would have to pass through everything else first. Last of all he made the whole fortress turn, slow as a millstone, so that no prisoner could learn where its door would be.\n\nThe Church of Camelot does not accept the Inconnu's account. Its priests call the prisoner the Beast of the last book and say that Arawn, a lord of the dead with no claim on the end of the world, has no business keeping it and less business letting Albion's champions climb to it. The Inconnu do not argue. They say only that the prisoner has been in the first cell longer than the Church has had books, and that it calls itself Apocalypse because men once named it so, and it liked the sound."
+    },
+    {
+      "title": "The Four Roads",
+      "text": "Arawn did not set jailers before the first cell. He set heralds.\n\nThere are four roads by which men come to the dead, the Inconnu teach: hunger, war, plague and the rites of the grave. In the centuries when Rome held Albion, more dead came to Annwn along those four roads than ever before, legion after legion buried along the Roman ways, and Arawn's keepers learned to speak the Roman tongue to receive them. When Arawn made four riders to stand before the end's door, he named them in that tongue: Fames, Bellum, Morbus, Funus.\n\nHe bound them with a law, which the Inconnu call the four-roads law. An ending may take only those who come to it early by choice; everyone else it must wait for. So the riders must ask. Fames, the eldest, chooses one face among those who climb and asks whether they come to challenge fate, and if the answer is no, the climbers may go back down unharmed. If the answer is yes, the law demands one more thing: that the living be given time to arrange their affairs, as the dying are. Fames, the eldest, grants the longest grace. Bellum grants a shorter one, as a soldier's courtesy. Morbus grants as much again, with a warning. Funus grants the same and calls it time to arrange for the event, and when he falls there is no grace at all: the door opens, because the four roads have all been walked.\n\nThe Camelot loremasters note that each rider sends a fate's bearer down the stair ahead of him, and argue about what the bearers are. The Inconnu say they are the riders' own dead, the first who walked each road. Brother Cadoc of Caer Gothwaite, who has seen them closer than any loremaster, wrote only that they bowed to the riders as servants bow, and that they carried something wrapped in cloth that none of his company was willing to unwrap."
+    },
+    {
+      "title": "Seven Came Home",
+      "text": "The first mortal to climb the turning gaol and come down again was Arthur.\n\nAlbion's bards sing that he sailed Prydwen to Caer Sidi with three shiploads of men and that seven came home, and they sing it as a riddle. The Inconnu tell it as a plain account. Arthur came for something in the fortress, they say, though they will not say what, and he fought his way up through the crypts and the galleries, and lost most of his company on the way. At the top of the stair he met the riders. Fames looked along his last men, chose the king's face, and asked him whether he had come to challenge fate.\n\nArthur said no. Fames told him to go and do what he was meant to do, and Arthur went, with six men behind him, and that is why seven came home. The Inconnu think it the wisest thing any king of Albion ever said.\n\nThe bards have a second version, and the Church a third. The bards say Arthur came for the cauldron the nine maidens kept warm, and took it, and that it is the cauldron, not the riders, that cost him his ships; the Inconnu answer that the cauldron's rim still lies cold in the larders of Caer Sidi, where Brother Cadoc saw it and drew it. The Church says Arthur went to the fortress to bind the Beast and failed, and that the failure is why the dark ages came after Camlann. The knights of Caer Gothwaite keep a fourth, the one Dame Ysolde told her company at the foot of the stair in a later age: whatever the king meant to do, he reached the riders, and he chose, and the first man of Albion who ever stood in that hall said no."
+    },
+    {
+      "title": "The Rising Below",
+      "text": "When the prisoners of Caer Sidi rose, the first cell stayed shut.\n\nThe rising came in the age of Morgana's war, when the witch began drawing the dead out of Annwn's Deadlands to march in her armies, and word went through the gaol that the door of the underworld could be opened from the wrong side. The prisoners broke Arawn's lesser keepers in a season. The Crypt Lord took command of them. The liches took the galleries, Lord Sanguis took his red chapel, Warlord Dorinakka took the yard and drilled Arawn's own knights. The fortress kept turning. For the first time since it was built, nobody in it answered to its builder.\n\nThe prisoners went up the stair once. A company of them, led by a lich of the galleries whose name the Inconnu do not say, climbed to the riders' hall to free the end of the world and make it their ally. Fames chose the lich's face and asked whether he came to challenge fate. The lich said yes. The Inconnu say that the riders granted the dead the same courtesy as the living, the same graces, the long and the shorter and the shortest, and that the door opened, and that Apocalypse came out and looked at the lich's company with great curiosity, and ended them, and went back into his cell, and shut the door himself.\n\nThat is the oldest proof the Inconnu have that he does not want to leave. Everything comes to him in time, they say; there is nowhere he needs to go. When Dame Ysolde's company reached the top of the fortress, ages after the lich, the riders were still there, still courteous, and the door was still shut from the inside."
+    },
+    {
+      "title": "The Harbingers and the Fire",
+      "text": "Apocalypse keeps two kinds of servant, and both were born on the day the lich's company went up the stair.\n\nThe Harbingers of Fate are the first. The Inconnu say the end of the world made them from the strongest of the lich's dead: those who had said yes and fought well enough to reach him. Brother Cadoc wrote that he did not call them at once, only when he had been wounded deep enough to wonder about his visitors, and then never alone, and that they fought for him without will. When Ysolde's knights broke them, he said so, plainly and without irony, and remarked that good harbingers were hard to come by and would need to be replaced. Cadoc's company understood the remark on the way down: the harbingers are made from the champions who reach him and fall. Sir Rhun of Caer Gothwaite did not come back from the harbinger he went to meet, and the knights of that garrison do not speak of the harbingers' faces.\n\nThe Rain of Fire is the second, and it is older. It is the fire that has fallen at the end of every age the Inconnu remember: on the old province's towns when Rome left, on the colleges of Avalon on the first night of the burning. Apocalypse calls it down in his hall in a ring, where the climbers stand, and it burns whatever does not move. The loremasters of Camelot have tried to prove that the fire which burned Avalon came down from Caer Sidi, and failed; the readers of Caer Gothwaite, who watched the colleges burn, will not discuss it.\n\nCadoc set the fire down in the words of the old province's last chroniclers, who saw it fall on the forum of the last Roman town in the west the year the legions sailed: a ring of fire, coming down where men stood. Under it he wrote one line of his own, which the knights of Caer Gothwaite still say to each other at burials: what dies up there joins him."
+    },
+    {
+      "title": "The Mill's Axle",
+      "text": "In every account that has come down the stair, Apocalypse leaves the floor, and not only once.\n\nBrother Cadoc saw it first when the first blade bit him, and again when the end of the world had begun to tire. He rises into the air of his hall, out of reach of any blade, drifts to a place above the middle of the room, and stays there long enough for the climbers to wonder whether he will come down. When he does, he has forgotten everyone. Whoever struck him hardest, whoever drew his eye, whoever he was about to kill: none of it is remembered. He comes down fresh and chooses again.\n\nThe Inconnu explain it by the fortress. Caer Sidi turns on an axle that runs up through the centre of every tier, they say, and the first cell sits on the axle's top, where the turning is slowest. When the end of the world rises into the air of his hall, he rises into the axle itself, into the place where the fortress's turning happens, and the turning takes his memory with it, as a millstone takes the grain. An ending has no memory, the Inconnu say. It only has a next.\n\nThe Church's priests have a harsher reading. They say the Beast forgets in order to be fair, because a thing that remembered every wound would end the world out of spite, and that the forgetting is the last mercy God left in it. Brother Cadoc, who is a priest of that Church, wrote that he could not tell which reading was right, only that his company nearly broke both times the Beast rose, and that Dame Ysolde held it together by calling out, while he hung in the air, the names of the dead of Caer Gothwaite, so that the company would have something to remember while he forgot."
+    },
+    {
+      "title": "Dame Ysolde's Company",
+      "text": "The first company of Albion to bring Apocalypse down was led by Dame Ysolde of Caer Gothwaite, a knight of the Isle of Glass garrison, and Brother Cadoc went with it as one of its priests. His account is the one Albion keeps.\n\nThey went up with eighty in the autumn after the rising was known in Camelot, guided by an Inconnu called Ennyn who would not pass the foot of the riders' stair. They lost nine to the Crypt Lord's court in the first hall. In Ilron's gallery two of them died fighting shadows that were not Ilron. They killed Sanguis twice. At the top Fames looked along their ranks and chose Ysolde, and she said yes, and in the grace the riders gave her nobody spoke except to pray.\n\nCadoc wrote that the riders took most of their strength and Apocalypse nearly took the rest. The end of the world asked each of them, while they bled, what drove them. Cadoc would not write what he was asked, because he said it was said to each of them alone and was not the same. When the harbingers came, two of the company's knights, Sir Rhun and Sir Geraint of Caerwent, took one each with their companies, and Sir Rhun did not come back from his. When the end of the world fell, the fortress stopped turning for the space of a breath; Ennyn, waiting below, felt it, and said afterwards that his lord would know.\n\nSeventy-one came home. Cadoc has counted them every night since. The Prydwen roll set the kill and the count beside Arthur's, and the two numbers are cut together over the chapel door at Caer Gothwaite: Arthur's seven, and Ysolde's seventy-one."
+    },
+    {
+      "title": "What He Asks",
+      "text": "Apocalypse is curious. Every account agrees on that, and nothing else about him is as frightening.\n\nHe asks the climbers why they came: power, he suggests, or fame, or fortune, or perhaps all three. He wonders aloud what drives a mortal to so audacious a move, and what kind of power lay behind the breaking of his harbingers. He observes, kindly, that they seem to have overlooked the small matter of a price. He is not the vengeful sort, he tells them. It is only that every early arrival costs him something, and he would like to understand why they insist on arriving early.\n\nWhat he wants, then, the Inconnu say, is only that: to understand. He does not want out of his cell. He does not want Albion, or Annwn, or the riders' freedom. He wants to know why men climb to him when he would come to them anyway, and no answer has ever satisfied him, so he keeps asking, and kills while he listens.\n\nWhat happens if he is ever let out is the one question the Inconnu answer without hesitation. The end of the age, they say: not a war, not a burning, only a closing, the way a book closes. Arawn walks to the foot of the riders' stair every winter, alone, and looks at the shut door, and goes back down. The Inconnu think he is checking the lock. When Ysolde's company ended the end of the world and the fortress stopped turning for a breath, Ennyn said the stillness went down the axle to his lord like a knock on a door, and that Arawn would know from it that the door still held. Brother Cadoc, who did not like the thought, wrote it down anyway: we were not his conquerors. We were his turnkeys."
+    }
+  ]
+}

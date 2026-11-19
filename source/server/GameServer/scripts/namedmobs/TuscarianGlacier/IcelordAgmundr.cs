@@ -59,8 +59,6 @@ namespace DOL.GS
             VisibleActiveWeaponSlots = 34;
             MeleeDamageType = eDamageType.Crush;
 
-            AgmundrBrain.IsChanged = false;
-            AgmundrBrain.IsPulled = false;
             AgmundrBrain sbrain = new AgmundrBrain();
             SetOwnBrain(sbrain);
             LoadedFromScript = false; //load from database
@@ -75,10 +73,10 @@ namespace DOL.GS
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             BroadcastMessage(String.Format("To come this far... only to face a terrible death!"));
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
     }
 }
@@ -97,8 +95,8 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        public static bool IsPulled = false;
-        public static bool IsChanged = false;
+        public bool IsPulled = false;
+        public bool IsChanged = false;
         private bool PulledText = false;
         public void BroadcastMessage(String message)
         {

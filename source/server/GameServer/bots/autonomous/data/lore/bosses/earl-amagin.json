@@ -1,0 +1,149 @@
+{
+ "id": "earl-amagin",
+ "name": "Earl Amagin",
+ "npcNames": [
+  "Earl Amagin"
+ ],
+ "aliases": [
+  "amagin",
+  "the examiner"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion",
+  "inquisition-below"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "examines for him"
+  },
+  {
+   "id": "marquis-haurian",
+   "relation": "carves after he reads"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "whose name he lacks"
+  },
+  {
+   "id": "prince-baalorien",
+   "relation": "sent him to the door"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "examined the host for him"
+  },
+  {
+   "id": "behemoth",
+   "relation": "stands under its ledge"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Amagin is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands at the bottom of the approach, about 430 units from the Behemoth.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Earl Amagin beside Marquis Chaosmar and Duke Alloc, in High Lord Baln's hall; the world data puts him on the approach. Living Server follows the world data and tells both.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Amagin is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Amagin uses model 2119, the model of the Inquisitors, with the demon body type.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In the Ars Goetia, Gamigin (4) is a marquis who gives account of the souls of the dead; Amagin may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Earl Amagin examines the condemned at the Master's door, and his is the last single voice a struck demon hears before the Master's many. The procedure the Chancellor fixed in the First Roll ran in four steps: the Inquisitors examine, the Chancellor pronounces, the Mutilators unmake and the Master eats. In the Fourth Roll Adremal added a fifth between the pronouncing and the unmaking, because a demon struck off on the north side of the hollow had the whole length of the court to walk before it reached the door, and two had tried to argue their way back onto the Roll on the slope. The Chancellor wanted the line read one last time at the door itself, by someone who would not be argued with. Prince Ba'alorien sent him Amagin.\n\nAmagin had been an Inquisitor of the north cloister, and he still wears the Inquisitors' grey shape. The realms' oldest maps of the hollow place him in High Lord Baln's hall beside Duke Alloc, and the court explains that too: for his first Rolls he sat in Baln's hall examining the host for faults on Field Marshal Nebir's behalf, and in the Fourth Roll the Master took him.\n\nHis form at the door is short. The condemned is brought down the slope between knights of Legion's Own. Amagin reads its line from the Chancellor's wall aloud, then reads it again with the word struck, and asks it one question: whether it heard. If it says yes, Marquis Haurian steps forward with his hooks. If it says no, Amagin reads it again. Nobody has been read to more than four times. The court calls Amagin's patience the only mercy at the door. The Chamberlain, who opens the door after, says it is not mercy but thoroughness.\n\nHe keeps one more account, which nobody asked him for. Every demon he has read to has gone into the Master, and Amagin says he can still tell each of their voices in the chorus by the line he read it. He stands a few strides from the Behemoth's ledge, listening upward, and the imps say he is checking the chorus against the Roll. One voice in it he cannot place: the politest one, which went into the Master in the Third Roll, before Amagin came to the door. It is the Chamberlain's name, and it is the only blank in his account. He has asked the Chamberlain for it once each Roll, as an examiner asks. The Chamberlain says it is not his to give.",
+ "legend": "Amagin stands at the bottom of the approach, directly below the Behemoth's ledge, which is far overhead, with Mutilators Konapher and Ezerak, Inquisitor Famuel and the Chamberlain all within a long pull. Level 71, the Inquisitor model, no script. Clear the Mutilators of Legion's Own around him first, then pull him up the slope, away from the Chamberlain. Players call him the Examiner, and the old story is that he reads each demon its line before Legion eats it. Albion priests swear he can hear every voice inside Legion. Older maps put him in Baln's hall instead, so do not trust a guide that sends you there. He is the last thing between you and the Chamberlain, so go in with full mana.",
+ "yells": {
+  "aggro": [
+   "Your line. You have none. I will read you nothing.",
+   "Did you hear? Then you were examined.",
+   "Come to the door. Everyone does, in the end."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Again. I will read it again. Listen this time."
+   }
+  ],
+  "death": [
+   "Read it... once more...",
+   "Whose voice will I be? Someone keep the account."
+  ],
+  "slay": [
+   "Examined.",
+   "Heard and struck.",
+   "The account is closed."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A voice reads names aloud, slowly, twice each.",
+   "Above, on the ledge, something vast is breathing."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Examiner begins to read your realm aloud."
+   }
+  ],
+  "realmFirstKill": "Earl Amagin has fallen. No one reads at the door."
+ },
+ "botLines": {
+  "briefing": [
+   "amagin is right under the behemoth ledge. [pull him up the slope|away from the chamberlain]",
+   "clear konapher and ezerak before amagin. [the mutilators first|mutilators first]",
+   "dont fight amagin near the chamberlain. [keep it up the slope|up the slope]",
+   "71 no tricks, inquisitor body. [full mana before|rebuff first]"
+  ],
+  "aftermathWin": [
+   "amagin down. [chamberlain next|the door is next]",
+   "earl amagin dead. [nobody to read at the door lol|examiner's done]",
+   "amagin done, [clean pull|kept the chamberlain out of it]",
+   "the examiner is dead. [now the chamberlain|full mana for the chamberlain]"
+  ],
+  "aftermathLoss": [
+   "fought amagin too close to the chamberlain. [never again|wipe]",
+   "amagin brought the chamberlain. [gg|mess]",
+   "amagin got us. [regroup|rez]",
+   "pulled the mutilators and amagin together. [too much|slower]"
+  ],
+  "rumour": [
+   "[heard|word is] earl amagin reads every demon its line before legion eats it",
+   "amagin can hear every voice inside legion. [creepy|so the priests say]",
+   "[someone said|my guildie says] amagin asks the chamberlain his name every time and never gets it",
+   "amagin used to sit in balns hall. [the old maps say so|the guide map has him there]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "amagin",
+  "text": "The Master's Examiner, once an Inquisitor of Prince [Ba'alorien]'s cloister, who reads each condemned demon its struck line at the door before Marquis [Haurian] carves it. He keeps an account of every voice in [Legion]; the one blank in it is the [Chamberlain]'s name."
+ },
+ "bookPage": "From an imp's account of the door, told to a Midgard skald in the Midgard hall for a cup of mead: They brought one of the great ones down the slope between knights, horned and taller than a pine. The grey one by the door read to it from the wall, slowly, and then read the same words again with one word changed, and asked it whether it had heard. The great one said no. The grey one read again. The third time the great one said yes, very quietly, and the Carver came forward with his hooks. I was close enough to hear the grey one say afterwards, to nobody, that it would know that voice again.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} silenced Earl Amagin, the Master's Examiner, in {minutes} minutes.",
+  "loss": "Earl Amagin read {realm}'s raid under {raidLeader} its line at the Master's door, twice."
+ }
+}

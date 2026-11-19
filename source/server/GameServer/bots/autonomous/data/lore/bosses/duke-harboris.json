@@ -1,0 +1,181 @@
+{
+ "id": "duke-harboris",
+ "name": "Duke Harboris",
+ "tier": "epic",
+ "npcNames": [
+  "Duke Harboris"
+ ],
+ "aliases": [
+  "harboris",
+  "the ghost duke"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "eastern-halls"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baelerdoth",
+   "relation": "his lord; once his firebrand"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "told him the Queen is away"
+  },
+  {
+   "id": "marquis-dortaleon",
+   "relation": "kept his seat on the same ruling"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "walked through his chambers"
+  },
+  {
+   "id": "duke-satori",
+   "relation": "listened to him for a Roll"
+  },
+  {
+   "id": "earl-fenex",
+   "relation": "shares his hall"
+  },
+  {
+   "id": "marquis-focalleste",
+   "relation": "shares his hall"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Duke Harboris is a level 67 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands in High Lord Baelerdoth's hall in the east, near Earl Fenex and Marquis Focalleste.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Duke Harboris among the dukes of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Below level 70, Duke Harboris is an ordinary grind target for gamebots, not a raid-reserved demon.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Duke Harboris spawns with the ghost flag; no other duke does.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "High Lord Baelerdoth, below a quarter of his health, casts an absorption debuff on the raiders around him.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaelerdoth.cs"
+  },
+  {
+   "text": "Haborym is named as a duke (an alias of Aim) in some demonologies; Harboris may read as that name, to verify. The Lesser Key lists Aim (23) as a duke.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "His seat, master, feuds and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "chapters": [
+  {
+   "title": "The firebrand",
+   "text": "The deep fires are the only light the hollow has of its own, and in the Uncounted Age they were far below the halls, at the bottom of cracks no lord would go down twice. Harboris went down them. He was High Lord Baelerdoth's firebrand: a demon who carried fire up from the deep on his own back, in a cage of his own ribs, and set it in the braziers of his master's hall so that Baelerdoth sat in light while his neighbours sat in the dark. It was hard work and dangerous, and it made Harboris the only demon of that age who knew every crack between the halls and the fires. The other lords of the east paid him in hoard-metal to bring fire to them too, and he brought it, and Baelerdoth never once asked where the hoard-metal went.\n\nAt the Feast of Thrones Harboris lit the deep chamber. The thirty lords had agreed to meet in the dark, but somebody had to be able to see who was eating whom, and Baelerdoth sent his firebrand to stand in the corner with his ribs alight. He saw everything. He is the only demon in the court who can say for certain which of the Blood knelt second, and he has never said, because both princes have offered him a duchy for the answer and he already has one. The First Roll wrote him as Duke, of High Lord Baelerdoth's household, Keeper of the Fires, in Baelerdoth's hall, and for seven Rolls his ribs lit the east."
+  },
+  {
+   "title": "The climb",
+   "text": "In the Seventh Roll the Queen went away, and nobody in the court knew where. Harboris believed he knew how. He had spent the Uncounted Age going down cracks, and he had found, at the end of one of them, a crack that did not go down to the fires but up, past the halls, past the roof of the hollow, toward something cold. Nobody had ever climbed it. In the Eighth Roll, Harboris told Baelerdoth he was going to look for the Queen, and Baelerdoth, who had always wanted to be the high lord who found her, gave him leave. Harboris put out the fire in his ribs, so that he would not be seen, and climbed.\n\nHe came back down at the end of the Roll. His body did not. What walked back into Baelerdoth's hall was the shape of Harboris without the weight, a ghost that passed through the braziers without lighting them and through the walls without stopping. He has not said what he found at the top of the crack. The court has three guesses and the realms have three more. The Chancellor ruled that a duke without a body has not fallen from his place, since nothing in the bargain says a duke must have one, on the same ground on which Marquis Dortaleon kept his seat after dying two Rolls before, and Harboris kept his duchy. He has not lit a fire since. The braziers of Baelerdoth's hall burn now with fire that other demons carry, and burn lower."
+  },
+  {
+   "title": "What he saw",
+   "text": "Each realm says Harboris came up into its own land, and each says the land did it to him. Albion's priests say the crack came out under a churchyard in the old kingdoms, and that the duke climbed into the open air on a feast day just as the bells were rung, and that the sound of the bells took the body off him like a coat. They ring the bells of Camelot's churches harder on feast days because of it. Midgard's skalds say he came out in the high snow above Mularn, long before there was a door there, and that the cold of the world above is a cold demons are not made for, and that it froze his body solid while his spirit kept climbing, and that the frozen duke stands somewhere in the snow still with his ribs open. Hibernia's druids say he came up inside one of the Sidhe hills, among the Good Folk, who have their own laws about guests, and that the Good Folk took his body as the toll for leaving, which is what they always take.\n\nThe court's own guesses are less interesting and more frightening. The imps say he found the Queen, and that she took his body to wear. The Inquisitors say he found nothing, and that it was finding nothing that unmade him. The Chamberlain, who keeps the Queen's chair, asked Harboris once whether he had seen her. Harboris said that she is away. They are the only words the two of them have ever been heard to exchange, and they are the same words."
+  },
+  {
+   "title": "The ghost of the east",
+   "text": "When the three doors opened in the age of the realm wars, the court found that it had one demon who had been up into the world and come back, and Field Marshal Nebir went to Baelerdoth's hall to ask him about it. The Marshal came away with nothing he could count. Duke Satori, who listens to everyone, is said to have stood unseen beside the ghost duke for a whole Roll to learn the way up, and to have left without it. Prince Abdin's Director, Kobil, wanted Harboris for the Army of Shadows, reasoning that a ghost was already most of the way to being a shadow. Harboris walked through the Director's chambers above the Gate and out the other side without stopping, and Kobil has not asked again.\n\nHe stands now in High Lord Baelerdoth's hall in the east, not far from his lord, with Earl Fenex and Marquis Focalleste near by. Baelerdoth's presence drinks the strength from every ward near him; Harboris has no ward and nothing to drink, and he passes through his master's aura as through everything else. The Hibernian company that first came into the hall from the eastern stair found him standing before his lord, and its bards came home saying that a ghost can still strike. What he wants is the one thing everyone in the court understands and nobody envies. He wants to go back up the crack. The court believes he has been back to the bottom of it every Roll since, and stood looking up, and come away, a little thinner each time."
+  }
+ ],
+ "story": "Duke Harboris was High Lord Baelerdoth's firebrand. In the Uncounted Age he carried fire up from the deep cracks in a cage of his own ribs and set it in his master's braziers, and he knew every crack between the halls and the fires. At the Feast of Thrones he lit the deep chamber with his ribs, and so he is the only demon who knows for certain which prince knelt second; both have offered him a duchy for the answer, and he already has one. The First Roll made him Keeper of the Fires.\n\nIn the Seventh Roll the Queen went away. Harboris knew a crack that went up instead of down, toward something cold. In the Eighth Roll he put out the fire in his ribs and climbed it to find her. What came back down at the end of the Roll was his shape without his body. The Chancellor ruled that the bargain does not require a duke to have a body, as it had not required Marquis Dortaleon to be alive, and Harboris kept his duchy. He has lit no fire since.\n\nEach realm says he came up into its land. Albion's priests say the bells of a feast day took his body off him; Midgard's skalds say the snow above Mularn froze it; Hibernia's druids say the Good Folk took it as toll. The imps say he found the Queen and she wears it; the Inquisitors say he found nothing. When the Chamberlain asked if he had seen the Queen, Harboris said she is away.\n\nNebir, Satori and Kobil have all tried to learn the way up from him and failed. He stands in Baelerdoth's hall near Earl Fenex and Marquis Focalleste, and goes back to the bottom of the crack every Roll to look up.",
+ "legend": "Harboris is a ghost duke in High Lord Baelerdoth's hall in the east, near Earl Fenex and Marquis Focalleste. Level 67, no script; the ghost look is all he has, he takes damage like anything else. The danger is the room: Baelerdoth is close, and below a quarter of his health the high lord strips the absorption off everyone near him. Kill Harboris, Fenex and Focalleste first, one at a time, out toward the Ward, before you touch Baelerdoth. People say Harboris is the only demon who has been up into the world and come back, and argue about whose land he came up in. Albion players say it was theirs. So does everyone else.",
+ "yells": {
+  "aggro": [
+   "I have been where you come from. It is cold.",
+   "You cannot burn what has no body.",
+   "Up the crack. That is where you belong. Go back."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The fire is out. It has been out since the climb."
+   }
+  ],
+  "death": [
+   "Up... let me go up...",
+   "She is away. Tell them she is away."
+  ],
+  "slay": [
+   "Lighter now. Like me.",
+   "Your body stays here. I know how that feels.",
+   "Down. Not up. Never up."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "A shape moves through the braziers without lighting them.",
+   "The fires here burn low.",
+   "Something stands in the wall, half in and half out."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The ghost duke rises through the floor."
+   }
+  ],
+  "realmFirstKill": "Duke Harboris has fallen. The ghost of the east is still."
+ },
+ "botLines": {
+  "briefing": [
+   "harboris is the ghost duke in baelerdoths hall. [no tricks|its just a look], kill him like anything else",
+   "harboris, fenex, focalleste first. [one at a time|single pulls], out toward the ward",
+   "dont touch baelerdoth till the room is clear. [he eats your absorb|below 25 he strips abs]",
+   "67, quick kill. [then the earl|then fenex]"
+  ],
+  "aftermathWin": [
+   "harboris down. [ghost is gone|the ghost duke is done]",
+   "duke harboris dead. [fenex next|on to fenex]",
+   "ghost down, [easy|quick one]",
+   "harboris done. [room is nearly clear for baelerdoth|baelerdoth soon]"
+  ],
+  "aftermathLoss": [
+   "pulled baelerdoth with harboris. [no absorb, rip|wards eaten]",
+   "harboris plus focalleste, [wipe|too much]",
+   "the ghost duke got us. [regroup|rez]",
+   "wrong pull in baelerdoths hall. [back up|pull out to the ward]"
+  ],
+  "rumour": [
+   "[heard|word is] harboris climbed up into the world once and came back a ghost",
+   "harboris went up to look for the demon queen. [lost his body|came back without it]",
+   "[someone said|my guildie says] harboris saw which prince knelt second at the feast and wont tell",
+   "the albs say church bells took harboris's body. [the mids say snow|the hibs say the good folk]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "harboris",
+  "text": "The ghost duke of High Lord [Baelerdoth]'s hall, once the Keeper of the Fires. In the Eighth Roll he climbed a crack toward the world above to find the absent Queen, and came back without his body. Each realm says it was its own land that took it. He told the [Chamberlain] only that she is away."
+ },
+ "bookPage": "From a sermon preached at Camelot on the feast of the dedication, copied by a novice: Ring the bells harder, I tell you, and I will tell you why. In the days of the old kings, long before the door under the Hills, a demon of the pit climbed up through the earth to see the sky, and came out under a churchyard on a feast day. The sexton saw it, a horned thing with its ribs open like a cage, standing among the graves and staring at the sun. Then the bells were rung for the feast, and the sexton swore that at the first stroke the thing went thin, like smoke, and at the third it was gone.",
+ "bookPages": [
+  "From a sermon preached at Camelot on the feast of the dedication, copied by a novice: Ring the bells harder, I tell you, and I will tell you why. In the days of the old kings, long before the door under the Hills, a demon of the pit climbed up through the earth to see the sky, and came out under a churchyard on a feast day. The sexton saw it, a horned thing with its ribs open like a cage, standing among the graves and staring at the sun. Then the bells were rung for the feast, and the sexton swore that at the first stroke the thing went thin, like smoke, and at the third it was gone.",
+  "The sermon goes on: Gone, I say, but only its body. The sexton heard it go back down. He heard it all night in the earth under the graves, climbing down, and weeping, and once he heard it say a word that he took to be a woman's name. That is why the bells of Camelot are rung hard on feast days, so that anything climbing up under our churchyards may know what waits for it at the top. I am told the Midgarders say the snow did it, and the Hibernians that it was their fair folk. Let them. We have the bells."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} laid the ghost of Duke Harboris in {minutes} minutes.",
+  "loss": "Duke Harboris rose through the floor of Baelerdoth's hall and drove {realm}'s raid under {raidLeader} back up the stair."
+ }
+}

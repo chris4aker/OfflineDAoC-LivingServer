@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The playtester's own tests: packet layouts, the scripted player against a fake server, the test-world guard,
+       the server config and the reports. They need no game files and no running server. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OfflineDaoc.Playtester\OfflineDaoc.Playtester.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="NUnit" Version="4.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
+  </ItemGroup>
+</Project>

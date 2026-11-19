@@ -10,7 +10,13 @@ fingerprint, checks the result against the fixed one, and backs the file up firs
 
 An entry may instead name a whole file shipped in the build folder ("File": "content/<name>", no "Ops"), for a file
 that is entirely Living Server's own (Beta 1.1: the game's loading screen, pregame/splash.mpk -> content/
-pregame-splash.mpk). Those entries are written by hand and kept when this script rewrites the list.
+pregame-splash.mpk). Those entries are written by hand (the loading screen's by make_pregame_splash.py
+--update-patches) and kept as they are when this script rewrites the list, with their two optional fields:
+  "Replaces": [sha256, ...]  earlier Living Server versions of the file the installer may also replace (1.2: the 1.1
+                             loading screen); a file that is none of these nor the released one is left alone.
+  "Keep": true               Living Server's own file stays on rollback: ROLLBACK.cmd puts back only an earlier Living
+                             Server version, never the released file, and PREPARE-FOR-UPDATE.cmd leaves it.
+Both are honoured only on "File" entries (byte ops need the released file), and this script never writes them.
 """
 import base64
 import difflib
@@ -89,6 +95,8 @@ def main(argv):
     try:
         with open(argv[1], encoding='utf-8') as f:
             kept = [e for e in json.load(f) if 'File' in e and e['Path'] not in {x['Path'] for x in entries}]
+        for e in entries + kept:
+            assert 'File' in e or not ('Replaces' in e or 'Keep' in e), f"{e['Path']}: Replaces and Keep need a File entry"
     except FileNotFoundError:
         kept = []
     entries += kept

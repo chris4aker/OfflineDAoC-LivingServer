@@ -1,0 +1,71 @@
+{
+  "id": "kreg",
+  "name": "Kreg",
+  "npcNames": [
+    "Kreg"
+  ],
+  "locationId": "gripklosa-mountains",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "aegir-clans"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Kreg is a level-38 bergklan concoctor (faction Berklan Tribe; the clan-folk's model) in the Gripklosa Mountains (324,841/286,898) among bergklan concocters, with griffon gliders (40-44) and hostile mylings nearby; aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Morvalt Crystal' (Kekov of Hagall): 'Find Kreg, a bergklan concoctor, and ask him for the map', then follow it to the morvalt camp to learn the words.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "Kreg's map and his trade are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Kreg brews. He is a concoctor of the bergklan, the mountain-clan, who mix what the mountains give them into things the clan sells and things it does not, and he keeps a map nobody else in the clan is allowed to see: the way to the morvalt fires where the words of the morvalt crystal can be heard. Kekov of Hagall wants the crystal. Kreg wants something for the map, and what he wants changes every time.\n\nThe bergklan trust nobody, Gripklosa says, and Kreg trusts less than that. He brews where the griffon gliders circle over his fire and the mylings, the dead children, wander close, because, he says, nobody comes to steal from a man who works between griffons and the dead. He gives up the map to those who ask the right way, and fights those who do not, and some days he fights both. Kekov pays him well.",
+  "legend": "Kreg is a level 38 bergklan concoctor (Berklan Tribe faction) in the Gripklosa Mountains, for Kekov's Morvalt Crystal: ask him for the map, then go to the morvalt camp for the words. Concocters, griffon gliders (40-44) and hostile mylings are around him. Ask him for the map with the whisper before you kill anything near him; the griffon gliders overhead are higher level than he is.",
+  "yells": {
+    "aggro": [
+      "The map? The map costs more than you have.",
+      "(He tips a bubbling pot toward you.)"
+    ],
+    "death": [
+      "The brew... is ruined..."
+    ],
+    "slay": [
+      "Another ingredient."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A clan-man brews between the griffons and the dead."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "kreg is the 38 bergklan concoctor with the map for morvalt crystal",
+      "griffon gliders overhead are 40 to 44"
+    ],
+    "aftermathWin": [
+      "got the map",
+      "kreg wanted something different again"
+    ],
+    "rumour": [
+      "kreg keeps a map to the morvalt crystal camp nobody else in the clan may see",
+      "kreg brews between the griffons and the mylings so nobody steals from him"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kreg",
+    "text": "A concoctor of the [bergklan] who keeps the map to the morvalt crystal's camp and wants something different for it every time. He brews between the griffons and the [mylings]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} took Kreg's map in Gripklosa in {minutes} minutes."
+  }
+}

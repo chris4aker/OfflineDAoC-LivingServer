@@ -1,0 +1,66 @@
+{
+  "id": "manstrale",
+  "name": "Manstrale",
+  "npcNames": [
+    "Manstrale"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Manstrale is a level-36 wolfaur (the wolfaur's model) in Varulvhamn (27,851/32,765) among wolfaur quixots and lunarians, a scavenger and an advisor; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Swedish manstrale would read 'moonbeam' (mansken, strale), to verify; Manstrale as the moon-watchers' pupil is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines; Old Norse/Swedish (to verify)"
+    }
+  ],
+  "story": "Manstrale is the moonbeam, the youngest of the wolfaur who walk with the lunarians, the old moon-watchers who count the nights to every change for High Lord Modolfr. The lunarians took Manstrale in as a cub, the court says, because she was born on a night when the moon came through a crack in the haven's roof and lay across her, and the lunarians take that for a sign.\n\nShe has been counting nights ever since, and the lunarians say she counts better than any of them, and that she does not tell Modolfr everything she counts. The young of the upper tunnels think she knows the night Modolfr has picked for the war. She will not say. She fights strangers with the quixots and moon-watchers round her, quickly, as the wolfaur do, and then goes back to the crack in the roof. Ritter of the quixots calls her the only wolfaur who has ever made him wait.",
+  "legend": "Manstrale is a level 36 wolfaur among wolfaur quixots and lunarians (37-39) in Varulvhamn, west of the upper halls. No faction on her; the lunarians and quixots round her are the work. The lunarians are 39, a few levels above her, so pull her out to you rather than walking into the moon-watchers. Good spot for a group in the high 30s that wants a named without the lords' hall.",
+  "yells": {
+    "aggro": [
+      "The moon did not tell me about you.",
+      "(She glances at the crack in the roof.)"
+    ],
+    "death": [
+      "Count... the nights..."
+    ],
+    "slay": [
+      "One night fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Moonlight through a crack in the roof. Someone counts."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "manstrale is the 36 wolfaur with the lunarians in varulvhamn",
+      "lunarians round her are higher than she is"
+    ],
+    "aftermathWin": [
+      "manstrale down",
+      "no idea what night modolfr picked though"
+    ],
+    "rumour": [
+      "manstrale was born in moonlight through a crack in the haven roof",
+      "manstrale may know the night modolfr picked for the war"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Manstrale",
+    "text": "The moonbeam, a young wolfaur raised by the lunarian moon-watchers, who counts the nights better than any of them. See [high lords]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} ended Manstrale's counting in Varulvhamn in {minutes} minutes."
+  }
+}

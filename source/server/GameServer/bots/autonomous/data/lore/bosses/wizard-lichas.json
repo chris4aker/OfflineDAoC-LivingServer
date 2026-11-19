@@ -1,0 +1,86 @@
+{
+  "id": "wizard-lichas",
+  "name": "Wizard Lichas",
+  "npcNames": [
+    "Wizard Lichas"
+  ],
+  "locationId": "stonehenge-barrows",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Wizard Lichas: NPC template 12815, level 48, model 61, ghost, aggro 200 (range 200), no spells, respawn 300 s, at 28332, 30439 in the upper halls among spiritual advisors, repentant followers (37, Undead) and malefic phantoms.",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate/ZonePoint tables, region 20 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Feast of the Decadent (Elvinia Dareal, Caer Witrin): destroy the focus Dathmul in Snowdonia, take the scroll to Vera Astyrian in Snowdonia Fortress, then seek out and destroy the Wizard Lichas in Stonehenge Barrows.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Existing bot chat: Lichas was Merlin's apprentice who stayed behind when the barrow was sealed.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+    },
+    {
+      "text": "Lichas's school of the dead and his question to visitors are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The minstrels say Lichas was Merlin's pupil, the last one, who stayed behind under the stones to keep a door when his master went away, and that his master said he would not be long. That was before Camlann. Lichas is still keeping it. He has gone to bone and spite in the keeping, and he asks every living visitor the same thing: whether the master sent them.\n\nHe has not kept it alone. In a hall of the upper barrows that the soul harvesters leave alone he keeps a school of the dead: spiritual advisors who have nobody left to advise, followers who repented of whatever they did when it was too late to matter, phantoms who listen. He teaches them, though no one living has heard what, and the repentant stand nearest him, as pupils do, and rise with him.\n\nElvinia Dareal of Caer Witrin says Lichas is not keeping a door shut but holding one ajar, and that the hollow man Dathmul in Snowdonia and the scroll Vera Astyrian guards are pieces of the same gathering; she wants him destroyed for it. Dafydd of the harp says Lichas is only tired. Both may be true. A pupil left too long stops waiting for his master and starts waiting for someone else.",
+  "legend": "Wizard Lichas, level 48, upper west halls of the Barrows, in the middle of his school: spiritual advisors, repentant followers (37) and malefic phantoms, all undead and they help each other. Clear the room from the edge, then kill him; he has no spells in the data, he just hits. Feast of the Decadent wants him destroyed after Dathmul and Vera Astyrian's scroll. Respawn about five minutes.",
+  "yells": {
+    "aggro": [
+      "Did my master send you?",
+      "Class! We have visitors."
+    ],
+    "phases": [],
+    "death": [
+      "Tell him... I kept it..."
+    ],
+    "slay": [
+      "Not sent, then.",
+      "Sit. Listen. You will learn."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A wizard teaching the dead. They stand when he does."
+    ],
+    "phases": [],
+    "realmFirstKill": "Wizard Lichas has fallen. The door he kept is unwatched."
+  },
+  "botLines": {
+    "briefing": [
+      "lichas is in the upper west halls with his advisors and followers, clear them first",
+      "kill lichas for feast of the decadent, after dathmul and the scroll"
+    ],
+    "aftermathWin": [
+      "lichas down. tell elvinia",
+      "lichas down. still didnt say what door"
+    ],
+    "aftermathLoss": [
+      "his whole class stood up at once"
+    ],
+    "rumour": [
+      "[heard|someone said] lichas asks everyone if merlin sent them",
+      "heard lichas is holding the door open, not shut. elvinia thinks so"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "lichas",
+    "text": "Wizard Lichas of the [stonehenge barrows], the minstrels' Merlin's pupil who stayed to keep a door, and keeps a school of the dead round him. Elvinia Dareal thinks he holds the door ajar."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} ended Wizard Lichas's long watch in the Stonehenge Barrows in {minutes} minutes.",
+    "loss": "Lichas's school rose with him; {raidLeader} of {realm} was turned out of the barrows."
+  },
+  "era": "alb-the-old-kingdoms",
+  "factions": [
+    "old-powers",
+    "morgana"
+  ],
+  "tier": "minor"
+}

@@ -62,6 +62,12 @@ namespace DOL.GS.Tests
         [TestCase("could i borrow some plat")]
         [TestCase("anyone got any armor for me?")]
         [TestCase("SPARE A COPPER??")]
+        [TestCase("i need to borrow some gold")]
+        [TestCase("i need some gold to buy my spells")]
+        [TestCase("can i get some coin, im broke")]
+        [TestCase("anyone have some plat to spare")]
+        [TestCase("could someone give me a few coppers")]
+        [TestCase("hey give me a sec. actually can you spare some silver?")]
         public void AskingForGoldOrItemsIsRead(string line) =>
             Assert.That(AutonomousBeggars.AsksForCharity(line), Is.True, line);
 
@@ -77,6 +83,13 @@ namespace DOL.GS.Tests
         [TestCase("this is for you")]
         [TestCase("have some gold, friend")]
         [TestCase("you can have my old sword")]
+        // 1.2 (the Easter egg inventory): an ordinary question with "need" or "can i get" in it asked for nothing.
+        [TestCase("i need to repair my armor")]
+        [TestCase("i need to change my spec")]
+        [TestCase("can i get some help with this quest item")]
+        [TestCase("we need something to do tonight")]
+        [TestCase("i need a new weapon, where do i buy one")]
+        [TestCase("i need 1 more for the group, anything works")]
         [TestCase("")]
         [TestCase(null)]
         public void OtherTalkIsNotAskingForCharity(string line) =>

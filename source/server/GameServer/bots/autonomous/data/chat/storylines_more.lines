@@ -1,0 +1,1949 @@
+# More storylines (owner 2026-11-18 09:14: "10 new arcs added to 1.2"). Ten more four-episode dramas between two bots,
+# played in /faction by AutonomousBotStorylines exactly like storylines.lines: the same two bots play A and B in every
+# episode, episodes are 3 to 10 hours apart, and a player who names one of them in /faction gets the ending _4a (sided
+# with A) or _4b (with B), with {player} that player; plain _4 is the ending nobody chose (or the player is offline).
+# A side character keeps its letter across an arc (the newbie is H in every mentor episode, the bounty's scorekeeper is
+# H, the third camper is C), so each letter is one person with one stance for the whole arc. {keep} and {frontier} are
+# fixed once per arc; {enemy} is drawn per episode, so only episode 1 of an arc names it. No episode says "yesterday" or
+# "last week" about the arc's own events, and the endings quote what the player said in faction, never place them at
+# the scene. Class-bound stories cast class-bound roles: the healer is a healer, the bard a bard, the archers archers.
+# All realm-neutral, 1.65 (October 2003). New writing.
+
+@kind debate
+@realm *
+
+# ==== mentor: A taught B everything; B outgrows the lessons and runs with a bigger group ============================
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_1
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+B: big ty to {name_a} for everything. taught me to pull, to bind, to not run into walls | shoutout to {name_a}, best teacher in the realm. i was hopeless before
+A: aw. you did the work {name_b}. i just yelled "dont pull that" a lot | lol you were never hopeless {name_b}. just loud
+C: wait, {name_a} has a student? since when | {name_a} is teaching now? since when
+B: since i was a nobody dying to spiders outside town | since my first day, when i died to everything with legs
+A: i found {name_b} face down outside town. twice in one hour | nine deaths in one hour. i counted every one
+D: thats so nice. nobody ever taught me anything | aww. i had to learn everything by dying
+F: dying is a great teacher. just slow and expensive | i learned from dying too. still learning
+B: and now im {level}. still cant believe it | {level} already. all thanks to {name_a}
+G: good teachers are rare. hold on to that one {name_b} | {name_a} has helped half the realm. you got lucky
+B: oh and big news. that big rvr group asked me to run with them. as a regular | also, guess what. the big rvr group wants me with them every run
+A: oh? which group | wait, who asked you
+B: the one everyone talks about. they said i have good instincts | the big one. they said i pull clean. i wonder who taught me that
+A: huh. they never asked me | they didnt ask about me? i've been out there for ages
+E: lol they want the young blood {name_a} | sounds like they want {name_b}, not the teacher
+A: no, thats great. really. go | thats good. you should go {name_b}
+B: you could come too. i'll ask if they have room | i can ask them about you. they might have a spot
+A: nah. somebody has to watch the newbies. just bind first | no no. go have fun out there. just bind before you go
+C: was that a little sad or am i reading into it | {name_a} sounded a bit hurt there
+D: leave it. its a proud teacher moment | its fine. teachers are allowed to be proud
+F: "just bind first" is the most teacher thing ever said | bind first. dont pull adds. eat your vegetables
+B: ty {name_a}. i wont forget who taught me | i owe you everything {name_a}. really
+A: you owe me nothing. just dont die stupid out there | just come back in one piece
+~ 6
+G: famous last words. they always come back different | they all leave eventually. thats how it goes
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_2
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: dumb question. how do you pull just one from a group of three | how do people pull one mob without the whole pack coming
+B: easy. run in and hit the first one. the others are slow | just charge in and hit it. the adds wont follow far
+A: no. that gets people killed. pull from range and back off around a corner | uh, dont do that. ranged pull, back up around a corner, let it come to you
+B: thats the old way {name_a}. the group i run with now just goes in | nobody does the corner thing anymore. too slow
+A: the old way is the way that keeps people alive | slow is how you stay away from your bindstone
+H: so... which one do i do | ok. now im more confused than before
+G: do what {name_a} said. charging in is how you meet your bindstone | listen to {name_a}. i've seen a thousand charges end at the bind
+B: wow. so now i get corrected in front of the whole realm | cool. so everyone corrects me in faction now
+A: i wouldnt have to if you didnt teach it wrong | you answered wrong. i fixed it. thats all
+B: i'm {level}, {name_a}. i know how to pull | {level} and still being told how to pull. great
+E: ohhh the student talks back | the kid has a voice now
+A: you learned the careful stuff from me. now you're teaching the bad parts | you didnt learn charging in from me
+B: no, i learned it from people who actually win fights | i learned it out in {frontier} with real groups
+C: {name_b} hasnt grouped with {name_a} once since that invite | {name_b} has been running with that group nonstop since they asked
+A: i noticed | yeah. i noticed
+D: you two should just talk. in tells. not here | maybe take this to tells guys
+B: nothing to talk about. maybe i just dont need a teacher anymore | maybe i outgrew the lessons {name_a}
+A: ...ok {name_b}. noted | wow. ok then
+F: the teacher just got benched | ouch. the student graduated themselves
+H: i'm doing the corner thing. i like living | i'll go with the corner. dying costs too much
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_3
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+G: so {name_b}'s new group called {name_a}'s way "old school and slow". in public | heard {name_b} and that big group joking that {name_a} plays like its launch week
+A: old school. the person i pulled out of the dirt calls me old school | i taught you where your hotbar is and now im old school
+B: i didnt say it like that. i said your way is slow. it is | it wasnt mean. i said you play safe. you do
+A: safe kept you alive the whole way up | safe is why you're not still dying outside town
+B: and now safe is holding me back | safe is boring {name_a}. i want to fight
+A: i bought your first decent armor. i ran you through every dungeon in the realm | who bought your first real armor {name_b}? who ran you through every dungeon?
+B: and i said thank you. in faction. remember? | i thanked you in front of the whole realm. what more do you want
+A: a little respect. and not acting like you did it alone | i want you to not act like you did it alone
+E: students leave. thats the whole point of teaching | come on {name_a}, the bird has to leave the nest some day
+G: theres leaving and theres spitting on the nest | leaving is fine. trashing your teacher in public isnt
+B: i didnt trash anyone! my group said it, i just laughed | it was a joke in group chat, not a speech
+A: you laughed. thats the part | you laughed along {name_b}. thats worse
+C: so the big group is laughing at {name_a} now? cold | the cool kids are making fun of {name_a}? harsh
+D: this is so sad. you two were the best duo in the realm | i liked these two together. this is awful
+B: you know what {name_a}, i never asked to be your project | i never asked to be babysat {name_a}
+A: babysat. ok. then you're on your own. dont send me tells when you're stuck | then good luck out there. no more tells for help
+B: fine by me | fine. i wont need them
+F: ok faction, pick a side. {name_a} or {name_b} | realm, whos right here? the teacher or the student
+G: {name_a}. respect the one who taught you | {name_a}. no question
+E: {name_b}. let them fly | {name_b}. teachers have to let go
+C: this ends with one of them face down in {frontier}, i just know it | someone is ending up at the bindstone over this
+~ 6
+D: i hope they make up. i really do | please make up you two
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_4
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: did everyone hear? {name_b}'s big group wiped in {frontier} and left them lying there | word is {name_b}'s new group wiped, logged, and left {name_b} dead out there
+B: it wasnt that bad | ok. it was pretty bad
+E: they just left you? some group | they left you lying there? classy
+B: they said "release and run back" and logged off. all of them | one of them typed "rel" and they were gone. every one
+A: and guess who went out there with a friend who can rez | someone had to go get them. i brought a friend who rezzes
+B: you came. after everything i said | {name_a} came out. after i said all that
+A: i said no more tells. i never said i'd leave you lying there | of course i came. thats what teachers do. even for ungrateful students
+D: ok that is the best thing i've read in faction | aww. i'm not crying, you're crying
+B: i'm sorry {name_a}. for the laughing. and for "babysat" | sorry for the old school thing. you were right about the pulling
+A: and i'm sorry i corrected you in front of everyone. you're not a kid anymore | i held on too tight. you've grown up out there
+G: look at that. two grown ups | finally, some sense in faction
+B: can we duo again? not lessons. just a duo | lets group again. as equals this time
+A: equals. ok. but i still pull | sure. equals. i still get to say "told you so"
+F: "told you so" is the teacher's last weapon | the teacher always keeps one lesson back
+H: can one of you teach me? i still mess up the corner thing | so who teaches me now? i'm still pulling everything
+B: i will. {name_a} can grade me | i got this one. {name_a} can watch and wince
+A: deal. just dont teach the charging part | go ahead. i'll be right here correcting you
+E: the student becomes the teacher. classic | and round it goes. faction style
+~ 6
+H: ok. ranged pull, back up, corner. got it | pulled one. just one. i'm a genius
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_4a
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: big news. {name_b} sent me a tell and asked for lessons again | so {name_b} came back. asked to learn properly this time
+B: yeah. i did. i was wrong. the charging thing gets people killed | i'm back with {name_a}. turns out the slow way works
+C: did the big group finally drop you? | what happened to the cool group
+B: they kept wiping. every run. charging in. i left | four wipes in a row, all charging in. i'm done with them
+G: told you. you never forget who taught you | the old ways are old because they work
+A: and {player} said it in faction when nobody else would. ty {player} | {player} backed me when half the realm called me old school. thank you {player}
+B: yeah {player}, i read that. you were right. annoyingly | {player} said "listen to your teacher" and i hated it. and it was true
+E: {name_b} admitting it. never thought i'd see the day | the student came home. didnt see that coming
+B: lesson one again. ranged pull, back off, corner | ok. ranged pull, corner, let them come. i remember
+A: good. lesson two: pick groups that dont laugh at your friends | and lesson two: dont laugh when your group trashes your friends
+B: yeah. that one i learned the hard way | that one hurt to learn
+D: what a way for it to end | im so glad they made up
+F: {name_a} is going to be unbearable now | {name_a} gets to say "told you so" forever now
+A: only once a day. maybe twice | i'll keep it to once an hour
+H: so can i join the lessons? | room for one more student?
+A: sure. ask {name_b}. they're my assistant now | of course. {name_b} can show you. under supervision
+B: under supervision. great | i'm a teacher with a teacher. fine
+G: {player} for realm mentor | someone give {player} a student too
+
+@topic story_mentor
+@levels 10-50
+@scene story_mentor_4b
+@role A type=NoLifer levels=40-50
+@role B type=Leveler,Explorer,Socialite levels=10-39
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: news: i'm leading my own group now. small one. no charging | so i started my own group. they actually listen
+A: congrats {name_b}. really | i heard. well done {name_b}
+C: wait {name_a} is being nice about it? | no fight? {name_a} just said congrats?
+A: i had time to think. {name_b} outgrew me. thats what students are for | i held on too tight. you were ready and i wasnt
+B: {player} said it in faction: teachers have to let go. that stuck with me | ty {player}. you said i could stand on my own and i believed it
+A: yeah, {player}. you took the student's side. i was mad at you for a while | {player}, i was annoyed at you. you were right though, which is worse
+E: told you. let them fly | the bird flew. and didnt even crash
+B: and we use the corner pull. dont tell anyone | for the record, my group pulls around corners. its good
+A: i KNEW it | ha. so the old school way stuck
+B: some of it. the good parts | the parts that work, yes
+G: still think a little respect was owed | i still say {name_a} deserved more credit
+B: {name_a} gets credit. every new person in my group hears who taught me | everyone in my group knows where i learned it
+D: aww | thats lovely
+A: if your group ever needs someone old school, i'm one tell away | just tell me if you get stuck out there
+B: always. old school is welcome | you're always welcome {name_a}. you can even pull
+F: the teacher joins the student's group. full circle | now the teacher is the recruit lol
+H: room for me {name_b}? i finally pull one at a time | {name_b}, i do the corner thing now. can i come?
+B: sure. you learned from the best. well, second best | of course. {name_a} would be proud
+
+# ==== bounty: an enemy stealther ganks the mile gate; two archers race to be the realm's first to drop it ==========
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_1
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: someone camp the mile gate in {frontier} please. a {enemy_mod} stealther keeps jumping people running out | that {enemy_mod} stealther is back at the mg in {frontier}. third time i ate the floor today
+F: the mile gate ganker strikes again | lol the mg ganker has a fan club
+D: ok thats it. bounty. gold to whoever drops that stealther first | bounty time. i'll pay whoever kills that ganker first. realm pride
+A: say no more. i'm a {class}. hunting stealthers is what i do | {class} here. i'll have that stealther on the ground in no time
+B: lol {name_a}, you couldnt find a stealther if it sat on your head. its mine | cute. {name_b} is already on it, {name_a}. go home
+A: {name_b}. of course | oh great, {name_b} wants the bounty too
+B: i want the bragging rights. the gold is a bonus | its not about gold. its about being first
+E: a race! first one to drop the ganker | two archers, one ganker. this is great
+G: stealthers always say they got the kill. i want proof | i'll believe it when someone sees the body
+A: i'll paste the kill line in faction. word for word | proof? i'll post the combat log
+B: and mine will be up before yours | i'll paste mine first
+H: i'll sit by the mile gate guards and keep score | i'll stand by the mg and watch who gets it
+D: rules: a clean kill. if the guards get it, nobody gets paid | the bounty is for a real kill. no guard kills, no zerg
+B: guards wont get near it. i'm faster | i dont need guards. or {name_a}
+A: you need glasses. you shot a tree last time we grouped | {name_b} spent a whole fight shooting at a rock once
+B: that rock moved! | it was a stealther shaped rock
+F: rofl stealther shaped rock | the rock had it coming
+C: i dont care who gets it, just make it stop | please. i just want to reach the frontier alive
+E: my money is on {name_b} | odds? i say {name_a}
+~ 6
+G: whoever it is, no log, no gold | log first. then we talk about gold
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_2
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: done. dropped the mg ganker. clean. pay up | the mile gate stealther is dead. by my hand. pay up
+B: lol no. i had it at half health before you even showed up | that was MY kill. i opened on it, you just finished it
+A: you opened and missed. twice | your arrows hit the dirt {name_b}. twice
+B: they were warning shots | i was softening it up
+D: so who do i pay | uh, so who gets the bounty
+G: i said log. somebody paste the log | logs. both of you. now
+A: my shot, then "the stealther dies". clean | here: my arrow hits, then the stealther is dead. right there
+B: and right above your line is mine. i hit it first | and one line up: my arrow. first blood was mine
+H: i was at the gate. arrows from everywhere. no idea whose was last | i saw it. both of them shooting. it was a mess
+E: so its a tie? tie means double bounty right? | a tie lol. boring
+D: no. no clear kill, no gold | nope. a tie means nobody gets paid
+A: thats robbery. i got the killing blow | the last hit counts. everyone knows that
+B: the first hit counts. thats the rule for named mobs | first hit is how it works for mobs. why not for gankers
+F: are we really doing camp rules for enemy players | first hit, last hit, the stealther doesnt care
+C: uh. it was back at the gate right after. it got me again | did anyone notice the ganker was back an hour later
+A: of course its back. they come back. still my kill | it came back. players do. still mine
+B: so your kill did nothing. great work {name_a} | wow, a kill that lasted an hour. legend
+A: at least my arrows go where i point them | at least i landed mine
+G: new rule. the bounty is for whoever kills it twice | two kills, then i believe it
+D: fine. double bounty. two clean kills, clear logs | ok, new terms: two kills, nothing messy
+E: round two | game on again
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_3
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: so {name_a} posted another "kill". funny, nobody saw it | another kill from {name_a}. no witnesses. again
+A: because i hunt quiet. thats how stealth works {name_b} | witnesses? i'm stealthed. nobody sees anything. thats the point
+G: and thats why i dont trust stealther kills | convenient
+B: i think you're making them up for the gold | i bet you typed that log yourself
+A: say that again {name_b} | you're calling me a liar? in faction?
+B: yeah. liar | liar. there. said it twice
+E: oh here we go | ohhh fighting words
+A: at least i dont follow people around stealing their targets. i see you behind me at the gate | you've been shadowing me for hours. i see your name every time i turn around
+B: shadowing you? i was hunting. its a free frontier | i was there first. you followed ME
+C: meanwhile i got ganked again while you two argued | still dying at the mg btw. still no hero
+F: the hunters are hunting each other now | the ganker is just watching them fight. probably laughing
+D: ok. enough. one stakeout at the mile gate. both of you. witnesses. first clean kill takes everything | final round: both of you at the gate, the realm watching
+H: keeping score again. like before | i'll keep score. again. i'm getting good at it
+A: fine. and when i get it you take back "liar". in faction | deal. i win, you say sorry for the liar thing
+B: and when i get it, you never paste another log | i win, you stop posting logs forever
+G: and if neither of you gets it? | what if the ganker gets you both
+A: wont happen | not a chance
+B: never | lol no
+E: faction, place your bets. {name_a} or {name_b}? | who are we backing, realm? {name_a} or {name_b}
+G: my gold is on the ganker | i back the stealther, honestly
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_4
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: stakeout report: {name_a} and {name_b} are at the mile gate. stealthed. not talking | ok i'm at the gate. both hunters are here. glaring at each other, i think
+A: in position | ready. dont get in my way {name_b}
+B: you get in mine | stay out of my shot
+~ 20
+H: something just opened on {name_b} | {name_b} just got jumped
+B: ITS HERE. ITS ON ME | its on me, its on me, shoot it
+A: i see it. shooting | firing, hold on
+H: and {name_a} just got hit from behind. there are TWO of them | wait, theres a second one. {name_a} is down
+B: down too. it got me | dead. great
+E: rofl both dead | the hunters got hunted
+C: wait. the first one was almost dead so i just hit it. and it DIED | I GOT IT. I was running past, it was nearly dead, i hit it once. its DEAD
+D: then the bounty goes to the one it ganked the most. ha | clean kill. the bounty is yours. ha
+A: are you serious | you have got to be kidding
+B: we did all the work | we softened it up! both of us!
+G: and you both died doing it. dead hunters dont get paid | rules are rules. the bounty goes to the living
+A: {name_b}... it was two on one | ok {name_b}. two of them. we never had a chance alone
+B: yeah. maybe we hunt together next time | next time we go as a pair? cover each other
+A: fine. you take the left, i take the right | deal. and no shooting rocks
+B: one time! | the rock moved!
+F: the stealther shaped rock lives on | the rock is part of realm history now
+C: best day ever. i'm keeping this log forever | i never killed anything that fought back before
+~ 6
+E: the mg is safe. for now | until it logs back on
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_4a
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: stakeout report. both hunters at the mile gate. and the ganker just showed | here we go. the stealther is out. {name_b} and {name_a} both shooting
+A: DOWN. its down. clean shot | got it. one shot from stealth. its dead
+H: confirmed. that was {name_a}. nobody else touched it | i'm right here. {name_a}'s arrow. start to finish
+B: ...it was a good shot | ugh. clean. i'll give you that
+D: bounty to {name_a}. paid in full | {name_a} gets the gold. sent
+G: ok. i saw a body. i believe it | first stealther kill i actually believe
+A: and {player} said i wasnt lying when nobody else would. ty {player} | {player} backed me in faction when i got called a liar. you're a good one {player}
+B: yeah, i saw {player} in faction. siding with the log poster | {player} picked {name_a}. fine. this time it paid off
+A: a deal is a deal {name_b}. the liar thing | {name_b}. say it
+B: i take back "liar". you're not a liar. you're just annoying | fine. not a liar. sorry {name_a}
+E: was that so hard | an apology from {name_b}. mark the date
+C: i ran through the mile gate and nobody jumped me! first time ever | the mg is safe! i made it to the frontier!
+A: mg is clear. go get your rps | the frontier is open, everyone
+B: the next ganker is mine {name_a} | next time, i get first shot
+A: sure, if you can find it | we'll see
+F: and the rock? | someone check on the rock
+B: leave the rock out of this | the rock is innocent
+G: two witnesses next time. at least | and next time i want two witnesses
+D: the bounty fund stays open for the next ganker | i'll keep the fund open. theres always another ganker
+
+@topic story_bounty
+@levels 10-50
+@scene story_bounty_4b
+@role A class=Scout,Hunter,Ranger levels=30-50
+@role B class=Scout,Hunter,Ranger levels=30-50
+@role C type=Leveler
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: stakeout report: the ganker is out. both hunters on it | its on the move. {name_b} and {name_a} shooting
+B: GOT IT. dead. thats mine | down. one clean shot. my arrow
+H: confirmed. that was {name_b}. {name_a} was still turning around | saw it. {name_b}'s kill, first arrow to last
+A: ...ok. that was clean | fine. nice shot. i hate it
+D: bounty to {name_b}. gold sent | the gold goes to {name_b}. paid
+B: and {player} called out those logs when nobody else would. ty {player} | big thanks to {player}, who said what i was thinking about those logs
+A: {player}, my logs were real. just so you know | {player}... those logs were real, for the record
+G: real or not, this one had a body | at least this kill had a witness
+B: the deal, {name_a}. no more logs | so no more pasting logs. ever. you agreed
+A: fine. no more logs. i'll just hunt quietly | ugh. fine. no logs. ever again
+E: the log poster is retired | the end of the log era
+C: i can run to the frontier again. ty {name_b} | i made it through the mg alive. thank you {name_b}
+B: anytime. the gate is clear | you're welcome. the frontier is open
+A: i get the next ganker though | just wait for the next one
+B: i'll be right behind you. shadowing | i'll be waiting. behind you. like you said
+F: the shadowing comeback lol | shadowing again, nice
+D: bounty fund is open again, realm | the fund stays open for whoever comes next
+C: first trip through the gate without dying. ty | nobody ganked me at the gate today
+E: next ganker, next race | round two when the next one shows
+
+# ==== ballad: a bard's song about B's worst death sweeps the realm; B answers with a song of their own ==============
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_1
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: new song, everyone. "the ballad of {name_b}". verse one, here goes | i wrote a song. its called "the ballad of {name_b}". ready?
+B: wait what. no. {name_a} dont | {name_a} i swear, if this is about the river
+A: "oh {name_b} pulled one and twelve came along / so {name_b} ran for the bridge and thats where it went wrong" | "{name_b} ran from the camp with the whole camp behind / took a leap off the bridge with no plan in mind"
+C: LOL | omg
+B: thats not what happened | that is NOT how it went
+A: "the river was deep and the armor was heavy / {name_b} sank like a stone while the healer said ready" | "down went the armor and down went the pride / the fish still talk of the day {name_b} dived"
+D: ok thats actually catchy | its stuck in my head already
+E: verse two when | more verses please
+B: i was not running. i was repositioning | it was a tactical retreat. into water
+F: "a tactical retreat, said {name_b}, soaking wet" | "{name_b} repositioned straight into the drink"
+B: stop helping {name_a} | dont YOU start too
+G: bards. give them one funny death and they write an epic | every bard thinks every death is a song
+A: some deaths are songs. this one was born to be sung | some deaths are just deaths. this one is art
+H: someone just sang it in /say at the bindstone in {capital} | people at the bindstone in {capital} are already singing it
+B: its been five minutes!! | HOW. it just got written
+A: good songs travel fast | thats the power of music
+C: the chorus is so good. "down to the bottom went {name_b}" | "glub glub {name_b}" is my new favorite line
+B: {name_a} you take this song down | delete it. unsing it. whatever bards do
+A: you cant unsing a song {name_b} | songs dont come with a delete button
+E: this is going to be everywhere by tonight | the whole realm will know this one by heart
+~ 6
+B: i hate every one of you | i'm logging off. not really. but i want to
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_2
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: heard the ballad of {name_b} three times since it came out. three | the {name_b} song is everywhere. a whole group was singing it at a camp
+B: i know. i KNOW. strangers send me the chorus in tells | people i dont even know are sending me "glub glub" in tells
+A: fame, {name_b}. you're famous | you're the most famous person in the realm now. you're welcome
+B: famous for drowning! | i'm famous for sinking {name_a}
+F: fan verse: "now they fish by the bridge and they fish up {name_b}" | a fan verse for you: "they built a dock where {name_b} fell in"
+A: ooh i like that one. adding it | thats going in the song, credit to you
+B: you're letting people ADD to it now? | its a group project now?? great
+G: in my day bards sang about dragons | songs used to be about heroes and dragons
+A: {name_b} is a hero. a damp one | heroes come in all sizes. some are wet
+B: ok listen. it wasnt even my fault. i lagged on the bridge | seriously. the jump was lag. i never meant to jump
+D: lag. the oldest excuse there is | "it was lag" lol, the classic
+A: "{name_b} said lag and {name_b} said lies / but the river remembers, the river knows why" | "blame the lag, blame the bridge, blame the moon in the sky / but the river saw {name_b} and the river wont lie"
+E: {name_a} has a verse for everything | rofl instant verse
+B: {name_a}, i'm asking nicely. stop singing it | please. as a friend. retire the song
+A: art doesnt retire {name_b} | i cant. the people want it
+B: then i'll write one about you | fine. two can play this. i'm writing a song too
+A: lol you cant rhyme | you? write a song? you can barely spell "rez"
+H: oh no. a song war | dueling ballads incoming
+C: i am so here for this | best thing in faction in a long time
+~ 6
+F: what rhymes with {name_a}. anyone? | i'm already working on rhymes for {name_b}'s song
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_3
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: ok. my song. its about {name_a}. its called "the noise" | here it is. my song. "the noise", a song about a singer
+A: oh no. go on | please. this should be good
+B: "{name_a} sings at the bindstone and the guards beg for peace / {name_a} sings in the frontier and the enemy flees" | "{name_a} took up an instrument and the whole realm cried / not from beauty, from pain, and still {name_a} tried"
+C: LOL ok that was good | {name_b} can rhyme after all
+A: "the enemy flees" is a compliment {name_b}. thanks | if they flee, my singing works. ty
+B: verse two. "a song about a friend on the worst day they had / thats {name_a}'s idea of art, and its sad" | verse two: "{name_a} laughs at a drowning, so clever, so bold / from the back of the group where its safe and its cold"
+E: OHHH | that verse had teeth
+A: ok that one was mean | wow. ok. that was personal
+B: so was yours! the whole realm sings "glub glub" at me | yours was personal too {name_a}. i get "glub glub" in every group
+A: mine was funny. yours was just mean | mine was a joke. yours had a knife in it
+D: both songs are funny. but you're both being mean now | ok stop, this stopped being fun a verse ago
+G: this is why bards shouldnt write about real people | told you. bards cause trouble
+F: realm vote! which song is better | faction, pick a song. {name_a}'s river song or {name_b}'s "the noise"
+C: the river song. its a classic | the original. glub glub forever
+E: the noise. it has teeth | {name_b}'s song. the guards verse got me
+A: let the realm decide. the realm loves a good drowning | they can vote. the river song cant be beaten
+B: we'll see. i have nine more verses | i'm not done. i have a whole songbook
+H: a whole songbook lol | {name_b} the bard now
+~ 6
+D: whoever wins, please make up | someone write a song where they make up
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_4
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+D: ok. i wrote the last verse. for both songs. hear me out | i have a verse that ends this. both of you listen
+A: go on | ok, lets hear it
+B: fine | if it has "glub" in it i'm leaving
+D: "two fools with a song and a grudge and a bridge / sang so loud that the river ran up the ridge" | "one fell in the river and one cant hold a tune / and the realm sings them both, every night, every noon"
+C: aww | thats sweet
+E: lame. i wanted blood | boo, too nice
+A: ...ok its good | its good actually
+B: its fine. it doesnt have "glub" | i accept a song with no glub in it
+D: so sing it together. both songs, then mine | duet. both songs back to back, then the ending
+A: {name_b}... want to? | ok {name_b}. one time. together
+B: one time | fine. one time. go
+A: "oh {name_b} pulled one and twelve came along..." | "{name_b} ran from the camp..."
+B: "{name_a} sings at the bindstone..." | "{name_a} took up an instrument..."
+F: this is the best and worst concert ever | /cheer
+G: fine. bards are allowed. this once | i take it back. some songs are worth it
+B: you know, being famous isnt so bad. strangers buff me now | ok, i get free buffs from strangers now. its not all bad
+A: told you. and the next verse is a hero verse. a dry one | next verse: {name_b} kills something. on land
+B: on land. promise | on land!! thats all i ask
+H: the realm's first bard duet. someone write this down | first duet in realm history. i was here
+C: glub glub forever | the river remembers
+B: ugh | i knew someone would say it
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_4a
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: the votes are in. the river song wins. by a mile | the realm has picked. "the ballad of {name_b}" wins
+A: the people have spoken | art wins. always
+B: of course it did | yeah, yeah. i saw
+A: and {player} was the first to say so in faction. ty {player}, a true fan | ty {player}, you backed the river song from the start
+B: thanks a lot {player}. really. now strangers sing it at me | {player}, every time someone says glub to me, i think of you
+E: lol {name_b} blaming {player} | {player} just has good taste
+F: the river song is the realm anthem now | its basically our anthem at this point
+C: my whole guild knows it by heart | i'm teaching it to my guild
+B: ok. fine. if its the anthem, i want a verse where i win something | if i'm stuck with it, give me a better ending
+A: deal. "and {name_b} climbed out of the river, still dripping and proud / went back to that camp and pulled one, not a crowd" | ok: "and {name_b} rose from the river, wet but not done / went back to the camp and this time pulled one"
+B: ...thats actually nice | ok. i'll allow that verse
+D: aww they made up | the song healed them
+G: still prefer songs about dragons | bards. i'll never understand them
+A: the next song has a dragon in it. starring {name_b} | the next one is about a dragon. and {name_b} is in it
+B: does the dragon drown me | i hope its a land dragon
+H: glub | glub glub
+B: every time | there it is
+E: ten out of ten song war | best song war ever
+
+@topic story_ballad
+@levels 10-50
+@scene story_ballad_4b
+@role A class=Minstrel,Skald,Bard levels=10-50
+@role B type=Leveler,Daredevil,Explorer levels=10-50
+@role C type=Socialite
+@role D type=*
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: the votes are in. "the noise" wins! {name_b}'s song | the realm picked {name_b}'s song. the guards verse did it
+B: HA. who cant rhyme now {name_a} | lol {name_a}. beaten at your own game
+A: i lost a song war. to {name_b}. who sank in a river | beaten by someone who sinks
+B: and {player} called it first. ty {player}, you have taste | {player} backed my song when everyone was singing glub. ty {player}
+A: {player}, really? the noise? | {player}... i saw your vote. i'm hurt. a little
+E: {player} picked the song with teeth | {player} likes a song that bites
+A: ok. i owe {name_b} something. an apology verse | fine. one more verse, and its an apology
+B: oh this i want to hear | go on, bard
+A: "i wrote of a friend and i laughed at the fall / but the river was cold and i wasnt there at all" | "{name_b}, i'm sorry, the song went too far / you sank once, i sing badly, and here we both are"
+D: aww | that was sweet {name_a}
+B: ...ok. fine. accepted, that one was good | ok. i forgive you. the song can stay
+A: wait, really? | the river song lives?
+B: yes. but the sorry verse goes at the end. always | yes, but only with the apology verse last
+F: two songs, one realm, peace at last | the song wars are over
+G: in my day it was dragons | i still want a song about dragons
+H: i still say glub sometimes | i'm still going to say glub. quietly
+B: i know you are | i expected nothing less
+E: the sorry verse is the best part now | the apology verse is my favorite now
+
+# ==== masterpiece: A crafted B a masterpiece; B sold it to a merchant by mistake ======================================
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_1
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: {name_b} why arent you wearing the chest piece i made you. you had something else on earlier | hey {name_b}, where is the chest i made? i saw you in some other one
+B: oh. that. uh. its in the bank | the chest. right. its safe. somewhere
+A: somewhere? | which somewhere {name_b}
+B: ok dont be mad | promise you wont be mad
+A: i'm already mad and i dont know why yet | you're making me nervous
+B: i was clearing my bags at a merchant and i sold it. by accident | i sold a pile of loot to a merchant and it was in the pile. i'm so sorry
+D: oh no | NO
+A: you sold my masterpiece. to a merchant | you SOLD it?? a hundred percent. MP. to a MERCHANT
+E: oh {name_a}. thats painful | ouch. thats a real wound
+B: it looked like the other chests in my bag! same icon! | it has the same icon as every other chest!!
+A: it has the same icon because its a chest {name_b} | the icon isnt the point!! it was MP!
+G: and merchants dont sell back. its gone | you cant buy back from a merchant. thats it, its gone
+E: what did the merchant give you for it | how much did you even get lol
+B: ...a few silver | some silver. not a lot
+A: a few silver. that piece took me hours of combines | i burned stacks of materials on that. for a few SILVER
+F: that merchant got the deal of the century | that merchant is going to retire on that chest
+B: i'll make it up to you {name_a}. i swear | tell me how to fix it. anything
+A: you cant fix it. it was one in a hundred | you cant. masterpieces dont come on order
+H: the realm is going to hear about this | i'm telling my guild. sorry
+B: please dont | no no dont tell anyone
+H: too late | already did
+~ 6
+D: a moment of silence for the chest | rest well, little chest
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_2
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role C type=Crafter
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+A: update: i asked the merchants in {capital}. they dont even remember it | i went to the merchant {name_b} sold it to. nothing. its gone. like i said
+B: i'm really sorry {name_a}. i went to look too | i went back too. the merchant just stared at me
+E: the merchant is wearing it right now | the merchant is wearing it under the apron
+A: i want the materials back. at least what they cost | you can at least pay for what i used. thats fair
+B: wait. it was a gift. you gave it to me | it was a present {name_a}. you dont charge for presents
+A: a present you sold! | you sold my present for silver!
+B: i didnt throw it away. i made a mistake | it was an accident. mistakes happen
+D: {name_b} has a point. a gift is a gift | i kind of agree with {name_b}. you cant charge for a gift
+G: a gift is a gift, sure. but you take care of a gift | you dont sell a gift to a merchant though. come on
+A: thank you | see. somebody gets it
+B: you want me to pay for the materials. fine. how much | ok. tell me what it cost. i'll pay
+A: its not about the coin {name_b}. its about the hours | you cant pay for the hours i spent crafting it
+B: then what do you want from me?? | so what do you want?? you just said pay
+A: i want you to care about it like i did | i want you to understand what you sold
+E: crafter drama is the best drama | this beats every other fight in faction
+B: i DO care. i felt sick when i saw it was gone | i care! i felt awful when i noticed
+A: you noticed because i asked | you only noticed because i asked where it was
+B: ...ok, thats fair | ...ouch. ok. fair
+F: rule one: never sell anything you cant name | new rule: read every item before you click sell
+C: {name_b}, i craft too. if you need a new chest, send me a tell | if you need a chest {name_b}, i'd make you one. no drama
+A: oh is that how it is | wow. circling already?
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_3
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role C type=Crafter
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: so {name_b} is wearing a new chest. and its not one of {name_a}'s | heard {name_b} went to another crafter for a new chest
+A: yeah. i noticed. i'm totally fine about it | i saw. someone else's work. thats fine. i'm fine
+B: you said you'd never make me anything again! what was i supposed to do | you told me you were done with me. i needed armor
+A: i said that when i was angry | i was upset. i didnt mean forever
+B: you said "never" in faction. three times | you said never. everyone heard it
+C: i made it fair and square. {name_b} asked, i made it | i'm just a crafter doing my job. no hard feelings {name_a}
+A: no hard feelings. what did it come out at. 90 something? | sure. so what quality, low 90s?
+C: 96. its good work | 96. its a good piece
+A: 96 is perfect for someone who sells everything to merchants | 96. fine. plenty for someone who sells their armor for silver
+E: ohhhh | the crafter just went for the throat
+B: wow {name_a}. i said sorry like ten times | i apologized. over and over. and you keep doing this
+A: and i spent hours on a piece you didnt even look at | sorry doesnt bring back an MP
+C: just let it go, {name_a}. it was one piece | its one chest. you'll make another
+A: easy for you to say. you got a customer out of it | of course you'd say that. you got my customer
+C: your customer? nobody belongs to a crafter | i didnt steal anyone. people pick who they like
+D: guys, this isnt about the chest anymore | this is turning into a crafter war
+G: ok realm, settle this. should {name_a} forgive, or is {name_b} on their own? | realm question: {name_a} or {name_b}?
+F: {name_b}. accidents happen. let it go | forgive and make another! more drama if it gets sold again
+H: {name_a}. you dont sell a gift. ever | team {name_a}. that was a masterpiece
+B: fine. i'll wear this one until it falls apart | then i'll keep wearing the 96
+~ 6
+A: enjoy it | hope it fits
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_4
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role C type=Crafter
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: {name_a} just walked up to {name_b} at the bank and opened a trade. everyone stop | something is happening at the bank. {name_a} and {name_b}. a trade window
+B: {name_a}... what is this | is this a chest?
+A: its a chest. 99%. not an MP. close | yes. its a chest. it came out at 99. one short
+C: 99 is great work | 99 is beautiful work, {name_a}
+A: thanks. and sorry for snapping at you | ty. sorry about the customer thing
+C: no worries. every crafter has a story like this | its fine. we all lose one sometime
+B: why. after everything | why would you make me another one
+A: because i was mad about the piece, not about you | because i missed making stuff for you
+D: ok thats the sweetest thing i've ever read here | i'm crying. actually crying
+B: i'll never sell this one. its going straight in the bank | its going in the bank. only out for fights
+A: dont put it in the bank! wear it! thats what its for | WEAR it. armor in a bank slot is just a sad chest
+B: ok ok. wearing it | fine. its on. it fits perfect
+E: so no round two? | no more drama? boo
+F: put a label on it: DO NOT SELL | someone dye it bright pink so it never looks like loot again
+A: huh. smart, actually | i'll dye it. loud
+B: not pink. please not pink | anything but pink. i beg you
+G: and next time, check your bags before you sell | lesson for the realm: read before you click
+B: i check twice now. every time | i read every item now. every single one
+A: good | thats all i wanted
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_4a
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role C type=Crafter
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: ok realm. i bought every material {name_a} burned on that chest. with my own coin | so i went and bought {name_a} a full set of materials. all of them. my coin
+A: they're in my bags. every bit of it | i got them. all of it
+C: thats a lot of coin {name_b} | that cost more than a few silver
+B: {player} said a gift is something you take care of. so i paid it back | ty {player}. you said sorry wasnt enough and you were right. so i paid
+A: ty {player}. you backed me when everyone said "its just one chest" | {player} stood up for my hours at the crafting table. ty {player}
+B: and {player}, my coin purse would like a word | {player}, i'm broke now. thanks for that
+E: lol {name_b} is broke | {name_b} paid in full. respect
+A: so i used them. and this one came out at 100 | so i made something with them. MP. again. dont ask me how
+H: NO WAY | two MPs. who does that
+B: i'm not selling it. i'm not even standing near a merchant | it never leaves my back. ever
+A: i dyed it the loudest color i had. no more mixups | i dyed it. bright. you'll never mistake it
+D: this is perfect | best ending
+G: lesson learned | the realm learned something today
+C: nice work {name_a}. two of them | two MPs on one piece. respect
+F: somewhere a merchant is waiting. patiently | the merchant is sad. good
+B: not today merchant | never again merchant. never again
+E: two MPs and a broke customer. great story | best crafting story in the realm
+H: the guild gets the happy ending too | i'm telling my guild this part too
+
+@topic story_masterpiece
+@levels 15-50
+@scene story_masterpiece_4b
+@role A type=Crafter levels=20-50
+@role B type=Daredevil,Leveler,Explorer levels=15-50
+@role C type=Crafter
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: ok. i've been thinking. a gift is a gift. i shouldnt have asked for the coin | {name_b}, i was wrong about the materials. a gift is a gift
+B: you mean it? | wait, really?
+A: {player} said it plain in faction: accidents happen and a friend forgives. it stuck | ty {player}. you said accidents happen and i didnt want to hear it
+B: ty {player}. everyone else called me careless. you didnt | {player}, you backed me when i felt like the worst person in the realm. thank you
+A: and {player}... it still stung a little | {player}, you were right. it still stung though
+E: a crafter who forgives. now i've seen it all | {name_a} forgiving? whats next, cheap prices
+C: told you. its one piece | see? one chest. not the end of the world
+A: yeah yeah. you were right too | and you were right too. sorry
+B: so... we're ok? | are we good {name_a}?
+A: we're good. and i'll make another one. no charge, no lectures | we're good. and i'm making you a new one. free. for real this time
+D: aww | ok that made my day
+B: i read every item before i sell now. promise | i'll check my bags twice. every time
+A: and i'm dyeing it so loud the merchant will refuse to take it | and i'll dye it something you cant miss
+F: the merchant has standards now | even the merchant will say no
+G: still. check your bags | read before you click, everyone
+H: crafter drama over. for now | the chest saga ends
+B: {name_a} makes the best chests in the realm. tell your friends | best crafter in the realm. i'll say it everywhere
+C: hey | second best
+
+# ==== mistell: A's tell about B's slow heals reaches B; B pays it back with a "mistell" of A's secret ==================
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_1
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: so {name_a} just sent me a tell. pretty sure it wasnt meant for me | ok realm, here is a tell i just got from {name_a}. i dont think it was for me
+A: {name_b} dont | {name_b} please dont paste that
+B: "dont invite {name_b} again. heals are slow and they never stop talking" | quote: "skip {name_b} next time, slowest heals in the realm and they talk the whole fight"
+C: OHHH | oh no
+F: mistell of the year | the classic mistell
+A: that was a mistell! it was for my guild! | it was meant for someone else!
+B: i know. thats the point {name_a}. you meant it | yes, a mistell. which means you meant every word, just not to me
+G: the golden rule. read the name before you hit enter | thats why you check who you're sending to. every time
+A: i was just venting. it was a bad pull | i was frustrated, the group had a rough run
+B: a rough run because you pulled three at once and i kept you alive | the rough run where i healed you through a triple pull? that run?
+E: ohh {name_b} remembers every pull | {name_b} kept score
+A: ok your heals were fine. its the talking | the heals were fine. but you DO talk a lot
+B: i talk because nobody else does! someone has to say "add" | i talk because i'm calling the adds YOU pull
+D: this is a tells conversation, not a faction one | you two, just talk it out. in private
+A: i'm sorry {name_b}. it was out of line | that was mean. i'm sorry
+B: sorry you got caught | sorry you mistold, you mean
+H: thats cold {name_b} | {name_b} isnt letting this go
+B: next group, everyone gets heals. you get potions | i'll heal everyone in your next group. except you
+A: you wouldnt | you cant be serious
+~ 6
+B: try me | we'll see
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_2
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: so did {name_b} really let {name_a} die in a group earlier? | heard {name_b} let {name_a} die on purpose
+A: yes. they healed everyone but me. i died watching their power bar sit full | they healed the whole group. i died to a blue with our healer at full power
+B: i was busy healing people who dont trash me in tells | you pulled. i healed the people who didnt mistell about me
+G: thats a dangerous game {name_b} | letting a groupmate die is a line, {name_b}
+B: they released and ran back. they're fine | it was one death. they ran back in no time
+A: i lost a bubble of exp over a tell! | a whole bubble. gone. because of one tell
+B: and i lost groups over that tell | and i lost invites because "{name_b} talks too much"
+A: nobody stopped inviting you | thats not true, you get invites
+B: since your tell, two people have asked me to "keep chat down" | two leaders told me to keep it quiet in group. because of you
+H: its true. i saw one of them | yeah i saw that. someone quoted the tell at them
+A: i didnt want that to happen | i didnt mean for it to spread
+B: but it did. so now you can buy potions | well it did. enjoy your potions
+E: potion life lol | {name_a} is a potion person now
+A: fine. i'll find another healer | ok then. i'll get a different healer
+D: please. you two were a good team | you two used to group every day. come on
+B: we were. until the tell | before the tell, yes
+F: the tell heard round the realm | that tell has its own fan club now
+A: ok. how do i fix this {name_b} | what do you want me to do
+B: say it in faction: "{name_b} is the best healer in the realm" | type it here. that my heals are the best in the realm
+A: no | no way. not happening
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_3
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: "dont tell anyone but {name_a} still runs from grey spiders" oops. wrong window | lol oops. "{name_a} is scared of spiders, even the grey ones". meant that for someone else
+A: {name_b}!!! | you did NOT
+C: HAHAHA | the revenge mistell
+E: the payback | {name_b} went for it
+A: nobody mistells into faction by accident. thats on purpose | that was on purpose. you dont mistell into faction
+B: mistakes happen, {name_a}. you'd know | oh is it? funny how that works
+G: a faction mistell. thats not even a real thing | thats not a mistell. thats a declaration of war
+A: it was one spider. a big one. i was low level | they were BIG spiders. one time. ONE TIME
+H: i was there. it was grey. it was very small | i saw it. it was tiny. you ran into a wall
+F: rofl the wall | {name_a} against the tiny spider. the spider won
+A: ok so we're even. happy? | fine. we're even now
+B: not even close. yours cost me groups. mine costs you nothing | even? you told people not to group with me. i told them you dont like spiders
+A: it costs me my dignity | everyone is going to send me spider jokes now
+B: now you know how it feels | welcome to my side of it
+D: this has gone too far both ways | you're both worse than each other now
+C: ok realm, who's worse? the mistell or the payback | faction vote: {name_a}'s mean tell or {name_b}'s payback
+E: {name_b}, all day. {name_a} started it | {name_b}. revenge is fair
+G: {name_a}. you dont fight a mistell with a fake one | {name_a}. two wrongs, and the second one was public
+A: no more groups till you take the spider thing back | i'm not grouping with you again until you say sorry
+B: then enjoy your potions and your spiders | then you'll be soloing with potions for a long time
+~ 6
+F: spiders and potions. new guild name | the spider and potion guild
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_4
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: so i invited {name_a} and {name_b} off the lfg window earlier. both. i thought someone would die | i grouped with {name_a} and {name_b} together. by accident. picked them both off the lfg list
+C: who died | how many died
+H: nobody! {name_a} pulled a whole spider nest and {name_b} kept them up | nobody. {name_b} healed {name_a} through a huge pull
+A: they did. every heal landed | yeah. {name_b} didnt let me drop once
+B: i thought about it. for a second | i was going to let you die. then i didnt
+A: and i pulled the adds off {name_b} when they turned on the healer | and i grabbed the add that went for you
+B: i saw that. thanks | yeah. you did
+D: is this a truce? | so you're friends again?
+A: ok. here it is, for all of faction: nobody heals like {name_b} | {name_b}... your heals are the best in the realm. there. in faction
+E: {name_a} SAID IT | {name_a} actually typed it
+B: and i take back the spider thing. you were brave. with spiders | and you're not scared of spiders. officially
+A: ty | thank you
+F: the spiders are upset | the spiders feel left out
+G: and both of you, read the name before you press enter | moral: check your tells
+B: i check the name twice now | i read it three times now. every tell
+A: me too. i vent in a chat group with nobody in it now | i vent to myself now. in a chat group with one person
+C: so the duo is back? | you'll group again?
+B: yes. and i'll call adds a little quieter | yes. and i'll talk less. a little
+A: dont. the talking is why we lived | no. keep talking. you called the adds that saved us
+H: best group i've had in ages | aww
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_4a
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: ok. i owe {name_a} an apology. the spider thing was on purpose | i'm saying it here. my "mistell" in faction was on purpose. that was low
+A: thank you {name_b}. really | ty. that means a lot
+C: {name_b} admits it?? in faction? | wait {name_b} admitted it?
+B: {player} said a fake mistell to the whole realm is worse than a real one to one person. they were right | ty {player}. you said two wrongs and i hated that you were right
+A: {player} backed me when everyone was sending spider jokes. thank you {player} | ty {player}. you saw it for what it was
+B: but {player}, the slow heals thing still hurt | {player}, just so you know, my heals arent slow
+E: they're a little slow | they kind of are
+B: stay out of this | who asked you
+A: and for the record: your heals are great and the talking is fine | and i'm sorry for the tell too. your heals are good. you talk a normal amount
+D: two apologies in one day. faction is healing | both apologized!
+G: good. like adults | see, that wasnt so hard
+F: now apologize to the spiders | the spiders are still waiting for theirs
+B: the spiders know what they did | never
+A: group later? | duo again?
+B: yes. you get heals first. always | yes. i'll heal you first
+H: the mistell duo rides again | the realm's most dangerous duo is back
+C: everyone check your tells now | the whole realm learned to read the name before enter
+G: read the name, then send. every time | now both of you, check the name before enter
+
+@topic story_mistell
+@levels 10-50
+@scene story_mistell_4b
+@role A type=Socialite,Leveler levels=10-50
+@role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden levels=10-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: ok. i'm saying it here, where the tell should have been said: i was wrong about {name_b} | here goes. {name_b}, the tell was mean and wrong. sorry
+B: say the other part | and?
+A: {name_b} is the best healer in the realm. there | {name_b} is the best healer in the realm. happy?
+C: they said it!! | it happened. in faction
+B: very happy. ty {player}. you said the tell started it and you were right | {player} saw that {name_a} started it. ty {player}
+A: {player}... the spider thing was public though. just saying | {player}, you know the spider thing was worse right? ok. fine
+E: {name_a} hasnt forgiven {player} yet lol | {player} got {name_a} to apologize. legendary
+G: the tell was the first wrong. fair enough | started with the tell. ended with the tell
+B: and i take back the spider thing. you only ran a little | ok. the spider was small, but you were low level
+A: thank you | its something
+D: friends again? | are we good now?
+B: yes. full heals again. even the first one | yes. you get heals again. all of them
+F: no more potions for {name_a} | potion life is over
+A: i will not miss the potions | i'll miss the potions. no i wont
+H: and you read the name before you send now? | check the name next time
+A: every time. forever | three times. every tell
+C: that was a proper apology | best apology i've seen in faction
+E: {name_b} wins again | and {name_b} still won lol
+
+# ==== buffbot: B tells the realm that A is somebody's buffbot; A goes on a buff strike ==================================
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_1
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: theory: {name_a} is somebody's buffbot. never talks, just buffs and follows | anyone else think {name_a} is a buffbot? silent, buffs everyone, stands there
+A: i'm literally typing right now | i'm right here {name_b}. talking. to you
+B: thats exactly what a buffbot's owner would type | a buffbot with an owner who types. classic
+C: wait is this real | ooh, a buffbot accusation
+G: half the realm runs a second account for buffs anyway | buffbots are everywhere. two accounts, one person. its normal
+B: normal or not, {name_a} is one | i'm just saying what i see
+A: this is my main. it has always been my main | i've played this one since the day i rolled it. its my main
+H: {name_a} buffed me earlier. talked my ear off actually | i grouped with {name_a}. they talked the whole time
+B: so they talk to YOU | ah, so the owner types through it sometimes
+E: lol this is great | buffbot trial when
+A: i buff because people ask nicely. thats it | i buff people because i'm nice! people ask, i buff
+B: thats what they all say | a buffbot that says "i'm nice". cute
+F: next {name_a} will say "buffs up, have a nice day" | any second now: "buffs done, next please"
+D: leave {name_a} alone. they buffed me for free a dozen times | {name_a} is the nicest player in the realm. back off
+B: free, instant, silent. buffbot | free buffs. exactly like a buffbot
+A: how is this silent?? look at all these words | i'm not silent! i'm typing paragraphs at you!
+B: could be the owner | owner typing. buffbot still a buffbot
+G: one way to settle it. say something a buffbot owner never would | prove it then. something only a real main would say
+A: ok. {name_b} is the most annoying person in the realm. that came from the heart | here: i cant stand {name_b}. buffbots dont have feelings like that
+C: lol that felt real | thats a real person talking
+B: nice try. owner wrote that | the owner wrote that one
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_2
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: new evidence. {name_a} stood by the bindstone in {capital} for an hour. not moving | i watched {name_a} stand in {capital} for an hour without moving once
+A: i was afk. people go afk {name_b} | afk. the kettle, the door, life
+B: buffbots stand still. buffbots go "afk" | a buffbot parked in town. classic
+C: wait, you watched {name_a} for an HOUR? | you stood there for an hour watching them?
+B: ...for science | i was waiting for someone
+E: lol who's the weird one now | {name_b} watched a statue for an hour
+B: and {name_a} buffs the same person first every time. i know who the main is | theres a pattern. {name_a} always buffs the same person first
+A: ok, who do i buff first. tell me | who?? go on
+B: i'm not saying yet | i'll say when i have more proof
+G: so what if they were. half the realm does it | buffbots arent a crime anyway. why does it matter
+B: it matters. one person playing two characters isnt a group | it matters because they get free buffs and the rest of us wait
+D: {name_a} buffed you last time you asked! you said ty! | and {name_a} buffs everyone. even you {name_b}. remember?
+B: that ty was for the owner | i said ty to the owner
+A: ok. thats it. {name_b} gets no buffs from me. ever | you know what? no more buffs for {name_b}
+B: ha. caught and angry | see? thats what an owner says when caught
+F: so is the buffbot going on strike? | the buffbot is on strike lol
+A: maybe i am | maybe. maybe the whole realm learns what its like without me
+H: please dont put me in the middle of this | i just want my buffs
+D: dont punish everyone for {name_b} | the realm didnt do anything {name_a}
+A: then the realm can ask {name_b} to stop | tell that to {name_b}
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_3
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+C: the buff strike is real. i asked {name_a} for buffs and got "ask {name_b}" | {name_a} is refusing buffs to everyone. "ask {name_b}" they said
+A: no buffs till {name_b} takes it back. thats the deal | until {name_b} apologizes, no buffs. for anyone
+B: fine. i'll say it. the main is the one {name_a} groups with all the time. you know who | ok. the one {name_a} always buffs first. the one always in their group
+H: are you talking about me?? | wait. is that me? i just like getting buffs
+B: you said it, not me | if the boots fit
+H: lol no. i dont even have a second account | i'm not their main! i have one character and its this one
+A: so now innocent people get dragged in. nice | {name_b} you just accused a random person to win an argument
+E: lol {name_b} is losing it | {name_b} going full detective
+G: buffbot or not, the strike hurts everyone | this is getting silly. the realm needs a healer
+D: please {name_b}. my buffs ran out an hour ago | {name_b} just say sorry. we need our buffs
+B: i'm not saying sorry for the truth | i wont apologize for being right
+A: then nobody gets buffs | then enjoy your unbuffed life
+F: i miss my buffs | my buffs... gone
+C: faction poll: buffbot {name_a} or paranoid {name_b} | realm, who's right? is {name_a} a buffbot or is {name_b} paranoid?
+E: i'm with {name_b}. too quiet, too helpful | {name_a}'s a buffbot. obviously
+D: team {name_a}. buffbots dont go on strike | {name_b} is paranoid. {name_a} is a person
+H: buffbots definitely dont go on strike | thats the best proof yet
+~ 6
+B: this isnt over | we'll see
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_4
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: just saw {name_b} pull way too much at a camp. guess who walked by | {name_b} was dying to a whole camp. and then {name_a} showed up
+B: ...yeah | ok. yes. that happened
+A: strike or no strike, i dont let people die | i healed them. the strike has a rescue clause
+C: wait, {name_a} broke the strike for {name_b}?? | aww
+B: and then {name_a} typed "buffbot reporting for duty". i deserved that | {name_a} said "you're welcome, from the buffbot". fair
+E: lol | thats a good line
+B: ok. sorry {name_a}. a buffbot wouldnt have stopped. you did | i'm sorry. you're not a buffbot. you're just... nice. weird, but ok
+A: thank you. strike is over | apology accepted. buffs are back
+D: BUFFS ARE BACK | the realm is saved
+F: finally. i can tank again | i've been fighting unbuffed for ages
+G: buffbots still exist. this just wasnt one | and for the record, buffbots are still everywhere. just not {name_a}
+H: and i'm still not anyone's main | and i'm still not a second account
+B: yeah. sorry for dragging you in | sorry about that too
+A: first buff goes to {name_b}. as a thank you for the apology | {name_b} gets first buffs. dont make me regret it
+B: ty {name_a}. the real one | i'll say ty. to you. not an owner
+C: everybody got buffed. nicest ending | nicest ending in a long time
+~ 6
+F: line for buffs forms behind {name_b} | ok who is next in the buff line
+H: me next. not anyone's main. just me | can i be next? i'm nobody's second account
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_4a
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: ok. i was wrong. {name_a} is a person. a whole person | i take it back. {name_a} is not a buffbot. never was
+A: thank you. buffs are back on, everyone | ty. strike over. come get your buffs
+D: YES | buffs!
+A: and ty {player}. you said it first: buffbots dont go on strike | {player} stood up for me when {name_b} had half the realm believing it. ty {player}
+B: {player}, you ruined my whole theory. thanks | yeah {player}. you and your logic
+E: lol {name_b} | the detective got outsmarted
+H: and i'm not their main. for the record. again | still not a second account
+B: yeah sorry. that was too far | sorry about that
+G: i still say watch for buffbots. just not {name_a} | buffbots are real though. just not here
+A: {name_b}, you get buffs too. last in line | {name_b}, line up. at the back
+B: thats fair | fine. i'll wait
+F: the detective at the back of the buff line lol | justice, buff style
+C: {name_a} is the most patient person in the realm | {name_a} is a saint
+B: one more thing. you are very quiet sometimes | still. you're really quiet sometimes
+A: its called medding {name_b}. healers med a lot | i'm quiet because i'm medding. healers do that
+F: buffs!! i can feel my arms again | first buff i've had since the strike
+D: best healer in the realm, i'll say it | {name_a} for realm healer of the year
+E: {name_b}, still in line? lol | and {name_b} still waits at the back
+
+@topic story_buffbot
+@levels 20-50
+@scene story_buffbot_4b
+@role A class=Cleric,Healer,Shaman,Druid levels=20-50
+@role B type=NoLifer,Daredevil levels=20-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: the realm has spoken. {name_a} acts like a buffbot. too quiet | most of faction agrees with me. {name_a} is way too quiet
+A: fine. you want talk? i'll talk. all the time | i'm not a buffbot. but fine. i'll talk more. watch
+B: ty {player}. you saw it too. too quiet, too helpful | {player} backed me when everyone called me paranoid. ty {player}
+A: {player}... you think i'm a buffbot? really? | {player}, i'm hurt. i talk. look, i'm talking
+E: {player} said what we were all thinking | {player} saw it too
+A: hi realm. hows everyone. i'm talking now. buffs for anyone. what a day | hello everyone! just checking in! buffs available! also hi!
+C: oh no | what have we done
+A: {name_b}! hi! did you get good loot? i love loot. tell me about your loot | {name_b}, how was the hunting? nice frontier huh? lots of trees?
+B: ok stop | please stop
+A: but a buffbot would be quiet. so i'm talking. forever | i have to prove it. i'm going to talk every minute
+F: the buffbot broke | we made it chatty
+B: ok ok, you're not a buffbot. please go back to quiet | i take it back. you're a person. just be quiet again
+A: finally. buffs are back. quietly | ha. thank you. buffs are back
+D: everyone wins, sort of | best outcome
+G: lesson: be careful what you ask for | buffbots are real. this one just talks too much now
+H: buff please? no talking needed | can i get a buff? quietly?
+E: we broke the healer lol | the chattiest healer in the realm
+C: lesson learned. quiet is fine | never again will i call anyone quiet
+
+# ==== keepgrudge: the melee leader and the caster leader blame each other for nearly losing {keep} =====================
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_1
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: ok who told the casters to stay on the wall at {keep}. we nearly lost the inner door | we almost lost {keep} because the casters stood on the wall the whole fight
+B: i did. casters belong on the wall. thats where we hit them from | that was me. casters on the wall is how you hold a keep {name_a}
+A: the ram was on the door and you were up there throwing sparkles at their back line | the door was getting rammed and you were nuking people in the back
+B: those people in the back were their healers. you're welcome | i was killing their healers. thats why you lived
+C: i was at {keep}. it was close. really close | i was there. the door was nearly down
+A: we needed you inside the door. ae on the ram crew | you should have been inside, hitting whoever came through
+B: and get flattened by their whole zerg in a doorway? no | cast in a doorway, with the {enemy_mod} zerg on the other side? great plan
+E: melee against casters. the oldest fight in the frontier | here we go. tanks against casters
+A: we held because my group plugged the door | we only held because my group stood in the door
+B: you held because we killed everything that came through it | you held because our nukes landed
+D: it held. thats a win. both of you | you BOTH held it. thats the point. it held
+A: barely | by a hair
+B: and next time it holds better if the tanks dont run out the door | next time, dont charge out the front gate
+A: the ram was RIGHT THERE. someone had to kill it | i charged out because the ram was right there
+B: you died in three seconds and the ram didnt notice | and you died. and the ram was fine
+F: the ram did not notice lol | the ram sends its regards {name_a}
+A: at least i went for the ram. you watched from a wall | i fought. you watched
+B: some of us fight with our brains | i fought from a smart place
+G: i've seen this argument at every keep since launch | this happens every keep fight. melee want the door, casters want the wall
+E: so who's right though | ok but who's right
+H: the casters. obviously. they're alive | the melee. obviously. a keep is a door
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_2
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: posting the defense plan for {keep}: casters on the wall, melee inside the door, nobody goes out | plan for the next {keep} defense. casters up top. tanks hold the door from inside. nobody runs out
+A: "nobody runs out". so the melee stand in a box and wait | so we sit inside and listen to the ram. great plan
+B: the door takes the ram. you take what breaks through | you dont take ram hits. the door does. you hit what comes in
+A: and when the door goes, your casters are still up on the wall enjoying the view | and when the door breaks, where are your casters? still on the wall?
+B: we come down. we're not statues | we come down to the lord room. its in the plan
+A: oh its in the PLAN | ah. the PLAN
+E: {name_a} doing the caps thing | the caps are out
+A: here's mine. we go out, kill the ram crew, come back in | my plan: melee out the door, kill the ram, back inside
+B: thats what you did last time. it didnt work | you did that! you died! the ram was fine!
+A: because nobody had my back | because nobody came out with me!
+B: nobody follows a bad idea {name_a} | because it was a bad idea!
+C: i went out with {name_a}. we both died. it was fun though | i followed {name_a} out. i died too
+F: the out the door club has two members | fun death count: two
+D: why not one plan. from both of you | can you both just plan it together
+A: not with someone who calls the melee "the meat" | i'm not planning anything with someone who calls me a meat shield
+B: you called us "sparkle throwers" first! | you called my group sparkle throwers
+A: well you throw sparkles | you ARE sparkle throwers
+B: and you're a walking door | and you're a door with legs
+G: the enemy is going to walk right in while they argue | these two are going to lose {keep} arguing about {keep}
+H: i'm not going near the next {keep} defense | next attack on {keep} is going to be a mess
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_3
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: lf melee for my {keep} defense group. we fight at the door. no wall people | recruiting for the {keep} defense. melee only. we go out the door
+B: casters to me. we stay up on the walls, like smart people | and i'm recruiting casters. we hold the wall. no door people
+C: two groups, one keep, zero teamwork | so two defense groups that wont talk to each other. great
+A: they can watch us from the wall. like always | they can talk to the back of my head while i'm at the door
+B: we'll have a great view of you dying | we'll watch you die. like always
+E: ouch | lol
+D: the enemy is going to love this | this is how keeps fall
+A: you've never held a door in your life {name_b} | you've never once stood in a doorway {name_b}
+B: and you've never once looked at the whole fight | you dont see the fight. you see one enemy at a time
+A: thats called focus | its called being on the front line
+B: its called tunnel vision | its called being a door with legs. again
+G: both plans work. with people who listen | i've seen both work. the problem is them, not the plans
+F: let the keep lord decide. its the lord's keep | maybe the keep lord should choose
+A: next defense. whoever's plan holds, the other one follows from then on. deal? | ok. whoever's plan holds the next defense leads all of them after
+B: deal. when mine holds, you type "the casters were right" | deal. and when mine works you say "the wall was right" in faction
+A: and when mine holds, you stand in the doorway with me. one fight | when mine works, you stand in the door. once. with me
+B: ...fine | deal
+H: realm, pick a side. door or wall. {name_a} or {name_b} | who are we with? {name_a}'s door or {name_b}'s wall
+E: door. always the door | {name_a}. tanks win keeps
+C: wall. i like being alive | {name_b}. dead tanks hold nothing
+~ 6
+D: just hold the keep. please | whoever wins, keep the keep
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_4
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+G: ok. i wrote a plan for {keep}. casters up top, melee at the door, and a small group goes out only when the ram crew is thin | here is a plan. melee inside the door, casters on the wall, one group out for the ram when its alone
+A: thats my plan | thats what i said
+B: thats MY plan | uh, thats literally my plan
+G: its both your plans. thats the point | its both. thats why it works
+C: some of us walked through it at {keep}. it makes sense | a few of us tried the positions at {keep}. it fits
+A: ok fine. the door group goes out only when its clear | fine. we only go out when the ram is alone
+B: and the casters come down when the door breaks. not before | and we come down the second the door goes
+A: ...thats reasonable | ok. that works
+B: it does | yeah
+E: wait. are they agreeing? | is this agreement? in faction?
+F: someone check the sky | the sky is falling
+D: finally | took long enough
+A: you're still a sparkle thrower | still. sparkles
+B: and you're still a door. just one that walks | still a door. a door that talks
+A: nicest door on the frontier | best door you've got
+B: finest sparkles on the frontier | best sparkles you'll ever see
+G: next time {keep} is hit, we use it. both groups. one realm | next defense, we use the plan. together
+H: ok i'll come to the next one | i might actually show up to the next defense
+C: sparkles and door. best duo in the frontier | door with legs and the sparkle thrower. best names ever
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_4a
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: the realm went with the door. melee out, kill the ram, back in. thank you all | most of faction picked the door plan. its the plan now
+B: i saw | yeah. i saw the votes
+A: ty {player}. you said "kill the ram" when the casters laughed at me | and {player} said it plain: a keep is a door. ty {player}
+B: {player}, you picked the walking door. i'll remember that | {player} you sided with the door with legs. wow
+E: the door wins | tanks rule
+B: a deal is a deal. i'll stand in the door with {name_a}. one fight | ok. the deal. i stand in the door. once
+A: right next to me. you'll love it | you'll see. its the best spot in the keep
+C: {name_b} in a doorway. someone get a screenshot | i need to see {name_b} in a doorway
+B: if i drop in that door, i'm blaming you forever | if i die in that door, i'm haunting you {name_a}
+A: you wont drop. i'll be standing in front of you | you wont. i'll be in front
+B: ugh. thats nice. i hate that | ...ok, thats kind of nice
+D: the door protects the sparkles | aww
+G: one fight. then the casters go back on the wall | and after that, casters back up top
+B: yes. please | thank you
+F: a door with legs and a caster in a doorway. faction gold | best fight in the realm and it hasnt even happened
+H: i'm coming to watch that | next defense is going to be great
+E: tanks out, ram dead. lovely | door plan forever
+C: i'm joining the door group | i'll be at the door too
+
+@topic story_keepgrudge
+@levels 35-50
+@scene story_keepgrudge_4b
+@role A class=Armsman,Paladin,Mercenary,Reaver,Warrior,Thane,Berserker,Savage,Hero,Champion,Blademaster levels=40-50
+@role B class=Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter,Mentalist levels=40-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: the realm went with the wall. casters up top, tanks inside, nobody runs out | faction picked the wall. thats the plan now
+A: yeah. i saw | i saw it
+B: ty {player}. you said it when {name_a} called us sparkle throwers | and {player} called it: dead tanks hold nothing. ty {player}
+A: {player}... the wall? really? | {player}, you picked the sparkles. i thought you were cool
+E: lol {name_a} is sulking | the door is sad
+B: so. the deal. type it | the deal, {name_a}
+A: fine. "the casters were right". there | ...the casters were right
+C: {name_a} typed it. its real | never thought i'd see that typed
+B: and for the record, you hold a door better than anyone | and ty for holding the door. you're still the best door in the realm
+A: well yes | obviously
+D: they're nice to each other! | aww
+A: but if the ram crew is thin, i'm going out. one exception | ok but if the ram is alone, i'm killing it
+B: ok. if its clear. and we cover you from the wall | fine. if its alone. and you take a few of us with you
+G: thats a good plan | thats the plan i would have written
+F: covered by sparkles | sparkle cover. nice
+H: i feel safer already. a little | the realm is safe. sort of
+E: the door will get over it | {name_a} still sulking?
+C: wall group, here i come | sign me up for the wall group
+
+# ==== loan: A lent B gold for armor; B pays in silver, then swears it was all paid at the bank ========================
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_1
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: {name_b}. been a while. the gold i lent you for your armor? | hey {name_b}, about that gold i lent you. remember?
+B: of course i remember. i'm working on it | yes yes. its coming. soon
+A: you said soon before | soon was a while ago {name_b}
+C: oh a loan | uh oh. money between friends
+G: never lend gold. ever. first rule of the realm | this is why you never lend coin. never
+B: its fine. {name_a} knows i'm good for it | {name_a} knows i pay. i always pay
+A: i'd believe it more with some gold in my purse | i'd know that better if i saw some of it
+B: i keep dying. repairs, potions, it adds up | repairs are killing me. dying costs a fortune
+E: weird, because {name_b} has a brand new dye job on that armor | but you have a fresh dye job
+A: wait. you dyed the armor. the armor my gold bought | you bought dyes?? for the armor i paid for?
+B: it was cheap dye. barely anything | dyes are cheap!
+A: cheap is not free! cheap is money! my money! | cheap or not, thats my gold you're wearing
+F: to be fair it is a nice color | the armor looks great though
+B: think of it as an investment in how i look | see? it looks great. you're investing in a good looking realm
+A: i want a return. in gold | i'm investing in getting my gold back
+D: give them time. {name_b} always comes through | {name_b} will pay. they're good people
+A: i've given time | time is all i've given
+B: you'll see some gold soon. promise promise | i'll start paying it back. i promise
+A: everyone heard that. faction is my witness | i'm holding you to that. in faction
+H: witnessed | i'm a witness
+~ 6
+G: never lend. thats all i'm saying | i'm just saying. never lend
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_2
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: payment one! {name_a}, i just traded you. told you | ok {name_a}. first payment, sent. see?
+A: i got it. its a few silver {name_b} | you sent me silver. a little silver
+B: its a start! | every journey starts with one step
+E: thats a tip, not a payment | lol silver
+A: at this pace you'll finish paying when the realm is in ruins | at this rate i'll be paid back when my hair is grey
+B: next payment will be bigger. promise | then i'll pay more next time
+A: plus a little interest. for the wait | and with a little interest, since its been a while
+B: INTEREST?? we're friends! | interest?? what are you, a bank?
+A: friends pay back what they borrow | a friend would have paid by now
+C: {name_a} the banker | interest lol
+G: see, this is why. gold ruins everything | told you. never lend. it ruins friendships
+D: come on, interest between friends is harsh | {name_a}, interest is a bit much
+A: so is waiting this long | being made to wait is a bit much too
+B: no interest. i'll pay back the gold. every coin. thats it | i'm not paying interest. i'll pay what i owe
+A: ok. then the whole amount. no more silver drips | fine. then pay it. all of it
+B: i'm working on it! | i will!
+F: the silver drip is a strategy | this could take forever. i'm here for it
+H: witness reporting. a few silver changed hands | i'm still a witness by the way
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_3
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: ok. i paid you back in full. at the bank in {capital}. you even said ty | {name_a}, i paid all of it. at the bank. you said thanks!
+A: what? when? | i have no idea what you're talking about
+B: right after the silver. the big trade. you accepted it | the big trade after my first payment. you took it
+A: that trade had three potions and some junk. no gold | i accepted a trade with potions in it. not gold
+B: the gold was in there. you didnt look! | there was gold in it! with the potions!
+H: i saw you two trade at the bank. i cant see inside a trade window though | i was at the bank. i saw a trade. i dont know what was in it
+E: nobody can prove anything. great | so its your word against theirs
+A: if i'd been paid i'd be telling the whole realm. i'm not | i would know if i got all my gold back {name_b}. i'd be dancing
+B: maybe you spent it and forgot | maybe it went on that new pile of materials you bought
+A: those were mine. i've been saving forever | i bought materials with MY OWN gold. not yours
+C: ok its getting heated | this is getting ugly
+G: i'm going to keep saying it. never lend | and this is why i dont lend coin
+B: i think you like me owing you. it makes you feel big | you know what, i think you just like having something to hold over me
+A: and i think you were never going to pay me back | and i think you never meant to pay
+D: ok thats too far, both of you | hey. both of you. stop
+B: i know what i traded | i paid. i know i did
+A: then show me the gold | then where is it?
+F: where did the gold go. the realm wants to know | the gold has vanished. mystery of the realm
+H: faction, you decide. did {name_b} pay or not | realm, who's telling the truth? {name_a} or {name_b}?
+E: {name_a}. if you got paid, you'd know | {name_b} paid. {name_a} is just bad with bags
+~ 6
+D: please sort this out | count your coin {name_a}. please
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_4
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+H: witness update. i thought about the bank trade. i remember it now | ok i remembered something about that trade at the bank
+H: {name_b} put a pile of gold in. then took half of it back out before {name_a} accepted | gold went in. then some came out. then {name_a} clicked accept
+A: so... half of it came | so i got half
+B: wait. i took some out? i was fixing the stack | half?? i didnt mean to take any out
+C: so {name_b} paid half and {name_a} got half. everyone was half right | so you're both right. and both wrong
+G: count the coin before you accept. always | and this is why you count before you click accept
+A: ok. so i did get some. a lot, actually | ...so i did get paid. some
+B: and i still owe half. ugh | and i still owe the other half
+A: sorry {name_b}. i said you never meant to pay. that was wrong | i'm sorry i called you a liar about it
+B: sorry for what i said too. it was ugly | and i'm sorry i said you like holding it over me
+D: make up! make up! | hug it out
+B: ok. trade window. i'm counting every coin this time | other half. right now. counting it out loud
+A: got it. every coin. we're square | counted. accepted. paid in full
+E: the debt is dead | paid in full!
+F: goodbye silver drip | the silver drip era is over
+G: lesson: dont lend. or count. one of those | and now, never lend gold again
+A: i'd lend again. with a witness | i'd lend to {name_b} again. maybe
+H: witness for hire | i'm available
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_4a
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: i owe the realm a confession. that big trade had no gold in it. i thought it did | i looked again. that trade was potions. i never put the gold in. {name_a} was right
+A: you have no idea how good that is to read | ty {name_b}. really. i needed that
+C: {name_b} owned it. respect | wow, a confession
+B: ty {player}. you said "if {name_a} got paid they'd know" and you were right | {player} told me to check before calling anyone a liar. so i checked
+A: ty {player}. you believed me when it was just my word | {player} backed me. thank you, really
+B: and {player}... the dye was worth it. just saying | {player}, you could have been nicer about the dye
+E: gold. now. all of it | so pay up
+B: sent. every coin. plus a little extra. call it interest | its all there. and a bit more. for the wait
+A: you didnt have to do the extra | i said no interest was fine
+B: you lent it when i couldnt afford a single piece. i owed you more than gold | i wanted to. you lent it when i had nothing
+D: thats lovely | aww
+G: i still say never lend gold | and the lesson: never lend gold
+A: i'd do it again for {name_b} | i'd lend to {name_b} again
+B: never again. i'll wear grey loot first | you wont have to. i'm never borrowing again
+F: the dye is staying | the dye stays though
+B: obviously | the dye stays
+H: case closed. the witness goes home | the witness rests
+E: first loan in history paid back with extra | a debt paid with extra. thats rare
+
+@topic story_loan
+@levels 15-50
+@scene story_loan_4b
+@role A type=NoLifer,Crafter,Leveler levels=20-50
+@role B type=Daredevil,Socialite,Explorer levels=15-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: ok. i owe {name_b} an apology. i counted again. the gold was there | {name_b} was right. i went through it all again. i got paid
+B: told you | i KNEW it
+C: plot twist | ooh {name_a} was wrong
+A: i saw three potions and thought that was it. i never counted | i saw the potions and stopped looking. the gold was in there the whole time
+B: ty {player}. you backed me when everyone thought i was a deadbeat | {player} said it: {name_a} is just bad with bags. ty {player}
+A: {player}, you were right. i'm bad with bags. dont tell anyone | {player}... "bad with bags" hurt. it was true, but it hurt
+E: {name_a} the banker, bad with bags | lol "bad with bags"
+A: {name_b}, i told everyone you'd never pay. i was wrong. sorry | and i'm sorry i said you never meant to pay
+B: and the interest? | and the interest thing?
+A: no interest. never was | forget the interest
+D: they made up! | friends again, finally!
+B: and every coin is accounted for. thank you very much | and i paid every coin
+G: lesson: count before you accept | count your coin, everyone
+F: the dye is clean money | the dye was paid for with honest gold
+A: i count every trade now. out loud | next time i'll count. twice
+B: and i'm never borrowing again. promise | and next time i'll buy my own armor
+H: witness off duty. finally | case closed. witness out
+E: {name_a} lost the count | the banker got caught short lol
+
+# ==== gimped: B kicks A from a group for playing a "gimped" class; A sets out to prove the class ======================
+# A is the realm's class the 2002-2003 boards called gimped (Friar, Warrior, Warden), and so is H, A's classmate.
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_1
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+A: so {name_b} kicked me from the group. reason: i play a {class} | just got kicked by {name_b}. the reason? i'm a {class}
+B: nothing personal. i run a tight group. no gimps | its not personal. its math
+A: oh the math. tell me the math {name_b} | math? what math
+B: its on every board. the class is gimped. not my rules | everyone knows your class is gimped. read the boards
+A: the boards say every class is gimped. including yours | the boards also said the world was ending last patch
+G: i've seen every class get called gimped. wait a patch, it flips | every class has been called gimped at some point. even the uber ones
+H: another {class} here. i heard that {name_b} | as a {class} myself, i'm offended
+E: i mean... it is a bit gimped | sorry but {name_b} isnt wrong
+A: name one time i let a group die | i've never let a group down. not once
+B: its not about once. its every fight a bit slower | i dont need a time. i need numbers. and yours are low
+D: i grouped with {name_a}. they were the best part of that group | thats so unfair. {name_a} is great in a group
+B: great. you two can group. i'll fill the spot with someone useful | then group with them. i'll take a real class
+A: useful. wow | ok {name_b}. noted. very noted
+C: {name_b} is famous for this. kicked someone for an ugly helmet once | {name_b} kicks people for anything. i heard one got kicked for their name
+B: the helmet was ugly | the name had three x's in it
+F: three x's is a fair kick | lol the xxx name
+A: i'm going to prove my class works. watch | i'll prove it. watch me
+B: sure. send me a postcard from the bindstone | good luck. bring potions
+~ 6
+H: {class}s of the realm, we're with you {name_a} | all of us {class}s are behind you {name_a}
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_2
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+A: went out solo earlier. a whole camp of blues. didnt die once | soloed a camp of blue con mobs earlier. no potions. no deaths
+B: anyone can solo blues {name_a} | blues. wow. my grandmother could solo blues
+E: blues are training dummies | lol blues
+A: then let me in for one run. your group, your pace. see what i do | ok then. one run. you and me. your group. let me in once and see
+B: and why would i waste a run | why would i do that
+A: because if i'm bad, you get to brag about being right. forever | because if i'm useless, you get to say i told you so in faction
+B: hmm. bragging rights. go on | ...ok. thats tempting
+A: and if i pull my weight, you say sorry. here. in faction | and if i'm good, you apologize. in faction
+B: fine. one run. dont slow us down | deal. one run. and you better keep up
+C: the fate of a whole class rides on one run | one run to decide a class
+G: a single run is all dice. but fine | one run proves nothing. its luck
+D: go show them {name_a} | you've got this {name_a}
+H: do it for all of us | the {class}s are watching
+F: bets are open. i say {name_a} lives | if {name_a} dies first, i'm never letting it go
+B: one rule. i pull, not you | and dont pull. i pull
+A: fine by me. i'll just carry the rest | fine. you pull. i'll do everything else
+B: big talk | carry lol
+E: {name_a} is getting kicked mid run, calling it | this is going to end in a kick
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_3
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+A: the run happened. and it went really well. ask anyone | so. the run. we went. it went great
+B: you died FIRST {name_a} | "really well". you died first
+A: i died holding the add that was eating you. you're welcome | i died first because i jumped the add that was going for you
+B: i had that add. you jumped in | i didnt need you to hold it. i had it
+A: you were at half health and falling fast | you had it at half health and dropping
+C: wait so was it a save or a death | so did {name_a} save {name_b} or not
+H: i was there. {name_a} took that add off {name_b}. clean | i was in that group. it was a save. clear save
+B: you play the same class. of course you'd say that | you're biased. same class
+E: {name_b} said the run took longer than normal | and the group finished slower than usual. {name_b} said so
+A: it took longer because we stopped to rez me! because i saved you! | because i died saving you, thats why
+B: so you admit it. you died | so you admit you died
+A: i admit i'm the reason you're alive | i admit i'm a hero
+G: thats what a support class does. takes the hit | sounds like the class did its job
+B: a proper tank holds it and lives | a real tank would have held it and lived
+A: and where was your real tank? oh right, behind me | then where was your proper tank?
+F: burn | ohhh
+D: apology time {name_b}? a deal is a deal | so does {name_b} owe an apology or not
+B: no. dying is not pulling your weight | the deal was pulling your weight. dying first isnt that
+A: saving the group leader is ALL the weight | saving the leader is pulling weight
+C: faction vote: does {name_b} owe {name_a} a sorry? | realm, settle it. did {name_a} earn the apology?
+H: yes. {name_a} earned it | yes. obviously
+E: no. dying first is dying first | no. {name_b} is right, dying first loses
+~ 6
+G: dice. all dice | one run proves nothing. i said so
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_4
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+B: so. i thought about that run some more | ok. i've been thinking about the run
+A: go on | and?
+B: i'd have died. and then the group. you saved the run | if you hadnt jumped that add, i die and the group wipes
+A: finally | thank you
+B: so you can have a spot. regular. if you still want it | so. you're in. regular spot. if you want it
+D: YES | they did it
+H: the {class}s are vindicated | a win for {class}s everywhere
+B: the rule stays. no gimps. except {name_a} | but my no gimps rule stays. you're the exception
+A: i'll take being the exception | lol. i'll take it
+E: so its a gimped class with one good player? | so the class is still gimped but {name_a} isnt?
+B: basically, yes | yes
+G: its never the class. its who plays it | thats how it always goes. the player, not the class
+A: what about other {class}s | and if another {class} wants in?
+B: one run. same deal. no favors | they get one run. like you
+H: sign me up for my run | i'm in for my one run
+F: {name_b} has a heart. tiny, but there | {name_b} is softening. a little
+B: i do not | dont spread that
+C: give it a day. {name_b} kicks someone for a helmet soon | {name_b} will kick someone for their name again soon, watch
+A: and next run, i pull | one more thing. i'm pulling next time
+B: no. never. i pull | absolutely not. i pull
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_4a
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+B: here it is. sorry {name_a}. you did more than your share | ok. the deal. i'm sorry {name_a}. you pulled your weight. more than
+A: ty. i know that hurt to type | thank you {name_b}. that took a lot
+D: {name_b} apologized! | it happened!!
+A: {player} backed me when {name_b} said dying first loses. ty {player} | and ty {player}. you said it plain: saving the leader is pulling your weight
+B: {player}, you and your fair points. ugh | yeah, {player}. you made it hard to argue
+E: the gimped class wins one | {name_b} lost an argument to the gimped class lol
+B: and the class is fine. i said it. dont make me say it again | and the class isnt gimped. ok? its fine. its good even
+H: i'm putting that on the boards | someone screenshot that. i'm framing it
+A: so the rule? | and the no gimps rule?
+B: new rule: everyone gets one run. no class bans | gone. one run for anyone. thats the rule now
+G: the realm grows up a little | progress
+F: {name_b} is a nice person now. weird | {name_b} has a heart after all
+B: dont push it | one run. not a free ride
+A: not bad {name_b}. not bad | you're a good leader {name_b}. when you listen
+C: until the next patch | the class wars of the realm are over
+H: every {class} in the realm just smiled | {class}s everywhere are celebrating
+D: {name_b} the reformed | best leader in the realm now
+E: still a little gimped. just saying | i still think the class is a bit gimped
+
+@topic story_gimped
+@levels 15-50
+@scene story_gimped_4b
+@role A class=Friar,Warrior,Warden levels=15-50
+@role B type=NoLifer levels=25-50
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H class=Friar,Warrior,Warden
+B: faction agreed. you died first. no sorry from me | the realm voted. dying first is dying first. no apology
+A: yeah. i saw | fine. i know
+B: {player} backed me. dying first loses. ty {player} | ty {player}. you said it straight: a real tank holds the add and lives
+A: {player}... i jumped an add for that group. remember that | {player}, i saved a whole group. but ok
+E: no sorry. as expected | told you
+A: i'm making my own group. any class. no kicks for helmets | you know what. i'm starting my own group. {class}s welcome. everyone welcome
+H: i'm in. obviously | count me in
+D: i'll join that | me too!
+C: {name_a} has more people than {name_b} now | {name_a}'s group is filling up faster than {name_b}'s lol
+B: hold on | wait what
+A: people like groups where nobody gets kicked for their class | turns out people like a leader who doesnt kick them
+B: ok fine. maybe i was a little strict | ...ok, maybe the "no gimps" sign was a bit much
+G: a little, sure | a little
+B: ok. anyone from your group gets one run with mine | one run for anyone in your squad. same deal you got
+A: how kind | generous
+F: gimp squad, best squad | the gimp squad lives
+A: gimp squad it is. proudly gimped | we're calling it the gimp squad. proudly
+C: the squad is full already lol | the gimp squad has a waiting list now
+
+# ==== campspot: two strangers fight over one camp, draw a border at a rock, and end up friends ========================
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_1
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: someone has been sitting at my camp for hours. {name_b}, i'm looking at you | {name_b} has been parked on my spot for ages
+B: your camp? its a public camp {name_a} | your camp? i didnt see a sign
+A: i've been at that camp longer than the trees | i've camped that spot every day. everyone knows its mine
+B: its a big camp. theres room for two | and now i camp it too. it has room
+G: first there gets the spot. thats the rule | camp etiquette says first one there has it
+B: i got there first today! | i was first today!
+A: i went to sell for ten minutes and you moved in | you got there first because i was at the merchant!
+E: lol a camp war over a rock | camp war
+B: fine. split it. left side yours, right side mine | we can split it. you take the left, i take the right
+A: you took the side with more spawns | the right side has the better spawns
+B: swap then. i dont mind | then take the right. i dont care
+A: no, i like the left. its fine | ...no. i'm used to the left
+F: lol they solved it. sort of | so the problem was solved in two lines
+D: you know you could just group up | or you could just group
+A: never | no
+B: no thanks | lol no
+H: two people, one camp, no group. bold | they're sharing a camp and refusing to group. this is going to be great
+A: stay on your side. dont touch my pulls | one rule. you pull from your side only
+B: deal. and stop standing there glaring | fine. and you stop glaring at me
+A: i'm resting. thats my resting face | i'm not glaring. i'm medding
+~ 6
+E: i can feel the glaring from here | they're glaring. both of them. i can tell
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_2
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: {name_b} just pulled from MY side | that mob was on my side {name_b}. i saw it
+B: it was standing on the rock. the rock is the middle | it was ON the line. the line is the rock
+A: who said the rock is the middle | since when is the rock the middle
+B: i decided. rock is the line | since now
+H: they're using a rock as a border lol | they've drawn a line. at a rock
+E: the rock war has begun | this is basically rvr now
+A: ok. new rule. a mob belongs to the side its walking toward | fine. then a mob that crosses the rock goes to whichever side its walking to
+B: mobs dont walk in straight lines {name_a} | thats insane. mobs walk in circles
+A: then i get the rock | then the rock is mine
+B: nobody owns rocks | you cant own a rock
+G: in my experience, camp borders end in tears | i've seen camp borders before. they always end badly
+F: the rock belongs to the realm | the rock is neutral ground. like a treaty
+D: you're talking more than most groups do. group up already | you two talk every five minutes anyway. just group
+A: its not talking. its border talks | we are NOT talking. we're negotiating
+B: yeah. very serious diplomats here | border talks lol
+C: is the spot by the big rock open? can i come? | hey, is that camp full? i wanted to come by
+A: FULL | no. full
+B: full | taken. sorry
+C: two people who arent even grouped said full. at the same time | ok wow. full, by two people not even grouped?
+E: first thing they ever agreed on | they agreed on something!
+A: dont expect it twice | that was a coincidence
+~ 6
+H: that was in sync | they said "full" at the exact same time
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_3
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: so {name_a} pulled a bad one earlier, three came, and they were almost dead | so {name_a} pulled three from their side and was about to die
+A: i was fine | i had it
+B: you were at a sliver. i took the add off you | you were not fine. i killed the add on you
+A: you were on my side of the rock | you crossed the rock
+B: i crossed the rock to keep you alive! | i crossed the rock to SAVE your life
+H: the rock was crossed. for a good reason | crossing the rock to save a rival. this is a story
+E: {name_a} owes {name_b} one now, right? | so does {name_a} owe {name_b} now
+A: i didnt ask | i didnt ask for help
+G: at a camp, you help. thats a rule older than the rock | you dont ask at a camp. you just help. its etiquette
+A: ok. thank you {name_b} | ...fine. ty
+B: with feeling please | say it like you mean it
+A: thank you for saving me. i hate it | ty {name_b}. you saved me. on my side of the rock
+F: thats the angriest thank you ever typed | the most grudging ty in realm history
+D: admit it. you two are friends now | and you two have been talking for hours. you like each other
+A: not friends. camp neighbors | we are not friends. we're neighbors
+B: neighbors who talk all day, ok | neighbors who chat for hours. sure
+A: you talk. i just sit there | you talk. i listen and med
+B: you lol'd at my rock joke. twice | you laughed at my joke about the rock
+A: ...it was funny | ok it was a good joke
+C: so is the camp still full or | can i come yet or no
+A: still full | nope. full
+B: full | no
+E: faction, settle it. whose camp is it really. {name_a} or {name_b} | realm, who's right? {name_a}'s camp or {name_b}'s public one?
+~ 6
+H: they're friends and they dont know it | whoever wins, they're friends. everyone sees it
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_4
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: update: {name_a} invited me to group. i accepted | so {name_a} sent me a group invite
+A: grouping is faster. its math | it was more efficient. thats all
+E: "its math" | math lol
+D: it took them forever | FINALLY
+A: the rock stays on my side though | still my rock though
+B: the rock belongs to the group now | we share the rock now. its a group rock
+F: peace at the rock | the rock treaty is signed
+C: can i come now? please? | so... full still, or can i come?
+A: what do you think {name_b} | ...{name_b}?
+B: sure. three is better than two | let them in. more pulls
+A: ok. but nobody touches the rock | fine. but you stay off the rock
+C: i promise to respect the rock | deal. i'll never touch the rock
+G: the best groups start as camp fights | and that is how camps become groups
+H: its official. friends | they're friends. its official
+A: camp neighbors. with a group | neighbors
+B: friends, {name_a}. say it | friends
+A: ok. friends | ...friends
+E: there it is | awww
+B: see you at the rock tomorrow? | same spot tomorrow?
+A: i'll get there before you | i'll beat you to it
+B: we'll see about that | we'll see
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_4a
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+A: faction agreed. my camp. finally | the realm has spoken. the camp is mine
+B: i saw | yeah yeah
+A: {player} backed me. first come, first serve. ty {player} | and ty {player}. you said it: i was there first, every day
+B: {player}, you sided with the grump. wow | {player}, you took the side of the person who glares. remember that
+E: {name_a} the grump wins | lol the grump
+A: so. you can still camp. as my guest | so, {name_b}... you can stay. on the right side
+B: your guest? at a public camp? | as your GUEST
+A: my guest. in my group. if you want | my guest. with a group invite
+B: fine. invite me | ...ok. i'll take the group
+D: the camp war ends in a group | they grouped!!
+C: room for me now? | and me? can i come?
+A: sure. everyone's my guest | you can come. you're my guest too
+G: a gracious camp owner | the host of the rock
+B: you're going to say "my camp" forever | you're going to be unbearable about this
+A: every single time | only every day
+F: long live the rock owner | the rock salutes its owner
+H: they went from border talks to a group invite | from rock war to guest list. faction history
+E: the grump has a group now. aww | the grump made a friend
+
+@topic story_campspot
+@levels 10-45
+@scene story_campspot_4b
+@role A type=Leveler levels=10-45
+@role B type=Explorer,Socialite levels=10-45
+@role C type=*
+@role D type=Socialite
+@role E type=Daredevil
+@role F type=*
+@role G type=NoLifer
+@role H type=*
+B: faction says its a public camp. like i said | the realm agrees. public camp. nobody owns a spot
+A: yeah. i read it | i saw
+B: {player} said nobody owns a camp. ty {player} | and ty {player}. you said it: camps are for everyone
+A: {player}, i had history there. but fine | {player}... i have camped that spot forever. but ok
+E: free the rock | the rock is free!
+A: fine. its everyone's camp. you were right | ok {name_b}. you were right. its a public camp
+B: thanks. so. group? | thank you. now group with me
+A: ok. yes | ...yes
+D: they grouped! | finally!!!
+C: is there room for me now | and me?
+B: sure. its a public camp after all | of course. public camp
+A: i still want the left side | but i still get the left side
+B: the left is yours. friend | you can have the left side. friend
+A: ok. friend | ...friend
+G: best camp story i've heard | and that is how camp feuds should end
+H: they started at war and ended in a group | from rock war to friends. faction history
+F: the rock brought them together | the rock did this
+E: no more rock borders | the rock is a free rock

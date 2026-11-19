@@ -1,0 +1,95 @@
+{
+  "id": "necromantic-apprentice",
+  "name": "Necromantic Apprentice",
+  "npcNames": [
+    "Necromantic Apprentice"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Necromantic Apprentice: NPC template 60164422, level 46, faction Drakoran Legion, aggro 200 (range 500), no spells, respawn 80 s, across the wooden bridge from Fort Gwyntell at 404113, 400086 with drakoran guardsmen (52) and archiators (53).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Zombies, Ghosts, and Necromancers: talk to Avice Swett in the apparition houses near Fort Gwyntell, kill an Avalonian apparition, see the Priest of Arawn, kill the drakoran necromancer's apprentice across the wooden bridge and bring his rod of necromancy to Avice.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The apprentice's rod and the household names it cannot hold are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Beath the necromancer keeps a bank across the wooden bridge with Bayn, and an apprentice, and the apprentice carries a rod. The Priest of Arawn at Fort Gwyntell says the rod is the reason the households of the dales are still in their houses: the drakoran necromancers found the colleges' tenants dead in their homes after the first summers of the war and tried to raise them, and could not, and tried instead to hold them where they were, and that they could do. The rod holds them. The apprentice does not understand it.\n\nThe apprentice was given it because a necromancer does not carry his own anchor; if the anchor is struck, the one who holds it suffers, and Beath would rather that were someone young. The apprentice practises with it on the households, morning and evening, calling them by the names in Gracien Adamson's register, which the drakoran stole a copy of, and the households answer, and do not come.\n\nAvice Swett, who keeps bees by the fort road and is dead, wants the rod. She says that if it is broken the households will be able to choose whether to stay. She does not say which she would choose.",
+  "legend": "Necromantic Apprentice, level 46 Drakoran Legion, across the wooden bridge from Fort Gwyntell, with guardsmen (52) and archiators (53) close by: you will fight guards too, so bring a group in the high forties and pull carefully. Plain melee, no spells in the data. Kill him for his rod of necromancy for Zombies, Ghosts, and Necromancers (Avice Swett). Beath and Bayn are close; do not pull them by accident.",
+  "yells": {
+    "aggro": [
+      "The rod is mine to carry!",
+      "Master Beath! They want the rod!"
+    ],
+    "phases": [],
+    "death": [
+      "The rod... let them... go..."
+    ],
+    "slay": [
+      "Held. Like the others.",
+      "Answer the rod."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "An apprentice carries a rod he does not understand."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Necromantic Apprentice has fallen. The rod is free."
+  },
+  "botLines": {
+    "briefing": [
+      "the apprentice is across the wooden bridge, guardsmen and archiators round him",
+      "kill him and loot the rod for avice swett"
+    ],
+    "aftermathWin": [
+      "got the rod. back to avice",
+      "apprentice down without pulling beath, nice"
+    ],
+    "aftermathLoss": [
+      "pulled beath with the apprentice"
+    ],
+    "rumour": [
+      "[heard|someone said] the apprentice's rod is what keeps the dales families in their houses",
+      "heard the drakoran stole a copy of gracien's register to call the dead by name"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "necromantic apprentice",
+    "text": "Beath's apprentice across the wooden bridge in the [dales of devwy], who carries the rod that holds the colleges' dead households in their houses. Avice Swett wants it."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} took the rod from the Necromantic Apprentice across the wooden bridge in {minutes} minutes.",
+    "loss": "The Necromantic Apprentice kept the rod; {raidLeader} of {realm} fell back over the bridge."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "drakoran",
+    "arawn"
+  ],
+  "related": [
+    {
+      "id": "beath",
+      "relation": "his master"
+    },
+    {
+      "id": "bayn",
+      "relation": "fellow of the bank"
+    },
+    {
+      "id": "the-swett-household",
+      "relation": "Avice Swett wants his rod"
+    }
+  ],
+  "tier": "minor"
+}

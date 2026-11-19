@@ -1,0 +1,117 @@
+{
+  "id": "rolf",
+  "name": "Rolf",
+  "npcNames": [
+    "Rolf"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "basilius",
+      "relation": "the morvalt king near whose hall the howlers hunt"
+    },
+    {
+      "id": "hoden",
+      "relation": "the shield-man who took Rolf's pack as dogs and lost them"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Rolf is a level-50 howler in the far north-east of Modernagrav (484747, 337341), about 1,800 units from Basilius, with five howlers (48-50) about a thousand units off.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template gives it no faction, so it never brings friends (bring-a-friend needs a faction).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60165404)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Hrolfr (Rolf) is a common Old Norse personal name ('fame-wolf').",
+      "provenance": "original",
+      "source": "Old Norse name lists, to verify"
+    }
+  ],
+  "story": "The vigil around the bones of Modernagrav is kept by dead beasts: mammoths decaying on their feet, great cats and serpents with the light showing through them, and howlers that should have rotted long ago. Not all the howlers on the island are dead. In the far north-east, out past Basilius's hall, a pack of living ones hunts, and their leader is a big grey howler the dwarves of the post call Rolf.\n\nThe name is a dwarf's joke. The Remnants say the living howlers are the descendants of the ones in the vigil, the ones that did not walk in to the bones when the others did, a long time ago; that some of the pack stayed out, and lived, and had pups, and that their pups have been living on the island's far edge ever since, as far from the bones as the island goes. The dwarves gave the leader a man's name, the commonest in Midgard, because, Orri of Hagall wrote, he behaves like a man who has decided not to go to a funeral: he stays away, and makes a great deal of noise about it.\n\nHe howls at night. The vigil does not answer. The morvalt of Basilius's hall, who live closest, hate the sound, and the dwarves say Hoden once went out with a cord to take the pack as dogs for the hall, because a king should have hounds, and came back with the cord and no dogs, and that Rolf's pack howled outside the hall every night for a season afterwards.\n\nRolf hunts alone when he hunts big. The pack runs a little way off, and does not run to him, and the dwarves think that is the howlers' way: the leader kills, and the pack eats after. A stranger who meets Rolf in the north-east meets one howler. Orri wrote that the stranger had better hope it stays one, and that the pack has excellent hearing.",
+  "legend": "Rolf is a level 50 named howler in the far north-east of Modernagrav, about 1,800 from Basilius's hall, with a pack of five howlers (48-50) about a thousand units away. He has no faction, so he never calls the pack in, but if you fight near them they'll see it and join on their own. Pull him away from the pack (west, toward the middle of the island, not east toward Basilius). No abilities, not CC-immune: an easy named for a small group or a strong pet class. Keep well clear of Basilius's hall: the king's aggro range is 800 and his whole pack comes with him.",
+  "yells": {
+    "aggro": [
+      "(A big grey howler raises its head and howls.)",
+      "(Rolf circles once, low to the ground.)",
+      "(The howl is not answered by the vigil.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Rolf howls, and far off the pack answers.)"
+      }
+    ],
+    "death": [
+      "(The grey howler lies down, facing away from the bones.)",
+      "(Rolf's howl breaks off.)"
+    ],
+    "slay": [
+      "(Rolf stands over what he killed and howls.)",
+      "(The pack comes to eat.)",
+      "(The leader kills. The pack eats after.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Living howlers, far from the bones. One is grey.",
+      "A howl at night. The dead vigil does not answer."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Somewhere off in the dark, the pack is listening."
+      }
+    ],
+    "realmFirstKill": "Rolf the grey howler falls, far from the bones."
+  },
+  "botLines": {
+    "briefing": [
+      "rolf is a 50 howler, no faction",
+      "pack of five is about 1000 away, pull him west",
+      "stay away from basilius hall east",
+      "easy named"
+    ],
+    "aftermathWin": [
+      "rolf down, pack didnt notice",
+      "easy",
+      "pulled west, clean",
+      "loud dog"
+    ],
+    "aftermathLoss": [
+      "fought near the pack, they joined",
+      "ran east into basilius",
+      "the pack came",
+      "bad pull"
+    ],
+    "rumour": [
+      "rolfs pack are the howlers that didnt walk in to the bones",
+      "the dwarves named rolf after the commonest name in midgard",
+      "hoden tried to take rolfs pack as hounds and failed",
+      "rolf howls at night and the vigil never answers"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Rolf",
+    "text": "A living grey howler of the far north-east, leader of a pack descended from the howlers that did not walk in to the [vigil]. [Hoden] once tried to take them as hounds. The dwarves gave him the commonest name in Midgard."
+  },
+  "bookPage": "From the slates of Orri of Hagall: there is a living howler in the north-east, a big grey one, and I have heard him howl on still nights from the post, though it is a long way. The vigil round the bones has howlers in it, dead, standing with the mammoths, facing in. When the grey one howls they do not turn their heads. But once, a winter ago, I watched one of the dead howlers at the edge of the vigil, and when the howl came its ear moved. Only the one ear. I wrote it down and did not break that slate.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} brought down Rolf the grey howler in Modernagrav in {minutes} minutes.",
+    "loss": "Rolf and his pack ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

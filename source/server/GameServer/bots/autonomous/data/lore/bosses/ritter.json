@@ -1,0 +1,66 @@
+{
+  "id": "ritter",
+  "name": "Ritter",
+  "npcNames": [
+    "Ritter"
+  ],
+  "locationId": "varulvhamn",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "werewolves"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Ritter is a level-39 wolfaur (the wolfaur's model) in the upper halls of Varulvhamn (30,926/32,125) among eighteen wolfaur quixots, werewolf scruffs, wolfspiders and pragmatics, near Thelod; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "German Ritter is 'knight'; the wolfaur's courtesy and Ritter's oath are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Ritter is the wolfaur's knight. The old generation of the werewolves, the wolfaur who are nearly natural in their wolf shapes, are courteous and philosophical, and Ritter is the most courteous of them: a wolf who took a word from the southern tongue for his name, the court says, because it meant a man who fights by custom and keeps his word. He keeps the quixots, the wolfaur who tilt at things, and has trained them to salute before they bite.\n\nThe young wolves of the upper tunnels laugh at him. He lets them. The wolfaur say that Ritter has never once struck a sleeping enemy or a fleeing one, and that he will kill anyone else in the first breath, as all the wolfaur will, if they mistake his manners for softness. He stands near Thelod, whom he despises for keeping a captive priest, and has never done anything about it, because the king has not told him to.",
+  "legend": "Ritter is a level 39 wolfaur in Varulvhamn's upper halls among eighteen wolfaur quixots and werewolf scruffs, near Thelod. No faction on him, but he stands in a crowd of quixots, so clearing to him takes time. Wolfaur hit fast for their level. Ritter has no faction, so it's the camp around him you have to plan for, not him.",
+  "yells": {
+    "aggro": [
+      "(Ritter salutes.) Now we may begin.",
+      "Draw, if you have any manners."
+    ],
+    "death": [
+      "Well... fought..."
+    ],
+    "slay": [
+      "(He salutes the fallen.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A wolfaur salutes before he bites."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "ritter is the 39 wolfaur knight among the quixots in varulvhamn",
+      "no faction, but lots of quixots round him"
+    ],
+    "aftermathWin": [
+      "ritter down",
+      "he saluted us first, classy"
+    ],
+    "rumour": [
+      "ritter never strikes a sleeping or fleeing enemy",
+      "ritter despises thelod for keeping a captive priest"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Ritter",
+    "text": "The wolfaur's knight, who took a southern word for his name and trained the quixots to salute before they bite. See [manners]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} accepted Ritter's salute in Varulvhamn in {minutes} minutes."
+  }
+}

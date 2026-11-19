@@ -1,0 +1,125 @@
+{
+  "id": "waleron-douglas",
+  "name": "Waleron Douglas",
+  "npcNames": [
+    "Waleron Douglas"
+  ],
+  "locationId": "caldey",
+  "realm": "Albion",
+  "aliases": [
+    "waleron of the clan"
+  ],
+  "facts": [
+    {
+      "text": "Waleron Douglas: template 60167757, level 52, by the clan outpost beside Little Haven at 354441, 375944, about 500 from the Clan Matron; faction Caldey Outpost, no spells or styles, respawn 80 seconds.",
+      "provenance": "game",
+      "source": "world data: Mob and NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Decayed Water Orb XP Item is a turn-in quest Waleron Douglas gives at levels 42-44; an NPC that gives a quest leaves players in its level range alone, and companions are judged by their owner.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC that gives a quest leaves a player in its level range alone; companions are judged by their owner)"
+    },
+    {
+      "text": "The Caldey Outpost's base hostility is 30, a neutral standing: its people do not attack a newcomer.",
+      "provenance": "game",
+      "source": "world data: Faction table (base hostility); source/server/GameServer/gameutils/Faction.cs (above 75 aggressive, above 25 neutral) and StandardMobBrain.CanAggroTarget (faction NPCs attack by standing)"
+    },
+    {
+      "text": "A faction NPC that is attacked calls friends of its faction within 450, plus 150 for each attacker beyond the first (the clan's barbarian defenders stand 560 to 800 off).",
+      "provenance": "game",
+      "source": "source/server/GameServer/ai/brain/StandardMob/StandardMobBrain.cs (BringFriends: radius 450 + 150 per extra attacker, up to eight; friends must share the faction)"
+    },
+    {
+      "text": "Waleron as a man of the highland clan (Douglas), his brother Ewan who walked into the sea, the drowned dead's water-orbs as what the sea keeps of a man, and the clan song are Living Server writing; that he buys the drowned's water-orbs and his brother went into the water is from the Caldey file.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Waleron Douglas came down from the north with the highland clan in the second summer of the war, in the long boats, with his younger brother Ewan. The clan has a name for the two of them still: the Douglas pair, because they did everything together, rowed on the same bench, stood on the same stretch of the outpost wall, and drank from the same cup. Ewan was the better fighter and the worse sleeper. In the third winter he started walking at night.\n\nThe clan says the dead of Caldey called him. Waleron says Ewan had been calling back. Either way, on a night of hard frost the watch on the wall saw Ewan Douglas walk out of the outpost gate and down past Little Haven to the eastern strand, where the drowned come up, and into the sea, and keep walking until the water closed over him, and Waleron ran after him and stood in the surf to his chest calling his name until the clan dragged him out.\n\nThe drowned of Caldey come up out of the water with something in them that the fishermen call a water-orb: a cold, clouded sphere the size of a fist, which is what the sea keeps of a man, they say, when it has taken the rest. Waleron buys them. He pays for every one the realm's young bring him, and holds each one up to the light at the outpost gate and looks into it a long time, and then puts it with the others in a sea-chest. The Matron lets him. The clan bard made a song about the Douglas pair, and the last verse is about the sea-chest, and nobody sings the last verse when Waleron is in the hall.\n\nHe lodges by the outpost but he counts himself of Little Haven now, he says, because the village is nearer the water. He has never raised a hand to anyone but the dead, and the clan's defenders would come down off the wall for him without being asked; he is the Douglas pair, or half of it.",
+  "legend": "Waleron Douglas is a level 52 man of the highland clan, standing by the outpost beside Little Haven on Caldey, who buys Decayed Water Orbs from the drowned (his turn-in, levels 42 to 44). He is not hostile: the Caldey Outpost faction starts neutral, and he leaves players of his quest's level band alone. Hitting him brings the Clan Matron's people and the barbarian defenders (same faction) and sours your standing with the outpost. No spells or styles in the data; there is no quest to kill him. Bring him the orbs from Caldey's drowned dead at 42 to 44 instead; he pays in experience.",
+  "yells": {
+    "aggro": [
+      "You strike a Douglas?",
+      "Clan! Wall!",
+      "Ewan! Ewan, stand with me!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Not the sea-chest. Not the sea-chest."
+      }
+    ],
+    "death": [
+      "Ewan... I am coming...",
+      "Look... in the orb..."
+    ],
+    "slay": [
+      "Into the water with you.",
+      "The sea can keep you.",
+      "Not my brother. Never my brother."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A highlander holds a clouded orb up to the light.",
+      "A sea-chest of cold, clouded spheres."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The clan comes down off the wall for the Douglas."
+      }
+    ],
+    "realmFirstKill": "Waleron Douglas has fallen. The sea-chest is unwatched."
+  },
+  "botLines": {
+    "briefing": [
+      "waleron douglas, 52, highlander by the outpost. turn-in for water orbs, not a mob",
+      "clan is neutral, he wont aggro. hit him and the matron's people and the defenders come",
+      "no spells, no quest to kill him",
+      "bring him decayed water orbs at 42-44"
+    ],
+    "aftermathWin": [
+      "waleron down. and the clan saw",
+      "why would anyone kill waleron",
+      "defenders were brutal",
+      "no water orb turn-ins for a bit"
+    ],
+    "aftermathLoss": [
+      "hit him and the whole outpost came",
+      "aoe'd near the matron, bad",
+      "he's 52 with a clan behind him",
+      "never hit the highlanders"
+    ],
+    "rumour": [
+      "[heard|someone said] waleron douglas buys water orbs because his brother walked into the sea",
+      "heard he looks into every orb a long time before he puts it in the chest",
+      "[heard|someone said] the clan bard has a song about the douglas pair. nobody sings the last verse near him",
+      "heard the drowned's water orb is what the sea keeps of a man"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "waleron douglas",
+    "text": "A man of the highland clan at the [clan outpost] beside [little haven], one half of the Douglas pair. His brother Ewan walked into the sea off the eastern strand one frozen night. The drowned of [caldey] come up with water-orbs, which the fishermen say are what the sea keeps of a man; Waleron buys every one, looks into it a long time and puts it in a sea-chest."
+  },
+  "bookPage": "From the Ledger of Little Haven, kept by Mordwywr, enchanter. Paid by Waleron Douglas, to a scout of the realm, for one decayed water-orb: the usual. He held it up at the outpost gate against the evening and looked into it so long that the scout asked what he was looking for. He said a face. The scout asked whose. He said his brother's, and that he would know it, and that it had not been in any of them yet. The scout gave him back the coin. Waleron would not take it. I have entered the payment as made, and the coin as on the scout's side of the ledger, where it will stay.",
+  "chronicle": {
+    "win": "{realm}'s company under {raidLeader} struck down Waleron Douglas by the clan outpost in {minutes} minutes, and the clan saw it.",
+    "loss": "The highland clan came down off the wall for Waleron Douglas, and {raidLeader}'s company of {realm} went into the sea."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "realm-of-camelot"
+  ],
+  "related": [
+    {
+      "id": "clan-matron",
+      "relation": "the matron of his clan, who lets him keep the sea-chest"
+    },
+    {
+      "id": "caldey",
+      "relation": "the eastern strand where his brother walked into the sea"
+    }
+  ]
+}

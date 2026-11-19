@@ -1,0 +1,337 @@
+{
+  "id": "lough-gur",
+  "name": "Lough Gur",
+  "realm": "Hibernia",
+  "regions": [
+    200
+  ],
+  "zones": [
+    204
+  ],
+  "summary": "The enchanted lake of the south-west: Innis Carthaig and Culraid, the doors into the hills, the weeping queen, the headless riders and the lord of the mice.",
+  "facts": [
+    {
+      "text": "Zone 204 (region 200, x 286,720-352,256, y 679,936-745,472): 700 monsters. Towns: Innis Carthaig (area at 334,820/719,979; Chieftess Niamh, Sholto, Kern the enchanter, Harper Brac, a channeler) and Culraid (298,535/687,614; Chief Bran Llyr). The Treibh Caillte entrance is at 296,010/705,974.",
+      "provenance": "game",
+      "source": "world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Monsters: irewood saplings and greenbarks, dampwood mites, melancholic fairies (45-50) and two militant ones (55), large and greater luch with luch catchers and hunters, deamhan aeir and hounds, cluricauns, the gurite (assailers, waylayers, raiders, footpads, lookouts, ambushers, seekers; Siabras), giant ants, pookas, dullahans (49-56), black badgers, alp luachra, far darrig, far liath, scanradh, merucha, two little unicorns.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The lake's bosses: the Melancholic Fairy Queen (65) by her door in the south-west and Lhia (53) on the shore; tier B Smidget (x2, Clurican), Smirky, Curmie, Tiomoid (Siabras), Ailbe, Sarsoureh and Banghaisgidheach (a time-of-day spawn, untargetable); tier C Luchtigern (32), Trefor and Brannigan.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md"
+    },
+    {
+      "text": "Quests: The Piper's Price (Amynda): 'Glennard's staff for the chieftess was stolen by the rats; search their den on the hillside southwest of town'; Occupation of Lough Gur and Lost Townfolk of Bran Llyr begin with Chief Bran Llyr in Culraid; Last Heir: 'Speak to Donnchadh about the beast', 'Kill a pooka in the Bog of Cullen or Lough Gur'.",
+      "provenance": "game",
+      "source": "DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
+    },
+    {
+      "text": "Lough Gur in County Limerick is rich in legend: the Earl Gearóid Iarla is said to sleep beneath it and ride out every seventh year, and the lake is linked with the goddess Áine.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Lough_Gur"
+    },
+    {
+      "text": "In Irish folklore the dullahan is a headless rider whose coming foretells a death; the fear liath ('grey man') is the fog that brings travellers to grief.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Dullahan"
+    },
+    {
+      "text": "In the medieval tale of Seanchán Torpéist the poet satirises the mice that ate his dinner, and then the cats, and Irusan, king of cats, comes to carry him off.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Irusan"
+    },
+    {
+      "text": "Luchtigern read as 'mouse-lord' (luch, mouse; tigern, lord): to verify.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Living Server lore: the lake of doors; the court under the water and the queen shut out of it; the trumpets; the headless riders' road; the gurite; Luchtigern's hall; the rats of Innis Carthaig and the piper; Brac's book.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Tier C named spawns of Lough Gur: Luchtigern (32, a rat body, DOL.GS.DaySpawn: shown only by day), Trefor (29, gurite; Occupation of Lough Gur; aggressive though the quest speaks to him), Brannigan (28, leprechaun; respawn 600 s).",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Horn Twin (Harmony50.cs): Revelin, a peaceful level-20 NPC the script creates at 343,442/706,235 in region 200 if none exists, sends Blademasters, Druids, Valewalkers, Animists and Mentalists to 'Seek out Cailean in Cursed Forest and kill it'; the horn is given to Revelin for the epic armour.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Hibernia/epic/Harmony50.cs (integration/1.2)"
+    }
+  ],
+  "story": "Lough Gur is ringed with doors. The hills around the lake are hollow, the people of Innis Carthaig say, and the doors into them are everywhere, in the faces of rocks and under old trees and at the bottoms of pools, and most of them have been shut since the Veil came down. On summer nights there is music under the water, trumpets and harps, the court of the lake keeping its feasts, and every grandmother of the realm says the same thing about it: if the trumpets sound after dark, go home.\n\nTwo women of the lake have been shut out. The Melancholic Fairy Queen sits by a door in the hills of the south-west that will not open for her; she was shut out of her own kingdom on the night the courts quarrelled in the Cursed Forest, the Ardee folk say, and she comes to the door every night with her guard behind her, to a fanfare from no instrument anyone can find, and weeps by the water until morning. The melancholic fairies of her court weep with her in the hills, and the militant ones stand over them. Lhia was of the court under the water until Piaras of Howth broke the condition she set him, a year and a day and never by daylight, and the court shut its door on her. She walks the shore looking for him, and takes everyone for him at first.\n\nThere are worse things on the lake roads. The dullahans ride the middle shore, headless, and the old people of Innis Carthaig say that a dullahan stopping at a house means a death in it before the month is out. The far liath comes off the western hills as fog and leads walkers into the water. The scanradh, whose name is only the word for fright, wait in the high ground of the south-west. And the gurite, the siabra of the lake country, hold camps all round the shore, waylayers and footpads and ambushers who rob the lake roads and lookouts who watch them.\n\nThe lake has a lord of the mice. Luchtigern keeps a hall in the west of the lake country among the irewoods, and the luch, the great mice of Lough Gur, large and greater, are his, and the luch catchers and hunters who track them are trying to get to him. The bards of Innis Carthaig sing an old satire in which a poet mocked the king of cats and the mice laughed, and say Luchtigern is the mouse who laughed loudest. The rats are another matter. Rats came into Innis Carthaig and stole the staff the smith Glennard made for the chieftess, and carried it to their den on the hillside, and the town has been paying pipers ever since.\n\nInnis Carthaig is the lake's chief town, on its eastern shore, where Chieftess Niamh keeps her hall and Sholto and Kern the enchanter keep the lake's errands, and the realm's companies stop on their way to Shannon or the bog. Culraid stands in the north-west, smaller and older, under Chief Bran Llyr, whose townsfolk have gone missing into the lake country and who sends the realm after them. In the west the irewoods grow thick, and beyond them is the entrance to Treibh Caillte, where King Vian's lost tribe keep their halls. Old Donnchadh keeps a camp in the east hills with a nightshade commander, and knows about the beast the Last Heir hunts.\n\nWhy does it matter? Because Lough Gur is where the realm keeps its manners with the Otherworld. The druids of Lough Gur, the oldest in the realm, were taught at this lake, Brónach among them; they say that every door around it is a promise one side or the other made and has not kept, and that the lake is the nearest the realm comes to the courts' own country. The trumpets sound most nights. The realm goes home.",
+  "legend": "Lough Gur is the south-west lake zone, levels 22-56. Innis Carthaig (east shore) is the town: channeler, merchants, Chieftess Niamh, Sholto and Kern for Morven's Return and Occupation of Lough Gur. Culraid (north-west) has Chief Bran Llyr. The Treibh Caillte entrance is in the west. Camps: irewood saplings (22-37) in the west, large luch (32-37) and dampwood mites by Innis Carthaig, giant ants, the gurite siabra camps all round the lake (30-49, social), melancholic fairies (45-50) in the south-west hills, dullahans and pookas (49-56) on the middle shore, deamhans in the south. The Melancholic Fairy Queen (65) comes at night with trumpets and five guards; Lhia (53) is the last kill of Piaras and Lhia. Lots of tier B named (Smidget, Smirky, Curmie, Tiomoid, Ailbe). Superstition: if you hear trumpets after dark, go home, and never answer a dullahan at your door.",
+  "atmosphere": {
+    "firstEntry": [
+      "Lough Gur. The hills are hollow here.",
+      "Doors in the rocks, all shut.",
+      "Music under the water, some nights.",
+      "If the trumpets sound, go home.",
+      "A headless rider on the far shore."
+    ],
+    "areas": [
+      {
+        "name": "Innis Carthaig",
+        "x": 334820,
+        "y": 719980,
+        "z": 4310,
+        "radius": 2000,
+        "lines": [
+          "Innis Carthaig, the lake's chief town.",
+          "Chieftess Niamh is short a staff.",
+          "The rats are back. Somebody pay the piper."
+        ]
+      },
+      {
+        "name": "Culraid",
+        "x": 298540,
+        "y": 687610,
+        "z": 4940,
+        "radius": 1500,
+        "lines": [
+          "Culraid, small and old.",
+          "Bran Llyr's people keep going missing."
+        ]
+      },
+      {
+        "name": "the queen's door",
+        "x": 309090,
+        "y": 733930,
+        "z": 6600,
+        "radius": 2000,
+        "lines": [
+          "A door in the hill that will not open.",
+          "Trumpets from no instrument at all.",
+          "A queen weeping until morning."
+        ]
+      },
+      {
+        "name": "the shore",
+        "x": 316720,
+        "y": 709940,
+        "z": 4130,
+        "radius": 2000,
+        "lines": [
+          "A woman on the shore looks up, then away.",
+          "The court under the water shut its door."
+        ]
+      },
+      {
+        "name": "the riders' road",
+        "x": 316470,
+        "y": 718800,
+        "z": 4250,
+        "radius": 3500,
+        "lines": [
+          "Headless riders on the middle shore.",
+          "If one stops at a door, a death follows."
+        ]
+      },
+      {
+        "name": "the gurite camps",
+        "x": 300000,
+        "y": 724000,
+        "z": 5100,
+        "radius": 6000,
+        "lines": [
+          "Gurite fires around the lake roads.",
+          "Waylayers and footpads, siabra all."
+        ]
+      },
+      {
+        "name": "the mouse hall",
+        "x": 306950,
+        "y": 707170,
+        "z": 4790,
+        "radius": 1500,
+        "lines": [
+          "The lord of the mice keeps a hall here.",
+          "The mouse who laughed loudest.",
+          "Luchtigern's hall. By daylight, a lord of mice."
+        ]
+      },
+      {
+        "name": "the luch fields",
+        "x": 338000,
+        "y": 710000,
+        "z": 5000,
+        "radius": 3500,
+        "lines": [
+          "Great mice in the fields.",
+          "Luch catchers, still trying."
+        ]
+      },
+      {
+        "name": "the irewoods",
+        "x": 302400,
+        "y": 692300,
+        "z": 5000,
+        "radius": 4000,
+        "lines": [
+          "Irewoods thick in the west.",
+          "The fog comes off these hills."
+        ]
+      },
+      {
+        "name": "the Treibh Caillte door",
+        "x": 296010,
+        "y": 705970,
+        "z": 6480,
+        "radius": 1200,
+        "lines": [
+          "A door into the hill that opens.",
+          "The lost tribe's halls below."
+        ]
+      },
+      {
+        "name": "Donnchadh's camp",
+        "x": 343470,
+        "y": 706090,
+        "z": 6360,
+        "radius": 1000,
+        "lines": [
+          "An old soldier and a nightshade commander.",
+          "He knows about the beast.",
+          "Revelin waits by the camp fire for the green paths."
+        ]
+      },
+      {
+        "name": "Trefor's camp",
+        "x": 292843,
+        "y": 732975,
+        "z": 6192,
+        "radius": 1500,
+        "lines": [
+          "Trefor's camp. Talk of treasure, and daggers.",
+          "Gurite raiders, and one who bargains."
+        ]
+      },
+      {
+        "name": "Brannigan's hill",
+        "x": 327661,
+        "y": 741216,
+        "z": 6560,
+        "radius": 1200,
+        "lines": [
+          "Brannigan's hill. The dullahans go round it.",
+          "A leprechaun who says he saw the doors shut."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "lough gur is ringed with doors into the hills. [all shut|since the veil came down]",
+      "theres music under the water at lough gur on summer nights. [the lake court|trumpets]",
+      "the melancholic fairy queen was shut out of her kingdom the night the courts quarrelled",
+      "lhia was of the lake court until piaras of howth came to see her by daylight",
+      "if the trumpets sound at lough gur after dark, go home. [every gran says it|seriously]",
+      "a dullahan stopping at your door means a death in the house within the month. [innis carthaig says|brr]",
+      "the far liath is the grey man, fog off the hills that walks you into the water",
+      "luchtigern is the lord of the mice at lough gur. [the mouse who laughed loudest|old satire]",
+      "rats stole the chieftess's staff in innis carthaig. [the piper's price|pay the piper]",
+      "the gurite are the siabra of the lake country. they rob the lake roads",
+      "chief bran llyr in culraid keeps losing townsfolk. [lost townfolk quest|sad]",
+      "the treibh caillte door is in the west of lough gur, past the irewoods",
+      "the lough gur druids are the oldest in the realm. [brónach|they were taught at the lake]"
+    ],
+    "rumour": [
+      "[heard|someone said] the trumpets sounded at noon today. [never happens|bad sign]",
+      "a dullahan stopped outside the innis carthaig inn [last night|again]",
+      "[word is|heard] the militant melancholic fairies are 55. [two of them|careful]",
+      "banghaisgidheach only shows at certain hours and you cant touch her. [weird|time spawn]",
+      "[heard|someone said] the rats took something else from innis carthaig. [the piper again|lol]",
+      "someone followed the fog off the west hills and [ended up in the lake|swam home]",
+      "[word is|heard] smidget and smirky are cluricauns occupying something. [occupation of lough gur|ask bran llyr]",
+      "old donnchadh in the east hills says the beast is moving",
+      "[heard|someone said] luchtigern only holds court by day. at night his hall is empty",
+      "[heard|someone said] trefor the gurite thinks the gurite are digging for treasure under the lake",
+      "[heard|someone said] brannigan says he got out of the court under the water when the doors shut",
+      "[heard|someone said] revelin wont say where the twin of cailean's horn is"
+    ],
+    "tell": [
+      "lough gur is the south west lake zone. innis carthaig is the town. 22 to 56",
+      "where is innis carthaig? east shore of lough gur. channeler there",
+      "is lough gur hard? 30s around town, gurite camps 30s-40s, the south west fairies and dullahans 45-56",
+      "whats in lough gur? the melancholic fairy queen, lhia, dullahans, gurite siabra, luch, irewoods",
+      "where is treibh caillte? the door is in the west of lough gur past the irewoods",
+      "where is culraid? north west of lough gur. chief bran llyr",
+      "luchtigern is a 32 giant mouse lord in the mouse hall in the western irewoods. day spawn only",
+      "trefor is a 29 gurite in the raider camp south west of the lake. occupation of lough gur. hes aggro, mind",
+      "brannigan is a 28 leprechaun in the hills above the south shore of lough gur. long respawn",
+      "revelin is by donnchadh's camp in lough gur. the horn twin epic: kill cailean in the cursed forest"
+    ]
+  },
+  "loremaster": {
+    "intro": "Lough Gur, the lake of [doors]. Two women are shut out: the [queen] and [Lhia]. The [dullahans] ride, the [gurite] rob, and the [mice] have a lord. [Innis Carthaig] and [Culraid] keep the shore. Mind the [trumpets].",
+    "topics": {
+      "doors": "The doors into the hollow hills around the lake, in rocks and under trees and at the bottoms of pools, shut since the Veil came down. The Lough Gur druids say every one is a promise somebody did not keep.",
+      "queen": "The Melancholic Fairy Queen, shut out of her kingdom the night the courts quarrelled. She weeps by her door in the south-west hills every night with her guard. Strangers who come instead of her people are not welcome.",
+      "Lhia": "Of the court under the water, until Piaras of Howth came to see her by daylight on the last day of the year and a day. The court shut its door on her. She walks the shore and takes everyone for him at first.",
+      "dullahans": "Headless riders of the middle shore. A dullahan stopping at a house means a death in it before the month is out, the old people say. Nobody answers the door to one.",
+      "gurite": "The siabra of the lake country: waylayers, footpads, ambushers, raiders and lookouts in camps all round the lake, robbing the lake roads. Tiomoid of the siabra is among them.",
+      "mice": "The luch, the great mice of Lough Gur, and their lord Luchtigern in his hall among the western irewoods. The bards say he is the mouse who laughed loudest in the old satire on the king of cats.",
+      "Innis Carthaig": "The lake's chief town on the eastern shore: Chieftess Niamh's hall, Sholto and Kern, Harper Brac, and rats. The rats stole the chieftess's staff; the town pays pipers.",
+      "Culraid": "The small old town in the north-west under Chief Bran Llyr, whose townsfolk keep going missing into the lake country, and the cluricauns Smidget and Smirky who will not leave his fields.",
+      "trumpets": "The music of the court under the water, which sounds on summer nights. Every grandmother of the realm says the same thing: if the trumpets sound after dark, go home. The queen comes to them.",
+      "Luchtigern": "Luchtigern is the lord of the luch, the great mice of Lough Gur, and he keeps his hall among the western irewoods. The bards of Innis Carthaig sing an old satire in which a poet mocked the king of cats and the mice laughed, and they say Luchtigern is the mouse who laughed loudest. He keeps court by daylight and not after, as mice do not, and the luch catchers who hunt his people come to his hall in the morning, and find it empty by night.",
+      "Trefor": "Trefor is the gurite of the raider camp in the south-west who deals with the realm, or seems to. Aziliz of Lough Derg sends the young to find out what the gurite siabra are doing at the lake, and the road leads to Trefor, who takes a bundle of daggers and a ring and talks about treasure hunting, and asks for more. Harper Brac thinks the gurite are digging for something under the lake. Trefor thinks it is funny that anyone asks.",
+      "Brannigan": "Brannigan is a leprechaun of the southern shore, big for one, who claims to have been at the court under the water when the doors shut and to have got out by the last of them. Nobody believes him, and he does not need them to. He keeps to himself in the hills above the shore, and the dullahans of the riders' road go round his ground, which is more than they do for anyone else.",
+      "Revelin": "Revelin keeps company with old Donnchadh at his camp on the east of the lake, and is the one the realm's champions of the green paths come to when they are ready, the blademasters and druids, the valewalkers, animists and mentalists. Revelin sends them to the Cursed Forest after Cailean, a tree gone mad with terror, north-west of the grannies' fort across the river, and asks them to bring back its horn. The horn has a twin, Revelin says, and will not say where."
+    }
+  },
+  "book": {
+    "title": "The Lake of Doors, by Harper Brac of Innis Carthaig",
+    "pages": [
+      "A harper of Innis Carthaig learns two kinds of music: the kind he plays and the kind he listens for. The second kind comes from under the lake on summer nights, trumpets and harps, a court at its feast behind a door. My master taught me to listen to it from the shore and never to answer it with my own harp, because a door that hears its own music played back to it opens, and nobody on this side knows what comes out. I have kept that rule forty years. My harp is very quiet in summer.",
+      "Two women of the lake were shut out of it, and both of them still come to the shore. The queen of the south-west came with her guard the night the courts quarrelled in the forest and found her own door shut, and she has wept by it every night since. The other was Lhia, of the court under the water, who promised herself to Piaras of Howth on the old condition and lost him to an afternoon. The court shut its door on her too. She walks the shore. When she looks up at a footstep, I keep walking.",
+      "The roads have their own dangers. The headless riders come along the middle shore at night, and when one stops at a house there is a death in that house before the month is out; I have seen it twice. The grey man comes off the western hills as fog. The siabra of the lake rob the roads, and the town's guard is only so large. And there are the mice, great ones, and their lord in his hall in the irewoods, of whom we sing the old satire, very quietly, because he can hear it.",
+      "Innis Carthaig has rats as well. They took the chieftess's staff from Glennard's forge and carried it up the hillside to their den, and we paid a piper to bring it back, and now we pay one every season, because the rats have learned that we will. The chieftess says it is cheaper than the alternative. I play at her hall in the evenings and listen, under my own tune, for the other music. When I hear it, I stop, and we all go home, and nobody asks me to finish the tune."
+    ]
+  },
+  "bosses": [
+    "melancholic-fairy-queen",
+    "lhia",
+    "smidget",
+    "smirky",
+    "curmie",
+    "tiomoid",
+    "ailbe",
+    "sarsoureh",
+    "banghaisgidheach"
+  ],
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe",
+    "siabra"
+  ],
+  "related": [
+    {
+      "id": "hibernia-wilds",
+      "relation": "the region overview"
+    },
+    {
+      "id": "treibh-caillte",
+      "relation": "whose entrance is in its west"
+    },
+    {
+      "id": "bog-of-cullen",
+      "relation": "the bog to the east"
+    },
+    {
+      "id": "shannon-estuary",
+      "relation": "the coast to the north"
+    },
+    {
+      "id": "silvermine-mountains",
+      "relation": "Piaras of Howth, who sends the young after Lhia"
+    }
+  ]
+}

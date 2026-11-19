@@ -115,11 +115,18 @@ first to {what}? {target} has no life. respect
 @needs in_rvr
 {size} {enemy} near {place}
 inc {size}+ {enemy} at {place}
-{enemy} zerg at {place}, {size} or more
 heads up, {size} {enemy} moving through {place}
 {size} {enemy} at {place}, {classes}
-small {enemy} group at {place}, {classes}
 spotted {size} {enemy} near {place}, careful
+# 1.2 chat audit (TEXT-020, LOG-017): "few" is under 8 enemies, "many" 8 or more, "zerg" 16 or more (AlarmFlags).
+@needs in_rvr,few
+small group of {enemy} at {place}, {classes}
+@needs in_rvr,many
+{enemy} at {place}, {size} or more
+big group of {enemy} at {place}, {size} or more
+@needs in_rvr,zerg
+{enemy_mod} zerg at {place}, {size} or more
+@needs in_rvr
 @who Daredevil
 @needs in_rvr
 {size} {enemy} at {place}, who wants to fight
@@ -160,7 +167,7 @@ hey all
 back on
 hi all, what did i miss
 @needs day
-morning everyone
+hey everyone
 @needs
 @who Socialite
 hey everyone!! who is up for something
@@ -170,18 +177,24 @@ on for a couple hours, need a group
 @kind session
 @topic logoff
 @who *
+@needs !day
 gn all
+@needs
 @needs !day
 night all
 @needs
+@needs !day
 calling it, gn
+@needs
 logging, cya tomorrow
 @needs !day
 off to bed, gn
 work in the morning, gn
 @needs
 @who NoLifer
+@needs !day
 one more pull... ok gn
+@needs
 
 @kind session
 @topic brb

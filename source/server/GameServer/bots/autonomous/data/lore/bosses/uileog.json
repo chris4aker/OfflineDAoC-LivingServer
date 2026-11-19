@@ -1,0 +1,89 @@
+{
+  "id": "uileog",
+  "name": "Uileog",
+  "npcNames": [
+    "Uileog"
+  ],
+  "locationId": "cruachan-gorge",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Uileog: level 40, a Fomorian body (model 827, size 125), faction Fomorian, at about 351,500/393,300 in the floor of Cruachan Gorge; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Morven's Return (Cathbad of Howth): 'Ask Lucan about Morven's heirs', 'Slay Ronat, the first heir, east of Dun Lamfhota', 'Slay Uileog, the second heir', 'Slay Raemon, the third heir, at the cyclops tower'.",
+      "provenance": "game",
+      "source": "DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Uileog is Morven's second heir, younger and smaller than Ronat and much less patient, and he keeps the floor of Cruachan Gorge among the curmudgeon puggards and the white boars, where the road runs. Where his elder brother watches, Uileog robs: he comes up out of the gorge floor at the hostings on their way to the keeps and takes what he can, cattle when the gorge had cattle, supplies now, and the gorge folk say he does it to make his father proud and that it has never once worked.\n\nThe keeners of Breifine say that if the heirs' line ever comes to Uileog, the frontier will have a Fomorian lord again who is worse than the old one, because Morven at least wanted something. Uileog only wants to be seen wanting it. His father has never once sent word that he is pleased. Uileog keeps robbing the road anyway, and the gorge folk have started leaving a little of every load at the roadside for him, to save the rest.",
+  "legend": "Uileog (40) is Morven's second heir in the floor of Cruachan Gorge (about 351k/393k), among curmudgeon puggards (39-43) and rainbow sprites. Second kill of the heirs in Morven's Return. A group of 40ish handles him easily; watch the puggards on the slopes. 5-minute respawn. Frontier zone. Plain spawn, no script; the only danger is the puggards and sprites on the slopes, and enemy warbands using the gorge road. Do him second, after Ronat, as the quest says.",
+  "yells": {
+    "aggro": [
+      "Father will hear of this!",
+      "The road is mine, and what is on it."
+    ],
+    "phases": [],
+    "death": [
+      "Tell father... I fought..."
+    ],
+    "slay": [
+      "Did he see that? Did father see?"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A young Fomorian in the gorge floor, by the road."
+    ],
+    "phases": [],
+    "realmFirstKill": "Uileog, Morven's second heir, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "uileog is 40, second heir, in the cruachan gorge floor",
+      "morven's return. easy for 40s"
+    ],
+    "aftermathWin": [
+      "uileog down. [second head|grats]",
+      "raemon next. [breifine|cyclops ruin]"
+    ],
+    "aftermathLoss": [
+      "puggards joined. [rip|oops]",
+      "warband on the road. [frontier|ouch]"
+    ],
+    "rumour": [
+      "[heard|someone said] uileog robs the hostings on the gorge road to make his father proud",
+      "breifine keeners say uileog would be a worse lord than morven"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Uileog",
+    "text": "Morven's second heir, impatient, who robs the hostings on the Cruachan Gorge road to make his father proud. It has never worked."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Uileog in Cruachan Gorge in {minutes} minutes.",
+    "loss": "Uileog turned back {realm}'s band under {raidLeader} in Cruachan Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "morven",
+      "relation": "his father"
+    },
+    {
+      "id": "ronat",
+      "relation": "the first heir"
+    },
+    {
+      "id": "raemon",
+      "relation": "the third heir"
+    }
+  ]
+}

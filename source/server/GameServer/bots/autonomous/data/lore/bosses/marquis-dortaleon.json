@@ -1,0 +1,148 @@
+{
+ "id": "marquis-dortaleon",
+ "name": "Marquis Dortaleon",
+ "npcNames": [
+  "Marquis Dortaleon"
+ ],
+ "aliases": [
+  "dortaleon"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-long-feuds",
+ "factions": [
+  "dark-ones",
+  "host-of-the-marshal"
+ ],
+ "related": [
+  {
+   "id": "high-lord-baln",
+   "relation": "his lord"
+  },
+  {
+   "id": "malroch-the-cook",
+   "relation": "tried the plague on him, by every sign"
+  },
+  {
+   "id": "duke-harboris",
+   "relation": "kept his duchy on the same ruling"
+  },
+  {
+   "id": "field-marshal-nebir",
+   "relation": "his road runs to the Marshal's table"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "ruled he could keep his seat dead"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Dortaleon is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands on the road east out of High Lord Baln's hall, toward the Field Marshal's table.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Dortaleon among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Dortaleon is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Marquis Dortaleon has body type 11 (undead) in the world data; the other marquises are demon (2) or untyped.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In \"Black Plague\" the sick in each capital wake with a back burning as if from hot coals and the smell of rotting flesh.",
+   "provenance": "game",
+   "source": "world data: DataQuest table"
+  },
+  {
+   "text": "No demonology source found for the name Dortaleon.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Marquis Dortaleon died in the Sixth Roll and did not give up his seat. He had been a marquis of High Lord Baln's household, keeping the eastern road out of Baln's hall where it runs toward the Marshal's war table and the East Ward, and by the account of the demons who served under him he was a fastidious, cold, very correct peer, the kind who made sure every demon walking his road knew its line on the Roll. Then he began to rot.\n\nThe court has never said aloud what killed him, but it is not hard to guess. In the Sixth Roll the court's kitchen, under Malroch the Cook in Prince Ba'alorien's north, was working on something the Cook called a dish for the realms. Malroch needed to try it on somebody who could not complain to a prince. The Inquisitors who examined the dead marquis afterwards found a burning down his back, as if he had slept on coals, and the smell of rotten flesh in his rooms; when, many Rolls later, the court sent its Black Plague up into the three capitals, the sick in Camelot and Jordheim and Tir na Nog woke with exactly those signs. The kitchen will not confirm it. Dortaleon will not discuss it.\n\nGrand Chancellor Adremal ruled that nothing in the bargain requires a marquis to be alive, and Dortaleon kept his line. He keeps the eastern road still, dead, correct and stinking, and Duke Harboris kept his duchy two Rolls later on the same ruling. The realms' own bestiaries list Dortaleon among the dead and not among the demons. He corrects them, when he can.",
+ "legend": "Dortaleon stands on the road east out of Baln's hall, between the dukes' end of the hall and the Field Marshal's war table, which makes him easy to pull by accident during the Eligar or Nebir fights. Level 73, no script, and the world data types him undead rather than demon, which matters to anything that cares about body type. Kill him on his own before the Marshal. Players say the smell on that road is the same as the Black Plague in the capitals, and Albion players who did the plague quest swear they know it. Albion clerics joke that he is the one thing in the dungeon their prayers for the dead were written for.",
+ "yells": {
+  "aggro": [
+   "Your line on the Roll. You have none. Leave my road.",
+   "Dead, and still more correct than you.",
+   "Breathe through your mouth. It does not help."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "I have already died once. I did it properly."
+   }
+  ],
+  "death": [
+   "Again. How tedious.",
+   "Tell the kitchen... nothing. Tell it nothing."
+  ],
+  "slay": [
+   "Off my road.",
+   "Correctly fallen.",
+   "You will smell like me soon."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The road east out of the hall smells of rot.",
+   "Someone dead keeps this road, and keeps it well."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The dead marquis does not fall easily."
+   }
+  ],
+  "realmFirstKill": "Marquis Dortaleon has fallen. Again."
+ },
+ "botLines": {
+  "briefing": [
+   "dortaleon is on the road east of balns hall. [easy to pull by accident|watch him on the eligar pull]",
+   "hes typed undead not demon. [weird for df|check the con]",
+   "kill dortaleon alone [before the marshal|before nebir]",
+   "73, no tricks, just a dead marquis that hits hard"
+  ],
+  "aftermathWin": [
+   "dortaleon down. [the road is clear|smell's still there though]",
+   "dead marquis is dead again. [lol|properly this time]",
+   "dortaleon done, [now the marshal|nebir next]",
+   "marquis dortaleon dead. [dead again lol|deader now]"
+  ],
+  "aftermathLoss": [
+   "pulled dortaleon into the eligar fight. [mess|wipe]",
+   "dortaleon and the marshal at once. [never|gg]",
+   "the dead marquis got us. [regroup|rez]",
+   "lost it on dortaleon, [healers oom|out of mana]"
+  ],
+  "rumour": [
+   "[heard|word is] marquis dortaleon died and kept his seat anyway",
+   "the road east of balns hall smells like the black plague. [same smell|the albs swear it]",
+   "[someone said|my guildie says] the demon cook tried the plague on dortaleon first",
+   "dortaleon is undead. [only undead lord in df|a dead demon, go figure]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "dortaleon",
+  "text": "A marquis of High Lord [Baln]'s household who died in the Sixth Roll and kept his seat, since the bargain does not require a marquis to be alive. The Inquisitors found a burning back and the smell of rot, the signs of the plague the [kitchen] later sent up into the capitals."
+ },
+ "bookPage": "From a cleric's notes, Camelot, in the season of the Black Plague: I smelled it before I saw him, on the road out of the southern hall. I knew it at once. It was the smell in the sickroom of the guard Sister Elaydith nursed, and in every room in Camelot where someone woke with their back on fire. The marquis was dead, plainly dead, and standing, and correct in every particular, and he told me to leave his road. I asked him whether the Cook had done it. He did not answer, but he looked north, toward the kitchens, for a long moment, and then he drew.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} put Marquis Dortaleon down in {minutes} minutes; he was already dead.",
+  "loss": "Marquis Dortaleon kept his road against {realm}'s raid under {raidLeader}, dead and correct."
+ }
+}

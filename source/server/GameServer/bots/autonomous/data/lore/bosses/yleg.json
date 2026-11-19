@@ -1,0 +1,67 @@
+{
+  "id": "yleg",
+  "name": "Yleg",
+  "npcNames": [
+    "Yleg"
+  ],
+  "locationId": "spindelhalla",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "arachites",
+    "dishonoured-dead"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Yleg is a level-45 undead (the zombies' and ghoul knights' model) in Spindelhalla (30,639/31,082) among arachite tunnelhosts and impalers, mad kobolds, kopparorm and hallaratta; no faction, aggressive.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Yleg as the dead troll of the tunnels is Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    }
+  ],
+  "story": "Yleg came down for his brother. The trolls of Gotar say he was a troll of the south who heard that his brother had been taken by the spiders and went down into Spindelhalla alone to bring him out, and that he got further than any troll before him, as far as the tunnelhosts' passages, before the arachites caught him. They did not husk him. They let him rot where he stood and kept him there, and he walks the tunnels still, a dead thing that was a troll, among the tunnelhosts who use him as a door-ward.\n\nThe thralls' frames call him the one who came for someone. They do not know whom; nobody told them. Odell's list has a line for a troll of Gotar under the frames' account, and a line under it for the brother, with no name, marked 'husk'. Yleg does not know. He fights everything that comes into his passage, because one day it might be the spiders, and he still means to make them pay.",
+  "legend": "Yleg is a level 45 undead in Spindelhalla among arachite tunnelhosts and impalers (36-43), mad kobolds, kopparorm (49) and hallaratta. No faction on him, but the tunnelhosts round him are aggressive and many. No spells. Clear the tunnel in front first. He's alone among the arachites, not one of them, so he won't call them, but you will be standing in the middle of them. Kopparorm at 49 are the nasty ones nearby. A mid 40s group can do it carefully.",
+  "yells": {
+    "aggro": [
+      "(A dead troll's roar.) Brother?",
+      "Not the spiders. You will do."
+    ],
+    "death": [
+      "...brother..."
+    ],
+    "slay": [
+      "(He turns back to the dark.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dead troll stands in the tunnels, waiting."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "yleg is a 45 undead troll in the spindelhalla tunnels",
+      "lots of tunnelhosts and kopparorm round him"
+    ],
+    "aftermathWin": [
+      "yleg down",
+      "he called someone brother as he fell"
+    ],
+    "rumour": [
+      "yleg came down into spindelhalla alone to bring his brother out",
+      "the spiders didnt husk yleg, they kept him as a door ward"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Yleg",
+    "text": "A troll of Gotar who came down alone for his taken brother and got as far as the tunnelhosts' passages, and is kept there dead. Odell's list marks the brother 'husk'. See [thralls]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} gave Yleg rest in Spindelhalla's tunnels in {minutes} minutes."
+  }
+}

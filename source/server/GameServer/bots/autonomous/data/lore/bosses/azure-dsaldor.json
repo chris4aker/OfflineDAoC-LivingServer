@@ -1,0 +1,120 @@
+{
+  "id": "azure-dsaldor",
+  "name": "Azure Dsaldor",
+  "npcNames": [
+    "Azure Dsaldor"
+  ],
+  "locationId": "sheeroe-hills",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "The Order of the Azure on Sheeroe's northern slopes (world data): azure cleansers (45-54), banishers (48-56), avengers (51-56) and idolaters (24-27), with Tailtiu guards (55) and a Voice of the Azure (27); its named are Azure Dsaldor (57, 382,500/666,200), Azure Coseal (55, 400,100/666,900) and Azure Thror (52, 395,300/667,400), plain spawns with an 80-second respawn, model 354 at size 76-77.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "In Irish myth Tailtiu is the foster-mother of Lugh, who founded the games of Lughnasadh in her honour.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Tailtiu"
+    },
+    {
+      "text": "Living Server lore (Cuuldurach ch.4, Maldahar): Dsaldor leads the crusade from the highest camp and forbids the Order to raise a hand against Maldahar, and has never explained why.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The Order of the Azure is the realm's strangest ally against the Glimmer King, and the realm is not sure it is an ally at all. They are firbolg kin who paint themselves blue and pray to the open sky, and they came up onto Sheeroe's northern slopes the summer after the sky tore, to make war on the light. They burn the Glimmer. They burn anything that glows. Their guards are named for Tailtiu, the foster-mother who made the first games for Lugh of the long arm, and the Azure say the open sky is Lugh's, and the Glimmer's light is stolen from it.\n\nDsaldor leads them. He keeps the highest camp of the Order on the northern slopes, above Coseal's preaching-ground and Thror's war-camp, and the Cullen watch, which keeps a tally of everything on Sheeroe, has never once seen him come down from it. The Order's banishers and avengers go out from his camp to burn the Glimmer's lesser lights; his Voices go down into Connacht to preach in the market at Basar; and his young followers on the farms, Bas and Windaille and the rest, have started burning lamps and marsh-lights and glimmer-dye, and the realm has had to send swords to Basar to stop them. Dsaldor has not stopped them. He has not encouraged them either.\n\nHe has given the Order one law that nobody understands. The Azure may burn any light on Sheeroe but one: they may not raise a hand against Maldahar, the Glimmer Prince, who rides the borders of his father's country in plain sight of the Azure camps. Coseal the preacher says only that the son is not the father. The Cullen watch thinks Dsaldor made a bargain. The druids of Lough Gur think Dsaldor knows something about the prince that the realm does not, and are afraid to guess what.\n\nTo Hibernians who come up the northern slopes, Dsaldor is neither friend nor enemy, as the Order is neither. His people fight anyone who comes into their camps unasked, because the Azure trust no light but the sky's, and a Hibernian's lantern is a light. The realm's captains who have spoken with him under truce say he asked each of them the same question, which was whether they had come up the hill to kill the king, and that when they said yes, he wished them the open sky.",
+  "legend": "Azure Dsaldor (57) holds the highest Azure camp on Sheeroe's northern slopes (about 382k/666k). The Order of the Azure is hostile in the world data, with cleansers, banishers and avengers (45-56) around every camp and Tailtiu guards (55) nearby, so clear the camp before you pull him. Plain mob, no script, 80-second respawn; a full 50s group. Coseal (55) and Thror (52) keep the other two named camps to the east. The Azure are anti-Glimmer, but killing them gains you nothing with the Glimmer court. Bring a puller: the camps sit on open turf with long sight-lines, and the avengers come in numbers if you walk in. Mianed of the Glimmer's lesser court watches the Azure country from the far north; do not drag her in.",
+  "yells": {
+    "aggro": [
+      "You carry a light. Put it out.",
+      "The open sky is Lugh's. Nothing else may shine.",
+      "Tailtiu's guards! A lantern on the hill."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Did you come to kill the king? Then why are you fighting me?"
+      }
+    ],
+    "death": [
+      "The open sky... take me...",
+      "Not the prince... never the prince..."
+    ],
+    "slay": [
+      "Put out.",
+      "The sky keeps you now.",
+      "One light fewer."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The highest camp of the blue-painted Order.",
+      "Blue faces, turned up to the open sky."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Dsaldor calls the Order to the highest camp!"
+      }
+    ],
+    "realmFirstKill": "Azure Dsaldor, leader of the Order, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "dsaldor is 57 in the highest azure camp. [clear the camp first|cleansers and avengers]",
+      "tailtiu guards are 55 nearby. [careful|dont pull them]",
+      "plain mob, full 50s group",
+      "coseal and thror are the other two named camps east"
+    ],
+    "aftermathWin": [
+      "dsaldor down. [the azure are leaderless|for 80 seconds]",
+      "camp cleared first. [clean|nice]",
+      "the glimmer wont thank us lol",
+      "coseal next"
+    ],
+    "aftermathLoss": [
+      "pulled the whole camp. [avengers|wipe]",
+      "tailtiu guards joined. [55s|ouch]",
+      "group too low",
+      "we had a lantern. [they hate lights|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] dsaldor forbids the azure to fight maldahar and nobody knows why",
+      "dsaldor asks every captain if they came to kill the king",
+      "[word is|heard] dsaldor has never come down from the highest camp",
+      "the azure guards are named for tailtiu, lugh's foster mother"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Dsaldor",
+    "text": "Leader of the Order of the [Azure] on Sheeroe's northern slopes, in the highest camp. He forbids his people to raise a hand against [Maldahar], and has never said why."
+  },
+  "bookPage": "From Eoghan's account of Sheeroe: the blue folk came up the north slopes the summer after the sky tore, and Dsaldor has never come down from their highest camp since. His people burn the glimmers and anything else that glows. He gave them one law no shepherd understands: they may not raise a hand against the prince. Coseal says the son is not the father. The watch thinks there was a bargain. A captain of the realm who spoke with Dsaldor under truce told me he was asked whether he had come to kill the king, and when he said yes, Dsaldor wished him the open sky.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Azure Dsaldor in Sheeroe Hills in {minutes} minutes.",
+    "loss": "Azure Dsaldor turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "order-of-the-azure"
+  ],
+  "related": [
+    {
+      "id": "azure-coseal",
+      "relation": "his preacher"
+    },
+    {
+      "id": "azure-thror",
+      "relation": "his arm"
+    },
+    {
+      "id": "maldahar-the-glimmer-prince",
+      "relation": "whom he forbids his people to fight"
+    },
+    {
+      "id": "glimmer-lords",
+      "relation": "the court his crusade burns"
+    }
+  ]
+}

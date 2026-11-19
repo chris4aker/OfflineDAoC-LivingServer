@@ -1,0 +1,112 @@
+{
+  "id": "aodhnait",
+  "name": "Aodhnait",
+  "npcNames": [
+    "Aodhnait"
+  ],
+  "locationId": "cothrom-gorge",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Altan Garran (about 336,000/315,500 in Cothrom Gorge) is a walled outlander town of faction Outland Residents: Outland garda (49-53), conaitheoir (48-51), bardach (48-53) and asarlai (49-57), merchants (Egomas the smith, Halwyn, Paili, Noirin the enchanter, Forsa, Gearoidin the healer, Alastair and Luiseach Erea) and garran treants; its named are Fedail, Elnara Erea, Ulicia, Aodhnait, Ansol, Fachtna, Zinsya and Declan, all set aggressive (200) in the world data.",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Aodhnait: level 51, faction Outland Residents, aggressive, at about 336,900/315,600 in Altan Garran; her model (703) is used by no one else in Hy Brasil (elsewhere only by the 'doomed plunderer' in region 244).",
+      "provenance": "game",
+      "source": "world data Mob/NpcTemplate tables, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Aodhnait as the one Hibernian-born outlander, who came with the first swords and stayed.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Altan Garran is the only town in Cothrom Gorge, and it is not a Sylvan town. Its people are outlanders: Sylvan and half-Sylvan families who left Domnann over the generations, for quarrels, for debts, for love, for the wardens' law, and went down into the gorge where the wardens do not walk, and built a walled grove of their own on the gorge's eastern ledges. They keep their own garda on the walls, their own bards and sorcerers, their own markets, and their own opinion of strangers, which is low. The Domnann wardens call them the outlanders and trade with them when they must. Hibernians who walk up to the gate unannounced are generally met at it.\n\nThere is one outlander in Altan Garran who was not born on Hy Brasil, and the town is prouder of her than it admits. Aodhnait came over from the mainland with the first Hibernian swords in the first summer of the isles, a young woman of the Lough Derg country with a spear and no particular captain, and went down into Cothrom Gorge with a company that did not come back up. She did. The outlanders found her on the west road three days later with a broken leg and a dead stag, and took her in, which they do for nobody, because she had dragged the stag the whole way and offered it to the gate.\n\nShe stayed. Nobody at the gate remembers being asked whether she could; she was simply there, mending, and then she was walking the walls with the garda, and then she had a house across the square from Ulicia's and was married into the town. She does not look like any of them, and never will, and the town has stopped noticing. What she has not stopped being is Hibernian. She is the only outlander who goes up to Domnann's markets of her own will, and she brings back news of the mainland that nobody else in Altan Garran cares to hear.\n\nShe is also, now, the outlander who dislikes the realm's swords the most, which the Domnann wardens find hard to understand and the garda do not. The companies that come down the gorge now come for the worts and the rider and the walking hill, Aodhnait says, the way her own company came, and none of them comes down for the people who live there. When a Hibernian reaches the gate she is generally the one who reaches him first, and she speaks to him in the Lough Derg accent before she does anything else, so that he knows.",
+  "legend": "Aodhnait (51) is a named of Altan Garran with a model no one else in Hy Brasil uses. The town is set aggressive (Outland Residents), so she can attack Hibernians who come in. Plain melee, no script, level 51: a 50 group handles her, but she stands in the middle of the town among garda, conaitheoir and bardach, so pull with care or clear around her. Ansol, Fachtna, Zinsya and Declan (40-45) are the lesser named of the town nearby. She speaks to Hibernians in a Lough Derg accent; it is flavour, not a quest, and she will still fight you.",
+  "yells": {
+    "aggro": [
+      "You hear the accent? Good. Then you know.",
+      "Lough Derg sends its greetings. Go home.",
+      "Garda! Mainland swords!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "I came down this gorge for the same reasons. Look where it got me."
+      }
+    ],
+    "death": [
+      "Tell them in Lough Derg... I stayed...",
+      "The garran... is home..."
+    ],
+    "slay": [
+      "Should have stayed on the mainland.",
+      "One more company that came for the worts.",
+      "Go home. Oh."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A house across the square from the south side.",
+      "Someone here speaks with a Lough Derg accent."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Aodhnait shouts in a Lough Derg accent."
+      }
+    ],
+    "realmFirstKill": "Aodhnait, the Hibernian of Altan Garran, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "aodhnait is 51, middle of altan garran. [plain melee|no script]",
+      "town is aggro. [clear around her|pull carefully]",
+      "a 50 group handles her",
+      "ansol, fachtna, zinsya, declan are the lesser named nearby"
+    ],
+    "aftermathWin": [
+      "aodhnait down. [lough derg accent and all|got her]",
+      "cleared the square first. [clean|nice]",
+      "weird fighting a hib in hy brasil",
+      "the outlanders will remember"
+    ],
+    "aftermathLoss": [
+      "pulled half the square. [garda|wipe]",
+      "bardach joined. [ugh|ouch]",
+      "walked in the gate like tourists lol",
+      "healer aggro. [she ran to the healer|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] aodhnait is from lough derg and came over with the first swords",
+      "the outlanders took aodhnait in because she dragged a dead stag to the gate. [respect|lol]",
+      "[word is|heard] aodhnait is the only outlander who goes to domnann's markets",
+      "aodhnait speaks to hibs in her lough derg accent before she fights them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Aodhnait",
+    "text": "The one Hibernian-born outlander of Altan Garran in [Cothrom Gorge], a Lough Derg spear who came with the first swords, lost her company in the gorge and was taken in. She dislikes the realm's companies most."
+  },
+  "bookPage": "Noirin the enchanter of Altan Garran: Aodhnait came down the gorge with the first Hibernian swords and her company did not come back up. We found her on the west road with a broken leg and a dead stag she had dragged the whole way to offer at the gate, and we took her in, which we do for nobody. She married into the town. She still goes up to Domnann's markets and brings back mainland news. When Hibernians come to the gate now she speaks to them first, in her Lough Derg accent, so that they know.",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Aodhnait in Altan Garran in Cothrom Gorge in {minutes} minutes.",
+    "loss": "Aodhnait turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "outland-residents"
+  ],
+  "related": [
+    {
+      "id": "fedail",
+      "relation": "the outlander who took her in"
+    },
+    {
+      "id": "ulicia",
+      "relation": "neighbour across the square"
+    }
+  ]
+}

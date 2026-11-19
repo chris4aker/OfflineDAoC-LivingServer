@@ -1,0 +1,271 @@
+{
+  "id": "fomor",
+  "name": "Fomor",
+  "realm": "Hibernia",
+  "regions": [
+    180
+  ],
+  "summary": "The sunken city of the Fomorians on Hy Brasil, where hydra-keepers tend the many-headed Myrddraxis.",
+  "facts": [
+    {
+      "text": "Shrouded Isles: Hy Brasil is 'being devastated by the monstrous Fomorians', and the Sylvan asked Hibernia for help against them.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69398-matt-firor-interview-v15-69398.html"
+    },
+    {
+      "text": "The Fomorians are named as the ever-encroaching threat to Hy Brasil.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/69207-new-shrouded-isles-information.html"
+    },
+    {
+      "text": "Region 180 (zone 'Fomor') holds Fomorian ugats, bellers, gentarns, wolfentries, hydrars, nocturs, feralidins and many more, hydrar-trained shrillers and dark grove phantoms.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json; source/server/GameServer/scripts/dbupdater/insert/Zones.xml"
+    },
+    {
+      "text": "Its catalogued bosses are Myrddraxis (80), Anurigunda (75), Krackenschtein (70) and Nogoribando (70). It is a camp dungeon, not a raid: its navmesh has no path to Myrddraxis.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs:50"
+    },
+    {
+      "text": "The Fomorians, enemies of the Tuatha Dé Danann, were broken at the second battle of Mag Tuired.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Balor"
+    },
+    {
+      "text": "Bot chat: the Fomorians lost and went to islands nobody could find, and now we fight them on an isle that was only a story.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "The lead brief called Fomor neutral; the catalog and world place it on Hy Brasil (Hibernia), so it is written as a Hibernian location.",
+      "provenance": "original",
+      "source": "conflict note"
+    },
+    {
+      "text": "Fomor's halls lie close together: the hydra's cistern at 32302, 32221; Anurigunda at 30912, 33136; Krackenschtein at 31773, 37385; Nogoribando at 31463, 29191; the upper gate at 33801, 24157.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Each great one brings a linked household when pulled: 14 for Anurigunda, 8 for Krackenschtein, 10 for Nogoribando.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The navmesh path from the entrance stops 3,000-3,600 units short of the central chamber on both sides (zone180.nav, 2026-10-20), which is why the realm raid does not go there.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+    },
+    {
+      "text": "In Irish myth the Fomorians were a race of sea and underworld beings, often monstrous, who fought the Tuatha Dé Danann.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fomorians"
+    },
+    {
+      "text": "A traditional (disputed) etymology derives Fomóire from fo 'under' and muir 'sea'; in the Lebor Gabála the Fomorian Conand's tower on Tory Island exacted a Samhain tribute of two-thirds of the Nemedians' corn, milk and children.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fomorians"
+    },
+    {
+      "text": "Hy-Brasil is a phantom island of Irish legend west of Ireland, said to be visible only rarely and otherwise hidden in mist.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Hy-Brasil"
+    },
+    {
+      "text": "Living Server lore: the Fomorian name for the stair ('the throat'); the shore groves cut to shore the first passages (the dark grove phantoms); the coins as Fomorian tribute to the sea; households first, trades second; the city dug to defeat armies; the great ones' quarrels as the city's politics; the city as a waiting-room for the day Balor's eye opens fully; each great one's telling of that day.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The bards end the song at Mag Tuired; the Sylvan of Hy Brasil know the next verse. The Fomorians, the ones from under the sea, once held the northern islands and took Samhain tribute from Tory of the mainland's corn, milk and children. Broken on the field, they went west to the isle that does not stay found and went down under its western shore to dig a city and give it their own name: Fomor, not a refuge but a waiting-room.\n\nThe shore stair begins in a cleft under the cliffs. The Fomorians shored its first passages with the Sylvan's western groves, and the dark grove phantoms in the lower streets are those trees, left in the dark; the wardens never touch them. The coins on the top step began as Fomorian tribute to the sea; the realm's people add one and take it to mean coming back up. Halfway down the bellers call, and below them the shrillers scream.\n\nIt is a city of trades: bellers who call and choose war-leaders, wolfentries, noctur, feralidin, the old war-ranks of gentarns, creln, hicjer and hofscorian, ugats, the hydrars and the makers. A Fomorian belongs to a household before a trade; households never come to each other's quarrels, but touch one and all of it comes. The passages turn back and end at walls, dug by a people who lost once in the open; armies stay on the shore and small companies go down hall by hall.\n\nThe city has no king but the one in the tower. Its great ones are Anurigunda the eldest by her hearth, Nogoribando the war-leader, oak and hornet, Krackenschtein of the workshop, and Myrddraxis in the lowest cistern, and their quarrels are its politics. The forays up the stair into Domnann brought Hibernia to Hy Brasil at the Sylvan's asking, and the Sylvan count the realm's friendship in quiet seasons. Fiachra of Howth went down first; the companies of Nuala, Ríonach, Lochlann and Bébinn followed, and the great ones return as forests regrow. The whole city waits for the day Balor's eye opens fully and every household climbs the stair together; the Sylvan watch the Vale, the cliff and the stair, and when any of them stirs, the realm comes.",
+  "legend": "Not a place for a raid, the leaders say: the road down to the hydra is too narrow for a hundred, so groups camp the halls instead. Kill a big named and its whole household comes with it, so clear the rooms around first. At the bottom the heads of Myrddraxis feed the body with every bite, so the heads die first. Nicknames: 'the cellar', 'down the stair', and for the hydra 'five-head' or 'the nuts', after an old drop joke nobody can explain. Superstitions: never answer a beller; never touch a dark grove phantom, because the trees remember; and leave a coin on the top step of the shore stair so you come back up. Groups say the city is best done by halls, and that nobody should ever pull two households.",
+  "atmosphere": {
+    "firstEntry": [
+      "Fomor. The losers of Mag Tuired, at home.",
+      "Wet stone, low arches, and somewhere, screaming.",
+      "A city under the shore that the songs left out.",
+      "Bellers call to each other in a voice like grinding stone.",
+      "Dark grove phantoms drift past. Nobody here notices.",
+      "The Fomorians are home, and you are the stranger."
+    ],
+    "areas": [
+      {
+        "name": "the upper gate",
+        "x": 33801,
+        "y": 24157,
+        "z": 16084,
+        "radius": 1200,
+        "lines": [
+          "The Fomorians remember Mag Tuired. Do you?",
+          "The shore stair goes down into wet stone.",
+          "Leave a coin on the top step. Come back up."
+        ]
+      },
+      {
+        "name": "the hydra's cistern",
+        "x": 32302,
+        "y": 32221,
+        "z": 15635,
+        "radius": 1800,
+        "lines": [
+          "Five heads rise from the dark water.",
+          "The shrillers scream. The hydra is hungry.",
+          "The hydrars sing to it. It does not sleep."
+        ]
+      },
+      {
+        "name": "Anurigunda's hall",
+        "x": 30912,
+        "y": 33136,
+        "z": 15860,
+        "radius": 1200,
+        "lines": [
+          "The floor is warm. The walls are melting.",
+          "Her household stands ready, fourteen strong.",
+          "Stone flows like honey near her throne."
+        ]
+      },
+      {
+        "name": "Krackenschtein's workshop",
+        "x": 31773,
+        "y": 37385,
+        "z": 16000,
+        "radius": 1100,
+        "lines": [
+          "Stitches, hooks, and something huge on a table.",
+          "Hooks hang empty. Something huge is missing.",
+          "Thunder rumbles inside the walls."
+        ]
+      },
+      {
+        "name": "Nogoribando's hall",
+        "x": 31463,
+        "y": 29191,
+        "z": 16768,
+        "radius": 1100,
+        "lines": [
+          "A drum beats faster and faster.",
+          "War-banners for the next raid on Domnann.",
+          "The bellers wait for his signal."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the fomorians went west after mag tuired and [built a city under hy brasil|went down under the shore]. thats fomor",
+      "the fomorians think they are the first people of these isles [come home|back for what is theirs]",
+      "the hydrars in fomor raised myrddraxis from a hatchling. [it has five heads now|nobody is laughing anymore]",
+      "fomor households all come at once. [pull one great one, get the family|clear first]",
+      "the hydrars sing to myrddraxis so it never sleeps. [creepy song|eat and be whole]",
+      "nogoribando's bellers sound before every fomorian raid on domnann. [listen for them|you can hear it from the shore]",
+      "the dark grove phantoms in fomor are the trees they cut to build the stair. [dont touch them|sad]",
+      "the fomorians remember mag tuired as well as our bards do. [they know who we are|they remember losing]",
+      "krackenschtein came out of a fomorian workshop. [stitched from their dead|woken with lightning]",
+      "anurigunda is the oldest great one in fomor. [lava for skin|she outlived everyone]",
+      "the road to the middle of fomor is too narrow for a full raid. [groups only|bands not armies]",
+      "the fomorians fight as families. [one shout and the whole house comes|households stick together]"
+    ],
+    "rumour": [
+      "[heard|someone said] the fomorians are raiding [further into domnann|deeper into the sylvan woods] this season",
+      "myrddraxis [ate|took] a whole group last night. the shrillers were [screaming|loud] for an hour",
+      "[heard|someone said] the bellers sounded in fomor last night. [raid on domnann coming|watch the woods]",
+      "[word is|heard] the fomorians are waiting for balor's eye to open all the way. then they climb",
+      "someone answered a beller in fomor and [the whole street came|regretted it]",
+      "[heard|someone said] the myrddraxis loot was redone. [the scale might be real now|who knows]",
+      "leave a coin on the top step of the shore stair. [so you come back up|old habit]",
+      "[word is|heard] a sylvan watched the hydrars feed myrddraxis from the ledge. [didnt sleep for a week|ugh]"
+    ],
+    "tell": [
+      "fomor is the fomorian city on hy brasil. groups camp it, the hydra myrddraxis is at the bottom",
+      "anurigunda, nogoribando, krackenschtein and myrddraxis. pull one and the whole room comes",
+      "is fomor hard? hard if you pull two households. take it one hall at a time with a good group",
+      "where is fomor? under the shore of hy brasil, down the shore stair",
+      "whats in fomor? a whole fomorian city. anurigunda, nogoribando, krackenschtein, and myrddraxis the hydra",
+      "can a raid do fomor? the realm raid cant reach the middle. groups do it hall by hall"
+    ]
+  },
+  "loremaster": {
+    "intro": "Fomor, the city of the Fomorians beneath Hy Brasil. The songs say they lost at [Mag Tuired] and went into the sea. The sea kept them, and they [built]. Their great ones keep the halls, their [bellers] call to war, the [phantoms] of cut trees drift in the streets, and their [hydrars] keep the [hydra].",
+    "topics": {
+      "built": "A real city, with trades and households. Bellers, wolfentries, noctur, feralidin. Their great ones are [Anurigunda], [Nogoribando] and [Krackenschtein].",
+      "hydra": "Myrddraxis, five heads, raised from a hatchling by the hydrars. Every bite a head takes feeds the body. Kill the heads first.",
+      "Anurigunda": "Her skin runs with lava, and her household comes when she is pressed.",
+      "Nogoribando": "First the oak and then the hornet: huge and slow, then small and quick, and back again as long as he fights. His drain falls on the one he faces and on anyone at that one's shoulder.",
+      "Krackenschtein": "Stitched together in a Fomorian workshop. Only a blade at arm's length can find him.",
+      "hydrars": "The keepers of [hydra], who raised it from an egg and sing to it so it never sleeps.",
+      "bellers": "Fomorian callers. When [Nogoribando] means to raid the Sylvan woods, the bellers sound through the city.",
+      "phantoms": "Dark grove phantoms, the shades of the trees cut for the shore stair. Do not touch them.",
+      "Mag Tuired": "The great battle the Fomorians lost to the Tuatha, as the bards sing it. The Fomorians remember it too."
+    }
+  },
+  "book": {
+    "title": "Down the Shore Stair",
+    "pages": [
+      "The account of Fiachra of Howth, who went down into Fomor as a young man and wrote this much later. The Sylvan warned me not to go and I went, because a young man always goes. The stair begins in a cleft under the cliffs and smells of the sea. Someone had left coins on the top step, many coins, green with age; I added one and did not ask why. Halfway down you hear the bellers, calling to each other in a tongue like rocks grinding. Further down you hear the other thing, a high continual screaming, and a Sylvan later told me it was the shrillers.",
+      "It is a city. I had expected a cave. There are streets of a kind, and doors, and families; I saw a Fomorian child, if that is the word, carrying water. They are not beasts. Each of their great ones keeps a hall, and each hall a household, and when my companions struck one Fomorian at a door the whole household came, without a word, the way a family comes when someone shouts in the yard. We ran. We were lucky. I have since heard the captains of Howth say Fomor must be taken hall by hall, and I believe them.",
+      "Their great ones: a woman whose skin pours molten rock, the oldest of them, who sat in her hall as a grandmother sits by the fire; a war-leader who seemed to swell and shrink as he paced beneath banners for the next foray into the Sylvan woods; and in a room full of hooks a stitched giant that I will not describe except to say that the hooks were empty, and the table in the middle was large. Shades of trees drifted in the streets between them. Nobody looked at the shades. I tried not to, and failed.",
+      "At the bottom is the cistern where the hydrars keep Myrddraxis. I saw it from a ledge, which was as close as I wished to be. Five heads, and each one, when it bit, made the great body under the water heave and grow whole. The keepers stood round it singing a song with three lines: eat, and be whole; eat, and be many; eat, and be ours. The shrillers screamed at it from the walls so it would not sleep. A thing that never sleeps, a Sylvan told me afterwards, never forgets an insult either.",
+      "I asked the Sylvan afterwards about the coins on the top step. They told me the Fomorians began it: every one of them who went down the stair for the last time, when the city was first dug, laid a coin there for the sea, as the people of Tory once paid tribute to them. I said the realm's people leave them so as to come back up. The Sylvan said yes, they knew. They said it was not their place to tell us that for a Fomorian it means the opposite. I have thought about that kindness more than about anything I saw below.",
+      "The trades of Fomor, as the Sylvan named them for me: bellers who call, wolfentries at the doors, noctur who work by night, feralidin bred to fight, the old war-ranks of gentarn and creln and hicjer and hofscorian, the ugats who do what nobody else will, and the hydrars at the bottom. A Fomorian belongs to a household first and a trade second. A street is quiet until its own family is touched. I learned that one at a door, and I am told the captains of Howth learned it the same way, more than once.",
+      "A Sylvan warden of Domnann told me about the eldest's door years later. She had gone into that hall to bring out a captive child, and was standing in the doorway with the child's hand in hers when she found herself back by the hearth with the warm floor under her feet and the eldest looking at her, and had not felt herself moved. She got them both out another way. The Sylvan say of any place easy to walk into and hard to walk out of that it is the eldest's door. I have lived in such places, in Howth, and never had a name for them before.",
+      "I came up the stair at dawn and the Sylvan were waiting with blankets. They asked whether the bellers were calling. I said they were. They looked at each other and went to warn the villages of Domnann, and that week a Fomorian war-band came up out of the shore and the wardens of Domnann met it in the woods. The Sylvan told me the Fomorians have a story of their own, that they are waiting for the eye in the tower to open fully. On that day, they say, the city will climb the stair together. I have not been back. I still leave a coin on my own doorstep."
+    ]
+  },
+  "bosses": [
+    "myrddraxis",
+    "anurigunda",
+    "krackenschtein",
+    "nogoribando"
+  ],
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "fomorians"
+  ],
+  "related": [
+    {
+      "id": "tur-suil",
+      "relation": "Balor's tower, the Fomorians' other stronghold"
+    },
+    {
+      "id": "hy-brasil",
+      "relation": "the isle it lies beneath"
+    },
+    {
+      "id": "galladoria",
+      "relation": "the Root's hollow, another wound of the isle"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "After Mag Tuired",
+      "text": "The bards of Hibernia end the song at Mag Tuired. The Fomorians were broken on that field, the song says, Balor fell to the stone from his grandson's sling, and the people of the sea were driven back into the sea; and that is the end of them. The Sylvan of Hy Brasil know the next verse, because they have been living in it.\n\nThe Fomorians were a sea people before they were anything else. The scholars of Tir na Nog give their name as the ones from under the sea, fo and muir, and admit the old grammarians quarrelled over it; the Fomorians, the Sylvan say, give it the same way and do not quarrel. Before Mag Tuired they held the islands off the northern coast of Hibernia, and the oldest books of the realm remember the tower one of their kings raised on Tory, and the tribute he took from the people of the mainland every year at Samhain: two parts of their corn, two parts of their milk, and two parts of their children. The Fomorians remember Tory too. They remember it as the last time the world was the right way round.\n\nAfter the battle they went west. Off the western coast, beyond where the fishing boats go, lies an isle the old stories say is seen once in a long while and then lost again, an isle that does not stay found, and the Fomorians found it and stayed. That is Hy Brasil. The Sylvan were there already, in their forests, and the Fomorians did not fight them at first; they did not fight anyone. They went down. Under the shore of Hy Brasil, in the dark and the wet, they began to dig, and they called what they dug by their own name, Fomor, because it was the only thing of theirs that the battle had left.\n\nThe Sylvan say the digging took longer than any forest they have grown. The Fomorians had time. They are not a short-lived people; the eldest of their great ones remembers Mag Tuired from the field. And they had a reason to dig slowly and well, which the Sylvan did not learn until much later: the Fomorians did not think of the city as a refuge. They thought of it as a waiting-room.\n\nThe marching songs of the realm's soldiers, the Sylvan say, have it almost right: the Fomorians lost, and went to islands nobody could find, and now the realm fights them on an isle that was only a story. The Fomorians would add one word to that. Yet."
+    },
+    {
+      "title": "The Shore Stair",
+      "text": "The way down into Fomor begins in a cleft under the cliffs of the western shore, where the sea comes in at high water and leaves weed on the rock. The Fomorians cut a stair there, down through the cliff and under the beach and on into the rock beneath the isle, and it is the only way in that anyone of the realm has found. The Sylvan call it the shore stair. The Fomorians call it something that the Sylvan say means the throat.\n\nThey built it with timber before they built it with stone. To shore the first passages against the wet the Fomorians came up out of the cleft by night and cut the trees of the coast, the old groves of the Sylvan's western shore, and carried them down. The Sylvan did not know what was happening to their trees until whole groves were gone. The dark grove phantoms that drift through the lower streets of Fomor are those trees, the Sylvan say: the shades of a forest that was carried underground and held up a roof until the stone was ready, and then left in the dark when it was no longer needed. Nobody in Fomor seems to notice them. The Sylvan wardens never touch them, and ask the realm's people not to, because the trees remember who carried them down.\n\nOn the top step of the stair there are coins, many coins, green with age, and anyone of the realm who goes down leaves one more. Fiachra of Howth did it as a young man without asking why, and asked afterwards. The Sylvan told him the Fomorians had started it. When the city was first dug, every Fomorian who went down the stair for the last time laid a coin on the top step for the sea, as the people of Tory had once paid tribute to them; the Fomorians, who took tribute for an age, pay it now, to the water they came out of. The realm's people took up the custom without knowing it was Fomorian, and say a coin on the top step means coming back up. The Sylvan have never told them it means the opposite for a Fomorian, and Fiachra thought that kind of them.\n\nHalfway down the stair the bellers can be heard, calling to one another in a tongue like rocks grinding. Further down there is the other sound, high and continual, which is the shrillers screaming on the cistern walls far below. The Sylvan who keep watch on the stair from the cliffs above listen for both, and the bellers are the one they fear."
+    },
+    {
+      "title": "A City of Trades",
+      "text": "It is a city, not a camp. That is the thing every Hibernian who goes down says first, and the thing the realm finds hardest to believe. There are streets of a kind and doors, halls and workshops and cisterns, and families in them; Fiachra saw a Fomorian child carrying water. The Fomorians are not beasts, the Sylvan say, and the realm does itself no good by calling them so. They are a people with trades, and the trades have names.\n\nThe bellers are the city's callers, whose voices carry up the stair and out over the water, and who choose its war-leaders by calling names through the halls. The wolfentries guard the doors. The noctur work by night, at the trades that need the dark, and are seldom seen by the realm's companies at all. The feralidin are the fighters the city breeds for the purpose, and the gentarns, the creln, the hicjer and the hofscorian are the old ranks of a Fomorian war-band, which the Sylvan say are older than the city and were used at Mag Tuired. The ugats do the work nobody else will. The hydrars were the city's water-keepers once and are the keepers of the beast in the lowest cistern now, and keep apart from everyone. And there are the makers of the workshop, whom the rest of the city does not like to name.\n\nAbove the trades are the great ones, each with a hall and a household, and the households are the true shape of the city. A Fomorian belongs to a household before a trade. The households do not mix: the eldest's people never come to the war-leader's quarrel, and the workshop's guard never comes to the eldest's. But touch one of a household and every one of it comes at once, without a word, the way a family comes when somebody shouts in the yard; Fiachra's companions struck one Fomorian at a door and the whole household was on them before the first one fell. The Sylvan wardens' saying is that a Fomorian street is quiet until its own family is touched, and then it is not a street any more.\n\nThe city was not built for strangers. Its passages turn back on themselves, end at walls, narrow where a stranger would expect them to widen, and the way to the middle is never the way it looks. The Sylvan say it was dug that way on purpose, by a people who had once lost a battle in the open and did not mean to lose another, and that an army of the realm could no more march through Fomor than through a rabbit warren. Small companies go down, hall by hall. Armies stay on the shore."
+    },
+    {
+      "title": "The Great Ones",
+      "text": "The city has no king. It had one once, the Fomorians say, and he is in the tower on the crag to the south with his eye in the roof, and the city does not go to him and he does not come to the city. In his absence Fomor is held by its great ones, each in a hall with a household, and by the quarrels between them, which the Sylvan say are as old as the digging.\n\nThe eldest is Anurigunda, who came up out of the burning sea-floor rock to meet the diggers and has sat by her hearth from that day, settling the city's quarrels; nobody appeals her judgements, and nobody stands in her doorway. The war-leader is Nogoribando, whose name the bellers called louder than any in the city's memory, who goes up the stair at the head of the forays and swells and shrinks as he fights, oak and hornet. The workshop has its champion, Krackenschtein, stitched from the city's best dead and woken with lightning down a shaft from the cliffs, who has never done one thing the city wanted. And in the lowest cistern the hydrars keep Myrddraxis, the five-headed beast that grew from an egg in the black sand, which the city calls its luck.\n\nThe quarrels are the city's politics. The eldest thinks the war-leader a fool and says so; he thinks her a relic and says so louder, though never in her hall. The hydrars think the workshop an obscenity, and the eldest settled that quarrel by telling the makers their stitched thing was an insult to the dead and letting them keep it anyway. The war-leader goes down to the cistern before every foray to ask the beast's blessing, and the hydrars make him wait at the edge of the water until he is angry, which is the hydrars' only politics and they are very good at it.\n\nThe Sylvan watch the quarrels as a farmer watches the weather. A city at odds with itself sends fewer forays up the stair, they say, and a city that agrees about something is the most dangerous thing on Hy Brasil. There is only one thing the great ones of Fomor have ever been heard to agree on, and it is the thing the whole city is waiting for: the eye in the tower."
+    },
+    {
+      "title": "The Forays",
+      "text": "The Fomorians did not fight the Sylvan at first. They dug. But a city needs timber and food and hands, and the forests of Hy Brasil were above them, and in time the war-bands began to go up the stair. The Sylvan call them the forays. They come up out of the shore at night, a war-band at a time, and go into the western woods for what the city needs, and come back down with it, and with captives.\n\nDomnann bore the worst of it. The Sylvan village above the shore lost its outer clearings first, then its groves, then its children, and the wardens of Domnann learned to fight a war-band in the woods by night, which no Sylvan had ever had to learn. They set watchers on the cliffs above the shore stair. They learned to listen for the bellers, because the bellers sound through the city before every foray and their voices carry up the stair, and to read the war-leader's face when he came up from the cistern. When the bellers call, the watchers run to Domnann and the children are called in from the woods.\n\nIt was the forays that brought Hibernia to Hy Brasil, as much as anything. When the isle was found again and the realm's first ships came, the Sylvan asked Hibernia for help against the people under the shore, and Hibernia, which had a long memory of the Fomorians and of Tory, said yes. The Sylvan count the realm's friendship by the forays still. When a company of the realm goes down the stair and brings down the war-leader, the bellers are silent for a season and the children of Domnann are allowed back into the woods; and the children know the names of the companies that bought their summers.\n\nThe Fomorians see it differently, as the Sylvan have heard from captives who came home. The forests of Hy Brasil, they say, are the only forests left to a people who were driven out of every other; the Sylvan have more trees than they could ever need; and the realm's companies who come down the stair are only the Tuatha again, come to finish what they started on the field. A captive child of Domnann who came home after a year in the city said the Fomorian children she had lived among were taught Mag Tuired before they were taught to walk."
+    },
+    {
+      "title": "Down the Stair",
+      "text": "The first Hibernian to go down the stair and come back to tell of it was Fiachra of Howth, as a young man, against the Sylvan's advice; he wrote his account much later, and it is the one the realm reads. He saw the city's streets, the households, the hall with the lava-skinned woman by her hearth, the war-hall with its new banners, the room with the hooks, and the cistern from a ledge. He ran more than once. He came up at dawn, and the Sylvan were waiting at the top of the stair with blankets, and asked whether the bellers were calling.\n\nThe companies that went down after him learned the city hall by hall, because there is no other way to learn it. The captains of Howth said it first and the realm has said it since: Fomor is taken one household at a time, and the company that wakes two households at once comes back up the stair carried. Nuala of Bri Leith's company brought down the war-leader in his war-hall in the second year of the isles, and Domnann had its first quiet season. Ríonach of Tir na Nog's company went all the way down to the lowest cistern in the third year and starved the beast by its mouths, and the tally-keepers of Tir na Nog counted it among the dragons. Lochlann of Connacht went into the workshop with every close-handed fighter he could find. Bébinn of Howth, who had been told as a girl by Fiachra himself that the worst thing in Fomor was a look, ended the eldest by her own hearth and lived to die in her bed.\n\nNone of it lasts. The great ones return, as the great ones of every dark place in the realm return: the eldest up out of the burning rock, the war-leader when the bellers call his name again, the champion when lightning goes down the shaft, the beast when the hydrars have dug in the black sand. The Sylvan do not find that discouraging. A forest does not expect to stay cut, they say. Neither does a city.\n\nThe custom at the top of the stair has not changed in all that time. A company of the realm coming up out of Fomor at dawn finds the Sylvan waiting with blankets. The Sylvan do not ask how it went. They ask whether the bellers were calling, and whether everyone wiped their boots before they went into the eldest's hall, and whether anyone left a coin on the top step on the way down. Most companies have."
+    },
+    {
+      "title": "What the City Waits For",
+      "text": "The Fomorians have a story, the Sylvan say, which every child in the city learns, and which the great ones of Fomor agree on when they agree on nothing else. It is about the eye.\n\nIn the tower on the crag to the south, Balor's eye is shut. The eye in the roof of his chamber opens when he is wounded and chooses one at a time. But the city's story says that one day the eye will open fully, the great eye in his face that burned the Vale and killed his own army at Mag Tuired, and that on that day the city will climb the stair together, every household and every trade, the eldest and the war-leader and the makers and the hydrars, and take the isle; and then the sea; and then the land beyond the sea that they lost. The city is not a refuge. It is a waiting-room, and the Fomorians are very patient.\n\nEach of the great ones has a part in the story, the Sylvan say, and each tells it a little differently. In the war-leader's telling the forays are the first verse, and he leads the climb. In the hydrars' telling the beast goes first, out through a broken cistern wall into the sea and east toward the loughs its kind were driven from. The makers say nothing in front of the Sylvan, but there are new hooks in the workshop. The eldest does not tell it at all. When she is asked, the captive children say, she answers that she was at Mag Tuired and has no need to hear about the next one; she will be there.\n\nThe realm does not know whether the story is true. The druids of Tir na Nog think the Fomorians believe it, which is enough to be dangerous, and that the forays, the stitched champion and the beast in the cistern are all of them preparations, whether or not the great ones would call them that. The Sylvan of the western coast have their own answer, which is the only one the realm has needed so far. They watch the Vale of Balor for the red glow that means the king in the tower has returned, and the cliff above the workshop for lightning going down the shaft, and the stair for the bellers, and when any of the three begins they send to Tir na Nog, and the realm comes.\n\nFiachra of Howth ended his account by saying he had not been back. He still left a coin on his own doorstep every night, he wrote, though he knew perfectly well what it meant to a Fomorian. He said a man should hedge."
+    }
+  ]
+}

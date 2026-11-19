@@ -86,14 +86,13 @@ namespace DOL.GS.Scripts
         /// Invoked when Aros the Spiritmaster dies.
         /// </summary>
         /// <param name="killer">The living that got the killing blow.</param>
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             if (killer == null)
                 log.Error("Aros The Spiritmaster Killed: killer is null!");
             else
                 log.Debug("Aros The Spiritmaster Killed: killer is " + killer.Name + ", attackers:");
             base.StopCurrentSpellcast();
-            base.Die(killer);
 
             foreach (String message in m_DeathAnnounce)
             {
@@ -111,6 +110,8 @@ namespace DOL.GS.Scripts
                     npc.Die(killer);
                 }
             }
+
+            base.ProcessDeath(killer);
         }
 
         #region Damage & Heal Events
@@ -185,7 +186,7 @@ namespace DOL.GS.Scripts
                 GameLiving source = sender as GameLiving;
                 if (e == GameObjectEvent.TakeDamage)
                 {
-                    foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                    foreach (GameLiving player in EncounterTargets.InRadius(this, WorldMgr.VISIBILITY_DISTANCE))
                     {
                         CheckDebuff(player);
                         CheckChanceBomb(player);
@@ -196,7 +197,7 @@ namespace DOL.GS.Scripts
 
         #endregion
 
-        public void SpawnGuardian(GamePlayer enemy)
+        public void SpawnGuardian(GameLiving enemy)
         {
             GameNPC summonedGuard = new GameNPC();
             SetVariables(summonedGuard);
@@ -502,7 +503,7 @@ namespace DOL.GS.Scripts
         {
             CastSpell(Summon, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
             GameLiving target = null;
-            foreach (GamePlayer player in GetPlayersInRadius(1500))
+            foreach (GameLiving player in EncounterTargets.InRadius(this, 1500))
             {
                 if (player == null) continue;
 

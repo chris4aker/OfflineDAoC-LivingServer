@@ -1,0 +1,149 @@
+{
+ "id": "marquis-haurian",
+ "name": "Marquis Haurian",
+ "npcNames": [
+  "Marquis Haurian"
+ ],
+ "aliases": [
+  "haurian",
+  "the carver"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion",
+  "mutilators-pit"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "carves for him"
+  },
+  {
+   "id": "prince-asmoien",
+   "relation": "his first lord; sent him from the pit"
+  },
+  {
+   "id": "earl-amagin",
+   "relation": "the Examiner who stands beside him"
+  },
+  {
+   "id": "mutilators",
+   "relation": "his order of origin"
+  },
+  {
+   "id": "chamberlain",
+   "relation": "opens the door after his work"
+  },
+  {
+   "id": "marquis-chaosmar",
+   "relation": "the second Chaosmar stands near"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Haurian is a level 68 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands at the bottom of the approach near Legion's lair, with Earl Amagin.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Haurian among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Below level 70, Marquis Haurian is an ordinary grind target for gamebots.",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Flauros or Haures (64) is a duke; Haurian may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Marquis Haurian uses model 635, the model of the Mutilators.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "The bargain of the Feast ends the same way every time: a demon struck from the Roll is unmade by a Mutilator into a state the Master can eat, and the Master eats it. Somebody has to do the unmaking at the Master's door, and since the First Roll it has been Marquis Haurian. He is the Master's Carver. He still has a Mutilator's shape, because he was one: one of the first of Prince Asmoien's order, sworn in the western pit when the order was founded to unmake whatever the Inquisition condemned.\n\nWhen the first demon of rank was struck off in the Second Roll, the Chancellor ruled that the unmaking must be done at the Master's door and not in the pit, so that the Master would not have to wait, and Asmoien sent his best. Haurian walked from the pit to the door with his hooks and did the work, and the Master was pleased enough that Adremal raised him to a marquis on the next Roll and wrote his seat as the door itself. He has done every unmaking since. He did not do Mystemas, since Mystemas was moved and not eaten; he was there, hooks ready, when the Chancellor gave the ruling, and the imps say it is the only time anyone has seen the Carver disappointed.\n\nHe stands now close to the Master's door, with Earl Amagin, the Master's Examiner, beside him and the second Marquis Chaosmar near by. Since the doors opened, no mortal has reached the Master's door without passing within reach of his hooks. The knights of the Chthonic Chapter despise him, as they despise all of Asmoien's order, and the Mutilators of the pit regard him as a saint. He regards himself as a craftsman, and says he has never once done a careless piece of work.",
+ "legend": "Haurian stands at the bottom of the approach near Legion's door, with Earl Amagin and the second Marquis Chaosmar close by and the Mutilators of Legion's Own around him. Level 68, a Mutilator's body, no script. Pull him with the slope above already cleared, and do not drag the fight toward the Chamberlain. Players call him the Carver and say he is the demon who cuts up the other demons for Legion to eat. He has a Mutilator's body and a marquis's level; there is nothing special to him beyond that, but he stands close to the door, so a slow, careful pull matters more than speed.",
+ "yells": {
+  "aggro": [
+   "Hold still. I do careful work.",
+   "You are not on the Roll. Pity. You would carve well.",
+   "The Master's door. You will go through it in pieces."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Careless. You are making me careless."
+   }
+  ],
+  "death": [
+   "Who will carve... for the Master...",
+   "A clean cut. At least make it clean."
+  ],
+  "slay": [
+   "Carved.",
+   "Neatly done.",
+   "The Master will not have to wait."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Hooks hang on the wall by the Master's door, very clean.",
+   "Someone here takes great care with his work."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The Master's Carver drops one hook and keeps the other."
+   }
+  ],
+  "realmFirstKill": "Marquis Haurian has fallen. The Master's Carver is still."
+ },
+ "botLines": {
+  "briefing": [
+   "haurian at the bottom of the approach. [clear the slope first|slope first]",
+   "68, mutilator body, no tricks. [careful pull|slow pull, near the door]",
+   "dont drag haurian toward the chamberlain. [keep it up the slope|pull him up]",
+   "amagin and chaosmar are close. [single pulls|one at a time]"
+  ],
+  "aftermathWin": [
+   "haurian down. [carver's done|the carver is dead]",
+   "marquis haurian dead. [amagin next|on to amagin]",
+   "haurian done, [clean|nice pull]",
+   "carver down. [chamberlain soon|nearly at the door]"
+  ],
+  "aftermathLoss": [
+   "haurian and amagin together. [wipe|too much]",
+   "dragged haurian into the chamberlain. [mess|gg]",
+   "haurian got the mt. [regroup|rez]",
+   "lost the pull at the bottom of the slope. [slower|careful]"
+  ],
+  "rumour": [
+   "[heard|word is] marquis haurian cuts up demons for legion to eat. the carver",
+   "haurian was a mutilator once. [raised to marquis|they promoted him]",
+   "[someone said|my guildie says] haurian was ready to carve mystemas but the chancellor demoted him instead",
+   "the knights hate haurian. [all mutilators|the blade and the hook]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "haurian",
+  "text": "The Master's Carver: a Mutilator of Prince [Asmoien]'s order raised to marquis, who unmakes every demon struck from the Roll at the Master's door so the Master need not wait. He stands there still, beside Earl [Amagin], the Master's Examiner."
+ },
+ "bookPage": "From The Unmaking at the Door, as an imp described it: The examined one is brought down the slope by knights. The Examiner reads its line from the Chancellor's wall, aloud, and then reads it again with the word struck. The Carver steps forward. He has two hooks and a long knife, and he does not hurry, and he does not speak, and when he is finished there is nothing left that could ever stand on a Roll again. Then the Chamberlain opens the door. I have seen it three times. The Carver cleans his hooks every time, after, for a very long while.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} slew Marquis Haurian, the Master's Carver, in {minutes} minutes.",
+  "loss": "Marquis Haurian carved {realm}'s raid under {raidLeader} at the Master's door, carefully."
+ }
+}

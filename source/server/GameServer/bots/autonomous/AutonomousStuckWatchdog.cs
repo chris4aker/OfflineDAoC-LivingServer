@@ -105,6 +105,9 @@ public static class AutonomousStuckWatchdog
     /// </summary>
     public static bool RepairInvalidLoginPosition(GameBot bot)
     {
+        // a hired companion goes where its player takes it: the watchdog never moves it (True 1.65, owner 2026-10-30)
+        if (bot.IsHiredCompanion)
+            return false;
         if (bot.IsAutonomousWorldBot && BotReleaseBindPoints.IsEnemyBindPosition(
                 bot.CurrentRegionID, bot.X, bot.Y, bot.Z, bot.Realm))
             return RelocateToSafeCapital(bot, DateTime.UtcNow, "saved at an enemy realm bindstone", false);
@@ -275,7 +278,7 @@ public static class AutonomousStuckWatchdog
     public static bool Observe(GameBot bot, DateTime? nowUtc = null)
     {
         if (bot?.IsAutonomousWorldBot != true || bot.DatabaseID <= 0 || bot.PersistentRecord == null ||
-            bot.ObjectState != GameObject.eObjectState.Active)
+            bot.ObjectState != GameObject.eObjectState.Active || bot.IsHiredCompanion)
             return false;
 
         DateTime now = nowUtc ?? DateTime.UtcNow;
@@ -318,7 +321,7 @@ public static class AutonomousStuckWatchdog
 
         Observation current = CurrentFor(bot, now, out Observation previous);
 
-        bool withHuman = bot.IsPlayerLedGroup || bot.Group?.GetPlayersInTheGroup().Count > 0;
+        bool withHuman = HasHumanCompany(bot);
         if (!GoalObservations.TryGetValue(bot.DatabaseID, out GoalObservation goalObservation))
             goalObservation = GoalObservations.GetOrAdd(bot.DatabaseID, new GoalObservation
             {
@@ -395,6 +398,13 @@ public static class AutonomousStuckWatchdog
             "AUTONOMOUS_STUCK_15M_RECOVERY");
     }
 
+    /// <summary>
+    /// A gamebot with a real player (in the player's group, or in a group a player is in) is never relocated by the
+    /// 15- or 45-minute clocks: the player decides where it goes.
+    /// </summary>
+    public static bool HasHumanCompany(GameBot bot) =>
+        BotDutyLeaseRules.ExemptsFromWatchdog(BotDutyLeases.KindOf(bot)) || bot.Group?.GetPlayersInTheGroup().Count > 0;
+
     // The group check takes the coordinator's global lock, which every grouped
     // actor's Pulse also holds. These clocks are 15 and 45 minutes long, so a
     // two-second-old answer is equivalent; the session samples its own shared
@@ -441,6 +451,8 @@ public static class AutonomousStuckWatchdog
     {
         if (moveLiveObject && TryRecoverToPlayerLeader(bot, now, reason, logMarker))
             return true;
+        if (moveLiveObject && logMarker == "AUTONOMOUS_STUCK_15M_RECOVERY" && TryRecoverInsideRaid(bot, now, reason))
+            return true;
         CapitalLocation capital = SafeCapitalFor(bot.Realm);
         if (capital.RegionId == 0)
             return false;
@@ -461,7 +473,7 @@ public static class AutonomousStuckWatchdog
             // operation, with an explicit cause, rather than silently removing
             // one actor and leaving seven stale group assignments behind.
             if (expedition == null) AutonomousBotGroupCoordinator.EndPvePartyBeforeIndividualRecovery(bot, reason);
-            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot);
+            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK)?.DropFromCarrier(bot, "stuck-watchdog:" + reason);
             if (expedition == null) bot.Group?.RemoveMember(bot);
             bot.CompleteStableMasterRoute();
             bot.StopAttack();
@@ -535,10 +547,64 @@ public static class AutonomousStuckWatchdog
     /// from the player's group without a word, and the schedule logged it off a few seconds later. Companion bots already
     /// rejoin their player this way (TryReturnTemporaryCompanionToLeader).
     /// </summary>
+    /// <summary>A raid member stuck inside its raid's dungeon joins the raid there instead of going to the capital and
+    /// walking back into the same spot (AutonomousRealmRaid.TryRecoverInsideRaid; Krondon, PC 2026-11-11).</summary>
+    private static bool TryRecoverInsideRaid(GameBot bot, DateTime now, string reason)
+    {
+        if (!bot.IsAlive) return false;
+        if (!AutonomousRealmRaid.TryRecoverInsideRaid(bot, out ushort region, out Vector3 spot, out string near, out bool stays))
+        {
+            if (!stays) return false;
+            // Inside its raid's dungeon with every regroup point by a resting boss: it stays (the watchdog asks again later),
+            // never its capital (RealmRaidStuckRecovery.StaysInside).
+            Log.Warn($"AUTONOMOUS_RAID_STUCK_RECOVERY bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} reason=\"{ForLog(reason)}\" " +
+                     $"at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} to=stay instead=\"the capital\" " +
+                     $"why=\"every regroup point is in a resting boss's aggro\"");
+            MarkProgress(bot, eAutonomousProgressKind.Recovery, now);
+            return true;
+        }
+        ushort oldRegion = bot.CurrentRegionID;
+        int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
+        string oldActivity = bot.PersistentRecord?.Activity ?? string.Empty;
+        // Onto the mesh when there is one; the raider's own spot or the route's front otherwise (both are floor).
+        Zone zone = WorldMgr.GetRegion(region)?.GetZone((int)spot.X, (int)spot.Y);
+        var nav = PathfindingProvider.Instance;
+        bool snapped = zone != null && nav.IsAvailable && nav.HasNavmesh(zone) && nav.TrySnapToMesh(zone, ref spot, 128f);
+        bot.StopAttack();
+        bot.StopFollowing();
+        bot.StopMovingOnPath();
+        bot.StopMoving();
+        bot.StopCurrentSpellcast();
+        if (bot.Brain is BotBrain brain)
+        {
+            brain.ClearAggroList();
+            brain.FSM.SetCurrentState(eFSMStateType.IDLE);
+        }
+        if (!bot.MoveTo(region, (int)Math.Round(spot.X), (int)Math.Round(spot.Y), (int)Math.Round(spot.Z), bot.Heading))
+            return false;
+        OfflineWorldBotRecord record = bot.PersistentRecord;
+        if (record != null)
+        {
+            record.RecoveryCount++;
+            record.LastMeaningfulProgressUtc = now.ToString("O");
+        }
+        Log.Warn($"AUTONOMOUS_RAID_STUCK_RECOVERY bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} level={bot.Level} " +
+                 $"realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{ForLog(bot.ClassName)}\" reason=\"{ForLog(reason)}\" " +
+                 $"activity=\"{ForLog(oldActivity)}\" from={oldRegion}:{oldX},{oldY},{oldZ} to={region}:{(int)spot.X},{(int)spot.Y},{(int)spot.Z} " +
+                 $"near=\"{ForLog(near)}\" snapped={snapped} instead=\"the capital\"");
+        MarkProgress(bot, eAutonomousProgressKind.Recovery, now);
+        bot.MarkAutonomousStateDirty();
+        AutonomousBotStatusPersistence.Queue(bot);
+        return true;
+    }
+
     private static bool TryRecoverToPlayerLeader(GameBot bot, DateTime now, string reason, string logMarker)
     {
         if (bot.PlayerGroupLeader is not { IsAlive: true, ObjectState: GameObject.eObjectState.Active } leader ||
             leader.CurrentZone == null || bot.Group == null || bot.Group != leader.Group || leader.Realm != bot.Realm)
+            return false;
+        // Owner 2026-11-15: never carried into another realm's territory (a GM /jump there); the capital recovery applies.
+        if (RealmTerritory.IsEnemyRealmTerritoryFor(bot, leader))
             return false;
         ushort oldRegion = bot.CurrentRegionID;
         int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;

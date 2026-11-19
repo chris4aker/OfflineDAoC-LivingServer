@@ -14,9 +14,61 @@ namespace DOL.GS
         private long _dungeonThreatHoldSince;
         // The last scan that held (AutonomousDungeonPolicy.ThreatHoldStart: one hold while the bot keeps holding).
         private long _dungeonThreatHoldLast;
+        // Where the current hold began (AutonomousDungeonPolicy.ThreatHoldSamePlace).
+        private Vector3 _dungeonThreatHoldAt;
         // A corridor threat this bot is walking around because its party is elsewhere (see SeparatedFromParty).
         private GameNPC _dungeonThreatDetour;
+        private long _nextPullerAwayLog;
         public const long DungeonThreatHoldLimitMilliseconds = 90_000;
+        // Diagnostics only (AUTONOMOUS_DUNGEON_HOLD_LONG): how long this bot has held in one place, counting every restart
+        // of the 90-second clock, and why the clock started again.
+        private long _dungeonHoldFirst;
+        private Vector3 _dungeonHoldFirstAt;
+        private int _dungeonHoldRestarts;
+        private long _dungeonHoldLongestGap;
+        private long _nextDungeonHoldLog;
+        /// <summary>A hold in one place this long is reported, and again at this interval while it lasts.</summary>
+        public const long DungeonHoldLongMilliseconds = 3 * 60_000;
+        /// <summary>Further than this from where the hold began, it is another hold.</summary>
+        public const float DungeonHoldSamePlace = 400f;
+
+        /// <summary>Whether a hold in one place is long enough to report now (pure): it has lasted
+        /// <see cref="DungeonHoldLongMilliseconds"/> and the last report is that old too.</summary>
+        public static bool HoldIsLong(long first, long now, long nextLog) =>
+            first > 0 && now - first >= DungeonHoldLongMilliseconds && now >= nextLog;
+
+        /// <summary>Counts one held scan and reports a bot that has held in one place for minutes although each hold is
+        /// limited to 90 seconds (duo30 and duo31, 2026-11-11: 60 and 39 raiders stood at the Summoner's Hall staging post
+        /// in Dodens Gruva on "Holding before dungeon threat" until the raid had wiped without them). Measures only.</summary>
+        private void NoteDungeonHold(GameBot bot, GameNPC blocker, long now, long gap, bool restarted, bool separated, bool raidTrash)
+        {
+            Vector3 at = new(bot.X, bot.Y, bot.Z);
+            // A new hold (the bot walked on, or came back to this spot after a death or a fight) is counted from now.
+            if (_dungeonHoldFirst <= 0 || Vector3.Distance(at, _dungeonHoldFirstAt) > DungeonHoldSamePlace ||
+                gap > AutonomousDungeonPolicy.ThreatHoldGapMilliseconds)
+            {
+                _dungeonHoldFirst = now;
+                _dungeonHoldFirstAt = at;
+                _dungeonHoldRestarts = 0;
+                _dungeonHoldLongestGap = 0;
+                _nextDungeonHoldLog = 0;
+                return;
+            }
+            if (restarted) _dungeonHoldRestarts++;
+            if (gap > _dungeonHoldLongestGap) _dungeonHoldLongestGap = gap;
+            if (!HoldIsLong(_dungeonHoldFirst, now, _nextDungeonHoldLog) || !Log.IsInfoEnabled) return;
+            _nextDungeonHoldLog = now + DungeonHoldLongMilliseconds;
+            AutonomousRealmRaid.View raid = AutonomousRealmRaid.GetTravelView(bot);
+            GameBot puller = AutonomousBotGroupCoordinator.PartyPuller(bot);
+            Log.Info($"AUTONOMOUS_DUNGEON_HOLD_LONG bot={bot.Name} id={bot.DatabaseID} class=\"{bot.CharacterClass?.Name}\" region={bot.CurrentRegionID} " +
+                     $"at={bot.X},{bot.Y},{bot.Z} total_s={(now - _dungeonHoldFirst) / 1000} unbroken_s={(now - _dungeonThreatHoldSince) / 1000} " +
+                     $"restarts={_dungeonHoldRestarts} longest_gap_ms={_dungeonHoldLongestGap} blocker=\"{blocker.Name}\" blockerLevel={blocker.Level} " +
+                     $"distance={bot.GetDistanceTo(blocker)} separated={separated} puller=\"{puller?.Name}\" isPuller={puller == bot} " +
+                     $"pullerRegion={puller?.CurrentRegionID ?? 0} pullerHealth={puller?.HealthPercent ?? 0} " +
+                     $"raid=\"{raid?.EventId}\" raidState=\"{raid?.State}\" raidHold={raid?.Hold} raidMuster={raid?.Muster} raidCrossing={raid?.Crossing} " +
+                     $"raidTrash={raidTrash} mayPull={AutonomousBotGroupCoordinator.CanInitiateNewPull(bot, corridorBlocker: true, raidTrash)} " +
+                     $"resting={_dungeonRouteResting}");
+        }
         private Vector3[] _dungeonProbeNodes;
         private Vector3 _dungeonProbeOrigin;
         private Vector3 _dungeonProbeDestination;
@@ -229,8 +281,26 @@ namespace DOL.GS
             // Nobody of its party is in this region (a raid member left behind in another dungeon, PC 2026-11-09): no puller
             // comes, so it does not wait for one, goes around the monster when the mesh has a way, and otherwise clears it.
             bool separated = SeparatedFromParty(bot);
-            // An ordinary monster in the raid's own dungeon may be pulled while the raid holds (its muster walk).
-            bool raidTrash = inOwnRaidDungeon && blocker is not IGameEpicNpc;
+            // An ordinary monster in the raid's own dungeon may be pulled while the raid holds (its muster walk), and one in the
+            // dungeon the raid walks through on its way in (PC 2026-11-14, Dodens Gruva: AutonomousRealmRaid.IsRaidApproachDungeon).
+            bool raidTrash = blocker is not IGameEpicNpc && (inOwnRaidDungeon ||
+                raidView != null && AutonomousRealmRaid.IsRaidApproachDungeon(bot, bot.CurrentRegionID));
+            // A raid party's designated puller stands in another region (it went on into Summoner's Hall while these walk
+            // through Dodens Gruva): nobody here waits for it. The members here choose their own puller
+            // (AutonomousBotGroupCoordinator.CanInitiateNewPull) and fight without the party's ranged-pull handshake, whose
+            // state belongs to the absent puller (PC 2026-11-14: two shamans stood 15 minutes 460-500 from a cavernous yeti
+            // with puller="Dawnblade" pullerRegion=248, then died to it).
+            GameBot designated = _groupDirective?.Puller;
+            bool pullerAway = raidView != null && !separated &&
+                AutonomousDungeonPolicy.PullerAway(designated != null, designated?.IsAlive == true,
+                    designated?.CurrentRegionID ?? 0, bot.CurrentRegionID);
+            if (pullerAway && _nextPullerAwayLog <= now)
+            {
+                _nextPullerAwayLog = now + DungeonHoldLongMilliseconds;
+                Log.Info($"AUTONOMOUS_DUNGEON_PULLER_AWAY bot={bot.Name} id={bot.DatabaseID} region={bot.CurrentRegionID} " +
+                         $"blocker=\"{blocker.Name}\" puller=\"{designated?.Name}\" pullerRegion={designated?.CurrentRegionID ?? 0} " +
+                         $"raidTrash={raidTrash} reason=\"the party's puller is not in this region; the members here pull for themselves\"");
+            }
             GameBot leader = _groupDirective?.Leader;
             bool rejoiningLeader = AutonomousDungeonPolicy.IsFollowerRejoinDestination(
                 _groupDirective?.IsDynamic == true,
@@ -268,16 +338,22 @@ namespace DOL.GS
             // group-defense systems; death handling remains authoritative if
             // the encounter really is too difficult.
             if (!rejoiningLeader && (!AutonomousBotGroupCoordinator.CanInitiateNewPull(bot, corridorBlocker: true, raidTrash) ||
-                (_groupDirective?.IsDynamic == true && _groupDirective.Puller != bot)))
+                (_groupDirective?.IsDynamic == true && _groupDirective.Puller != bot && !pullerAway)))
             {
                 // Bounded: a puller that is dead or elsewhere never comes. After DungeonThreatHoldLimit
                 // of one unbroken hold the member clears it; ordinary group defense joins the fight
                 // (109 Summoner's Hall raid members held in Marfach Caverns, 2026-10-06). The clock no longer
                 // starts again when another monster becomes the first in the way (Ferken, PC 2026-11-09).
                 long holdNow = GameLoop.GameLoopTime;
+                long holdGap = _dungeonThreatHoldLast > 0 ? holdNow - _dungeonThreatHoldLast : 0;
+                long holdBefore = _dungeonThreatHoldSince;
                 _dungeonThreatHoldBlocker = blocker;
-                _dungeonThreatHoldSince = AutonomousDungeonPolicy.ThreatHoldStart(_dungeonThreatHoldSince, _dungeonThreatHoldLast, holdNow);
+                Vector3 holdAt = new(bot.X, bot.Y, bot.Z);
+                _dungeonThreatHoldSince = AutonomousDungeonPolicy.ThreatHoldStart(_dungeonThreatHoldSince, _dungeonThreatHoldLast, holdNow,
+                    Vector3.Distance(holdAt, _dungeonThreatHoldAt));
+                if (_dungeonThreatHoldSince != holdBefore) _dungeonThreatHoldAt = holdAt;
                 _dungeonThreatHoldLast = holdNow;
+                NoteDungeonHold(bot, blocker, holdNow, holdGap, _dungeonThreatHoldSince != holdBefore, separated, raidTrash);
                 if (AutonomousDungeonPolicy.HoldsForPuller(!separated, holdNow - _dungeonThreatHoldSince, DungeonThreatHoldLimitMilliseconds))
                 {
                     SetStatus(bot, "Holding before dungeon threat", GoalText(),
@@ -318,8 +394,8 @@ namespace DOL.GS
                         new(other.X, other.Y, other.Z), nav.DefaultFilters);
             });
             // A party pull (ranged pull, flying handoff) needs the party: a member alone in another region fights it itself.
-            if (!separated && AutonomousDefensivePull.TryBeginFlyingHandoff(bot, blocker, corridorBlocker: true)) return true;
-            if (!separated && !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
+            if (!separated && !pullerAway && AutonomousDefensivePull.TryBeginFlyingHandoff(bot, blocker, corridorBlocker: true)) return true;
+            if (!separated && !pullerAway && !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                 AutonomousDefensivePull.TryBegin(bot, blocker)) return true;
             bot.TargetObject = blocker;
             _lastEngagedCon = con;

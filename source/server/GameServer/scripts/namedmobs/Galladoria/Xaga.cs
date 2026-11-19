@@ -100,7 +100,7 @@ namespace DOL.GS
             }
         }
         public static bool spawn_lights = false;
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach(GameNPC lights in WorldMgr.GetNPCsFromRegion(CurrentRegionID))
             {
@@ -110,7 +110,7 @@ namespace DOL.GS
                         lights.Die(lights);
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {
@@ -306,10 +306,10 @@ namespace DOL.GS
             return 0.20;
         }
         public static int BeathaCount = 0;
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             --BeathaCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {
@@ -514,10 +514,10 @@ namespace DOL.GS
             return 0.20;
         }
         public static int TineCount = 0;
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             --TineCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {

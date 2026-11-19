@@ -1,0 +1,81 @@
+{
+  "id": "eresidae",
+  "name": "Eresidae",
+  "npcNames": [
+    "Eresidae"
+  ],
+  "locationId": "emain-macha",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Eresidae: level 48, a large creature (model 117, size 126), at about 425,900/291,000 high on a ridge north of Dun Crauchon; respawn 300 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Strange Powers (a Midgard quest from Mularn): 'Seek out Eresidae on a ridge southeast of Dun Crauchon in Emain Macha' and 'Hand Garon Eresidae's carcass'.",
+      "provenance": "game",
+      "source": "DataQuest 'Strange Powers' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "On the highest ridge north of Dun Crauchon lives a creature the rangers of the keep call Eresidae, and it is the only thing in Emain Macha that the men of Midgard cross the frontier on purpose to kill. They come in small bands, young ones, up the far side of the ridge, and take its carcass back over the border, and the rangers of Crauchon have watched it happen for years without ever learning why.\n\nGormán of the wall, who counts everything, has a theory. He says Midgard's rune-masters need something in the creature's body for a working of theirs, and that a realm that will cross a frontier for a carcass is a realm that has run out of its own. The other rangers say that is a ranger's theory and they would rather the Midgard young kept to the ridge than came to the keep. Eresidae, for its part, does not seem to know whose country it is in.",
+  "legend": "Eresidae (48) lives on a high ridge north of Dun Crauchon in Emain Macha (about 426k/291k). It is the target of Strange Powers, a Midgard quest, so you will see Midgard lowbies coming for it. For Hibernians it is just a big 48 with a 5-minute respawn. Emain Macha is the enemy realms' way in, so mind warbands from the Midgard portal keep to the east.",
+  "yells": {
+    "aggro": [
+      "(the great creature rears on its ridge)",
+      "(Eresidae turns from the north, toward you)"
+    ],
+    "phases": [],
+    "death": [
+      "(it falls, and the ridge is empty)"
+    ],
+    "slay": [
+      "(Eresidae returns to watching the north)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A great creature on the highest ridge."
+    ],
+    "phases": [],
+    "realmFirstKill": "Eresidae of the ridge has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "eresidae is 48 on the ridge north of dun crauchon",
+      "midgard quest target. mids come for it"
+    ],
+    "aftermathWin": [
+      "eresidae down. [no mids around|grats]",
+      "got there before the mids. [lol|nice]"
+    ],
+    "aftermathLoss": [
+      "mid warband on the ridge. [rip|frontier]",
+      "too low for 48. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] midgard sends its young across the frontier to kill eresidae. nobody knows why",
+      "gormán on the crauchon wall thinks the mids need something in eresidae's body for runes"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Eresidae",
+    "text": "A great creature of the ridge north of Dun Crauchon, the one thing in Emain Macha Midgard crosses the frontier on purpose to kill, for reasons the rangers have never learned."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Eresidae in Emain Macha in {minutes} minutes.",
+    "loss": "Eresidae turned back {realm}'s band under {raidLeader} in Emain Macha after {minutes} minutes."
+  },
+  "era": "hib-the-realm-war",
+  "factions": [
+    "frontier-guard"
+  ],
+  "related": [
+    {
+      "id": "emain-macha",
+      "relation": "its ridge"
+    }
+  ]
+}

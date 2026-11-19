@@ -1,0 +1,175 @@
+{
+  "id": "avartack-the-champion",
+  "name": "Avartack the Champion",
+  "catalogKey": "marfach-caverns/avartack",
+  "locationId": "marfach-caverns",
+  "realm": "Hibernia",
+  "facts": [
+    {
+      "text": "Level 65, 30,000 health, a realm-raid final. He fights with crushing blows and casts Avartack's Force, 300 body damage.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs; docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He cannot be hurt outside his tether.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "'Avartack' is unglossed; the champion's oath is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Avartack's Force is an instant 300 body-damage spell (range 1,500, recast 15-25 s) cast at his current target every think while he fights; he resists 20% melee and 30% other damage, is immune to crowd control and has a 350 melee reach.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs (integration/1.2)"
+    },
+    {
+      "text": "When his target faces away from him (he stands at 160-200 degrees behind it) he uses a back-attack style (Champion style 304); otherwise a taunt style. He resets to full health when his aggro list empties.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AvartackTheChampion.cs (integration/1.2)"
+    },
+    {
+      "text": "Single combat at the ford is a motif of the Ulster Cycle: in the Táin Bó Cúailnge Cú Chulainn holds a ford against Medb's army by fighting her champions one by one.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/T%C3%A1in_B%C3%B3_C%C3%BAailnge"
+    },
+    {
+      "text": "Living Server lore: Avartack, son of the ferryman Áed Dub of the ford of the Erne, fostered with Caimheul by the eldest keener (the Black Lady); the law of the water (a turned back may be struck); the oath with no word to end it; Daire of the Crannóg and 'only as long-lived as the woman on his bank'; died standing at the grave-chamber door in the third night; Diarmait of Bri Leith's company; Echna of Ardee and the word that ends a watch; the Erne ferrymen's custom.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Avartack was the son of Áed Dub, the ferryman who kept the ford of the Erne below the Breifine heights, and he grew up fighting in the water, where a man cannot step back or aside but only reach. He was sent as a fosterling to the eldest keener's house by the lake to be raised beside the boy who became Caimheul, and on the day Caimheul was made chieftain at the stone he named his foster-brother his champion.\n\nFor twenty years Avartack held the fords of Breifine in single combat, as the old hill wars were fought, and never lost in the water. He kept the law of the water: the ford belongs to whoever faces it, and a turned back may be struck down without shame. A force went out of him into the man he faced, through mail, again and again, and reached even a champion who stood off on the far bank; the hill country still says a man in a bad place is only as long-lived as the woman on his bank. No binding-song made him sleep at his post, and the druids' burning words went into him like rain into thatch. The youngest keener sang for every blade he broke.\n\nHis oath, I will stand before you until you have no need of me, had no word in it to end the watch. On the day Caimheul died on the reed-flats, Avartack was holding the ford of the Erne without a death on either side, and came home to the bier. He went down under the hill first and stood at his lord's feet in the grave-chamber, facing the door, until he died on his feet in the third night, so that when the keeners looked back on the fourth he did not need to stand up.\n\nHe holds the floor before his lord's hall still, which he takes for the ford: safe in the grave-peace beyond it, and whole again the moment nobody stands against him. Diarmait of Bri Leith's company came at him in a ring and broke at the back. Echna of Ardee, a ferryman's daughter, faced him and never turned, with her sister on her bank and her company at his sides and back, and said the old word that ends a watch over him when he fell. It did not hold, but the custom did, and the ferrymen of the Erne call the word over the water at night.",
+  "legend": "Fight him on his floor. Drag him off it and he takes no damage and walks home at full health, and if everyone drops off his hate list he resets to full. No mezz, root or stun lands on him. Avartack's Force (300 body damage, instant, every 15-25 seconds, reaches 1,500) always goes at whoever he is fighting, so the main tank eats it all night: heals go on the tank, not the cloth. Never let his target turn away from him. If his target shows him its back he switches to a back style that hits far harder, so the tank faces him the whole fight and nobody runs across his front. Everyone else hits him from the sides and back; he only swings at the one he faces, but his reach on that one is longer than it looks. Melee does better on him than spells: he shrugs off more magic than steel. Hill-country superstition: salute him before the pull, champion to champion, and say 'the ford is held' over him when he drops. The Ardee tanks who do it swear he fights them cleaner.",
+  "yells": {
+    "aggro": [
+      "No one passes. My lord is resting.",
+      "The ford is mine. Turn back.",
+      "Twenty years, and no one crossed.",
+      "Face me. Only a coward shows the water his back."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Turn your back, then. The water knows what to do with it."
+      },
+      {
+        "trigger": "health<=50",
+        "text": "I held the ford for him. I will hold this."
+      }
+    ],
+    "death": [
+      "My lord... I am relieved... at last...",
+      "Tell him... I held..."
+    ],
+    "slay": [
+      "The ford is held.",
+      "Back across the water with you.",
+      "You turned. The water does not forgive it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A champion stands guard for a dead lord.",
+      "He stands where a ford once was, in his mind.",
+      "Water runs down the walls around a man standing still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=75",
+        "text": "Avartack's force goes out like a push in deep water."
+      }
+    ],
+    "realmFirstKill": "Avartack the Champion is relieved of his oath."
+  },
+  "botLines": {
+    "briefing": [
+      "avartack's force goes on whoever he is hitting, every 20 sec or so. [heal the tank|keep the tank topped]",
+      "main tank faces him the whole time. if his target turns its back he [back styles|hits way harder]",
+      "fight him on his floor. off it hes immune and [walks home full|resets]",
+      "no cc on him, [dont bother mezzing|hes cc immune]. melee does more than spells on him",
+      "everyone but the tank on his sides and back. [he only swings at who hes facing|stay off his front]"
+    ],
+    "aftermathWin": [
+      "avartack down. [someone say the ford is held|the ford is held]",
+      "tank never turned once. [textbook|thats how you do it]",
+      "the force hit the tank all fight and the heals kept up. [grats druids|nice heals]",
+      "the champion is down, caimheul next. [go|on we go]"
+    ],
+    "aftermathLoss": [
+      "tank turned to run and got [back styled|cut in half]. never turn on him",
+      "the force wore the tank down, [heals fell behind|too slow on the tank]",
+      "dragged him off his floor and he [went immune|took no damage] and walked home full",
+      "nobody picked him up when the tank died and he [reset|went home full]"
+    ],
+    "rumour": [
+      "[heard|someone said] avartack was the chieftain's champion. still guarding him, all these years",
+      "[heard|someone said] avartack never lost at the ford in twenty years",
+      "[word is|heard] avartack was raised with caimheul. same foster mother, the black lady",
+      "the ferrymen on the erne call a word over the water at night for him, they say",
+      "ardee folk say the ford is held over him when he drops. [old custom|weird but ok]",
+      "the blue lady's swords include the ones avartack broke at the ford, they say"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Avartack",
+    "text": "Caimheul's champion and foster-brother, a ferryman's son of the Erne raised by the keener who became the Black Lady. He held the fords of Breifine for twenty years and was holding the ford of the Erne the day his lord died. He stands on his floor before the hall still, waiting for the word that ends a watch. The hill folk say never show him your back, and that a man in his water is only as long-lived as the woman on his bank."
+  },
+  "bookPage": "From Nóra's book: my grandmother's grandmother saw Avartack fight at the ford of the Erne, or said she did. She said he was not tall, but that when he stepped into the water the other war-band's champion stepped back out of it, and the two chieftains went home without a battle. That was the best of the old hill wars, she said: the champion took the death so the rest did not. He is still taking it, under Breifine, on a floor he thinks is the river. The old word that ends a watch was never said over him while he lived. The ferrymen of the Erne call it across the water at night, in case. When a company of the realm ends his watch, someone should tell him the ford is held. He would like to know.",
+  "chronicle": {
+    "win": "{realm} went down into Marfach under {raidLeader} and silenced Avartack the Champion in {minutes} minutes. His oath is discharged.",
+    "loss": "{realm} lost {raidLeader}'s raid to Avartack the Champion in the Marfach Caverns after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "summoners",
+    "lords-of-the-undead"
+  ],
+  "related": [
+    {
+      "id": "chieftain-caimheul",
+      "relation": "the lord he swore to stand before"
+    },
+    {
+      "id": "blue-lady",
+      "relation": "the keener who sang for his broken blades"
+    },
+    {
+      "id": "black-lady",
+      "relation": "his foster-mother, the eldest keener"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Ferryman's Son",
+      "text": "Before there were bridges in the hill country there were fords, and every ford had a keeper. At the ford of the Erne below the Breifine heights, in the days of Caimheul's father, the keeper was a ferryman named Áed Dub, who carried travellers over on his back when the river was high and was paid a cow a year by the chieftain to keep the crossing clear of reavers. His son was Avartack. The hill country has kept no other name for him and no meaning for this one. The scholars of Tir na Nog have tried and given it up; the keeners' daughters say a champion's name means whatever he did with it.\n\nThe boy grew up in the water. He learned to stand at the shallows with the current at his waist and to fight there with his father's ferry-pole, because a man in a ford cannot step back or aside; he can only reach. The hill country remembers that his reach was longer than his height had any right to give him, and more than one reaver of the lakes who thought himself a safe length off in the river found out otherwise, too late to wade clear.\n\nWhen the chieftain's heir was a small boy in the eldest keener's house by the lake, his father sent to the ford for a companion for him, as the old families did: a fosterling of lower birth, raised beside the heir to share his bed and his porridge and, in time, to stand in front of him. The ferryman sent his son. So the woman who would become the Black Lady raised them both. Nóra's family say she loved the ferryman's boy the better of the two, because he was easier to love; the druids of Lough Gur say she loved neither more, and only told each of them that she did.\n\nFoster-brothers were bound tighter than kin in the old families. A man might quarrel with his brother over cattle; he did not quarrel with the boy he had been raised beside. On the day Caimheul was made chieftain at the inauguration stone on the heights, the first thing he did after the white rod was put in his hand was to name Avartack his champion. The war-band had watched the two of them grow, and nobody argued."
+    },
+    {
+      "title": "The Law of the Water",
+      "text": "In the old hill wars two war-bands that met at a river did not rush the crossing. Each chieftain sent his champion into the ford, and the two fought in the water while both armies watched from the banks, and often enough the war-band whose champion fell went home without a battle. The bards say the custom is as old as the Hound of Ulster, who held a ford against a queen's whole army by fighting her champions one at a time; the hill country says it is older, and only got its fame from him.\n\nThe water had its law, and Avartack kept it all his life. The ford belongs to whoever faces it. A man who turns his back in the water has given up his claim, and may be struck down from behind without shame, because a champion who lets a turned back go across lets the war-band behind it across too. Avartack never once struck a man who faced him from behind. It was the turned back he punished, and he punished it as he punished nothing else: men who turned to run from him in the Erne were found downstream in two pieces. Breifine fathers teaching their sons the spear still say it before anything else: never show the water your back.\n\nHis oath was sworn at the stone on the day he was named, and the words come down in two forms. Nóra's family give them as the hill keeners sang them: I will stand before you until you have no need of me. The bards of Howth, who learned the keen of Caimheul from the keeners' daughters and improved it, give them as: I will stand in your water until it runs clear. Both forms agree on what the oath leaves out. A watch in the old families ended with a word; the man who set it said the word, and the sentry stood down. Avartack's oath had no word in it to end it, and the druids of Lough Gur think Caimheul meant to give him one on his deathbed, as chieftains did, and never had a deathbed to give it on.\n\nHis people say he was not tall, and not handsome, and not clever, and that none of it mattered in the water. In place of the ferry-pole the smith of the dún made him a great two-handed weapon that crushed rather than cut, because a man in a ford is wearing all the iron he owns."
+    },
+    {
+      "title": "Twenty Years in the Water",
+      "text": "He held the fords of Breifine for his foster-brother for twenty years and never lost in the water. The keen of Caimheul gives the champion no verse of his own, which the keeners' daughters call a fault in it, but the hill country has kept his fights anyway, the way hill country keeps the names of floods.\n\nThe best of them were against Daire of the Crannóg, the champion of Tuathal Garbh and the lake men, who met him at the ford of the Erne in three summers running. Daire was the better swordsman, the lake bards said, and it did him no good. Avartack laid his weight against a man as his father had laid it against the current, and a force went out of him with it, through shield and mail and into the chest like cold water poured into a man; it came, and passed, and after a little it came again. In the third summer Daire would not go into the river at all. He stood off on the far bank and called insults across, and the force reached him there anyway, a long spear's cast from the water, and put him on his knees in front of both war-bands. Daire lasted longer than any other man who faced Avartack because his mother stood behind him on the bank all three summers with her herbs and her bindings, and the hill country made a saying of it that it still uses of any man in a bad place: he is only as long-lived as the woman on his bank.\n\nThe lake men's druids tried words where their swordsmen had failed. They sang binding-songs at him from the reeds to make him sleep standing, as a horse sleeps, and the songs did not take; nothing in the hills ever made Avartack sleep at his post or bend his knee. They sent their burning words into him, and the words went in like rain into thatch, slowly and to little purpose, when a plain spear thrown from the lake bank had at least made him bleed.\n\nHe broke a great many weapons in those twenty years, his own and other men's, and every broken blade from his water was carried home to the dún and sung over by the youngest of the keeners, whose trade was the keen for iron. The druids say some of those blades rise in the Blue Lady's room under Breifine still, and know him."
+    },
+    {
+      "title": "Too Late from the Ford",
+      "text": "On the day Caimheul died on the reed-flats, Avartack was holding the ford of the Erne against Tuathal's second war-band, on his foster-brother's orders. Their champion took one look at the man in the water and stepped back out of it, and the two war-bands stood on the banks until evening and went home, and no one on either side died. It was the best day of his life, his people said afterwards, and he came home at dawn to find his lord laid out on the bier in the yard under the oak.\n\nThe war-band said he did not weep. He asked who had done it, and they told him: a herd-boy of the lakes, out of the reeds, from the side. He asked where the boy was, and they told him the chieftain had killed him as he fell. Then he went into the house and asked the eldest keener, his foster-mother, what the oath meant now. Nóra's mother said it was the only time in her life the eldest was heard to say she did not know.\n\nWhen the household carried Caimheul down under the hill, the men of his war-band who chose to go with him went down too, as the oldest custom allowed, and Avartack went first. He took his post inside the grave-chamber at his lord's feet, facing the door, as the chieftain had meant anyone coming through it to face him, with the great weapon in both hands. The torch-bearers saw him there the first night and the second and the third. He did not eat or drink, and he did not sit. On the third morning, when the household went home and left the keeners to sing the last night alone, the torch-bearers looked back from the passage and saw that he was still standing, and that his breath no longer showed in the cold. The druids of Lough Gur say he died on his feet sometime in the third night, cold and upright, without ever setting down his weapon.\n\nSo when the voice answered from below on the fourth night and the keeners looked back, the champion did not have to stand up. He had never lain down. He was sung back with his lord and his lord's hounds and his lord's war-band, and in the morning he was where he had been, facing the door, waiting for a word that nobody alive knew to say."
+    },
+    {
+      "title": "The Floor That Is a Ford",
+      "text": "He is there still, on the floor before his lord's hall in the caves under Breifine, and the druids of Lough Gur believe he takes it for the ford of the Erne. The passage narrows there, and water runs down the walls; perhaps that is enough. Those who have stood before him say he plants his feet as a man plants them against a current, and looks at a stranger's feet before he looks at the face, as his foster-brother did.\n\nHe shares the grave-peace of the fourth night with the whole household. On his own floor he can be wounded like any man. Drawn beyond it, he walks in a peace no blade enters, back to his post, and he is whole when he gets there. The ferrymen of the Erne have a saying for the same thing in the river: a ford is never left empty. Whatever stretch of water a champion is not made to fight for, he has, and the moment there is nobody left standing in front of Avartack, he has all of it back, every wound closed, as if the ford had never been crossed.\n\nHe does not hear the voice below, any more than his lord does. He does not answer the Ladies' keen, though he knows the voices, and stops sometimes with his head on one side when the youngest sings. The reanimated guardians at the turns of the road were his comrades of the war-band, and he knows them. The enthralled dead who came down later from the frontier he treats as he treated beggars at the ford: he lets them pass, because they are not crossing toward his lord.\n\nThe druids have watched him longer than anyone, from the passage mouth, with the patience of Lough Gur. They say the oath has become the only thing in him. He cannot be charmed to sleep or bound or made to kneel, because there is nothing left in him that would like to rest. He does not hate the living. He does not want them dead. He wants them on the far bank, and the only way he knows to put a man on the far bank is the way he learned in the Erne."
+    },
+    {
+      "title": "The Ones Who Crossed",
+      "text": "The first of the realm's companies to reach his floor came down from Bri Leith in the first years after the frontier keeps were raised, under a hero named Diarmait who had read every account of the hill wars he could find and believed none of them. They came on in a ring, as a company comes on against a bear. Those at the back of the ring broke first: they turned to run from the long weapon, and he struck them down from behind, one after another, by the law of the water. Diarmait held the front until the force had gone through him more times than his menders could follow, and he fell on the floor, and the survivors carried him out past the guardians. Bri Leith still keeps his shield, split at the boss, in its hall of arms.\n\nThe second company was led by a hero of Ardee named Echna, a ferryman's daughter of the Erne who knew the law of the water as she knew her prayers. She went into his ford alone in front of her company, facing him, and she did not turn once from the first blow to the last. Her mother had died the winter before; it was her sister who stood behind her with the bindings and the herb-bag, and the company said afterwards that the sister never once took her eyes off Echna. The rest of them came at him from behind Echna, from his sides and his back, where a champion with his eyes on the water in front of him does not look. No one ran. When he went down on the stones with the weapon still in both hands, he said the one thing the realm still hears from him: tell him I held.\n\nEchna knelt and said the word into his ear, the old word that ends a watch in the hill country, which her own father had used to stand the ferrymen down at night. She told the bards afterwards that his face changed when she said it. She would not say how.\n\nIt did not last. He was standing on his floor again before the next season, facing outward, because the bargain of the fourth night is kept to the letter and the word was never part of it. But the custom stayed. The word is said over him each time he falls, the champions of Ardee learn it as children, and nobody from Ardee has ever been heard to turn their back in the water."
+    },
+    {
+      "title": "What the Champion Wants",
+      "text": "He wants to be relieved. That is all the keeners' daughters will say of him, and they say it with less pity than they spend on the Ladies, because the Ladies chose and he did not. He is the only one of the household who never looked back. He was facing the other way.\n\nThe druids of Tir na Nog, who think of Marfach always as the Summoners' road, say he is the most useful door-ward the hall below could have and the least obliged to it. He keeps the floor before his lord's hall for his lord's sake, and the road happens to pass his floor. A servant can be bought off or frightened; a man holding a ford for a dead foster-brother can be neither. The druids of Lough Gur say only that the Summoners did not make him, and could not unmake him if they tried.\n\nThe old soldiers of the Breifine keeps have the darker account, as they have of the chieftain. If Caimheul ever comes up the road to take back his heights, they say, Avartack will come first, as he always did, and stand in the first ford he finds, and nothing of any realm will cross it until his lord says so. The ferrymen of the Erne do not say this. They say something stranger: that on nights when the keen under Breifine is loud, a man can be seen standing in the shallows of the old ford with the river at his waist, facing the far bank, and that he is gone before the light.\n\nThe ferrymen keep a custom for him all the same. The last ferryman to cross at night on the Breifine side of the Erne calls the old word back over the water before he ties up, the word that ends a watch. They say it costs nothing and might be heard. When word comes over the hills that Avartack has fallen again, the ferrymen do not light candles, as the old families do for the Ladies. They clear the crossing-stone at the ford of the Erne of weed and leave it clear for a month, so that if a tired man comes home that way he will find his footing."
+    }
+  ]
+}

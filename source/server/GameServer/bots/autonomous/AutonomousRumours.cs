@@ -16,7 +16,9 @@ namespace DOL.GS;
 /// <item>A rare named monster (a capitalised name and a respawn of 20 minutes or more, level 20+) that just respawned in a
 /// realm's lands, when a player of that realm is online at a level to care: "heard {target} is up again in {place}". Said
 /// one to four minutes after the spawn, and only if the monster is still alive then.</item>
-/// <item>An enemy frontier keep whose guards are mostly dead (under 30% alive): "scout says {keep} is wide open".</item>
+/// <item>An enemy frontier keep whose guards are mostly dead (under 30% alive): "free rps at {keep}. guards are down". Never a
+/// portal keep, one under siege, one that changed hands in the last half hour, or one with its owners near (chat audit
+/// 2026-11-18: all three keep rumours of a night came within minutes of a capture, while the army was still inside).</item>
 /// </list>
 /// Each realm hears at most one rumour every 20 minutes, a monster at most every six hours, a keep at most every two.
 /// </summary>
@@ -65,6 +67,30 @@ public static class AutonomousRumours
     /// <summary>A keep is thin when it has at least four guards and under 30% of them are alive. Pure.</summary>
     public static bool IsThin(int guards, int alive) => guards >= MinimumGuards && alive < guards * ThinGuardShare;
 
+    /// <summary>How long after a keep changes hands no thin-keep rumour is told about it.</summary>
+    public static readonly TimeSpan CaptureRest = TimeSpan.FromMinutes(30);
+
+    /// <summary>The range in which a living player or gamebot of the keep's owner means it is not left empty.</summary>
+    public const int OwnersNearRadius = 3_000;
+
+    /// <summary>
+    /// Whether a thin keep may be called open: not a portal keep, no siege on it, not taken in the last
+    /// <see cref="CaptureRest"/> (<paramref name="sinceCapture"/> null when it has not changed hands lately), and none of its
+    /// owners near. Pure.
+    /// </summary>
+    public static bool MayCallOpen(bool portalKeep, bool underSiege, TimeSpan? sinceCapture, int ownersNear) =>
+        !portalKeep && !underSiege && (sinceCapture == null || sinceCapture.Value >= CaptureRest) && ownersNear == 0;
+
+    /// <summary>A rumour's names as chat wrote them: the keep and the zone short ("hlid", "jamtland mountains"), the monster as it is. Pure but for the draw.</summary>
+    public static Dictionary<string, string> ChatSlots(Dictionary<string, string> slots, Random random)
+    {
+        if (slots.TryGetValue("keep", out string keep))
+            slots["keep"] = AutonomousChatFieldTalk.ShortKeep(keep, random);
+        if (slots.TryGetValue("place", out string place))
+            slots["place"] = AutonomousChatFieldTalk.ShortZone(place, random);
+        return slots;
+    }
+
     #endregion
 
     private static bool RealmMayHear(eRealm realm, long now) =>
@@ -103,7 +129,7 @@ public static class AutonomousRumours
                 if (!monster.IsAlive || monster.ObjectState != GameObject.eObjectState.Active || monster.SpawnTick != spawned ||
                     !RealmMayHear(realm, now) || !AboutIsFresh(key, NamedRest, now))
                     return 0;
-                var slots = new Dictionary<string, string> { ["target"] = monster.Name, ["place"] = zone.Description };
+                var slots = ChatSlots(new Dictionary<string, string> { ["target"] = monster.Name, ["place"] = zone.Description }, Random.Shared);
                 Tell(realm, "named_up", slots, now, key, $"RUMOUR_NAMED realm={GlobalConstants.RealmToName(realm)} target=\"{monster.Name}\" zone=\"{zone.Description}\"",
                     () => monster.IsAlive && monster.ObjectState == GameObject.eObjectState.Active && monster.SpawnTick == spawned);
                 return 0;
@@ -133,7 +159,7 @@ public static class AutonomousRumours
             about = "no rare named monster is up in this region";
             return false;
         }
-        var slots = new Dictionary<string, string> { ["target"] = named.Name, ["place"] = named.CurrentZone.Description };
+        var slots = ChatSlots(new Dictionary<string, string> { ["target"] = named.Name, ["place"] = named.CurrentZone.Description }, Random.Shared);
         LastRumourAt.TryRemove(player.Realm, out _);
         Due.TryRemove(player.Realm, out _);
         about = $"{named.Name} (level {named.Level}) in {named.CurrentZone.Description}";
@@ -181,7 +207,7 @@ public static class AutonomousRumours
         AbstractGameKeep[] keeps;
         try
         {
-            keeps = GameServer.KeepManager.GetFrontierKeeps().Where(keep => keep is not GameKeepTower && keep.Realm != eRealm.None).ToArray();
+            keeps = GameServer.KeepManager.GetFrontierKeeps().Where(keep => keep is not GameKeepTower && !keep.IsPortalKeep && keep.Realm != eRealm.None).ToArray();
         }
         catch (Exception exception)
         {
@@ -202,20 +228,38 @@ public static class AutonomousRumours
                 if (guards.Length >= MinimumGuards && alive < guards.Length * 0.6)
                     Log.Debug($"RUMOUR_KEEP_CHECK hearer={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" guards={alive}/{guards.Length}");
                 string key = $"keep:{keep.KeepID}";
-                if (!IsThin(guards.Length, alive) || !AboutIsFresh(key, KeepRest, now))
+                if (!IsThin(guards.Length, alive) || !AboutIsFresh(key, KeepRest, now) || !Open(keep, now))
                     continue;
-                var slots = new Dictionary<string, string>
+                var slots = ChatSlots(new Dictionary<string, string>
                 {
                     ["keep"] = keep.Name,
                     ["place"] = keep.CurrentZone?.Description ?? "the frontier",
                     ["enemy"] = AutonomousLivingServer.RealmPlural(keep.Realm),
-                };
+                }, Random.Shared);
                 AbstractGameKeep thin = keep;
+                eRealm owner = keep.Realm;
                 Tell(realm, "keep_thin", slots, now, key, $"RUMOUR_KEEP realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" guards={alive}/{guards.Length}",
-                    () => thin.Realm != realm);
+                    () => thin.Realm != realm && thin.Realm == owner && Open(thin, GameLoop.GameLoopTime));
                 break;
             }
         }
+    }
+
+    /// <summary>The live facts <see cref="MayCallOpen"/> reads for a keep: a siege on it, a recent capture, its owners near.</summary>
+    private static bool Open(AbstractGameKeep keep, long nowTick)
+    {
+        bool sieged = AutonomousRvrEventLayer.ActiveSieges(nowTick).Any(siege =>
+            string.Equals(siege.KeepName, keep.Name, StringComparison.OrdinalIgnoreCase));
+        DateTime utc = DateTime.UtcNow;
+        TimeSpan? sinceCapture = AutonomousChatNews.Board.Snapshot()
+            .Where(item => item.Topic.StartsWith("keep_", StringComparison.Ordinal) &&
+                           string.Equals(item.Keep, keep.Name, StringComparison.OrdinalIgnoreCase))
+            .Select(item => (TimeSpan?)(utc - item.When)).OrderBy(age => age).FirstOrDefault();
+        int ownersNear = WorldMgr.GetPlayersCloseToSpot(keep.Region, keep.X, keep.Y, keep.Z, OwnersNearRadius)
+                             .Count(player => player.Realm == keep.Realm && player.IsAlive) +
+                         WorldMgr.GetNPCsCloseToSpot(keep.Region, keep.X, keep.Y, keep.Z, OwnersNearRadius).OfType<GameBot>()
+                             .Count(bot => bot.Realm == keep.Realm && bot.IsAlive);
+        return MayCallOpen(keep.IsPortalKeep, sieged, sinceCapture, ownersNear);
     }
 
     /// <summary>

@@ -1,0 +1,194 @@
+{
+    "name": "6-mechanics",
+    "note": "Game mechanics as Mythic and the class sites explained them, 2002-2005: the Grab Bag Q&A (every distinct version), documentation (respec costs, spellcraft formula), Team Lead class reports, master levels, realm abilities by patch era, New Frontiers, and Classes of Camelot's attributes, FAQ, class pages and news archive. Every URL form here was seen in the first site map. Each page is saved once (its latest capture in 2002-2005) unless the note says otherwise. Pages other jobs already saved are copied, not fetched.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 780,
+    "targets": [
+        {
+            "url": "www.camelotherald.com/grabbag.php",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Mythic's Grab Bag mechanics Q&A: EVERY distinct version of the page (collapse=digest, pick=first), because each one carried a different column.",
+            "collapse": "digest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 200
+        },
+        {
+            "url": "camelotherald.com/grabbag.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "The Grab Bag's sorted listings (grabbag.php?sortby=..&min=..), seen in the site map: the titles of every column. Latest version of each.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 50
+        },
+        {
+            "url": "camelotherald.com/documentation/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: respec costs, the PvP document, spellcraft and its formula, CS appeals.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "camelotherald.com/teamleads/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: the class Team Lead programme (tl_reports, tl_news): class balance reports of 2003.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "camelotherald.com/masterlevels/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: ToA master level pages (ma.php?ml=Banelord, Battlemaster...).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "camelotherald.com/realmabilities/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: the classic realm ability pages (<class>.html, ra.php?c_id=N, 2002-2003), the latest version per year so each patch era shows.",
+            "collapse": "digest",
+            "pick": "latest-per-year",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 180
+        },
+        {
+            "url": "camelotherald.com/newfrontiers/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: New Frontiers (2003) realm abilities per class, siege, keeps, transportation, geography. Not the screenshots, nor the server statistics.",
+            "collapse": "digest",
+            "pick": "latest",
+            "exclude": [
+                "/newfrontiers/media/",
+                "allserverstats"
+            ],
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 110
+        },
+        {
+            "url": "camelotherald.com/section.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: section.php?id=N, the Herald's article sections (lists of articles by topic).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "camelotherald.com/roundtable/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: the 2002 Round Table fan gathering (schedule, scrapbook). Event logistics pages left out.",
+            "collapse": "digest",
+            "pick": "latest",
+            "exclude": [
+                "registration",
+                "sponsor"
+            ],
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "darkageofcamelot.com/roundtable/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: the 2004 Round Table (agenda, feud, contests). Gallery, travel and registration pages left out.",
+            "collapse": "digest",
+            "pick": "latest",
+            "exclude": [
+                "gallery",
+                "hotel",
+                "restaurant",
+                "roadtrip",
+                "sponsor",
+                "registration",
+                "mapofmgm",
+                "feedback"
+            ],
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "classesofcamelot.com/attributes/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: Classes of Camelot's attribute pages (strength, piety...): what each stat does.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "classesofcamelot.com/faq.asp",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: Classes of Camelot FAQ by category (faq.asp?mode=view&cat=N).",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "classesofcamelot.com/Classes.asp",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: Classes of Camelot class pages (Classes.asp?class=Armsman...), captured up to December 2005.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 50
+        },
+        {
+            "url": "classesofcamelot.com/archives.asp",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: Classes of Camelot news archive by month (archives.asp?date=M-YYYY): class changes as they came.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "classesofcamelot.com/albion/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the map: Classes of Camelot Albion class guides (<class>.asp). 3-builds-specs may already hold some; those are copied, not fetched again.",
+            "collapse": "digest",
+            "pick": "latest",
+            "cdxPageSize": 500,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        }
+    ]
+}

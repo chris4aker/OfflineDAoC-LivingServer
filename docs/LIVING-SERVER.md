@@ -4,8 +4,9 @@ Part of the Living Server fork. The goal (Chris, 2026-10-16): make the autonomou
 like players on a 2003 server, through continuity and consequence more than through more chat.
 
 **Status:** released in 0.36-se.1. Automated tests pass (see "Tests" below). **Partly checked in
-game** (2026-10-17, see "In-game check" below). Every part starts **off**. With everything off, the
-only changes left are the always-on ones listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
+game** (2026-10-17, see "In-game check" below). Every part started **off** until 1.2; since 1.2 every part is **on** by
+default (see "Switches" below). With everything off (**ALL OFF** in the launcher's Living Server tab), the only changes
+left are the always-on ones listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 The server life parts change only autonomous gamebots; your `/spawn` companions and real players
 are not affected by them. (One always-on fix does reach companions: a dead bot's corpse now stays
@@ -24,13 +25,13 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 |---|---|---|
 | Bots remember you | `bot_living_memory` | True (since Beta 1.1) |
 | Grats | `bot_living_grats` | True (since Beta 1.1) |
-| Server firsts | `bot_living_firsts` | False |
-| Rezzes and corpse runs | `bot_living_death` | False |
-| Frontier alarms | `bot_living_alarms` | False |
-| Nemeses | `bot_living_nemesis` | False |
-| Bot schedule | `bot_schedule_mode` | `off` (also `session`, `clock`) |
-| Breaks and linkdeads | `bot_living_breaks` | False |
-| Body language | `bot_living_body_language` | False |
+| Server firsts | `bot_living_firsts` | True (since 1.2) |
+| Rezzes and corpse runs | `bot_living_death` | True (since 1.2) |
+| Frontier alarms | `bot_living_alarms` | True (since 1.2) |
+| Nemeses | `bot_living_nemesis` | True (since 1.2) |
+| Bot schedule | `bot_schedule_mode` | `clock` since 1.2 (also `off`, `session`) |
+| Breaks and linkdeads | `bot_living_breaks` | True (since 1.2) |
+| Body language | `bot_living_body_language` | True (since 1.2) |
 | Beggars | `bot_living_beggars` | True |
 | Deeds and reputation | `bot_living_deeds` | True |
 | Storylines | `bot_living_storylines` | True |
@@ -39,8 +40,70 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Holiday chatter | `bot_living_holidays` | True (Beta 1.1) |
 | Leeroy in raids | `bot_living_leeroy` | True (Beta 1.1) |
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
+| Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 = the game's prices (1.2; server keys only, not in the launcher tab yet) |
+| Personal milestones (Bots as people) | `bot_living_milestones` | True (1.2; card **BOTS AS PEOPLE**; see below) |
 
-**ALL OFF** in the tab switches every part off, along with the other Living Server features.
+Every part is on by default since 1.2 (owner 2026-11-16: "all our living server features should be in by default if
+someone downloads our installer"). A world from an earlier build moves once, only where a row still holds the old
+default the server wrote; a value set in the tab is kept. **ALL OFF** in the tab switches every part off, along with
+the other Living Server features.
+
+### Bots as people (1.2)
+
+[BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md): skill that varies and improves, knowing only what a player would know,
+movement that doesn't look scripted, and personal milestones. The launcher's card **BOTS AS PEOPLE** has the four master
+switches; the others are server keys (category `bots`). **All twelve are on by default** and new in 1.2 (no row in an
+older world, so no upgrade line). A master switch turned off turns its sub-switches off with it. **ALL OFF** is the classic
+server: it turns the four masters off with the rest, and `raid_learns_from_raiders` too (it has no master and no
+checkbox; turning "Skill that grows" back on in the tab turns it back on). Work packages 1 to 6 and 2R are built.
+**Everything here is tests only** until it is seen in the
+owner's PC log ([PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md), "Bots as people").
+
+Only autonomous gamebots are touched. Companions (hired ones too), real players, `/spawn` and `/raid` helpers, Epic
+Special Forces and buffbots keep today's rules, and so do realm raids (apart from `raid_learns_from_raiders`), raid
+dungeons, battleground keep assaults, fights at a keep, siege jobs, relic carriers and stable rides. One test,
+`BotPeopleScope`, guards every rule. In a group with a real player, mistakes come at a quarter of the rate; way finding
+and the movement habits don't happen there at all.
+
+**One tier per bot.** Each gamebot is Casual, Average or Veteran (30/50/20, shifted by `rvr_bot_awareness`, the one
+difficulty knob), rolled from its own id. Every package reads that one tier: its skill profile's tier, which can grow by
+one tier with play, or the same start roll when `bot_skill_profiles` is off. In an RvR group the group's tier counts
+(owner decision 5); a member's own facets only move its delays inside the group tier's band.
+
+| Switch | Key | What it does (default True) |
+|---|---|---|
+| Skill profiles (master) | `bot_skill_profiles` | Each bot gets its tier and six facets (reactions, positioning, pulls, standing in fire, buffs, power) and makes the mistakes its tier gives it: a pulled add in 10/5/1.5% of party pulls (Casual/Average/Veteran), a buff left off in 25/12/4% of expiries, its dearest nuke in 30/15/5% of casts, resting at 25/35/45% power, a circle step into a monster's face in 12/6/2%, reactions x1.3/1.0/0.75. Caps: never a named, never a monster more than 2 levels above, never in a dungeon for pulls and buffs. In open-field RvR a backline member steps out of an area effect after 2-5/1-3/0.5-1.5 s, and a member follows its group's call after a delay in the group tier's band, moved by its reactions (a group of grown bots follows sooner, never outside the band) |
+| Skill grows with play | `bot_skill_growth` | Fights won (the bot or a gamebot groupmate within 3,000), deaths, pulls, buffs and rests add experience; about 40 hours of fighting moves a bot from one band's bottom to the next. One tier at most, and it never falls (lowering `rvr_bot_awareness` can pull a grown bot down, owner 2026-11-17) |
+| Fewer mistakes in your group | `bot_skill_spare_player_group` | In a group with a real player, mistakes come at a quarter of the rate and the rest floor moves most of the way back to today's 45%. Delays are not shortened |
+| Raids learn from their raiders (no master; off with ALL OFF) | `raid_learns_from_raiders` | Xanxicar's stomp only: the raid's familiarity comes from the raiders who have seen it (full from 60% of them, a quarter with none), so a newcomer lapses more than the veteran beside him. An upgraded world is seeded once so its average stays its record's. Off: the record's familiarity, exactly as before |
+| Place knowledge (master) | `bot_place_knowledge` | Each bot knows its capital, a home town, its realm's zones below its level and, from level 20, its border keep; never a dungeon, a frontier zone or another realm's place at the start. It learns a place when it arrives. Routes and camp choice are unchanged |
+| Asking the way, tagging along | `bot_ask_the_way` | Going somewhere it doesn't know, a bot may ask in /say or /faction (one /faction ask per realm per 10 minutes, inside the chat budgets); only bots that know the place answer, and the asker then half knows it. Or it follows a realm-mate within 2 levels going there, until the zone line, and stops at any threat |
+| Wrong roads | `bot_wrong_roads` | Sometimes (15/8/2% of unknown trips) a bot walks 600-1,500 units along another proven walking leg, looks around and walks back: at most 3 minutes, once a trip, never in a frontier, a dungeon, a group or below 80% health, and never toward a yellow or worse |
+| Movement habits (master) | `bot_movement_habits` | Overshoot at town spots (25/15/8%: 30-60 units past, then a step back), and the bank crowd |
+| Circle-strafing in RvR | `bot_move_strafe` | Melee bots circle-strafe their target (20/50/85% of fights, never into its front); casters and healers face a melee enemy and back off, healers along their usual kite (also needs `rvr_bot_field_tactics`) |
+| /stick lines | `bot_move_stick_line` | A travelling bot group follows in a line at 80-200 units, with now and then a lost stick for 3-10 s |
+| Sitting, and keep walls | `bot_move_sit_and_walls` | After 30-50 s of waiting, most waits sit (wait sites, rendezvous, the bank). At a keep the realm holds, with no siege and no enemy noticed, formation members sit on the guard archers' floors and stand within 1 s when an enemy comes within 2,500 |
+| Personal milestones (master) | `bot_living_milestones` | One goal at a time, from the bot's real numbers: the ding to 50 from level 45; at 50 realm rank 5 (an RvR leaning: Daredevils, No Lifers, Risk 7+) or a dragon trophy (a raid leaning: Socialites, No Lifers, some Explorers, Daredevils and Levelers), an item the bot really received from the loot of a dragon, an epic boss or a raid's final boss, never a boss's add. A raid drop is remembered whatever the bot is chasing, so none ever says it won nothing after winning. No epic armour (owner decision 2). At about 50% and 90% of the way (the trophy: the 2nd and 5th big kill without a drop) a bot may say so (35-80% by chattiness), in its group with you, /say near you, its guild or /faction: at most one milestone line a realm in /faction every 5 minutes and one a minute elsewhere, under the channel's ceiling. Fighting when its line is due, it tries again after 15-30 s (at most 8 times); nobody hearing, it waits 10 minutes. Realm rank 5 and a trophy are told in /faction and the realm cheers (1-3 reactions), one moment a kill; the ding to 50 keeps its own ding line, story and grats. The Herald lists the last 40 under **Milestones of the Realms**. The small push: within 2 levels of 50, 40-60% of the town breaks; past halfway to realm rank 5, x1.5 (x2 past 90%) the wish for an RvR slot, inside the realm's exact goal mix |
+
+**Log tags** (each event line is rate-limited; the summaries come every 5 minutes, one `BOT_PEOPLE_SUMMARY` line with the
+switches, the rows saved and the scope's answers, then one line per package):
+
+| Package | Per event | Every 5 minutes |
+|---|---|---|
+| All | | `BOT_PEOPLE_SUMMARY` |
+| 1 Skill profiles | `BOT_SKILL_PROFILE` (at login), `BOT_SKILL_GROWTH` (a tier gained) | `BOT_SKILL_BUDGET` |
+| 2 Skill in the hands | `BOT_SKILL_MISTAKE kind= spared=` | `BOT_SKILL_MISTAKES` (`rate_out=`, `rate_in=`) |
+| 2R Raid learning | `RAID_LEARN raid= mechanic= record= seenShare= familiarity=`, `RAID_MECHANIC_SEEN how=raid\|seeded` | |
+| 3 Place knowledge | `BOT_PLACE_LEARNED how=seeded\|visited\|told` | `BOT_PLACE_BUDGET` |
+| 4 Way finding | `BOT_WAY_ASK`, `BOT_WAY_TOLD`, `BOT_WAY_FOLLOW`, `BOT_WAY_WRONG_ROAD cost_s=` | `BOT_WAY_SUMMARY` |
+| 5 Movement habits | `BOT_MOVE_STRAFE kind=circle\|face`, `BOT_MOVE_STICK_LOST`, `BOT_MOVE_OVERSHOOT`, `BOT_MOVE_SIT`, `BOT_MOVE_WALL` | `BOT_MOVE_HABITS` |
+| 6 Milestones | `BOT_MILESTONE_ARC state=active\|dropped`, `BOT_MILESTONE_PROGRESS point= talk=yes\|no\|later reason=in_combat\|nobody_hears\|channel_gap`, `BOT_MILESTONE_TALK channel= bubbles= left_k= count= line=`, `BOT_MILESTONE_REACHED arc= trophy= source= sought= announce=` | `BOT_MILESTONE_SUMMARY` |
+
+AI_PROFILE times the packages as `people.skill`, `people.places`, `people.way_finding`, `people.movement` and
+`people.milestones`. GM checks: `/lstest skill`, `/lstest lost`, `/lstest ask`,
+`/lstest wall`, `/lstest milestone` (the target's passed talk point is said now; never one its numbers have not reached); every player: `/lswhy skill [name]`, `/lswhy way [name]`. The saved tables (`offline_bot_skill`,
+`offline_bot_places`, `offline_bot_milestones`, `offline_bot_mechanics_seen`) are saved progress: a release ships them
+empty.
 
 ## What each part does
 
@@ -145,15 +208,15 @@ Each character gets at most one grats chain every 20 seconds. This is separate f
   with this switch on, one-kill rows older than a week are forgotten at server start.
 
 ### Bot schedule (`bot_schedule_mode`)
-- `off` (default): every bot stays online, as before.
+- `off`: every bot stays online (the default before 1.2).
 - `session`: each bot plays sessions of 1–4 hours, with 20 minutes to 2 hours away. Timing is
   counted from server start. About two-thirds of the roster is online at any time.
-  - No-lifers play longer and are away less; Socialites play a little longer.
-- `clock`: follows your PC's clock like a 2002 North American server.
+  - No Lifers play longer and are away less; Socialites play a little longer.
+- `clock` (the default since 1.2): follows your PC's clock like a 2002 North American server.
   - About 95% of the roster is online from 8 to 10 p.m.
   - About 20% at 4–5 a.m.
   - Weekends (from Friday 6 p.m.) are busier in the daytime.
-  - The same bots stay on as the evening fills up; no-lifers stay up late.
+  - The same bots stay on as the evening fills up; No Lifers stay up late.
 
 **How logging out works:**
 - Only bots that can leave without breaking anything log out: ungrouped, alive, out of combat, not
@@ -230,11 +293,30 @@ companion bots and real players are not.
   then when a new party has an old friend in it (40%), and grumbles about a no-show (50%). One line per topic per realm
   every 10 minutes, with up to two reactions. Logs `BOND_TALK`. The Herald doesn't show bonds yet.
 
+### Bots dress up (`bot_cosmetics`)
+Gamebots spend their coin on how they look, not only on gear. Each bot has its own style, the same every time you
+see it: about a fifth never bother, most dye what they wear in one colour, some wear two colours and colour their weapon
+with a weapon luster, and a few show-offs do every weapon. Their colours lean on their realm's
+(Albion reds and blues, Midgard blues and greys, Hibernia greens and purples), and guild members often wear their
+guild's colour.
+
+They buy at a merchant during the town visit they already make between tasks, after selling and buying upgrades,
+and only from coin above what they keep for gear and repairs. They buy the game's own dyes at the game's own prices:
+cloth dye, leather dye or enamel to fit the piece, from 50 copper for a light shade to over 16 gold for royal and black
+ones, and about 196 gold for a weapon luster. Tidy bots take the cheap shades, show-offs the dear ones. Bots buy no
+weapon glows: as in 1.65, a glowing weapon comes from an epic boss, a dragon or a Darkness Falls seal merchant, so a
+bot with one earned it. The Effect Master in the capital is still there for you. New gear comes in its plain colour, so
+they pay to dye it again. Guild emblems on cloaks and shields stay. `bot_cosmetics_price_percent` scales the prices.
+Your own gear and your companions are never touched.
+
 ### Deeds, storylines, spammers, roleplayers and rumours
 - **Deeds and reputation** (`bot_living_deeds`): bots that see you solo a named monster, go on a kill streak, get zerged
   or die to something silly tell /faction and others react. It builds a reputation the realm brings up, and a nickname.
-- **Storylines** (`bot_living_storylines`): pairs of bots live out four-episode dramas in /faction over days (a kill steal,
-  a guild split, a romance, a ninja-loot trial). Name one of them during an episode to take a side; the ending follows you.
+- **Storylines** (`bot_living_storylines`): pairs of bots live out four-episode dramas in /faction, episodes hours apart
+  (a kill steal, a guild split, a romance, a ninja-loot trial, a crafters' price war, and from 1.2 ten more: a mentor and
+  the apprentice who outgrows them, a race for a ganker's bounty, a bard's song about a drowning, a sold masterpiece, a
+  mistell, a buffbot rumour, a keep-defense grudge, an unpaid loan, a "gimped" class, a camp feud that ends in
+  friendship). Name one of them during an episode to take a side; the ending follows you.
 - **Spammers and roleplayers** (`bot_living_characters`): a gold spammer floods /faction now and then until it is
   banned; a few bots always speak in thee and thou and get mocked for it.
 - **True rumours** (`bot_living_rumours`): a rare named monster that just spawned, or an enemy keep with its guards down.
@@ -269,7 +351,7 @@ final encounter, once a quarter of the raid is there but not all of it (half, at
 there; a few raiders react in /say ("oh my god he just ran in", "stick to the plan!!") and one tells /faction. The
 raid's own rules take it from there: a wipe still regroups and tries again. After the raid a raider tells /faction how
 it went ("thanks a lot ..." or "cant believe that worked"). He is a damage dealer, never a healer or support class, and
-usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
+usually a Daredevil or No Lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
 `REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
 
 ### Raid wipes and the Epic Special Forces (always on)
@@ -304,6 +386,221 @@ New bots are named the way a 2003 server's players named themselves:
 - **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
 - **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
+### Era builds (`bot_era_class_shares`, `bot_era_builds`, `bot_era_offmeta_percent`, `rvr_roster_build_roles`)
+
+Added for 1.2 (owner Chris, 2026-11-17; design and review in [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md)). **Tests only**:
+nothing here has been seen on the owner's PC yet. New gamebots are built the way players built their characters in
+2002-2003 (patch 1.65):
+- **The class mix** (`bot_era_class_shares`, on): the launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50` batches draw each
+  bot's class from its realm's 2003 share (Cleric 12% of Albion, Healer 15% of Midgard, Druid 12% of Hibernia, Reaver
+  3%), not evenly.
+- **A build for life** (`bot_era_builds`, on): at its first load a new gamebot draws one of its class's period builds by
+  weight (a Mind/Body Sorcerer more often than a Matter one), seeded by its roster id, moves up to 2 points between its
+  lower lines, and keeps that build for life, as it kept today's. A `+ Lv.20` or `+ Lv.50` bot arrives trained in it; a
+  `+ Lv.1` bot trains it level by level at its trainer. Its weapons and its starter gear follow the build's weapon lines.
+- **The odd spec** (`bot_era_offmeta_percent`, 10): one new gamebot in ten takes one of today's class-file builds
+  instead. 0: era builds only. Which bots do is fixed by their roster ids.
+- **Crowd control in RvR** (`rvr_roster_build_roles`, on): when a role-built eight fills its crowd-control slot, it first
+  takes a member or bot with a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard), then the
+  classes as before. Bots without an era build rank as before.
+- **Who keeps what:** a gamebot that already has a saved build keeps its class and build; nothing is re-drawn and no
+  point is ever untrained. One from before lifetime builds that already trained lines takes the era build of its two
+  highest lines, or today's build if none matches. Your `/spawn`, `/raid` and `/bot` companions, hired companions, Epic
+  Special Forces and No Lifers' buffbots keep today's builds. Bots never play the custom class (the Sluaghbinder), in
+  either edition.
+- **Level 41-50 points:** since 1.2 a gamebot that trains every level gets the half-level spec points above 40 that a
+  player gets at each "x.5", so it reaches 50 with the same points as a `+ Lv.50` bot. Points it missed before 1.2 are
+  given back at load since the owner's 2026-11-17 19:43 decision (below); its trained levels never go down.
+- **Every bot has a player's points** (owner, 2026-11-17: "companions and bots should be the same as a player"). A hired
+  companion's spec window counts its points as yours are counted: every level, every half level above 40 it has
+  passed, and the current one once its bar reaches the half, less what its lines cost you. A companion saved before
+  1.2 keeps every trained line and gets its missing half-level points to spend (up to 220/330/445 at level 50 for
+  x1.0/x1.5/x2.0 classes); its free respec gives back the same total. `/spawn` helpers promoted from 49 to 50 now get
+  the 49.5 points too. A gamebot gets each "x.5" point with its next level's training, so it matches a player at every
+  whole level. Tests only until seen on the owner's PC.
+- **Autotrain, as yours.** Eleven classes have autotrain lines (Armsman and Mercenary: Slash, Thrust; Paladin: Slash,
+  Chants; Reaver: Slash, Flexible; Scout: Longbows; Minstrel: Instruments; Warrior: Sword, Axe, Hammer; Infiltrator,
+  Shadowblade and Nightshade: Stealth; Ranger: Recurve Bow; this server's Hunter has none). You pay nothing for those
+  lines up to a quarter of your level, whenever you train them: 77 points a line at 50. Every bot now pays the same.
+  - This server's rule is the later "autotrain refund" one (its code names patch 1.87): nothing rises by itself and
+    training a line early loses nothing. **In 1.65 it was stricter** (Wayback scrape of 2026-11-13: Classes of Camelot's
+    FAQ "Training", its autotrain section written 2002-09-30 and corrected that October, captured 2005-03-06; the
+    Herald's "Classes and Races: Autotraining" table, captured 2005-02-09): the trainer raised an autotrain line for free only while it was below a quarter of the
+    level ("will not auto-train a skill unless the skill is less than 25% of your level"), and "if you did not autotrain
+    from the get go, you will not get the benefit of autotrain points". So a 1.65 player got the 77 points only for a
+    line left untrained to level 48, and none for a line trained from level 5; here every player and bot gets them. The
+    scrape has no patch note for when autotrain arrived; its earliest mention is a site news item of September 2002.
+  - The same sources list the period's autotrain lines: this server's, except that Classes of Camelot's Ranger page
+    (captured 2005-12-25) lists none (the server's Ranger has Recurve Bow, 77 points). The Hunter had none then and
+    has none here.
+  - A hired companion's free levels show "next: 0 points"; one saved before gets the points back to spend (77 a line at
+    50), and its respec leaves autotrain lines at a quarter of its level, as yours does.
+  - Era builds are **fully trained** on the **modern 1.65 templates** (owner, 2026-11-17 18:59 and 19:43): the Uthgard
+    1.65 freeshard's templates and period guides reposted there, tuned back to 1.65, wherever the research is
+    confident; the dated 2002-2003 posts elsewhere. Each build cites its source; 113 builds, the Necromancer's 3 not
+    sourced. Every autotrain line is at its free 12. What is left (0-29 points) buys no further level. The list:
+    [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+  - A levelling era bot trains toward its build at every trainer visit and keeps no points its build can take;
+    the per-bot variation (2 points) keeps the build fully trained; `ERA_BUILD_TRAINED` ends with `unspent=`.
+  - **Existing gamebots** are counted as a player at load (owner 2026-11-17 19:43): a bot saved with fewer points
+    than a player of its level and lines (the autotrain refund, half levels it never had) gets the difference,
+    `AUTONOMOUS_SPEC_REFUND` in the log; a bot at the level it trained at spends them at once. No line is lowered. This
+    replaces #326's "points missed before 1.2 are not given back".
+  - An era bot made by an earlier 1.2 test build keeps the plan it saved.
+  - Tests only until seen on the owner's PC.
+- **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so
+  for each share and weight, and a later data update can re-weight them.
+- **Log:** `ERA_BUILDS_LOADED` at start; `ERA_BUILD_ASSIGNED` when a bot's plan is first saved (`draw=era`, `offmeta`,
+  `nearest` or `legacy`, with the jitter); `ERA_BUILD_TRAINED` once when an era-built bot first stands trained at 50
+  (`match=yes`, or `match=no short=...`); `ERA_BUILD_CENSUS` once per start and realm: the bots by plan (`era`, `kept`,
+  `new` = not loaded yet) and by class against the target share (`Healer=139(15.4%/15%)`; Hibernia always lists
+  `Sluaghbinder`), then the same by class over the era-built bots only (`eraClasses="Healer=12(16.0%/15%),..."`). `RVR_PARTY_FORMED` names the crowd controller's build role (`cc=Healer(healer-cc)`). None of these
+  is behind a diagnostics switch; ASSIGNED and TRAINED are at most one line per bot for life.
+- **Switches:** `bot_era_class_shares` and `bot_era_builds` are in the launcher's Living Server tab (economy card,
+  "2003 class mix" and "2003 builds"); the other two are server keys only (category `bots`). **ALL OFF** switches the
+  two tab switches off with the other Living Server features: new bots then come evenly and with today's builds, and
+  bots that already have a build keep it.
+
+### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_bot_perception_bots`, `rvr_bot_group_lookers`, `rvr_group_pet_cap`)
+
+Added for 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gamebots in the frontier saw you from
+5,000 units, instantly and all at once, whenever you were in their line of sight. Now they notice you the way players
+did in 2003. The observer cap, the calibration, duty and the pet caps follow the North Star audit of 2026-11-03
+(challenge 2 and priority 7; `docs/audits/2026-11-03/technical.md` §8.2 on the audit branch). The design notes are in
+[BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md) (from the `plan/rvr-builds` branch, PR #52).
+
+- **Who it changes:** autonomous gamebots in the frontier, the battlegrounds and Darkness Falls, when they pick an enemy
+  player, a player's companion or a player's pet. Since 1.2 work package 1 (`rvr_bot_perception_bots`, below) enemy
+  gamebots and their pets are noticed the same way. Siege engines, keep guards, doors and monsters are acquired as
+  before, and so are the targets of bots at a keep they hold or besiege. A bot that is hit, or whose realm-mates near
+  it or group are attacked, fights back at once (`bot_incoming_fire_reaction` handles that delay). Your own companions
+  and the gamebots in your group never scan for enemies this way and never hear these calls.
+- **At a keep means near it (1.2):** a bot counts as at its keep only within 9,500 units of it (the ring the siege
+  camps stand in, which the siege code already counts as "there"), or while it works a siege engine. Until 1.2 a whole
+  army counted as at the keep from the moment its warband chose to attack or defend it, so a column on the road saw
+  everything at once. Now a marching column, attackers and defenders alike, notices like everyone else until it is
+  9,500 units from the keep. In the lane survey's 165 main routes that is most of each march (about 85% of the
+  distance; 70% for the short keep-to-keep hops).
+- **Noticing:** within 1,000 units a bot always notices you; beyond 3,500 it never notices on its own. In between it
+  is a chance on each scan, set so that one bot looking on its own needs this long (the median) for a plain sighting
+  (you alone, moving, not fighting or casting, not in front of it):
+
+  | Distance | easy | normal | veteran |
+  |---|---|---|---|
+  | 1,500 | 3 s | 1.5 s | 0.75 s |
+  | 2,500 | 12 s | 6 s | 3 s |
+  | 3,400 | never | 20 s | 10 s |
+
+  The normal column is the audit's target. Between the rows the time grows evenly on a log scale. The chance per scan
+  is worked out from the real time since the bot's last scan, so the times hold if bots scan more slowly under load.
+  Fighting halves the time, casting and a group of 3 or more divide it by 1.5, being in the bot's 120° view by 1.75,
+  and standing still out of combat doubles it. Line of sight and stealth still apply first.
+- **The observer cap:** at most 3 bots of a realm (easy 2, veteran 5) look for the same enemy group in each second
+  (until 1.2: the same enemy). The others don't roll at all: they learn of you only from a call. Bots within 1,000 units
+  don't need a slot. A bot looks at a group once per scan, for the member it is most likely to notice, and noticing
+  one member notices that member's group mates within 1,500 units of it; a mate who walks up later, near one already
+  noticed, is noticed then. In the audit's spread-out crowd (50 bots in groups of 8 between 1,000 and 3,500 units)
+  about a third have engaged after 5 s and three fifths after
+  10 s (two lookers per group: 33% and 59%; every bot looking, as before 1.2: 35% and 62%), against 90% after 5 s
+  without the cap; someone still notices you within 5 s 96% of the time (94% before).
+- **Lookers (`rvr_bot_group_lookers`, 1.2):** away from keeps, two members of each gamebot group look for enemies,
+  you included, and the pair changes every 10 seconds; a soloer or a pair looks for itself. The others run no scan
+  until something wakes them: a mate calls an enemy, a group mate is fighting, or the group's plan has a target. The
+  table above is one bot looking on its own, so it holds for each looker and each soloer; a group of 8 now first
+  notices you in about half the table's time (two lookers), where
+  every member looking under the cap took about a quarter (normal: 0.8 s at 1,500, 2.9 s at 2,500 and 10.3 s at 3,400,
+  against 0.2, 1.4 and 5.5 s).
+- **How far (1.2):** away from keeps a bot looks only as far as it could notice anyone: 3,500 units on normal (easy
+  2,600, veteran 4,500), not 5,000. That is about half the area. Bots at a keep, raids and battleground assaults still
+  look 5,000.
+- **Stealth (1.2, part of `rvr_bot_perception_bots`):** until 1.2 a bot never saw a stealthed enemy until it struck.
+  Now a bot may notice one, player or bot, by chance on each scan, never better than a player in its place: only
+  within the range the server gives a player to see that stealther ((level - stealth spec) x 20 + 125, wider with
+  Detect Hidden or See Hidden, never through Vanish), and never beyond 350 units. Within 125 units the chance rises to
+  about 50% a second at point blank (veteran 60%, easy 35%); from 125 it falls to nothing at 350 or at the player's
+  range, whichever is nearer. A bot fighting someone else never notices, line of sight is needed, and its mates are
+  not told (they cannot see it). These numbers are a first cut, not from a source.
+- **Reacting:** a bot that notices you engages 0.5-2 seconds later. Higher level bots and bold personalities
+  (Daredevils, then high Risk) are faster.
+- **Spotters (`rvr_bot_spotters`):** the bot that notices you tells its group mates within 2,500 units, and each of them
+  engages after its own reaction delay. Each other group of its warband (the groups marching to the same keep or
+  relic) hears it relayed half the time, as a whole group, 4 seconds later. With bot voices on and you in that group,
+  it calls it in /group ("inc 3 north"), at most every 12 seconds. Warbands have no chat channel yet, so relayed calls
+  are only in the log.
+- **Duty:** a gamebot told by a call leaves what it is doing only if its duty allows it (`/lswhy duty`): a free bot, a
+  bot marching with an RvR event and a bot in a gamebot group answer; a bot on a realm raid, in a battleground assault
+  or in a player's group does not. It still notices you itself, and fights what it sees.
+- **Difficulty (`rvr_bot_awareness`):** `easy` (always within 700, never beyond 2,500, the easy column, 30% slower
+  reactions, calls heard within 2,000), `normal` or `veteran` (always within 1,300, never beyond 4,500, the veteran
+  column, 30% faster reactions, calls heard within 3,000).
+- **Pet caps (`rvr_group_pet_cap`, 2):** when gamebots form an RvR group (a roaming warband of 2-8 or a siege party),
+  at most 2 pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist,
+  Sluaghbinder) join a group of five or more and 1 a group of four or fewer; the others wait for the next group.
+  Druids and Hunters don't count. Groups you lead or join are never changed. 0 turns the cap off. Which classes
+  gamebots play is unchanged; a cap across a whole warband is not done yet.
+- **Settings:** `rvr_bot_perception` on, `rvr_bot_awareness` normal, `rvr_bot_spotters` on and `rvr_group_pet_cap` 2 by
+  default. With `rvr_bot_perception` off bots see as before. `rvr_bot_perception_bots` and `rvr_bot_group_lookers`
+  are on by default and need `rvr_bot_perception` and the master switch `rvr_bot_field_tactics`; they apply only to
+  gamebots away from keeps and not on a raid, in a battleground assault or in a group with a player. With
+  `rvr_bot_perception_bots` off enemy gamebots are acquired at once again, up to 5,000 units, and stealthers are never
+  seen; with `rvr_bot_group_lookers` off every bot looks.
+- **Log:** `RVR_NOTICE` for each sighting (bot, target, `kind` = Player, PlayerCompanion, PlayerPet, EnemyBot or
+  EnemyBotPet, `party` (solo or the enemy group), `partyNoticed` (members noticed with it), distance, the factors
+  (Party for a mate noticed with another, Stealth for a stealther, with its `stealthLimit`), the chance,
+  `time_since_first_los_ms`, the delay), one line per group noticed, and `RVR_SPOT` for each call (`kind`, `noticed`,
+  `told` in the group, `relayed` to other groups, `held` by their duty, and where it was said). Once a minute
+  `RVR_SCAN_BUDGET` per realm: scans, which bots scanned (lookers, solo, woken, everyone), idle non-lookers, notice
+  rolls, rolls refused by the cap, rays, notices and stealth rolls. The medians in the table can be checked against
+  `time_since_first_los_ms`.
+- **Cost:** the frontier scan still casts at most 8 line-of-sight rays per scan (`VisibilityBudget`), and now casts
+  none at a target a bot couldn't notice on that scan (beyond the outer range, or over the observer cap for a group it
+  is not already watching). In a test with 900 gamebots of one realm around a player, rays at the player fell from 99
+  to 11 a second; with 2,700 bots of three realms in one zone the scan casts about 18,700 rays a second, as before
+  (`UT_RvrPerceptionCalibration`). With 1.2 work package 1, in the scene the RvR design assumed (300 gamebots per
+  realm, 80% in groups of five, nobody fighting, 10 s from a cold start) scans fell from 782 to 754 a second and rays
+  from 6,262 to 5,797 in a 24,000-unit square, and from 782 to 685 scans and 5,875 to 4,054 rays in a 48,000-unit
+  square. That is an upper bound: in the test nobody fights, so the bots woken by a call keep scanning; the design's
+  estimate of about 416 scans and 2,000 rays a second is for a quiet field. Not measured in game.
+- **Owner's decisions (confirmed by the owner, 2026-11-05):** easy is twice the normal times and veteran half; bots
+  within 1,000 units are outside the observer cap; gamebot-group members answer calls; other groups of a warband hear
+  a call half the time, 4 seconds later; the pet-class list above (Druids and Hunters out, the Sluaghbinder in) with a
+  cap of 2; a median of 0.75 s just outside 1,000 units (normal).
+- **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
+  `UT_RvrPetCap`; for 1.2 work package 1 `UT_RvrPerceptionBots`). Noticing was seen on the owner's PC on build
+  `3d67b6f` (2026-11-15: bots noticed the owner's character at 516-1,575 units, by chance and after a delay). The
+  spotter call (`RVR_SPOT`) and the pet cap have not been seen yet. The 1.2 work package 1 parts (enemy gamebots and
+  their groups, lookers, the radius, "at a keep" by position, stealth, `RVR_SCAN_BUDGET`) are tests only: not seen in a
+  log on the owner's PC yet. The design is [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md).
+
+### Playing with friends: bots and companions (`companion_budget_total`, `companion_budget_per_player`)
+
+Added for 1.2 (owner Chris, 2026-11-08: 1-4 friends in your bot world). How bots behave with more than one real player
+online; joining a friend's server is the hosting half. With one player online nothing here changes.
+- **Who a bot follows (`BotHumanBinding`):** a companion (`/spawn`, `/raid`, a saved `/bot` companion) follows its owner,
+  always: no other player's `/pull`, attack, `/bot pilot` or invite takes it. A gamebot invited into a player's group
+  follows the group's leader: `/makeleader` hands the gamebots to the new leader, and when the leader leaves they follow
+  the new leader (another player only when no player leads). A player who leaves a group another player stays in takes
+  their companions along (a `/spawn` companion vanishes, as it does whenever it leaves its group).
+- **`/pull` and attacks:** a player's `/pull` orders their own companions, plus the gamebots when they lead the group.
+  The leader's tank-gated pull holds only the leader's bots; a friend's attack or `/pull` meanwhile sends the friend's own
+  companions in and leaves the leader's tank gate alone. A friend with no companions near is told who the gamebots follow.
+- **Host-PC only:** `/travel` (it holds the run key in the game window) and `/bot pilot` (it reads the quickbars the game
+  saved in `%APPDATA%`) work only for the game on the PC that runs the server. A friend on another PC is told so and
+  nothing starts.
+- **Companion budget:** while more than one player is online, a new companion needs room in the server's total
+  (`companion_budget_total`, 160) and in the player's own share (`companion_budget_per_player`, 79, a full `/raid 80`).
+  0 turns either off. Companions already out stay out; only new ones are refused, with the numbers. Each companion is a
+  bot thinking at the player-led cadence (a `/raid 80` is about 260 decisions a second), so four full raids would cost
+  more than the rest of the world.
+- **Chat:** the bots' reply cooldowns in `/faction` and `/say` are per player, so one player's line no longer stops the
+  bots answering another for 10-12 seconds. The pause in unprompted `/faction` lines after anyone speaks stays realm-wide
+  (everyone of the realm hears that channel).
+- **Quest credit:** a gamebot's kill credits every player of its group within range once, as a player's kill does; when
+  the leader is dead or away, another player of the group in range is credited instead of nobody.
+- **Bot leaders' invites:** each player has at most one invite box waiting, and a gamebot leader whose box waits for one
+  player's answer invites nobody else meanwhile.
+- **Checked:** automated tests only (`UT_PlayWithFriends`). It has not been played with two people yet.
+
 ## New client (0.36c)
 
 Everything here runs in the server and the launcher, so it works the same with the original client and the Godot
@@ -336,8 +633,9 @@ them:
 - `offline_bot_bonds` (2026-10-27)
 
 Writes are batched off the game loop every 5 seconds, under the same database lock as bot status
-saves. The release builder deletes every `bot_living_*` setting and `bot_schedule_mode`, so
-releases ship with everything off.
+saves. Since 1.2 the release builder (`build_release_037.py`) writes every `bot_living_*` setting and `bot_schedule_mode`
+at its release value from `source/tools/release-server-settings.json`, so releases ship with every part on and the
+real-clock schedule (the 0.36 builder deleted them, and releases shipped with everything off).
 
 ## Checking it in game: /lstest (GMs)
 
@@ -357,21 +655,23 @@ through the part's own code, lines and logging, in your realm and around you.
 | `/lstest deed <solo, group, streak, ganked, silly, fell>` | A bot near you tells /faction it saw you do that (your reputation counts don't change) |
 | `/lstest holiday <name, off>` | Bots treat today as that holiday until `off` or a restart |
 | `/lstest leeroy` | The next realm raid has a Leeroy (start one with `/lstest raid dragon`) |
-| `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once |
+| `/lstest leeroy now` | A raid with a Leeroy that is gathering for its final boss charges at once (once, within 10 minutes) |
 | `/lstest raid [dragon] [alb, mid, hib]` | A realm's automatic raid (yours unless named) opens now, sized to its free level 50s and its record (at least 40 before sizing; raids from the launcher need 300) |
 
 ## Why a bot said that: /lswhy (every player)
 
 `/lswhy` shows the last chat decisions of your target, or of the last gamebot that spoke to or near you. Each one gives
-the channel, what set it off, the rule and score it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot,
-`/lswhy last [n]` the realm's last decisions, and `/lswhy budget` how busy each channel around you is against its
-floor, target and ceiling. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
+the channel, its reason code (`exempt-named`, `hold-reply-target`, `below-minimum`...), what set it off, the rule and score
+it used, and why, or why it stayed quiet. `/lswhy <name>` shows one bot, `/lswhy last [n]` the realm's last decisions,
+`/lswhy me` why bots answered your own lines or didn't, `/lswhy held [n]` the replies the reply budget held back, and
+`/lswhy budget` how busy each channel around you is against its floor, target and ceiling, with /faction's and /say's
+replies counted apart. A tell to a bot, or a line naming one, is always answered. How bots decide how much to say: [bot-voices/CHAT-BUDGETS.md](bot-voices/CHAT-BUDGETS.md).
 
 ## Tests
 
 Automated (no running world):
 - **Server, `UT_AutonomousLivingServer`:**
-  - defaults are off;
+  - every part is on by default (since 1.2), and the schedule is clock;
   - schedule parsing, session lengths and online share, and how often a bot's state changes;
   - the clock curve and that clock mode keeps the same bots online;
   - mood rules, alarm head counts, race and realm words, first claims;
@@ -381,7 +681,7 @@ Automated (no running world):
 - **Server, `UT_AutonomousBotVoices`:**
   - every server life kind has lines for every personality;
   - topic filtering;
-  - the six-hour no-repeat window.
+  - the no-repeat window (three days; six hours once a kind of line runs short).
 - **Launcher:**
   - `SocialExpansionSettingsTests`: the new keys and defaults match the server, the schedule mode
     is read like the server reads it, and ALL OFF;

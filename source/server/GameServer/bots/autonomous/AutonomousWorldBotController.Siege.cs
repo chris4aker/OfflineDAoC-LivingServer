@@ -441,8 +441,10 @@ namespace DOL.GS
                 DbInventoryItem item=GameInventoryItem.Create(template);
                 if (item==null) { ReleaseSiegeJob(bot); _siegeNextAttempt=GameLoop.GameLoopTime+60_000; return false; }
                 item.Count=quantity;
-                if (!AutonomousBotEconomy.TrySpend(bot.DatabaseID,price)) return false;
-                if (!bot.Inventory.AddItem(slot,item)) { AutonomousBotEconomy.AddMoney(bot.DatabaseID,price); return false; }
+                // Crafting 2.0 WP7: a siegecrafter gamebot may supply it below the merchant price (bot_siege_supply).
+                if (!BotSiegeRuntime.TryPaySupply(bot,price,DOL.GS.CraftingEconomy.EconomyFlowKind.Siege,out var payment)) return false;
+                if (!bot.Inventory.AddItem(slot,item)) { BotSiegeRuntime.RefundSupply(bot,payment); return false; }
+                price=payment.Paid;
                 AutonomousBotEconomy.MarkInventoryChanged(bot); bot.MarkAutonomousStateDirty(); AutonomousBotStatusPersistence.Queue(bot,true);
                 SiegeLog(bot,"purchase",null,$"item={id} count={quantity} copper={price}");
                 _siegeSupplyItem=null;

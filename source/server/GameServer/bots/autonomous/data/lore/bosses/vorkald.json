@@ -1,0 +1,117 @@
+{
+  "id": "vorkald",
+  "name": "Vorkald",
+  "npcNames": [
+    "Vorkald"
+  ],
+  "locationId": "delling-crater",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "dellingstad"
+  ],
+  "related": [
+    {
+      "id": "old-matriarch",
+      "relation": "the leader of the herd whose whisker comes to his table"
+    },
+    {
+      "id": "weaponmaster-zargin",
+      "relation": "the weaponmaster across the town"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Vorkald is a level-52 man of Dellingstad (the town's kobold-guard and crossbowman model) in the town (364220, 321412), near Brunhil the merchant, Dellingstad citizens and fortifiers.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60167730)"
+    },
+    {
+      "text": "The quest 'Mammoth Hunt' (Bothrar Hadd in Bjarken) sends players to Mammoth Valley for bull and matriarch tusks and pelts; Volkstad in Dellingstad sends them to wipe out the morvalt mammut jagare camp above the valley; a last whisker from a matriarch or bull is returned in Dellingstad, to Vorkald.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    },
+    {
+      "text": "His template puts him in the People of Dellingstad faction and makes him aggressive (200 at range 500): like the rest of the town he is hostile to strangers until their standing is good. When a player, a player's pet or a companion bot attacks it, it can bring nearby people of dellingstad into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "Dellingstad keeps its own accounts with everything around it, Kolfinna the miner wrote, and Vorkald keeps the one with the herd. He has a table in the middle of the town, near Brunhil's stall, and on it a box, and in the box are whiskers: one for every year the town has paid to have the morvalt mammoth-hunters cleared from the heights above Mammoth Valley.\n\nThe account is old. The great herd of Aegir walks the island round, and the crater folk have always taken from it what they needed and no more: a little tusk, a little pelt, and the meat of the old and the lame. When the morvalt came and settled above the valley and began to take more than that, the town's soothsayers said the herd would not stand it, and that if the herd broke, the crater would have no mammoths, and a town that cannot feed itself from its own country is not a town. So Dellingstad began to pay. Bothrar Hadd of Bjarken sends his young men for tusk and pelt; Volkstad of Dellingstad sends them on against the hunters' fires; and when the hunters are cleared, the last thing asked is a whisker of the herd, brought back to Vorkald, who puts it in the box.\n\nThe whisker is not payment, he tells anyone who asks. It is a receipt. The herd has given the town one whisker for one year of peace on the heights, and Vorkald counts them, and the soothsayers read the count. The box is nearly full now. Vorkald says that when it is full the town will make another box, and the soothsayers say nothing, which in Dellingstad is how bad news is told.\n\nHe is a townsman like any other of Dellingstad, wary of strangers until they have proved friends, and the town comes to his side if he is threatened, as it would for anyone of its own. The strangers who have proved friends get a nod across his table and, once in a long while, a look inside the box. Kolfinna wrote that she was let look once, as a girl, and that the oldest whiskers at the bottom were grey, and that the newest were white.",
+  "legend": "Vorkald is the Dellingstad end of the Mammoth Hunt quest: after Bothrar Hadd's tusks and pelts and Volkstad's order to clear the morvalt mammut jagare camp above Mammoth Valley, you bring a last whisker from a matriarch or bull back to Vorkald in Dellingstad. He's level 52, People of Dellingstad faction and aggressive like the rest of the town until your faction is good enough, and the citizens, fortifiers and crossbowmen around him will join (bring-a-friend). He has no abilities and isn't CC-immune, but you almost certainly don't want to kill him: raise Dellingstad faction instead, or you lose the turn-in and the town's good will.",
+  "yells": {
+    "aggro": [
+      "You are not on the account.",
+      "Town! A stranger at the table!",
+      "No whisker, no welcome."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The account will show this. Everything shows."
+      }
+    ],
+    "death": [
+      "Someone... keep the box...",
+      "The newest... are white..."
+    ],
+    "slay": [
+      "Entered.",
+      "Closed account.",
+      "The town remembers."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A table, a box, a man counting whiskers.",
+      "Dellingstad's account with the herd is kept here."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The town's fortifiers turn toward Vorkald's table."
+      }
+    ],
+    "realmFirstKill": "Vorkald falls at his table. The account is unkept."
+  },
+  "botLines": {
+    "briefing": [
+      "vorkald is the mammoth hunt whisker turn in, dont kill him",
+      "hes aggro till your dellingstad faction is good",
+      "the town joins if you fight him",
+      "raise faction instead"
+    ],
+    "aftermathWin": [
+      "we killed vorkald, now who takes the whisker",
+      "faction is ruined now",
+      "the town came at us after",
+      "probably shouldnt have"
+    ],
+    "aftermathLoss": [
+      "the whole town came",
+      "crossbowmen everywhere",
+      "dont fight in dellingstad",
+      "should have raised faction"
+    ],
+    "rumour": [
+      "vorkald keeps a box of mammoth whiskers, one per year of peace on the heights",
+      "the whisker is a receipt, not payment, vorkald says",
+      "vorkalds box is nearly full and the soothsayers say nothing",
+      "the oldest whiskers in the box are grey, the newest white"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Vorkald",
+    "text": "Keeper of [Dellingstad]'s account with the herd: a box of whiskers, one for every year the morvalt hunters were cleared from above Mammoth Valley. See [the herd's account]."
+  },
+  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: Vorkald asked me once, when I was a girl, whether I knew why the town takes a whisker and not a tusk. I said a whisker is smaller. He said a tusk is what you take from a mammoth you have killed, and a whisker is what you take from one that is still walking, and the town wants the herd walking. Then he shut the box. I have thought about that every year since, daughter, when the young men come back from the heights with tusks.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} closed Vorkald's account in Dellingstad in {minutes} minutes. The town will not forget it.",
+    "loss": "Dellingstad threw {raidLeader}'s party from {realm} away from Vorkald's table after {minutes} minutes."
+  }
+}

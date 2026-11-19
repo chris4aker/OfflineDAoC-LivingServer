@@ -16,6 +16,21 @@ namespace DOL.GS
             return spellType is not eSpellType.EnduranceRegenBuff ? ServerProperties.Properties.BUFF_RANGE > 0 ? ServerProperties.Properties.BUFF_RANGE : 5000 : 1500;
         }
 
+        /// <summary>
+        /// Whether a concentration buff of <paramref name="caster"/> on <paramref name="owner"/> is within its activation range.
+        /// A No Lifer's buffbot follows the 2003 rule (NoLiferBuffBots.ConcentrationRangeFree): concentration buffs had no
+        /// range then (the 5,000-unit limit came with Mythic's Classic servers in July 2005), so its buffs stay on while it is
+        /// parked at a bind. Every other caster keeps this server's range.
+        /// </summary>
+        public static bool IsConcentrationEffectInRange(GameLiving caster, GameLiving owner, eSpellType spellType)
+        {
+            if (caster == null || owner == null)
+                return false;
+            if (caster is GameBot { IsNoLiferBuffBot: true } && NoLiferBuffBots.ConcentrationRangeFree)
+                return true;
+            return caster.IsWithinRadius(owner, GetConcentrationEffectActivationRange(spellType));
+        }
+
         public static void SendSpellAnimation(ECSGameSpellEffect e, bool noSound = false)
         {
             if (e == null)

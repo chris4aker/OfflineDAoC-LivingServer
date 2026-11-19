@@ -1,0 +1,246 @@
+{
+  "id": "aldland",
+  "name": "Aldland",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    56
+  ],
+  "aliases": [
+    "the old land",
+    "diogel"
+  ],
+  "summary": "The old land of the hall-folk: Krondon's door under the hill and its ogres, the Kulaclan orcs of the south-west, the lammia shore and the griffin heights, and Caer Diogel, Albion's safe fort.",
+  "facts": [
+    {
+      "text": "Aldland is zone 56 of region 51, with Caer Diogel and the entrance to Krondon and about 1,260 monsters: Kulaclan orcs (with a level 63 chieftain), thrawn ogres (Children of Orylie), lammia, griffins, winged serpents, algae, lights, water elementals, sea hounds and drakoran patrols.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 51 zone 56 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Mythic: Krondon is an Avalon dungeon of the Shrouded Isles, whose setting is Morgana's war on Avalon.",
+      "provenance": "mythic",
+      "source": "https://www.gamebanshee.com/news/68904-new-shrouded-isles-info.html"
+    },
+    {
+      "text": "Free the Rogue!: Mercal hides by three barrels left of the main Krondon entrance and is freed by saying his name; he goes to Caer Diogel.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lost Stone of Arawn: O'honat of the Inconnu is in Caer Diogel.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+    },
+    {
+      "text": "Quests also send players to the algae on the coast west of Caer Diogel (Lost Treasure), to the orc acolyte Calikana at three rocks on the coast, and to watch for a woman in black by the stable (Reports).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Old English 'ald' means old; Welsh 'diogel' means safe or secure (to verify); the lammia take their name from the Lamia of Greek myth; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wiktionary.org/wiki/diogel"
+    },
+    {
+      "text": "Aldland as the hall-folk's 'old land', the readers' storms, the Kulaclan as orcs who stayed and the ones who ran, Mercal's three days by the barrels, the hill lights as the old land's own, the weather-log of Caer Diogel and O'honat's warm south wind are Living Server writing; the storm-keeper and the storm-tithe come from the Krondon files.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The old land. Aldland is the oldest of the isles in the reckoning of the hall-folk of Krondon, who named it in their own tongue: the old land, the first ground to come up out of the sea. The hall under the hill in its north-western corner was their greatest hall, and their fields and fishing-grounds ran down from it to the southern coast. The readers of Avalon, who bought their books' second copies from Krondon, came to Aldland for the hall-folk's songs and went home with the hall-folk's weather, because every reader who ever sailed to Aldland wrote of the storms. The storm-keeper of Krondon kept the shore, the hall-folk said, and a quiet sea was something you paid for.\n\nWhat went wrong. Krondon fell to the thrawn ogres and their queen before Morgana's war reached the other isles, and the ogres have kept its door ever since: threshers and thrashers and guardsmen at the mouth of the hall, and lookouts on the slope above it. The hall-folk's fields went wild. And the orcs of the isles, who had lived in the south of Aldland under their own chiefs since before the hall-folk counted years, found themselves with ogres on one side and the sea on the other. Some of them fled to Inishail, the Albion garrison says, and found something worse in its marsh. The rest stayed and grew hard. The Kulaclan of the south-west is the strongest orc clan in the isles now, with finguards and spearmen and brandishers, weatherwitches who call the rain, priestesses who keep its rites and a chieftain over all of them, and its beachcombers and clamshuckers work the eastern coast as if no war had come.\n\nThe coast and the hills. The western shore belongs to the lammia, huntresses and seductresses and sorceresses, who sing the sailors in, and the griffins nest above them on the western heights with their moulting young. Winged serpents hunt the middle of the isle. Lights burn on the hills at night, mountain lights and white lights that the readers say are the old land's own, older than Morgana's corpse-lights and not hers. The algae of the coast has grown into something that moves. And Morgana's war came to Aldland too, in the end: drakoran patrols walk the roads near Albion's fort, and a woman in black has been seen by the stables at night.\n\nCaer Diogel. Albion holds Aldland from one fort, Caer Diogel, which the old tongue calls the safe fort, on the eastern side of the isle under Captain Denholm, with trainers of every order and a teleporter to Caer Gothwaite. An Inconnu called O'honat keeps a room there and goes out into the west alone, searching for a lost stone of her master's. A rogue called Mercal was taken by the ogres at Krondon's door and hid by three barrels in a shadowy corner of the mouth until someone came and said his name; he keeps the inn's corner now and has documents for anyone the fort trusts.\n\nWhy it matters to Albion. Aldland is the way to Krondon, and Krondon was the hall that kept the isles' storms. Every company that goes down to the ogre queen goes from Caer Diogel, past the threshers at the door, and the garrison says the weather off Aldland has been worse every year since the hall fell. The orcs of the Kulaclan, who remember the hall-folk, say it will not mend until the storm has a keeper again who keeps it for the shore.",
+  "legend": "Aldland is the SI zone with the Krondon entrance, west of Avalon Isle, levels 35 to 60. Caer Diogel on the east side is the town: trainers, a teleporter, Captain Denholm, O'honat (part of Lost Stone of Arawn), Arden (Free the Rogue). The Krondon door is in the north-west, guarded by thrawn ogre threshers and guardsmen; Mercal hides by three barrels left of the main entrance for Free the Rogue. The south-west is the Kulaclan orc country, fifties and low sixties, with a level 63 chieftain: finguards, weatherwitches and priestesses in big camps, good for groups. The orc beachcombers and clamshuckers on the east coast are easier, low forties. Lammia and griffins on the west side, winged serpents in the middle, algae on the coasts (Lost Treasure wants blue slime from the algae west of Caer Diogel). Drakoran patrols walk near the fort. This is the zone everybody runs through on the way to Krondon.",
+  "atmosphere": {
+    "firstEntry": [
+      "Aldland. The old land, the first out of the sea.",
+      "Rain. Then more rain.",
+      "Ogre song from the hill in the north-west.",
+      "Orc fires along the southern coast.",
+      "Lights on the hills that are not lanterns."
+    ],
+    "areas": [
+      {
+        "name": "Caer Diogel",
+        "x": 402771,
+        "y": 502879,
+        "z": 4680,
+        "radius": 3000,
+        "lines": [
+          "Caer Diogel, the safe fort. Captain Denholm's.",
+          "O'honat comes back from the west, alone, again.",
+          "Mercal keeps the inn's corner and his papers."
+        ]
+      },
+      {
+        "name": "Krondon's door",
+        "x": 386927,
+        "y": 479721,
+        "z": 4000,
+        "radius": 2000,
+        "lines": [
+          "The hall under the hill. The ogres keep its door.",
+          "Threshers at the mouth. Lookouts above.",
+          "Three barrels in a shadowy corner."
+        ]
+      },
+      {
+        "name": "the Kulaclan camps",
+        "x": 386500,
+        "y": 527000,
+        "z": 4000,
+        "radius": 4500,
+        "lines": [
+          "Kulaclan fires in the south-west.",
+          "Weatherwitches call the rain. Priestesses keep it.",
+          "The chieftain's banner over the biggest camp."
+        ]
+      },
+      {
+        "name": "the eastern coast",
+        "x": 417500,
+        "y": 514000,
+        "z": 3500,
+        "radius": 3500,
+        "lines": [
+          "Orc beachcombers working the tide line.",
+          "Clamshuckers, and a fishmonger shouting prices."
+        ]
+      },
+      {
+        "name": "the lammia shore",
+        "x": 380500,
+        "y": 499500,
+        "z": 3500,
+        "radius": 3000,
+        "lines": [
+          "Lammia sing on the western shore.",
+          "A huntress, a sorceress. Both smiling."
+        ]
+      },
+      {
+        "name": "the griffin heights",
+        "x": 380500,
+        "y": 513500,
+        "z": 5000,
+        "radius": 3000,
+        "lines": [
+          "Griffins nest on the western heights.",
+          "Moulting grifflets screaming for food."
+        ]
+      },
+      {
+        "name": "the serpents' middle",
+        "x": 387879,
+        "y": 513441,
+        "z": 4500,
+        "radius": 3000,
+        "lines": [
+          "Winged serpents hunt the middle of the isle.",
+          "A shadow with scales passes overhead."
+        ]
+      },
+      {
+        "name": "the hill lights",
+        "x": 384000,
+        "y": 508000,
+        "z": 5000,
+        "radius": 3500,
+        "lines": [
+          "Lights on the hills at night. Not Morgana's.",
+          "The old land's own lights, the readers say."
+        ]
+      },
+      {
+        "name": "the algae coast",
+        "x": 413819,
+        "y": 482411,
+        "z": 3500,
+        "radius": 2500,
+        "lines": [
+          "The algae on the rocks has learned to move.",
+          "Sea hounds run the northern sand."
+        ]
+      },
+      {
+        "name": "the drakoran road",
+        "x": 422364,
+        "y": 496475,
+        "z": 4500,
+        "radius": 2000,
+        "lines": [
+          "Drakoran patrols on the road near the fort.",
+          "Morgana's war came to the old land too."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "aldland is where the krondon door is. caer diogel is the town",
+      "the hall-folk called aldland the old land, first ground out of the sea",
+      "thrawn ogres hold the krondon door. threshers at the mouth",
+      "the kulaclan in sw aldland is the strongest orc clan in the isles",
+      "the orcs that fled to inishail are 'the ones who ran' to the kulaclan",
+      "aldland has the worst weather in the isles. the orcs say since krondon fell",
+      "lammia sing on the west shore of aldland. dont listen",
+      "griffins nest on the western heights in aldland",
+      "the lights on aldland's hills at night arent morgana's, [heard|the readers say]",
+      "caer diogel means the safe fort, [heard|they say]",
+      "drakoran patrols walk the road near caer diogel now",
+      "the orc beachcombers on the east coast sell fish to the fort cook"
+    ],
+    "rumour": [
+      "[heard|someone said] mercal hid by the barrels at krondon's door for three days",
+      "heard theres a woman in black by the caer diogel stables at night",
+      "[heard|someone said] o'honat goes out west alone looking for a stone of arawn's",
+      "heard the kulaclan chieftain is level 63",
+      "[heard|someone said] the algae on aldland's coast learned to move",
+      "heard the weatherwitches call the rain the fort writes down",
+      "[heard|someone said] the kulaclan remembers the hall-folk",
+      "heard o'honat came back once with something warm wrapped in cloth"
+    ],
+    "tell": [
+      "aldland? the si zone with the krondon door, west of avalon isle",
+      "is it hard? 35 to 60. the kulaclan orc camps in the sw are 50s and 60s",
+      "whats there? caer diogel, the krondon entrance, orc camps, lammia, griffins",
+      "where's krondon? nw corner of aldland, past the ogre threshers",
+      "where's caer diogel? east side of aldland. teleporter there",
+      "good xp? orc beachcombers on the east coast in the 40s, kulaclan in the 50s for groups"
+    ]
+  },
+  "loremaster": {
+    "intro": "Aldland, the old land. Ask of [caer diogel], [o'honat] and [mercal], of [krondon] and the [thrawn ogres], of the [kulaclan] and their [chieftain], the [lammia], the [griffins], the hill [lights], or the [weather].",
+    "topics": {
+      "caer diogel": "Albion's one fort on Aldland, the safe fort in the old tongue, on the east side of the isle under Captain Denholm, with trainers, a teleporter, Arden the instrument merchant, the stable master Vilmalin, [o'honat] and [mercal].",
+      "o'honat": "An Inconnu who keeps a room at Caer Diogel and goes into the west alone, searching for a lost Stone of Arawn with Honayt'rt and N'chever of Wearyall.",
+      "mercal": "A rogue of Albion taken by the ogres at Krondon's door, who hid by three barrels in a shadowy corner of the mouth until someone said his name. He keeps the inn's corner at Caer Diogel and his documents for Arden.",
+      "krondon": "The hall-folk's greatest hall, under the hill in the north-west of Aldland, held now by the [thrawn ogres] and their queen. The weather off Aldland has been worse every year since it fell.",
+      "thrawn ogres": "Orylle's people, the Children of Orylie: threshers and thrashers at Krondon's mouth, guardsmen inside, lookouts on the slope above.",
+      "kulaclan": "The strongest orc clan of the isles, in the south-west of Aldland: finguards, spearmen, brandishers, weatherwitches who call the rain, priestesses and a [chieftain]. They remember the hall-folk, and call the orcs who fled to Inishail the ones who ran.",
+      "chieftain": "The chieftain of the Kulaclan keeps the biggest camp in the far south-west, and every orc of the clan answers to him.",
+      "lammia": "Huntresses, seductresses, enchantresses and sorceresses who sing on the western shore. Sailors who listen are not logged again.",
+      "griffins": "Griffins nest on the western heights above the lammia, and their moulting young scream all through the season.",
+      "lights": "Mountain lights and white lights burn on the hills at night; the readers say they are the old land's own, older than Morgana's corpse-lights, and not hers.",
+      "weather": "Aldland has the worst weather in the isles. The orcs say the sea is taking the old land back since the storm of Krondon lost its keeper; Caer Diogel keeps a weather-log for the harbor-reeve of Gothwaite."
+    }
+  },
+  "book": {
+    "title": "The Weather-Log of Caer Diogel",
+    "pages": [
+      "The Weather-Log of Caer Diogel, kept by the fort's watch-officer for the harbor-reeve of Gothwaite, who asked for it, and continued by each watch-officer since. Wind, sky, sea and what came out of it, every watch. The first officer wrote on the first page that Aldland has the worst weather in the isles, and every officer since has agreed. The hall-folk of Krondon named this isle the old land, the first ground out of the sea. The orcs say the sea has been trying to take it back ever since the hall under the hill fell and the storm lost its keeper.",
+      "Of the ogres. The thrawn ogres hold the door of Krondon and have since before the war reached the other isles. Threshers and thrashers at the mouth, guardsmen inside it, lookouts on the slope. A rogue of ours, Mercal, was taken by them and hid three days by some barrels in a shadowy corner of the mouth, saying nothing, until someone came and said his name aloud. He is in the inn now with his papers. The watch-log for those three days says only: wind from the west, rain, ogres singing. Mercal says the song was the same three lines over and over, and that he will not sing them for anyone.",
+      "Of the orcs. The Kulaclan holds the south-west, and it is the strongest orc clan in the isles: finguards and spearmen, weatherwitches who call the rain we write down, priestesses, and a chieftain over them all. The orcs remember the hall-folk. Their beachcombers and clamshuckers work the eastern coast below the fort and sell fish to our cook through the fishmonger, and the garrison does not ask. Some of the orcs fled to Inishail when the ogres came. The Kulaclan calls them the ones who ran, and does not speak of what they found there.",
+      "Of the west. The lammia sing on the western shore and the sailors who listen are not logged again. Griffins nest on the heights above them, and the grifflets scream all through the moult. Winged serpents hunt the middle of the isle. On the hills at night there are lights, mountain lights and white lights, and the readers who came here with Captain Denholm say they are older than Morgana's corpse-lights and are not hers. The watch logs them anyway. Lights on the hills, three; no wind. The next night the same officer wrote: lights on the hills, three, nearer.",
+      "Of the war and the Inconnu. Drakoran patrols walk the road near the fort now, and a woman in black has been seen by the stables at night, and the stable master Vilmalin will not say what she does there. An Inconnu called O'honat keeps a room in the fort and goes out into the west alone, searching for a stone of Arawn's that her people lost. She came back once with something wrapped in cloth and would not let it be logged. The officer that night wrote: wind from the south, warm, which it never is."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres",
+    "krondon-hall-folk",
+    "drakoran"
+  ]
+}

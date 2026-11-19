@@ -339,6 +339,10 @@ namespace DOL.GS.ServerRules
             if (!defender.IsAlive || !attacker.IsAlive)
                 return false;
 
+            // a companion or pet stowed during its player's horse ride neither attacks nor can be attacked (owner 2026-10-31)
+            if (defender is GameNPC { StowedForRide: true } || attacker is GameNPC { StowedForRide: true })
+                return false;
+
             GamePlayer playerAttacker = attacker as GamePlayer;
             GamePlayer playerDefender = defender as GamePlayer;
 
@@ -1029,6 +1033,19 @@ namespace DOL.GS.ServerRules
 
         private static GameStaticItemOwnerDamageComparer _gameStaticItemOwnerDamageComparer = new();
 
+        /// <summary>Once per gamebot party that took part in the kill (AutonomousBotGroupCoordinator.NoteCampBonus).</summary>
+        private static void NoteGamebotPartyCampBonus(GameNPC killedNpc, IEnumerable<GameBot> bots)
+        {
+            HashSet<Group> noted = null;
+            foreach (GameBot bot in bots)
+            {
+                if (bot is not { IsAutonomousWorldBot: true, IsPlayerLedGroup: false, Group: { } group } ||
+                    !(noted ??= new()).Add(group))
+                    continue;
+                AutonomousBotGroupCoordinator.NoteCampBonus(group, killedNpc.Name, killedNpc.CampBonus);
+            }
+        }
+
         public virtual void OnNpcKilled(GameNPC killedNpc, GameObject killer)
         {
             // Persistent autonomous bots represent real realm opponents in RvR.
@@ -1085,6 +1102,17 @@ namespace DOL.GS.ServerRules
             // Support bots earn the same kill credit without duplicating XP awards.
             var expeditionOwner = AutonomousRealmRaid.LootOwner(killedNpc,
                 botCountAndDamage.ToDictionary(pair => pair.Key, pair => pair.Value.Damage)) as RealmRaidLootOwner;
+            bool highEndRaidKill = expeditionOwner != null && AutonomousRealmRaid.IsHighEndRaidEncounter(killedNpc);
+            if (highEndRaidKill)
+            {
+                // the real players in a high-end raid encounter get their quarter of its loot (owner 2026-10-31): whoever
+                // fought it, or stands with the expedition's realm by the boss. Only these bosses: every other kill keeps
+                // the normal loot rules (autoloot off unless the player turns it on)
+                eRealm raidRealm = expeditionOwner.Members.FirstOrDefault()?.Realm ?? eRealm.None;
+                expeditionOwner.Players = playerCountAndDamage.Keys
+                    .Concat(killedNpc.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Where(p => p.Realm == raidRealm))
+                    .Distinct().ToArray();
+            }
             var expeditionMembers = expeditionOwner?.Members.ToHashSet();
             foreach (var pair in botCountAndDamage)
             {
@@ -1099,10 +1127,15 @@ namespace DOL.GS.ServerRules
                     AutonomousGoalDiagnostics.Reward(bot, killedNpc, 0);
                 }
 
+            // A gamebot party moves on once its camp bonus runs dry (from True 1.65): the fraction this kill paid.
+            NoteGamebotPartyCampBonus(killedNpc, botCountAndDamage.Keys);
+
             // Camp bonus drops by 2% per kill.
             if (killedNpc.CampBonus > 0)
                 killedNpc.CampBonus -= 0.02;
 
+            // Bots as people WP6: the raiders at a high-end raid kill, and the items its loot really gives them (dragon trophies).
+            using var milestoneLoot = BotMilestoneLife.RaidLoot(highEndRaidKill ? killedNpc : null, expeditionOwner?.Members);
             if (killedNpc.CanDropLoot && !NoItemLoot(killedNpc))
             {
                 // The set contains potential item owners (entities able to pick the item up). They are the battlegroup, group, and player that did the most damage.
@@ -2520,7 +2553,7 @@ namespace DOL.GS.ServerRules
             }
 
             int value = rpBase + (keep.BaseLevel - 50) * rpMultiplier;
-            value += (keep.Level - Properties.STARTING_KEEP_LEVEL) * Properties.UPGRADE_MULTIPLIER;
+            value += (keep.Level - keep.UnclaimedLevel) * Properties.UPGRADE_MULTIPLIER;
             return value;
         }
 

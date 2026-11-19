@@ -20,14 +20,14 @@ namespace DOL.GS.DailyQuest.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Thidranki Conquerer";
+		private const string questTitle = "Seize the Keep in Thidranki";
 		private const int minimumLevel = 20;
 		private const int maximumLevel = 24;
 
 		// Capture Goal
 		private const int MAX_CAPTURED = 1;
 		
-		private static GameNPC PazzHib = null; // Start NPC
+		private static GameNPC CaptainHib = null; // Start NPC
 
 		private int _isCaptured = 0;
 
@@ -66,43 +66,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Hibernia);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 252, 18658, 18710))
-					{
-						PazzHib = npc;
-						break;
-					}
-				}
-
-			if (PazzHib == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find PazzHib, creating it ...");
-				PazzHib = new GameNPC();
-				PazzHib.Model = 26;
-				PazzHib.Name = "Pazz";
-				PazzHib.GuildName = "Bone Collector";
-				PazzHib.Realm = eRealm.Hibernia;
-				//Druim Ligen Location
-				PazzHib.CurrentRegionID = 252;
-				PazzHib.Size = 40;
-				PazzHib.Level = 59;
-				PazzHib.X = 18658;
-				PazzHib.Y = 18710;
-				PazzHib.Z = 4320;
-				PazzHib.Heading = 1424;
-				PazzHib.Flags |= GameNPC.eFlags.PEACE;
-				PazzHib.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					PazzHib.SaveIntoDatabase();
-				}
-			}
-
+			CaptainHib = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Hibernia, 252); // Captain Cody, the Thidranki portal keep
 
 			#endregion
 
@@ -115,11 +79,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(PazzHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCola));
-			GameEventMgr.AddHandler(PazzHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCola));
+			GameEventMgr.AddHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			PazzHib.AddQuestToGive(typeof (ThidKeepCaptureHib));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainHib.AddQuestToGive(typeof (ThidKeepCaptureHib));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -129,27 +93,27 @@ namespace DOL.GS.DailyQuest.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (PazzHib == null)
+			if (CaptainHib == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(PazzHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCola));
-			GameEventMgr.RemoveHandler(PazzHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCola));
+			GameEventMgr.RemoveHandler(CaptainHib, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainHib, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			PazzHib.RemoveQuestToGive(typeof (ThidKeepCaptureHib));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainHib.RemoveQuestToGive(typeof (ThidKeepCaptureHib));
 		}
 
-		private static void TalkToCola(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(PazzHib.CanGiveQuest(typeof (ThidKeepCaptureHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (ThidKeepCaptureHib), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -162,17 +126,17 @@ namespace DOL.GS.DailyQuest.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							PazzHib.SayTo(player, "Find an enemy occupied keep and capture it. If you succeed come back for your reward.");
+							CaptainHib.SayTo(player, "Find a keep held by the enemy and capture it. Come back to me when it is done.");
 							break;
 						case 2:
-							PazzHib.SayTo(player, "Hello " + player.Name + ", did you [capture] a keep?");
+							CaptainHib.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					PazzHib.SayTo(player, "Look "+ player.Name +", I'll cut to the chase. " +
-					                   "We need the central keep back because I left some... contraband in the basement that I'd really like to reclaim before its found by the guards. Can you [help a skeleton] out?");
+					CaptainHib.SayTo(player, player.Name + ", the keep at the heart of Thidranki is the prize of this field, and while the enemy holds it, the field is theirs. " +
+					                      "Take it for Hibernia and I will see you rewarded. Will you [take the keep]?");
 				}
 			}
 				// The player whispered to the NPC
@@ -183,8 +147,8 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "help a skeleton":
-							player.Out.SendQuestSubscribeCommand(PazzHib, QuestMgr.GetIDForQuestType(typeof(ThidKeepCaptureHib)), "Will you help Pazz with "+questTitle+"");
+						case "take the keep":
+							player.Out.SendQuestSubscribeCommand(CaptainHib, QuestMgr.GetIDForQuestType(typeof(ThidKeepCaptureHib)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -192,10 +156,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "capture":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Thank you for your contribution!", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well done! The keep is ours, and Hibernia holds the field. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -261,7 +225,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(PazzHib.CanGiveQuest(typeof (ThidKeepCaptureHib), player)  <= 0)
+			if(CaptainHib.CanGiveQuest(typeof (ThidKeepCaptureHib), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (ThidKeepCaptureHib)) != null)
@@ -269,15 +233,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping Hibernia.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!PazzHib.GiveQuest(typeof (ThidKeepCaptureHib), player, 1))
+				if (!CaptainHib.GiveQuest(typeof (ThidKeepCaptureHib), player, 1))
 					return;
 
-				PazzHib.SayTo(player, "Thank you "+player.Name+", you are a true soldier of Hibernia!");
+				CaptainHib.SayTo(player, "Thank you, " + player.Name + ". You are a true soldier of Hibernia!");
 
 			}
 		}
@@ -296,9 +260,9 @@ namespace DOL.GS.DailyQuest.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "Go to the battlefield and conquer a keep. \nCaptured: Keep ("+ _isCaptured +" | 1)";
+						return "Go to the battlefield and capture a keep. \nKeeps Captured: ("+ _isCaptured +" | 1)";
 					case 2:
-						return "Return to Pazz in Thidranki Portal Keep for your Reward.";
+						return "Return to Captain Cody in the Thidranki portal keep for your reward.";
 				}
 				return base.Description;
 			}
@@ -316,12 +280,12 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (Step != 1 || e != GamePlayerEvent.CapturedKeepsChanged) return;
 			_isCaptured = 1;
-			player.Out.SendMessage("[Daily] Captured Keep: ("+_isCaptured+" | "+MAX_CAPTURED+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Keep Captured: ("+_isCaptured+" | "+MAX_CAPTURED+")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (_isCaptured >= MAX_CAPTURED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 

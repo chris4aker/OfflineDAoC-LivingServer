@@ -212,11 +212,16 @@ namespace DOL.AI.Brain
         // whoever stands in them; 145 raiders by the Magical Earthmender were swinging at them and 2 at the Earthmender.
         public static bool IsUntargetable(GameLiving living) => living is GameNPC { Flags: var flags } && (flags & GameNPC.eFlags.CANTTARGET) != 0;
 
+        /// <summary>Untargetable for this bot: as <see cref="IsUntargetable"/>, except a boss meant to be finished by spells for an
+        /// offensive caster (EpicEncounterTactics.FinishedBySpells: Lich Lord Sanguis's last 5%).</summary>
+        public bool IsUntargetableForMe(GameLiving living) => IsUntargetable(living) &&
+            !EpicEncounterTactics.MayFinishUntargetable(BotBody, living);
+
         public void ForceAddToAggroList(GameLiving living, long aggroAmount)
         {
-            if (IsUntargetable(living)) return;
+            if (IsUntargetableForMe(living)) return;
             if (!CompanionEngagementMode.Allows(Body, living)) return;
-            if (_autonomousWorldController?.IgnoresTarget(living) == true) return;
+            if (_autonomousWorldController?.IgnoresAggro(living, BotBody) == true) return;
             if (CompanionRaidSiege.Ignores(Body as GameBot, living)) return;
             if (living is DOL.GS.Keeps.GuardLord { ShieldedFromBots: true }) return;
             if (aggroAmount > 0)
@@ -284,6 +289,19 @@ namespace DOL.AI.Brain
             AggroList.TryRemove(living, out _);
         }
 
+        /// <summary>Removes every aggro entry <paramref name="drop"/> says to drop; how many went.</summary>
+        public int RemoveFromAggroListWhere(Func<GameLiving, bool> drop)
+        {
+            int removed = 0;
+            foreach (GameLiving held in AggroList.Keys)
+                if (drop(held) && AggroList.TryRemove(held, out _))
+                    removed++;
+            if (removed > 0)
+                lock (((ICollection)OrderedAggroList).SyncRoot)
+                    OrderedAggroList.RemoveAll(entry => !AggroList.ContainsKey(entry.Item1));
+            return removed;
+        }
+
         private void ForgetDepartedAggro()
         {
             bool removed = false;
@@ -317,7 +335,7 @@ namespace DOL.AI.Brain
         protected virtual bool ShouldBeRemovedFromAggroList(GameLiving living)
         {
             return !living.IsAlive ||
-                   IsUntargetable(living) ||
+                   IsUntargetableForMe(living) ||
                    living.ObjectState != GameObject.eObjectState.Active ||
                    living.CurrentRegion != Body.CurrentRegion ||
                    !Body.IsWithinRadius(living, MAX_AGGRO_LIST_DISTANCE) ||
@@ -339,12 +357,22 @@ namespace DOL.AI.Brain
             long highestEffectiveAggro = -1;
             long highestEffectiveAggroInAttackRange = -1;
 
+            // A mesmerized or rooted monster waits while anything else is in the fight (BotBrain.CrowdControlRespect).
+            bool uncontrolledAvailable = false;
+            // The monster the player is mesmerizing, stunning or rooting is left alone even before the spell lands.
+            GameLiving leaderHeld = PlayerLedPullCoordinator.LeaderControlTarget(AssistedPlayer);
+            foreach (GameLiving candidate in AggroList.Keys)
+            {
+                if (candidate is { IsAlive: true } && !ShouldBeIgnoredFromAggroList(candidate) && !IsBreakablyControlled(candidate))
+                {
+                    uncontrolledAvailable = true;
+                    break;
+                }
+            }
+
             foreach (var pair in AggroList)
             {
                 GameLiving living = pair.Key;
-
-                if (Body.TargetObject == living)
-                    currentTarget = pair;
 
                 if (ShouldBeRemovedFromAggroList(living))
                 {
@@ -354,6 +382,13 @@ namespace DOL.AI.Brain
 
                 if (ShouldBeIgnoredFromAggroList(living))
                     continue;
+
+                if (PassOverControlled(IsBreakablyControlled(living), uncontrolledAvailable) ||
+                    living == leaderHeld)
+                    continue;
+
+                if (Body.TargetObject == living)
+                    currentTarget = pair;
 
                 AggroAmount aggroAmount = pair.Value;
                 double distance = Body.GetDistanceTo(living);
@@ -413,15 +448,28 @@ namespace DOL.AI.Brain
             if (realTarget is IGamePlayer && realTarget.Realm != Body.Realm)
                 return true;
 
+            // An enemy keep's doors and walls are fought whatever their con (owner 2026-10-29: companions would not help
+            // the player break a battleground keep's door).
+            if (realTarget is DOL.GS.Keeps.GameKeepDoor or DOL.GS.Keeps.GameKeepComponent && realTarget.Realm != Body.Realm)
+                return true;
+
             // Evaluate the monster from the character's perspective, not the
             // reverse. The native NPC check rejected purple pulls because the
             // character was grey to the monster. Camp selection owns difficulty;
             // this shared execution gate only excludes non-XP grey monsters.
-            if (Body.IsObjectGreyCon(realTarget))
+            // The one exception is the human leader's own fight: a companion in the player's group joins the monster the
+            // player is attacking whatever its con (owner's PC, build b1b6846, 2026-11-18: hired Armsman Pannax, level 5,
+            // stood idle while his player killed level 1-2 "headless dead" and "urchin quib" in Isle of Glass, grey to him).
+            if (Body.IsObjectGreyCon(realTarget) && !JoinsLeaderFight(target))
                 return false;
 
             return AggroLevel > 0;
         }
+
+        /// <summary>A bot in a human player's group whose leader (or the leader's pet) is fighting this very target.</summary>
+        private bool JoinsLeaderFight(GameLiving target) =>
+            target != null && BotBody?.IsPlayerLedGroup == true &&
+            PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) == target;
 
         /// <summary>
         /// Retaliation is not a new XP pull. A grey creature that actually hit
@@ -444,6 +492,7 @@ namespace DOL.AI.Brain
 
             if (ad.GeneratesAggro)
             {
+                NoteRvrFire(ad); // Bots as people WP2: an area effect the bot may have to step out of (BotBrain.RvrPositioning)
                 if (BotBody?.IsRecoveryResting == true)
                     BotBody.WakeRecoveryRest();
                 ConvertDamageToAggroAmount(ad.Attacker, Math.Max(1, ad.Damage + ad.CriticalDamage));
@@ -620,6 +669,8 @@ namespace DOL.AI.Brain
         private long _nextInstrumentKitCheck;
         private long _nextNecromancerCommandTick;
         private int _activeTwistedSongId;
+        private long _songHoldUntil, _songMovingSince, _songStoppedSince;   // holding one song (owner 2026-10-30)
+        private bool _songTraveling;
         private readonly Dictionary<int, SpellLine> _knownSpellLines = new();
         private GamePlayer _subscribedAssistedPlayer;
         private GameLiving _orderedPullTarget;
@@ -636,6 +687,8 @@ namespace DOL.AI.Brain
         private long _nextExchangeCheckTick;
         private long _nextMerchantServiceTick;
         private long _pendingExchangeListTick;
+        // A listing deferred because the database writer was busy is retried this soon (ms).
+        private const int ExchangeWriteRetryMs = 1_000;
         private DbInventoryItem _pendingExchangeItem;
         private int _pendingExchangePrice;
         private AutonomousWorldBotController _autonomousWorldController;
@@ -898,9 +951,15 @@ namespace DOL.AI.Brain
         {
             if (candidate == null || Body.ControlledBrain is not ControlledMobBrain petBrain)
                 return candidate;
+            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
+            if (PetsDoNoDamageTo(candidate) && (candidate = PetTargetInsteadOfBoss(candidate, petBrain)) == null)
+                return null;
 
             GameLiving current = petBrain.OrderedAttackTarget;
             if (current == null || current == candidate || candidate == ActiveOrderedPullTarget)
+                return candidate;
+            // ... and a pet already ordered onto such a boss leaves it for the new target
+            if (PetsDoNoDamageTo(current))
                 return candidate;
 
             if (!IsValidPetCombatTarget(petBrain.Body, current))
@@ -919,6 +978,34 @@ namespace DOL.AI.Brain
             pet.IsWithinRadius(target, MAX_AGGRO_LIST_DISTANCE) &&
             CompanionEngagementMode.Allows(pet, target) &&
             GameServer.ServerRules.IsAllowedToAttack(pet, target, true);
+
+        /// <summary>
+        /// Druids and Minstrels keep a defensive pet in the bot's own pet logic, and a Druid heals with its target on a
+        /// friend, so their pets only defended (owner 2026-10-31: druids send their pet in while healing, as they did
+        /// before, and minstrels use their pet aggressively too, solo or grouped). Every turn of a fight the pet goes for
+        /// the enemy: the human leader's target, else the bot's own hostile target, else the enemy a groupmate is
+        /// attacking, else the bot's worst threat.
+        /// </summary>
+        private void KeepSupportPetFighting()
+        {
+            if (BotBody?.CharacterClass?.ID is not ((int)eCharacterClass.Druid or (int)eCharacterClass.Minstrel) ||
+                Body.ControlledBrain is not ControlledMobBrain pet ||
+                pet.Body?.IsAlive != true || pet.Body.ObjectState != GameObject.eObjectState.Active)
+                return;
+            GameLiving enemy = AssistedPlayer is GamePlayer ? PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) : null;
+            if (enemy == null && (Body.IsAttacking || Body.InCombat || HasAggro) && Body.TargetObject is GameLiving own && own.IsAlive &&
+                GameServer.ServerRules.IsAllowedToAttack(Body, own, true))
+                enemy = own;
+            if (enemy == null && Body.Group != null)
+                enemy = Body.Group.GetMembersInTheGroup()
+                    .Where(m => m != Body && m.IsAlive && m.IsAttacking && m.CurrentRegion == Body.CurrentRegion)
+                    .Select(m => m.TargetObject as GameLiving)
+                    .FirstOrDefault(t => t != null && GameServer.ServerRules.IsAllowedToAttack(Body, t, true));
+            if (enemy == null && (Body.InCombat || HasAggro))
+                enemy = CalculateNextAttackTarget();
+            if (enemy != null && IsValidPetCombatTarget(pet.Body, enemy) && GameServer.ServerRules.IsAllowedToAttack(Body, enemy, true))
+                CommandPetAttack(enemy);
+        }
 
         /// <summary>Orders the pet onto the resolved target; repeated identical orders are ignored by the pet brain.</summary>
         private void CommandPetAttack(GameLiving candidate)
@@ -1148,6 +1235,13 @@ namespace DOL.AI.Brain
                 _ambientWanderMovement = false;
                 return;
             }
+            if (!ambientWander && CompanionHealerCombatHold.Holds(BotBody, leader))
+            {
+                // Stop a formation walk already under way; other movement is left alone.
+                if (Body.IsMoving && CompanionFollowPolicy.HasFormationOrder(BotBody))
+                    Body.StopMoving();
+                return;
+            }
 
             bool tightInterior = Body.CurrentRegion?.IsDungeon == true;
             bool companionTravel = CompanionFollowPolicy.Applies(BotBody);
@@ -1243,8 +1337,28 @@ namespace DOL.AI.Brain
                 OnOwnerAttacked(attackArgs.AttackData);
         }
 
+        /// <summary>
+        /// A bot swinging at its target faces it (owner 2026-10-31: gamebots meleed facing away). The attack turns an NPC
+        /// only once, when it starts; a bot that then walks to its own spot (closing in, a flank, behind for a style) and
+        /// stops kept facing the way it walked. Every think: standing, attacking in melee, more than 30 degrees off -> turn.
+        /// </summary>
+        private void FaceMeleeTarget()
+        {
+            GameNPC body = Body;
+            if (body is not { IsAlive: true, IsAttacking: true } || body.IsMoving || body.IsCasting ||
+                body.ActiveWeaponSlot == eActiveWeaponSlot.Distance ||
+                body.TargetObject is not GameLiving target || !target.IsAlive || target.CurrentRegion != body.CurrentRegion ||
+                !body.IsWithinRadius(target, 600))
+                return;
+            int off = Math.Abs(body.GetHeading(target) - body.Heading) % 4096;
+            if (Math.Min(off, 4096 - off) > 4096 / 12)
+                body.TurnTo(target);
+        }
+
         public override void Think()
         {
+            // A No Lifer's buffbot (Living Server 1.2) runs its own short turn and nothing else: follow or park, buff its main.
+            if (NoLiferBuffBots.Think(this)) return;
             if (BotGroupRelease.TryUnstick(BotBody)) return; // Fork: first, whatever below would keep a released bot from its player
             // Living Server linkdead (bot_living_breaks): the bot stands still and does nothing until it
             // "reconnects" (30-90 s) or is attacked (AutonomousBotSchedule.OnAttacked wakes it).
@@ -1254,8 +1368,19 @@ namespace DOL.AI.Brain
                     BotBody.StopMoving();
                 return;
             }
+            // Crafting 2.0 WP8 (the full bot trade): a gamebot in a trade window with a real player stands still and faces
+            // the player until the window closes (at most two minutes; a fight ends it at once). Off with bot_crafter_commerce.
+            if (DOL.GS.CraftingEconomy.BotTrades.HoldsStill(BotBody))
+                return;
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
+                return;
+            // 1.2: thrown, teleported or jailed by an encounter script: land, then get back to the raid (or wait in the jail),
+            // before any follow, pull or rally order of this turn can send it elsewhere.
+            if (EncounterDisplacementRecovery.Think(BotBody))
+                return;
+            // 1.2: a raid party sent on an encounter errand (Jailer Vifil's tunnel guards) walks there, clears it and comes back.
+            if (EpicEncounterTactics.ThinkErrand(BotBody))
                 return;
             // Out of a boss's blast before anything else (Xanxicar's stomp), whatever the bot is doing.
             if (EpicEncounterTactics.ThinkBlast(BotBody))
@@ -1283,13 +1408,29 @@ namespace DOL.AI.Brain
             AutonomousSummonActivity.RecoverOwner(BotBody);
             BotAnimistPolicy.RestoreEncounterTarget(BotBody);
             ObserveLeaderActivity();
-            // The talking update: in the real player's group a gamebot calls the fight in /group (pull, adds, oom, wipe).
-            if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
+            // The talking update: in the real player's group a gamebot calls the fight in /group (pull, adds, oom, wipe);
+            // in a gamebot party that hosts the player too (B4: there the leader calls the pull).
+            if (AutonomousBotCombatCalls.ObservesFight(BotBody))
                 AutonomousBotCombatCalls.Observe(BotBody);
+            CompanionStealth.Maintain(BotBody);
+            WatchPetFocusShield();
+            WatchHarmfulAura();
             BotBody?.WakeRecoveryRestIfCombatBlocked();
             BotBody?.EnsureAutonomousRecoveryTimers();
 
             if (AutonomousStuckWatchdog.Observe(BotBody))
+                return;
+
+            FaceMeleeTarget();
+
+            // put away for its player's horse ride: nothing to do until it is back at the player's side. Checked on every
+            // think, not only when the stable master hands over the ride (owner 2026-10-31: companions still ran behind)
+            if (TemporaryGroupStableTravel.SyncStowWithLeaderRide(BotBody) || Body.StowedForRide)
+                return;
+
+            // True 1.65 (veteran review M6): a party that called RUN, a solo bot bailing out, a hired healer surviving
+            // to raise its player: run, fight nothing (BotBrain.Retreat)
+            if (BotBody?.IsOnStableMasterRoute == false && TryHoldRetreat())
                 return;
 
             AutonomousBotRealmAbilities.UseActives(BotBody);
@@ -1308,8 +1449,14 @@ namespace DOL.AI.Brain
             }
 
             CompanionPvpEngagement.Observe(BotBody);
+            KeepSupportPetFighting();
             // Goal 11: a /raid 40 or /raid 80 on a keep siege works its squad job (rams, engines) on its own.
             if (CompanionRaidSiege.Think(this))
+                return;
+
+            // A hired companion (HiredCompanions165, from True 1.65) never runs the world bots' goals: out of its player's
+            // group it rejoins them, with its player gone it waits. Inside the group it thinks as every companion does.
+            if (HiredCompanions165.KeepWithOwner(BotBody))
                 return;
 
             // Frontier enemies take priority over rally/follow/rest and optional
@@ -1350,6 +1497,14 @@ namespace DOL.AI.Brain
             if (BotBody?.IsTemporaryGroupHelper == true &&
                 (BotBody.TryReturnTemporaryCompanionToLeader() || TryResurrectCompanionOwner()))
                 return;
+            // A hired healer raises its dead player first, as a /spawn helper does; one left far behind or stuck comes back
+            // to its player (True 1.65, owner 2026-10-30 / 2026-10-31).
+            if (BotBody?.IsHiredCompanion == true &&
+                (TryResurrectCompanionOwner() || HiredCompanions165.TryRecallToOwner(BotBody) || HiredCompanions165.TryUnstick(BotBody)))
+                return;
+            // Any move of a hired companion (MoveTo stops the brain) left it with no state: in its player's group it follows.
+            if (FSM.GetCurrentState() == null && BotBody?.IsHiredCompanion == true && BotBody.IsPlayerLedGroup)
+                FSM.SetCurrentState(eFSMStateType.FOLLOW);
 
             if (PlayerLedPullCoordinator.IsWaiting(BotBody))
             {
@@ -1363,7 +1518,9 @@ namespace DOL.AI.Brain
                 return;
             }
 
-            GameLiving leaderTarget = PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer);
+            // The player's mesmerize, stun or root joins the fight on another monster of the pack (owner 2026-10-29).
+            GameLiving leaderTarget = PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) ??
+                PlayerLedPullCoordinator.FindLeaderControlFight(AssistedPlayer, BotBody);
             if (leaderTarget != null && PlayerLedPullCoordinator.Available(BotBody, AssistedPlayer) &&
                 Body.IsWithinRadius(leaderTarget, GROUP_DEFENSE_ASSIST_RADIUS))
                 AssistPlayerAttack(leaderTarget);
@@ -1537,12 +1694,26 @@ namespace DOL.AI.Brain
             if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
                 AutonomousBotGroupCoordinator.Pulse(BotBody);
 
-            MaybeAutonomousWorldChat();
+            // A hired companion says its own lines while it follows its player (CompanionChat165, rate-limited inside; the
+            // gamebots' grats, group talk and calls reach it as they reach any gamebot), and starts no world talk of its own;
+            // it never sells or shops on its own: what it carries is its player's to give.
+            if (BotBody?.IsHiredCompanion == true)
+            {
+                if (BotBody.IsPlayerLedGroup)
+                    CompanionChat165.TryAmbient(BotBody);
+            }
+            else
+            {
+                MaybeAutonomousWorldChat();
 
-            if (TryHandleAutonomousMerchantService())
-                return;
+                if (TryHandleAutonomousMerchantService())
+                    return;
 
-            if (TryHandleAutonomousRealmExchange())
+                if (TryHandleAutonomousRealmExchange())
+                    return;
+            }
+
+            if (HiredCompanions165.KeepWithOwner(BotBody))
                 return;
 
             if (BotBody?.IsAutonomousWorldBot == true && !BotBody.IsPlayerLedGroup)
@@ -1662,6 +1833,7 @@ namespace DOL.AI.Brain
 
         private void MaybeAutonomousWorldChat()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.ChatBotTurn); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long nowTick = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || nowTick < _nextAmbientChatCheckTick)
@@ -1735,6 +1907,7 @@ namespace DOL.AI.Brain
 
         private bool TryHandleAutonomousRealmExchange(RealmExchangeBroker arrivedBroker = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.EconomyExchange); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long now = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
@@ -1765,10 +1938,17 @@ namespace DOL.AI.Brain
 
                 DbInventoryItem item = _pendingExchangeItem;
                 int price = _pendingExchangePrice;
+                bool listed = AutonomousBotEconomy.TryList(bot, item, price, out bool listingDeferred);
+                if (!listed && listingDeferred)
+                {
+                    // The database writer is busy: keep the reserved item and try again in a moment.
+                    _pendingExchangeListTick = now + ExchangeWriteRetryMs;
+                    bot.StopMoving();
+                    return true;
+                }
                 _pendingExchangeItem = null;
                 _pendingExchangePrice = 0;
                 _pendingExchangeListTick = 0;
-                bool listed = AutonomousBotEconomy.TryList(bot, item, price);
                 SetExchangeStatus(bot, listed
                     ? $"Listed {item.Name} on the Realm Exchange"
                     : $"Kept {item.Name} after its listing failed",
@@ -1788,8 +1968,7 @@ namespace DOL.AI.Brain
             // the listing. The world controller routes to a vendor after this
             // slot is occupied and returns here for upgrades only after clearing.
             AutonomousBotEconomy.ListingCandidate candidate = AutonomousBotEconomy.FindValuableListingCandidate(bot);
-            if (candidate != null &&
-                AutonomousBotEconomy.FindFreeListingSlot(AutonomousBotEconomy.GetOwnerId(bot.DatabaseID)) >= 0)
+            if (candidate != null && AutonomousBotEconomy.CanListNow(bot, candidate.Item))
             {
                 int listingPrice = AutonomousBotEconomy.RollListingPrice(candidate.Item);
 
@@ -1797,7 +1976,16 @@ namespace DOL.AI.Brain
                                   AutonomousBotChatCoordinator.TryAdvertiseExchangeItem(bot, candidate.Item.Name);
                 if (!advertised)
                 {
-                    bool listed = AutonomousBotEconomy.TryList(bot, candidate.Item, listingPrice);
+                    bool listed = AutonomousBotEconomy.TryList(bot, candidate.Item, listingPrice, out bool listingDeferred);
+                    if (!listed && listingDeferred)
+                    {
+                        // The database writer is busy: reserve the item and list it in a moment, as after chatter.
+                        _pendingExchangeItem = candidate.Item;
+                        _pendingExchangePrice = listingPrice;
+                        _pendingExchangeListTick = now + ExchangeWriteRetryMs;
+                        bot.StopMoving();
+                        return true;
+                    }
                     if (listed)
                     {
                         SetExchangeStatus(bot, $"Listed {candidate.Item.Name} on the Realm Exchange",
@@ -1816,12 +2004,24 @@ namespace DOL.AI.Brain
                 return true;
             }
 
+            // A seam (Crafting 2.0 WP0): registered Exchange steps (list crafted stock, hand over orders, buy a template
+            // piece) after the listing and before the purchase. None is registered by default.
+            if (DOL.GS.CraftingEconomy.BotServiceSeams.TryRunSteps(eWorldServiceKind.RealmExchange, bot, broker, now,
+                    out DOL.GS.CraftingEconomy.BotServiceResult exchangeStep))
+            {
+                SetExchangeStatus(bot, exchangeStep.Status, exchangeStep.Detail);
+                AutonomousStuckWatchdog.MarkProgress(bot, exchangeStep.Progress);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextExchangeCheckTick = now + Math.Max(1_000, exchangeStep.CooldownMs);
+                return true;
+            }
+
             AutonomousBotEconomy.PurchaseCandidate purchase = AutonomousBotEconomy.IsBackpackFull(bot)
                 ? null : AutonomousBotEconomy.FindBestUsefulExchangePurchase(bot);
             if (purchase != null)
             {
                 int paidCopper = purchase.Item.SellPrice;
-                if (AutonomousBotEconomy.TryBuy(bot, purchase.Item))
+                if (AutonomousBotEconomy.TryBuy(bot, purchase.Item, out bool purchaseDeferred))
                 {
                     bool equipped = AutonomousBotEconomy.TryEquipPurchasedUpgrade(bot, purchase);
                     SetExchangeStatus(bot,
@@ -1832,6 +2032,10 @@ namespace DOL.AI.Brain
                     _nextExchangeCheckTick = now + 3_000 + Random.Shared.Next(4_001);
                     return true;
                 }
+                // The database writer was busy and nothing changed: the listing is still there, so keep the
+                // cached decision and try again at the next check.
+                if (purchaseDeferred)
+                    return false;
             }
 
             // Another buyer can remove the prospective upgrade while this bot
@@ -1849,6 +2053,7 @@ namespace DOL.AI.Brain
         /// </summary>
         private bool TryHandleAutonomousMerchantService(GameMerchant arrivedMerchant = null)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.EconomyMerchant); // AI_PROFILE: measures only
             GameBot bot = BotBody;
             long now = GameLoop.GameLoopTime;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
@@ -1879,6 +2084,19 @@ namespace DOL.AI.Brain
                 !merchant.IsWithinRadius(bot, interactionRadius) ||
                 merchant.Realm != eRealm.None && merchant.Realm != bot.Realm)
                 return false;
+
+            // Darkness Falls seals buy seal gear here, paid in the bot's own seals (owner 2026-10-30).
+            if (merchant is GameDarknessFallsSealsMerchant sealMerchant &&
+                AutonomousBotEconomy.TryBuySealItem(bot, sealMerchant, out DbInventoryItem sealGear, out int sealsPaid, out bool sealUpgrade))
+            {
+                SetMerchantStatus(bot, $"Bought {sealGear.Name} from {merchant.Name}", sealUpgrade
+                    ? $"Paid {sealsPaid} looted seals for a seal gear upgrade"
+                    : $"Paid {sealsPaid} looted seals for an item to sell; no seal upgrade left to save for");
+                AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Inventory);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + 3_000;
+                return true;
+            }
 
             if (bot.Inventory?.AllItems.Any(i=>BotSiegeRuntime.IsSupply(i.Id_nb))==true)
             {
@@ -1942,6 +2160,28 @@ namespace DOL.AI.Brain
             {
                 _lastBetweenTaskPurchaseAssignment = bot.PersistentRecord.ObjectiveAssignmentId;
                 SetMerchantStatus(bot, $"Bought {purchased.Name} from {merchant.Name}", $"Spent {spent} saved copper on a legal equipment upgrade");
+                AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
+                return true;
+            }
+
+            // A seam (Crafting 2.0 WP0): registered merchant steps (repairs, potions, materials) after the selling and
+            // the upgrades, before the cosmetics. None is registered by default.
+            if (DOL.GS.CraftingEconomy.BotServiceSeams.TryRunSteps(eWorldServiceKind.Vendor, bot, merchant, now,
+                    out DOL.GS.CraftingEconomy.BotServiceResult merchantStep))
+            {
+                SetMerchantStatus(bot, merchantStep.Status, merchantStep.Detail);
+                AutonomousStuckWatchdog.MarkProgress(bot, merchantStep.Progress);
+                AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
+                _nextMerchantServiceTick = now + Math.Max(1_000, merchantStep.CooldownMs);
+                return true;
+            }
+
+            // Bot cosmetics (owner 2026-11-12): with the selling and the upgrades done, coin above the reserve buys its looks.
+            if (AutonomousBotCosmetics.TryRestyle(bot, merchant, out string restyled, out long styleCopper))
+            {
+                SetMerchantStatus(bot, $"Had gear dyed and styled at {merchant.Name}", $"Spent {styleCopper} saved copper: {restyled}");
                 AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Money);
                 AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                 _nextMerchantServiceTick = now + 30_000 + Random.Shared.Next(30_001);
@@ -2047,6 +2287,11 @@ namespace DOL.AI.Brain
                 if (target == bot.ControlledBrain?.Body && spell.ID == _pendingMaintenancePetBuffId &&
                     GameLoop.GameLoopTime < _pendingMaintenancePetBuffUntil)
                     continue;
+                // Bots as people WP2: now and then a person lets an expired buff stay off a while (BotBuffLapses).
+                if (BuffLapses.Waits(target, spell.ID, GameLoop.GameLoopTime, (brain: this, bot, target, spell),
+                        static s => BotSkillHands.BuffLapse(s.bot, s.target, s.spell, s.brain.NamedInPlay()),
+                        static s => BotSkillHands.LapseStillAllowed(s.bot, s.brain.NamedInPlay())))
+                    continue;
 
                 bool companionPerformerBuff = IsStationaryTemporaryCompanionPerformer();
                 if (companionPerformerBuff)
@@ -2062,6 +2307,8 @@ namespace DOL.AI.Brain
                 bot.TargetObject = previousTarget;
                 if (cast && companionPerformerBuff)
                     _companionPerformerBuffBatch = true;
+                if (cast)
+                    BotSkillHands.NoteBuffCast(bot);
                 bool isMainPetTarget = target == bot.ControlledBrain?.Body;
                 // Pet effects can be applied asynchronously. The just-cast pet buff
                 // is skipped for 15 seconds unless its effect appears (the
@@ -2134,7 +2381,7 @@ namespace DOL.AI.Brain
             if (bot.IsCasting && IsSelfBladeturn(bot.castingComponent?.SpellHandler?.Spell) && !HasAggro)
                 return true;
             if (now < _nextSelfBladeturnTick || bot.IsOnStableMasterRoute ||
-                CompanionFollowPolicy.WaitingForLeaderToStop(bot) ||
+                CompanionFollowPolicy.WaitingForLeaderToStop(bot) || EpicEncounterTactics.NoBladeturnHere(bot) ||
                 !SelfBladeturnSafe(true, HasAggro, bot.IsAttacking,
                     bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true,
                     bot.IsStunned || bot.IsMezzed || bot.IsSilenced,
@@ -2199,7 +2446,7 @@ namespace DOL.AI.Brain
             !CompanionFollowPolicy.WaitingForLeaderToStop(BotBody);
 
         private static bool IsTemporaryCompanionPerformer(GameBot bot) =>
-            bot is { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false, IsPlayerLedGroup: true } &&
+            bot is { IsPlayerCompanion: true, IsPlayerLedGroup: true } &&
             IsClassicSongClass(bot);
 
         private void CompleteCompanionPerformerBuffBatch(GameBot bot)
@@ -2265,51 +2512,64 @@ namespace DOL.AI.Brain
                              bot.PersistentRecord?.Activity?.Contains("travel", StringComparison.OrdinalIgnoreCase) == true ||
                              bot.PersistentRecord?.Activity?.Contains("walking", StringComparison.OrdinalIgnoreCase) == true;
 
-            IEnumerable<Spell> songCandidates = (bot.MiscSpells ?? [])
+            // Hold one song for the situation, like a player (owner 2026-10-30): no twisting a second song in and out.
+            long now = GameLoop.GameLoopTime;
+            bool moving = traveling || ownerMoving;
+            if (moving)
+            {
+                if (_songMovingSince == 0) _songMovingSince = now;
+                _songStoppedSince = 0;
+            }
+            else
+            {
+                _songMovingSince = 0;
+                if (_songStoppedSince == 0) _songStoppedSince = now;
+            }
+            _songTraveling = moving
+                ? ownerMoving || now - _songMovingSince >= BotSongTwistPolicy.TravelAfterMovingMilliseconds || _songTraveling
+                : _songTraveling && now - _songStoppedSince < BotSongTwistPolicy.StayTravelingMilliseconds;
+
+            Dictionary<eSpellType, Spell> songsByType = (bot.MiscSpells ?? [])
                 .Concat(bot.InstantMiscSpells ?? [])
                 .Where(spell => spell != null && spell.IsPulsing && !spell.IsHarmful &&
-                                spell.Level <= bot.Level && IsMaintainableClassBuff(spell) &&
-                                bot.Mana >= bot.PowerCost(spell) &&
-                                (!ownerMoving || BotSongTwistPolicy.IsCompanionTravelSong(
-                                    (eCharacterClass)bot.CharacterClass.ID, spell.SpellType)))
-                .DistinctBy(spell => spell.ID)
-                .Where(spell => spell.SpellType != eSpellType.SpeedEnhancement || !immediateCombat && (traveling || groupedSupport));
-            if (ownerMoving)
-                songCandidates = songCandidates.GroupBy(spell => spell.SpellType)
-                    .Select(group => group.OrderByDescending(spell => spell.Level)
-                        .ThenByDescending(spell => spell.Value).First());
-            List<Spell> songs = songCandidates
-                .OrderByDescending(spell => spell.SpellType == eSpellType.SpeedEnhancement && !immediateCombat)
-                .ThenByDescending(spell => groupedSupport && spell.Target is eSpellTarget.GROUP or eSpellTarget.REALM)
-                .ThenByDescending(spell => spell.Value)
-                .ThenByDescending(spell => spell.Level)
-                .ToList();
-
-            if (songs.Count == 0)
-            {
-                // No currently affordable replacement is not a reason to cancel
-                // a still-useful native pulse (nor bypass its own power checks).
-                _nextSongTwistTick = GameLoop.GameLoopTime + 4_000;
-                return false;
-            }
+                                spell.Level <= bot.Level && IsMaintainableClassBuff(spell))
+                .GroupBy(spell => spell.SpellType)
+                .ToDictionary(group => group.Key, group => group
+                    .OrderByDescending(spell => groupedSupport && spell.Target is eSpellTarget.GROUP or eSpellTarget.REALM)
+                    .ThenByDescending(spell => spell.Level)
+                    .ThenByDescending(spell => spell.Value).First());
 
             // The real pulse may have ended from interruption or lack of power.
-            // Do not let a stale tracked ID permanently suppress its restart.
             ECSPulseEffect activePulse = Body.effectListComponent.GetPulseEffects()
                 .FirstOrDefault(effect => !effect.IsEnding && !effect.IsEnded &&
                     effect.SpellHandler?.Spell is Spell activeSpell && activeSpell.IsPulsing &&
                     !activeSpell.IsHarmful && IsMaintainableClassBuff(activeSpell));
             _activeTwistedSongId = activePulse?.SpellHandler.Spell.ID ?? 0;
-            int chosenId = BotSongTwistPolicy.Choose(songs[0].ID, _activeTwistedSongId,
-                songs.Select(candidate => new BotSongTwistPolicy.Song(candidate.ID, candidate.CastTime,
-                    bot.GetSkillDisabledDuration(candidate), SongRemainingMilliseconds(candidate))).ToArray());
-            Spell song = songs.FirstOrDefault(candidate => candidate.ID == chosenId);
+            eSpellType? activeType = activePulse?.SpellHandler.Spell.SpellType;
 
-            // Preserve the anchor. Only leave after its reuse clears and a real
-            // child pulse has enough life for the secondary and return casts.
-            if (song == null)
+            GameLiving[] audience = bot.Group?.GetMembersInTheGroup()
+                .Where(member => member.IsAlive && member.CurrentRegionID == bot.CurrentRegionID &&
+                                 bot.IsWithinRadius(member, 2000)).ToArray() ?? [bot];
+            eSpellType? wanted = BotSongTwistPolicy.PerformerHold(_songTraveling, immediateCombat,
+                audience.Any(member => Short(member, m => m.MaxMana > 0 && m.ManaPercent < 85)),
+                audience.Any(member => Short(member, m => m.HealthPercent < 85)),
+                audience.Any(member => Short(member, m => m.EndurancePercent < 85)),
+                songsByType.Keys, activeType);
+            Spell song = wanted is { } type ? songsByType[type] : null;
+            if (song == null || song.ID == _activeTwistedSongId)
             {
-                _nextSongTwistTick = GameLoop.GameLoopTime + 750;
+                _nextSongTwistTick = now + (song == null ? 4_000 : 1_000);
+                return false;
+            }
+            // a held song stays at least HoldMilliseconds; starting to travel may always switch to speed
+            if (activePulse != null && now < _songHoldUntil && song.SpellType != eSpellType.SpeedEnhancement)
+            {
+                _nextSongTwistTick = Math.Min(_songHoldUntil, now + 1_000);
+                return false;
+            }
+            if (bot.Mana < bot.PowerCost(song) || bot.GetSkillDisabledDuration(song) > 0)
+            {
+                _nextSongTwistTick = now + 1_000;
                 return false;
             }
 
@@ -2335,6 +2595,7 @@ namespace DOL.AI.Brain
             if (cast)
             {
                 _activeTwistedSongId = song.ID;
+                _songHoldUntil = GameLoop.GameLoopTime + BotSongTwistPolicy.HoldMilliseconds;
             }
 
             // Actual casts, child lifetimes and skill reuse own the timing, not
@@ -2344,6 +2605,13 @@ namespace DOL.AI.Brain
             // Cast selectors still see the pending/active request and cannot
             // enqueue another spell; follow/route decisions may run alongside it.
             return cast && !immediateCombat && !BotSongTwistPolicy.IsMobileSong(bot, song);
+        }
+
+        // A member whose stats can't be read (not fully in the world yet) counts as short of nothing.
+        private static bool Short(GameLiving member, Func<GameLiving, bool> test)
+        {
+            try { return test(member); }
+            catch (Exception) { return false; }
         }
 
         private long SongRemainingMilliseconds(Spell song)
@@ -2375,6 +2643,8 @@ namespace DOL.AI.Brain
                 .Where(spell => spell?.Level <= bot.Level && BotSongTwistPolicy.IsManagedSong(bot, spell))
                 .GroupBy(spell => spell.SpellType)
                 .Select(group => group.OrderByDescending(spell => spell.Level).First()).ToList();
+            // No pulsing bladeturn by a fighting Legion (he eats it and blasts after five): the chant goes to another anchor.
+            if (EpicEncounterTactics.NoBladeturnHere(bot)) chants.RemoveAll(spell => spell.SpellType == eSpellType.Bladeturn);
             if (chants.Count == 0) return;
             Spell active = bot.effectListComponent.GetPulseEffects()
                 .FirstOrDefault(effect => !effect.IsEnding && !effect.IsEnded &&
@@ -2405,37 +2675,10 @@ namespace DOL.AI.Brain
             }
             else
             {
-                bool injured = bot.HealthPercent < 95 || bot.Group?.GetMembersInTheGroup().Any(member =>
-                    member.IsAlive && member.HealthPercent < 95 && member.CurrentRegionID == bot.CurrentRegionID &&
-                    bot.IsWithinRadius(member, GROUP_DEFENSE_ASSIST_RADIUS)) == true;
-                bool combatHealing = injured && (bot.InCombat || HasAggro || bot.IsAttacking);
-                // A solo Paladin holds one chant instead of cycling three: each recast briefly
-                // retargets the bot to itself mid-fight, and the held chant was endurance or
-                // armor, not damage (solo Paladins killed at half the Armsman rate, Oct 3-5).
-                bool fighting = bot.InCombat || HasAggro || bot.IsAttacking;
-                if ((bot.Group?.MemberCount ?? 1) <= 1)
-                {
-                    eSpellType anchor = BotSongTwistPolicy.SoloPaladinAnchor(fighting, bot.HealthPercent);
-                    chosen = chants.FirstOrDefault(spell => spell.SpellType == anchor) ??
-                        chants.FirstOrDefault(spell => spell.SpellType == eSpellType.DamageAdd) ??
-                        chants.FirstOrDefault(spell => spell.SpellType != eSpellType.CombatHeal);
-                    if (chosen == null || chosen.ID == active?.ID || bot.GetSkillDisabledDuration(chosen) > 0 ||
-                        bot.Mana < bot.PowerCost(chosen)) return;
-                    GameObject soloTarget = bot.TargetObject;
-                    try { bot.TargetObject = bot; bot.CastSpell(chosen, m_mobSpellLine, false); }
-                    finally { bot.TargetObject = soloTarget; }
-                    return;
-                }
-                chants = chants.Where(spell => spell.SpellType != eSpellType.CombatHeal || combatHealing)
-                    .OrderByDescending(spell => spell.SpellType == eSpellType.EnduranceRegenBuff)
-                    .ThenByDescending(spell => spell.SpellType == eSpellType.SpecArmorFactorBuff)
-                    .ThenByDescending(spell => spell.SpellType == eSpellType.DamageAdd).ToList();
-                if (chants.Count == 0) return;
-                int id = BotSongTwistPolicy.Choose(chants[0].ID, active?.ID ?? 0,
-                    chants.Select(spell => new BotSongTwistPolicy.Song(spell.ID, spell.CastTime,
-                        bot.Mana >= bot.PowerCost(spell) ? bot.GetSkillDisabledDuration(spell) : int.MaxValue,
-                        SongRemainingMilliseconds(spell))).ToArray());
-                chosen = chants.FirstOrDefault(spell => spell.ID == id);
+                // A Paladin holds one chant, grouped or solo (owner 2026-10-30: endurance in a fight, no cycling):
+                // endurance, else damage add, else armor. Each recast replays the chant's sound.
+                eSpellType held = BotSongTwistPolicy.PaladinHold(chants.Select(spell => spell.SpellType).ToHashSet());
+                chosen = chants.FirstOrDefault(spell => spell.SpellType == held);
             }
 
             if (chosen == null || chosen.ID == active?.ID || bot.GetSkillDisabledDuration(chosen) > 0 ||
@@ -2521,6 +2764,24 @@ namespace DOL.AI.Brain
         }
 
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, BotBuffReservations<GameLiving>> BuffClaims = new();
+
+        /// <summary>This caster's lapsed buffs (Bots as people WP2).</summary>
+        private readonly BotBuffLapses<GameLiving> BuffLapses = new();
+
+        /// <summary>
+        /// Whether a named monster is in play for this bot (Bots as people WP2: no buff lapse at a boss): its ordered or
+        /// committed pull, or anything on its aggro list. BotSkillHands adds its own and its groupmates' targets. Read at a
+        /// lapse decision and while one runs only.
+        /// </summary>
+        internal bool NamedInPlay()
+        {
+            if (BotSkillHands.IsNamed(ActiveOrderedPullTarget) || BotSkillHands.IsNamed(_committedDungeonPull))
+                return true;
+            foreach (GameLiving living in AggroList.Keys)
+                if (BotSkillHands.IsNamed(living))
+                    return true;
+            return false;
+        }
 
         private GameLiving FindRandomMissingRealmBuffTarget(Spell spell, int minimumRange = 0)
         {
@@ -3055,6 +3316,11 @@ namespace DOL.AI.Brain
         {
             if (!IsActive)
                 return;
+            NoteCastForStep();
+
+            // True 1.65 (veteran review M6): a solo caster steps straight back from a rooted or snared monster (once per 20 s)
+            if (TryCasterStepBack())
+                return;
 
             if (AutonomousDefensivePull.Hold(BotBody))
             {
@@ -3067,6 +3333,13 @@ namespace DOL.AI.Brain
             if (HoldsExclusiveSupportRole())
             {
                 PerformGroupSupport();
+                return;
+            }
+
+            // A pet focus shield channel stands still; heals and add control may take over it.
+            if (WatchPetFocusShield())
+            {
+                ContinuePetFocusShield();
                 return;
             }
 
@@ -3100,7 +3373,8 @@ namespace DOL.AI.Brain
                     Body.ActiveWeaponSlot,
                     currentBowTarget.IsAlive && currentBowTarget.ObjectState == GameObject.eObjectState.Active &&
                     (currentBowTarget is not DOL.GS.Keeps.GuardLord || Body.IsWithinRadius(currentBowTarget, 280)),
-                    Body.attackComponent != null && Body.IsWithinRadius(currentBowTarget, Body.attackComponent.AttackRange),
+                    Body.attackComponent != null &&
+                    Body.IsWithinRadius(currentBowTarget, CapRangeForTarget(currentBowTarget, Body.attackComponent.AttackRange)),
                     directAttacker != null && Body.IsWithinRadius(directAttacker, Body.MeleeAttackRange + 200),
                     protectionTarget != null))
                 return;
@@ -3111,12 +3385,18 @@ namespace DOL.AI.Brain
                 : null;
             if (activePetTarget != null)
                 AddToAggroList(activePetTarget, Math.Max(1, activePetTarget.EffectiveLevel));
+            // The pet's fight is not followed onto a mesmerized or rooted monster (BotBrain.CrowdControlRespect).
+            if (activePetTarget != null && IsBreakablyControlled(activePetTarget))
+                activePetTarget = null;
             // Once our own pet has made contact, keep the owner and pet on that
             // same live opponent unless the owner is personally attacked or is
             // protecting a group member. Generic aggro may still contain the
             // previous pull and used to make archers/casters repeatedly switch
             // away from the fight their pet had already started.
             Body.TargetObject = protectionTarget ?? directAttacker ?? activePetTarget ?? CalculateNextAttackTarget();
+            if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
+            RedirectPetFromControlledTarget(Body.TargetObject as GameLiving);
+            MaintainTankPeel();
             // A tethered boss outside its tether is immune: stop hitting it and lead it home (AutonomousTetherReset).
             if (Body.TargetObject is GameNPC tetheredBoss && AutonomousTetherReset.TryHandle(BotBody, tetheredBoss))
                 return;
@@ -3155,7 +3435,16 @@ namespace DOL.AI.Brain
                     Body.PathTo(new Point3D(lord.X, lord.Y, lord.Z), Body.MaxSpeed);
                     return;
                 }
+                if (Body.TargetObject is GameLiving rvrFightTarget && TryRvrTacticsMove(rvrFightTarget)) return;
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
+                    return;
+                // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
+                // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
+                if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
+                    return;
+                // Then, standing there and swinging, it circles a little now and then instead of standing like a post
+                // (BotBrain.CombatMovement). A tank holding aggro stays put; raids and player-led groups as before.
+                if (Body.TargetObject is GameLiving circleTarget && TryCircle(circleTarget))
                     return;
                 if (Body.IsStealthed)
                     Body.Stealth(false);
@@ -3205,6 +3494,11 @@ namespace DOL.AI.Brain
                     Body.StopAttack();
                     return;
                 }
+
+                // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
+                if (rangedCaster && !outOfPowerMelee && Body.TargetObject is GameLiving casterStepTarget &&
+                    TryCasterStep(casterStepTarget))
+                    return;
 
                 bool bowCycleOwnsAction = Body.attackComponent != null &&
                     Body.rangeAttackComponent != null &&
@@ -3289,12 +3583,25 @@ namespace DOL.AI.Brain
                             stance,
                             targetForcesMelee,
                             hasRangedCombatWeapon);
+                        // An epic rule says this target is fought with the distance weapon only (Funus: a melee swing from
+                        // a mercenary, armsman, infiltrator or scout heals him to full). Short of endurance for a shot the
+                        // bot waits; it never falls back to its melee weapon on him.
+                        if (EpicEncounterTactics.FightsAtRange(BotBody, livingTarget))
+                        {
+                            if (!hasRangedCombatWeapon)
+                            {
+                                if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance) Body.StopAttack();
+                                return;
+                            }
+                            useRanged = true;
+                        }
                         if (useRanged)
                         {
                             if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance)
                                 Body.SwitchWeapon(eActiveWeaponSlot.Distance);
 
-                            int rangedAttackRange = Body.attackComponent.AttackRange;
+                            // df-bosses L2 (True 1.65): an archer stands where a raid boss takes damage (Legion: inside 1,400)
+                            int rangedAttackRange = CapRangeForTarget(livingTarget, Body.attackComponent.AttackRange);
                             if (BotRangedCombat.ShouldCloseToRangedRange(
                                     true, distance, rangedAttackRange))
                             {
@@ -3347,8 +3654,9 @@ namespace DOL.AI.Brain
         private void TryEnterStealthWhileIdle()
         {
             // Idle is not a reason to hide (and slow travel). Stealth belongs to
-            // the approach to a legal enemy player/bot, not random PvE pauses.
-            if (Body.IsStealthed) Body.Stealth(false);
+            // the approach to a legal enemy player/bot, not random PvE pauses,
+            // or to a companion hidden with its hidden player (CompanionStealth).
+            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody)) Body.Stealth(false);
         }
 
         private bool TryApproachAmbush(GameLiving target)
@@ -3376,7 +3684,8 @@ namespace DOL.AI.Brain
             // target (1,000), not at nuke range (1,500), so every shroom can be
             // planted beside the Animist instead of out by the enemy.
             int shroomRange = BotAnimistPolicy.ShroomStandoffRange(BotBody);
-            return shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range;
+            // df-bosses L2 (True 1.65): never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
+            return CapRangeForTarget(target, shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range);
         }
 
         private int SpellApproachRange()
@@ -3437,9 +3746,21 @@ namespace DOL.AI.Brain
             return true;
         }
 
+        /// <summary>
+        /// A bot may fall back to its melee weapon on <paramref name="target"/> (pressed in melee, or out of power) unless an
+        /// epic rule says it fights this target with its distance weapon only (Funus: a scout's, mercenary's, armsman's or
+        /// infiltrator's melee hit heals him to full). Play test duo13: every melee switch traced on Funus came from the
+        /// melee-pressure fallback, and 50 of his 51 heals were scouts swinging their swords while he stood on them.
+        /// </summary>
+        public static bool MayFallBackToMelee(GameBot bot, GameLiving target) =>
+            !EpicEncounterTactics.FightsAtRange(bot, target);
+
         private bool TryEngageUnderMeleePressure(GameLiving target)
         {
             if (target?.IsAlive != true || !Body.IsWithinRadius(target, Body.MeleeAttackRange + 35))
+                return false;
+            // The ranged branch of AttackMostWanted keeps the distance weapon; the rule's step-back opens the range.
+            if (!MayFallBackToMelee(BotBody, target))
                 return false;
 
             // Being close to an enemy is not itself an interruption. A caster
@@ -3546,6 +3867,7 @@ namespace DOL.AI.Brain
             if (target?.IsAlive != true || Body.IsCasting ||
                 BotBody?.CharacterClass?.ID == (int)eCharacterClass.Necromancer ||
                 !GameServer.ServerRules.IsAllowedToAttack(Body, target, true) ||
+                !MayFallBackToMelee(BotBody, target) ||
                 !OutOfPowerForOffense())
                 return false;
 
@@ -3582,6 +3904,7 @@ namespace DOL.AI.Brain
 
         private void QueueUsableMeleeStyle()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatStyle); // AI_PROFILE: measures only
             if (Body.styleComponent.NextCombatStyle != null || Body.ActiveWeapon == null)
                 return;
             Body.styleComponent.NextCombatStyle = BotMeleeStylePolicy.Select(BotBody,
@@ -3609,6 +3932,16 @@ namespace DOL.AI.Brain
             // An off-hand-only persisted loadout is not combat-ready; weapon
             // reconciliation will move/create a legal primary weapon instead.
             bool oneHandUsable = rightUsable;
+            // 1.2 epic rule (Kvasir: cold heals him): with one melee set that would land a forbidden damage type on the target
+            // and another that would not, the bot fights with the clean one (a raider swaps weapons for the fight).
+            if (Body.TargetObject is GameNPC ruled && oneHandUsable && twoHandUsable)
+            {
+                bool oneHandHeals = EpicEncounterTactics.WeaponForbidden(ruled, rightHand) ||
+                                    leftUsable && leftHand.Object_Type != (int)eObjectType.Shield && EpicEncounterTactics.WeaponForbidden(ruled, leftHand);
+                bool twoHandHeals = EpicEncounterTactics.WeaponForbidden(ruled, twoHand);
+                if (oneHandHeals && !twoHandHeals) oneHandUsable = false;
+                else if (twoHandHeals && !oneHandHeals) twoHandUsable = false;
+            }
             bool preferTwoHand = PreferTwoHandedSlot(twoHandUsable, oneHandUsable,
                 BotBody.BotSpec?.Is2H == true ||
                 BotBody.CharacterClass.ClassType == eClassType.ListCaster ||
@@ -3658,7 +3991,9 @@ namespace DOL.AI.Brain
         {
             Body.StopAttack();
             if (!UsesDefensiveOnlyPet) Body.ControlledBrain?.Disengage();
-            if (Body.IsCasting && Body.castingComponent?.SpellHandler?.Spell?.IsHarmful == true)
+            // A mez or stun on an add (TryPveAddControl) is a support action and finishes.
+            if (Body.IsCasting && Body.castingComponent?.SpellHandler?.Spell is { IsHarmful: true } casting &&
+                !IsAddControlSpell(casting))
                 Body.StopCurrentSpellcast();
         }
 
@@ -3667,7 +4002,9 @@ namespace DOL.AI.Brain
             if (CompanionFollowPolicy.SendsDruidPet(BotBody))
                 TryCommandCompanionDruidPet(CalculateNextAttackTarget());
             HoldSupportCombat();
-            if (!CheckHeals() && !TryPvpCrowdControl()) CheckSpells(eCheckSpellType.Defensive);
+            if (TryRvrTacticsSupport()) return;
+            if (!CheckHeals() && !TryPvpCrowdControl() && !TryPveAddControl() && !TryGroupCelerity())
+                CheckSpells(eCheckSpellType.Defensive);
             if (BotBody.IsPlayerLedGroup)
             {
                 if (!Body.IsCasting && Body.castingComponent?.HasPendingSkillRequests != true)
@@ -3694,6 +4031,13 @@ namespace DOL.AI.Brain
             // The Druid remains a support actor. Only its pet gets an attack
             // order, and an existing matching order is not restarted each tick.
             if (pet is ControlledMobBrain controlled && controlled.OrderedAttackTarget == target) return;
+            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
+            if (PetsDoNoDamageTo(target))
+            {
+                if (pet is not ControlledMobBrain mob || (target = PetTargetInsteadOfBoss(target, mob)) == null ||
+                    mob.OrderedAttackTarget == target)
+                    return;
+            }
             pet.Attack(target);
         }
 
@@ -3702,7 +4046,7 @@ namespace DOL.AI.Brain
             // Only player-led /spawn performers: ordinary gamebot route and
             // scheduling rules are untouched. Optional upkeep can otherwise
             // return before the FOLLOW state's mobile-song movement branch.
-            if (BotBody is not { IsTemporaryGroupHelper: true, IsAutonomousWorldBot: false,
+            if (BotBody is not { IsPlayerCompanion: true,
                     IsRecoveryResting: false, IsOnStableMasterRoute: false, IsAlive: true } bot ||
                 !IsClassicSongClass(bot) || !bot.IsPlayerLedGroup || bot.IsIncapacitated ||
                 bot.InCombat || HasAggro || bot.IsAttacking ||
@@ -3747,6 +4091,7 @@ namespace DOL.AI.Brain
 
         private GameLiving FindProtectionTarget()
         {
+            if (RvrTacticsProtectionTarget(out GameLiving rvrProtect)) return rvrProtect;
             if (!IsTankClass || Body?.Group == null)
                 return null;
 
@@ -3775,12 +4120,25 @@ namespace DOL.AI.Brain
 
         private bool TryPriorityTaunt(GameLiving target)
         {
+            if (RvrSlamQueued(target)) return false; // an open-field slam queued on it stays (BotBrain.TankPeel)
             if (!IsTankClass || target?.TargetObject is not GameLiving victim || Body.Group == null ||
                 victim.Group != Body.Group || !Body.Group.IsInTheGroup(victim) ||
                 victim.CurrentRegionID != Body.CurrentRegionID ||
                 !Body.IsWithinRadius(victim, GROUP_DEFENSE_ASSIST_RADIUS))
                 return false;
 
+            return TauntNow(target, false);
+        }
+
+        /// <summary>
+        /// An encounter tactic's taunt (EpicEncounterTactics.TauntDue: Govannon's demon, when his target is not a tank): the
+        /// class's taunt spell when one is ready (Paladin chants, Sluaghbinder), and a taunt style that fits the weapon in
+        /// hand as the next style (every tank class has them). True when a taunt spell was cast.
+        /// </summary>
+        public bool TauntForEncounter(GameLiving target) => IsTankClass && target != null && TauntNow(target, true);
+
+        private bool TauntNow(GameLiving target, bool usableStyleOnly)
+        {
             if (GameLoop.GameLoopTime >= _nextPriorityTauntTick)
             {
                 // Instant taunts (no cast time, like the Sluaghbinder's) are
@@ -3802,6 +4160,8 @@ namespace DOL.AI.Brain
 
             Style tauntStyle = BotBody.StylesTaunt?
                 .Where(style => style.Level <= Body.Level)
+                .Where(style => !usableStyleOnly || Body.ActiveWeapon != null &&
+                    StyleProcessor.CanUseStyle(Body.attackComponent?.attackAction?.LastAttackData, Body, style, Body.ActiveWeapon))
                 .OrderByDescending(style => style.Level)
                 .FirstOrDefault();
             if (tauntStyle != null)
@@ -3880,6 +4240,7 @@ namespace DOL.AI.Brain
 
         public virtual bool CheckSpells(eCheckSpellType type)
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatSpells); // AI_PROFILE: measures only
             if (Body == null || Body.Spells == null || Body.Spells.Count <= 0)
                 return false;
 
@@ -3923,8 +4284,12 @@ namespace DOL.AI.Brain
             }
             else if (!casted && type == eCheckSpellType.Offensive)
             {
+                // df-bosses L2 (True 1.65): from where the target takes no damage, no attack spell: the caller walks in to range
+                if (BeyondTargetDamageRange()) return false;
                 if (TryPvpCrowdControl()) return true;
                 if (TryBardPveAddMez()) return true;
+                if (TryPveAddControl()) return true;
+                if (TryGroupCelerity()) return true;
                 if (TryShamanPveAddRoot()) return true;
                 if (TryShortCombatShield()) return true;
                 if (BotBody.CharacterClass.ID == (int)eCharacterClass.Cleric)
@@ -3971,6 +4336,14 @@ namespace DOL.AI.Brain
                 // Nightshade melee focus
                 if (BotBody.CharacterClass.ID == (int)eCharacterClass.Nightshade)
                     return false;
+
+                // A point blank spell with a cast time: cast in place, or walk in while the group holds the monsters.
+                if (TryPointBlankArea())
+                    return true;
+
+                // A pet being hit, power to save: the pet focus shield instead of nukes (BotPetFocusShieldPolicy).
+                if (Body.ManaPercent <= BotPetFocusShieldPolicy.MaxPowerPercent && TryStartPetFocusShield(false))
+                    return true;
 
                 // Melee hybrids prefer melee when in range
                 if (!PrefersCurrentSpellRange() && (BotBody.CanUsePositionalStyles || BotBody.CanUseAnytimeStyles) && (Body.IsWithinRadius(Body.TargetObject, 550) || Body.ManaPercent <= 10))
@@ -4030,6 +4403,10 @@ namespace DOL.AI.Brain
                     }
                 }
 
+                // Nothing else to cast while the pet is being hit: the shield, above 60% power too.
+                if (spellsToCast.Count == 0 && TryStartPetFocusShield(true))
+                    return true;
+
                 if (spellsToCast.Count > 0)
                 {
                     // Do not roll a DoT/debuff already on this mob and mistake
@@ -4042,12 +4419,16 @@ namespace DOL.AI.Brain
                     if (PrefersCurrentSpellRange() && spellsToCast.Exists(BotCasterPriority.IsDamage))
                         spellsToCast.RemoveAll(spell => !BotCasterPriority.IsDamage(spell));
                     bool shamanHybrid = ShamanBotCombatPolicy.IsHybrid((eCharacterClass)BotBody.CharacterClass.ID);
-                    Spell spellToCast = shamanHybrid
+                    // Two or more monsters in the fight within an area damage spell's reach: that spell, when its total
+                    // beats the best single nuke. Area spells that would wake a mez or pull a monster are dropped here.
+                    Spell areaChoice = ChooseAreaDamage(spellsToCast, Body.TargetObject as GameLiving);
+                    if (spellsToCast.Count == 0) return Body.IsCasting;
+                    Spell spellToCast = areaChoice ?? (shamanHybrid
                         ? spellsToCast.OrderBy(ShamanBotCombatPolicy.RotationPriority)
                             .ThenByDescending(spell => spell.Level).First()
                         : BotBody.IsEndgameCompanion
                         ? TemporaryCompanionBalance.HighestSpell(spellsToCast)
-                        : spellsToCast[Util.Random(spellsToCast.Count - 1)];
+                        : BotSpellPower.WithSkill(BotBody, spellsToCast, spellsToCast[Util.Random(spellsToCast.Count - 1)]));
 
                     if (spellToCast.Uninterruptible || !Body.IsBeingInterrupted)
                         casted = CheckOffensiveSpells(spellToCast);
@@ -4191,8 +4572,12 @@ namespace DOL.AI.Brain
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 !ShamanBotCombatPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell) ||
                 BotSpellPower.BlocksAttackerRotation(BotBody, spell) ||
+                EpicEncounterTactics.ForbidsSpell(BotBody, target, spell) ||
                 !NeedsOffensiveSpellApplication(target, spell) ||
-                Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell))
+                Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell) ||
+                // 1.2 epic tactics: no damage type the target is immune to (Orshom's Fire: cold only), and nothing at all on a
+                // boss this bot must not hit (Funus heals to full from the wrong class).
+                EpicEncounterTactics.SpellWasted(target, spell) || EpicEncounterTactics.MustNotHit(BotBody, target))
                 return false;
 
             if (spell.CastTime > 0 && spell.Target is eSpellTarget.ENEMY or eSpellTarget.AREA or eSpellTarget.CONE)
@@ -4209,6 +4594,8 @@ namespace DOL.AI.Brain
         protected bool CanCastDefensiveSpell(Spell spell)
         {
             if (CompanionFollowPolicy.DeferBuff(BotBody, spell)) return false;
+            // Legion eats the bladeturn of his target, and five of them set off his soul blast (epic wave 3).
+            if (spell?.SpellType == eSpellType.Bladeturn && EpicEncounterTactics.NoBladeturnHere(BotBody)) return false;
             if (spell == null || spell.IsHarmful || spell.Level > Body.Level ||
                 !BotBody.CanAffordConcentration(spell) ||
                 BotSongTwistPolicy.IsReservedPulse(BotBody, spell) ||
@@ -4234,8 +4621,10 @@ namespace DOL.AI.Brain
 
             bool casted = false;
 
-            if (Body.TargetObject is GameLiving living && NeedsOffensiveSpellApplication(living, spell))
+            if (Body.TargetObject is GameLiving living && NeedsOffensiveSpellApplication(living, spell) &&
+                !EpicEncounterTactics.ForbidsSpell(BotBody, living, spell))
             {
+                AimGroundSpell(spell, living);
                 casted = Body.CastSpell(spell, m_mobSpellLine);
             }
 
@@ -4314,7 +4703,10 @@ namespace DOL.AI.Brain
         {
             if (spell == null || IsOutclassedDamageSpell(spell) || Body.Mana < BotBody.PowerCost(spell) ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
-                spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0)
+                spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
+                EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell) ||
+                // As CanCastOffensiveSpell: nothing on a boss this bot must not hit (duo14: reavers' instant DoTs healed Funus).
+                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving))
                 return false;
 
             bool castSpell = false;
@@ -4331,6 +4723,7 @@ namespace DOL.AI.Brain
                 case eSpellType.CombatSpeedDebuff:
                 case eSpellType.DamageOverTime:
                 case eSpellType.MeleeDamageDebuff:
+                case eSpellType.ArmorAbsorptionDebuff:
                 case eSpellType.AllStatsPercentDebuff:
                 case eSpellType.CrushSlashThrustDebuff:
                 case eSpellType.EffectivenessDebuff:
@@ -4338,7 +4731,14 @@ namespace DOL.AI.Brain
                 case eSpellType.Stun:
                 case eSpellType.Mez:
                 case eSpellType.Mesmerize:
-                    if (spell.IsPBAoE && !Body.IsWithinRadius(Body.TargetObject, spell.Radius))
+                    // A point blank spell (range 0) hits around the caster: the old check wanted the target within range 0,
+                    // so these were never cast (issue #17). Two or more monsters in the fight around it, nothing woken or pulled.
+                    if (spell.IsPBAoE)
+                    {
+                        castSpell = InstantPointBlankWorthwhile(spell, Body.TargetObject as GameLiving);
+                        break;
+                    }
+                    if (AreaBlastVetoed(spell, Body.TargetObject))
                         break;
 
                     if (!LivingHasEffect((GameLiving)Body.TargetObject, spell) && Body.IsWithinRadius(Body.TargetObject, spell.Range))
@@ -4651,6 +5051,7 @@ namespace DOL.AI.Brain
             {
                 target = null;
                 if (CompanionFollowPolicy.DeferBuff(BotBody, spell)) return false;
+                if (spell?.SpellType == eSpellType.Bladeturn && EpicEncounterTactics.NoBladeturnHere(BotBody)) return false;
 
                 if (spell.Level > Body.Level || Body.Mana < BotBody.PowerCost(spell) ||
                     !BotBody.CanAffordConcentration(spell) ||
@@ -4851,11 +5252,19 @@ namespace DOL.AI.Brain
             corpse.GetNPCsInRadius(PlayerRezHostileRadius).Any(npc => npc != null && npc.IsAlive && npc is not GameBot &&
                 npc.Brain is IOldAggressiveBrain { AggroLevel: > 0 } && GameServer.ServerRules.IsAllowedToAttack(npc, bot, true));
 
-        private bool FreeToRezStrangers(GameBot bot) =>
-            !bot.IsOnStableMasterRoute && !bot.IsReturningAfterRelease && !BotSiegeRuntime.Assigned(bot) &&
-            !BotSiegeRuntime.HoldingPosition(bot) &&
-            bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) == null &&
-            string.IsNullOrEmpty(bot.TempProperties.GetProperty<string>("RvrEventForce"));
+        // 1.2 play-check prep (2026-11-15): every RvR gamebot keeps its force id ("rvr-<id>") once it has run its RvR goal,
+        // and it is never cleared, so "has a force id" meant no bot that had ever done RvR (every bot in a battleground or
+        // the frontier) would rez a stranger. The schedule had the same mistake, fixed in 1.1.3; the id's event is asked.
+        private static bool FreeToRezStrangers(GameBot bot) =>
+            FreeToRezStrangers(bot.IsOnStableMasterRoute, bot.IsReturningAfterRelease, BotSiegeRuntime.Assigned(bot),
+                BotSiegeRuntime.HoldingPosition(bot), bot.TempProperties.GetProperty<GameRelic>(GameRelic.PLAYER_CARRY_RELIC_WEAK) != null,
+                AutonomousBotSchedule.InRealmEvent(bot));
+
+        /// <summary>The rule, pure: a bot may rez a player outside its group unless it travels, runs back after a death, is at
+        /// a siege, carries a relic or is committed to a realm event (a force id alone is not one).</summary>
+        public static bool FreeToRezStrangers(bool onStableRoute, bool returningAfterRelease, bool atSiege, bool holdingSiegePosition,
+            bool carryingRelic, bool inRealmEvent) =>
+            !onStableRoute && !returningAfterRelease && !atSiege && !holdingSiegePosition && !carryingRelic && !inRealmEvent;
 
         private long _nextRezSkipReport;
 
@@ -5028,10 +5437,64 @@ namespace DOL.AI.Brain
         /// A group member a heal or buff may be aimed at: this bot, or a member within
         /// 2,500 units in the same region that is not being skipped after a failed approach.
         /// </summary>
+        private long _nextRaidCureScan;
+        private long _nextRaidCureLog;
+
+        /// <summary>
+        /// A mesmerized member of this bot's raid, of any party, that it can cure from where it stands, or null: autonomous
+        /// raiders with the cure only, scanned twice a second (<see cref="RaidCureMezz"/>).
+        /// </summary>
+        private GameLiving RaidMezzedToCure()
+        {
+            if (!BotBody.IsAutonomousWorldBot || BotBody.CureMezz == null || BotBody.Group == null) return null;
+            long now = GameLoop.GameLoopTime;
+            if (now < _nextRaidCureScan) return null;
+            _nextRaidCureScan = now + 500;
+            if (AutonomousRealmRaid.GetView(BotBody.Group) == null || !CheckHealSpell(BotBody.CureMezz)) return null;
+            int range = BotBody.castingComponent.CalculateSpellRange(BotBody.CureMezz);
+            var living = new List<GameLiving>();
+            var mezzed = new List<RaidCureMezz.Mezzed>();
+            foreach (GameLiving member in AutonomousRealmRaid.SupportMembers(BotBody))
+            {
+                if (member == null || member == Body || !member.IsAlive || !member.IsMezzed ||
+                    member.CurrentRegion != Body.CurrentRegion || !Body.IsWithinRadius(member, range))
+                    continue;
+                GameBot bot = member as GameBot;
+                living.Add(member);
+                mezzed.Add(new(member.ObjectID, bot?.CureMezz != null,
+                    bot?.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID),
+                    BotPartyRoles.IsTank(bot)));
+            }
+            // Sweep 7c (H-1): a raider another curer is curing is left out, and the one taken is claimed for the cast.
+            long curer = Body.ObjectID;
+            int pick = RaidCureMezz.Choose(mezzed, curer, id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Mezz, id, curer, now));
+            if (pick < 0) return null;
+            if (!RaidCureClaims.TryClaim(RaidCureClaims.Kind.Mezz, mezzed[pick].Id, curer, now, BotBody.CureMezz.CastTime)) return null;
+            if (now >= _nextRaidCureLog && log.IsInfoEnabled)
+            {
+                _nextRaidCureLog = now + 15_000;
+                log.Info($"RAID_CURE_MEZZ bot={Body.Name} class=\"{BotBody.CharacterClass?.Name}\" target=\"{living[pick].Name}\" " +
+                         $"rank={RaidCureMezz.Rank(mezzed[pick])} mezzedInReach={mezzed.Count} spell=\"{BotBody.CureMezz.Name}\"");
+            }
+            return living[pick];
+        }
+
         private bool InSupportReach(GameLiving member) =>
             member == Body || member != null && member.CurrentRegion == Body.CurrentRegion &&
             Body.IsWithinRadius(member, BotSupportReach.SupportRadius) &&
             !_supportReach.IsSkipped(member, GameLoop.GameLoopTime);
+
+        // Owner 2026-10-27: a /spawn companion does not walk away from its player to heal or buff a member that is
+        // far from the player (in a battleground the Cleric and Friar ran off alone to buff a revived Paladin).
+        public const int CompanionSupportLeash = 1_500;
+
+        public static bool LeavesPlayerToSupport(bool temporaryCompanion, bool autonomous, bool playerNear, int targetToPlayer) =>
+            temporaryCompanion && !autonomous && playerNear && targetToPlayer > CompanionSupportLeash;
+
+        private bool LeavesPlayerToSupport(GameLiving target) =>
+            AssistedPlayer is { IsAlive: true } player && LeavesPlayerToSupport(BotBody?.IsTemporaryGroupHelper == true,
+                BotBody?.IsAutonomousWorldBot == true, player.CurrentRegionID == Body.CurrentRegionID,
+                player.CurrentRegionID == target.CurrentRegionID ? (int)player.GetDistanceTo(target) : int.MaxValue);
 
         /// <summary>
         /// Walks toward a group member that is out of range of a heal or buff. False once the
@@ -5039,7 +5502,7 @@ namespace DOL.AI.Brain
         /// </summary>
         private bool ApproachSupportTarget(GameLiving target)
         {
-            if (target == null || target == Body || !InSupportReach(target) ||
+            if (target == null || target == Body || !InSupportReach(target) || LeavesPlayerToSupport(target) ||
                 !_supportReach.KeepApproaching(target, Body.GetDistanceTo(target), GameLoop.GameLoopTime))
                 return false;
             BotBody.WalkTo(new Point3D(target.X, target.Y, target.Z), BotBody.MaxSpeed);
@@ -5048,6 +5511,7 @@ namespace DOL.AI.Brain
 
         public bool CheckHeals()
         {
+            using var aiProfile = AiProfile.Scope(AiSystem.CombatHeals); // AI_PROFILE: measures only
             const byte ManaThreshold = 90;
             const long CureDelay = 5000;
 
@@ -5080,6 +5544,8 @@ namespace DOL.AI.Brain
             int amountToHeal = 0;
             int numEmergency = 0;
             int numNeedHealing = 0;
+            // Own-party members in reach under RaidCurePoison.DangerPercent (the raid cure waits for them).
+            int partyInDanger = 0;
             Spell spellToCast = null;
             GameLiving spellTarget = null;
             bool startedCasting = false;
@@ -5097,6 +5563,7 @@ namespace DOL.AI.Brain
                     if (deficit > 0)
                     {
                         amountToHeal += deficit;
+                        if (member.HealthPercent < RaidCurePoison.DangerPercent) partyInDanger++;
 
                         if (member.HealthPercent < 65)
                         {
@@ -5234,6 +5701,31 @@ namespace DOL.AI.Brain
                 }
             }
 
+            // A storming battleground healer heals its fellow stormers. Ungrouped (as gamebots on a battleground tour are), it
+            // healed only itself: the RvR block above is for the frontier objective. Owner, 2026-11-16: the zerg's healers
+            // stood behind and kept its fighters up while they killed the gate's guards. The same range and line-of-sight
+            // checks as the RvR block; companions and players' groups are untouched (only autonomous stormers qualify).
+            if (BotBody.IsAutonomousWorldBot && BattlegroundBrackets.IsBattlegroundRegion(Body.CurrentRegionID) &&
+                AutonomousBattlegroundKeepRally.IsStorming(Body.CurrentRegionID, Body.Realm, BotBody.DatabaseID))
+            {
+                GameLiving stormer = Body.GetNPCsInRadius((ushort)AutonomousBattlegroundKeepRally.StormerHealRadius).OfType<GameBot>()
+                    .Where(other => other != Body && other.IsAlive && other.Realm == Body.Realm &&
+                        other.HealthPercent < AutonomousBattlegroundKeepRally.StormerHealBelowPercent)
+                    .OrderBy(other => other.HealthPercent)
+                    .Take(4)
+                    .FirstOrDefault(other => AutonomousBattlegroundKeepRally.IsStorming(Body.CurrentRegionID, Body.Realm, other.DatabaseID) &&
+                        PathfindingProvider.Instance.HasLineOfSight(Body.CurrentZone, new(Body.X, Body.Y, Body.Z),
+                            new(other.X, other.Y, other.Z), PathfindingProvider.Instance.DefaultFilters));
+                if (stormer != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || stormer.HealthPercent < spellTarget.HealthPercent))
+                {
+                    spellTarget = stormer;
+                    amountToHeal = Math.Max(amountToHeal, stormer.MaxHealth - stormer.Health);
+                    numNeedHealing = Math.Max(1, numNeedHealing);
+                    if (stormer.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+                    AutonomousBattlegroundKeepRally.NoteStormerHeal(Body.CurrentRegionID, Body.Realm);
+                }
+            }
+
             if (AutonomousRealmRaid.HasSharedSupport(BotBody))
             {
                 // Lowest-health raid member or pet in range, without sorting the whole roster.
@@ -5245,6 +5737,11 @@ namespace DOL.AI.Brain
                 foreach (GameLiving m in AutonomousRealmRaid.SupportPets(BotBody, 1800))
                     if (m.HealthPercent < 80 && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
                         raidPatient = m;
+                // dragon-fight M1 (True 1.65): a real player of the realm fighting beside the raid, not in its parties, is healed too
+                foreach (GameLiving m in BotGroupSupport.RaidGuests(BotBody))
+                    if (m.IsAlive && m.CurrentRegionID == Body.CurrentRegionID && m.HealthPercent < 80 &&
+                        Body.IsWithinRadius(m, 1800) && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
+                        raidPatient = m;
                 if (raidPatient != null && (spellTarget == null || raidPatient.HealthPercent < spellTarget.HealthPercent))
                 {
                     spellTarget = raidPatient;
@@ -5253,8 +5750,39 @@ namespace DOL.AI.Brain
                 }
             }
 
+            // 1.2: a raider an encounter just threw, teleported or jailed comes first (EncounterDisplacementRecovery.PreferPatient).
+            GameLiving displacedPatient = EncounterDisplacementRecovery.DisplacedPatient(BotBody, spellTarget, InSupportReach);
+            if (displacedPatient != null)
+            {
+                spellTarget = displacedPatient;
+                amountToHeal = Math.Max(amountToHeal, displacedPatient.MaxHealth - displacedPatient.Health);
+                numNeedHealing = Math.Max(1, numNeedHealing);
+                if (displacedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+            }
+
+            // 1.2 (epic wave 2): the raider a boss mechanic marks (a glare's, the party under Xanxicar's stomp, anyone under
+            // half beside Legion) comes next (EpicEncounterTactics.SignalPatient).
+            GameLiving markedPatient = displacedPatient == null ? EpicEncounterTactics.SignalPatient(BotBody, spellTarget, InSupportReach) : null;
+            if (markedPatient != null)
+            {
+                spellTarget = markedPatient;
+                amountToHeal = Math.Max(amountToHeal, markedPatient.MaxHealth - markedPatient.Health);
+                numNeedHealing = Math.Max(1, numNeedHealing);
+                if (markedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+            }
+
+            // 1.2 (sweep 7b): inside a raid's fight a damage over time on several raiders (Summoner Pain) is cured before the
+            // turn's heal, unless a member of this bot's own party is in danger or a boss mechanic marks a patient (RaidCurePoison).
+            bool raidCureFirst = TryRaidCurePoison(partyInDanger, displacedPatient != null || markedPatient != null,
+                out Spell raidCure, out GameLiving raidCureTarget);
+            if (raidCureFirst)
+            {
+                spellToCast = raidCure;
+                spellTarget = raidCureTarget;
+            }
+
             // Emergency heal
-            if (numEmergency > 0)
+            if (spellToCast == null && numEmergency > 0)
             {
                 if (canCastInstantHeal)
                     spellToCast = BotBody.HealInstant;
@@ -5373,6 +5901,15 @@ namespace DOL.AI.Brain
                 }
             }
 
+            // The raid's mesmerized, across its parties, before ordinary healing (RaidCureMezz).
+            if (RaidCureMezz.ComesBeforeHealing(numEmergency) && RaidMezzedToCure() is GameLiving raidMezzed)
+            {
+                if (raidCureFirst && raidCure == BotBody.CurePoison && raidCureTarget != null)
+                    RaidCureClaims.Release(RaidCureClaims.Kind.Poison, raidCureTarget.ObjectID, Body.ObjectID);
+                spellToCast = BotBody.CureMezz;
+                spellTarget = raidMezzed;
+            }
+
             // Cast the selected spell
             if (BotBody.IsAutonomousWorldBot && (AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR) || AutonomousRealmRaid.GetView(BotBody.Group) != null) &&
                 spellTarget != null && spellTarget != Body && Body.Group?.IsInTheGroup(spellTarget) != true &&
@@ -5413,9 +5950,20 @@ namespace DOL.AI.Brain
                 {
                     BotGroupSupport.CancelHeal(BotBody);
                     BotBody.TargetObject = oldTarget;
+                    // A raid cure that did not start gives its raider back to the other curers (RaidCureClaims).
+                    if (spellToCast == BotBody.CureMezz)
+                        RaidCureClaims.Release(RaidCureClaims.Kind.Mezz, spellTarget.ObjectID, Body.ObjectID);
+                    else if (spellToCast == BotBody.CurePoison)
+                        RaidCureClaims.Release(RaidCureClaims.Kind.Poison, spellTarget.ObjectID, Body.ObjectID);
                 }
                 else
                 {
+                    // Sweep 6f: a raid's cure poison casts are summed in the log (RAID_CURE_POISON, logging only).
+                    if (spellToCast.SpellType == eSpellType.CurePoison && spellTarget != null)
+                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime);
+                    // The raid cure waits its delay whether the cure is instant or not: the next turns heal (sweep 7b).
+                    if (raidCureFirst && spellToCast == raidCure)
+                        nextCureTime = GameLoop.GameLoopTime + CureDelay;
                     if (spellToCast.IsInstantCast)
                     {
                         BotBody.TargetObject = oldTarget;
@@ -5429,6 +5977,55 @@ namespace DOL.AI.Brain
             return startedCasting || isCastingHeal;
         }
 
+        private long _nextRaidPoisonScan;
+
+        /// <summary>
+        /// This turn's raid cure (RaidCurePoison, sweep 7b): an autonomous raider of a realm raid with its class's cure poison
+        /// (CurePoison or CurePoisonGroup) cures a damage over time that several raiders in its reach carry before it heals.
+        /// </summary>
+        private bool TryRaidCurePoison(int partyInDanger, bool markedPatient, out Spell cure, out GameLiving target)
+        {
+            cure = null;
+            target = null;
+            Group group = Body.Group;
+            if (!BotBody.IsAutonomousWorldBot || group == null || BotBody.CurePoison == null && BotBody.CurePoisonGroup == null)
+                return false;
+            long now = GameLoop.GameLoopTime;
+            if (nextCureTime >= now || now < _nextRaidPoisonScan || partyInDanger > 0 || markedPatient) return false;
+            _nextRaidPoisonScan = now + RaidCurePoison.ScanMilliseconds;
+            if (AutonomousRealmRaid.GetView(group) == null) return false;
+            bool canSingle = CheckHealSpell(BotBody.CurePoison), canGroup = CheckHealSpell(BotBody.CurePoisonGroup);
+            if (!canSingle && !canGroup) return false;
+            int singleRange = canSingle ? BotBody.castingComponent.CalculateSpellRange(BotBody.CurePoison) : 0;
+            int groupRange = !canGroup ? 0 : BotBody.CurePoisonGroup.Range > 0
+                ? BotBody.castingComponent.CalculateSpellRange(BotBody.CurePoisonGroup) : (int)BotBody.CurePoisonGroup.Radius;
+            var living = new List<GameLiving>();
+            var dotted = new List<RaidCurePoison.Dotted>();
+            IEnumerable<GameLiving> members = canSingle ? AutonomousRealmRaid.SupportMembers(BotBody) : group.GetMembersInTheGroup();
+            foreach (GameLiving member in members)
+            {
+                if (member == null || !member.IsAlive || member.CurrentRegion != Body.CurrentRegion || !member.IsPoisoned) continue;
+                bool own = group.IsInTheGroup(member);
+                bool groupReach = own && canGroup && Body.IsWithinRadius(member, groupRange);
+                if (!groupReach && !(canSingle && Body.IsWithinRadius(member, singleRange))) continue;
+                living.Add(member);
+                // Own party: within the group cure's reach when the class has one (it cures only those), else any.
+                dotted.Add(new(member.ObjectID, canGroup ? groupReach : own, member.HealthPercent));
+            }
+            long curer = Body.ObjectID;
+            var (which, pick) = RaidCurePoison.Decide(true, true, canGroup, canSingle, dotted, partyInDanger, false, curer,
+                id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Poison, id, curer, now));
+            if (which == RaidCurePoison.Cure.None || pick < 0) return false;
+            // Sweep 7c (H-1): a single cure claims its raider for the cast, so the raid's other curers take someone else.
+            if (which == RaidCurePoison.Cure.Single &&
+                !RaidCureClaims.TryClaim(RaidCureClaims.Kind.Poison, dotted[pick].Id, curer, now, BotBody.CurePoison.CastTime))
+                return false;
+            cure = which == RaidCurePoison.Cure.Group ? BotBody.CurePoisonGroup : BotBody.CurePoison;
+            // The group cure takes the caster's party around it; aimed at itself it needs no walk.
+            target = which == RaidCurePoison.Cure.Group ? Body : living[pick];
+            return true;
+        }
+
         private bool CanHealRelicCarrier(GameLiving carrier)
         {
             Spell[] heals = [BotBody.HealInstant, BotBody.HealBig, BotBody.HealEfficient, BotBody.HealOverTime];
@@ -5440,8 +6037,8 @@ namespace DOL.AI.Brain
         private bool TryResurrectCompanionOwner()
         {
             GameBot bot = BotBody;
-            if (bot?.IsTemporaryGroupHelper != true) return false;
-            GamePlayer owner = bot.Owner;
+            if (bot?.IsTemporaryGroupHelper != true && bot?.IsHiredCompanion != true) return false;
+            GamePlayer owner = bot.CompanionPlayer;
             Spell resurrection = bot.ResurrectionSpell;
             if (owner == null || owner.IsAlive || resurrection == null || owner.ObjectState != GameObject.eObjectState.Active ||
                 owner.CurrentRegionID != bot.CurrentRegionID ||
@@ -5579,7 +6176,10 @@ namespace DOL.AI.Brain
         private bool TryResurrectGroupMember()
         {
             Spell resurrection = BotBody.ResurrectionSpell;
-            if (Body.Group != null)
+            // Read once: the group can be disbanded between two reads (owner's PC, build b1b6846, 2026-11-18: two
+            // NullReferenceExceptions at 07:08:17 here, for Thanturbuffs and Grimizrad).
+            Group group = Body.Group;
+            if (group != null)
             {
                 if (Body.IsCasting && Body.castingComponent.SpellHandler?.Spell?.SpellType == eSpellType.Resurrect)
                     return BotGroupSupport.ContinueResurrection(BotBody);
@@ -5587,7 +6187,7 @@ namespace DOL.AI.Brain
                 // A queued resurrection that hasn't started yet is not a reason to queue a second (play test 2026-10-27: two
                 // casts reached the player back to back, and the second dialog's arrival declined the first).
                 if (Body.castingComponent.HasPendingSkillRequests &&
-                    Body.Group.GetMembersInTheGroup().Any(member => member != Body && !member.IsAlive))
+                    group.GetMembersInTheGroup().Any(member => member != Body && !member.IsAlive))
                     return true;
                 if (Body.IsCasting || !CheckHealSpell(resurrection))
                 {
@@ -5598,7 +6198,7 @@ namespace DOL.AI.Brain
                 }
                 // A real player is raised where the caster stands: clear what would hit them first (play test 2026-10-28).
                 int raiseRange = BotBody.castingComponent.CalculateSpellRange(resurrection);
-                GameLiving playerCorpse = Body.Group.GetMembersInTheGroup().FirstOrDefault(member => member is GamePlayer && !member.IsAlive &&
+                GameLiving playerCorpse = group.GetMembersInTheGroup().FirstOrDefault(member => member is GamePlayer && !member.IsAlive &&
                     member.ObjectState == GameObject.eObjectState.Active && member.CurrentRegionID == Body.CurrentRegionID &&
                     Body.IsWithinRadius(member, raiseRange));
                 if (playerCorpse != null && BotGroupSupport.ThreatToRaisedPlayer(BotBody) is GameNPC threat)
@@ -5642,12 +6242,12 @@ namespace DOL.AI.Brain
                 }
                 ReportResurrectionBlock(resurrection, null);
             }
-            if (resurrection == null || Body.Group == null || Body.InCombat || Body.Group.GetMembersInTheGroup().Any(m => m.IsAlive && m.InCombat) || Body.IsCasting || !CheckHealSpell(resurrection))
+            if (resurrection == null || group == null || Body.InCombat || group.GetMembersInTheGroup().Any(m => m.IsAlive && m.InCombat) || Body.IsCasting || !CheckHealSpell(resurrection))
                 return false;
 
             int range = BotBody.castingComponent.CalculateSpellRange(resurrection);
             bool regrouping = AutonomousBotGroupCoordinator.IsRecovering(BotBody);
-            GameLiving deadMember = Body.Group.GetMembersInTheGroup()
+            GameLiving deadMember = group.GetMembersInTheGroup()
                 .Where(member => member != Body && !member.IsAlive && member.ObjectState is GameObject.eObjectState.Active &&
                                  member.CurrentRegionID == Body.CurrentRegionID)
                 // Raise nearby casualties, but do not abandon recovery to chase

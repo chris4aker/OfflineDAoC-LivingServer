@@ -1,0 +1,143 @@
+{
+ "id": "marquis-valupa",
+ "name": "Marquis Valupa",
+ "npcNames": [
+  "Marquis Valupa"
+ ],
+ "aliases": [
+  "valupa",
+  "the slope-keeper"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-three-doors",
+ "factions": [
+  "dark-ones",
+  "throne-of-legion"
+ ],
+ "related": [
+  {
+   "id": "legion",
+   "relation": "answers to him only"
+  },
+  {
+   "id": "duke-satori",
+   "relation": "always stands near it"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "sets Legion's Own knights on the slope"
+  },
+  {
+   "id": "mutilators",
+   "relation": "sets Legion's Own Mutilators on the slope"
+  },
+  {
+   "id": "marquis-haurian",
+   "relation": "places him by the door"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "his table is on its ground"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Marquis Valupa is a level 73 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands on the approach to Legion's lair, below the Grand Chancellor and near Duke Satori.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Allakhazam's bestiary lists Marquis Valupa among the marquises of Darkness Falls.",
+   "provenance": "mythic",
+   "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+  },
+  {
+   "text": "Marquis Valupa is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "In the Ars Goetia, Vapula (60) is a duke; Valupa may read as that name, to verify.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Marquis Valupa keeps the slope. The approach to the Master's door is the most important ground in the hollow after the Master's lair itself, and since the doors opened it has been walked by every mortal company that went looking for the Master, and somebody has to decide where Legion's Own stand on it. That is Valupa's office. The Roll names it Marquis of the Approach, under the Master, and it is the only post in the court that answers to neither a prince nor a high lord nor the Chancellor, though the Chancellor's table is part of the ground Valupa keeps.\n\nValupa was a marquis without a master before that, which in the court is a dangerous thing to be. In the Uncounted Age it served whoever had last fed it, and at the Feast of Thrones it served nobody and was nearly eaten for it; it knelt with the eleven by walking out of the crowd at the back of the deep chamber and kneeling at the end of the line, and the Master, the court says, had already eaten enough. The First Roll gave it a line under the Master directly, with no seat at all. It took the slope as its seat by standing on it, and nobody has moved it.\n\nIts great talent is knowing where everyone is. It sets Legion's Own on the slope, the knights Fonath and Carabia and Olov and Tamuel, the Mutilators Konapher and Oprionach and the rest, Inquisitor Famuel, Earl Amagin and Marquis Haurian, so that nothing can come down the approach without meeting them in the order Valupa chose. It is also the only demon in the court that knows where Duke Satori is standing at any moment, because Satori always stands near it. It has never said a word about him. The court regards that as Valupa's other talent.",
+ "legend": "Valupa stands on the approach to Legion's lair, below the Chancellor and above the Mutilators and knights of Legion's Own, and Duke Satori is stealthed nearby. Level 73, no script. Sweep for Satori before you pull Valupa, or you will have both at once. After Valupa, the rest of Legion's Own on the slope come one cluster at a time. Players call it the slope-keeper and say it places the demons on the approach like chess pieces. Whether that is true or not, the approach is the one stretch in Darkness Falls where careless pulling kills raids. Bring a second set of eyes for stealth and do not rush the slope.",
+ "yells": {
+  "aggro": [
+   "Wrong order. You came down the slope in the wrong order.",
+   "Everyone here stands where I put them. You too.",
+   "The approach is mine. Walk it properly."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Out of place. You are all out of place."
+   }
+  ],
+  "death": [
+   "Someone... else will keep the slope.",
+   "You stand where I would have put you."
+  ],
+  "slay": [
+   "There. That is your place.",
+   "Out of order, and down.",
+   "The slope is tidy again."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Every demon on this slope stands exactly where it should.",
+   "Someone near is keeping very still."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The slope-keeper looks down the approach, counting."
+   }
+  ],
+  "realmFirstKill": "Marquis Valupa has fallen. The approach is in disorder."
+ },
+ "botLines": {
+  "briefing": [
+   "valupa is on the approach, satori is stealthed next to it. [sweep first|find satori first]",
+   "73 no tricks. after valupa, legions own [one cluster at a time|one pack at a time]",
+   "this slope kills raids. [slow pulls|no rushing]",
+   "valupa then haurian and the mutilators. [mana check|rebuff]"
+  ],
+  "aftermathWin": [
+   "valupa down. [slope keeper is done|the approach is ours]",
+   "marquis valupa dead. [satori next if hes still up|find satori]",
+   "valupa done, [clean|good pull]",
+   "slope-keeper dead. [legions own next|on down]"
+  ],
+  "aftermathLoss": [
+   "pulled valupa and satori together. [wipe|told you sweep]",
+   "valupa brought half the slope. [too fast|slow down]",
+   "valupa got us. [regroup|rez]",
+   "the approach ate us again. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] valupa places legions own on the approach like chess pieces",
+   "valupa answers to legion only. [no prince, no high lord|its own master]",
+   "[someone said|my guildie says] valupa always knows where satori is and never says",
+   "valupa was nearly eaten at the feast. [knelt last|at the end of the line]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "valupa",
+  "text": "The Marquis of the Approach, answering only to [Legion], who sets Legion's Own on the slope so that no raid meets them out of order. It is the one demon that always knows where Duke [Satori] stands, and it has never said."
+ },
+ "bookPage": "From The Slope, a Midgard skald's verse turned into plain speech: Down the slope to the Master's door the demons stand like men in a shield-wall that has been set by someone who has fought a great many battles: knights here, flayers there, a questioner in the middle, and a marquis above them all looking down the slope at you as a jarl looks down a hall. We tried to come down in our own order. The marquis moved one knight three paces to the left, and our whole order was wrong. I have never seen so small a move do so much.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} broke the slope-keeper, Marquis Valupa, in {minutes} minutes.",
+  "loss": "Marquis Valupa set Legion's Own against {realm}'s raid under {raidLeader}, and every piece was in its place."
+ }
+}

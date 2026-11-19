@@ -1,0 +1,436 @@
+{
+  "id": "salisbury-plains",
+  "name": "Salisbury Plains",
+  "realm": "Albion",
+  "regions": [
+    1
+  ],
+  "zones": [
+    1
+  ],
+  "aliases": [
+    "salisbury",
+    "the plains"
+  ],
+  "summary": "The chalk downs south of the king's hills: the great circle over the barrows of kings, the druids' seven rings, Epona's wild herds, Osric's diggers, the slavers and the waking dead.",
+  "facts": [
+    {
+      "text": "Salisbury Plains is zone 1 of region 1, with the town of West Downs and about 1,060 monsters: grove nymphs, wild horses (faction Epona), boars, red adders, basilisks, tomb raiders (faction Lord Osric), giants and giant skeletons, druids and filidh, spriggarns, slavers, bandits, carrion drakes and the Salisbury undead.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The entrance to the Stonehenge Barrows lies inside the great circle in the middle of the zone.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Weakened Bonds (Librarian Pelan) sends players to use a ley crystal at seven circles named Beltaine, Midsummer, Lughnasadh, Mabon, Yule, Imbolc and Ostara, then to Stonehenge, then against Archdruid Glasan.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Lord Aryon's Box (Sister Elaydith): tomb robbers stole the key from Lord Aryon's grave; Halena Edulan keeps the tomb robber camp in eastern Salisbury Plains.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Quests also name Tuka (a basilisk on the ridge across the road from West Downs), Slave Master Cottrel and Kearcs (the slaver camp), Growler (near the north-western guard tower), Zelsania Nodith (west of the circle of stones in the north-west), Lonry Aetheoc, Veviel the grove nymph, Slythcur the drake, Kedalinde Teanidd (behind West Downs) and Celain Elrich (by the outer stones of the Barrows).",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Water Spider Gleek is a normal mob only between game hours 10 and 13; at other hours it is hidden and peaceful.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/AlbionMobs/WaterSpiderGleek.cs"
+    },
+    {
+      "text": "Cynewulf the Ghostwalker, Halena Edulan, Kearcs, Lonry Aetheoc, Slave Master Cottrel, Tuka, Veviel and Zelsania Nodith are classic quest monsters (package ClassicQuest); Archdruid Glasan, Abagu, Berik Liglim, Growler, Kedalinde Teanidd and Slythcur load from NPC templates.",
+      "provenance": "game",
+      "source": "world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Real-world: Stonehenge stands on Salisbury Plain in Wiltshire; Geoffrey of Monmouth says Merlin brought its stones from Ireland; Epona is the Celtic horse goddess; the eight-fold year of the seasonal festivals is a modern reconstruction; not game canon.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Stonehenge"
+    },
+    {
+      "text": "Annest of West Downs and her calendar, Epona's herds and the open gate on Beltaine night, Lord Osric as a seal nobody has seen, the diggers as the cause of the druids' war, Cynewulf as a mourner who learned to talk to the dead, Kearcs as a sold man, the nameless Seer as a Midgard war-band's leaving, and Slythcur as a Pennine drake are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The open country. South of the king's hills the land flattens and lifts into the long chalk downs of the Plains, grass to the edge of sight, cut by a few streams and dotted with stones, and in the middle of it the great circle that the chroniclers say Merlin brought over the sea. The Plains were never empty. The first people of the island raised their stones here and buried their dead under long mounds, and the druids of southern Albion, who say they are the heirs of those people, still walk the old lines between the circles. They count seven lesser rings across the Plains, one for each turning of the year, Beltaine and Midsummer, Lughnasadh and Mabon, Yule, Imbolc and Ostara, and they say the great circle drinks from all seven as a well drinks from springs. The Academy calls these lines the ley, and has argued for longer than the Academy has had a roof whether the druids found them or made them.\n\nThe horses and the giants. Before there were towns on the Plains there were herds. The wild horses of the downs answer to no farmer, and the shepherds say they are Epona's, the horse-mother of the old faith, who rode the downs before Rome and rides them still on the nights the herds run for no reason. A pale horse runs with them that no one has ever bridled, and the shepherds of West Downs leave the gate of the lower fold open on the first night of Beltaine in case she wants it. In the south of the Plains the giants of the old age are buried, and some of them are buried badly: their bones walk in the ring the druids use for the dark of the year, and the living giants of the downs, slow and old and much smaller than their fathers, keep away from it.\n\nWhat went wrong. When Arthur fell, the Plains lost their lords and gained everyone else. Diggers came first, with spades and sealed papers saying that what lay under the land belonged to whoever held it, and the seal was the seal of a lord called Osric whom nobody in Camelot has ever seen. The diggers broke into mounds that had been shut since before the Romans, and one camp of them robbed the grave of Lord Aryon and took the key to a box of papers that King Arthur himself had written in, which the sisters of Camelot have wanted back ever since. The druids took the robbing of the mounds as a declaration of war and began to answer it in the old way, with sacrifices at the rings and the dead raised to guard them. Slavers came up from the south and built a camp in the east with cages and cart horses, and took people off the roads. And the dead of the Plains, who had been quiet for an age, woke: presences on the open grass at dusk, a growling ghost by the north-western watch-post who lost his necklace to a Difwych thief, and a man the shepherds call the Ghostwalker who teaches the dead to walk where he tells them.\n\nWhat lives there now. West Downs, the only town, sits on the northern downs with a smith, a leech, a stable and a garrison under Ensign Redway, and sends its young out to learn the Plains as Cotswold sends them to the hills. The basilisks of the stony ridges turn sheep to stone, or near enough; the shepherds say a basilisk's eye only stiffens you, and that you thaw if your friends are quick. Grove nymphs dance in the copses and steal what they like. Carrion drakes nest in the north-west. A water spider lives in a pond in the far south-east and is seen only in the late morning, and a knight's squire called Graid has been guarding a great stone in the west for so long that the shepherds give directions by him.\n\nWhy it matters to Albion. The Plains are where the realm keeps its oldest dead, and its oldest dead are not finished. Under the great circle the barrows of kings run down and down, and Uther Pendragon is buried there, and every power in the Plains, the druids and their ley, Osric's diggers and their papers, the Ghostwalker and his teaching, wants what is under the stones. The Church in Camelot says the realm should have built a wall around the circle in Arthur's day. The druids say the realm should never have built anything at all.",
+  "legend": "Salisbury Plains is the second newbie zone, south of Camelot Hills across the Prydwen bridge, levels 10 to 25 or so. West Downs on the northern downs is the town: merchants, a smith, a healer and a stable. Wild horses, boars and grove nymphs near town, basilisks and tomb raiders further out, giants and giant skeletons in the south. Stonehenge sits in the middle and the Barrows dungeon is inside it. The tomb raider camps are Lord Osric's and give good camps in the teens; Halena Edulan sits in the eastern one. The slaver camp in the east has Kearcs and Slave Master Cottrel, both quest targets. Tuka the basilisk is on the ridge across the road from West Downs. Water Spider Gleek in the south-east pond is only up in the late morning (game hours 10 to 13); Cronker in the hills works the same way. Archdruid Glasan is the end of the Weakened Bonds ley-line chain, which walks you round all seven circles. Squire Graid is at the big rock in the west and needs help more often than he should. Do not stand around the outer stones at night at level 12; the presences and ghasts there come in numbers.",
+  "atmosphere": {
+    "firstEntry": [
+      "The Plains. Grass to the edge of the sky.",
+      "Stones on the skyline. The great circle waits.",
+      "Hoofbeats far off. No rider.",
+      "Smoke from a digger's camp. Spades ring on chalk.",
+      "The wind drops. Something old is listening."
+    ],
+    "areas": [
+      {
+        "name": "West Downs",
+        "x": 577635,
+        "y": 556980,
+        "z": 2191,
+        "radius": 1500,
+        "lines": [
+          "West Downs. A smith, a healer, and a lot of grass.",
+          "Ensign Redway's garrison watches the downs.",
+          "Marlin Thuler tunes a harp and listens to everyone."
+        ]
+      },
+      {
+        "name": "the great circle",
+        "x": 585762,
+        "y": 585248,
+        "z": 2200,
+        "radius": 2500,
+        "lines": [
+          "The great stones. Kings lie under them.",
+          "The wind drops inside the circle. It always does.",
+          "Merlin brought these stones, they say. From where?"
+        ]
+      },
+      {
+        "name": "the outer stones",
+        "x": 586793,
+        "y": 588200,
+        "z": 2190,
+        "radius": 1200,
+        "lines": [
+          "Presences on the grass at dusk. Many of them.",
+          "Celain Elrich waits here for someone sent."
+        ]
+      },
+      {
+        "name": "the Plains bridge",
+        "x": 586000,
+        "y": 553500,
+        "z": 2830,
+        "radius": 1500,
+        "lines": [
+          "The road from the hills crosses here. So do thieves.",
+          "Bandit fires on the slope above the bridge."
+        ]
+      },
+      {
+        "name": "the north-western watch-post",
+        "x": 556161,
+        "y": 551475,
+        "z": 2346,
+        "radius": 1300,
+        "lines": [
+          "Growler growls at the watch-post. He wants it back.",
+          "Carrion drakes circle over the north-west downs."
+        ]
+      },
+      {
+        "name": "the druids' ring behind West Downs",
+        "x": 577034,
+        "y": 550647,
+        "z": 2809,
+        "radius": 1200,
+        "lines": [
+          "Kedalinde Teanidd's filidh keep this ring.",
+          "Red dust on the stones. Not all of it is dust."
+        ]
+      },
+      {
+        "name": "Glasan's ring",
+        "x": 590258,
+        "y": 579672,
+        "z": 2096,
+        "radius": 1200,
+        "lines": [
+          "Archdruid Glasan draws on the ley here.",
+          "The air hums. The grass leans toward the circle."
+        ]
+      },
+      {
+        "name": "the ring of the dark of the year",
+        "x": 601754,
+        "y": 597903,
+        "z": 2485,
+        "radius": 2000,
+        "lines": [
+          "Giant bones walk in the ring. They were buried badly.",
+          "The living giants will not come this close."
+        ]
+      },
+      {
+        "name": "the north-western stone ring",
+        "x": 553064,
+        "y": 562534,
+        "z": 3100,
+        "radius": 1200,
+        "lines": [
+          "Zelsania Nodith holds a courier here, they say.",
+          "Old stones on the ridge. A druid's camp beside them."
+        ]
+      },
+      {
+        "name": "Lonry's ring",
+        "x": 561551,
+        "y": 577861,
+        "z": 2537,
+        "radius": 1000,
+        "lines": [
+          "Lonry Aetheoc digs under the ring. Of course he does.",
+          "Spades and sealed papers. Osric's men."
+        ]
+      },
+      {
+        "name": "the eastern diggings",
+        "x": 602646,
+        "y": 577386,
+        "z": 2531,
+        "radius": 1600,
+        "lines": [
+          "Halena Edulan's camp. A grave-key changed hands here.",
+          "Lord Osric's diggers. Lord Osric is never here."
+        ]
+      },
+      {
+        "name": "the slaver camp",
+        "x": 605500,
+        "y": 564300,
+        "z": 2170,
+        "radius": 1500,
+        "lines": [
+          "Cages and cart horses. The slavers' camp.",
+          "Kearcs counts the cages. Cottrel counts the coin."
+        ]
+      },
+      {
+        "name": "Tuka's ridge",
+        "x": 592790,
+        "y": 558246,
+        "z": 3044,
+        "radius": 900,
+        "lines": [
+          "Tuka basks on the ridge. Do not meet its eye.",
+          "Stone-still sheep on the slope. Some still breathing."
+        ]
+      },
+      {
+        "name": "the horse downs",
+        "x": 578323,
+        "y": 569613,
+        "z": 2440,
+        "radius": 2000,
+        "lines": [
+          "Epona's herds run the downs. Abagu leads them.",
+          "Hoofbeats, and no rider."
+        ]
+      },
+      {
+        "name": "the pale horse's run",
+        "x": 580779,
+        "y": 595475,
+        "z": 2161,
+        "radius": 1200,
+        "lines": [
+          "A White Horse runs here. No one has bridled her.",
+          "The herd parts for the pale one."
+        ]
+      },
+      {
+        "name": "the Ghostwalker's hollow",
+        "x": 574348,
+        "y": 591253,
+        "z": 2446,
+        "radius": 1200,
+        "lines": [
+          "Cynewulf the Ghostwalker teaches the dead to walk.",
+          "Green ghasts stand in rows. Waiting for a word."
+        ]
+      },
+      {
+        "name": "Graid's stone",
+        "x": 554047,
+        "y": 580362,
+        "z": 2263,
+        "radius": 900,
+        "lines": [
+          "Squire Graid guards the great rock. Still.",
+          "Shepherds give directions by Graid."
+        ]
+      },
+      {
+        "name": "Veviel's copse",
+        "x": 567249,
+        "y": 574753,
+        "z": 2308,
+        "radius": 1000,
+        "lines": [
+          "Grove nymphs dance. Veviel has a stolen scroll.",
+          "Laughter in the copse, and a smell of ink."
+        ]
+      },
+      {
+        "name": "Slythcur's nest",
+        "x": 561010,
+        "y": 561307,
+        "z": 2355,
+        "radius": 900,
+        "lines": [
+          "Carrion drakes nest here. Slythcur is the biggest.",
+          "Bones picked clean under the drakes' rocks."
+        ]
+      },
+      {
+        "name": "the mercenaries' camp",
+        "x": 600453,
+        "y": 603751,
+        "z": 1986,
+        "radius": 1300,
+        "lines": [
+          "Berik Liglim's hired spades. They dig for pay.",
+          "Mercenary diggers. Osric pays better than the king."
+        ]
+      },
+      {
+        "name": "Gleek's pond",
+        "x": 601621,
+        "y": 606335,
+        "z": 2027,
+        "radius": 800,
+        "lines": [
+          "A still pond. Water Spider Gleek, late mornings.",
+          "Ripples, and nothing to make them. Not yet."
+        ]
+      },
+      {
+        "name": "the southern druid camp",
+        "x": 575652,
+        "y": 603524,
+        "z": 2261,
+        "radius": 1200,
+        "lines": [
+          "Druid sacrificers by the fire. Spirits watch.",
+          "A nameless Seer squats by the stones, muttering."
+        ]
+      },
+      {
+        "name": "the Huntington camp",
+        "x": 558000,
+        "y": 601216,
+        "z": 2185,
+        "radius": 900,
+        "lines": [
+          "The Huntingtons' camp. Woodsmen and a huntsman.",
+          "Jill Huntington counts the snares twice."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "salisbury plains is the second newbie zone. west downs is the town",
+      "stonehenge is in the middle of salisbury. the barrows are under it",
+      "the druids have seven rings in salisbury, one for each season. beltaine, midsummer, the lot",
+      "the wild horses on the plains are epona's, [heard|the shepherds say]. the old horse goddess",
+      "lord osric's tomb raiders dig everywhere on the plains. nobody's ever seen osric",
+      "the druids went to war when the diggers opened the old mounds",
+      "the giant skeletons in the south were buried badly. now they walk",
+      "basilisks on the plains only stiffen you. your friends can thaw you if theyre quick",
+      "the shepherds at west downs leave a gate open on beltaine night for the white horse",
+      "squire graid has been guarding the big rock in salisbury forever. ask sir jerem",
+      "uther pendragon is buried under stonehenge, [heard|they say]",
+      "the academy calls the druid lines the ley. they still argue who made them"
+    ],
+    "rumour": [
+      "[heard|someone said] halena edulan's diggers robbed lord aryon's grave for a key",
+      "heard archdruid glasan is weakening the bonds on the barrows ring by ring",
+      "[heard|someone said] water spider gleek is only out late morning. the rest of the time the pond's empty",
+      "heard slave master cottrel's sword was taken off a dead knight",
+      "[heard|someone said] kearcs was a slave once himself",
+      "heard tuka's eye turns sheep to stone for an hour and then they walk off",
+      "[heard|someone said] the ghostwalker teaches the green dead to walk in rows",
+      "heard growler just wants his necklace back. cyfwlch difwych has it",
+      "[heard|someone said] zelsania nodith is holding a church courier by the old ring in the nw",
+      "heard lonry aetheoc found more under his ring than anyone knows",
+      "[heard|someone said] veviel the nymph dances with a stolen spell scroll",
+      "heard slythcur is a pennine drake that flew south and stayed small",
+      "[heard|someone said] kedalinde's red dust isnt red because of the stone",
+      "heard berik liglim's diggers will dig anything for pay",
+      "[heard|someone said] the seer by the southern druid fire came over with a mid war band and got left",
+      "heard abagu the stallion has never been caught. every horse coper walked home",
+      "[heard|someone said] the white horse is epona herself"
+    ],
+    "tell": [
+      "salisbury? south of camelot hills over the prydwen bridge. west downs is the town",
+      "is it hard? teens to mid twenties. the south end has giants and druids, careful there",
+      "whats there? stonehenge and the barrows, tomb raider camps, slavers, basilisks, horses",
+      "where's tuka? on the ridge across the road from west downs",
+      "where's gleek? pond in the far south east, game hours 10 to 13 only",
+      "glasan is ne of stonehenge. do weakened bonds first, it walks you round all seven rings",
+      "slaver camp is in the east. kearcs and cottrel both there",
+      "growler is by the nw watch post. talk to him first, sergeant alain sends you",
+      "cynewulf the ghostwalker is sw of stonehenge with the green ghasts",
+      "the white horse and abagu run the downs south of west downs. leave them be unless you need them",
+      "halena edulan is in the eastern tomb raider camp. lonry is at the ring sw of the nw post",
+      "berik liglim is with the mercenary diggers in the far se. kedalinde is behind west downs",
+      "zelsania nodith? west of the old stone ring in the nw. veviel's in the copses mid plains",
+      "slythcur is with the carrion drakes in the nw. the seer is by the southern druid fire"
+    ]
+  },
+  "loremaster": {
+    "intro": "Salisbury Plains, the open country. Ask of [west downs] and the [plains], of the great [circle] and the [stonehenge barrows], of the seven [rings] and the [herds], of Lord [osric] and the [slavers], of the waking [dead], of [squire graid], [sir merin] and the [huntingtons], or of the Plains' own: [archdruid glasan], [kedalinde teanidd], [zelsania nodith], [cynewulf the ghostwalker], [growler], [celain elrich], [halena edulan], [lonry aetheoc], [berik liglim], [slave master cottrel], [kearcs], [tuka], [slythcur], [water spider gleek], [veviel], [abagu], the [white horse] and the [seer].",
+    "topics": {
+      "west downs": "The only town of the Plains, on the northern downs: a smith, a healer, a stable, merchants and a garrison under Ensign Redway. Marlin Thuler sells instruments there and hears everything. See [plains].",
+      "plains": "The long chalk downs south of the king's hills, with the great [circle] in the middle, seven seasonal [rings] of the druids, Epona's [herds], Lord [osric]'s diggers, the [slavers] and the waking [dead].",
+      "circle": "The great stones of the Plains, which the chroniclers say Merlin brought over the sea. Under them the barrows of kings run down and down, and Uther Pendragon is buried there. See [stonehenge barrows].",
+      "stonehenge barrows": "The barrows under the great circle, entered inside the stones. Their dead outrank the living.",
+      "rings": "Seven lesser rings, one for each turning of the year: Beltaine, Midsummer, Lughnasadh, Mabon, Yule, Imbolc and Ostara. The druids walk the ley between them; Librarian Pelan in Camelot sends the curious round all seven before [archdruid glasan].",
+      "herds": "The wild horses of the downs answer to no farmer. The shepherds say they are Epona's, the horse-mother of the old faith. [abagu] leads them; the [white horse] runs with them and no one has bridled her.",
+      "osric": "Lord Osric's seal is on every digger's papers on the Plains, and nobody in Camelot has ever seen Lord Osric. The only Osric anyone can name sells swords in a town of the Black Mountains and says he has never owned so much as a field. His diggers broke into mounds shut since before Rome. See [halena edulan], [lonry aetheoc], [berik liglim].",
+      "slavers": "A camp in the east with cages and cart horses, under [slave master cottrel] and [kearcs]. They take people off the roads. Some who escaped turned bandit in the far south.",
+      "dead": "Presences on the open grass, ghasts and spirits, the growling ghost [growler], [cynewulf the ghostwalker] and the necromancer [celain elrich] at the outer stones.",
+      "squire graid": "Sir Jerem's squire, who guards a great rock in the west of the Plains and never reports. Shepherds give directions by him. The Ghostwalker's apprentice troubles him oftener than he admits.",
+      "sir merin": "A knight of the Plains who keeps to the south-west road, where the Huntingtons camp, and watches the druids' fires in the south with a face like a closed door.",
+      "huntingtons": "Jill and Landon Huntington keep a camp in the south-west with woodsmen, a huntsman and two guards, Dafydd and Eiddef. They sell what they snare and they snare everything.",
+      "archdruid glasan": "Archdruid Glasan keeps the ring north-east of the great circle and draws the ley of the seven rings through it toward the stones. The grass around him leans toward the circle as if a wind blew out of it. Gral Bermorn of Caer Ulfwych says Glasan has been weakening the bonds that hold the barrows' dead, ring by ring, and sends the curious to walk all seven circles in the order of the year before they face him. Glasan says the bonds were never Albion's to keep.",
+      "berik liglim": "Berik Liglim captains the mercenary diggers in the far south-east, hired spades who work for Lord Osric's seal and pay. He wears the same coat as his men and claims he does not know what they dig for, which the shepherds believe, because Berik has never been known to ask a question that might lower his price. His camp sits beside the giant bones of the dark-of-the-year ring and he sleeps well there.",
+      "water spider gleek": "Water Spider Gleek lives in a still pond in the far south-east of the Plains. The shepherds say it keeps late-morning hours like a lady: between the second milking and the noon meal it is out on the water, and at any other hour the pond is only a pond and a stone thrown into it hits nothing. The Academy says it is a spirit of the water. The shepherds say it is a spider, and a big one, and that the Academy has never had to fetch a lamb out of that pond.",
+      "slave master cottrel": "Slave Master Cottrel runs the slaver camp in the east and carries a sword he is very proud of, taken from a knight who did not come home. Marlin Thuler of West Downs wants that sword broken, and says he knows a lady in Camelot Hills who will pay to see the pieces: she calls the broken blade a shard of freedom. Cottrel has heard this and laughs about it, and keeps the sword by him at all times.",
+      "kearcs": "Kearcs keeps the cages at the slaver camp in the east and counts them every morning. Contyth, an apprentice smith of Humberton, needs something from Kearcs that Kearcs will not part with alive. The slaves who have got away say Kearcs was a slave himself once, sold by his own family, and that he has never forgiven anyone for it, least of all the people in his cages.",
+      "tuka": "Tuka is the great basilisk of the stony ridge across the road from West Downs. Its eye stiffens what it looks at, and the shepherds say the sheep on that slope stand still for an hour after it has passed and then walk on as if nothing happened. Larson O'Riley, west of West Downs, pays for one of its feathers and will not say what he brews with it; Edith Waring of Camelot seems to know.",
+      "cynewulf the ghostwalker": "Cynewulf the Ghostwalker was a mourner of the Plains who stayed too long at a grave and learned to talk to what was in it. He keeps a hollow in the south-west among the green ghasts and teaches the dead to walk in rows, and he has an apprentice who walks the dead out to trouble Squire Graid at his rock. The Church says Cynewulf is a necromancer. He says he is a teacher, and that the dead were always willing to learn.",
+      "white horse": "The White Horse is a pale mare who runs with the wild herds in the south of the Plains and has never been bridled. The shepherds of West Downs leave the lower fold's gate open on the first night of Beltaine in case she wants to come in; she never has. The old faith says she is Epona's own, or Epona herself, and the herd parts for her wherever she runs. She is not gentle with anyone who tries to catch her.",
+      "abagu": "Abagu is the bay stallion who leads the wild herds of the downs south of West Downs, and has no fear of anything on two legs. Every horse-coper in Albion has tried to take him and every one has come back on foot. The shepherds say he is Epona's chosen, and that the night the herds run for no reason, it is Abagu who hears her call first and starts them.",
+      "halena edulan": "Halena Edulan keeps the tomb robbers' camp in the east of the Plains under Lord Osric's seal. That camp opened the grave of Lord Aryon and took the key to his box, which holds papers written by Lord Aryon and by King Arthur himself; Sister Elaydith of Camelot wants it back. Halena claims never to have seen inside the box, and not to care; the key, Halena says, was the only thing in the grave worth carrying.",
+      "zelsania nodith": "Zelsania Nodith is a druid who keeps a camp just west of the old stone ring on the north-western ridge. She holds Dustan, a courier of the Church, as a hostage, and Sister Rhigwyn of Camelot wants him home with his box. Her kinswoman Elithralia Nodith keeps the door of the Keltoi Fogou in Campacorentin; the Nodith women have been druids since before the Romans, and they say so.",
+      "lonry aetheoc": "Lonry Aetheoc is one of Lord Osric's diggers, a tomb raider who works the ring south of the north-western watch-post. He has found more under that ring than anyone in Camelot knows, including a chain that Mairi Ralilden wants for an amulet of her own making. Lonry does not sell to anyone who asks politely. He has learned that polite people come back with friends.",
+      "veviel": "Veviel is a grove nymph of the copses in the middle of the Plains who stole a green spell scroll from Vadri Pade's Magic Shoppe in Camelot, or was given it by the pixies who did. She cannot read it. She dances with it, and the other nymphs dance round her, and the grass where they dance smells of ink for a week. Vadri Pade wants it back before it is danced to pieces.",
+      "slythcur": "Slythcur is the greatest of the carrion drakes that nest in the rocks of the north-western Plains, and the drakes give him the best of every carcass. Anga Weaver of Adribard's Retreat makes a cloak from his hide when someone brings it, and says the scales are worth the trouble because Slythcur never stops growing a new one. The shepherds say he is a drake of the Pennine kind that flew south and stayed small.",
+      "growler": "Growler was a man of the Plains who died by the north-western watch-post and stayed, because a Difwych thief took the necklace from his body. Now he growls at everyone who passes. Sergeant Alain at the Camelot Hills bridge sends squires to hear him out, to get the necklace back from Cyfwlch Difwych on the Castle Sauvage road, and then to give him his rest the only way a ghost can be given it. Growler seems grateful for both.",
+      "kedalinde teanidd": "Kedalinde Teanidd leads the filidh of the ring on the downs behind West Downs, close enough to the town that the garrison can hear his people singing. He keeps a sack of red dust that Siom Felanis of Humberton wants for a staff. The dust is from the stones of his ring, ground fine, and the shepherds say it is red because of what was spilled on the stones before it was ground.",
+      "seer": "A Seer with no name squats by the stones near the southern druid camp and mutters to himself. He is no druid, and he will not say where he came from; the shepherds think he came over the northern sea long ago with a Midgard war-band and was left behind. The sacrificers let him sit by their fire. He is weak as a child and nobody has ever seen him eat.",
+      "celain elrich": "A necromancer who keeps among the presences at the outer stones of the great circle. See the loremaster's own page on [celain elrich] for what the Academy knows of him."
+    }
+  },
+  "book": {
+    "title": "A Shepherd's Calendar of the Plains",
+    "pages": [
+      "A Shepherd's Calendar of the Plains, set down by Annest of West Downs, who has kept sheep on the downs for sixty years and wants it known. The year on the Plains has seven doors, and the druids keep one ring for each: Beltaine and Midsummer, Lughnasadh and Mabon, Yule, Imbolc and Ostara. A shepherd learns which ring she is nearest at every season, because that is the ring where the filidh will be, and the filidh do not like sheep on their grass. The great circle in the middle belongs to no season. The druids say it drinks from all seven. My mother said it drinks from whoever stands in it too long.",
+      "Of the herds. The wild horses are not ours and never were. My grandfather said they were Epona's, the horse-mother, who rode the downs before Rome, and the herds still run on certain nights for no reason anyone can see, all at once, as if someone called them. Abagu leads them. He is a bay stallion and he has no fear of anything on two legs. A pale mare runs with them in the south that no one has ever put a bridle on, and on the first night of Beltaine we leave the gate of the lower fold open in case she wants it. She has never come in. We leave it open anyway.",
+      "Of the diggers. They came after Camlann with spades and papers, and the papers had a seal, and the seal was Lord Osric's, and I have never met anyone who has met Lord Osric. They dig into the long mounds and the rings. Lonry Aetheoc digs under the ring south of the watch-post. Halena Edulan keeps the camp in the east, and that camp opened Lord Aryon's grave and took a key from it, a key to a box with the old king's own writing inside. The sisters came from Camelot asking after it. I told them to ask Osric. They did not laugh.",
+      "Of the druids. Kedalinde Teanidd keeps the ring behind West Downs with his filidh, and they leave red dust on the stones that is not all dust. Archdruid Glasan keeps the ring north-east of the great circle and draws the ley through it, and the grass there leans toward the stones as if a wind blew from them. When the diggers opened the mounds the druids began to answer in the old way, with knives at the rings and the dead raised to keep them. I do not take my sheep south of the great circle any more. The sacrificers there do not care whose a sheep is.",
+      "Of the slavers. They came up from the south when the roads emptied and built their camp in the east, cages and cart horses and a slave master called Cottrel who carries a sword he is very proud of. Kearcs keeps the cages. They took my neighbour's boy off the road at harvest. The garrison at West Downs went after him and found the cages empty and the camp moved a mile. Some who got away from them did not come home; they turned bandit themselves in the far south, which I understand and do not forgive.",
+      "Of the dead. They were quiet for my mother's whole life and they are not quiet now. Presences stand on the open grass by the outer stones at dusk, many of them, and a necromancer called Celain Elrich keeps among them whom nobody sees unless he has been sent to look. A ghost by the north-western watch-post growls at every passer-by because a Difwych thief has his necklace. And in the south-west a man they call the Ghostwalker teaches the green dead to walk in rows. Squire Graid at the great rock says he is not afraid of any of them. Graid is very young."
+    ]
+  },
+  "bosses": [
+    "celain-elrich"
+  ],
+  "era": "alb-first-stones",
+  "factions": [
+    "keltoi",
+    "old-powers"
+  ]
+}

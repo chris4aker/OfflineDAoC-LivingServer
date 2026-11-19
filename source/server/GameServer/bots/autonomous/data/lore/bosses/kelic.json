@@ -1,0 +1,116 @@
+{
+  "id": "kelic",
+  "name": "Kelic",
+  "catalogKey": "midgard-named-mobs-classic-zones/kelic",
+  "locationId": "raumarik",
+  "realm": "Midgard",
+  "era": "mid-era-realm-war",
+  "factions": [
+    "dishonoured-dead"
+  ],
+  "related": [
+    {
+      "id": "runil",
+      "relation": "one of the deserters who carried him to the snowline"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Kelic is a level-65 undead named with 10,000 health and followers. He casts Delaceration over time, Cursed Essence (disease) and a long root, and takes no damage from attackers far from his spawn.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He is the target of the mystic epic 'Saving the Clan': Danica says Jango and his deserters took Kelic to Raumarik to dispose of him, that even in death he is strong, and that he wore a curse around a totem that was destroying the clan.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/quests/Midgard/epic/Mystic50.cs"
+    },
+    {
+      "text": "Allakhazam lists Kelic and his servants in Raumarik.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/12483"
+    },
+    {
+      "text": "This world database has no standing spawn for Kelic; the epic script creates him when needed.",
+      "provenance": "game",
+      "source": "docs/encounters/world-spawns.json"
+    },
+    {
+      "text": "Kelic takes no damage from attackers standing outside his tether range from his spawn. On his target he casts, each on a 25% roll and only if it lacks one, Delaceration (89 matter over 24 s), Cursed Essence (disease, 120 s) and Superior Leg Twisting (99% snare, 73 s), all uninterruptible. Servants of Kelic within 2,500 join him. 10,000 health, CC-immune. The mystic epic creates him; three Servants of Kelic stand at the snowline in the world data.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Classic Zones/Kelic.cs"
+    }
+  ],
+  "story": "Kelic was a clansman of Midgard, of a clan the mystics' halls do not name aloud, and he put a curse on his own people. The clan's own account, which Danica of the mystics keeps, says he did it out of grief: his wife and son died of a winter fever that the clan's elders would not spend their stores to treat, and he carved a totem out of the wood of their pyre and wound the curse around it, and said the clan would die as they had, slowly, of being let go.\n\nIt began to work. Children sickened who should not have; old men lost the use of their legs and sat where they fell. The elders could not break it, because a curse wound round a totem holds while the hand that wound it holds the totem. So a man named Jango, who had been a war-leader and was not a patient one, took a band of the clan's deserters, men who had run from the clan's wars and owed it something, and carried Kelic far into Raumarik, and killed him at the snowline under a stand of trees, and left him there with his totem, thinking death would be enough.\n\nDeath was not enough. Even in death Kelic is strong, the note on Danica's map says, and he stands at the snowline still with the totem in his hands and the clan's sickness in his breath. Those who come against him go the way his clan went: a wasting that eats the flesh, a sickness that slows the healing, and legs that twist and will not carry them, so that they stand where he has fixed them. He does it with a word, and no blow interrupts the word. Servants have gathered to him there, who come when he is threatened.\n\nAnd like the other dead things of Raumarik that are bound to a place, he cannot be hurt by anyone who stands off; he belongs to the spot where he was killed, and only those who come to it can reach him. The deserters who carried him did not get far on the road home. One of them, Runil, still stands to the east.\n\nThe mystics are sent to take the totem from him so that Danica can break the curse, and when they bring it, she does, and the clan is safe until the next grief.",
+  "legend": "Kelic is the mystic epic target (runemaster, spiritmaster, bonedancer): the quest spawns him at the snowline in northern Raumarik under a stand of trees; follow Danica's directions. Level 65, 10,000 health, CC-immune, and he takes no damage from anyone standing too far from his spawn, so fight close. On whoever he's targeting he stacks three things, each only if it isn't already on them: a matter DoT, a disease (no healing bonus), and a 99% snare that lasts over a minute. All uninterruptible. Cure disease, purge or remove snare, and keep the target healed. The Servants of Kelic nearby join when you touch him, so clear them first. The map note says bring friends. It means it.",
+  "yells": {
+    "aggro": [
+      "Jango? Is that you? No. Another one come for my totem.",
+      "The clan let them go. I am only returning the favour.",
+      "Stand still. You will stand still."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The curse holds while I hold it!"
+      }
+    ],
+    "death": [
+      "The clan... will never... be free of me...",
+      "Tell Danica... I remember the fever..."
+    ],
+    "slay": [
+      "Another for the curse.",
+      "Lie there. As they lay.",
+      "Slowly. It should always be slowly."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A stand of trees at the snowline. A curse hangs here.",
+      "The snow round the trees is grey, like ash."
+    ],
+    "realmFirstKill": "Kelic's curse is broken at last.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Kelic grips the totem. The curse tightens."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "kelic plus his servants, root break and cure disease. mystic epic",
+      "fight close, he takes nothing from range",
+      "dot, disease and a 99% snare on his target, all uninterruptible",
+      "clear the servants of kelic first"
+    ],
+    "aftermathWin": [
+      "got kelic's totem, clan's saved",
+      "cure disease made all the difference",
+      "servants first, then him. easy",
+      "danica broke the curse, clan saved"
+    ],
+    "aftermathLoss": [
+      "got rooted and diseased and his servants did the rest",
+      "casters stood back, did nothing",
+      "no snare removal, stuck the whole fight",
+      "the servants came while we fought him"
+    ],
+    "rumour": [
+      "kelic cursed his own clan, and deserters dumped him in raumarik. he got back up",
+      "he carved the totem from his wifes pyre, danica says",
+      "jango led the deserters who carried him",
+      "danica keeps a map with a note on it. bring friends"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Kelic",
+    "text": "A clansman who cursed his own clan through a totem. Deserters left him dead at Raumarik's snowline. He did not stay dead."
+  },
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: Galplen tells the curse plainly. The clan let a man's wife and son die of a winter fever rather than open its stores, and he carved a totem from their pyre and promised the clan the same death: slowly, of being let go. When it worked, the clan sent deserters to carry him north and kill him, and thought that ended it. The Galplen folk think the clan got the curse it deserved and the man got the death he did not. They think that is why he will not lie down.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Kelic's curse in {minutes} minutes.",
+    "loss": "Kelic's curse held against {raidLeader}'s party from {realm} for {minutes} minutes."
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "id": "goretooth",
+  "name": "Goretooth",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/goretooth",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "shredclaw",
+      "relation": "the young rival whose ground he never enters"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Goretooth is a level-68 blood render with 30,000 health in eastern Faraheim; four blood renders come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He poisons and stuns.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam calls him a named blood render that can poison, damage over time and stun, with a strong BAF, worth 2% of master-level experience.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5773"
+    },
+    {
+      "text": "When he is fought, his four blood renders (GoretoothBaf, within 2,500) join him. On 35% of his hits he poisons his target (100 body every few seconds for 30 s, if it has no such effect) and on 35% stuns it for 6 s. 30,000 health, CC-immune, reach 350; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Goretooth.cs"
+    }
+  ],
+  "story": "The blood renders of Faraheim are scaled hunters with jaws built for one thing, and they hunt the east of the island in packs. Goretooth is the oldest jaw among them. The Remnants have slates that name him from the winter they moved their settlement out of the Iarnwood, and he was old then; the dwarves say renders do not live so long, and that Goretooth does not seem to have heard.\n\nHe holds the south of the east, between the skogsra's woods and the iron trees, with four of his kind who have hunted with him for years. The gastornis and the bone crunchers, who are not small, step out of his ground when his pack is moving. He hunts with a hunter's patience. A bite first, which leaves a poison in the blood that works slowly and does not stop; then, when the prey turns to face him, a blow of the head that leaves it standing dazed and helpless while the four close in. The pack comes the moment he is challenged, from wherever they lie.\n\nThe iarn dwarves name their children's nightmares after him. They also leave him alone, and so does everything else, except Shredclaw. The young render to the north has never yet crossed into the old jaw's ground, and the strip of empty wood between their two grounds is the most peaceful place in Faraheim, because nothing that lives will go there. The dwarves say that when Goretooth finally weakens, Shredclaw will come through that strip, and that whichever of them comes out of it will hunt the whole east, and then the whole island.\n\nNothing has ever held him. Hunters' snares part on his scales, and the dwarves' sleep-charms find nothing to take hold of.",
+  "legend": "Goretooth is the old blood render in the south-east of Faraheim, level 68, 30,000 health, and his four renders all come when you touch him. Poison (a DoT, 100 body every few seconds for 30 seconds) and a 6-second stun on whoever he's hitting, both on a 35% chance per hit, so cure poison and have a second tank or stun immunity ready. He's CC-immune, reach 350, resets full if you leave. Kill or hold the four renders; they hit hard too. Shredclaw's pack is in the north-east, far enough away not to join, but don't drag a fight between the two grounds.",
+  "yells": {
+    "aggro": [
+      "(A hiss and a click of teeth from the undergrowth.)",
+      "(Four shapes rise from the ferns behind the old jaw.)",
+      "(Goretooth's scales rasp as he turns.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Goretooth's pack closes in.)"
+      }
+    ],
+    "death": [
+      "(The old jaw goes slack.)",
+      "(Somewhere to the north, a render lifts its head.)"
+    ],
+    "slay": [
+      "(The pack feeds.)",
+      "(Goretooth leaves the rest for the pack.)",
+      "(The old jaw licks its teeth.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Gnawed bones in the ferns. The pack is near.",
+      "Five long shapes lie in the ferns, the colour of old blood."
+    ],
+    "realmFirstKill": "Goretooth, the oldest jaw of Faraheim, is slain.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Goretooth's pack closes round the old jaw."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "goretooth + 4 renders, cure poison, stun break",
+      "stun on his target, have a second tank ready",
+      "all four come at once",
+      "cc immune, dont bother"
+    ],
+    "aftermathWin": [
+      "goretooth down",
+      "the old jaw is dead. shredclaw will be happy",
+      "two tanks made the stuns easy",
+      "cure poison and it was fine"
+    ],
+    "aftermathLoss": [
+      "stunned and poisoned, gg",
+      "the four renders ate the healer",
+      "no cure poison, bad idea",
+      "we dragged it toward shredclaws ground"
+    ],
+    "rumour": [
+      "the iarn dwarves name their kids' nightmares after goretooth",
+      "when goretooth dies shredclaw will hunt the whole island",
+      "nothing lives between the two render grounds",
+      "the remnants have a slate about goretooth older than most dwarves"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Goretooth",
+    "text": "The oldest jaw among Faraheim's blood renders. A bite, a poison and a blow that leaves you stunned while his pack closes."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: from the griffon I saw the old jaw's pack lying in the ferns at noon, five long shapes, scaled, the colour of old blood. The gastornis on the edge of their ground were walking away from them, slowly, the way cattle walk away from a dog. The dwarf flying me said the old jaw had a slate in their house older than she was. I asked how old renders live to be. She said: not that old. Then she turned the griffon north, over the empty strip, and did not speak again until we were past it.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Goretooth in {minutes} minutes.",
+    "loss": "Goretooth's pack ran down {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

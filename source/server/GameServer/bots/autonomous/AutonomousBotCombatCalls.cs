@@ -38,7 +38,10 @@ public static class AutonomousBotCombatCalls
     public const int OomResetPercent = 40;
 
     /// <summary>The group's fight as one bot sees it this second.</summary>
-    public sealed record GroupView(bool Fighting, int Enemies, int Members, int Alive, bool Worn, bool PlayerDown = false, bool PlayerFighting = false);
+    /// <param name="Experience">The experience the group's members hold together now (players and bots); a fight that ends
+    /// with more than it started with gave someone experience.</param>
+    public sealed record GroupView(bool Fighting, int Enemies, int Members, int Alive, bool Worn, bool PlayerDown = false, bool PlayerFighting = false,
+        long Experience = 0);
 
     public sealed class GroupState
     {
@@ -55,6 +58,10 @@ public static class AutonomousBotCombatCalls
         public bool PlayerInFight;
         /// <summary>When the group last ended a fight the player took part in, with nobody dead (game time).</summary>
         public long LastSharedKill = long.MinValue / 2;
+        /// <summary>The group's experience when the current fight started.</summary>
+        public long ExperienceAtStart;
+        /// <summary>Whether the last fight gave anyone in the group experience (an end-of-fight "nice xp" needs it).</summary>
+        public bool LastFightGaveExperience;
     }
 
     /// <summary>How long after a fight hunting talk ("nice pull", "good camp") still fits.</summary>
@@ -117,7 +124,7 @@ public static class AutonomousBotCombatCalls
     /// when half the group has died in it, "kill" or "rest" when it ends (rest more likely when the group is worn). Updates the
     /// state; the caller checks the group gap.
     /// </summary>
-    public static string GroupEvent(GroupState state, GroupView view, long now, Random random)
+    public static string GroupEvent(GroupState state, GroupView view, long now, Random random, bool botsLead = false)
     {
         if (!state.WasFighting && view.Fighting)
         {
@@ -126,7 +133,8 @@ public static class AutonomousBotCombatCalls
             state.DeadAtStart = view.Members - view.Alive;
             state.WipeCalled = false;
             state.PlayerInFight = view.PlayerFighting;
-            return view.Enemies >= 1 && random.NextDouble() < 0.35 ? "pull" : null;
+            state.ExperienceAtStart = view.Experience;
+            return view.Enemies >= 1 && random.NextDouble() < PullCallChance(botsLead) ? "pull" : null;
         }
         if (state.WasFighting && view.Fighting)
         {
@@ -151,14 +159,17 @@ public static class AutonomousBotCombatCalls
         {
             state.WasFighting = false;
             state.LastFightEnded = now;
+            state.LastFightGaveExperience = view.Experience > state.ExperienceAtStart;
             if (state.PlayerInFight && !state.WipeCalled && view.Alive > 0 && !view.PlayerDown && view.Members - view.Alive <= state.DeadAtStart)
                 state.LastSharedKill = now;
             // Play test 2026-10-27: "Gj." in /group just after the player died to a myrkcat.
             if (state.WipeCalled || view.Alive <= 0 || view.PlayerDown)
                 return null;
             double roll = random.NextDouble();
-            if (view.Worn)
-                return roll < 0.45 ? "rest" : roll < 0.6 ? "kill" : null;
+            // Chat audit CORPUS-C-024: "clean", "easy" and "smooth" are no end for a fight a groupmate died in; the group rests.
+            bool someoneDied = view.Members - view.Alive > state.DeadAtStart;
+            if (view.Worn || someoneDied)
+                return roll < 0.45 ? "rest" : roll < 0.6 && !someoneDied ? "kill" : null;
             return roll < 0.3 ? "kill" : roll < 0.4 ? "rest" : null;
         }
         return null;
@@ -208,6 +219,16 @@ public static class AutonomousBotCombatCalls
         eSpellType.Taunt => "taunt",
         _ => null
     };
+
+    /// <summary>
+    /// How often a pull is called. In a group the player leads, a groupmate says "inc" now and then (the player pulls). In a
+    /// party a gamebot leads (bot-led groups, B4) the leader calls its own party's pulls more often, with its own lines
+    /// ("pulling", "inc, on me"): that call is the pull's one line, never a second "inc" beside it.
+    /// </summary>
+    public static double PullCallChance(bool botsLead) => botsLead ? 0.6 : 0.35;
+
+    /// <summary>Who calls a pull: in a party a gamebot leads, its leader when it is alive and saw the fight; anyone otherwise.</summary>
+    public static bool LeaderCallsPull(bool botsLead, bool leaderAlive, bool leaderSawFight) => botsLead && leaderAlive && leaderSawFight;
 
     /// <summary>The calls that wait until the spell has landed on its target.</summary>
     public static bool NeedsLanding(string topic) => topic is "mez" or "root" or "stun";
@@ -264,6 +285,21 @@ public static class AutonomousBotCombatCalls
     private static readonly ConditionalWeakTable<Group, GroupState> Groups = new();
     private static readonly ConditionalWeakTable<GameBot, BotState> Bots = new();
 
+    /// <summary>
+    /// Whether a bot's think looks at the fight (<see cref="Observe"/>): an autonomous gamebot in the real player's group, or
+    /// in a gamebot party that hosts the player (bot-led, not a raid party's guest seat). Owner's PC 2026-11-15 (build
+    /// 1dc66b6): party albion-f86e88-1370 fought orc beachcombers and a griffin with the player from 01:36 to 01:43 and said
+    /// nothing in /group, because a gamebot that leads never enters the player's group (IsPlayerLedGroup) and B4's leader
+    /// pull call was never reached. Pure.
+    /// </summary>
+    public static bool ObservesFight(bool autonomousWorldBot, bool temporaryHelper, bool playerLedGroup, bool hostedNotRaidGuest) =>
+        autonomousWorldBot && !temporaryHelper && (playerLedGroup || hostedNotRaidGuest);
+
+    /// <summary><see cref="ObservesFight(bool, bool, bool, bool)"/> for a live bot.</summary>
+    public static bool ObservesFight(GameBot bot) =>
+        bot != null && ObservesFight(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.IsPlayerLedGroup,
+            BotLedGroups.ViewOf(bot.Group) is { RaidGuest: false });
+
     /// <summary>From the bot's think: a bot in the real player's group looks at the fight once a second.</summary>
     public static void Observe(GameBot bot)
     {
@@ -290,10 +326,13 @@ public static class AutonomousBotCombatCalls
                     state.LastObserved = now;
                     var view = new GroupView(members.Any(m => m.IsAlive && m.InCombat), enemies, members.Length,
                         members.Count(m => m.IsAlive), members.Any(m => m.IsAlive && (m.HealthPercent < 50 || m.MaxMana > 0 && m.ManaPercent < 40)),
-                        members.Any(m => m is GamePlayer && !m.IsAlive), members.Any(m => m is GamePlayer && m.IsAlive && m.InCombat));
-                    string topic = GroupEvent(state, view, now, Random.Shared);
+                        members.Any(m => m is GamePlayer && !m.IsAlive), members.Any(m => m is GamePlayer && m.IsAlive && m.InCombat),
+                        GroupExperience(members));
+                    // B4: in a party a gamebot leads (not a raid party), the leader calls the pull.
+                    bool botsLead = BotLedGroups.ViewOf(group) is { RaidGuest: false };
+                    string topic = GroupEvent(state, view, now, Random.Shared, botsLead);
                     if (topic != null)
-                        CallForGroup(members, state, topic, now, enemies);
+                        CallForGroup(members, state, topic, now, enemies, botsLead ? group.LivingLeader as GameBot : null);
                 }
             }
             if (!bot.IsAlive)
@@ -333,10 +372,22 @@ public static class AutonomousBotCombatCalls
         }
     }
 
-    private static void CallForGroup(GameLiving[] members, GroupState state, string topic, long now, int enemies)
+    private static void CallForGroup(GameLiving[] members, GroupState state, string topic, long now, int enemies, GameBot leader = null)
     {
         if (topic != "wipe" && now - state.LastCall < GroupGapMs)
             return;
+        // B4: the leader's own pull call is the pull's one line; it falls back to anyone's "inc" only when it has none.
+        if (topic == "pull" && leader != null && LeaderCallsPull(true, leader.IsAlive, SawTheFight(leader, members)))
+        {
+            BotState own = Bots.GetValue(leader, _ => new BotState());
+            if (Gate(state, own, topic, now))
+            {
+                if (SayLeaderPull(leader))
+                    return;
+                state.LastCall = long.MinValue / 2;
+                own.LastCall = long.MinValue / 2;
+            }
+        }
         GameBot[] bots = members.OfType<GameBot>()
             .Where(b => b.IsAlive && b.IsAutonomousWorldBot && !b.IsTemporaryGroupHelper && b.DatabaseID > 0 && SawTheFight(b, members))
             .OrderBy(_ => Random.Shared.Next()).ToArray();
@@ -352,7 +403,7 @@ public static class AutonomousBotCombatCalls
             // A bot that just spoke leaves the call to the next one (review 2026-10-26: a wipe call was lost that way).
             if (!Gate(state, self, topic, now))
                 continue;
-            if (Say(speaker, topic, enemies))
+            if (Say(speaker, topic, enemies, state.LastFightGaveExperience))
                 return;
             // Nothing to say for this bot (its role has no line): let the next one try.
             state.LastCall = long.MinValue / 2;
@@ -380,10 +431,65 @@ public static class AutonomousBotCombatCalls
         _ => false,
     };
 
-    private static bool Say(GameBot bot, string topic, int enemies)
+    /// <summary>The leader's pull line (topic lead_pull in the voice corpus), through the group channel's meter like every call.</summary>
+    private static bool SayLeaderPull(GameBot leader)
     {
-        if (!AutonomousBotVoices.TryLine(bot, "combat", out VC.Picked picked, topic: topic, relax: true,
-                filter: topic is "pull" or "add" ? line => PullLineFits(line.Text, enemies) : null))
+        if (!AutonomousBotVoices.TryLine(leader, "group", out VC.Picked picked, topic: "lead_pull", flags: ["lead_call"]))
+            return false;
+        AutonomousBotGroupChatter.Send(leader, picked.Text, "none");
+        return true;
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex ExperienceWords = new(
+        @"\b(xp|exp|experience|bubbles?)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// An end-of-fight line fits the kill: one that praises the experience ("nice xp, next") only when the fight gave someone
+    /// in the group experience (owner's PC, build b1b6846, 2026-11-18: hired Pannax said "nice xp, next :P" after his player
+    /// killed a grey "headless dead" that gave nobody experience). Pure.
+    /// </summary>
+    public static bool KillLineFits(string text, bool gaveExperience) =>
+        !string.IsNullOrEmpty(text) && (gaveExperience || !ExperienceWords.IsMatch(text));
+
+    private static readonly System.Text.RegularExpressions.Regex OwnPowerWords = new(
+        @"\b(to med|need power|sitting for power|my power|oom)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// A rest call fits its speaker: one about the speaker's own power ("give me a sec to med", "need power, sitting") only from a
+    /// bot that uses power and is under 40% of it (chat audit CORPUS-C-024: a Warrior said "give me a sec to med", a Wizard at full
+    /// power "need power, sitting", because the rest call follows the group's state). Pure.
+    /// </summary>
+    public static bool RestLineFits(string text, bool usesPower, int manaPercent) =>
+        !string.IsNullOrEmpty(text) && (!OwnPowerWords.IsMatch(text) || usesPower && manaPercent < OomResetPercent);
+
+    private static readonly System.Text.RegularExpressions.Regex OtherEnemyWords = new(
+        @"\b(add|other|the first)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>A root call that names another enemy ("rooted the add", "rooted, kill the other") only when there are two or more
+    /// (chat audit CORPUS-C-023: a root on a single monster called "rooted, kill the other"). Pure.</summary>
+    public static bool RootLineFits(string text, int enemies) =>
+        !string.IsNullOrEmpty(text) && (enemies >= 2 || !OtherEnemyWords.IsMatch(text));
+
+    /// <summary>The experience the group's players and bots hold together.</summary>
+    private static long GroupExperience(GameLiving[] members)
+    {
+        long total = 0;
+        foreach (GameLiving member in members)
+            total += member switch { GamePlayer player => player.Experience, GameBot bot => bot.Experience, _ => 0 };
+        return total;
+    }
+
+    private static bool Say(GameBot bot, string topic, int enemies, bool gaveExperience = true)
+    {
+        Func<VC.Line, bool> filter = topic switch
+        {
+            "pull" or "add" => line => PullLineFits(line.Text, enemies),
+            "kill" => line => KillLineFits(line.Text, gaveExperience),
+            "rest" => line => RestLineFits(line.Text, UsesPower(bot), bot.ManaPercent),
+            "root" => line => RootLineFits(line.Text, enemies),
+            _ => null,
+        };
+        if (!AutonomousBotVoices.TryLine(bot, "combat", out VC.Picked picked, topic: topic, relax: true, filter: filter))
             return false;
         AutonomousBotGroupChatter.Send(bot, picked.Text, "none");
         return true;

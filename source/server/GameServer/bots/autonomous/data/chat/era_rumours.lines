@@ -1,0 +1,131 @@
+# Trials of Atlantis and Catacombs as rumours only (owner, 2026-11-15, "Yes agreed on lore"). Nobody in this world has been
+# to a sunken land or under a capital, nobody has master levels, artifacts or a Catacombs class, and no line suggests the
+# player can go. Atlantis is sailors' and grandmothers' talk; what lies under the capitals is a door that stays shut.
+#
+# The tag: @topic rumour_atlantis or rumour_below. Only lines with that topic may say "atlantis" or "catacombs"
+# (tools/bot-voices/build_corpus.py, ERA_RUMOUR_TOPICS); every other out-of-era word stays banned in them too.
+# Where they are heard (rare by design):
+#   - the storyteller's legend of the glass that spoke (topic tale_atlantis, AutonomousTales.Legends), in the tale rotation;
+#   - one /faction debate (an ordinary scene, one of several hundred);
+#   - a few place-bound /faction musings (AutonomousChatFiller: musings are a 5% share of /faction openers, one written
+#     line per realm in 20 minutes);
+#   - answers when a player asks ("what is atlantis", "is there anything under camelot", LoreLegends).
+# New writing; Mythic's lore (camelotherald.com/node/244) paraphrased, never quoted.
+
+# ---------------------------------------------------------------- the storyteller's legend: the glass that spoke
+# Rewritten 2026-11-15 after the owner's read ("choppy, the vocab is poor"). The teller writes whole sentences with
+# capitals and stops, which the chat pass keeps (AutonomousChatDebateSpeech: it drops only a line's last stop and sends a
+# line of more than 14 words as two chat lines, at a sentence or the comma nearest its middle). The listeners type as
+# players do.
+@kind debate
+@realm *
+@topic tale_atlantis
+@levels 1-50
+@scene tale_atlantis
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell the one about the glass that spoke | {name_b}, do your gran's story, the glass ball one
+C: oh, this one. hush everyone | {name_b} is telling the orb story, everyone hush
+?E: the talking ball again lol | here we go, the ball that talks
+D: go on {name_b}, the new ones have never heard it | please {name_b}, i never heard it all the way through
+B: This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall.
+B: One hard winter a fisherman came up from the coast with a sack over his shoulder, and the sack was still dripping.
+B: His nets had come up heavy off the point, and in them was a ball of green glass the size of a child's head.
+B: Coral had grown over one side of it, and it was warm to the touch, though it had lain all night in the bilge.
+B: The council paid him two silver and set it on the high table between the candlesticks, and for seven nights it was a curiosity.
+~ 8
+D: and then it talked? | so when does it talk?
+B: On the eighth night, late, with the hall dark but for the high table, a light came up in the heart of the glass.
+B: In the light stood a man no taller than her thumb, robed in a fashion no tailor in the realm had ever seen.
+B: He spoke in a stranger's voice, and he said that past the edge of the sea there lay a land where whole peoples were tried.
+B: He asked the council to send its champions over the water, and he named the ten trials one after another.
+?F: did they send anyone? | so who went?
+B: Nobody went. They argued until the candles guttered, and then the light came up again and he said it all over, word for word.
+B: She was the one who saw that he never looked at the councillors. He looked down the hall, to where nobody sat.
+B: He said it every night that winter. The council stopped coming, and in the end only she heard it, because the candles still wanted trimming.
+B: For years after, she dreamed of it: sand to the end of the world, a mountain on fire, a city standing on cloud.
+B: And at the last the sky opened and the sea stood up, and all of it was gone in a day and a night.
+B: In spring they sewed it back into the fisherman's sack and rowed it out past the point on the ebb.
+B: She was in the boat, because someone had to hold the sack. She said it was still talking when it went under.
+~ 25
+F: ...still talking | wait. it was still talking?
+A: ty {name_b}. not going near the docks tonight | thanks {name_b}, nobody tells that one like you
+@end
+
+# ---------------------------------------------------------------- a /faction debate: the uncle's city
+@kind debate
+@realm *
+@topic rumour_atlantis
+@levels 1-50
+@scene rumour_atlantis_uncle
+@role A type=Socialite,Explorer
+@role B type=NoLifer,Daredevil
+@role C type=*
+@role D type=*
+A: {q} my uncle says theres a whole city at the bottom of the sea, is that true? lol
+B: your uncle also says he soloed the dragon
+A: ok he said that once. but the fishermen really do pull up carved stone with coral all over it
+C: the sailors have a name for it, atlantis | harbour folk call it atlantis and then go quiet
+?D: so what are the lights out past the harbour at night? | then what are the lights under the water
+B: fish that glow. or your uncle with a lantern
+A: laugh all you like. ask any fisherman if he will cast a net past the point after dark
+B: your uncle would. right after the dragon
+@end
+
+# ---------------------------------------------------------------- answers: "what is atlantis?" (LoreLegends)
+@kind reply
+@topic rumour_atlantis
+@answers ask_atlantis
+@realm alb
+@about place
+[gothwaite harbour talk|sailor talk from caer gothwaite]. a land past the isles that sank in a day and a night, and nobody has been
+@realm mid
+aegirhamn sailor talk, a drowned land out past the isles. buy one an ale and you hear it twice
+@realm hib
+the boatmen at the domnann dock [talk about it|swear by it], a sunken land out west. none of them has rowed out to look
+
+# ---------------------------------------------------------------- answers: "is there anything under the city?"
+@kind reply
+@topic rumour_below
+@answers ask_below
+@realm alb
+@about place
+old crypts under camelot, bricked up. the cellar folk say the inconnu never had to ask the way down
+@realm mid
+kobold miners swear theres a city under jordheim. they hear picks [below|under] their own
+@realm hib
+the dream tree roots under tnn go down further than roots should, and the druids stopped following them
+
+# ---------------------------------------------------------------- place-bound musings (rare: see AutonomousChatFiller)
+@kind ambient
+@topic rumour_atlantis
+@weight 0.5
+@realm alb
+@needs at:isle of glass
+@about place
+the lights are back off gothwaite. under the water this time, not on it
+@realm mid
+@needs at:aegir
+fisherman in aegirhamn pulled up a carved stone with coral all over it. theres a face on it
+@realm hib
+@needs at:domnann
+domnann boatmen came in early again, said the lights under the water are back
+
+@kind ambient
+@topic rumour_below
+@weight 0.5
+@realm alb
+@needs at:camelot
+something knocked under the bank floor in camelot, three times. i left
+@realm mid
+@needs at:jordheim
+@invites joke
+kobold in jordheim told me to stop stamping. said i was bothering the neighbours
+@realm hib
+@needs at:tir na nog
+@invites chat
+put my ear to a dream tree in tnn and its humming, from somewhere underneath

@@ -1,0 +1,153 @@
+{
+  "id": "fostra-orm",
+  "name": "Fostra Orm",
+  "catalogKey": "trollheim/fostraorm",
+  "locationId": "trollheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "morvalt"
+  ],
+  "related": [
+    {
+      "id": "dagar",
+      "relation": "the chief who feeds it"
+    },
+    {
+      "id": "trollheim",
+      "relation": "the warm water by Dagar's hall"
+    }
+  ],
+  "tier": "epic",
+  "facts": [
+    {
+      "text": "Fostra Orm is a level-61 serpent with 8,000 health that poisons (Orm Poison) and diseases.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists it as an animal in Trollheim; its drops include Morvalt jewellery. The bestiary also has 'Hus'djur Blood Orm', house-beast serpents.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5980"
+    },
+    {
+      "text": "Swedish fostra means to foster or raise, and orm serpent (to verify).",
+      "provenance": "original",
+      "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "Each brain tick there is a 25% chance it casts Orm Poison (70 body every 3 s for 30 s, uninterruptible, range 500) on its target if the target has no damage-over-time on it, and a 25% chance of Disease (120 s, range 350) if the target is not diseased. It never re-applies either while it is still running, so they do not stack. 8,000 health, reach 350, not CC-immune.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs"
+    },
+    {
+      "text": "Ulfrun and the Valkyn saying 'the orm never bites a sick man twice' are Living Server lore.",
+      "provenance": "original",
+      "source": "source/server/GameServer/scripts/namedmobs/Trollheim/FostraOrm.cs"
+    }
+  ],
+  "story": "The morvalt keep serpents the way Jordheim keeps hounds. They call them hus'djur, house-beasts, and raise them from eggs in the warm runoff that seeps under the upper city, where the Fathers' forges still leak heat into the rock. Fostra Orm is the first of them, the foster-serpent: an egg a morvalt warrior found in the steam on the day the gates broke and carried in his shirt for a winter, and grown fat on the city ever since. It sleeps in the warm water by Dagar's hall, and Dagar feeds it himself every morning after the day's mark is cut.\n\nThe morvalt children feed the young blood orms by hand and have never been bitten. The morvalt touch Fostra Orm's scales for luck as they pass, which it allows from them alone. Everyone else it bites, and its bite carries two gifts at once, poison and rot: the poison eats at the blood for a while, the rot settles into the wound and makes it slow to mend, so that one works while the other keeps the body from answering. The Valkyn came to know the venom the hard way, when Ulfrun, a guide of Dyrfjall, was bitten at the water's edge and brought home grey; the wise-women who sat with her found that the serpent never bites a sick man twice. It gives each gift once, to the one it faces, and waits until the body is clean before it gives it again.\n\nDyrfjall's guides carry two flasks past the warm water now, one against each gift, and the saying goes with them. Hallveig's grandmother carried an egg north to Midgard in her pack, and it hatched by a fire in Aegirhamn and grew as long as a man and never bit any of them, and when it died she buried it facing east, toward the warm water. The serpent in the steam is old now, and very large, and the morvalt say it is lucky. Its cast skins make the rings of the ancients, which are said to keep off the same rot.",
+  "chapters": [
+    {
+      "title": "An Egg in a Shirt",
+      "text": "Under the upper city of Trollheim the rock is warm. The Fathers' forges were cut deep, and their fires burned for longer than anyone can count, and the heat of them is still in the stone; water that seeps down through the halls comes out of the rock near Dagar's hall steaming, and gathers in a long low cave, and never freezes. The serpents of Aegir found it long before the morvalt did. They lay their eggs in the steam.\n\nOn the day the gates broke, a morvalt warrior whose name nobody kept was chasing a Valkyn through the lower galleries and fell into the warm water. He came out with an egg in his hand, leathery and warm and as big as a man's head, and instead of eating it, which is what a morvalt does with an egg, he put it inside his shirt. Nobody knows why. The Valkyn say perhaps it was the first warm thing he had ever held. He carried it there for a winter, against his skin, through the fighting in the middle city, and in the spring it hatched in his shirt and bit him and he laughed.\n\nFostra, the morvalt call it, in the borrowed tongue they use for titles: the fostered one, the raised one. Orm is the serpent. The warrior who raised it died long ago in some fight on the surface, and the serpent did not go with him. It went back to the warm water by the hall where it was found, and grew, and has not left the steam since. The morvalt say it is the luckiest thing in Trollheim, because it came in with them on the first day and has outlived every morvalt who did."
+    },
+    {
+      "title": "House-Beasts",
+      "text": "After Fostra Orm, every war-band in the upper city wanted one. The morvalt began to take eggs from the steam and raise them by their fires, and they called the serpents hus'djur, house-beasts, the way a farmer of Gotar would speak of the beasts that sleep under his roof. The young ones are the blood orms, red along the belly, and they curl by the morvalt fires and are fed by hand by morvalt children, and they have never been known to bite one of them. They bite everyone else.\n\nThe morvalt touch Fostra Orm's scales as they pass the warm water, for luck, the way a Jordheim smith touches the doorpost of his forge. It allows it from them and from nobody else. The Valkyn guides say that is the strangest thing in the upper city: a savage people that has never been gentle with anything, and a serpent that has never been gentle with anyone, being gentle with each other.\n\nDagar feeds it. Every morning, after the day's mark is cut on the wall, the chief of the count walks down to the warm water with meat and stands at the edge while it eats. His larlings say he talks to it. They do not say what about. The house-serpent is the one creature in Trollheim he does not count as a day, and the morvalt say that if anything ever happened to it, Dagar would cut a mark so long it went round the hall on its own."
+    },
+    {
+      "title": "Two Gifts in One Bite",
+      "text": "The Valkyn came to know the venom the hard way. Ulfrun of Dyrfjall, a guide of the generation before Hallveig, took a Midgard company past the warm water in the dark and went too close to the edge, and the serpent came up out of the steam and bit her once, through the arm, and went back down. The company carried her out. She was grey by the time they reached Dyrfjall.\n\nThe wise-women who sat with her found that the bite had given her two things. One was a poison, a burning in the blood that ran its course in a while and stopped. The other was a rot that settled into the wound and stayed far longer, and while it stayed, nothing they did for her took hold: her body would not mend, and every draught they gave her did half what it should. One gift works, they said, and the other keeps the body from answering it.\n\nThey found something else, sitting with her through the winter. The rot and the poison were each in her once, and no more. The serpent had bitten her only the one time, and it never bit her again in the cave, though she had been in front of it for some breaths after. The guides who went back past the water watched it, and saw the same: it bites the one it faces, and gives each gift once, and waits until the body is clean of it before it gives it again. The Valkyn made a saying of it. The orm never bites a sick man twice.\n\nUlfrun lived. She walked with a stick afterwards and would not go near warm water. The guides of Dyrfjall carry two flasks past the steam now, one for each gift, and the young ones are told the saying with them, and told that it is not a comfort. It means the serpent can wait."
+    },
+    {
+      "title": "Facing East",
+      "text": "When the Valkyn went north to Midgard after the gates broke, Hallveig's grandmother Ragnfrid carried a blood orm's egg in her pack, taken from the steam on the way out. She never said why, any more than the morvalt warrior did. It hatched in a pot by the fire in Aegirhamn and grew as long as a man and lived a long time for a serpent away from the warm water, and it never bit any of them.\n\nWhen it died she would not let them skin it. She said the house-beasts remember the warm water of Trollheim, and that hers had wanted to go home its whole life, and the least they could do was bury it facing east, toward the city. They did. Hallveig says that is the only grave the Valkyn have dug that faces Trollheim, and that her grandmother went and sat by it more often than by her own mother's.\n\nFostra Orm is old now and very large, and it sleeps in the steam coiled like a rope thrown into a pot. Midgard's companies who come home from the warm water bring its remains and its cast skins, and the morvalt rings made from them, the rings of the ancients, which the morvalt say keep off the rot. Nobody in Jordheim has proved it. The skalds say the morvalt think everything that serpent touches is lucky, and that they may be right, because nothing else in Trollheim has lasted as long. In a season it is back in the steam, and Dagar is standing at the edge with meat."
+    }
+  ],
+  "legend": "Fostra Orm is an easy kill for a level 50 group if you can cure. It has two spells, both on its current target only: Orm Poison, 70 body every 3 seconds for 30 seconds, and a Disease that lasts two minutes and cuts healing on the victim. Neither stacks: it won't recast a spell on someone who still has it, so as soon as you cure the tank it may bite again, but it can never pile two poisons on him. Keep cure poison and cure disease ready on whoever has it and the fight is a grind; without them the disease halves your heals while the poison ticks. Shamans earn their keep here. It has 8,000 health and a long reach (about 350), and it isn't CC-immune. It sits in the warm water near Dagar's hall, so don't pull both at once unless you mean to. Its remains, the ring of the ancients and the morvalt shadow needle are the drops.",
+  "yells": {
+    "aggro": [
+      "(The serpent hisses and uncoils.)",
+      "(Steam rolls off its scales.)",
+      "(Its tongue tastes the air.)",
+      "(The steam parts. Something long rises out of it.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Fostra Orm coils tighter in the steam, hissing.)"
+      }
+    ],
+    "death": [
+      "(The great serpent goes limp.)",
+      "(It sinks into the warm water.)",
+      "(The old serpent sinks into the warm water, still.)"
+    ],
+    "slay": [
+      "(It coils around the fallen.)",
+      "(The serpent settles back into the steam.)",
+      "(Fostra Orm hisses softly.)",
+      "(It settles back into the steam to wait.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Warm water steams here. Something long sleeps in it.",
+      "Something long sleeps coiled in the steam.",
+      "Smooth scales by the water, worn by morvalt hands."
+    ],
+    "realmFirstKill": "Fostra Orm sinks into the steam. Dagar's meat goes uneaten.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Fostra Orm coils tighter in the steam."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "fostra orm poisons and diseases. cure both or heals dont land",
+      "cure disease on the tank every bite",
+      "dont pull dagar with the snake",
+      "one healer watches the tank's debuffs only",
+      "fostra orm: poison and disease on its target only. they dont stack",
+      "cure disease and cure poison on the tank, it rebites after a cure",
+      "orm isnt cc immune if you need to reset positions"
+    ],
+    "aftermathWin": [
+      "snake down, easy",
+      "ring of the ancients dropped!",
+      "fostra orm's remains. trophy time",
+      "morvalt shadow needle dropped",
+      "two flasks, no problem",
+      "ring of the ancients!",
+      "snake down, cured everything"
+    ],
+    "aftermathLoss": [
+      "pulled dagar with the snake by accident [oops|my bad]",
+      "no cure disease and the poison won",
+      "the snake brought dagar. [great|ugh]",
+      "nobody had cure disease and the heals did half",
+      "pulled the snake and dagar together"
+    ],
+    "rumour": [
+      "the morvalt keep snakes as pets in trollheim. house snakes. [nope|no thanks]",
+      "morvalt kids feed the blood orms by hand and never get bitten",
+      "the morvalt touch fostra orm's scales for luck",
+      "the morvalt raise blood orms in the warm runoff from the old forges",
+      "valkyn saying: the orm never bites a sick man twice. its not a comfort",
+      "fostra orm hatched in a morvalt's shirt on the day trollheim fell",
+      "dagar feeds the snake every morning after he cuts his mark"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Fostra Orm",
+    "text": "The first of the [morvalt]'s house-serpents, hatched in a morvalt warrior's shirt on the day the gates broke. It sleeps in the warm water by [Dagar]'s hall. Its bite brings poison and rot together, and the Valkyn say the orm never bites a sick man twice; it waits until the body is clean."
+  },
+  "bookPage": "From the notes of Hallveig, the Valkyn guide. My people kept a blood orm too, after we came to Midgard; my grandmother brought an egg in her pack. It hatched in a pot by the fire in Aegirhamn and grew as long as a man and never bit any of us. When it died she would not let us skin it. She said the house-beasts remember the warm water of Trollheim, and that ours had wanted to go home, and that the least we could do was bury it facing east. We did. My uncles who were not tamed would have eaten it.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew the foster-serpent of Trollheim in {minutes} minutes.",
+    "loss": "Fostra Orm's venom turned back {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

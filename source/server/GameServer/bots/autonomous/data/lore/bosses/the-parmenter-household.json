@@ -1,0 +1,94 @@
+{
+  "id": "the-parmenter-household",
+  "name": "Parmenter household",
+  "npcNames": [
+    "Eabae Parmenter",
+    "Anwynd Parmenter",
+    "Ethel Parmenter",
+    "Byrht Parmenter",
+    "Burgraed Parmenter"
+  ],
+  "locationId": "dales-of-devwy",
+  "realm": "Albion",
+  "aliases": [
+    "eabae parmenter",
+    "anwynd parmenter",
+    "ethel parmenter",
+    "byrht parmenter",
+    "burgraed parmenter"
+  ],
+  "facts": [
+    {
+      "text": "The Parmenter household: Eabae (49), Anwynd (48), Ethel (44), Byrht (43) and Burgraed (43, aggro 0) Parmenter, ghosts, no faction, no spells, respawn 80 s, at the south-east end of the dyers' hamlet (~432.6-432.9k, 392.6-392.9k).",
+      "provenance": "game",
+      "source": "world data: Mob/NpcTemplate tables (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The household's trades and each member's habit are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Parmenters were the hamlet's tailors.\n\nEabae Parmenter cut the colleges' gowns, the readers' black and the masters' furred, and still measures every visitor with a look as if for a robe nobody will pay for.\n\nAnwynd Parmenter kept the peace between the Dyers and the Tinctors, badly, and still stands between their houses.\n\nEthel Parmenter sewed, and counts stitches aloud, and loses count at the same place every time.\n\nByrht Parmenter carried bolts of cloth to the colleges by cart and is still waiting for the cart.\n\nBurgraed Parmenter, the eldest, sits by the hearth and never rises against anyone. Gracien Adamson thinks Burgraed is the only one who knows the household is dead.",
+  "legend": "The Parmenter household: five ghosts at the south-east end of the dyers' hamlet, Eabae (49), Anwynd (48), Ethel (44), Byrht (43) and Burgraed (43). All aggro on sight except Burgraed, who never starts a fight. They stand close, so you often get two or three: pull from the edge. Plain melee, no spells, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "yells": {
+    "aggro": [
+      "Stand still. You want measuring.",
+      "Out of my house."
+    ],
+    "phases": [],
+    "death": [
+      "The gown... never finished..."
+    ],
+    "slay": [
+      "A shroud, then.",
+      "Measured."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Eabae Parmenter, at the door of the house.",
+      "Anwynd Parmenter is still at home.",
+      "Ethel Parmenter is still at home.",
+      "Byrht Parmenter is still at home.",
+      "Burgraed Parmenter is still at home."
+    ],
+    "phases": [],
+    "realmFirstKill": "The Parmenter house falls quiet. For now."
+  },
+  "botLines": {
+    "briefing": [
+      "parmenter house in the dyers hamlet, five ghosts, burgraed never aggros",
+      "pull from the edge, they stand close"
+    ],
+    "aftermathWin": [
+      "cleared the parmenters",
+      "eabae parmenter down. she measured me first"
+    ],
+    "aftermathLoss": [
+      "got three parmenters at once"
+    ],
+    "rumour": [
+      "[heard|someone said] eabae parmenter still measures everyone for a gown",
+      "heard anwynd parmenter still stands between the dyers and the tinctors",
+      "[heard|someone said] ethel parmenter loses count of her stitches at the same place every time",
+      "heard byrht parmenter is waiting for a cart that's never coming",
+      "[heard|someone said] burgraed parmenter knows they're all dead"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "parmenter",
+    "text": "The Parmenters were the colleges' tailors in the dyers' hamlet of the [dales of devwy]: Eabae the cutter, Anwynd the peacemaker, Ethel the seamstress, Byrht the carter and old Burgraed by the hearth, who alone never rises against a visitor."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s {raidLeader} gave the Parmenter household their rest for a while, in {minutes} minutes.",
+    "loss": "The Parmenter household kept house; {raidLeader} of {realm} was shown the door."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "arawn",
+    "drakoran"
+  ],
+  "tier": "minor"
+}

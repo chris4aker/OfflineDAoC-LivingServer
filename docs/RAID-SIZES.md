@@ -28,8 +28,15 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
     realm's 300.
 - **Recruit cap:** a quarter above what the raid must stage, in whole parties (RecruitCap of the full size, scaled by
   the same percentage).
-- **Short start and hub departure:** half of what the sized raid needs, at least three parties (24). The old minimum
-  of 40 was 57% of a 70-bot dragon raid and 82% of one trimmed to 49.
+- **Short start and hub departure** (owner, 2026-11-11: "go with who came"): after the hub's 30 minutes the raid leaves
+  with whoever gathered, and at its staging deadline it goes in with whoever is there, three parties (24) at least.
+  Until then it was half of what the sized raid needs: on the owner's PC (build e17a92b) Midgard's and Hibernia's epic
+  rallies, sized up to 134 and 142 after losses, gathered 55 and 69 in 90 minutes, never left their hubs and ended
+  "Failed rally" without a fight.
+- **A loss under strength is no result:** a raid that never had the bots it was sized for (the most it recruited is
+  under what it must stage) and is defeated or times out does not move the next raid's size or the Special Forces'
+  call-up (`REALM_RAID_ENDED ... mostRecruited= underStrength=True`; in the ledger its details end "Under strength: 55 of
+  134."). A win under strength is a win. The Herald still tells it as a defeat.
 - **Epic Special Forces** (owner, 2026-11-04): "keep 24 and if they are called in on the same raid type where 24 made
   the second run win, it's 16 now". They don't scale with the raid's size. Per encounter: 24 to start; a win they took
   part in makes the next call-up there a party (8) smaller, down to 8 (they always answer a wipe); a win without them
@@ -78,6 +85,38 @@ Most of the evidence is from Freddyshouse, the European DAoC community forum, in
 | Tur Suil (Balor) | 160 | 40 | Dec 2003: "After all you only need 2fg's"; the raid had 3 groups. | [Balor/Quest Raid, Dec 2003](https://forums.freddyshouse.com/threads/balor-quest-raid-today-friday.163060/) |
 | Marfach Caverns (Black Lady, Caimheul, Avartack) | 64 | 64 | Unverified: no count found. Unchanged. | - |
 
+## The open-world big bosses (1.2)
+
+Every big boss is in 1.2 (owner, 2026-11-14). The open-world bosses had no raid at all: ordinary groups walk around an
+open-world epic, so the bots never fought them. Each now has its realm's raid (`RealmRaidOpenWorld.cs`), fought by the
+dragon-fight engine with the boss's spawn in place of a lair: a hub of the boss's realm in its region, a staging ring
+around the spawn, the regroup after a wipe, the Special Forces and win-rate sizing as for every raid. Most of them were one-
+to three-group fights by 2003, so most sit at the realm raid's smallest full size (40).
+
+| Raid | Period size | Starts at (125%) | Can range (70-200%) | Period evidence | Source |
+|---|---|---|---|---|---|
+| Coliath (Albion Shrouded Isles) | 64 | 80 | 45-128 | "about Legion difficulty": sized as Legion | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
+| Glacier Giant (Odin's Gate) | 48 | 60 | 34-96 | Dec 2003: two guild groups wiped in seven minutes; "done with 5-6 fgs"; earlier kills with 2 groups (2002-2003) | [FreddysHouse, "Glacier Giant", Dec 2003](https://forums.freddyshouse.com/threads/glacier-giant.604/) |
+| Green Knight (Forest Sauvage) | 40 | 50 | 28-80 | Feb 2003: about Grand Summoner difficulty, 4-5 groups | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
+| Evern (Breifine) | 40 | 50 | 28-80 | 2003: a full group was beaten, eight killed him in 20 minutes; the Green Knight's equal | Allakhazam (2003); the Albion guide above |
+| Mortufoghus (Modernagrav) | 40 | 50 | 28-80 | Oct 2003: three groups couldn't get it under 50%; Apr 2003: 1.5-3 groups | Allakhazam; JeuxOnline 288849 |
+| Spirit of Lord Emthoro (Inishail Island) | 40 | 50 | 28-80 | 2004: more than one full group | Allakhazam (Mar 2004) |
+| The five Wretches of Winter (Raumarik) | 40 each | 50 | 28-80 | 2002-2003: groups of about 10; May 2002: "The human form wretch wiped out everyone 3 times" | Allakhazam; [FreddysHouse, May 2002](https://forums.freddyshouse.com/threads/glacier-giant-0-midgard-1.86858/) |
+| Raumarik Revenant | 40 | 50 | 28-80 | May 2002: killed with the Wretch of Winter; no count | [FreddysHouse, May 2002](https://forums.freddyshouse.com/threads/glacier-giant-0-midgard-1.86858/) |
+| Juggernaut (Cursed Forest) | 40 | 50 | 28-80 | 2002: a full group with bladeturn took it to 25% | Allakhazam |
+| Curengkur, Marfoirwort, Mollunero (Hibernia Shrouded Isles) | 40 each | 50 | 28-80 | Unverified: no count found | - |
+
+- **The schedule:** a realm's scheduled roll goes to one of these at `realm_raid_open_world_percent` percent (25 as
+  shipped; 0 = never on the schedule, the GM sweep and the launcher still start them), so the dragon, epic dungeon,
+  neutral and raid dungeon raids keep three quarters of the rolls, and the realm raids no more often than before. The five
+  Wretches of Winter are one choice among Midgard's four. A raid whose start fails on the schedule (its hub has no route to
+  the boss) is not picked again for two hours.
+- **Not here:** Morgana (a quest NPC in the period, not a raid boss; no spawn in the world database), and Fomor City's
+  Myrddraxis and Anurigunda (no path in on its navmesh; their raid plans steer the gamebots that fight there).
+- **The GM sweep:** `/epictest sweep start openworld` runs these alone; `all` runs them with the rest.
+
+None of these raids has been played: tests only.
+
 ## What the numbers mean for bots
 
 The period sizes are for 2003 players. Two things pull the other way, and win-rate sizing is there to absorb both:
@@ -87,5 +126,15 @@ The period sizes are for 2003 players. Two things pull the other way, and win-ra
 - **Bots play worse:** confirmed on the first night (1 win in 7). Raids start at 125% and grow up to 200% when they
   keep losing. Overnight the defeated raids already had 86-104 bots with the Special Forces against period sizes of
   48-64 (Tuscaran Glacier 94, sized 58 by the restart), so the owner raised the ceiling from 150% to 200%.
+
+## Boss mechanics that count raiders (1.2)
+
+Since 1.2 the bosses count and pick bots too. A few mechanics make an add or a heal per raider, so a bot raid at up to
+200% of its period size would face far more than a full 2003 raid did. `EncounterFloodGuard` caps each such count at
+the period size in the table above (`SuggestedBots`): Legion's adds and kill heals, High Lord Saeor's kill heals and
+Beliathan's minions (Darkness Falls, 64), Nosdoden's spirits (Trollheim, 64), the Green Knight's trees and Oona's undead
+(on the dragon raids' way, 70; the Green Knight has his own raid of 40 since 1.2, and the cap stays the dragon raid's 70), and Risnir Cruss's apparitions (no raid: 40, the smallest period size). Up to that size
+the mechanic is the original; each cap is its own setting (`EncounterFloodGuard.SetLimit`, 0 = none). The server log's
+`EPIC_FLOOD_GUARD` line shows a cap at work.
 
 None of this has been played in game yet. `REALM_RAID_SIZED` in the server log shows each raid's size and why.

@@ -1,0 +1,111 @@
+{
+  "id": "shredclaw",
+  "name": "Shredclaw",
+  "catalogKey": "midgard-named-mobs-shrouded-isles/shredclaw",
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "wild-beasts"
+  ],
+  "related": [
+    {
+      "id": "goretooth",
+      "relation": "the old jaw whose ground he waits to take"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Shredclaw is a level-66 named with 30,000 health in Faraheim; three blood renders come with him.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "He poisons and causes bleeding.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "Allakhazam lists Shredclaw as an animal of level 66 in Faraheim that gives master-level experience.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/db/mob/5777"
+    },
+    {
+      "text": "When he is fought, his three blood renders (ShredclawBaf, within 2,500) join him. On 35% of his hits he poisons his target (100 body over 30 s, if it has no such effect) and on 35% makes it bleed (45 over 30 s, if not already bleeding; it does not stack). 30,000 health, CC-immune, reach 350; resets at full health.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Shredclaw.cs"
+    }
+  ],
+  "story": "Shredclaw is the young one. He came out of the old jaw's own pack, the dwarves say, a render who would not wait his turn, and was driven north across the empty strip with three others who would not wait either. They took the north of the east as their ground and have held it since, and he has grown into it, and the claw-marks he leaves on the trunks there are deeper every year.\n\nWhere Goretooth bites, Shredclaw tears. His claws open wounds that will not close and leave a poison in them besides, and he does not stop to let the prey be still; he goes on tearing, and the three come in from the sides. A hunter who goes into his ground comes out bleeding or does not come out. The skogsra of Dalgo's wood, who are his nearest neighbours, move their paths away from his trunks.\n\nHe has never crossed the strip. The dwarves have watched him from griffon-back walk to its edge, and stand, and look south toward the old jaw's ground for a long time, and go back. They think he is waiting for Goretooth to weaken. They also think he does not know how to wait, which is the only reason they sleep at all: a render who cannot wait will go through the strip one day before the old jaw is ready to lose, and the old jaw will kill him, and the east will be quiet again for a generation. The dwarves would like that very much. They are not sure enough of it to bet a griffon.\n\nLike the old jaw, he has never been held by snare or charm. The dwarves say renders are made that way: slippery as a fish and twice as cold.",
+  "legend": "Shredclaw is the younger blood render in the north-east of Faraheim, level 66, 30,000 health, with three renders that come when you touch him. Poison (100 body over 30 seconds) and a bleed (45 over 30 seconds) on whoever he's hitting, each on a 35% chance per hit; neither stacks, so it's steady pressure rather than a spike. Bring cure poison and keep steady heals on the tank. A bit easier than Goretooth; still a full-group pull. CC-immune, reach 350, resets full if you leave. He's well away from Goretooth, so the packs won't mix unless you drag the fight.",
+  "yells": {
+    "aggro": [
+      "(Claws rake bark, close by.)",
+      "(Three shapes slide out from behind the trunks.)",
+      "(Shredclaw hisses, low and eager.)"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "(Shredclaw's claws open wounds that will not close.)"
+      }
+    ],
+    "death": [
+      "(Shredclaw shudders and lies still.)",
+      "(To the south, the old jaw lifts its head.)"
+    ],
+    "slay": [
+      "(Shredclaw tears at the fallen.)",
+      "(Fresh claw-marks on the nearest trunk.)",
+      "(The young one does not stop to eat.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Claw-marks gouge every trunk. Fresh ones.",
+      "The trunks here are scored deeper every year."
+    ],
+    "realmFirstKill": "Shredclaw is slain. Goretooth has no rival now.",
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Shredclaw's claws open wounds that will not close."
+      }
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "shredclaw + 3 renders, bleeds and poison. cures and bandages",
+      "neither the poison nor the bleed stacks, steady heals",
+      "all three come when we touch him",
+      "cc immune"
+    ],
+    "aftermathWin": [
+      "shredclaw down",
+      "goretooth has no rival now",
+      "cure poison made it easy",
+      "the trunks round here will heal now"
+    ],
+    "aftermathLoss": [
+      "bled out",
+      "the three renders flanked the casters",
+      "no cures, long fight",
+      "pulled the skogsra too"
+    ],
+    "rumour": [
+      "goretooth and shredclaw never meet. [good|the day they do, run]",
+      "shredclaw came out of goretooths own pack, the dwarves say",
+      "he walks to the edge of the empty strip and looks south",
+      "his claw marks get deeper every year"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Shredclaw",
+    "text": "[Goretooth]'s rival among the blood renders. Where the old jaw bites, Shredclaw tears, and the wounds will not close."
+  },
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the dwarves showed me the young render standing at the northern edge of the empty strip. He stood there all the while we circled, a long time, looking south, his three behind him, and his tail moving like a cat's. Then he turned and went back into his own wood and raked a trunk as he passed it, so hard I heard it from the air. The dwarf said: one day he will not turn back. I asked what would happen then. She said the empty strip would be full for an afternoon.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} slew Shredclaw in {minutes} minutes.",
+    "loss": "Shredclaw tore through {raidLeader}'s party from {realm} after {minutes} minutes."
+  }
+}

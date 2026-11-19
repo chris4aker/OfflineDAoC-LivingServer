@@ -65,8 +65,8 @@ namespace DOL.AI.Brain
             AggroLevel = 100;
             AggroRange = 500;
         }
-        public static GameLiving TeleportTarget = null;
-        public static bool CanPoison = false;
+        public GameLiving TeleportTarget = null;
+        public bool CanPoison = false;
         public override void OnAttackedByEnemy(AttackData ad)
         {
             if(ad != null && ad.Attacker != null && Body.TargetObject != ad.Attacker && CanPoison==false)
@@ -95,9 +95,9 @@ namespace DOL.AI.Brain
             {
                 switch (Util.Random(1, 3))
                 {
-                    case 1: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 34496, 30879, 14551, 1045); break;
-                    case 2: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 37377, 30154, 13973, 978); break;
-                    case 3: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38292, 31794, 13940, 986); break;
+                    case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 34496, 30879, 14551, 1045, DisplacementKind.Teleport, Body); break;
+                    case 2: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 37377, 30154, 13973, 978, DisplacementKind.Teleport, Body); break;
+                    case 3: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38292, 31794, 13940, 986, DisplacementKind.Teleport, Body); break;
                 }
             }
             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetTeleport), Util.Random(12000,18000));

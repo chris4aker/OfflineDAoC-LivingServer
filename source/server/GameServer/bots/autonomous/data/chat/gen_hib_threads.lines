@@ -10,19 +10,19 @@
 @role C class=Bard
 @role D class=Warden
 @role E type=Leveler,Socialite
-A: {q} rolling a healer alt. druid, bard or warden? | {q} need a hib healer alt, which one would you pick | ok healers of hibernia, convince me
+A: {q} rolling a healer alt. druid, bard or warden? | {q} need a hib healer alt, which one would you pick? | ok healers of hibernia, convince me
 B: druid. biggest heals in the realm and nobody argues | druid, hands down. the heals are why groups survive
 C: bard. you heal, you run speed, you mez the add. every group wants you | bard, because a group without speed is a group walking home slowly
 D: warden. you can stand in melee and not fold | warden, heal from the front line with a weapon in your hand
 B: a warden heals ok but nobody asks a warden to main heal a hard camp | main healing spraggon den as a warden sounds like a long night
 D: i main healed muire tomb on my warden for a week, nobody died | we cleared muire tomb with me as the only healer and it went fine
-C: muire tomb is not exactly a hard test | muire is where everyone learns, it is gentle
+C: muire tomb isnt exactly a hard test | muire is where everyone learns, its gentle
 ~ 25
 E: sorry, which one is the bard, the one with the instrument? | wait, which of you plays music
-C: that is us. songs, speed and a lute on my back | yes, the one with the songs. we are hard to miss
+C: thats us. songs, speed and a lute on my back | yes, the one with the songs. we are hard to miss
 E: huh, i thought bards only did the speed at the stables | i only ever see bards running speed near the stablemaster
-B: and that is the trap. a bard running speed all fight is not healing | the bard is always busy with something, that is my worry
-C: i change songs when the fight starts, the group lives | the speed comes down when the pull lands, it is not hard
+B: and thats the trap. a bard running speed all fight isnt healing | the bard is always busy with something, thats my worry
+C: i change songs when the fight starts, the group lives | the speed comes down when the pull lands, its not hard
 ?D: half of a warden's job happens before the pull, with the buffs | warden buffs make every heal go further, people forget that
 ~ 30
 A: what about soloing, i log at odd hours | solo matters to me too, my friends are never on when i am
@@ -47,29 +47,29 @@ A: thanks all, off to mag mell | appreciate it, see you in lough derg in a few d
 @role E type=Socialite
 A: is it just me or does every hib lfg start with "need bard" | why does every group in hibernia want a bard before anything else
 B: because we are the best class in the realm, obviously | because without me you walk. slowly. everywhere
-C: speed to camp, mez the add, heal the slip. a bard covers more jobs than anyone | bards do four jobs, that is why they get the first invite
+C: speed to camp, mez the add, heal the slip. a bard covers more jobs than anyone | bards do four jobs, thats why they get the first invite
 B: and i get yelled at for every one of those jobs | i take that as a compliment, mostly
 D: my last group had no bard and the run back from the bind took forever | we tried a group without a bard once. never again
 ~ 20
 B: the part nobody sees is the mez. three adds locked down and nobody notices | people thank the druid and forget who mezzed the adds
 C: oh we notice when the mez breaks | people notice. they notice when it breaks
 B: it breaks because the hero swings at the mezzed one | it breaks because somebody pbaes right next to it, every time
-?E: the eternal mez breaker question returns | lol, it is always the enchanter
+?E: the eternal mez breaker question returns | lol, its always the enchanter
 D: we had an enchanter break mez four pulls in a row at spraggon den | spraggon den last week, the enchanter woke the adds every single pull
 ~ 35
 E: so do i list a bard as a healer or as support when i lfg | real question, is the bard a healer or a support class
-B: support that can heal. if i am the only healer something went wrong | support with heals. do not make me main heal anything big
+B: support that can heal. if im the only healer something went wrong | support with heals. dont make me main heal anything big
 C: at low levels a bard main heals just fine | i have seen a bard main heal muire tomb without a single death
 D: low levels, sure. in the 40s you want a druid behind that bard | in the 40s you need a druid next to the bard, period
 C: two bards in one group is silly but so fast | double bard groups are my favorite, everything runs
 B: with two bards i finally get to swing a sword | two bards means one plays speed and i get to hit things
-A: wait, bards can melee? | i did not know bards could hit things
+A: wait, bards can melee? | i didnt know bards could hit things
 B: badly. but yes | a blade and a prayer, yes
 ?C: bard melee is mostly for show | the swinging is decoration, the songs are the class
 ~ 25
-D: ok speaking of bards, we need one for spraggon den right now, 3 spots | lf bard for spraggon den, we have room
-B: lol, on my way, send the invite | heh. inv me, i will bring speed
-C: and that is how every bard argument ends, with an invite | every bard debate ends with someone needing a bard
+D: ok speaking of bards, we need one for spraggon den right now, pst | lf bard for spraggon den, pst me
+B: lol, tell sent | heh. sending a tell, i will bring speed
+C: and thats how every bard argument ends, with a group | every bard debate ends with someone needing a bard
 ?E: have fun, keep an eye on the enchanter | watch out for the mez breakers
 
 @topic hib_mentalist
@@ -79,7 +79,7 @@ C: and that is how every bard argument ends, with an invite | every bard debate 
 @role C type=NoLifer
 @role D class=Druid
 @role E type=Leveler
-A: honest question, what is a mentalist for | what does a mentalist do in a group? i see them lfg for ages
+A: honest question, whats a mentalist for | what does a mentalist do in a group? i see them lfg for ages
 B: heals, mez and damage, in any order you like | a bit of everything. heal, mez, hit things with my mind
 C: a bit of everything is the problem. three jobs at half strength | jack of all trades. the heals are smaller, the damage is smaller
 B: half strength mez is still a mez | my mez holds the add the same as anyone else's
@@ -89,8 +89,8 @@ C: backup healer, sure. main heals, no | second healer fine. only healer, i get 
 E: sorry to jump in, which line has the heals, light or mana? | newbie question, which spec line heals on a mentalist
 B: mentalism. heals and mez live there, light and mana are damage | mentalism has the heals and the mez, the other two hit things
 E: so one damage line plus mentalism? | ty, so pick light or mana and put the rest in mentalism
-B: that is the usual, yes. some go nearly pure mentalism | most do, yes
-?C: and some go all damage and then cannot heal a scratch | and some forget mentalism and wonder why groups pass them over
+B: thats the usual, yes. some go nearly pure mentalism | most do, yes
+?C: and some go all damage and then cant heal a scratch | and some forget mentalism and wonder why groups pass them over
 ~ 30
 D: for me the mez alone is worth the slot | honestly the mez is the real reason to bring one
 C: bards mez too and they bring speed | we already have bards for mez
@@ -100,7 +100,7 @@ C: fine. a mentalist is welcome. still pick a druid first | i will grant it, men
 ?A: so the utility caster of hibernia | the realm's swiss army knife then
 ~ 20
 B: anyway, lfg {level} mentalist, heals mez damage, whatever you need | so... lfg {level} mentalist, can do everything apparently
-D: hmm. inv coming, we are short a mezzer | pst you, our group needs a mez
+D: hmm. pst me, we are short a mezzer | sending you a tell, our group needs a mez
 C: and there goes my whole argument | lol fine, go mez something
 E: gl in there | have fun
 
@@ -115,25 +115,25 @@ A: making an eldritch tonight. void, light or mana? | thinking about a fresh eld
 B: void. the biggest single hit in the realm, end of discussion | void, every time. watch a yellow con fall over in two casts
 C: light. the damage is steady and the tricks keep you alive | light eldritch here, steadier and more forgiving
 B: forgiving is for people who miss | steady never killed anything fast
-C: steady does not run out of power halfway through a camp | i am still casting while the void is sitting on the floor for power
-D: mana is the answer nobody talks about | nobody ever mentions mana and i think it is underrated
+C: steady doesnt run out of power halfway through a camp | im still casting while the void is sitting on the floor for power
+D: mana is the answer nobody talks about | nobody ever mentions mana and i think its underrated
 B: nobody mentions it for a reason | mana mostly shows up in stories about regret
 ~ 30
 D: brb, pulling, keep arguing without me | hold that thought, i have a pull coming
 E: can an eldritch solo or is it group only | are eldritch any good on their own
-C: carefully. anything that reaches you hurts a lot | it can, but you are in cloth, one bad pull and you are back in tir na nog
-B: the void solo plan is simple, it dies before it arrives | kill it before it reaches you, that is all
-?E: and if two of them arrive? | and when it does reach you?
+C: carefully. anything that reaches you hurts a lot | it can, but youre in cloth, one bad pull and youre back in tir na nog
+B: the void solo plan is simple, it dies before it arrives | kill it before it reaches you, thats all
+E: and if two of them arrive? | and when it does reach you?
 ?C: then you meet your bind point | then you learn where you bound
 ~ 25
 D: back. so who won | pull is done, what did i miss
-A: nobody won, as usual | B says void, C says light, i still have no idea
+A: nobody won, as usual | one says void, one says light, i still have no idea
 D: mana. i keep telling you | i stand by mana, alone apparently
 C: ok, void for groups is fair. light if you solo a lot | i will give void the group seat. solo, light
-B: fine, void gets groups, i will take it | that is the most reasonable thing said in faction tonight
+B: fine, void gets groups, i will take it | thats the most reasonable thing said in faction tonight
 ~ 40
 A: ok, void it is. now where is the trainer in tir na nog | going void. wish me luck finding the trainer in tir na nog
-?D: up the stairs, past the merchant, then you are lost | nobody knows, that is the secret of tir na nog
+?D: up the stairs, past the merchant, then youre lost | nobody knows, thats the secret of tir na nog
 E: gl with it, show us some big numbers | gl, post your first big hit
 
 @topic hib_enchanter_room
@@ -144,10 +144,10 @@ E: gl with it, show us some big numbers | gl, post your first big hit
 @role D type=Leveler
 @role E type=Daredevil
 @role F type=Socialite
-A: we just wiped in spraggon den and i think the enchanter did it | well that was a wipe. spraggon den, whole room, everyone at the bind
-B: i did not pull that room, the pet did | in my defense the pet ran in on its own
+A: we wiped in spraggon den earlier and i think the enchanter did it | that was a wipe earlier. spraggon den, whole room, everyone at the bind
+B: i didnt pull that room, the pet did | in my defense the pet ran in on its own
 C: the pet ran in because you sent it | last i checked the pet does what it is told
-B: i sent it at one pit spraggon. the rest came along for the party | i sent it at one spraggon cutter, i did not expect friends
+B: i sent it at one pit spraggon. the rest came along for the party | i sent it at one spraggon cutter, i didnt expect friends
 D: nothing in spraggon den comes alone, you know that | every pull in the den comes with friends
 ?F: rip | sorry for your loss lol
 ~ 25
@@ -160,15 +160,15 @@ D: they were going to break after we killed the loose two, not before | we had t
 F: newbie question, do all enchanters run a pet or is that a spec thing | do enchanters always have a pet
 B: everyone gets one, more enchantments makes it better | the pet comes with the class, enchantments makes it stronger
 E: and it tanks better than half the heroes i know | that pet holds aggro better than some tanks
-?C: do not let the heroes hear that | lol, let the heroes believe what they want
+?C: dont let the heroes hear that | lol, let the heroes believe what they want
 F: neat, i might roll one | sounds fun, maybe my next alt
 ~ 20
-D: ok, everyone back from the bind, ready to go again? | so are we going back in
+D: so, would you all go back in with that enchanter? | so are you going back in
 B: yes, and this time i wait for the call | yes. i wait for the mez to settle, promise
-C: i will say it in group when it is safe to burn | i will call it, then you burn them down
+C: i will say it in group when its safe to burn | i will call it, then you burn them down
 E: or we pull the bigger room and see what happens | i say we try the back room this time
 D: no | absolutely not
-A: lol omw back, buff me at the entrance | heading back in, save me a spot
+A: lol, maybe tomorrow | next time, with a bigger group
 
 @topic hib_front_line
 @levels 30-50
@@ -187,23 +187,23 @@ B: a dead monster is fine until the add shows up and wants the cloth | the add a
 E: real answer, hero at camps, champion in the frontier | in pve i take the hero, in the frontier the champion
 C: thank you, someone gets it | the frontier is where valor shines, yes
 D: and the blademaster sits on the bench? | where does that leave me
-E: in the second group, killing casters | you are the assist train's favorite
+E: in the second group, killing casters | youre the assist train's favorite
 ?F: blademasters always have the best dyed armor in the realm | blademasters spend more on dye than anyone
-D: i will not deny the dye | true, i spent more on dye than on weapons
+D: i wont deny the dye | true, i spent more on dye than on weapons
 ~ 30
 B: nobody talks about who holds the door when the ram shows up | none of you want to stand at a door holding off a ram crew
 C: the door holds itself, the druid holds the hero | you hold it because a druid is behind you
 F: you three should just duel it out | fair fight, at the keep, tonight
 B: heroes win the long fight | i outlast both of you
-D: if the fight goes long i already lost | i would not let it go long
+D: if the fight goes long i already lost | i wouldnt let it go long
 C: i would debuff you both and walk away | i would debuff you and you would both cry
 ~ 25
 E: put all three in one group and stop arguing | a group with all three is a good group, honestly
 A: hero tanks, champion debuffs, blademaster kills. everyone has a job | ok so everyone gets a job
 ?B: and i get the job where things hit me, as usual | and i take the hits, like always
-F: ok enough, who is heading out? the frontier needs bodies more than this argument | anyway, emain needs bodies more than this argument
+F: enough talk, emain isnt going to fight itself | anyway, emain needs people more than this thread
 B: that settles it. heroes to the front | heroes first, see you out there
-C: debuffs ready, omw | omw
+C: debuffs ready, someone call targets | heroes first, sure
 D: last one there is a lurikeen | race you
 
 @topic hib_champion_valor
@@ -215,20 +215,20 @@ D: last one there is a lurikeen | race you
 A: someone explain valor to me, our champion keeps talking about it | what exactly does a champion debuff
 B: valor is the debuff line. i make the target weaker and everyone hits harder | the valor spells strip the target down, then the group hits it harder
 C: and a debuff is only worth it on what the group is hitting | only matters if the whole group is on the same target
-B: which is why assist matters. one target, everyone on it | that is the whole trick, assist and kill one thing at a time
-A: our group has eight people hitting eight targets | assist? our groups never assist, it is chaos
-C: then your champion is wasted | that is a waste of a good champion
+B: which is why assist matters. one target, everyone on it | thats the whole trick, assist and kill one thing at a time
+A: our group has eight people hitting eight targets | assist? our groups never assist, its chaos
+C: then your champion is wasted | thats a waste of a good champion
 ~ 25
 D: from the healer seat, assist makes my job easy | i love a group that assists. fights end, power stays
 B: see, the druid gets it | the healer agrees with me, that settles it
 C: a good MA makes a group, the debuff makes it faster | the main assist is what matters, the champion is a multiplier
-A: what is an MA, sorry | wait, who is the MA supposed to be
+A: whats an MA, sorry | wait, who is the MA supposed to be
 C: main assist. one person picks the target, everyone targets through them | the main assist, everyone else uses /assist on them
-?B: and it should never be the person who gets mezzed first | pick someone who will not die in the first ten seconds
+?B: and it should never be the person who gets mezzed first | pick someone who wont die in the first ten seconds
 ~ 30
 B: put the champion on MA and the debuff is always on the right thing | i like being MA, i already pick the target for valor
 D: no, the MA should be someone not busy casting | the MA should be a melee who does nothing else
-B: i am a melee who does nothing else, mostly | i swing and debuff, it is not hard
+B: im a melee who does nothing else, mostly | i swing and debuff, its not hard
 C: ok that actually works | fair point, champion MA works
 ?D: fine, but you call targets out loud | then type the target in group, every time
 ~ 20
@@ -245,16 +245,16 @@ A: i will relay that word for word | lol will do
 @role D type=Daredevil
 @role E type=Leveler
 A: any of our stealthers out? i keep getting picked off on the road | who is hunting stealthers tonight
-B: me, when i am out. lone albs on the roads are the best targets | nightshade here, send me targets
+B: me, when im out. lone albs on the roads are the best targets | nightshade here, send me targets
 C: ranger here. from a hill i see them before you do | i take the hill, i see everything that moves
 B: and i reach them before you do | seeing is nice, stabbing is better
-C: i do not need to reach them, that is the point of a bow | you walk to them, my arrows fly
+C: i dont need to reach them, thats the point of a bow | you walk to them, my arrows fly
 ~ 25
 D: who wins in a duel, nightshade or ranger, straight up | real question, ns or ranger, one on one
-B: nightshade. i open from stealth and it is over | i get the first hit, the ranger never gets a shot off
-C: only if i do not spot you first | if you find me first. half the time i see you coming
-B: you never see me coming | nobody sees a nightshade coming, that is the class
-C: tell that to the nightshades i dropped last night | i have shot three nightshades this week
+B: nightshade. i open from stealth and its over | i get the first hit, the ranger never gets a shot off
+C: only if i dont spot you first | if you find me first. half the time i see you coming
+B: you never see me coming | nobody sees a nightshade coming, thats the class
+C: tell that to the nightshades i beat in duels last week | i have won three duels against nightshades this week
 ?E: you two should just group up | or work together, crazy idea
 ~ 30
 E: question from a leveler, is ranger fun to level? | do rangers solo pve well, thinking of an alt
@@ -277,10 +277,10 @@ E: and the debate continues | lol so nobody wins, as usual
 @role C type=NoLifer
 @role D class=Hero
 @role E type=*
-A: why do alb scouts outrange everyone, i got shot from across the field | a scout hit me from so far away i could not even see him
-B: longbows. it is their whole thing | they put everything in longbows, that is the price you pay
+A: why do alb scouts outrange everyone, i got shot from across the field | a scout hit me from so far away i couldnt even see him
+B: longbows. its their whole thing | they put everything in longbows, thats the price you pay
 C: our rangers do fine at range too | rangers can trade shots if they stand still
-B: we can, but i am not standing in the open to prove it | i would rather fight from stealth and pick my moment
+B: we can, but im not standing in the open to prove it | i would rather fight from stealth and pick my moment
 ~ 25
 D: heroes have a simple answer to archers. run at them | the solution to archers is running at them
 C: and eat arrows every step of the way | and get shot all the way there
@@ -292,13 +292,13 @@ E: does a group even want a ranger | are rangers good in a group though
 B: in the frontier, for picking off casters. at camps they would rather have a druid | rvr yes. pve, honestly, kind of meh
 C: a ranger's pve job is pulling, the bow pulls from far | good puller though, the bow pulls clean
 B: thanks, i will put "good puller" on my grave | best puller in hibernia, at least i have that
-?D: a good puller is half the camp, it matters | pulling is a real job, do not sell it short
+?D: a good puller is half the camp, it matters | pulling is a real job, dont sell it short
 ~ 25
 A: so the albs win the archer fight? | so basically scouts are just better archers
-B: they snipe from a hill, we hunt in the woods. different game | they stand and shoot, i hunt. i would not trade
+B: they snipe from a hill, we hunt in the woods. different game | they stand and shoot, i hunt. i wouldnt trade
 C: and midgard hunters have a pet, so everyone has something | hunters get a pet, nobody complains about that
 A: i still want revenge on that scout | ok but who wants to help me find that scout
-B: give me five minutes to stealth up and head out | i will come, bring a druid, i always need heals after
+B: if i see him, he is mine | i hunt him next time, bring a druid, i always need heals after
 D: i will run at him, as discussed | i will be the bait, i always am
 
 @topic hib_animist_walls
@@ -309,12 +309,12 @@ D: i will run at him, as discussed | i will be the bait, i always am
 @role D class=Eldritch
 @role E type=Socialite
 @role F type=*
-A: {q} is it just me or do animists win every keep defense now | {q} honest question, are animists the best keep defenders we have
+A: {q} is it just me or do animists win every keep defense now? | {q} are animists the best keep defenders we have?
 B: put me on a wall with shrooms and watch | give me a wall and i will fill it with turrets
-C: please do not plant the whole wall, my frame rate cannot take it | last defense with three animists was a slideshow for me
+C: please dont plant the whole wall, my frame rate cant take it | last defense with three animists was a slideshow for me
 B: enough to keep the ram crew busy | as many as the wall will hold
 D: the turrets do more damage than i do some nights | love the shrooms, ram crews stop at the door and just melt
-C: they are doing more damage to my computer | my poor computer is choking on them
+C: theyre doing more damage to my computer | my poor computer is choking on them
 ?E: turn the spell effects down, it helps | lower your settings, trust me
 ~ 30
 C: complaints aside, a wall full of shrooms is scary | honestly nothing holds a wall like an animist
@@ -327,12 +327,12 @@ F: best part is when the ram crew reaches the door and finds a carpet of mushroo
 B: i always plant the inner side too | some turrets over the door, some on the inner side
 C: and my screen becomes a sea of mushrooms | i can never see the albs, only fungus
 D: while i nuke the ram crew from the wall, it works | i drop everything on the ram crew, the shrooms do the rest
-?E: just keep the animist alive, he is the army | druids, always heal the animist first
+?E: just keep the animist alive, thats the army | druids, always heal the animist first
 ~ 20
 F: and the door usually holds when the shrooms are up | in my experience the door holds and they run
 B: the shrooms win again | another keep saved by mushrooms
 C: ok, i take it back, plant all you want | fine. i surrender to the fungus
-A: ok, who is heading out? the walls need shrooms more than this argument | lol fine, plant away
+A: fine, plant away, see you on the walls | lol fine, plant away
 
 @topic hib_valewalker
 @levels 20-45
@@ -342,7 +342,7 @@ A: ok, who is heading out? the walls need shrooms more than this argument | lol 
 @role D type=Leveler
 @role E type=NoLifer
 A: saw someone swinging a scythe at a sandman today, what was that | met a valewalker today and i have questions
-B: that was probably me. ask away | hello, i am the valewalker, what do you want to know
+B: that was probably me. ask away | hello, im the valewalker, what do you want to know
 A: is it a tank, a caster or a farmer? | the scythe, is that a weapon or a gardening tool
 B: all of the above. scythe in hand, arboreal path for the spells | melee with a scythe and a few spells from arboreal path
 E: the arboreal path spells are a mystery even to valewalkers | nobody knows what the spells do, including valewalkers
@@ -351,20 +351,20 @@ B: i know what they do. mostly | i know. roughly
 C: they came with shrouded isles, right? same as animists | valewalkers are new with the expansion, yes?
 B: yep, us and the animists | yes, shrouded isles brought both
 D: how is it to level one | are valewalkers good to level
-B: solo is fine. groups do not know what to do with me | fine alone, harder to get groups
-C: every new class gets that treatment at first | groups do not know what to do with anything new
+B: solo is fine. groups dont know what to do with me | fine alone, harder to get groups
+C: every new class gets that treatment at first | groups dont know what to do with anything new
 ?D: the animists say the same thing | same story with the animists
 ~ 25
 E: give it time, people will figure them out | honestly i think valewalkers are going to surprise people
 D: i would try one as a second melee next to a hero | put one in the front with a hero, see what happens
-B: i will hold you to that | i will take that invite when it comes
+B: noted. ill bring it up later | i will remember you said that
 A: last question. why a scythe, of all things | why a scythe though
 B: because it looks amazing | do you need more reason than style
-C: hard to argue with that | can not argue there
+C: hard to argue with that | cant argue there
 ?E: the most hibernian answer possible | style is half of hibernia
 ~ 20
-D: lf one more melee for spraggon den, valewalker welcome | we need a melee at spraggon den, want in?
-B: on my way, scythe sharpened | inv me, harvest time
+D: lf one more melee for spraggon den, valewalker welcome, pst | we need a melee at spraggon den, pst me
+B: tell sent, scythe sharpened | sending a tell, harvest time
 A: let us know how the spells go | report back on what the spells actually do
 
 @topic hib_newbie_mentor
@@ -378,30 +378,30 @@ A: let us know how the spells go | report back on what the spells actually do
 A: first night ever, standing in mag mell. what now? | brand new to the game, standing in mag mell, where do i start
 B: welcome! stay around mag mell until things there go green | welcome. stay near mag mell for a few levels, then follow the road
 C: talk to the npcs in town too, some of them have tasks | read the quest givers in town, easy xp and some gear
-D: and say hi in faction any time, we do not bite | glad to have you, ask anything you want
+D: and say hi in faction any time, we dont bite | glad to have you, ask anything you want
 ~ 25
-A: got a level! what do the colors on monster names mean | just dinged. what do the con colors mean
-B: green and blue are your friends, yellow is a fair fight, orange is a risk | grey is free, green is easy, blue is good, yellow is even
+A: ok next question, what do the colors on monster names mean | what do the con colors mean, everything here is a different color
+B: green and blue are your friends, yellow is a fair fight, orange is a risk | grey gives nothing, green is easy, blue is good, yellow is even
 E: red and purple are where the fun is | red and purple are for brave people
-B: red and purple are how you meet your bind point | do not listen to E, red means run
-?D: E has died more than anyone in hibernia | E learned that the hard way. many times
+B: red and purple are how you meet your bind point | dont listen to that, red means run
+?D: that one has died more than anyone in hibernia | spoken by someone who learned it the hard way. many times
 ~ 30
-A: dinged again, still mag mell? | a few levels up now, where next
+A: and when the things around mag mell go green, where then | where do i go once mag mell stops giving xp
 C: lough derg. the lough wolves and orchard nippers are perfect for you | head into lough derg, plenty of lough wolves at your level
 B: careful with the lough wolf cadgers, they hit harder | the cadgers are tougher than the regular wolves, watch the names
-A: something called a water beetle just bit me | what is a water beetle and why is it chasing me
-E: that is lunch, hit it back | hit it back harder
+A: something called a water beetle just bit me | whats a water beetle and why is it chasing me
+E: thats lunch, hit it back | hit it back harder
 ~ 20
 D: which class are you going for? | what did you roll by the way
 A: {class}, for now anyway | {class}, still learning what that means
 D: nice pick, hibernia needs more of those | good choice, you will have fun
-C: after lough derg, connacht has room for a hunter | connacht next, lots of space and lots of feccans
+C: after lough derg, connacht has plenty of room to hunt | connacht next, lots of space and lots of feccans
 B: low teens, silvermine mts. walking rocks and badgers give good xp | then silvermine mts, the walking rocks are slow and worth it
-?E: and the luricaduanes. they look friendly. they are not | beware the luricaduane, small but rude
+?E: and the luricaduanes. they look friendly. theyre not | beware the luricaduane, small but rude
 ~ 25
-A: wow, this is way more help than i expected | you are all so helpful, thank you
-D: we were all new once | that is hibernia for you
-B: one more tip, visit your trainer every time you level | do not forget the trainer when you ding, it is easy to forget
+A: wow, this is way more help than i expected | youre all so helpful, thank you
+D: we were all new once | thats hibernia for you
+B: one more tip, visit your trainer every time you level | dont forget the trainer when you ding, its easy to forget
 A: will do. back to the wolves | off to lough derg, wish me luck
 
 @topic hib_tomb_to_den
@@ -414,32 +414,32 @@ A: will do. back to the wolves | off to lough derg, wish me luck
 @role F type=Socialite
 @role A levels=12-19
 A: mid teens and soloing is getting slow, where are the groups | lf group or advice, still in my teens and everything takes forever
-B: muire tomb, groups form at the entrance this time of night | muire tomb, there is always someone forming at the door
+B: muire tomb, groups form at the entrance this time of night | muire tomb, theres always someone forming at the door
 C: or shannon estuary if you want to keep soloing, the sandmen are slow | shannon estuary, sand crabs and sandmen, easy solo
-D: muire is better xp, just do not go in without a healer | the tomb with a group, and bring a healer
+D: muire is better xp, just dont go in without a healer | the tomb with a group, and bring a healer
 E: i soloed muire at 15, mostly | i went in alone at 16 and did fine
 D: mostly. you died to a death worm, i was there | i rezzed you twice, i remember
 E: a minor setback | details
 ?F: the death worm remembers | lol
 ~ 30
-A: everyone keeps warning me about mummy hags | what is the deal with mummy hags
+A: everyone keeps warning me about mummy hags | whats the deal with mummy hags
 B: heavy hitters, and the tomb dwellers nearby like to add | they hit hard and sometimes come in pairs
 C: the murkmen near the water are gentler if your group is small | small group? stick to the murkmen
 F: and never fight a corpse devourer at low health | the corpse devourers are nasty too
 ~ 25
 A: and after the tomb? | where do i go after muire
-B: spraggon den once you are 20, pit spraggons all night | spraggon den in your 20s, it is the best xp
+B: spraggon den once you are 20, pit spraggons all night | spraggon den in your 20s, its the best xp
 C: or wander the valley of bri leith, siog footpads everywhere | try the valley of bri leith, the siogs are fun
-D: bring a bard to the den, it is a long walk from anywhere | the den is a long run, you will want speed
+D: bring a bard to the den, its a long walk from anywhere | the den is a long run, you will want speed
 E: and a puller who knows the den | and someone who can pull clean
 ?B: careful with the spraggon cutters, they hurt | the cutters are the ones to watch
 ~ 20
-F: group forming at muire tomb, 2 spots, who wants in | muire group at the entrance, need 2
-A: me! inv please, on my way | inv please, i can be there fast
-F: sent | invite sent
-D: i will come heal | i am in, i will heal
-E: i will come too, just to prove a point | i am coming, and i will not die this time
-D: then i am definitely bringing power | that is what you said last time
+F: group forming at muire tomb, need 2, pst | muire group at the entrance, need 2, pst me
+A: me! tell sent | sending a tell, pick me
+F: got it | got your tell
+D: tell sent, i heal | sent a tell, healer here
+E: tell sent too, just to prove a point | me too, and i wont die this time
+D: then im definitely bringing power | thats what you said last time
 
 @topic hib_late_zones
 @levels 30-50
@@ -450,23 +450,23 @@ D: then i am definitely bringing power | that is what you said last time
 @role E class=Bard
 @role A levels=35-40
 A: late 30s and bored of my usual camp, where else is there | need a new zone for my late 30s, sick of my camp
-B: cliffs of moher. the view alone is worth the trip | have you been to the cliffs of moher? go, it is beautiful
-C: a view does not give xp. find a camp people use and stay | scenery is nice, but stick with a busy camp
-D: the cursed forest. it lives up to the name and i love it | cursed forest, it is called cursed for a reason
+B: cliffs of moher. the view alone is worth the trip | have you been to the cliffs of moher? go, its beautiful
+C: a view doesnt give xp. find a camp people use and stay | scenery is nice, but stick with a busy camp
+D: the cursed forest. it lives up to the name and i love it | cursed forest, its called cursed for a reason
 E: bog of cullen is good if you can get a full group | the bog of cullen with a full group is solid
 B: i hate the bog after dark, i swear something follows you | the bog is creepy at night, i hear things
 ~ 30
-C: nobody goes to the sheeroe hills and i do not know why | the sheeroe hills are emptier than they should be
+C: nobody goes to the sheeroe hills and i dont know why | the sheeroe hills are emptier than they should be
 D: people say strange things walk those hills | too big, too empty, too quiet
 B: i camped lough gur last week, very peaceful | lough gur was quiet, nice for a duo
 ?E: peaceful is code for slow | peaceful, so no xp
 ~ 25
-E: dinner, back in twenty | brb, dinner
+E: food, back in twenty | brb, food
 A: ok no scenery talk. if you had to pick one for xp, where | best spot for xp, final answers please
 C: wherever your friends are. a group beats any zone | the zone matters less than the group
 D: anywhere with orange cons. more risk, more xp | wherever the reds are
 B: the cliffs. i will die on that hill | cliffs of moher, final answer
-?C: on that cliff, you mean | you probably will, it is a long fall
+?C: on that cliff, you mean | you probably will, its a long fall
 ~ 40
 E: back. did we agree on anything | back, did anyone pick
 C: no | not even close
@@ -497,7 +497,7 @@ C: small and dead, from what i hear | and very dead, from my experience
 F: what about allta fearann | is allta fearann worth going to
 B: yes, but not alone | yes, go with friends
 D: the whole island is a group place really | everything in hy brasil goes better with friends
-C: right, so go where the groups are. the old zones | that is my point, the groups are in the classic zones
+C: right, so go where the groups are. the old zones | thats my point, the groups are in the classic zones
 E: or make your own group and go | or bring your own group, crazy idea
 ~ 20
 A: so hy brasil with friends, classic zones solo | so the answer is hy brasil if i have a group
@@ -519,7 +519,7 @@ B: still lost, and i was here at launch | i get lost there every single week
 C: follow the crafters, we always know where everything is | crafters live here, i can walk you anywhere
 D: the trick is to look up. everything is stacked | everything is on a different level, look up and down, not around
 A: i need the bindstone and the stablemaster | where do i bind and where is the stable
-C: depends which side of the city you are on | which one? there is more than one way out of here
+C: depends which side of the city youre on | which one? theres more than one way out of here
 ~ 25
 E: i never bind in tir na nog, too much walking | i just bind in mag mell, the city is too slow to cross
 B: but the people are here, mag mell is lonely after 20 | the people are here though, mag mell is empty past 20
@@ -527,19 +527,19 @@ D: the music in tir na nog is my favorite in the game | i like the sounds in the
 ?C: i stay for the merchants, honestly | the merchants are why i keep coming back
 ~ 30
 A: stable found! now the trainers | found the stablemaster. trainers next
-E: the trainers are always up somewhere | up. it is always up
+E: the trainers are always up somewhere | up. its always up
 C: or ask in faction, someone always knows the way | faction is the real map of tir na nog
 B: heh, the faction map. very reliable | and then half of faction gives you wrong directions
 ~ 20
 D: random tangent, did anyone else stand under the big trees on their first night | anyone else think the trees here are the best part of the game
 B: every new character, yes | i still do that sometimes
-E: that is my lfg spot, right under the trees | i stand there while i wait for a group
-?A: i see why, it is calming | same, very relaxing
+E: thats my lfg spot, right under the trees | i stand there while i wait for a group
+?A: i see why, its calming | same, very relaxing
 ~ 25
 A: trained, bound and ready. thank you all | all done finally, thanks for the help
 C: stop by the crafters on the way out, i have armor | come back when you need armor
-B: good luck and do not get lost again | welcome to tir na nog, officially
-?D: you will get lost again | see you in twenty minutes when you are lost
+B: good luck and dont get lost again | welcome to tir na nog, officially
+?D: you will get lost again | see you in twenty minutes when youre lost
 
 @topic hib_relic_night
 @levels 40-50
@@ -550,16 +550,16 @@ B: good luck and do not get lost again | welcome to tir na nog, officially
 @role D class=Druid
 @role E type=Socialite levels=35-44
 @role F type=*
-A: {q} anyone else notice midgard always hits the relic keeps around 4am | {q} why are the night raids on our relics always the mids
-B: of course it is 4am, they always come when we sleep | naturally they wait until we are all asleep
+A: {q} anyone else notice midgard always hits the relic keeps around 4am? | {q} why are the night raids on our relics always the mids?
+B: of course, they always come when we sleep | naturally they wait until we are all asleep
 C: i have run to a relic defense half asleep more than once | last time i ran over in my pajamas
-D: druid here, at that hour i always end up healing the door crew | if i am up, i heal the door crew, every time
+D: druid here, at that hour i always end up healing the door crew | if im up, i heal the door crew, every time
 B: how many do they even bring at that hour | and how many do they bring?
 A: usually a full group and a ram, maybe more behind | eight or so and a ram, more on the hill
 ~ 20
 E: just logged in to check a sale, why is faction full at this hour | wait, why is everyone awake
 B: arguing about mid relic raids at 4am, weigh in | night raids on our relics, the usual complaint
-E: i would be way too low for a relic defense anyway | i am not 50, what would i even do
+E: i would be way too low for a relic defense anyway | im not 50, what would i even do
 C: a lowbie can still stand on the wall and yell inc | you can still count them from the wall
 ?D: yes please, eyes are worth a lot | a scout is a scout
 ~ 25
@@ -571,7 +571,7 @@ B: and champions, valor on the ram crew, always | debuffs on whoever is at the r
 ~ 30
 A: hold long enough and they break and run for the border | they always pull back once a few of us stand firm
 C: and the stragglers on the way out are free realm points | the road home is where i get my kills
-D: then i rez everyone at the gate | and then it is rezzing at the gate till dawn
+D: then i rez everyone at the gate | and then its rezzing at the gate till dawn
 E: so do we usually win those? | does the relic usually stay?
 B: if enough of us wake up, the relic stays home | more often than you think. good night hibernia
 E: sounds worth staying up for | ok, next time i stay up
@@ -586,31 +586,31 @@ E: sounds worth staying up for | ok, next time i stay up
 @role D class=Bard
 @role E class=Enchanter
 @role F type=Leveler
-A: best thing in the game is a three way fight in emain, nobody can tell me otherwise | {q} anyone else live for the three realm fights in emain
+A: best thing in the game is a three way fight in emain, nobody can tell me otherwise | {q} anyone else live for the three realm fights in emain?
 B: nothing better than a three way fight | the best fight in the game, three realms in one field
-F: my computer cannot handle emain, last time i froze and died | i went once and my screen turned into a slideshow
+F: my computer cant handle emain, last time i froze and died | i went once and my screen turned into a slideshow
 C: everybody lags in emain, push through | turn everything down and run in
 E: i turn the effects down and play by sound | effects off, i just listen for the bard
-D: i just keep speed up and everyone follows me in | speed on and follow the bard, that is my whole plan
+D: i just keep speed up and everyone follows me in | speed on and follow the bard, thats my whole plan
 ~ 25
 B: the problem is always who leads, you need one voice | the hard part is who calls targets
-C: i always call their clerics first | when i lead, it is the alb clerics first, every time
-E: if we focus their healers we win this | their healers fall fast if we all hit them
-D: mez one realm and fight the other, that is the trick | i mez the mids and we fight the albs first
-?F: which ones are the mids, i cannot tell | sorry, how do i tell albs from mids in this mess
+C: i always call their clerics first | when i lead, its the alb clerics first, every time
+E: focus their healers and those fights are won | their healers fall fast if we all hit them
+D: mez one realm and fight the other, thats the trick | i mez the mids and we fight the albs first
+?F: i can never tell which ones are the mids | honest question, how do you tell albs from mids in that mess
 ~ 30
-F: last time i made it to the field and just lagged | i got there once and the frames were terrible
+F: ok say i get there without freezing, what do i even hit | so what do you hit first in a mess like that
 B: lag or not, hit the casters | just keep swinging at whatever is in a robe
 C: drop two clerics and the rps roll in | once their healers drop, the rps come fast
 E: best is a pbae on a whole ram crew | i love catching a ram crew with one pbae
 ?D: and when the mez breaks, just burn it all | someone always breaks the mez anyway, then you burn
 ~ 20
-A: and then one realm runs and you are alone with the other | then the albs run and it is just us and the mids
+A: and then one realm runs and youre alone with the other | then the albs run and its just us and the mids
 B: and the last realm standing gets the field | last group standing wins the night
 D: and if it turns, pull back to the keep | stay together and stay on the speed
 F: my first realm kill ever was in one of those | my first rps ever were in a three way mess like that
 C: gz! the first one is the sweetest | gz, the start of a bad habit
-E: gz, now you are hooked | welcome to emain
+E: gz, now youre hooked | welcome to emain
 
 @topic hib_keep_claim
 @levels 35-50
@@ -619,29 +619,29 @@ E: gz, now you are hooked | welcome to emain
 @role C type=NoLifer
 @role D type=Leveler
 @role E type=Crafter
-A: {q} our guild wants to claim a keep, good idea or not | {q} would it be dumb to put our guild banner on a keep
+A: {q} our guild wants to claim a keep, good idea or not? | {q} would it be dumb to put our guild banner on a keep?
 B: go for it, enjoy it while it lasts | sure, how long until someone takes it
 C: claiming is easy, holding it is the job | holding a keep is the part that matters
 A: we have a few night owls, we will manage | we have people on at odd hours, should be fine
-D: sorry, what is the point of claiming a keep | what does claiming even do
+D: sorry, whats the point of claiming a keep | what does claiming even do
 C: your guild's name on the walls, some pride, and a reason to log in for defense | pride, and a reason to log in when the door gets hit
-E: and you are the ones everyone yells at when it falls | and the guild gets the blame when it falls
+E: and youre the ones everyone yells at when it falls | and the guild gets the blame when it falls
 ~ 30
 B: our guild held a keep for a week once, good week | we had one once, for a week
-C: until midgard took it at 3am | and lost it while you slept
-B: let us not relive that | we do not talk about that
+C: until midgard took it in the middle of the night | and lost it while you slept
+B: lets not relive that | we dont talk about that
 ?D: still sounds like decoration to me | i still say claiming is mostly decoration
 ~ 25
 E: need arrows for the wall archers? i can fletch | i can fletch arrows for the defenders if you need them
 A: yes please, the rangers go through them fast | yes, our rangers will empty the stock in one siege
 E: send me a tell, guild discount | pst, i will price it fair
 C: also make a list of who plays when, you will need it | post a defense list, who is on at what hours
-A: good idea, on it | will do
+A: good idea | will do
 ~ 20
 D: any room in your guild for a leveler? | is your guild recruiting
 A: always, pst me | yes, small but active, send me a tell
 B: and bring a druid if you know one | we need healers, as always
-?C: the walls do not heal themselves | keeps need healers more than anything
+?C: the walls dont heal themselves | keeps need healers more than anything
 A: come visit once we have one | see you all out there
 
 @topic hib_glimmer_king
@@ -653,7 +653,7 @@ A: come visit once we have one | see you all out there
 @role E class=Bard
 @role F type=Socialite
 A: anyone want to try the glimmer king this weekend | thinking about a raid on cuuldurach saturday, interest?
-B: yes! been waiting for this | count me in
+B: yes! been waiting for this | sounds good
 C: how many fifties can we actually get | we need a lot of fifties, do we have them
 A: if every guild sends a group, enough | with three guilds, maybe
 D: i will heal, but i want a plan, not a zerg at a dragon | healing yes, but we need a real plan this time
@@ -661,8 +661,8 @@ E: bards on speed and power songs, everyone spread out | spread out and i will k
 ~ 30
 F: is it true cuuldurach can flatten everyone at once | i heard the glimmer king can wipe a raid in seconds
 C: a careless raid, yes | if everyone clumps up, yes
-B: that is half the fun | that is why we go
-D: fun for you, i am the one rezzing everyone after | fun until i run out of power rezzing
+B: thats half the fun | thats why we go
+D: fun for you, im the one rezzing everyone after | fun until i run out of power rezzing
 ?E: last time we died on the way in | last time half of us died before anyone hit him
 ~ 25
 F: is the loot good? | what does he drop
@@ -672,8 +672,8 @@ C: someone always gets upset | someone always does
 ~ 20
 A: saturday, gather at tir na nog | saturday then, meet in tir na nog
 D: bring potions, all of them | everyone bring every potion you own
-E: speed ready | i will be there with speed
-F: i am coming just to see the dragon | i just want to see him once
+E: speed ready | bards on speed, as always
+F: i would go just to see the dragon | i just want to see him once
 B: you will see him from the floor | you will see him up close, lying down
 ?C: tell your guilds, we need numbers | post it in every guild channel
 A: saturday it is, glimmer king beware | see you saturday
@@ -686,8 +686,8 @@ A: saturday it is, glimmer king beware | see you saturday
 @role D type=NoLifer
 @role E type=Daredevil
 A: do we still have DF? | anyone know if darkness falls is open to us right now
-D: no idea, it changes with the keeps | check the entrance, it changes every time a keep falls
-B: if it is open, i want to farm the demoniac familiars | whenever we have it i farm familiars
+D: /realm will tell you, it changes with the keeps | type /realm before you walk there, it changes every time a keep falls
+B: if its open, i want to farm the demoniac familiars | whenever we have it i farm familiars
 C: df is the creepiest place in the game and i love it | i love df, so dark and strange
 E: the deeper you go the better it gets | deeper halls are where the real loot is
 ~ 25
@@ -695,17 +695,17 @@ A: is df worth it at 30? | what level range is best for df
 B: anywhere in your 30s, plenty to fight | 30s is great, the upper halls are full
 C: watch the necyomancers, they cast | the necyomancers are tricky
 E: the plated fiends are my favorite | plated fiends hit hard but go down
-?D: and when it is ours, the other realms are locked out | when we hold it, nobody else's realm gets in
+?D: and when its ours, the other realms are locked out | when we hold it, nobody else's realm gets in
 ~ 30
 D: if we lose keeps, df closes, simple as that | we have to keep holding keeps or df closes
-B: which is why i defend keeps even as a leveler | and that is why pve players should care about rvr
-C: so that is why the frontier matters to me | i never thought of it that way
+B: which is why i defend keeps even as a leveler | and thats why pve players should care about rvr
+C: so thats why the frontier matters to me | i never thought of it that way
 E: defend the keeps, keep df | the best reason to defend there is
 ~ 25
 A: anyone want to group in df next time it is ours | next time we have df, anyone want to group
 B: i will | sure, send me a tell
 E: me too, i want a deamhaness pull | me too, looking for a deamhaness
-C: careful with those, they hurt | those are not a joke, go careful
+C: careful with those, they hurt | those arent a joke, go careful
 ?D: famous last words in df | let me know how that goes
 A: ok, sending tells | i will send tells when it opens
 
@@ -719,9 +719,9 @@ A: ok, sending tells | i will send tells when it opens
 @role F type=*
 A: small family guild looking for members, we help with leveling and craft | recruiting for a relaxed guild, all levels, all classes
 C: do you raid keeps or is it all pve | does your guild do rvr
-A: some, but we are not hardcore | casual frontier, mostly leveling
+A: some, but we arent hardcore | casual frontier, mostly leveling
 C: then i will pass, i want a guild that runs emain every night | i want a real rvr guild, so i will pass
-B: there is room in hibernia for both | both kinds of guild are welcome
+B: theres room in hibernia for both | both kinds of guild are welcome
 D: small guilds group more, in my experience | small guilds are better for leveling, people actually group
 ~ 25
 E: small guilds always need a crafter | as a crafter i like small guilds, people order things and pay
@@ -729,7 +729,7 @@ C: we have six crafters in mine | big guilds have crafters too
 E: and they never answer tells | and i bet they never have time for you
 ?B: ouch | heh
 ~ 30
-F: what does family guild mean | what is a family guild
+F: what does family guild mean | whats a family guild
 A: relaxed, no drama, just people having fun | friendly, no pressure, people help each other
 B: a guild where people know each other | like a group that never disbands
 C: my guild is big and friendly too | big guilds can be friendly
@@ -752,15 +752,15 @@ E: gl | enjoy
 A: anyone here with really high tailoring, i need a quote | who has their tailoring way up? looking to order a set
 B: me, and my bank account is still crying about it | that would be me. every silver i ever earned went into leather
 C: crafting is a money sink, everyone knows that going in | nobody gets rich leveling a craft, you pay to get good
-B: but the first time a masterpiece pops out, it is all worth it | until an MP lands. then you forget the money
-D: MP armor plus spellcraft is how you win duels at 50 | masterpiece armor with gems in it, that is the whole endgame
-E: what is spellcraft exactly | newbie here, what does spellcraft do
+B: but the first time a masterpiece pops out, its all worth it | until an MP lands. then you forget the money
+D: MP armor plus spellcraft is how you win duels at 50 | masterpiece armor with gems in it, thats the whole endgame
+E: whats spellcraft exactly | newbie here, what does spellcraft do
 D: it puts gems in your armor for extra stats | you socket gems into crafted gear for bonuses
 ~ 25
 C: a full sc suit costs a fortune, be warned | a fully spellcrafted suit is no small purchase
 D: at 50 it is a must if you go to the frontier | worth every coin once you are 50 and fighting players
-E: i am nowhere near 50, so that can wait | not even close to that yet, i will wait
-B: wise. buy cheap until 50, then go big | smart, do not spend big on gear you will outlevel
+E: im nowhere near 50, so that can wait | not even close to that yet, i will wait
+B: wise. buy cheap until 50, then go big | smart, dont spend big on gear you will outlevel
 ?C: start a savings pile now though | but start saving now, seriously
 ~ 30
 A: also, who makes weapons? a hero in my guild needs a spear | anyone do weaponcraft? looking for a celtic spear
@@ -770,15 +770,16 @@ A: a big spear for a big hero | a spear, the bigger the better
 B: pst me the details, i will see what i can do | send me a tell with the type, i will quote you
 ?D: ask for the quality before you pay | always check the quality before you hand over coin
 ~ 20
-E: which craft is the worst to level | what is the most annoying craft to grind
+E: what craft is the biggest pain to level | whats the most annoying craft to grind
 B: tailoring, so many leathers, so many patterns | tailoring. i dream of leather now
 C: fletching. the arrows never end | fletching, a lifetime of arrows
-D: all of them, that is why i buy | every single one, that is why i pay crafters
+D: all of them, thats why i buy | every single one, thats why i pay crafters
 ?E: i will stick to fighting things | ok they all sound miserable
 A: well, i will pst you both, thanks | sending tells now, thanks you two
 
 @topic hib_late_night
 @levels 20-50
+@needs !day
 @scene hib_gen_late_night
 @role B type=Socialite
 @role C type=Daredevil
@@ -791,23 +792,24 @@ C: i said sorry in say for ten minutes | nobody invited me for a week after that
 ?E: everyone has one of those | we all have a train story
 ~ 30
 D: best night i ever had was a wipe at spraggon den. rezzed everyone one by one | we wiped once in the den and i was the only one left, i rezzed them all
-B: that is the kind of thing people remember a druid for | i bet that group still talks about you
+B: thats the kind of thing people remember a druid for | i bet that group still talks about you
 D: they sent me a tell every time they leveled after that | one of them still says hi every time i log on
 ~ 25
 E: mine is quieter. i climbed the cliffs of moher at dawn just to look | i went to the edge of the cliffs of moher once just to watch the sun come up
 B: did you fall | and then what
 E: no, i sat there for an hour and logged off happy | i sat and watched, then logged off. best night
-?C: that is the least dangerous story ever told in faction | no monsters? what kind of story is that
+?C: thats the least dangerous story ever told in faction | no monsters? what kind of story is that
 ~ 30
 B: i met my best friend in a lough derg pickup group, years ago now | my best friend in game was a random druid in a lough derg group
-A: aw, that is the best kind of story | that is a good one honestly
+A: aw, thats the best kind of story | thats a good one honestly
 B: we still group every weekend | we have duoed every class combination since
-D: the friends are the real reason people stay | that is why this game sticks
-?C: and the trains | and the trains, do not forget the trains
+D: the friends are the real reason people stay | thats why this game sticks
+?C: and the trains | and the trains, dont forget the trains
 ~ 20
-E: ok, it is late even for me, night all | logging, see you all tomorrow
+E: ok, its late even for me, night all | logging, see you all tomorrow
 B: night! | sleep well
 A: thanks for the stories | good stories tonight, night everyone
+@needs
 
 @topic hib_realm_pride
 @levels 20-29
@@ -815,14 +817,14 @@ A: thanks for the stories | good stories tonight, night everyone
 @role B class=Bard
 @role C type=Daredevil
 @role D type=NoLifer
-@role E type=*
+@role E type=* levels=18-24
 A: best thidranki night i ever had, those albs never stood a chance | remember that night thidranki was all hibernia
-B: we mez you, then we sing about it. that is hibernia | mez the group, sing the victory song, repeat
-C: the albs kept charging into the mez like it was not there | i watched four albs walk straight into a mez and stand there
-D: to be fair, the mids had our number in the second half | the mids took the keep back once, let us be honest
+B: we mez you, then we sing about it. thats hibernia | mez the group, sing the victory song, repeat
+C: the albs kept charging into the mez like it wasnt there | i watched four albs walk straight into a mez and stand there
+D: to be fair, the mids had our number in the second half | the mids took the keep back once, lets be honest
 C: once. for about five minutes | they held it briefly, very briefly
 ~ 25
-E: i keep hearing thidranki, what is it | what is thidranki, sorry, still new
+E: i keep hearing thidranki, whats it | whats thidranki, sorry, still new
 D: the battleground for 20 to 24. rvr for people too young for emain | a small frontier for your low 20s, all three realms
 B: and murdaigean after that, for the late 20s | then murdaigean once you pass 24
 E: is it fun at 20 with nothing good | can i go with quest gear
@@ -832,10 +834,10 @@ D: watch for the twinks though, they make it rough | the twinks are the real pro
 C: twinks are part of the charm | a twink is only a player who thought ahead about gear
 D: a twink is someone who spent a fortune to beat level 20s | planning ahead to farm new players, very noble
 B: at least the twinks in hibernia carry a bard | the hib twinks at least share speed
-?E: i do not know what a twink is either | what is a twink
+E: i dont know what a twink is either | whats a twink
 D: a character kept at the bg's top level with the best gear money buys | someone who stops leveling at the cap and buys gear
 ~ 25
 A: anyway, the other realms will be back for more tomorrow | they will be back tomorrow, they always are
 B: and we will be singing | and we will mez them again
-C: count me in | i will be there
-E: me too, i will try it | ok i am going tomorrow
+C: sounds good | sounds fun
+E: me too, i will try it | ok im going tomorrow

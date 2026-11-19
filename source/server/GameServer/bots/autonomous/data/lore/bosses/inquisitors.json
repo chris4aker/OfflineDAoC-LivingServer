@@ -1,0 +1,752 @@
+{
+ "id": "inquisitors",
+ "name": "The Inquisitors",
+ "tier": "order",
+ "npcNames": [
+  "Inquisitor Famuel",
+  "Inquisitor Zaviben",
+  "Inquisitor Zazinol",
+  "Inquisitor Haap",
+  "Inquisitor Tlaw",
+  "Inquisitor Asil",
+  "Inquisitor Eciraum",
+  "Inquisitor Niloc",
+  "Inquisitor Hadis",
+  "Inquisitor Mucifen",
+  "Inquisitor Nifil",
+  "Inquisitor Bor",
+  "Inquisitor Factol",
+  "Inquisitor Haimir",
+  "Inquisitor Hellos",
+  "Inquisitor Morg",
+  "Inquisitor Morrian",
+  "Inquisitor Nej",
+  "Inquisitor Yor",
+  "Inquisitor Irawn",
+  "Inquisitor Lokis",
+  "Inquisitor Medebo"
+ ],
+ "aliases": [
+  "the grey ones",
+  "the askers"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-first-roll",
+ "factions": [
+  "dark-ones",
+  "inquisition-below"
+ ],
+ "related": [
+  {
+   "id": "prince-baalorien",
+   "relation": "their prince"
+  },
+  {
+   "id": "earl-mermer",
+   "relation": "the knight they kept"
+  },
+  {
+   "id": "earl-amagin",
+   "relation": "one of theirs, the Examiner at the door"
+  },
+  {
+   "id": "grand-chancellor-adremal",
+   "relation": "wrote their procedure"
+  },
+  {
+   "id": "malroch-the-cook",
+   "relation": "their neighbour, examined once"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "they keep the peace between them and the Hook"
+  },
+  {
+   "id": "mutilators",
+   "relation": "the next step after them"
+  }
+ ],
+ "facts": [
+  {
+   "text": "The Inquisitors are 22 named GameEpicNPCs of levels 60 to 74 in Darkness Falls, using models 2119 and 2120, with no scripts, paths or template spells.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "All but Inquisitor Irawn deal thrust damage (Irawn slashes).",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key places Inquisitors beside Prince Baalorien, at the Gate and with Legion's Own on the approach.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Most respawn in 180 seconds; Famuel, Zaviben, Zazinol, Haap and Bor in 1,800.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "No demonology source found for most of the Inquisitors' names.",
+   "provenance": "original",
+   "source": "Living Server"
+  },
+  {
+   "text": "The order's founding, its procedure and its cases are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "The Inquisitors are Prince Ba'alorien's order and the court's first step toward the Master's table. When Grand Chancellor Adremal made striking-off a procedure in the First Roll, he wrote it in four parts: the Inquisitors examine, the Chancellor pronounces, the Mutilators unmake and the Master eats. Ba'alorien, who had always preferred asking to fighting, founded the order to do the examining, and housed it in the cloisters of the north, between his own hall and the raw rock where the hollow ends. They wear one grey shape, and they work with points rather than edges; the realms that have met them say an Inquisitor's wounds are small, deep and many.\n\nThe order's work is finding out. It finds out whether a demon has fallen from its place, which is the question the whole court rests on, and so every demon of the court is afraid of it, the princes included. It examined both Prince Abdin's and Prince Asmoien's claims to have knelt second at the Feast of Thrones and found both sincere and neither true. It examined the marquis Dortaleon after he died and reported the burning back and the smell of rot that the Black Plague later carried into the realms' capitals. It examined the three Oros, and Earl Mercur's three accounts of them, and Duke Harboris after his climb, and filed what it found, and has never once been asked to give a finding back.\n\nIn the feud of the Blade and the Hook the Inquisition stood apart and kept a knight. Prince Abdin sent the knight Mermer north to demand that the order find the Mutilators false; Ba'alorien had the witness examined first, for a whole Roll, and kept him. Mermer is the Earl of the Cloister now. Since the Gate watch was made after the feud, Inquisitors stand at the crossing between knights and Mutilators, and the court says it is the Inquisitor of the watch who keeps the peace there, by asking each of the others, at the right moment, to say its oath.\n\nThe order has spread as the court has. It gave the Master an Inquisitor to stand on the approach, Famuel, and an examiner for the door itself, the earl Amagin. It keeps questioners in Duke Bimure's East Ward to find out whose followers started each quarrel between the halls. It keeps two on the north road, the order's own way out to the rest of the court, watching the raw rock at the edge of the hollow. And it keeps its records, in a shorthand only it reads, in the prince's cloister beside the kitchens of Malroch the Cook, whom it has examined once and does not intend to examine again.\n\nThe realms have their own names for them. Albion's Church calls them the grey friars of the pit and says they hear confessions they have no right to hear; Midgard's skalds call them the askers and say a man should give them nothing, not even his name; Hibernia's druids say they are the most dangerous of the court, because they want only to know, and knowing is how the court decides who is eaten.",
+ "legend": "The Inquisitors stand in fixed posts like the knights: four in Prince Ba'alorien's cloister (Zaviben, Zazinol, Haap, Tlaw) with Earl Mermer, six in the far cloister to the west (Asil, Eciraum, Niloc, Hadis, Mucifen, Nifil), two out on the north road (Bor, Factol), Famuel with Legion's Own on the approach, six in the East Ward camps (Haimir, Hellos, Morg, Morrian, Nej, Yor) and three at the Gate (Irawn, Lokis, Medebo). Levels 60 to 74, thrusting melee except Irawn, who slashes; no scripts, no spells in their templates. Ba'alorien's cloister group sits close to Malroch the Cook, so Albion plague groups bump into them. Most come back in three minutes; Famuel, Zaviben, Zazinol, Haap and Bor in half an hour. Players call them the grey ones or the askers.",
+ "yells": {
+  "aggro": [
+   "A question first.",
+   "You will answer. Everyone answers.",
+   "Examined, and found wanting."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Your answers are getting shorter."
+   }
+  ],
+  "death": [
+   "File it... unfinished...",
+   "Ask... the cloister..."
+  ],
+  "slay": [
+   "Examined.",
+   "That was your answer.",
+   "Filed."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "Grey questioners stand in the cloister, slates in hand.",
+   "Somewhere a voice is asking the same question, again."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The questioner's points come faster now."
+   }
+  ],
+  "realmFirstKill": "The Inquisitors have been answered by the realms."
+ },
+ "botLines": {
+  "briefing": [
+   "inquisitors are thrust melee, no tricks. [one camp at a time|single camps]",
+   "baalorien's cloister group is next to the cook. [plague quest careful|watch it on the plague quest]",
+   "far cloister has six of them. [rest between|mana between]",
+   "famuel on the approach is 74. [legions own|careful near the door]"
+  ],
+  "aftermathWin": [
+   "inquisitor camp down. [next|on we go]",
+   "cloister cleared. [mermer next|on to the earl]",
+   "famuel dead. [approach is clear-ish|one less on the slope]",
+   "the askers are done. [no more questions lol|quiet now]"
+  ],
+  "aftermathLoss": [
+   "pulled the whole far cloister. [wipe|too many]",
+   "inquisitors and the cook at once. [mess|gg]",
+   "the grey ones got us. [regroup|rez]",
+   "respawned on us in the cloister. [move faster|three minutes]"
+  ],
+  "rumour": [
+   "[heard|word is] the inquisitors decide which demons legion eats",
+   "the inquisitors kept a chthonic knight and turned him. [mermer|the whisper earl]",
+   "[someone said|my guildie says] the inquisitors examined the demon cook and never went back",
+   "the inquisitor at the gate keeps the knights and mutilators from fighting. [lol|so they say]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "inquisitors",
+  "text": "Prince [Ba'alorien]'s order, the grey questioners of the north cloisters, who examine whether a demon has fallen from its place: the first step of the four by which the court feeds the Master. They kept the knight [Mermer]; they keep the peace at the Gate; they have examined the [Chamberlain], the three Oros and Duke Harboris."
+ },
+ "bookPage": "From a confession taken down at Camelot from a cleric who had been below, by the priest who heard it: He said the grey ones did not hurt him. He said that was the worst of it. They sat him in a cell in a cloister far in the north and asked him about his mother, and his first sword, and the name of his horse, and he answered because there seemed no harm in it. Then they asked him what Albion feared, and he found that he had already told them. He wept when he said this. I told him that every man confesses. He said yes, Father, but not to them.",
+ "bookPages": [
+  "From a confession taken down at Camelot from a cleric who had been below, by the priest who heard it: He said the grey ones did not hurt him. He said that was the worst of it. They sat him in a cell in a cloister far in the north and asked him about his mother, and his first sword, and the name of his horse, and he answered because there seemed no harm in it. Then they asked him what Albion feared, and he found that he had already told them. He wept when he said this. I told him that every man confesses. He said yes, Father, but not to them.",
+  "The priest went on: I asked him how he came out. He said that on the last day the one who had questioned him, a grey thing with a patient voice, wrote something on a slate and said that he had been examined and was of no further interest, and that the cell door was open. He walked out and up and no one stopped him. He said he would rather have been kept. I have prayed on this and I believe I understand him. To be of no further interest to that order is to have nothing left that they did not take."
+ ],
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} silenced the Inquisitors' questions in {minutes} minutes.",
+  "loss": "The Inquisitors examined {realm}'s raid under {raidLeader} and found it wanting."
+ },
+ "members": [
+  {
+   "name": "Inquisitor Famuel",
+   "level": 74,
+   "post": "Legion's Own, the approach",
+   "story": "Famuel is the Inquisitor the Master keeps, the strongest of the order, standing among Legion's Own on the approach. Where Earl Amagin reads the condemned their line at the door, Famuel examines the living who come down the slope, which is a duty nobody gave him. He says the Master likes to know what is coming, and that someone should ask it first.",
+   "yells": {
+    "aggro": [
+     "A question before the door. Answer it."
+    ],
+    "death": [
+     "Ask... the Master... what I was..."
+    ],
+    "slay": [
+     "Examined."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A grey questioner on the slope watches who comes down."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "famuel",
+    "text": "Famuel is the Inquisitor the Master keeps, the strongest of the order, standing among Legion's Own on the approach. Where Earl Amagin reads the condemned their line at the door, Famuel examines the living who come down the slope, which is a duty nobody gave him."
+   }
+  },
+  {
+   "name": "Inquisitor Zaviben",
+   "level": 72,
+   "post": "Prince Ba'alorien's cloister, the north",
+   "story": "Zaviben is the first questioner of the north cloister, the one Prince Ba'alorien sends for when a case touches the princes. He examined both Abdin's and Asmoien's claims to have knelt second and reported that both were sincere and neither true, and the Chancellor wrote the two princes on one line on his report. The princes have never forgiven him, and he has never asked them to.",
+   "yells": {
+    "aggro": [
+     "Your answer is sincere. It is not true."
+    ],
+    "death": [
+     "Both... sincere... neither..."
+    ],
+    "slay": [
+     "Answered fully."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "In the cloister a questioner sits as if expecting you."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zaviben",
+    "text": "Zaviben is the first questioner of the north cloister, the one Prince Ba'alorien sends for when a case touches the princes. He examined both Abdin's and Asmoien's claims to have knelt second and reported that both were sincere and neither true, and the Chancellor wrote the two princes on one line on his report."
+   }
+  },
+  {
+   "name": "Inquisitor Zazinol",
+   "level": 72,
+   "post": "Prince Ba'alorien's cloister, the north",
+   "story": "Zazinol stands beside Earl Mermer in the prince's cloister and keeps the cloister's records of every examination, scratched in a shorthand only the order reads. He is the one who wrote down whatever Mermer said in the Fourth Roll. The knights have asked for the page many times. Zazinol says it is filed.",
+   "yells": {
+    "aggro": [
+     "Your answer will be filed."
+    ],
+    "death": [
+     "File me... under... unfinished..."
+    ],
+    "slay": [
+     "Filed."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Scratched slates are stacked in the cloister, very neatly."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "zazinol",
+    "text": "Zazinol stands beside Earl Mermer in the prince's cloister and keeps the cloister's records of every examination, scratched in a shorthand only the order reads. He is the one who wrote down whatever Mermer said in the Fourth Roll."
+   }
+  },
+  {
+   "name": "Inquisitor Haap",
+   "level": 70,
+   "post": "Prince Ba'alorien's cloister, the north",
+   "story": "Haap keeps the cloister door, near Earl Mermer and a short walk from Malroch the Cook's kitchen, and tastes everything the kitchen sends in. He is the only Inquisitor who has examined the Cook, in the Sixth Roll, over a marquis who began to rot. Haap's report says the Cook answered every question with a recipe.",
+   "yells": {
+    "aggro": [
+     "Everything that comes in through this door is examined."
+    ],
+    "death": [
+     "The Cook... ask the Cook..."
+    ],
+    "slay": [
+     "Tasted and set aside."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Near the cloister door, a smell of cooking that is not food."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "inquisitor haap",
+    "text": "Haap keeps the cloister door, near Earl Mermer and a short walk from Malroch the Cook's kitchen, and tastes everything the kitchen sends in. He is the only Inquisitor who has examined the Cook, in the Sixth Roll, over a marquis who began to rot."
+   }
+  },
+  {
+   "name": "Inquisitor Tlaw",
+   "level": 68,
+   "post": "Prince Ba'alorien's cloister, the north",
+   "story": "Tlaw is the cloister's quietest examiner, the one sent when a demon must not know it is being questioned. He stands at the western end of the prince's cloister and asks about the weather in the deep fires, or the price of seals, and the demon answers for a long dark and goes away cheerful, and Tlaw writes it all down.",
+   "yells": {
+    "aggro": [
+     "Tell me about yourself. No reason."
+    ],
+    "death": [
+     "I only... wanted to talk..."
+    ],
+    "slay": [
+     "Thank you. That was everything."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner at the cloister's end smiles, which is worse."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "tlaw",
+    "text": "Tlaw is the cloister's quietest examiner, the one sent when a demon must not know it is being questioned. He stands at the western end of the prince's cloister and asks about the weather in the deep fires, or the price of seals, and the demon answers for a long dark and goes away cheerful, and Tlaw writes it all down."
+   }
+  },
+  {
+   "name": "Inquisitor Asil",
+   "level": 66,
+   "post": "the far cloister, the north",
+   "story": "Asil keeps the far cloister, beyond the prince's, where the long examinations are done. A demon sent to the far cloister is not expected back for a Roll at least. Asil has a reputation in the court for patience, and the imps say she once spent a whole Roll on one question and got the answer on the last night.",
+   "yells": {
+    "aggro": [
+     "We have time. A great deal of time."
+    ],
+    "death": [
+     "One more... question..."
+    ],
+    "slay": [
+     "Answered, eventually."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "In the far cloister nobody hurries, and nobody leaves."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "asil",
+    "text": "Asil keeps the far cloister, beyond the prince's, where the long examinations are done. A demon sent to the far cloister is not expected back for a Roll at least."
+   }
+  },
+  {
+   "name": "Inquisitor Eciraum",
+   "level": 66,
+   "post": "the far cloister, the north",
+   "story": "Eciraum examines the court's lies. When two demons tell the Chancellor different stories, Eciraum takes both and finds the one that is false, and it is Eciraum who reported that Earl Mercur believes each of his three accounts of the Oros while he tells it. Eciraum calls it the most interesting case of the Tenth Roll and has asked for Mercur back.",
+   "yells": {
+    "aggro": [
+     "One of your stories is false. Let us find which."
+    ],
+    "death": [
+     "Neither... was false..."
+    ],
+    "slay": [
+     "That one was false."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Two chairs face each other in the far cloister, both empty."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "eciraum",
+    "text": "Eciraum examines the court's lies. When two demons tell the Chancellor different stories, Eciraum takes both and finds the one that is false, and it is Eciraum who reported that Earl Mercur believes each of his three accounts of the Oros while he tells it."
+   }
+  },
+  {
+   "name": "Inquisitor Niloc",
+   "level": 66,
+   "post": "the far cloister, the north",
+   "story": "Niloc keeps the far cloister's western cells and the order's one mortal case before the doors opened: the Chamberlain, whom the order examined in the Third Roll when he came down the crack and asked for service. Niloc found nothing in him but the wish to be useful, and wrote so, and the Queen kept him. Niloc has examined no other mortal since and says none has interested him as much.",
+   "yells": {
+    "aggro": [
+     "Mortal. The second I have examined. Be interesting."
+    ],
+    "death": [
+     "The Chamberlain... was more interesting..."
+    ],
+    "slay": [
+     "Less interesting."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A cell in the cloister is kept clean for a mortal guest."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "niloc",
+    "text": "Niloc keeps the far cloister's western cells and the order's one mortal case before the doors opened: the Chamberlain, whom the order examined in the Third Roll when he came down the crack and asked for service. Niloc found nothing in him but the wish to be useful, and wrote so, and the Queen kept him."
+   }
+  },
+  {
+   "name": "Inquisitor Hadis",
+   "level": 65,
+   "post": "the far cloister, the north",
+   "story": "Hadis keeps the far cloister's upper cells, nearest the climb. She examines demons who have been up the cracks toward the world, of whom there are very few, and she spent most of the Eighth Roll with Duke Harboris after he came back without his body. She has said only that his answers passed through her as he passes through everything else.",
+   "yells": {
+    "aggro": [
+     "Have you been up? Then you have answers."
+    ],
+    "death": [
+     "Up... I never went up..."
+    ],
+    "slay": [
+     "Nothing to say. Good."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "High in the cloister, a cell faces a crack that goes upward."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "hadis",
+    "text": "Hadis keeps the far cloister's upper cells, nearest the climb. She examines demons who have been up the cracks toward the world, of whom there are very few, and she spent most of the Eighth Roll with Duke Harboris after he came back without his body."
+   }
+  },
+  {
+   "name": "Inquisitor Mucifen",
+   "level": 64,
+   "post": "the far cloister, the north",
+   "story": "Mucifen is the order's clerk, who carries the cloister's findings down the long road to the Chancellor's table on the approach. He walks it once each Roll with a satchel of slates, and he is the only Inquisitor the Gatekeeper lets through the crossing without toll, on the ground that what he carries is already the court's.",
+   "yells": {
+    "aggro": [
+     "Your findings will go to the Chancellor."
+    ],
+    "death": [
+     "The satchel... deliver the satchel..."
+    ],
+    "slay": [
+     "Recorded."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A satchel of slates hangs by the far cloister's door."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "mucifen",
+    "text": "Mucifen is the order's clerk, who carries the cloister's findings down the long road to the Chancellor's table on the approach. He walks it once each Roll with a satchel of slates, and he is the only Inquisitor the Gatekeeper lets through the crossing without toll, on the ground that what he carries is already the court's."
+   }
+  },
+  {
+   "name": "Inquisitor Nifil",
+   "level": 64,
+   "post": "the far cloister, the north",
+   "story": "Nifil questions the imps, which the order considers punishment duty. The imps answer everything, at length, and none of it is ever true, and Nifil writes it all down regardless, on the principle that a lie told often enough has a shape. He is said to know more about Mystemas than anyone in the court except Mystemas.",
+   "yells": {
+    "aggro": [
+     "Another imp? No. Worse. A mortal."
+    ],
+    "death": [
+     "The imps... were telling... the truth..."
+    ],
+    "slay": [
+     "Noted, and doubted."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner sits with a stack of slates marked 'imps'."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "nifil",
+    "text": "Nifil questions the imps, which the order considers punishment duty. The imps answer everything, at length, and none of it is ever true, and Nifil writes it all down regardless, on the principle that a lie told often enough has a shape."
+   }
+  },
+  {
+   "name": "Inquisitor Bor",
+   "level": 70,
+   "post": "the north road",
+   "story": "Bor keeps the north road out of the cloisters, the way the Inquisitors walk when they go out to examine the rest of the court. He is the order's warden of the road and stands at its far end with Factol. Nothing leaves the cloisters without passing Bor, and the cloister says nothing has ever passed him without being asked where it was going.",
+   "yells": {
+    "aggro": [
+     "Where are you going? No, where are you really going?"
+    ],
+    "death": [
+     "The road... is open now..."
+    ],
+    "slay": [
+     "Going nowhere."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "At the end of the north road a questioner waits."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "inquisitor bor",
+    "text": "Bor keeps the north road out of the cloisters, the way the Inquisitors walk when they go out to examine the rest of the court. He is the order's warden of the road and stands at its far end with Factol."
+   }
+  },
+  {
+   "name": "Inquisitor Factol",
+   "level": 63,
+   "post": "the north road",
+   "story": "Factol keeps the north road with Bor, at its farthest point, where the hollow runs out into raw rock. He is the order's watcher of the edge, and he stands looking outward at the rock rather than in at the court, because the order once heard that something in the rock was asking questions of its own.",
+   "yells": {
+    "aggro": [
+     "I was watching the rock. You will do instead."
+    ],
+    "death": [
+     "The rock... asked first..."
+    ],
+    "slay": [
+     "No answer. As usual."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Here the hollow ends in raw rock. A questioner faces it."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "factol",
+    "text": "Factol keeps the north road with Bor, at its farthest point, where the hollow runs out into raw rock. He is the order's watcher of the edge, and he stands looking outward at the rock rather than in at the court, because the order once heard that something in the rock was asking questions of its own."
+   }
+  },
+  {
+   "name": "Inquisitor Haimir",
+   "level": 68,
+   "post": "the East Ward",
+   "story": "Haimir examines for Duke Bimure in the East Ward. When the high lords' followers quarrel between the halls and someone dies, Haimir finds out whose follower started it, and Bimure decides who is moved. Haimir stands nearest the road to High Lord Saeor's hall and is said to be the only Inquisitor Earl Oraxus has never tasted.",
+   "yells": {
+    "aggro": [
+     "Who started this? I always find out."
+    ],
+    "death": [
+     "Ask... who started it..."
+    ],
+    "slay": [
+     "You started it."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner stands in the Ward, looking from hall to hall."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "haimir",
+    "text": "Haimir examines for Duke Bimure in the East Ward. When the high lords' followers quarrel between the halls and someone dies, Haimir finds out whose follower started it, and Bimure decides who is moved."
+   }
+  },
+  {
+   "name": "Inquisitor Hellos",
+   "level": 62,
+   "post": "the East Ward",
+   "story": "Hellos is the youngest Inquisitor of the Ward, sent east for asking Prince Ba'alorien a question. Nobody knows the question. Hellos stands in the Ward's western camp and examines anything that comes from the Gate road, and he has been heard to say that the East Ward is the only place in the hollow where nobody asks him anything back.",
+   "yells": {
+    "aggro": [
+     "I ask. You answer. That is the arrangement."
+    ],
+    "death": [
+     "My question... was a good one..."
+    ],
+    "slay": [
+     "No more questions."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A young questioner in the Ward watches the Gate road."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "hellos",
+    "text": "Hellos is the youngest Inquisitor of the Ward, sent east for asking Prince Ba'alorien a question. Nobody knows the question."
+   }
+  },
+  {
+   "name": "Inquisitor Morg",
+   "level": 68,
+   "post": "the East Ward",
+   "story": "Morg keeps the Ward's north-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop.",
+   "yells": {
+    "aggro": [
+     "Your line. Say your line."
+    ],
+    "death": [
+     "My line... say it for me..."
+    ],
+    "slay": [
+     "No line. No place."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner on the Ward road demands each passer's line."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "inquisitor morg",
+    "text": "Morg keeps the Ward's north-western camp near Duke Bimure and asks every demon that passes the same question, whether it is on the Roll, and then asks it to say its line. The Ward calls him the Toll of the Ward and the Gatekeeper calls him a thief of his custom, and neither has ever been able to make Morg stop."
+   }
+  },
+  {
+   "name": "Inquisitor Morrian",
+   "level": 65,
+   "post": "the East Ward",
+   "story": "Morrian keeps the Ward's northern camp, toward High Lord Oro's hall, and is the Inquisitor assigned to the three Oros. Her finding, in the Third Roll, is the shortest the order has ever filed: three, one voice, no answer. She has been reassigned to the question every Roll since, at her own request.",
+   "yells": {
+    "aggro": [
+     "Three of them, one voice. And now you."
+    ],
+    "death": [
+     "Three... one... no answer..."
+    ],
+    "slay": [
+     "One answer, at least."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner in the Ward stares at the three-fold hall."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "morrian",
+    "text": "Morrian keeps the Ward's northern camp, toward High Lord Oro's hall, and is the Inquisitor assigned to the three Oros. Her finding, in the Third Roll, is the shortest the order has ever filed: three, one voice, no answer."
+   }
+  },
+  {
+   "name": "Inquisitor Nej",
+   "level": 68,
+   "post": "the East Ward",
+   "story": "Nej keeps the Ward's southern camp with Yor, the two of them back to back, one facing Saeor's road and one facing Baelerdoth's. Nej faces Saeor. She says that every demon who comes down that road is a little stronger than when it went up, and she keeps a slate of how much, which Earl Oraxus has twice tried to buy.",
+   "yells": {
+    "aggro": [
+     "You are stronger than you were. Where did you get it?"
+    ],
+    "death": [
+     "Weaker... at last..."
+    ],
+    "slay": [
+     "Weighed less."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Two questioners stand back to back in the Ward."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "inquisitor nej",
+    "text": "Nej keeps the Ward's southern camp with Yor, the two of them back to back, one facing Saeor's road and one facing Baelerdoth's. Nej faces Saeor."
+   }
+  },
+  {
+   "name": "Inquisitor Yor",
+   "level": 68,
+   "post": "the East Ward",
+   "story": "Yor stands back to back with Nej in the Ward's southern camp and faces Baelerdoth's road. She keeps the opposite slate: how much less every demon is that comes back from the thirsting lord's hall. Yor and Nej compare slates at the end of each Roll and have never once agreed on what the numbers mean.",
+   "yells": {
+    "aggro": [
+     "You are weaker than you were. I can see it."
+    ],
+    "death": [
+     "Less... and less..."
+    ],
+    "slay": [
+     "Less, again."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Facing the thirsting lord's road, a questioner keeps count."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "inquisitor yor",
+    "text": "Yor stands back to back with Nej in the Ward's southern camp and faces Baelerdoth's road. She keeps the opposite slate: how much less every demon is that comes back from the thirsting lord's hall."
+   }
+  },
+  {
+   "name": "Inquisitor Irawn",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Irawn is the Gate watch's Inquisitor of the toll, who asks each traveller through the crossing its business and reports the answers to Gatekeeper Dommel. She is the only one of the order whose blade is an edge rather than a point, which the cloister considers a lapse of discipline and Irawn considers the Gatekeeper's business.",
+   "yells": {
+    "aggro": [
+     "Your business at the Gate?"
+    ],
+    "death": [
+     "Report... to the Gatekeeper..."
+    ],
+    "slay": [
+     "Business concluded."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "A questioner at the Gate asks every traveller's business."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "irawn",
+    "text": "Irawn is the Gate watch's Inquisitor of the toll, who asks each traveller through the crossing its business and reports the answers to Gatekeeper Dommel. She is the only one of the order whose blade is an edge rather than a point, which the cloister considers a lapse of discipline and Irawn considers the Gatekeeper's business."
+   }
+  },
+  {
+   "name": "Inquisitor Lokis",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Lokis keeps the Gate's northern road beside the knight Ibeko and the Mutilator Axtanax. He is the watch's peacemaker: when the knights and the Mutilators of the watch come near to drawing on each other, it is Lokis who asks each of them, very gently, to say its Gate oath aloud. It has worked every time so far.",
+   "yells": {
+    "aggro": [
+     "Say your oath. You have none? Then I will help you."
+    ],
+    "death": [
+     "The oath... kept..."
+    ],
+    "slay": [
+     "Peace at the Gate."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "At the Gate a questioner stands between knight and flayer."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "lokis",
+    "text": "Lokis keeps the Gate's northern road beside the knight Ibeko and the Mutilator Axtanax. He is the watch's peacemaker: when the knights and the Mutilators of the watch come near to drawing on each other, it is Lokis who asks each of them, very gently, to say its Gate oath aloud."
+   }
+  },
+  {
+   "name": "Inquisitor Medebo",
+   "level": 60,
+   "post": "the Gate watch",
+   "story": "Medebo keeps the centre of the crossing at the Gatekeeper's side, and is the Inquisitor Dommel asks when he wants to know whether a toll was paid in full. Medebo has never said no. The watch suspects she has never been asked a question she wanted to answer truthfully, and she does not deny it.",
+   "yells": {
+    "aggro": [
+     "The toll was paid. Was it? Let me ask you."
+    ],
+    "death": [
+     "Paid... in full..."
+    ],
+    "slay": [
+     "Paid in full."
+    ]
+   },
+   "atmosphere": {
+    "lairEntry": [
+     "Beside the still figure at the crossing, a questioner waits."
+    ]
+   },
+   "loremasterTopic": {
+    "keyword": "medebo",
+    "text": "Medebo keeps the centre of the crossing at the Gatekeeper's side, and is the Inquisitor Dommel asks when he wants to know whether a toll was paid in full. Medebo has never said no."
+   }
+  }
+ ]
+}

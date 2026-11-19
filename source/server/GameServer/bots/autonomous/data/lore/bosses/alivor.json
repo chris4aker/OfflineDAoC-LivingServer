@@ -1,0 +1,117 @@
+{
+  "id": "alivor",
+  "name": "Alivor",
+  "npcNames": [
+    "Alivor"
+  ],
+  "locationId": "modernagrav",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "iarn-dwarves"
+  ],
+  "related": [
+    {
+      "id": "asutri",
+      "relation": "the other dwarf of the Remnants' watch at the post"
+    },
+    {
+      "id": "chief-tarek",
+      "relation": "the chief of the iron-tree encampment, of the same blood"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Alivor is a level-50 iarn dwarf near the Remnants' post in south-western Modernagrav (438814, 384669), with an iarn dwarf and an iarn dwarf tracker close by and Hermione the stablemaster's griffon post nearby.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "His template puts him in The Remnants faction and makes him aggressive (200 at range 500): he attacks strangers. When a player, a player's pet or a companion bot attacks it, it can bring nearby the remnants into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60157752)"
+    },
+    {
+      "text": "Killing a faction member changes the killer's standing with its friend and enemy factions (Faction.OnMemberKilled).",
+      "provenance": "game",
+      "source": "source/server/GameServer/gameutils/Faction.cs"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "The Remnants keep a post on the south-west of Modernagrav, with a griffon and a stablemaster, because the dwarves would rather watch the dig than be surprised by it. The post has a watch. Alivor and Asutri keep it, and they keep it against everyone.\n\nThe dwarves' oldest slates call the island beyond the rockwall by a word that means the place one does not dig, and the clans that crossed to Aegir in the first boats agreed among themselves that nobody would. The morvalt broke that agreement with picks and fire. The Remnants could not stop them, but they could keep the agreement themselves, and they decided at the slate-house, the dwarves say, that the post on Modernagrav would let nobody pass toward the bones who had not earned the dwarves' trust: no morvalt, no sjoalf, no Vendo, and no stranger of Midgard either, whose explorers had come through the gap with the dwarves' own and wanted, the dwarves thought, to dig.\n\nAlivor is the elder of the watch, a tracker by training, who walked the island with Orri of Hagall in the first season and saw what the morvalt found. He came back from it with a single opinion that he has repeated to every traveller since, usually with an axe in his hand: that the bones are not the Mother and are not a cow and are not anything the dwarves have a word for, and that the right number of people digging at them is none. He does not ask whose side a stranger is on. A stranger who has not proved a friend to the Remnants, by the dwarves' long reckoning of deeds, is a stranger walking toward the bones.\n\nHis watch is his clan. The dwarves of the post come when he is struck, as the Remnants have always come for each other, and the slate-house keeps account of everyone who strikes one of them. The griffon at the post flies only friends. Alivor says that is the whole of the dwarves' law in one sentence, and that Midgard would do well to remember it.",
+  "legend": "Alivor is a level 50 iarn dwarf of the Remnants near their post in south-western Modernagrav. He's Remnants faction and AGGRESSIVE: if your standing with the Remnants is low, he attacks you on sight, and the dwarves next to him (an iarn dwarf and a tracker) come too via bring-a-friend. No special abilities, not CC-immune. Think before you kill him: killing faction members shifts your faction standing the usual way, and the Remnants run the griffon post here and in Faraheim. If you're raising Remnants faction, go around; if you don't care, he and Asutri are an easy pair for a group of 50s. Hermione the stablemaster is close by and isn't hostile.",
+  "yells": {
+    "aggro": [
+      "Nobody passes toward the bones.",
+      "Watch! A stranger on the post road!",
+      "Earn the dwarves' trust or turn round."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "The slate-house will know your name."
+      }
+    ],
+    "death": [
+      "None... the right number is none...",
+      "Keep the watch... Asutri..."
+    ],
+    "slay": [
+      "Nobody digs.",
+      "Turned back.",
+      "The slate-house will mark it."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The Remnants' post. Dwarves watch the road to the bones.",
+      "A griffon waits. It flies only friends."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Alivor calls the dwarves of the post."
+      }
+    ],
+    "realmFirstKill": "Alivor of the Remnants' watch falls. It is marked."
+  },
+  "botLines": {
+    "briefing": [
+      "alivor is remnants faction and aggro if your faction is low",
+      "the dwarves by him come too",
+      "killing him changes your faction standing",
+      "50, easy, but think first"
+    ],
+    "aftermathWin": [
+      "killed alivor, the remnants wont like that",
+      "easy pair with asutri",
+      "hermione didnt care",
+      "faction hit probably"
+    ],
+    "aftermathLoss": [
+      "the tracker joined",
+      "didnt expect dwarves to be hostile",
+      "asutri came over",
+      "bad pull"
+    ],
+    "rumour": [
+      "alivor walked the island with orri in the first season",
+      "alivor says the right number of people digging at the bones is none",
+      "the remnants post lets nobody toward the bones who hasnt earned their trust",
+      "the griffon at the post flies only friends"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Alivor",
+    "text": "Elder of the Remnants' watch at the [post], a tracker who walked the island with [Orri]. He holds that the right number of people digging at the [bones] is none, and attacks those the dwarves do not trust."
+  },
+  "bookPage": "From the slates of Orri of Hagall: Alivor walked with me the first season. He is a better tracker than I am a slate-writer, and he read the ground round the bones for a day and then sat down and would not go nearer. I asked him what he had read. He said the beasts of the vigil had all come there walking, from every side of the island, a long time ago, and none of them had ever walked away. He said a dwarf does not need a slate to know what that means. I wrote it down anyway.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke the Remnants' watch at Alivor's post in Modernagrav in {minutes} minutes.",
+    "loss": "Alivor and the Remnants' watch turned {raidLeader}'s party from {realm} back from the bones after {minutes} minutes."
+  }
+}

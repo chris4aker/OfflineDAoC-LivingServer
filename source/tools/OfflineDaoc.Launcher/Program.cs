@@ -24,6 +24,19 @@ internal static class Program
             return;
         }
         ApplicationConfiguration.Initialize();
+        if (args.Length == 1 && args[0] == "--join")
+        {
+            // Join Friend only (from rambodolphin13/DividedRealms 3c6cc9d): no dashboard, no local server, no local save.
+            try
+            {
+                Application.Run(new JoinFriendForm(MainForm.ServerRootFor(AppContext.BaseDirectory)));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Join Friend could not start", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return;
+        }
         Application.Run(new MainForm());
     }
 

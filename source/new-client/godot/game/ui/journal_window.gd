@@ -48,6 +48,14 @@ func build() -> void:
 		else:
 			guide_requested.emit(selected))
 	add_child(_guide)
+	# Living Server 1.2: the lore codex - the server's /lore pages in the LORE window (GameUi.show_lore).
+	var lore_button := UiArt.button("LORE", Vector2(96, 16), 9)
+	lore_button.position = Vector2(194, 226)
+	lore_button.tooltip_text = "Your realm's places and bosses, and what your realm has slain"
+	lore_button.pressed.connect(func():
+		if Server.active:
+			Server.command("/lore"))
+	add_child(lore_button)
 	_remove = UiArt.button("REMOVE QUEST", Vector2(96, 16), 9)
 	_remove.position = Vector2(398, 226)
 	_remove.pressed.connect(func():

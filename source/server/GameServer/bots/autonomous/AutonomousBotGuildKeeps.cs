@@ -37,12 +37,16 @@ public static class AutonomousBotGuildKeeps
         check.SameRealm && !check.AlreadyClaimed && !check.InCombat && check.ClaimableType && !check.PlayerPresent &&
         check.ClaimLimit > 0 && check.GuildClaims < check.ClaimLimit && check.MembersPresent >= check.Needed;
 
-    public readonly record struct Claimant(string GuildId, BotGuildCharter Charter, int Present);
+    public readonly record struct Claimant(string GuildId, BotGuildCharter Charter, int Present, bool AtClaimLimit = false);
 
-    /// <summary>The guild with the most members present; ties go to RvR, then Raiding, then the lowest id.</summary>
+    /// <summary>
+    /// The guild with the most members present; ties go to RvR, then Raiding, then the lowest id. A guild that already holds
+    /// as many keeps as guilds_claim_limit allows is passed over (1.2 play-check prep, 2026-11-15: it was chosen anyway and
+    /// then failed the limit, so the realm's biggest RvR guild, once it held a keep, stopped every other guild claiming).
+    /// </summary>
     public static string ChooseClaimant(IEnumerable<Claimant> claimants) =>
         (claimants ?? Enumerable.Empty<Claimant>())
-            .Where(claimant => claimant.Present > 0 && !string.IsNullOrEmpty(claimant.GuildId))
+            .Where(claimant => claimant.Present > 0 && !claimant.AtClaimLimit && !string.IsNullOrEmpty(claimant.GuildId))
             .OrderByDescending(claimant => claimant.Present)
             .ThenBy(claimant => claimant.Charter switch { BotGuildCharter.Rvr => 0, BotGuildCharter.Raiding => 1, _ => 2 })
             .ThenBy(claimant => claimant.GuildId, StringComparer.Ordinal)
@@ -132,7 +136,8 @@ public static class AutonomousBotGuildKeeps
         string chosenId = ChooseClaimant(byGuild.Select(group =>
         {
             AutonomousBotRealmGuilds.TryGetBotGuild(group.Key.GuildID, out AutonomousBotRealmGuilds.BotGuildInfo info);
-            return new Claimant(group.Key.GuildID, info?.Charter ?? BotGuildCharter.Social, group.Count());
+            return new Claimant(group.Key.GuildID, info?.Charter ?? BotGuildCharter.Social, group.Count(),
+                group.Key.ClaimedKeeps.Count >= Properties.GUILDS_CLAIM_LIMIT);
         }));
         if (chosenId == null)
             return false;

@@ -1,0 +1,128 @@
+{
+  "id": "ulor-se-bysen",
+  "name": "Ulor se Bysen",
+  "catalogKey": "krondon/ulorbysen",
+  "locationId": "krondon",
+  "realm": "Albion",
+  "facts": [
+    {
+      "text": "Level 72-77, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800; never melees. Casts Lance Spirit (matter DoT 83 every 4 s for 24 s, radius 350), Banish Immunities (-50 body resist, 8 s) and Essence Devourer (400 body, radius 200), all interruptible. Linked with Jehrog se Bysen.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/namedmobs/Krondon/UlorAndJehrogSeBysen.cs"
+    },
+    {
+      "text": "Bysen means 'example, pattern, model', and also 'command, precept' (Bosworth-Toller).",
+      "provenance": "original",
+      "source": "https://bosworthtoller.com/"
+    },
+    {
+      "text": "'Hungry as Ulor', the ealdor's book of three curses and its law, Wynflaed's answer, the young ogres' scattering game, Father Collen and Sir Rhydian of Caer Gothwaite are Living Server writing. Earlier lore gave the curses to Jehrog; the script gives them to Ulor.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Ulor was the youngest and smallest of his litter in the Undercroft, born hungry, and what he hungered for was to be taught. He sat a season at Drihten's feet making him repeat the words he had heard through the hall-folk's floor. The diggers had a saying for any youngster who wants too much: hungry as Ulor. His elder brother Jehrog carried him down the seams and has stood in front of him ever since. When Orylle gave the brothers the title bysen, the example, Ulor asked Wynflaed's ghost what an example must know. Everything the young will need, she said, and he went to the scriptorium that night.\n\nHe found the ealdor's book of curses: three words spoken slowly over a guest who broke guest-law. The first opened the man so nothing could guard him; the second laid sores on him that crept to whoever stood near; the third ate what the first had opened. Let the cursed stand alone, the first leaf says, and the words must be said whole, for a curse broken off in the middle is only noise. Ulor learned the words by shape from Drihten's painted copies. He says them every time anyone comes into the room of the example. He has never lifted his staff to anything but point it.\n\nJehrog stands in front, the arm of the pair; Ulor stands behind and follows a man the length of the room to finish a word. The young ogres play at the second word in the corridors, scattering from whoever is pointed at. Wynflaed has not spoken to Ulor since.\n\nFather Collen, exorcist of Caer Gothwaite, went down with Sir Rhydian's company on one condition: that every man who could not reach the ogre with a blade carried stones. The knights held Jehrog; the rest stood a long arm's length apart and threw whenever Ulor drew breath, breaking each word in the middle, and the priests drew the sores out with the hospice's cure for poison. Ulor died with his mouth open in the middle of the third word. Gothwaite's squires still carry Collen's stone.",
+  "legend": "Ulor is the caster brother: level 72 to 77, 30,000 health, CC immune, 20% melee / 30% other reduction, 3,800 tether, and he never melees. Pull either brother and the other joins. Ulor follows his target to casting range and chains three spells, all interruptible: Banish Immunities (-50 body resist for 8 seconds), Lance Spirit (a matter DoT, 83 every 4 seconds for 24 seconds, on everyone within 350 of his target) and Essence Devourer (400 body damage within 200 of his target, cast over and over). He does not drain or heal himself, whatever the old guides said. So: interrupt him constantly, with any hit, bolt or spell (he is CC immune but not interrupt immune); stand apart so his circles catch one person, not five; cure poison takes the sores off. Most raids kill Ulor first, because he does the damage, while the tanks hold Jehrog away from the casters. Jehrog does not get angrier when Ulor dies.",
+  "yells": {
+    "aggro": [
+      "Brother! They come to learn by our example!",
+      "Watch, little ones. Three words, and slowly.",
+      "Stand alone, guest. The book says so."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Jehrog! Show them how we stand!"
+      }
+    ],
+    "death": [
+      "Be the example... brother...",
+      "Remember... how we stood..."
+    ],
+    "slay": [
+      "Opened, and eaten.",
+      "The third word.",
+      "Let the cursed stand alone."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two ogres stand side by side, like a lesson.",
+      "Young ogres watch from the doorway."
+    ],
+    "phases": [],
+    "realmFirstKill": "Ulor se Bysen has fallen. The example is broken."
+  },
+  "botLines": {
+    "briefing": [
+      "ulor is the caster, jehrog the melee. pull one and you get both",
+      "interrupt ulor nonstop, every cast he finishes hurts. he is cc immune, not interrupt immune",
+      "spread a body length apart, his dot hits 350 round his target and his nuke 200",
+      "cure poison on the sores. kill ulor first, tanks hold jehrog off the casters"
+    ],
+    "aftermathWin": [
+      "ulor never finished a cast. great interrupts",
+      "both brothers down. bad example",
+      "spread was perfect, the dot only got one at a time",
+      "collen's stones, every time"
+    ],
+    "aftermathLoss": [
+      "nobody interrupted ulor and he chain cast the whole time",
+      "we stood in a heap and his dot hit the whole group",
+      "nobody cured the sores",
+      "we went jehrog first while ulor nuked us from the back"
+    ],
+    "rumour": [
+      "heard ulor learned the old hall's curses off ogre copies he cant read",
+      "[heard|someone said] caer gothwaite squires carry a stone for ulor's mouth",
+      "bysen means example in the old tongue, [heard|someone said]. the ogres hold those two up as the model ogre",
+      "heard the young ogres play a game where they scatter from whoever is pointed at"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "bysen",
+    "text": "The younger of the brothers called the Example in [Krondon], the hungry one, who learned the ealdor's three curses by shape: one opens a man, one lays creeping sores, one eats what is open. They must be said whole. Father Collen broke them with stones. See [jehrog] and [bysen]."
+  },
+  "bookPage": "From the account of Father Collen, exorcist of Caer Gothwaite. The younger brother does not fight; he speaks. He has the old hall's book of curses by heart without knowing a letter of it, three words, slow, and they must be said whole. So we broke them. Every man who could not reach him with a blade threw something whenever he drew breath, and I walked behind them shouting the office so my own men would not listen to him. We stood apart, as his book says the cursed should. When he died his mouth was open in the middle of a word. I have never been so glad of an unfinished sentence.",
+  "chronicle": {
+    "win": "{realm}'s raid under {raidLeader} broke the Example of Krondon, Ulor se Bysen, in {minutes} minutes.",
+    "loss": "Ulor se Bysen and his brother made an example of {realm}'s raid under {raidLeader}."
+  },
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "thrawn-ogres"
+  ],
+  "related": [
+    {
+      "id": "jehrog-se-bysen",
+      "relation": "his elder brother"
+    },
+    {
+      "id": "jehrog-se-bysen",
+      "relation": "his elder brother, the arm of the pair; whoever comes to one comes to both"
+    },
+    {
+      "id": "drihten-elreden",
+      "relation": "taught him the hall-folk's words; his scribes painted the book of curses"
+    }
+  ],
+  "tier": "epic",
+  "chapters": [
+    {
+      "title": "The Hungry One",
+      "text": "Ulor was the youngest of his litter in the Undercroft and the smallest, and the ogres say he was born hungry and never stopped.\n\nIt was not food he wanted, or not only food. The thrawn ogres of the seams dug the same tunnels for a thousand years and killed whatever tried to teach them a new one, and Ulor, the ogres say, was the only one of his generation who wanted to be taught. He followed the oldest diggers about asking what things were called. He ate the moss off the walls of a new seam to know what it tasted like. When Drihten came back from under the hall-folk's floor saying words that nobody understood, Ulor sat at his feet for a season and made him say them again and again, and the ogres say that was the first time anyone had seen Ulor full.\n\nHis elder brother Jehrog carried him down the seams on his back when he was small, and has stood in front of him ever since, and the ogres think it is the only reason Ulor lived long enough to climb the shaft. The clan's diggers did not like a young ogre who asked questions. They had a saying for him, which the ghosts of Krondon have heard the old ogres use of any youngster who wants too much: hungry as Ulor. It is not meant kindly in the seams. In the hall it has become something else, because of what Ulor ate there.\n\nOn the night of the taking Orylle gave the brothers the title cut over the door of the room they had taken, bysen, the example, so that the young ogres of the hall would have a pattern to follow. Jehrog took it as an honour. Ulor took it as a question, and went to the ghost of Wynflaed, the last teacher, to ask what an example was supposed to know. The ghosts say Wynflaed told him: everything the young will need. Ulor went to the scriptorium the same night and has been hungry for it ever since."
+    },
+    {
+      "title": "The Three Words",
+      "text": "The book Ulor found in the scriptorium was the hall-folk's book of curses, and the hall-folk had not written it for anyone like him.\n\nIt was the ealdor's book. The hall-folk had a law for the guest who broke guest-law, who drew a blade at the high table or stole from the stores, and the law was spoken, not done: the ealdor stood over the oath-breaker and said three words from the book, slowly, in order, and the hall-folk believed the words did the rest. The first word opened the man, so that nothing he wore or was could guard him. The second laid sores on him that crept to whoever stood near him, so that his own people would step away. The third ate what the first had opened. Wenna of Caer Gothwaite read the book's first leaf and found the law written there in the ealdor's own words: let the cursed stand alone.\n\nDrihten's scribes had copied the book more often than any other because its pages were the most handsomely painted, and Ulor learned the three words off their copies by shape, as a child learns a prayer in a tongue he does not know. He cannot read them. He says them. The ghosts say the hall-folk's ealdors never once spoke all three in the life of the hall, because none of them was ever angry enough, and that Ulor speaks them every time anyone comes into the room of the example.\n\nHe says them slowly, as the book says they must be said. The ealdor's leaf is very plain about it: the words must be said whole, and a curse broken off in the middle is only noise. Ulor has never been told what that means. He has found it out, the ghosts say, every time someone has thrown something at his mouth, and it makes him furious, and he starts again. He does not strike with his hands. In all the years since the taking, the ogres say, no one has seen Ulor lift his staff to anything but point it."
+    },
+    {
+      "title": "The Pattern and the Arm",
+      "text": "The brothers stand in the room of the example as the hall-folk's bysen once stood, and the young ogres of Krondon crowd the doorway to watch them.\n\nJehrog is in front. He is the arm of the pair and has never learned a word, and he stands where the cempa stood in the carvings over the muster door, with his maul across his body, between his brother and whatever comes in. Ulor stands behind him and speaks. When an enemy moves, Ulor moves after him, never closer than he must and never further than his voice will carry, so that he can always see the face of the man he is cursing; the ghosts say he will follow a man the length of the room to finish a word. A man who comes to one brother has come to both. That much the hall already says of them, and the young in the doorway have learned it.\n\nWhat the young have also learned is the second word, the one that creeps. The ghosts of the room say the young ogres play at it in the corridors, one of them pointing and the rest scattering from the one he points at, shrieking, as the hall-folk's children once played at the guest-stone. The hall-folk's ealdor wrote let the cursed stand alone. The young ogres of Krondon have made a game of it, and the ghosts say it is the only game the ogres have that the hall-folk would have recognised.\n\nWynflaed's ghost, who told Ulor that an example must know everything the young will need, comes to the doorway of the room sometimes and watches with the young. The ghosts say she has never spoken to Ulor since that night. They say she is ashamed, not of him, but of the answer she gave, which was a teacher's answer, and true, and should not have been given to anyone so hungry."
+    },
+    {
+      "title": "Father Collen's Stones",
+      "text": "The first company of Albion to kill the brothers was led by a knight, but it was a priest who stopped Ulor's mouth.\n\nFather Collen was the exorcist of the Church at Caer Gothwaite, the priest the garrison sent for when a man on the wall started speaking in a voice that was not his, and he had spent his life talking over things that were trying to finish a sentence. He read Wenna's notes on the book of curses in the readers' store, and he went to Sir Rhydian of Caer Gothwaite, who was raising a company for Krondon, and said that he would come on one condition: that every man who could not reach the ogre with a blade should carry stones.\n\nRhydian laughed at him and agreed. In the room of the example the company did as Collen had told them. The knights went in on Jehrog. Everyone else stood off from one another, a long arm's length apart, as the ealdor's leaf said the cursed should stand, and whenever Ulor drew breath for a word they threw: stones, bolts, spells, a helmet once, anything that would break the word in the middle. Collen walked behind them reciting the office of exorcism at the top of his voice, which he said was not for Ulor but to keep his own men from listening to him. When the sores came anyway, as they did, the company's priests drew them out with the cure the hospice uses for a poisoned wound, and the cursed stepped away from their friends.\n\nCollen wrote that Ulor died with his mouth open in the middle of the third word, and that it was the first time in his ministry he had been glad to hear a sentence go unfinished. The readers of Caer Gothwaite still argue over his account and Rhydian's, which tells the same night from the front and says nothing about stones. The squires of Caer Gothwaite carry a pebble in their belt-pouch when they go to the isles. They call it Collen's stone."
+    }
+  ]
+}

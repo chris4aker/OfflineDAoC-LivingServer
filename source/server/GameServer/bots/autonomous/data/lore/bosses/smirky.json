@@ -1,0 +1,81 @@
+{
+  "id": "smirky",
+  "name": "Smirky",
+  "npcNames": [
+    "Smirky"
+  ],
+  "locationId": "lough-gur",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Smirky: level 36, a cluricaun body (model 318), faction Clurican, at about 317,600/697,900 on the north shore; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "Occupation of Lough Gur (Aziliz): 'Seek out the cluricaun Smidget on the north side of the island in Lough Gur', 'Fight the curmudgeon Curmie outside Innis Carthaig'; its question is why the gurites stay in Lough Gur and do not attack Innis Carthaig.",
+      "provenance": "game",
+      "source": "DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+    }
+  ],
+  "story": "Smirky is Smidget's cousin, and the cluricauns' lookout on the north shore of Lough Gur, toward Culraid. He grins. That is what the name means to the lake folk, and the grin is the only thing about him anyone can describe: it stays in the air a moment after he has gone, and the children of Culraid say a grin seen without its cluricaun means the robbing is already done.\n\nHe steals from Chief Bran Llyr's people, mostly, small things from the Culraid cellars, and Bran Llyr has asked Aziliz and the realm for help with him more than once. The cluricauns say Smirky is only collecting what the town owes them, a debt from the days when Culraid's founders brewed with water from a fairy spring and never paid for it. Culraid denies there was ever a spring. Bran Llyr keeps a list of what Smirky has taken, nailed to the cellar door, and it is longer than the door.",
+  "legend": "Smirky (36) is a cluricaun on Lough Gur's north shore toward Culraid (about 318k/698k). Easy for a group of mid 30s; other cluricauns (32-36) near him are social. Plain spawn, 80-second respawn. Part of the cluricaun trouble behind Occupation of Lough Gur, with his cousin Smidget on the island. Clear the cluricauns (32-36) around him first, since they are social with him. A solo 40 can manage; a group is quicker.",
+  "yells": {
+    "aggro": [
+      "(a grin, and then the cluricaun under it)",
+      "Culraid owes us. You can pay."
+    ],
+    "phases": [],
+    "death": [
+      "(the grin lingers a moment, then goes)"
+    ],
+    "slay": [
+      "Paid in full."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A grin in the air on the north shore."
+    ],
+    "phases": [],
+    "realmFirstKill": "Smirky's grin is gone from the north shore."
+  },
+  "botLines": {
+    "briefing": [
+      "smirky is 36 on the north shore toward culraid",
+      "cluricauns around are social"
+    ],
+    "aftermathWin": [
+      "smirky down. [grin's gone|lol]",
+      "culraid's cellars are safe. [for 80 seconds|lol]"
+    ],
+    "aftermathLoss": [
+      "cluricauns piled in. [rip|oops]",
+      "he stole my lunch. [lol|literally]"
+    ],
+    "rumour": [
+      "[heard|someone said] if you see smirky's grin without smirky you have already been robbed",
+      "the cluricauns say culraid owes them for water from a fairy spring"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Smirky",
+    "text": "Smidget's cousin, the cluricauns' lookout on Lough Gur's north shore, whose grin outlasts him. He robs Culraid's cellars and says the town owes his people for a fairy spring."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Smirky in Lough Gur in {minutes} minutes.",
+    "loss": "Smirky turned back {realm}'s band under {raidLeader} in Lough Gur after {minutes} minutes."
+  },
+  "era": "hib-age-of-the-veil",
+  "factions": [
+    "sidhe"
+  ],
+  "related": [
+    {
+      "id": "smidget",
+      "relation": "his cousin"
+    }
+  ]
+}

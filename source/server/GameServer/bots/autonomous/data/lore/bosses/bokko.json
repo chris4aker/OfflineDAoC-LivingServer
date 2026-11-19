@@ -1,0 +1,117 @@
+{
+  "id": "bokko",
+  "name": "Bokko",
+  "npcNames": [
+    "Bokko"
+  ],
+  "locationId": "faraheim",
+  "realm": "Midgard",
+  "era": "mid-era-shrouded-isles",
+  "factions": [
+    "tradklan"
+  ],
+  "related": [
+    {
+      "id": "cronk",
+      "relation": "the chief of the northern trunks, whose right of fire Bokko disputes"
+    },
+    {
+      "id": "trude",
+      "relation": "the sister who chose Cronk out of the ashes"
+    }
+  ],
+  "facts": [
+    {
+      "text": "Bokko is a level-60 tradklan of great size in the west of Faraheim (366589, 350465), about 14,500 units south of Cronk, among a second tradklan settlement of tribesmen, medicine men and darters (level 52-57).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "Its template puts it in the Tradklan Tribe faction, so when a player, a player's pet or a companion bot attacks it, it can bring nearby Tradklan Tribe into the fight once (the standard bring-a-friend rule).",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data) (template 60158602)"
+    },
+    {
+      "text": "He is not in Cronk's CronkBaf pack.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "No spells, styles or abilities in its template; not CC-immune.",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    }
+  ],
+  "story": "The tradklan have two sets of trunks in Faraheim. Cronk's are in the north-west, and every traveller in Hagall knows them. The southern trunks are further down the western woods, smaller and quieter, and their chief is Bokko, who is larger than Cronk and older, and who has never held the right of fire.\n\nHe believes he should have. On the night the chiefs before Cronk burned the clan's houses, the clan was left without a chief and without trunks, and by the clan's oldest law the right of fire passes to one of the old chief's sisters' children, chosen out of the ashes. There were two of age that night. One was Cronk. The other was Bokko. The southern trunks say it was settled by which of them was dragged out of the ashes first, and that Trude dragged her brother out and left Bokko to crawl out by himself, and that the clan was too frightened that night to argue with a woman carrying a child under each arm.\n\nBokko took the half of the clan that agreed with him and went south. He built new trunks there without fire, which a tree-clan can do if it is willing to eat cold and sleep cold, and his people have done both for longer than Cronk has held the fire. They think it has made them hard. The northern trunks think it has made them miserable. Bokko's medicine men keep a single coal in a clay pot, unlit, against the day they say the clan will need a chief who has never burned anything.\n\nHe is a great slow heavy tradklan, and he fights as his people live, without fire and without hurry, and his trunks come round him when he is struck as Cronk's come round Cronk. The dwarves of Hagall say the two halves of the tree-clan have never come to blows, because a clan that fights itself in a wood with only one fire between them is a clan that burns.",
+  "legend": "Bokko is the chief of the southern tradklan trunks in west Faraheim, level 60 and big, standing among tribesmen, medicine men and darters (52-57). He's not part of Cronk's pack, so no fire and no Cronk, but he's Tradklan Tribe, so hitting him can bring the nearby tradklan along (bring-a-friend), and there are a lot of them standing close: six tribesmen, five medicine men and seven darters within about 600. Pull him out with range and work the tradklan from the edges (the medicine men have no spells in this world, despite the name), and keep the fight away from the middle of the trunks. No special abilities on Bokko himself, not CC-immune, no quest.",
+  "yells": {
+    "aggro": [
+      "Cold arms, cold hearts. Come and be cold.",
+      "I never burned anything. I will start with you.",
+      "Trunks! The cold clan stands!"
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Keep the coal dark. Keep it dark!"
+      }
+    ],
+    "death": [
+      "The coal... for the clan... not for Cronk...",
+      "I crawled out... by myself..."
+    ],
+    "slay": [
+      "Cold.",
+      "No fire for you.",
+      "The southern trunks keep what falls."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The southern trunks. No smoke rises here.",
+      "A cold tree-clan, and a chief who never held the fire."
+    ],
+    "phases": [
+      {
+        "trigger": "health<=50",
+        "text": "Bokko's trunks crowd in, silent and cold."
+      }
+    ],
+    "realmFirstKill": "Bokko of the southern trunks falls. The coal stays dark."
+  },
+  "botLines": {
+    "briefing": [
+      "bokko is 60, southern tradklan trunks, not cronks pack",
+      "tradklan tribe, his trunks come, lots of them",
+      "the medicine men dont heal here, just work the edges",
+      "pull him out of the middle, no fire on him"
+    ],
+    "aftermathWin": [
+      "bokko down, no fire to deal with at least",
+      "working the edges worked",
+      "big but slow",
+      "the cold clan is broken"
+    ],
+    "aftermathLoss": [
+      "half the southern trunks came",
+      "too many tribesmen at once",
+      "pulled in the middle of the trunks",
+      "60 is tougher than he looks"
+    ],
+    "rumour": [
+      "bokko says the right of fire should have been his",
+      "trude pulled cronk out of the ashes first and left bokko to crawl out",
+      "the southern trunks keep a single unlit coal in a clay pot",
+      "the two halves of the tree clan have never fought, one fire between them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Bokko",
+    "text": "Chief of the southern tradklan trunks, larger and older than [Cronk], who says the right of fire was his on the night the houses burned until [Trude] chose. His people live cold. See [tree-clan]."
+  },
+  "bookPage": "From the trap-lines of Solvi of Hagall: the southern trunks are the coldest place I know of in the western woods, and I have slept in snow. No smoke. No hearth. The tradklan there eat their meat raw and their children sleep in heaps for the warmth. I saw the clay pot once, carried by a medicine man on a cord round his neck, and asked through the kobold what was in it. The medicine man opened it for me. It was a black coal, cold as a stone. He said: the next chief. Then he closed it again.",
+  "chronicle": {
+    "win": "{raidLeader} of {realm} broke Bokko's cold trunks in Faraheim in {minutes} minutes.",
+    "loss": "Bokko and the southern trunks left {raidLeader}'s party from {realm} cold after {minutes} minutes."
+  }
+}

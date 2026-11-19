@@ -126,6 +126,9 @@ namespace DOL.GS
             {
                 if (_groupMembers.Count >= MaximumMemberCount || living.Group != null)
                     return false;
+                // A No Lifer's buffbot never joins any group or raid, its main's included (NoLiferBuffBots).
+                if (living is GameBot { IsNoLiferBuffBot: true })
+                    return false;
                 if (IsCompanionRaid && living != CompanionRaidOwner &&
                     (living is not GameBot companion || !companion.IsTemporaryGroupHelper || companion.IsAutonomousWorldBot || companion.Owner != CompanionRaidOwner))
                     return false;
@@ -321,6 +324,9 @@ namespace DOL.GS
 
             GameLiving soleMemberToRemove = null;
             string newLeaderName = null;
+            // Bot-led groups: a gamebot party that hosts the player keeps a gamebot leader (read outside the member lock,
+            // like every call into the autonomous layer here).
+            bool hostsPlayer = BotLedGroups.IsHostedGroup(this);
             lock (_groupMembersLock)
             {
                 int memberCount = _groupMembers.Count;
@@ -345,7 +351,13 @@ namespace DOL.GS
                     // Autonomous bot-only groups have no GamePlayer member;
                     // use one when present, otherwise elect the first remaining
                     // living member instead of throwing on an empty sequence.
-                    LivingLeader = _groupMembers.OfType<GamePlayer>().FirstOrDefault() ??
+                    // A party hosting the player elects a gamebot, never the player (docs/BOT-LED-GROUPS.md).
+                    int botLeader = hostsPlayer
+                        ? BotLedGroups.ElectLeader(_groupMembers.Select(member => new BotLedGroups.MemberView(member is GamePlayer,
+                            member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false }, member.IsAlive)).ToArray())
+                        : -1;
+                    LivingLeader = botLeader >= 0 ? _groupMembers[botLeader] :
+                                   _groupMembers.OfType<GamePlayer>().FirstOrDefault() ??
                                    _groupMembers.FirstOrDefault(member => member.IsAlive) ??
                                    _groupMembers[0];
                     newLeaderName = LivingLeader.Name;
@@ -361,7 +373,10 @@ namespace DOL.GS
             // fell to one member, so two or more bots kept following someone they were no longer grouped with and
             // refused new invites until the player logged out (issue #33).
             if (living is GamePlayer leavingPlayer)
+            {
                 ReleaseGamebotsLedBy(leavingPlayer);
+                ReleaseCompanionsOf(leavingPlayer);
+            }
 
             UpdateGroupIndexes();
             UpdateGroupWindow();
@@ -409,9 +424,13 @@ namespace DOL.GS
             if (followers.Count == 0)
                 return;
 
+            // Play with friends (1.2): invited gamebots follow the group's leader, so they go to the new human leader
+            // (elected in RemoveMember before this runs), and only without one to another human still in the group.
             GamePlayer stays;
             lock (_groupMembersLock)
-                stays = _groupMembers.OfType<GamePlayer>().FirstOrDefault(member => member != player);
+                stays = LivingLeader is GamePlayer leader && leader != player && _groupMembers.Contains(leader)
+                    ? leader
+                    : _groupMembers.OfType<GamePlayer>().FirstOrDefault(member => member != player);
 
             foreach (GameBot bot in followers)
             {
@@ -424,6 +443,46 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>
+        /// The invited gamebots of this group that follow another player now follow <paramref name="leader"/> (the new
+        /// group leader). A gamebot that follows nobody (a bot-led party) is left to its own coordinator. Returns how many.
+        /// </summary>
+        public int RebindGamebotsTo(GamePlayer leader)
+        {
+            if (leader == null)
+                return 0;
+            List<GameBot> gamebots;
+            lock (_groupMembersLock)
+                gamebots = _groupMembers.OfType<GameBot>()
+                    .Where(bot => bot.Owner == null && bot.PlayerGroupLeader != null && bot.PlayerGroupLeader != leader)
+                    .ToList();
+            int moved = 0;
+            foreach (GameBot bot in gamebots)
+                if (bot.EnterPlayerLedGroup(leader))
+                    moved++;
+            return moved;
+        }
+
+        /// <summary>
+        /// Play with friends (1.2): a player's companions follow only that player, so when the player leaves a group in
+        /// which another human stays, the companions leave with them (a /spawn companion vanishes, as it does whenever it
+        /// is removed from its group). With no other human left nothing changes: the group ends as before.
+        /// </summary>
+        public void ReleaseCompanionsOf(GamePlayer player)
+        {
+            if (player == null)
+                return;
+            List<GameBot> companions;
+            lock (_groupMembersLock)
+            {
+                if (!_groupMembers.OfType<GamePlayer>().Any(member => member != player))
+                    return;
+                companions = _groupMembers.OfType<GameBot>().Where(bot => bot.Owner == player).ToList();
+            }
+            foreach (GameBot companion in companions)
+                _ = RemoveMember(companion);
+        }
+
         public void DisbandGroup()
         {
             AutonomousBotGroupCoordinator.OnDisbanding(this);
@@ -431,9 +490,11 @@ namespace DOL.GS
             Mission?.ExpireMission();
 
             List<GameBot> temporaryHelpers;
+            List<GamePlayer> players;
 
             lock (_groupMembersLock)
             {
+                players = _groupMembers.OfType<GamePlayer>().ToList();
                 temporaryHelpers = _groupMembers.OfType<GameBot>()
                     .Where(bot => bot.IsTemporaryGroupHelper)
                     .ToList();
@@ -450,6 +511,15 @@ namespace DOL.GS
                 }
                 LivingLeader = null;
                 _groupMembers.Clear();
+            }
+
+            // A group disbanded with a player still in it (a bot-led or raid party ending, 2026-11-12) left the player's
+            // group window showing the old party: tell each player, as RemoveMember does.
+            foreach (GamePlayer player in players)
+            {
+                player.Out.SendMessage("Your group has disbanded.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                player.Out.SendGroupWindowUpdate();
+                player.Out.SendQuestListUpdate();
             }
 
             foreach (GameBot helper in temporaryHelpers)
@@ -484,9 +554,15 @@ namespace DOL.GS
                 oldLeader.GroupIndex = index;
             }
 
+            // Play with friends (1.2): invited gamebots follow the group's leader, so a new human leader takes them over.
+            // Companions keep following their own owner (GameBot.EnterPlayerLedGroup refuses anyone else).
+            if (living is GamePlayer newLeader)
+                RebindGamebotsTo(newLeader);
+
             UpdateMembers([oldLeader, living], true, true);
             UpdateGroupWindow();
-            SendMessageToGroupMembers($"{Leader.Name} is the new group leader.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+            // living, not Leader: Leader is the GamePlayer leader only, and a gamebot can be made leader (bot-led groups, B2).
+            SendMessageToGroupMembers($"{living.Name} is the new group leader.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return true;
         }
 
@@ -580,6 +656,10 @@ namespace DOL.GS
 
         public TryPickUpResult TryAutoPickUpMoney(GameMoney money)
         {
+            // A group with the player and gamebots, whoever leads: coin split by member in range, the player counting
+            // as two (owner 2026-11-04, BotLedGroups.TrySplitMoney).
+            if (BotLedGroups.TrySplitMoney(this, money, out TryPickUpResult mixed))
+                return mixed;
             if (Leader != null)
                 return TryPickUpMoney(Leader, money);
 
@@ -609,6 +689,10 @@ namespace DOL.GS
 
         public TryPickUpResult TryAutoPickUpItem(WorldInventoryItem inventoryItem)
         {
+            // A group with the player and gamebots, whoever leads: the item rotation with the player's share and
+            // upgrades first (owner 2026-11-04, BotLedGroups.TrySplitItem).
+            if (BotLedGroups.TrySplitItem(this, inventoryItem, out TryPickUpResult mixed))
+                return mixed;
             if (Leader == null)
             {
                 inventoryItem.AssertLockAcquisition();
@@ -630,6 +714,8 @@ namespace DOL.GS
 
         public TryPickUpResult TryPickUpMoney(GamePlayer source, GameMoney money)
         {
+            if (BotLedGroups.TrySplitMoney(this, money, out TryPickUpResult mixed))
+                return mixed;
             money.AssertLockAcquisition();
 
             if (!AutosplitCoins)
@@ -675,6 +761,8 @@ namespace DOL.GS
 
         public TryPickUpResult TryPickUpItem(GamePlayer source, WorldInventoryItem item)
         {
+            if (BotLedGroups.TrySplitItem(this, item, out TryPickUpResult mixed))
+                return mixed;
             item.AssertLockAcquisition();
 
             // A group is only able to pick up items if auto split is enabled. Otherwise, solo logic should apply.

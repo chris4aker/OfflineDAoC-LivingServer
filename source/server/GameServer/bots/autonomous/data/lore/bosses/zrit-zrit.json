@@ -1,0 +1,66 @@
+{
+  "id": "zrit-zrit",
+  "name": "Zrit-Zrit",
+  "npcNames": [
+    "Zrit-Zrit"
+  ],
+  "locationId": "skona-ravine",
+  "realm": "Midgard",
+  "era": "mid-era-jarls",
+  "factions": [
+    "wild-beasts"
+  ],
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Zrit-Zrit (level 35, class ZritZrit) is a great badger north-east of the Sidhe Draoi camp in Skona Ravine (702,340/945,217) who cannot be seen or touched until twenty of the timberland badgers round him (class ZritZritAdd) have died.",
+      "provenance": "game",
+      "source": "source/server/GameServer/scripts/mobs/MidgardMobs/Zrit-Zrit.cs; runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+    },
+    {
+      "text": "'Zrit-Zrit's Item' (Gautr of Nalliten): 'Kill Zrit-Zrit, a timberland badger in Skona Ravine, and find the item of the warrior it devoured.'",
+      "provenance": "game",
+      "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    }
+  ],
+  "story": "Zrit-Zrit is the timberland badgers' chief, and he ate a warrior. Gautr of Nalliten says so, and the warrior's kin say so, and the sidhe of the draoi fires nearby, who have little reason to agree with anyone in Midgard, say so too: a man in good armour went into the timberland setts north-east of their fires and did not come out, and something he carried is inside the badger still. The badgers name their chief for the sound he makes, which the sidhe say is the only honest name in the ravine.\n\nLike Stripe of the south slope, Zrit-Zrit lets his diggers do the fighting. The timberland badgers come up out of the ground at anyone who walks their setts, and keep coming, and only when enough of them are dead does the chief come up to see why. The hunters of Nalliten call it the badgers' law, and say it is the same law that keeps every jarl alive: let the shield-wall go first.",
+  "legend": "Zrit-Zrit (35) is the named timberland badger north-east of the Sidhe Draoi camp in Skona. Like Stripe, he's hidden until 20 timberland badgers (32-33) die, then appears. Kill him for the warrior's item in Gautr's quest. Bring a group for the badger farm; they're 30s. The setts are near the Sidhe Draoi camp, so watch for sidhe wandering in. Once he shows he's a plain hitter for his level.",
+  "yells": {
+    "aggro": [
+      "(Zrit! Zrit!)",
+      "(The ground splits and an old badger bursts out.)"
+    ],
+    "death": [
+      "(Zrit... zrit...)"
+    ],
+    "slay": [
+      "(Zrit-zrit.)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Timberland setts. Something chitters under the ground."
+    ]
+  },
+  "botLines": {
+    "briefing": [
+      "zrit zrit pops after 20 timberland badgers die",
+      "north east of the sidhe draoi camp"
+    ],
+    "aftermathWin": [
+      "zrit zrit down, got the item",
+      "badger farming is dull but it works"
+    ],
+    "rumour": [
+      "zrit zrit ate a warrior in good armour, the item is still inside him",
+      "the sidhe say zrit zrit is the only honest name in skona"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Zrit-Zrit",
+    "text": "The chief of the timberland badgers north-east of the sidhe camp, named for the sound he makes, who ate a warrior and lets his diggers fight first. See [the sidhe]."
+  },
+  "chronicle": {
+    "win": "{raidLeader} of {realm} cut the warrior's item out of Zrit-Zrit in Skona in {minutes} minutes."
+  }
+}

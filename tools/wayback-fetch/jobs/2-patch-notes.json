@@ -1,0 +1,61 @@
+{
+    "name": "2-patch-notes",
+    "note": "What changed when, 2002-2005: patch and release notes, spec and realm ability changes, class balance, and the Shrouded Isles (2002) and Trials of Atlantis (2003) dates. index.csv's patch column lists the patch versions each page names.",
+    "from": "2002",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 280,
+    "targets": [
+        {
+            "url": "camelotherald.com/archives.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: archives.php?t=game&sortby=... (the Herald's game news and patch archive).",
+            "cdxFilters": [
+                "urlkey:.*[?&]t=game(&.*)?"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "camelotherald.com/article.php",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Seen in the first map: article.php?id=N, about 95 captures (patch notes, developer letters, lore articles).",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 100
+        },
+        {
+            "url": "www.camelotherald.com/",
+            "matchType": "exact",
+            "guess": false,
+            "note": "The Herald front page once a month (collapse=timestamp:6): the news of each month, launch and patch dates.",
+            "collapse": "timestamp:6",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 48
+        },
+        {
+            "url": "camelotherald.com/release",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "GUESS: a release-notes section (one cheap lookup; the map's 'r' range shows the truth).",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "camelot.allakhazam.com/story.html",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Allakhazam news stories (story.html?story=N); story 703 of 9 February 2002 carries the 1.45D patch notes. GUESS that the era site used this path.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        }
+    ]
+}

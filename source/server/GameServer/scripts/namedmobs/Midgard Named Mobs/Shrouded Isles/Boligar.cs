@@ -104,22 +104,22 @@ namespace DOL.AI.Brain
 		}
 		public static bool IsTargetTeleported = false;
 		#region Pick player to port
-		public static GamePlayer teleporttarget = null;
-		public static GamePlayer TeleportTarget
+		public static GameLiving teleporttarget = null;
+		public static GameLiving TeleportTarget
 		{
 			get { return teleporttarget; }
 			set { teleporttarget = value; }
 		}
-		List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		List<GameLiving> Port_Enemys = new List<GameLiving>();
 		public int PickTeleportPlayer(ECSGameTimer timer)
 		{
 			if (Body.IsAlive && HasAggro)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(1500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.DisplacesBots(Body)))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player))
 							{
@@ -138,7 +138,7 @@ namespace DOL.AI.Brain
 				{
 					if (Port_Enemys.Count > 0)
 					{
-						GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+						GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 						TeleportTarget = Target;
 						if (TeleportTarget.IsAlive && TeleportTarget != null)
 							new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), 3000);
@@ -153,10 +153,10 @@ namespace DOL.AI.Brain
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: TeleportTarget.MoveTo(151, 409989, 378960, 7752, 3040); break;
-					case 2: TeleportTarget.MoveTo(151, 411003, 377902, 7704, 3070); break;
-					case 3: TeleportTarget.MoveTo(151, 409983, 376894, 7376, 3097); break;
-					case 4: TeleportTarget.MoveTo(151, 408968, 377920, 7440, 3047); break;
+					case 1: EncounterDisplacement.Move(TeleportTarget, 151, 409989, 378960, 7752, 3040, DisplacementKind.Teleport, Body); break;
+					case 2: EncounterDisplacement.Move(TeleportTarget, 151, 411003, 377902, 7704, 3070, DisplacementKind.Teleport, Body); break;
+					case 3: EncounterDisplacement.Move(TeleportTarget, 151, 409983, 376894, 7376, 3097, DisplacementKind.Teleport, Body); break;
+					case 4: EncounterDisplacement.Move(TeleportTarget, 151, 408968, 377920, 7440, 3047, DisplacementKind.Teleport, Body); break;
 				}
 				Port_Enemys.Remove(TeleportTarget);
 				TeleportTarget = null;//reset random target to null

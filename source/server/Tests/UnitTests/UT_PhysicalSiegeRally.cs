@@ -109,7 +109,7 @@ public class UT_PhysicalSiegeRally
     }
 
     [Test]
-    public void RelicEscortInheritsReactingRealmsAndRemainingBattleClock()
+    public void RelicEscortInheritsReactingRealmsAndGetsItsOwnClock()
     {
         long now = GameLoop.GameLoopTime;
         var (target, forces) = Open(true, now, 22);
@@ -121,7 +121,8 @@ public class UT_PhysicalSiegeRally
             Assert.That(AutonomousRvrEventLayer.ChooseOrJoin(force, [target with { UnderAttack = true }], ready + 1, 0)?.TargetId, Is.EqualTo(target.Id));
         string carrier = target.Id + "-carrier";
         AutonomousRvrEventLayer.TransferToRelicCarrier(target.Id, carrier, ready + 60_000);
-        Assert.That(AutonomousRvrEventLayer.CarrierRemainingMilliseconds(carrier, ready + 60_000), Is.EqualTo(AutonomousRvrEventLayer.BattleLifetimeMilliseconds - (ready - now) - 60_000));
+        Assert.That(AutonomousRvrEventLayer.CarrierRemainingMilliseconds(carrier, ready + 60_000), Is.EqualTo(AutonomousRvrEventLayer.CarrierEventMilliseconds),
+            "relic audit 2026-10-31 (L6): the carrier event no longer keeps the siege's leftover time");
         foreach (var force in forces.Concat(reactors)) Assert.That(AutonomousRvrEventLayer.IsForceCommitted(force.GroupId, ready + 60_001), Is.True);
         foreach (var force in forces.Concat(reactors))
             Assert.That(AutonomousRvrEventLayer.ChooseOrJoin(force, [], ready + 60_001, 0)?.TargetId, Is.EqualTo(carrier),

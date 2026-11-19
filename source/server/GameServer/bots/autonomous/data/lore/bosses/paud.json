@@ -1,0 +1,81 @@
+{
+  "id": "paud",
+  "name": "Paud",
+  "npcNames": [
+    "Paud"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Paud: level 39, a treant body (model 946, size 125), faction The Watcher, at about 412,000/320,600 below the rows of vigilant ones; respawn 600 seconds.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Paud and Regan as the eldest Watchers, the only two who remember what the rows were set to watch for.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Paud is one of the two eldest Watchers of Vigilant Rock, and the larger, a great treant standing a little below the rows of the vigilant ones with Regan beside him. The Necht folk say the Watchers were set on the shelf before there were Sylvan to see it done, to watch the sea for whatever might come out of it, and that Paud and Regan are the only two who still remember what that was.\n\nPaud does not say. When the realm's companies come down the shelf, he turns his eyes on them slowly, the way he turned them on Orlaith of Necht when she asked, and then back to the water, and if they come closer he takes it as the thing he was set to watch for, and does what he was never able to do when the Fomorians came ashore. The Necht fishers say that is the saddest thing on the rock: that the Watchers learned to act only after it was too late, and now act against the wrong people.",
+  "legend": "Paud (39) is a big treant of the Watcher faction below the vigilant-one rows (about 412k/321k), right beside Regan (38). They stand together, so expect both. Treant hits are slow and heavy. 10-minute respawn. Killing Watchers costs faction with the vigilant ones. Pull them to the open shelf, away from the rows, or the vigilant ones (36-42) on the slope above join in. Mel the trading dervish wants Watcher leaves; that kill task costs the same faction.",
+  "yells": {
+    "aggro": [
+      "(the great trunk turns its eyes from the sea)",
+      "You came out of the water. You came out of the water."
+    ],
+    "phases": [],
+    "death": [
+      "(Paud's eyes close, facing the sea)"
+    ],
+    "slay": [
+      "(the treant turns back to the water)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "Two great trees below the rows, eyes on the sea."
+    ],
+    "phases": [],
+    "realmFirstKill": "Paud, eldest of the Watchers, has closed his eyes."
+  },
+  "botLines": {
+    "briefing": [
+      "paud is 39 with regan right next to him. [two treants|both]",
+      "watcher faction, costs faction with the vigilant ones"
+    ],
+    "aftermathWin": [
+      "paud down. [big tree|timber]",
+      "got both eldest watchers. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "paud and regan together hit hard. [rip|ouch]",
+      "too low for two treants. [38-39|more people]"
+    ],
+    "rumour": [
+      "[heard|someone said] paud remembers what the watchers were set to watch for. he wont say",
+      "paud looked at orlaith of necht and then back at the sea. thats all anyone ever got"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Paud",
+    "text": "The larger of the two eldest Watchers of Vigilant Rock, a great treant below the rows. He remembers what the Watchers were set to watch for and has never said."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Paud in Vigilant Rock in {minutes} minutes.",
+    "loss": "Paud turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-before-the-names",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "regan",
+      "relation": "the other eldest Watcher"
+    }
+  ]
+}

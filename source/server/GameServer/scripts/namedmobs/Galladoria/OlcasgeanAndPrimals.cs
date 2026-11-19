@@ -66,6 +66,7 @@ namespace DOL.AI.Brain
         public static bool startevent = false;
         public static int DeadPrimalsCount = 0;
         public const int BotTriggerRadius = 1500;
+        private long _botOnBridgeSince;
 
         public void BroadcastMessage(String message)
         {
@@ -81,21 +82,30 @@ namespace DOL.AI.Brain
             point1.X = 39652; point1.Y = 60831; point1.Z = 11893;//loc of waterfall bridge to start event and pop elementars
             if (Body.IsAlive)
             {
+                bool botOnBridge = false;
                 foreach (GameLiving player in EpicEncounterActors.Nearby(Body, 7000))
                 {
                     if (!startevent && EpicEncounterActors.CanTrigger(player))
                     {
                         // Run 12 (2026-10-15): the bot raid held near the bridge for 40 minutes and none of its 250 raiders
                         // stood on the 350-unit spot, so the primals never came. A raid bot anywhere on the bridge starts it.
-                        // The original 350-unit spot for bots too is behind EpicEncounterMechanics.AllowGalladoriaBridgeSpot.
+                        // The original 350-unit spot for bots too is behind EpicEncounterMechanics.AllowGalladoriaBridgeSpot
+                        // (on since 1.2: the raid route stages its first party on the spot); a raid bot that has stood on the
+                        // bridge for EpicEncounterRestores.BridgeFallbackMilliseconds still starts it, so a raid is never held.
+                        bool onBridge = player is GameBot && player.IsWithinRadius(point1, BotTriggerRadius);
+                        botOnBridge |= onBridge;
                         int triggerRadius = player is GameBot && !EpicEncounterMechanics.AllowGalladoriaBridgeSpot ? BotTriggerRadius : 350;
-                        if (player.IsWithinRadius(point1, triggerRadius) && !startevent && DeadPrimalsCount == 0 && !startevent)
+                        if ((player.IsWithinRadius(point1, triggerRadius) ||
+                             onBridge && EpicEncounterRestores.BridgeFallbackDue(_botOnBridgeSince, GameLoop.GameLoopTime)) &&
+                            !startevent && DeadPrimalsCount == 0 && !startevent)
                         {
                             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(Message1), 5000);//5s to start
                             startevent = true;
                         }
                     }
                 }
+                if (!botOnBridge || startevent) _botOnBridgeSince = 0;
+                else if (_botOnBridgeSince == 0) _botOnBridgeSince = GameLoop.GameLoopTime;
             }
             base.Think();
         }
@@ -380,9 +390,10 @@ namespace DOL.GS
         }
         protected void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardEpicEncounterKillPoint();
+            AwardEpicEncounterKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
             {
@@ -405,7 +416,7 @@ namespace DOL.GS
             }
             return count;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC npc in GetNPCsInRadius(10000))
             {
@@ -416,7 +427,11 @@ namespace DOL.GS
                         if (npc is Olcasgean2 boss)
                         {
                             if (boss != null && boss.IsAlive && boss.Brain is OlcasgeanBrain2)
+                            {
+                                // One encounter, one payout: this body takes the second body's attackers (epic-bosses M5).
+                                EpicEncounterMechanics.TransferDamageCredit(boss, this);
                                 boss.RemoveFromWorld();
+                            }
                         }
 
                         if (npc.Brain is VortexBrain)
@@ -443,10 +458,10 @@ namespace DOL.GS
             }
             if (canReportNews)
             {
-                if (killer is not Olcasgean or Olcasgean2)
+                if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #endregion
         public override bool AddToWorld()
@@ -487,7 +502,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss being attacked
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
                 if (HealthPercent <= 50)
                 {
@@ -544,8 +559,8 @@ namespace DOL.AI.Brain
             ThinkInterval = 1000;
         }
         public static bool cast1 = true;         
-        private GamePlayer teleporttarget = null;
-        private GamePlayer TeleportTarget//teleport target 
+        private GameLiving teleporttarget = null;
+        private GameLiving TeleportTarget//teleport target 
         {
             get { return teleporttarget; }
             set { teleporttarget = value; }
@@ -558,10 +573,10 @@ namespace DOL.AI.Brain
         public static bool spawn_effect = false;
         public static bool Spawn_Copy = false;
         private bool RemoveAdds = false;
-        List<GamePlayer> player_in_range;
-        List<GamePlayer> player_in_range2;
-        List<GamePlayer> player_to_port;
-        List<GamePlayer> ported_player;
+        List<GameLiving> player_in_range;
+        List<GameLiving> player_in_range2;
+        List<GameLiving> player_to_port;
+        List<GameLiving> ported_player;
 
         public void SpawnAntiPass()
         {
@@ -626,6 +641,11 @@ namespace DOL.AI.Brain
                 spawn_antipass = false;
                 spawn_effect = false;
                 TeleportTarget = null;
+                // 1.2: a new fight starts with nobody on the spots and nobody thrown.
+                player_in_range?.Clear();
+                player_in_range2?.Clear();
+                player_to_port?.Clear();
+                ported_player?.Clear();
                 if (!RemoveAdds)
                 {
                     foreach (GameNPC npc in Body.GetNPCsInRadius(4000))
@@ -655,7 +675,7 @@ namespace DOL.AI.Brain
                 Point3D point2 = new Point3D();
                 point2.X = 39237; point2.Y = 62644; point2.Z = 11685;
 
-                if (EpicEncounterMechanics.AllowPositionPuzzle && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.
+                if (EpicEncounterMechanics.AllowPositionPuzzleFor(Body) && HasAggro && Body.TargetObject != null)//Player-only split-position/throw puzzle disabled for offline raids.
                 {
                     RemoveAdds = false;
                     if (spawn_effect == false)
@@ -664,38 +684,38 @@ namespace DOL.AI.Brain
                         spawn_effect = true;
                     }
                     if (player_in_range == null)
-                        player_in_range = new List<GamePlayer>();
+                        player_in_range = new List<GameLiving>();
 
                     if (player_in_range2 == null)
-                        player_in_range2 = new List<GamePlayer>();
+                        player_in_range2 = new List<GameLiving>();
 
                     if (player_to_port == null)
-                        player_to_port = new List<GamePlayer>();
+                        player_to_port = new List<GameLiving>();
 
                     if (ported_player == null)
-                        ported_player = new List<GamePlayer>();
+                        ported_player = new List<GameLiving>();
 
                     if (spawn_antipass == false)//spawn anti pass near waterfall so players cant leave boss area until killed 
                     {
                         SpawnAntiPass();
                         spawn_antipass = true;
                     }
-                    foreach (GamePlayer player in Body.GetPlayersInRadius(1500))//pick teleport player
+                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 1500, bots: EncounterTargets.DisplacesBots(Body)))//pick teleport player
                     {
                         if (player != null)
                         {
-                            if (player.IsAlive && player.Client.Account.PrivLevel == 1 && player != Body.TargetObject)
+                            if (player.IsAlive && EncounterTargets.NotGm(player) && player != Body.TargetObject)
                             {
                                 if (!player_to_port.Contains(player))
                                     player_to_port.Add(player);
                             }
                         }
                     }
-                    foreach (GamePlayer player in Body.GetPlayersInRadius(5000))//pick players to make list of 2 areas
+                    foreach (GameLiving player in EncounterTargets.InRadius(Body, 5000))//pick players to make list of 2 areas
                     {
                         if (player != null)
                         {
-                            if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                            if (player.IsAlive && EncounterTargets.NotGm(player))
                             {
                                 if (player.IsWithinRadius(point1, 200))//location of main boss
                                 {
@@ -720,17 +740,27 @@ namespace DOL.AI.Brain
                             }
                         }
                     }
+                    // 1.2: a raider who died on a spot no longer holds it.
+                    player_in_range.RemoveAll(p => p == null || !p.IsAlive);
+                    player_in_range2.RemoveAll(p => p == null || !p.IsAlive);
                     if (player_in_range.Count > 0 && player_in_range2.Count > 0)
                     {/* do nothing */}
                     else
-                        Body.CastSpell(OlcasgeanDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
-
-                    if (ported_player.Count > 0)
                     {
-                        GamePlayer port = ((GamePlayer)(player_to_port[Util.Random(0, player_to_port.Count) - 1]));
-                        TeleportTarget = port;
+                        Body.CastSpell(OlcasgeanDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        // 1.2 (epic wave 2): the raid hears it (EncounterSignals): the two parties the spots are given to run to them.
+                        if (EncounterSignals.Active(Body, EncounterSignals.SafeSpots, GameLoop.GameLoopTime) == null)
+                            EncounterSignals.Raise(Body, EncounterSignals.SafeSpots, null, 200, false, 0, 10_000);
+                    }
 
-                        if (TeleportTarget != null && TeleportTarget.IsAlive && !teleport_player && Body.HealthPercent <= 50)
+                    // 1.2: the throw as OpenDAoC-Core 3513bad has it. The fork's copy waited for someone already thrown (it never
+                    // started) and picked index -1 one time in n+1 (an exception): below half health, every 12-20 s, one raider
+                    // within 1,500 who is not his target and was not thrown before.
+                    player_to_port.RemoveAll(p => p == null || !p.IsAlive || ported_player.Contains(p));
+                    if (player_to_port.Count > 0 && !teleport_player && Body.HealthPercent <= 50)
+                    {
+                        TeleportTarget = player_to_port[Util.Random(0, player_to_port.Count - 1)];
+                        if (TeleportTarget != null && TeleportTarget.IsAlive)
                         {
                             new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(DoPort), Util.Random(12000,20000));//do teleport every 12-20s
                             teleport_player = true;
@@ -768,10 +798,10 @@ namespace DOL.AI.Brain
                     {
                         case 1:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38399, 60893, 12242, 3548);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38399, 60893, 12242, 3548, DisplacementKind.Throw, Body);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -779,10 +809,10 @@ namespace DOL.AI.Brain
                             break;
                         case 2:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38564, 64161, 12242, 2382);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38564, 64161, 12242, 2382, DisplacementKind.Throw, Body);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -791,10 +821,10 @@ namespace DOL.AI.Brain
                             break;
                         case 3:
                             {
-                                if (TeleportTarget.IsAlive && TeleportTarget != null && !ported_player.Contains(TeleportTarget))
+                                if (TeleportTarget != null && TeleportTarget.IsAlive && !ported_player.Contains(TeleportTarget))
                                 {
-                                    if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 41580, 62325, 12242, 890);
-                                    TeleportTarget.Client.Out.SendMessage(Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                                    if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 41580, 62325, 12242, 890, DisplacementKind.Throw, Body);
+                                    EncounterTargets.Tell(TeleportTarget, Body.Name + " throws you away...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                                     if (!ported_player.Contains(TeleportTarget))
                                         ported_player.Add(TeleportTarget);
                                 }
@@ -906,9 +936,10 @@ namespace DOL.GS
         }
         protected void ReportNews(GameObject killer)
         {
-            int numPlayers = AwardEpicEncounterKillPoint();
+            AwardEpicEncounterKillPoint();
+            int numPlayers = EpicEncounterMechanics.ForceSize(this);
             String message = String.Format("{0} has been slain by a force of {1} warriors!", Name, numPlayers);
-            NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
+            NewsMgr.CreateNews(message, killer?.Realm ?? eRealm.None, eNewsType.PvE, true);
 
             if (Properties.GUILD_MERIT_ON_DRAGON_KILL > 0)
             {
@@ -931,8 +962,9 @@ namespace DOL.GS
             }
             return count;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
+            bool mainBodyDied = false;
             foreach (GameNPC npc in GetNPCsInRadius(10000))
             {
                 if (npc != null)
@@ -941,8 +973,15 @@ namespace DOL.GS
                     {
                         if (npc is Olcasgean boss)
                         {
+                            // The main body dies with the real killer and pays for both bodies; this one pays nothing.
+                            // It used to die by its own hand, and both bodies dropped loot when both had been hit
+                            // (epic-bosses M5).
                             if (boss != null && boss.IsAlive && boss.Brain is OlcasgeanBrain)
-                                boss.Die(boss);
+                            {
+                                EpicEncounterMechanics.TransferDamageCredit(this, boss);
+                                boss.Die(killer);
+                                mainBodyDied = true;
+                            }
                         }
 
                         if (npc.Brain is VortexBrain)
@@ -954,9 +993,9 @@ namespace DOL.GS
                 }
             }
 
-            bool canReportNews = true;
+            bool canReportNews = !mainBodyDied; // the main body has already told the players and the news
             // due to issues with attackers the following code will send a notify to all in area in order to force quest credit
-            foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+            foreach (GamePlayer player in mainBodyDied ? new List<GamePlayer>() : GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
             {
                 player.Notify(GameLivingEvent.EnemyKilled, killer, new EnemyKilledEventArgs(this));
 
@@ -968,10 +1007,10 @@ namespace DOL.GS
             }
             if (canReportNews)
             {
-                if(killer is not Olcasgean or Olcasgean2)
+                if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #endregion
         public override bool AddToWorld()
@@ -993,7 +1032,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)// on Boss being attacked
         {
-            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && ad.Attacker is GamePlayer)
+            if (ad != null && ad.Damage > 0 && ad.Attacker != null && ad.Attacker.IsAlive && EncounterTargets.IsRaider(ad.Attacker))
             {
                 if (HealthPercent <= 50)
                 {
@@ -1156,10 +1195,10 @@ namespace DOL.GS
         public override void StopFollowing()
         {
         }      
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {
@@ -1273,11 +1312,11 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
             {
                 if (player != null)
                 {
-                    if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                    if (player.IsAlive && EncounterTargets.NotGm(player))
                         AggroList.TryAdd(player, new(100));
                 }
             }
@@ -1504,10 +1543,10 @@ namespace DOL.GS
                 default: return 70;// dmg reduction for rest resists
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)
@@ -1695,22 +1734,22 @@ namespace DOL.AI.Brain
         }
         #region Pick player to port
         public static bool IsTargetTeleported = false;
-        public static GamePlayer teleporttarget = null;
-        public static GamePlayer TeleportTarget
+        public static GameLiving teleporttarget = null;
+        public static GameLiving TeleportTarget
         {
             get { return teleporttarget; }
             set { teleporttarget = value; }
         }
-        List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+        List<GameLiving> Port_Enemys = new List<GameLiving>();
         public int PickTeleportPlayer(ECSGameTimer timer)
         {
             if (Body.IsAlive && HasAggro)
             {
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                         {
                             if (!Port_Enemys.Contains(player))
                             {
@@ -1731,7 +1770,7 @@ namespace DOL.AI.Brain
                 {
                     if (Port_Enemys.Count > 0)
                     {
-                        GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+                        GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
                         TeleportTarget = Target;
                         if (TeleportTarget.IsAlive && TeleportTarget != null)
                         {
@@ -1744,12 +1783,12 @@ namespace DOL.AI.Brain
         }
         public int TeleportPlayer(ECSGameTimer timer)
         {
-            if (TeleportTarget.IsAlive && TeleportTarget != null && HasAggro)
+            if (TeleportTarget != null && TeleportTarget.IsAlive && HasAggro)
             {
                 switch (Util.Random(1, 2))
                 {
-                    case 1: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 38626, 60891, 11771, 2881); break;
-                    case 2: if (EpicEncounterMechanics.AllowDisplacement) TeleportTarget.MoveTo(Body.CurrentRegionID, 40606, 60868, 11721, 1095); break;
+                    case 1: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 38626, 60891, 11771, 2881, DisplacementKind.Teleport, Body); break;
+                    case 2: if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 40606, 60868, 11721, 1095, DisplacementKind.Teleport, Body); break;
                 }
                 Port_Enemys.Remove(TeleportTarget);
                 TeleportTarget = null;//reset random target to null
@@ -1820,10 +1859,10 @@ namespace DOL.GS
         {
             return;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)
@@ -1908,11 +1947,11 @@ namespace DOL.AI.Brain
             if (Body.IsAlive)
             {
                 Body.CastSpell(FireDS, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//cast dmg shield every 60s
-                foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+                foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
                 {
                     if (player != null)
                     {
-                        if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+                        if (player.IsAlive && EncounterTargets.NotGm(player))
                             AggroList.TryAdd(player, new(100));
                     }
                 }
@@ -2192,7 +2231,7 @@ namespace DOL.GS
                 default: return 70;// dmg reduction for rest resists
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
             foreach (GameNPC npc in GetNPCsInRadius(8000))
@@ -2206,7 +2245,7 @@ namespace DOL.GS
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)
@@ -2318,11 +2357,34 @@ namespace DOL.AI.Brain
                         Body.MaxSpeedBase = npcTemplate.MaxSpeed;
                 }
             }
+            ReturnHomeIfListEmpty();
+            base.Think();
+        }
+
+        /// <summary>Out of his tether with nobody on his aggro list: home, on his own legs (<see cref="ReturnHomeWithLegs"/>).</summary>
+        public void ReturnHomeIfListEmpty()
+        {
             if (Body.IsOutOfTetherRange && !HasAggro)
             {
+                ReturnHomeWithLegs();
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
             }
-            base.Think();
+        }
+
+        /// <summary>
+        /// Living Server 1.2 (owner's PC, build b1b6846, 2026-11-18, Galladoria): out of his tether with nobody left on his
+        /// aggro list he walks home. The script's freeze (speed 0 while his target stands more than 900 from his spawn) is
+        /// unchanged in the fight; only once his list is empty does he get his template speed back. Before this his speed
+        /// stayed 0, so every leash (AutonomousTetherReset) sent him home at speed 0: he stood 1,044 from his spawn through
+        /// 13 leashes, untouchable, and killed 177 raiders. A return already begun at speed 0 is begun again at his speed.
+        /// </summary>
+        public void ReturnHomeWithLegs()
+        {
+            if (Body.MaxSpeedBase > 0) return;
+            short speed = NpcTemplateMgr.GetTemplate(60159436)?.MaxSpeed ?? Body.NPCTemplate?.MaxSpeed ?? 0;
+            if (speed <= 0) return;
+            Body.MaxSpeedBase = speed;
+            if (Body.IsReturningToSpawnPoint) Body.ReturnToSpawnPoint(Body.MaxSpeed);
         }
         private Spell m_EarthRoot;
         private Spell EarthRoot
@@ -2511,7 +2573,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -2719,7 +2781,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -2924,7 +2986,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -3129,7 +3191,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -3192,7 +3254,7 @@ namespace DOL.GS
         public Vortex() : base() { }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            if (!EpicEncounterMechanics.AllowInvulnerableHazards)
+            if (!EpicEncounterMechanics.AllowInvulnerableHazardsFor(this))
             {
                 if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);
                 return;
@@ -3353,14 +3415,14 @@ namespace DOL.AI.Brain
         }
         public override void Think()
         {
-            foreach (GamePlayer player in Body.GetPlayersInRadius((ushort)AggroRange))
+            foreach (GameLiving player in EncounterTargets.InRadius(Body, (ushort)AggroRange, bots: EncounterTargets.DisplacesBots(Body)))
             {
                 if (player != null)
                 {
                     if (player.IsAlive)
                     {
-                        if (player.Client.Account.PrivLevel == 1)
-                            if (EpicEncounterMechanics.AllowDisplacement) player.MoveTo(Body.CurrentRegionID, 39664, 60792, 11542, 4078);
+                        if (EncounterTargets.NotGm(player))
+                            if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 39664, 60792, 11542, 4078, DisplacementKind.Barrier, Body);
                     }
                 }
             }

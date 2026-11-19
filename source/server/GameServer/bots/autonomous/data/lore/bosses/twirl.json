@@ -1,0 +1,81 @@
+{
+  "id": "twirl",
+  "name": "Twirl",
+  "npcNames": [
+    "Twirl"
+  ],
+  "locationId": "vigilant-rock",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Twirl: level 35, a tree dervish body (model 844), faction The Tree Dervishes, at about 412,800/333,000; respawn 80 seconds. Whirl (31) and Mel (29) are dervishes of the same woods.",
+      "provenance": "game",
+      "source": "world data Mob table, region 181 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Twirl and Whirl as the dervishes' twins, named by the Necht children.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "The children of Necht named the dervishes they could see from the woods' edge, and the two they named first were Twirl and Whirl, because those were the words they had. Twirl is the larger and the elder, and spins in the middle of the dervish woods with the watchful ones around her; Whirl keeps the edge closer to the coast. The children say they are twins, grown from one seed, and the Necht singers do not correct them.\n\nTwirl is the one the realm's young meet when they first go into the dervish woods, and she is not kind to them, but she is not cruel either; she spins, and anything in her way is struck. Mel, the trading dervish, will not stand near her. The Necht folk say Twirl was the first of the young ones to take up Manus's spinning, and that if Manus ever stops, she will be the eldest.",
+  "legend": "Twirl (35) is a named tree dervish in the middle of the dervish woods (about 413k/333k) with watchful dervishes around her. Clear the adds first. A group of mid 30s handles her. 80-second respawn. Whirl (31) is near the coast. Plain spawn with no script. Mel, the trading dervish, wanders nearby and is a kill task target in its own right, so do not pull him by mistake.",
+  "yells": {
+    "aggro": [
+      "(Twirl spins faster)",
+      "Round and round. In the way."
+    ],
+    "phases": [],
+    "death": [
+      "(Twirl wobbles and falls still)"
+    ],
+    "slay": [
+      "(she spins on)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A dervish spinning fast in the middle woods."
+    ],
+    "phases": [],
+    "realmFirstKill": "Twirl the dervish is still at last."
+  },
+  "botLines": {
+    "briefing": [
+      "twirl is 35 in the middle of the dervish woods",
+      "clear the watchful dervishes around her first"
+    ],
+    "aftermathWin": [
+      "twirl down. [dizzy|lol]",
+      "cleared the woods to her. [nice|grats]"
+    ],
+    "aftermathLoss": [
+      "watchful dervishes joined. [rip|too many]",
+      "got spun. [ouch|lol]"
+    ],
+    "rumour": [
+      "[heard|someone said] the necht kids named twirl and whirl. they think theyre twins",
+      "twirl will be the eldest dervish if manus ever stops spinning, necht says"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Twirl",
+    "text": "A dervish of the middle woods, named by the Necht children with her twin Whirl. The first of the young ones to take up Manus's spinning."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Twirl in Vigilant Rock in {minutes} minutes.",
+    "loss": "Twirl turned back {realm}'s band under {raidLeader} in Vigilant Rock after {minutes} minutes."
+  },
+  "era": "hib-the-shrouded-isles",
+  "factions": [
+    "sylvan"
+  ],
+  "related": [
+    {
+      "id": "manus",
+      "relation": "the eldest dervish above"
+    }
+  ]
+}

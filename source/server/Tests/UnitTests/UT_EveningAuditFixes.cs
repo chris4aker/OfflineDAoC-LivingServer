@@ -95,11 +95,13 @@ namespace DOL.UnitTests
         public void UndamagedRouteTargetIsSetAside(bool finalBoss, long sinceProgress, bool skip) =>
             Assert.That(RealmRaidDungeonRoute.ShouldSkipTarget(finalBoss, sinceProgress), Is.EqualTo(skip));
 
-        // A final encounter waits for half the living raid (8-150), a third after 20 minutes of mustering.
+        // A final encounter waits for 70% of the living raid (8-150), half after 20 minutes of mustering
+        // (half and a third until 1.2 build 2: attempts went in with half the raid that was sent).
         [TestCase(300, 0, 150)]
-        [TestCase(200, 0, 100)]
+        [TestCase(200, 0, 140)]
+        [TestCase(80, 0, 56)]
         [TestCase(10, 0, 8)]
-        [TestCase(200, 20 * 60_000, 66)]
+        [TestCase(200, 20 * 60_000, 100)]
         [TestCase(600, 25 * 60_000, 150)]
         public void FinalEncounterWaitsForTheRaid(int living, long mustering, int needed) =>
             Assert.That(RealmRaidDungeonRoute.FinalMusterNeeded(living, mustering), Is.EqualTo(needed));

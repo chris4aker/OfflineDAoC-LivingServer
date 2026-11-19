@@ -1,0 +1,290 @@
+{
+  "id": "inishail-island",
+  "name": "Inishail Island",
+  "realm": "Albion",
+  "regions": [
+    51
+  ],
+  "zones": [
+    57
+  ],
+  "aliases": [
+    "inishail",
+    "the isle of rest"
+  ],
+  "summary": "The isle of rest, last and smallest of the isles: a dead lord who will not leave his ground, the orcs who ran from Krondon and became his tenants, Sarcondina's marsh, and lammia who do not trade.",
+  "facts": [
+    {
+      "text": "Inishail Island is zone 57 of region 51, with about 470 monsters and no realm NPCs: orcs (brutes, battlers, oracles, soothsayers, Chieftain Toca), lammia (trackers, escorts, sorceresses, diviners), slimes and oozes, dragonflies, mountain yales, sea slimes and tidal mongrels.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 51 zone 57 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Orcs with Spellbooks: 'The orcs have stolen Avalonian tomes'; Veena sends players to the soothsayers at the orc camp north-west across the lake, to the buzzing nuisances east of it, and to Chieftain Toca in the largest central hut of the orc village.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Evening the Odds: Veena wants three vials from the beach's sea slimes, venom from the inishail flies beside her and saliva from a tidal mongrel in the water between Gwyddneau and Inishail.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The lammia camp of the south-west has its own stable master, Callisa, and is hostile; Veena uses the lammia model of Clifton.",
+      "provenance": "game",
+      "source": "world data: Zones/Mob tables, region 51 zone 57 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Sarcondina and the Spirit of Lord Emthoro are scripted bosses on Inishail; Emthoro stands just north of the orc village.",
+      "provenance": "game",
+      "source": "docs/encounters/epic-encounters.json; world data: Zones/Mob tables, region 51 zone 57 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Existing bot chat: the orcs on Inishail fled the ogres; the Spirit of Lord Emthoro still holds Inishail.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "Inishail is also a real island in Loch Awe, Scotland, with an old burial ground; its name is often glossed 'isle of rest' (to verify).",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Inishail"
+    },
+    {
+      "text": "The isle of rest, the lord who held land by standing on it, the tenancy that runs past death, the ones who ran as the lord's tenants, the stolen tomes and their margins, and Sarcondina as older than the lord are Living Server writing; the ones who ran come from the Aldland file.",
+      "provenance": "original",
+      "source": "LORE"
+    },
+    {
+      "text": "Inishail lies directly west of Gwyddneau, foggy and marshy. Orcs fleeing the ogres' constant attacks came there and met hostile lammias who had come to wipe out any undead presence on the island; the two fight for it while avoiding the central marsh, where slimes and sinkholes abound.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    },
+    {
+      "text": "Lammias who count a traveller a friend can bring him from Clifton, through Nimea, to their camp on Inishail.",
+      "provenance": "mythic",
+      "source": "http://www.camelotherald.com/more/1019.shtml (Camelot Herald, 2003-08-21, 1.65A notes; Wayback capture 2005-12-28)"
+    }
+  ],
+  "story": "The isle of rest. Inishail is the westernmost and smallest of the isles, and the readers of Avalon wrote that its name meant the isle of rest, because the lords who held it went there to be left alone. One lord held it in the last years before the war. The colleges' rolls have lost his name, or never had it. His people called him Lord Emthoro, and he held the island as a lord holds land, by being on it: he walked his bounds, he heard his tenants at his own door, and he let nobody give him orders who would not first come and stand on his ground. When the war came he would not leave. He was still on his ground when the war reached it, and he is on it now.\n\nThe lord's ground. The spirit of Lord Emthoro stands at the north end of the island, on the patch of ground before his old door, and has not stepped off it. Nothing reaches him from beyond it: arrows from the edge fall short of meaning, spells pass through him like light through a window, and the orcs say a stone thrown from outside his bounds is not even noticed. Those who step onto his ground can reach him, and find that he can reach them too: something goes out of everyone who stands there, a little at a time, and into him. He calls his tenants when he is troubled, as a lord calls his household, and the dead and the orcs of Inishail come to his door. He does not chase anyone off his land. He never had to.\n\nThe ones who ran. When the thrawn ogres took Krondon, the orcs of Aldland split. The Kulaclan stayed and grew hard. The rest crossed the water west to Inishail, and the Kulaclan has called them the ones who ran ever since. They built their village in the north-west, beside the lord's ground, under a chieftain called Toca, and the lord took them as tenants whether they liked it or not: when one of them dies, the island says, it comes back to his door. Toca's brutes and battlers keep the village, and his oracles and soothsayers keep something stranger: tomes of Avalon, stolen from somewhere in the isles, which they read in the largest hut by firelight, looking, the lammia say, for the words that will let them out of the lord's tenancy.\n\nThe marsh. The middle of the island is a marsh, and the marsh is Sarcondina's. She is a great creature of the wet ground, older than the lord, and her smaller kin crawl out of the slime to her side whenever she is troubled. The orcs who ran from the ogres found her when they first tried to farm the middle of the island, and the Kulaclan, who know the story, say the ogres were only the reason the orcs left Aldland and Sarcondina was the reason they stayed in the north-west. Slimes and oozes fill the marsh round her, corrosive and viscous and congealed, and some of them have reached the beaches.\n\nThe lammia and the rest. The lammia of Inishail keep a camp in the south-west with trackers, escorts, diviners and a stable for their mounts, and they are not the lammia of Clifton; strangers are not welcome there. They crossed to the island to root out its dead, and found the orcs in their way. Another lammia, Veena, lives alone on the south-eastern shore and is making poisons out of the island's flies and slimes and the tidal mongrels of the strait, to even the odds against the orcs, she says, and to get the tomes back. Dragonflies plague the island: a great one called Pester rules the buzzing nuisances east of the orc village, and a small one with too many eyes, ThousandEyes, hangs about Veena's shore. Mountain yales graze the southern hills.\n\nWhy it matters to Albion. Inishail is the last of the isles and the farthest from the wall, and Albion has never held it. But the tomes in Toca's hut are Avalon's, and Albion wants Avalon's books back wherever they are, and the lord on his ground is the one dead thing in the isles that Morgana's war did not raise; he was already there. The readers at Caer Gothwaite would very much like to know what he still expects of his tenants.",
+  "legend": "Inishail is the smallest SI isle, in the far west past Gwyddneau, levels 40 to 65, with no Albion town. The orc village in the north-west is the Kulaclan's runaways: brutes and battlers in the 50s, oracles and soothsayers, and Chieftain Toca (65) in the big central hut. Veena, a lammia on the south-east shore, gives Evening the Odds (sea slime vials, inishail fly venom, tidal mongrel saliva) and Orcs with Spellbooks (soothsayer tome, buzzing nuisance stinger, then Toca). The lammia camp in the south-west is hostile, with its own stable master. The middle is Sarcondina's slime marsh. The Spirit of Lord Emthoro (77) is just north of the orc village: you can only damage him standing on his ground, so everyone stacks in close, casters included. Pester (55) is the big dragonfly east of the orc camp; ThousandEyes (48) is near Veena. Yales in the south, decent xp.",
+  "atmosphere": {
+    "firstEntry": [
+      "Inishail. The isle of rest, they called it.",
+      "Orc fires in the north. Firelight on a page.",
+      "Wings and stings over the fields.",
+      "A marsh in the middle that nobody farms.",
+      "Somewhere a lord is waiting at his door."
+    ],
+    "areas": [
+      {
+        "name": "the lord's ground",
+        "x": 238081,
+        "y": 434761,
+        "z": 4521,
+        "radius": 600,
+        "lines": [
+          "A lord's ground. Step onto it to face him.",
+          "Nothing from beyond the bounds reaches him.",
+          "Something goes out of you here, a little at a time."
+        ]
+      },
+      {
+        "name": "Toca's village",
+        "x": 240500,
+        "y": 442500,
+        "z": 4900,
+        "radius": 2000,
+        "lines": [
+          "The village of the ones who ran.",
+          "Firelight in the big hut. Someone is reading.",
+          "Orc brutes at the gate, battlers behind."
+        ]
+      },
+      {
+        "name": "the nuisances' field",
+        "x": 253500,
+        "y": 439000,
+        "z": 5100,
+        "radius": 1500,
+        "lines": [
+          "The air is all wings and stings.",
+          "Pester rules the buzzing here."
+        ]
+      },
+      {
+        "name": "Sarcondina's marsh",
+        "x": 260656,
+        "y": 456185,
+        "z": 4782,
+        "radius": 1500,
+        "lines": [
+          "The marsh moves. Her servants are coming.",
+          "Slime older than the lord.",
+          "The orcs never farmed the middle."
+        ]
+      },
+      {
+        "name": "the marsh edge",
+        "x": 263366,
+        "y": 445861,
+        "z": 4627,
+        "radius": 1500,
+        "lines": [
+          "Marsh slimes creep toward the north.",
+          "The wet ground is spreading."
+        ]
+      },
+      {
+        "name": "the lammia camp",
+        "x": 237000,
+        "y": 472500,
+        "z": 4790,
+        "radius": 2500,
+        "lines": [
+          "A lammia camp. Not Clifton's kind.",
+          "Trackers at the edge. Diviners by the fire.",
+          "Strangers are not welcome here."
+        ]
+      },
+      {
+        "name": "the fly fields",
+        "x": 273142,
+        "y": 455179,
+        "z": 4933,
+        "radius": 2000,
+        "lines": [
+          "Inishail flies over the congealed ooze.",
+          "Venom for Veena's vials."
+        ]
+      },
+      {
+        "name": "Veena's shore",
+        "x": 279117,
+        "y": 475105,
+        "z": 4368,
+        "radius": 1000,
+        "lines": [
+          "A lammia alone on the shore, mixing poisons.",
+          "She wants the tomes back."
+        ]
+      },
+      {
+        "name": "ThousandEyes' hollow",
+        "x": 274073,
+        "y": 472827,
+        "z": 4784,
+        "radius": 800,
+        "lines": [
+          "A small dragonfly with too many eyes.",
+          "It has seen you already."
+        ]
+      },
+      {
+        "name": "the eastern beach",
+        "x": 282935,
+        "y": 452719,
+        "z": 3289,
+        "radius": 1500,
+        "lines": [
+          "Sea slimes along the eastern beach.",
+          "Gwyddneau's heights across the water."
+        ]
+      },
+      {
+        "name": "the strait",
+        "x": 289346,
+        "y": 460034,
+        "z": 2912,
+        "radius": 1200,
+        "lines": [
+          "Tidal mongrels in the strait.",
+          "The water between the last two isles."
+        ]
+      },
+      {
+        "name": "the southern hills",
+        "x": 259694,
+        "y": 477921,
+        "z": 5522,
+        "radius": 2500,
+        "lines": [
+          "Mountain yales graze the southern hills.",
+          "The only quiet on Inishail."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "inishail is the smallest si isle, all the way west past gwyddneau",
+      "the orcs on inishail are the ones who ran from krondon's ogres",
+      "the kulaclan on aldland calls the inishail orcs the ones who ran",
+      "lord emthoro's spirit still holds inishail. you have to stand on his ground",
+      "the inishail orcs stole avalon books. veena wants them back",
+      "toca reads stolen avalonian tomes in the big hut, [heard|the lammia say]",
+      "sarcondina's marsh is the middle of inishail. nobody farms it",
+      "the lammia camp in sw inishail isnt like clifton. they wont trade",
+      "veena lives alone on the se shore making poisons",
+      "inishail supposedly means isle of rest. the orcs disagree",
+      "pester is a huge dragonfly east of the orc camp",
+      "thousandeyes hangs around veena's shore. creepy little thing"
+    ],
+    "rumour": [
+      "[heard|someone said] when an inishail orc dies it goes to emthoro's door",
+      "heard the orcs are reading the stolen tomes to get out of the lord's service",
+      "[heard|someone said] sarcondina was on inishail before lord emthoro",
+      "heard nothing from outside emthoro's ground even reaches him",
+      "[heard|someone said] the orcs drew a circle round sarcondina's page in the tome",
+      "heard thousandeyes watches for veena",
+      "[heard|someone said] emthoro never chases anyone off his land",
+      "heard the colleges lost lord emthoro's name, or never had it"
+    ],
+    "tell": [
+      "inishail? the smallest si isle, far west past gwyddneau. no albion town",
+      "is it hard? 40 to 65. toca is 65, emthoro 77",
+      "whats there? toca's orc village, emthoro, sarcondina's marsh, lammia camp, veena",
+      "where's emthoro? just north of the orc village in the nw",
+      "where's veena? se shore. evening the odds and orcs with spellbooks",
+      "good xp? orc village in the 50s, yales in the south"
+    ]
+  },
+  "loremaster": {
+    "intro": "Inishail, the [isle of rest]. Ask of [lord emthoro] and his [tenants], of [toca] and the [ones who ran], of the stolen [tomes], of [sarcondina]'s marsh, of [veena], the [lammia camp], [pester] or [thousandeyes].",
+    "topics": {
+      "lord emthoro": "The lord of Inishail before the war, whose name the colleges' rolls have lost. He held the isle by being on it and would not take orders from anyone who would not stand on his ground. His spirit stands there still, before his old door, and calls his [tenants].",
+      "tenants": "By the old custom of the isle, the lord's tenants owe him service even after death. The orcs who came to [toca]'s village found they had become his tenants, and their dead go to his door.",
+      "toca": "Chieftain of the [ones who ran], in the largest central hut of the orc village beside the lord's ground. His oracles and soothsayers read stolen Avalonian [tomes] there by firelight.",
+      "ones who ran": "The orcs who left Aldland when the ogres took Krondon and crossed to Inishail. The Kulaclan, who stayed, gave them the name. They found [sarcondina] in the middle of the isle and the lord's tenancy in the north.",
+      "tomes": "Books of Avalon stolen by the orcs of Inishail, read in Toca's hut by the oracles and soothsayers, who are looking, the lammia say, for words to end the lord's tenancy. [veena] wants them back.",
+      "sarcondina": "The great creature of Inishail's marsh, older than the lord, whose smaller kin crawl out of the slime to her side. The orcs drew a line round her page in the stolen tome.",
+      "veena": "A lammia who lives alone on Inishail's south-eastern shore, making poisons from flies, slimes and the tidal mongrels of the strait, to even the odds against the orcs and get the [tomes] back.",
+      "lammia camp": "A camp of lammia in the south-west of Inishail, trackers, escorts, sorceresses and diviners with a stable master called Callisa. They are not Clifton's lammia and do not trade.",
+      "pester": "A great dragonfly that rules the buzzing nuisances east of the orc village.",
+      "thousandeyes": "A small dragonfly with far too many eyes that hangs about [veena]'s shore. The orcs say it watches for her.",
+      "isle of rest": "The readers wrote that Inishail means the isle of rest, because its lords went there to be left alone. The orcs wrote NOT REST in the margin."
+    }
+  },
+  "book": {
+    "title": "Of the Isle of Rest",
+    "pages": [
+      "Of the Isle of Rest, a description of Inishail written by a reader of the college of the old tongues before the war, recovered from the largest hut of the orc village by the lammia Veena, with the orcs' writing in its margins. Inishail is the westernmost of the isles and the smallest. Its name in the old tongue means the isle of rest, for its lords have always gone there to be left alone. In the margin, in a heavy hand, in charcoal: NOT REST. And under it, in a different hand, smaller: rest for him.",
+      "Of its lord. The present lord, Emthoro, holds the isle in the old manner, by being on it. He walks his bounds and hears his tenants at his own door, and he will not take orders from anyone who will not first come and stand on his ground; the college's messengers have twice been obliged to walk up from the shore. He is courteous to those who do. In the margin: he is still at the door. Below: he calls us and we go. Below that, crossed out and written again: we go. The college's messenger who wrote this page walked up from the shore himself, and noted that the lord thanked him for it.",
+      "Of the marsh. The middle of the isle is a wet ground that the tenants do not farm, being, they say, someone else's. I asked whose. They said the marsh's, and would not say more, and the lord did not contradict them. I have seen a great slow shape move in it at evening, and smaller ones come to it. In the margin: SHE. The orc who wrote it has drawn a line round the whole page, very carefully, the way the old women of a village draw a line round a sick house. Nobody has written inside the line.",
+      "Of the lammia. There are lammia in the south-west of the isle who are not the lammia of Clifton and do not trade, and one on the south-eastern shore who keeps to herself and makes medicines from the flies. The lord leaves them alone and they him. In the margin: the shore one wants this book. Below, in the small hand: let her come for it. And below that, newer, in the heavy hand again: she came. This is the last margin in the tome. Veena has the tome now, and says she has read the margins more often than the text.",
+      "Of what the tenants owe. The tenants of the isle owe the lord what tenants owe: their labour in the season, their presence at his door when he calls, and, by the old custom of the isle, their service after death, for the lord's household on Inishail has always included the dead. I set this down as a curiosity of the isle. On this page there is no margin note, but the page has been read so often that the word dead has been worn through the vellum, and someone has tried to scrape away the word always, and stopped halfway."
+    ]
+  },
+  "bosses": [
+    "sarcondina",
+    "spirit-of-lord-emthoro",
+    "chieftain-toca",
+    "pester",
+    "veena",
+    "thousandeyes"
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "old-powers"
+  ]
+}

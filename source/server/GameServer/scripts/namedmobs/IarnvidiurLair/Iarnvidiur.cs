@@ -84,22 +84,22 @@ namespace DOL.AI.Brain
 		}
 		public static bool IsTargetTeleported = false;
 		#region Pick player to port
-		public static GamePlayer teleporttarget = null;
-		public static GamePlayer TeleportTarget
+		public static GameLiving teleporttarget = null;
+		public static GameLiving TeleportTarget
 		{
 			get { return teleporttarget; }
 			set { teleporttarget = value; }
 		}
-		List<GamePlayer> Port_Enemys = new List<GamePlayer>();
+		List<GameLiving> Port_Enemys = new List<GameLiving>();
 		public int PickTeleportPlayer(ECSGameTimer timer)
 		{
 			if (Body.IsAlive)
 			{
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500, bots: EncounterTargets.DisplacesBots(Body)))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 						{
 							if (!Port_Enemys.Contains(player))
 							{
@@ -118,7 +118,7 @@ namespace DOL.AI.Brain
 				{
 					if (Port_Enemys.Count > 0)
 					{
-						GamePlayer Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
+						GameLiving Target = Port_Enemys[Util.Random(0, Port_Enemys.Count - 1)];
 						TeleportTarget = Target;
 						if (TeleportTarget.IsAlive && TeleportTarget != null)
 						{							
@@ -135,15 +135,15 @@ namespace DOL.AI.Brain
 		}
 		public int TeleportPlayer(ECSGameTimer timer)
         {
-			GamePlayer oldTarget = (GamePlayer)Body.TargetObject; //old target
+			GameLiving oldTarget = Body.TargetObject as GameLiving; //old target (a bot target made the old cast throw)
 			if (TeleportTarget.IsAlive && TeleportTarget != null)
 			{
 				switch (Util.Random(1, 4))
 				{
-					case 1: TeleportTarget.MoveTo(161, 12563, 13450, 18537, 2997); break;
-					case 2: TeleportTarget.MoveTo(161, 15212, 13331, 18537, 920); break;
-					case 3: TeleportTarget.MoveTo(161, 16958, 13269, 18537, 988); break;
-					case 4: TeleportTarget.MoveTo(161, 11829, 13530, 18537, 2985); break;
+					case 1: EncounterDisplacement.Move(TeleportTarget, 161, 12563, 13450, 18537, 2997, DisplacementKind.Teleport, Body); break;
+					case 2: EncounterDisplacement.Move(TeleportTarget, 161, 15212, 13331, 18537, 920, DisplacementKind.Teleport, Body); break;
+					case 3: EncounterDisplacement.Move(TeleportTarget, 161, 16958, 13269, 18537, 988, DisplacementKind.Teleport, Body); break;
+					case 4: EncounterDisplacement.Move(TeleportTarget, 161, 11829, 13530, 18537, 2985, DisplacementKind.Teleport, Body); break;
 				}
 				Port_Enemys.Remove(TeleportTarget);
 				if (oldTarget != null) Body.TargetObject = oldTarget; //return to old target
@@ -156,8 +156,8 @@ namespace DOL.AI.Brain
 		#endregion
 		#region DD or Dot random player
 		public static bool IsTargetPicked = false;
-		public static GamePlayer randomtarget = null;
-		public static GamePlayer RandomTarget
+		public static GameLiving randomtarget = null;
+		public static GameLiving RandomTarget
 		{
 			get { return randomtarget; }
 			set { randomtarget = value; }
@@ -167,11 +167,11 @@ namespace DOL.AI.Brain
 			if (Body.IsAlive && HasAggro)
 			{
 				List<GameLiving> enemies = AggroList.Keys.ToList();
-				foreach (GamePlayer player in Body.GetPlayersInRadius(2500))
+				foreach (GameLiving player in EncounterTargets.InRadius(Body, 2500))
 				{
 					if (player != null)
 					{
-						if (player.IsAlive && player.Client.Account.PrivLevel == 1)
+						if (player.IsAlive && EncounterTargets.NotGm(player))
 							AggroList.TryAdd(player, new());
 					}
 				}
@@ -193,7 +193,7 @@ namespace DOL.AI.Brain
 							continue;
 						GameLiving living = null;
 						living = enemies[i] as GameLiving;
-						if (living.IsVisibleTo(Body) && Body.TargetInView && living is GamePlayer)
+						if (living.IsVisibleTo(Body) && Body.TargetInView && EncounterTargets.IsRaider(living))
 						{
 							damage_enemies.Add(enemies[i] as GameLiving);
 						}
@@ -201,7 +201,7 @@ namespace DOL.AI.Brain
 
 					if (damage_enemies.Count > 0)
 					{
-						GamePlayer Target = (GamePlayer)damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
+						GameLiving Target = damage_enemies[Util.Random(0, damage_enemies.Count - 1)];
 						RandomTarget = Target; //randomly picked target is now RandomTarget
 						if (RandomTarget != null && RandomTarget.IsAlive)
 						{

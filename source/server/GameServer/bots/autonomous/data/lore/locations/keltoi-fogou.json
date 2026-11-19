@@ -1,0 +1,208 @@
+{
+  "id": "keltoi-fogou",
+  "name": "Keltoi Fogou",
+  "realm": "Albion",
+  "regions": [
+    22
+  ],
+  "aliases": [
+    "keltoi",
+    "the fogou"
+  ],
+  "summary": "The Keltoi's holy cave in Campacorentin, a threshold built to keep something in, where the priests still keep their rite, their count and their small old guests.",
+  "facts": [
+    {
+      "text": "Keltoi Fogou (levels 15-30) in Campacorentin Forest: the Keltoi, a spiritual people, use it for initiations, teaching and birth and death rites, never for burial. It is held to be a threshold between this world and the next; initiates may have been sealed in to face their fear and come out reborn; its design may be meant to hold forces in rather than keep enemies out.",
+      "provenance": "mythic",
+      "source": "https://camelot.allakhazam.com/zones.html?czone=24"
+    },
+    {
+      "text": "Its people are keltoi visionaries, spiritualists, eremites, ritualists, recluses, initiates, novitiates, banishers and familiars, gremlins, and muryan emissaries.",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "Cornish archaeology, not game canon: a fogou is an Iron Age underground passage of west Cornwall whose purpose is unknown.",
+      "provenance": "myth",
+      "source": "https://en.wikipedia.org/wiki/Fogou"
+    },
+    {
+      "text": "Cornish folklore, not game canon: muryan is the Cornish word for ant, and fairies were said to dwindle until they became muryans (to verify).",
+      "provenance": "myth",
+      "source": "to verify"
+    },
+    {
+      "text": "Existing bot chat: the carvings are not Roman, and the Keltoi priests are still chanting.",
+      "provenance": "original",
+      "source": "source/server/GameServer/bots/autonomous/data/chat/lore_albion.lines"
+    },
+    {
+      "text": "A Living Server bot camp dungeon: autonomous gamebots camp and level here (AutonomousDungeonPolicy).",
+      "provenance": "game",
+      "source": "source/server/GameServer/bots/autonomous/AutonomousDungeonPolicy.cs"
+    },
+    {
+      "text": "The fogou (region 22, about 129 spawns, levels 20-28): keltoi visionaries, spiritualists, eremites, familiars, ritualists, recluses, initiates, banishers and novitiates (faction Keltoi), gremlins, and six muryan emissaries (faction Muryans).",
+      "provenance": "game",
+      "source": "world data: Mob table, region 22 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Named: Beven (21) by the initiates, Gwern (23) with the recluses, Fane (25, faction Undead) among the visionaries, Dai and Meurig (27) by the muryans.",
+      "provenance": "game",
+      "source": "world data: Mob table, region 22 (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "Wizard's Appeal (Omis, Cynwik the Wizard, Roben Fraomar of Cornwall Station, Scribe Eril of Adribard's Retreat): descend into Keltoi Fogou and kill the Elder Gwern in the rough-walled cavern with the recluse druids.",
+      "provenance": "game",
+      "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
+    },
+    {
+      "text": "The two counts on the wall, Fane as the difference, Beven's question, Tangwystl's account and the muryans as the fogou's guests are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
+    }
+  ],
+  "story": "Before Rome. The Keltoi were in Albion before Rome and before anyone the Romans could name, a people of priests and seers who kept the year by the stones of Salisbury and their holiest place under the ground in the forest of Campacorentin. They called it a fogou. The Cornish still use the word for the stone-lined passages their grandfathers' grandfathers dug and nobody now can explain. The Keltoi could have explained this one. They did not bury their dead in it. They brought their young into it, at dusk, and shut the door on them, and left them in the dark with whatever lives on the far side of fear; and on the third day the door was opened, and the ones who came out were Keltoi. The fogou is a threshold, their priests taught, a door between this world and the next, and its walls were built not to keep enemies out but to keep something in.\n\nWhat went wrong. The door was not always opened in time. The Keltoi kept a count of those who went in and those who came out, cut in a line of marks along the passage to the visionaries' rooms, and the two counts do not agree. One who did not come out still walks among the visionaries: Fane, the dalesmen call it, which is an old word for a temple, because it has become part of the place. When Rome came the Keltoi went down into their fogou and did not come up to meet the legions, and when Rome went they did not come up either. Their great rite, the one their initiates still wait by the door for, has not been finished since; nobody alive knows whether it was the rite that failed, or the Keltoi who stopped trusting what answered it.\n\nWho keeps it now. The Keltoi are still there, all of them, at the tasks they had on the day they shut the door. Initiates and novitiates wait at the entrance. Banishers stand in the great chamber below, and eremites round them, chanting to drive back whatever climbs up out of the lower dark; the gremlins that scurry through the passages are what gets past them. Visionaries and ritualists keep the carved rooms where the counts are cut, and spiritualists and their familiars the deeper halls. In a rough-walled cavern of his own the Elder Gwern sits among the recluse druids, the eldest of them, who will not speak to the realm and whom the realm's wizards want silenced. Beven keeps the initiates' door. And in the far chamber, guarded by Dai and Meurig, the muryan emissaries wait, small and ancient and patient, the last of the old folk of the land, who have been dwindling for a thousand years and are not quite gone. The Keltoi call them guests. The Cornish say they were the first people the fogou kept.\n\nWhy it matters to Albion. The druids of southern Albion, the cults of Salisbury, the stone-rings and the Lethantis scholars of Campacorentin all claim descent from the Keltoi, and all of them would like to know what the fogou keeps in. The wizards of Cornwall Station and Adribard's Retreat send the young down to end the Elder Gwern, because they believe he knows. The Keltoi carvings on the walls are not Roman. They are not anything with a name.",
+  "legend": "Keltoi Fogou is the druid cave in Campacorentin Forest, levels 20 to 28. Gremlins and initiates by the door for the youngest, then the banisher room, which is the most chaotic room in Albion for its level because the eremites and banishers link and the gremlins wander through. The visionaries and ritualists fill the carved rooms; the spiritualists and their familiars are deeper and hit harder. The ant room at the far end, the muryans with Dai and Meurig, is the hardest pull in the place. Elder Gwern (23) sits with the recluse druids in the rough-walled cavern: kill him for Wizard's Appeal (Omis, Cynwik the Wizard, Roben Fraomar, Scribe Eril). Fane wanders the visionaries' rooms and is not Keltoi at all, it is undead. Bring a mace for the familiars and plenty of interrupts for the casters.",
+  "atmosphere": {
+    "firstEntry": [
+      "A threshold. Built to keep something in.",
+      "Chanting, somewhere below, without a breath.",
+      "The carvings are not Roman.",
+      "Initiates in a line, waiting for a rite."
+    ],
+    "areas": [
+      {
+        "name": "the initiates' door",
+        "x": 31459,
+        "y": 31785,
+        "z": 15997,
+        "radius": 800,
+        "lines": [
+          "Initiates wait for a rite that never ends.",
+          "A door built to keep something in."
+        ]
+      },
+      {
+        "name": "the banisher room",
+        "x": 32596,
+        "y": 32404,
+        "z": 15680,
+        "radius": 900,
+        "lines": [
+          "The banishers chant. Something below answers.",
+          "Eremites round the banishers, never silent."
+        ]
+      },
+      {
+        "name": "the visionaries' rooms",
+        "x": 35055,
+        "y": 30505,
+        "z": 15731,
+        "radius": 900,
+        "lines": [
+          "The carvings here are not Roman. Not anything.",
+          "A count cut in the wall. It does not agree."
+        ]
+      },
+      {
+        "name": "the rough-walled cavern",
+        "x": 35387,
+        "y": 31199,
+        "z": 15627,
+        "radius": 600,
+        "lines": [
+          "Recluse druids round the Elder Gwern.",
+          "The eldest of the Keltoi will not speak to you."
+        ]
+      },
+      {
+        "name": "the spiritualists' halls",
+        "x": 36051,
+        "y": 32955,
+        "z": 15626,
+        "radius": 900,
+        "lines": [
+          "Spiritualists, and familiars at their heels.",
+          "The air is thick with old breath."
+        ]
+      },
+      {
+        "name": "the muryans' chamber",
+        "x": 37410,
+        "y": 34167,
+        "z": 15680,
+        "radius": 700,
+        "lines": [
+          "Small old things wait here. They were larger once.",
+          "Dai and Meurig keep the guests' door."
+        ]
+      }
+    ]
+  },
+  "botLines": {
+    "lore": [
+      "the keltoi fogou is a holy cave from before rome. [the keltoi are still down there chanting|the priests never left]",
+      "the keltoi didnt bury their dead in the fogou. [they shut their kids in it|they sealed initiates in there]. to be reborn",
+      "the muryans in keltoi fogou were fairies once, my gran said. [they got small|they dwindled]",
+      "the keltoi count who went into the fogou and who came out. the numbers dont match",
+      "fane in keltoi is undead, not keltoi. the one the door didnt give back",
+      "elder gwern is the oldest keltoi. the cornwall wizards want him dead",
+      "beven at the keltoi door asks your name. dont lie",
+      "dai and meurig guard the muryan room in keltoi",
+      "the keltoi went underground when rome came and never came back up",
+      "every druid lot in albion claims the keltoi as ancestors",
+      "the banishers in keltoi chant to keep something down below",
+      "the gremlins in keltoi are whatever gets past the banishers"
+    ],
+    "rumour": [
+      "[heard|someone said] the banisher room in keltoi is the most chaotic room in albion",
+      "the ant room in keltoi is harder than it looks",
+      "[heard|someone said] fane in keltoi is an initiate that never came out",
+      "heard gwern knows what the fogou was built to keep in",
+      "[heard|someone said] if you step into the banisher ring the whole room comes",
+      "heard the muryans were the first ones the fogou kept",
+      "[heard|someone said] the keltoi initiates are still waiting for a rite from before rome",
+      "heard the girl who came out of keltoi forgot her own name"
+    ],
+    "tell": [
+      "keltoi fogou? the keltoi holy cave in campacorentin. priests, banishers, gremlins and ants. teens to twenties",
+      "where's keltoi fogou? campacorentin forest, the druid cave",
+      "is keltoi hard? 20 to 28, the banisher room is a mess and the ant room is worse",
+      "who do i kill for wizard's appeal? elder gwern, rough walled cave with the recluses",
+      "what level for keltoi? low 20s at the door, high 20s for the ants",
+      "whats fane? undead thing in the visionaries room. not keltoi"
+    ]
+  },
+  "loremaster": {
+    "intro": "The Keltoi fogou is a [threshold], and the [keltoi] still keep it. Ask of the [count] and [fane], of [beven] at the door, the [banishers], [gwern] in his cavern, [dai and meurig], or the oldest thing in it, which is not Keltoi at all: the [muryans]. [Tangwystl] went in and came out.",
+    "topics": {
+      "threshold": "A door between this world and the next, the priests taught, built to keep something in, not out. Initiates were sealed in the dark and came out reborn.",
+      "keltoi": "A people in Albion before Rome. Their visionaries and ritualists still chant, their banishers still stand in the great chamber, and their initiates still wait by the door.",
+      "muryans": "The old folk of the land, the Cornish say, who have been dwindling a thousand years. Small, ancient and patient. Do not underestimate small things.",
+      "count": "Two lines of marks cut along the wall of the visionaries' rooms, those who went into the [threshold] and those who came out. The lines are not the same length. The difference, some say, is [fane].",
+      "fane": "A grey, slow thing that walks among the visionaries of Keltoi Fogou and is not Keltoi: an initiate the door did not give back, named with the old word for a temple because it has become part of the place.",
+      "gwern": "The Elder Gwern, eldest of the [keltoi], who sits with the recluse druids in the rough-walled cavern and will not speak to the realm. The wizards of Cornwall Station, through Roben Fraomar and Scribe Eril, want him silenced; they believe he knows what the fogou keeps in.",
+      "beven": "Keeper of the initiates' door, who asks every newcomer's name and says the door will know if it is false.",
+      "dai and meurig": "The two Keltoi who keep the door of the [muryans]' chamber, the guests' door, and keep it shut. This Meurig is not Brother Meurig of Camelot nor the lieutenant of the Isle of Glass.",
+      "banishers": "They stand in a ring in the great chamber with the eremites round them, chanting without a breath, to drive back what climbs from below. The gremlins are what gets past.",
+      "tangwystl": "A girl of the Campacorentin farms who went into the fogou on a dare, came out on the third day, and told the sisters of Caer Ulfwych what she saw. She will not say her true name."
+    }
+  },
+  "book": {
+    "title": "What the Initiate Saw",
+    "pages": [
+      "What the Initiate Saw, taken down at Caer Ulfwych from the mouth of Tangwystl, a girl of the forest farms who went into the fogou on a dare and came out on the third day. They shut the door on me at dusk and I sat in the dark for what the ritualists said afterward was three days. I did not sleep. Something came up from the lower chamber on the second night and sat beside me, and it was not cruel, and it was not kind, and it asked me who I would be when the door opened. I told it. The banishers drove it back down at dawn. The door opened on the third day, and I came out, and I have been that answer ever since.",
+      "Of the door. There are always initiates at it, Tangwystl says, standing in a line as if the rite were about to begin, and a keeper called Beven who looks each newcomer up and down the way a farmer looks at a calf. Beven did not stop her. Beven only asked her name, and she gave a false one, and Beven smiled and said that the door would know the difference. She went down the passage with the false name in her mouth and says that by the second night she could not remember the true one.",
+      "Of the banishers. Below the door is a great chamber where the banishers stand in a ring with the eremites round them, chanting without a breath between verses, and the sound is like a mill-race. Small grey things came running through the ring while she watched, gremlins she calls them, and the chant did not stop for them; they were what got past. She says that whoever steps into that ring has all of it, every one of them at once, and she went round by the wall on her hands and knees, as far from the ring as the chamber allowed, and did not stand up again until the chant was behind her.",
+      "Of the count. In the carved rooms the visionaries keep two lines of marks along the wall, one for those who went in and one for those who came out, and Tangwystl counted them with her fingers in the dark and the lines are not the same length. There is a thing among the visionaries that is not one of them, grey and slow, and the visionaries let it walk with them as if it were. The Caer Ulfwych sisters call it Fane. Tangwystl says it is the difference between the two lines, and that it looked at her as if it were counting too.",
+      "Of the elder. In a cavern with rough walls, away from the carvings, an old man sits among druids who do not chant, and he is the eldest of them all. He looked at her, she says, and knew her true name, which she had forgotten, and told it back to her, and told her to go home. That is Gwern. The wizards of Cornwall Station want him dead; Scribe Eril at Adribard's Retreat has his name on a list. Tangwystl would not say why she thinks they are wrong, only that a man who gives you back your name is not a man to be silenced.",
+      "Of the guests, last. Past the spiritualists and their familiars is the far chamber, and two Keltoi keep its door, Dai and Meurig, and inside it are the muryans, small as dogs and older than anything. The Keltoi call them guests, she says, and treat them as guests are treated, with care and with the door kept shut. She did not go in. She sat outside it on the third day until the door at the top was opened, and then she came out, and she has been her true name ever since, and she will not say it to us."
+    ]
+  },
+  "bosses": [],
+  "era": "alb-first-stones",
+  "factions": [
+    "keltoi"
+  ]
+}

@@ -88,6 +88,50 @@ namespace DOL.GS
             return eSpellType.DamageAdd;
         }
 
+        // ---- Holding one song like a player (owner 2026-10-30: "the twisting ... is too much sound diarrhea")
+        // Performers no longer twist a second song in and out; each situation has one song, held until the situation
+        // changes, and never changed sooner than HoldMilliseconds after the last change. Normal and True 1.65 Mode.
+        public const int HoldMilliseconds = 10_000;
+        public const int TravelAfterMovingMilliseconds = 3_000;  // short steps (a pull, a reposition) are not travel
+        public const int StayTravelingMilliseconds = 5_000;      // short stops keep the speed song
+
+        /// <summary>
+        /// The one song a Bard, Minstrel or Skald holds: speed while travelling; in a fight endurance (then power, then
+        /// health); standing around, whatever the group is short of (power, health, endurance), else the song already
+        /// playing. Null when none of the wanted songs is known.
+        /// </summary>
+        public static eSpellType? PerformerHold(bool traveling, bool combat, bool powerLow, bool healthLow, bool enduranceLow,
+            ICollection<eSpellType> available, eSpellType? active)
+        {
+            if (traveling && !combat && available.Contains(eSpellType.SpeedEnhancement))
+                return eSpellType.SpeedEnhancement;
+            var wanted = new List<eSpellType>();
+            if (combat)
+                wanted.AddRange([eSpellType.EnduranceRegenBuff, eSpellType.PowerRegenBuff, eSpellType.HealthRegenBuff]);
+            else
+            {
+                if (powerLow) wanted.Add(eSpellType.PowerRegenBuff);
+                if (healthLow) wanted.Add(eSpellType.HealthRegenBuff);
+                if (enduranceLow) wanted.Add(eSpellType.EnduranceRegenBuff);
+                // nobody short of anything: keep the song already playing (any but speed, which is for travel)
+                if (wanted.Count == 0 && active is { } current && current != eSpellType.SpeedEnhancement && available.Contains(current))
+                    return current;
+                wanted.AddRange([eSpellType.PowerRegenBuff, eSpellType.HealthRegenBuff, eSpellType.EnduranceRegenBuff]);
+            }
+            foreach (eSpellType type in wanted)
+                if (available.Contains(type))
+                    return type;
+            // owner 2026-10-30: a bot (gamebot or companion) that hasn't learned speed or endurance yet uses what it has
+            // until then: any other song it knows, speed last.
+            return available.Where(type => type != eSpellType.SpeedEnhancement).OrderBy(type => type).Cast<eSpellType?>().FirstOrDefault()
+                ?? (available.Contains(eSpellType.SpeedEnhancement) ? eSpellType.SpeedEnhancement : null);
+        }
+
+        /// <summary>The one chant a Paladin holds (owner 2026-10-30: endurance in a fight), grouped or solo.</summary>
+        public static eSpellType PaladinHold(ICollection<eSpellType> available) =>
+            new[] { eSpellType.EnduranceRegenBuff, eSpellType.DamageAdd, eSpellType.SpecArmorFactorBuff, eSpellType.CombatHeal }
+                .FirstOrDefault(available.Contains, eSpellType.EnduranceRegenBuff);
+
         public static int Choose(int primaryId, int activeId, IReadOnlyList<Song> songs)
         {
             Song primary = songs.FirstOrDefault(song => song.Id == primaryId);

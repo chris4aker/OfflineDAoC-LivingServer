@@ -1,0 +1,89 @@
+{
+  "id": "deniela",
+  "name": "Deniela",
+  "npcNames": [
+    "Deniela"
+  ],
+  "locationId": "bog-of-cullen",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Deniela: level 48, a human body (model 366), at about 404,000/758,900 on the outlaws' island; respawn 80 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    },
+    {
+      "text": "The Cullen outlaws' island (about 404,000/759,000, east edge of the Bog of Cullen): Ide (52), Donal (50), Deniela, Jannet and Manius (48), and the peaceful 'Fruadan Draoi Manius' (50) of the Last Heir quest.",
+      "provenance": "game",
+      "source": "world data Mob table, region 200 (read 2026-11-06)"
+    }
+  ],
+  "story": "Deniela keeps the outlaws' tally. Donal runs the island like the Cullen watch he once served beside, with a night watch and a cracked pot for a bell, and a tally of everything that comes and goes, and Deniela is the one who keeps it, in charcoal on a board by the landing. She was a clerk of the Ardee barracks, the outlaws say, who added up the names on the wall one winter and found that the barracks had sent more of the young to die on Sheeroe than it had written down, and said so, and was not thanked.\n\nShe walked into the bog the same week. She keeps the island's count as honestly as she kept the barracks', and she counts the realm's companies who come to the island, and how many leave. The other outlaws say she is the only one of them who still thinks the realm will one day ask for her numbers.",
+  "legend": "Deniela (48) is one of the Cullen outlaws on the island at the east edge of the Bog of Cullen (about 404k/759k), standing with Jannet and Manius (48), Ide (52) and Donal (50). They are close together: pull one at a time or fight several. Group of high 40s. Plain spawn, 80-second respawn. Fruadan Draoi Manius (peaceful) is the Last Heir NPC.",
+  "yells": {
+    "aggro": [
+      "You will be counted.",
+      "Ardee sent you? Ardee owes me numbers."
+    ],
+    "phases": [],
+    "death": [
+      "Write it... honestly..."
+    ],
+    "slay": [
+      "One more on the board."
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "A tally board by the landing, in charcoal."
+    ],
+    "phases": [],
+    "realmFirstKill": "Deniela, keeper of the outlaws' tally, has fallen."
+  },
+  "botLines": {
+    "briefing": [
+      "deniela is 48 on the outlaws' island with jannet, manius, ide and donal",
+      "pull one at a time"
+    ],
+    "aftermathWin": [
+      "deniela down. [the tally keeper|grats]",
+      "pulled her alone. [nice|clean]"
+    ],
+    "aftermathLoss": [
+      "the whole island came. [rip|outlaws]",
+      "donal joined. [ouch|oops]"
+    ],
+    "rumour": [
+      "[heard|someone said] deniela was an ardee barracks clerk who found the sheeroe numbers didnt add up",
+      "deniela counts every hib company that comes to the island and how many leave"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Deniela",
+    "text": "Keeper of the Cullen outlaws' tally, once a clerk of the Ardee barracks who found the realm had sent more young to die on Sheeroe than it wrote down, and said so."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Deniela in the Bog of Cullen in {minutes} minutes.",
+    "loss": "Deniela turned back {realm}'s band under {raidLeader} in the Bog of Cullen after {minutes} minutes."
+  },
+  "era": "hib-the-glimmer-king",
+  "factions": [
+    "outlaws"
+  ],
+  "related": [
+    {
+      "id": "donal",
+      "relation": "her captain"
+    },
+    {
+      "id": "jannet",
+      "relation": "her sister on the island"
+    },
+    {
+      "id": "ide",
+      "relation": "the island's wise-woman"
+    }
+  ]
+}

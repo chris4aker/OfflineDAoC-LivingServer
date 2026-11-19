@@ -1,0 +1,85 @@
+{
+  "id": "thorg",
+  "name": "Thorg",
+  "npcNames": [
+    "Thorg"
+  ],
+  "locationId": "treibh-caillte",
+  "realm": "Hibernia",
+  "tier": "minor",
+  "facts": [
+    {
+      "text": "Thorg: level 42, a spider body (model 117) at size 102, the largest spider in the caves (arachnids are 63), at about 29,300/34,720 (z 14,536) in the passages west of King Vian's hall with ursine warriors (36-39), a shaman (38) and an arachnid near him; respawn 180 seconds; a plain spawn.",
+      "provenance": "game",
+      "source": "world data Mob table, region 224 (read 2026-11-06)"
+    },
+    {
+      "text": "Living Server lore: Thorg as King Vian's champion, a spider of the western dark the ursine feed.",
+      "provenance": "original",
+      "source": "Living Server"
+    }
+  ],
+  "story": "Every account of King Vian's hall names Thorg, his champion, standing in the passage beside it where the king can see him. What the accounts leave out, Hervelina says, is that Thorg is not a bear. He is a spider, the largest in the caves, larger than any arachnid of the western dark he came out of, and the ursine warriors stand about him the way grooms stand about a war-horse, with a shaman to see to him.\n\nThe ursine tell it as a story of the old quarrel. When the tribe split, each side put up a champion, as the old families of the mainland did, and the champion of the side that lost was the greatest ursine warrior of his day. Vian's grandfather did not put up an ursine against him. He went into the western dark with a thrall on a rope and came back with Thorg, and it was over before the torches had burned down, and the side that lost went into collars. Since then Thorg has been fed by the king's own hand.\n\nHervelina's view is that a king's champion should be of his people, and that the champion Vian keeps tells you what his people are to him. The thralls of the south hall carry Thorg's meals. They say he is gentle with them, which is the worst thing about him.",
+  "legend": "Thorg (42) is the biggest spider in Treibh Caillte (about 29.3k/34.7k), kept by the ursine in the passages west of King Vian's hall, with ursine warriors (36-39), a shaman (38) and an arachnid near him. Clear the ursine first. Helminth (36) is about 2,000 away on the level below. A group of low to mid 40s. Plain spawn, no script, 3-minute respawn.",
+  "yells": {
+    "aggro": [
+      "(the king's champion unfolds its legs)",
+      "(Thorg turns from the king's passage toward you)"
+    ],
+    "phases": [],
+    "death": [
+      "(the great spider sinks in the passage)"
+    ],
+    "slay": [
+      "(Thorg waits to be fed)"
+    ]
+  },
+  "atmosphere": {
+    "lairEntry": [
+      "The king's champion. Not a bear."
+    ],
+    "phases": [],
+    "realmFirstKill": "Thorg, the king's champion, is dead."
+  },
+  "botLines": {
+    "briefing": [
+      "thorg is a 42 giant spider west of the king's hall, ursine round him",
+      "clear the warriors and shaman first"
+    ],
+    "aftermathWin": [
+      "thorg down. [the king's champion lol|grats]",
+      "biggest spider ive seen. [huge|eww]"
+    ],
+    "aftermathLoss": [
+      "warriors and the shaman joined. [rip|ouch]",
+      "the king came over. [oops|wipe]"
+    ],
+    "rumour": [
+      "[heard|someone said] vian's grandfather won the old quarrel with thorg instead of a bear",
+      "the thralls feed thorg. they say hes gentle with them"
+    ]
+  },
+  "loremasterTopic": {
+    "keyword": "Thorg",
+    "text": "King Vian's champion in Treibh Caillte: not a bear but the largest spider of the caves, brought out of the western dark by Vian's grandfather to win the tribe's old quarrel, and fed by the king's hand since."
+  },
+  "bookPage": "",
+  "chronicle": {
+    "win": "{realm}'s band under {raidLeader} brought down Thorg in Treibh Caillte in {minutes} minutes.",
+    "loss": "Thorg turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."
+  },
+  "era": "hib-the-old-families",
+  "factions": [
+    "wild-tribes"
+  ],
+  "related": [
+    {
+      "id": "king-vian",
+      "relation": "the king whose champion he is"
+    },
+    {
+      "id": "webweaver",
+      "relation": "the western dark he came out of"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+ "id": "earl-glassalab",
+ "name": "Earl Glassalab",
+ "npcNames": [
+  "Earl Glassalab"
+ ],
+ "aliases": [
+  "glassalab",
+  "the digger"
+ ],
+ "locationId": "darkness-falls",
+ "realm": "Neutral",
+ "era": "neu-the-present",
+ "factions": [
+  "dark-ones",
+  "chthonic-chapter"
+ ],
+ "related": [
+  {
+   "id": "prince-abdin",
+   "relation": "its prince, who pays it most"
+  },
+  {
+   "id": "director-kobil",
+   "relation": "it digs his Army a road"
+  },
+  {
+   "id": "gatekeeper-dommel",
+   "relation": "whose roads the tunnel avoids"
+  },
+  {
+   "id": "chthonic-knights",
+   "relation": "stand beside it and dislike it"
+  }
+ ],
+ "facts": [
+  {
+   "text": "Earl Glassalab is a level 71 GameEpicNPC of the Demon Lords faction, with no script and no catalog entry; it stands beside Prince Abdin's hall in the north-west, with Chthonic Knights Haag, Gaapoler and Vosoes.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Prima's map key lists Earl Glassalab with Chthonic Knights, Pale Guardians, Umbral Aegis and Chaosians, beside Prince Abdin.",
+   "provenance": "mythic",
+   "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
+  },
+  {
+   "text": "Earl Glassalab is one of the level 70+ epic demons the gamebots leave for raids (a raid-event row).",
+   "provenance": "game",
+   "source": "source/server/GameServer/bots/autonomous/data/darkness_falls_raid_event_mobs.json"
+  },
+  {
+   "text": "Earl Glassalab has body type 7 (insect) and model 115 in the world data; every other earl is demon-typed or untyped.",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "Chthonian crawlers are a monster of Darkness Falls (17 spawns in the world data).",
+   "provenance": "game",
+   "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
+  },
+  {
+   "text": "In the Ars Goetia, Glasya-Labolas (25) is an earl and president, captain of manslayers, who can make men invisible; Glassalab reads as that name.",
+   "provenance": "myth",
+   "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/The_Lesser_Key_of_Solomon"
+  },
+  {
+   "text": "Seat, master and history are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "Under Prince Abdin's chapter house the rock is full of holes, and Earl Glassalab made them. It is the one earl of the court whose body is not a demon's at all but a crawler's: plated, many-legged and patient, of the same kind as the chthonian crawlers that still nest in the hollow's deep places, and grown to the height of a duke. In the Uncounted Age it dug. It dug under the halls of lords and let them fall in, and the lords who survived learned to pay it not to, and in this way it became the first power of the north-west to grow rich without ever fighting anyone. When Abdin claimed the north-west after the Feast, he paid it the most, and the First Roll wrote it as his earl.\n\nThe knights do not like it. A Chthonic Knight is sworn to the deep earth, to hold what is taken and to go down rather than give ground, and Glassalab's whole art is taking the ground out from under things. The chapter house tolerates it because Abdin tells it to, and because the house stands on the earl's tunnels and would fall into them if it were ever displeased. It stands beside the prince's hall with the knights Haag, Gaapoler and Vosoes of Abdin's guard, and the knights stand a little further from it than they stand from each other.\n\nIts present work is the prince's greatest plan. When Director Kobil finishes the Army of Shadows in his chambers above the Gate, the Army will have to march, and every road out of the crossing belongs to Gatekeeper Dommel, who has sworn the Army will find them very long. Glassalab is digging the Army another road. The tunnel runs from the chapter house toward the Director's chambers, under the crossing and not through it, and the imps who have been down it say it is already longer than any road Dommel keeps. Dommel knows. The Gatekeeper is said to have put his ear to the floor of the crossing in the Tenth Roll and listened for a whole dark, and then to have cut a notch in the floor that was not for any mortal.",
+ "legend": "Glassalab is the giant bug in Prince Abdin's hall in the north-west: an insect body, not a demon, standing next to Chthonic Knights Haag, Gaapoler and Vosoes, with the prince himself under nine hundred units away. Level 71, no script. Clear the three knights of Abdin's guard one at a time first, then pull Glassalab away from the prince's room; you want Abdin last and alone. Its body type is insect, which surprises people who read the bestiary for the first time and expected a demon. Players call it the digger and swear the north-west is full of tunnels it dug. Some say there is a tunnel from Abdin's hall to Director Kobil's chambers above the Gate. Nobody has found it, and nobody who went looking has said where they looked.",
+ "yells": {
+  "aggro": [
+   "The floor is mine. You are standing on a lid.",
+   "Dig, dig. Where do you think you are?",
+   "Every hall falls in, in the end."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "Down. Everything goes down eventually."
+   }
+  ],
+  "death": [
+   "The tunnel... not finished...",
+   "Let the house fall in. It owes me."
+  ],
+  "slay": [
+   "Buried.",
+   "Into the hole.",
+   "The ground took you."
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "The floor here sounds hollow under your feet.",
+   "Something many-legged clicks behind the knights."
+  ],
+  "phases": [
+   {
+    "trigger": "health<=50",
+    "text": "The ground shifts. Something beneath is digging."
+   }
+  ],
+  "realmFirstKill": "Earl Glassalab has fallen. The digging stops."
+ },
+ "botLines": {
+  "briefing": [
+   "glassalab is the big bug next to abdin. [clear haag gaapoler vosoes first|knights first]",
+   "pull glassalab away from abdin's room. [abdin last|prince alone]",
+   "its an insect not a demon. [dont be surprised|bug body]",
+   "71 no tricks. [single pull|one at a time]"
+  ],
+  "aftermathWin": [
+   "glassalab down. [squashed the bug|bug's dead]",
+   "earl glassalab dead. [abdin next|on to the prince]",
+   "glassalab done, [clean pull|knights stayed put]",
+   "the digger's dead. [rebuff for abdin|mana check]"
+  ],
+  "aftermathLoss": [
+   "glassalab brought the knights. [too many|wipe]",
+   "pulled abdin with glassalab. [gg|mess]",
+   "glassalab got us. [regroup|rez]",
+   "lost the pull in abdin's hall. [slower|one at a time]"
+  ],
+  "rumour": [
+   "[heard|word is] earl glassalab dug every tunnel in the north west of df",
+   "theres a tunnel from abdin's hall to kobil's rooms. [nobody found it|so they say]",
+   "[someone said|my guildie says] the knights in df are scared of glassalab",
+   "glassalab isnt even a demon, its a bug. [check the con|bug body]"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "glassalab",
+  "text": "Prince [Abdin]'s earl, a crawler grown to a duke's height, which grew rich in the Uncounted Age by not digging under lords who paid. It is digging the [Army of Shadows] a road from the chapter house to Director [Kobil]'s chambers that does not pass through the Gate."
+ },
+ "bookPage": "From the report of a Midgard war-band's scout, given at Jordheim: The black knights' house stands on nothing. I put my ear to its floor while the others rested and heard digging under it, steady, the way a beetle digs in rotten wood, and then I heard it stop, and something under the floor listened back. In the hall beside the house there is a thing like a beetle the height of a longhouse, plated and still, and the knights keep their distance from it. I think the house knows that if it ever displeases the beetle it will go down into the dark all at once, and I think the knights know it too.",
+ "chronicle": {
+  "win": "{realm}'s raid under {raidLeader} stopped Earl Glassalab's digging in {minutes} minutes.",
+  "loss": "Earl Glassalab took the ground from under {realm}'s raid under {raidLeader}."
+ }
+}
