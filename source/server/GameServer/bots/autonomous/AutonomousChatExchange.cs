@@ -193,6 +193,22 @@ public static class AutonomousChatExchange
             lane.PlayerFloorUntil = Math.Max(lane.PlayerFloorUntil, Math.Min(until, now + PlayerFloorMaxMs));
     }
 
+    /// <summary>Until when a player's line has the floor in this lane (0 or past: it hasn't). Read by the scenes (AutonomousBotDebates).</summary>
+    public static long PlayerFloorUntil(string key)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            return lane.PlayerFloorUntil;
+    }
+
+    /// <summary>
+    /// When a scene's next beat looks again while a player's line has the floor (PC check 2026-11-19, build c81eb5d: Ealhswith's
+    /// storyline beat came 2 s before the answer to "how do i get to breifine?"): within a second, so it goes on as soon as the
+    /// answer is said; 0 when the player's line has no floor now. Pure.
+    /// </summary>
+    public static long SceneWaitsForPlayerUntil(long playerFloorUntil, long now) =>
+        playerFloorUntil > now ? Math.Min(playerFloorUntil, now + PlayerFloorRetryMs) : 0;
+
     /// <summary>The player's answer was said: the bots' exchanges in the lane go on.</summary>
     public static void ReleasePlayerFloor(string key)
     {

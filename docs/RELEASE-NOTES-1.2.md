@@ -343,8 +343,8 @@ only".
 - **/faction is busy by design: about 5 to 7 lines a minute on a full realm.** That is the pace the owner chose
   (2026-11-18). On the owner's PC (build 5378dbe, about 930 Albion bots, 4.6 hours) /faction averaged 5.1 lines a minute;
   the busiest minute had 13 against a ceiling of 17, and no line was said over the ceiling. Bursts are at most three
-  reactions. The budget's own target (8 new lines a minute at the default **How much they talk**, 2) is an upper aim the
-  realm stays under. Lower **How much they talk** in the Living Server tab if it is too much. (The earlier "up to 20 a
+  reactions. The budget's own target (8 new lines a minute at the default **How much bots talk**, 2) is an upper aim the
+  realm stays under. Lower **How much bots talk** in the Living Server tab if it is too much. (The earlier "up to 20 a
   minute, bursts of 10 to 16" was the 1.1.3 build's result.)
 - **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, it stopped for
   up to 6.2 seconds.

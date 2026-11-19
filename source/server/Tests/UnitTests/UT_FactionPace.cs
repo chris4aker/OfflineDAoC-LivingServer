@@ -43,7 +43,7 @@ public class UT_FactionPace
         Assert.That(max, Is.EqualTo(7.0));
         Assert.That(scene, Is.EqualTo(6.0));
         Assert.That(Budget.SceneLineGapMs(scene), Is.EqualTo(10_000));
-        // The launcher's "How much they talk" keeps its meaning: calmer at 1, busier at 3.
+        // The launcher's "How much bots talk" keeps its meaning: calmer at 1, busier at 3.
         Assert.That(Budget.FactionPace(Settings, 1.0).Max, Is.EqualTo(3.5));
         Assert.That(Budget.FactionPace(Settings, 3.0).Max, Is.EqualTo(10.5));
         // An older copy of chat-budget.json without "pace" gets the same defaults.

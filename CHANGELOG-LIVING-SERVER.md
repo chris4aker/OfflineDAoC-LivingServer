@@ -8,6 +8,47 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Chat from the PC log of build c81eb5d: Tepok's Mine, help calls to everyone, /broadcast answers, /lfg at 22, the /faction minimum (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `c81eb5d` (2026-11-19 09:07-09:42, Testrunner, Albion 22, Camelot; `DIAG-c81-nonraid`).
+Nothing below is seen in game yet: **tests only** (`UT_ChatPcCheckC81`, `test_played_check_log.py`).
+- **Travel follow-ups find places with an apostrophe.** After "Tepok's Mine for 22 bring a group", "is it far?" became "is
+  tepoks mine far?" (the catalog alias) and "how do i get there?" "how do i get to tepoks mine?"; both got "no clue"
+  (09:20:36, 09:21:26), because the travel answers matched the world's "Tepok's Mine" with its apostrophe. Both sides are
+  now compared without case or punctuation (`AutonomousChatKnowledge.NamesPlace`), and a catalog alias of a place that is
+  itself a zone ("tepoks", "cardova", "pennine") finds that zone (`NamedPlaceKey`). The stable-route answer matches the
+  same way. The sweep over places.json: Hadrian's Wall, Odin's Gate, Nisse's Lair, Iarnvidiur's Lair, World's End and
+  every short alias of a zone (cardova, pennine, salisbury, skona, emain...) missed the same way and are now found.
+- **A help call or a line to everyone is open to every bot.** "can someone help me in Camelot Hills?" went to Sven alone
+  (he had the floor from the earlier answers), who refused (`in_bot_group`), so no other bot could answer or offer to come
+  through `ChatPromises.Gate`. `KeepsTheFloor` now lets go of help calls and of lines with "someone", "anyone", "any1",
+  "anybody" or "ne1".
+- **A /broadcast question is answered where it was asked.** "anyone know where to get a good shield?" in /broadcast was
+  answered by /tell, 19 s later. It is now answered in /broadcast when the answer fits under that channel's ceiling, else
+  in /say when the player is within earshot, else not at all; within 12 s (`DirectTypingCapMs`). /chatgroup keeps its tell.
+- **/lfg nobody can answer gets an honest reply.** "lfg 22, any group" met silence: no bot party near 22 and no solo bot
+  within 2 levels. When no invite and no duo offer can go out, one bot of the realm now says so by tell ("nobody around
+  your level that i know of, sorry"). When solo bots near the level exist, the last of them offers if none has. The
+  `BOT_LED_INVITE not_sent ... no_party_fits` line is written once per ask (it was three: the ask and two pulses).
+- **/faction keeps the owner's 5-7 (decision 5, 2026-11-18: "Yeah I think 5-7 is the right pace").** With no scene it
+  settled at 3.9 a minute (09:30-09:40). `chat-budget.json` has `pace.faction_min_per_minute: 5`: /faction's floor is at
+  least 5 and its target 5.5, at any hour, scaled by "How much bots talk" against its default 2 (1 gives 2.5, 0 only
+  answers) and, on a roster under 300 bots a realm, as the scenes are. Under that floor the realm's bots try to talk as
+  often as they can (pressure 4; it read about 2). The cap of 7 is unchanged. In the simulation of a quiet 09h hour with
+  the player online (960 bots a realm) c81eb5d's budget gives 4.1-4.2 a minute and this one 5.2-5.4 (five seeds); with a thinner
+  opener supply (3.6 before) it reaches only about 4.6, so the PC count decides.
+- **A storyline beat waits for the player's answer.** Ealhswith's beat came at 09:23:07, between "how do i get to
+  breifine?" (09:22:57) and its answer (09:23:09). Scenes (`AutonomousBotDebates.PlayBeat`, its split pieces too) now hold
+  while a player's /faction line has the floor, as running threads do (the same capped hold).
+- **The equipment upgrade line logs the gain that decided it.** 109 of 200 `AUTONOMOUS_EQUIPMENT_UPGRADE` lines read
+  newValue under oldValue: the line printed `EquipmentValue`, while the set score (`GearImprovement`) decided. The line now
+  adds `gain=` and `decidedBy=set|value`, the gain read before the move. Log only; no decision changed.
+- **The launcher label is "How much bots talk"** in the 1.2 release notes, CHAT-BUDGETS and chat-budget.json (they said
+  "How much they talk").
+- **Checker:** the regroup row's (c) says "nothing to judge (no relayed starts)" when there were none, not "a build before
+  the sender was logged". `RELAY_SHARE_BAR` is 20% (owner decision 2026-11-19, "Raise to 20%"; it was 15%, and `9a173f4`
+  read 17.4% with (a), (b) and (c) all 0).
+
 ## Battleground keeps: guards and lords at their battleground's level (1.2, 2026-11-19; tests only)
 
 Owner, 2026-11-19: "I want the guards and lord levels appropriate for their battleground". This is the owner's own request,

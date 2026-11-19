@@ -77,8 +77,9 @@ RAW_FRONT_RETRIES = 10
 # 2026-11-18: 11.5%, a backstop. The exact checks (a), (b) and (c) decide one hop and no echo. Raised to 15% by the owner
 # (2026-11-18 18:19, "Raise to 15% is a good idea"): on b1b6846 one hop in dense warbands fanned out to 12.6-14.4% by the
 # hour with (a), (b) and (c) all 0, so 11.5% failed a correct build. 15% still catches a runaway relay; the exact checks
-# catch a second hop or an echo at any share.
-RELAY_SHARE_BAR = 15.0
+# catch a second hop or an echo at any share. Raised to 20% by the owner (2026-11-19, "Raise to 20%"): on 9a173f4
+# 17.4% of starts were relay-started with (a), (b) and (c) all 0 (exact, from= on every relayed start).
+RELAY_SHARE_BAR = 20.0
 # Sweep 6d (build b1b6846): a required-adds phase with no add death this long while the raid dealt the adds more than
 # their combined health (D-1, the Galladoria Earthmenders); raider deaths to an epic this soon after its raid ended, in
 # its region (P-1, P-2); a raid's end outcome lines are matched to its REALM_RAID_ENDED within this many seconds.
@@ -2321,7 +2322,9 @@ def rvr(j: Judge, sec: Section, c):
     counts = {k: c(f"regroup.{k}") for k in ("a_relayed_sends", "b_echo_source", "c_returned")}
     named, one_fight = sec.n["relay.named"], c("regroup.c_one_fight")
     over = starts and share > RELAY_SHARE_BAR
-    c_text = (f"(c) relay back at its sender within 60 s: {counts['c_returned']} (exact, from= on {named} relayed "
+    # c81eb5d: with no relayed start at all there is nothing to judge, whatever the build logs (it logs from=).
+    c_text = (f"(c) relay back at its sender within 60 s: nothing to judge (no relayed starts)" if not relay_started else
+              f"(c) relay back at its sender within 60 s: {counts['c_returned']} (exact, from= on {named} relayed "
               f"start(s))" if named else
               f"(c) relay back at its sender within 60 s: not judged (no from= on relayed starts, a build before the "
               f"sender was logged); relays among the groups of one fight: {one_fight}")
