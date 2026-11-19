@@ -584,7 +584,7 @@ Levels 1–50 · 7 lines · about 1 min · roles: B (Leveler), C (Socialite), D 
 
 Levels 5–50 · 32 lines · about 4 min · roles: A, B (Socialite), C (NoLifer), D (Daredevil), E, F, G, H
 
-- **A:** "{q} how do i level up my horse? mine is still really slow" / "{q} serious question, where do i train my horse? it never gets faster"
+- **A:** "{q} how do i level up my horse? mine is still really slow" / "serious question, where do i train my horse? it never gets faster"
 - **B:** "hahahaha" / "ROFL"
 - **C:** "your. horse." / "...your horse"
 - **D:** "you have to feed it a dragon scale every level" / "have you tried killing blues ON the horse"
@@ -622,14 +622,14 @@ Levels 5–50 · 32 lines · about 4 min · roles: A, B (Socialite), C (NoLifer)
 
 Levels 10–50 · 29 lines · about 3 min · roles: A, B (Daredevil), C (NoLifer), D (Socialite), E, F, G, H
 
-- **A:** "{q} how do i turn off pvp?? the enemy keeps killing me in the frontier" / "{q} where is the option to turn off pvp, three enemies just killed me again"
+- **A:** "{q} how do i turn off pvp?? the enemy keeps killing me in the frontier" / "{q} three enemies just killed me again, where is the option to turn off pvp?"
 - **B:** "lol" / "omfg"
 - **C:** "the frontier. is the pvp." / "turn off pvp... in the frontier... the pvp zone"
 - **D:** "there's a button for it but you have to be level 51 to see it" / "it's under options, right below "make me invincible""
 - **A:** "oh ha ha. so funny. i just died three times and you're doing standup" / "wow, i'm getting farmed and my own realm is laughing. great realm"
 - **E:** "you walked to an enemy keep alone. we're allowed to laugh" / "you gave them three kills in ten minutes. the laugh is earned"
 - **A:** "i didnt GIVE them anything. i was exploring. not that you would know, you never leave the capital" / "it wasnt free rps. at least i go out there, you all hide in town"
-- **F:** "i've got more kills tonight than you have deaths. barely" / "big words from someone who just gave the enemy a free dinner"
+- **F:** "i've got more kills tonight than you have deaths. barely" / "big words from someone who just gave the enemy a free meal"
 - **A:** "shut up. nobody cares about your stupid kills" / "wow congrats on your little kill count. want a medal?"
 - **B:** "i'd take a medal over a corpse run" / "yes actually. i'd like a medal. you can bring it on your next corpse run"
 - **A:** "you're all trash. our realm loses because of trash like you" / "this is why we lose every keep. a realm full of garbage players"
@@ -657,7 +657,7 @@ Levels 10–50 · 29 lines · about 3 min · roles: A, B (Daredevil), C (NoLifer
 
 Levels 10–50 · 27 lines · about 3 min · roles: A, B (Crafter), C (NoLifer), D (Socialite), E (Daredevil), F, G, H
 
-- **A:** "{q} which merchant sells realm points? i have like 40 gold saved" / "{q} where can i buy realm points, i have gold now"
+- **A:** "{q} which merchant sells realm points? i have like 40 gold saved" / "{q} i have gold now, where can i buy realm points?"
 - **B:** "the merchant is called the frontier" / "aisle three, next to the courage potions"
 - **E:** "i'll sell you mine. send me the 40 gold and stand very still in the frontier" / "40 gold and i'll send you all my realm points. trust me"
 - **A:** "really? ok how do i send it" / "wait for real? how many do i get"
@@ -690,7 +690,7 @@ Levels 10–50 · 27 lines · about 3 min · roles: A, B (Crafter), C (NoLifer),
 
 Levels 10–50 · 25 lines · about 3 min · roles: A, B (NoLifer), C (Socialite), D (Daredevil), E (Explorer), F, G, H
 
-- **A:** "{q} how do i switch realms? the other side is winning and i want to be on that team" / "{q} is there a way to move my guy to the winning realm"
+- **A:** "{q} how do i switch realms? the other side is winning and i want to be on that team" / "{q} is there a way to move my guy to the winning realm?"
 - **B:** "lol, a traitor in faction" / "wow. said it right out loud and everything"
 - **C:** "aw, fair weather fan" / "someone's shopping for a new realm"
 - **D:** "ask the enemy, they'll give you a very warm welcome. with swords" / "sure, walk over and ask them nicely. they love visitors"
@@ -752,7 +752,7 @@ Levels 15–50 · 25 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 
 Levels 5–50 · 24 lines · about 3 min · roles: A, B (Socialite), C (NoLifer), D (Daredevil), E, F, G, H
 
-- **A:** "{q} why do the guards at the enemy keep attack me? i just want to look around" / "{q} the guards at the enemy border keep killed me again, is that a bug"
+- **A:** "{q} why do the guards at the enemy keep attack me? i just want to look around" / "{q} the guards at the enemy border keep killed me again, is that a bug?"
 - **B:** "aww" / "oh no. oh sweetie"
 - **C:** "why are you walking into their keep" / "stop. visiting. their guards"
 - **D:** "those are their guards. they kill anyone from our realm who walks in" / "the guards there have a very simple rule, and you found it"
@@ -780,7 +780,7 @@ Levels 5–50 · 24 lines · about 3 min · roles: A, B (Socialite), C (NoLifer)
 
 ### dunce pause game
 
-Levels 5–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Socialite), D (Daredevil), E (Leveler), F, G, H
+Levels 5–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Socialite), D (Daredevil), E (Leveler), F, G, H · plays only when: evening
 
 - **A:** "{q} how do i pause the game? i need to go eat and i'm in a fight" / "{q} whats the pause button? dinner is ready and i'm fighting"
 - **B:** "...pause" / "pause the... server"
@@ -905,7 +905,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 Levels 1–50 · 24 lines · about 3 min · roles: A, B, C (Socialite/Explorer), D, E (NoLifer/Daredevil), F (Leveler/Crafter/Explorer)
 
 - **A:** "{name_b} you on? tell the one about the glass that spoke" / "{name_b}, do your gran's story, the glass ball one"
-- **C:** "oh, this one. hush everyone" / "quiet in faction for a bit, {name_b} is telling the orb"
+- **C:** "oh, this one. hush everyone" / "{name_b} is telling the orb story, everyone hush"
 - **E:** *(sometimes)* "the talking ball again lol" / "here we go, the ball that talks"
 - **D:** "go on {name_b}, the new ones have never heard it" / "please {name_b}, i never heard it all the way through"
 - **B:** This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall.
@@ -935,7 +935,7 @@ Levels 1–50 · 24 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 
 Levels 1–50 · 8 lines · about 1 min · roles: A (Socialite/Explorer), B (NoLifer/Daredevil), C, D
 
-- **A:** {q} my uncle says theres a whole city at the bottom of the sea lol
+- **A:** {q} my uncle says theres a whole city at the bottom of the sea, is that true? lol
 - **B:** your uncle also says he soloed the dragon
 - **A:** ok he said that once. but the fishermen really do pull up carved stone with coral all over it
 - **C:** "the sailors have a name for it, atlantis" / "harbour folk call it atlantis and then go quiet"
@@ -948,7 +948,7 @@ Levels 1–50 · 8 lines · about 1 min · roles: A (Socialite/Explorer), B (NoL
 
 Levels 35–50 · 26 lines · about 5 min · roles: B (NoLifer), C (Daredevil), D (Socialite), E (Crafter)
 
-- **A:** "{q} who wants to take a keep tonight? we have been sitting at home all week" / "ok real talk, when did we last take a keep that wasnt ours already"
+- **A:** "{q} who wants to take a keep tonight? we have been sitting at home all week" / "ok seriously, when did we last take a keep that wasnt ours already"
 - **B:** "depends which one. the close ones always have half their realm parked next to them" / "which keep tho. the near ones get defended in two minutes"
 - **C:** "hit the far one. by the time they notice we are inside" / "go deep, nobody ever watches the back keeps"
 - **B:** deep means a very long walk home if it goes wrong
@@ -982,7 +982,7 @@ Levels 35–50 · 26 lines · about 5 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 35–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Leveler/Explorer), D (Socialite/Crafter)
 
-- **A:** "{q} next time they ram a door, where does everyone actually stand?" / "{q} how do we hold a door when they bring rams"
+- **A:** "{q} next time they ram a door, where does everyone actually stand?" / "{q} how do we hold a door when they bring rams?"
 - **B:** "numbers matter more than anything" / "numbers first, always"
 - **A:** "say fifteen, two rams, a few casters on the hill. the usual" / "usually fifteen or so, rams on the door and casters behind them"
 - **C:** "half the time i get the call in {capital} and miss the whole thing" / "i always hear about it when i am in {capital}, long run"
@@ -1013,13 +1013,13 @@ Levels 35–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Leveler/Expl
 
 Levels 35–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Daredevil/Socialite), D (Crafter)
 
-- **A:** "{q} why does nobody ever build a catapult" / "serious question, has anyone actually used a catapult in a raid"
+- **A:** "{q} why does nobody ever build a catapult?" / "serious question, has anyone actually used a catapult in a raid"
 - **B:** "because a ram does the job and catapults take forever to set up" / "rams hit the door, catapults hit the wall, only one of those matters"
 - **C:** "catapults are for the defenders, hit the crowd at the ram" / "from inside the catapult is great, it drops on people bunched at the door"
 - **B:** ok fair, from inside its a different story
 - **D:** "i built a trebuchet once. took me all evening to get it to the keep" / "dragged a trebuchet across {frontier} once, never again"
 - **C:** "lol where did it end up" / "did it at least hit something"
-- **D:** "{enemy} stealthed up and killed me next to it and it sat there all night" / "died to a stealther five steps from the keep, left it in the grass"
+- **D:** "a {enemy_mod} stealther killed me next to it and it sat there all night" / "died to a stealther five steps from the keep, left it in the grass"
 - *(quiet for 30 seconds)*
 - **A:** "where do siege weapons even come from, a vendor?" / "who makes these things, is it a trade?"
 - **B:** *(sometimes)* "crafted, its a separate trade skill" / "siegecraft, its its own trade"
@@ -1028,7 +1028,7 @@ Levels 35–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Daredevil/So
 - **D:** "shoots one guy really hard. great if that one guy is their healer" / "ballista on the healer, very satisfying when it works"
 - **B:** "and useless when they move" / "it works right until the healer takes a step to the left"
 - *(quiet for 25 seconds)*
-- **C:** "honestly the best siege weapon is twenty people with swords" / "real talk, the zerg is the siege weapon"
+- **C:** "honestly the best siege weapon is twenty people with swords" / "face it, the zerg is the siege weapon"
 - **B:** "twenty people with swords dont break a door fast" / "swords on a door is like rain on a rock"
 - **A:** "can the defenders break a ram, or is it safe once it is set up" / "do rams die if the people inside hit them"
 - **C:** "they can, which is why you guard the thing" / "oh they break, ask anyone who left one alone"
@@ -1042,7 +1042,7 @@ Levels 35–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Daredevil/So
 
 Levels 35–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Leveler), D (Socialite), E (Explorer/Daredevil)
 
-- **A:** "{q} would your guild claim a keep if it could? i want our banner on a wall" / "{q} anyone else want to see their guild banner over a keep"
+- **A:** "{q} would your guild claim a keep if it could? i want our banner on a wall" / "{q} anyone else want to see their guild banner over a keep?"
 - **B:** "sure, then you get to defend it every time someone sneezes" / "then enjoy waking up for every raid on it"
 - **C:** "wait guilds can own keeps?" / "how does claiming even work, i thought keeps belonged to the realm"
 - **A:** "the realm still holds it, the guild just puts its name on it" / "still the realm's keep, we just claim it and look after it"
@@ -1070,7 +1070,7 @@ Levels 35–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Leveler), D 
 
 Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Leveler/Crafter) · plays only when: night
 
-- **A:** "{q} anyone else up? this is exactly when {enemy} like to move on the relics" / "{q} why do {enemy} always go for the relics at this hour"
+- **A:** "{q} anyone else up? this is exactly when {enemy} like to move on the relics" / "{q} why do {enemy} always go for the relics at this hour?"
 - **B:** "of course this is when they come" / "they always come when we are all asleep"
 - **C:** "i am up, cant sleep, whats the topic" / "here, insomnia club reporting in"
 - **A:** "if they came right now, how many of us could even show up" / "honestly, how many bodies could we raise right now"
@@ -1100,7 +1100,7 @@ Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 40–50 · 24 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Socialite), E (Explorer/NoLifer), F (Leveler)
 
-- **A:** "{q} does the relic bonus actually matter or is it in our heads" / "{q} does anyone actually feel the relic bonus in a fight"
+- **A:** "{q} does the relic bonus actually matter or is it in our heads?" / "{q} does anyone actually feel the relic bonus in a fight?"
 - **B:** "you dont feel it, its in your head" / "the difference is smaller than people think"
 - **C:** "tell that to my damage" / "my melee says otherwise"
 - **B:** "placebo" / "sure, sure"
@@ -1132,7 +1132,7 @@ Levels 40–50 · 24 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 30–50 · 19 lines · about 3 min · roles: B (Leveler), C (Explorer/Socialite), D (NoLifer)
 
-- **A:** "nothing worse than losing darkness falls while you are still down there" / "{q} anyone else been deep in df when the keeps flipped"
+- **A:** "nothing worse than losing darkness falls while you are still down there" / "{q} anyone else been deep in df when the keeps flipped?"
 - **B:** "happened to me once, half an hour later their groups were in my camp" / "yes. first the warning, then {enemy} walking down the stairs"
 - **C:** "and it always means someone took a keep from us" / "which means a keep fell and nobody was home"
 - **A:** "and nobody even noticed it was being hit" / "usually one we left empty for hours"
@@ -1152,13 +1152,13 @@ Levels 30–50 · 19 lines · about 3 min · roles: B (Leveler), C (Explorer/Soc
 - **A:** thats how they get you
 - **C:** *(sometimes)* "next thing you know you are counting realm points in your sleep" / "first it is df, then you are buying realm abilities"
 - **B:** "never" / "we will see about that"
-- **D:** *(sometimes)* "i give it a month" / "you will be in an 8man by christmas"
+- **D:** *(sometimes)* "a month, tops" / "you will be in an 8man by christmas"
 
 ### rvr rp pace
 
 Levels 40–50 · 19 lines · about 5 min · roles: B (NoLifer), C (Leveler/Daredevil)
 
-- **A:** "{q} how long did it take you to get your first realm rank" / "how long is the grind to rr2 for a normal person"
+- **A:** "{q} how long did it take you to get your first realm rank?" / "how long is the grind to rr2 for a normal person"
 - **B:** "depends how you play. an 8man gets there fast, the zerg slower" / "small group is way faster than following the zerg"
 - **C:** "i got mine defending keeps mostly, took forever" / "slow and steady, keep defense mainly"
 - **A:** "i get almost nothing in the zerg" / "i swear i get nothing for half the zerg kills"
@@ -1187,7 +1187,7 @@ Levels 40–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Socialite), 
 
 - **A:** "finally have enough realm points for my first ability, what do i get" / "first realm ability is in reach, help me not waste it"
 - **B:** "purge, dont even think" / "purge, every time"
-- **C:** "depends on your class, what are you" / "what class? that changes everything"
+- **C:** "what are you playing? depends on that" / "what class? that changes everything"
 - **A:** "{class}" / "i am {class}, if that helps"
 - **C:** "then maybe not purge first" / "hmm, then it depends on your group"
 - **B:** "purge is never wrong. stun, mez, root, you just walk out" / "everything stops you in rvr, purge lets you leave"
@@ -1241,7 +1241,7 @@ Levels 35–50 · 20 lines · about 4 min · roles: B (Leveler/Socialite), C (No
 
 Levels 35–50 · 22 lines · about 4 min · roles: B (Daredevil), C (NoLifer), D (Leveler)
 
-- **A:** "{q} last fight, who was hitting the tank" / "why was half our group on their tank last night"
+- **A:** "{q} last fight, who was hitting the tank?" / "why was half our group on their tank last night"
 - **B:** "me, sorry, he was hitting our healer" / "guilty, he was right in front of me"
 - **C:** "thats exactly why you hit their healer, so he goes down after" / "the tank doesnt die, ever. their healer does"
 - **A:** "rule is simple: /assist the MA, no exceptions" / "/assist on me, nothing else, that was the deal"
@@ -1296,7 +1296,7 @@ Levels 35–50 · 18 lines · about 3 min · roles: B (Leveler), C (Socialite), 
 
 Levels 35–50 · 18 lines · about 3 min · roles: B (Leveler/Socialite), C (Daredevil), D (NoLifer)
 
-- **A:** "{q} how do you fight an archer who wont come closer" / "archer pinned me on a hill for ten minutes, how do you even fight that"
+- **A:** "{q} how do you fight an archer who wont come closer?" / "archer pinned me on a hill for ten minutes, how do you even fight that"
 - **B:** "you dont, you leave LoS" / "break line of sight and make him come to you"
 - **A:** "there was no LoS to break, open field" / "i was in a field, nothing to hide behind"
 - **C:** "then charge. archers are paper up close" / "close the gap, they fold in melee"
@@ -1322,7 +1322,7 @@ Levels 35–50 · 18 lines · about 3 min · roles: B (Leveler/Socialite), C (Da
 
 Levels 35–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Socialite), D (Daredevil), E (Armsman/Paladin/Warrior/Thane/Hero/Champion, Leveler), A (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden/Mentalist)
 
-- **A:** "is it just me or do the {enemy} always go straight for the healers" / "died four fights in a row as the first target"
+- **A:** "is it just me or do {enemy_mod} groups always go straight for the healers" / "died four fights in a row as the first target"
 - **B:** "thats every group, healers die first or the fight lasts forever" / "of course, kill the healer first, thats rvr"
 - **C:** "welcome to playing a healer" / "thats healer life, sadly"
 - **A:** "i dont mind dying, i mind dying first every time" / "i would just like to cast one spell before i die"
@@ -1349,7 +1349,7 @@ Levels 35–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Socialite), 
 
 Levels 35–50 · 19 lines · about 3 min · roles: B (NoLifer), C (Leveler), D (Minstrel/Skald/Bard, Socialite/Explorer)
 
-- **A:** "{q} why did everyone run in a different direction last fight" / "that retreat last night was a disaster, who called it"
+- **A:** "{q} why did everyone run in a different direction last fight?" / "that retreat last night was a disaster, who called it"
 - **B:** "nobody called it, everyone just ran" / "it wasnt a retreat, it was a scatter"
 - **C:** "and we lost our speed when the speed class died first" / "our speed singer was the first one they killed"
 - **A:** "so what, we guard the speed like a healer?" / "protect the speed class like a healer then"
@@ -1376,7 +1376,7 @@ Levels 35–50 · 19 lines · about 3 min · roles: B (NoLifer), C (Leveler), D 
 
 Levels 35–50 · 21 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Explorer), E (Socialite/Leveler)
 
-- **A:** "{q} anyone else think a bridge is the best place to fight" / "{q} if {enemy} ever bring a zerg across a bridge, shouldnt we be holding it"
+- **A:** "{q} anyone else think a bridge is the best place to fight?" / "{q} if a {enemy_mod} zerg ever comes across a bridge, shouldnt we be holding it?"
 - **B:** "bridges are the best spot in {frontier}. they have to come to us" / "love a bridge, nowhere for them to spread out"
 - **C:** "tanks hold the middle, casters hang back on our side?" / "casters at the end, tanks on the middle?"
 - **B:** "dont put tanks in the middle, they get surrounded" / "tanks on our end, let them walk into the casters"
@@ -1431,7 +1431,7 @@ Levels 35–50 · 18 lines · about 3 min · roles: B (Daredevil), C (Socialite)
 
 Levels 35–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Socialite), E (Leveler/Crafter)
 
-- **A:** "{q} the biggest realm always wins, why even fight" / "does anyone else think the biggest realm just holds everything"
+- **A:** "{q} the biggest realm always wins, why even fight?" / "does anyone else think the biggest realm just holds everything"
 - **B:** "they have more people at every hour, thats it" / "its just math, they have more on at night"
 - **C:** "more people doesnt mean better people" / "numbers are not everything"
 - **B:** "numbers take relics" / "it is everything when they are at the door with fifty"
@@ -1459,7 +1459,7 @@ Levels 35–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 35–50 · 17 lines · about 3 min · roles: B (Socialite), C (Daredevil), D (Explorer/NoLifer)
 
-- **A:** "{q} ever watch forty {enemy} spend twenty minutes looking for a door" / "once watched a group of {enemy} walk into a keep wall for five minutes"
+- **A:** "{q} ever watch a {enemy_mod} zerg of forty spend twenty minutes looking for a door?" / "once watched a {enemy_mod} group walk into a keep wall for five minutes"
 - **B:** "lol they do that, its a tradition" / "they always get lost near the keeps"
 - **C:** "to be fair we did the same last week" / "we arent much better, i saw our zerg get lost in fog"
 - **A:** "we were exploring" / "that was a scouting trip"
@@ -1504,14 +1504,14 @@ Levels 20–24 · 19 lines · about 3 min · roles: B (Socialite), C (NoLifer), 
 - **D:** "group with me and i will keep you alive" / "tell you what, come with me, i will show you around"
 - **A:** "a twink offering help? suspicious" / "how do i know this isnt a trick"
 - **D:** "we are on the same side, remember" / "same realm, i couldnt hit you if i wanted to"
-- **A:** "ok fine, pst me" / "ok, send me a tell"
+- **A:** "ok fine, pst me" / "ok, /tell me later then"
 - **B:** "the twink escort service, now open" / "lol, twink bodyguard"
 
 ### rvr thid first night
 
 Levels 20–24 · 20 lines · about 4 min · roles: B (Socialite), C (Explorer), D (Daredevil), A
 
-- **A:** "{q} first time in thidranki, what do i do" / "new to the battlegrounds, is thidranki worth it"
+- **A:** "{q} first time in thidranki, what do i do?" / "new to the battlegrounds, is thidranki worth it"
 - **B:** "yes! go now, its the best part of the game" / "absolutely, best fun at your level"
 - **C:** "find the keep in the middle, thats where the action is" / "stick with a group, follow the crowd to the keep"
 - **A:** "what if i die" / "do i lose anything if i die there"
@@ -1527,7 +1527,7 @@ Levels 20–24 · 20 lines · about 4 min · roles: B (Socialite), C (Explorer),
 - **B:** "find our group, stay near them" / "go with the biggest group of your realm"
 - **A:** "i got a message about realm points" / "what are realm points, i just got some"
 - **C:** "you killed someone, grats!" / "thats from a kill, grats on your first"
-- **A:** ":D" / "first blood!"
+- **A:** "woot" / "first blood!"
 - **B:** "dont run off chasing the next one" / "dont let it go to your head"
 - *(quiet for 20 seconds)*
 - **A:** "dead. i ran after a guy alone" / "ok i ran off chasing the next one"
@@ -1621,7 +1621,7 @@ Levels 35–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Leveler), D 
 
 Levels 40–50 · 22 lines · about 4 min · roles: A, B (NoLifer), C (Socialite), D (Daredevil), E (Leveler/Explorer)
 
-- **A:** "{q} first night in the frontier, how do i even start" / "just went to the frontier for the first time, where do i go"
+- **A:** "{q} first night in the frontier, how do i even start?" / "just went to the frontier for the first time, where do i go"
 - **B:** "find a group, never walk alone" / "first rule: never alone"
 - **C:** "go to {keep} and see who is there" / "head to {keep}, someone is always around there"
 - **A:** "ok, is {frontier} dangerous?" / "i see {frontier} on the map, is it safe"
@@ -1651,7 +1651,7 @@ Levels 40–50 · 22 lines · about 4 min · roles: A, B (NoLifer), C (Socialite
 
 Levels 10–40 · 6 lines · about 1 min · roles: B (Leveler)
 
-- **A:** "anyone at {camp}?" / "{q} is {camp} taken right now" / "camp check {camp}, anybody there"
+- **A:** "anyone at {camp}?" / "{q} is {camp} taken right now?" / "camp check {camp}, anybody there"
 - **B:** "we are, full group, sorry" / "yeah we have it, been here a while" / "taken, but we might pack up soon"
 - **A:** "how long are you staying" / "any idea when you are done" / "ok, mind if i wait close by"
 - **B:** "an hour maybe, our healer has to log soon" / "until someone falls asleep at the keyboard" / "hard to say, we keep saying one more pull"
@@ -1674,7 +1674,7 @@ Levels 15–45 · 7 lines · about 1 min · roles: B (Daredevil), C (Socialite)
 
 Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 
-- **A:** "where do i find my trainer?" / "how do i train, cant find the guy" / "{q} where are the trainers"
+- **A:** "where do i find my trainer?" / "how do i train, cant find the guy" / "{q} where are the trainers?"
 - **B:** "every starter town has trainers, and {capital} has all of them" / "look for the npc with your class guild in the title"
 - **C:** "and spend your points while you are there" / "dont forget to train your specs when you visit"
 - **A:** "wait i have points to spend?" / "i have been leveling with nothing trained lol" / "train? i thought it was automatic"
@@ -1775,9 +1775,9 @@ Levels 10–40 · 7 lines · about 1 min · roles: B (Socialite), C
 
 Levels 35–50 · 8 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
-- **A:** "{q} ever been the only one at a keep when the rams show up" / "{q} worst keep defense you ever stood through, go" / "{q} who here has held a door with nobody else home"
+- **A:** "{q} ever been the only one at a keep when the rams show up?" / "worst keep defense you ever stood through, go" / "{q} who here has held a door with nobody else home?"
 - **B:** "once. me, four guards and a ram on the door" / "yes. alone on the wall, counting them as they came up the road" / "yes, and i typed for help the whole time"
-- **A:** "how many did they bring" / "how big was it" / "zerg or one group"
+- **A:** "how many are there" / "how big was it" / "zerg or one group"
 - **B:** "two groups and a ram" / "one group, but it felt like forty" / "enough that i stopped counting"
 - **C:** "thats the call i always ride for" / "those are the best fights, three of us against a ram crew" / "i show up for every one of those, late but i show up"
 - **D:** *(sometimes)* "did the door hold" / "so did help come" / "and the keep?"
@@ -1788,7 +1788,7 @@ Levels 35–50 · 8 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
 Levels 30–50 · 6 lines · about 1 min · roles: B
 
-- **A:** "{q} why do stealthers always camp the roads to the keeps" / "stealthers love the frontier roads, watch yourselves" / "the {enemy} send stealthers to camp the keep roads every night"
+- **A:** "{q} why do stealthers always camp the roads to the keeps?" / "stealthers love the frontier roads, watch yourselves" / "the {enemy} send stealthers to camp the keep roads every night"
 - **B:** "what class usually" / "which kind gets you" / "do you ever see who it is"
 - **A:** "no idea, i am dead before i see anything" / "couldnt tell you, two hits and gone" / "something with daggers, that narrows it down lol"
 - **C:** *(sometimes)* "they always pick the lone healer" / "and this is why nobody rides out alone" / "they love those roads"
@@ -1922,7 +1922,7 @@ Levels 10–40 · 6 lines · about 1 min · roles: B (Leveler), C
 - **B:** "my group at {camp} might be short one, pst me" / "pst me, we could use one more at {camp}"
 - **A:** "sending a tell" / "anything beats solo, tell sent" / "sure, check your tells"
 - **C:** *(sometimes)* "grab it before someone else does" / "lucky, i waited an hour once" / "take it, groups are rare tonight"
-- **B:** "got it, see you at the camp" / "ok, meet us there" / "got your tell, come on over"
+- **B:** "ok, ill find it" / "ok, meet us there" / "got your tell, come on over"
 - **A:** "ty" / "thx"
 
 ### sh storm outside
@@ -1954,7 +1954,7 @@ Levels 1–50 · 6 lines · about 1 min · roles: B, C (Socialite)
 - **A:** "a bit of everything" / "mostly leveling and a raid now and then" / "we try to do keep raids on weekends"
 - **C:** "anyone ever on at night" / "are people on late" / "anyone around really late"
 - **A:** "plenty of night owls" / "we have a few who never sleep" / "always someone on late"
-- **B:** *(sometimes)* "will send you a tell" / "maybe, i will pst you" / "ok, sounds decent"
+- **B:** *(sometimes)* "will send you a tell" / "maybe, let me think on it" / "ok, sounds decent"
 
 ### sh thid tonight
 
@@ -2003,7 +2003,7 @@ Levels 15–45 · 6 lines · about 1 min · roles: B (Explorer), C
 
 Levels 30–49 · 6 lines · about 1 min · roles: B, C
 
-- **A:** "is df open for us?" / "do we have df right now" / "can we get into darkness falls"
+- **A:** "is df open for us?" / "is df ours at the moment?" / "can we get into darkness falls"
 - **B:** "type /realm, it tells you who holds it" / "/realm shows it. the door only opens for the realm with the most keeps" / "check /realm before you walk all the way there"
 - **C:** *(sometimes)* "if it is open, get in while it lasts" / "when its ours, go while it lasts" / "if it is open, hurry before {enemy} take keeps back"
 - **A:** "where should i hunt in there" / "whats good for my level inside"
@@ -2057,7 +2057,7 @@ Levels 10–50 · 5 lines · about 1 min · roles: B (Crafter), C
 
 Levels 20–50 · 5 lines · about 1 min · roles: B, C
 
-- **A:** "{q} roll on drops or free for all, what do your groups do" / "loot rules, what does everyone use" / "who gets the drops in your groups"
+- **A:** "{q} roll on drops or free for all, what do your groups do?" / "loot rules, what does everyone use" / "who gets the drops in your groups"
 - **B:** "roll for what you can use" / "roll, but only if its an upgrade" / "rolls, and no rolling on stuff to sell"
 - **C:** "the healer gets first pick, keep the healer happy" / "whoever needs it, healer first"
 - **A:** *(sometimes)* "i like that" / "ok sounds good" / "fair enough"
@@ -2140,7 +2140,7 @@ Levels 35–50 · 5 lines · about 1 min · roles: B, C (NoLifer)
 
 Levels 15–40 · 20 lines · about 3 min · roles: B (Leveler), C (Socialite), D (Daredevil), E
 
-- **A:** "{q} is there a rule about camps? someone just started pulling our spawn at {camp}" / "so someone just walked into {camp} and started pulling our spawn"
+- **A:** "{q} is there a rule about camps? someone just started pulling our spawn at {camp}" / "so some guy rode into {camp} and is pulling our spawn"
 - **B:** "if you were there first its your camp, everyone knows that" / "first come first served, always has been"
 - **A:** i told them that. they said they didnt see us
 - **C:** "didnt see a whole group sitting in a circle? lol" / "eight people sitting in a ring and they didnt see us. sure"
@@ -2195,7 +2195,7 @@ Levels 10–45 · 21 lines · about 4 min · roles: B (Leveler), C (Socialite), 
 
 Levels 10–45 · 19 lines · about 3 min · roles: B (Socialite), C (Leveler), D (Explorer), E (Crafter), F (Daredevil)
 
-- **A:** "on the boat again. this ride is so long" / "{q} anyone else on the boat right now"
+- **A:** "on the boat again. this ride is so long" / "{q} anyone else on the boat right now?"
 - **B:** "boat rides are the best time to make a sandwich" / "perfect time to grab a snack"
 - **C:** "or to read faction chat lol" / "thats when faction gets the most chatter"
 - **A:** where is everyone headed
@@ -2252,7 +2252,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Socialite), C (Leveler), 
 
 Levels 15–45 · 18 lines · about 3 min · roles: B (Leveler), C (Socialite), D (Crafter), E (Explorer), F
 
-- **A:** "do you all group with strangers or wait for guildmates" / "{q} pick up groups or guild groups, which do you prefer"
+- **A:** "do you all group with strangers or wait for guildmates" / "{q} pick up groups or guild groups, which do you prefer?"
 - **B:** guild every time. i know who will stay and who will afk
 - **C:** strangers. half my friends list started as a random invite
 - **B:** and the other half are names you never want to see again
@@ -2321,7 +2321,7 @@ Levels 25–50 · 19 lines · about 3 min · roles: B (Crafter), C (Crafter/Soci
 - **B:** "sell it as basically masterpiece" / "list it as nearly perfect and smile"
 - **E:** "people pay well for a 99, honestly" / "a 99 sells, just not for masterpiece money"
 - **A:** going to keep it for myself, i earned it
-- **F:** "spoken like a true crafter" / "the crafter's curse, you keep the best ones"
+- **F:** "thats crafter talk right there" / "the crafter's curse, you keep the best ones"
 - **D:** *(sometimes)* describe it to me in detail, i want to feel your pain
 - **A:** "back to the forge, still need the gloves" / "ok, gloves next. pray for me"
 
@@ -2463,14 +2463,14 @@ Levels 30–50 · 18 lines · about 3 min · roles: B (Socialite), C (Crafter), 
 
 Levels 1–50 · 21 lines · about 3 min · roles: B (Socialite), C (NoLifer), D (Daredevil), E (Leveler), F
 
-- **A:** "starting a guild, need a name that isnt terrible" / "{q} help me name my new guild"
+- **A:** "starting a guild, need a name that isnt terrible" / "{q} can someone help me name my new guild?"
 - **B:** "something with knights in it" / "anything but "of the something""
 - **C:** "something with dragons. people love dragons" / "add dragon to it, instant members"
 - **D:** "please nothing with elite in it" / "if it has elite in the name i am not joining"
 - **A:** ok i had elite in it
 - **D:** *(sometimes)* lol naturally. of course you did
 - *(quiet for 30 seconds)*
-- **E:** "how many members so far" / "whos in it so far"
+- **E:** "how many have joined so far" / "whos in it so far"
 - **A:** "me, my alt, and my sister" / "me and two friends from school"
 - **B:** "so a guild of three. thats how all the big ones started" / "every big guild started as three people and a dream"
 - **E:** *(sometimes)* and a lot of recruit spam in faction
@@ -2478,7 +2478,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: B (Socialite), C (NoLifer), D
 - **A:** "mostly a place for friends to hang out" / "no pressure stuff. play when you can"
 - **D:** "then name it something cozy" / "then call it something warm. like a tavern"
 - **E:** "the hearth" / "the last inn" / "the long table"
-- **A:** "oh i like that one" / "ok thats actually good"
+- **A:** "oh i like that, yeah" / "ok thats actually good"
 - *(quiet for 25 seconds)*
 - **C:** now you need an emblem too, that is the real fight
 - **A:** dont start
@@ -2542,7 +2542,7 @@ Levels 10–50 · 18 lines · about 3 min · roles: B (Socialite), C (Leveler), 
 
 Levels 1–25 · 20 lines · about 4 min · roles: B (Leveler), C (Socialite), D (NoLifer), E (Explorer), A
 
-- **A:** "new player here, i died and lost xp? what do i do" / "{q} brand new, how do i get stuff back after dying"
+- **A:** "new player here, i died and lost xp? what do i do" / "{q} brand new, how do i get stuff back after dying?"
 - **B:** "go back to where you died and pray at your gravestone" / "find your grave and /pray at it, you get some xp back"
 - **A:** "i have a grave??" / "wait, i get a gravestone? that is creepy"
 - **C:** lol welcome to the game
@@ -2600,7 +2600,7 @@ Levels 25–50 · 22 lines · about 4 min · roles: B (Socialite), C (Leveler), 
 
 Levels 45–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Socialite), D (Daredevil), E (Leveler), F
 
-- **A:** "our alliance switched to loot points for raids and people are mad" / "{q} anyone else hate raid point systems"
+- **A:** "our alliance switched to loot points for raids and people are mad" / "{q} anyone else hate raid point systems?"
 - **B:** "points are fair. you show up, you earn" / "points reward the people who come every week"
 - **C:** points reward the people with no lives lol
 - **B:** which is also who kills the dragon
@@ -2667,7 +2667,7 @@ Levels 15–50 · 18 lines · about 3 min · roles: B (Socialite), C (Leveler), 
 - **B:** "dont forget to visit the town healer later, the con loss adds up" / "con loss stacks, pay the healer in town once in a while"
 - **C:** i forgot about con loss for weeks once, wondered why i died so fast
 - *(quiet for 30 seconds)*
-- **F:** "unpopular opinion, the death penalty is what makes the game exciting" / "without the penalty nobody would be careful"
+- **F:** "maybe its just me, but the death penalty is what makes the game exciting" / "without the penalty nobody would be careful"
 - **D:** "without the penalty i would be level 50 already" / "id be happier lol"
 - **F:** "and you would never feel your heart race on a bad pull" / "the fear is the fun"
 - **C:** *(sometimes)* i like fear in small doses
@@ -2680,7 +2680,7 @@ Levels 15–50 · 18 lines · about 3 min · roles: B (Socialite), C (Leveler), 
 
 Levels 20–50 · 19 lines · about 3 min · roles: B (Leveler), C (Daredevil), D (Crafter), E (NoLifer), F (Socialite)
 
-- **A:** "whats the best moment you have had leveling so far" / "{q} favorite leveling memory, go"
+- **A:** "whats the best moment you have had leveling so far" / "favorite leveling memory, go"
 - **B:** "first ding in a full group, everyone spamming gz" / "my first group ding, the whole group typed gz at once"
 - **C:** "first time i fought an orange and won" / "killing an orange solo with nothing left in the tank"
 - **D:** "getting my first real weapon off a drop" / "the first time something dropped that i could actually use"
@@ -2732,7 +2732,7 @@ Levels 10–50 · 18 lines · about 4 min · roles: B (Socialite), C (Crafter), 
 
 Levels 10–50 · 20 lines · about 4 min · roles: B (Daredevil), C (Crafter), D (Socialite), E (Leveler), F (Explorer) · plays only when: night
 
-- **A:** "late night question. what was your very first character" / "{q} first character you ever made, go"
+- **A:** "late night question. what was your very first character" / "first character you ever made, go"
 - **B:** "a tank. died to the first thing i hit" / "a fighter type with way too much strength"
 - **C:** "a caster who put points into strength lol" / "caster with a terrible stat spread, didnt know any better"
 - **D:** i made a healer because a friend begged me, never looked back
@@ -2785,7 +2785,7 @@ Levels 20–50 · 18 lines · about 3 min · roles: B (Socialite), C (NoLifer), 
 
 Levels 15–45 · 22 lines · about 4 min · roles: B (Leveler), C (Socialite), D (Daredevil), E (Explorer), F (NoLifer)
 
-- **A:** "i am completely lost. trees everywhere" / "{q} anyone good with directions, im lost"
+- **A:** "i am completely lost. trees everywhere" / "{q} anyone good with directions? im lost"
 - **B:** "what can you see" / "describe it. landmarks?"
 - **A:** "a big rock, a river, and something purple looking at me" / "river on my left, giant tree, and a red con watching me"
 - **C:** "thats every place in the game" / "that narrows it down to everywhere"
@@ -3390,7 +3390,7 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 - **B:** "big words from a camper. you'll be dead before your first swing" / "i'll be done before you finish medding"
 - **H:** "should we sell tickets" / "i'm charging admission at the gate"
 - **A:** "and after i win, i'm camping every named you ever look at" / "when this is over i'm sitting on every camp you love. forever"
-- **B:** "you cant camp anything, you just sit there and lose it" / "try it. i'll be there first. like always"
+- **B:** "you cant camp anything, you just sit there and lose it" / "try it. i'll get there first. like always"
 - **D:** "the realm is officially split. team {name_a} or team {name_b}" / "its war now. pick a side people"
 - **G:** "so when is this duel even happening" / "someone tell me when, i'm not missing it"
 - *(quiet for 6 seconds)*
@@ -3481,7 +3481,7 @@ Levels 10–50 · 22 lines · about 3 min · roles: A (Socialite), B (NoLifer), 
 - **B:** "ok since {name_a} wont listen in guild chat: we need loot rules. real ones" / "posting this in faction so the whole realm sees: {name_a}, our guild needs a loot system"
 - **A:** "lol {name_b} why is this in faction. we have guild chat for this" / "{name_b}... we have a guild channel. you know that right"
 - **B:** "because in guild chat you just type "lol" and go afk" / "you ignore me in guild chat. here you cant"
-- **C:** "oh no, guild drama in faction. my favorite" / "grabbing a snack, guild fight in faction"
+- **C:** "oh no, guild drama in faction. my favorite" / "guild fight in faction, getting popcorn"
 - **A:** "our loot system is fine. everyone rolls. its fun" / "free rolls for everyone. its worked for months"
 - **B:** "its not fine. last raid someone who showed up for five minutes won the best drop" / "your "fun" gave the best drop to someone who logged in for the last pull"
 - **A:** "thats what rolls are, {name_b}. luck" / "thats luck {name_b}. sometimes the dice like people"
@@ -3565,7 +3565,7 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Socialite), B (NoLifer), 
 - **B:** "we're here too {name_a}. all of us" / "my guild is at {keep}. full force"
 - **C:** "lol i see three of {name_a}'s and three of {name_b}'s" / "i count six people. total. both guilds"
 - **D:** "thats it? the great guild war is six people?" / "six people. thats the whole war"
-- **A:** "some of mine were busy" / "half my guild had dinner plans"
+- **A:** "some of mine were busy" / "half my guild had other plans"
 - **B:** "mine had to work. real life stuff" / "mine logged early. its a weeknight"
 - **E:** "uh. {enemy} are here. a lot of {enemy}" / "incoming. big group of {enemy}. like thirty"
 - **F:** "and they're all dead" / "everyone's dead. both guilds. instantly"
@@ -3933,7 +3933,7 @@ Levels 10–50 · 21 lines · about 2 min · roles: A (NoLifer), B (Explorer), C
 Levels 10–50 · 19 lines · about 2 min · roles: A (NoLifer), B (Explorer), C (Socialite), D, E, F, G, H
 
 - **C:** "the verdict on the ring. ready?" / "the jury has voted. the court is ready"
-- **C:** "{name_b} is NOT GUILTY. a deal is a deal" / "NOT GUILTY. "the next one" means the next one"
+- **C:** "{name_b} is NOT GUILTY. they kept to the deal" / "NOT GUILTY. "the next one" means the next one"
 - **B:** "HA. told you {name_a}" / "YES. the realm has sense after all"
 - **A:** "this is a joke. a total joke" / "unbelievable. a ring thief walks free"
 - **D:** "{player} brought up the "next one" deal and it changed everything" / "{player} stood up for {name_b} and the jury flipped"
@@ -5529,7 +5529,7 @@ Levels 30–50 · 27 lines · about 5 min · roles: B (NoLifer), C (Socialite), 
 - **E:** as a crafter i love buffbots, everyone with one buys two sets of gear
 - **D:** lol, true
 - *(quiet for 30 seconds)*
-- **F:** wait what did i miss
+- **F:** wait, what happened
 - **A:** buffbot argument, round three
 - **F:** oh. bots are fine in pve, ruin the frontier though
 - **B:** everyone in the frontier has buffs anyway
@@ -5950,7 +5950,7 @@ Levels 30–50 · 22 lines · about 4 min · roles: B (Healer), C (Healer), D (D
 
 Levels 20–45 · 20 lines · about 4 min · roles: B (Shaman), C (Leveler), D (Warrior/Thane), E (Explorer)
 
-- **A:** "anyone actually leveled a cave shaman? subterranean all the way" / "{q} is full subterranean shaman a real thing or a joke" / "{q} any cave shamans out there, how is it going"
+- **A:** "anyone actually leveled a cave shaman? subterranean all the way" / "{q} is full subterranean shaman a real thing or a joke?" / "{q} any cave shamans out there, how is it going?"
 - **B:** "me. mostly solo, the dots do the work" / "yep, cave shaman here. i dot it, back off a bit, sit, repeat" / "im one. it is slow but it is a different game from heal duty"
 - **C:** "why would you play a support class and not support" / "a shaman that wont heal is just a weird caster"
 - **B:** "i heal fine, i just dont live in the heal bar" / "i can still heal, the base heals do the job on small pulls"
@@ -5978,7 +5978,7 @@ Levels 20–45 · 20 lines · about 4 min · roles: B (Shaman), C (Leveler), D (
 
 Levels 20–50 · 23 lines · about 4 min · roles: B (Skald), C (NoLifer), D (Berserker/Savage), E (Socialite), F (Leveler), A (Skald)
 
-- **A:** "why does every group ask the skald to sit on speed the whole time" / "{q} skald here, am i allowed to do damage or am i just a horse" / "does anyone let their skald actually fight"
+- **A:** "why does every group ask the skald to sit on speed the whole time" / "{q} skald here, am i allowed to do damage or am i just a horse?" / "does anyone let their skald actually fight"
 - **B:** "i ask myself that every night" / "same question, different skald lol"
 - **C:** "speed is the reason skalds get invites. that is just the truth" / "because without speed the pull runs back slower and the xp drops"
 - **A:** i have damage shouts for a reason though
@@ -6009,7 +6009,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Skald), C (NoLifer), D (B
 
 Levels 15–50 · 19 lines · about 3 min · roles: B (Thane), C (Warrior), D (NoLifer/Explorer)
 
-- **A:** "thane question. how much stormcalling is too much" / "{q} thanes, do you max stormcalling or your weapon" / "thinking of rolling a thane, lightning or hammer?"
+- **A:** "thane question. how much stormcalling is too much" / "{q} thanes, do you max stormcalling or your weapon?" / "thinking of rolling a thane, lightning or hammer?"
 - **B:** "weapon first, stormcalling enough for the good shocks" / "i run high storm, i love the lightning more than the hammer"
 - **C:** "if you want to tank, put it in shields and weapon and let the casters cast" / "thane tanking is fine on small stuff, on hard pulls thats my job"
 - **B:** thanes tank fine, we wear chain and carry a shield
@@ -6024,7 +6024,7 @@ Levels 15–50 · 19 lines · about 3 min · roles: B (Thane), C (Warrior), D (N
 - **A:** "so half and half is ok?" / "is a hybrid spec bad or is that the point of the class"
 - **D:** "hybrid is the whole point. you are never the best at one thing" / "for a thane the split is the build"
 - **B:** "and you are never useless" / "never the best, never useless. thane motto"
-- **C:** *(sometimes)* i like that one actually
+- **C:** *(sometimes)* ha, that one is good actually
 - **C:** "just dont stand in my aggro and complain when the mob turns" / "if the mob turns on you, dont run to me"
 - *(quiet for 20 seconds)*
 - **B:** *(sometimes)* when has a thane ever run
@@ -6036,7 +6036,7 @@ Levels 15–50 · 19 lines · about 3 min · roles: B (Thane), C (Warrior), D (N
 
 Levels 20–50 · 20 lines · about 4 min · roles: B (Warrior), C (Berserker), D (Healer/Shaman), E (Crafter)
 
-- **A:** "shout out to warriors, the most underrated class in midgard" / "can we talk about how nobody appreciates warriors" / "{q} why does everyone roll zerker when warriors are right there"
+- **A:** "shout out to warriors, the most underrated class in midgard" / "can we talk about how nobody appreciates warriors" / "{q} why does everyone roll zerker when warriors are right there?"
 - **B:** "thank you. finally" / "someone finally said it"
 - **C:** "warriors are great. someone has to stand there while i do the damage" / "love warriors, they hold the mob still so i can hit it"
 - **B:** "and someone has to explain to the healer why the zerker died first" / "yeah and who pulls it off you when you go berserk and lose aggro"
@@ -6064,7 +6064,7 @@ Levels 20–50 · 20 lines · about 4 min · roles: B (Warrior), C (Berserker), 
 
 Levels 20–50 · 22 lines · about 4 min · roles: B (Berserker), C (Savage), D (NoLifer/Daredevil)
 
-- **A:** "zerkers vs savages, who wins a duel in the end" / "serious one, savage or berserker for rvr" / "{q} if you could only bring one, zerker or savage"
+- **A:** "zerkers vs savages, who wins a duel in the end" / "serious one, savage or berserker for rvr" / "{q} if you could only bring one, zerker or savage?"
 - **B:** "zerker. berserk style hits harder than anything a savage swings" / "berserker. two axes, berserk, done"
 - **C:** "savage. hand to hand is fast and the self buffs make us a different class" / "savage, easy. the buffs make me faster than you and i hit just as hard"
 - **B:** "buffs that cost health. you start every fight half dead" / "your buffs eat your own health bar, i dont have that problem"
@@ -6088,7 +6088,7 @@ Levels 20–50 · 22 lines · about 4 min · roles: B (Berserker), C (Savage), D
 - **B:** berserkers win on the numbers, im calling it too
 - **A:** *(sometimes)* two winners, everyone go home
 - *(quiet for 30 seconds)*
-- **C:** "we agree to keep arguing then" / "see you at the next round"
+- **C:** "we agree to keep arguing then" / "until the next round then"
 - **B:** and i will still be right
 
 ### mid savage newbie
@@ -6123,7 +6123,7 @@ Levels 15–40 · 20 lines · about 4 min · roles: B (Savage), C (Healer/Shaman
 
 Levels 25–50 · 21 lines · about 4 min · roles: B (Hunter), C (Daredevil), D (Spiritmaster), E (NoLifer)
 
-- **A:** "got shot to death by an albion scout from somewhere i couldnt even see" / "{q} is it just me or are enemy archers hitting from across the zone" / "three arrows and im dead, never saw the guy"
+- **A:** "got shot to death by an albion scout from somewhere i couldnt even see" / "{q} is it just me or are enemy archers hitting from across the zone?" / "three arrows and im dead, never saw the guy"
 - **B:** "welcome to how they feel about us" / "hunters do the same to them, for what it is worth"
 - **C:** "their scouts sit on hills and shoot people who are just traveling" / "scouts on the hill outside every keep, every night"
 - **B:** "and we sit on our hills. it is an archer thing" / "every realm has hill archers. ours are just nicer"
@@ -6153,7 +6153,7 @@ Levels 25–50 · 21 lines · about 4 min · roles: B (Hunter), C (Daredevil), D
 
 Levels 30–50 · 21 lines · about 4 min · roles: B (Shadowblade), C (Shadowblade), D (Socialite/Leveler)
 
-- **A:** "shadowblades, left axe or a big two hander" / "{q} sb question, two hander or left axe" / "planning a shadowblade alt, two handed or dual axes"
+- **A:** "shadowblades, left axe or a big two hander" / "{q} sb question, two hander or left axe?" / "planning a shadowblade alt, two handed or dual axes"
 - **B:** "left axe. more swings, more poison on the target" / "dual axes. envenom on two weapons is twice the fun"
 - **C:** "two hander. the opener from stealth hits like a truck" / "two handed every time, the first hit from stealth decides the fight"
 - **B:** "and if the first hit doesnt kill them?" / "sure, until they live through it"
@@ -6182,7 +6182,7 @@ Levels 30–50 · 21 lines · about 4 min · roles: B (Shadowblade), C (Shadowbl
 
 Levels 20–50 · 23 lines · about 4 min · roles: B (Runemaster), C (Spiritmaster), D (Bonedancer), E (Leveler), F (Socialite)
 
-- **A:** "rolling a caster, runemaster, spiritmaster or bonedancer?" / "{q} which of the three midgard casters should i roll" / "rm, sm or bd for a first caster"
+- **A:** "rolling a caster, runemaster, spiritmaster or bonedancer?" / "{q} which of the three midgard casters should i roll?" / "rm, sm or bd for a first caster"
 - **B:** "runemaster. runecarving nukes, groups always want damage" / "rm, every group needs a nuker"
 - **C:** "spiritmaster. the pet tanks while i cast, solo is easy" / "sm, my spirit pet does half my work"
 - **D:** "bonedancer. you get a whole army, why have one pet" / "bd. a commander and his little helpers. who needs friends"
@@ -6213,7 +6213,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Runemaster), C (Spiritmas
 
 Levels 30–50 · 19 lines · about 3 min · roles: B (Bonedancer), C (NoLifer), D (Daredevil)
 
-- **A:** "is it just me or does every keep fight lag out lately" / "{q} anyone else freeze at keep fights lately" / "the last siege was a slideshow for me"
+- **A:** "is it just me or does every keep fight lag out lately" / "{q} anyone else freeze at keep fights lately?" / "the last siege was a slideshow for me"
 - **C:** "three bonedancers with full armies on the wall, that will do it" / "count the skeletons, that was the lag" / "every bd in the realm showed up with pets, of course it lagged"
 - **B:** "hey, we bring damage" / "the army is the class, i cant leave it home"
 - **C:** "you bring a lot of little bones my computer has to draw" / "my video card does not like your little friends"
@@ -6240,7 +6240,7 @@ Levels 30–50 · 19 lines · about 3 min · roles: B (Bonedancer), C (NoLifer),
 
 Levels 1–25 · 20 lines · about 4 min · roles: B (NoLifer/Leveler), C (Explorer), D (Socialite), E (Leveler), A
 
-- **A:** "first character ever, where do i go after the vale of mularn" / "{q} new to the game, what comes after mularn" / "still single digits, kind of lost, where next"
+- **A:** "first character ever, where do i go after the vale of mularn" / "{q} new to the game, what comes after mularn?" / "still single digits, kind of lost, where next"
 - **B:** "myrkwood forest next, then nisses lair once you have a group" / "head to myrkwood around 10, then nisses lair in your teens"
 - **C:** "myrkwood is pretty at night, watch for the arachites" / "the arachite weblashers in myrkwood will surprise you"
 - **D:** *(sometimes)* welcome to midgard, glad youre here!
@@ -6268,7 +6268,7 @@ Levels 1–25 · 20 lines · about 4 min · roles: B (NoLifer/Leveler), C (Explo
 
 Levels 35–50 · 19 lines · about 4 min · roles: B (Explorer), C (Leveler), D (NoLifer), E (Crafter), A
 
-- **A:** "late 30s here, aegir or stay home for the 40s" / "{q} is aegir worth it for the 40s or stick to the classic zones" / "trying aegir for the first time, good idea?"
+- **A:** "late 30s here, aegir or stay home for the 40s" / "{q} is aegir worth it for the 40s or stick to the classic zones?" / "trying aegir for the first time, good idea?"
 - **B:** "aegir. gripklosa and delling crater are full of xp and nobody is there" / "go aegir, new zones, empty camps"
 - **C:** "classic. spindelhalla has groups all day, you never wait" / "stay in midgard proper, spindelhalla is always busy"
 - **B:** busy is the problem. i like having a camp to myself
@@ -6350,7 +6350,7 @@ Levels 1–50 · 19 lines · about 3 min · roles: B (Socialite), C (Crafter), D
 
 Levels 35–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Healer), E (Skald), F (Leveler)
 
-- **A:** "{q} why does it always take us forever to answer a keep call" / "{q} when a keep starts flashing, do you actually drop what you are doing" / "{q} who actually answers keep calls"
+- **A:** "{q} why does it always take us forever to answer a keep call?" / "{q} when a keep starts flashing, do you actually drop what you are doing?" / "{q} who actually answers keep calls?"
 - **B:** "depends how many they bring" / "depends on the numbers, honestly"
 - **A:** "say one group of hibs with a ram" / "eight hibs and a ram, the usual"
 - **C:** "one group? we can take one group" / "eight is nothing, i go every time"
@@ -6382,7 +6382,7 @@ Levels 35–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 40–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Socialite), D (Daredevil), E (Crafter)
 
-- **A:** "who is watching mjollner faste tonight" / "{q} anyone guarding our relics or are we trusting the guards" / "quick check, is anyone at grallarhorn faste right now"
+- **A:** "who is watching mjollner faste tonight" / "{q} anyone guarding our relics or are we trusting the guards?" / "quick check, is anyone at grallarhorn faste right now"
 - **B:** "nobody, as usual. everyone thinks the guards will hold" / "nobody. the guards are on their own"
 - **C:** "the guards wont hold against a real raid" / "if a forty man raid shows up, guards are a speed bump"
 - **D:** "so go stand there yourself" / "then go stand at the castle all night, ill wait"
@@ -6434,13 +6434,13 @@ Levels 45–50 · 22 lines · about 4 min · roles: B (Daredevil), C (Healer/Sha
 - **E:** "sounds good" / "tell sent"
 - **C:** "healer, put me in the healer group" / "healer here, put me with the other healers"
 - **D:** *(sometimes)* and dont blame me when we wipe the first time
-- **A:** "ok, see you all there" / "see you at the bind"
+- **A:** "ok, meet you all there" / "see you at the bind"
 
 ### mid iarn lair
 
 Levels 45–50 · 19 lines · about 3 min · roles: B (Explorer), C (Daredevil), D (Leveler)
 
-- **A:** "has anyone been deep in iarnvidiurs lair" / "{q} iarnvidiurs lair, worth it or a waste of a night" / "thinking of trying the lair in aegir, anyone done it"
+- **A:** "has anyone been deep in iarnvidiurs lair" / "{q} iarnvidiurs lair, worth it or a waste of a night?" / "thinking of trying the lair in aegir, anyone done it"
 - **B:** "been to the entrance. the redcaps nearly ended me" / "i saw the first rooms. redcap davin hit like a hammer"
 - **C:** "we tried the big guy himself once" / "we pulled iarnvidiur once with two groups"
 - **A:** "and?" / "how did that go?"
@@ -6467,7 +6467,7 @@ Levels 45–50 · 19 lines · about 3 min · roles: B (Explorer), C (Daredevil),
 
 Levels 30–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Leveler), D (Daredevil), E (Crafter)
 
-- **A:** "do we even have df right now?" / "{q} who has darkness falls tonight" / "is df open for us or did we lose it"
+- **A:** "do we even have df right now?" / "{q} who has darkness falls tonight?" / "is df open for us or did we lose it"
 - **B:** "/realm says who has it, it changes hands with the keeps" / "type /realm. it depends on the keeps and they change all day"
 - **C:** "and when we lose it, there goes my xp plan for the night" / "whenever it closes, there goes my leveling"
 - **B:** "you could help take the keeps back" / "the fastest way to get df back is the frontier"
@@ -6508,7 +6508,7 @@ Levels 30–50 · 18 lines · about 3 min · roles: B (NoLifer), C (Daredevil), 
 - **C:** "honestly the albs zerg too, they just call it a raid" / "when albs bring forty people its a strategy"
 - **D:** "and hibs call it a party" / "and when hibs bring forty its a festival"
 - **B:** "everyone zergs. we just do it in bigger furs" / "all three realms zerg, we just wear more fur"
-- **E:** *(sometimes)* and horns. dont forget the horns
+- **E:** *(sometimes)* and horns. so many horns
 - *(quiet for 20 seconds)*
 - **A:** "i still like the 8man fights better" / "honestly the best fights are 8 vs 8 anyway"
 - **C:** "8man is great until a zerg rolls over you" / "then forty trolls walk over the hill"
@@ -6546,7 +6546,7 @@ Levels 15–50 · 17 lines · about 3 min · roles: B (Socialite), C (NoLifer), 
 
 Levels 15–50 · 19 lines · about 3 min · roles: B (Crafter), C (Crafter), D (Leveler)
 
-- **A:** "armorcraft or weaponcraft, which one makes more money in jordheim" / "{q} crafters, which craft pays best" / "thinking about crafting, which line actually makes money"
+- **A:** "armorcraft or weaponcraft, which one makes more money in jordheim" / "{q} crafters, which craft pays best?" / "thinking about crafting, which line actually makes money"
 - **B:** "armorcraft. everyone needs a full suit, and every few levels" / "armor sells, five pieces every few levels"
 - **C:** "weaponcraft. one weapon, but they pay more for a good one" / "weapons, people pay a lot for a masterpiece axe"
 - **B:** "spellcraft is the real money at 50 though" / "at 50, spellcraft gems are where the coin is"
@@ -6600,7 +6600,7 @@ Levels 20–50 · 18 lines · about 4 min · roles: B (Explorer), C (Daredevil),
 
 Levels 40–50 · 6 lines · about 1 min · roles: B (Healer/Shaman), C (Leveler)
 
-- **A:** "anyone in spindelhalla? looking for a spot" / "spindel check, which camps are open" / "{q} is spindelhalla packed tonight"
+- **A:** "anyone in spindelhalla? looking for a spot" / "spindel check, which camps are open" / "{q} is spindelhalla packed tonight?"
 - **B:** "two groups deep inside, the entrance is free" / "we are on the arachite krigare, rest looks open" / "busy, but the entrance camps were empty"
 - **A:** "need a healer for the entrance then" / "any healers want to come along" / "if a healer joins we can take the open spot"
 - **B:** "maybe after this pull" / "maybe when my group breaks up" / "my group is wrapping up, pst me"
@@ -6633,14 +6633,14 @@ Levels 22–32 · 6 lines · about 1 min · roles: B (Skald), C (Healer)
 
 Levels 10–40 · 8 lines · about 1 min · roles: B (Hunter), C (Hunter)
 
-- **A:** "hunter question, spear or bow for leveling?" / "new hunter, where do my points go" / "{q} hunters, which line first"
+- **A:** "hunter question, spear or bow for leveling?" / "new hunter, where do my points go" / "{q} hunters, which line first?"
 - **B:** "spear and beastcraft, the pet tanks and you stab" / "beastcraft first, the pet does the work early on"
 - **C:** "composite bow, pull from range and finish it before it arrives" / "bow all day, why walk up to anything"
 - **B:** "until something gets close and you have nothing" / "the bow is nice in rvr, for leveling it is slow"
 - **C:** "nothing gets close, thats the point" / "it dies before it reaches me"
 - **A:** *(sometimes)* "two hunters, two answers" / "i will try both and see" / "of course you disagree"
 - **B:** "spear for leveling, bow for the frontier" / "depends what you do most, honestly"
-- **C:** "ok, that i can live with" / "agreed, for once"
+- **C:** "fair enough, ill take that" / "agreed, for once"
 
 ### sh mid bonedancer alt
 
@@ -6657,7 +6657,7 @@ Levels 5–25 · 6 lines · about 1 min · roles: B (Bonedancer), C
 
 Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
-- **A:** "{q} why is it always bledmeer that gets hit first" / "{q} is it just me or do the albs only know the way to bledmeer" / "{q} has anyone counted how often bledmeer gets rammed in a week"
+- **A:** "{q} why is it always bledmeer that gets hit first?" / "{q} is it just me or do the albs only know the way to bledmeer?" / "{q} has anyone counted how often bledmeer gets rammed in a week?"
 - **B:** "its the first keep on their road, thats all" / "closest door to their side, of course they knock on it" / "they are lazy and bledmeer is the short walk"
 - **A:** "and never without a ram" / "a full group and a ram, every single time" / "always a ram, always too many clerics behind it"
 - **C:** "good. i know exactly where to ride" / "i like it, i never have to ask where the fight is" / "saves me reading the keep map"
@@ -6692,7 +6692,7 @@ Levels 40–50 · 6 lines · about 1 min · roles: B (Explorer), C (Leveler)
 
 Levels 20–49 · 6 lines · about 1 min · roles: B (Runemaster), C (Socialite)
 
-- **A:** "who dinged, i saw grats flying" / "{q} someone dinged, who" / "was that a ding?"
+- **A:** "who dinged, i saw grats flying" / "{q} someone dinged, who?" / "was that a ding?"
 - **B:** "me, ding {level} on my runemaster" / "that was me, {level} runie" / "me, finally"
 - **C:** "gz! now go outdamage the thane" / "grats, more darkness more fun" / "gz runie"
 - **D:** *(sometimes)* "runies are the best, gz" / "grats, the bolts must hit harder now"
@@ -6703,10 +6703,10 @@ Levels 20–49 · 6 lines · about 1 min · roles: B (Runemaster), C (Socialite)
 
 Levels 47–50 · 6 lines · about 1 min · roles: B (Healer/Shaman), C (Daredevil)
 
-- **A:** "gjalpinulva raid tonight, pst me" / "dragon raid on gjalpinulva later, need healers, pst" / "gjalpinulva later, send a tell if you want to come"
+- **A:** "anyone up for gjalpinulva tonight?" / "dragon raid on gjalpinulva later, need healers, pst" / "gjalpinulva later, send a tell if you want to come"
 - **B:** "healer here, in" / "i can heal" / "how many so far"
 - **A:** "enough to try" / "a few groups" / "we need more healers though"
-- **C:** *(sometimes)* "last time half the raid died to the breath" / "bring resist buffs" / "stand where the leader says, please"
+- **C:** *(sometimes)* "half of us ate the breath last time" / "bring resist buffs" / "stand where the leader says, please"
 - **B:** "sounds good" / "ill bring my healer" / "ok, tell sent"
 - **A:** "meet in jordheim" / "gathering in jordheim soon" / "pst me"
 
@@ -6718,7 +6718,7 @@ Levels 18–28 · 6 lines · about 1 min · roles: B (Healer/Shaman), C
 - **B:** "that was me, you were right by the draugr warriors" / "me. first hall, right where everyone dies" / "yw, you were not hard to find"
 - **A:** "the draugr warriors hit harder than they look" / "i only went one room past the entrance" / "i thought the first hall was safe"
 - **C:** *(sometimes)* "watch the vengeful ghouls too" / "ghouls add from behind in there" / "nothing in that tomb is safe"
-- **B:** "bind closer next time" / "it happens, the tomb is mean" / "next time bring a friend"
+- **B:** "bind closer next time" / "it happens, the tomb is mean" / "next time take someone with you"
 - **A:** "ty healer" / "owe you" / "thanks a lot"
 
 ### sh mid hunt the stealther
@@ -6747,7 +6747,7 @@ Levels 40–50 · 6 lines · about 1 min · roles: B (Crafter), C
 
 Levels 15–40 · 8 lines · about 1 min · roles: B (Savage), C (Berserker)
 
-- **A:** "savage or berserker for an alt?" / "thinking zerker, or should i go savage" / "{q} savage or zerk"
+- **A:** "savage or berserker for an alt?" / "thinking zerker, or should i go savage" / "{q} savage or zerk?"
 - **B:** "savage, hand to hand and savagery, fast hits and you feel them" / "savage, the speed of those hits is addictive"
 - **C:** "berserker, left axe and the rage, nothing hits harder" / "zerk, two axes and a bad attitude"
 - **B:** "savages look cooler" / "savage wins on speed"
@@ -6760,7 +6760,7 @@ Levels 15–40 · 8 lines · about 1 min · roles: B (Savage), C (Berserker)
 
 Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
-- **A:** "{q} how long have our relics stayed home, anyone counting" / "{q} do our relics ever leave home" / "anyone know when we last lost a relic"
+- **A:** "{q} how long have our relics stayed home, anyone counting?" / "{q} do our relics ever leave home?" / "anyone know when we last lost a relic"
 - **B:** "/relic will tell you, i stopped counting" / "grallarhorn faste gets tested every week" / "the albs try every few nights"
 - **C:** "midgard holds, mostly" / "we have the numbers, usually" / "relics stay home if we show up"
 - **A:** *(sometimes)* "heh, good" / "proud of us" / "love to hear it"
@@ -7722,7 +7722,7 @@ Levels 1–50 · 24 lines · about 5 min · roles: B (Healer/Shaman), C (Berserk
 - **A:** ok thats four answers
 - **F:** welcome to midgard
 - *(quiet for 30 seconds)*
-- **B:** real talk, healers never have trouble finding groups
+- **B:** lets be honest, healers never have trouble finding groups
 - **C:** and never have fun soloing
 - **B:** pac healers solo fine if theyre careful
 - **C:** careful is a polite word for slow
@@ -7858,7 +7858,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Cleric), C (Armsman/Palad
 - **F:** "sorry to jump in, how do clerics get the rez? is it a spec thing" / "quick newbie question, does every cleric get rez or only rejuv ones"
 - **B:** "every cleric rezzes, dont worry about that part" / "all of us rez, the spec only changes what else you do"
 - **F:** "ok cool ty, carry on arguing" / "ty! ok back to the fight, pretend i was never here"
-- **D:** "honest take, rejuv clerics get invites in seconds. smite clerics wait" / "real talk, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two"
+- **D:** "honest take, rejuv clerics get invites in seconds. smite clerics wait" / "no lie, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two"
 - **A:** two is enough, i only need one good group
 - **C:** "and i only need one cleric who watches my health bar" / "im happy with any cleric that watches the health bars"
 - *(quiet for 20 seconds)*
@@ -7904,7 +7904,7 @@ Levels 15–50 · 23 lines · about 4 min · roles: B (Friar), C (Friar/Cleric),
 
 Levels 25–50 · 22 lines · about 4 min · roles: B (Armsman), C (Armsman), D (NoLifer), E (Cleric/Friar)
 
-- **A:** "armsmen, settle something for me. polearm, two hander or crossbow?" / "{q} rolling an armsman alt, which weapon line actually matters" / "polearm or two handed, and is crossbow worth any points at all"
+- **A:** "armsmen, settle something for me. polearm, two hander or crossbow?" / "{q} rolling an armsman alt, which weapon line actually matters?" / "polearm or two handed, and is crossbow worth any points at all"
 - **B:** "polearm. the reach, the positional styles, it feels like what an armsman should be" / "polearm all day, nothing says albion like a halberd"
 - **C:** "two handed. bigger swings, simpler setup, less fussing with positions" / "two hander here. i dont want to dance around a monster to hit hard"
 - **B:** "the dancing is the fun part" / "positionals are half the class, you skip half the class"
@@ -7934,7 +7934,7 @@ Levels 25–50 · 22 lines · about 4 min · roles: B (Armsman), C (Armsman), D 
 
 Levels 20–50 · 20 lines · about 3 min · roles: B (Paladin), C (Minstrel), D (Leveler), E (Socialite)
 
-- **A:** "paladins, how many chants do you actually keep going at once" / "{q} how do paladins juggle chants without going crazy" / "is chant twisting on a paladin worth learning or just a show off thing"
+- **A:** "paladins, how many chants do you actually keep going at once" / "{q} how do paladins juggle chants without going crazy?" / "is chant twisting on a paladin worth learning or just a show off thing"
 - **B:** "one steady, and i twist more in between swings" / "depends on the fight. endurance always, then i weave in the heal and the damage"
 - **C:** "minstrel here, welcome to the twisting club, we have headaches" / "twisting is a full time job, ask any minstrel"
 - **D:** i have grouped with paladins who twist and ones who dont. night and day difference
@@ -8018,7 +8018,7 @@ Levels 35–50 · 19 lines · about 3 min · roles: B (Scout), C (Armsman/Mercen
 
 Levels 30–50 · 22 lines · about 4 min · roles: B (Infiltrator), C (Infiltrator), D (Leveler), E (Daredevil)
 
-- **A:** "who is going infil hunting in the frontier tonight, any takers" / "{q} any infiltrators up for a stealth hunt in Forest Sauvage tonight"
+- **A:** "who is going infil hunting in the frontier tonight, any takers" / "{q} any infiltrators up for a stealth hunt in Forest Sauvage tonight?"
 - **B:** "im in. last night in Snowdonia was a feast" / "i like it, i had a great run in Snowdonia last night"
 - **C:** "careful, their shadowblades love hunting other stealthers" / "heads up, their nightshades go looking for infils on purpose"
 - **B:** good. i want a stealther fight more than a lone caster anyway
@@ -8048,7 +8048,7 @@ Levels 30–50 · 22 lines · about 4 min · roles: B (Infiltrator), C (Infiltra
 
 Levels 20–50 · 21 lines · about 4 min · roles: B (Minstrel), C (Sorcerer), D (Socialite), E (Leveler), A (Minstrel)
 
-- **A:** "is it just me or does every group invite open with "u have speed?"" / "{q} anyone else play a minstrel and feel like a horse with a lute"
+- **A:** "is it just me or does every group invite open with "u have speed?"" / "{q} anyone else play a minstrel and feel like a horse with a lute?"
 - **B:** "every single invite. speed first, everything else second" / "i got invited, then asked to sing, then asked to sing faster"
 - **C:** at least they want you. sorcerers get invited and then ignored until the adds come
 - **B:** you get to mez the adds. i get to mez the adds AND be a horse
@@ -8077,7 +8077,7 @@ Levels 20–50 · 21 lines · about 4 min · roles: B (Minstrel), C (Sorcerer), 
 
 Levels 20–50 · 23 lines · about 4 min · roles: B (Wizard), C (Wizard), D (Wizard/Theurgist), E (NoLifer)
 
-- **A:** "wizards, earth, cold or fire, which line are you running?" / "{q} rolling a wizard alt, which line do i dump points into" / "earth cold or fire, and dont tell me it doesnt matter"
+- **A:** "wizards, earth, cold or fire, which line are you running?" / "{q} rolling a wizard alt, which line do i dump points into?" / "earth cold or fire, and dont tell me it doesnt matter"
 - **B:** "fire. its the biggest number on the screen and thats all i want" / "fire, because when it lands everyone notices"
 - **C:** "cold. the steady choice, less flashy but i rarely regret it" / "cold. less noise, more consistency"
 - **D:** "earth. nobody talks about earth and thats why i like it" / "earth here, we are rare and smug about it"
@@ -8108,12 +8108,12 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Wizard), C (Wizard), D (W
 
 Levels 20–50 · 20 lines · about 4 min · roles: B (Theurgist), C (Cleric/Friar), D (Leveler), E (Armsman/Paladin)
 
-- **A:** "theurg question, do your pets ever stop running off and pulling the whole room" / "{q} how do theurgists keep their pets from wandering into extra mobs"
+- **A:** "theurg question, do your pets ever stop running off and pulling the whole room" / "{q} how do theurgists keep their pets from wandering into extra mobs?"
 - **B:** "they dont. thats part of the charm" / "short answer no. long answer also no"
 - **C:** "as a healer who has grouped with a theurg, the pets have a mind of their own" / "healed for a theurg once. never again, too many adds"
 - **B:** never again until you need someone to solo with you
 - *(quiet for 25 seconds)*
-- **D:** "real talk, theurgs level faster solo than anyone i know" / "theurgists solo better than any class i have tried"
+- **D:** "honestly, theurgs level faster solo than anyone i know" / "theurgists solo better than any class i have tried"
 - **B:** "summon, summon, summon, then sit. thats the whole loop" / "keep summoning and keep moving, the pets do the rest"
 - **E:** "and when it goes wrong in a group the tank eats it" / "tank perspective: theurg pets pull aggro then die and it all comes to me"
 - **B:** "youre a tank, eating it is the job" / "thats literally why you wear plate"
@@ -8168,7 +8168,7 @@ Levels 20–50 · 24 lines · about 4 min · roles: B (Sorcerer), C (Wizard), D 
 
 Levels 15–50 · 21 lines · about 4 min · roles: B (Cabalist), C (Cabalist), D (Explorer), E (Crafter)
 
-- **A:** "cabalists, why does everyone call you the slow class" / "{q} is cabalist as slow as people say"
+- **A:** "cabalists, why does everyone call you the slow class" / "{q} is cabalist as slow as people say?"
 - **B:** "because we are. dots tick, the simulacrum hits, and we wait" / "slow and steady. dot, dot, pet, wait"
 - **C:** "slow is a feature, nothing gets away from a dot" / "slow kills are still kills. ask anything that ran from my dots"
 - **D:** "what even is a simulacrum? the glowing rock thing that follows you around?" / "is the simulacrum a pet or a statue? it looks like a walking gemstone"
@@ -8197,7 +8197,7 @@ Levels 15–50 · 21 lines · about 4 min · roles: B (Cabalist), C (Cabalist), 
 
 Levels 20–50 · 23 lines · about 4 min · roles: B (Necromancer), C (Cleric), D (Socialite), E (Leveler)
 
-- **A:** "grouped with a necro tonight and i still dont understand what happened" / "{q} can someone explain necromancers to me, our healer got so confused"
+- **A:** "grouped with a necro tonight and i still dont understand what happened" / "{q} our healer got so confused, can someone explain necromancers to me?"
 - **B:** "necro here, ask away, we are used to it" / "ask me, im the pet. or the shade. depends when you ask"
 - **A:** "our cleric tried to heal the necro and the heal went to the pet" / "the heals kept landing on the pet instead of the robe guy"
 - **B:** "correct. the pet is my body now. heal the pet" / "the pet is the real target. im just a shade along for the ride"
@@ -8228,7 +8228,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Necromancer), C (Cleric),
 
 Levels 1–24 · 21 lines · about 4 min · roles: B (Leveler), C (Explorer), D (Socialite), E (NoLifer), A
 
-- **A:** "first character ever, just left Cotswold. where should i go next" / "{q} brand new, finished the Cotswold quests, what comes after" / "hi all, first night playing, where do people level after Cotswold"
+- **A:** "first character ever, just left Cotswold. where should i go next" / "{q} brand new, finished the Cotswold quests, what comes after?" / "hi all, first night playing, where do people level after Cotswold"
 - **B:** "welcome! Camelot Hills first, the snakes and bandits are easy xp" / "grats on starting. Camelot Hills next, plenty of snakes and young boars"
 - **C:** "and stay away from anything red or purple, even if it looks like a snake" / "rule one, check the con color. purple snakes arent your friends"
 - **A:** con color?
@@ -8257,7 +8257,7 @@ Levels 1–24 · 21 lines · about 4 min · roles: B (Leveler), C (Explorer), D 
 
 Levels 25–45 · 21 lines · about 4 min · roles: B (Leveler), C (Explorer), D (Daredevil), E (NoLifer), A
 
-- **A:** "outleveled Cornwall tonight. where do people go in the 30s these days" / "{q} done with the moor wolves in Cornwall, whats next for the low 30s" / "outleveled cornwall, where to now"
+- **A:** "outleveled Cornwall tonight. where do people go in the 30s these days" / "{q} done with the moor wolves in Cornwall, whats next for the low 30s?" / "outleveled cornwall, where to now"
 - **B:** "gz! Llyn Barfog is decent if you can find a group" / "grats. Llyn Barfog has groups most evenings"
 - **C:** "Lyonesse has the hamadryads, quiet and pretty" / "try Lyonesse, the hamadryads, nobody is ever there"
 - **D:** "or Dartmoor if you like living dangerously" / "Dartmoor. bring a healer and an exit plan"
@@ -8286,7 +8286,7 @@ Levels 25–45 · 21 lines · about 4 min · roles: B (Leveler), C (Explorer), D
 
 Levels 20–45 · 22 lines · about 4 min · roles: B (Explorer), C (Leveler), D (Crafter), E (Socialite)
 
-- **A:** "honest opinion, is the shrouded isles leveling better than the classic zones" / "{q} avalon or the old zones for leveling, which do you prefer"
+- **A:** "honest opinion, is the shrouded isles leveling better than the classic zones" / "{q} avalon or the old zones for leveling, which do you prefer?"
 - **B:** "avalon. the Isle of Glass alone is worth the box" / "Avalon, every corner looks new. the old zones feel tired to me"
 - **C:** "classic. i know every pull in Cornwall, why would i relearn everything" / "classic zones. i know where every spawn is, thats speed"
 - **B:** knowing every spawn is why everyone else is there too
@@ -8344,7 +8344,7 @@ Levels 10–50 · 20 lines · about 4 min · roles: B (Socialite), C (Crafter), 
 
 Levels 35–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Cleric/Friar), E (Leveler), F (Armsman/Paladin)
 
-- **A:** "{q} why does it feel like every night one of our keeps gets hit and nobody is home" / "{q} anyone else notice our keeps fall while the whole realm is leveling"
+- **A:** "{q} why does it feel like every night one of our keeps gets hit and nobody is home?" / "{q} anyone else notice our keeps fall while the whole realm is leveling?"
 - **B:** "keeps fall all the time and half the realm never even notices" / "a keep flips, the claim goes with it, and nobody blinks"
 - **C:** "i notice. im usually the only one there" / "i have been the only one at a door before. it was a long minute"
 - *(quiet for 25 seconds)*
@@ -8373,7 +8373,7 @@ Levels 35–50 · 20 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Socialite), E (Leveler) · plays only when: day
 
-- **A:** "{q} why do relic raids always happen at five am, who is awake for that" / "{q} the mids love a dawn relic raid, have you noticed"
+- **A:** "{q} why do relic raids always happen at five am, who is awake for that?" / "{q} the mids love a dawn relic raid, have you noticed?"
 - **B:** "they come when nobody is online to stop them" / "dawn raids work because every defender is asleep"
 - **C:** "classic. nobody defends at five" / "of course they came at dawn. they always come at dawn"
 - **D:** "the worst is hearing about it from your guild over coffee" / "finding out over breakfast is the worst part"
@@ -8404,7 +8404,7 @@ Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 45–50 · 24 lines · about 5 min · roles: B (NoLifer), C (Cleric), D (Daredevil), E (Socialite), F (Crafter)
 
-- **A:** "Golestandt raid sunday, how many are we so far" / "{q} head count for the dragon on sunday, who is in"
+- **A:** "Golestandt raid sunday, how many are we so far" / "{q} head count for the dragon on sunday, who is in?"
 - **B:** "i count thirty-one confirmed, we need more healers" / "around thirty so far. short on clerics as always"
 - **C:** "cleric, im in. i will bring two more from my guild" / "me and two rejuv clerics from my guild, maybe"
 - **D:** "i have never seen the dragon. is it as bad as people say" / "first dragon for me. what am i walking into"
@@ -8437,7 +8437,7 @@ Levels 45–50 · 24 lines · about 5 min · roles: B (NoLifer), C (Cleric), D (
 
 Levels 30–50 · 21 lines · about 4 min · roles: B (Leveler), C (NoLifer), D (Explorer), E (Daredevil)
 
-- **A:** "{q} how do you even tell if DF is open for us" / "{q} anyone know how albion keeps Darkness Falls open"
+- **A:** "{q} how do you even tell if DF is open for us?" / "{q} anyone know how albion keeps Darkness Falls open?"
 - **B:** "type /realm, or walk to the entrance and see if it lets you in" / "/realm shows who holds it. it opens when we hold the most keeps, go while it lasts"
 - **C:** "and when its open, thank whoever held the keeps" / "it stays open because someone holds the keeps all day, thank them"
 - **A:** "thank you keep people" / "heroes of the frontier"
@@ -8529,7 +8529,7 @@ Levels 20–50 · 23 lines · about 4 min · roles: B (Crafter), C (Crafter), D 
 
 Levels 20–50 · 23 lines · about 5 min · roles: B (Explorer), C (Daredevil), D (Socialite), E (Leveler) · plays only when: night
 
-- **A:** "still on at this hour. anyone else awake" / "{q} who else is up this late"
+- **A:** "still on at this hour. anyone else awake" / "{q} who else is up this late?"
 - **B:** "here. sitting in the barrows waiting for a respawn" / "awake and on a slow camp"
 - **C:** "here. ran from a red con for twenty minutes, too wired to sleep" / "still up. just survived something i shouldnt have"
 - **D:** "tell the story!" / "ok you have to tell us now"
@@ -8561,7 +8561,7 @@ Levels 20–50 · 23 lines · about 5 min · roles: B (Explorer), C (Daredevil),
 
 Levels 20–50 · 21 lines · about 4 min · roles: B (Socialite), C (NoLifer), D (Wizard/Sorcerer/Theurgist/Cabalist), E (Armsman/Paladin)
 
-- **A:** "why do the mids always roll in with twice our numbers" / "{q} where do the mids keep finding all these people"
+- **A:** "why do the mids always roll in with twice our numbers" / "{q} where do the mids keep finding all these people?"
 - **B:** "they clone them in Jordheim" / "they grow them in the snow, everyone knows that"
 - **C:** "they have more people, we have better casters, it evens out" / "numbers versus casters, it has always been that way"
 - **D:** "correct. one well placed spell and their numbers are a lot smaller" / "albion casters, the great equalizer"
@@ -8601,7 +8601,7 @@ Levels 38–50 · 6 lines · about 1 min · roles: B (Leveler), C
 
 Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 
-- **A:** "just made a char, im in cotswold, what now" / "new to albion, what do i do in cotswold" / "{q} new here, where should i go first"
+- **A:** "just made a char, im in cotswold, what now" / "new to albion, what do i do in cotswold" / "{q} new here, where should i go first?"
 - **B:** "see your trainer, then hunt outside town in camelot hills" / "camelot hills is right outside, start there"
 - **C:** "snakes and young boars first, bandits once you have a few levels" / "start small, emerald snakes and young boars, then work up"
 - **A:** *(sometimes)* "anything i should avoid" / "what kills newbies here" / "any tips"
@@ -8613,7 +8613,7 @@ Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 Levels 7–14 · 6 lines · about 1 min · roles: B (Daredevil), C
 
 - **A:** "lfm tomb of mithra, newbie run, pst" / "tomb of mithra, need a few more, pst me" / "mithra run, send a tell"
-- **B:** "tell sent" / "pst sent" / "me, sending you a tell"
+- **B:** "tell sent" / "pst sent" / "me! pick me, tell sent"
 - **C:** "its dark and full of ghosts, have fun" / "the haunting glooms used to give me nightmares" / "mithra, good memories, go"
 - **B:** "do we have a healer" / "who is healing" / "is anyone bringing a cleric"
 - **A:** "a friar said maybe, we will see" / "no healer yet, we are brave" / "we go anyway, sitting is free"
@@ -8645,7 +8645,7 @@ Levels 10–45 · 6 lines · about 1 min · roles: B (Minstrel), C
 
 Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
-- **A:** "{q} why do the mids always go for caer benowyc first" / "{q} does midgard know we have other keeps than benowyc" / "{q} do the mids ever try any keep but benowyc"
+- **A:** "{q} why do the mids always go for caer benowyc first?" / "{q} does midgard know we have other keeps than benowyc?" / "{q} do the mids ever try any keep but benowyc?"
 - **B:** "its the closest door to their gate" / "first keep on their way in, they are not creative" / "short walk, big door, that is their whole plan"
 - **A:** "and always with a ram and a pile of healers" / "never a small group either, a crowd every time" / "two groups and a ram, like clockwork"
 - **C:** "suits me, i always know where to find a fight" / "i ride to benowyc before anyone even calls it" / "fine by me, saves me looking for them"
@@ -8671,7 +8671,7 @@ Levels 5–25 · 6 lines · about 1 min · roles: A (Necromancer), B (Necromance
 - **A:** "necro question, why did i turn into a shadow" / "i cast my pet and became a shade??" / "what is shade form, am i bugged"
 - **B:** "thats normal, you are a shade and the pet does the work" / "not bugged, the pet is your real body in a fight"
 - **C:** "necros are so weird, love them" / "necromancers, the strangest class in albion"
-- **A:** *(sometimes)* "so i just stand there?" / "can i still cast" / "what happens if the pet dies"
+- **A:** *(sometimes)* "so i stand around and wait?" / "can i still cast" / "what happens if the pet dies"
 - **B:** "keep the pet alive, thats the whole game" / "protect the pet and you will be fine" / "look after the pet and it looks after you"
 - **A:** "ok" / "weird but ok" / "interesting"
 
@@ -8723,7 +8723,7 @@ Levels 35–50 · 6 lines · about 1 min · roles: B (Infiltrator), C
 
 Levels 15–45 · 7 lines · about 1 min · roles: B (Reaver), C (Reaver)
 
-- **A:** "reaver question, flexible or soulrending" / "new reaver, which line first" / "{q} what do reavers spec"
+- **A:** "reaver question, flexible or soulrending" / "new reaver, which line first" / "{q} what do reavers spec?"
 - **B:** "soulrending, the lifetaps keep you alive" / "soulrending first, the taps are the class"
 - **C:** "flexible, the flex weapons are the fun part" / "flexible first, the whip is why you rolled a reaver"
 - **B:** "fun does not keep you standing" / "you can have fun after you stop dying"
@@ -8746,7 +8746,7 @@ Levels 15–45 · 6 lines · about 1 min · roles: B (Armsman), C (Armsman)
 
 Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
-- **A:** "{q} why is it always a night raid when a relic goes" / "{q} has albion ever lost a relic while people were awake" / "{q} do relics only ever move in the middle of the night"
+- **A:** "{q} why is it always a night raid when a relic goes?" / "{q} has albion ever lost a relic while people were awake?" / "{q} do relics only ever move in the middle of the night?"
 - **B:** "because nobody is on to stop it" / "its the only hour they can get past us" / "guards alone dont stop forty people"
 - **C:** "and then we take it back on the weekend with half the realm" / "then prime time comes and we go get it" / "we always walk it home again, it just takes a few tries"
 - **A:** *(sometimes)* "so we lose them asleep and win them back awake" / "sneaky mids" / "sounds about right"
@@ -9728,7 +9728,7 @@ Levels 35–50 · 22 lines · about 4 min · roles: B (Wizard), C (Sorcerer), D 
 - **B:** ouch
 - **C:** fair though
 - *(quiet for 25 seconds)*
-- **D:** real talk, pets carry solo play. no caster solos like a theurgist
+- **D:** honestly, pets carry solo play. no caster solos like a theurgist
 - **E:** necromancers might disagree
 - **D:** necromancers arent even sure what they are
 - **B:** and wizards solo just fine if you kite
@@ -9844,7 +9844,7 @@ Levels 15–25 · 6 lines · about 1 min · roles: B (Leveler), C (Explorer)
 
 Levels 25–50 · 24 lines · about 4 min · roles: B (Druid), C (Bard), D (Warden), E (Leveler/Socialite)
 
-- **A:** "{q} rolling a healer alt. druid, bard or warden?" / "{q} need a hib healer alt, which one would you pick" / "ok healers of hibernia, convince me"
+- **A:** "{q} rolling a healer alt. druid, bard or warden?" / "{q} need a hib healer alt, which one would you pick?" / "ok healers of hibernia, convince me"
 - **B:** "druid. biggest heals in the realm and nobody argues" / "druid, hands down. the heals are why groups survive"
 - **C:** "bard. you heal, you run speed, you mez the add. every group wants you" / "bard, because a group without speed is a group walking home slowly"
 - **D:** "warden. you can stand in melee and not fold" / "warden, heal from the front line with a weapon in your hand"
@@ -10114,7 +10114,7 @@ Levels 30–50 · 20 lines · about 4 min · roles: B (Ranger), C (NoLifer), D (
 
 Levels 35–50 · 21 lines · about 4 min · roles: B (Animist), C (NoLifer), D (Eldritch), E (Socialite), F
 
-- **A:** "{q} is it just me or do animists win every keep defense now" / "{q} are animists the best keep defenders we have"
+- **A:** "{q} is it just me or do animists win every keep defense now?" / "{q} are animists the best keep defenders we have?"
 - **B:** "put me on a wall with shrooms and watch" / "give me a wall and i will fill it with turrets"
 - **C:** "please dont plant the whole wall, my frame rate cant take it" / "last defense with three animists was a slideshow for me"
 - **B:** "enough to keep the ram crew busy" / "as many as the wall will hold"
@@ -10159,7 +10159,7 @@ Levels 20–45 · 22 lines · about 4 min · roles: B (Valewalker), C (Socialite
 - *(quiet for 25 seconds)*
 - **E:** "give it time, people will figure them out" / "honestly i think valewalkers are going to surprise people"
 - **D:** "i would try one as a second melee next to a hero" / "put one in the front with a hero, see what happens"
-- **B:** "i will hold you to that" / "i will remember you said that"
+- **B:** "noted. ill bring it up later" / "i will remember you said that"
 - **A:** "last question. why a scythe, of all things" / "why a scythe though"
 - **B:** "because it looks amazing" / "do you need more reason than style"
 - **C:** "hard to argue with that" / "cant argue there"
@@ -10327,7 +10327,7 @@ Levels 1–50 · 22 lines · about 4 min · roles: B (Socialite), C (Crafter), D
 
 Levels 40–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Druid), E (Socialite), F · plays only when: night
 
-- **A:** "{q} anyone else notice midgard always hits the relic keeps around 4am" / "{q} why are the night raids on our relics always the mids"
+- **A:** "{q} anyone else notice midgard always hits the relic keeps around 4am?" / "{q} why are the night raids on our relics always the mids?"
 - **B:** "of course, they always come when we sleep" / "naturally they wait until we are all asleep"
 - **C:** "i have run to a relic defense half asleep more than once" / "last time i ran over in my pajamas"
 - **D:** "druid here, at that hour i always end up healing the door crew" / "if im up, i heal the door crew, every time"
@@ -10358,7 +10358,7 @@ Levels 40–50 · 23 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), D (Bard), E (Enchanter), F (Leveler)
 
-- **A:** "best thing in the game is a three way fight in emain, nobody can tell me otherwise" / "{q} anyone else live for the three realm fights in emain"
+- **A:** "best thing in the game is a three way fight in emain, nobody can tell me otherwise" / "{q} anyone else live for the three realm fights in emain?"
 - **B:** "nothing better than a three way fight" / "the best fight in the game, three realms in one field"
 - **F:** "my computer cant handle emain, last time i froze and died" / "i went once and my screen turned into a slideshow"
 - **C:** "everybody lags in emain, push through" / "turn everything down and run in"
@@ -10388,7 +10388,7 @@ Levels 40–50 · 22 lines · about 4 min · roles: B (NoLifer), C (Daredevil), 
 
 Levels 35–50 · 21 lines · about 4 min · roles: B (Socialite), C (NoLifer), D (Leveler), E (Crafter)
 
-- **A:** "{q} our guild wants to claim a keep, good idea or not" / "{q} would it be dumb to put our guild banner on a keep"
+- **A:** "{q} our guild wants to claim a keep, good idea or not?" / "{q} would it be dumb to put our guild banner on a keep?"
 - **B:** "go for it, enjoy it while it lasts" / "sure, how long until someone takes it"
 - **C:** "claiming is easy, holding it is the job" / "holding a keep is the part that matters"
 - **A:** "we have a few night owls, we will manage" / "we have people on at odd hours, should be fine"
@@ -10525,7 +10525,7 @@ Levels 15–50 · 24 lines · about 4 min · roles: B (Crafter), C (Crafter), D 
 - **B:** "pst me the details, i will see what i can do" / "send me a tell with the type, i will quote you"
 - **D:** *(sometimes)* "ask for the quality before you pay" / "always check the quality before you hand over coin"
 - *(quiet for 20 seconds)*
-- **E:** "which craft is the worst to level" / "whats the most annoying craft to grind"
+- **E:** "what craft is the biggest pain to level" / "whats the most annoying craft to grind"
 - **B:** "tailoring, so many leathers, so many patterns" / "tailoring. i dream of leather now"
 - **C:** "fletching. the arrows never end" / "fletching, a lifetime of arrows"
 - **D:** "all of them, thats why i buy" / "every single one, thats why i pay crafters"
@@ -10593,7 +10593,7 @@ Levels 20–29 · 20 lines · about 4 min · roles: B (Bard), C (Daredevil), D (
 
 Levels 18–26 · 6 lines · about 1 min · roles: B (Leveler), C
 
-- **A:** "anyone in spraggon den?" / "spraggon den check" / "{q} is spraggon den full tonight"
+- **A:** "anyone in spraggon den?" / "spraggon den check" / "{q} is spraggon den full tonight?"
 - **B:** "we have the pit spraggons, the rest looks open" / "one group in there, plenty of room" / "the cutters are free, we are on the sprites"
 - **A:** "ty" / "ok, good to know" / "cool"
 - **C:** *(sometimes)* "spraggon den, where every hib grew up" / "i must have killed a thousand spraggons there" / "love that place"
@@ -10627,7 +10627,7 @@ Levels 5–20 · 6 lines · about 1 min · roles: B, C (Socialite)
 
 Levels 20–50 · 6 lines · about 1 min · roles: B (Bard/Mentalist), C (Enchanter)
 
-- **A:** "who broke the mez in my group earlier" / "the mez broke on us again tonight" / "who woke up the adds on our last pull"
+- **A:** "who broke the mez in my group earlier" / "mez got broken on us again, same as always" / "who woke up the adds on our last pull"
 - **C:** "my area spell, sorry" / "that was me, the area spell hit the mezzed ones" / "oops, my spell hit everything"
 - **B:** "no area damage near the mezzed ones, please" / "please target only the one we are killing" / "i just mezzed those, give me a break"
 - **C:** "sorry, sticking to single target" / "ok, will be careful" / "my bad, wont happen again"
@@ -10649,7 +10649,7 @@ Levels 15–50 · 6 lines · about 1 min · roles: B (Animist), C
 
 Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
-- **A:** "{q} why do the albs always walk straight to dun crauchon" / "{q} is crauchon the only keep the albs can find" / "{q} does any keep in emain get rammed as often as crauchon"
+- **A:** "{q} why do the albs always walk straight to dun crauchon?" / "{q} is crauchon the only keep the albs can find?" / "{q} does any keep in emain get rammed as often as crauchon?"
 - **B:** "first door past the mile gate, they never look further" / "its the nearest one, that is all the thinking they do" / "because it worked once and they never forgot"
 - **A:** "always a ram, always scouts on the hill behind it" / "a full group, a ram and somebody shooting the walls" / "they never even try the walls, only the door"
 - **C:** "i like it, nobody has to tell me where the fight is" / "fine by me, i know where to ride every time" / "good. i bind as close to crauchon as i can"
@@ -10661,19 +10661,19 @@ Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil)
 
 Levels 10–45 · 7 lines · about 1 min · roles: B (Eldritch), C (Eldritch)
 
-- **A:** "eldritch question, light, mana or void" / "new eldritch, where do my points go" / "{q} eldritches, which line"
+- **A:** "eldritch question, light, mana or void" / "new eldritch here, which line gets my points" / "{q} eldritches, which line?"
 - **B:** "void, the damage is the whole point" / "void, nothing else comes close"
 - **C:** "light, it is cheap on power and you keep casting" / "light, you will never run out of power"
 - **B:** "running out of power is your own fault" / "power is for spending"
 - **C:** "tell that to the group sitting while you med" / "i never sit, you always sit"
 - **D:** *(sometimes)* "mana is the real answer and you both know it" / "some mana helps either way"
-- **A:** "ok" / "helpful as always" / "i will try one and see"
+- **A:** "ok" / "helpful as always" / "ill try it out and see"
 
 ### sh hib mag mell start
 
 Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 
-- **A:** "just started, im in mag mell, what now" / "new hib, what do i do in mag mell" / "{q} new here, where do i hunt"
+- **A:** "just started, im in mag mell, what now" / "new hib, what do i do in mag mell" / "{q} new here, where do i hunt?"
 - **B:** "kill the small stuff around town, lough wolves and orchard nippers" / "start outside mag mell, the wolves and the nippers"
 - **C:** "talk to your trainer first, they give you a few tasks" / "see your trainer and spend your points"
 - **A:** *(sometimes)* "anything to watch out for" / "what should i stay away from" / "any advice"
@@ -10684,13 +10684,13 @@ Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 
 Levels 20–50 · 8 lines · about 1 min · roles: B (Ranger), C (Nightshade)
 
-- **A:** "ranger or nightshade, which is better" / "{q} ranger or nightshade for rvr" / "thinking ranger, or nightshade?"
+- **A:** "ranger or nightshade, which is better" / "{q} ranger or nightshade for rvr?" / "thinking ranger, or nightshade?"
 - **B:** "ranger, recurve bow and celtic dual, range and melee" / "ranger, you can shoot and stab"
 - **C:** "nightshade, nightshade magic and stealth, you pick the fight" / "nightshade, critical strike and you win"
 - **B:** "you have to get close though" / "rangers see you coming"
-- **C:** "they never see me coming" / "i am already behind you"
+- **C:** "nobody sees a nightshade coming" / "i am already behind you"
 - **A:** *(sometimes)* "lol" / "spooky" / "ok then"
-- **B:** "ranger to level, nightshade if you like ambushes" / "depends on the playstyle, both are fine"
+- **B:** "ranger to level, nightshade if you like ambushes" / "depends how you like to play, both are fine"
 - **C:** "grudgingly agreed" / "fine, both then"
 
 ### sh hib glimmer king
@@ -10708,9 +10708,9 @@ Levels 47–50 · 6 lines · about 1 min · roles: B (Druid/Bard/Warden), C (Dar
 
 Levels 35–50 · 6 lines · about 1 min · roles: B (Explorer), C (Leveler)
 
-- **A:** "anyone leveling in hy brasil?" / "is domnann worth it" / "{q} any good spots in hy brasil"
+- **A:** "anyone leveling in hy brasil?" / "is domnann worth it" / "{q} any good spots in hy brasil?"
 - **B:** "domnann is beautiful and empty" / "world's end is worth the trip" / "hy brasil is empty, great xp"
-- **C:** "empty means no group though" / "the classic zones have the groups" / "i stay where the people are"
+- **C:** "empty zone, empty group list though" / "the classic zones have the groups" / "i stay where the people are"
 - **B:** "solo is fine with no ks" / "quiet is the point" / "no competition at all"
 - **A:** *(sometimes)* "i will check it out" / "sounds fun" / "ok"
 - **C:** "have fun alone" / "send a postcard" / "gl"
@@ -10719,7 +10719,7 @@ Levels 35–50 · 6 lines · about 1 min · roles: B (Explorer), C (Leveler)
 
 Levels 5–40 · 7 lines · about 1 min · roles: B (Valewalker), C
 
-- **A:** "valewalker question, scythe or arboreal path" / "new valewalker, what do i spec" / "{q} valewalkers, which line first"
+- **A:** "valewalker question, scythe or arboreal path" / "new valewalker, what do i spec" / "{q} valewalkers, which line first?"
 - **B:** "scythe for leveling, arboreal path later" / "scythe early, arboreal path once you have the levels"
 - **C:** "nobody knows how valewalkers work yet" / "valewalkers, still a mystery" / "i have never even grouped with one"
 - **B:** "we know, trust us" / "lol" / "we are rare but we exist"
@@ -10741,7 +10741,7 @@ Levels 20–49 · 5 lines · about 1 min · roles: B (Druid), C (Socialite)
 
 Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
-- **A:** "{q} how often do our relics actually leave home" / "{q} anyone know when we last lost a relic" / "relics, do we ever lose them?"
+- **A:** "{q} how often do our relics actually leave home?" / "{q} how long since we lost a relic?" / "relics, do we ever lose them?"
 - **B:** "not often" / "not as often as the mids think" / "rarely, for now"
 - **C:** "hibernia holds" / "mids tried last week" / "the albs keep trying"
 - **A:** *(sometimes)* "good" / "heh" / "nice"
@@ -10752,7 +10752,7 @@ Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
 Levels 20–45 · 8 lines · about 1 min · roles: B (Champion), C (Hero)
 
-- **A:** "champion or hero for my alt" / "{q} hero or champion" / "thinking about champion, or hero?"
+- **A:** "champion or hero for my alt" / "{q} hero or champion?" / "thinking about champion, or hero?"
 - **B:** "champion, valor and the debuffs" / "champion, valor wins fights"
 - **C:** "hero, celtic spear or large weapons, and you tank" / "hero, the best tank in hibernia"
 - **B:** "tanks are boring" / "a hero cant debuff"

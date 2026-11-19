@@ -3,7 +3,8 @@
 # channel, or a /beg) gets followed around the city and insulted until they leave it. Every coin and item is
 # real: given by a player (drag it onto the beggar), given by a passing bot from its own purse, or a begged item sold
 # at a merchant or listed on the Realm Exchange. {coin} is the amount, {hoard} the beggar's whole purse, {npc} the
-# merchant whose corner it is. Real swear words are not in the corpus: they swear the way 2003 chat did. New writing.
+# merchant whose corner it is. Swearing in 2003 style is allowed (owner, 2026-11-18; tools/bot-voices/banned.txt);
+# slurs are not. New writing.
 
 # ---- beg: to a real player walking past ----------------------------------------------------------
 @kind beggar
@@ -55,7 +56,7 @@ i will [pray|sing|chant] for you, {player}. for a silver. for a copper i will hu
 @kind beggar
 @topic beg_idle
 @who *
-[alms|alms for the poor|coin for the needy][! alms!|, anyone|, please|]
+[alms|alms for the hungry|spare a coin][! alms!|, anyone|, please|]
 [spare a copper|spare some coin|any spare coin][, anyone|, friends|][?|? anyone?]
 [will take|taking] [vendor trash|junk loot|old gear|anything] [off your hands|for free|gladly]. [drag it on me|just hand it over]
 [poor|old|humble] {class}, [down on my luck|fallen on hard times|out of coin]. [anything helps|please]
@@ -137,7 +138,7 @@ i [have|got] [no coin|nothing|less than you probably], {target}
 [not now|busy], {target}. [maybe later|ask someone else|ask the guards]
 {target} [youve asked me|you ask me] [every day|three times today|every time i pass]. no
 @who Leveler
-[no time|cant stop], {target}. [xp waits|camp waits|on my way out]
+[no time|cant stop], {target}. [xp waits|camp waits|just leaving]
 @who Daredevil
 [earn it|go earn it], {target}. [the frontier pays|go kill something|the realm needs swords not beggars]
 @who NoLifer
@@ -282,7 +283,7 @@ the only party i join is the one with [coin|a purse]. [got one?|you have one?]
 @kind beggar
 @topic corner
 @who *
-[this|THIS] [is|is MY] corner, {player}. [mine|MINE]. [nobody begs here but me|i have papers|ask anyone]
+[this is|THIS is|this is MY|THIS is MY] corner, {player}. [mine|MINE]. [nobody begs here but me|i have papers|ask anyone]
 [i have been|been|ive been] begging [on this corner|by {npc}] [since before you could walk|for years|since the realm was young]. [MINE|my corner]
 [the corner by|the spot by] {npc} [is|is MINE. its] [mine|taken|spoken for]. [find your own|go beg by the gates|the sewers have room]
 [nobody|NOBODY] [begs|works|sits] [my corner|by {npc}] [but me|without my blessing|and lives]

@@ -150,5 +150,56 @@ class Invites(unittest.TestCase):
         self.assertEqual(build_corpus.infer_invites('anyone seen the dragon today?', 'ambient'), 'ask_know')
 
 
+class EventAndSceneFiles(unittest.TestCase):
+    """Chat follow-up F2 (2026-11-18): E4's event files and E8's scene files are clean, so their hits now fail the build."""
+
+    @staticmethod
+    def owned(*owners):
+        return [p for p in sorted(build_corpus.CHAT.glob('*.lines')) if chat_rules.owner_of(p.name) in owners]
+
+    def parse(self, paths):
+        problems = []
+        audit = chat_rules.Audit(problems, {'E4', 'E8'})
+        build_corpus.AUDIT = audit
+        lines, scenes = [], []
+        try:
+            for path in paths:
+                l, s = build_corpus.parse_file(path, problems)
+                lines += l
+                scenes += s
+        finally:
+            build_corpus.AUDIT = None
+        return problems, audit, lines, scenes
+
+    def test_e4_and_e8_are_strict(self):
+        self.assertTrue({'E3', 'E4', 'E8'} <= chat_rules.STRICT_OWNERS)
+
+    def test_e4_and_e8_lines_pass_the_line_checks(self):
+        paths = self.owned('E4', 'E8')
+        self.assertGreater(len(paths), 15)
+        problems, audit, lines, scenes = self.parse(paths)
+        items = [(x['where'], x['text']) for x in lines] + [(b['where'], v) for sc in scenes for b in sc['beats']
+                                                             for v in b.get('variants', []) if 'where' in b]
+        chat_rules.vocabulary_audit(items, audit, chat_rules.load_vocabulary())
+        chat_rules.duplicates_audit(lines, audit)
+        self.assertEqual(problems, [])
+        self.assertEqual({o: v for o, v in audit.warnings.items() if o in ('E4', 'E8')}, {})
+
+    def test_thanks_topics_are_the_ones_the_server_asks_for(self):
+        # AutonomousLivingServer.Memory: a thanks line is picked by the memory's LastTopic, which is only "rez" or "group";
+        # extras.lines had a "heal" thanks line nobody could ever say.
+        problems, _, lines, _ = self.parse([build_corpus.CHAT / 'extras.lines'])
+        topics = {x['topic'] for x in lines if x['kind'] == 'thanks'}
+        self.assertTrue(topics)
+        self.assertLessEqual(topics, {'rez', 'group'})
+
+    def test_group_again_gossip_needs_a_real_group(self):
+        problems, _, lines, _ = self.parse([build_corpus.CHAT / 'extras.lines'])
+        again = [x for x in lines if x['kind'] == 'gossip' and 'group again' in x['text']]
+        self.assertTrue(again)
+        for x in again:
+            self.assertIn('player_grouped', x['needs'], x['text'])
+
+
 if __name__ == '__main__':
     unittest.main()

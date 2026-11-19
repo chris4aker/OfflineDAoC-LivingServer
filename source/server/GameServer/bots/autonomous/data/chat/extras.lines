@@ -138,9 +138,7 @@ any guild running groups tonight? {class} {level} here
 @who *
 {player}, ty for the patience with my pulls at {place}
 still talk about that group at {place}, ty {player}
-@topic heal
-@who *
-{player} you kept me alive at {place}, owe you one
+{player}, you kept me alive that whole group at {place}, owe you one
 @topic rez
 @who *
 {player} rezzed me in the worst spot at {place}, legend
@@ -163,4 +161,6 @@ there you are {player}, we were just talking about you
 @mood friendly
 @who *
 {player} is the kind of {player_class} you hope shows up when things go wrong
+@needs player_grouped
 {player}, [u around?|free?] want to group again
+@needs

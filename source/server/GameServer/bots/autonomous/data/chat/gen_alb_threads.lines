@@ -30,7 +30,7 @@ B: lol accurate
 F: sorry to jump in, how do clerics get the rez? is it a spec thing | quick newbie question, does every cleric get rez or only rejuv ones
 B: every cleric rezzes, dont worry about that part | all of us rez, the spec only changes what else you do
 F: ok cool ty, carry on arguing | ty! ok back to the fight, pretend i was never here
-D: honest take, rejuv clerics get invites in seconds. smite clerics wait | real talk, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two
+D: honest take, rejuv clerics get invites in seconds. smite clerics wait | no lie, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two
 A: two is enough, i only need one good group
 C: and i only need one cleric who watches my health bar | im happy with any cleric that watches the health bars
 ~ 20
@@ -82,7 +82,7 @@ D: a friar statue holding a staff and a heal potion | holding a staff in one han
 @role C class=Armsman
 @role D type=NoLifer
 @role E class=Cleric,Friar
-A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} rolling an armsman alt, which weapon line actually matters | polearm or two handed, and is crossbow worth any points at all
+A: armsmen, settle something for me. polearm, two hander or crossbow? | {q} rolling an armsman alt, which weapon line actually matters? | polearm or two handed, and is crossbow worth any points at all
 B: polearm. the reach, the positional styles, it feels like what an armsman should be | polearm all day, nothing says albion like a halberd
 C: two handed. bigger swings, simpler setup, less fussing with positions | two hander here. i dont want to dance around a monster to hit hard
 B: the dancing is the fun part | positionals are half the class, you skip half the class
@@ -115,7 +115,7 @@ A: ...i will think about it while i level | ok i will just flip a coin at the tr
 @role C class=Minstrel
 @role D type=Leveler
 @role E type=Socialite
-A: paladins, how many chants do you actually keep going at once | {q} how do paladins juggle chants without going crazy | is chant twisting on a paladin worth learning or just a show off thing
+A: paladins, how many chants do you actually keep going at once | {q} how do paladins juggle chants without going crazy? | is chant twisting on a paladin worth learning or just a show off thing
 B: one steady, and i twist more in between swings | depends on the fight. endurance always, then i weave in the heal and the damage
 C: minstrel here, welcome to the twisting club, we have headaches | twisting is a full time job, ask any minstrel
 D: i have grouped with paladins who twist and ones who dont. night and day difference
@@ -208,7 +208,7 @@ A: go on, i still have to sit | save me a hill
 @role C class=Infiltrator
 @role D type=Leveler
 @role E type=Daredevil
-A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight
+A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight?
 B: im in. last night in Snowdonia was a feast | i like it, i had a great run in Snowdonia last night
 C: careful, their shadowblades love hunting other stealthers | heads up, their nightshades go looking for infils on purpose
 B: good. i want a stealther fight more than a lone caster anyway
@@ -242,7 +242,7 @@ A: have fun out there, and stealth up before you leave the gate
 @role D type=Socialite
 @role E type=Leveler
 @role A class=Minstrel
-A: is it just me or does every group invite open with "u have speed?" | {q} anyone else play a minstrel and feel like a horse with a lute
+A: is it just me or does every group invite open with "u have speed?" | {q} anyone else play a minstrel and feel like a horse with a lute?
 B: every single invite. speed first, everything else second | i got invited, then asked to sing, then asked to sing faster
 C: at least they want you. sorcerers get invited and then ignored until the adds come
 B: you get to mez the adds. i get to mez the adds AND be a horse
@@ -274,7 +274,7 @@ B: and then ask for speed | you say that, but you would still ask for speed
 @role C class=Wizard
 @role D class=Wizard,Theurgist
 @role E type=NoLifer
-A: wizards, earth, cold or fire, which line are you running? | {q} rolling a wizard alt, which line do i dump points into | earth cold or fire, and dont tell me it doesnt matter
+A: wizards, earth, cold or fire, which line are you running? | {q} rolling a wizard alt, which line do i dump points into? | earth cold or fire, and dont tell me it doesnt matter
 B: fire. its the biggest number on the screen and thats all i want | fire, because when it lands everyone notices
 C: cold. the steady choice, less flashy but i rarely regret it | cold. less noise, more consistency
 D: earth. nobody talks about earth and thats why i like it | earth here, we are rare and smug about it
@@ -308,12 +308,12 @@ A: ill sleep on it lol
 @role C class=Cleric,Friar
 @role D type=Leveler
 @role E class=Armsman,Paladin
-A: theurg question, do your pets ever stop running off and pulling the whole room | {q} how do theurgists keep their pets from wandering into extra mobs
+A: theurg question, do your pets ever stop running off and pulling the whole room | {q} how do theurgists keep their pets from wandering into extra mobs?
 B: they dont. thats part of the charm | short answer no. long answer also no
 C: as a healer who has grouped with a theurg, the pets have a mind of their own | healed for a theurg once. never again, too many adds
 B: never again until you need someone to solo with you
 ~ 25
-D: real talk, theurgs level faster solo than anyone i know | theurgists solo better than any class i have tried
+D: honestly, theurgs level faster solo than anyone i know | theurgists solo better than any class i have tried
 B: summon, summon, summon, then sit. thats the whole loop | keep summoning and keep moving, the pets do the rest
 E: and when it goes wrong in a group the tank eats it | tank perspective: theurg pets pull aggro then die and it all comes to me
 B: youre a tank, eating it is the job | thats literally why you wear plate
@@ -375,7 +375,7 @@ B: i will believe that when a pull ends without fire
 @role C class=Cabalist
 @role D type=Explorer
 @role E type=Crafter
-A: cabalists, why does everyone call you the slow class | {q} is cabalist as slow as people say
+A: cabalists, why does everyone call you the slow class | {q} is cabalist as slow as people say?
 B: because we are. dots tick, the simulacrum hits, and we wait | slow and steady. dot, dot, pet, wait
 C: slow is a feature, nothing gets away from a dot | slow kills are still kills. ask anything that ran from my dots
 D: what even is a simulacrum? the glowing rock thing that follows you around? | is the simulacrum a pet or a statue? it looks like a walking gemstone
@@ -407,7 +407,7 @@ A: ok rolling one. the rock and i will be very happy
 @role C class=Cleric
 @role D type=Socialite
 @role E type=Leveler
-A: grouped with a necro tonight and i still dont understand what happened | {q} can someone explain necromancers to me, our healer got so confused
+A: grouped with a necro tonight and i still dont understand what happened | {q} our healer got so confused, can someone explain necromancers to me?
 B: necro here, ask away, we are used to it | ask me, im the pet. or the shade. depends when you ask
 A: our cleric tried to heal the necro and the heal went to the pet | the heals kept landing on the pet instead of the robe guy
 B: correct. the pet is my body now. heal the pet | the pet is the real target. im just a shade along for the ride
@@ -442,7 +442,7 @@ D: necromancers, the only class with a user manual
 @role D type=Socialite
 @role E type=NoLifer
 @role A levels=1-9
-A: first character ever, just left Cotswold. where should i go next | {q} brand new, finished the Cotswold quests, what comes after | hi all, first night playing, where do people level after Cotswold
+A: first character ever, just left Cotswold. where should i go next | {q} brand new, finished the Cotswold quests, what comes after? | hi all, first night playing, where do people level after Cotswold
 B: welcome! Camelot Hills first, the snakes and bandits are easy xp | grats on starting. Camelot Hills next, plenty of snakes and young boars
 C: and stay away from anything red or purple, even if it looks like a snake | rule one, check the con color. purple snakes arent your friends
 A: con color?
@@ -475,7 +475,7 @@ D: good luck! shout if you need help | holler if you get stuck, someone will com
 @role D type=Daredevil
 @role E type=NoLifer
 @role A levels=28-34
-A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, whats next for the low 30s | outleveled cornwall, where to now
+A: outleveled Cornwall tonight. where do people go in the 30s these days | {q} done with the moor wolves in Cornwall, whats next for the low 30s? | outleveled cornwall, where to now
 B: gz! Llyn Barfog is decent if you can find a group | grats. Llyn Barfog has groups most evenings
 C: Lyonesse has the hamadryads, quiet and pretty | try Lyonesse, the hamadryads, nobody is ever there
 D: or Dartmoor if you like living dangerously | Dartmoor. bring a healer and an exit plan
@@ -507,7 +507,7 @@ E: and this is how every route conversation ends, in a group lol | the route tal
 @role C type=Leveler
 @role D type=Crafter
 @role E type=Socialite
-A: honest opinion, is the shrouded isles leveling better than the classic zones | {q} avalon or the old zones for leveling, which do you prefer
+A: honest opinion, is the shrouded isles leveling better than the classic zones | {q} avalon or the old zones for leveling, which do you prefer?
 B: avalon. the Isle of Glass alone is worth the box | Avalon, every corner looks new. the old zones feel tired to me
 C: classic. i know every pull in Cornwall, why would i relearn everything | classic zones. i know where every spawn is, thats speed
 B: knowing every spawn is why everyone else is there too
@@ -572,7 +572,7 @@ B: see you all saturday :)
 @role D class=Cleric,Friar
 @role E type=Leveler levels=30-49
 @role F class=Armsman,Paladin
-A: {q} why does it feel like every night one of our keeps gets hit and nobody is home | {q} anyone else notice our keeps fall while the whole realm is leveling
+A: {q} why does it feel like every night one of our keeps gets hit and nobody is home? | {q} anyone else notice our keeps fall while the whole realm is leveling?
 B: keeps fall all the time and half the realm never even notices | a keep flips, the claim goes with it, and nobody blinks
 C: i notice. im usually the only one there | i have been the only one at a door before. it was a long minute
 ~ 25
@@ -605,7 +605,7 @@ B: here we go | about time someone said it
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
-A: {q} why do relic raids always happen at five am, who is awake for that | {q} the mids love a dawn relic raid, have you noticed
+A: {q} why do relic raids always happen at five am, who is awake for that? | {q} the mids love a dawn relic raid, have you noticed?
 B: they come when nobody is online to stop them | dawn raids work because every defender is asleep
 C: classic. nobody defends at five | of course they came at dawn. they always come at dawn
 D: the worst is hearing about it from your guild over coffee | finding out over breakfast is the worst part
@@ -641,7 +641,7 @@ A: see everyone out there | albion wakes up eventually
 @role D type=Daredevil
 @role E type=Socialite
 @role F type=Crafter
-A: Golestandt raid sunday, how many are we so far | {q} head count for the dragon on sunday, who is in
+A: Golestandt raid sunday, how many are we so far | {q} head count for the dragon on sunday, who is in?
 B: i count thirty-one confirmed, we need more healers | around thirty so far. short on clerics as always
 C: cleric, im in. i will bring two more from my guild | me and two rejuv clerics from my guild, maybe
 D: i have never seen the dragon. is it as bad as people say | first dragon for me. what am i walking into
@@ -677,7 +677,7 @@ B: sunday then. log in early, buffs at the gate | sunday, gather early, we leave
 @role C type=NoLifer
 @role D type=Explorer levels=30-38
 @role E type=Daredevil
-A: {q} how do you even tell if DF is open for us | {q} anyone know how albion keeps Darkness Falls open
+A: {q} how do you even tell if DF is open for us? | {q} anyone know how albion keeps Darkness Falls open?
 B: type /realm, or walk to the entrance and see if it lets you in | /realm shows who holds it. it opens when we hold the most keeps, go while it lasts
 C: and when its open, thank whoever held the keeps | it stays open because someone holds the keeps all day, thank them
 A: thank you keep people | heroes of the frontier
@@ -780,7 +780,7 @@ E: one thing at a time lol
 @role C type=Daredevil
 @role D type=Socialite
 @role E type=Leveler
-A: still on at this hour. anyone else awake | {q} who else is up this late
+A: still on at this hour. anyone else awake | {q} who else is up this late?
 B: here. sitting in the barrows waiting for a respawn | awake and on a slow camp
 C: here. ran from a red con for twenty minutes, too wired to sleep | still up. just survived something i shouldnt have
 D: tell the story! | ok you have to tell us now
@@ -816,7 +816,7 @@ D: night all :)
 @role C type=NoLifer
 @role D class=Wizard,Sorcerer,Theurgist,Cabalist
 @role E class=Armsman,Paladin
-A: why do the mids always roll in with twice our numbers | {q} where do the mids keep finding all these people
+A: why do the mids always roll in with twice our numbers | {q} where do the mids keep finding all these people?
 B: they clone them in Jordheim | they grow them in the snow, everyone knows that
 C: they have more people, we have better casters, it evens out | numbers versus casters, it has always been that way
 D: correct. one well placed spell and their numbers are a lot smaller | albion casters, the great equalizer

@@ -126,7 +126,7 @@ no loot for me off {boss}. [oh well|maybe next time]
 {count} [boss kills|raid kills] and nothing. [the loot gods hate me|i must be cursed]
 [still|yet again] nothing off {boss}. thats {count} [raid kills|big kills] [with nothing|dry]
 @who NoLifer
-{count} [raid kills|boss kills] and still no drop. [not stopping now|ill be there for the next one]
+{count} [raid kills|boss kills] and still no drop. [not stopping now|ill be back for the next one]
 @who Daredevil
 {count} big kills, zero drops. someday i get my drop
 
@@ -137,7 +137,7 @@ no loot for me off {boss}. [oh well|maybe next time]
 @who *
 @levels 50-50
 {item} off {boss}!!
-[woot|yes], {item} [from|off] {boss}
+[woot|yes], got {item} [from|off] {boss}
 [cant believe it|no way], {item} off {boss}
 got a drop off {boss}: {item}
 {boss} dropped {item} [for me|and its mine]
@@ -174,7 +174,7 @@ gz rr5, now come roam with us
 
 @answers milestone_trophy
 @who *
-[gz|grats] on the drop
+[gz|grats] on [that drop|finally getting it]
 [gz|grats] on the loot
 [nice|sweet], [gz|grats] on the {item}
 [gz|grats], {boss} came through for you

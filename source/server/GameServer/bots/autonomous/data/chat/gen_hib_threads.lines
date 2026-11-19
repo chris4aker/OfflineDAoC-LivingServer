@@ -10,7 +10,7 @@
 @role C class=Bard
 @role D class=Warden
 @role E type=Leveler,Socialite
-A: {q} rolling a healer alt. druid, bard or warden? | {q} need a hib healer alt, which one would you pick | ok healers of hibernia, convince me
+A: {q} rolling a healer alt. druid, bard or warden? | {q} need a hib healer alt, which one would you pick? | ok healers of hibernia, convince me
 B: druid. biggest heals in the realm and nobody argues | druid, hands down. the heals are why groups survive
 C: bard. you heal, you run speed, you mez the add. every group wants you | bard, because a group without speed is a group walking home slowly
 D: warden. you can stand in melee and not fold | warden, heal from the front line with a weapon in your hand
@@ -309,7 +309,7 @@ D: i will run at him, as discussed | i will be the bait, i always am
 @role D class=Eldritch
 @role E type=Socialite
 @role F type=*
-A: {q} is it just me or do animists win every keep defense now | {q} are animists the best keep defenders we have
+A: {q} is it just me or do animists win every keep defense now? | {q} are animists the best keep defenders we have?
 B: put me on a wall with shrooms and watch | give me a wall and i will fill it with turrets
 C: please dont plant the whole wall, my frame rate cant take it | last defense with three animists was a slideshow for me
 B: enough to keep the ram crew busy | as many as the wall will hold
@@ -357,7 +357,7 @@ C: every new class gets that treatment at first | groups dont know what to do wi
 ~ 25
 E: give it time, people will figure them out | honestly i think valewalkers are going to surprise people
 D: i would try one as a second melee next to a hero | put one in the front with a hero, see what happens
-B: i will hold you to that | i will remember you said that
+B: noted. ill bring it up later | i will remember you said that
 A: last question. why a scythe, of all things | why a scythe though
 B: because it looks amazing | do you need more reason than style
 C: hard to argue with that | cant argue there
@@ -550,7 +550,7 @@ B: good luck and dont get lost again | welcome to tir na nog, officially
 @role D class=Druid
 @role E type=Socialite levels=35-44
 @role F type=*
-A: {q} anyone else notice midgard always hits the relic keeps around 4am | {q} why are the night raids on our relics always the mids
+A: {q} anyone else notice midgard always hits the relic keeps around 4am? | {q} why are the night raids on our relics always the mids?
 B: of course, they always come when we sleep | naturally they wait until we are all asleep
 C: i have run to a relic defense half asleep more than once | last time i ran over in my pajamas
 D: druid here, at that hour i always end up healing the door crew | if im up, i heal the door crew, every time
@@ -586,7 +586,7 @@ E: sounds worth staying up for | ok, next time i stay up
 @role D class=Bard
 @role E class=Enchanter
 @role F type=Leveler
-A: best thing in the game is a three way fight in emain, nobody can tell me otherwise | {q} anyone else live for the three realm fights in emain
+A: best thing in the game is a three way fight in emain, nobody can tell me otherwise | {q} anyone else live for the three realm fights in emain?
 B: nothing better than a three way fight | the best fight in the game, three realms in one field
 F: my computer cant handle emain, last time i froze and died | i went once and my screen turned into a slideshow
 C: everybody lags in emain, push through | turn everything down and run in
@@ -619,7 +619,7 @@ E: gz, now youre hooked | welcome to emain
 @role C type=NoLifer
 @role D type=Leveler
 @role E type=Crafter
-A: {q} our guild wants to claim a keep, good idea or not | {q} would it be dumb to put our guild banner on a keep
+A: {q} our guild wants to claim a keep, good idea or not? | {q} would it be dumb to put our guild banner on a keep?
 B: go for it, enjoy it while it lasts | sure, how long until someone takes it
 C: claiming is easy, holding it is the job | holding a keep is the part that matters
 A: we have a few night owls, we will manage | we have people on at odd hours, should be fine
@@ -770,7 +770,7 @@ A: a big spear for a big hero | a spear, the bigger the better
 B: pst me the details, i will see what i can do | send me a tell with the type, i will quote you
 ?D: ask for the quality before you pay | always check the quality before you hand over coin
 ~ 20
-E: which craft is the worst to level | whats the most annoying craft to grind
+E: what craft is the biggest pain to level | whats the most annoying craft to grind
 B: tailoring, so many leathers, so many patterns | tailoring. i dream of leather now
 C: fletching. the arrows never end | fletching, a lifetime of arrows
 D: all of them, thats why i buy | every single one, thats why i pay crafters

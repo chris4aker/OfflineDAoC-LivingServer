@@ -30,7 +30,9 @@ public static class AutonomousChatIdiolect
 
     /// <summary>Applies a bot's habits to a line it is about to say. <paramref name="tidy"/>: a careful writer, left alone.</summary>
     /// <paramref name="terse"/>: a short functional line ("lfg 38 sm"), which takes no "lol" tail and no trailing "...".
-    public static string Apply(string text, long botId, bool tidy, Random random, bool terse = false)
+    /// <paramref name="maxWords"/>: a debate piece's split limit; no "lol" tail that would push the piece past it
+    /// (AutonomousChatDebateSpeech.TailFits; 0: no limit).
+    public static string Apply(string text, long botId, bool tidy, Random random, bool terse = false, int maxWords = 0)
     {
         if (string.IsNullOrEmpty(text) || tidy || botId <= 0)
             return text;
@@ -45,7 +47,8 @@ public static class AutonomousChatIdiolect
             result = trimmed + "?";
         // Beta 1.1.2, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
         if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
-            !Contains(result, "haha") && !EndsWithSmiley(result) && result.Split(' ').Length >= 3)
+            !Contains(result, "haha") && !EndsWithSmiley(result) && result.Split(' ').Length >= 3 &&
+            AutonomousChatDebateSpeech.TailFits(result, maxWords))
             result = result.TrimEnd('.') + " lol";
         return result.Length <= AutonomousBotVoiceCorpus.MaxLength ? result : text;
     }

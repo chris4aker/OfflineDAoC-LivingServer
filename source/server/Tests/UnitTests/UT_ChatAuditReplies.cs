@@ -242,6 +242,62 @@ namespace DOL.UnitTests
             }
         }
 
+        /// <summary>Always draws 0: every chance passes, so a tail is added wherever the code allows one.</summary>
+        private sealed class ZeroRandom : Random
+        {
+            public override double NextDouble() => 0.0;
+            protected override double Sample() => 0.0;
+            public override int Next(int maxValue) => 0;
+            public override int Next(int minValue, int maxValue) => minValue;
+        }
+
+        // Chat follow-up F2: a debate piece already at its split limit (10 words for a terse writer, plus the two-word tail the
+        // split folds back) got a "lol" and went out one word over: "gripklosa is nothing but mountains, trolls walked down
+        // from them, mystery solved lol". Neither the "lol" habit nor a style's emote may push a piece past the limit.
+        private const string AtTheLimit = "gripklosa is nothing but mountains, trolls walked down from them, mystery solved";
+
+        [Test]
+        public void TailFitsOnlyUnderThePieceLimit()
+        {
+            int max = AutonomousChatDebateSpeech.TerseMaxWords;
+            Assert.That(AutonomousChatDebateSpeech.Words(AtTheLimit), Is.EqualTo(AutonomousChatDebateSpeech.PieceWordLimit(max)));
+            Assert.That(AutonomousChatDebateSpeech.TailFits(AtTheLimit, max), Is.False);
+            Assert.That(AutonomousChatDebateSpeech.TailFits("trolls walked down from them, mystery solved", max), Is.True);
+            Assert.That(AutonomousChatDebateSpeech.TailFits(AtTheLimit, 0), Is.True, "no limit outside a debate");
+        }
+
+        [Test]
+        public void ASentenceAtTheLimitGetsNoLolTail()
+        {
+            long botId = Enumerable.Range(1, 100_000).Select(i => (long)i)
+                .First(id => AutonomousChatIdiolect.HabitsOf(id) == AutonomousChatIdiolect.Habit.LolTail);
+            int max = AutonomousChatDebateSpeech.TerseMaxWords;
+            Assert.That(AutonomousChatIdiolect.Apply(AtTheLimit, botId, false, new ZeroRandom(), maxWords: max), Is.EqualTo(AtTheLimit));
+            // The same bot still tags a shorter piece, and any line outside a debate.
+            Assert.That(AutonomousChatIdiolect.Apply("trolls walked down from them", botId, false, new ZeroRandom(), maxWords: max),
+                Does.EndWith(" lol"));
+            Assert.That(AutonomousChatIdiolect.Apply(AtTheLimit, botId, false, new ZeroRandom()), Does.EndWith(" lol"));
+        }
+
+        [Test]
+        public void ASentenceAtTheLimitGetsNoStyleEmote()
+        {
+            VC.Voice laughing = Corpus.Voices.First() with
+            {
+                Emotes = new[] { "lol" }, EmoteChance = 1.0, TypoChance = 0, Capitalize = false, CapitalizeSentences = false,
+                EndPeriod = false, StripPunctuation = false, Abbreviate = Array.Empty<(string, string)>(),
+                Expand = new Dictionary<string, string>(),
+            };
+            int max = AutonomousChatDebateSpeech.TerseMaxWords;
+            Assert.That(VC.Style(AtTheLimit, laughing, new ZeroRandom(), out _, null, max), Does.Not.EndWith("lol"));
+            Assert.That(VC.Style(AtTheLimit, laughing, new ZeroRandom(), out _, null), Does.EndWith(" lol"));
+            // Speech.Typed itself: every piece of a line typed by this writer stays within the split's limit.
+            foreach (string piece in AutonomousChatDebateSpeech.Typed(AtTheLimit, laughing with { StripPunctuation = true }, 0,
+                         new ZeroRandom()))
+                Assert.That(AutonomousChatDebateSpeech.Words(piece),
+                    Is.LessThanOrEqualTo(AutonomousChatDebateSpeech.PieceWordLimit(max)), piece);
+        }
+
         #endregion
 
         #region Crafters (CORPUS-C-037, C-038, LOG-024, LOG-026, LOG-036)

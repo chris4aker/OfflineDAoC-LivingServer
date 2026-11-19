@@ -29,8 +29,9 @@ OWNERS = [
     ('E8', r'debates.*|gen_.*|threads_long|scenes_live'),
 ]
 ALL_OWNERS = {owner for owner, _ in OWNERS} | {'unowned'}
-# The owners whose files fail on these checks. E3's PR fixed its own files; the others' hits are warnings until their PRs merge.
-STRICT_OWNERS = {'E3'}
+# The owners whose files fail on these checks. E3's PR fixed its own files, and the chat follow-up F2 (2026-11-18) cleared
+# E4's and E8's; the others' hits are warnings until their fixes merge.
+STRICT_OWNERS = {'E3', 'E4', 'E8'}
 
 
 def owner_of(where):

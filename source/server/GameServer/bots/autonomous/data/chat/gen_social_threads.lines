@@ -12,7 +12,7 @@
 @role C type=Socialite
 @role D type=Daredevil
 @role E type=*
-A: {q} is there a rule about camps? someone just started pulling our spawn at {camp} | so someone just walked into {camp} and started pulling our spawn
+A: {q} is there a rule about camps? someone just started pulling our spawn at {camp} | so some guy rode into {camp} and is pulling our spawn
 B: if you were there first its your camp, everyone knows that | first come first served, always has been
 A: i told them that. they said they didnt see us
 C: didnt see a whole group sitting in a circle? lol | eight people sitting in a ring and they didnt see us. sure
@@ -74,7 +74,7 @@ D: you said that last time too | heh
 @role D type=Explorer
 @role E type=Crafter
 @role F type=Daredevil
-A: on the boat again. this ride is so long | {q} anyone else on the boat right now
+A: on the boat again. this ride is so long | {q} anyone else on the boat right now?
 B: boat rides are the best time to make a sandwich | perfect time to grab a snack
 C: or to read faction chat lol | thats when faction gets the most chatter
 A: where is everyone headed
@@ -139,7 +139,7 @@ B: see, send a tell first, post names second
 @role D type=Crafter
 @role E type=Explorer
 @role F type=*
-A: do you all group with strangers or wait for guildmates | {q} pick up groups or guild groups, which do you prefer
+A: do you all group with strangers or wait for guildmates | {q} pick up groups or guild groups, which do you prefer?
 B: guild every time. i know who will stay and who will afk
 C: strangers. half my friends list started as a random invite
 B: and the other half are names you never want to see again
@@ -217,7 +217,7 @@ D: 99 is the cruelest number in the game
 B: sell it as basically masterpiece | list it as nearly perfect and smile
 E: people pay well for a 99, honestly | a 99 sells, just not for masterpiece money
 A: going to keep it for myself, i earned it
-F: spoken like a true crafter | the crafter's curse, you keep the best ones
+F: thats crafter talk right there | the crafter's curse, you keep the best ones
 ?D: describe it to me in detail, i want to feel your pain
 A: back to the forge, still need the gloves | ok, gloves next. pray for me
 
@@ -383,14 +383,14 @@ D: i will bring the statue | i will bring something tasteful. maybe
 @role D type=Daredevil
 @role E type=Leveler
 @role F type=*
-A: starting a guild, need a name that isnt terrible | {q} help me name my new guild
+A: starting a guild, need a name that isnt terrible | {q} can someone help me name my new guild?
 B: something with knights in it | anything but "of the something"
 C: something with dragons. people love dragons | add dragon to it, instant members
 D: please nothing with elite in it | if it has elite in the name i am not joining
 A: ok i had elite in it
 ?D: lol naturally. of course you did
 ~ 30
-E: how many members so far | whos in it so far
+E: how many have joined so far | whos in it so far
 A: me, my alt, and my sister | me and two friends from school
 B: so a guild of three. thats how all the big ones started | every big guild started as three people and a dream
 ?E: and a lot of recruit spam in faction
@@ -398,7 +398,7 @@ C: what is the guild for, rvr, leveling, chatting | whats the point of it though
 A: mostly a place for friends to hang out | no pressure stuff. play when you can
 D: then name it something cozy | then call it something warm. like a tavern
 E: the hearth | the last inn | the long table
-A: oh i like that one | ok thats actually good
+A: oh i like that, yeah | ok thats actually good
 ~ 25
 C: now you need an emblem too, that is the real fight
 A: dont start
@@ -473,7 +473,7 @@ A: maybe | no promises
 @role D type=NoLifer
 @role E type=Explorer
 @role A levels=1-9
-A: new player here, i died and lost xp? what do i do | {q} brand new, how do i get stuff back after dying
+A: new player here, i died and lost xp? what do i do | {q} brand new, how do i get stuff back after dying?
 B: go back to where you died and pray at your gravestone | find your grave and /pray at it, you get some xp back
 A: i have a grave?? | wait, i get a gravestone? that is creepy
 C: lol welcome to the game
@@ -539,7 +539,7 @@ A: my turn. i told them i will stay and help them get theirs | it was my turn. s
 @role D type=Daredevil
 @role E type=Leveler
 @role F type=*
-A: our alliance switched to loot points for raids and people are mad | {q} anyone else hate raid point systems
+A: our alliance switched to loot points for raids and people are mad | {q} anyone else hate raid point systems?
 B: points are fair. you show up, you earn | points reward the people who come every week
 C: points reward the people with no lives lol
 B: which is also who kills the dragon
@@ -613,7 +613,7 @@ A: you are a lifesaver. literally | yes please! i will wait
 B: dont forget to visit the town healer later, the con loss adds up | con loss stacks, pay the healer in town once in a while
 C: i forgot about con loss for weeks once, wondered why i died so fast
 ~ 30
-F: unpopular opinion, the death penalty is what makes the game exciting | without the penalty nobody would be careful
+F: maybe its just me, but the death penalty is what makes the game exciting | without the penalty nobody would be careful
 D: without the penalty i would be level 50 already | id be happier lol
 F: and you would never feel your heart race on a bad pull | the fear is the fun
 ?C: i like fear in small doses
@@ -630,7 +630,7 @@ A: heading to the nearest bindstone now | rebinding first, lesson learned
 @role D type=Crafter
 @role E type=NoLifer
 @role F type=Socialite
-A: whats the best moment you have had leveling so far | {q} favorite leveling memory, go
+A: whats the best moment you have had leveling so far | favorite leveling memory, go
 B: first ding in a full group, everyone spamming gz | my first group ding, the whole group typed gz at once
 C: first time i fought an orange and won | killing an orange solo with nothing left in the tank
 D: getting my first real weapon off a drop | the first time something dropped that i could actually use
@@ -693,7 +693,7 @@ F: hours to go for me lol | marathon continues. see you all at breakfast
 @role D type=Socialite
 @role E type=Leveler
 @role F type=Explorer
-A: late night question. what was your very first character | {q} first character you ever made, go
+A: late night question. what was your very first character | first character you ever made, go
 B: a tank. died to the first thing i hit | a fighter type with way too much strength
 C: a caster who put points into strength lol | caster with a terrible stat spread, didnt know any better
 D: i made a healer because a friend begged me, never looked back
@@ -756,7 +756,7 @@ E: thats the best use of a 50 friend | lol, a 50 sitting at a camp of lowbies
 @role D type=Daredevil
 @role E type=Explorer
 @role F type=NoLifer
-A: i am completely lost. trees everywhere | {q} anyone good with directions, im lost
+A: i am completely lost. trees everywhere | {q} anyone good with directions? im lost
 B: what can you see | describe it. landmarks?
 A: a big rock, a river, and something purple looking at me | river on my left, giant tree, and a red con watching me
 C: thats every place in the game | that narrows it down to everywhere

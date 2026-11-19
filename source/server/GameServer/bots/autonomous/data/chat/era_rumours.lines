@@ -29,7 +29,7 @@
 @role E type=NoLifer,Daredevil
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} you on? tell the one about the glass that spoke | {name_b}, do your gran's story, the glass ball one
-C: oh, this one. hush everyone | quiet in faction for a bit, {name_b} is telling the orb
+C: oh, this one. hush everyone | {name_b} is telling the orb story, everyone hush
 ?E: the talking ball again lol | here we go, the ball that talks
 D: go on {name_b}, the new ones have never heard it | please {name_b}, i never heard it all the way through
 B: This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall.
@@ -66,7 +66,7 @@ A: ty {name_b}. not going near the docks tonight | thanks {name_b}, nobody tells
 @role B type=NoLifer,Daredevil
 @role C type=*
 @role D type=*
-A: {q} my uncle says theres a whole city at the bottom of the sea lol
+A: {q} my uncle says theres a whole city at the bottom of the sea, is that true? lol
 B: your uncle also says he soloed the dragon
 A: ok he said that once. but the fishermen really do pull up carved stone with coral all over it
 C: the sailors have a name for it, atlantis | harbour folk call it atlantis and then go quiet

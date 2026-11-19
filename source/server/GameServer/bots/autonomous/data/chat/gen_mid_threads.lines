@@ -78,7 +78,7 @@ C: gl, come back and tell us which spec you picked | have fun, tell them you are
 @role C type=Leveler
 @role D class=Warrior,Thane
 @role E type=Explorer
-A: anyone actually leveled a cave shaman? subterranean all the way | {q} is full subterranean shaman a real thing or a joke | {q} any cave shamans out there, how is it going
+A: anyone actually leveled a cave shaman? subterranean all the way | {q} is full subterranean shaman a real thing or a joke? | {q} any cave shamans out there, how is it going?
 B: me. mostly solo, the dots do the work | yep, cave shaman here. i dot it, back off a bit, sit, repeat | im one. it is slow but it is a different game from heal duty
 C: why would you play a support class and not support | a shaman that wont heal is just a weird caster
 B: i heal fine, i just dont live in the heal bar | i can still heal, the base heals do the job on small pulls
@@ -111,7 +111,7 @@ E: welcome to the cave | the diseased life awaits you
 @role E type=Socialite
 @role F type=Leveler
 @role A class=Skald
-A: why does every group ask the skald to sit on speed the whole time | {q} skald here, am i allowed to do damage or am i just a horse | does anyone let their skald actually fight
+A: why does every group ask the skald to sit on speed the whole time | {q} skald here, am i allowed to do damage or am i just a horse? | does anyone let their skald actually fight
 B: i ask myself that every night | same question, different skald lol
 C: speed is the reason skalds get invites. that is just the truth | because without speed the pull runs back slower and the xp drops
 A: i have damage shouts for a reason though
@@ -144,7 +144,7 @@ B: ...that is all we ever wanted
 @role B class=Thane
 @role C class=Warrior
 @role D type=NoLifer,Explorer
-A: thane question. how much stormcalling is too much | {q} thanes, do you max stormcalling or your weapon | thinking of rolling a thane, lightning or hammer?
+A: thane question. how much stormcalling is too much | {q} thanes, do you max stormcalling or your weapon? | thinking of rolling a thane, lightning or hammer?
 B: weapon first, stormcalling enough for the good shocks | i run high storm, i love the lightning more than the hammer
 C: if you want to tank, put it in shields and weapon and let the casters cast | thane tanking is fine on small stuff, on hard pulls thats my job
 B: thanes tank fine, we wear chain and carry a shield
@@ -159,7 +159,7 @@ B: we dont stand in the back, we just like range sometimes | casting from melee 
 A: so half and half is ok? | is a hybrid spec bad or is that the point of the class
 D: hybrid is the whole point. you are never the best at one thing | for a thane the split is the build
 B: and you are never useless | never the best, never useless. thane motto
-?C: i like that one actually
+?C: ha, that one is good actually
 C: just dont stand in my aggro and complain when the mob turns | if the mob turns on you, dont run to me
 ~ 20
 ?B: when has a thane ever run
@@ -174,7 +174,7 @@ B: lightning out, catch you all later | hammer up, see you
 @role C class=Berserker
 @role D class=Healer,Shaman
 @role E type=Crafter
-A: shout out to warriors, the most underrated class in midgard | can we talk about how nobody appreciates warriors | {q} why does everyone roll zerker when warriors are right there
+A: shout out to warriors, the most underrated class in midgard | can we talk about how nobody appreciates warriors | {q} why does everyone roll zerker when warriors are right there?
 B: thank you. finally | someone finally said it
 C: warriors are great. someone has to stand there while i do the damage | love warriors, they hold the mob still so i can hit it
 B: and someone has to explain to the healer why the zerker died first | yeah and who pulls it off you when you go berserk and lose aggro
@@ -204,7 +204,7 @@ B: :)
 @role B class=Berserker
 @role C class=Savage
 @role D type=NoLifer,Daredevil
-A: zerkers vs savages, who wins a duel in the end | serious one, savage or berserker for rvr | {q} if you could only bring one, zerker or savage
+A: zerkers vs savages, who wins a duel in the end | serious one, savage or berserker for rvr | {q} if you could only bring one, zerker or savage?
 B: zerker. berserk style hits harder than anything a savage swings | berserker. two axes, berserk, done
 C: savage. hand to hand is fast and the self buffs make us a different class | savage, easy. the buffs make me faster than you and i hit just as hard
 B: buffs that cost health. you start every fight half dead | your buffs eat your own health bar, i dont have that problem
@@ -228,7 +228,7 @@ C: savage wins, im calling it | savages win by default
 B: berserkers win on the numbers, im calling it too
 ?A: two winners, everyone go home
 ~ 30
-C: we agree to keep arguing then | see you at the next round
+C: we agree to keep arguing then | until the next round then
 B: and i will still be right
 
 @topic savage_health_cost
@@ -269,7 +269,7 @@ B: gl out there!
 @role C type=Daredevil
 @role D class=Spiritmaster
 @role E type=NoLifer
-A: got shot to death by an albion scout from somewhere i couldnt even see | {q} is it just me or are enemy archers hitting from across the zone | three arrows and im dead, never saw the guy
+A: got shot to death by an albion scout from somewhere i couldnt even see | {q} is it just me or are enemy archers hitting from across the zone? | three arrows and im dead, never saw the guy
 B: welcome to how they feel about us | hunters do the same to them, for what it is worth
 C: their scouts sit on hills and shoot people who are just traveling | scouts on the hill outside every keep, every night
 B: and we sit on our hills. it is an archer thing | every realm has hill archers. ours are just nicer
@@ -301,7 +301,7 @@ C: bring a friend next time | find a group, seriously
 @role B class=Shadowblade
 @role C class=Shadowblade
 @role D type=Socialite,Leveler
-A: shadowblades, left axe or a big two hander | {q} sb question, two hander or left axe | planning a shadowblade alt, two handed or dual axes
+A: shadowblades, left axe or a big two hander | {q} sb question, two hander or left axe? | planning a shadowblade alt, two handed or dual axes
 B: left axe. more swings, more poison on the target | dual axes. envenom on two weapons is twice the fun
 C: two hander. the opener from stealth hits like a truck | two handed every time, the first hit from stealth decides the fight
 B: and if the first hit doesnt kill them? | sure, until they live through it
@@ -334,7 +334,7 @@ C: deal | fair enough
 @role D class=Bonedancer
 @role E type=Leveler
 @role F type=Socialite
-A: rolling a caster, runemaster, spiritmaster or bonedancer? | {q} which of the three midgard casters should i roll | rm, sm or bd for a first caster
+A: rolling a caster, runemaster, spiritmaster or bonedancer? | {q} which of the three midgard casters should i roll? | rm, sm or bd for a first caster
 B: runemaster. runecarving nukes, groups always want damage | rm, every group needs a nuker
 C: spiritmaster. the pet tanks while i cast, solo is easy | sm, my spirit pet does half my work
 D: bonedancer. you get a whole army, why have one pet | bd. a commander and his little helpers. who needs friends
@@ -367,7 +367,7 @@ D: welcome to the army | told you so
 @role B class=Bonedancer
 @role C type=NoLifer
 @role D type=Daredevil
-A: is it just me or does every keep fight lag out lately | {q} anyone else freeze at keep fights lately | the last siege was a slideshow for me
+A: is it just me or does every keep fight lag out lately | {q} anyone else freeze at keep fights lately? | the last siege was a slideshow for me
 C: three bonedancers with full armies on the wall, that will do it | count the skeletons, that was the lag | every bd in the realm showed up with pets, of course it lagged
 B: hey, we bring damage | the army is the class, i cant leave it home
 C: you bring a lot of little bones my computer has to draw | my video card does not like your little friends
@@ -398,7 +398,7 @@ B: army up, lets go | bones, wake up, we are going in
 @role D type=Socialite
 @role E type=Leveler
 @role A levels=1-9
-A: first character ever, where do i go after the vale of mularn | {q} new to the game, what comes after mularn | still single digits, kind of lost, where next
+A: first character ever, where do i go after the vale of mularn | {q} new to the game, what comes after mularn? | still single digits, kind of lost, where next
 B: myrkwood forest next, then nisses lair once you have a group | head to myrkwood around 10, then nisses lair in your teens
 C: myrkwood is pretty at night, watch for the arachites | the arachite weblashers in myrkwood will surprise you
 ?D: welcome to midgard, glad youre here!
@@ -430,7 +430,7 @@ A: ty everyone :) | thanks, really appreciate it
 @role D type=NoLifer
 @role E type=Crafter
 @role A levels=35-41
-A: late 30s here, aegir or stay home for the 40s | {q} is aegir worth it for the 40s or stick to the classic zones | trying aegir for the first time, good idea?
+A: late 30s here, aegir or stay home for the 40s | {q} is aegir worth it for the 40s or stick to the classic zones? | trying aegir for the first time, good idea?
 B: aegir. gripklosa and delling crater are full of xp and nobody is there | go aegir, new zones, empty camps
 C: classic. spindelhalla has groups all day, you never wait | stay in midgard proper, spindelhalla is always busy
 B: busy is the problem. i like having a camp to myself
@@ -523,7 +523,7 @@ A: ill keep you company for a bit | im still here for a while
 @role D class=Healer
 @role E class=Skald
 @role F type=Leveler
-A: {q} why does it always take us forever to answer a keep call | {q} when a keep starts flashing, do you actually drop what you are doing | {q} who actually answers keep calls
+A: {q} why does it always take us forever to answer a keep call? | {q} when a keep starts flashing, do you actually drop what you are doing? | {q} who actually answers keep calls?
 B: depends how many they bring | depends on the numbers, honestly
 A: say one group of hibs with a ram | eight hibs and a ram, the usual
 C: one group? we can take one group | eight is nothing, i go every time
@@ -558,7 +558,7 @@ D: hold. fix the doors first | hold, we need the doors repaired
 @role C type=Socialite
 @role D type=Daredevil
 @role E type=Crafter
-A: who is watching mjollner faste tonight | {q} anyone guarding our relics or are we trusting the guards | quick check, is anyone at grallarhorn faste right now
+A: who is watching mjollner faste tonight | {q} anyone guarding our relics or are we trusting the guards? | quick check, is anyone at grallarhorn faste right now
 B: nobody, as usual. everyone thinks the guards will hold | nobody. the guards are on their own
 C: the guards wont hold against a real raid | if a forty man raid shows up, guards are a speed bump
 D: so go stand there yourself | then go stand at the castle all night, ill wait
@@ -614,7 +614,7 @@ F: {level} {class}, ready | {class}, {level}
 E: sounds good | tell sent
 C: healer, put me in the healer group | healer here, put me with the other healers
 ?D: and dont blame me when we wipe the first time
-A: ok, see you all there | see you at the bind
+A: ok, meet you all there | see you at the bind
 
 @topic iarnvidiur_lair
 @levels 45-50
@@ -622,7 +622,7 @@ A: ok, see you all there | see you at the bind
 @role B type=Explorer
 @role C type=Daredevil
 @role D type=Leveler
-A: has anyone been deep in iarnvidiurs lair | {q} iarnvidiurs lair, worth it or a waste of a night | thinking of trying the lair in aegir, anyone done it
+A: has anyone been deep in iarnvidiurs lair | {q} iarnvidiurs lair, worth it or a waste of a night? | thinking of trying the lair in aegir, anyone done it
 B: been to the entrance. the redcaps nearly ended me | i saw the first rooms. redcap davin hit like a hammer
 C: we tried the big guy himself once | we pulled iarnvidiur once with two groups
 A: and? | how did that go?
@@ -652,7 +652,7 @@ D: fine. but if we wipe im going back to spindel | fine, but im bringing my spin
 @role C type=Leveler
 @role D type=Daredevil
 @role E type=Crafter
-A: do we even have df right now? | {q} who has darkness falls tonight | is df open for us or did we lose it
+A: do we even have df right now? | {q} who has darkness falls tonight? | is df open for us or did we lose it
 B: /realm says who has it, it changes hands with the keeps | type /realm. it depends on the keeps and they change all day
 C: and when we lose it, there goes my xp plan for the night | whenever it closes, there goes my leveling
 B: you could help take the keeps back | the fastest way to get df back is the frontier
@@ -696,7 +696,7 @@ A: after a raid in emain macha that went poorly, i needed something to read | we
 C: honestly the albs zerg too, they just call it a raid | when albs bring forty people its a strategy
 D: and hibs call it a party | and when hibs bring forty its a festival
 B: everyone zergs. we just do it in bigger furs | all three realms zerg, we just wear more fur
-?E: and horns. dont forget the horns
+?E: and horns. so many horns
 ~ 20
 A: i still like the 8man fights better | honestly the best fights are 8 vs 8 anyway
 C: 8man is great until a zerg rolls over you | then forty trolls walk over the hill
@@ -740,7 +740,7 @@ A: sending now | tell sent
 @role B type=Crafter
 @role C type=Crafter
 @role D type=Leveler
-A: armorcraft or weaponcraft, which one makes more money in jordheim | {q} crafters, which craft pays best | thinking about crafting, which line actually makes money
+A: armorcraft or weaponcraft, which one makes more money in jordheim | {q} crafters, which craft pays best? | thinking about crafting, which line actually makes money
 B: armorcraft. everyone needs a full suit, and every few levels | armor sells, five pieces every few levels
 C: weaponcraft. one weapon, but they pay more for a good one | weapons, people pay a lot for a masterpiece axe
 B: spellcraft is the real money at 50 though | at 50, spellcraft gems are where the coin is
