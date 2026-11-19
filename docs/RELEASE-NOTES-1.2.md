@@ -1,6 +1,6 @@
-# Living Server Beta 1.2: release notes (draft)
+# Living Server 1.2: release notes (draft)
 
-The text below the line is the draft of the GitHub release notes for `v1.2-beta`, "Where Legends Wake". It is a draft for
+The text below the line is the draft of the GitHub release notes for `v1.2` ("1.2" final, not a beta: owner 2026-11-19), "Where Legends Wake". It is a draft for
 the owner's approval: the "How it was tested" section is finished after the owner's played check. In the file table the
 Setup row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only that text with the
 exe's SHA-256. The zip's SHA-256 is filled in by hand when publishing. Publish it as Latest, not as a pre-release: the
@@ -276,9 +276,9 @@ Each is credited to its author.
 
 - **Have 1.1.2, 1.1.3 or 1.1.4:** the launcher's **Check for updates** finds 1.2. START SERVER reads **GET UPDATE**:
   Install, Later or Skip this version.
-- **New to Offline DAoC, or adding Living Server:** run `LivingServer-Setup-1.2-beta.exe`. Windows SmartScreen may say
+- **New to Offline DAoC, or adding Living Server:** run `LivingServer-Setup-1.2.exe`. Windows SmartScreen may say
   "Windows protected your PC" because the exe isn't code-signed: click More info, then Run anyway.
-- **Have 1.1 to 1.1.4:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2-beta.zip` into your game folder and run
+- **Have 1.1 to 1.1.4:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2.zip` into your game folder and run
   `INSTALL.cmd` with the game and server closed. Your characters, bots, guilds and settings stay.
 - **Every Living Server feature is on from the start** (owner, 2026-11-16). That covers bot guilds, bot personalities,
   every Server life part, the real-clock bot schedule, bot crafters and their craft orders, the bots' upkeep, luxury
@@ -369,8 +369,8 @@ only".
 
 | File | SHA-256 |
 |---|---|
-| `LivingServer-Setup-1.2-beta.exe` | (filled in when the exe is built) |
-| `OfflineDAoC-LivingServer-1.2-beta.zip` | (owner: the zip's SHA-256, filled in by hand at publish) |
+| `LivingServer-Setup-1.2.exe` | (filled in when the exe is built) |
+| `OfflineDAoC-LivingServer-1.2.zip` | (owner: the zip's SHA-256, filled in by hand at publish) |
 
 ### Credits
 

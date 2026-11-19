@@ -1,4 +1,4 @@
-OFFLINE DAOC: LIVING SERVER - BETA 1.2     (github.com/chris4aker/OfflineDAoC-LivingServer)
+OFFLINE DAOC: LIVING SERVER 1.2            (github.com/chris4aker/OfflineDAoC-LivingServer)
 ===========================================================================================
 
 An add-on for Offline DAoC 0.37 / 0.37b (with or without the 0.37c new client) that makes the
@@ -79,7 +79,7 @@ when that is what it replaced, but never shadowofze's: after a first install the
 one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like
-  FORK_BUILD name=1.2-beta commit=... bot_guilds=on ... bot_voices=on ... living=memory,grats,...
+  FORK_BUILD name=1.2 commit=... bot_guilds=on ... bot_voices=on ... living=memory,grats,...
 (a switch you turned off in the tab shows as off there).
 
 Had an earlier Social Expansion build (0.36-se.N or 0.37-se.N)? Just run INSTALL.cmd: your

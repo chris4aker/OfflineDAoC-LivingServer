@@ -13,7 +13,7 @@ build, with the build named. The steps below are written so each row closes in o
 | Row | CI job | What it checks |
 |---|---|---|
 | 1 | `candidate-install / update114` | Living Server 1.1.4's published Setup (`LivingServer-Setup-1.1.4-beta.exe`) installs a new 1.1.4 game. `tools/installer/seed_progress.py` seeds a level-20 character with coin, realm points and an item in its backpack, one gamebot per realm, six changed Living Server settings, the bot population target and a launcher option. The candidate's Setup updates the game. Every seeded row must be unchanged, and so must `runtime\account.txt`, `bot-goals.json` and `game.dll`. Setup must not apply the suggested settings over the player's own. The updated server then starts once (`smoke_release_037.py`), and the seed is checked again on the world it ran on |
-| 2 | `candidate-install / fresh` | The candidate's package zipped as a release zips it, put in a Setup exe, then a new install from Living Server's copy of shadowofze's 0.37 release files. Then Setup's own paths (scan, run again, refuse while running, remove, reinstall, a hand-changed server, `--force`). The installed server starts with `FORK_BUILD name=1.2-beta` and a login like ENTER REALM works |
+| 2 | `candidate-install / fresh` | The candidate's package zipped as a release zips it, put in a Setup exe, then a new install from Living Server's copy of shadowofze's 0.37 release files. Then Setup's own paths (scan, run again, refuse while running, remove, reinstall, a hand-changed server, `--force`). The installed server starts with `FORK_BUILD name=1.2` and a login like ENTER REALM works |
 | 3 | `candidate-install / fresh` (`classoff`) | The new install is the 0.37 edition: `classes / enable_sluaghbinder` is `False`, `game.dll` is the 0.37 client (SHA-256 `f55ed6b0…`, no Sluaghbinder patches), and no character or gamebot of class 16, 62 or 63 is in the world. On a playtester copy of that world (`make_test_world.py from-release`, the switch kept), the **installed** server runs the playtester's `class-switch` scenario. A player's requests for the client's Sluaghbinder slot (62), the Sluaghbinder (63) and the Acolyte novice (16) are refused, and a Celt Naturalist is made. `login-save-restart` keeps a character over a restart. The server's `FORK_BUILD` line ends `sluaghbinder=off` |
 | 3 | `playtester` (Linux) | The same `class-switch` scenario on minimal worlds, one with the switch on (the slot makes the Acolyte novice) and one with it off (`make_test_world.py minimal --class-off`), with `login-save-restart` on the class-off world |
 
@@ -29,7 +29,7 @@ screen of the real client, an hour of play, a raid, a real PC (antivirus, SmartS
   `playable-v1.1.4-update`, `playable-v1.2-new` and `playable-v0.37-classoff`.
 - **One server at a time.** Close every Offline DAoC launcher and server first. Only one server can use port 10300.
 - **The candidate Setup.** Open the `build-and-test` run of the candidate commit (the `integration/1.2` tip you are
-  testing). Its `candidate-install / setup` job's artifact `Candidate-Setup` holds `LivingServer-Setup-1.2-beta.exe`.
+  testing). Its `candidate-install / setup` job's artifact `Candidate-Setup` holds `LivingServer-Setup-1.2.exe`.
   Write down the run's commit: every result below is reported for that commit.
 - **The two helper scripts** run from this repository's checkout (`<repo>` below) with Python 3:
   `tools\installer\seed_progress.py` and `source\tools\make_classoff_copy.py`. Neither writes outside the folders
@@ -50,7 +50,7 @@ screen of the real client, an hour of play, a raid, a real PC (antivirus, SmartS
    generate a small bot roster. In the Living Server tab, change two settings and write them down (or take a screenshot).
    ENTER REALM, make a character of your own, and get a level and some loot. Note its name, level, coin and one bag item.
    Quit the game and close the launcher.
-4. Run `LivingServer-Setup-1.2-beta.exe`. Pick `playable-v1.1.4-update` on its games page, and no other game (it lists
+4. Run `LivingServer-Setup-1.2.exe`. Pick `playable-v1.1.4-update` on its games page, and no other game (it lists
    every game it finds, `playable-v0.37b` included). It offers to update Living Server: leave "suggested settings"
    unticked and update. It ends with "The realm awaits".
 5. Check:
@@ -59,13 +59,13 @@ screen of the real client, an hour of play, a raid, a real PC (antivirus, SmartS
    - Start the launcher. The Living Server tab shows your two settings, and the roster is there. ENTER REALM: your
      character is listed at the same level, with its coin and bag item.
 6. Proof to record: the Setup log (`%TEMP%\LivingServer-Setup-<time>.log`, its `RESULT Success` line), and
-   `runtime\server\deployment-backups\fork-build-*\install-record.json` with `BuildName` `1.2-beta`. Also
-   `runtime\server\logs\server.log`'s `FORK_BUILD name=1.2-beta commit=<the candidate's commit>` line, whose settings
+   `runtime\server\deployment-backups\fork-build-*\install-record.json` with `BuildName` `1.2`. Also
+   `runtime\server\logs\server.log`'s `FORK_BUILD name=1.2 commit=<the candidate's commit>` line, whose settings
    (for example `xp_rate_by_level=`, `bot_schedule=`) show yours.
 
 ## Row 2: a new install of the 1.2 candidate
 
-1. Run `LivingServer-Setup-1.2-beta.exe` and choose a new install. Set the folder to
+1. Run `LivingServer-Setup-1.2.exe` and choose a new install. Set the folder to
    `C:\Games\OfflineDAoC\playable-v1.2-new`. The folder it suggests may be another one; never use `playable-v0.37b`.
    Untick the shortcuts. Leave "suggested settings" ticked, as a new player has it.
 2. When it ends, start `START OFFLINE DAOC.cmd` in that folder. ENTER REALM makes your account. Make a character and
@@ -79,7 +79,7 @@ screen of the real client, an hour of play, a raid, a real PC (antivirus, SmartS
    part of row 3's "character creation offers no Sluaghbinder", seen in the real client.
 4. Proof to record: `python <repo>\source\tools\make_classoff_copy.py status --game C:\Games\OfflineDAoC\playable-v1.2-new`
    prints `EDITION enable_sluaghbinder=False game.dll=classic` and `CUSTOM-CLASS characters=0 gamebots=0`. Also the
-   Setup log's `RESULT Success` and `server.log`'s `FORK_BUILD name=1.2-beta commit=<commit> ... sluaghbinder=off`.
+   Setup log's `RESULT Success` and `server.log`'s `FORK_BUILD name=1.2 commit=<commit> ... sluaghbinder=off`.
    `sluaghbinder=` is in the line from this change on. On an older build, use the `status` line.
 
 ## Row 3: a class-off smoke session on a copy of the test world
@@ -99,7 +99,7 @@ class-off copy of the test world `playable-v0.37b-fresh`, made the way `build_re
    - If the copy needs the candidate build, run the candidate Setup on `playable-v0.37-classoff` (the copy only).
 2. **Start it.** Start `START OFFLINE DAOC.cmd` in `playable-v0.37-classoff`. `runtime\server\logs\server.log` must have:
    - `GameServer startup completed`;
-   - `FORK_BUILD name=1.2-beta commit=<the candidate's commit> ... sluaghbinder=off`.
+   - `FORK_BUILD name=1.2 commit=<the candidate's commit> ... sluaghbinder=off`.
 3. **Character creation.** On the character screen in Hibernia, the class list has no Sluaghbinder. The Mauler slot
    can still be picked for a Celt (row 2 step 3): try it once. It is refused with no message; the character list
    comes back without it, and `server.log` has `CUSTOM_CLASS_REFUSED ... class=62`. Then make a classic character

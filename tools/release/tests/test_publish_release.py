@@ -174,5 +174,73 @@ class PublishTests(unittest.TestCase):
                 pr.publish(FakeGitHub(), TAG, COMMIT, "T", "no hash", path, dry_run=True)
 
 
+class FinalReleaseTests(unittest.TestCase):
+    """1.2 is a final release (owner, 2026-11-19): tag v1.2, build 1.2, no "-beta" anywhere."""
+    TAG, BUILD, ZIP = "v1.2", "1.2", "OfflineDAoC-LivingServer-1.2.zip"
+
+    def notes(self):
+        return NOTES.replace("1.1.2-beta", self.BUILD).replace("Beta 1.1.2", "1.2")
+
+    def test_tags_name_their_build(self):
+        for tag, build in (("v1.2", "1.2"), ("v1.2.1", "1.2.1"), ("v2.0", "2.0"), ("v1.1.4-beta", "1.1.4-beta"),
+                           ("v1.1-beta", "1.1-beta"), ("v1.2-beta", "1.2-beta")):
+            self.assertEqual(pr.build_of(tag), build, tag)
+
+    def test_refuses_what_is_not_a_living_server_tag(self):
+        # v0.37 / v0.37b are Offline DAoC's own tags in this repository; the rest aren't release tags at all.
+        for bad in ("1.2", "v1", "v0.37", "v0.37b", "v0.36-se.1", "v1.2-rc1", "v1.2-beta.1", "v1.2 ", "latest", ""):
+            with self.assertRaises(pr.Stop, msg=bad):
+                pr.build_of(bad)
+
+    def test_zips_the_1_2_package_under_its_final_names(self):
+        with tempfile.TemporaryDirectory() as d:
+            make_artifact(Path(d) / "a", build=self.BUILD)
+            target, _ = pr.package(Path(d) / "a", self.TAG, COMMIT, Path(d) / "out")
+            self.assertEqual(target.name, self.ZIP)
+            self.assertEqual(zipfile.ZipFile(target).namelist()[0], "LivingServer-1.2/")
+
+    def test_refuses_a_candidate_still_built_as_1_2_beta(self):
+        # The launchers on 1.1.x would refuse it: they look for LivingServer-1.2 and BUILD-INFO BuildName=1.2.
+        with tempfile.TemporaryDirectory() as d:
+            make_artifact(Path(d) / "a", build="1.2-beta")
+            with self.assertRaisesRegex(pr.Stop, "LivingServer-1.2"):
+                pr.package(Path(d) / "a", self.TAG, COMMIT, Path(d) / "out")
+        with tempfile.TemporaryDirectory() as d:
+            folder = make_artifact(Path(d) / "a", build=self.BUILD)
+            info = folder / "BUILD-INFO.txt"
+            info.write_text(info.read_text().replace("BuildName=1.2", "BuildName=1.2-beta"))
+            with self.assertRaisesRegex(pr.Stop, "BuildName=1.2-beta, expected 1.2"):
+                pr.package(Path(d) / "a", self.TAG, COMMIT, Path(d) / "out")
+
+    def test_notes_rows_use_the_final_names(self):
+        body = pr.release_body(self.notes(), self.BUILD, "a" * 64)
+        self.assertIn(f"| `{self.ZIP}` | `{'a' * 64}` |", body)
+        self.assertIn("| `LivingServer-Setup-1.2.exe` | (filled in when the exe is built) |", body)
+        with self.assertRaisesRegex(pr.Stop, "LivingServer-Setup-1.2.exe"):
+            pr.release_body(NOTES.replace("1.1.2", "1.2"), self.BUILD, "a" * 64)   # rows still named 1.2-beta
+
+    def test_the_1_2_notes_file_table_names_the_final_files(self):
+        notes = (Path(__file__).resolve().parents[3] / "docs" / "RELEASE-NOTES-1.2.md").read_text(encoding="utf-8")
+        rows = [l for l in notes.splitlines() if l.lstrip().startswith("|")]
+        self.assertEqual([l for l in rows if "`LivingServer-Setup-1.2.exe`" in l],
+                         ["| `LivingServer-Setup-1.2.exe` | (filled in when the exe is built) |"])
+        self.assertEqual(len([l for l in rows if f"`{self.ZIP}`" in l]), 1)
+        self.assertNotIn("1.2-beta", notes)
+
+    def test_publishes_v1_2_as_latest(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / self.ZIP
+            path.write_bytes(b"zip")
+            gh = FakeGitHub()
+            pr.publish(gh, self.TAG, COMMIT, "Living Server 1.2 — Where Legends Wake", f"`{sha(b'zip')}`", path,
+                       dry_run=False)
+            self.assertEqual(gh.calls[0], ("create", "v1.2", COMMIT, "Living Server 1.2 — Where Legends Wake"))
+            self.assertEqual(gh.calls[1], ("upload", self.ZIP))
+            beta = Path(d) / "OfflineDAoC-LivingServer-1.2-beta.zip"
+            beta.write_bytes(b"zip")
+            with self.assertRaisesRegex(pr.Stop, "needs OfflineDAoC-LivingServer-1.2.zip"):
+                pr.publish(FakeGitHub(), self.TAG, COMMIT, "T", f"`{sha(b'zip')}`", beta, dry_run=True)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,15 +2,15 @@
 
 For sessions that can't create releases or upload files themselves: the workflow runs this on GitHub's runner.
 
-    python tools/release/publish_release.py package --artifact DIR --tag v1.1.2-beta --commit SHA --out DIR
+    python tools/release/publish_release.py package --artifact DIR --tag v1.2 --commit SHA --out DIR
         Checks the push run's package (its one LivingServer-<build> folder, BUILD-INFO.txt naming this build, this
         commit and main, GameServer.dll matching its hash) and zips it as OfflineDAoC-LivingServer-<build>.zip in the
         layout of the earlier releases: one top folder, folder entries, files in name order. Prints its SHA-256.
-    python tools/release/publish_release.py notes --notes docs/RELEASE-NOTES-1.1.2.md --tag v1.1.2-beta --zip ZIP --out FILE
+    python tools/release/publish_release.py notes --notes docs/RELEASE-NOTES-1.2.md --tag v1.2 --zip ZIP --out FILE
         The release notes: the text below the notes file's first "---" line, with the zip row's placeholder replaced
         by the zip's SHA-256. The Setup row must still read "(filled in when the exe is built)" (publish_setup.py
         fills it), and no other placeholder may be left.
-    python tools/release/publish_release.py publish --tag v1.1.2-beta --commit SHA --title T --body FILE --zip ZIP [--dry-run]
+    python tools/release/publish_release.py publish --tag v1.2 --commit SHA --title T --body FILE --zip ZIP [--dry-run]
         Creates the tag and a draft release on that commit, attaches the zip, checks GitHub's SHA-256 of it, then
         publishes the release as Latest (not a pre-release). Stops, changing nothing, when the tag or a release for it
         exists already. --dry-run does every check and prints what it would do.
@@ -35,7 +35,9 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "chris4aker/OfflineDAoC-LivingServer"
 API = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 SETUP_PLACEHOLDER = "(filled in when the exe is built)"
 ZIP_PLACEHOLDER = "(zip SHA-256: filled in by hand at publish)"
-TAG = re.compile(r"^v(\d+(?:\.\d+)+-beta)$")
+# v1.1.4-beta (the betas, up to 1.1.4) or v1.2 (final releases, from 1.2 on: owner 2026-11-19). The build is the tag
+# without its "v"; 0.x tags (v0.37) are Offline DAoC's own releases, never a Living Server one.
+TAG = re.compile(r"^v((\d+)(?:\.\d+)+(?:-beta)?)$")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 LEFTOVER = re.compile(r"\((?:owner|zip SHA-256)[^)]*\)|@@[A-Z_]+@@")
 
@@ -46,8 +48,9 @@ class Stop(Exception):
 
 def build_of(tag):
     m = TAG.match(tag or "")
-    if not m:
-        raise Stop(f"{tag} is not a Living Server release tag (v<version>-beta, e.g. v1.1.2-beta)")
+    if not m or int(m.group(2)) < 1:
+        raise Stop(f"{tag} is not a Living Server release tag (v<version> or v<version>-beta, e.g. v1.2 or "
+                   "v1.1.4-beta)")
     return m.group(1)
 
 

@@ -2,13 +2,13 @@
 
 Used by .github/workflows/release.yml (docs/DEVELOPMENT.md, "Releasing Living Server"):
 
-    python tools/release/publish_setup.py plan --tag v1.1.2-beta
+    python tools/release/publish_setup.py plan --tag v1.2
         Checks the release and its package, and says whether anything is left to do (GitHub step outputs).
-    python tools/release/publish_setup.py publish --tag v1.1.2-beta --exe <Setup.exe> --package <LivingServer.zip> [--dry-run]
+    python tools/release/publish_setup.py publish --tag v1.2 --exe <Setup.exe> --package <LivingServer.zip> [--dry-run]
         Uploads the exe unless it is attached already, then fills the Setup row of the notes' file table:
-            | `LivingServer-Setup-1.1.2-beta.exe` | (filled in when the exe is built) |
+            | `LivingServer-Setup-1.2.exe` | (filled in when the exe is built) |
         becomes
-            | `LivingServer-Setup-1.1.2-beta.exe` | `<sha256>` |
+            | `LivingServer-Setup-1.2.exe` | `<sha256>` |
 
 Safe to run again:
 - an exe already attached with the same SHA-256 is not uploaded again, and notes that already show it aren't edited;
@@ -33,7 +33,9 @@ from pathlib import Path
 REPO = os.environ.get("GITHUB_REPOSITORY", "chris4aker/OfflineDAoC-LivingServer")
 API = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 PLACEHOLDER = "(filled in when the exe is built)"
-TAG = re.compile(r"^v(\d+(?:\.\d+)+-beta)$")
+# v1.1.4-beta (the betas, up to 1.1.4) or v1.2 (final releases, from 1.2 on: owner 2026-11-19). The build is the tag
+# without its "v"; 0.x tags (v0.37) are Offline DAoC's own releases, never a Living Server one.
+TAG = re.compile(r"^v((\d+)(?:\.\d+)+(?:-beta)?)$")
 SHA256 = re.compile(r"\b[0-9a-f]{64}\b")
 
 
@@ -42,9 +44,10 @@ class Stop(Exception):
 
 
 def build_of(tag):
-    m = TAG.match(tag)
-    if not m:
-        raise Stop(f"{tag} is not a Living Server release tag (v<version>-beta, e.g. v1.1.2-beta)")
+    m = TAG.match(tag or "")
+    if not m or int(m.group(2)) < 1:
+        raise Stop(f"{tag} is not a Living Server release tag (v<version> or v<version>-beta, e.g. v1.2 or "
+                   "v1.1.4-beta)")
     return m.group(1)
 
 

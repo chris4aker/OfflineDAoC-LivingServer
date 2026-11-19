@@ -42,6 +42,8 @@ SEEN = "Seen"
 NOT_SEEN = "Not seen"
 CONTRADICTED = "Contradicted"
 NOT_APPLICABLE = "Not applicable"
+# The build names a 1.2 server gives in its FORK_BUILD line: the release's, then the earlier candidates'.
+RELEASE_BUILD_NAMES = ("1.2", "1.2-beta")
 # An attempt that ends "never entered combat" with this many fallen was a fight the route missed (sweep 6b).
 NEVER_ENTERED_FALLEN = 10
 
@@ -1888,8 +1890,10 @@ def install(j: Judge, sec: Section, c):
     fork = Evidence()
     fork.add(sec.fork_build_t, "FORK_BUILD " + " ".join(f"{k}={flags[k]}" for k in ("name", "commit", "sluaghbinder")
                                                         if k in flags))
-    j.add("install", "fork_build", "The server names its build (FORK_BUILD name=1.2-beta)",
-          SEEN if sec.build_name == "1.2-beta" else NOT_SEEN, fork,
+    # 1.2 is a final release (owner, 2026-11-19): the release build says name=1.2. The 1.2 candidates built before that
+    # day said name=1.2-beta, and their logs still count as a 1.2 build (--build picks the candidate's commit).
+    j.add("install", "fork_build", "The server names its build (FORK_BUILD name=1.2)",
+          SEEN if sec.build_name in RELEASE_BUILD_NAMES else NOT_SEEN, fork,
           f"name={sec.build_name}", note="row 1 and 2 proof line (INSTALL-CHECKS-1.2.md)")
     started = Evidence()
     if sec.startup_completed:

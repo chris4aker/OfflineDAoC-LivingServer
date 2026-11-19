@@ -663,6 +663,17 @@ class Install(unittest.TestCase):
         log.add(at(41), "Trainer Muirenn: no Sluaghbinder specialization", "ERR", "DOL.GS.Trainer")
         self.assertEqual(check(only(log.run()[1]), "classoff_errors")["status"], pcl.CONTRADICTED)
 
+    def test_the_build_row_takes_the_1_2_release_name(self):
+        # 1.2 is final (owner, 2026-11-19): the release logs name=1.2; candidates before that day logged name=1.2-beta.
+        for name, status in (("1.2", pcl.SEEN), ("1.2-beta", pcl.SEEN), ("1.1.4-beta", pcl.NOT_SEEN),
+                             ("1.2.1", pcl.NOT_SEEN)):
+            log = Log()
+            log.lines = [l.replace("name=1.2-beta ", f"name={name} ") for l in Log().start(at(0)).lines]
+            row = check(only(log.run()[1]), "fork_build")
+            self.assertEqual(row["status"], status, name)
+            self.assertEqual(row["detail"], f"name={name}")
+        self.assertIn("FORK_BUILD name=1.2)", row["row"])
+
     def test_class_on_world_is_not_the_class_off_row(self):
         sec = only(Log().start(at(0)).run()[1])
         self.assertEqual(check(sec, "classoff_flag")["status"], pcl.NOT_SEEN)

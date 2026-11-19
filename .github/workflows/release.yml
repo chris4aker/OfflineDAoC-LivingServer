@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag, e.g. v1.1.2-beta"
+        description: "Release tag: v1.2 (final releases, from 1.2 on), v1.1.4-beta (the betas before it)"
         required: true
       dry_run:
         description: "Dry run: build and test, but don't upload or edit the release"

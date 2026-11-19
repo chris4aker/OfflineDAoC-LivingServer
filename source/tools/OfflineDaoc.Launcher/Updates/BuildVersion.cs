@@ -9,7 +9,8 @@ namespace OfflineDaoc.Updates;
 // A Living Server build name as the releases use it: "1.1.1-beta", or its tag "v1.1.1-beta". Shared by the launcher
 // and Setup (tools/installer links this file), so both read and compare builds by the same rules:
 // - numbers compare as numbers, missing ones are 0: 1.1-beta < 1.1.1-beta < 1.1.2-beta < 1.2-beta;
-// - a final release outranks the beta of the same numbers: 1.2-beta < 1.2;
+// - a final release outranks the beta of the same numbers: 1.2-beta < 1.2. The releases were betas up to 1.1.4
+//   (v1.1.4-beta) and are final from 1.2 on (v1.2, owner 2026-11-19), so 1.1.4-beta < 1.2 < 1.2.1-beta < 1.2.1;
 // - a numbered test build of a beta comes after it: 1.1-beta < 1.1-beta.2.
 // Anything else ("latest", "0.37-se.2", "v1.x-beta") is not a build this reads, and Parse returns null.
 public sealed class BuildVersion : IComparable<BuildVersion>

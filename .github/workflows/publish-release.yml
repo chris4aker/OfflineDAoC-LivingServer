@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag, e.g. v1.1.2-beta"
+        description: "Release tag: v1.2 (final releases, from 1.2 on), v1.1.4-beta (the betas before it)"
         required: true
       run_id:
         description: "The build-and-test push run on main whose package is published"
@@ -63,8 +63,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ steps.run.outputs.commit }}
-      - name: Versions agree
-        run: python3 tools/release/check_versions.py
+      - name: Versions agree, and the tag is the newest release's
+        env:
+          TAG: ${{ inputs.tag }}
+        run: python3 tools/release/check_versions.py --tag "$TAG"
       - name: Download the run's package
         env:
           GH_TOKEN: ${{ github.token }}
@@ -86,6 +88,7 @@ jobs:
           COMMIT: ${{ steps.run.outputs.commit }}
         run: |
           set -euo pipefail
+          # docs/RELEASE-NOTES-<version>.md: v1.2 reads RELEASE-NOTES-1.2.md, and so did v1.1.2-beta RELEASE-NOTES-1.1.2.md.
           version="${TAG#v}"; version="${version%-beta}"
           python3 tools/release/publish_release.py package --artifact "$RUNNER_TEMP/artifact" --tag "$TAG" --commit "$COMMIT" --out out
           python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --out out/release-notes.md

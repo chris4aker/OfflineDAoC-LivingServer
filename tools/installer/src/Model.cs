@@ -45,7 +45,7 @@ namespace LivingServerSetup
 
         static string Get(string key) => BuildInfo.TryGetValue(key, out var v) ? v : "";
 
-        /// <summary>"1.0-beta" reads as "Beta 1.0"; anything else as it is.</summary>
+        /// <summary>"1.0-beta" reads as "Beta 1.0"; anything else as it is (a final release, "1.2", as "1.2").</summary>
         public static string DisplayName
         {
             get
