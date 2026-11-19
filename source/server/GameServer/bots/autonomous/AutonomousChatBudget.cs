@@ -169,23 +169,31 @@ public static class AutonomousChatBudget
     /// at least the owner's pace minimum (<see cref="Settings.FactionPaceMin"/>, 5 a minute) as its floor and half a line more
     /// as its target, at any hour (c81eb5d: 09h's 0.6 brought it to 3.9 a minute with no scene). That minimum scales with the
     /// rate against its default 2, as <see cref="FactionPace"/> does, so a lower "How much bots talk" can go under 5 and 0 still
-    /// only answers, and with <see cref="SceneScale"/> for the bots online, so a small realm isn't pushed to a full realm's pace.
-    /// The cap stays <see cref="FactionPace"/>'s 7. Pure.
+    /// only answers, and by <see cref="MinimumRosterScale"/> for the bots online, so a small realm isn't pushed to a full realm's
+    /// pace. Not with the clock schedule, whose quiet night is its purpose (the owner's PC runs with it off). The cap stays
+    /// <see cref="FactionPace"/>'s 7. Pure.
     /// </summary>
     public static (double Floor, double Target, double Ceiling) Band(Settings settings, Channel channel, int count, int localHour, bool clockSchedule, double rate)
     {
         ChannelBand band = settings.Band(channel);
         double scale = PopulationFactor(settings, band, count) * HourFactor(settings, localHour, clockSchedule) * Math.Clamp(rate, 0.0, 3.0);
         (double floor, double target, double ceiling) = (band.Floor * scale, band.Target * scale, band.Ceiling * scale);
-        if (channel == Channel.Faction && settings.FactionPaceMin > 0.0005 && rate > 0.0005 && band.Target > 0.0005)
+        if (channel == Channel.Faction && !clockSchedule && settings.FactionPaceMin > 0.0005 && rate > 0.0005 && band.Target > 0.0005)
         {
-            double least = settings.FactionPaceMin * Math.Clamp(rate / 2.0, 0.5, 1.5) * SceneScale(count);
-            floor = Math.Max(floor, least);
-            target = Math.Max(target, least + 0.5 * Math.Clamp(rate / 2.0, 0.5, 1.5) * SceneScale(count));
+            double factor = Math.Clamp(rate / 2.0, 0.5, 1.5) * MinimumRosterScale(count);
+            floor = Math.Max(floor, settings.FactionPaceMin * factor);
+            target = Math.Max(target, (settings.FactionPaceMin + 0.5) * factor);
             ceiling = Math.Max(ceiling, target);
         }
         return (floor, target, ceiling);
     }
+
+    /// <summary>
+    /// How much of /faction's minimum pace a realm of this many bots keeps: all of it from <see cref="SceneFullRoster"/> (300)
+    /// bots a realm up, and (bots / 300)^2 below, so a small roster keeps its own quiet curve (10 bots a realm: the playtester's
+    /// 0.34 a minute target; 120 bots: the hour still shapes it). Pure.
+    /// </summary>
+    public static double MinimumRosterScale(int realmBots) => Math.Pow(Math.Clamp(Math.Max(0, realmBots) / (double)SceneFullRoster, 0.0, 1.0), 2);
 
     /// <summary>
     /// A channel's reply target and reply ceiling now, in lines per minute (1.2): scaled like its ambient band, by the bots online

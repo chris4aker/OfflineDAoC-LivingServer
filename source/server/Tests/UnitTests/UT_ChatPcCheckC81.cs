@@ -206,8 +206,10 @@ public class UT_ChatPcCheckC81
         Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 960, 9, false, 1.0).Floor, Is.EqualTo(2.5).Within(1e-9));
         Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 960, 9, false, 0.0).Target, Is.EqualTo(0.0));
         Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 960, 9, false, 3.0).Floor, Is.GreaterThanOrEqualTo(7.5 - 1e-9));
-        // A small realm isn't pushed to a full one's pace (the scenes' roster scale).
-        Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 10, 9, false, 2.0).Floor, Is.LessThan(1.5));
+        // A small realm isn't pushed to a full one's pace, and the clock schedule keeps its quiet night.
+        Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 10, 9, false, 2.0), Is.EqualTo(Budget.Band(Before, Budget.Channel.Faction, 10, 9, false, 2.0)));
+        Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 300, 9, false, 2.0).Floor, Is.GreaterThanOrEqualTo(5.0));
+        Assert.That(Budget.Band(Settings, Budget.Channel.Faction, 960, 3, true, 2.0), Is.EqualTo(Budget.Band(Before, Budget.Channel.Faction, 960, 3, true, 2.0)));
         // Other channels are untouched.
         Assert.That(Budget.Band(Settings, Budget.Channel.Say, 960, 9, false, 2.0), Is.EqualTo(Budget.Band(Before, Budget.Channel.Say, 960, 9, false, 2.0)));
     }

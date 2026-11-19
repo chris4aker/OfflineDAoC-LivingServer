@@ -33,7 +33,8 @@ Nothing below is seen in game yet: **tests only** (`UT_ChatPcCheckC81`, `test_pl
 - **/faction keeps the owner's 5-7 (decision 5, 2026-11-18: "Yeah I think 5-7 is the right pace").** With no scene it
   settled at 3.9 a minute (09:30-09:40). `chat-budget.json` has `pace.faction_min_per_minute: 5`: /faction's floor is at
   least 5 and its target 5.5, at any hour, scaled by "How much bots talk" against its default 2 (1 gives 2.5, 0 only
-  answers) and, on a roster under 300 bots a realm, as the scenes are. Under that floor the realm's bots try to talk as
+  answers), fading on a roster under 300 bots a realm ((bots / 300)^2), and not with the clock schedule (its quiet night
+  is its purpose; the owner's PC runs it off). Under that floor the realm's bots try to talk as
   often as they can (pressure 4; it read about 2). The cap of 7 is unchanged. In the simulation of a quiet 09h hour with
   the player online (960 bots a realm) c81eb5d's budget gives 4.1-4.2 a minute and this one 5.2-5.4 (five seeds); with a thinner
   opener supply (3.6 before) it reaches only about 4.6, so the PC count decides.

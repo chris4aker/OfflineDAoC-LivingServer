@@ -150,7 +150,8 @@ quiet spell also let six field questions through in 28 s, under the floor. Now `
   /faction settled at 3.9 a minute with no scene (09h, whose hour factor is 0.6). /faction's floor is now at least 5 and
   its target 5.5 at any hour (`AutonomousChatBudget.Band`), so the gate says `SpeakUnderFloor` below 5, and under that
   floor the realm's bots try to talk as often as they can (pressure 4). Scaled by the rate against 2 like the others (2.5
-  at rate 1; rate 0 still only answers), and on a roster under 300 bots a realm by `SceneScale`. The cap stays 7.
+  at rate 1; rate 0 still only answers), fading as (bots / 300)^2 under 300 bots a realm (`MinimumRosterScale`), and not
+  with `bot_schedule_mode clock`, whose quiet night is its purpose. The cap stays 7.
   `UT_ChatPcCheckC81` plays a quiet 09h hour with the player online at 960 bots a realm: 4.1-4.2 a minute on `c81eb5d`'s
   budget, 5.2-5.4 now (tests only; with a thinner opener supply it reaches only about 4.6).
 
