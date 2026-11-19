@@ -63,6 +63,16 @@
     // A big moment (a keep, a relic, a raid, a first) draws a burst of 3-6 reactions over about 90 seconds.
     "burst_min": 3, "burst_max": 6, "burst_spread_s": 90
   },
+  "pace": {
+    // 1.2 (owner 2026-11-18: "5-7 is the right pace"): the most /faction lines a player hears in any minute, every line
+    // counted (openers, answers, scene beats, events). An opener waits when it and its answer would not fit; an answer, a
+    // realm event and a line to the player are never held by it. At bot_voices_chat_rate 2; scaled by the rate against 2
+    // (between half and one and a half).
+    "faction_max_per_minute": 7,
+    // A running debate, storyline or tale owns /faction and plays at this pace: a line no sooner than 60 / this seconds
+    // after the channel's last line (10 s at 6). Slowed, never cut.
+    "faction_scene_per_minute": 6
+  },
   "reply": {
     // A reply to a player needs this fit (AutonomousChatReplyFit: 4 known, 3 specific, 2 fits, 1 weak).
     "min_fit": 2,

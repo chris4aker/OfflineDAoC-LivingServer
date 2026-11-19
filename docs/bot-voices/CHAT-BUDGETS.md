@@ -125,8 +125,34 @@ budget holds: no /faction line was said over its ceiling. But most channels run 
 - /say beside a player standing idle: 6 lines in 276 minutes, against a floor of 1.3 a minute.
 
 As a listener, 5 to 7 /faction lines a minute at 700 to 800 bots a realm reads busy and followable, and that is the pace
-the owner chose (2026-11-18: "5-7 is the right pace"). The pacing stays as it is: the targets above are the budget's
-upper aim, which a realm stays under; what a player hears on a full realm is 5 to 7 /faction lines a minute.
+the owner chose (2026-11-18: "5-7 is the right pace"). The targets above are the budget's upper aim; what a player hears
+is held to the pace below.
+
+**The listener's pace (1.2, after sweep 7c; tests only).** On build `9a173f4` the player was online under three minutes
+and heard 13 /faction lines a minute (11.9 and 14.6 in the two windows). A storyline (`story_mistell_1`, 18 lines) and a
+tale (Govannon, 7 lines) played their beats 4-12 s apart, about 10 a minute on their own, and 25 of the 37 lines were
+theirs. A scene already owned the channel (every other line but a realm event or a line to the player waited for it), but
+nothing paced the scene itself, and its beats counted only against the ceiling (17-19 a minute there). The login after a
+quiet spell also let six field questions through in 28 s, under the floor. Now `chat-budget.json`'s `pace` holds every
+/faction line to the owner's pace, counted over the last minute, every line included:
+- `faction_max_per_minute` (7): an **opener** (an ambient line, a field question, a story, a rumour, a gold spammer's
+  ad) waits while it, its answer and one line for each exchange already running would not fit in the last minute
+  (`AutonomousChatBudget.OpenerFitsPace`, sink hold `pace`). Its feature tries again later, as after any hold. A line that
+  goes on with an exchange (an answer, a riff, a thread's next line) is never held by the pace, so no question loses its
+  answer. A realm event and a line to the player are never held.
+- `faction_scene_per_minute` (6): a running **debate, storyline or tale** says its next line no sooner than 10 s after the
+  channel's last line, and only while the last minute holds fewer than 7 (`ScenePacedAt`). A scene is slowed, never cut:
+  every beat is said, the mistell storyline in about 3 minutes instead of 1 min 40. A scene's start is never held, so the
+  live keep and relic scenes start as before; only their lines are spaced.
+- Both are set at `bot_voices_chat_rate` 2 and scaled by the rate against 2 (half to one and a half): 3.5 and 3 at rate 1,
+  10.5 and 9 at rate 3. They are not scaled by the bots online; a small realm runs under them anyway.
+
+`UT_FactionPace` plays an hour of one realm's /faction with the player online from a cold start, the real ambient gate,
+answers, two realm events, and the real storyline and tale with their texts and typing delays. With `9a173f4`'s rules the
+evening ran at 9.9 a minute, its busiest minute held 19 lines and the storyline played 20 lines in 107 s. With the pace it
+runs at 5.8 a minute, no minute over 7 (a realm event aside), and each scene at 5-7 a minute with every beat said. The model
+is busier than the owner's PC, where the /faction openers ran at about half their target: without scenes the PC's two
+windows carried 4.2 lines a minute, so a quiet stretch can still sit under 5. The pace is a ceiling; it adds no lines.
 
 **Scenes on a small roster (1.2, owner 2026-11-05).** Debates and the gold spammer's waves wait longer below 300 bots a
 realm: their gap is divided by `SceneScale` = the square root of (bots online / 300), between 0.1 and 1, read when a
@@ -260,6 +286,17 @@ otherwise an emote such as *nods*.
 
 Bots also answer `/advice` (one knowledgeable bot of your realm, when it knows the answer), and questions in
 `/broadcast` and chat groups, by tell.
+
+**A bot's /broadcast question** (owner's decision 12) gets one short answer about one time in three, at most one a region
+in three minutes, from a bot in /say range of the asker. After sweep 7c (build `9a173f4`, 0 of 16 /broadcast lines
+answered; 4 of the 16 were questions with answers, the rest wts, wtb and lfg posts) two things changed (tests only):
+- The region's three-minute turn is taken only once the answer is ready: an answerer who can answer, a line, and room in
+  the reply budget. Before, it was taken when the question was asked, so a question nobody near could answer used up the
+  region's next three minutes.
+- The answer is said in /say when a player stands within /say range of the answerer, and otherwise in /broadcast when a
+  player is in the answerer's broadcast area. Before, it could be said only in /say with a player beside the answerer, who
+  stands beside the asker. A question broadcast across a capital was almost never answered where the player could see it,
+  and an answer said out of the player's hearing has no CHAT_LINE.
 
 **How many replies a channel carries (1.2).** In /faction and /say, replies are counted apart from the ambient lines,
 against the channel's `reply_target` and `reply_ceiling` (scaled like its ambient band, and by `bot_voices_chat_rate` but

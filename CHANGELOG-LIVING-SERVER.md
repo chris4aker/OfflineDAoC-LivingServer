@@ -8,6 +8,28 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Chat from sweep 7c: /faction held to the owner's 5-7 a minute with scenes, /broadcast answers heard (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `9a173f4` (2026-11-18 22:13-22:25, `DIAG-9a17-sweep7c`, the player online 2 min 51 s).
+Nothing below is seen in game yet: **tests only** (`UT_FactionPace`). No line, scene, storyline or tale is removed.
+- **/faction keeps the owner's pace with scenes playing** (owner 2026-11-18: "5-7 is the right pace"). The player heard 13
+  lines a minute (11.9 and 14.6): the storyline `story_mistell_1` (18 lines) and the tale of Govannon (7 lines) said their
+  beats 4-12 s apart, 25 of the 37 lines. A scene owned the channel, but its own beats were paced only by the ceiling
+  (17-19 a minute). Now `chat-budget.json` has a `pace`: at most 7 /faction lines a minute, every line counted. An opener
+  waits until it and its answer fit (hold `pace`; answers, realm events and lines to the player are never held). A running
+  debate, storyline or tale says a line no sooner than 10 s after the channel's last one (6 a minute), so it is slowed,
+  not cut. A scene's start is never held, so the live keep and relic scenes start as before. Both scale with
+  `bot_voices_chat_rate` against its default 2. `UT_FactionPace` plays an hour with the real storyline and tale: 9.9 a
+  minute and a busiest minute of 19 on `9a173f4`'s rules, 5.8 a minute and no minute over 7 now, each scene at 5-7.
+- **/broadcast questions are answered where the player hears them** (owner's decision 12). 0 of 16 /broadcast lines were
+  answered; 4 of them were questions that have answers. The region's three-minute answer turn was taken when the question
+  was asked, before any answerer was found. The answer could be said only in /say, with a player beside the answerer,
+  next to the asker. Now the turn is taken only when an answer is ready and a player hears it: in /say beside the player,
+  else in /broadcast in the answerer's area.
+- **Not bugs (report only):** 0 `CHAT_PROMISE` lines because the player typed nothing (0 player chat lines in the whole
+  log) and no bot line said "omw" or "coming". Conversation memory (#350) writes no log line of its own, so "0 lines" says
+  nothing about it either way; it only acts on a player's lines, and there were none.
+
 ## Raid fixes from sweep 7b: Roesia's camps out, Summoner Pain cured, walk-back cap, dragon wipe line (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `9a173f4` (2026-11-18 21:59 to 11-19 01:30, `DIAG-9a17-sweep7b`). Nothing below is seen
