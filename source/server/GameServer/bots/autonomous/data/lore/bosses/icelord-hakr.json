@@ -50,7 +50,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
     },
     {
-      "text": "While any iceweaver lives, every 10-20 s he picks a random real player and announces 'Touchdown!', but the throw itself is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement), so nobody moves. 'Magic barrier fades away' is announced when the last iceweaver dies; there is no actual barrier.",
+      "text": "While any iceweaver lives, every 10-20 s he picks a random raider, bots included, and announces 'Touchdown!' as he tosses them 220 up beside him (AllowDisplacement and AllowBotDisplacement ship on for him). 'Magic barrier fades away' is announced when the last iceweaver dies; there is no actual barrier.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs"
     },

@@ -46,7 +46,7 @@
       "source": "https://camelot.allakhazam.com/db/mob/3985"
     },
     {
-      "text": "While he fights he raises 18-25 tortured souls whenever none of his are alive; once twenty have been killed, an infected ghoul crawls toward a random real player and, on reaching them, bursts (Plague: 1,000 matter damage, radius 500).",
+      "text": "While he fights he raises 18-25 tortured souls whenever none of his are alive; once twenty have been killed, an infected ghoul crawls toward a random raider, bot or player, and, on reaching them, bursts (Plague: 1,000 matter damage, radius 500).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
     },

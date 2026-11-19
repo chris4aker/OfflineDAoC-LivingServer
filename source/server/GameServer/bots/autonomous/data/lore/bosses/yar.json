@@ -31,7 +31,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Yar.cs"
     },
     {
-      "text": "While he fights, every drakulv within 2,000 of him attacks the real players within 2,500 (GameBots are not set on).",
+      "text": "While he fights, every drakulv within 2,000 of him attacks the raiders within 2,500 (bots are set on too).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Yar.cs"
     },

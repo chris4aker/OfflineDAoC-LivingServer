@@ -21,7 +21,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs; docs/encounters/epic-encounters.json"
     },
     {
-      "text": "Adds come to him at 85/70/55/40/25/10% health, at most six in a fight; his glare picks real players.",
+      "text": "Adds come to him at 85/70/55/40/25/10% health, at most six in a fight; his glare picks any raider, bots included.",
       "provenance": "game",
       "source": "docs/encounters/hand-notes.json"
     },

@@ -6,7 +6,7 @@
   "realm": "Albion",
   "facts": [
     {
-      "text": "Level 68, 30,000 health. Fifteen Sys'sro's Pit Monsters (5,000 health, take no damage at all, snare 60% on hit) live in the pit and die with him; every 10-15 s he throws a random real player near him, never a bot and never his target, into the pit (50: 41489, 40699, 8145). Pulling him brings six syhr'phint alblasters and two dragoons.",
+      "text": "Level 68, 30,000 health. Fifteen Sys'sro's Pit Monsters (5,000 health, take no damage at all, snare 60% on hit) live in the pit and die with him; every 10-15 s he throws a random raider near him, bots included but never his target, into the pit (50: 41489, 40699, 8145). Pulling him brings six syhr'phint alblasters and two dragoons.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
     },
@@ -16,7 +16,7 @@
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
     },
     {
-      "text": "Sys'sro's pit monsters (5,000 health each) take no damage, snare 60% and die with him; every 10-15 s he throws a random real player near him (never a bot, never his target) into the pit.",
+      "text": "Sys'sro's pit monsters (5,000 health each) take no damage, snare 60% and die with him; every 10-15 s he throws a random raider near him (bots included, never his target) into the pit.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs"
     },
@@ -27,7 +27,7 @@
     }
   ],
   "story": "Sys'sro the Ruthless is lord of the syhr'phint, the other drakoran clan that remembers where it came from: the prison-pits cut in the cooled lava of the burnt coast across the western sea, which the syhr'phint kept as taskers, catchpoles and pit-wardens. He was a pit-warden's son and fed his mother's beasts by hand. By the oldest syhr'phint custom a warden's beasts are fed on the warden's own blood from the day they are whelped, until they are bound to him like a limb: no blade bites them while he lives, and when he dies they lie down beside him. Elowen of Caer Gothwaite was told so under parley and did not believe it.\n\nWhen Dura'ek parted the burned city, Sys'sro got the scholars' cloister and dug his pit where Chancellor Rhydderch's blessed well had been, lined with the cloister's paving by conquered readers who were the first to go in. From the cloister his taskers run the city's work and his catchpoles its streets; his alblasters and dragoons stand at the edge so that no one climbs out alone. Ifor Netmender's cousin Tegwen, caught carrying a book under the drakoran's nets, spent nine days being run slow round the pit floor by beasts that would not kill her.\n\nHe is no duellist. He fights whoever stands in front of him and reaches past to seize one of the others and throw them in: never the one he is fighting, by the catchpoles' law that the pit is for whoever came with your enemy. The readers noted that the ones he throws are strangers who came across the water of their own will. The pit ends as it ended for Albion's first knight and for Tegwen: the companions above go for the lord, and the beasts lie down when he falls.\n\nHis ledger of everyone thrown in, copied by Elowen, shows the thrown one wins whenever the lord loses. The other lords despise and need him. He wants the city to keep order, as a pit keeps order.",
-  "legend": "Fifteen pit monsters live under him and nothing hurts them; they die when he does. If he throws you in, heal and hold on while the others burn him. Kill his alblasters and dragoons first, and keep the healers well back from the edge.\n\nEvery ten to fifteen seconds he throws someone into the pit, and in this world that someone is always you, never a bot. Fifteen pit monsters wait down there, they snare, and nothing hurts them; do not waste a swing. They die the moment Sys'sro does, so the answer is speed: kill the alblasters and dragoons of his faction who stand at the cloister edge and come in with him, then burn him while whoever is in the pit heals and holds on. Bots are never thrown; only you are. Keep a heal ready on yourself.",
+  "legend": "Fifteen pit monsters live under him and nothing hurts them; they die when he does. If he throws you in, heal and hold on while the others burn him. Kill his alblasters and dragoons first, and keep the healers well back from the edge.\n\nEvery ten to fifteen seconds he throws someone into the pit, and in this world that someone can be you or any bot beside you. Fifteen pit monsters wait down there, they snare, and nothing hurts them; do not waste a swing. They die the moment Sys'sro does, so the answer is speed: kill the alblasters and dragoons of his faction who stand at the cloister edge and come in with him, then burn him while whoever is in the pit heals and holds on. Bots are thrown too; only you are. Keep a heal ready on yourself.",
   "yells": {
     "aggro": [
       "Another for the pit!",

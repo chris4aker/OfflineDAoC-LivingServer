@@ -50,7 +50,7 @@
       "source": "Old Norse name, to verify (Cleasby-Vigfusson)"
     },
     {
-      "text": "Hjalmar and Suttung are never alive together: a controller raises one of the two at random, after the respawn interval, only when both are dead. A howl is announced when a real player comes within 400 of the hall's mouth.",
+      "text": "Hjalmar and Suttung are never alive together: a controller raises one of the two at random, after the respawn interval, only when both are dead. A howl is announced when a raider, bot or player, comes within 400 of the hall's mouth.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
     },

@@ -46,7 +46,7 @@
       "source": "Old Norse name, to verify"
     },
     {
-      "text": "When first attacked Vifil places two hrimathursa tormentors (level 78, 20,000 health, 45% melee / 30% magic resists, tether 5,800) at the tunnel to the cells. Every 25-45 s he picks a random real player in his aggro list and removes that player from it; the original port of that player to the cells is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "text": "When first attacked Vifil places two hrimathursa tormentors (level 78, 20,000 health, 45% melee / 30% magic resists, tether 5,800) at the tunnel to the cells. Every 25-45 s he picks a random raider in his aggro list, bots included, and removes them from it; the original port of that player to the cells is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs"
     },
@@ -75,7 +75,7 @@
       "text": "At the end of the last row of cells there is one set apart, with a door cut twice the height of the others and wider than any giant needs. It was there before the row was finished. Vifil visits it every morning, before he counts the rest, and stands in front of it for a while, and goes away. Nobody else is allowed down that far, and since Vifil stopped carrying prisoners nobody has been.\n\nNo sound comes from it. Midgard's rumour, which has outlived all the companies that tried to check it, is that the jailer keeps a Troll Father in it: one of the ancient ones who went deeper when Trollheim fell, caught in the glacier on the way. The Valkyn guides do not say yes and do not say no, which the companies take for yes. The cast-out sculptors say it is the last cell of all, the one the row was cut to reach, and that whatever is in it was in the ice before Kula was.\n\nThe companies who have got past the jailer and walked down to the tall door say the same thing, all of them. Once in a long while, to those who stand there long enough, something on the other side knocks. Three times, the Valkyn say when they are asked; the companies say they did not count.\n\nNobody has opened it. Vifil has the only key and has never put it down, and when he falls the companies find that the key is not on him. The sculptors say he has never once carried it to the tall door. He goes there every morning, they say, only to make sure it is still shut."
     }
   ],
-  "legend": "Old guides say Vifil ports you into his tunnels. Not here: that's switched off. What he still does, every 25 to 45 seconds, is drop a random REAL player off his aggro list (if you're the only human, that's you), so if you're tanking he'll suddenly turn and go for someone else. Keep a second tank ready to taunt him back. When you pull him, two hrimathursa tormentors (20,000 health each, 45% melee resist) appear at the mouth of the cell tunnel; tank them or kill them, they have a long tether. Vifil himself has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Don't drag him past his tether or he resets. And no, nobody has found the Troll Father. Some swear they heard knocking from the last door. His bloodforged legs drop.",
+  "legend": "Old guides say Vifil ports you into his tunnels. Not here: that's switched off. What he still does, every 25 to 45 seconds, is drop a random raider, bot or player, off his aggro list, so if you're tanking he'll suddenly turn and go for someone else. Keep a second tank ready to taunt him back. When you pull him, two hrimathursa tormentors (20,000 health each, 45% melee resist) appear at the mouth of the cell tunnel; tank them or kill them, they have a long tether. Vifil himself has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Don't drag him past his tether or he resets. And no, nobody has found the Troll Father. Some swear they heard knocking from the last door. His bloodforged legs drop.",
   "yells": {
     "aggro": [
       "Another for the cells. There is always room.",
@@ -129,7 +129,7 @@
       "two tormentors come out, [cc|kill] them",
       "two tormentors spawn at the cell tunnel when you pull vifil",
       "tanks keep taunting vifil, he forgets people",
-      "vifil drops a real player off his aggro every 25-45s. second tank ready to taunt",
+      "vifil drops someone off his aggro every 25-45s. second tank ready to taunt",
       "he doesnt port any more",
       "two tormentors at the cell tunnel when you pull, 20k each",
       "fight him in place, he resets if dragged"

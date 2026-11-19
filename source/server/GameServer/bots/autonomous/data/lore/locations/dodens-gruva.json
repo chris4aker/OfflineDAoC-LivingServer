@@ -60,7 +60,7 @@
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=68"
     },
     {
-      "text": "When Hamar is first fought, the snow vendo within 1,000 of him join in against a nearby real player (GameBots are never chosen).",
+      "text": "When Hamar is first fought, the snow vendo within 1,000 of him join in against a nearby raider (bots included).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs"
     },
@@ -70,7 +70,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs"
     },
     {
-      "text": "The Mistress of Runes drops a flaming spear (Odin's Hatred, 650 energy damage in a 450 radius around her target) every 10-15 seconds and dims a random real player's sight (nearsight) every 20-25 seconds.",
+      "text": "The Mistress of Runes drops a flaming spear (Odin's Hatred, 650 energy damage in a 450 radius around her target) every 10-15 seconds and dims a random raider's sight (nearsight), bots included, every 20-25 seconds.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/MinstressofRunes.cs"
     },

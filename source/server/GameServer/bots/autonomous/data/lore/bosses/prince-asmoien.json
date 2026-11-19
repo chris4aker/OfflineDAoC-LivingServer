@@ -16,7 +16,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs"
     },
     {
-      "text": "BotBrain implements IControlledBrain, so companion bots and autonomous gamebots are candidates for the devour, not only pets.",
+      "text": "BotBrain implements IControlledBrain, but EpicEncounterMechanics.IsDevourablePet leaves out every GameBot, so only summoned pets (a player's or a bot's) are devoured.",
       "provenance": "game",
       "source": "source/server/GameServer/bots/BotBrain.cs"
     },
@@ -32,7 +32,7 @@
     }
   ],
   "story": "Prince Asmoien learned his appetite at the Feast of Thrones by watching the hungry one eat from a corner. When the bargain was struck that the Master would eat only those who fell from their place, Asmoien asked what of those who have no place: servants, beasts, things that come into the hollow at another's bidding. The Master laughed with nineteen voices and gave them to him. The First Roll grants him leave to eat what follows. He took the west and the long pit of the Mutilators, his Hook; Earl Ipostian keeps his tally on a cord of knotted gut.\n\nHe does not hunt. When a company enters his hall its servants whimper, and he breathes in as a man breathes in the smell of bread, and the nearest of them comes apart and goes into him and mends him; a few breaths later, the next. An Albion theurgist wrote that her furthest spirit lasted longest. Nor is it only beasts: a squire who came because his knight ordered him, a hired sword, a sworn companion are followers too, as an Albion company that came down with every captain's household learned. The free man, who came of his own will, is the Master's portion, and Asmoien keeps the bargain. Leave the hound at the top of the stair, the druids say.\n\nHis feud with Prince Abdin, the Blade and the Hook, filled the Gate in the Fourth Roll until Gatekeeper Dommel closed every road out of it; since then all three orders watch the crossing. Lecherous Gress says the soul they fought over was a Midgard huntsman's hound that Asmoien had already eaten.\n\nSir Gerallt of the Downs raised the Free Company in Camelot Hills: no man came because another told him to, no squires, no hired swords, no beasts or spirits, and every name was sworn at the cross in the Albion hall. In the prince's hall nothing whimpered, and for the first time the prince looked surprised. They killed him in the pit. Midgard and Hibernia each claim him first.",
-  "legend": "Prince Asmoien is level 78 with 100,000 health, CC immune, 40% melee / 70% other reduction. Every 5 seconds while he is fighting he kills the nearest pet OR BOT within 2,000 of him and heals by its full health. That is not a typo: the code treats every bot, your companions and the realm's gamebots alike, as a 'controlled' creature, so in a bot raid he eats the closest bot every 5 seconds and heals thousands each time. Only the human is never eaten. There is no clean answer with bots today; untested ideas are to fight him with as few bots inside 2,000 as possible (pets dismissed, healers and casters at maximum range), or with a small hard-hitting group so the heals he gets cannot keep up. Pets on their own are suicide. Out of the fight for 8 seconds past his reach and he walks home at full health. He is one of the four Blood that must die before Beliathan can rise.",
+  "legend": "Prince Asmoien is level 78 with 100,000 health, CC immune, 40% melee / 70% other reduction. Every 5 seconds while he is fighting he kills the nearest pet within 2,000 of him and heals by its full health. Bots are controlled creatures in the code too, but the devour skips them: it takes summoned pets only, players' and bots' pets alike, and every one is thousands of health back on him. Nobody in the raid is eaten, bot or player; only the pets. The answer is pets: untested ideas are to fight him with every pet dismissed or kept out of 2,000 (bot pets too), healers and casters at maximum range, or with a small hard-hitting group so the heals he gets cannot keep up. Pets on their own are suicide. Out of the fight for 8 seconds past his reach and he walks home at full health. He is one of the four Blood that must die before Beliathan can rise.",
   "yells": {
     "aggro": [
       "What lovely little servants you have brought me.",
@@ -70,7 +70,7 @@
   },
   "botLines": {
     "briefing": [
-      "asmoien eats the nearest pet or bot within 2000 every 5 sec and heals off it",
+      "asmoien eats the nearest pet within 2000 every 5 sec and heals off it. dismiss the pets, bots are fine",
       "yes bots count. keep as few of us inside 2000 as we can, casters at max range",
       "no pets at all. dismiss them at the top of the stair",
       "he is one of the four royals for beliathan"

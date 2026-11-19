@@ -78,7 +78,7 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
     },
     {
-      "text": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears over one random real player for 5 s; it is visual only and does no damage.",
+      "text": "Every 25-45 s an untargetable 'Eyes Watching You' effect appears over one random raider, bot or player, for 5 s; it is visual only and does no damage.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json (galladoria/eyes-watching-you)"
     },

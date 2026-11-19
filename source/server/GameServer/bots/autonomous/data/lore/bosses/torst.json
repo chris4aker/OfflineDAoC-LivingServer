@@ -41,7 +41,7 @@
       "source": "Swedish and Old Norse glossaries, to verify"
     },
     {
-      "text": "When engaged Torst raises five eddies (10,000 health, speed 300) that wander the ledge casting Cold Snap (110 cold, radius 300, every 5-12 s). On 20% of his hits he casts a 550 cold blast in a 400 radius round his target (recast 25-45 s); with a 10% chance per tick he roots his target (99%, 60 s, recast 30 s). Whenever his target is rooted he clears his aggro list and attacks a random REAL player within 1,500 (bots are never chosen). His aerial patrol is OFF in Living Server (AllowGlacierGriffonPatrol); he keeps his perch. 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "text": "When engaged Torst raises five eddies (10,000 health, speed 300) that wander the ledge casting Cold Snap (110 cold, radius 300, every 5-12 s). On 20% of his hits he casts a 550 cold blast in a 400 radius round his target (recast 25-45 s); with a 10% chance per tick he roots his target (99%, 60 s, recast 30 s). Whenever his target is rooted he clears his aggro list and attacks a random raider within 1,500 (bots included). His aerial patrol is OFF in Living Server (AllowGlacierGriffonPatrol); he keeps his perch. 100,000 health, 40% melee / 70% magic resists, CC-immune.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
     },
@@ -70,7 +70,7 @@
       "text": "In the old days Torst and Hurika flew long circuits over the glacier together, at dawn and dusk, wide slow rings over the crater and back to the ledge, and the giants of the citadel watched the sky for them as men of Midgard watch the sky for weather. The wind-riders timed their attempts on the roost by those circuits, because the nest was alone while the pair were in the air.\n\nThey do not fly now. The season the wind-rider Hrafn made his fourth and last attempt on the roost, he put a spear through Hurika's wing on the ledge, and the lift went out of it. The hen can beat her wings still, and raise a gale, but she cannot leave the ledge. Torst has not flown the circuit since. The wind-riders who have watched say he goes to the edge at dawn, and spreads his wings, and looks back at her, and folds them again.\n\nHe keeps the ledge beside her now, with the nest between them, and his eddies go round and round the roost in their own paths, and the wind-riders have not made an attempt in years. Asmund said, near the end of his life, that he was glad of it. He said the eastern ledge had two griffons on it that would not leave each other, and that a rider who wanted to break that to the saddle had misunderstood what a griffon was.\n\nHrafn no longer flies either. The wind-riders say he goes up onto the cliffs at dawn, like the cock, and looks east, and comes down."
     }
   ],
-  "legend": "Torst and Hurika sit side by side, so expect both. Torst: 100,000 health, 40% melee and 70% magic resists, CC-immune. When he wakes he spits out five eddies (10,000 health each) that wander the ledge on their own paths casting a 110 cold Cold Snap in a 300 radius every few seconds: kill them or keep the healers out of their way. Some of his hits drop a 550 cold blast within 400 of his target. The nasty one: he roots his target now and then, and the moment his target is rooted he drops it and goes for a random REAL player within 1,500. If you're the only human, that's you. Keep root-break on the tank, and be ready for him to turn on you. The old 'bolt-pull the bird down off the ledge' trick doesn't apply: neither griffon patrols any more, they stay on their perches. Cold resist for everyone. The griffon mantles are the drops everybody wants.",
+  "legend": "Torst and Hurika sit side by side, so expect both. Torst: 100,000 health, 40% melee and 70% magic resists, CC-immune. When he wakes he spits out five eddies (10,000 health each) that wander the ledge on their own paths casting a 110 cold Cold Snap in a 300 radius every few seconds: kill them or keep the healers out of their way. Some of his hits drop a 550 cold blast within 400 of his target. The nasty one: he roots his target now and then, and the moment his target is rooted he drops it and goes for a random raider within 1,500, bot or player. Anyone can be next, so healers stay ready. Keep root-break on the tank, and be ready for him to turn on you. The old 'bolt-pull the bird down off the ledge' trick doesn't apply: neither griffon patrols any more, they stay on their perches. Cold resist for everyone. The griffon mantles are the drops everybody wants.",
   "yells": {
     "aggro": [
       "SKRAAAAAH!",
@@ -124,7 +124,7 @@
       "pull the birds down to the flat if you can",
       "root break on torst, the root sets you up for the eddies",
       "kill both birds together",
-      "torst roots his target then switches to a real player. thats you if youre the only one",
+      "torst roots his target then switches to someone random. thats you if youre the only one",
       "root break on the tank vs torst",
       "5 eddies wander the ledge, kill them or keep heals clear",
       "birds dont patrol any more, fight them on the perch"

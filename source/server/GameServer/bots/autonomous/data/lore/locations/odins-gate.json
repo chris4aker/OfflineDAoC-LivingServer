@@ -32,7 +32,7 @@
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
     },
     {
-      "text": "The Glacier Giant's throw is live in Living Server (no EpicEncounterMechanics switch): while above 15% health it may pick a random real player who is not its target and move them to one of six spots up to a few thousand units away and several hundred units up; a thrown player is not picked again for 45 s.",
+      "text": "The Glacier Giant's throw is live in Living Server (no EpicEncounterMechanics switch): while above 15% health it may pick a random raider, bots included, who is not its target and move them to one of six spots up to a few thousand units away and several hundred units up; a thrown player is not picked again for 45 s.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs"
     },

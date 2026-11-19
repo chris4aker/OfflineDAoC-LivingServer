@@ -15,7 +15,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
     },
     {
-      "text": "He hurls a random real player within 2,500 into the air every 20-40 s and glares at another; when he dies 'a glowing light begins to form on the mound'.",
+      "text": "He hurls a random raider within 2,500, bots included, into the air every 20-40 s and glares at another; when he dies 'a glowing light begins to form on the mound'.",
       "provenance": "game",
       "source": "docs/encounters/hand-notes.json"
     },

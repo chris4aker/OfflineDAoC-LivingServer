@@ -46,7 +46,7 @@
       "source": "Celtic name elements, to verify"
     },
     {
-      "text": "Each damaging hit on her has a 15% chance to make her pick a random real player within 2,000; a second later she bolts them with cold (Summoner Bolt, 200, range 1,800) and moves them to a ledge high above her room (24874, 36116, 17060). She does it at most every 8-12 seconds; GameBots are never picked.",
+      "text": "Each damaging hit on her has a 15% chance to make her pick a random raider within 2,000; a second later she bolts them with cold (Summoner Bolt, 200, range 1,800) and moves them to a ledge high above her room (24874, 36116, 17060). She does it at most every 8-12 seconds; Bots are picked too.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs"
     },

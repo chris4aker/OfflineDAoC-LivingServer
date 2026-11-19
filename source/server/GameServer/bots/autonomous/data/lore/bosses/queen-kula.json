@@ -47,7 +47,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
     },
     {
-      "text": "Thor's Might is a 400-point energy bolt (range 2,500) on her current target, cast when a real player's blow lands on her: rarely while Tuscar lives and she is above half, often (half the time) once he is dead or she is at half or below. GameBot blows never trigger it.",
+      "text": "Thor's Might is a 400-point energy bolt (range 2,500) on her current target, cast when a raider's blow lands on her, bot or player: rarely while Tuscar lives and she is above half, often (half the time) once he is dead or she is at half or below. GameBot blows never trigger it.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs"
     },

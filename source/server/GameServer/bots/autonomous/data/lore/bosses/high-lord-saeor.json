@@ -17,7 +17,7 @@
     }
   ],
   "story": "Of the three halls of the east, High Lord Saeor's is the warmest, because it is the fullest. He came late to the Feast of Thrones and lived because he did: he went round the edges of the deepest chamber where the fallen lay killed but not yet eaten, and drank not their souls, which were the Master's, but their measure, whatever makes a living thing as large as it is. He knelt among the eleven larger than he had come in, and the Master made him a High Lord and said nothing. The court despises him as soldiers despise a man who goes through the pockets of the dead. Duke Zepor keeps his door, Earl Oraxus his books, and Marquis Almen has never seen his lord hungry.\n\nHe drinks the measure of those he kills in the moment they fall: something goes out of the man and into him, the whole size of the man, and he is mended as a cracked cask is mended by a new stave. Only his own kills feed him. Yet not every man: Brother Odran's reports do not agree, and the Inquisitors say he drinks only those who came down of their own will. The Albion captains settled it by a custom said at the muster before every descent into the east: give him no one.\n\nThe court needs him all the same. The lesser fallen, whom the Master will not stoop to, are carried to the edges of the warm hall, and he grows every Roll. Baelerdoth says his East Ward was built for Saeor; the imps bet there will be no Twentieth Roll. The Church says a man lost to him has lost his burial too.\n\nSir Tomos Llwyd of the Isle of Glass brought more priests than any Albion company before him, ringed them behind his knights with one order, no one falls, and changed the knight who held the high lord before each one tired. Saeor fell unfed. Tomos had every man counted at the Albion hall before any sat, and every one answered.",
-  "legend": "High Lord Saeor is level 70 with 100,000 health, CC immune, 40% melee / 70% other reduction, and otherwise a plain melee fight with one rule: when a real player he kills dies within 1,000 of him, he heals by that player's whole maximum health. Only the human feeds him; bots who die to him heal nothing, and deaths to his servants heal nothing. So in a bot raid the one thing that matters is that the human never dies to Saeor: if you are the tank, rotate out early and let a bot tank take him; if you are a healer or caster, stay well back and keep your own health full. Change tanks before they are low anyway, as Sir Tomos did. His hall is quiet otherwise: Duke Zepor, Earl Oraxus and Marquis Almen and a few succubi stand near him. Drop out of the fight for 8 seconds and he resets full.",
+  "legend": "High Lord Saeor is level 70 with 100,000 health, CC immune, 40% melee / 70% other reduction, and otherwise a plain melee fight with one rule: when anyone he kills, bot or player, dies within 1,000 of him, he heals by their whole maximum health. A dead bot feeds him as well as a dead player; bots who die to him heal nothing, and deaths to his servants heal nothing. So in a bot raid the one thing that matters is that nobody dies to Saeor: if you are the tank, rotate out early and let a bot tank take him; if you are a healer or caster, stay well back and keep your own health full. Change tanks before they are low anyway, as Sir Tomos did. His hall is quiet otherwise: Duke Zepor, Earl Oraxus and Marquis Almen and a few succubi stand near him. Drop out of the fight for 8 seconds and he resets full.",
   "yells": {
     "aggro": [
       "Come, feed me.",
@@ -56,8 +56,8 @@
   },
   "botLines": {
     "briefing": [
-      "saeor heals by the full max hp of any real player he kills. only the human feeds him",
-      "human stays alive no matter what. if you tank, rotate out early",
+      "saeor heals by the full max hp of anyone he kills. bots feed him too",
+      "nobody dies, rotate the tanks early. if you tank, rotate out early",
       "bot deaths dont heal him, but rotate tanks before they drop anyway",
       "plain fight otherwise. dont let it go quiet or he resets"
     ],
@@ -70,7 +70,7 @@
     "aftermathLoss": [
       "one death, then another, and he was back to full",
       "i died to him and he healed right back up",
-      "the human tanked too long",
+      "the main tank stayed on too long",
       "fight went quiet and he reset full"
     ],
     "rumour": [
