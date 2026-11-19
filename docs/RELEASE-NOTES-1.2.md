@@ -1,330 +1,388 @@
 # Living Server 1.2: release notes (draft)
 
-The text below the line is the draft of the GitHub release notes for `v1.2` ("1.2" final, not a beta: owner 2026-11-19), "Where Legends Wake". It is a draft for
-the owner's approval: the "How it was tested" section is finished after the owner's played check. In the file table the
-Setup row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only that text with the
-exe's SHA-256. The zip's SHA-256 is filled in by hand when publishing. Publish it as Latest, not as a pre-release: the
-launcher's update check reads GitHub's latest release, which leaves pre-releases out. Lines marked "[if it lands: ...]"
-describe work still on its own branch: keep them only if it is merged before the tag, and drop the marker. Nothing here
-names the Easter eggs or the project's internal vocabulary. Brought up to date on 2026-11-13 with everything merged into
-1.2 that day (play with friends, the character passport, bot cosmetics, the raid changes, the audit fixes).
+The text below the line is the draft of the GitHub release notes for 1.2, "Where Legends Wake" (owner 2026-11-19: "1.2"
+final, not a beta). It describes all of Living Server as it is in 1.2, not only what changed. Publish it as Latest, not
+as a pre-release: the launcher's update check reads GitHub's latest release, which leaves pre-releases out.
+
+Before publishing:
+- **`[BUILD]` and `[TESTS]`** are the release-build slots (in "How it was tested": the "Automated" line and the "On the
+  release build" line). Fill them from the release build's own log and CI run. No result in these notes is from the
+  release build until then. `publish_release.py` doesn't catch these two slots (its leftover check looks only for
+  "(owner ...)" and "@@NAME@@"), so check by hand that none is left.
+- **Files table:** the Setup row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only
+  that text with the exe's SHA-256. The zip row must keep exactly `(zip SHA-256: filled in by hand at publish)`:
+  `publish_release.py notes` replaces it with the zip's SHA-256. Both rows name the build (`1.2`); the tag is `v1.2`.
+- **"Bots as people"** in "How it was tested" is marked unverified until the owner confirms it (the PC notes of 18
+  November record it as seen; docs/PLAYED-CHECK-1.2.md still says "Not run").
+
+Nothing here names the Easter eggs or the project's internal vocabulary.
 
 ---
 
-### Where Legends Wake
+# Living Server 1.2: Where Legends Wake and the Realms are Alive
 
-1.1.2 gave the raids their first five boss tactics. 1.2 turns the epic encounters up to full strength, with bots that
-have to survive them, and gives every dungeon, dragon and boss a story you can find in the world. The bots also play
-with you now: they invite you, lead groups you can simply follow, and notice you in RvR the way a player would. A realm's
-raid begins with its boss's tale and a horn, and for the first time a few friends can join your world.
+*Offline. Never alone.*
 
-It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client, like 1.1 to 1.1.4. As in 1.1.4, a new
-install from Setup is **0.37** (the original client and the Classic + Shrouded Isles classes), downloaded from Living
-Server's own copy of shadowofze's release files.
+> Living Server is an unofficial, free, non-commercial fan project. It is not affiliated with, endorsed by or
+> connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
-### The epic encounters, at full strength
+This page describes all of Living Server as it is in 1.2, not only what changed. The tag after each part says which
+release brought it: **1.0** (Beta 1.0, which carried every Social Expansion build before it), **1.1**, **1.1.2**,
+**1.1.3**, **1.1.4** or **1.2**. **Offline DAoC** marks what the game already did before Living Server; it is listed only
+where Living Server builds on it.
 
-- **The bosses' own rules are back on.** In earlier versions many boss mechanics were softened or switched off so bot
-  raids could win. 1.2 turns them back on: the horsemen's tether heal, Morbus's swarm, the Skeletal Sacristan's patrol,
-  Soul Reckoner's souls and small room, Aroon's Scaiths in order, the Earthmenders, Beatha healing Xaga, Kvasir's cold
-  heal, King Tuscar and Queen Kula healing each other, the dragons' messengers, and more. Of the 19 restored rules that
-  are now server settings, 13 are on. Funus's class and weapon puzzle, the original fire patches, Govannon's full
-  300,000 health and full heal, Easmarach's endless heal at the falls, and the Earthmenders healing each other stay off.
-- **They hit bots too.** Bosses used to choose their throws, glares, debuffs and "random target" spells from real players
-  only. Now they choose from the whole raid: you, your companions and the gamebots. With bots around you are one target
-  among many, never chosen more often than before.
-- **Thrown bots get back.** The dragons' wing gust is back, and most throws, teleports and jails take bots as well. A thrown
-  bot falls and takes the same fall damage you would. It walks back to its party when it can; otherwise it recalls to its
-  raid after 5 seconds. Most thrown bots are recalled: in a long run, 4 in 5 were.
-- **No floods of adds.** A bot raid can be bigger than a 2003 raid. A few bosses that make adds or heals per raider now
-  count at most a period-sized raid, so a big bot raid faces what a full raid of players did.
-- **Your companions stay at the fight** when a boss throws you, instead of being dragged along.
+A feature counts as working only once it has been seen working on the owner's PC. Everything else says **tests only**.
+Each "seen" result names the build it came from. None of them comes from the build you are downloading.
 
-### Raid tactics for the real puzzles
+It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client. A new install from Setup is **0.37**
+(the original client, Classic and Shrouded Isles classes), from the project's own copy of the 0.37 release files.
 
-A boss with a puzzle can't be beaten by hitting harder. The raids now have a plan for many of them. Grand Summoner
-Govannon has not been beaten by bots yet; Spindler Broodmother fell to a bot raid for the first time on 12 November. The
-encounter catalog lists 40 encounters with a raid tactic that is new or reworked in 1.2. Some of them:
+---
 
-- **Funus (Caer Sidi):** his class and weapon puzzle is off by default. Do not turn it on yet: the raid's tactic for it
-  is not finished.
-- **The Earthmenders (Galladoria):** each one takes damage only from its own classes, so each raider takes one its class
-  can hurt, and the Earthmenders die before the primal. They heal only the primal, not each other, so the raid can win
-  (simulated: all four die in about 10 minutes). The original mutual heal is the server setting
-  `epic_earthmender_mutual_heal` (off). Turned on, it makes Galladoria unwinnable for bots: on build `b1b6846` the four
-  out-healed 1.44M damage in 48 minutes, and the raid's heal-watching tactic kills only one of them.
-- **Spindler Broodmother:** casters and archers kill each newborn spindler as it comes, the curers stand apart from her
-  mesmerize so someone can always wake the raid, and the small spindlers that burst from her body are cleared before the
-  raid moves on.
-- **Grand Summoner Govannon:** in his demon form the casters, archers and healers stand clear of his target. His
-  sacrifice and demon are killed on their way to his altar.
-- **Tuscaran Glacier:** the raid kills Kula first while one tank holds the King, nobody casts cold at Kvasir, and a team
-  clears the Jailer's tunnel guards, so whoever he jails walks out.
-- **The dragons:** casters and archers run down the messengers, and the raid steps away from a stare or a breath.
-- **Easmarach, Olcasgean, the Sacristan, Soul Reckoner, the Crypt Lord, Orshom's fire, Dra'argus's sphere** and others
-  each have a plan of their own. Your party calls each mechanic in /group as it happens ("all on kula", "out of the fire").
-- **Raid leaders call it, and a realm learns a boss.** For Xanxicar's stomp, the raid leader now calls when to get out,
-  and each bot reacts in its own time, some late. A realm that is new to him loses more raiders to the stomp; over its
-  attempts it learns him and loses fewer. This is still being tuned.
-- **Aidon the Archwizard's illusions** now leave with every fight, not only the first.
+## 1. What Living Server is
 
-**Some secrets take a realm time to learn.** A raid of bots may still lose these fights for a while: **Grand Summoner
-Govannon**, **Galladoria** past Spindler Broodmother, **Tuscaran Glacier** and **Trollheim**'s last boss. If a fight is
-too hard on your world, each restored rule is a server setting of its own and can be switched off alone.
+Offline DAoC is the 1.65-era game, Classic and Shrouded Isles, on your own PC, with bots who level, group and fight
+*(Offline DAoC)*. Living Server gives those bots the lives of 2003 players. They talk the way we talked, keep their own hours,
+join guilds, remember you, craft and trade, call their own raids, take each other's keeps, and invite you along. It
+runs while your server runs.
 
-### A raid is a realm event
+**A new world starts empty.** You make the population on the launcher's main screen with **+ Lv.1**, **+ Lv.20** and
+**+ Lv.50** for each realm (Shift adds 10, Ctrl adds 100).
 
-- **The boss's tale, then the horn.** When a realm's raid comes due, or you force one from the launcher, the realm's
-  storyteller first tells the tale of that raid's boss in /faction, to its end. Then the realm is called: a large line
-  across the screen and a horn. Only then do the bots gather. A raid is never lost to its tale: if the tale can't start
-  or runs long, the call goes out anyway, and with no player of that realm online the raid forms at once.
-- **One raid every four hours** per realm, instead of every two and a half. A world still on the old default moves to
-  four hours once; an interval you chose yourself is kept.
-- **No time limit in the dungeon.** A raid used to end four hours after it went in, even one still winning: Caer Sidi
-  was cut off with 12 named down. Now a raid ends when it wins, when it runs out of attempts, or when it stops making
-  progress: an hour with no named or boss down, no wipe and its target never lower than before. A raid you force from
-  the launcher waits three hours.
-- **After a wipe the raid comes back together.** Released raiders gather at the way in and go back in waves, and the
-  next attempt waits for 70% of the living raid (it was half). A boss that resets while the raid still stands costs no
-  attempt, and raiders still walking back count as part of the raid when an attempt is scored.
-- **Your raid spot, clearly.** An invite to a raid that has already left now says so instead of "no spot left", and
-  when a raid ends your group window clears.
+**People**
+- **Personalities** *(1.0)*: Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, with five traits that decide
+  who grinds, who parks in town and who lives in the frontier. Target a gamebot and type `/personality`.
+- **Period chat** *(1.0; rewritten 1.1; tuned 1.1.2, 1.1.3 and 1.2)*: hand-written lines in five writing styles, chosen by
+  realm, class, level, zone, time and what is really happening, in /faction, /say, /group, /guild, /lfg, /trade,
+  /broadcast and tells. Keep, relic, raid and zone talk comes from the live world.
+- **They read what you type** *(1.0)*: "ty", "inc", "rez pls", "lfg 24 cleric", "is friar good?".
+- **Bot guilds** *(1.0)*: levelling, social, RvR, raiding and crafting guilds with names over their heads, /gu chat,
+  recruiting ("lf guild"), dues, merit, guild buffs, alliances and keep claims. Gamebots invited into your own guild
+  *(1.1.2)*.
+- **Memory** *(1.0; more in 1.1.3)*: who they grouped with, your rezzes and your insults; friends greet you, grat your
+  dings and offer a rez.
+- **Server life** *(1.0)*: grats, server firsts, rezzes and corpse runs, frontier alarms, nemeses, breaks, body
+  language, and a bot schedule that can follow your PC's clock.
+- **2003-style names** *(1.1)*, from about 700 real names of 2001-2004.
+- **The Herald** *(1.0)*: a news page the launcher writes from your world.
+- `/lswhy` *(1.1.2)* shows why a bot said something; **How much bots talk** (0-3) in the launcher sets the volume
+  *(1.1.2)*.
 
-### A world whose stories come alive
+**Play**
+- **Levelling like people** *(1.0; Offline DAoC underneath)*: zones by personality, roads that bend around monsters far above
+  them, memory of where bots keep dying. Reacting to attacks like players *(1.1)*. Gamebots start without armor and earn
+  it.
+- **Talk to bots by name** *(1.0)*: `/send <name>` any online bot of your realm; `/invite` or `/target` a nearby one.
+- **Bots that invite you** *(1.1.3; much more in 1.2)*.
+- **Quests** *(1.1, 1.1.2)*: quest markers, epic chains, your bot group's kills count for your quests.
+- **XP by level range** *(1.0)*, for you and for the bots.
 
-- **Every place has its story.** 108 places, 578 bosses and 4 realm histories (Albion, Midgard, Hibernia and the places
-  no realm holds), from the dragons and epic dungeons down to the named monsters of every zone. The four battlegrounds
-  have one too, and no two realms tell it alike.
-- **Checked against Mythic's own words.** Where Mythic told a story, it is kept, in our own words, with its source. 832
-  Camelot Herald articles from November 2001 to February 2005, read from the web archive, were checked against the
-  lore, and where ours disagreed with Mythic's, Mythic's version won: Dartmoor's history, Gjalpinulva's mother, the Legendary
-  Afanc's return and Krondon's ogres among them. Where Mythic told no story, the Living Server wrote one. Every compass
-  direction in the lore was checked against the world.
-- **Where you meet it:**
-  - **Loremasters** in each capital: Aldwin in Camelot's library, Sigrun at Jordheim's temple, Eithne by the bards of
-    Tir na Nog. Ask them about the [places] of your realm.
-  - **Lore books**, one per place, read a page at a time. The loremasters copy them for a silver, and now and then one
-    turns up on a monster near the place it tells of. They never crowd out real loot.
-  - **The Herald:** each raid in Realm Records ends with a sentence from its boss's story.
-  - **The Bestiary**, a new Realm Records page: every boss of your realm's places, with what raid leaders say about it.
-    Its full story opens once your realm has brought it down. Raids won before 1.2 count.
-  - **`/lore`** in either client. In the new client the journal's LORE button opens it in its own window.
-  - **Bosses speak** their own lines as a fight starts, at their phases, at their big moments and when they die.
-  - **Short lines on screen** the first time each day you enter a dungeon, when you step into a boss's lair, when a
-    dragon takes to the sky, and at a realm's first kill of a boss. At most one every 30 seconds, and realm news always
-    comes first. **Atmosphere lines** in the launcher's Living Server tab turns them off.
-  - **Bots know the stories.** A raid leader tells the realm what the boss does as the raid sets out. Ask a bot "whats in
-    krondon?" and it answers from the lore.
-  - **The realm's storyteller** tells a boss's tale in /faction, line by line, and keeps to it until the end. Ask for one
-    in plain words ("tell the one about golestandt"). A group resting by the fire sometimes tells one too.
+**The endgame**
+- **Realm raids** *(1.0)*: each realm raids its dragon, its epic dungeon, Summoner's Hall, Darkness Falls and its raid
+  dungeons on its own schedule. The raid musters, clears its way in, wipes, regroups and goes again. Two realms can meet
+  in Darkness Falls.
+- **Period-sized raids and the first boss tactics** *(1.1.2)*; raids that keep moving *(1.1.3)*.
+- **Keep sieges with a fight on both sides** *(1.0)*: warbands lay siege, defenders turn out, called as the enemy army
+  marches *(1.1.3)*.
 
-### Play with friends (experimental)
+**The economy:** the Realm Exchange and real loot *(Offline DAoC, kept as they are)*; bots sell only at natural task breaks.
 
-A few friends can now join your bot world from their own PCs, with the original game client.
+**Yours to run**
+- **The Living Server tab** *(1.0)*: every part has its own switch; **ALL OFF** gives you the plain server.
+- **One Setup** *(1.1; fixed for new players in 1.1.4)* installs the game and Living Server, or adds Living Server to your
+  game.
+- **Updates from the launcher** *(1.1.2)*: **Check for updates**, then **GET UPDATE**. Nothing installs until you say so.
+- **Backups** *(1.0, 1.1.2)*: every install backs up what it replaces; `ROLLBACK.cmd` puts it back; the server copies
+  your world once a day.
 
-- **HOST FOR FRIENDS** in the launcher: set a password for friends, press START HOSTING, and send them the invite code.
-  Windows asks once for permission to let them through its firewall. Your home network and Tailscale are on by default;
-  joining over the internet is a box you tick. If your server is running, the launcher offers to restart it so hosting
-  takes effect.
-- **JOIN FRIEND** on a friend's PC: paste the code, choose an account name and your own password (6 to 13 characters),
-  and type the host's password the first time. Your character is saved in the host's world.
-- **Passwords:** the host's password is needed only to make an account, and never travels: Join Friend sends a short code
-  made from it. Your own password is yours alone. Five wrong passwords from one PC lock it out for ten minutes. Your own
-  PC is never asked for the host password and is never locked out.
-- **Friends play as players.** Make Me GM changes only your own account, and `/travel` and `/bot pilot` work only on the
-  host's PC.
-- **Bots with more than one of you:** your companions follow you, always, and a friend's `/pull` never takes them.
-  Gamebots you invite follow the group's leader. Each of you gets quest credit for a gamebot's kill, and bots answer
-  each of you in turn.
-- **Character passport:** CHARACTER PASSPORT… takes one of your characters to a friend's world with its gear, quests and
-  the coin you choose, and COME HOME brings it back with what it earned. While it's away it's locked at home. Every step
-  backs your world up first.
-- Not yet: the new client (0.37c) can't use Join Friend.
+**The rules that never change:** real loot, the Realm Exchange, stablemaster routes, selling only at natural breaks,
+bots that start without armor and earn it, and Darkness Falls open to solo bots.
+
+---
+
+## 2. New in 1.2, by area
+
+### Chat and bot speak
+
+- **Bots answer you first.** A tell, or a line that names a bot, always gets an answer, however busy the channel.
+  Replies to you have their own budget, so on a busy channel bots stop answering each other before they stop answering
+  you. Bot exchanges already running wait for your answer to be said first (30 seconds at most).
+- **/faction at a 2003 pace.** About 5 to 7 lines a minute on a full realm, never more than 7, with scenes slowed rather
+  than cut. **How much bots talk** scales it. On a small server /faction is quieter than before.
+- **Promises they keep.** A bot that says "omw" or "coming" to an alarm, a keep call or a call for help has to go there,
+  with a deadline. A bot that can't go says something else ("how many?", "cant, sry").
+- **Honest answers.** A bot no longer claims to be another class, role or level. "is it far?" after a place gets a
+  travel answer. A call for help gets an offer or an honest no, never a story. Another realm's zone is "thats hib
+  frontier, rvr only", not a route. /broadcast questions are answered where you hear them.
+- **`/lswhy`** grew: `/lswhy me` (why bots answered your lines, or didn't), `held`, `budget`, `duty`, `skill` and `way`.
+- **Bots dress up** at the game's own prices: dyes and weapon lusters from the merchants you use. Some never bother, a
+  few are peacocks, many wear their realm's colours. Bots never buy glows. Server setting `bot_cosmetics` (on).
+- **Arguments that run for days.** Ten more of them play out in /faction over several evenings, so a realm has fifteen
+  to draw from.
+- **Personalities, every Server life part and the real-clock schedule are on from the start.**
+
+### RvR
+
+- **They notice you the way a player would.** Gamebots in the frontier, battlegrounds and Darkness Falls used to see
+  you from 5,000 units, all at once. Now it is chance and distance: always within 1,000 units, never beyond 3,500 on
+  their own; the rest hear it when one calls it.
+- **Groups fight like groups.** They call a target and switch together, assign crowd control, interrupt, peel for their
+  healers, kite, and open from stealth. Armies leave a milegate on more than one road. Eight-man groups roam the
+  fringes.
+- **A role-built eight looks for a crowd-control build** (a mezzing Healer, Sorcerer or Bard).
+- **Battlegrounds:** waves and storms on the keep lord, a rally spot per realm, and **+ Lv.20** bots that arrive with
+  starter gear. Battleground keeps can't be claimed by guilds, as in 2003.
+- **Movement:** melee bots flank a monster that is fighting someone else and use their side, back and front styles where
+  they really stand; they chain styles and use reactive ones after an evade, block or parry; moving parties no longer
+  jerk once a second.
+
+### Raids and epics
+
+- **The tale, then the horn.** When a realm's raid comes due, the realm's storyteller tells that boss's tale in /faction
+  to its end. Then a large line crosses the screen and a horn sounds, and only then do the bots gather. Every open-world
+  raid has a tale of its own now. A raid is never lost to its tale: if it can't start or runs long, the call goes out.
+- **The bosses' own rules are back on.** The horsemen's tether heal, Morbus's swarm, the Skeletal Sacristan's patrol,
+  Soul Reckoner's souls and small room, Aroon's Scaiths in order, Beatha healing Xaga, Kvasir's cold heal, King Tuscar
+  and Queen Kula healing each other, the dragons' messengers and wing gust, and more. Of the 19 restored rules that are
+  server settings, 13 are on, and each can be switched off alone. Still off: Funus's class and weapon puzzle, the
+  original fire patches, Govannon's full health and full heal, Easmarach's endless heal at the falls, and the
+  Earthmenders healing each other.
+- **They pick bots too.** Throws, glares, debuffs and "random target" spells choose from the whole raid: you, your
+  companions and the gamebots. A thrown bot falls, takes the fall damage you would, and walks or recalls back.
+- **A big bot raid faces what a period raid did.** Bosses that make adds or heals per raider count at most a
+  period-sized raid.
+- **A plan for the real puzzles.** Kula first while one tank holds the King; no cold at Kvasir; a team clears the
+  Jailer's tunnel; casters run down the dragons' messengers; Spindler Broodmother's newborns die as they come and her
+  curers stand apart from her mesmerize; the Earthmenders taken by class; Aidon fought inside his home; Summoner Pain
+  cured by the healers. Your party calls each mechanic in /group ("all on kula", "out of the fire").
+- **Raid leaders call it, and a realm learns a boss** (Xanxicar's stomp). A realm new to him loses more raiders; over its
+  attempts it loses fewer. **Still being tuned.**
+- **One raid every four hours per realm**, and **no clock inside the dungeon**: a raid ends when it wins, runs out of
+  attempts, or makes no progress for an hour.
+- **After a wipe the raid comes back together** at the way in and goes back in waves; the next pull waits for 70% of the
+  living raid. A boss that resets while the raid stands costs no attempt.
+- **Raid leaders invite you.** At level 50 the raid leader may offer you a spot, once per raid.
+- **Some fights are still being tuned, and the bots lose them.** See "Seen and tests only" below for each one.
+
+### Companions
+
+- **Your companions stay at the fight** when a boss throws you (server setting `epic_companions_stay_when_thrown`, on).
+- **Hired companions.** Up to seven of your own, hired beside a healer of your realm (`/hire`, or the healer's
+  [companions] link). Slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free. You pick race, class, look
+  and name; it joins at level 5 with a training weapon, levels only beside you and never passes your level. You gear it
+  (`/hire gear <n>`), train its specs (`/hire train <n> <line>`), buy its realm abilities and set its AI options
+  (`/hire options <n>`). It talks like the other bots, or keeps a formal 1.65 voice (its **Speech** option). `/hire help`
+  lists every word. Some of the code is borrowed from the True 1.65 project. Switch: **Hired companions**.
+- **Every bot is trained like a player.** Gamebots, `/spawn` helpers and hired companions get the half-level spec points
+  above 40 and pay what you pay for autotrain lines.
+- **With friends:** your companions follow you, always, and a friend's `/pull` never takes them.
+
+### Guilds
+
+- **Bot guilds are on from the start**, with their chat, recruiting, keep claims, dues, merit and alliances.
+- **Guild crafters.** A guild's crafter bots make for guildmates at material cost. Ask "anyone craft?" in your guild's
+  chat and the guild's best crafter answers with its title and skill.
+- **Guilds have a look.** A guild often wears one colour scheme.
+- **Raid leaders** are officers of a raiding guild in the raid.
+
+### Crafting and the economy
+
+- **Bot crafters** join an order, work at the forges and stations, earn titles, fill craft orders and sell on the Realm
+  Exchange. They advertise in /trade, quote, haggle and take commissions by tell ("can you make", "how much for",
+  "deal", "ready?").
+- **You join an order at its crafting master**, the way a new character did in 1.65 (switch **Era start**). Crafting
+  needs the original client.
+- **Bots keep an economy:** upkeep and repairs, potions, luxuries, siege supply, and an economy ledger the launcher can
+  show.
+- Still off by default (the player's choice): the classic rule options **Half below 50% power**, **Secondary skill caps**,
+  **Classic quality** and **Classic losses**.
+
+### Lore, tales and storylines
+
+- **Every place has its story.** 108 places, 578 bosses and four realm histories, from the dragons and the epic dungeons
+  down to the named monsters of every zone, and the battlegrounds. Where Mythic told a story, it is kept, in our own
+  words: 832 Camelot Herald articles from November 2001 to February 2005, read from the web archive, were checked
+  against ours, and where they disagreed, the archive won.
+- **Where you meet it:** loremasters in each capital (Aldwin in Camelot's library, Sigrun at Jordheim's temple, Eithne by
+  the bards of Tir na Nog); lore books, a page at a time; the **Bestiary** in the launcher's **Realm Records** tab;
+  `/lore`, `/lore <place or boss>` in either client; bosses that speak; short **Atmosphere lines** on screen (a switch).
+- **Bots know the stories.** Ask "whats in krondon?". Ask for a tale in plain words ("tell the one about golestandt").
+- **Arguments that run for days** in /faction (see Chat). Talk of Atlantis and the world below stays hearsay.
+
+### Bots as people and 2003 builds
+
+- **Skill that grows:** each gamebot is Casual, Average or Veteran (about 30/50/20) and gets better with play, one tier at
+  most. Mistakes come mostly on strangers: a quarter as many in a group with you, and never on a named or a monster more
+  than 2 levels up.
+- **Knowing the way:** bots know their capital, home town, the zones they levelled through and, from 20, their border
+  keep. Heading somewhere new they may ask the way, tag along, or take a wrong road for a minute or two.
+- **Moving like people:** circle-strafing in RvR, a strung-out /stick line, sitting while they wait, crowding the bank,
+  sitting on a held keep's walls.
+- **Personal milestones:** the ding to 50, then realm rank 5 or a real dragon trophy. The Herald lists the last 40
+  under **Milestones of the Realms**.
+- **2003 class mix and 2003 builds** for **new** bots: each realm's period class shares and a period build for life, fully
+  trained from 1.65 templates; one in ten on an odd spec. Bots already in your world keep their class and build. The
+  shares and weights are estimates from 2002-2003 forum posts, not counts.
+- Switches: the **BOTS AS PEOPLE** card (**Skill that grows**, **Knowing the way**, **Moving like people**, **Personal
+  milestones**, **2003 class mix**, **2003 builds**). Touches autonomous gamebots only, never companions or raids.
+- Bots never play the Sluaghbinder, in either edition.
 
 ### Bots that play with you
 
-- **Bot leaders invite you.** The leader of a gamebot party near your level may send you a tell and an invite. Yes puts
-  you in its group, and the bot leads: the camp, the pulls, the breaks. You travel yourself; it waits for you. Unasked
-  invites come at most once every 45 minutes. `/lfg`, or a tell like "room for a cleric?", gets you one sooner.
-  `/invites off` stops them.
-- **Take the lead, or hand it back.** `/lead` makes you the leader. `/lead bot` hands it to a gamebot.
-- **Bot-led parties carry on.** When someone leaves, the leader looks for a replacement in /lfg. It calls its own pulls,
-  and it ends at a natural break with "last pull then town".
-- **Raid leaders invite you.** When a dragon or epic dungeon raid forms in your realm and you are level 50, its leader may
-  offer you a spot, once per raid.
-- **Loot in a group with gamebots, whoever leads:** an upgrade for you goes to you, an upgrade for a bot goes to the bot
-  that needs it most, and the rest is shared with two turns for you. Coin counts you twice. **Your loot share** is a
-  launcher setting.
-- **RvR perception.** Gamebots in the frontier, battlegrounds and Darkness Falls used to see you from 5,000 units, all at
-  once. Now they notice you by chance: always within 1,000 units, never beyond 3,500 on their own. In the seeded
-  simulations, the median time for a bot to notice you is about 1.5 seconds at 1,500 units and 20 seconds at 3,400.
-  At most 3 gamebots of a realm look for you each second; the rest hear it when one calls it.
-- **Replies that don't give bots away.** Bots answer you first: a tell, or a line that names a bot, always gets an answer,
-  however busy the channel. Answers have their own budget, so on a busy channel bots stop answering each other before they
-  stop answering you. A bot no longer claims to be another class, role or level. `/lswhy me` shows why bots answered your
-  lines, or didn't.
-- **Bots dress up, at the game's own prices.** A gamebot spends spare coin on dyes for its armor and, if it likes to show
-  off, a weapon luster, from the same dye merchants you use and at their prices. Each bot has a look of its own: some
-  never bother, some wear one tidy colour, a few are peacocks in the dearest shades, many lean on their realm's colours,
-  and a guild often wears one. Bots never buy glows: glowing weapons still come from epic and dragon drops and the
-  Darkness Falls merchants. The server setting `bot_cosmetics` (on by default) turns it off.
-- **New bots are built like 2003 players.** The launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50`
-  buttons now make each realm's 2003 class mix (Cleric 12% of Albion, Healer 15% of Midgard, Druid 12% of Hibernia),
-  and each new gamebot keeps one of its class's period builds for life: a Mind/Body Sorcerer more often than a Matter
-  one, a Pacification Healer more often than a Mending one, with a little per-bot variation, and one bot in ten on an
-  odd spec. These are **new bots only**: bots already in your world keep their class and build. The shares and weights
-  are **estimates** from 2002-2003 forum posts, not counts. In RvR a role-built eight now looks for a crowd-control build
-  (a mezzing Healer, Sorcerer or Bard) for its crowd controller. A gamebot that trains every level also gets the
-  half-level spec points above 40 now, as you do, and so do hired companions (their spec window shows the points a
-  player of their class and level has; a companion you already trained keeps its lines and gets the missing points to
-  spend) and `/spawn` helpers. Bots also pay what you pay for a class's autotrain lines (free up to a quarter of the
-  level, 77 points a line at 50), and every era build is fully trained on a 1.65 template (the Uthgard 1.65 server's and period guides, tuned back to
-  1.65; the 2002-2003 posts where nothing better exists), with every autotrain line at its free 12 and each build's
-  source in the data. A levelling era bot spends what its build can take at every trainer visit, and gamebots you
-  already have get back the points a player of their level would have. Bots never play the Sluaghbinder, in either edition; a gamebot that
-  already is one is kept with its items but no longer logs in. Switches: "2003 class mix" and "2003 builds" in the
-  Living Server tab.
-- **Hired companions talk like the other bots (tests only).** One voice: a companion types like a 2003 player in its own
-  writing style, in its own lines ("lead the way", "oom, need to med", "k, quiet till u tell me to talk again") and in
-  everything a gamebot says with you: grats, rez asks and thanks, group talk and fight calls, tells (`/send` reaches it).
-  Its **Speech** option (AI Options) keeps True 1.65's formal companion instead ("Lead the way, Testrunner."), which then
-  says only its own lines. A companion can claim a server first like any character (it never outlevels you, so it can only
-  tie you). The **Hired companions** switch is in the Living Server tab now.
-- **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own
-  budget. In the automated playtester's runs (10 gamebots a realm, two half-hour listens each, on a development machine) it went from 1.20 and 1.33
-  lines a minute to 0.87 and 0.97. A full server is not quieter: its channels were rebalanced, not cut.
+- **Bot leaders invite you.** A gamebot party leader near your level may send a tell and an invite. Say yes and it leads:
+  the camp, the pulls, the breaks, "last pull then town". You travel yourself; it waits for you. `/lfg`, or a tell like
+  "room for a cleric?", gets one sooner; `/invites off` stops unasked ones (at most one every 45 minutes).
+- `/lead` takes the lead; `/lead bot [name]` hands it to a gamebot.
+- **Loot with gamebots:** an upgrade for you goes to you, an upgrade for a bot to the bot that needs it most, and the
+  rest is shared with your share counted twice (**Your loot share** in the launcher).
 
-### Bots as people (tests only)
+### Play with friends (experimental)
 
-Gamebots play like people of 2003, not like perfect machines. All of it is on by default, touches only autonomous
-gamebots (never your companions, raids, battleground keep assaults or fights at a keep), and has been **tested
-automatically only: none of it has been seen on a played world yet**. The four switches are on the Living Server tab's
-**BOTS AS PEOPLE** card.
+- **HOST FOR FRIENDS** on the launcher: set a password, press **START HOSTING**, send the invite code. Home network and
+  Tailscale are on by default; the internet is a box you tick.
+- **JOIN FRIEND** on a friend's PC: paste the code, pick an account name and your own password (6 to 13 characters).
+  Five wrong passwords from one PC lock it out for ten minutes.
+- **CHARACTER PASSPORT…** takes a character to a friend's world with its gear, quests and the coin you choose; **COME
+  HOME** brings it back with what it earned. Every step backs your world up first.
+- Original client only; the new client can't use Join Friend yet.
 
-- **Skill that varies.** Each gamebot is Casual, Average or Veteran (about 30/50/20; **RvR bot awareness** moves the mix).
-  It keeps that one tier everywhere: in fights, finding its way and moving.
-- **Mistakes, mostly on strangers.** A Casual bot now and then pulls an add, lets a buff run out, spends its power on its
-  dearest nuke, rests on less power or reacts late; a Veteran rarely does. No mistake ever takes on a named or a monster
-  more than 2 levels above the group. In a group with you they make a quarter as many. In open-field RvR a member steps
-  out of an area effect and follows its group's call after a delay that fits its group's skill.
-- **Skill that grows.** Bots get better with play, by one tier at most: about 40 hours of fighting from Casual to
-  Average. They never get worse by playing.
-- **Raids learn from their raiders** (Xanxicar's stomp only). The raid knows the stomp as well as the raiders who have
-  seen it, so a newcomer slips more than the veteran beside him. A world updated from 1.1.x starts with the raiders it
-  would have had, so its raids don't forget the boss.
-- **Bots know the places they've been:** their capital, a home town, the zones they levelled through and, from level 20,
-  their border keep. They learn a place by going there.
-- **Asking the way.** Heading somewhere new, a bot may ask "how do i get to ..." in /say or /faction (one /faction ask
-  per realm every 10 minutes); only bots that know the place answer. Or it tags along behind a realm-mate going there, or
-  takes a wrong road for a minute or two (never more than 3) and walks back.
-- **Movement that looks like people.** Melee bots circle-strafe in RvR and casters face their attacker as they back
-  off; bot groups travel on /stick in a line; bots overshoot where they stop, sit when they wait, crowd the bank, and
-  sit on the walls of keeps their realm holds, standing as an enemy comes near. Whether the original client shows a
-  sitting bot is still to be checked.
-- **Personal milestones.** From level 45 a bot chases the ding to 50; at 50 some chase realm rank 5 and others a dragon
-  trophy: an item they really won from a dragon's or an epic boss's raid loot (no epic armour, no artifacts). As they get
-  close they may say so ("4 bubbles to 50", "over halfway to rr5") in your group, /say, their guild or /faction, never more
-  than one such line a realm in /faction every 5 minutes (one a minute elsewhere). The realm cheers realm rank 5 and a trophy, the ding to 50
-  keeps its grats, and the Camelot Herald lists the last 40 under **Milestones of the Realms**. Near 50 a bot takes fewer
-  town breaks; near realm rank 5 it leans to RvR, inside the realm's goal mix.
+### Launcher and installer
 
-### Questing and battlegrounds
+- **Every Living Server feature is on from the start** (the owner's decision of 2026-11-16). A world from an earlier build turns each one
+  on once, only where it still had the old default; a switch you set yourself stays.
+- **New on the Living Server tab:** the **BOTS AS PEOPLE** card, **BOT-LED GROUPS** (**Bot leaders invite you**, **Raid
+  leaders invite you**, **Your loot share**), **Hired companions**, **Atmosphere lines**, **No Lifer buffbots**, and
+  **BOT CRAFTERS AND THE ECONOMY** and **CRAFTING (YOUR CHARACTERS)** cards.
+- **Realm Records** has a **Bestiary** page: every boss of your realm's places, its full story once your realm has
+  brought it down (raids won before 1.2 count).
+- **+ Lv.20** joins + Lv.1 and + Lv.50 on each realm card.
+- **Setup retries a busy download server** after 30, 60, 120 and 240 seconds, keeping what it already has.
+- **Logs take far less room** (three days of server log, every log capped).
+- The online count on the main screen refreshes every five minutes again (tests only).
+- The patcher refuses a damaged update that names a file outside the game folder. The loading screen says LIVING SERVER.
 
-- **The epic chains are linked on every install**, by the server as it reads the quests. Nothing is written to your
-  world, and no Python is needed.
-- **Repeatable quests are offered again**, deliveries in quests without a collect column can be handed in, and a
-  collection quest takes its item whatever the case of its name.
+### Also
 
-### Movement that doesn't look scripted
+- Epic quest chains are linked on every install, by the server as it reads the quests (nothing written to your world).
+  Repeatable quests are offered again.
+- **Borrowed from the True 1.65 project**, each credited in the changelog: boss script fixes (Suttung, Legion, Govannon, Vifil,
+  Lossren, the dragons), better camp choice, and bot parties that know when to run. **Tests only.**
+- **From other forks:** two Darkness Falls exits that take you home and smarter style choice (rambodolphin13), the flank
+  step (from the True 1.65 project), no jerking in a moving party (Nikse77, via rambodolphin13).
 
-- **Flanking.** A melee gamebot that knows a back or side style steps behind or beside a monster that is fighting
-  someone else, and swings that style. It only walks where the navigation mesh says it can. Never for tanks, companions,
-  bots in a group you lead, raids or epic encounters.
-- **Positional styles.** Bots used to swing front styles even when they stood behind a boss. Now they use their side,
-  back and front styles when they are really there.
-- **Smarter style choice.** Melee gamebots chain their styles, use reactive styles after an evade, block or parry, and
-  stop spamming taunts unless they tank for a group.
-- **No more jerking once a second** in a moving party.
-- **Circling and stepping.** Melee bots circle and adjust in a fight, and casters step between casts. Stops and turns no
-  longer snap to a point. Bots idle at the bank and the usual crowd spots in town.
+---
 
-### Fixes from other forks of Offline DAoC
+## 3. Seen and tests only
 
-Each is credited to its author.
-- **Two Darkness Falls exits work:** the one by Legion's hall and the one near the Midgard boss now take you home (by
-  rambodolphin13). Nothing is written to your world.
-- **Smarter style choice** (by rambodolphin13).
-- **The flank step** (by shadowofze, from his OfflineDAoC-True165).
-- **No more jerking in a moving party** (by Nikse77, via rambodolphin13).
-- **New client (0.37c): skills on the quickbar, Stealth in the Abilities list, and a SELL button at merchants**
-  (shadowofze's own 1.2 script fixes, installed only over the released scripts; ROLLBACK.cmd puts them back).
+"Seen" means seen on the owner's PC, on screen or in its server log, on the build named. Bot raids below were bots only,
+started by the game or by the owner's test runs, unless it says otherwise. **None of these results is from the release
+build.**
 
-### Other changes
+### Seen on the owner's PC
 
-- **Setup retries a busy download server.** When the download server answers "busy" (429, 500, 502, 503 or 504), Setup
-  tries again by itself after 30, 60, 120 and 240 seconds, keeping what it already downloaded.
-- **The loading screen says LIVING SERVER**, and upgrades from 1.1, 1.1.1 and 1.1.2 get it too.
-- **Commands typed in the server window work again.**
-- **Level-50 bots from the launcher arrive trained** in their builds. Before, they loaded with every line at 1 and raids
-  formed in their first minutes fought with level-1 skills.
-- **Logs take far less room.** A full server wrote about 300 MB of logs a day and kept a week of them. Now the server log
-  keeps three days, routine bot travel goes to its own two-day file, and every log has a limit. Existing installs get the
-  new settings at their next start; the old ones are kept beside them.
-- **Safer updates:** the patcher refuses a damaged update that names a file outside the game folder.
+| Area | What | Build(s) |
+|---|---|---|
+| Chat | Bots answering the player in /faction and by tell; a /broadcast question answered; a live keep-defence scene in /faction; `/personality` and `/lswhy`; a companion answering; /faction at about 5 a minute over ten minutes; a bot that couldn't go refusing a promise | `5154cae` (19 Nov, 25 minutes in Camelot) |
+| Chat | Crafter replies to "what do you make?"; spec talk answering "anyone know a good paladin spec?" | `b1b6846` |
+| Bots with you | A gamebot leader's invite, following it, `/lead`, `/lead bot`, `/makeleader`, `/invites`, the replacement call | test builds 3-5, `1dc66b6` |
+| Bots with you | A raid leader's invite and a seat in the raid (Golestandt, Hall of the Corrupt, Caer Sidi, Krondon, Coliath) | test build 5, `1dc66b6` |
+| Raids | The boss's tale, then the call and its horn; a tale asked for in plain words; one raid every four hours | test builds 3-4, `1dc66b6` |
+| Raids | After a wipe, gathering at the way in and going back in waves | test build 3, `1dc66b6`, `9a173f4` |
+| Raids | Raid healers curing poison and mesmerize | `9a173f4` |
+| Raids won | Golestandt, Cuuldurach (test build 5); Gjalpinulva (`88b6ab3`, `9a173f4`); Krondon (`1dc66b6`, `b1b6846`); Hall of the Corrupt (`1dc66b6`); Avalon City and Crystal Cave (`ccba364`, `b1b6846`); Tur Suil (`ccba364`, `b1b6846`, `9a173f4`); Marfach Caverns (test builds 2, 4, 5; `9a173f4`); Iarnvidiur's Lair (`88b6ab3`); Juggernaut (`88b6ab3`, `9a173f4`); Dodens Gruva (test build 5, `b1b6846`); Coliath (`1dc66b6`, `19e7037`); Evern (`ccba364`, `9a173f4`); Mollunero (`ccba364`); Spirit of Lord Emthoro (`b1b6846`); Darkness Falls (Midgard) with Legion (`e3b8238`, before the Darkness Falls raid work) | as listed |
+| RvR | Bots noticing a player at 516-1,575 units, then mezzing and killing him | `3d67b6f` |
+| RvR | Keeps changing hands: 15 in one evening, one five times | `ccba364` |
+| RvR | Group target calls, crowd control, interrupts, peels and kites in the log | `19e7037` |
+| Crafting | Bot crafters at the stations: 2,109 sessions, 11,022 pieces, 6,903 Exchange sales in one evening | `ccba364` |
+| Cosmetics | Bots buying dyes and lusters at the game's prices | test build 6 |
+| Lore | Boss yells, atmosphere lines, realm first-kill lines; the `/lore` window; a loremaster standing in Camelot | `1dc66b6` |
+| Companions | `/hire`, the companion following; gear handed over and visible; `/hire train`; a companion summoned at login | `5ddd003`, `b1b6846` |
+| Bots as people | Skill tiers near 30/50/20, skill growth, places learned, movement habit counts, era builds assigned (server log only, not watched on screen) [unverified: from the owner's test notes; docs/PLAYED-CHECK-1.2.md still says "Not run"] | `b1b6846` |
+| Friends | A second game client joining over the home network with the host password | test build 7 |
 
-### Install
+### Lost or still being tuned (bots only)
 
-- **Have 1.1.2, 1.1.3 or 1.1.4:** the launcher's **Check for updates** finds 1.2. START SERVER reads **GET UPDATE**:
-  Install, Later or Skip this version.
-- **New to Offline DAoC, or adding Living Server:** run `LivingServer-Setup-1.2.exe`. Windows SmartScreen may say
-  "Windows protected your PC" because the exe isn't code-signed: click More info, then Run anyway.
-- **Have 1.1 to 1.1.4:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2.zip` into your game folder and run
-  `INSTALL.cmd` with the game and server closed. Your characters, bots, guilds and settings stay.
-- **Every Living Server feature is on from the start** (owner, 2026-11-16). That covers bot guilds, bot personalities,
-  every Server life part, the real-clock bot schedule, bot crafters and their craft orders, the bots' upkeep, luxury
-  spending and siege supply, and crafter commerce and crafting social life. A world updated from 1.1.x turns on each
-  one it still had at the old default the server wrote; a switch you set in the Living Server tab stays as you set it.
-  Still off: the diagnostics lines, the classic rule options (power halving, secondary crafting caps, classic quality
-  and losses) and the epic encounter options kept off until a played check.
-- **To undo:** `ROLLBACK.cmd`. It puts every replaced file back; it never puts your database back, because that would
-  undo your play since.
+- **Caer Sidi:** lost at the Crypt Lord, whose court and patrol beat the raid (`b1b6846`, `9a173f4`).
+- **Galladoria:** lost at Spindler Broodmother (`9a173f4`); on `b1b6846` it ran six hours without reaching Olcasgean.
+  The Earthmenders' mutual heal is off by default; turned on, the bots can't win (`b1b6846`). Fixes for the primals
+  since: tests only.
+- **Tuscaran Glacier:** lost at Queen Kula after two wipes, every Kula mechanic handled (`b1b6846`); lost at Suttung and
+  the Council (`9a173f4`); lost at King Tuscar after 365 minutes and 40 named (`ccba364`).
+- **Summoner's Hall (all three realms):** lost at Summoner Roesia (`b1b6846`, `9a173f4`). Healers now cure her Summoner
+  Pain first: **tests only**. **Grand Summoner Govannon has never been beaten by bots.**
+- **Trollheim:** timed out before Nosdoden fell (`ccba364`, `b1b6846`). Fixes since: tests only.
+- **Darkness Falls (Albion):** looped on a chthonic knight (`b1b6846`). Fixed: tests only.
+- **Golestandt** lost after two wipes on `9a173f4` (won on test build 5). Dragon fights can fall apart partway.
+- **Green Knight** and **Marfoirwort** lost (`ccba364`). **Curengkur** never formed (no route; fix tests only).
+- **Legion:** some rules are in (wounded raiders step out of his reach, his adds and heals are capped), but the raid does
+  not play his platform, the way down or his add waves. Behemoth is never fought; Fomor City and Morgana have no raid.
 
-Real loot, the Realm Exchange, stablemaster routes, selling at natural breaks, bots that earn their armor and Darkness
-Falls open to solo bots are untouched.
+### Tests only (not seen working on the owner's PC)
 
-### How it was tested
+- Mistakes and their rate, asking the way, milestone talk, raid learning, the sit emote in the original client.
+- Era builds' class mix on a fresh world, and any raid fought by an era-built world.
+- Crafting as a player; a completed trade with a crafter bot (tried on `b1b6846`, not finished; fixed since); craft
+  orders mostly filled; the launcher's crafter card and economy page.
+- Hired companions joining a fight on a grey monster (failed on `b1b6846`, fixed since), and their chat.
+- Roaming eights finding fights; open-field tactics judged by eye.
+- A session played together with a friend; a character passport trip between two PCs.
+- Loremasters' dialogs, lore books, the Bestiary page and the Herald's chronicle.
+- The chat fixes of 19 November ("is it far?", help calls, other realms' zones, "an"), the promises kept to the end, and
+  the launcher's online count.
+- Every raid fix after `9a173f4` (Roesia's cure, Suttung's pulls, Steinvor's pillar, Curengkur, Hibernia's dragon hub).
+- Updating a 1.1.4 game through Setup, a new install from Setup, and a class-off (0.37) world, on the owner's PC.
+  Automated: [TESTS].
+- **On the release build ([BUILD]):** [TESTS].
 
-A feature counts as working here only once it has been seen working on a real install. Everything else is "tests
-only".
+---
 
-- **Automated (tests only):** [filled in from this release's CI run: the server suite's count, and the Windows launcher
-  and installer tests]
-- **Bot raids in a test world (tests only, bots only):** Easmarach killed (build 8ab2279e), Soul Reckoner killed
-  (4cc22ab4) and Torst killed (8ab2279e). Govannon was not beaten in about 12 runs, and Spindler Broodmother not in
-  about 9. Funus was beaten once, only with fixes that are not in this build.
-- **On the owner's PC, test builds of 1.2 (10 to 13 November):**
-  - Bot-led groups: a gamebot leader's invite, following it, `/lead` and `/lead bot`, leaving and the replacement call,
-    and the party letting you go after half an hour when you never come (builds 3 to 5).
-  - A raid leader's invite to Golestandt, accepted, and a seat in the raid (build 5).
-  - The boss's tale, then the call with its horn, before a raid of the game's own (builds 3 and 4).
-  - A tale asked for in plain words, with the storyteller silent about anything else until it ended (build 4).
-  - After a wipe, the raid regrouping and going back in waves; the next attempt waiting for 70% of the raid (build 3).
-  - Raids won: Golestandt (build 5, second attempt), Cuuldurach (build 5, a raid the game opened itself), Marfach
-    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5).
-  - Raids lost: Galladoria at the Organic-Energy Mechanism, Trollheim at Nosdoden, and Caer Sidi cut off by the old
-    four-hour limit with 12 named down (build 5).
-  - Bots buying dyes and lusters at the game's prices (build 6).
-  - Play with friends: a second game client joined over the home network with the host password and made its account
-    (build 7). A session played together has not been checked yet.
-- **On a real install** (an overnight run of development build 76600af7, bots only, 7.8 hours): Fornfrusenen, the
-  Council Vagn and Nokkvi, Torst and Hurika were killed; Tuscaran Glacier was lost at Icelord Agmundr. Bot raids skipped Scurceol Hyrde: they could not shoot his orbs.
-  In the battlegrounds, 168 of 169 storms on a keep lord failed and no keep changed hands. The server stalled for 4 to
-  6 seconds three times.
-- **Played:** [owner: one line on the played check, filled in before publishing]
-- Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
-  `FORK_BUILD` line from `runtime\server\logs\server.log`.
+## 4. Known issues
 
-### Known issues (it's a beta)
+- **Bot raids still lose some fights**, named above. Each restored boss rule is a server setting of its own if a fight is
+  too hard on your world.
+- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail; no
+  battleground keep has changed hands.
+- **A very busy server can stall for a few seconds**, most often as two raids end together (3.0 s on `9a173f4`; a fix is
+  tests only).
+- **Open-field regroups are passed between groups more than planned** in dense warbands (17.4% of regroups on `9a173f4`
+  against a 15% bar), though never passed on twice.
+- **Some gamebots wait a long time at frontier teleporters**, and some search for a camp for minutes.
+- **Bots don't fall when they die**: the original client plays the lying-dead pose only for players.
+- **Bot-led groups:** gamebots don't share your horse or boat, and the break at the end of a session ends the party.
+- **Bot chat** still guesses from your words, and has been tested one line at a time more than as long conversations.
+- **A maximized launcher** can ignore START SERVER, STOP SERVER or ENTER REALM when another window sits over those
+  buttons. Use the launcher at its normal size.
+- **Bot guilds stay in your world when you turn them off**; `ROLLBACK.cmd` doesn't remove saved data.
+- **New client (0.37c):** no crafting and no Join Friend; APPRAISE stays hidden; no see-through Stealth.
+- **Play with friends** has only been tried on a home network.
+- More: [docs/KNOWN-ISSUES.md](KNOWN-ISSUES.md). Every change: [CHANGELOG-LIVING-SERVER.md](../CHANGELOG-LIVING-SERVER.md).
+
+---
+
+## 5. Upgrade notes
+
+- **Have 1.1.2, 1.1.3 or 1.1.4:** the launcher's **Check for updates** finds 1.2, and START SERVER reads **GET UPDATE**:
+  Install, Later or Skip this version. It installs only with the game and server closed, and only a package that matches
+  the SHA-256 GitHub publishes.
+- **Have 1.0, 1.1 or 1.1.1, or the Social Expansion on 0.37:** run Setup, or unzip
+  `OfflineDAoC-LivingServer-1.2.zip` into your game folder and run `INSTALL.cmd` with the game and server closed.
+- **New to Offline DAoC:** run `LivingServer-Setup-1.2.exe`. It installs Offline DAoC 0.37 and Living Server.
+  Windows SmartScreen may say "Windows protected your PC" because the exe isn't code-signed: More info, then Run anyway.
+- **On 0.36, 0.36b or 0.36c?** Setup updates the game to 0.37, keeping your saves, then adds Living Server (**tests only** for 1.2: not yet run on the owner's PC). On 0.36 with the Social Expansion, run `PREPARE-FOR-UPDATE.cmd` from this package first.
+- **What stays:** your characters, bots, guilds, bot memory and settings.
+- **What changes on an existing world, once:**
+  - every Living Server feature still at its old default turns on; a switch you set stays as you set it;
+  - raids come every four hours instead of two and a half, unless you chose your own interval;
+  - Galladoria's Earthmenders stop healing each other, unless you set that yourself;
+  - bots already in your world keep their class and build, and get the spec points a player of their level has;
+  - a gamebot of the custom Hibernian class is kept with its items but no longer logs in;
+  - buffbot copies saved by earlier 1.2 test builds are retired, with their items kept.
+- **Still off after the update:** diagnostics, the classic rule options, and the epic encounter options listed above.
+- **To undo:** `ROLLBACK.cmd` puts every replaced file back. It never puts your world back, because that would undo your
+  play since. Your daily backups are in `runtime\data\backups`.
+
+Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
+`FORK_BUILD` line from `runtime\server\logs\server.log`.
 
 - **Darkness Falls' raid bosses, Legion and the hardest level 70+ encounters are not implemented for bot raids.** Legion
   has a few new rules (wounded raiders step out of his reach, no bladeturns near him), but the raid does not play his
@@ -361,23 +419,23 @@ only".
 
 ### Coming next
 
-- **1.2.2:** a Linux build of the server, a launcher and the new client.
-- **2.0, the complete realm:** live events, the guild package, bots with alts, friends and grudges, crafting and a
-  server with a past.
+- **1.2.2:** a Linux build of the server, the launcher and the new client.
+- **2.0, the complete realm:** live events, the guild package, bots with alts, friends and grudges, and a server with a
+  past.
 
 ### Files
 
 | File | SHA-256 |
 |---|---|
 | `LivingServer-Setup-1.2.exe` | (filled in when the exe is built) |
-| `OfflineDAoC-LivingServer-1.2.zip` | (owner: the zip's SHA-256, filled in by hand at publish) |
+| `OfflineDAoC-LivingServer-1.2.zip` | (zip SHA-256: filled in by hand at publish) |
 
 ### Credits
 
-Built on shadowofze's Offline DAoC and
-[OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core). Fixes ported from the forks of rambodolphin13 and Nikse77, and
-from shadowofze's OfflineDAoC-True165; the AI cost meter builds on lometur's HearthDAoC and stefanrows's bot profiler.
-Boss lore checked against Mythic's Camelot Herald. Reports from the community on GitHub and r/daoc. Directed and
-play-tested by [chris4aker](https://github.com/chris4aker), coded with Claude (Anthropic). GPL-3.0.
+Offline DAoC with Living Server is maintained by [chris4aker](https://github.com/chris4aker) and coded with Claude
+(Anthropic). Offline DAoC was created by shadowofze; the server underneath is [OpenDAoC](https://github.com/OpenDAoC/OpenDAoC-Core).
+Some code and ideas are borrowed from the [True 1.65 project](https://github.com/zomboden/OfflineDAoC-True165) (zomboden/OfflineDAoC-True165), and fixes from
+other Offline DAoC forks, all credited in the README. Boss lore checked against the Camelot Herald archive.
+Reports from the community on GitHub and r/daoc. GPL-3.0.
 
-Living Server is a free, non-commercial fan project, not affiliated with Electronic Arts or Broadsword.
+Living Server is a free, non-commercial, unofficial fan project, not affiliated with Electronic Arts or Broadsword.

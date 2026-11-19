@@ -1,6 +1,7 @@
 # True 1.65's period content in Living Server 1.2
 
-Written 2026-11-14 for the 1.2 port from shadowofze's Offline DAoC True 1.65 (v0.7, `f68cc75`; GPL-3.0). It says which
+Written 2026-11-14 for the 1.2 port from the True 1.65 project ([zomboden/OfflineDAoC-True165](https://github.com/zomboden/OfflineDAoC-True165),
+v0.7, `f68cc75`; GPL-3.0), a different version of Offline DAoC that Living Server borrows some code and ideas from. It says which
 of True 1.65's world content fits Living Server, how it can reach a player's world, and what is ready.
 
 ## How world content reaches a Living Server world

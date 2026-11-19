@@ -1,4 +1,4 @@
-// Hand port from shadowofze/OfflineDAoC-True165 d2187a498 (UT_CompanionFlank165, by shadowofze, GPL-3.0), adapted to
+// Hand port from zomboden/OfflineDAoC-True165 d2187a498 (UT_CompanionFlank165, by shadowofze, GPL-3.0), adapted to
 // Living Server's gamebot-only rule: the companion "Positioning" option tests are dropped, raid/epic, player-led and
 // reachability rules are added.
 using System.Numerics;

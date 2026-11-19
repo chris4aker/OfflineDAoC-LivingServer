@@ -20,7 +20,7 @@ namespace DOL.GS
     public static class HiredCompanionsMode
     {
         // One line, as every launcher setting's attribute is (the launcher's KeysAndDefaultsMatchTheServer reads it that way).
-        [ServerProperty("bots", "hired_companions", "Hired companions (from True 1.65): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged.", true)]
+        [ServerProperty("bots", "hired_companions", "Hired companions (some code from the True 1.65 project): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged.", true)]
         public static bool HIRED_COMPANIONS = true;
 
         /// <summary>Tests can force the switch without touching the server properties.</summary>

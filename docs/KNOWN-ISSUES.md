@@ -1,150 +1,112 @@
-# Living Server Beta 1.1.3: known issues and what's not tested yet
+# Living Server 1.2: known issues and what's not tested yet
 
-For players. What to expect, what hasn't been checked in game, and known problems. The full list
-of changes is in [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
-The Living Server was called the Social Expansion up to 0.37-se.2; Beta 1.0 was that build, and Beta 1.1
-(2026-10-29) added bots that talk in chat like players, a busier world, 2003-style names, the one-click Setup and the
-fixes taken from other forks and from Offline DAoC 0.38.
+For players. What to expect, what hasn't been seen working yet, and known problems. What's in 1.2 and what has been
+seen working is in [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md); every change, with its numbers, is in
+[CHANGELOG-LIVING-SERVER.md](../CHANGELOG-LIVING-SERVER.md).
 
-A feature here counts as working only once it has been seen working on a real install. Until then it says "tests
-only".
+A feature counts as working only once it has been seen working on the owner's PC. Until then it says **tests only**.
+Each result names the build it came from. None of them is from the release build ([BUILD]); its own results:
+[TESTS].
 
-## Seen on a real install, and fixed in 1.1.3 by tests only
+## Epic raids: still being tuned
 
-These were seen on the owner's PC with 1.1.2 or the 1.1.3 release candidates and are fixed in this update. The fixes
-haven't been watched on a real install yet, so treat them as likely, not certain.
+Bot raids fight the bosses by their own rules now, and the bots lose some of them. These were lost on the owner's PC,
+bots only, at the game's own raid size:
 
-- **Chat that didn't sound like a real server:** most bot questions in /faction got no answer, realm news came out of
-  a bot's mouth like a herald's announcement, a bot could look for a group and form one in the same minute, items were
-  asked about for classes that can't use them, and Albion bots talked about Midgard's frontier as if it were home.
-- **A raid started from the launcher could wait forever for one bot**, and one bot stuck in another dungeon held a
-  Krondon raid at its gathering town until it was killed by hand. A raid now goes after 15 minutes with nine in ten.
-- **Orshom's Fire killed a hundred raiders in one Krondon raid.** Raiders now stay out of it.
-- **Attackers took most keeps** (12 of 16 bot sieges in one night), mostly because defenders were called only when
-  the battle began. They're now called as the enemy army marches, and the balance aims at about half.
-- **Gamebots waited 15 minutes in their capital for a frontier porter** (779 times in one night). They now go to the
-  border keep first.
-- **The server stalled for a second or more on a busy night.** Two heavy searches are capped. The 4-6 second stalls
-  were in Krondon raids before Scurceol's orb fix, which also bounds that search; it hasn't been timed on a real install.
+- **Caer Sidi:** lost at the Crypt Lord, whose court and patrol beat the raid (`b1b6846`, `9a173f4`).
+- **Galladoria:** lost at Spindler Broodmother (`9a173f4`). On `b1b6846` the raid ran six hours and never reached
+  Olcasgean; the fixes for the Corrupt Primals since then are **tests only**.
+- **Tuscaran Glacier:** lost at Queen Kula (`b1b6846`, every Kula mechanic handled), at Elder Icelord Suttung and the
+  Council (`9a173f4`), and at King Tuscar (`ccba364`).
+- **Summoner's Hall, all three realms:** lost at Summoner Roesia (`b1b6846`, `9a173f4`). **Grand Summoner Govannon has
+  never been beaten by bots.**
+- **Trollheim:** timed out before Nosdoden fell (`ccba364`, `b1b6846`).
+- **Darkness Falls (Albion):** the raid looped on a chthonic knight behind it (`b1b6846`). Fixed: **tests only**.
+- **Golestandt:** lost after two wipes (`9a173f4`; won on test build 5). Dragon fights can fall apart partway.
+- **The Green Knight** and **Marfoirwort:** lost (`ccba364`).
+- **Legion:** some of his rules are in (his adds and heals are capped, wounded raiders step out of his reach), but the
+  raid does not play his platform, the way down or his add waves. **Behemoth** is never fought; **Fomor City** and
+  **Morgana** have no raid.
+- **Xanxicar's stomp:** a realm learns him over its attempts. Still being tuned.
 
-## Still not right
+Fixes made after the last raid builds the owner ran are **tests only**:
+- **Summoner Roesia:** the split camps for her Summoner Pain made the raid worse and are removed. Raid healers now cure
+  Summoner Pain before a top-up heal when it is on two or more raiders and nobody in their party is in danger. On
+  `9a173f4` they never did (a heal always came first). **Tests only.** Before the camps the raid also lost to her.
+- **Raid cures in general:** healers were seen curing poison and mesmerize on `9a173f4`, but up to a dozen cured the same
+  raider in the same second. Each curer now claims its target. **Tests only.**
+- **Curengkur:** the raid never formed (no route to its staging post). The next staging posts are now tried. **Tests
+  only.**
+- **Hibernia's dragon:** "No muster post could be placed at the hub" at Innis Carthaig on `9a173f4`; it started first try
+  on `5154cae`. The check that names a refused post is **tests only**.
+- **Tuscaran Glacier:** Suttung pulled with nobody at his muster after stranded raiders were moved beside him, and
+  Steinvor's last Pillar of Ice outliving him. Both fixed: **tests only**.
+- **A stall as two raids end together** (3.0 s on `9a173f4`). Fixed: **tests only**.
 
-- **Summoner Roesia (Summoner's Hall) still beats the bot raid.** On build `9a173f4` all four attempts were lost at
-  89-93%. The split camps added for her Summoner Pain (#359) made it worse and are removed. Healers now cure Summoner
-  Pain before a top-up heal when it is on two or more raiders and nobody in their party is in danger, which they
-  never did before (0 cures all night). That is tests only: it hasn't been watched on a real install, and before the
-  camps the raid also lost to her, at 76%.
-- **Galladoria's Earthmenders: don't turn `epic_earthmender_mutual_heal` on.** By default they heal only the Earth primal
-  and the bot raid kills all four (simulated: about 10 minutes; tests only). With the server setting turned on, the
-  four heal each other and the bots can't win: on build `b1b6846` they held at 99-100% through 48 minutes and 1.44M
-  damage, and the raid's heal-watching tactic (simulated) kills one of them while the other three hold. The raid then
-  ends at the sweep's cap.
-- **Bots don't fall when they die.** The game client plays the lying-dead pose only for player characters. The only
-  death animation it plays for any other character also removes it from the world, so a fallen bot couldn't be rezzed.
-  There's no safe way around it without changing the game client.
-- **A bot stuck searching for a camp for minutes** (464 times in one night, mostly level 50s at Tir na Nog's bind):
-  the cause isn't found yet. The bot now clears its search memory after 3 minutes and the log records what it held,
-  so the next report should show why.
-- **Bot parties never take a new member once they set off**, so an "lfm" post from a bot party is only a last call
-  while it forms.
-- **A bot that offers to group may walk on before you meet.** It doesn't wait where it was; if it's too far by the time
-  you invite, it tells you where it is.
+If a fight is too hard on your world, each restored boss rule is a server setting of its own and can be switched off
+alone. **Don't turn on `epic_earthmender_mutual_heal`:** with it on, the four Earthmenders heal each other and the bots
+can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
-## Beta 1.1.3: what has been seen on a real install
+## RvR and battlegrounds
 
-- **Xanxicar's stomp fix:** one Albion raid of 280 bots killed him in 23 minutes with no wipe (a build before the chat
-  fixes; the stomp code is the same).
-- **Scurceol Hyrde's orbs:** a raid of 200 shot the four orbs down from the floor in 10 minutes and killed him 50
-  seconds later, with no raider killed by him or his orbs (third release candidate; the raid fixes made after it are
-  tests only).
-- **The two Darkness Falls exits:** clicked once each with an Albion character; both went to Albion's exit in Camelot
-  Hills. Not tried yet from Midgard or Hibernia.
-- **Chat, before today's fixes:** a bot that grouped with the player greeted them once when they met again, answered
-  the player's /faction question about a camp, and offered to group after the player's /lfg post.
-- **Chat, sixth to twelfth release candidates** (about five hours by day, Real clock): true answers to the player's
-  /faction questions within 16-34 seconds; a friend's honest answer to small talk; a far bot saying where it is; an idle
-  duo that stays quiet; the way to a zone; 88-100% of bot questions answered within a minute. Each build's log showed a
-  few lines that didn't fit, all fixed; the last one (an offer from across the zone saying "same mobs") is tests only. A
-  bot answering your own /trade post hasn't been seen yet.
-- **Setup waiting out a busy download server:** tests only.
+- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail; no
+  battleground keep has changed hands.
+- **Open-field regroups pass between groups more than planned** in dense warbands: 17.4% of regroups on `9a173f4`
+  against a 15% bar. None was passed on a second time.
+- **Roaming eight-man groups** rarely find a fight and move on (under investigation).
+- **Some gamebots wait a long time at frontier teleporters** before the server moves them on.
 
-## Always on
+## Chat
 
-These apply even with every Living Server switch off:
-- **The endgame runs itself.** Each realm schedules its own raids (its dragon, its epic dungeon,
-  Summoner's Hall, Darkness Falls and nine raid dungeons), warbands open keep sieges and defenders
-  answer them. `realm_raid_schedule_minutes` = 0 turns the raid schedule off.
-- **Safer bots.** Bots walk around monsters far above them and remember where they keep dying.
-- **Two game files are fixed in place:** Hall of the Corrupt's navmesh (`zone277.nav`) and, on the
-  0.37c new client, eight gate models. The installer changes them only when they are the released
-  files, and `ROLLBACK.cmd` puts them back.
-- **Talking to bots by name.** `/send <bot>` reaches an online bot of your realm (use its exact
-  name), and it answers with a tell. `/invite <name>` invites a nearby bot (same region, within
-  about 6,000 units), and `/target <name>` targets a nearby bot of your realm. A bot that is busy
-  with a siege, a relic or a realm event won't leave it to join you.
-- **A dead bot's corpse stays where it fell** until the bot releases. Before, it jumped to the
-  bot's spawn point the moment it died, so it couldn't be rezzed. This applies to every bot,
-  including your `/spawn` companions.
-- **A bot that dies 3 times on the way to its group's meetup** counts as a no-show, so its group
-  goes on without it instead of waiting 15 minutes.
-- **Bots read short chat (0.36-se.4).** Their answers to what you say in /say and /faction (which the
-  base game has too) now understand "ty", "lol", "brb", "inc", "rez pls" and the like; before, /say
-  ignored most of them. An insult has to be aimed at someone to count. Place answers match whole
-  words, name class trainers, and are worded like a player.
+- **/faction runs at about 5 to 7 lines a minute on a full realm, by design** (owner, 2026-11-18), never more than 7.
+  About 5 a minute was seen on `5154cae`. Lower **How much bots talk** in the Living Server tab if it's too much.
+- **Fixed after the owner's chat check on `5154cae`, tests only:** "is it far?" now gets a travel answer, not a place's
+  description; a bot-to-bot answer no longer lands before yours; a call for help gets an offer or an honest no, not a
+  story; another realm's zone gets "thats hib frontier, rvr only", not a route; "an armorcrafter", not "a armorcrafter".
+- **"omw" means coming** (tests only to the end): a bot that says it has to go, with a deadline. A reply that is never
+  sent leaves a short walk behind it (up to 210 seconds).
+- **Replies still guess from your words.** A bot doesn't know what you are doing beyond what you type. A bot that
+  remembers you may ask your level right after you said it. Chat has been tested one line at a time more than as long
+  conversations.
+- **Bot parties never take a new member once they set off**, so an "lfm" from a bot party is a last call while it forms.
 
-## Beta 1.1: what hasn't been checked yet
+## Bots that play with you, and companions
 
-- **Quests and quest markers.** Beta 1.1 carries HearthDAoC's quest changes (name matching, delivery items, the
-  25-quest journal, one marker scheme, the epic chains) and they have **not been played in game**. 1.1.2 added
-  quest credit for your bot group's kills, hand-ins above the quest's level and quest XP by level: tests only. The
-  epic chains are not linked until a world script runs, which the installer doesn't do yet. Details are in
-  [QUESTING.md](QUESTING.md).
-- **Sieges at a normal bot count.** Their timers really run from 1.1 on (they were off in every earlier build),
-  so musters, marches, repels and the four-hour cap fire where they used to be skipped. Checked only on the test
-  copy at about 1,000 bots.
-- **A few fixes to raid and chat moments** came after the last play test and are tests only.
-- **Smaller rosters:** automatic raids open only when a realm has 80 eligible level-50 bots online, so a small
-  roster rarely gets them, and a roster filled only with the Lv.1 and Lv.50 buttons has no bots between levels 20
-  and 49 until they level.
-- **Bot chat's own in-game list** (combat calls in a real fight, a keep's news retold a minute later,
-  /lfg and /trade in the original client, chat volume at 900 bots a realm) is still being worked through.
+- **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The
+  break at the end of a session ends the party.
+- **A bot that offers to group may walk on before you meet**; if it's too far by the time you invite, it says where it is.
+- **Hired companions:** joining your fight on a grey monster failed on `b1b6846` and is fixed: **tests only**. The healer's
+  [companions] and [hire] links work only with the healer targeted; typed `/hire` words always work. The gear window's
+  title reads "House Vault 0" (it reuses the house vault window).
+- **Bots don't fall when they die.** The original client plays the lying-dead pose only for players.
 
-## Beta 1.1.2 and 1.1.3: updates from the launcher and Setup
+## Bots as people and 2003 builds
 
-- **Not yet tried on a real Windows PC.** 1.1.3 is the first release the launcher can offer as an update. CI tests
-  the update path without the window on a fake game folder, and Setup's choice of package against GitHub. Still to check by hand: the GET UPDATE button, the dialog and its three
-  choices, the download progress line, the install window and its "Press Enter" step, the launcher opening again
-  and saying how it went, a 0.37c game (both launchers), a game folder in a path with spaces, Setup installing a
-  downloaded package all the way through its window, and SmartScreen or antivirus reactions to the PowerShell step.
-- **Releases marked as prereleases are never offered.** GitHub's "latest release" leaves them out, so a build is
-  offered only once its release is published as a full release (Beta 1.1.1 and 1.1.2 are full releases).
+Most of it is **tests only**: mistakes and their rate, asking the way, milestone talk, raid learning, and the era class
+mix on a fresh world. No raid has been fought by an era-built world yet. Whether the original client shows a sitting bot
+is still to be checked. [Owner: the PC notes of `b1b6846` record skill tiers, growth, places learned and movement counts
+as seen in the log; PLAYED-CHECK-1.2.md still says "Not run". Confirm before this says "seen in the log".]
 
-## How it was tested (Beta 1.0)
+## Crafting and the economy
 
-- **Automated:** every build runs the full server test suite (3,400+ tests) and the installer tests
-  before it's packaged.
-- **In game:** every feature was played on the owner's PC with every switch on, using the **new
-  client** (0.36c, then 0.37c): 300 bots per realm at first, 600 per realm overnight since
-  2026-10-19. The **original game client wasn't tried**; it runs the same server, so the features
-  should behave the same, but that hasn't been checked.
+- **Crafting as a player** hasn't been seen yet, and needs the original client.
+- **Trading with a crafter bot:** tried on `b1b6846`; a reply was cut mid-word, a different piece was offered, and the
+  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet.
+- **Craft orders** often lapsed (156 made, 163 expired on `19e7037`). Orders now go only to crafters who stay online and
+  are withdrawn from busy ones: **tests only**.
+- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces.
+- **The launcher's crafter card and economy page** haven't been checked on the owner's PC.
 
-A three-hour playtest on 2026-10-18 (a new Albion Scout from level 1 to 5, no GM powers) also saw a
-bot guild recruit the player, guild merit grow, a bot go linkdead in the player's group, and the
-meetup fix drop two no-shows (in the server log).
+## Lore
 
-**Not yet seen in game** (they have automated tests, but nobody has watched them happen yet):
-- bot guilds claiming keeps
-- `/ginvite` and `/gc remove` on a bot
-- the `clock` bot schedule (`session` was played)
-- nemesis lines in chat
-- you rezzing a dead bot, or a passing bot rezzing you (no healer passed in five deaths)
-- grats on your own ding from nearby bots
-- the exact bot XP-by-level factor (bot XP does go up with it on; the exact rate wasn't measured)
-- body language: steps in town and cheers (looks, emotes and greetings were seen in the new client); the
-  original client wasn't tried
-- the between-pulls group wait (next build) didn't raise the number of bot groups in a 39-minute check
+The loremasters' dialogs, the lore books, the Bestiary page and the Herald's chronicle are **tests only**. The `/lore`
+window, boss yells, atmosphere lines and first-kill lines were seen on `1dc66b6`.
 
-## Known problems
+## Play with friends (experimental)
+
+- It needs the original client; the new client can't use Join Friend yet.
+- Only a join over a home network has been seen (test build 7). A session played together and a character passport trip
+  between two PCs are **tests only**.
 
 - **Bot guilds stay in your world when you turn them off.** Their guilds, alliances and any keeps
   they claimed remain until you remove them. To remove them, close the game and server and run
@@ -222,30 +184,48 @@ meetup fix drop two no-shows (in the server log).
 - **Moving to 0.37:** `PREPARE-FOR-UPDATE.cmd` was used for a real update (the owner's 0.36c game to 0.37c).
   `carry_social_tables.py` was tested on test folders and databases only.
 
-## Save safety and network (1.1.2)
+## Launcher, install and updates
 
-- **Seen on the owner's install** (2026-11-05 and 2026-11-08): the server logged WAL confirmed, the integrity check
-  `ok` and a written daily backup. The installer's database copy and the ledger move
-  have been checked in automated tests (Linux and the Windows CI). A start should log
-  `DB_SAFETY ...`, `DB_SAFETY journal_mode=wal confirmed` and `DB_INTEGRITY ... result=ok`. About 5 minutes later it
-  should log `DB_BACKUP result=written`.
-- **"Your server can be reached from other computers" in the log.** Your `runtime\server\config\serverconfig.xml`
-  listens beyond this PC (`<IP>` or `<UdpIP>` is `0.0.0.0` or a network address), or has UPnP on. The server still
-  does what your config says; 1.1.2 changes only the defaults used when a setting is missing. If you don't host
-  friends, stop the server and set these in that file:
-  - `<IP>127.0.0.1</IP>`
-  - `<UdpIP>127.0.0.1</UdpIP>`
-  - `<EnableUPnP>False</EnableUPnP>`
-  - `<DetectRegionIP>False</DetectRegionIP>`
+- **Updating a 1.1.4 game through Setup, a new install from Setup, and a 0.37 (class-off) world** haven't been run on the
+  owner's PC for 1.2. CI runs them: **tests only**.
+- **Updating a 0.36, 0.36b or 0.36c game** through Setup is **tests only** for 1.2. On 0.36 with the Social Expansion,
+  run `PREPARE-FOR-UPDATE.cmd` from the package first.
+- **The online count on the main screen** stuck at "5 online" for half an hour on `5154cae`. Fixed: **tests only**.
+- **A maximized launcher ignores START SERVER, STOP SERVER or ENTER REALM** when another window sits over those buttons
+  (seen on the owner's PC, 2026-11-05 and 2026-11-18). Use the launcher at its normal size, or move the other window.
+- **Releases marked as pre-releases are never offered** by the launcher's update check.
+- **Windows SmartScreen** may warn that Setup isn't code-signed: More info, then Run anyway.
 
-  If there is a `runtime\server\win-x64\config\serverconfig.xml` too, change it the same way. With UPnP on, the
-  server now removes the router mappings it added when it stops. A server that is force-closed can't remove them, so
-  they stay until the next clean stop or until you remove them in the router.
-- **Disk space.** Seven daily copies and three installer copies of a 500 MB world take about 5 GB. Lower
-  `db_backup_keep` to keep fewer.
+## The server
+
+- **A very busy server can stall for a few seconds**, most often as raids end. An 8-hour run without a 2-second stall
+  hasn't been completed yet (4 h 42 min on `19e7037` had one stall of 1.05 s).
+- **A bot can search for a camp for minutes** (mostly level 50s at Tir na Nog's bind). It clears its search after 3
+  minutes; the cause isn't found yet.
+- **Memory over very long sessions:** Windows handles grow slowly (about 1,700 an hour with 600 bots a realm). The server's
+  own memory stays flat.
+
+## New client (0.37c)
+
+- No crafting and no Join Friend.
+- APPRAISE stays hidden, and you don't see yourself as see-through in Stealth yet.
+- No guild window; `/face` keeps facing your target until you type it again; a bow fires from the Ranged Weapon key.
+- Added the new client after installing Living Server? Run `INSTALL.cmd` again.
+
+## Always the case
+
+- **A fresh world needs bots.** Use **+ Lv.1**, **+ Lv.20** and **+ Lv.50** in the launcher. A realm needs 8 bots of level
+  5 or higher before it forms a bot guild; automatic raids need 80 eligible level-50 bots of the realm online.
+- **Bot guilds stay in your world when you turn them off.** Remove them with the game and server closed:
+  `python tools\claude-version\set_bot_guilds.py --purge --apply` in your game folder (it backs up your database first).
+- **`ROLLBACK.cmd` doesn't remove saved data.** It puts back the files the install replaced; new tables and settings
+  stay, and the original server ignores them. Run it once per build you installed.
+- **Versions:** Living Server is for Offline DAoC 0.37, 0.37b and 0.37c only. 0.37 stays the game; later
+  fixes come in Living Server releases.
+- **The server listens only on this PC** unless you host for friends. If your settings let other computers in, the log
+  warns at each start (`NETWORK_EXPOSURE`).
 
 ## Reporting a problem
 
-Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues).
-Include the `FORK_BUILD` line from `runtime\server\logs\server.log` (it names the build and which
-features are on) and what you were doing.
+Open an issue on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues). Include the `FORK_BUILD` line
+from `runtime\server\logs\server.log` (it names the build and which features are on) and what you were doing.
