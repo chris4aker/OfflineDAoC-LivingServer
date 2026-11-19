@@ -8,6 +8,27 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Chat answer timing from the in-game check: /faction answers in 12 s, the companion yields a line for another bot (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `5154cae` (2026-11-19 07:04-07:27, Testrunner in Camelot). Nothing below is seen in game
+yet: **tests only** (`UT_ChatAnswerLatency0730`).
+- **A player's /faction question is answered in 12 s at most.** "is it far?" (07:08:25) and "can someone help me in
+  Camelot Hills?" (07:10:24) were answered 33 s later (Ogria 07:08:58, Thaxard 07:10:57). The whole delay was typing: a
+  103-107 character line at about 40 wpm (the bots type at 25-60). The first answer to a player's question in /faction
+  now comes within 12 s, the cap DESIGN-018 set for tells and lines that name the bot. The pace from #368 never held answers
+  to the player and still holds openers and scenes to the owner's 5-7 a minute; pile-ons and other talk keep their own
+  typing time. The hold from #370 (running exchanges wait until the answer is due plus 2 s) is now 14 s at most for such
+  a question, not 30.
+- **The companion leaves a /say line aimed at another bot to that bot.** At 07:17:26 "you ready?" was said with the
+  gamebot Linaibel targeted (she had the floor after her "oh hey" at 07:17:14). Her answer was planned
+  (`CHAT_PLAYER_REPLY_PLAN ... directed=True planned=1`) but never said, and Pannax answered "ok" on the companion's 35%
+  chance to chime in. A companion now chimes in unnamed only when the line is for nobody: not when the player targets
+  another bot, nor when another bot has the floor and the line goes on with it (the gamebots' own addressee rule).
+- **A dropped answer says why in the log.** Linaibel had been given a solo task at 07:17:13 and was next seen outside
+  Camelot; the drop was recorded only in `/lswhy`'s memory, so the log cannot show whether she rode off, took a route or
+  left the region. A planned answer that cannot be said now also writes `CHAT_PLAYER_REPLY_DROPPED ... reason=` (riding,
+  stable_route, left_region, out_of_earshot, fighting, casting, gone, dead).
+
 ## Chat from the in-game check: "is it far?", help calls, placed lore, other realms' zones, "an", the launcher's count (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `5154cae` (2026-11-19 07:04-07:27, Testrunner in Camelot; `SWEEP8-RESULTS-1119`). Nothing

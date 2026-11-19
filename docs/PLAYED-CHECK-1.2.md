@@ -415,6 +415,17 @@ details in [TALES.md](TALES.md).
 | Boss yells, atmosphere lines and kill broadcasts on screen | must | **Seen** on `1dc66b6`: realm first-kill lines (22:52, 23:07, 04:57), the Aidon win line (00:44), an atmosphere line on arriving in Avalon Marsh (02:20) and a boss yell in Krondon (03:35). An aggro yell at a boss's death was fixed in #231 (tests only) |
 | Loremasters, books, the Herald chronicle and bestiary |  | Partly on `1dc66b6`: the `/lore` window (23:25) and a loremaster standing in Camelot's library (01:05, his dialog not opened). Books, the Herald chronicle and the bestiary: no record |
 
+## Bot chat: answer timing from the in-game check of 2026-11-19 (build `5154cae`, `fix/chat-answer-latency`)
+
+Every row is tests only (`UT_ChatAnswerLatency0730`).
+
+| Check | | Result |
+|---|---|---|
+| A question to everyone in /faction ("is it far?", "can someone help me in Camelot Hills?") is answered within about 4-15 s, not 30+ | must | Not run (tests only) |
+| /faction still runs at about 5-7 lines a minute apart from answers to you | | Not run (tests only) |
+| With a gamebot targeted (or right after it spoke to you), a /say question draws no "ok" from your companion; only the gamebot answers, or nobody | must | Not run (tests only) |
+| Every `CHAT_PLAYER_REPLY_PLAN ... planned=1` is followed by the answer on screen or by `CHAT_PLAYER_REPLY_DROPPED ... reason=` | | Not run (tests only) |
+
 ## Bot chat: the in-game check of 2026-11-19 (build `5154cae`, `fix/chat-pc-check-0719`)
 
 What the helper saw as Testrunner (Albion 22, Camelot, 07:04-07:27) and how to check each fix. Every row is tests only

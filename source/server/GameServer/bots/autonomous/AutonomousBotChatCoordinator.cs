@@ -1915,6 +1915,27 @@ public static partial class AutonomousBotChatCoordinator
     public const int DirectTypingCapMs = 12_000;
 
     /// <summary>
+    /// When a reply to a player's line is due: as read, thought and typed (<paramref name="due"/>), but no later than
+    /// <see cref="DirectTypingCapMs"/> after <paramref name="before"/> (the previous reply in the exchange, 0 for the first) for a
+    /// line that names or addresses the bot (DESIGN-018) and for the first answer to a player's question in /faction. PC check
+    /// 0730 (build 5154cae): "is it far?" and "can someone help me in Camelot Hills?" were answered 33 s later, the whole time
+    /// the answerer typing a 103-107 character line at about 40 wpm. A real player answers a short question in 4-15 s. Every
+    /// other reply keeps its own typing time, and the /faction pace (chat-budget.json "pace") never held answers to the player.
+    /// Pure.
+    /// </summary>
+    public static int PlayerAnswerDueMs(int due, int before, bool directed, bool firstAnswerToQuestion) =>
+        directed || firstAnswerToQuestion ? Math.Min(due, before + DirectTypingCapMs) : due;
+
+    /// <summary>
+    /// Why the bot chosen to answer a player could not say it when it came due (CHAT_PLAYER_REPLY_DROPPED, PC check 0730): the
+    /// first that holds of gone, dead, fighting, casting, on a stable route, riding, left the region, out of earshot. Pure.
+    /// </summary>
+    public static string BusyAtSendReason(bool active, bool alive, bool inCombat, bool casting, bool onHorse, bool onStableRoute,
+        bool sameRegion, bool heard) =>
+        !active ? "gone" : !alive ? "dead" : inCombat ? "fighting" : casting ? "casting" : onStableRoute ? "stable_route"
+        : onHorse ? "riding" : !sameRegion ? "left_region" : !heard ? "out_of_earshot" : "busy";
+
+    /// <summary>
     /// When a quick second tell is answered (DESIGN-003): not dropped, but queued after the first, at least
     /// <see cref="TellMinGapMs"/> after it. Returns the extra delay. Pure.
     /// </summary>
@@ -2926,9 +2947,9 @@ public static partial class AutonomousBotChatCoordinator
             int replyIndex = planned;
             int before = due;
             due = voices ? AutonomousChatArbiter.DelayMs(message, response, Wpm(responder), due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
-            // 1.2 chat audit (DESIGN-018): a line that names the bot is answered within 12 s, however slowly it types.
-            if (directed)
-                due = Math.Min(due, before + DirectTypingCapMs);
+            // 1.2 chat audit (DESIGN-018): a line that names the bot is answered within 12 s, however slowly it types; so is the
+            // first answer to a player's question in /faction (PC check 0730, build 5154cae: 33 s, typing alone).
+            due = PlayerAnswerDueMs(due, before, directed, faction && primary && question);
             if (primary)
                 firstDue = due;
             if (faction)
@@ -2951,8 +2972,17 @@ public static partial class AutonomousBotChatCoordinator
                     if (directed && Waitable(responder) && (retried += 5_000) <= DirectedRetryMs)
                         return 5_000;
                     if (primary)
+                    {
+                        // PC check 0730 (build 5154cae): a planned /say answer never came and the log could not say why (the drop
+                        // was only in /lswhy's memory). The reason now goes to the log too.
+                        string blocker = BusyAtSendReason(responder.ObjectState == GameObject.eObjectState.Active, responder.IsAlive,
+                            responder.InCombat, responder.IsCasting, responder.IsOnHorse, responder.IsOnStableMasterRoute,
+                            faction || responder.CurrentRegion == player.CurrentRegion, faction || HasLocalAudience(responder));
                         AutonomousChatWhy.Dropped(player.Name, player.Realm, why, AutonomousChatWhy.Codes.BusyAtSend,
-                            "the bot chosen to answer was fighting or casting when its reply was due, and nobody stood in", responder.Name, responder.DatabaseID);
+                            $"the bot chosen to answer could not when its reply was due ({blocker}), and nobody stood in", responder.Name, responder.DatabaseID);
+                        PlanLog.Debug($"CHAT_PLAYER_REPLY_DROPPED player=\"{player.Name}\" channel={why} bot=\"{responder.Name}\" id={responder.DatabaseID} " +
+                                      $"directed={directed} reason={blocker} retriedMs={retried}");
+                    }
                     return 0;
                 }
                 using var playerTag = AutonomousChatExchange.Tag("player", playerExchange, replyIndex, primary ? "answerer" : "pileon", speaker);
