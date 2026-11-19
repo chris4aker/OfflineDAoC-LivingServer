@@ -8,6 +8,47 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## RvR route traps from the PC log of build 43c43aa: the Cruachan Gorge seam, Odin's Gate muster posts, no exterior route, the rally-delay false alarm (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `43c43aa` (2026-11-19 13:20-14:22, restart 13:40:58; `DIAG-43c-rally`). Owner: "Fix
+before publishing". Nothing below is seen in game yet: **tests only** (`UT_RvrRouteTraps43c`; navmesh probes with the
+explicit `UT_ZoneStepProbe`, `UT_TripProbe` and the new `UT_RvrRouteTrapProbe` on the 0.37b fresh runtime's meshes). No
+navmesh, seam file or road file changed.
+- **The Cruachan Gorge / Breifine seam (200:384960,385504).** 206 `AUTONOMOUS_ZONE_SEAM_CYCLE` lines from 75 Hibernian
+  bots after the restart on the walk to Druim Ligen (the frontier medallion, goal 333231,420812), each ending in a pocket
+  escape to Tir na Nog. A bot that had just crossed from Breifine stood on the gorge's main ground, but the zone itinerary
+  took the ground from the nearest zone road anchor (384768,386202,7080, 723 away on the ledge above), so it planned
+  211>212>210>206>200>207 and walked back into Breifine, whose plan (212>211>207) sent it into the gorge again. A point that
+  stands on a crossing the seam file lists (within 96 of the border, 96 along it and 160 in height) now takes that
+  crossing's own ground (`AutonomousZoneItinerary.SeamGroundAt`). On the installed meshes the gorge side now steps on to
+  Connacht (334880,417728) and the whole trip from the seam to Druim Ligen walks through (73,485 units, no turn back).
+  The other seam-cycle spots of the log (Lough Derg / Bri Leith at 384960,486688 and 385088,483424) get the same ground as
+  before and are not changed by this.
+- **Muster posts no walk reaches (Odin's Gate, 100:596055,581400).** Miadur 4598, Yvik 4824 and Blotiogg 4677 stood
+  90-230 short of their posts (slots 13, 28 and 20 of the Hibernian muster), failed three local recoveries each and were
+  sent to Tir na Nog at 13:58, a minute before the march. On the installed meshes 29 of the first 80 slots there, and 11
+  of 80 at the Albion muster in Emain Macha (200:475835,343661), have no walk from the muster centre. A slot's post is
+  now proved from the centre (a complete corridor); a spot that fails takes the nearest spot round the same ring (12
+  tries, then 12 on a ring 60% as wide), else the centre's floor (`AutonomousRvrMusterPost`). Posts are proved once per
+  centre and slot and shared by every bot. With the meshes: 0 of 80 unreachable at both musters. A reachable slot keeps
+  its old spot.
+- **"No connected exterior route" by the arrival point.** Poshozois 4911 and Clumsychampion 5149 (rvr-keep-77, from
+  100:596048,582909) and Linaelorbel 3236 (rvr-keep-105, from 200:476630,343539) walked toward unreachable posts onto a
+  scrap of mesh with no way off and failed their keep route 5 times each, from 14:04; the first two were sent home by the
+  15-minute watchdog. The posts above remove the cause. As a fallback, a bot whose keep route fails twice with "No
+  connected exterior route" within 4,000 of its realm's arrival point in that frontier (the frontier porter's drop, the
+  muster centre) is moved to that point and plans again (`RVR_KEEP_ROUTE_RESTART`). From both arrival points the routes
+  exist on the meshes.
+- **RVR_RALLY_DELAY no longer names parties holding their muster post.** 39 of the 50 lines were siege and defense
+  parties standing at their posts as ordered: the muster path stops a bot there and never reported travel. A member that
+  reported itself at its post within the attendance window (15 s), or stands within its post radius (160), counts as
+  making progress. A member with no step and no post for 8 minutes is still reported, as before.
+- **Caer Caledon's lord at 100% (looked into, no change).** Damage reaches the lord: the status lines show it at 99%,
+  98%, 97% and 99% after the storms of 13:30, 14:05 and 14:22, and Gantend was attacking it at its feet (14:05:25). It
+  heals back between storms. At most 7 storm bots (levels 30-35) reached the level-46 lord (three times a guard's health)
+  at once, under its guards. Siege engines never hurt a lord, by design (`GuardLord.TakeDamage`). Expected, not a bug;
+  nothing was weakened.
+
 ## Chat from the PC log of build c81eb5d: Tepok's Mine, help calls to everyone, /broadcast answers, /lfg at 22, the /faction minimum (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `c81eb5d` (2026-11-19 09:07-09:42, Testrunner, Albion 22, Camelot; `DIAG-c81-nonraid`).

@@ -119,7 +119,7 @@ namespace DOL.GS
         private static Zone[] FindAreaRoute(Topology topology, Zone from, Zone to, Vector3 start, Vector3 goal, Func<Zone, bool> allowed)
         {
             if (!topology.Seams) return Array.Empty<Zone>();
-            int? startArea = AutonomousZoneRoads.AreaAt(from, start);
+            int? startArea = SeamGroundAt(topology, from, start) ?? AutonomousZoneRoads.AreaAt(from, start);
             int? goalArea = AutonomousZoneRoads.AreaAt(to, goal) ?? AutonomousZoneSeams.MainArea(topology.RegionId, to.ID);
             if (startArea == null || goalArea == null) return Array.Empty<Zone>();
             var graph = AutonomousZoneSeams.AreaGraph(topology.RegionId);
@@ -152,6 +152,51 @@ namespace DOL.GS
             }
             return Array.Empty<Zone>();
         }
+
+        /// <summary>How far from a border a point still counts as standing on that border's crossing (the itinerary's
+        /// inside and outside points are 64 from it).</summary>
+        public const float SeamGroundReach = 96;
+
+        /// <summary>
+        /// The seam file's own ground id for a point that stands on a listed crossing of one of its zone's borders (within
+        /// <see cref="SeamGroundReach"/> of the border, 96 along it and 160 in height); null anywhere else, and then the
+        /// nearest road anchor decides as before. The file measured that exact spot; the nearest road anchor is an
+        /// estimate. Cruachan Gorge, 2026-11-19 (build 1.2-43c43aa): a bot that had just crossed from Breifine stood on
+        /// the gorge's main ground at 384960,385504, but its nearest road anchor (723 away, on the ledge above) said
+        /// ledge, so the bot was sent back into Breifine, and from Breifine into the gorge again: 206 seam cycles by 75
+        /// Hibernian bots on the way to Druim Ligen, each ending in a pocket escape to Tir na Nog.
+        /// </summary>
+        private static int? SeamGroundAt(Topology topology, Zone from, Vector3 point)
+        {
+            if (!topology.Seams || !topology.Edges.TryGetValue(from, out Edge[] edges)) return null;
+            int? best = null;
+            float bestAlong = float.MaxValue;
+            foreach (Edge edge in edges)
+            {
+                float across = edge.Vertical ? point.X : point.Y;
+                float along = edge.Vertical ? point.Y : point.X;
+                if (MathF.Abs(across - edge.Border) > SeamGroundReach || along < edge.Low || along > edge.High) continue;
+                AutonomousZoneSeams.Crossing[] listed = AutonomousZoneSeams.For(topology.RegionId, from.ID, edge.To.ID);
+                if (listed == null) continue;
+                foreach (var crossing in listed)
+                {
+                    float offset = MathF.Abs(crossing.Along - along);
+                    if (crossing.InsideArea < 0 || offset > 96 || offset >= bestAlong ||
+                        MathF.Abs(crossing.InsideZ - point.Z) > 160) continue;
+                    best = crossing.InsideArea;
+                    bestAlong = offset;
+                }
+            }
+            return best;
+        }
+
+        /// <summary>Test hook: <see cref="SeamGroundAt"/> over a plain zone list.</summary>
+        public static int? SeamGroundAt(IReadOnlyList<Zone> zones, ushort regionId, Zone from, Vector3 point) =>
+            SeamGroundAt(new Topology(zones, regionId), from, point);
+
+        /// <summary>Test hook: the zone chain over connected ground (seam file areas) that the itinerary tries first.</summary>
+        public static ushort[] AreaRouteForTests(IReadOnlyList<Zone> zones, ushort regionId, Zone from, Zone to, Vector3 start, Vector3 goal) =>
+            FindAreaRoute(new Topology(zones, regionId), from, to, start, goal, null).Select(zone => zone.ID).ToArray();
 
         public static bool TryNextStep(Region region, Zone from, Zone to, Vector3 start, Vector3 goal,
             IPathfindingMgr nav, out AutonomousZoneBoundaryRouting.Step step, Func<Zone, bool> allowed = null,

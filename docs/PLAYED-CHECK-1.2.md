@@ -343,6 +343,18 @@ below). Then `4be6fab`, 06:18-06:48.
 | Sieges still happen and keeps change hands | must | **Seen** on `19e7037`: 4 sieges started (02:03, 03:16, 04:05, 04:55), 2 keeps taken: Caer Erasleigh by Midgard (02:15), then back by Albion (03:39) |
 | Catalogs rebuilt from a clean release world | must | Loaded and walked on `19e7037`: 98 check spots and 18 circuits (400 walks, 0 failed), 318 of 332 lanes validated (14 rejected). Whether the shipped catalogs were built from a clean release world is not in the log. Open |
 
+## RvR route traps: the PC log of 2026-11-19 (build `43c43aa`, `fix/rvr-route-traps`)
+
+From the owner's log on `43c43aa` (13:20-14:22; `DIAG-43c-rally`). Every row is tests only (`UT_RvrRouteTraps43c`).
+
+| Check | | Result |
+|---|---|---|
+| No `AUTONOMOUS_ZONE_SEAM_CYCLE` at `region=200 zone=211 position=384960,385504` or `zone=212 position=385088,385504`, and no `AUTONOMOUS_ROUTE_POCKET_ESCAPE from=200:384960,385504` (Hibernian bots on the walk to Druim Ligen) | must | **Contradicted** on `43c43aa`: 206 cycle lines from 75 bots after the restart, 108 escapes to Tir na Nog. Fixed, tests only |
+| No `AUTONOMOUS_ROUTE_RECOVERY ... reason="three verified local recovery attempts failed"` with a `destination` within about 1,500 of a realm's muster centre (Odin's Gate 100:596055,581400; Emain Macha 200:475835,343661) during an RvR muster, and no pocket escape to the capital from there before the march | must | **Contradicted** on `43c43aa` (Miadur 4598, Yvik 4824, Blotiogg 4677, 13:57-13:58). Fixed, tests only |
+| No `RVR_KEEP_ROUTE_FAILED ... reason="No connected exterior route"` repeating for a bot near its realm's arrival point; at most one, then `RVR_KEEP_ROUTE_RESTART` and the bot marches | must | **Contradicted** on `43c43aa` (Poshozois 4911, Clumsychampion 5149 on rvr-keep-77, Linaelorbel 3236 on rvr-keep-105, 5 failures each from 14:04). Fixed, tests only |
+| `RVR_RALLY_DELAY` only for members that really did not move: none during an `RVR_MUSTER`/`RVR_DEFENSE_MUSTER` for a party standing at its post (no route, stall or porter line of its own) | | **Contradicted** on `43c43aa`: 39 of 50 lines. Fixed, tests only |
+| A battleground lord drops under 100% when a storm reaches it (`BG_RALLY_STATUS ... atLord=` over 0 with `lord=` under 100%) | | **Seen** on `43c43aa` (Caer Caledon 99%, 98%, 97%; no code change). Whether a storm can take it is a separate, open question |
+
 ## Era builds (merged into 1.2 in #326)
 
 The plan is [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md) (WP0-WP5; the checks are its WP6). Everything is tests only. The owner

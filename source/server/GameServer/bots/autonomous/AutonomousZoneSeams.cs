@@ -21,7 +21,11 @@ public static class AutonomousZoneSeams
     /// </summary>
     public readonly record struct Crossing(float Along, float InsideZ, float OutsideZ, int InsideArea = -1, int OutsideArea = -1);
 
-    private static readonly Lazy<Dictionary<(ushort Region, ushort From, ushort To), Crossing[]>> Data = new(Load);
+    private static readonly Lazy<Dictionary<(ushort Region, ushort From, ushort To), Crossing[]>> FileData = new(Load);
+    // Tests only (SetForTests): a small seam file in place of navmesh/seams.json.
+    private static Dictionary<(ushort Region, ushort From, ushort To), Crossing[]> _testData;
+    private static Lazy<Dictionary<(ushort Region, ushort From, ushort To), Crossing[]>> Data =>
+        _testData is { } test ? new(() => test) : FileData;
     private static readonly HashSet<ushort> Regions = new();
     // Each zone's main walkable area (largest connected component), when the file lists it.
     private static readonly Dictionary<(ushort Region, ushort Zone), int> MainAreas = new();
@@ -74,13 +78,47 @@ public static class AutonomousZoneSeams
             return graph;
         });
 
+    /// <summary>Tests only: use this seam file text instead of navmesh/seams.json (null goes back to the file).</summary>
+    public static void SetForTests(string json)
+    {
+        _ = FileData.Value;
+        lock (Regions) Regions.Clear();
+        lock (MainAreas) MainAreas.Clear();
+        AreaGraphs.Clear();
+        if (json == null)
+        {
+            _testData = null;
+            // The file's regions and main areas again (Load fills them).
+            Parse(File.Exists(FilePath) ? File.ReadAllText(FilePath) : null, new());
+            return;
+        }
+        var data = new Dictionary<(ushort, ushort, ushort), Crossing[]>();
+        Parse(json, data);
+        _testData = data;
+    }
+
     private static Dictionary<(ushort, ushort, ushort), Crossing[]> Load()
     {
         var result = new Dictionary<(ushort, ushort, ushort), Crossing[]>();
         try
         {
             if (!File.Exists(FilePath)) return result;
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(FilePath));
+            Parse(File.ReadAllText(FilePath), result);
+        }
+        catch (Exception exception)
+        {
+            DOL.Logging.LoggerManager.Create(typeof(AutonomousZoneSeams)).Warn("navmesh/seams.json could not be read; zone borders are unrestricted", exception);
+            result.Clear();
+            lock (Regions) Regions.Clear();
+        }
+        return result;
+    }
+
+    private static void Parse(string json, Dictionary<(ushort, ushort, ushort), Crossing[]> result)
+    {
+        if (json == null) return;
+        {
+            using JsonDocument document = JsonDocument.Parse(json);
             if (document.RootElement.TryGetProperty("main", out JsonElement main))
                 foreach (JsonProperty region in main.EnumerateObject())
                     foreach (JsonProperty zone in region.Value.EnumerateObject())
@@ -99,12 +137,5 @@ public static class AutonomousZoneSeams
                 }
             }
         }
-        catch (Exception exception)
-        {
-            DOL.Logging.LoggerManager.Create(typeof(AutonomousZoneSeams)).Warn("navmesh/seams.json could not be read; zone borders are unrestricted", exception);
-            result.Clear();
-            lock (Regions) Regions.Clear();
-        }
-        return result;
     }
 }

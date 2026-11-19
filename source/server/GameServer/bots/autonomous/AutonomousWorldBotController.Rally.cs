@@ -34,15 +34,10 @@ public sealed partial class AutonomousWorldBotController
         Region region = WorldMgr.GetRegion(home.RegionId);
         if (!_musterPost.HasValue && region != null)
         {
-            // A sunflower spread around the keep: every slot its own spot, 120 units per ring.
-            double angle = slot * 2.39996323;
-            float radius = 450 + 120 * MathF.Sqrt(slot);
-            var raw = home.Position + new Vector3((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius, 0);
-            Zone zone = region.GetZone((int)raw.X, (int)raw.Y);
-            var nav = PathfindingProvider.Instance;
-            Vector3? floor = zone != null && nav.IsAvailable && nav.HasNavmesh(zone)
-                ? nav.GetClosestPoint(zone, raw, 160, 160, 800, nav.DefaultFilters) : raw;
-            _musterPost = floor ?? home.Position;
+            // A sunflower spread around the keep: every slot its own spot, 120 units per ring. A spot with no walk from
+            // the muster centre takes the nearest one round its ring that has one (AutonomousRvrMusterPost).
+            _musterPost = AutonomousRvrMusterPost.Choose(PathfindingProvider.Instance,
+                point => region.GetZone((int)point.X, (int)point.Y), home.Position, slot);
         }
         Vector3 post = _musterPost ?? home.Position;
         long now = GameLoop.GameLoopTime;
@@ -52,6 +47,8 @@ public sealed partial class AutonomousWorldBotController
             atPost && bot.IsAlive && !bot.InCombat && (bot.Brain as BotBrain)?.HasAggro != true, now, bot, post);
         if (atPost)
         {
+            // Holding the post (in a fight or not) is the progress the straggler sweep looks for (RVR_RALLY_DELAY).
+            AutonomousRvrEventLayer.ReportTravel(order.TargetId, forceId, bot.DatabaseID, double.PositiveInfinity, true, now, bot);
             bot.StopMovingOnPath();
             bot.StopMoving();
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Objective);
