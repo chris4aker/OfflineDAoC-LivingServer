@@ -747,8 +747,6 @@ namespace DOL.GS
             Vector3 at = new(raider.X, raider.Y, raider.Z);
             // The curers' post (Spindler Broodmother): while somebody fights her, every second curer keeps it (ThinkPartyPost).
             WatchPartyPosts(target, now);
-            // Summoner Pain's split camps (Summoner Roesia): while somebody fights her, the back lines keep their camps (ThinkPainCamp).
-            WatchPainCamps(target, now);
             // A raid breaking off from the fight (the boss, or the boss of this add or of this hazard) goes to the muster first.
             GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
@@ -948,10 +946,19 @@ namespace DOL.GS
         /// was already chasing. Now every raider of his fight, healers included, stands in his room; a heal still reaches the
         /// tanks from there. His script and tether are unchanged.
         /// </para>
+        /// <para>
+        /// Only within <see cref="WalkBackReach"/> of the home's edge (sweep 7b, owner's PC, build 9a173f4, Summoner Roesia):
+        /// 40 of the 102 raiders told to walk back stood 2,600-9,947 from her spawn (Unclespud 9,947, Lordnugget 8,454). Those
+        /// are joining or returning to the fight, and the raid's waves bring them; the rule had walked them in one at a time.
+        /// </para>
         /// </summary>
         public static bool StandsBackInside(int fightAtHomeRadius, double raiderFromSpawn, double raiderToBoss, double bossFromSpawn) =>
-            fightAtHomeRadius > 0 && raiderFromSpawn > fightAtHomeRadius &&
+            fightAtHomeRadius > 0 && raiderFromSpawn > fightAtHomeRadius && raiderFromSpawn <= fightAtHomeRadius + WalkBackReach &&
             !(bossFromSpawn <= fightAtHomeRadius && raiderToBoss <= BesideBossRadius);
+
+        /// <summary>A raider further than this outside a boss's home is joining or returning (the waves bring it), not walked
+        /// back inside by <see cref="StandsBackInside"/>.</summary>
+        public const int WalkBackReach = 1_500;
 
         /// <summary>
         /// The stand-inside-home advice for <paramref name="raider"/> in <paramref name="boss"/>'s fight (null: none): its
@@ -1481,8 +1488,6 @@ namespace DOL.GS
             if (!PostWatch.IsEmpty && ThinkPartyPost(bot, now)) return true;
             // A boss fought at home chasing this raider out of it: the raider leads it back, whatever it was doing.
             if (!HomeWatch.IsEmpty && ThinkLeadHome(bot, now)) return true;
-            // A boss with Summoner Pain is fought (Summoner Roesia): each party's back line walks to its camp (sweep 6f).
-            if (!PainWatch.IsEmpty && ThinkPainCamp(bot, now)) return true;
             // Soul Reckoner out of his room: the raider chosen to lead him back walks in, whatever it was doing (CaerSidi).
             if (ThinkSoulReckonerLead(bot, now)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
@@ -1631,7 +1636,6 @@ namespace DOL.GS
             LeadHomeRepath.Clear();
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
             ResetPartyPostsForTests();
-            ResetPainCampsForTests();
         }
 
         public static bool CanShootFlyers(GameBot bot)

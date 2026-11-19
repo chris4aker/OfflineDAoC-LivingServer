@@ -250,9 +250,20 @@ namespace DOL.GS
                 lock (state.Sync) state.Heals.Remove(bot);
         }
 
+        /// <summary>A cure (poison, disease, mesmerize, nearsight, all) removes an effect: it goes to the raider the healer chose,
+        /// never to the raid's lowest health (pure). Sweep 7b (owner's PC, build 9a173f4): a raid healer's single cure poison was
+        /// re-aimed at the lowest raider under 80%, poisoned or not, or dropped when nobody was under 80%.</summary>
+        public static bool IsCure(eSpellType type) => type is eSpellType.CurePoison or eSpellType.CureDisease or eSpellType.CureMezz or
+            eSpellType.CureAll or eSpellType.CureNearsight or eSpellType.CureNearsightCustom;
+
+        /// <summary>Whether the raid's heal reservation may re-aim this spell at the raid's lowest raider (pure).</summary>
+        public static bool Reserves(bool sharedSupport, bool isHealing, eSpellType type, eSpellTarget target, bool instant, int duration) =>
+            sharedSupport && isHealing && !IsCure(type) && target == eSpellTarget.REALM && !instant && duration <= 0;
+
         public static GameLiving ReserveHeal(GameBot bot, Spell spell, GameLiving preferred)
         {
-            if ((!CompanionRaid.IsMember(bot) && !AutonomousRealmRaid.HasSharedSupport(bot)) || !spell.IsHealing || spell.Target != eSpellTarget.REALM || spell.IsInstantCast || spell.Duration > 0)
+            if (!Reserves(CompanionRaid.IsMember(bot) || AutonomousRealmRaid.HasSharedSupport(bot), spell.IsHealing, spell.SpellType,
+                    spell.Target, spell.IsInstantCast, spell.Duration))
                 return preferred;
             object scope = AutonomousRealmRaid.SupportScope(bot);
             State state = States.GetOrCreateValue(scope);

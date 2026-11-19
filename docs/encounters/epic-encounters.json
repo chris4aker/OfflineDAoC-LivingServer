@@ -836,7 +836,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 2847
+   "line": 2848
   },
   {
    "id": "openworld-albion-coliath",
@@ -848,7 +848,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 2849
+   "line": 2850
   },
   {
    "id": "openworld-albion-emthoro",
@@ -860,7 +860,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 2851
+   "line": 2852
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -872,7 +872,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 2854
+   "line": 2855
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -884,7 +884,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 2856
+   "line": 2857
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 2858
+   "line": 2859
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 2860
+   "line": 2861
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 2862
+   "line": 2863
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 2864
+   "line": 2865
   },
   {
    "id": "openworld-midgard-revenant",
@@ -944,7 +944,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 2866
+   "line": 2867
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -956,7 +956,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 2868
+   "line": 2869
   },
   {
    "id": "openworld-hibernia-evern",
@@ -968,7 +968,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 2871
+   "line": 2872
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -980,7 +980,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 2873
+   "line": 2874
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -992,7 +992,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 2875
+   "line": 2876
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 2877
+   "line": 2878
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 2879
+   "line": 2880
   }
  ],
  "neutralObjectives": {
@@ -29181,7 +29181,7 @@
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "fightAtHomeRadius": 1000,
-    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets, so the raid fights within 900 of it (a raider further out walks in) and the raider she chases out leads her home past 1,000; her Summoner Pain (150 every 3 s for 36 s on everyone within 1,000 of a random raider, bots included) is cured (Cure Poison, logged as RAID_CURE_POISON). Split camps (owner 2026-11-18, sweep 6f; tests only): while a summoner who carries Summoner Pain is fought, the parties split evenly, with healers in each, between two camps on opposite sides of her spawn, 920 out (inside her 1,000 home, outside her 600 aggro; about 1,840 apart): each party's back line fights from its camp and its melee from her side facing that camp, so one cast never reaches both camps (REALM_EXPEDITION_TACTIC tactic=summoner-pain/camps; a model puts it at about 41 of 72 raiders a cast, against 71 on b1b6846). She is unchanged. Period (ToT Raids Summoner's Hall walkthrough, 2006): kill her nodes and orbs, then melee her down (no nodes in the script). EpicEncounterTactics.SummonersHall.",
+    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets, so the raid fights within 900 of it (a raider further out walks in) and the raider she chases out leads her home past 1,000; her Summoner Pain (150 every 3 s for 36 s on everyone within 1,000 of a random raider, bots included; range 1,800, recast every 20 s, so two casts are always active) is cured: in a raid a healer with Cure Poison or a group cure poison cures it before a top-up heal when two or more raiders in its reach carry it and nobody of its own party is under 50% (sweep 7b, RaidCurePoison; logged as RAID_CURE_POISON; tests only). Build 9a173f4 cured nothing (0 RAID_CURE_POISON): a heal always came first. The split camps of sweep 6f (#359) were removed after the owner's PC (build 9a173f4) showed them failing: her Pain reached both camps and the far camp's casters stood about 1,670 from her, out of range. She is unchanged. Period (ToT Raids Summoner's Hall walkthrough, 2006): kill her nodes and orbs, then melee her down (no nodes in the script). EpicEncounterTactics.SummonersHall.",
     "since": "1.2"
    },
    "verified": true

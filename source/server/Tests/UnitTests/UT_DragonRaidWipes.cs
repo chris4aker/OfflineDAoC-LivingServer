@@ -65,6 +65,33 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDragonFight.GoesInAgain(staged, roster, regroup, landed), Is.EqualTo(goes));
 
         [Test]
+        public void AWipeCarriesTheAttemptsRaidersAndTheFallenForTheWipeLine()
+        {
+            // Sweep 7b (build 9a173f4, Golestandt 23:13:47): REALM_RAID_WIPE said "living=96" (released raiders back on their
+            // feet) while the dragon's own line said 72 of 91 fell. The wipe now hands both counts to REALM_RAID_WIPE.
+            var fight = new RealmRaidDragonFight("Golestandt");
+            long[] roster = Roster(40);
+            long now = 0;
+            fight.Engage(roster, Idle, now);
+            now += Minute;
+            fight.Advance(All(roster, AtDragon), Fighting, now);
+            now += 9 * Minute;
+            var afterLosses = All(roster, id => id <= 25 ? Fallen(id) : AtDragon(id));
+            fight.Advance(afterLosses, new(true, true, false, 60, 60_000), now);
+            now += 10_000;
+            fight.Advance(afterLosses, new(false, true, false, 60, 60_000), now);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fight.TryTakeWipe(out int failures, out int engaged, out int fallen), Is.True);
+                Assert.That((failures, engaged, fallen), Is.EqualTo((1, 40, 25)));
+                Assert.That(fight.TryTakeWipe(out _, out int none, out _), Is.False);
+                Assert.That(none, Is.EqualTo(-1), "no wipe: not known");
+                Assert.That(AutonomousRealmRaid.WipeLine("dragon-albion", "Golestandt", failures, 40, 40, engaged, fallen, 10),
+                    Does.Contain("living=40 engaged=40 fallen=25"));
+            });
+        }
+
+        [Test]
         public void AWipeRegroupsTheRaidAtTheRingAndASecondWipeDefeatsIt()
         {
             var fight = new RealmRaidDragonFight("Golestandt");

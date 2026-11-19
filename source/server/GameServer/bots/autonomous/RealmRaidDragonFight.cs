@@ -78,7 +78,7 @@ public sealed class RealmRaidDragonFight
     private long _regroupSince, _nextRegroupLog;
     // Nobody has stood at the staging ring since this tick of the regroup (0 = someone is there).
     private long _regroupEmptySince;
-    private readonly Queue<int> _wipes = new();
+    private readonly Queue<(int Failures, int Engaged, int Fallen)> _wipes = new();
 
     public RealmRaidDragonFight(string dragon, bool openWorld = false)
     {
@@ -141,7 +141,16 @@ public sealed class RealmRaidDragonFight
     public void Engage(IEnumerable<long> staged, Dragon dragon, long now) => BeginAttempt(staged, dragon, now);
 
     /// <summary>The next wipe the raid has not reacted to yet (the realm's notice, the Special Forces).</summary>
-    public bool TryTakeWipe(out int failures) => _wipes.TryDequeue(out failures);
+    public bool TryTakeWipe(out int failures) => TryTakeWipe(out failures, out _, out _);
+
+    /// <summary>The next wipe with the attempt's raiders and how many of them fell (REALM_RAID_WIPE engaged= fallen=, sweep 7b:
+    /// "living=96" counted raiders who had released and stood again; the dragon's own line said 72 of 91 fell).</summary>
+    public bool TryTakeWipe(out int failures, out int engaged, out int fallen)
+    {
+        bool taken = _wipes.TryDequeue(out var wipe);
+        (failures, engaged, fallen) = taken ? wipe : (0, -1, -1);
+        return taken;
+    }
 
     /// <summary>One raid pulse (every ten seconds) while the raid has started and the dragon lives.</summary>
     public void Advance(IReadOnlyList<Raider> raiders, Dragon dragon, long now)
@@ -220,7 +229,7 @@ public sealed class RealmRaidDragonFight
             return false;
         }
         FailedAttempts++;
-        _wipes.Enqueue(FailedAttempts);
+        _wipes.Enqueue((FailedAttempts, engaged, fallen));
         // Guarded like the Info lines: the tests run this class with no logging configured.
         if (Log.IsWarnEnabled)
             Log.Warn($"REALM_RAID_DRAGON_WIPE dragon=\"{_dragon}\" failures={FailedAttempts} of={MaximumFailedAttempts} engaged={engaged} " +

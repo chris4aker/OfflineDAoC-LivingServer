@@ -5,11 +5,12 @@ using System.Linq;
 namespace DOL.GS
 {
     /// <summary>
-    /// Raid cure-poison casts in the log (Living Server 1.2, sweep 6f). Bots already cure a damage over time with their cure
-    /// poison spells (BotBrain's heal turn: CurePoison or CurePoisonGroup on a member of their own party whose
-    /// <see cref="GameLiving.IsPoisoned"/> is true, which every DamageOverTime effect makes it; Summoner Roesia's Summoner Pain
-    /// is one, and CurePoisonSpellHandler removes it), but that path wrote no log line, so the owner's PC log of b1b6846
-    /// could not show whether Summoner Pain was cured. Now each region's raid cures are summed and written once a minute at
+    /// Raid cure-poison casts in the log (Living Server 1.2, sweep 6f). Bots cure a damage over time with their cure poison
+    /// spells (CurePoison or CurePoisonGroup on a raider whose <see cref="GameLiving.IsPoisoned"/> is true, which every
+    /// DamageOverTime effect makes it; Summoner Roesia's Summoner Pain is one, and CurePoisonSpellHandler removes it). In a
+    /// raid that cure came only when no heal was due, which under Summoner Pain was never (build 9a173f4: 0 lines all night);
+    /// since sweep 7b it comes first when several raiders carry one (<see cref="RaidCurePoison"/>). The path wrote no log
+    /// line before sweep 6f, so the owner's PC log of b1b6846 could not show whether Summoner Pain was cured. Now each region's raid cures are summed and written once a minute at
     /// most (RAID_CURE_POISON), so a fight of 70 raiders adds one line a minute, not one per cast. Logging only.
     /// </summary>
     public static class RaidCureLog

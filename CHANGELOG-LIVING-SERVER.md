@@ -8,6 +8,47 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 7b: Roesia's camps out, Summoner Pain cured, walk-back cap, dragon wipe line (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `9a173f4` (2026-11-18 21:59 to 11-19 01:30, `DIAG-9a17-sweep7b`). Nothing below is seen
+in game yet: **tests only** (`UT_RaidSweep7b`, `UT_DragonRaidWipes`, `test_played_check_log.py`). No boss is changed:
+Summoner Roesia's script, Summoner Pain, her health and damage are as they were.
+- **Summoner Pain's split camps (#359) are removed** after the owner's PC showed them failing. All four attempts at Roesia
+  (Hibernia and Albion) were lost at 89-93%. Her Pain has a range of 1,800 and two casts are always active (36 s, recast
+  every 20 s), so it reached both camps, which stood about 1,670 apart. She walked onto one camp, and the other camp's
+  casters stood about 1,670 from her, out of nuke range, while the camp rule walked them back to their post. The raid dealt
+  her 0.2-4.5k in the first minute, against about 17k on `b1b6846` without camps. `EpicEncounterTactics.PainCamps.cs`
+  and its rule are gone. The raid is back on `b1b6846`'s rule: it fights within 900 of her spawn (`SummonersInsideTether`).
+  That restores `b1b6846`'s play, which also lost to her (lowest 76%); the cure below is the real answer.
+- **Healers cure Summoner Pain** (and any curable damage over time that reaches several raiders). Build `9a173f4` logged
+  0 `RAID_CURE_POISON` lines all night. A raid healer cured only when no heal had been chosen, and the raid-wide patient
+  check (anyone within 1,800 under 40%) chose one on every turn under Summoner Pain. A single cure poison was also handed
+  to the raid's heal reservation, which re-aimed it at the raid's lowest raider under 80%, poisoned or not, or dropped it.
+  Now (`RaidCurePoison`, `BotBrain.TryRaidCurePoison`):
+  - an autonomous raider in a realm raid cures before its turn's heal when two or more raiders in its reach carry a
+    curable damage over time and nobody of its own party in reach is under 50%, and no boss mechanic marks a patient;
+  - it uses its class's own cure poison spells only (CurePoison, CurePoisonGroup; nothing new): the group cure when two or
+    more of its own party carry it, else the single cure on its own party's lowest, then on another party's raider (a
+    different one for each curer);
+  - its own party's emergency heals stay first, and it cures at most once every 5 s (the existing cure delay, now for an
+    instant cure too), so its other turns heal;
+  - a cure (poison, disease, mesmerize, nearsight) is never re-aimed by the raid's heal reservation
+    (`BotGroupSupport.Reserves`), so a cure mesmerize also lands on the raider it was cast for;
+  - each cure poison cast is counted in #359's `RAID_CURE_POISON` summary line, as before.
+  A deterministic model of a party under Summoner Pain (`UT_RaidSweep7b`) cures it on the first healer turn and keeps
+  every member alive for two minutes of casts; `9a173f4`'s order cured nothing.
+- **#358's walk-back has a distance cap.** A raider outside a fight-at-home boss's home walks back in only from within
+  1,500 of the home's edge (`EpicEncounterTactics.WalkBackReach`). At Roesia 40 of the 102 raiders told to walk back
+  stood 2,600-9,947 away (Unclespud 9,947, Lordnugget 8,454): they were joining or returning, and the raid's waves bring
+  them.
+- **A dragon's wipe line says who fell.** `REALM_RAID_WIPE` for a dragon now prints `engaged=` and `fallen=` too, as a
+  dungeon's does. Golestandt's second wipe said `living=96`, which counts raiders who released and stood again; the dragon's
+  own line said 72 of 91 fell.
+- **Checker** (`played_check_log.py`): a new row, `raid_cure_dot`. A fight with a boss whose curable damage over time
+  reaches the raid (Summoner Roesia: she hits the raid in an `EPIC_FIGHT_LEDGER` minute) should see `RAID_CURE_POISON` in
+  her region during the fight. Contradicted on `9a173f4`: region 248 at 00:04-00:06, 00:12-00:14 and 00:57-01:11, with
+  0 lines each.
+
 ## Bot chat audit follow-ups: the code (1.2, 2026-11-18; tests only)
 
 What the chat audit's engineers left for each other in code (F1). Nothing below has been seen on the owner's PC yet:
@@ -171,8 +212,9 @@ No boss, guard or monster is changed: Summoner Roesia's script, Summoner Pain, h
   only; a cast on the melee still reaches all the melee and the camp they face. A deterministic model (`UT_RaidSweep6f`,
   72 raiders, 27 melee) gives 41.4 raiders a cast against 71.1 before: a little over half, not less. The owner asked for
   camps about 1,600 apart; at 1,600 the melee on her far side stand inside a cast on either camp (the model: about 50).
-- **Raid cures are logged.** Bots already cure Summoner Pain (a damage over time, which cure poison removes) with their cure
-  poison spells, but that path logged nothing, so `b1b6846` could not show it. Each region's raid cure poison casts are now
+  **Removed in sweep 7b**: the owner's PC (build `9a173f4`) showed the camps failing (see the sweep 7b entry above).
+- **Raid cures are logged.** This entry said bots already cured Summoner Pain; they did not while a heal was due, which in a
+  raid under her Pain was always (fixed in sweep 7b). The cure path logged nothing, so `b1b6846` could not show it. Each region's raid cure poison casts are now
   summed once a minute (`RAID_CURE_POISON casts= curers= targets= dots=`).
 - **Roesia's lore** no longer says GameBots are never Summoner Pain's centre: her script picks bots too (text only).
 - **Checker** (`played_check_log.py`): a new row, `rebase_silent`: a return wave rebased to a step none of its raiders
