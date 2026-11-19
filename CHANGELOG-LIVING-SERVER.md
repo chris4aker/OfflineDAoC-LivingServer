@@ -8,6 +8,32 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Battleground keeps: guards and lords at their battleground's level (1.2, 2026-11-19; tests only)
+
+Owner, 2026-11-19: "I want the guards and lord levels appropriate for their battleground". This is the owner's own request,
+so it overrides the rule against changing keep, lord or guard levels, for the four battlegrounds' own keeps only. Seen on
+the owner's PC on build `c81eb5d` (`BG_KEEP_STATUS` 09:07-09:40): Caer Caledon's lord was level 57 and its guards up to 48
+in Caledonia (levels 30-35). The gate clear stalled twice and the keep was never taken. Nothing below is seen in game yet:
+**tests only** (`UT_BattlegroundKeepGuardLevels`).
+- **Why Caledon was 57.** Guard and lord levels come from the keep's base level in the world's `Keep` table, through DOL's
+  formulas: guards `base + 1 + keep level x 1.6`, the lord `base + (base / 10 + 1) x 2 + keep level x 1.6`. The shipped world
+  gives three battleground keeps their bracket's top level + 2 (Dun Abermenai 21, Thidranki Faste 26, Dun Murdaigean 31)
+  and Caer Caledon 46, eleven above its 35. At keep level 1 that is guards 48 and lord 57. Nothing raised it while playing:
+  the log matches base 46 at keep level 1 exactly (battleground keeps stay at level 1 since 2026-11-15), and keep
+  balancing only runs in frontier regions.
+- **The rule.** A battleground keep's base level is its bracket's top + 2, the world's own value for the three keeps
+  nobody complained about. So guards are the top + 4 and the lord the top + 9 (Abermenai, Thidranki) or + 11 (Murdaigean,
+  Caledonia). Abermenai 23/28, Thidranki 28/33 and Murdaigean 33/40 are unchanged; **Caer Caledon goes to guards 39 and
+  lord 46** (base 37). Hasteners stay level 1.
+- **A cap.** Whatever raises a battleground keep (a claim and upgrades with `allow_bg_claim`, keep balancing, a bigger
+  `keep_guard_level_multiplier`, a GM's `/keep` command), its guards and lord never go above those level-1 values.
+- **Existing and fresh worlds.** At every start, a battleground keep whose base level is not its bracket's is set to it
+  and its `Keep` row saved (`BG_KEEP_BASE_LEVEL_REPAIRED`, once on a played world; a second start changes nothing).
+  `release-world-defaults.json` now carries the four base levels and `build_release_037.py` writes and checks them, so
+  the shipped world has them too.
+- **Unchanged:** every frontier keep and tower, the portal keeps, and the old battleground regions that have no bracket
+  in `BattlegroundBrackets` (Cathal Valley's Dun Orseo, Killaloe, Braemar, Molvik).
+
 ## The release name: "1.2", not "Beta 1.2" (1.2, 2026-11-19; tests only)
 
 The owner named this release **1.2** final (2026-11-19), not Beta 1.2: tag `v1.2`, build `1.2`, title "Living

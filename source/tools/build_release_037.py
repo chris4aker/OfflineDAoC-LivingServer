@@ -151,6 +151,8 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
         changed = con.execute("UPDATE Keep SET Realm=?,Level=?,ClaimedGuildName='' WHERE KeepID=?",
                               (keep["Realm"], keep["Level"], int(keep_id))).rowcount
         assert changed == 1, f"keep {keep_id} {keep['Name']}"
+        if "BaseLevel" in keep:  # a battleground keep: its bracket's top + 2 (BattlegroundKeepLevels, 2026-11-19)
+            con.execute("UPDATE Keep SET BaseLevel=? WHERE KeepID=?", (keep["BaseLevel"], int(keep_id)))
     for door_id, door in defaults["Door"].items():
         changed = con.execute("UPDATE Door SET Health=?,State=? WHERE Door_ID=?",
                               (door["Health"], door["State"], door_id)).rowcount
@@ -309,6 +311,10 @@ def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert set(keeps) == set(defaults["Keep"]), "the keep list differs from release-world-defaults.json"
     for keep_id, keep in defaults["Keep"].items():
         assert keeps[keep_id] == (keep["Realm"], keep["Level"], ""), f"keep {keep_id} {keep['Name']}: {keeps[keep_id]}"
+    base_levels = dict(con.execute("SELECT KeepID,BaseLevel FROM Keep"))
+    for keep_id, keep in defaults["Keep"].items():
+        if "BaseLevel" in keep:
+            assert base_levels[int(keep_id)] == keep["BaseLevel"], f"keep {keep_id} {keep['Name']}: base level {base_levels[int(keep_id)]}"
     doors = {d: (h, s) for d, h, s in con.execute("SELECT Door_ID,Health,State FROM Door")}
     assert set(doors) == set(defaults["Door"]), "the door list differs from release-world-defaults.json"
     for door_id, door in defaults["Door"].items():
