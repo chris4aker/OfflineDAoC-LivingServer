@@ -58,7 +58,7 @@ namespace DOL.GS
                 ($@"^The armies at {K} are committed to battle", "siege_others"),
                 ($@"^The armies at {K} have about twenty minutes left to muster", "siege_others_soon"),
                 ($@"^{K} is under attack!", "keep_attacked"),
-                ($@"^Scouts report {W}'s army marching on {K}!", "keep_army_coming"),
+                ($@"^Scouts report {W}'s army marching on {K}!", "keep_army_coming"),   // promise: none (a kind name)
                 ($@"^Our forces are attacking {K}\.", "keep_ours_attacking"),
                 ($@"^Enemy armies are clashing at {K}\.", "keep_others_fighting"),
                 ($@"^Fighting has broken out at {K}\.", "keep_others_fighting"),
@@ -85,6 +85,20 @@ namespace DOL.GS
             return rules.Select(rule => (new Regex(rule.Item1, RegexOptions.CultureInvariant | RegexOptions.Compiled), rule.Item2)).ToArray();
         }
 
+        /// <summary>
+        /// The kind of notice a news topic stands for (chat 1.2 follow-up, E4's siege stages): the attackers' muster
+        /// ("siege_muster") is a siege gathering, the defenders' warning ("siege_warning") an army on its way, and once the
+        /// battle has begun the assault ("siege_attack") and the keep under siege ("siege_defend"). Null for other topics. Pure.
+        /// </summary>
+        public static string KindOfTopic(string topic) => topic switch
+        {
+            "siege_muster" => "siege_gather",
+            "siege_warning" => "keep_army_coming",   // promise: none (a kind name)
+            "siege_attack" => "siege_advance",
+            "siege_defend" => "siege_begun",
+            _ => null,
+        };
+
         /// <summary>What a written notice is about, or null for one no rule knows. Pure.</summary>
         public static Reading Read(string notice)
         {
@@ -106,11 +120,14 @@ namespace DOL.GS
         /// The notice as a player of the realm would type it in /faction. <paramref name="slots"/> are the notice's news slots
         /// ({keep}, {enemy}, {raid}, {boss}), used where the written text doesn't name them. Pure.
         /// </summary>
-        public static string Say(string notice, IReadOnlyDictionary<string, string> slots, Random random)
+        public static string Say(string notice, IReadOnlyDictionary<string, string> slots, Random random, string topic = null)
         {
             random ??= Random.Shared;
             Reading r = Read(notice);
             string slot(string key) => slots != null && slots.TryGetValue(key, out string v) && !string.IsNullOrWhiteSpace(v) ? v : null;
+            // Chat 1.2 follow-up (E4's siege stages): a notice no rule reads is still said by its news topic when it has one.
+            if (r == null && KindOfTopic(topic) is { } byTopic && slot("keep") != null)
+                r = new Reading(byTopic);
             if (r == null)
                 return Plain(notice);
             string keep = AutonomousChatFieldTalk.ShortKeep(r.Keep ?? slot("keep"), random);
@@ -128,7 +145,7 @@ namespace DOL.GS
                 "raid_recruit" =>
                 [
                     $"{raid} raid forming at {hub}, need 50s", $"lf 50s for {raid}, meet at {hub}", $"{raid} raid at {hub} if anyone wants in",
-                    $"who's coming {raid}? forming up at {hub}", $"getting a {raid} raid going, {hub}", $"{raid} tonight, gathering at {hub}",
+                    $"who's coming {raid}? forming up at {hub}", $"getting a {raid} raid going, {hub}", $"{raid} tonight, gathering at {hub}",   // promise: none (asks who is coming)
                     $"anyone 50 want {raid}? we're at {hub}",
                 ],
                 "raid_depart" =>
@@ -166,7 +183,7 @@ namespace DOL.GS
                     $"wiped on {boss}, regroup and go again", $"{boss} wiped us, one more go", $"rez up, going again on {boss}",
                     $"ugh, {boss} got us, trying again", $"{boss} wipe, rebuff and back in",
                 ],
-                "raid_help" => [$"more help coming for {raid}, nice", $"reinforcements on the way to {raid}", $"extra grps joining {raid} now"],
+                "raid_help" => [$"more help coming for {raid}, nice", $"reinforcements on the way to {raid}", $"extra grps joining {raid} now"],   // promise: none (others coming)
                 "siege_gather" =>
                 [
                     $"warband going to {keep}, siege camp", $"forming up for {keep} at the siege camp", $"{keep} siege forming, come",
@@ -190,10 +207,10 @@ namespace DOL.GS
                     $"{keep} under attack, need ppl", $"{keep} getting hit!", enemy != null ? $"{enemy} hitting {keep}, anyone?" : $"{keep} needs defenders",
                     $"defend {keep}!", $"{keep} is getting sieged, who's close?",
                 ],
-                "keep_army_coming" =>
+                "keep_army_coming" =>   // promise: none (a kind name)
                 [
-                    $"{winnerAs} zerg heading for {keep}, defend", $"big {winnerAs} army moving on {keep}", $"{winner} coming for {keep}, get there",
-                    $"scouts saw {winner} marching on {keep}", $"{keep} about to get hit, {winner} on the way",
+                    $"{winnerAs} zerg heading for {keep}, defend", $"big {winnerAs} army moving on {keep}", $"{winner} coming for {keep}, get there",   // promise: none (the enemy coming)
+                    $"scouts saw {winner} marching on {keep}", $"{keep} about to get hit, {winner} on the way",   // promise: none (the enemy coming)
                 ],
                 "keep_ours_attacking" => [$"we're on {keep}, need help", $"hitting {keep}, come", $"{keep} siege, anyone close?"],
                 "keep_others_fighting" =>
@@ -204,7 +221,7 @@ namespace DOL.GS
                 "keep_retake" => [$"lost {keep}, retake?", $"{keep} fell, going back for it", $"{keep} gone, who wants it back", $"retake {keep}, meet at the outpost"],
                 "keep_relief" => [$"defense going to {keep}, come", $"relief heading to {keep}", $"grp going to save {keep}", $"going to help {keep}, join"],
                 "siege_reminder_defend" => [$"watch {keep}, they're forming", $"{keep} gets hit in 20 or so", $"be ready at {keep} soon"],
-                "siege_reminder_attack" => [$"20 min till {keep}, need more", $"{keep} soon, still forming", $"who's coming {keep}? 20 min"],
+                "siege_reminder_attack" => [$"20 min till {keep}, need more", $"{keep} soon, still forming", $"who's coming {keep}? 20 min"],   // promise: none (asks who is coming)
                 "keep_won" => [$"{keep} is ours!", $"took {keep}, gg", $"we got {keep}", $"{keep} ours, gj all"],
                 "keep_lost" => [$"{winner} took {keep}", $"lost {keep} to {winner}", $"{keep} gone, {winner} have it", $"ugh {winner} got {keep}"],
                 "siege_enemy_broke" => [$"they gave up on {keep} lol", $"{keep} safe, they left", $"no siege at {keep} after all"],

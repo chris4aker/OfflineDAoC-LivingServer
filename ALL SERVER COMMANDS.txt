@@ -1547,7 +1547,7 @@ GM ONLY COMMANDS
   /lstest memory - what bots remember about you
   /lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted
   /lstest greet | gossip - a remembered bot near you greets you; a bot that likes you mentions you in /faction
-  /lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that
+  /lstest deed <solo|group|streak|ganked|silly|fell|drowned> - a bot near you tells the realm it saw that
   /lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)
   /lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid
   /lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)

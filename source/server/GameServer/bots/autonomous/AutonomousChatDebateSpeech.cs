@@ -120,9 +120,11 @@ namespace DOL.GS
 
         /// <summary>
         /// A debate line as the speaker types it: its pieces (one chat line each), split and styled as described above. With no
-        /// style (voices off) the line is split only. Pure for a given draw.
+        /// style (voices off) the line is split only. <paramref name="noLaugh"/>: a beat said with no added laugh
+        /// (AutonomousBotDebates.NoLaughBeat), which also takes no "lol" from the speaker's typing habits (chat 1.2 follow-up,
+        /// E3's CORPUS-B2-032 gap). Pure for a given draw.
         /// </summary>
-        public static List<string> Typed(string line, VC.Voice voice, long botId, Random random)
+        public static List<string> Typed(string line, VC.Voice voice, long botId, Random random, bool noLaugh = false)
         {
             random ??= Random.Shared;
             bool terse = IsTerse(voice);
@@ -134,9 +136,9 @@ namespace DOL.GS
                 if (voice != null)
                 {
                     // A tidy writer's capital starts the chat line; no second sentence is capitalised and no full stop ends it.
-                    // A laugh tail only where it keeps the piece within the split's limit (TailFits).
+                    // A laugh tail only where it keeps the piece within the split's limit (TailFits); no laugh on a no-laugh beat.
                     text = VC.Style(text, voice with { CapitalizeSentences = false, EndPeriod = false }, random, out _, null, max);
-                    text = AutonomousChatIdiolect.Apply(text, botId, voice.Capitalize, random, maxWords: max);
+                    text = AutonomousChatIdiolect.Apply(text, botId, voice.Capitalize, random, terse: noLaugh, maxWords: max);
                 }
                 text = Chat(text, terse);
                 if (text.Length > 0)

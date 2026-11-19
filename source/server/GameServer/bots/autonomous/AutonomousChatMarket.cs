@@ -69,7 +69,7 @@ namespace DOL.GS
         {
             string t = " " + AutonomousChatQuestions.Normalize(text ?? string.Empty) + " ";
             string role = Regex.IsMatch(t, " (heal|healer|heals) ") ? "healer" : Regex.IsMatch(t, " tank ") ? "tank" :
-                Regex.IsMatch(t, " (cc|mezzer|mez) ") ? "cc" : Regex.IsMatch(t, " dps ") ? "dps" : Regex.IsMatch(t, " nuker ") ? "nuker" :
+                Regex.IsMatch(t, " (cc|mezzer|mez) ") ? "cc" : Regex.IsMatch(t, " dps ") ? "dps" : Regex.IsMatch(t, " nuker ") ? "nuker" :   // chat-check: input
                 Regex.IsMatch(t, " caster ") ? "caster" :
                 Regex.IsMatch(t, " puller ") ? "puller" : Regex.IsMatch(t, " support ") ? "support" : null;
             Match band = Regex.Match(text ?? string.Empty, @"\b(\d{1,2})-(\d{1,2})\b");

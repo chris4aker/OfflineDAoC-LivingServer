@@ -30,7 +30,7 @@ public static class AutonomousChatShortTalk
         "ppl", "people", "friends", "yall", "albion", "midgard", "hibernia", "albs", "mids", "hibs", "guild", "again", "back", "peeps", "gang",
         "folk", "lads", "ladies", "team", "crew", "fam", "everyone", "mates", "all");
     private static readonly HashSet<string> LaughWords = Set("lol", "lolol", "lololol", "lmao", "rofl", "roflmao", "haha", "hahaha",
-        "hehe", "heh", "hah", "ha", "lul", "xd", "hehehe", "ahaha", "lawl", "kek", "gg", "omg", "wow", "nice");
+        "hehe", "heh", "hah", "ha", "lul", "xd", "hehehe", "ahaha", "lawl", "kek", "gg", "omg", "wow", "nice");   // chat-check: input
     private static readonly HashSet<string> RezWords = Set("rez", "res", "rezz", "rezzes", "ress", "resurrect", "resurrection", "rezzer", "rezzers");
     private static readonly HashSet<string> AlarmWords = Set("inc", "incs", "incoming");
     private static readonly HashSet<string> TradeWords = Set("wts", "wtb", "wtt", "pc", "selling", "buying", "sell", "buy",
@@ -40,16 +40,16 @@ public static class AutonomousChatShortTalk
         "groups", "grps", "party", "inv", "invite", "duo", "trio", "fg", "lfguild", "lf", "forming", "puller", "pullers");
     private static readonly HashSet<string> RvrWords = Set("rvr", "frontier", "relic", "relics", "emain", "hadrians",
         "hadrian", "odins", "mg", "amg", "hmg", "mmg", "milegate", "stealther", "stealthers", "rps", "rp", "rr", "thid", "thidranki",
-        "abermenai", "murdaigean", "caledonia", "cathal", "bg", "battleground", "siege", "realmpoints", "zerg", "zergs", "zerging",
+        "abermenai", "murdaigean", "caledonia", "cathal", "bg", "battleground", "siege", "realmpoints", "zerg", "zergs", "zerging",   // chat-check: input
         "benowyc", "berkstead", "boldiam", "bledmeer", "crauchon", "crimthainn", "nottmoor", "glenlock", "renaris", "erasleigh",
         "sursbrooke", "hurbury", "blendrake", "arvakr", "fensalir", "hlidskialf", "nottmoor", "bolg", "ailline", "behnn", "scathaig",
         // 1.2 chat audit: the short keep names players typed ("lets take bled", "we lost beno again"), and keep talk.
         "beno", "berk", "bled", "crim", "crau", "nott", "keeps", "defending", "defenders");
     private static readonly HashSet<string> DungeonWords = Set("dungeon", "dungeons", "tomb", "cave", "caves", "caverns",
         "barrows", "den", "lair", "spindelhalla", "spindel", "varulvhamn", "varulv", "df", "darkness", "treibh", "coruscating",
-        "keltoi", "fogou", "tepok", "tepoks", "mithra", "vendo", "nisse", "nisses", "muire", "spraggon", "koalinth", "catacombs");
-    private static readonly HashSet<string> BanterWords = Set("same", "true", "ikr", "agreed", "yep", "yup", "indeed", "word", "truth",
-        "exactly", "totally", "right", "ouch", "yikes", "oof", "ugh", "bah", "meh", "nice", "sweet", "cool", "awesome", "wow");
+        "keltoi", "fogou", "tepok", "tepoks", "mithra", "vendo", "nisse", "nisses", "muire", "spraggon", "koalinth", "catacombs");   // chat-check: input
+    private static readonly HashSet<string> BanterWords = Set("same", "true", "ikr", "agreed", "yep", "yup", "indeed", "word", "truth",   // chat-check: input
+        "exactly", "totally", "right", "ouch", "yikes", "oof", "ugh", "bah", "meh", "nice", "sweet", "cool", "awesome", "wow");   // chat-check: input
     private static readonly HashSet<string> GankWords = Set("gank", "ganked", "ganking", "ganks", "stealthed", "stealther", "stealthers");
     private static readonly HashSet<string> BotWords = Set("bot", "bots", "npc", "npcs", "ai", "program", "script", "scripted", "robot");
     private static readonly HashSet<string> SpecWords = Set("spec", "specs", "specced", "respec", "build", "nerf", "nerfed", "nerfs",
@@ -309,8 +309,8 @@ public static class AutonomousChatShortTalk
             return "ask_price";
         if (!words.Any(GroupWords.Contains) && HasPhrase(words, "anyone want to", "anyone wanna", "anyone going", "anyone up for",
                 "anyone feel like", "anybody want to", "anybody wanna", "anybody going", "anybody up for", "any1 want to", "any1 wanna",
-                "who wants to", "who wants", "who is up for", "whos up for", "anyone doing", "anyone running", "anyone heading", "anyone coming",
-                "anybody coming", "anyone interested in", "anyone keen"))
+                "who wants to", "who wants", "who is up for", "whos up for", "anyone doing", "anyone running", "anyone heading", "anyone coming",   // chat-check: input
+                "anybody coming", "anyone interested in", "anyone keen"))   // chat-check: input
             return "ask_anyone";
         if (HasPhrase(words, "best spec", "what spec", "which spec", "how should i spec", "how do i spec", "how to spec", "any tips",
                 "any advice", "tips for", "advice for", "how do i make money", "how do i get money", "how to make money", "how do i get gold",
@@ -430,7 +430,7 @@ public static class AutonomousChatShortTalk
 
     /// <summary>"thx mythic", "thanks a lot lag", "ty goa", "game crashed again, thanks": thanks that complain. Pure.</summary>
     public static bool IsSarcasticThanks(string[] words) =>
-        words.Any(word => word is "mythic" or "goa" or "ea" or "lag" or "server" or "patch" or "isp" or "aol" or "comcast" or "crashed" or "crash" or
+        words.Any(word => word is "mythic" or "goa" or "ea" or "lag" or "server" or "patch" or "isp" or "aol" or "comcast" or "crashed" or "crash" or   // chat-check: input
             "crashes" or "crashing" or "ld" or "linkdead" or "nerf" or "nerfed" or "bug" or "bugged" or "disconnected" or "dc");
 
     /// <summary>A mishap told for a laugh: a fall, a one-shot, a death by something grey or silly. Pure.</summary>
@@ -526,7 +526,7 @@ public static class AutonomousChatShortTalk
             return "pet";
         if (Has("snowing", "raining", "so hot here", "so cold here", "thunderstorm", "heat wave", "no ac", "freezing here", "power went out"))
             return "weather";
-        if (Has("sopranos", "lord of the rings", "return of the king", "two towers", "the matrix", "movie", "on tv", "episode", "seen it yet",
+        if (Has("sopranos", "lord of the rings", "return of the king", "two towers", "the matrix", "movie", "on tv", "episode", "seen it yet",   // chat-check: input
                 "the game last night", "watch the game", "the game tonight", "watching the game", "the playoffs", "the series"))
             return "media";
         if (Has("work tomorrow", "from work", "at work", "my boss", "overtime", "long day at work", "job interview", "work sucks", "got home from work",
@@ -668,7 +668,7 @@ public static class AutonomousChatShortTalk
         "k", "kk", "sure", "cool", "nice", "same", "true", "right", "agreed", "agree", "maybe", "alright", "aight", "fair", "indeed",
         "exactly", "word", "mhm", "hm", "hmm", "oh", "ah", "ahh", "see", "me", "too", "got", "gotcha", "understood", "noted", "makes",
         "sense", "sounds", "good", "fine", "neat", "great", "perfect", "def", "definitely", "probably", "prolly", "guess", "suppose",
-        "same", "here", "true", "ikr", "totally", "either", "neither", "thats", "that's", "is", "was", "really", "yeh", "ye");
+        "same", "here", "true", "ikr", "totally", "either", "neither", "thats", "that's", "is", "was", "really", "yeh", "ye");   // chat-check: input
 
     /// <summary>"ok", "sure", "nice", "me too", "makes sense": a line that only acknowledges what was said.</summary>
     public static bool IsAcknowledgement(string text)
@@ -927,7 +927,7 @@ public static class AutonomousChatShortTalk
         {
             // ":)" ";p" "o/" and the like
             string raw = (text ?? string.Empty).Trim();
-            if (raw is "o/" or "\\o" or "o7")
+            if (raw is "o/" or "\\o" or "o7")   // chat-check: input
             {
                 intent = eAutonomousChatIntent.Greeting;
                 return true;
@@ -944,7 +944,7 @@ public static class AutonomousChatShortTalk
         int n = words.Length;
         // "o/ evening", "\\o all": a wave, then the greeting.
         string wave = (text ?? string.Empty).TrimStart();
-        if (!question && n <= 4 && (wave.StartsWith("o/", StringComparison.Ordinal) || wave.StartsWith("\\o", StringComparison.Ordinal)))
+        if (!question && n <= 4 && (wave.StartsWith("o/", StringComparison.Ordinal) || wave.StartsWith("\\o", StringComparison.Ordinal)))   // chat-check: input
             return Is(eAutonomousChatIntent.Greeting, out intent);
 
         // "are you a bot?", "r u real?", "is this an npc"
@@ -1095,8 +1095,8 @@ public static class AutonomousChatShortTalk
         if (!income && !alarmTalked && (Any(words, AlarmWords) || EnemyCall(words) || HasPhrase(words, "under attack", "under siege", "albs at", "mids at", "hibs at",
                 // Beta 1.1.2 (blind round 1): "need defenders at dun crim NOW", "mids ganking at the dock".
                 "need defenders", "defenders at", "defenders needed", "need def", "ganking at", "ganking near", "ganking by", "camping the dock",
-                "enemies at", "enemy at", "stealthers at", "zerg at", "zerg heading", "zerg coming", "stealthers near", "stealther near",
-                "stealthers by", "hibs pushing", "mids pushing", "albs pushing", "at our relic", "hitting our", "train coming", "train inc") ||
+                "enemies at", "enemy at", "stealthers at", "zerg at", "zerg heading", "zerg coming", "stealthers near", "stealther near",   // chat-check: input
+                "stealthers by", "hibs pushing", "mids pushing", "albs pushing", "at our relic", "hitting our", "train coming", "train inc") ||   // chat-check: input
                 enemy && HasPhrase(words, "heading for our", "pushing on", "pushing our", "pushing the", "watch out for") ||
                 n <= 2 && words.All(word => word is "adds" or "add" or "run" or "train" or "runner" or "runners") ||
                 // "stealther on me help", "add on me" (the holdout check)

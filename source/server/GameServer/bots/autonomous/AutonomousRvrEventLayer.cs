@@ -1753,7 +1753,8 @@ public static partial class AutonomousRvrEventLayer
             (string topic, Dictionary<string, string> slots) = SiegeOutcomeNews(active.Target.Name, active.AttackerRealm, active.DefenderRealm,
                 realm, winner, reason.StartsWith("Keep captured"));
             RealmEventNotices.Queue(active.TargetId, realm, RealmEventBanter.SiegeOutcome(Place(active.Target.Name),
-                realm == active.DefenderRealm, reason.StartsWith("Siege defended"), reason.StartsWith("Rally failed"), winner, realm), topic, slots);
+                realm == active.DefenderRealm, reason.StartsWith("Siege defended"), reason.StartsWith("Rally failed"), winner, realm,
+                attacker: realm == active.AttackerRealm), topic, slots);
         }
         RealmEventRecords.Finish(active.TargetId, reason.StartsWith("Rally failed") ? "Failed rally" : reason.StartsWith("Keep captured") ? "Captured" :
             reason.StartsWith("Siege defended") ? reason.Contains("expired") ? "Defended (timeout)" : "Defended" : SiegeEndOutcome(reason),

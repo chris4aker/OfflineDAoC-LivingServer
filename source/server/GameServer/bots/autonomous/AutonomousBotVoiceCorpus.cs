@@ -846,7 +846,7 @@ public sealed class AutonomousBotVoiceCorpus
     private static readonly HashSet<string> ChatTokens = new(StringComparer.OrdinalIgnoreCase)
     {
         "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
-        "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
+        "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",   // chat-check: input
         "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",   // chat-check: input
         // Beta 1.1.2: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
         "yes", "ya", "yeah", "yea", "no", "nah", "sure", "same", "true", "nice", "cool", "hey", "hi", "yo", "sup", "cya", "later", "night",

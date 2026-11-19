@@ -53,13 +53,13 @@ public static class AutonomousChatContext
             return ("context offer", Pick(random, "nah im good ty", "im ok ty", "nah ty", "all good ty"));
         // "loot the named", "grab the drop": the group's loot, said to the group.
         if (facts.Channel is "group" or "say" && Regex.IsMatch(text, @"^ (pls |ok |k )?(loot|grab|take) (the |that |it|ur |your )?(named|drop|drops|corpse|chest|loot|it|bag)? "))
-            return ("context loot", Pick(random, "k", "on it", "got it", "looting", "k, anyone need it?", "rolling"));
+            return ("context loot", Pick(random, "k", "on it", "got it", "looting", "k, anyone need it?", "rolling"));   // promise: none (a loot order acknowledged)
         // "fake inc dont bother", "nvm inc": an inc called off.
         if (Regex.IsMatch(text, @" (fake inc|false alarm|no inc|nvm inc|inc nvm|not inc|was a pet|just a pet|was nothing) "))
             return ("context inc", Pick(random, "k", "kk", "ok", "k ty"));
         if (Regex.IsMatch(text, @" (free rps|free rp|free realm points|free kills|easy rps|come get rps) "))
             return ("context rvr", facts.Comes(PlaceIn(incoming), ChatPromiseReason.RealmPoints)
-                ? Pick(random, "omw", "on my way", "omw!", "coming", "omw, save me some")
+                ? Pick(random, "omw", "on my way", "omw!", "coming", "omw, save me some")   // promise: gated (facts.Comes)
                 : Pick(random, "nice", "save me some", "nice, save me some", "lol nice", "gl, get em"));
         // 1.2 chat audit (DESIGN-005): "ready?", "we pulling?", "how much power you got": the bot's real power and health.
         if (shape == "ask_ready" && facts.Channel is "group" or "say" or "tell")
@@ -82,9 +82,9 @@ public static class AutonomousChatContext
             if (facts.Channel == "group")
                 return ("context inc", place || count ? Pick(random, "k", "got it", "ok", "k ty") : Pick(random, "where", "where?", "which way", "where?!"));
             bool comes = place && facts.Comes(PlaceIn(incoming), ChatPromiseReason.Alarm);
-            string reply = place && count ? comes ? Pick(random, "omw", "on my way", "coming", "omw!!")
+            string reply = place && count ? comes ? Pick(random, "omw", "on my way", "coming", "omw!!")   // promise: gated (facts.Comes)
                     : facts.InRvr ? Pick(random, "seen them", "ugh, again", "k ty", "not again") : Pick(random, "ugh", "ugh, again", "gl all", "not again", "k ty")
-                : place ? comes ? Pick(random, "omw", "omw, how many?", "coming")
+                : place ? comes ? Pick(random, "omw", "omw, how many?", "coming")   // promise: gated (facts.Comes)
                     : facts.InRvr ? Pick(random, "how many?", "seen them, ugh", "how many are there?") : Pick(random, "how many?", "how many are there?", "ugh, again")
                 : count ? Pick(random, "where?", "where at?", "where??")
                 : Pick(random, "where?", "where at?", "how many and where?", "where");
@@ -148,14 +148,14 @@ public static class AutonomousChatContext
         if (Regex.IsMatch(text, @" quest "))
             return Pick(random, "which quest?", "what quest?", "sure, which one?");
         if (Regex.IsMatch(text, @" corpse run "))
-            return facts.Near && facts.Comes(PlaceIn(text), ChatPromiseReason.Help) ? Pick(random, "omw, where in there?", "sure, where?")
+            return facts.Near && facts.Comes(PlaceIn(text), ChatPromiseReason.Help) ? Pick(random, "omw, where in there?", "sure, where?")   // promise: gated (facts.Comes)
                 : Pick(random, "how deep?", "where in there?", "how far in?");
         // 1.2 chat audit (DESIGN-006): "omw", "coming" or "healing" only from a bot the promise gate sends; any other asks where.
         bool close = facts.Near || facts.Channel is "say" or "group";
         bool healCall = facts.CanHeal && Regex.IsMatch(text, @" (heal|heals|healing|dying|low hp|oom|getting hit|killing me) ");
         if (close && facts.Comes(PlaceIn(text), healCall ? ChatPromiseReason.Heal : ChatPromiseReason.Help))
-            return healCall ? Pick(random, "healing", "got u", "hold on, healing", "heals coming", "on it")
-                : Pick(random, "omw", "hang on", "coming, hold on", "on it", "hold on!", "omw hang in there");
+            return healCall ? Pick(random, "healing", "got u", "hold on, healing", "heals coming", "on it")   // promise: gated (facts.Comes)
+                : Pick(random, "omw", "hang on", "coming, hold on", "on it", "hold on!", "omw hang in there");   // promise: gated (facts.Comes)
         if (healCall)
             return Pick(random, "where r u?", "where are you?", "where at?");
         return Pick(random, "where are you?", "whats up?", "what do u need?", "where at?", "whats wrong?");
@@ -169,13 +169,13 @@ public static class AutonomousChatContext
             return Pick(random, "nice!", "finally", "woot", "about time", "gj all", "yay");
         // 1.2 chat audit (DESIGN-006, CORPUS-C-018, TEXT-010): no "omw", "ill be there" or "count me in": the bot will not come.
         if (Regex.IsMatch(text, @" (got our|took our|lost our|taking our|have our|stole our) "))
-            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "omw, where are they?")
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "omw, where are they?")   // promise: gated (facts.Comes)
                 : Pick(random, "ugh", "again??", "not again", "where are they?", "how many?");
         if (Regex.IsMatch(text, @" (raid|meet|forming|form up) .*(at \d|at the|tonight|tmrw|tomorrow) |(at \d{1,2}|tonight) .*(raid|meet) "))
-            return facts.Comes(PlaceIn(text), ChatPromiseReason.RaidTime) ? Pick(random, "ill be there", "count me in", "x", "k ill be there")
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.RaidTime) ? Pick(random, "ill be there", "count me in", "x", "k ill be there")   // promise: gated (facts.Comes)
                 : Pick(random, "might make it", "ill try to make it", "maybe, depends when i get on", "good luck all", "where do we meet?");
         if (Regex.IsMatch(text, @" (is hot|is busy|zerg at|zerg in|everywhere|swarming) "))
-            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "nice, omw")
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "nice, omw")   // promise: gated (facts.Comes)
                 : Pick(random, "how many?", "where at?", "nice", "busy night");
         return null;
     }
@@ -191,7 +191,7 @@ public static class AutonomousChatContext
     private static bool NamesAPlace(string incoming, string text) =>
         Regex.IsMatch(text, @" (at|near|by|in|on|outside|behind|inside) (the )?[a-z]{3,}") ||
         AutonomousChatQuestions.PlaceNamed(incoming, AutonomousChatPlaces.All) != null ||
-        Regex.IsMatch(text, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|castle|tower|milegate) ");
+        Regex.IsMatch(text, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|castle|tower|milegate) ");   // chat-check: input
 
     /// <summary>"40+ hibs", "3 grps", "2 fg", "a zerg", "8 man": the line says how many. Pure.</summary>
     private static bool SaysHowMany(string text) =>

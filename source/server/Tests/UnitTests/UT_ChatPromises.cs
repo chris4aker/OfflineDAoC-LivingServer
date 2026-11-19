@@ -155,6 +155,7 @@ namespace DOL.UnitTests
             var book = new ChatPromiseBook(lines.Add);
             object bot = new();
             ChatPromise promise = book.Make(bot, "Bot1", 7, eRealm.Albion, R.Alarm, ChatPromiseMode.RvrObjective, Keep(), "Asker", 60, 0);
+            book.NoteSaid(bot, "omw");   // chat 1.2 follow-up: a promise stands once its line is said
             Assert.That(book.Check(bot, 30_000, On()), Is.Null, "on its way");
             Assert.That(book.Check(bot, 95_000, On(arrived: true)), Is.EqualTo("kept"));
             Assert.That(lines[^1], Is.EqualTo("CHAT_PROMISE kept bot=\"Bot1\" id=7 promise=1 reason=Alarm mode=RvrObjective " +
@@ -173,6 +174,7 @@ namespace DOL.UnitTests
             var book = new ChatPromiseBook(lines.Add);
             object bot = new();
             book.Make(bot, "Bot1", 7, eRealm.Albion, R.Alarm, ChatPromiseMode.RvrObjective, Keep(), "Asker", 60, 0);
+            book.NoteSaid(bot, "omw");   // chat 1.2 follow-up: a promise stands once its line is said
             Assert.That(book.Check(bot, 209_000, On()), Is.Null);
             Assert.That(book.Check(bot, 210_000, On()), Is.EqualTo("broken"));
             Assert.That(lines[^1], Is.EqualTo("CHAT_PROMISE broken bot=\"Bot1\" id=7 promise=1 reason=Alarm mode=RvrObjective " +
@@ -186,11 +188,13 @@ namespace DOL.UnitTests
                      })
             {
                 book.Make(bot, "Bot1", 7, eRealm.Albion, R.Alarm, ChatPromiseMode.RvrObjective, Keep(), "Asker", 60, 0);
+                book.NoteSaid(bot, "omw");
                 Assert.That(book.Check(bot, 10_000, progress), Is.EqualTo("broken"), why);
                 Assert.That(lines[^1], Does.Contain($" why={why} "));
             }
             // Dead on arrival is not a kept promise.
             book.Make(bot, "Bot1", 7, eRealm.Albion, R.Alarm, ChatPromiseMode.RvrObjective, Keep(), "Asker", 60, 0);
+            book.NoteSaid(bot, "omw");
             Assert.That(book.Check(bot, 10_000, On(arrived: true, alive: false)), Is.EqualTo("broken"));
         }
 

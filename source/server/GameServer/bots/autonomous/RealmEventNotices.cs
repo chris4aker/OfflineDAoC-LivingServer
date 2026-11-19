@@ -162,7 +162,7 @@ namespace DOL.GS
                 // A bot says it as a player would (1.1.3, after RC5: "Krondon: recruiting up to 120 level-50 adventurers via
                 // Caer Diogel; at least 93 must arrive before assault." in a bot's mouth); only the herald keeps the written notice.
                 AutonomousBotChatCoordinator.BroadcastFaction(herald?.Name ?? "Realm herald", notice.Realm,
-                    herald != null ? AutonomousBotVoices.StyleFor(herald, RealmEventSpoken.Say(notice.Text, notice.Slots, Random.Shared)) : notice.Text);
+                    herald != null ? AutonomousBotVoices.StyleFor(herald, RealmEventSpoken.Say(notice.Text, notice.Slots, Random.Shared, notice.Topic)) : notice.Text);
             }
         }
     }

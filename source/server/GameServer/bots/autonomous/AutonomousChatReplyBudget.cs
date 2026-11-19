@@ -190,7 +190,7 @@ public static class AutonomousChatReplyBudget
         if (rez)
             return moment.CanRez ? Pick(random, "where r u?", "where's ur body?", "where u at?") : Pick(random, $"no rez on a {cls} sry", $"{cls}, cant rez sry");
         if (heal)
-            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where r u?", "where u at?", "where are you?")
+            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where r u?", "where u at?", "where are you?")   // promise: gated (moment.Comes)
                 : Pick(random, $"{cls}, no heals sry", $"no heals on a {cls} sry");
         if (buff && question)
             return Pick(random, $"no buffs, im a {cls}", $"{cls}, sry no buffs", "nothing worth having sry");
@@ -293,16 +293,16 @@ public static class AutonomousChatReplyBudget
     {
         string t = " " + AutonomousChatQuestions.Normalize(message ?? string.Empty) + " ";
         bool where = System.Text.RegularExpressions.Regex.IsMatch(t, @" (at|in|near|on|by|outside|inside) \w+") ||
-                     System.Text.RegularExpressions.Regex.IsMatch(t, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|tower|milegate) ");
+                     System.Text.RegularExpressions.Regex.IsMatch(t, @" (amg|hmg|mmg|mg|dock|bridge|gate|keep|relic|pk|portal|caer|dun|faste|fort|tower|milegate) ");   // chat-check: input
         if (where && comes?.Invoke(ChatPromiseReason.Alarm) == true)
-            return Pick(random, "omw", "on it", "otw");
+            return Pick(random, "omw", "on it", "otw");   // promise: gated (comes)
         return where ? Pick(random, "k", "k ty", "ugh, again", "ty", "not again") : Pick(random, "where?", "where", "where?!", "which way");
     }
 
     /// <summary>A short reaction of a kind. Pure.</summary>
     public static string Reaction(string kind, Random random) => kind switch
     {
-        "sympathy" => Pick(random, "ugh", "ouch", "that sucks", "rip", "oof", "been there", "same here", "ugh, same"),
+        "sympathy" => Pick(random, "ugh", "ouch", "that sucks", "rip", "yikes", "been there", "same here", "ugh, same"),
         "laugh" => Pick(random, "lol", "heh", "haha", "lol nice", "hehe", "rofl"),
         _ => Pick(random, "lol", "heh", "same", "ha", "lol yeah", "heh yeah", "lol same"),
     };
@@ -358,10 +358,10 @@ public static class AutonomousChatReplyBudget
         bool rez = System.Text.RegularExpressions.Regex.IsMatch(padded, @" (rez|res|rezz) ");
         bool heal = System.Text.RegularExpressions.Regex.IsMatch(padded, @" (heal|heals|healz) ");
         if (rez)
-            return moment.CanRez ? moment.Comes(ChatPromiseReason.Rez) ? "omw, where?" : Pick(random, "where r u?", "where?", "where's ur body?")
+            return moment.CanRez ? moment.Comes(ChatPromiseReason.Rez) ? "omw, where?" : Pick(random, "where r u?", "where?", "where's ur body?")   // promise: gated (moment.Comes)
                 : Pick(random, "cant rez sry", $"no rez on a {cls}", $"{cls}, no rez sry");
         if (heal)
-            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where?", "where r u?", "where are you?")
+            return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where?", "where r u?", "where are you?")   // promise: gated (moment.Comes)
                 : Pick(random, "cant heal sry", "use a pot", $"{cls}, no heals", "pot up!");
         return Pick(random, "no buffs sry", $"{cls}, no buffs", "cant sry");
     }

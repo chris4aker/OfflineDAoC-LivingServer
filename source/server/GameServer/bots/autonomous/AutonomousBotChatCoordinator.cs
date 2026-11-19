@@ -566,7 +566,25 @@ public static partial class AutonomousBotChatCoordinator
                                  (said.Place == null || AtPlace(bot, said.Place) == AtPlace(answerer, said.Place)))
                 .ToArray();
         PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange, code, standIns,
-            said.WayTo == null ? null : speaker => BotWayFinding.Told(starter, speaker, said));
+            said.WayTo == null ? null : speaker => BotWayFinding.Told(starter, speaker, said), said);
+    }
+
+    /// <summary>
+    /// Says one line of a field thread through <paramref name="send"/> (chat 1.2 follow-up, E2's promise wiring): a line that
+    /// says its speaker is coming ("omw", "on my way", "k omw") goes through the promise gate for the bot that really says it,
+    /// at the moment it says it, and the thread's no-promise line (<see cref="AutonomousChatFieldTalk.ThreadPromise"/>) is said
+    /// when the bot won't go; a third bot's chime is then left out. <paramref name="answered"/> is the line before it (the
+    /// answer a closing thanks), read for a keep when the opener names none. False when nothing was said.
+    /// </summary>
+    public static bool SayThreadLine(GameBot bot, string text, AutonomousChatFieldTalk.Said said, int who, string answered, GameLiving asker,
+        Func<string, bool> send)
+    {
+        if (said == null || !ChatPromiseRules.SaysComing(text))
+            return send(text);
+        (ChatPromiseReason? reason, string fallback) = AutonomousChatFieldTalk.ThreadPromise(said, who);
+        if (reason == null)
+            return fallback != null && send(fallback);
+        return ChatPromises.SayPromised(bot, text, said.PromisePlace ?? said.Place, reason.Value, answered ?? said.Text, fallback, asker, send);
     }
 
     /// <summary>How many bots of the speaker's realm <see cref="Repliers"/> looks at.</summary>
@@ -720,32 +738,42 @@ public static partial class AutonomousBotChatCoordinator
     /// (a third bot's chime is skipped instead), and so does a short line whose referent other talk has scrolled away.
     /// </summary>
     private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule, long exchange,
-        string code = null, GameBot[] answererStandIns = null, Action<GameBot> onSaid = null)
+        string code = null, GameBot[] answererStandIns = null, Action<GameBot> onSaid = null, AutonomousChatFieldTalk.Said promises = null)
     {
         if (steps == null || steps.Count == 0 || speakers[0] == null)
             return;
         GameBot starter = speakers[0];
+        string lastSaid = null;
+        GameBot lastSpeaker = null;
         string lane = faction ? AutonomousChatExchange.FactionKey(starter.Realm) : AutonomousChatExchange.SayKey(starter.CurrentRegionID);
         AutonomousChatExchange.Play("thread", exchange, lane, AutonomousChatExchange.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2),
             speakers, bot => Eligible(bot) && !bot.InCombat && !bot.IsCasting &&
                              (faction ? HasFactionAudience(bot.Realm) && !AutonomousBotDebates.IsRunning(bot.Realm) && FactionRoom(bot.Realm) : HasLocalAudience(bot)),
             (bot, line) =>
             {
-                // 1.2 chat audit (DESIGN-043): a thread's line in its speaker's writing style, functional lines as typed.
-                string text = AutonomousBotVoices.StyleGenerated(bot, line.Text);
-                if (faction)
+                bool Send(string raw)
                 {
-                    if (!BroadcastFaction(bot.Name, bot.Realm, text, AsReply))
+                    // 1.2 chat audit (DESIGN-043): a thread's line in its speaker's writing style, functional lines as typed.
+                    string text = AutonomousBotVoices.StyleGenerated(bot, raw);
+                    if (faction)
+                    {
+                        if (!BroadcastFaction(bot.Name, bot.Realm, text, AsReply))
+                            return false;
+                        Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
+                        // The asker found what it asked for: tonight's follow-up doesn't ask after it.
+                        if (bot == starter && AutonomousChatRecall.SaysFound(raw))
+                            AutonomousChatRecall.Of(bot.Realm).Settle(bot.DatabaseID, AutonomousChatRecall.Kind.AskedGroup);
+                    }
+                    else if (!SayLine(bot, text, AsReply))
                         return false;
-                    Note(AutonomousChatThreads.Faction(bot.Realm), bot, text, null);
-                    // The asker found what it asked for: tonight's follow-up doesn't ask after it.
-                    if (bot == starter && AutonomousChatRecall.SaysFound(line.Text))
-                        AutonomousChatRecall.Of(bot.Realm).Settle(bot.DatabaseID, AutonomousChatRecall.Kind.AskedGroup);
+                    AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null,
+                        code: code);
+                    return true;
                 }
-                else if (!SayLine(bot, text, AsReply))
+                // Chat 1.2 follow-up: "omw" in a thread only from a bot the promise gate sends, at the moment it says it.
+                if (!SayThreadLine(bot, line.Text, promises, line.Who, lastSaid, line.Who == 0 ? lastSpeaker : starter, Send))
                     return false;
-                AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null,
-                    code: code);
+                (lastSaid, lastSpeaker) = (line.Text, bot);
                 onSaid?.Invoke(bot);
                 return true;
             }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say,
@@ -1104,17 +1132,25 @@ public static partial class AutonomousBotChatCoordinator
         return count;
     }
 
+    /// <summary>The longest line the /faction, /lfg and /trade sends carry.</summary>
+    public const int ChannelMaxLength = 240;
+
+    /// <summary>
+    /// A channel line cut to <see cref="ChannelMaxLength"/> at a whole word, ending "..." (chat 1.2 follow-up, E3's DESIGN-014:
+    /// the sends cut mid-word). Pure.
+    /// </summary>
+    public static string ChannelCap(string text) => VC.Fit(text, ChannelMaxLength);
+
     /// <summary>A gamebot leader's /lfg ask for a replacement (bot-led groups, B4), sent and counted like any bot /lfg line.</summary>
     internal static void SendLfgLine(GameBot bot, string text) => SendRealmChannel(bot, "lfg", text);
 
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
     {
-        string safe = VC.ForNow((text ?? string.Empty).Trim());
+        string safe = ChatPromises.BeforeSend(bot.Name, bot.Realm, VC.ForNow((text ?? string.Empty).Trim()));
         if (safe.Length == 0)
             return;
-        if (safe.Length > 240)
-            safe = safe[..240];
+        safe = ChannelCap(safe);
         bool lfg = channel == "lfg";
         string formatted = lfg ? $"[LFG] {bot.Name} ({bot.Level}, {bot.CharacterClass?.Name ?? bot.ClassName}): {safe}" : $"[Trade] {bot.Name}: {safe}";
         foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(bot.Realm))
@@ -1967,7 +2003,7 @@ public static partial class AutonomousBotChatCoordinator
         // An invite the bot turned down for a duty ("busy with a siege") says so; only one that never came is "try again".
         if (SaysInvited(message))
             return new ReplyChoice(AutonomousBotVoices.StyleFor(bot, bot.Group != null && bot.Group == player.Group
-                ? Random.Shared.Next(2) == 0 ? "got it, omw" : "ty, on my way"
+                ? Random.Shared.Next(2) == 0 ? "got it, omw" : "ty, on my way"   // promise: true (it is in the player's group now and follows it)
                 : bot.PlayerGroupLeader != null && bot.PlayerGroupLeader != player || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None
                     ? JoinReply(bot, player, Random.Shared)
                     : Random.Shared.Next(2) == 0 ? "didnt get anything, try again?" : "no invite came through, send it again?"), "tell invited");
@@ -2298,7 +2334,7 @@ public static partial class AutonomousBotChatCoordinator
                 _ => "I might offer a few silver if it suits my class.",
             };
         }
-        if (incoming.Contains("mythic", StringComparison.OrdinalIgnoreCase) ||
+        if (incoming.Contains("mythic", StringComparison.OrdinalIgnoreCase) ||   // chat-check: input
             incoming.Contains(" broken", StringComparison.OrdinalIgnoreCase) ||
             incoming.Contains(" op", StringComparison.OrdinalIgnoreCase) ||
             incoming.Contains("best class", StringComparison.OrdinalIgnoreCase))
@@ -2337,7 +2373,7 @@ public static partial class AutonomousBotChatCoordinator
             eAutonomousChatIntent.Travel => random.Next(2) == 0 ? "A stable master may shorten the trip." : "Check the road signs and travel with your group.",
             eAutonomousChatIntent.RvR => random.Next(2) == 0 ? "I have heard the frontier has some movement." : "A few defenders may head out before long.",
             eAutonomousChatIntent.Trading => random.Next(2) == 0 ? "The Realm Exchange may have something useful." : "I have seen a little trade around the capital.",
-            eAutonomousChatIntent.Dungeon => "A careful group should clear one pull at a time on the way inside.",
+            eAutonomousChatIntent.Dungeon => "A careful group should clear one pull at a time on the way inside.",   // promise: none (advice)
             eAutonomousChatIntent.Grinding => "Share the camp and level if you are looking for company.",
             eAutonomousChatIntent.Farewell => "Safe travels. Until next time.",
             eAutonomousChatIntent.IgnoreOutOfWorld => "Let us keep faction chat focused on the realm.",
@@ -2424,6 +2460,8 @@ public static partial class AutonomousBotChatCoordinator
         LastHeld = null;
         // 1.1.3, after RC6: whatever wrote it, a line says "today", not "tonight", by day on the PC's clock ("busy tonight" at 10:44 AM).
         message = VC.ForNow(message);
+        // Chat 1.2 follow-up: an "omw" whose promise ended unsaid while it was held is gated again (ChatPromises.BeforeSend).
+        message = ChatPromises.BeforeSend(speakerName, realm, message);
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         bool scene = AutonomousChatExchange.IsScene(source);
         // A tagged event or a line to the player goes; a running scene owns the channel; every other line fits under the
@@ -2499,8 +2537,7 @@ public static partial class AutonomousBotChatCoordinator
         string safe = (message ?? string.Empty).Trim();
         if (safe.Length == 0)
             return null;
-        if (safe.Length > 240)
-            safe = safe[..240];
+        safe = ChannelCap(safe);
         string formatted = $"({speakerName}) <Faction> {safe}";
         foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(realm))
             player.Out.SendMessage(formatted, eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
@@ -3222,34 +3259,47 @@ public static partial class AutonomousBotChatCoordinator
         var speakers = new List<GameBot> { starter };
         var standIns = new List<GameBot[]> { null };
         var rules = new List<string> { null };
+        // Chat 1.2 follow-up (E1's gap): an alarm reply that says "omw" is chosen when the bot could go and promised when it is
+        // said, by the bot that says it (a stand-in too); otherwise its calm line, picked here, is said instead.
+        string alarmPlace = AutonomousChatQuestions.PlaceNamed(opening, AutonomousChatPlaces.All)?.Key;
+        ChatPromiseReason comeFor = alarm ? ChatPromiseReason.Alarm : PromiseReasonFor(read, opening);
+        var calmFor = new Dictionary<int, string>();
         // A few tries past the wanted count, not the whole realm, when no reply fits (review 2026-10-18).
         using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(opening, ChannelKey(faction ? "faction" : "say", starter),
             GameLoop.GameLoopTime);
+        // The replies below put any "omw" through the gate (calmFor, SayPromised), so they may pick one.
+        using AutonomousBotVoices.PromiseScope promiseScope = AutonomousBotVoices.PromiseLines();
         for (int index = 0; index < eligible.Length && index < count + 3 && scheduled.Count < count; index++)
         {
             GameBot responder = eligible[index];
-            string response = null;
+            string response = null, calmLine = null;
             VC.Line replyLine = null;
             if (hasKnowledge)
                 response = AutonomousBotVoices.StyleFor(responder, knowledge);
             else if (alarm)
             {
                 // 1.2 chat audit (CORPUS-C-018): "omw", "coming from the mg" only when the promise gate sends the bot; else another line.
+                bool calmPicked = AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked calm, alarmIntent, slots: slots,
+                    filter: line => AutonomousChatShortTalk.ReplyFits(opening, line.Text) && !ChatPromiseRules.SaysComing(line.Text));
                 if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked alarmReply, alarmIntent, slots: slots,
                         filter: line => AutonomousChatShortTalk.ReplyFits(opening, line.Text)) &&
                     (!ChatPromiseRules.SaysComing(alarmReply.Text) ||
-                     ChatPromises.TryPromiseCome(responder, AutonomousChatQuestions.PlaceNamed(opening, AutonomousChatPlaces.All)?.Key, ChatPromiseReason.Alarm, opening, starter)))
+                     ChatPromises.CanPromiseCome(responder, alarmPlace, ChatPromiseReason.Alarm, opening, starter)))
+                {
                     (response, replyLine) = (alarmReply.Text, alarmReply.Line);
-                else if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked calm, alarmIntent, slots: slots,
-                             filter: line => AutonomousChatShortTalk.ReplyFits(opening, line.Text) && !ChatPromiseRules.SaysComing(line.Text)))
+                    calmLine = calmPicked ? calm.Text : null;
+                }
+                else if (calmPicked)
                     (response, replyLine) = (calm.Text, calm.Line);
             }
             else
             {
                 foreach (string answers in chain)
                 {
+                    // Chat 1.2 follow-up: a reply that says "omw" only from a bot the gate would send (promised when said).
                     if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked picked, answers: answers, slots: slots,
-                            filter: line => AnswerFits(answers, opening, line.Text)))
+                            filter: line => AnswerFits(answers, opening, line.Text) &&
+                                            (!ChatPromiseRules.SaysComing(line.Text) || ChatPromises.CanPromiseCome(responder, alarmPlace, comeFor, opening, starter))))
                     {
                         (response, replyLine) = (picked.Text, picked.Line);
                         break;
@@ -3272,6 +3322,8 @@ public static partial class AutonomousBotChatCoordinator
             // (re-run 2026-10-18: 26% of questions went unanswered because the one chosen bot was busy).
             standIns.Add(eligible.Skip(index + 1).Take(3).ToArray());
             speakers.Add(responder);
+            if (!hasKnowledge && ChatPromiseRules.SaysComing(response))
+                calmFor[speakers.Count - 1] = calmLine;
             rules.Add(hasKnowledge ? "knowledge" : RuleOf(replyLine, "reply"));
             lines.Add(new AutonomousChatExchange.Line(speakers.Count - 1, response, gap, lines.Count == 0 ? "answerer" : "answerer" + (lines.Count + 1)));
         }
@@ -3285,8 +3337,9 @@ public static partial class AutonomousBotChatCoordinator
             bool interested = trade && ShowsTradeInterest(lastReply);
             if (!trade || interested || TurnsTradeDown(lastReply))
                 foreach (string closingSet in trade ? [VC.InviteFamily(invites)] : BotClosingSets(invites, lastReply))
+                    // Chat 1.2 follow-up: the asker's closing says no "k omw" (no gate knows where a reply sent it).
                     if (AutonomousBotVoices.TryLine(starter, "closing", out VC.Picked closing, answers: closingSet,
-                            filter: line => interested == (line.Topic == "interested")))
+                            filter: line => interested == (line.Topic == "interested") && !ChatPromiseRules.SaysComing(line.Text)))
                     {
                         lines.Add(new AutonomousChatExchange.Line(0, closing.Text, ReplyDelayMs(closing.Text, due, Random.Shared) + 800 - due, "closing"));
                         break;
@@ -3313,7 +3366,17 @@ public static partial class AutonomousBotChatCoordinator
                 if (line.Role == "closing" && between > 2)
                     return false;
                 string text = line.Role != "closing" ? NameTheAsker(line.Text, starter.Name, between) : line.Text;
-                if (faction ? !BroadcastFaction(speaker.Name, speaker.Realm, text, AsReply) : !SayLine(speaker, text, AsReply))
+                bool Send(string t)
+                {
+                    if (faction ? !BroadcastFaction(speaker.Name, speaker.Realm, t, AsReply) : !SayLine(speaker, t, AsReply))
+                        return false;
+                    text = t;
+                    return true;
+                }
+                if (calmFor.TryGetValue(line.Who, out string calmText)
+                        ? !ChatPromises.SayPromised(speaker, text, alarmPlace, comeFor, opening,
+                            calmText == null ? null : NameTheAsker(calmText, starter.Name, between), starter, Send)
+                        : !Send(text))
                     return false;
                 if (line.Role == "closing")
                     return true;
@@ -3321,7 +3384,7 @@ public static partial class AutonomousBotChatCoordinator
                     AutonomousChatThreads.Log.Close(openerSaid);
                 Note(faction ? AutonomousChatThreads.Faction(speaker.Realm) : AutonomousChatThreads.Say(speaker.CurrentRegionID), speaker, text, "", starter.Name);
                 AutonomousChatWhy.Record(speaker, faction ? "faction" : "say", trigger, "said",
-                    line.Who < rules.Count ? rules[line.Who] : "reply", 0, "answers what the opener invites", line.Text, null, starter.Name, code: budgetCode);
+                    line.Who < rules.Count ? rules[line.Who] : "reply", 0, "answers what the opener invites", text, null, starter.Name, code: budgetCode);
                 return true;
             }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say, standIns: standIns.ToArray());
     }
@@ -3354,14 +3417,86 @@ public static partial class AutonomousBotChatCoordinator
         KnownChoice(responder, player, incoming, () => new ReplyChoice(fallback(), "fallback")).Text;
 
     /// <summary><see cref="KnownOr"/> with the route it took (C0).</summary>
-    private static ReplyChoice KnownChoice(GameBot responder, GamePlayer player, string incoming, Func<ReplyChoice> fallback) =>
-        // A question goes on to be answered, not replaced by a memory line (review 2026-10-26).
-        AutonomousLivingServer.MemoryOn && AutonomousChatShortTalk.QuestionShape(incoming) == null && !AutonomousChatQuestions.IsQuestion(incoming) &&
-        Random.Shared.NextDouble() < 0.6 &&
-        AutonomousLivingServer.TryKnownReply(responder, player,
-            AutonomousBotVoices.IntentName(AutonomousChatIntentModel.Predict(incoming)), out string known)
-            ? new ReplyChoice(known, "memory " + AutonomousBotVoices.IntentName(AutonomousChatIntentModel.Predict(incoming)))
-            : fallback();
+    private static ReplyChoice KnownChoice(GameBot responder, GamePlayer player, string incoming, Func<ReplyChoice> fallback)
+    {
+        using AutonomousBotVoices.PromiseScope promiseScope = AutonomousBotVoices.PromiseLines();   // KeepPromise gates any "omw"
+        return KeepPromise(responder, player, incoming,
+            // A question goes on to be answered, not replaced by a memory line (review 2026-10-26).
+            AutonomousLivingServer.MemoryOn && AutonomousChatShortTalk.QuestionShape(incoming) == null && !AutonomousChatQuestions.IsQuestion(incoming) &&
+            Random.Shared.NextDouble() < 0.6 &&
+            // Chat 1.2 follow-up (E4's DESIGN-007 needs the player's line: "lfg 30 cleric" is read for its band and refusals).
+            AutonomousLivingServer.TryKnownReply(responder, player,
+                AutonomousBotVoices.IntentName(AutonomousChatIntentModel.Predict(incoming)), out string known, incoming)
+                ? new ReplyChoice(known, "memory " + AutonomousBotVoices.IntentName(AutonomousChatIntentModel.Predict(incoming)))
+                : fallback(),
+            () => fallback().Text);
+    }
+
+    /// <summary>
+    /// Why a player's line would bring a bot that answers it with "omw" (chat 1.2 follow-up): an alarm or the enemy's news,
+    /// realm points in the frontier, a rez, a heal or a call for help (the bot walks to the player); a raid time. Pure.
+    /// </summary>
+    public static ChatPromiseReason PromiseReasonFor(eAutonomousChatIntent intent, string incoming)
+    {
+        if (intent == eAutonomousChatIntent.Rez)
+            return ChatPromiseReason.Rez;
+        if (intent == eAutonomousChatIntent.Alarm)
+            return ChatPromiseReason.Alarm;
+        if (intent == eAutonomousChatIntent.RvR)
+            return ChatPromiseReason.RealmPoints;
+        string t = " " + AutonomousChatQuestions.Normalize(incoming ?? string.Empty) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (heal|heals) "))
+            return ChatPromiseReason.Heal;
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" raid .*(at \d|tonight)| (at \d{1,2}|tonight) .*raid "))
+            return ChatPromiseReason.RaidTime;
+        return ChatPromiseReason.Help;
+    }
+
+    /// <summary>
+    /// A written (corpus) reply to a player that says the bot is coming ("omw", "on my way", "coming") stands only when the
+    /// promise gate sends the bot (chat 1.2 follow-up: no line may bypass it). The situation's own replies ("context ...")
+    /// asked the gate already; a corpus or memory line asks it here, once, when it is chosen, and a promise whose line is then
+    /// never sent ends quietly ("unsaid"). When the bot won't go, the caller's other reply is used if it promises nothing,
+    /// else no reply.
+    /// </summary>
+    internal static ReplyChoice KeepPromise(GameBot responder, GamePlayer player, string incoming, ReplyChoice choice, Func<string> other)
+    {
+        string text = WrittenReplyKept(choice.Text, Written(choice.Route, choice.Line != null), incoming,
+            reason => ChatPromises.TryPromiseCome(responder, AutonomousChatQuestions.PlaceNamed(incoming, AutonomousChatPlaces.All)?.Key, reason,
+                incoming, player), other);
+        return ReferenceEquals(text, choice.Text) ? choice : new ReplyChoice(text, choice.Route + " -> no promise");
+    }
+
+    /// <summary>
+    /// <see cref="KeepPromise"/>'s rule: <paramref name="text"/> when it promises nothing, is not a written line, or
+    /// <paramref name="tryCome"/> sends the bot (it is asked once, with <see cref="PromiseReasonFor"/>); else
+    /// <paramref name="other"/>'s reply when that promises nothing; else null (no reply). Pure but for the two calls.
+    /// </summary>
+    public static string WrittenReplyKept(string text, bool written, string incoming, Func<ChatPromiseReason, bool> tryCome, Func<string> other)
+    {
+        if (text == null || !written || !ChatPromiseRules.SaysComing(text))
+            return text;
+        if (tryCome != null && tryCome(PromiseReasonFor(AutonomousChatIntentModel.Predict(incoming), incoming)))
+            return text;
+        string instead;
+        try
+        {
+            instead = other?.Invoke();
+        }
+        catch (Exception)
+        {
+            instead = null;
+        }
+        return instead != null && !ChatPromiseRules.SaysComing(instead) ? instead : null;
+    }
+
+    /// <summary>
+    /// A reply by its route taken from the written lines (a corpus line, or a remembered player's line: "memory", "intent",
+    /// "shape", "not sure"), not a situation's own ("context", "fact", "live"), which ask the gate themselves. Pure.
+    /// </summary>
+    public static bool Written(string route, bool hasLine) =>
+        hasLine || route != null && (route.StartsWith("memory", StringComparison.Ordinal) || route.StartsWith("intent", StringComparison.Ordinal) ||
+                                     route.StartsWith("shape", StringComparison.Ordinal) || route.StartsWith("not sure", StringComparison.Ordinal));
 
     /// <summary>
     /// A corpus reply for the line's intent in the responder's voice (by name when it remembers the player), else
@@ -3380,7 +3515,9 @@ public static partial class AutonomousBotChatCoordinator
         eAutonomousChatIntent? knownIntent = null, bool addressed = false, string channel = null)
     {
         using (AutonomousChatFiller.Replying(incoming, ChannelKey(channel ?? "faction", responder), GameLoop.GameLoopTime))
-            return VoicedChoiceCore(responder, incoming, fallback, player, knownIntent, addressed, channel);
+        using (AutonomousBotVoices.PromiseLines())   // KeepPromise gates any "omw" picked inside
+            return KeepPromise(responder, player, incoming, VoicedChoiceCore(responder, incoming, fallback, player, knownIntent, addressed, channel),
+                fallback);
     }
 
     /// <summary>The key a channel moment's filler memory goes by: "faction:Albion", "say:1:Albion".</summary>
@@ -3412,7 +3549,7 @@ public static partial class AutonomousBotChatCoordinator
         // A bot that remembers this player answers by name, or coolly after abuse (Living Server memory). Not to a question
         // with answers of its own: "where to next?" drew "Wrenfield?" (live test 2026-10-18).
         if (player != null && AutonomousChatShortTalk.QuestionShape(incoming) == null && Random.Shared.NextDouble() < 0.6 &&
-            AutonomousLivingServer.TryKnownReply(responder, player, intent, out string known))
+            AutonomousLivingServer.TryKnownReply(responder, player, intent, out string known, incoming))
             return new ReplyChoice(known, "memory " + intent);
         if (!AutonomousBotVoices.Enabled)
             return new ReplyChoice(fallback(), "legacy");

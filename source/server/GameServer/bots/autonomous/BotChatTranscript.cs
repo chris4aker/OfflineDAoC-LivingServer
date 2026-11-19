@@ -39,6 +39,9 @@ public static class BotChatTranscript
     public static void Bot(string channel, string speaker, eRealm realm, string text, string to = null, GameBot who = null)
     {
         if (string.IsNullOrWhiteSpace(text)) return;
+        // Chat 1.2 follow-up: a promise made when its line was chosen stands once the line is out (ChatPromises, "unsaid").
+        if (who != null) ChatPromises.NoteSaid(who, text);
+        else ChatPromises.NoteSaid(speaker, realm, text);
         string via;
         try { via = Via(new StackTrace(1, false)); } catch { via = "?"; }
         Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +

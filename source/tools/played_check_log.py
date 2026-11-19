@@ -2437,11 +2437,13 @@ def chat(j: Judge, sec: Section, c):
     other = c("promise.broken") - timeout
     judged = kept + timeout
     share = kept / judged if judged else None
-    detail = (f"made={made} kept={kept} broken={c('promise.broken')} (timeout={timeout}, other={other}) "
+    unsaid = c("promise.broken.unsaid")
+    detail = (f"made={made} kept={kept} broken={c('promise.broken')} (timeout={timeout}, unsaid={unsaid}, other={other - unsaid}) "
               f"refused={c('promise.refused')}" + (f", kept {100 * share:.0f}% of kept+timeout ({PROMISE_KEPT_BAR:.0%} wanted)"
                                                     if share is not None else ""))
     row = "A bot that says it is coming arrives (CHAT_PROMISE made, then kept; timeouts under 30%)"
-    note = ("a broken promise for died, taken, logged_out, keep_fell or asker_gone is an honest end, not counted against; "
+    note = ("a broken promise for died, taken, logged_out, keep_fell or asker_gone is an honest end, not counted against, "
+            "and one broken unsaid had its line never sent (no one heard the omw); "
             "that no bot says \"omw\" without a made line is a chat-window check")
     if judged >= PROMISE_MIN_JUDGED and share < PROMISE_KEPT_BAR:
         j.add("chat", "promises", row, CONTRADICTED, j.ev("promise.broken.timeout"), detail, note=note)

@@ -330,7 +330,7 @@ public static class AutonomousChatFiller
         "interesting thought", "good point", "very true", "so true", "lol so true", "true that", "cant disagree", "cant argue there",
         "fair", "i suppose", "i guess so", "maybe maybe not", "if you say so", "you never know", "who knows",
         // Beta 1.1.2, round 5: canned agreement after a musing ("i know right", "yeah its always like that").
-        "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",
+        "i know right", "ikr", "yeah its always like that", "its always like that", "always like that", "yep that is how it goes",   // chat-check: input
         "thats how it goes", "that is how it goes", "yep thats how it goes", "story of my life", "tell me about it", "you said it",
         "isnt that the truth", "aint that the truth", "so true lol", "too true", "yep yep", "right there with you", "same here",
         // Beta 1.1.2, round 3: agreement filler between bots in /faction and /say.
@@ -423,7 +423,7 @@ public static class AutonomousChatFiller
         "ha", "haha", "hah", "heh", "hehe", "lol", "lmao", "rofl", "yes", "yep", "yeah", "ya", "yea", "yup", "oh", "hmm", "hm", "ah", "ok", "k", "kk",
         "so", "well", "wow", "man", "dude", "honestly", "tbh", "imo", "hey", "hi", "yo", "and", "but", "just", "really", "pretty", "very",
         // what is left of a smiley (":D", ":P", "XD")
-        "d", "p", "xd",
+        "d", "p", "xd",   // chat-check: input
     };
 
     /// <summary>

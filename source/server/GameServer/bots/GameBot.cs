@@ -311,7 +311,10 @@ namespace DOL.GS
         public override bool Say(string str)
         {
             str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou (never a hired companion)
+            str = ChatPromises.BeforeSend(Name, Realm, str);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
             bool said = base.Say(str);
+            if (said)
+                ChatPromises.NoteSaid(this, str);   // chat 1.2 follow-up: a promise's line said, heard by a player or not
             if (said && AutonomousLivingServer.PlayerHears(this))
                 BotChatTranscript.Bot("say", Name, Realm, str, who: this);
             return said;
@@ -1630,11 +1633,11 @@ namespace DOL.GS
             "release" => random.Next(3) switch
             {
                 0 => "released, running back",
-                1 => "at bind, omw back",
-                _ => "no rez, released. coming back to you",
+                1 => "at bind, omw back",   // promise: true (its real walk back to the group)
+                _ => "no rez, released. coming back to you",   // promise: true (its real walk back to the group)
             },
             "stable" => "grabbing a horse, faster",
-            "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",
+            "mount" => string.IsNullOrEmpty(stableDestination) ? "on a horse, be there soon" : $"horse to {stableDestination}, be there soon",   // promise: true (its real ride back to the group)
             "dismount" => "off the horse, almost there",
             "arrive_walk" => random.Next(3) switch
             {
@@ -1650,9 +1653,9 @@ namespace DOL.GS
             },
             _ => random.Next(3) switch
             {
-                0 => "still omw",
+                0 => "still omw",   // promise: true (its real walk back to the group)
                 1 => "taking the long way round some mobs, almost there",
-                _ => string.IsNullOrEmpty(zone) ? "omw back" : $"in {zone}, omw back",
+                _ => string.IsNullOrEmpty(zone) ? "omw back" : $"in {zone}, omw back",   // promise: true (its real walk back to the group)
             },
         };
 
@@ -1660,7 +1663,7 @@ namespace DOL.GS
         {
             "release" => Random.Shared.Next(3) switch
             {
-                0 => "No resurrection is coming. I have released, and I am making my way back.",
+                0 => "No resurrection is coming. I have released, and I am making my way back.",   // promise: none (a companion says no rez is coming)
                 1 => "I woke at the bindstone. Hold the road; I will return on foot.",
                 _ => "The healers could not reach me. I am alive again and starting the journey back."
             },
