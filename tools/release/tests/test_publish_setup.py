@@ -76,12 +76,27 @@ class FillNotes(unittest.TestCase):
 
 
 class Decide(unittest.TestCase):
-    def test_tag_must_be_a_living_server_beta(self):
-        for bad in ("1.1.1-beta", "v1.1.1", "v0.37b"):
-            with self.assertRaises(ps.Stop):
+    def test_tag_must_be_a_living_server_release(self):
+        # Betas up to 1.1.4 (v1.1.4-beta), final releases from 1.2 on (v1.2, owner 2026-11-19); never Offline DAoC's v0.x.
+        for bad in ("1.1.1-beta", "1.2", "v0.37", "v0.37b", "v1.2-rc1", "v1.2-beta.1"):
+            with self.assertRaises(ps.Stop, msg=bad):
                 ps.names(bad)
         self.assertEqual(ps.names("v1.1.2-beta"), ("1.1.2-beta", "LivingServer-Setup-1.1.2-beta.exe",
                                                    "OfflineDAoC-LivingServer-1.1.2-beta.zip"))
+        self.assertEqual(ps.names("v1.2"), ("1.2", "LivingServer-Setup-1.2.exe", "OfflineDAoC-LivingServer-1.2.zip"))
+        self.assertEqual(ps.names("v1.1.1"), ("1.1.1", "LivingServer-Setup-1.1.1.exe", "OfflineDAoC-LivingServer-1.1.1.zip"))
+
+    def test_a_v1_2_release_plans_and_fills_its_final_setup_row(self):
+        # The release workflow's run for v1.2: the release's assets and notes carry the final names, no "-beta".
+        body = BODY.replace("1.1.1-beta", "1.2")
+        rel = release(body)
+        rel["tag_name"] = "v1.2"
+        rel["assets"] = [{"name": "OfflineDAoC-LivingServer-1.2.zip", "digest": "sha256:" + "a" * 64}]
+        self.assertFalse(ps.decide(rel, "v1.2")["done"])
+        filled, _ = ps.fill_notes(body, "LivingServer-Setup-1.2.exe", "b" * 64)
+        self.assertIn("| `LivingServer-Setup-1.2.exe` | `" + "b" * 64 + "` |", filled)
+        with self.assertRaises(ps.Stop):
+            ps.decide(release(), "v1.2")   # the 1.1.1-beta release is not v1.2's
 
     def test_plan_without_the_exe_has_work(self):
         self.assertFalse(ps.decide(release(), TAG)["done"])

@@ -151,20 +151,27 @@ previous patch's file fingerprints accepted too.
 
 The owner publishes the release with its package and notes; the release workflow does the rest.
 
-1. **Name the release on main.** Rename the changelog's `## Beta X (in development)` heading to `## Beta X — <date>`,
-   set `ForkBuildInfo.BuildName` to `X-beta`, and move README.md to Beta X: its "**Beta X is out.**" sentence, its
-   release links and the file names it quotes. Build-and-test's `versions` job fails while these disagree
-   (`python tools/release/check_versions.py` says what is off). A heading marked "(in development)" isn't released, so
-   README.md stays on the last release until then.
-2. **Publish the release.** Make it as a draft with tag `vX-beta`, attach the package
-   `OfflineDAoC-LivingServer-X-beta.zip`, write the notes and publish. In the notes' file table, the Setup row is
+Release names: up to 1.1.4 every release was a beta (build `1.1.4-beta`, tag `v1.1.4-beta`, "Beta 1.1.4"). From 1.2
+on they are final releases (owner, 2026-11-19): build `1.2`, tag `v1.2`, "Living Server 1.2". Below, `<build>` is
+`X` for a final release and `X-beta` for a beta. The launchers' update check reads both (a final release outranks the
+beta of the same numbers, and 1.1.4-beta < 1.2 < 1.2.1-beta < 1.2.1), so launchers on 1.1.x see v1.2 as newer.
+
+1. **Name the release on main.** Rename the changelog's `## X (in development)` heading to `## X — <date>`
+   (`## Beta X — <date>` for a beta), set `ForkBuildInfo.BuildName` to `<build>`, and move README.md to it: its
+   "**X is out.**" sentence ("**Beta X is out.**" for a beta), its release links and the file names it quotes.
+   Build-and-test's `versions` job fails while these disagree (`python tools/release/check_versions.py` says what is
+   off; publish-release runs it with `--tag`, which also fails unless the tag is `v<build>` of that heading). A heading
+   marked "(in development)" isn't released, so README.md stays on the last release until then.
+2. **Publish the release.** Make it as a draft with tag `v<build>`, attach the package
+   `OfflineDAoC-LivingServer-<build>.zip` (its one folder is `LivingServer-<build>`), write the notes and publish. In
+   the notes' file table, the Setup row is
    ```
-   | `LivingServer-Setup-X-beta.exe` | (filled in when the exe is built) |
+   | `LivingServer-Setup-<build>.exe` | (filled in when the exe is built) |
    ```
    The package must be attached before publishing: the workflow starts at that moment.
 3. **The release workflow takes over** (`.github/workflows/release.yml`). It builds Setup on Windows from the release's
    own package (the installer workflow's build and end-to-end jobs, called as a reusable workflow), runs the real
-   download tests (one to three hours), then attaches `LivingServer-Setup-X-beta.exe` and replaces the placeholder with
+   download tests (one to three hours), then attaches `LivingServer-Setup-<build>.exe` and replaces the placeholder with
    its SHA-256. It checks that the package Setup embeds is the release's zip, byte for byte. If a test fails, nothing
    is attached or edited.
 

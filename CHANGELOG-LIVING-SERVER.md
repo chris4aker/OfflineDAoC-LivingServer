@@ -8,6 +8,25 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## The release name: "1.2", not "Beta 1.2" (1.2, 2026-11-19; tests only)
+
+The owner named this release **1.2** final (2026-11-19), not Beta 1.2: tag `v1.2`, build `1.2`, title "Living
+Server 1.2 — Where Legends Wake". Every release up to 1.1.4 was a beta (`v1.1.4-beta`); from 1.2 on they are final.
+- **The build is `1.2`.** `ForkBuildInfo.BuildName` is `1.2`, so the server logs `FORK_BUILD name=1.2`, the launcher
+  shows LIVING SERVER 1.2, and the package is `OfflineDAoC-LivingServer-1.2.zip` with one `LivingServer-1.2` folder
+  (BUILD-INFO `BuildName=1.2`), Setup is `LivingServer-Setup-1.2.exe` and CI's candidate artifact is
+  `OfflineDAoC-LivingServer-1.2-<sha7>`. Candidates built before this change say `1.2-beta`.
+- **Updates from 1.1.x.** The launchers' version check (unchanged since 1.1.2) already ranks a final release above
+  every beta of lower numbers and above the beta of the same numbers (1.1.4-beta < 1.2-beta < 1.2 < 1.2.1-beta), so
+  launchers on 1.1.2-1.1.4 see v1.2 as newer and offer GET UPDATE; their package check looks for
+  `OfflineDAoC-LivingServer-1.2.zip` and `LivingServer-1.2`, the names the build now makes. Tests only: the launcher
+  tests (`UpdateTests`, Windows CI) and the release tools' tests; the 1.1.4 → 1.2 update hasn't been seen on a PC.
+- **Release tools.** `check_versions.py` reads a released `## X — <date>` heading without "Beta" (0.x headings still
+  aren't releases), README's "**X is out.**" sentence and `v1.2` links, and with `--tag` (publish-release runs it so)
+  fails unless the tag is the newest release's. `publish_release.py` and `publish_setup.py` take `v1.2` as well as
+  `v1.1.4-beta` tags, and refuse 0.x tags. `played_check_log.py`'s build row takes `name=1.2` (and the earlier
+  candidates' `1.2-beta`).
+
 ## Chat answer timing from the in-game check: /faction answers in 12 s, the companion yields a line for another bot (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `5154cae` (2026-11-19 07:04-07:27, Testrunner in Camelot). Nothing below is seen in game
