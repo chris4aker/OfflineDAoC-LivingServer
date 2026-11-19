@@ -1542,5 +1542,52 @@ class DfKnightLoop(unittest.TestCase):
         self.assertEqual(self.row(log)["status"], pcl.SEEN, "two raids, three kills each")
 
 
+class Sweep7b(unittest.TestCase):
+    """Row from DIAG-9a17-sweep7b: a fight with a curable raid-wide DoT boss (Summoner Roesia's Summoner Pain) sees the
+    raid's cures (synthetic lines shaped like build 9a173f4's ledger and the RAID_CURE_POISON summary)."""
+
+    ROESIA = "Summoner Roesia"
+
+    def ledger(self, log, minute, took=True, region=248):
+        took_field = f"{self.ROESIA}:86001/457/58" if took else ""
+        log.add(at(minute), f'EPIC_FIGHT_LEDGER region={region} target="{self.ROESIA}" seconds=60 '
+                            f'raid_dealt="{self.ROESIA}:4489/168/40" raid_took="{took_field}"', "INF", "DOL.GS.EpicFightLedger")
+
+    def cure(self, log, minute, region=248, casts=14):
+        log.add(at(minute), f'RAID_CURE_POISON region={region} casts={casts} curers=6 targets=11 seconds=61 '
+                            f'dots="Summoner Pain x14"', "INF", "DOL.GS.RaidCureLog")
+
+    def row(self, log):
+        return check(only(log.run()[1]), "raid_cure_dot")
+
+    def test_four_attempts_with_no_cure_line_contradict(self):
+        # Build 9a173f4: Hib 00:03-00:06 and 00:12-00:15 (region 248), 0 RAID_CURE_POISON all night.
+        log = Log().start(at(0))
+        for m in (4, 5, 6):
+            self.ledger(log, m)
+        for m in (13, 14, 15):
+            self.ledger(log, m)
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("Summoner Roesia in region 248 06:04:00-06:06:00: 0 RAID_CURE_POISON line(s)", row["detail"])
+        self.assertIn("06:13:00-06:15:00: 0", row["detail"], "eight minutes apart: two fights")
+
+    def test_cures_in_her_region_during_the_fight_are_seen(self):
+        log = Log().start(at(0))
+        for m in (4, 5, 6):
+            self.ledger(log, m)
+        self.cure(log, 5)
+        self.cure(log, 8)            # written up to three minutes after her last minute: still this fight
+        self.cure(log, 6, region=77)  # another region's cures do not count
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("2 RAID_CURE_POISON line(s), 28 cast(s)", row["detail"])
+
+    def test_no_fight_or_a_minute_she_did_not_hit_the_raid_is_not_seen(self):
+        log = Log().start(at(0))
+        self.ledger(log, 4, took=False)
+        self.assertEqual(self.row(log)["status"], pcl.NOT_SEEN)
+
+
 if __name__ == "__main__":
     unittest.main()

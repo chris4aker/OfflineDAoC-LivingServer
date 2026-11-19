@@ -107,6 +107,13 @@ STUCK_BEFORE_WIN_SECONDS = 5 * 60
 # 15:38:03; Trollheim's wave 4, 34.8 minutes from 15:10:54 (raiders joining it, step=waiting and step=stuck are not acts).
 REBASE_SILENT_SECONDS = 10 * 60
 REBASE_ACTS = ("moving", "fighting", "cleared", "met", "passable", "left", "released", "ended", "lost", "rebased")
+# Sweep 7b (build 9a173f4): a boss whose damage over time reaches the whole raid and is curable (CurePoison removes every
+# DamageOverTime) -> the spell. A fight with one of them (the boss hits the raid in an EPIC_FIGHT_LEDGER minute) should see
+# the raid's cures (RAID_CURE_POISON) in that region; minutes more than CURE_FIGHT_GAP_SECONDS apart are separate fights,
+# and a cure line up to CURE_AFTER_SECONDS after the fight's last minute counts (it is written once a minute at most).
+CURABLE_DOT_BOSSES = {"Summoner Roesia": "Summoner Pain"}
+CURE_FIGHT_GAP_SECONDS = 5 * 60
+CURE_AFTER_SECONDS = 3 * 60
 END_OUTCOME_SECONDS = 15
 # DF knight loop (build b1b6846): the same target killed again this many times or more in a row in one raid's dungeon,
 # with no other target killed between (REALM_EXPEDITION_TARGET_DEFEATED): Chthonic Knight Ukobat 14 times in a row from
@@ -384,6 +391,9 @@ class Section:
         # Sweep 6f (build b1b6846)
         self.rebases = {}                 # (event, wave) -> (t, line) of a rebase to a step none of its raiders stood at
         self.silent_rebases = []          # (t, line, key, minutes silent, what ended the silence)
+        # Sweep 7b (build 9a173f4)
+        self.dot_fights = []              # [region, boss, first t, last t, first line] of a curable raid-wide DoT boss
+        self.raid_cures = []              # (t, region, casts, line) RAID_CURE_POISON
         # DF knight loop (build b1b6846)
         self.kill_streaks = {}            # region -> [target, kills, first t, first line, last t, event]
         self.rekill_loops = []            # closed streaks with REKILL_LOOP+ re-kills: (first t, line, region, target, kills, last t, event)
@@ -1057,6 +1067,28 @@ def _fight_ledger(sec, t, message, level, near):
                 if name in adds:
                     add_seen(sec, target, name)
     no_progress_minute(sec, t, region, f.get("raid_dealt") or "")
+    dot_fight_minute(sec, t, region, f.get("raid_took") or "", message)
+
+
+def dot_fight_minute(sec, t, region, took_field, message):
+    """Sweep 7b: a minute in which a curable raid-wide DoT boss (CURABLE_DOT_BOSSES) hit the raid."""
+    for entry in took_field.split(","):
+        name, sep, _ = entry.rpartition(":")
+        boss = name.strip()
+        if not sep or boss not in CURABLE_DOT_BOSSES:
+            continue
+        last = next((f for f in reversed(sec.dot_fights) if f[0] == region and f[1] == boss), None)
+        if last is not None and (t - last[3]).total_seconds() <= CURE_FIGHT_GAP_SECONDS:
+            last[3] = t
+        else:
+            sec.dot_fights.append([region, boss, t, t, message])
+
+
+@handles("RAID_CURE_POISON")
+def _raid_cure_poison(sec, t, message, level, near):
+    f = kv(message)
+    sec.ev["RAID_CURE_POISON"].add(t, message)
+    sec.raid_cures.append((t, f.get("region"), int(num(f.get("casts"))), message))
 
 
 def no_progress_minute(sec, t, region, dealt_field):
@@ -1909,6 +1941,7 @@ def raids(j: Judge, sec: Section, c):
     sweep6d_rows(j, sec, c)
     sweep6e_rows(j, sec, c)
     sweep6f_rows(j, sec, c)
+    sweep7b_rows(j, sec, c)
     rekill_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
@@ -2142,6 +2175,32 @@ def sweep6f_rows(j: Judge, sec: Section, c):
         j.add("raids", "rebase_silent", text, SEEN if c("return.rebased") else NOT_SEEN,
               j.ev("return.rebased") if c("return.rebased") else None,
               f"{c('return.rebased')} rebase(s), none silent {REBASE_SILENT_SECONDS // 60}+ minutes at a step nobody stood at")
+
+
+def sweep7b_rows(j: Judge, sec: Section, c):
+    """Sweep 7b (build 9a173f4): a fight with a curable raid-wide DoT boss (Summoner Roesia's Summoner Pain) sees the raid
+    cure it (RAID_CURE_POISON in her region during the fight). 9a173f4: four attempts, 0 cure lines."""
+    text = ("In a fight with a boss whose damage over time reaches the raid and is curable (Summoner Roesia's Summoner "
+            "Pain), the raid's healers cure it: RAID_CURE_POISON in her region during the fight (sweep 7b)")
+    if not sec.dot_fights:
+        j.add("raids", "raid_cure_dot", text, NOT_SEEN, None, "no fight with " + ", ".join(sorted(CURABLE_DOT_BOSSES)))
+        return
+    results = []
+    for region, boss, first, last, line in sec.dot_fights:
+        until = last + dt.timedelta(seconds=CURE_AFTER_SECONDS)
+        cures = [x for x in sec.raid_cures if x[1] == region and first <= x[0] <= until]
+        results.append((first, line, boss, region, last, len(cures), sum(x[2] for x in cures)))
+    uncured = [r for r in results if r[5] == 0]
+    detail = "; ".join(f"{boss} in region {region} {stamp(first)[6:]}-{stamp(last)[6:]}: {lines} RAID_CURE_POISON "
+                       f"line(s), {casts} cast(s)" for first, _, boss, region, last, lines, casts in results)
+    note = ("RAID_CURE_POISON sums a region's raid cure casts and is written once a minute at most, when a cast comes a "
+            "minute or more after the window opened; builds before sweep 7b cured only when no heal had been chosen")
+    if uncured:
+        bad = Evidence()
+        bad.add(uncured[0][0], uncured[0][1], len(uncured))
+        j.add("raids", "raid_cure_dot", text, CONTRADICTED, bad, detail, note=note)
+    else:
+        j.add("raids", "raid_cure_dot", text, SEEN, j.ev("RAID_CURE_POISON"), detail, note=note)
 
 
 def rekill_rows(j: Judge, sec: Section, c):

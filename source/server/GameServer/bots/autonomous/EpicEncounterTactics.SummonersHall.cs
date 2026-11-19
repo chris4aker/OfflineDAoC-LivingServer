@@ -27,15 +27,6 @@ namespace DOL.GS
                 Summary = "The raider the infected ghoul crawls toward walks away from it; casters kill it (ranged add).",
             },
             // ---- 1.2 big-boss plans (owner 2026-11-14; tests only) ----
-            // Owner 2026-11-18 (sweep 6f, R-1): Summoner Pain's split camps, gated on the spell (EpicEncounterTactics.PainCamps.cs).
-            new("SummonerPainCamps", [nameof(SummonerRoesia), nameof(SummonerCunovinda), nameof(SummonerLossren),
-                nameof(GrandSummonerGovannon)], PainCampAdvice)
-            {
-                Summary = $"A summoner who carries {SummonerPainSpell} (radius 1,000 around a random raider) is fought from two " +
-                          $"camps on opposite sides of her spawn, {PainCampFromSpawn} out (inside her home, outside her aggro), the " +
-                          "parties split evenly with healers in each: each party's back line fights from its camp and its melee " +
-                          "from her side facing that camp, so one cast never reaches both camps.",
-            },
             new("SummonersInsideTether", [nameof(SummonerRoesia), nameof(SummonerCunovinda), nameof(SummonerLossren),
                 nameof(GrandSummonerGovannon), nameof(TorturedSouls), nameof(ExplodeUndead)], SummonerInsideTether)
             {
@@ -94,8 +85,6 @@ namespace DOL.GS
                                             target.IsWithinRadius(n, SummonerAddReach))
                     .OrderBy(n => n.GetDistanceTo(target)).FirstOrDefault();
             if (summoner == null || summoner.TargetObject == c.Raider) return null;
-            // At its Summoner Pain camp (up to 1,000 from her spawn): it stays there (sweep 6f).
-            if (HasSummonerPain(summoner) && AtPainCamp(c.Raider, summoner)) return null;
             Vector3 home = new(summoner.SpawnPoint.X, summoner.SpawnPoint.Y, summoner.SpawnPoint.Z);
             return SummonerStepIn(c.At, home) is Vector3 inside
                 ? new(BotAction.Reposition, c.Target, inside,

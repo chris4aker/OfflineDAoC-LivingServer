@@ -756,8 +756,8 @@ namespace DOL.GS
                     {
                         PulseDragonReturnWave(raid, now);
                         fight.Advance(DragonRaiders(raid), DragonState(raid), now);
-                        while (fight.TryTakeWipe(out int failures))
-                            OnWipe(raid, raid.Boss.Name, failures, now);
+                        while (fight.TryTakeWipe(out int failures, out int engaged, out int fallen))
+                            OnWipe(raid, raid.Boss.Name, failures, now, engaged, fallen);
                         if (fight.Defeated)
                         {
                             // "after 2 failed attempts", or a regroup nobody reached for 20 minutes (2026-10-31).
@@ -2706,7 +2706,8 @@ namespace DOL.GS
         /// <summary>
         /// The REALM_RAID_WIPE line (pure). <paramref name="living"/> is every living raider wherever it stands, raiders who
         /// released and stand at their staging post outside included; <paramref name="engaged"/> and <paramref name="fallen"/>
-        /// are the raiders in the failed attempt and how many of them fell (-1: not known, a dragon's wipe). Owner's PC,
+        /// are the raiders in the failed attempt and how many of them fell (-1: not known; a dragon's wipe passes them too since
+        /// sweep 7b, after "living=96" on Golestandt's second wipe was read as nobody fallen: 72 of 91 had). Owner's PC,
         /// 2026-11-14 (build 1dc66b6): "failures=2 support=80 living=76" read as a wipe scored while the raid stood; all 65
         /// raiders in that attempt at Aidon the Archwizard had fallen (REALM_EXPEDITION_WIPE engaged=65 fallen=65) and 54 of them
         /// were already back on their feet at the staging post outside.

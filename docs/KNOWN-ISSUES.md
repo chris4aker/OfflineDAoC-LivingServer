@@ -29,6 +29,11 @@ haven't been watched on a real install yet, so treat them as likely, not certain
 
 ## Still not right
 
+- **Summoner Roesia (Summoner's Hall) still beats the bot raid.** On build `9a173f4` all four attempts were lost at
+  89-93%. The split camps added for her Summoner Pain (#359) made it worse and are removed. Healers now cure Summoner
+  Pain before a top-up heal when it is on two or more raiders and nobody in their party is in danger, which they
+  never did before (0 cures all night). That is tests only: it hasn't been watched on a real install, and before the
+  camps the raid also lost to her, at 76%.
 - **Galladoria's Earthmenders: don't turn `epic_earthmender_mutual_heal` on.** By default they heal only the Earth primal
   and the bot raid kills all four (simulated: about 10 minutes; tests only). With the server setting turned on, the
   four heal each other and the bots can't win: on build `b1b6846` they held at 99-100% through 48 minutes and 1.44M
