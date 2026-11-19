@@ -175,6 +175,8 @@ public sealed partial class AutonomousWorldBotController
                 int queries = _keepPlanning.Queries;
                 _keepPlanning = null;
                 _keepTravelFailures = Math.Min(4, _keepTravelFailures + 1);
+                if (failure == "No connected exterior route" && TryRestartKeepTravelAtArrival(bot, destination, current, queries))
+                    return true;
                 _keepTravelRetry = now + _keepTravelFailures * 30_000 + Math.Abs(bot.DatabaseID % 3000);
                 bot.StopMovingOnPath(); bot.StopMoving();
                 SetRvrStatus(bot, "Keep route retry", destination.MonsterName,
@@ -228,6 +230,35 @@ public sealed partial class AutonomousWorldBotController
         SetRvrStatus(bot, "Traveling to keep", destination.MonsterName,
             $"Following validated road segment {_keepTravelIndex+1}/{_keepTravelPoints.Length}" +
             (leg == next ? string.Empty : " in a shorter leg"));
+        return true;
+    }
+
+    /// <summary>
+    /// A keep route that keeps failing from a spot by the realm's arrival point starts again from that point, the porter's
+    /// drop and the muster centre (AutonomousRvrMusterPost.TryRestartPoint), instead of waiting there for the 15-minute
+    /// watchdog to send the bot to its capital. Logs RVR_KEEP_ROUTE_RESTART.
+    /// </summary>
+    private bool TryRestartKeepTravelAtArrival(GameBot bot, CampDestination destination, Vector3 current, int queries)
+    {
+        if (!AutonomousRvrMusterPost.TryRestartPoint(bot.Realm, bot.CurrentRegionID, current, _keepTravelFailures, out Vector3 arrival))
+            return false;
+        Zone zone = bot.CurrentRegion?.GetZone((int)arrival.X, (int)arrival.Y);
+        var nav = PathfindingProvider.Instance;
+        Vector3 floor = zone != null && nav.IsAvailable && nav.HasNavmesh(zone)
+            ? nav.GetClosestPoint(zone, arrival, 160, 160, 800, nav.DefaultFilters) ?? arrival : arrival;
+        if (!bot.MoveInRegion(bot.CurrentRegionID, (int)Math.Round(floor.X), (int)Math.Round(floor.Y), (int)Math.Round(floor.Z),
+                bot.Heading, true))
+            return false;
+        Log.Warn($"RVR_KEEP_ROUTE_RESTART bot=\"{bot.Name}\" id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
+                 $"target=\"{destination.Id}\" region={bot.CurrentRegionID} from={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                 $"to={(int)floor.X},{(int)floor.Y},{(int)floor.Z} failures={_keepTravelFailures} queries={queries}");
+        _keepTravelKey = null; _keepTravelPoints = null; _keepPlanning = null;
+        _keepTravelRetry = 0; _keepTravelFailures = 0; _keepHop = null;
+        ResetRouteOrderState();
+        bot.MarkAutonomousStateDirty();
+        AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Recovery);
+        SetRvrStatus(bot, "Keep route restart", destination.MonsterName,
+            "No route from that spot; starting the keep route again from the realm's arrival point");
         return true;
     }
 

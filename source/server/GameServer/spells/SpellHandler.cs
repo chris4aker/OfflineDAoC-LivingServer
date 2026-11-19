@@ -1015,7 +1015,7 @@ namespace DOL.GS.Spells
 			{
 				_lastDuringCastLosCheckTime = GameLoop.GameLoopTime;
 
-				if (!m_caster.castingComponent.StartDuringCastLosCheck(target))
+				if (!m_caster.castingComponent.StartDuringCastLosCheck(target, this))
 					HasLos = true;
 			}
 

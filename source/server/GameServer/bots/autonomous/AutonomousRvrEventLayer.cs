@@ -1464,6 +1464,16 @@ public static partial class AutonomousRvrEventLayer
         }
     }
 
+    /// <summary>When the member last reported itself at its muster post (attack or defense muster), or null.</summary>
+    private static long? HeldPostTick(ActiveEvent active, long memberId)
+    {
+        long? tick = null;
+        // Only a living bot at its post reports itself there (HandleSiegeMuster); the attendance window does the rest.
+        if (active.Mustered.TryGetValue(memberId, out var attack)) tick = attack.Tick;
+        if (active.DefenseMustered.TryGetValue(memberId, out var defense)) tick = Math.Max(tick ?? long.MinValue, defense.Tick);
+        return tick;
+    }
+
     public static void ReportTravel(string targetId, string forceId, long memberId, double distance, bool arrived, long nowTick, GameBot bot = null)
     {
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
@@ -1705,16 +1715,23 @@ public static partial class AutonomousRvrEventLayer
         {
             _nextStragglerSweep = nowTick + 10_000;
             foreach (var active in Events.Values.Where(entry => !entry.BattleStarted).ToArray())
-            foreach (var stalled in active.Travel.Where(pair => nowTick - pair.Value.ProgressTick >= StragglerTimeoutMilliseconds)
-                         .GroupBy(pair => pair.Value.Force).ToArray())
             {
-                // Missing members remain assigned so they can reinforce the
-                // deadline-started battle. Keep bounded diagnostics, not eviction.
-                string reason = $"Assigned members {string.Join(",", stalled.Select(pair => pair.Key))} made no approach progress for eight minutes; retaining siege assignment";
-                foreach (var member in stalled)
-                    active.Travel[member.Key] = member.Value with { ProgressTick = nowTick };
-                var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
-                if (log.IsWarnEnabled) log.Warn($"RVR_RALLY_DELAY target={active.TargetId} force={stalled.Key} reason=\"{reason}\"");
+                // A member holding its muster post (reported at it within the attendance window) is where it was told to
+                // be: that counts as progress. Owner's PC, 2026-11-19 (build 1.2-43c43aa): 39 of 50 RVR_RALLY_DELAY lines
+                // named siege and defense parties standing at their posts in the muster, 8 minutes after their last step.
+                foreach (long id in active.Travel.Keys.ToArray())
+                    if (RallyStragglerPolicy.HoldsMusterPost(nowTick, HeldPostTick(active, id)))
+                        active.Travel[id] = active.Travel[id] with { ProgressTick = nowTick };
+                foreach (var stalled in active.Travel.Where(pair => RallyStragglerPolicy.IsStalled(nowTick, pair.Value.ProgressTick))
+                             .GroupBy(pair => pair.Value.Force).ToArray())
+                {
+                    // Missing members remain assigned so they can reinforce the
+                    // deadline-started battle. Keep bounded diagnostics, not eviction.
+                    string reason = $"Assigned members {string.Join(",", stalled.Select(pair => pair.Key))} made no approach progress for eight minutes; retaining siege assignment";
+                    foreach (var member in stalled)
+                        active.Travel[member.Key] = member.Value with { ProgressTick = nowTick };
+                    Log.Warn($"RVR_RALLY_DELAY target={active.TargetId} force={stalled.Key} reason=\"{reason}\"");
+                }
             }
         }
         foreach (var entry in CarrierEvents.Where(pair => pair.Value.ExpiresTick <= nowTick).ToArray())
