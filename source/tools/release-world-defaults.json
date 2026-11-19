@@ -1732,6 +1732,7 @@
    "Realm": 3
   },
   "11": {
+   "BaseLevel": 26,
    "Level": 1,
    "Name": "Thidranki Faste",
    "Realm": 0
@@ -1837,16 +1838,19 @@
    "Realm": 3
   },
   "31": {
+   "BaseLevel": 37,
    "Level": 1,
    "Name": "Caer Caledon",
    "Realm": 0
   },
   "32": {
+   "BaseLevel": 31,
    "Level": 1,
    "Name": "Dun Murdaigean",
    "Realm": 0
   },
   "33": {
+   "BaseLevel": 21,
    "Level": 1,
    "Name": "Dun Abermenai",
    "Realm": 0
@@ -2092,5 +2096,5 @@
    "Realm": 3
   }
  },
- "_source": "The default world: keep owners and levels and keep door health/state as in the original v0.32 world (the last release built before any test runs changed them); the two battleground keeps added later (Dun Abermenai, Dun Murdaigean) as shipped in 0.35. build_release_036.py resets the release world to these and verifies it."
+ "_source": "The default world: keep owners and levels and keep door health/state as in the original v0.32 world (the last release built before any test runs changed them); the two battleground keeps added later (Dun Abermenai, Dun Murdaigean) as shipped in 0.35. build_release_036.py resets the release world to these and verifies it. BaseLevel, where given, is a battleground keep's base level: its bracket's top level + 2 (BattlegroundKeepLevels; owner 2026-11-19: guards and lords at their battleground's level; Caer Caledon had 46)."
 }

@@ -569,6 +569,15 @@ namespace DOL.GS.Keeps
 					StartDeductionTimer();
 				}
 			}
+			// Owner, 2026-11-19: battleground guards and lords at their battleground's level. Every start, so a world that
+			// ran an earlier build (Caer Caledon at base 46: lord 57, guards 48) and a fresh one both end up right, and a
+			// second start changes nothing (BattlegroundKeepLevels).
+			byte? battlegroundBaseWas = BattlegroundKeepLevels.Repair(this);
+			if (battlegroundBaseWas != null)
+			{
+				log.Info(BattlegroundKeepLevels.RepairLine(this, battlegroundBaseWas.Value));
+				SaveBattlegroundKeepRow();
+			}
 			byte? battlegroundLevelWas = RestoreBattlegroundKeepLevel();
 			if (battlegroundLevelWas != null)
 				log.Info($"BG_KEEP_LEVEL_RESTORED keep=\"{Name}\" id={KeepID} baseLevel={DBKeep.BaseLevel} realm={Realm} from={battlegroundLevelWas} to={Level} reason=unclaimable-battleground-keep");
@@ -590,6 +599,20 @@ namespace DOL.GS.Keeps
 		/// <summary>
 		/// save keep in DB
 		/// </summary>
+		/// <summary>Writes the keep's own row only (the battleground base level repair at load; components load later).</summary>
+		private void SaveBattlegroundKeepRow()
+		{
+			try
+			{
+				if (GameServer.Instance != null && InternalID != null)
+					GameServer.Database.SaveObject(DBKeep);
+			}
+			catch (Exception exception)
+			{
+				log.Error($"{BattlegroundKeepLevels.RepairLogTag} keep=\"{Name}\" id={KeepID}: the row could not be saved; repaired again next start", exception);
+			}
+		}
+
 		public virtual void SaveIntoDatabase()
 		{
 			if (Guild != null)
@@ -918,23 +941,34 @@ namespace DOL.GS.Keeps
 			}
 			else
 			{
-				int bonusLevel = 0;
-				double multiplier = ServerProperties.Properties.KEEP_GUARD_LEVEL_MULTIPLIER;
-
-				if (guard.Component != null)
-				{
-					// level is usually 4 unless upgraded, BaseLevel is usually 50
-					bonusLevel = guard.Component.Keep.Level;
-
-					if (guard.Component.Keep is GameKeepTower)
-						multiplier = ServerProperties.Properties.TOWER_GUARD_LEVEL_MULTIPLIER;
-				}
-
-				guard.Level = (byte)(GetBaseLevel(guard) + (bonusLevel * multiplier));
+				guard.Level = GuardLevelFor(guard);
 				guard.Health = guard.MaxHealth;
 			}
 
 			guard.StartHealthRegeneration();
+		}
+
+		/// <summary>The level <see cref="SetGuardLevel"/> gives a guard (not a hastener).</summary>
+		public virtual byte GuardLevelFor(GameKeepGuard guard)
+		{
+			int bonusLevel = 0;
+			double multiplier = ServerProperties.Properties.KEEP_GUARD_LEVEL_MULTIPLIER;
+
+			if (guard.Component != null)
+			{
+				// level is usually 4 unless upgraded, BaseLevel is usually 50
+				bonusLevel = guard.Component.Keep.Level;
+
+				if (guard.Component.Keep is GameKeepTower)
+					multiplier = ServerProperties.Properties.TOWER_GUARD_LEVEL_MULTIPLIER;
+			}
+
+			byte level = (byte)(GetBaseLevel(guard) + (bonusLevel * multiplier));
+			// A battleground keep's guards and lord never rise above their level-1 values, whatever raised the keep (a
+			// claim with allow_bg_claim, an upgrade, keep balancing, the multiplier, a GM): BattlegroundKeepLevels.
+			if (guard.Component != null)
+				level = BattlegroundKeepLevels.Capped(BattlegroundKeepLevels.BracketOf(guard.Component.Keep), guard is GuardLord, level);
+			return level;
 		}
 
 
