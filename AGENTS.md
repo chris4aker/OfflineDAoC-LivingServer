@@ -126,6 +126,7 @@ In a playable folder:
   - Arthur rides with his named knights in legend-age stories, and Midgard and Hibernia do the same with their own
     legend companies.
   - DAoC server names don't matter.
+  - Present-day friars and captains may keep a name where it adds gravity, and the 12-mention cap still holds.
   - `tools/lore/lint_lore.py` and `tools/lore/name_counts.py` enforce the mechanical rules in CI.
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
