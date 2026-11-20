@@ -118,6 +118,15 @@ In a playable folder:
 - **Item model chain:** `objects.csv` model ID → `items.csv` row → `items/<nif>`.
   - Shields that carry an emblem take their base texture from a `pskins.csv` override.
   - `tools/pet-art/nif4_geom.py` reads the old 4.x item NIFs that pyffi can't.
+- **Lore (1.2.1 on):** before editing anything under `source/server/GameServer/bots/autonomous/data/lore/`, read
+  [docs/1.2.1/HEROES.md](docs/1.2.1/HEROES.md) and [docs/1.2.1/HANDOFF.md](docs/1.2.1/HANDOFF.md). The owner's rules
+  (2026-11-20):
+  - Never trim lore; elaborate it.
+  - Each realm's heroes are its real folklore legends, told about as legends, never present-day characters or bots.
+  - Arthur rides with his named knights in legend-age stories, and Midgard and Hibernia do the same with their own
+    legend companies.
+  - DAoC server names don't matter.
+  - `tools/lore/lint_lore.py` and `tools/lore/name_counts.py` enforce the mechanical rules in CI.
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
   catalog rules (no blank lines, terminators, Expansion Only, ID order), confirmed and unconfirmed

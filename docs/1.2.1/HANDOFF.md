@@ -16,7 +16,11 @@ Start here. Then read `AGENTS.md` at the repository root, which holds the owner'
 
 The full list is in [FIX-LIST.md](FIX-LIST.md). In order:
 
-1. **Lore clean-up:** grade C+, see [LORE-AUDIT.md](LORE-AUDIT.md). The files are in
+1. **Lore clean-up:** grade C+, see [LORE-AUDIT.md](LORE-AUDIT.md). **Status (2026-11-20):** steps 1 and 2 are merged
+   into `integration/1.2.1` (#378, #379). Step 3 is #380, waiting on the owner's read. The heroes work (#386) replaces the
+   repeated witnesses with each realm's folklore heroes. **Read [HEROES.md](HEROES.md) first**: it holds the owner's hero
+   decisions (folklore heroes; Arthur rides with his named knights, and Midgard and Hibernia the same; server names don't
+   matter; never trim), the canon findings, and what is left. The files are in
    `source/server/GameServer/bots/autonomous/data/lore/`.
    1. Use a script to strip the developer notes from 74 `legend` texts and the duplicated lines in 55 files. Then
       add a lint check to the lore checker, so that template labels such as "Superstition:" and "Nicknames:",
