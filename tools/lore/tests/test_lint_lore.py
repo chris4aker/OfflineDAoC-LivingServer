@@ -24,7 +24,13 @@ class NameCountTests(unittest.TestCase):
     def test_no_named_person_is_overused(self):
         import name_counts
         c, _ = name_counts.count()
-        self.assertEqual(name_counts.problems(c), [])
+        self.assertEqual(name_counts.problems(c, name_counts.hero_count()), [])
+
+    def test_heroes_are_counted_by_bare_name(self):
+        import name_counts
+        h = name_counts.hero_count()
+        self.assertEqual(set(h), set(name_counts.HEROES))
+        self.assertGreater(h["Galahad"], 0)
 
     def test_the_retired_witnesses_stay_retired(self):
         import name_counts
