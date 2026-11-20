@@ -1,32 +1,97 @@
 # The famous heroes of each realm (1.2.1 lore pass)
 
-Owner, 2026-11-20: Dame Ysolde repeated so much is a problem. Each realm gets 2 or 3 famous heroes. None is a bot.
-They are legends. Source: the realm's own folklore (owner's choice: "Folklore heroes").
+Read this before writing any lore that names a hero, a witness or a company. It holds the owner's decisions, the canon
+review's findings and the work left to do.
 
-| Realm | Hero | Role in the stories | Myth source (public domain) |
+## The owner's decisions (2026-11-20, verbatim where quoted)
+
+1. **Retire the repeated witnesses.** "Dame being repeated so much is a problem. There should be roughly 2 or 3 'famous
+   heroes' of each realm, none of them being bots but legends." Dame Ysolde, Brother Cadoc, Sir Cador, Sir Geraint
+   and Brother Odran are retired from their witness roles. Captain Rhodri stays only where he is the real quest giver.
+2. **Source:** "Folklore heroes", the real legends of each realm's mythology, not invented ones.
+3. **No trimming:** "No lore should be trimmed, in fact the opposite. We should be cleaning up and elaborating where
+   needed to give rich history and stories."
+4. **Server names don't matter:** "Don't care about the server names, because server names were based on lore and as
+   an offshoot of the original DAoC, there aren't 'multiple' servers." Galahad, Lancelot, Percival, Kay and the rest are
+   free to use. Ignore the canon review's server-name advice (section 3 of CANON-REVIEW-HEROES.md).
+5. **Arthur rides with his famous knights, and the other realms follow the same pattern:** "I like the idea of Arthur
+   bringing other famous knights with him in the stories rather than always unnamed knights. Midgard and Hibernia should
+   be treated similar." Where a story tells of a legend-age deed and says "Arthur's knights", "six knights" or "a
+   company", it names the famous companions instead. Midgard and Hibernia get the same treatment with their own legend
+   companies.
+
+## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
+
+- At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
+  decline after his reign. All the heroes are **legends of the past**: they are told about, and they never stand in a
+  present-day scene. Mythic's own Arthurian figures in the game are Morgana (epic boss), Lady Nimue (quest giver), the
+  Lady of the Lake, the shades of Uther and Ambrosius, and the relics, the Scabbard of Excalibur and Merlin's Staff.
+  Merlin is missing, not an NPC.
+- **Galahad and Gawain die before Camlann. Bedivere outlives Arthur** (Malory). Geoffrey of Monmouth has Bedivere die
+  earlier, so cite Malory for "the last survivor".
+- **Caer Sidi is Arthur's own raid.** In *Preiddeu Annwfn*, Arthur sails to Caer Sidi with three shiploads, and seven
+  come back. This is the honest place for Arthur and his knights in our Caer Sidi lore. The poem does not name the seven.
+- **Midgard:** the Norse gods are alive and Ragnarok has not come. Sigurd, Ragnar and Hervor are heroes of older
+  ages. Ragnar belongs to the 9th century, and he died in Northumbria, on Albion's island.
+- **Hibernia:** DAoC's Hibernia has no Church. Never bring Saint Patrick or churchmen into Hibernian legend. Use the
+  Tuatha Dé Danann, the Fianna and the Red Branch.
+
+## Who tells the stories: leaders and companions
+
+Each realm has **leaders**, the names a story reaches for first, and **companions** who ride with them in legend-age
+stories, in place of unnamed knights. One cap of 12 mentions covers all of them (`tools/lore/name_counts.py`). Spread the
+load, and name only the companions a story can use.
+
+| Realm | Leaders | Companions (in legend-age stories, as the myth places them) | Myth sources |
 |---|---|---|---|
-| Albion | **Sir Galahad** | the pure knight; the quest that cannot be won by arms | Malory, *Le Morte d'Arthur*; the Vulgate *Queste del Saint Graal* |
-| Albion | **Sir Gawain** | the sun-strong champion who keeps his word at a cost | *Sir Gawain and the Green Knight*; Malory |
-| Albion | **Sir Bedivere** | the last survivor, the one who saw the end and told it | Malory; Geoffrey of Monmouth |
-| Midgard | **Sigurd** | the dragon-slayer, the one who knows what a dragon costs | *Volsunga saga*; the Poetic Edda |
-| Midgard | **Ragnar Lodbrok** | the raider-king who walked into the pit and sang | *Ragnars saga loðbrókar*; *Krákumál* |
-| Midgard | **Hervor** | the shield-maiden who woke the dead for a sword | *Hervarar saga ok Heiðreks* |
-| Hibernia | **Cú Chulainn** | the hound of Ulster who held the ford alone | *Táin Bó Cúailnge* |
-| Hibernia | **Fionn mac Cumhaill** | the chief of the Fianna, who tasted the salmon of knowledge | the Fenian Cycle |
-| Hibernia | **Oisín** | the poet who came back from Tír na nÓg and told it | the Fenian Cycle; *Acallam na Senórach* |
+| Albion | Arthur (dead at 1.65, told about), Sir Galahad, Sir Gawain, Sir Bedivere | Lancelot, Percival, Kay, Bors, Tristan, Gareth, Lamorak, Pellinore, Palomides, Gaheris, Lucan, Ector | Malory, *Le Morte d'Arthur*; *Sir Gawain and the Green Knight*; *Preiddeu Annwfn*; *Culhwch and Olwen* (Kay, Bedwyr) |
+| Midgard | Sigurd, Ragnar Lodbrok, Hervor | Sigmund and Sinfjötli, Brynhild, Regin, Ragnar's sons (Ivar the Boneless, Björn Ironside, Sigurd Snake-in-the-Eye), Angantyr and his brothers, Starkad, Beowulf (giant-kin stories) | *Volsunga saga*; Poetic Edda; *Ragnars saga loðbrókar*; *Hervarar saga*; *Gesta Danorum*; *Beowulf* |
+| Hibernia | Cú Chulainn, Fionn mac Cumhaill, Oisín | the Fianna: Diarmuid Ua Duibhne, Oscar, Caílte, Goll mac Morna, Conán; the Red Branch: Conall Cernach, Fergus mac Róich, Láegh; Nuada of the Silver Hand; Deirdre | the Ulster Cycle (*Táin Bó Cúailnge*); the Fenian Cycle (*Acallam na Senórach*, *Tóraigheacht Dhiarmada agus Ghráinne*); the Mythological Cycle |
+
+Spellings use the accented forms: Cú Chulainn, Oisín, Fionn mac Cumhaill, Caílte, Láegh, Sinfjötli. The files are UTF-8.
+
+The canon review also proposed new **leaders** for story shapes no current hero fills. These are the owner's call and
+are not added yet:
+- Albion: Pwyll and Taliesin.
+- Midgard: Beowulf, and Sigmund with Sinfjötli.
+- Hibernia: Nuada and Deirdre.
 
 ## Rules for the stories
 
-1. **Legends, not witnesses.** The old figures are told about ("the songs say", "Albion's knights still swear that
-   Galahad..."). They never sit in a present-day scene as a bot would. No hero is a present-day character.
-2. **No hero is mentioned more than 12 times across all the lore** (`tools/lore/name_counts.py` enforces it). Do not put
-   the same hero in every story: pick the one the story's shape fits, and leave most stories with none.
-3. **The retiring names:** Dame Ysolde, Brother Cadoc, Sir Cador, Brother Odran, Sir Geraint and Captain Rhodri each
-   end at 6 mentions or fewer. Where one is the story's witness, replace it with the realm's hero, or with an
-   unnamed voice ("a friar of the company", "a sergeant who walked down"). Never leave a story shorter: keep every
-   event and detail, change who tells it.
-4. **Mark the sourcing.** A hero's own deeds come from the myth source above (provenance `"myth"` with that source). What
-   the stories add around them is `"original"`.
-5. **Era.** Nothing after 1.65 (8 October 2003).
-6. **Dragon stories** lean on the hero who fits: Sigurd for Midgard's dragon, and Galahad or Gawain for Albion's.
-   Do not force a hero into a dungeon story where nothing in the plot calls for one.
+1. **Legends, not witnesses.** A hero is told about ("the songs say", "when Arthur rode to Caer Sidi with Kay and
+   Bedivere..."). No hero stands in a present-day scene, and none is a bot.
+2. **Present-day companies stay unnamed** but consistent, one label each: Caer Sidi's "the third company", "the captain
+   of the third company" then "the captain", and "the company's priest" then "the priest". Elsewhere "the knight-commander
+   of the Isle of Glass", "the warden of the castle ruins", and "the captain of Snowdonia Fortress". Never let one label
+   mean two people.
+3. **Legend-age companies are named** (decision 5). Replace "six knights", "Arthur's company" and "the Fianna went" with
+   the named companions the myth gives, or plausible ones from the table, marked `"original"` when the myth doesn't place
+   them there.
+4. **Mark the sourcing honestly.** Use `"myth"` only for what the source text says, and cite its title. Add a book or
+   chapter number only if you checked it. Everything we add is `"original"`.
+5. **Never shorten.** Keep every event and detail. Elaborate where a passage is thin.
+6. **Era:** nothing after 1.65 (8 October 2003). No developer vocabulary.
+7. **Caps:** one named person may have 12 mentions or fewer, counted by bare name for the heroes, history files included.
+   Fix an overrun with pronouns and varied epithets ("the knight", "the chief of the Fianna"), never by cutting an event.
+
+## Status and what is left (keep this up to date)
+
+- **Done.** On `lore/step4-heroes` (PR #386):
+  - The roster, the counter, the nine hero profiles and the 48-file rewrite (#382-#385).
+  - The prose review's fixes (#387: one naming scheme, 17 references that pointed at the wrong person, the new
+    repetition).
+- **In progress:** the canon fixes on the hero passages. These are the six myth errors, Saint Patrick out, the invented
+  "myth" facts relabelled `original`, one spelling per hero, and Fionn, Gawain and Bedivere brought to 12 mentions or
+  fewer. Branch `lore/step4-canon`.
+- **Next:**
+  1. **Decision 5.** Find the legend-age passages that say "Arthur's knights", "six knights", "the Fianna" and the like
+     without naming them, and name the companions from the table. Start with Caer Sidi and *Preiddeu Annwfn* (Arthur's
+     raid), Apocalypse (Arthur's six), the Avalon and Camlann lore, the Malmohus and Jordheim legends, and the Fianna
+     and Red Branch places in Hibernia. Record per file which companions were added.
+  2. **Re-check the repetition.** The prose fixes left "the third company" at 68 mentions and "the priest" at 132.
+     Have a reviewer who didn't write them judge whether they read as repetitive.
+  3. **Independent prose review.** Run one after each batch. The reviewer must not be the writer. Apply its fixes.
+     Show the owner samples before merging.
+  4. **Then** HANDOFF.md step 1.5: deepen the thin entries.
+- **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
+  Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.
