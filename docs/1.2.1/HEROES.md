@@ -52,9 +52,9 @@ load, and name only the companions a story can use.
 |---|---|---|---|
 | Albion | Arthur (dead at 1.65, told about), Sir Galahad, Sir Gawain, Sir Bedivere | Lancelot, Percival, Kay, Bors, Tristan, Gareth, Lamorak, Pellinore, Palomides, Gaheris, Lucan, Ector | Malory, *Le Morte d'Arthur*; *Sir Gawain and the Green Knight*; *Preiddeu Annwfn*; *Culhwch and Olwen* (Kay, Bedwyr) |
 | Midgard | Sigurd, Ragnar Lodbrok, Hervor | Sigmund and Sinfjötli, Brynhild, Regin, Ragnar's sons (Ivar the Boneless, Björn Ironside, Sigurd Snake-in-the-Eye), Angantyr and his brothers, Starkad, Beowulf (giant-kin stories) | *Volsunga saga*; Poetic Edda; *Ragnars saga loðbrókar*; *Hervarar saga*; *Gesta Danorum*; *Beowulf* |
-| Hibernia | Cú Chulainn, Fionn mac Cumhaill, Oisín | the Fianna: Diarmuid Ua Duibhne, Oscar, Caílte, Goll mac Morna, Conán; the Red Branch: Conall Cernach, Fergus mac Róich, Láegh; Nuada of the Silver Hand; Deirdre | the Ulster Cycle (*Táin Bó Cúailnge*); the Fenian Cycle (*Acallam na Senórach*, *Tóraigheacht Dhiarmada agus Ghráinne*); the Mythological Cycle |
+| Hibernia | Cú Chulainn, Fionn mac Cumhaill, Oisín | the Fianna: Diarmuid Ua Duibhne, Oscar, Caílte, Goll mac Morna, Conán; the Red Branch: Conall Cernach, Fergus mac Róich, Láeg; Nuada of the Silver Hand; Deirdre | the Ulster Cycle (*Táin Bó Cúailnge*); the Fenian Cycle (*Acallam na Senórach*, *Tóraigheacht Dhiarmada agus Ghráinne*); the Mythological Cycle |
 
-Spellings use the accented forms: Cú Chulainn, Oisín, Fionn mac Cumhaill, Caílte, Láegh, Sinfjötli. The files are UTF-8.
+Spellings use the accented forms: Cú Chulainn, Oisín, Fionn mac Cumhaill, Caílte, Láeg, Sinfjötli. The files are UTF-8.
 
 The canon review also proposed new **leaders** for story shapes no current hero fills. These are the owner's call and
 are not added yet:
@@ -82,20 +82,62 @@ are not added yet:
 
 ## Status and what is left (keep this up to date)
 
+- **Owner sign-off (2026-11-20):** the owner read #380 (flagships) and #386 (heroes, with #387, #390 and #391) and approved
+  them. Both are merged into `integration/1.2.1`. Nothing is on main.
+
 - **Done.** On `lore/step4-heroes` (PR #386):
   - The roster, the counter, the nine hero profiles and the 48-file rewrite (#382-#385).
   - The prose review's fixes (#387: one naming scheme, 17 references that pointed at the wrong person, the new
     repetition).
-- **In progress:** the canon fixes on the hero passages. These are the six myth errors, Saint Patrick out, the invented
-  "myth" facts relabelled `original`, one spelling per hero, and Fionn, Gawain and Bedivere brought to 12 mentions or
-  fewer. Branch `lore/step4-canon`.
+  - The canon fixes on the hero passages (#390: the six myth errors, Saint Patrick out, invented "myth" facts relabelled
+    `original`, one spelling per hero, every hero at 12 mentions or fewer).
+  - **Decision 5, first pass** (branch `lore/step4-companions`). The legend companions are now named in these files:
+    - `bosses/apocalypse.json`: Arthur's six who came home from Caer Sidi are Bedivere, Kay, Lucan, Bors, Percival
+      and the steersman Iddon. Kay goes first down the stair. The naming is `original`.
+    - `locations/caer-sidi.json`: the clerk's strip lists the same seven (Arthur, Bedwyr, Cei, Lucan, Bors, Peredur
+      and the steersman Iddon), with Bedivere, Kay and Percival in their Welsh forms, so the two files agree.
+      `original`. Gareth was swapped for Bors because Marshal Gareth of Prydwen Keep keeps the same roll.
+    - `bosses/wrath-of-mordred.json`: Mordred trained beside his half-brothers Gawain, Agravaine and Gaheris; Gareth
+      came later as Beaumains and kept out of his plotting. `myth`, from Malory.
+    - `locations/camelot.json`: Lucan dies lifting Arthur after Camlann, and his brother Bedivere is left for the
+      water. `myth`, from Malory.
+    - `history/midgard.json`:
+      - Sigmund and Sinfjötli in their wolf-skins (`myth`, *Volsunga saga*);
+      - the sons of Arngrim (Angantyr, Hjorvard, Hervard and Hrani) and their killers, Hjalmar the Brave and Orvar-Odd (`myth`,
+        *Hervarar saga*).
+    - `history/hibernia.json`:
+      - Fionn's named Fianna: Caílte, Diarmuid, Goll mac Morna, Conán Maol and Oscar;
+      - Cú Chulainn's charioteer Láeg, his foster-father Fergus mac Róich, and Conall Cernach's oath of vengeance.
+      - All `myth`.
+    - `locations/murdaigean.json`: Caílte sets the pace of the Fianna's run. `original`.
+  - **Left alone on purpose:**
+    - The Llyn Barfog afanc: Arthur and Llamrei alone is the folktale.
+    - Bellum's twelve battles and the Camlann adder: no myth names the knights there.
+    - Oscar's lay: its "king's son" detail needs a canon check of its own before anyone names Cairbre.
+    - Midgard's present-day warbands (Hallbjorn's eighty): they are not legend-age.
+  - **Gaps:** Tristan, Starkad and Deirdre are in the table but not used yet.
+  - **Companions review fixes** (REVIEW-COMPANIONS.md, applied on `lore/step4-companions`): the Cú Chulainn and
+    Fionn antecedents, the Caer Sidi muster contradiction, Murdaigean, the Camelot sentence, Mordred and Gareth, Bors
+    for Gareth, Hjalmar the Brave, the Sigurd and Hervor wording, the Fianna and Keating sources, and Hall of the
+    Corrupt's Sir Peredur renamed Sir Pedrog so he is not taken for Percival.
+  - **Decision 6, first pass** (names where they add gravity), in the bare-name counts:
+    - Dame Ysolde, 8: Dorinakka's charge and her rebuke on the stair, Fate's Chosen's oath, Apocalypse's foot of
+      the stair, Bane of Hope, the Host's count of the bodies, and the Caer Sidi sill.
+    - Brother Cadoc, 9: the oath he set down, Apocalypse's "turnkeys", Bane of Hope's walk back, Funus's office
+      said over the rider, the Host's account, and the Caer Sidi book.
+    - Sir Cador, 2: Lurfos's killer and the first knot.
+    - Sir Geraint, 1: the Host's body.
+    - Each name is introduced with its role. Roles still carry most mentions.
+  - **Small fixes:** the Host's "He wrote" is now Cadoc; Cathbad names Cú Chulainn; and the warp-spasm is described
+    from the *Táin*.
 - **Next:**
-  1. **Decision 5.** Find the legend-age passages that say "Arthur's knights", "six knights", "the Fianna" and the like
-     without naming them, and name the companions from the table. Start with Caer Sidi and *Preiddeu Annwfn* (Arthur's
-     raid), Apocalypse (Arthur's six), the Avalon and Camlann lore, the Malmohus and Jordheim legends, and the Fianna
-     and Red Branch places in Hibernia. Record per file which companions were added.
-  2. **Re-check the repetition.** The prose fixes left "the third company" at 68 mentions and "the priest" at 132.
-     Have a reviewer who didn't write them judge whether they read as repetitive.
+  1. **Decision 5, second pass.** Look for more legend-age passages that a companion would honestly improve:
+     - Midgard's Jordheim and dragon legends, which could use Starkad and Ragnar's sons;
+     - Hibernia's Red Branch places, such as the Ulster fords in Connacht and Mount Collory's Dún Scáith;
+     - Albion's Avalon and Grail lore, which could use Lancelot and Tristan.
+  2. **Re-check the repetition.** The prose fixes left "the third company" at 68 mentions and "the priest" at 132,
+     and decision 6 lowers both a little. Have a reviewer who didn't write them judge whether they read as
+     repetitive, and restore more names (up to the cap) where the reviewer finds a scene that needs one.
   3. **Independent prose review.** Run one after each batch. The reviewer must not be the writer. Apply its fixes.
      Show the owner samples before merging.
   4. **Then** HANDOFF.md step 1.5: deepen the thin entries.

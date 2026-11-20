@@ -153,6 +153,16 @@
       "summary": "The old kingdoms of Midgard: jarls on the frontier hills, the Cursed Tomb sealed, tomte driven underground, the vendo in their caves, and the mine of Dodens Gruva breaking into the hall below.",
       "events": [
         {
+          "text": "Sigmund and his son Sinfjötli put on wolf-skins that they cannot take off for ten days, and live as wolves in the forest; Sinfjötli later dies of poison given by his stepmother Borghild.",
+          "provenance": "myth",
+          "source": "Volsunga saga (public domain)"
+        },
+        {
+          "text": "Hervor's father Angantyr and his eleven brothers, the berserk sons of Arngrim, fall on Samsey to Hjalmar and Orvar-Odd; Hjorvard, Hervard and Hrani are among the brothers.",
+          "provenance": "myth",
+          "source": "Hervarar saga ok Heidreks (public domain)"
+        },
+        {
           "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
           "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=68"
@@ -201,6 +211,46 @@
           "text": "Hauk left with a few followers and settled in Niflheim, a land of darkness, hard frost and freezing fog at the very bottom of the world; Enar ruled, remorseful, but Hauk would not return. Hauk's descendants are the frostalfs.",
           "provenance": "mythic",
           "source": "http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
+        },
+        {
+          "text": "Sigurd, the son of Sigmund, has the sword Gram reforged from his father's broken blade by the smith Regin, and kills the dragon Fafnir by digging a pit in the path and thrusting the sword up into it as it crosses.",
+          "provenance": "myth",
+          "source": "Volsunga saga, chapters 15 and 18; Fafnismal (Poetic Edda)"
+        },
+        {
+          "text": "Fafnir tells the dying Sigurd that the gold carries a curse; Sigurd tastes the dragon's heart-blood while roasting it, understands the speech of birds, and kills the treacherous Regin.",
+          "provenance": "myth",
+          "source": "Volsunga saga, chapter 19; Fafnismal (Poetic Edda)"
+        },
+        {
+          "text": "Midgard's dragon-hunters still dig a second pit, because the old man at the crossing told Sigurd to; in Malmohus the hunters say the same of Gjalpinulva.",
+          "provenance": "original",
+          "source": "Living Server"
+        },
+        {
+          "text": "Ragnar wins Thora Town-Hart, daughter of Jarl Herraud of Gautland, by killing the lindworm that has grown around her bower, wearing shaggy trousers coated in tar and sand, and earns the name Lodbrok (Hairy-Breeches).",
+          "provenance": "myth",
+          "source": "Ragnars saga lodbrokar (the winning of Thora)"
+        },
+        {
+          "text": "Ragnar is captured by King Aella of Northumbria and thrown into a pit of snakes; in the saga he says from the pit that the little pigs would grunt if they knew how the old boar suffers, and his death-song, the Krakumal, lists his battles and ends that he will die laughing.",
+          "provenance": "myth",
+          "source": "Ragnars saga lodbrokar (the snake pit) for the little pigs; Krakumal for the battle-list and the laughing death"
+        },
+        {
+          "text": "The Krakumal's last stanzas end with the hope of drinking ale from curved horns in Odin's hall.",
+          "provenance": "myth",
+          "source": "Krakumal (the Death-Song of Lodbrok), the closing stanzas"
+        },
+        {
+          "text": "Hervor, the daughter of Angantyr, disguises herself as a man named Hervard, goes alone to the island of Samsey at sunset, and wakes the dead sons of Arngrim in their burial mounds, calling them by name: Hervard, the uncle who shares her borrowed name, Hjorvard, Hrani and her father Angantyr.",
+          "provenance": "myth",
+          "source": "Hervarar saga ok Heidreks; The Waking of Angantyr (Hervararkvida)"
+        },
+        {
+          "text": "Angantyr warns Hervor that the sword Tyrfing kills a man whenever it is drawn and will destroy her kin, but gives it to her when she curses the barrow-dead to rot in their mounds.",
+          "provenance": "myth",
+          "source": "Hervarar saga ok Heidreks; The Waking of Angantyr (Hervararkvida)"
         }
       ],
       "places": [
@@ -1121,6 +1171,39 @@
         "igo",
         "ond"
       ]
+    },
+    {
+      "id": "sigurd",
+      "name": "Sigurd, slayer of Fafnir",
+      "summary": "Sigmund's son, who reforged his father's sword, dug the pit under the dragon Fafnir and learned from the dragon's blood what the gold would do to him.",
+      "text": "Every jarl's hall in Midgard keeps a place for Sigurd the dragon-slayer, because he is the one whom the songs trust to know what a dragon costs. He was the son of Sigmund the Volsung, born after his father fell, and the skalds still sing of the Volsungs before him: how Sigmund and his son Sinfjötli ran the forests in wolf-skins they could not take off for ten days at a time, and how Sinfjötli died of a horn of poison his stepmother gave him. Sigurd was raised by the smith Regin, who hated his own brother Fafnir for the gold that Fafnir turned into a dragon to guard. From the shards of his father's sword Regin forged Gram, and Gram split Regin's anvil in two. On the road to Fafnir's heath, an old man with one eye told Sigurd to dig more than one pit, because the dragon's blood would drown a man in a single trench. Sigurd lay in the pit under the path and drove Gram up into the dragon as it crawled over him. Fafnir spoke as it died, and warned him that the gold carried a curse. Sigurd roasted the heart for Regin, burned his thumb, and tasting the blood understood the speech of birds, who told him that Regin meant to kill him. He killed Regin, took the hoard and rode up to the mountain Hindarfell, where a ring of fire held the sleeping Valkyrie Brynhild. The skalds finish the tale where the dragon did: the gold killed everyone who touched it.",
+      "places": [
+        "malmohus"
+      ],
+      "bosses": [
+        "gjalpinulva"
+      ]
+    },
+    {
+      "id": "ragnar-lodbrok",
+      "name": "Ragnar Lodbrok, who sang in the pit",
+      "summary": "The raider-king of the sagas, who won his queen by killing the serpent coiled around her bower and died singing in a pit of adders.",
+      "text": "The skalds of Midgard sing Ragnar Lodbrok as the king who laughed at his own death. He won his name, Hairy-Breeches, before he won his crown: Jarl Herraud of Gautland had a daughter, Thora, whose bower was ringed by a lindworm that had grown from a gift in a box until it circled the house, and Ragnar wore a cloak and trousers of shaggy hide, tarred and rolled in sand, and killed it. He took Thora for his wife, and after her Aslaug, the daughter of Sigurd and Brynhild, raised as a peasant girl and famous for her wit, whose sons Ivar the Boneless, Bjorn Ironside and Sigurd Snake-Eye fought across the western seas. Ragnar himself sailed to Northumbria with two ships and too few men, was taken by King Aella and thrown into a pit of vipers. The saga gives him the words every Midgard warrior knows from the pit itself: that the little pigs would grunt if they knew how the old boar suffered. His death-song, the Krakumal, gives the rest: a list of the battles he fought, the ale that waits in Odin's hall in curved horns, and the promise that he would die laughing. He died laughing. His sons came back for Aella with a great army, and the saga of that vengeance is the one every young raider asks to hear.",
+      "places": [
+        "uppland",
+        "east-svealand"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "hervor",
+      "name": "Hervor, who woke the dead for a sword",
+      "summary": "The shield-maiden of the sagas, who went to her father's burial mound at dusk and made him give her the cursed sword Tyrfing.",
+      "text": "Of the three heroes the songs of Midgard keep, Hervor is the one with the least to prove and the most to take. She was the daughter of Angantyr, one of the twelve berserk sons of Arngrim, who were killed on the island of Samsey by the Swedish champion Hjalmar the Brave and his sworn brother Orvar-Odd, though Hjalmar died there too of the wounds Tyrfing gave him, and she grew up hearing that her father's sword, Tyrfing, lay in his barrow with him. She put on a man's clothes, took the name Hervard, and went to the island alone as the sun set, and walked through the fires that ring the barrows at night, past the shepherds who ran from her. At the mound she called her father, who answered from the grave and told her to leave the sword: it would kill a man each time it was drawn, would never miss, and would destroy her own kin. She told him that she would take it, and that she would lay a curse on all the barrow-dead, that they would rot in their mounds, if he refused. He gave it to her, and warned her again. She went back to the ships with the sword, and the saga of her son Heidrek is the story of what the sword did.",
+      "places": [
+        "dodens-gruva"
+      ],
+      "bosses": []
     }
   ]
 }

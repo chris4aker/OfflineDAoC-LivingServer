@@ -138,6 +138,41 @@
           "text": "In Uther's time Articus, whose father was a man of rank in Rome, settled on Dartmoor to escape Rome's politics; about ten years later the Duke of Cornwall's son found him and all his household dead, and came home alone.",
           "provenance": "mythic",
           "source": "http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotherald.com/more/177.php, 2002-01-29; Wayback capture 2005-12-20)"
+        },
+        {
+          "text": "Galahad, the son of Lancelot and Elaine of Corbenic, sits the Siege Perilous at the Round Table without harm, and his name appears on the seat; the same day he draws the sword from the floating stone at the river below Camelot.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur, book 13 (the coming of Galahad to Camelot)"
+        },
+        {
+          "text": "Galahad, Percival and Bors achieve the Grail at Sarras; Galahad asks to be taken from the world and dies there, and the Grail is carried up to heaven.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur, book 17 (the achieving of the Sangreal); La Queste del Saint Graal (Vulgate Cycle)"
+        },
+        {
+          "text": "A green giant challenges the court at Camelot to a beheading game; Gawain beheads him, and the Green Knight picks up his head and sets the meeting a year and a day later at the Green Chapel.",
+          "provenance": "myth",
+          "source": "Sir Gawain and the Green Knight (late 14th century), fitts 1 and 2"
+        },
+        {
+          "text": "At Bertilak's castle Gawain keeps his bargain to give his host whatever he wins, except the green girdle of the lady, which he hides; the Green Knight at the chapel gives him one small cut for the concealment, and the court wears green sashes afterward.",
+          "provenance": "myth",
+          "source": "Sir Gawain and the Green Knight (late 14th century), fitts 3 and 4"
+        },
+        {
+          "text": "Bedwyr is a one-handed warrior whom no one equals with a spear, a companion of Arthur from the oldest Welsh tradition.",
+          "provenance": "myth",
+          "source": "Culhwch and Olwen (Mabinogion, the White Book of Rhydderch), the list of Arthur's men"
+        },
+        {
+          "text": "Bedivere twice hides Excalibur and lies about it to the dying Arthur, and the third time throws it into the water, where a hand takes it; he carries Arthur to the barge of the queens bound for Avalon.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur, book 21 (the passing of Arthur)"
+        },
+        {
+          "text": "Bedivere lives out his life as a hermit at Glastonbury, near the tomb of Arthur.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur, book 21 (the burial of Arthur and the hermit's life of Bedivere)"
         }
       ],
       "places": [
@@ -865,6 +900,39 @@
       "bosses": [
         "wrath-of-mordred"
       ]
+    },
+    {
+      "id": "sir-galahad",
+      "name": "Sir Galahad, the knight of the Grail",
+      "summary": "Lancelot's son, the purest knight of the Round Table, who sat the Siege Perilous and saw the Grail. Albion's knights still say that the best sword in the realm cannot do what he did.",
+      "text": "Albion tells Galahad as the knight who was too good for the age he lived in. He was Lancelot's son by Elaine of Corbenic, raised among nuns, and came to Camelot at a Pentecost feast when the Round Table stood full except one seat, the Siege Perilous, that had killed every man who tried it. He sat it unharmed, and the letters on the seat changed to his name. That same day he drew a sword from a stone that floated down the river to Camelot, a sword no other knight could lift. When the Grail passed through the hall veiled and every knight swore to seek it, Galahad rode out with Percival and Bors. The others wandered, sinned, turned back or died. He alone passed every trial, healed the Maimed King of Corbenic, and at the holy city of Sarras looked into the Grail and asked to leave the world. He died there, and a hand came down out of the sky and took the vessel away. Albion's knights tell it at the oath-fires, and the old ones add that Camelot never filled that seat again.",
+      "places": [
+        "camelot",
+        "avalon-isle"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "sir-gawain",
+      "name": "Sir Gawain, the keeper of the bargain",
+      "summary": "Arthur's nephew and the sun-strong champion of the Round Table, who kept a bargain with the Green Knight and wore the green girdle for his shame.",
+      "text": "The knights of Albion say that Gawain kept the worst promise of any man at Camelot, and kept it well. On a New Year's feast a green giant rode into the hall on a green horse, carrying an axe and a holly branch, and offered any knight a blow with the axe if he would take the return blow a year and a day later. Gawain, Arthur's nephew, took the axe and struck the giant's head off. The Green Knight picked up his head, told the knight to seek him at the Green Chapel, and rode out. A year later he went north through the winter, and at the castle of Lord Bertilak he spent three days at a game of exchanged winnings while the lady of the house tempted him. He kept faith with her husband in all but one thing: he accepted a green girdle that would keep him from harm and told no one. At the chapel the Green Knight struck three times, the third drawing a little blood, and told him that the cut was for the girdle, and that the rest of him was clean. Gawain wore the girdle ever after as a mark of shame, and the court of Camelot wore green sashes in his honour.",
+      "places": [
+        "camelot"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "sir-bedivere",
+      "name": "Sir Bedivere, who saw the end",
+      "summary": "The last of Arthur's knights to stand beside him, who was told to throw Excalibur into the water and was the only one to see where it went.",
+      "text": "Of all the knights Albion remembers, Bedivere is the one who was there at the end and told it. The old Welsh tales know him as Bedwyr, one-handed, whose spear no man could match; Geoffrey of Monmouth makes him Arthur's cupbearer and has him fall against the Romans before Camlann; it is Malory who makes him the last companion, and it is Malory's ending that Albion tells. After the field of Camlann, where Arthur and Mordred killed each other, Arthur lay wounded by the shore and ordered Bedivere to carry Excalibur to the water and throw it in. Twice he went to the water's edge, thought the sword too fine to lose, hid it in the reeds and came back, and twice Arthur asked what he had seen and knew he had lied. The third time he threw it. A hand came up out of the water, caught the sword by the hilt, brandished it three times and drew it under. He then carried the king to a barge on the water where three queens in black hoods waited, and watched it row away toward Avalon. Malory names one of them as Arthur's sister Morgan, and Albion, which knows Morgana as its enemy, does not like to say so. He lived out his days as a hermit in the chapel at Glastonbury beside the king's tomb. It is Bedivere's account that the realm has of the king's last hour.",
+      "places": [
+        "llyn-barfog",
+        "avalon-isle",
+        "avalon-marsh"
+      ],
+      "bosses": []
     }
   ]
 }
