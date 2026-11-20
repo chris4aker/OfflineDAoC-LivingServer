@@ -51,10 +51,6 @@
       {
         "trigger": "health<=50",
         "text": "Champions! Your lord calls you!"
-      },
-      {
-        "trigger": "addsSpawn",
-        "text": "Champions! Your lord calls you!"
       }
     ],
     "death": [

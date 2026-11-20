@@ -21,7 +21,6 @@
   "yells": {
     "aggro": [
       "The dark horse stamps and shows its teeth.",
-      "The dark horse stamps and shows its teeth.",
       "A rider? No. Food."
     ],
     "phases": [
@@ -31,11 +30,9 @@
       }
     ],
     "death": [
-      "The horse falls. Its eyes are still open.",
       "The horse falls. Its eyes are still open."
     ],
     "slay": [
-      "Ridden down.",
       "Ridden down.",
       "Trampled."
     ]

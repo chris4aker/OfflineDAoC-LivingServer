@@ -21,7 +21,6 @@
   "yells": {
     "aggro": [
       "The ghost-fire flares toward you.",
-      "The ghost-fire flares toward you.",
       "Warm. Warm enough."
     ],
     "phases": [
@@ -32,11 +31,9 @@
     ],
     "death": [
       "The fire goes out without smoke.",
-      "The fire goes out without smoke.",
       "The old hearth is cold."
     ],
     "slay": [
-      "Ash.",
       "Ash.",
       "Burned on nothing."
     ]

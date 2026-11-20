@@ -85,10 +85,6 @@
       {
         "trigger": "health<=50",
         "text": "(Skoll's collar blazes like a small sun.)"
-      },
-      {
-        "trigger": "health<=25",
-        "text": "(Skoll's collar blazes like a small sun.)"
       }
     ],
     "death": [

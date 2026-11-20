@@ -45,10 +45,6 @@
         "text": "Mages! Feed the floor!"
       },
       {
-        "trigger": "addsSpawn",
-        "text": "Mages! Feed the floor!"
-      },
-      {
         "trigger": "death",
         "text": "Again, then. Again."
       }

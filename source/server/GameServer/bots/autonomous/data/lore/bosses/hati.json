@@ -86,10 +86,6 @@
       {
         "trigger": "health<=50",
         "text": "(Hati howls at a moon no one else can see.)"
-      },
-      {
-        "trigger": "health<=25",
-        "text": "(Hati howls at a moon no one else can see.)"
       }
     ],
     "death": [
