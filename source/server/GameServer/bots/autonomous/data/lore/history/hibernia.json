@@ -118,6 +118,41 @@
           "text": "For a generation afterwards no family in Breifine hired a keener, until Nóra's great-grandmother sang for any family's dead without a fee, facing forward.",
           "provenance": "original",
           "source": "Living Server"
+        },
+        {
+          "text": "Setanta kills the hound of the smith Culann and offers to guard the smith's house in its place, and is called Cu Chulainn, the Hound of Culann.",
+          "provenance": "myth",
+          "source": "Tain Bo Cuailnge (Recension I), the Boyhood Deeds of Cu Chulainn"
+        },
+        {
+          "text": "While the men of Ulster lie in the weakness of Macha's curse, Cu Chulainn alone holds the fords against Medb's army, fights Ferdiad his foster-brother over three days at the ford, and kills him.",
+          "provenance": "myth",
+          "source": "Tain Bo Cuailnge (Recension I), the combat at the ford"
+        },
+        {
+          "text": "Wounded, Cu Chulainn ties himself to a standing stone so that he dies on his feet, and his enemies do not approach him until a raven lands on his shoulder.",
+          "provenance": "myth",
+          "source": "Aided Con Culainn (the Death of Cu Chulainn)"
+        },
+        {
+          "text": "As a boy Fionn serves the poet Finnegas, who has waited seven years to catch the Salmon of Knowledge at the Boyne; Fionn burns his thumb on the cooking fish, sucks it, and gains the knowledge the salmon holds.",
+          "provenance": "myth",
+          "source": "Macgnimartha Finn (the Boyhood Deeds of Finn); Acallam na Senorach"
+        },
+        {
+          "text": "Fionn leads the Fianna, whose recruits must pass tests of speed and skill, and whose company has the duty of guarding Ireland's coast for the high king.",
+          "provenance": "myth",
+          "source": "Acallam na Senorach (the Colloquy of the Ancients); the Fenian Cycle"
+        },
+        {
+          "text": "Niamh of the Golden Hair comes on a white horse to take Oisin to Tir na nOg, where he lives for what seems three years but is three hundred.",
+          "provenance": "myth",
+          "source": "Michael Comyn, Laoi Oisin ar Thir na nOg (The Lay of Oisin in the Land of Youth)"
+        },
+        {
+          "text": "On his return Oisin falls from the white horse when its girth breaks, becomes old and blind, and tells the tales of the Fianna to Saint Patrick.",
+          "provenance": "myth",
+          "source": "Michael Comyn, Laoi Oisin ar Thir na nOg; Acallam na Senorach (the Colloquy of the Ancients)"
         }
       ],
       "places": [
@@ -861,6 +896,36 @@
         "thorg",
         "webweaver"
       ]
+    },
+    {
+      "id": "cu-chulainn",
+      "name": "Cu Chulainn, the Hound of Ulster",
+      "summary": "The boy-warrior of Ulster, who killed a smith's hound with his hands and held the ford against the army of Connacht alone.",
+      "text": "Hibernia's bards tell Cu Chulainn as the hero who gave his life to a promise made in a moment. He was born Setanta, the son of Deichtine and the god Lugh, and as a boy of seven he killed the great hound of the smith Culann with a hurley ball, then offered to guard Culann's house himself until a hound of its breed could be raised. The smith's people called him the Hound of Culann ever after. When Queen Medb of Connacht marched on Ulster for the brown bull of Cooley, every man of Ulster lay in the weakness of Macha's curse, and only Cu Chulainn, who was not of the line that was cursed, stood at the fords of the border. He held them for months, fighting one champion at a time by the old law, and when his foster-brother Ferdiad came against him, fought him three days at the ford and killed him, and wept. The warp-spasm that came over him in battle turned him into a thing of horror. At the last he took a spear wound he could not walk away from, and tied himself to a standing stone so that he would die on his feet. His enemies would not come near until a raven landed on his shoulder.",
+      "places": [
+        "emain-macha"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "fionn-mac-cumhaill",
+      "name": "Fionn mac Cumhaill, chief of the Fianna",
+      "summary": "The chief of the Fianna, who as a boy tasted the Salmon of Knowledge and had only to put his thumb in his mouth to know what he needed.",
+      "text": "Hibernia's firesides keep Fionn as the wise man who ruled by being clever, and the strong man who ruled by being kind. As a boy he was sent to serve the poet Finnegas, who had waited seven years by the Boyne to catch the Salmon of Knowledge, the fish that had eaten the nuts of the hazels of wisdom, and who had been told that the first to taste it would know everything. Finnegas caught it and gave it to Fionn to cook, with the warning not to eat any of it. As Fionn turned the fish, a blister rose on its skin and he pressed it down with his thumb, burned himself, and put the thumb in his mouth. From then on he had only to put his thumb between his teeth to know the answer. He grew up to lead the Fianna, the band of hunters and warriors who guarded the island's coast for the high king, fed on the hunt, and tested every recruit by making him run through the woods while the band threw spears at him. He loved Diarmuid and lost him to the jealousy of an old promise. The Fianna fell at last, and Fionn's son Oisin was the one who lived to remember.",
+      "places": [
+        "connacht"
+      ],
+      "bosses": []
+    },
+    {
+      "id": "oisin",
+      "name": "Oisin, the poet who came back",
+      "summary": "Fionn's son and the greatest poet of the Fianna, who went to Tir na nOg for what he thought was three years and came home to find three hundred gone.",
+      "text": "Hibernia remembers the Fianna because Oisin lived to tell it. He was the son of Fionn and Sadb, a woman who had been turned into a deer, and he grew up to be the best poet the Fianna had. One morning a woman rode out of the sea on a white horse, golden-haired Niamh of Tir na nOg, the Land of the Young, and told him she had come for him. He went with her over the water, and lived with her in the otherworld for what felt like three years, where no one grew old and no one grieved. Homesick at last, he asked to see his father's people once more. Niamh lent him the white horse and warned him never to set foot on the ground. He rode back and found the island changed, the Fianna gone, his father's hall in ruins, and the men of the island small and weak. When he leaned from the saddle to help men shift a great stone, the girth broke and he fell. He rose an old blind man, three hundred years older. Saint Patrick took him in, and Oisin spent his last years telling the saint the whole tale of the Fianna, and complaining that the saint's psalms were duller than the hunt.",
+      "places": [
+        "tir-na-nog"
+      ],
+      "bosses": []
     }
   ]
 }
