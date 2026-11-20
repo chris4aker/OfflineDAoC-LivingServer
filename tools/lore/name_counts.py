@@ -24,11 +24,12 @@ OVER_CAP = {"Sir Arward": 25, "Lord Aryon": 17, "Lady Nimue": 15, "Lord Emthoro"
 HEROES = {
     "Galahad": r"Galahad", "Gawain": r"Gawain", "Bedivere": r"Bedivere",
     "Sigurd": r"Sigurd", "Ragnar Lodbrok": r"Ragnar", "Hervor": r"Hervor",
-    "Cu Chulainn": r"C[uú] Chulainn", "Fionn mac Cumhaill": r"Fionn", "Oisin": r"Ois[ií]n",
+    # One spelling per hero in the lore (Cú Chulainn, Oisín); the patterns also catch an unaccented slip so it still counts.
+    # "Fionn Óg of Connla" (Marfoirwort, Hy Brasil) is a different man and is not counted as Fionn mac Cumhaill.
+    "Cú Chulainn": r"C[uú] Chulainn", "Fionn mac Cumhaill": r"Fionn(?! Óg)", "Oisín": r"Ois[ií]n",
 }
-# Over the cap on 2026-11-20 and held at that count until the canon review (CANON-REVIEW-HEROES) decides their passages:
-# the Caer Sidi Bedivere and Gawain inserts, and Fionn, whom older Hibernian lore already names.
-HERO_OVER_CAP = {"Fionn mac Cumhaill": 17, "Gawain": 14, "Bedivere": 13}
+# Heroes held over the cap at a known count. Empty since the canon pass of 2026-11-20 brought every hero to 12 or fewer.
+HERO_OVER_CAP = {}
 
 def hero_count(root=LORE_DIR):
     c = collections.Counter()

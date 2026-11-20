@@ -29,9 +29,14 @@
       "source": "docs/RAID-SIZES.md"
     },
     {
-      "text": "In the Welsh poem 'Preiddeu Annwfn' Arthur sails in Prydwen to the fortress of Annwn, Caer Sidi, with three shiploads of men, and only seven return. Later tellers count Sir Bedivere (Welsh Bedwyr), Arthur's companion in the Welsh tales and at his death in Malory, among those who came home.",
+      "text": "In the Welsh poem 'Preiddeu Annwfn' Arthur sails in Prydwen to the fortress of Annwn, Caer Sidi, with three shiploads of men, and only seven return. The poem names none of the seven. Sir Bedivere (Welsh Bedwyr) is Arthur's companion in the Welsh tales and at his death in Malory.",
       "provenance": "myth",
       "source": "Preiddeu Annwfn (Book of Taliesin, c. 13th century, public domain); Culhwch ac Olwen; Malory, Le Morte d'Arthur"
+    },
+    {
+      "text": "Albion's tellers counting Sir Bedivere among the seven who came home from Caer Sidi, and his being last down the stair, are Living Server writing; Preiddeu Annwfn names no survivor.",
+      "provenance": "original",
+      "source": "Living Server"
     },
     {
       "text": "The third company's captain, Ennyn of the Inconnu, Sir Rhun, the knight of Caerwent, the company's priest, the lich's company, the axle and the four-roads law are Living Server writing.",
@@ -166,7 +171,7 @@
     },
     {
       "title": "Seven Came Home",
-      "text": "The first mortal to climb the turning gaol and come down again was Arthur.\n\nAlbion's bards sing that he sailed Prydwen to Caer Sidi with three shiploads of men and that seven came home, and they sing it as a riddle. The Inconnu tell it as a plain account. Arthur came for something in the fortress, they say, though they will not say what, and he fought his way up through the crypts and the galleries, and lost most of his company on the way. At the top of the stair he met the riders. Fames looked along his last men, chose the king's face, and asked him whether he had come to challenge fate.\n\nArthur said no. Fames told him to go and do what he was meant to do, and Arthur went, with six men behind him, and that is why seven came home. Albion's tellers say Sir Bedivere was the last of them down the stair, and the one who carried the story to the shore. The Inconnu think it the wisest thing any king of Albion ever said.\n\nThe bards have a second version, and the Church a third. The bards say Arthur came for the cauldron the nine maidens kept warm, and took it, and that it is the cauldron, not the riders, that cost him his ships; the Inconnu answer that the cauldron's rim still lies cold in the larders of Caer Sidi, where a priest of the third company saw it and drew it. The Church says Arthur went to the fortress to bind the Beast and failed, and that the failure is why the dark ages came after Camlann. The knights of Caer Gothwaite keep a fourth, the one the captain of the third company told her knights at the foot of the stair in a later age: whatever the king meant to do, he reached the riders, and he chose, and the first man of Albion who ever stood in that hall said no."
+      "text": "The first mortal to climb the turning gaol and come down again was Arthur.\n\nAlbion's bards sing that he sailed Prydwen to Caer Sidi with three shiploads of men and that seven came home, and they sing it as a riddle. The Inconnu tell it as a plain account. Arthur came for something in the fortress, they say, though they will not say what, and he fought his way up through the crypts and the galleries, and lost most of his company on the way. At the top of the stair he met the riders. Fames looked along his last men, chose the king's face, and asked him whether he had come to challenge fate.\n\nArthur said no. Fames told him to go and do what he was meant to do, and Arthur went, with six men behind him, and that is why seven came home. The Inconnu think it the wisest thing any king of Albion ever said. Albion's tellers add that Sir Bedivere was the last of the six down the stair, and the one who carried the story to the shore.\n\nThe bards have a second version, and the Church a third. The bards say Arthur came for the cauldron the nine maidens kept warm, and took it, and that it is the cauldron, not the riders, that cost him his ships; the Inconnu answer that the cauldron's rim still lies cold in the larders of Caer Sidi, where a priest of the third company saw it and drew it. The Church says Arthur went to the fortress to bind the Beast and failed, and that the failure is why the dark ages came after Camlann. The knights of Caer Gothwaite keep a fourth, the one the captain of the third company told her knights at the foot of the stair in a later age: whatever the king meant to do, he reached the riders, and he chose, and the first man of Albion who ever stood in that hall said no."
     },
     {
       "title": "The Rising Below",
