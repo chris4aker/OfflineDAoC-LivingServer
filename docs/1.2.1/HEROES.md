@@ -82,6 +82,9 @@ are not added yet:
 
 ## Status and what is left (keep this up to date)
 
+- **Owner sign-off (2026-11-20):** the owner read #380 (flagships) and #386 (heroes, with #387, #390 and #391) and approved
+  them. Both are merged into `integration/1.2.1`. Nothing is on main.
+
 - **Done.** On `lore/step4-heroes` (PR #386):
   - The roster, the counter, the nine hero profiles and the 48-file rewrite (#382-#385).
   - The prose review's fixes (#387: one naming scheme, 17 references that pointed at the wrong person, the new
