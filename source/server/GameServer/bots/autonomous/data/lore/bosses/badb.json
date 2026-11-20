@@ -31,7 +31,6 @@
   "yells": {
     "aggro": [
       "The crow has smelled a battle. Here it is.",
-      "The crow has smelled a battle. Here it is.",
       "Scream for me, little soldiers."
     ],
     "phases": [
@@ -45,7 +44,6 @@
       "When there is war, the crow will come again."
     ],
     "slay": [
-      "Carrion.",
       "Carrion.",
       "Pick the bones."
     ]

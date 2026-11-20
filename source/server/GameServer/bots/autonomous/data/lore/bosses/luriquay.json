@@ -21,8 +21,7 @@
   "yells": {
     "aggro": [
       "Not as small as I look, am I?",
-      "Big folk! In my wood!",
-      "Not as small as I look, am I?"
+      "Big folk! In my wood!"
     ],
     "phases": [
       {
@@ -31,11 +30,9 @@
       }
     ],
     "death": [
-      "The fire... is getting out...",
       "The fire... is getting out..."
     ],
     "slay": [
-      "Too slow, big folk.",
       "Too slow, big folk.",
       "Small, was I?"
     ]

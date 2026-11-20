@@ -21,7 +21,6 @@
   "yells": {
     "aggro": [
       "My garden does not want you.",
-      "My garden does not want you.",
       "Up, my trees. Up."
     ],
     "phases": [
@@ -31,11 +30,9 @@
       }
     ],
     "death": [
-      "Who will tend them now?",
       "Who will tend them now?"
     ],
     "slay": [
-      "Compost.",
       "Compost.",
       "Planted."
     ]

@@ -26,7 +26,6 @@
   "yells": {
     "aggro": [
       "Who cuts the thorn?",
-      "Who cuts the thorn?",
       "Iron. You brought iron. Clever."
     ],
     "phases": [
@@ -40,7 +39,6 @@
       "The thorn... is cut... mind your luck..."
     ],
     "slay": [
-      "Another rag on the branches.",
       "Another rag on the branches.",
       "Thorned."
     ]

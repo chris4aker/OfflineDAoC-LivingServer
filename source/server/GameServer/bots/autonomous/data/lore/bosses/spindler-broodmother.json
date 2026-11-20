@@ -31,7 +31,6 @@
   "yells": {
     "aggro": [
       "The broodmother's sac shudders. Something inside moves.",
-      "The broodmother's sac shudders. Something inside moves.",
       "Hundreds of small eyes open in the dark."
     ],
     "phases": [
@@ -49,7 +48,6 @@
       "Her last children pour out of her, screaming."
     ],
     "slay": [
-      "The young feed.",
       "The young feed.",
       "Food for the brood.",
       "Into the sac with you."

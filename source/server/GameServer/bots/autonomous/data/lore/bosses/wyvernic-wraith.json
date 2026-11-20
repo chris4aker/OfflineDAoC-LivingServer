@@ -16,7 +16,6 @@
   "yells": {
     "aggro": [
       "A ghostly wyvern shrieks and dives.",
-      "A ghostly wyvern shrieks and dives.",
       "Master? No. Prey."
     ],
     "phases": [
@@ -26,11 +25,9 @@
       }
     ],
     "death": [
-      "The wraith scatters on the wind.",
       "The wraith scatters on the wind."
     ],
     "slay": [
-      "Prey.",
       "Prey.",
       "Dropped."
     ]

@@ -26,7 +26,6 @@
   "yells": {
     "aggro": [
       "You have been killing my little ones.",
-      "You have been killing my little ones.",
       "A bargain, stranger? No? Then a fight."
     ],
     "phases": [
@@ -36,11 +35,9 @@
       }
     ],
     "death": [
-      "The bargain... is over...",
       "The bargain... is over..."
     ],
     "slay": [
-      "My pookas will play with your bones.",
       "My pookas will play with your bones.",
       "Should have bargained."
     ]

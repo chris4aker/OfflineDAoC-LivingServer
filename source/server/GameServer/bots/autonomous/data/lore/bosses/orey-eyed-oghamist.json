@@ -21,7 +21,6 @@
   "yells": {
     "aggro": [
       "I have read your name in the stones.",
-      "I have read your name in the stones.",
       "Hold still. I am writing."
     ],
     "phases": [
@@ -31,11 +30,9 @@
       }
     ],
     "death": [
-      "The last word... unwritten...",
       "The last word... unwritten..."
     ],
     "slay": [
-      "Cut into the stone with the rest.",
       "Cut into the stone with the rest.",
       "Written."
     ]

@@ -26,7 +26,6 @@
   "yells": {
     "aggro": [
       "Is it you? Have you come to open the door?",
-      "Is it you? Have you come to open the door?",
       "No... you are not the one."
     ],
     "phases": [
@@ -36,11 +35,9 @@
       }
     ],
     "death": [
-      "The door... I can see it opening...",
       "The door... I can see it opening..."
     ],
     "slay": [
-      "Another who could not open it.",
       "Another who could not open it.",
       "Weep with me."
     ]

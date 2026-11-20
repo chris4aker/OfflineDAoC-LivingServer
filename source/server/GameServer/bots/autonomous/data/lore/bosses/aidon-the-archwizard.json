@@ -61,10 +61,6 @@
       {
         "trigger": "addsDead",
         "text": "You break my reflections? I have more."
-      },
-      {
-        "trigger": "addsSpawn",
-        "text": "Fire. Ice. Air. Earth. Choose your death."
       }
     ],
     "death": [

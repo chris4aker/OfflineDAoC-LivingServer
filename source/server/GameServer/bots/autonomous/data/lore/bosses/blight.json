@@ -21,11 +21,10 @@
       "source": "Living Server"
     }
   ],
-  "story": "A crop disease does not arrive all at once. It comes in stages, and the farmers of Hibernia know the names: the fire blight that scorches the leaves, the late blight that rots the root, and the blight in the flesh that the old women do not name at all. The earth of the Cursed Forest learned all three when the court bargain broke there, and something in that earth learned to be them. The sickness has a will.\n\nIt comes up out of the ground in the same order, as a controller in the soil sends it: eight fire blights first, smouldering things; then four late blights; then two of flesh, and that is when the wise go home. And if a band is foolish enough to kill all of those, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud of gore and stands up as a single giant skeleton, and turns its dreadful stare on whoever is left. The Sylvan call that its true form. Nobody has asked them how they know. The farmers of Ardee burn their fields when they see the first sign of fire blight, and pray it never reaches the third.",
+  "story": "A crop disease does not arrive all at once. It comes in stages, and the farmers of Hibernia know the names: the fire blight that scorches the leaves, the late blight that rots the root, and the blight in the flesh that the old women do not name at all. The earth of the Cursed Forest learned all three when the court bargain broke there, and something in that earth learned to be them. The sickness has a will.\n\nIt comes up out of the ground in the same order, as if something in the soil sent them: eight fire blights first, smouldering things; then four late blights; then two of flesh, and that is when the wise go home. And if a band is foolish enough to kill all of those, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud of gore and stands up as a single giant skeleton, and turns its dreadful stare on whoever is left. The Sylvan call that its true form. Nobody has asked them how they know. The farmers of Ardee burn their fields when they see the first sign of fire blight, and pray it never reaches the third.",
   "legend": "It is a gauntlet, not a fight: eight fire blights, four late blights, two flesh blights, then Blight itself. Pace the healers and the mana across all four waves. Its true form has a dreadful stare; stay spread and do not pull other things in the forest meanwhile. Pace the healers and mana across all four stages; the skeleton is the hardest and comes last. Superstition: burn a pinch of salt before you start, as the Ardee farmers do before harvest. Nicknames: 'the four', 'the rot'. Ardee farmers burn a pinch of salt before the realm's bands go in, and the bands have taken up the habit.",
   "yells": {
     "aggro": [
-      "The earth splits and something smoulders out.",
       "The earth splits and something smoulders out.",
       "Fire. Rot. Flesh. Bone."
     ],
@@ -41,11 +40,9 @@
     ],
     "death": [
       "The bones fall apart. The earth is clean, for now.",
-      "The bones fall apart. The earth is clean, for now.",
       "The soil breathes again."
     ],
     "slay": [
-      "Into the soil with you.",
       "Into the soil with you.",
       "Another bone for my true form."
     ]
