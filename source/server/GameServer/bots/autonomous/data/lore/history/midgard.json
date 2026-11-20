@@ -218,14 +218,14 @@
           "source": "Living Server"
         },
         {
-          "text": "Ragnar wins Thora Town-Hart by killing the serpents that guard her father's hall, wearing shaggy trousers coated in tar and sand, and earns the name Lodbrok (Hairy-Breeches).",
+          "text": "Ragnar wins Thora Town-Hart, daughter of Jarl Herraud of Gautland, by killing the lindworm that has grown around her bower, wearing shaggy trousers coated in tar and sand, and earns the name Lodbrok (Hairy-Breeches).",
           "provenance": "myth",
-          "source": "Ragnars saga lodbrokar, chapters 2 and 3"
+          "source": "Ragnars saga lodbrokar (the winning of Thora)"
         },
         {
-          "text": "Ragnar is captured by King Aella of Northumbria and thrown into a pit of snakes; his dying song, the Krakumal, lists his battles and says that the little pigs would grunt if they knew how the old boar suffers.",
+          "text": "Ragnar is captured by King Aella of Northumbria and thrown into a pit of snakes; in the saga he says from the pit that the little pigs would grunt if they knew how the old boar suffers, and his death-song, the Krakumal, lists his battles and ends that he will die laughing.",
           "provenance": "myth",
-          "source": "Ragnars saga lodbrokar, chapter 17; Krakumal"
+          "source": "Ragnars saga lodbrokar (the snake pit) for the little pigs; Krakumal for the battle-list and the laughing death"
         },
         {
           "text": "The Krakumal's last stanzas end with the hope of drinking ale from curved horns in Odin's hall.",
@@ -235,12 +235,12 @@
         {
           "text": "Hervor, the daughter of Angantyr, disguises herself as a man named Hervard, goes alone to the island of Samsey at sunset, and wakes the dead brothers in their burial mounds.",
           "provenance": "myth",
-          "source": "Hervarar saga ok Heidreks, chapters 3 and 4; The Waking of Angantyr (Hervararkvida)"
+          "source": "Hervarar saga ok Heidreks; The Waking of Angantyr (Hervararkvida)"
         },
         {
-          "text": "Angantyr warns Hervor that the sword Tyrfing kills a man whenever it is drawn and will destroy her kin, but gives it to her when she threatens the barrow with fire.",
+          "text": "Angantyr warns Hervor that the sword Tyrfing kills a man whenever it is drawn and will destroy her kin, but gives it to her when she curses the barrow-dead to rot in their mounds.",
           "provenance": "myth",
-          "source": "Hervarar saga ok Heidreks, chapter 4; The Waking of Angantyr (Hervararkvida)"
+          "source": "Hervarar saga ok Heidreks; The Waking of Angantyr (Hervararkvida)"
         }
       ],
       "places": [
@@ -1177,8 +1177,8 @@
     {
       "id": "ragnar-lodbrok",
       "name": "Ragnar Lodbrok, who sang in the pit",
-      "summary": "The raider-king of the sagas, who won his queen by killing the serpents around her father's hall and died singing in a pit of adders.",
-      "text": "The skalds of Midgard sing Ragnar Lodbrok as the king who laughed at his own death. He won his name, Hairy-Breeches, before he won his crown: King Herraud of the Geats had a daughter, Thora, whose hall was ringed by serpents, and Ragnar wore a cloak and trousers of shaggy hide, tarred and rolled in sand, and killed them. He took Thora for his wife, and after her the shield-maiden Aslaug, whose sons Ivar the Boneless, Bjorn Ironside and Sigurd Snake-Eye fought across the western seas. Ragnar himself sailed to Northumbria with two ships and too few men, was taken by King Aella and thrown into a pit of vipers. The skald's song that gives his last words begins with a list of the battles he fought and ends with the lines every Midgard warrior knows: that the little pigs would grunt if they knew how the old boar suffered, and that Odin's hall waits with drinking horns. He died laughing. His sons came back for Aella with a great army, and the saga of that vengeance is the one every young raider asks to hear.",
+      "summary": "The raider-king of the sagas, who won his queen by killing the serpent coiled around her bower and died singing in a pit of adders.",
+      "text": "The skalds of Midgard sing Ragnar Lodbrok as the king who laughed at his own death. He won his name, Hairy-Breeches, before he won his crown: Jarl Herraud of Gautland had a daughter, Thora, whose bower was ringed by a lindworm that had grown from a gift in a box until it circled the house, and Ragnar wore a cloak and trousers of shaggy hide, tarred and rolled in sand, and killed it. He took Thora for his wife, and after her Aslaug, the daughter of Sigurd and Brynhild, raised as a peasant girl and famous for her wit, whose sons Ivar the Boneless, Bjorn Ironside and Sigurd Snake-Eye fought across the western seas. Ragnar himself sailed to Northumbria with two ships and too few men, was taken by King Aella and thrown into a pit of vipers. The saga gives him the words every Midgard warrior knows from the pit itself: that the little pigs would grunt if they knew how the old boar suffered. His death-song, the Krakumal, gives the rest: a list of the battles he fought, the ale that waits in Odin's hall in curved horns, and the promise that he would die laughing. He died laughing. His sons came back for Aella with a great army, and the saga of that vengeance is the one every young raider asks to hear.",
       "places": [
         "uppland",
         "east-svealand"
@@ -1189,7 +1189,7 @@
       "id": "hervor",
       "name": "Hervor, who woke the dead for a sword",
       "summary": "The shield-maiden of the sagas, who went to her father's burial mound at dusk and made him give her the cursed sword Tyrfing.",
-      "text": "Of the three heroes the songs of Midgard keep, Hervor is the one with the least to prove and the most to take. She was the daughter of Angantyr, one of twelve brothers killed in a duel on the island of Samsey, and she grew up hearing that her father's sword, Tyrfing, lay in his barrow with him. She put on a man's clothes, took the name Hervard, and went to the island alone as the sun set, and walked through the fires that ring the barrows at night, past the shepherds who ran from her. At the mound she called her father, who answered from the grave and told her to leave the sword: it would kill a man each time it was drawn, would never miss, and would destroy her own kin. She told him that she would take it, and that she would burn the barrow if he refused. He gave it to her, and warned her again. She went back to the ships with the sword, and the saga of her son Heidrek is the story of what the sword did.",
+      "text": "Of the three heroes the songs of Midgard keep, Hervor is the one with the least to prove and the most to take. She was the daughter of Angantyr, one of twelve brothers killed in a duel on the island of Samsey, and she grew up hearing that her father's sword, Tyrfing, lay in his barrow with him. She put on a man's clothes, took the name Hervard, and went to the island alone as the sun set, and walked through the fires that ring the barrows at night, past the shepherds who ran from her. At the mound she called her father, who answered from the grave and told her to leave the sword: it would kill a man each time it was drawn, would never miss, and would destroy her own kin. She told him that she would take it, and that she would lay a curse on all the barrow-dead, that they would rot in their mounds, if he refused. He gave it to her, and warned her again. She went back to the ships with the sword, and the saga of her son Heidrek is the story of what the sword did.",
       "places": [
         "dodens-gruva"
       ],
