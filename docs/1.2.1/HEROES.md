@@ -20,6 +20,12 @@ review's findings and the work left to do.
    company", it names the famous companions instead. Midgard and Hibernia get the same treatment with their own legend
    companies.
 
+6. **Names where they add gravity:** "I like the revisions and rewrites but you can leave names friars or captains
+   where it adds gravity." A present-day friar, captain or knight may keep or regain a name (Dame Ysolde, Brother Cadoc
+   and the rest included) where the name gives the scene weight: a death, a last stand, a choice, a record someone
+   signs. Elsewhere use the role ("the captain", "the priest"). The 12-mention cap still holds for every name, so no
+   witness becomes the default teller again.
+
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
@@ -60,7 +66,7 @@ are not added yet:
 
 1. **Legends, not witnesses.** A hero is told about ("the songs say", "when Arthur rode to Caer Sidi with Kay and
    Bedivere..."). No hero stands in a present-day scene, and none is a bot.
-2. **Present-day companies stay unnamed** but consistent, one label each: Caer Sidi's "the third company", "the captain
+2. **Present-day companies use roles by default, and names where they add gravity** (decision 6). Keep one label each: Caer Sidi's "the third company", "the captain
    of the third company" then "the captain", and "the company's priest" then "the priest". Elsewhere "the knight-commander
    of the Isle of Glass", "the warden of the castle ruins", and "the captain of Snowdonia Fortress". Never let one label
    mean two people.
