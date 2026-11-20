@@ -19,5 +19,18 @@ class LintTests(unittest.TestCase):
         self.assertEqual(d["legend"], "He hits hard. Bring a healer.")
         self.assertEqual(d["yells"]["aggro"], ["a", "b"])
 
+
+class NameCountTests(unittest.TestCase):
+    def test_no_named_person_is_overused(self):
+        import name_counts
+        c, _ = name_counts.count()
+        self.assertEqual(name_counts.problems(c), [])
+
+    def test_the_retired_witnesses_stay_retired(self):
+        import name_counts
+        c, _ = name_counts.count()
+        for name in ["Dame Ysolde", "Brother Cadoc", "Sir Cador", "Sir Geraint", "Brother Odran"]:
+            self.assertLessEqual(c[name], 6, name)
+
 if __name__ == "__main__":
     unittest.main()

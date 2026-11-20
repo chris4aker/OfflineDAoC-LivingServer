@@ -7,20 +7,31 @@
 import json, re, sys, os, collections
 sys.path.insert(0, os.path.dirname(__file__))
 from lore_text import *
-from lint_lore import texts
 
 HONORIFIC = r"(?:Dame|Sir|Thane|Jarl|Brother|Sister|Friar|Skald|Captain|Brehon|Warden|Lady|Lord|Master)"
 NAME = re.compile(r"\b(" + HONORIFIC + r")\s+([A-Z][a-zé']+(?:\s+(?:the\s+)?[A-Z][a-z]+)?)")
 NOT_A_NAME = {"Odran's Door"}   # places that carry a person's name
 COURT = {"Lord Baln", "Lord Oro", "Lord Saeor", "Lord Baelerdoth", "Lady Lurlei"}   # the demon court of Darkness Falls, by design in many files
 MAX_MENTIONS = 12               # one named person may be mentioned this often across all the lore
-# The recurring witnesses that the 1.2.1 lore pass replaces with each realm's folklore heroes (docs/1.2.1/HEROES.md).
-# name -> its mention count on 2026-11-20; may only go down, and each must end at MAX_MENTIONS or fewer.
-OVER_CAP = {"Brother Cadoc": 60, "Dame Ysolde": 57, "Sir Cador": 27, "Brother Odran": 20, "Sir Geraint": 16, "Captain Rhodri": 15}
+# Dame Ysolde, Brother Cadoc, Sir Cador, Brother Odran and Sir Geraint were replaced by the realms'
+# folklore heroes on 2026-11-20 (docs/1.2.1/HEROES.md) and now sit under the general cap.
+# Regional through-line characters and quest NPCs whose stories recur by design (Sir Arward across Dartmoor, Lord Aryon's
+# box, Lady Nimue's Sequence). Ratchet at their count on 2026-11-20; a later pass may vary them like the retired witnesses.
+OVER_CAP = {"Sir Arward": 25, "Lord Aryon": 17, "Lady Nimue": 15, "Lord Emthoro": 13, "Sister Elaydith": 13}
 
 def person(m):
     name = re.sub(r"'s$", "", m.group(2).strip()).strip()
     return f"{m.group(1)} {name}"
+
+def strings(v):
+    """Every narrative string in a lore file: story, legend, chapters, book pages, loremaster topics, yells, bot lines.
+    The `facts` arrays are left out: they are game-sourced (quest NPCs such as Sir Arward) and repeat names truthfully."""
+    if isinstance(v, str): yield v
+    elif isinstance(v, dict):
+        for k, x in v.items():
+            if k != "facts": yield from strings(x)
+    elif isinstance(v, list):
+        for x in v: yield from strings(x)
 
 def boss_names(root=LORE_DIR):
     """Names that belong to bosses and NPCs themselves (Lord Gildas, Lady Darra): never counted as heroes."""
@@ -35,7 +46,7 @@ def count(root=LORE_DIR):
     c, files = collections.Counter(), collections.defaultdict(set)
     for f in lore_files(root):
         d = json.load(open(f, encoding="utf-8"))
-        for _, t in texts(d):
+        for t in strings(d):
             for m in NAME.finditer(t):
                 if m.group(2).strip() in NOT_A_NAME: continue
                 p = person(m)
