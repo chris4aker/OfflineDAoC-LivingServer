@@ -16,7 +16,7 @@
         },
         {
           "text": "The Keltoi use their fogou for initiation and rites, as a threshold between worlds.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=24"
         },
         {
@@ -85,12 +85,12 @@
         },
         {
           "text": "A Roman legion and an emperor no one can name lie in the catacombs of Cardova; Mythic's quest names him Seleucus.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
         },
         {
           "text": "Morgana raised the undead remains of Roman soldiers to serve in her army.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
         }
       ],
@@ -176,17 +176,17 @@
       "events": [
         {
           "text": "Passage of Conflict replaced three old dungeons that led to the Summoner's Hall from the old frontier.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=156"
         },
         {
           "text": "Darkness Falls opened in patch 1.49 (April 2002); its door opens for the realm holding the most keeps.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=62"
         },
         {
           "text": "Goblins of the Black Mountains seized Tepok's Mine from the townsfolk.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=26"
         },
         {
@@ -258,7 +258,7 @@
       "events": [
         {
           "text": "Morgana and the drakoran overran Avalon; Arawn sent the Inconnu to help Albion because she takes his dead.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
         },
         {
@@ -268,7 +268,7 @@
         },
         {
           "text": "Three ring-forts on an earthen border guard the Isle of Glass.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=77"
         },
         {

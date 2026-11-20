@@ -22,12 +22,12 @@
   "facts": [
     {
       "text": "Allakhazam's zone page calls Summoner's Hall the place 'where the zones connect across the 3 realms', for levels 35-50: neutral mobs, aggro deep wolves, sidhe magickers, three summoners needing three or four groups each, and the Grand Summoner in what in Darkness Falls is Legion's room.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=74"
     },
     {
       "text": "Its bestiary lists sidhe magickers and coimirceoir, black and grey nobles, Ard Tiarna Kieren, deep wolves, disemboweled undead, gore dappled zombies, a spirit master, the Shade of Aelfgar, the three summoners and the Grand Summoner.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=74"
     },
     {
@@ -37,12 +37,12 @@
     },
     {
       "text": "Allakhazam's Aidon the Archwizard page says he guards the way down to the hall and lists him there; this world's data puts Aidon in Hall of the Corrupt (region 277), which Living Server follows: he guards the Albion approach, not the hall.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/3783"
     },
     {
       "text": "Marfach Caverns was Hibernia's old frontier dungeon (entered from Breifine, removed by New Frontiers); that it also leads to the hall is assumed by symmetry (to verify).",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=70"
     },
     {

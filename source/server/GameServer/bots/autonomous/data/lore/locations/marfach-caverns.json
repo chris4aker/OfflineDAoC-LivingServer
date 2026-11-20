@@ -9,17 +9,17 @@
   "facts": [
     {
       "text": "A classic Hibernian dungeon for levels 40-50, entered from Breifine at about 60K, 40K; Allakhazam marks it as gone after New Frontiers.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/zones.html?czone=70"
     },
     {
       "text": "Passage of Conflict later 'replaces the original three dungeons that led to Summoner's Hall', with entrances in Jamtland, Pennine and Breifine; Allakhazam's Marfach page links a Summoner's Hall map. Marfach was Hibernia's road to the Summoners.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=156"
     },
     {
       "text": "Patch 1.66zd (Nov 2003) made the withered oaks of Marfach a plant type.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://www.gamebanshee.com/k69yq"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "text": "Patch 1.76 let each realm's sages shield their people from the Summoner's wards at their own frontier entrance to Passage of Conflict, the dungeon that replaced Marfach's road; wards in Summoner's Hall stayed dangerous.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=156"
     },
     {

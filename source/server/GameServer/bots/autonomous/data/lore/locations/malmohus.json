@@ -22,7 +22,7 @@
   "facts": [
     {
       "text": "Malmohus is a Midgard zone for levels 35-50, called an epic zone meant to be crossed by large groups of high-level players; it borders Skona Ravine and the Labyrinth.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=60"
     },
     {
@@ -32,12 +32,12 @@
     },
     {
       "text": "Its bestiary lists drakulv of many ranks (armguard, axehand, disciple, executioner, soultrapper, sacrificer, priest), svartalfar of Svarhamr, scaled vargs, enraged mara and adolescent dragons.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
     },
     {
       "text": "Svarhamr is a svartalf town in Malmohus; its people include the Dragonbane Svartalfar.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/13216"
     },
     {
@@ -52,12 +52,12 @@
     },
     {
       "text": "The Dragonslayer quest and Dragon Myths & Legends both send Midgard players after Gjalpinulva in Malmohus.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/quest/3822"
     },
     {
       "text": "Malmohus's bestiary lists adolescent dragons (Jarkkonith, Ljoridkorith) at level 60, and the svartalf dragonbane town of Svarhamr with Kiaja and Raxnathor.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "text": "Malmohus's bestiary names the svartalf townsfolk of Svarhamr: Dagna the healer, Gudrun the enchanter, Lunt the recharger, Odell the vault keeper, Stig and Streya the merchants, Hamar the channeler, and Svarhamr guards.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=60"
     },
     {
