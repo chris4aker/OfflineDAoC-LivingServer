@@ -32,11 +32,12 @@ class NameCountTests(unittest.TestCase):
         self.assertEqual(set(h), set(name_counts.HEROES))
         self.assertGreater(h["Galahad"], 0)
 
-    def test_the_retired_witnesses_stay_retired(self):
+    def test_the_old_witnesses_stay_under_the_cap(self):
+        # Owner, 2026-11-20: they may keep a name where it adds gravity, never as the default teller again.
         import name_counts
         c, _ = name_counts.count()
         for name in ["Dame Ysolde", "Brother Cadoc", "Sir Cador", "Sir Geraint", "Brother Odran"]:
-            self.assertLessEqual(c[name], 6, name)
+            self.assertLessEqual(c[name], name_counts.MAX_MENTIONS, name)
 class ProvenanceTests(unittest.TestCase):
     def test_mythic_needs_a_mythic_source(self):
         from lore_text import MYTHIC_SOURCE
