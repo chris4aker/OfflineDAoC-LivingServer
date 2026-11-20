@@ -27,6 +27,17 @@ HEROES = {
     # One spelling per hero in the lore (Cú Chulainn, Oisín); the patterns also catch an unaccented slip so it still counts.
     # "Fionn Óg of Connla" (Marfoirwort, Hy Brasil) is a different man and is not counted as Fionn mac Cumhaill.
     "Cú Chulainn": r"C[uú] Chulainn", "Fionn mac Cumhaill": r"Fionn(?! Óg)", "Oisín": r"Ois[ií]n",
+    # Their legend companions (owner decision 5), counted by bare name and Welsh form. Arthur is the realm's king, not a
+    # recurring witness, and Oscar and Mordred are bosses: none of the three is capped here. Lucan, Hjalmar and Nuada are
+    # left out because the same names belong to others in the game (Hibernia's Guardian Lucan, the Icelord Hjalmar of
+    # Tuscaran, the Overseer of Nuada's Silver Hand).
+    "Kay": r"(?:Kay|Cei)", "Gareth": r"Gareth", "Percival": r"(?:Percival|Peredur)",
+    "Lancelot": r"Lancelot", "Bors": r"Bors", "Tristan": r"Tristan", "Gaheris": r"Gaheris", "Agravaine": r"Agravaine",
+    "Sigmund": r"Sigmund", "Sinfjötli": r"Sinfj[öo]tli", "Brynhild": r"Brynhild", "Regin": r"Regin",
+    "Angantyr": r"Angantyr", "Starkad": r"Starkad",
+    "Caílte": r"Ca[ií]lte", "Diarmuid": r"Diarmuid", "Goll mac Morna": r"Goll", "Conán Maol": r"Con[aá]n",
+    "Conall Cernach": r"Conall", "Fergus mac Róich": r"Fergus", "Láeg": r"L[aá]eg",
+    "Deirdre": r"Deirdre",
 }
 # Heroes held over the cap at a known count. Empty since the canon pass of 2026-11-20 brought every hero to 12 or fewer.
 HERO_OVER_CAP = {}

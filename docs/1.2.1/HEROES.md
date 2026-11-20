@@ -80,14 +80,37 @@ are not added yet:
   - The roster, the counter, the nine hero profiles and the 48-file rewrite (#382-#385).
   - The prose review's fixes (#387: one naming scheme, 17 references that pointed at the wrong person, the new
     repetition).
-- **In progress:** the canon fixes on the hero passages. These are the six myth errors, Saint Patrick out, the invented
-  "myth" facts relabelled `original`, one spelling per hero, and Fionn, Gawain and Bedivere brought to 12 mentions or
-  fewer. Branch `lore/step4-canon`.
+  - The canon fixes on the hero passages (#390: the six myth errors, Saint Patrick out, invented "myth" facts relabelled
+    `original`, one spelling per hero, every hero at 12 mentions or fewer).
+  - **Decision 5, first pass** (branch `lore/step4-companions`). The legend companions are now named in these files:
+    - `bosses/apocalypse.json`: Arthur's six who came home from Caer Sidi are Bedivere, Kay, Lucan, Gareth, Percival
+      and the steersman Iddon. Kay goes first down the stair. The naming is `original`.
+    - `locations/caer-sidi.json`: the clerk's strip lists the same seven in Welsh forms (Bedwyr, Cei, Lucan, Gareth,
+      Peredur and Iddon), so the two files agree. `original`.
+    - `bosses/wrath-of-mordred.json`: Mordred trained beside his half-brothers Agravaine, Gaheris and Gareth. `myth`,
+      from Malory.
+    - `locations/camelot.json`: Lucan dies lifting Arthur after Camlann, and one knight is left for the water. `myth`,
+      from Malory.
+    - `history/midgard.json`:
+      - Sigmund and Sinfjötli in their wolf-skins (`myth`, *Volsunga saga*);
+      - the sons of Arngrim (Angantyr, Hjorvard, Hervard and Hrani) and their killers, Hjalmar and Orvar-Odd (`myth`,
+        *Hervarar saga*).
+    - `history/hibernia.json`:
+      - Fionn's named Fianna: Caílte, Diarmuid, Goll mac Morna, Conán Maol and Oscar;
+      - Cú Chulainn's charioteer Láeg, his foster-father Fergus mac Róich, and Conall Cernach's oath of vengeance.
+      - All `myth`.
+    - `locations/murdaigean.json`: Caílte sets the pace of the Fianna's run. `original`.
+  - **Left alone on purpose:**
+    - The Llyn Barfog afanc: Arthur and Llamrei alone is the folktale.
+    - Bellum's twelve battles and the Camlann adder: no myth names the knights there.
+    - Oscar's lay: its "king's son" detail needs a canon check of its own before anyone names Cairbre.
+    - Midgard's present-day warbands (Hallbjorn's eighty): they are not legend-age.
+  - **Gaps:** Tristan, Starkad and Deirdre are in the table but not used yet.
 - **Next:**
-  1. **Decision 5.** Find the legend-age passages that say "Arthur's knights", "six knights", "the Fianna" and the like
-     without naming them, and name the companions from the table. Start with Caer Sidi and *Preiddeu Annwfn* (Arthur's
-     raid), Apocalypse (Arthur's six), the Avalon and Camlann lore, the Malmohus and Jordheim legends, and the Fianna
-     and Red Branch places in Hibernia. Record per file which companions were added.
+  1. **Decision 5, second pass.** Look for more legend-age passages that a companion would honestly improve:
+     - Midgard's Jordheim and dragon legends, which could use Starkad and Ragnar's sons;
+     - Hibernia's Red Branch places, such as the Ulster fords in Connacht and Mount Collory's Dún Scáith;
+     - Albion's Avalon and Grail lore, which could use Lancelot and Tristan.
   2. **Re-check the repetition.** The prose fixes left "the third company" at 68 mentions and "the priest" at 132.
      Have a reviewer who didn't write them judge whether they read as repetitive.
   3. **Independent prose review.** Run one after each batch. The reviewer must not be the writer. Apply its fixes.
