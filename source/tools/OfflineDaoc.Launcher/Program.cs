@@ -24,6 +24,7 @@ internal static class Program
             return;
         }
         ApplicationConfiguration.Initialize();
+        ToolTipFaultFilter.Install(MainForm.ServerRootFor(AppContext.BaseDirectory));
         if (args.Length == 1 && args[0] == "--join")
         {
             // Join Friend only (from rambodolphin13/DividedRealms 3c6cc9d): no dashboard, no local server, no local save.

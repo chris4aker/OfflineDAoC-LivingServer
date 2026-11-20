@@ -115,6 +115,9 @@ internal sealed partial class MainForm : Form
         ReshowDelay = 100,
         ShowAlways = true,
     };
+    // Tooltips come back a moment after the window is active again, once the alt-tab focus change has settled.
+    private readonly System.Windows.Forms.Timer _toolTipResume = new() { Interval = ToolTipResumeMilliseconds };
+    internal const int ToolTipResumeMilliseconds = 400;
     private readonly DataGridView _grid = new();
     private readonly DataGridView _auctionGrid = new();
     private readonly BindingSource _rvrSource = new();
@@ -260,8 +263,20 @@ internal sealed partial class MainForm : Form
             // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
             await CheckForUpdatesAsync(asked: false);
         };
+        // Issue #389 (Linux, Wine): with the game in front, the launcher's tooltips still reacted to the mouse and showed
+        // over the game, and alt-tabbing back could trip the WinForms keyboard tooltip timer (ToolTipFaultFilter).
+        // Tooltips are off while the launcher isn't the active window.
+        Deactivate += (_, _) => PauseToolTips();
+        Activated += (_, _) => _toolTipResume.Start();
+        _toolTipResume.Tick += (_, _) =>
+        {
+            _toolTipResume.Stop();
+            if (ActiveForm == this)
+                _helpTip.Active = true;
+        };
         FormClosing += (_, _) =>
         {
+            PauseToolTips();
             _serverReadinessPoll.Stop();
             _serverLog?.Dispose();
         };
@@ -275,6 +290,7 @@ internal sealed partial class MainForm : Form
             _displayClock.Dispose();
             _autoRefresh.Dispose();
             _serverReadinessPoll.Dispose();
+            _toolTipResume.Dispose();
             _helpTip.Dispose();
             _releaseWeb?.Dispose();
         }
@@ -461,9 +477,23 @@ internal sealed partial class MainForm : Form
 
     private void SetToolTip(Control root, string text)
     {
-        _helpTip.SetToolTip(root, text);
+        SetTip(root, text);
         foreach (Control child in root.Controls)
             SetToolTip(child, text);
+    }
+
+    /// <summary>Sets a tooltip only when its text changes. Re-setting the same text on every refresh restarts the WinForms
+    /// tooltip state for that control for nothing (see ToolTipFaultFilter).</summary>
+    private void SetTip(Control control, string? text)
+    {
+        if (_helpTip.GetToolTip(control) != (text ?? ""))
+            _helpTip.SetToolTip(control, text);
+    }
+
+    private void PauseToolTips()
+    {
+        _toolTipResume.Stop();
+        _helpTip.Active = false;
     }
 
     private Control RealmGenerateButton(int realm, string realmName, Color accent)
@@ -504,7 +534,7 @@ internal sealed partial class MainForm : Form
     {
         BattlegroundBotLevels.Bracket bracket = BattlegroundBotLevels.Default;
         Button button = RealmGenerateCardButton(BattlegroundBotLevels.ButtonText, accent);
-        _helpTip.SetToolTip(button, BattlegroundBotLevels.ButtonTip(bracket));
+        SetTip(button, BattlegroundBotLevels.ButtonTip(bracket));
         button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, 0, bracket);
         return button;
     }
@@ -1107,7 +1137,7 @@ internal sealed partial class MainForm : Form
         _deleteBotButton.Click += async (_, _) => await DeleteSelectedBotAsync();
         panel.Controls.Add(_deleteBotButton);
         panel.Controls.Add(_onlineOnly);
-        _helpTip.SetToolTip(_onlineOnly, "Show only online bots in the current realm and search results. Uncheck to show all bots.");
+        SetTip(_onlineOnly, "Show only online bots in the current realm and search results. Uncheck to show all bots.");
         return panel;
     }
 
@@ -1398,7 +1428,7 @@ internal sealed partial class MainForm : Form
             _midgardValue.Text = RealmRosterValue(snapshot.Bots, "Midgard");
             _hiberniaValue.Text = RealmRosterValue(snapshot.Bots, "Hibernia");
             _performanceValue.Text = snapshot.BotAiDelay is { } aiDelay ? $"{aiDelay.AverageMs:0.0} ms" : "—";
-            _helpTip.SetToolTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
+            SetTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
                 ? $"{PerformanceHelp}{Environment.NewLine}Last minute: average {aiPeak.AverageMs:0.0} ms, slowest {aiPeak.PeakMs:N0} ms over {aiPeak.Samples:N0} ticks."
                 : $"{PerformanceHelp}{Environment.NewLine}Shown about a minute after the server starts.");
             _startButton.Enabled = !_updating && !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);
