@@ -22,17 +22,17 @@
   "facts": [
     {
       "text": "Tuscaran Glacier is a level-50 Shrouded Isles dungeon entered from Delling Crater on the isle of Aegir; it became an Epic Zone in patch 1.101 (2010).",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=76"
     },
     {
       "text": "Its bestiary lists 51 creatures: the hrimthursa council and icelords, hrimthursa giants of many trades (sculptors, icesplitters, seers, throne guards), iceweavers, frostbound and icebound skeletons, griffons and Fornfrusenen.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
     },
     {
       "text": "Killing its giants lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/6072"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "text": "Hrimthursa trades in the bestiary: berg, bladehand, depredator, dominator, grinder, harrower, icereaver, icespine, icesplitter, icetouch, rook, sculptor, seer, serac, throne guard, tormentor.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
     },
     {

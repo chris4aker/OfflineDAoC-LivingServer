@@ -29,12 +29,20 @@ The full list is in [FIX-LIST.md](FIX-LIST.md). In order:
       - **Legion:** reconcile its "two princes" origin with the Feast of Thrones in `history/neutral.json`, and
         remove "no raid tactics in our raid AI yet" from what players see.
       - **Cuuldurach:** "the only male dragon" is player talk, so present it as hearsay, not fact.
-   4. Cap the repeated phrases with a phrase counter in CI, using `lore-audit-scripts/tics.py` as the base:
+   4. Cap the repeated phrases with a phrase counter in CI, using `lore-audit-scripts/tics.py` as the base. Reword
+      each repeat into a fresh sentence; do not delete the line, and do not shorten the story:
       - "the X say", currently 1,157 times;
       - "nobody", "still" and "has never";
       - Dame Ysolde, who appears 48 times.
-   5. Trim the 165 stories that are over the 400-word limit. Cut minor bosses to 60–120 words, and give each
-      realm's epics a voice of its own.
+   5. **Deepen the lore. Nothing is trimmed** (owner, 2026-11-20: "No lore should be trimmed, in fact the opposite. We
+      should be cleaning up and elaborating where needed to give rich history and stories"). The earlier audit advice
+      to cut the 165 stories over 400 words and to cut minor bosses to 60-120 words is withdrawn. The length
+      warnings ("long for one sitting", chapters over 700 words) are advisory; never fix one by cutting.
+      - Elaborate the thin and weak entries first: `bosses/blight.json`, `locations/cursed-forest.json`,
+        `bosses/luso.json`, and the 484 bosses with no Mythic canon. The depth floors in `LoreBible.DepthReport` are
+        the target: location story 500+ words, location legend 120+, boss story 150+.
+      - Give each realm's epics a voice of its own.
+      - New writing is marked `"original"`; keep the era (nothing after 1.65) and keep each fact's real source.
    - **Keep:** Golestandt's chapters, `locations/jordheim.json` and the Feast of Thrones history. The audit judged
      these the best writing.
    - **Rules:** lore is never cut wholesale; reword it. Nothing after 1.65 (8 October 2003). After editing the lore,

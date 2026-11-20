@@ -13,12 +13,12 @@
   "facts": [
     {
       "text": "Crystal Cave is a level 50 Shrouded Isles dungeon entered by a downward passage near the centre of Avalon City; Allakhazam called it possibly the hardest dungeon in the game to enter, with Caer Sidi a close rival. Its guards are the Xar.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=97"
     },
     {
       "text": "The drakoran are said to be led by a huge dragon.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/zones.html?czone=63"
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "text": "A 2010 patch (1.101) made Avalon City and Crystal Cave an Epic Zone.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=97"
     },
     {

@@ -47,7 +47,7 @@
       "events": [
         {
           "text": "Troll and kobold myths tell of the Troll Fathers, wise precursors of both races, who lived in Trollheim on the island of Aegir.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=65"
         },
         {
@@ -105,7 +105,7 @@
         },
         {
           "text": "The quest 'The Legend of Fenrir's Folly' sends players to win a sun fragment back from the Raumarik Revenant.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/db/quest/1770"
         },
         {
@@ -154,17 +154,17 @@
       "events": [
         {
           "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=68"
         },
         {
           "text": "The Cursed Tomb holds the dishonoured warriors and kings whom the gods would not admit to Valhalla.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=40"
         },
         {
           "text": "Summoner's Hall connects the zones of the three realms; Midgard reaches it from Dodens Gruva.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=74"
         },
         {
@@ -364,17 +364,17 @@
       "events": [
         {
           "text": "A lone Troll Father came to Jordheim: the morvalt had swept Aegir and Trollheim held out only for a time; the tamed Valkyn joined Midgard to cleanse the island.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=65"
         },
         {
           "text": "The morvalt broke Faraheim's rockwall to reach Modernagrav, seeking the Mother, and found an ancient skeleton guarded by the dead.",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=116"
         },
         {
           "text": "The Shrouded Isles expansion added Tuscaran Glacier, Trollheim and Iarnvidiur's Lair as Midgard's epic dungeons (2002).",
-          "provenance": "mythic",
+          "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=76"
         }
       ],

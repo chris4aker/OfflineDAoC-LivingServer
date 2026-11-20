@@ -31,6 +31,23 @@ class NameCountTests(unittest.TestCase):
         c, _ = name_counts.count()
         for name in ["Dame Ysolde", "Brother Cadoc", "Sir Cador", "Sir Geraint", "Brother Odran"]:
             self.assertLessEqual(c[name], 6, name)
+class ProvenanceTests(unittest.TestCase):
+    def test_mythic_needs_a_mythic_source(self):
+        from lore_text import MYTHIC_SOURCE
+        for ok in ["https://www.camelotherald.com/news/x", "Camelot Herald, Nov 2001", "darkageofcamelot.com patch notes", "Mythic patch 1.65"]:
+            self.assertTrue(MYTHIC_SOURCE.search(ok), ok)
+        for bad in ["https://camelot.allakhazam.com/db/mob.html?x", "Prima Official eGuide", "www.gamebanshee.com"]:
+            self.assertFalse(MYTHIC_SOURCE.search(bad), bad)
+
+    def test_relabel_changes_only_the_label(self):
+        import json
+        d = {"facts": [{"text": "t", "provenance": "mythic", "source": "https://camelot.allakhazam.com/x"},
+                       {"text": "u", "provenance": "mythic", "source": "https://camelotherald.com/y"}]}
+        from lore_text import all_facts, MYTHIC_SOURCE
+        for x in all_facts(d):
+            if x["provenance"] == "mythic" and not MYTHIC_SOURCE.search(x["source"]): x["provenance"] = "legend"
+        self.assertEqual([x["provenance"] for x in d["facts"]], ["legend", "mythic"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -4,6 +4,7 @@
 Hard rules (always zero):
   - developer notes in player-facing text (DEV_NOTE in lore_text.py)
   - duplicate entries inside a yell or bot-line pool
+  - a fact labelled "mythic" whose source is not a Herald page, darkageofcamelot.com or a Mythic note
 Ratchets (may only go down; lower the number when you fix some):
   - template labels such as "Superstition:" and "Nicknames:" at the start of a paragraph
 """
@@ -29,6 +30,9 @@ def lint(root=LORE_DIR):
             for s in sentences(t):
                 if DEV_NOTE.search(s): problems.append(f"{rel} {k}: developer note: {s[:100]}")
             labels += len(TEMPLATE_LABEL.findall(t))
+        for x in all_facts(d):
+            if x.get("provenance") == "mythic" and not MYTHIC_SOURCE.search(x.get("source", "")):
+                problems.append(f"{rel}: \"mythic\" fact from a non-Mythic source ({x.get('source','')[:60]}): {x.get('text','')[:70]}")
         pools = [("botLines", d.get("botLines"))] + [("yells." + k, v) for k, v in (d.get("yells") or {}).items()]
         for name, pool in pools:
             t = [entry_text(e) for e in pool_entries(pool)]
