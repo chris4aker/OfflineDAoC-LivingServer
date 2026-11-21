@@ -11,6 +11,10 @@ it fullscreen, the same as `wmctrl -b add,fullscreen`.
     daoc_fullscreen.py            fix any client window now and exit
     daoc_fullscreen.py --watch    keep fixing new client windows until stopped
     daoc_fullscreen.py --watch --while-pid PID   ...and stop when PID exits
+
+While watching, a client window that leaves fullscreen is put back within a couple of seconds. The environment
+variable ODAOC_FULLSCREEN changes that (--watch only): "once" makes each client window fullscreen one time and then
+leaves it alone, "off" (or 0, no, false) doesn't touch any window.
 """
 import argparse
 import ctypes
@@ -122,9 +126,14 @@ def make_fullscreen(d, root, w, atoms):
     x.XFlush(d)
 
 
-def fix_once(d, root, atoms, verbose):
+def fix_once(d, root, atoms, verbose, done=None):
+    """Makes the client windows fullscreen. With `done` (a set), each window only once: it remembers them there."""
     fixed = 0
     for w in client_windows(d, root, atoms):
+        if done is not None:
+            if w in done:
+                continue
+            done.add(w)
         if not is_fullscreen(d, w, atoms):
             make_fullscreen(d, root, w, atoms)
             fixed += 1
@@ -148,6 +157,11 @@ def main():
     ap.add_argument("--interval", type=float, default=2.0)
     args = ap.parse_args()
 
+    mode = os.environ.get("ODAOC_FULLSCREEN", "").strip().lower()
+    if args.watch and mode in ("off", "0", "no", "false"):
+        print("daoc_fullscreen: ODAOC_FULLSCREEN=%s, leaving the client window alone" % mode, flush=True)
+        return
+
     d = x.XOpenDisplay(None)
     if not d:
         raise SystemExit("daoc_fullscreen: cannot open the X display (is DISPLAY set?)")
@@ -159,8 +173,9 @@ def main():
         if n == 0:
             print("daoc_fullscreen: no client window needed fixing")
         return
+    done = set() if mode == "once" else None   # None: put a window back whenever it leaves fullscreen
     while args.while_pid is None or alive(args.while_pid):
-        fix_once(d, root, atoms, True)
+        fix_once(d, root, atoms, True, done)
         time.sleep(args.interval)
 
 

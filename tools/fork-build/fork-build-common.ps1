@@ -1,5 +1,7 @@
 # Shared by install-server-build.ps1 and rollback-server-build.ps1 (docs/RELEASE-PLAN.md).
 # Windows PowerShell 5.1 compatible.
+# linux/install_living_server.py (in the repository only) ports the install side to Python for Wine: keep its folder,
+# file and process lists and its checks in step with this file.
 
 $Script:ServerFolders = @('runtime/server', 'runtime/server/lib', 'runtime/server/win-x64')
 # The launcher (its Living Server tab): the game's own copy, and the 0.37c new client's copy when present.
