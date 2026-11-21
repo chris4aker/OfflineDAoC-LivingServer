@@ -103,6 +103,18 @@ public static class AutonomousRvrMusterPost
         AutonomousFrontierTransport.Passage passage = AutonomousFrontierTransport.Destination(realm, region);
         if (passage?.Location == null || passage.Region != region) return false;
         var arrival = new Vector3(passage.Location.X, passage.Location.Y, passage.Location.Z);
+        // In the realm's own frontier the army musters at its border keep (AutonomousRvrStaging.TryGetSiegeMuster), not at
+        // the home porter's drop: restart from the keep's muster centre, the point every muster post is proved from and
+        // the army marched from. Owner's PC, 2026-11-19 (build 1.2-aa537ce, 16:37-16:53): Kanira3 and Krudrum, on the
+        // walk from Castle Sauvage to Caer Benowyc, were restarted at the home drop 584285,477200 (850 from the keep's
+        // centre, near the walled-off floor of run 21) and failed "No connected exterior route" twice again from there,
+        // while the army of 81 walked from the muster round 585085,477504.
+        if (passage.Medallion == "home_necklace")
+        {
+            if (!AutonomousRvrStaging.TryGetBorderKeepNear(realm, region, new(current.X, current.Y), out var keep) ||
+                keep.RegionId != region) return false;
+            arrival = keep.Position;
+        }
         float flat = Vector2.Distance(new(current.X, current.Y), new(arrival.X, arrival.Y));
         if (flat > RestartReach || flat <= RestartMinimum) return false;
         restart = arrival;

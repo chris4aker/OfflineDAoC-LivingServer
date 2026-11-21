@@ -45,4 +45,27 @@ public class UT_RvrRoutesAa537
         Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(40, 32, 64, playerDefense: false, extended: false),
             Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.March));
     }
+
+    // ---- Castle Sauvage -> Caer Benowyc: "No connected exterior route" after RVR_KEEP_ROUTE_RESTART -------------------
+
+    [Test]
+    public void KeepRouteRestart_InTheHomeFrontier_StartsFromTheBorderKeepMuster()
+    {
+        var sauvage = new System.Numerics.Vector3(585085, 477504, 2600);
+        Assert.Multiple(() =>
+        {
+            // The home porter's drop (584285,477200), where the 1.2 restart put Kanira3 and Krudrum.
+            Assert.That(AutonomousRvrMusterPost.TryRestartPoint(eRealm.Albion, 1, new(584285, 477200, 2600), 2, out var fromDrop), Is.True);
+            Assert.That(fromDrop, Is.EqualTo(sauvage), "the muster centre the army marched from, not the drop again");
+            Assert.That(AutonomousRvrMusterPost.TryRestartPoint(eRealm.Albion, 1, new(587500, 479000, 2700), 2, out var near), Is.True);
+            Assert.That(near, Is.EqualTo(sauvage));
+            Assert.That(AutonomousRvrMusterPost.TryRestartPoint(eRealm.Albion, 1, sauvage + new System.Numerics.Vector3(80, 0, 0), 4, out _),
+                Is.False, "a bot on the muster centre already starts from it");
+            Assert.That(AutonomousRvrMusterPost.TryRestartPoint(eRealm.Midgard, 100, new(767000, 670500, 5736), 2, out var svasud), Is.True);
+            Assert.That(svasud, Is.EqualTo(new System.Numerics.Vector3(766235, 669173, 5736)));
+            // Abroad the frontier porter's drop is the muster centre, unchanged (UT_RvrRouteTraps43c).
+            Assert.That(AutonomousRvrMusterPost.TryRestartPoint(eRealm.Albion, 200, new(476630, 343539, 4083), 2, out var emain), Is.True);
+            Assert.That(emain, Is.EqualTo(new System.Numerics.Vector3(475835, 343661, 4080)));
+        });
+    }
 }
