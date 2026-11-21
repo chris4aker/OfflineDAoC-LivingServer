@@ -27,12 +27,22 @@ namespace DOL.GS
 
         public void Add(T item)
         {
+            if (!TryAdd(item))
+                throw new InvalidOperationException($"Cannot {nameof(Add)} while {nameof(DrainTo)} is in progress.");
+        }
+
+        /// <summary>
+        /// <see cref="Add"/> that reports a drain in progress instead of throwing: false, and the item was not added.
+        /// For producers that are not tied to the consumer's schedule and can wait for the drain to end.
+        /// </summary>
+        public bool TryAdd(T item)
+        {
             Interlocked.Increment(ref _adding);
 
             try
             {
                 if (Volatile.Read(ref _draining))
-                    throw new InvalidOperationException($"Cannot {nameof(Add)} while {nameof(DrainTo)} is in progress.");
+                    return false;
 
                 int index = Interlocked.Increment(ref _writeIndex) - 1;
 
@@ -43,6 +53,8 @@ namespace DOL.GS
                     _overflowQueue.Enqueue(item);
                     _overflowed = true;
                 }
+
+                return true;
             }
             finally
             {

@@ -96,6 +96,80 @@ namespace DOL.GS.Tests
             }
         }
 
+        [Test]
+        public void TryAdd_DuringDrainTo_ShouldReturnFalse_AndAddNothing()
+        {
+            DrainArray<int> drainArray = new();
+            drainArray.Add(1);
+            bool? addedDuringDrain = null;
+
+            drainArray.DrainTo(_ => addedDuringDrain = drainArray.TryAdd(42));
+
+            Assert.That(addedDuringDrain, Is.False);
+            Assert.That(drainArray.TryAdd(43), Is.True, "the drain has ended");
+
+            ConcurrentBag<int> drained = new();
+            drainArray.DrainTo(drained.Add);
+            CollectionAssert.AreEquivalent(new[] { 43 }, drained);
+        }
+
+        // 1.2.1: "QueuePacket failed when adding to _tcpPacketQueue ... Cannot Add while DrainTo is in progress" (owner's PC,
+        // build 1.2-43c43aa, once): a packet queued while the client service drained the queue was dropped.
+        [Test]
+        public void AQueuedPacket_WaitsOutADrain_AndIsNotLost()
+        {
+            DrainArray<int> queue = new();
+            queue.Add(1);
+
+            ManualResetEventSlim draining = new(false);
+            ManualResetEventSlim endDrain = new(false);
+
+            var drainTask = Task.Run(() => queue.DrainTo(_ =>
+            {
+                draining.Set();
+                endDrain.Wait();
+            }));
+
+            draining.Wait();
+            var addTask = Task.Run(() => DOL.GS.PacketHandler.PacketProcessor.AddWhenNotDraining(queue, 42, maxWaitMs: 30_000));
+            bool addedDuringDrain = addTask.Wait(100);
+            endDrain.Set();
+            Task.WaitAll(drainTask, addTask);
+
+            ConcurrentBag<int> drained = new();
+            queue.DrainTo(drained.Add);
+
+            Assert.That(addedDuringDrain, Is.False, "the add waits for the drain");
+            CollectionAssert.AreEquivalent(new[] { 42 }, drained);
+        }
+
+        [Test]
+        public void AQueuedPacket_GivesUp_WhenTheDrainNeverEnds()
+        {
+            DrainArray<int> queue = new();
+            queue.Add(1);
+            Exception thrown = null;
+
+            // From inside the drain the queue can never become free: the bound ends the wait.
+            queue.DrainTo(_ =>
+            {
+                try
+                {
+                    DOL.GS.PacketHandler.PacketProcessor.AddWhenNotDraining(queue, 42, maxWaitMs: 20);
+                }
+                catch (Exception e)
+                {
+                    thrown = e;
+                }
+            });
+
+            ConcurrentBag<int> drained = new();
+            queue.DrainTo(drained.Add);
+
+            Assert.That(thrown, Is.InstanceOf<InvalidOperationException>());
+            Assert.That(drained, Is.Empty);
+        }
+
         /*[Test]
         public void DrainTo_DuringAdd_ShouldThrowInvalidOperationException()
         {
