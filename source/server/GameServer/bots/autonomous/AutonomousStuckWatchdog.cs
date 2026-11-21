@@ -111,6 +111,12 @@ public static class AutonomousStuckWatchdog
         if (bot.IsAutonomousWorldBot && BotReleaseBindPoints.IsEnemyBindPosition(
                 bot.CurrentRegionID, bot.X, bot.Y, bot.Z, bot.Realm))
             return RelocateToSafeCapital(bot, DateTime.UtcNow, "saved at an enemy realm bindstone", false);
+        // A player who logs in beside an enemy keep is sent to their bind point ("This area isn't currently secure",
+        // PlayerInitRequestHandler); a gamebot saved in a frontier beside another realm's keep or tower now logs in at its
+        // capital. Owner's PC, 2026-11-19 (build 1.2-aa537ce): 11 Midgard bots saved 3,650 from Dun Ailinne in Cruachan Gorge
+        // (200:370940,392757) logged in there off the mesh, were moved and died to Hibernian guards.
+        if (bot.IsAutonomousWorldBot && SavedBesideEnemyKeep(bot, out string keepName))
+            return RelocateToSafeCapital(bot, DateTime.UtcNow, $"saved beside the enemy keep {keepName}", false);
         if (!TryDescribeInvalidPosition(bot, out string reason))
         {
             Zone zone = WorldMgr.GetRegion(bot.CurrentRegionID)?.GetZone(bot.X, bot.Y);
@@ -158,6 +164,35 @@ public static class AutonomousStuckWatchdog
         }
 
         return RelocateToSafeCapital(bot, DateTime.UtcNow, $"login position invalid: {reason}", false);
+    }
+
+    /// <summary>How near an enemy keep or tower a saved spot may be: the radius players are checked at login.</summary>
+    public const int EnemyKeepLoginClearance = WorldMgr.VISIBILITY_DISTANCE;
+
+    /// <summary>
+    /// Whether a spot lies within <see cref="EnemyKeepLoginClearance"/> of a keep or tower held by another realm. An
+    /// unclaimed (neutral) keep is left out, and the caller asks only in the three frontier regions. Pure.
+    /// </summary>
+    public static bool IsBesideEnemyKeep(eRealm realm, float x, float y,
+        System.Collections.Generic.IEnumerable<(eRealm Realm, float X, float Y)> keeps) =>
+        realm != eRealm.None && keeps.Any(keep => keep.Realm != eRealm.None && keep.Realm != realm &&
+            (keep.X - x) * (keep.X - x) + (keep.Y - y) * (keep.Y - y) <= (float)EnemyKeepLoginClearance * EnemyKeepLoginClearance);
+
+    private static bool SavedBesideEnemyKeep(GameBot bot, out string keepName)
+    {
+        keepName = null;
+        if (bot.CurrentRegionID is not (1 or 100 or 200)) return false;
+        var keeps = GameServer.KeepManager?.GetKeepsOfRegion(bot.CurrentRegionID);
+        if (keeps == null || keeps.Count == 0) return false;
+        foreach (var keep in keeps)
+        {
+            if (keep?.DBKeep == null ||
+                !IsBesideEnemyKeep(bot.Realm, bot.X, bot.Y, [(keep.Realm, (float)keep.DBKeep.X, (float)keep.DBKeep.Y)]))
+                continue;
+            keepName = keep.Name;
+            return true;
+        }
+        return false;
     }
 
     public static bool ShouldRecoverMovement(

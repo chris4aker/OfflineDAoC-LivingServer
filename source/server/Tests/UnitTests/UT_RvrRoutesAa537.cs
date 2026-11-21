@@ -68,4 +68,23 @@ public class UT_RvrRoutesAa537
             Assert.That(emain, Is.EqualTo(new System.Numerics.Vector3(475835, 343661, 4080)));
         });
     }
+
+    // ---- 11 Midgard bots logged in at 200:370940,392757 by Dun Ailinne and died to Hibernian guards -------------------
+
+    [Test]
+    public void LoginBesideAnEnemyKeep_IsRefused_FriendlyAndUnclaimedAreNot()
+    {
+        (eRealm, float, float)[] ailinne = [(eRealm.Hibernia, 369509, 396114)];
+        Assert.Multiple(() =>
+        {
+            Assert.That(AutonomousStuckWatchdog.IsBesideEnemyKeep(eRealm.Midgard, 370940, 392757, ailinne), Is.True,
+                "the logged login spot, 3,650 from Dun Ailinne (Hibernia)");
+            Assert.That(AutonomousStuckWatchdog.IsBesideEnemyKeep(eRealm.Hibernia, 370940, 392757, ailinne), Is.False,
+                "a Hibernian bot by its own keep logs in where it was");
+            Assert.That(AutonomousStuckWatchdog.IsBesideEnemyKeep(eRealm.Midgard, 370940, 392757, [(eRealm.None, 369509, 396114)]),
+                Is.False, "an unclaimed keep is not counted");
+            Assert.That(AutonomousStuckWatchdog.IsBesideEnemyKeep(eRealm.Midgard, 369509 + 7000, 396114, ailinne), Is.False,
+                "beyond the players' 6,000 check radius nothing changes");
+        });
+    }
 }
