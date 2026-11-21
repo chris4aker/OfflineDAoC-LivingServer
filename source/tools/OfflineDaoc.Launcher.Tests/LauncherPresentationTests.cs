@@ -132,9 +132,28 @@ public sealed class LauncherPresentationTests
         using var form = (Form)Activator.CreateInstance(mainFormType)!;
         var displayClock = (System.Windows.Forms.Timer)mainFormType.GetField("_displayClock", HiddenInstance)!.GetValue(form)!;
         Assert.That(displayClock.Interval, Is.EqualTo(1000));
+        // _toolTipWatch is not a dashboard timer: it only runs under Wine, to pause tooltips (issue #389).
         Assert.That(mainFormType.GetFields(HiddenInstance)
-            .Count(field => field.FieldType == typeof(System.Windows.Forms.Timer)), Is.EqualTo(3),
+            .Count(field => field.FieldType == typeof(System.Windows.Forms.Timer) && field.Name != "_toolTipWatch"), Is.EqualTo(3),
             "The countdown must reuse the existing display timer and add no polling timer.");
+    }
+
+    [Test]
+    public void ToolTipsArePausedOnlyUnderWine()
+    {
+        // Issue #389: the tooltip watch is for Wine. On Windows it never starts and the tooltips stay on (ShowAlways).
+        Type mainFormType = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
+        bool underWine = (bool)Launcher.GetType("OfflineDaoc.Launcher.LauncherToolTips")!
+            .GetProperty("UnderWine", HiddenStatic)!.GetValue(null)!;
+        using var form = (Form)Activator.CreateInstance(mainFormType)!;
+        var watch = (System.Windows.Forms.Timer)mainFormType.GetField("_toolTipWatch", HiddenInstance)!.GetValue(form)!;
+        var helpTip = (ToolTip)mainFormType.GetField("_helpTip", HiddenInstance)!.GetValue(form)!;
+        Assert.That(watch.Enabled, Is.EqualTo(underWine));
+        if (!underWine)
+        {
+            Assert.That(helpTip.Active, Is.True);
+            Assert.That(helpTip.ShowAlways, Is.True);
+        }
     }
 
     [Test]

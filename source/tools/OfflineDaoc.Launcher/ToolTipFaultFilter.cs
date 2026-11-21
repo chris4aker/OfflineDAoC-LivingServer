@@ -19,6 +19,14 @@ public static class ToolTipFaultFilter
     public static bool IsKeyboardToolTipFault(Exception exception) =>
         exception.StackTrace?.Contains("KeyboardToolTipStateMachine", StringComparison.Ordinal) == true;
 
+    /// <summary>Only the first skipped tooltip errors of a run are logged, so launcher-ui.log can't grow without end.</summary>
+    public const int SkippedFaultLogLimit = 20;
+
+    /// <summary>Whether the nth skipped tooltip error of this run (counted from 1) is written to the log.</summary>
+    public static bool LogsSkippedFault(int occurrence) => occurrence <= SkippedFaultLogLimit;
+
+    private static int _skippedFaults;
+
     internal static UpdateLog? Log { get; private set; }
 
     internal static void Install(string serverRoot)
@@ -29,7 +37,12 @@ public static class ToolTipFaultFilter
         {
             if (IsKeyboardToolTipFault(e.Exception))
             {
-                Log.Write($"Skipped a WinForms keyboard tooltip error ({e.Exception.GetType().Name}): {e.Exception.Message}");
+                int occurrence = Interlocked.Increment(ref _skippedFaults);
+                if (LogsSkippedFault(occurrence))
+                {
+                    Log.Write($"Skipped a WinForms keyboard tooltip error ({e.Exception.GetType().Name}): {e.Exception.Message}" +
+                              (occurrence == SkippedFaultLogLimit ? " (further ones in this run are skipped without a log line)" : ""));
+                }
                 return;
             }
             Log.Write("Unhandled launcher error: " + e.Exception);
@@ -77,7 +90,7 @@ internal static class LauncherToolTips
             using var process = Process.GetProcessById((int)pid);
             frontProcess = process.ProcessName;
         }
-        catch (Exception e) when (e is ArgumentException or InvalidOperationException)
+        catch (Exception) // the name is only a label; whatever fails (process gone, access denied, Wine), fall back to the id
         {
             frontProcess = "pid " + pid;
         }

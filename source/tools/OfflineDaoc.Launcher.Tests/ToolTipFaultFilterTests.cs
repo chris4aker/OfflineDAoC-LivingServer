@@ -34,6 +34,15 @@ public sealed class ToolTipFaultFilterTests
         Assert.That(ToolTipFaultFilter.IsKeyboardToolTipFault(Caught(() => _ = new Dictionary<int, int>()[1])), Is.False);
 
     [Test]
+    public void Logs_OnlyTheFirstSkippedFaultsOfARun()
+    {
+        Assert.That(ToolTipFaultFilter.SkippedFaultLogLimit, Is.EqualTo(20));
+        Assert.That(ToolTipFaultFilter.LogsSkippedFault(1), Is.True);
+        Assert.That(ToolTipFaultFilter.LogsSkippedFault(20), Is.True);
+        Assert.That(ToolTipFaultFilter.LogsSkippedFault(21), Is.False);
+    }
+
+    [Test]
     public void Keeps_OtherErrorTypes() =>
         Assert.That(ToolTipFaultFilter.IsKeyboardToolTipFault(Caught(() => throw new InvalidOperationException("KeyboardToolTipStateMachine"))), Is.False);
 }
