@@ -30,8 +30,18 @@ namespace DOL.GS.Commands
                          client.Player.CurrentRegion == bot.CurrentRegion && client.Player.IsWithinRadius(bot, WorldMgr.YELL_DISTANCE) &&
                          !bot.IsStealthed)
                 {
+                    // 1.2.1: the original client may not select a dead bot; the server remembers it for your resurrection.
+                    BotCorpseTargeting.Remember(client.Player, bot);
                     client.Out.SendChangeTarget(bot);
                     client.Out.SendMessage($"You target {bot.GetName(0, true)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return;
+                }
+                else if (BotCorpseTargeting.FindByName(client.Player, args[1], WorldMgr.YELL_DISTANCE) is GameBot deadBot)
+                {
+                    // A dead /bot companion (not in the gamebot registry), by its full name.
+                    BotCorpseTargeting.Remember(client.Player, deadBot);
+                    client.Out.SendChangeTarget(deadBot);
+                    client.Out.SendMessage($"You target {deadBot.GetName(0, true)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     return;
                 }
                 else if (client.Account.PrivLevel > 1)

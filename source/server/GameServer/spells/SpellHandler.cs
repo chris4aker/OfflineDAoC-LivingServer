@@ -399,6 +399,7 @@ namespace DOL.GS.Spells
 			}
 
 			GamePlayer playerCaster = m_caster as GamePlayer;
+			bool corpseChosenByServer = false;
 
 			// Even with the spell queue disabled, spells are allowed to be queued silently to help counteract the client's anti spam feature.
 			// But this means we should use the most up-to-date target, as no actual queuing behavior is expected.
@@ -438,12 +439,28 @@ namespace DOL.GS.Spells
 				{
 					// Get the current target if we don't have one already.
 					Target ??= Caster.TargetObject as GameLiving;
+
+					// 1.2.1: the original client can't select a dead bot, so a player's resurrection with nothing dead
+					// selected goes to a dead bot of the realm in range (BotCorpseTargeting).
+					if (m_spell.Target is eSpellTarget.CORPSE && m_spell.SpellType is eSpellType.Resurrect && playerCaster != null &&
+						BotCorpseTargeting.TryRedirect(playerCaster, Target, m_spell.CalculateEffectiveRange(playerCaster), quiet, out GameLiving botCorpse))
+					{
+						Target = botCorpse;
+						corpseChosenByServer = true;
+					}
+
 					break;
 				}
 			}
 
 			// Initial LoS state.
-			if (playerCaster != null)
+			if (corpseChosenByServer)
+			{
+				// The client's "target in view" is about what it has selected, not this corpse. The checks during the cast
+				// still ask the client about the corpse itself.
+				HasLos = true;
+			}
+			else if (playerCaster != null)
 			{
 				// This may be wrong. This is the LoS state at the time the player used the spell, not necessarily for the target the spell is being cast on, assuming it can change.
 				// It should be fine since it's updated at the same time as `TargetObject`, and the spell handler doesn't receive a target explicitly. But it needs more testing.
