@@ -140,6 +140,16 @@
           "source": "Tain Bo Cuailnge (Recension I), the combat at the ford"
         },
         {
+          "text": "Deirdre of the Sorrows, reared apart to be King Conchobar's wife, flees over the sea with Naoise son of Uisnech; Conchobar calls them home under the safe-conduct of Fergus mac Róich and has Naoise killed on the green of Emain. The surety burns Emain and goes over to Medb of Connacht, which is why he marches in her army in the Táin, and Deirdre dies against a stone rather than be given to Naoise's killer.",
+          "provenance": "myth",
+          "source": "Longes mac nUislenn (Book of Leinster; Ulster Cycle, public domain)"
+        },
+        {
+          "text": "At Mac Dathó's feast Conall Cernach takes the carving of the pig from Cet mac Mágach of Connacht by throwing down the head of Cet's brother Anlúan, and the hound Ailbe, loosed in the brawl, chooses Ulster and is killed on the plain named for it.",
+          "provenance": "myth",
+          "source": "Scéla Mucce Meic Dathó (Ulster Cycle, public domain)"
+        },
+        {
           "text": "Wounded, Cú Chulainn ties himself to a standing stone so that he dies on his feet, and his enemies do not approach him until a raven lands on his shoulder.",
           "provenance": "myth",
           "source": "Aided Con Culainn (the Death of Cú Chulainn)"
@@ -170,7 +180,10 @@
         "connacht",
         "marfach-caverns",
         "muire-tomb",
-        "treibh-caillte"
+        "treibh-caillte",
+        "emain-macha",
+        "cruachan-gorge",
+        "mount-collory"
       ],
       "bosses": [
         "ancient-black-oak",
@@ -191,7 +204,8 @@
         "tawi-shon",
         "thorg",
         "tinka",
-        "webweaver"
+        "webweaver",
+        "ailbe"
       ]
     },
     {
@@ -913,9 +927,14 @@
       "summary": "The boy-warrior of Ulster, who killed a smith's hound with his hands and held the ford against the army of Connacht alone.",
       "text": "Hibernia's bards tell Cú Chulainn as the hero who gave his life to a promise made in a moment. He was born Setanta, the son of Deichtine and the god Lugh, and as a boy of seven he killed the great hound of the smith Culann with a hurley ball, then offered to guard Culann's house himself until a hound of its breed could be raised. The druid Cathbad gave him the name that day, the Hound of Culann, and he kept it ever after. When Queen Medb of Connacht marched on Ulster for the brown bull of Cooley, every man of Ulster lay in the weakness of Macha's curse, and only Cú Chulainn, who was not of the line that was cursed, stood at the fords of the border. He held them for months, with his charioteer Láeg mac Riangabra at the reins, fighting one champion at a time by the old law; his own foster-father Fergus mac Róich, in exile, marched with Medb's army and would not raise his hand to the boy he had raised; and when his foster-brother Ferdiad came against him, the Hound fought him day after day at the ford and killed him, and wept. The warp-spasm that came over him in battle turned him into a thing of horror: the Táin says his body turned within his skin, one eye sank into his head and the other stood out on his cheek, his hair bristled like thorns with a spark on every strand, and the hero's light rose from his brow while a dark column of blood shot up from the crown of his head like the mast of a great ship. At the last he took a spear wound he could not walk away from, and tied himself to a standing stone so that he would die on his feet. His enemies would not come near until a raven landed on his shoulder. Conall Cernach of the Red Branch had sworn that whichever of them fell first, the other would avenge him before evening, and Conall rode after the killers and kept the oath.",
       "places": [
-        "emain-macha"
+        "emain-macha",
+        "connacht",
+        "mount-collory",
+        "cruachan-gorge"
       ],
-      "bosses": []
+      "bosses": [
+        "avartack-the-champion"
+      ]
     },
     {
       "id": "fionn-mac-cumhaill",
