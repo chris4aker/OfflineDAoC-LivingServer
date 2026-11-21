@@ -198,6 +198,15 @@ namespace DOL.GS
         /// Owner's PC, 2026-11-19 14:56:33 (build 1.2-43c43aa): the component's SpellHandler was cleared during the tick (an
         /// interrupt or the cast ending), this line threw a NullReferenceException in CastingService and the service removed
         /// the gamebot Carik from the world. The handler and its LoS checker are now read once; a missing one means no check.</param>
+        /// <returns>False: no check, and the caller takes the target as in view (as with no checker). True: a client was
+        /// asked, or an end of the check has left the world and the cast's view stays as it was.</returns>
+        /// <remarks>1.2.1, the gap behind that crash: the checker is a real player's client, and it can't always be asked.
+        /// It has no packet sender before its login completes, and it refuses the request while it is not in the playing
+        /// state (zoning, logging out, link-dead) or when an end of the check has no object id. The refusal used to be
+        /// dropped: an end-of-cast check then stayed pending for ever with its damage never dealt, and an NPC's spell
+        /// (NpcCastingComponent) waited for ever while counting as "casting". Now a checker that can't be asked is the same
+        /// as no checker (what NpcAttackAction does for melee), and a spell at something that left the world is not
+        /// applied.</remarks>
         public bool StartDuringCastLosCheck(GameLiving target, SpellHandler spellHandler = null)
         {
             spellHandler ??= SpellHandler;
@@ -207,11 +216,15 @@ namespace DOL.GS
             if (packets == null || target == null || target == Owner)
                 return false;
 
+            if (LeftTheWorld(Owner, target))
+                return true;
+
             _duringCastLosCheckListener.SpellHandler = spellHandler;
-            packets.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
-            return true;
+            return packets.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
         }
 
+        /// <returns>False: no check, and the caller applies the spell now (as with no checker). True: the client's answer
+        /// applies it, or an end of the check has left the world and nothing is applied.</returns>
         public bool StartEndOfCastLosCheck(GameLiving target, SpellHandler spellHandler)
         {
             // The asking handler's checker (it is the component's handler while its cast ends); read once, see above.
@@ -219,9 +232,23 @@ namespace DOL.GS
             if (packets == null || target == null || target == Owner)
                 return false;
 
+            if (LeftTheWorld(Owner, target))
+                return true;
+
+            // Registered before the request: a cached answer is delivered inside it.
             _endOfCastLosCheckListener.AddPendingLosCheck(target, spellHandler);
-            packets.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener);
-            return true;
+
+            if (packets.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener))
+                return true;
+
+            _endOfCastLosCheckListener.RemovePendingLosCheck(target, spellHandler);
+            return false;
+        }
+
+        /// <summary>No client can check a pair with an end that has left the world (object id 0): it refuses the request.</summary>
+        protected static bool LeftTheWorld(GameObject source, GameObject target)
+        {
+            return source == null || target == null || source.ObjectID == 0 || target.ObjectID == 0;
         }
 
         public void RequestUseAbility(Ability ability)
@@ -616,6 +643,18 @@ namespace DOL.GS
                     list.Add(spellHandler);
                 else
                     _pendingLosChecks[target.ObjectID] = [spellHandler]; // Consider pooling if end of cast LoS checks become common.
+            }
+
+            /// <summary>Takes back a check whose request was refused: no answer will come for it.</summary>
+            public void RemovePendingLosCheck(GameLiving target, SpellHandler spellHandler)
+            {
+                if (_pendingLosChecks == null || !_pendingLosChecks.TryGetValue(target.ObjectID, out var list))
+                    return;
+
+                list.Remove(spellHandler);
+
+                if (list.Count == 0)
+                    _pendingLosChecks.Remove(target.ObjectID);
             }
 
             public void HandleLosCheckResponse(GamePlayer player, LosCheckResponse response, ushort targetId)
