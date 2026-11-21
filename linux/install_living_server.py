@@ -30,6 +30,10 @@ CORE_FILES = ["CoreBase.dll", "CoreDatabase.dll", "CoreServer.dll"]
 DB_KEEP = 3   # world database copies kept in deployment-backups (newest installs); older data/ folders are removed
 PROCESS_NAMES = {"CoreServer", "DOLServer", "OfflineDAoC", "game", "camelot", "connect",
                  "Godot_v4.7.2-stable_mono_win64"}
+# Names any Linux program could have: they count only as a Windows program (game.exe). Under Wine the classic client
+# runs as game.dll.
+GENERIC_NAMES = {"game", "camelot", "connect"}
+CLIENT_DLL = "game.dll"
 
 
 def stop(msg):
@@ -89,10 +93,21 @@ def running():
         except OSError:
             continue
         for n in names:
-            stem = n[:-4] if n.lower().endswith(".exe") else n
-            if stem in PROCESS_NAMES:
-                found.add(stem)
+            name = running_name(n)
+            if name:
+                found.add(name)
     return found
+
+
+def running_name(n):
+    """The game program a process name or argument stands for, or None."""
+    if n.lower() == CLIENT_DLL:
+        return CLIENT_DLL
+    exe = n.lower().endswith(".exe")
+    stem = n[:-4] if exe else n
+    if stem in PROCESS_NAMES and (exe or stem not in GENERIC_NAMES):
+        return stem
+    return None
 
 
 def install_records(game):
