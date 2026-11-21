@@ -40,7 +40,7 @@
     },
     {
       "text": "Allakhazam lists Skoll as an animal, level 60; he drops Skoll's Sunstone Collar and a flaming-sphere greave.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/4671"
     },
     {
@@ -84,10 +84,6 @@
     "phases": [
       {
         "trigger": "health<=50",
-        "text": "(Skoll's collar blazes like a small sun.)"
-      },
-      {
-        "trigger": "health<=25",
         "text": "(Skoll's collar blazes like a small sun.)"
       }
     ],

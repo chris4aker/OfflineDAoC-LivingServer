@@ -26,7 +26,6 @@
   "yells": {
     "aggro": [
       "Who has loosed me?",
-      "Who has loosed me?",
       "The dark men are dead. Then I am free to kill you."
     ],
     "phases": [
@@ -36,11 +35,9 @@
       }
     ],
     "death": [
-      "Free... at last...",
       "Free... at last..."
     ],
     "slay": [
-      "Another for the dark men.",
       "Another for the dark men.",
       "Into the earth with me."
     ]

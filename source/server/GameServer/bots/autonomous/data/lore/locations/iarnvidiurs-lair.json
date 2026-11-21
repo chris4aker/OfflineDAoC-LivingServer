@@ -22,12 +22,12 @@
   "facts": [
     {
       "text": "Iarnvidiur's Lair is a level 45-50 Shrouded Isles dungeon in Iarnwood Forest on Aegir, at 28k, 39k.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=93"
     },
     {
       "text": "Its bestiary lists 21 creatures: animus giants (rondjur, syndig), egilvarg and grymvarg wolves, syver of every age, skuggande, fjarskafinn, narfi and the nameds.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=93"
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "text": "Killing Dyranapur raises faction with the Arachite, the Svartalfar Outcasts and the Varulv, and lowers it with the Svartalfar.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/4665"
     },
     {

@@ -16,7 +16,6 @@
   "yells": {
     "aggro": [
       "The pool heaves and opens into a mouth.",
-      "The pool heaves and opens into a mouth.",
       "Hungry. Always hungry."
     ],
     "phases": [
@@ -30,7 +29,6 @@
       "The Maw bursts into hungry pieces!"
     ],
     "slay": [
-      "Swallowed.",
       "Swallowed.",
       "Gone down."
     ]

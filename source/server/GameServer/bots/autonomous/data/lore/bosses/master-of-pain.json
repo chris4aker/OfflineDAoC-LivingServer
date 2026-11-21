@@ -12,7 +12,7 @@
     },
     {
       "text": "Allakhazam lists him as level 74 undead; Tur Suil also holds wall spikes and a rack of spikes.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=96"
     }
   ],
@@ -20,7 +20,6 @@
   "legend": "He appears fresh in his own room by the cells the moment Kierac dies, and waits there: rest, rebuff and walk in ready. He saps strength and constitution, so buff back and keep the tank healed. His debuff lands on his target and everyone standing close to them, so do not crowd the tank. Rebuff the moment his debuff lands; a tank with no strength and no constitution dies fast. The spikes in his walls are decoration, whatever the old hands say; never walk in on him with half the raid still drinking after Kierac. Superstition: never hum on the stair of Tur Suil. He likes company, the old hibs say, and he will come looking for the tune.",
   "yells": {
     "aggro": [
-      "Ah. New subjects. Hold still.",
       "Ah. New subjects. Hold still.",
       "Kierac was lovely work. Let me show you more."
     ],
@@ -40,7 +39,6 @@
       "The humming... stops..."
     ],
     "slay": [
-      "That one broke too quickly.",
       "That one broke too quickly.",
       "Next, please.",
       "Everyone talks in the end."

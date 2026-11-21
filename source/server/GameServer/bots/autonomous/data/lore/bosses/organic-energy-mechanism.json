@@ -26,7 +26,6 @@
   "yells": {
     "aggro": [
       "The beat in the stone quickens.",
-      "The beat in the stone quickens.",
       "Thud. Thud. The chamber tightens around you."
     ],
     "phases": [
@@ -44,7 +43,6 @@
       "The beat falters... and stops."
     ],
     "slay": [
-      "The pools will have you.",
       "The pools will have you.",
       "Feed the feeders."
     ]

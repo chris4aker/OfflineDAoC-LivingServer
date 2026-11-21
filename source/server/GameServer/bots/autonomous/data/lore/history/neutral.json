@@ -11,7 +11,7 @@
    "events": [
     {
      "text": "Darkness Falls is a vast underground kingdom under all three realms, dominated by the arch-demon Legion.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
     },
     {
@@ -86,12 +86,12 @@
    "events": [
     {
      "text": "Mythic described the demons as keeping a strict hierarchy based on power; the strongest hold titles and underlings, and the Picullus imps, the weakest, survive by hiding and stealing.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://www.gamebanshee.com/3d68"
     },
     {
      "text": "The bestiary lists princes, high lords, a Grand Chancellor, a Field Marshal, a Chamberlain, a Gatekeeper, an Ambassador, a Director, an Archivist, dukes, marquises, earls, lieutenants, Inquisitors, Mutilators, Chthonic Knights and Lilith the Demon Queen.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
     },
     {
@@ -154,7 +154,7 @@
     },
     {
      "text": "Allakhazam's bestiary types Marquis Dortaleon as undead, unlike the other marquises.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
     },
     {
@@ -164,7 +164,7 @@
     },
     {
      "text": "Lilith the Demon Queen is in Mythic's bestiary; Offline DAoC's world spawns no Lilith.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
     },
     {
@@ -206,7 +206,7 @@
    "events": [
     {
      "text": "Only the realm holding more frontier keeps than the other two can open its Darkness Falls portal. Entrances are in Camelot Hills, the Vale of Mularn and Connacht.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
     },
     {

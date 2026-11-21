@@ -28,10 +28,6 @@
       {
         "trigger": "health<=30",
         "text": "Something inside me is laughing."
-      },
-      {
-        "trigger": "health<=50",
-        "text": "Something inside me is laughing."
       }
     ],
     "death": [

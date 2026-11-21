@@ -21,7 +21,6 @@
   "yells": {
     "aggro": [
       "Uaimh Lairmaster feels threatened and appears more menacing!",
-      "Uaimh Lairmaster feels threatened and appears more menacing!",
       "The den-keeper bristles and bares his teeth."
     ],
     "phases": [
@@ -35,7 +34,6 @@
       "The den is empty now."
     ],
     "slay": [
-      "Drag it to the den.",
       "Drag it to the den.",
       "Bones for the niches.",
       "Mine. My den. Mine."
