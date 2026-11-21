@@ -22,6 +22,9 @@
 # - fixes game files listed in content-patches.json in place, only where the file is the released one or, for a file of
 #   Living Server's own, an earlier Living Server version of it that the entry names ("Replaces"; anything else is left
 #   alone and reported), backed up the same way. Files the entry marks "Keep" (the loading screen) stay on rollback.
+#
+# linux/install_living_server.py (in the repository only, not in any package) is a Python port of this script for Wine,
+# where Windows PowerShell doesn't run. Keep it in step when a check, the backup layout or install-record.json changes.
 param(
     [string]$GameFolder = '',
     [switch]$DryRun,
