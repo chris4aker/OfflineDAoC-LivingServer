@@ -115,6 +115,13 @@ internal sealed partial class MainForm : Form
         ReshowDelay = 100,
         ShowAlways = true,
     };
+    // Under Wine only: checks whether the launcher is the window in front; tooltips are on only while it is (issue #389).
+    // On Windows it never starts, and tooltips show as before (ShowAlways).
+    private readonly System.Windows.Forms.Timer _toolTipWatch = new() { Interval = ToolTipWatchMilliseconds };
+    internal const int ToolTipWatchMilliseconds = 250;
+    // Tooltips come back after this many checks in front in a row, once the alt-tab focus change has settled.
+    private const int ToolTipResumeChecks = 2;
+    private int _checksInFront;
     private readonly DataGridView _grid = new();
     private readonly DataGridView _auctionGrid = new();
     private readonly BindingSource _rvrSource = new();
@@ -260,8 +267,25 @@ internal sealed partial class MainForm : Form
             // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
             await CheckForUpdatesAsync(asked: false);
         };
+        // Issue #389 (Linux, Wine): with the game in front, the launcher's tooltips still reacted to the mouse and showed
+        // over the game, and alt-tabbing back could trip the WinForms keyboard tooltip timers (ToolTipFaultFilter).
+        // Under Wine, tooltips are on only while the launcher is the window in front, and the grids' cell tooltips are
+        // off. On Windows nothing here runs: tooltips still show while another window has the focus (ShowAlways).
+        if (LauncherToolTips.UnderWine)
+        {
+            LauncherToolTips.TurnOffGridToolTipsUnderWine(this);
+            Deactivate += (_, _) => PauseToolTips();
+            Activated += (_, _) => LauncherToolTips.TurnOffGridToolTipsUnderWine(this);
+            _toolTipWatch.Tick += (_, _) => WatchToolTips();
+            _toolTipWatch.Start();
+        }
         FormClosing += (_, _) =>
         {
+            if (LauncherToolTips.UnderWine)
+            {
+                _toolTipWatch.Stop();
+                PauseToolTips();
+            }
             _serverReadinessPoll.Stop();
             _serverLog?.Dispose();
         };
@@ -275,6 +299,7 @@ internal sealed partial class MainForm : Form
             _displayClock.Dispose();
             _autoRefresh.Dispose();
             _serverReadinessPoll.Dispose();
+            _toolTipWatch.Dispose();
             _helpTip.Dispose();
             _releaseWeb?.Dispose();
         }
@@ -461,9 +486,38 @@ internal sealed partial class MainForm : Form
 
     private void SetToolTip(Control root, string text)
     {
-        _helpTip.SetToolTip(root, text);
+        SetTip(root, text);
         foreach (Control child in root.Controls)
             SetToolTip(child, text);
+    }
+
+    /// <summary>Sets a tooltip only when its text changes. Re-setting the same text on every refresh restarts the WinForms
+    /// tooltip state for that control for nothing (see ToolTipFaultFilter).</summary>
+    private void SetTip(Control control, string? text)
+    {
+        if (_helpTip.GetToolTip(control) != (text ?? ""))
+            _helpTip.SetToolTip(control, text);
+    }
+
+    // Wine only (see the constructor). Not logged: it happens on every alt-tab.
+    private void PauseToolTips()
+    {
+        _checksInFront = 0;
+        if (_helpTip.Active)
+            _helpTip.Active = false;
+    }
+
+    private void WatchToolTips()
+    {
+        bool inFront = ActiveForm == this && LauncherToolTips.LauncherIsInFront(out _);
+        if (!inFront)
+        {
+            PauseToolTips();
+            return;
+        }
+        if (_helpTip.Active || ++_checksInFront < ToolTipResumeChecks)
+            return;
+        _helpTip.Active = true;
     }
 
     private Control RealmGenerateButton(int realm, string realmName, Color accent)
@@ -504,7 +558,7 @@ internal sealed partial class MainForm : Form
     {
         BattlegroundBotLevels.Bracket bracket = BattlegroundBotLevels.Default;
         Button button = RealmGenerateCardButton(BattlegroundBotLevels.ButtonText, accent);
-        _helpTip.SetToolTip(button, BattlegroundBotLevels.ButtonTip(bracket));
+        SetTip(button, BattlegroundBotLevels.ButtonTip(bracket));
         button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, 0, bracket);
         return button;
     }
@@ -1107,7 +1161,7 @@ internal sealed partial class MainForm : Form
         _deleteBotButton.Click += async (_, _) => await DeleteSelectedBotAsync();
         panel.Controls.Add(_deleteBotButton);
         panel.Controls.Add(_onlineOnly);
-        _helpTip.SetToolTip(_onlineOnly, "Show only online bots in the current realm and search results. Uncheck to show all bots.");
+        SetTip(_onlineOnly, "Show only online bots in the current realm and search results. Uncheck to show all bots.");
         return panel;
     }
 
@@ -1398,7 +1452,7 @@ internal sealed partial class MainForm : Form
             _midgardValue.Text = RealmRosterValue(snapshot.Bots, "Midgard");
             _hiberniaValue.Text = RealmRosterValue(snapshot.Bots, "Hibernia");
             _performanceValue.Text = snapshot.BotAiDelay is { } aiDelay ? $"{aiDelay.AverageMs:0.0} ms" : "—";
-            _helpTip.SetToolTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
+            SetTip(_performanceValue, snapshot.BotAiDelay is { } aiPeak
                 ? $"{PerformanceHelp}{Environment.NewLine}Last minute: average {aiPeak.AverageMs:0.0} ms, slowest {aiPeak.PeakMs:N0} ms over {aiPeak.Samples:N0} ticks."
                 : $"{PerformanceHelp}{Environment.NewLine}Shown about a minute after the server starts.");
             _startButton.Enabled = !_updating && !_resettingKeepsRelics && !_savingXpRates && !_stoppingServer && snapshot.ServerState == "Stopped" && File.Exists(_serverExecutable);

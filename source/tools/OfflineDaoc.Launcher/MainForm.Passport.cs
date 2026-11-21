@@ -11,7 +11,7 @@ internal sealed partial class MainForm
         Button button = ActionButton("CHARACTER PASSPORT…", DaocTheme.Gold);
         button.Dock = DockStyle.Fill;
         button.Margin = new Padding(0);
-        _helpTip.SetToolTip(button, "Take one of your characters to a friend's world and bring it home again.");
+        SetTip(button, "Take one of your characters to a friend's world and bring it home again.");
         button.Click += (_, _) =>
         {
             if (_passportForm == null || _passportForm.IsDisposed)

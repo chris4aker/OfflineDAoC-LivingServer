@@ -65,6 +65,7 @@ internal sealed class ExchangeSalesForm : Form
         layout.Controls.Add(_grid, 0, 1);
         layout.Controls.Add(_status, 0, 2);
         Controls.Add(layout);
+        LauncherToolTips.TurnOffGridToolTipsUnderWine(this); // issue #389 / #392
         Shown += async (_, _) => await RefreshAsync();
         UiScale.Apply(this);
     }
