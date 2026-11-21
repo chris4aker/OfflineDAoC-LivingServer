@@ -2,13 +2,16 @@ using NUnit.Framework;
 
 namespace OfflineDaoc.Launcher.Tests;
 
-/// <summary>Only the WinForms keyboard tooltip timer fault is skipped; every other error still reaches the dialog.</summary>
+/// <summary>Only errors from the WinForms keyboard tooltip code are skipped; every other error still reaches the dialog.</summary>
 public sealed class ToolTipFaultFilterTests
 {
     // Stands in for System.Windows.Forms.KeyboardToolTipStateMachine so the stack trace names it.
     private static class KeyboardToolTipStateMachine
     {
         public static void Transition() => throw new KeyNotFoundException("The given key was not present in the dictionary.");
+
+        // Wine can't load the accessibility type library a DataGridView cell's keyboard tooltip asks for.
+        public static void ShowToolTip() => throw new System.Runtime.InteropServices.COMException("TYPE_E_CANTLOADLIBRARY", unchecked((int)0x80029C4A));
     }
 
     private static Exception Caught(Action action)
@@ -21,6 +24,10 @@ public sealed class ToolTipFaultFilterTests
     [Test]
     public void Skips_TheKeyboardToolTipTimerFault() =>
         Assert.That(ToolTipFaultFilter.IsKeyboardToolTipFault(Caught(KeyboardToolTipStateMachine.Transition)), Is.True);
+
+    [Test]
+    public void Skips_TheGridKeyboardToolTipComFault() =>
+        Assert.That(ToolTipFaultFilter.IsKeyboardToolTipFault(Caught(KeyboardToolTipStateMachine.ShowToolTip)), Is.True);
 
     [Test]
     public void Keeps_OtherMissingKeyErrors() =>

@@ -115,9 +115,12 @@ internal sealed partial class MainForm : Form
         ReshowDelay = 100,
         ShowAlways = true,
     };
-    // Tooltips come back a moment after the window is active again, once the alt-tab focus change has settled.
-    private readonly System.Windows.Forms.Timer _toolTipResume = new() { Interval = ToolTipResumeMilliseconds };
-    internal const int ToolTipResumeMilliseconds = 400;
+    // Checks whether the launcher is the window in front; tooltips are on only while it is (issue #389).
+    private readonly System.Windows.Forms.Timer _toolTipWatch = new() { Interval = ToolTipWatchMilliseconds };
+    internal const int ToolTipWatchMilliseconds = 250;
+    // Tooltips come back after this many checks in front in a row, once the alt-tab focus change has settled.
+    private const int ToolTipResumeChecks = 2;
+    private int _checksInFront;
     private readonly DataGridView _grid = new();
     private readonly DataGridView _auctionGrid = new();
     private readonly BindingSource _rvrSource = new();
@@ -264,18 +267,16 @@ internal sealed partial class MainForm : Form
             await CheckForUpdatesAsync(asked: false);
         };
         // Issue #389 (Linux, Wine): with the game in front, the launcher's tooltips still reacted to the mouse and showed
-        // over the game, and alt-tabbing back could trip the WinForms keyboard tooltip timer (ToolTipFaultFilter).
-        // Tooltips are off while the launcher isn't the active window.
+        // over the game, and alt-tabbing back could trip the WinForms keyboard tooltip timers (ToolTipFaultFilter).
+        // Tooltips are on only while the launcher is the window in front, and the grids' cell tooltips are off under Wine.
+        LauncherToolTips.TurnOffGridToolTipsUnderWine(this);
         Deactivate += (_, _) => PauseToolTips();
-        Activated += (_, _) => _toolTipResume.Start();
-        _toolTipResume.Tick += (_, _) =>
-        {
-            _toolTipResume.Stop();
-            if (ActiveForm == this)
-                _helpTip.Active = true;
-        };
+        Activated += (_, _) => LauncherToolTips.TurnOffGridToolTipsUnderWine(this);
+        _toolTipWatch.Tick += (_, _) => WatchToolTips();
+        _toolTipWatch.Start();
         FormClosing += (_, _) =>
         {
+            _toolTipWatch.Stop();
             PauseToolTips();
             _serverReadinessPoll.Stop();
             _serverLog?.Dispose();
@@ -290,7 +291,7 @@ internal sealed partial class MainForm : Form
             _displayClock.Dispose();
             _autoRefresh.Dispose();
             _serverReadinessPoll.Dispose();
-            _toolTipResume.Dispose();
+            _toolTipWatch.Dispose();
             _helpTip.Dispose();
             _releaseWeb?.Dispose();
         }
@@ -492,8 +493,27 @@ internal sealed partial class MainForm : Form
 
     private void PauseToolTips()
     {
-        _toolTipResume.Stop();
+        _checksInFront = 0;
+        if (!_helpTip.Active)
+            return;
         _helpTip.Active = false;
+        bool inFront = LauncherToolTips.LauncherIsInFront(out string front);
+        ToolTipFaultFilter.Log?.Write($"Tooltips off (launcher {(ActiveForm == this ? "active" : "not active")}, " +
+                                      $"in front: {(inFront ? "launcher" : front == "" ? "none" : front)}).");
+    }
+
+    private void WatchToolTips()
+    {
+        bool inFront = ActiveForm == this && LauncherToolTips.LauncherIsInFront(out _);
+        if (!inFront)
+        {
+            PauseToolTips();
+            return;
+        }
+        if (_helpTip.Active || ++_checksInFront < ToolTipResumeChecks)
+            return;
+        _helpTip.Active = true;
+        ToolTipFaultFilter.Log?.Write("Tooltips on (launcher in front).");
     }
 
     private Control RealmGenerateButton(int realm, string realmName, Color accent)
