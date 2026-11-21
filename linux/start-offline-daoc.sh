@@ -20,7 +20,6 @@ GAME="$(cd "$GAME" 2>/dev/null && pwd)" || { echo "No game folder at ${1:-${ODAO
 [[ -f "$GAME/runtime/OfflineDAoC.exe" ]] || { echo "$GAME has no runtime/OfflineDAoC.exe: is it the game folder?" >&2; exit 1; }
 
 export WINEPREFIX="${WINEPREFIX:-$(dirname "$GAME")/wineprefix}"
-export WINEARCH="${WINEARCH:-win64}"
 [[ -d "$WINEPREFIX" ]] || { echo "No Wine prefix at $WINEPREFIX (set WINEPREFIX)" >&2; exit 1; }
 for tool in wine winepath python3; do
   command -v "$tool" >/dev/null || { echo "$tool is not installed" >&2; exit 1; }
@@ -31,7 +30,8 @@ mkdir -p "$LOGS"
 cd "$GAME"
 G="$(winepath -w "$GAME" 2>/dev/null || echo "Z:${GAME//\//\\}")"
 
-# Installs an update the launcher closed for. 0 = installed, 1 = failed, 3 = none waiting.
+# Installs an update the launcher closed for. 0 = installed, 1 = failed (the launcher shows why), 3 = none waiting,
+# 4 = one is waiting but the game is still running, 5 = the script itself failed.
 finish_update() { python3 -I "$HERE/finish_launcher_update.py" "$GAME"; }
 
 # An update left half done by an earlier run (the launcher closed for it, but it never got installed): finish it first.
@@ -40,13 +40,19 @@ finish_update || true
 while :; do
   WINEDEBUG="${WINEDEBUG:--all,err+module,err+seh}" \
   DOTNET_ROOT="$G\\tools\\dotnet" DOTNET_ROOT_X64="$G\\tools\\dotnet" DOTNET_MULTILEVEL_LOOKUP=0 \
-    wine runtime/OfflineDAoC.exe >"$LOGS/linux-launcher.log" 2>&1 &
+    wine runtime/OfflineDAoC.exe >>"$LOGS/linux-launcher.log" 2>&1 &
   LAUNCHER=$!
 
   # Keep the client window fullscreen for as long as the launcher runs.
   python3 -I "$HERE/daoc_fullscreen.py" --watch --while-pid "$LAUNCHER" >>"$LOGS/linux-fullscreen.log" 2>&1 &
 
   wait "$LAUNCHER" || true
-  # Did the launcher close for an update? Install it and open the launcher again; otherwise we're done.
-  finish_update || break
+  # Did the launcher close for an update? Then open it again, whether the install worked (0) or failed (1): as on
+  # Windows, it shows the result (runtime/updates/last-update.txt). Anything else and we're done: nothing was waiting
+  # (3), the game is still running (4), or the script failed (5).
+  rc=0
+  finish_update || rc=$?
+  if [[ $rc -ne 0 && $rc -ne 1 ]]; then
+    break
+  fi
 done
