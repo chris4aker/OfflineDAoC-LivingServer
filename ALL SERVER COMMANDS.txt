@@ -463,7 +463,8 @@ NORMAL PLAYER COMMANDS
   /hire race+|race-|class+|class-|gender|look+|look-|hair+|hair-|height+|height-|look - change the companion you design
   /hire name [name] - name them (no name: a random one); /hire confirm - hire them
   /hire summon|dismiss|release|revive <n> - companion n of /hire list
-  /hire gear|stats|spec|trainer|ra|options|repair <n>; /hire train <n> <line>; /hire buyra <n> <ability>; /hire respec <n>
+  /hire gear|stats|spec|trainer|ra|options|repair <n>; /hire buyra <n> <ability>; /hire respec <n>
+  /hire train <n> <line name or number> [level] - raise a spec line by one, or to a level (/hire train 1 mind twisting 12)
   /hire option <n> <row> <choice> - set an AI option from /hire options
   /hire help - every /hire word
   Handler: DOL.GS.Commands.HireCommand165Handler

@@ -148,6 +148,10 @@ namespace DOL.GS
             if (verb == "trainer")
             {
                 CompanionWindows165.SendTrainerWindow(player, hired.Row, bot);
+                // the same by typing, for a line the window has no row to click for (issue #397)
+                player.Out.SendMessage(HireText165.TrainHelp(hired.Row + 1, bot.Name,
+                        CompanionWindows165.Lines(bot).Select(line => line.Name ?? line.KeyName).ToList()),
+                    eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return true;
             }
             HireText165.Run(player, verb, [(hired.Row + 1).ToString()], quiet: true);

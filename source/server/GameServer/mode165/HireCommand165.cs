@@ -16,7 +16,8 @@ namespace DOL.GS.Commands
         "/hire race+|race-|class+|class-|gender|look+|look-|hair+|hair-|height+|height-|look - change the companion you design",
         "/hire name [name] - name them (no name: a random one); /hire confirm - hire them",
         "/hire summon|dismiss|release|revive <n> - companion n of /hire list",
-        "/hire gear|stats|spec|trainer|ra|options|repair <n>; /hire train <n> <line>; /hire buyra <n> <ability>; /hire respec <n>",
+        "/hire gear|stats|spec|trainer|ra|options|repair <n>; /hire buyra <n> <ability>; /hire respec <n>",
+        "/hire train <n> <line name or number> [level] - raise a spec line by one, or to a level (/hire train 1 mind twisting 12)",
         "/hire option <n> <row> <choice> - set an AI option from /hire options",
         "/hire help - every /hire word")]
     public sealed class HireCommand165Handler : AbstractCommandHandler, ICommandHandler
@@ -76,7 +77,8 @@ namespace DOL.GS.Commands
             "/hire name <name> names them (/hire name alone: a random name), /hire confirm hires them. /hire list shows your companions, numbered.",
             "/hire summon <n> (beside a healer), dismiss <n>, release <n>, revive <n> (beside a healer, free).",
             "/hire gear <n> opens their gear window: drag from your backpack onto it, or off it to take items back.",
-            "/hire stats <n>, spec <n>, train <n> <line>, trainer <n> (the trainer window), respec <n>, ra <n>, buyra <n> <ability>, options <n>, option <n> <row> <choice>, repair <n> (beside a smith).",
+            "/hire stats <n>, spec <n>, trainer <n> (the trainer window), respec <n>, ra <n>, buyra <n> <ability>, options <n>, option <n> <row> <choice>, repair <n> (beside a smith).",
+            "/hire train <n> <line name or number> [level] raises a spec line by one, or to that level: /hire train 1 smite, /hire train 1 mind twisting 12, /hire train 1 2 12. /hire spec <n> lists the lines.",
             "Right-click your companion for their own links; a healer's [companions] link opens hiring.",
         ];
 
@@ -176,7 +178,10 @@ namespace DOL.GS.Commands
                 if (verb == "options")
                     Options(player, RowAt(0));
                 else if (LiveAt(player, RowAt(0)) is { } trainee)
+                {
                     CompanionWindows165.SendTrainerWindow(player, RowAt(0), trainee);
+                    Say(player, TrainHelp(RowAt(0) + 1, trainee.Name, LineNames(trainee)));
+                }
                 else
                     Say(player, "Summon that companion first (/hire list).");
                 return;
@@ -205,16 +210,41 @@ namespace DOL.GS.Commands
                     Roster(player);
                 return;
             }
+            // /hire train n <line name or number> [level] (issue #397: only a line number was read, so every line name
+            // answered "Choose a spec line."): the line is found here, and a line that is not one is answered with the
+            // companion's own lines and the words to type
+            Specialization trained = null;
+            int trainLine = -1, trainTo = -1;
+            if (verb == "train")
+            {
+                if (LiveAt(player, RowAt(0)) is not { } trainee)
+                {
+                    Say(player, RowAt(0) < 0
+                        ? "Say which companion first: /hire train <n> <line name or number> [level], n being their number in /hire list."
+                        : "Summon that companion first (/hire list).");
+                    return;
+                }
+                List<Specialization> specs = CompanionWindows165.Lines(trainee);
+                if (!ParseTrain(LineNames(trainee), rest.Skip(1).ToArray(), out trainLine, out trainTo) || trainLine >= specs.Count)
+                {
+                    Say(player, TrainHelp(RowAt(0) + 1, trainee.Name, LineNames(trainee)));
+                    return;
+                }
+                trained = specs[trainLine];
+            }
             // the companion windows: the row first, then the window's own arguments (a line or ability number from 1)
             string[] windowArgs = verb switch
             {
-                "train" or "buyra" => ["companionui", verb, Row(0), rest.Length > 1 && int.TryParse(rest[1], out int k) ? (k - 1).ToString() : "-1"],
+                "train" => ["companionui", verb, Row(0), trainLine.ToString(), trainTo.ToString()],
+                "buyra" => ["companionui", verb, Row(0), rest.Length > 1 && int.TryParse(rest[1], out int k) ? (k - 1).ToString() : "-1"],
                 "option" => OptionArgs(player, Row(0), rest),
                 _ => ["companionui", verb == "gear" ? "vault" : verb, Row(0), .. rest.Skip(1)],   // chat-check: input (command verbs)
             };
             CompanionWindows165.Handle(player, windowArgs);
             Problem(player);
             int row = RowAt(0);
+            if (trained != null && Hire165.Get(player) is not { Problem.Length: > 0 })
+                Say(player, $"{trained.Name ?? trained.KeyName} is now {trained.Level}.");
             switch (verb)
             {
                 case "stats" or "select":
@@ -230,6 +260,73 @@ namespace DOL.GS.Commands
                     Options(player, row);
                     break;
             }
+        }
+
+        /// <summary>The companion's trainable lines by name, in the order /hire spec numbers them.</summary>
+        private static List<string> LineNames(GameBot bot) =>
+            CompanionWindows165.Lines(bot).Select(s => s.Name ?? s.KeyName).ToList();
+
+        /// <summary>A line name as it is compared: its letters and digits, lower case ("Mind Twisting" = "mindtwisting").</summary>
+        private static string LineKey(string text) =>
+            new string((text ?? string.Empty).Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant).ToArray());
+
+        /// <summary>
+        /// Pure: the words after "/hire train n" as a line and a level. The line is its number in /hire spec (from 1) or
+        /// its name: any case, one word or several, whole or its beginning ("mind", "Mind Twist"), or a part of it that
+        /// only one line has ("twisting"). A last number after the line is the level to train it to; without one the
+        /// line goes up by one (toLevel -1). False when no line, or more than one, fits: line is then -1.
+        /// </summary>
+        public static bool ParseTrain(IReadOnlyList<string> lineNames, IReadOnlyList<string> words, out int line, out int toLevel)
+        {
+            line = -1;
+            toLevel = -1;
+            if (lineNames == null || words == null || words.Count == 0)
+                return false;
+            int count = words.Count;
+            if (count > 1 && int.TryParse(words[count - 1], out int level))
+            {
+                if (level < 1)
+                    return false;
+                toLevel = level;
+                count--;
+            }
+            if (count == 1 && int.TryParse(words[0], out int number))
+            {
+                if (number < 1 || number > lineNames.Count)
+                    return false;
+                line = number - 1;
+                return true;
+            }
+            string wanted = LineKey(string.Concat(words.Take(count)));
+            if (wanted.Length == 0)
+                return false;
+            List<string> keys = lineNames.Select(LineKey).ToList();
+            int found = keys.IndexOf(wanted);
+            if (found < 0)
+                found = Only(keys, k => k.StartsWith(wanted, StringComparison.Ordinal));
+            if (found < 0)
+                found = Only(keys, k => k.Contains(wanted, StringComparison.Ordinal));
+            line = found;
+            return found >= 0;
+        }
+
+        /// <summary>The index of the only entry that fits, or -1 when none or several do.</summary>
+        private static int Only(List<string> keys, Predicate<string> fits)
+        {
+            int first = keys.FindIndex(fits);
+            return first >= 0 && keys.FindLastIndex(fits) == first ? first : -1;
+        }
+
+        /// <summary>Pure: what /hire train answers when it can't tell the line: the companion's lines, numbered, and the
+        /// words to type (companion n of /hire list).</summary>
+        public static string TrainHelp(int n, string name, IReadOnlyList<string> lineNames)
+        {
+            if (lineNames == null || lineNames.Count == 0)
+                return $"{name} has no spec lines to train.";
+            string example = lineNames[lineNames.Count - 1].ToLowerInvariant();
+            return $"{name}'s spec lines: {string.Join(", ", lineNames.Select((line, i) => $"{i + 1} {line}"))}. " +
+                   $"Type /hire train {n} <line name or number> [level]: /hire train {n} {example} raises it by one, " +
+                   $"/hire train {n} {example} 10 trains it to 10, /hire train {n} 1 does the same by number.";
         }
 
         private static void Say(GamePlayer player, string text) =>
@@ -348,7 +445,8 @@ namespace DOL.GS.Commands
             var lines = new List<string>
             {
                 $"{bot.CompanionSpecPoints} specialization points to spend.",
-                $"/hire train {row + 1} <line> raises a line by one; /hire trainer {row + 1} opens the trainer window.",
+                $"/hire train {row + 1} <line name or number> raises a line by one, with a level after it to that level",
+                $"(/hire train {row + 1} 1 10). /hire trainer {row + 1} opens the trainer window.",
                 " ",
             };
             List<Specialization> specs = CompanionWindows165.Lines(bot);
