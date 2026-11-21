@@ -88,5 +88,58 @@ namespace DOL.GS.Tests
             Assert.That(layout.Keys.All(slot => slot is >= 0 and < 150), Is.True);
             Assert.That(moved, Is.EqualTo(2));
         }
+
+        // 1.2.1: "Old merchant item templates missing at startup: about 760 error lines at every start from the stock world
+        // data" (KNOWN-ISSUES 1.2). One warning with a count and a few examples; each row is named at debug level.
+
+        [Test]
+        public void MissingTemplatesAreSummedUpInOneLineWithAFewExamples()
+        {
+            var log = new MerchantTradeItems.MissingTemplateLog();
+            for (int i = 0; i < 760; i++)
+                Assert.That(log.Add("list" + i % 40, "old_item_" + i, now: 1_000), Is.True, "each row is new once: it is named at debug level");
+
+            string line = log.Summary(now: 1_000, force: true);
+
+            Assert.That(line, Does.StartWith("MERCHANT_ITEMS_MISSING rows=760 lists=40 this_run=760 "));
+            Assert.That(line, Does.Contain("examples=[list0:old_item_0, list1:old_item_1, list2:old_item_2, list3:old_item_3, list4:old_item_4]"));
+            Assert.That(line, Does.Not.Contain("old_item_5"), "a few examples, not the list");
+            Assert.That(log.Summary(now: 9_000_000, force: true), Is.Null, "said once");
+        }
+
+        [Test]
+        public void AMissingTemplateIsCountedOncePerRun()
+        {
+            var log = new MerchantTradeItems.MissingTemplateLog();
+            Assert.That(log.Add("smith", "Old_Sword", now: 0), Is.True);
+            Assert.That(log.Add("smith", "old_sword", now: 0), Is.False, "the list is read again every five minutes");
+            Assert.That(log.Add("fletcher", "old_sword", now: 0), Is.True, "another list's row");
+            Assert.That(log.Total, Is.EqualTo(2));
+            Assert.That(log.Summary(now: 0, force: true), Does.StartWith("MERCHANT_ITEMS_MISSING rows=2 lists=2 this_run=2 "));
+        }
+
+        [Test]
+        public void RowsFoundLaterWaitAndAreSummedUpTogether()
+        {
+            var log = new MerchantTradeItems.MissingTemplateLog();
+            log.Add("smith", "a", now: 0);
+            log.Summary(now: 0, force: true);
+
+            const int quiet = MerchantTradeItems.MissingTemplateLog.QuietMilliseconds;
+            log.Add("tailor", "b", now: 10_000);
+            Assert.That(log.Summary(now: 10_000, force: false), Is.Null, "not a line per list as lists are read");
+            log.Add("tailor", "c", now: 20_000);
+            Assert.That(log.Summary(now: 10_000 + quiet - 1, force: false), Is.Null);
+
+            string line = log.Summary(now: 10_000 + quiet, force: false);
+            Assert.That(line, Does.StartWith("MERCHANT_ITEMS_MISSING rows=2 lists=1 this_run=3 examples=[tailor:b, tailor:c]"));
+            Assert.That(log.Summary(now: 10_000 + 2 * quiet, force: false), Is.Null);
+        }
+
+        [Test]
+        public void NothingMissingSaysNothing()
+        {
+            Assert.That(new MerchantTradeItems.MissingTemplateLog().Summary(now: 0, force: true), Is.Null);
+        }
     }
 }
