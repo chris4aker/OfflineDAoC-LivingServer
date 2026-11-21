@@ -56,6 +56,13 @@ class LivingServerOnByDefaultText(unittest.TestCase):
     def test_the_tab_says_they_are_on(self):
         self.assertIn("Everything here is on by default", TAB.read_text(encoding="utf-8"))
 
+    def test_the_chat_rate_caption_matches_its_name_and_the_docs(self):
+        # 1.2.1 fix list: the caption read "HOW MUCH THEY TALK" while the accessible name and the docs say "How much bots talk".
+        text = TAB.read_text(encoding="utf-8")
+        self.assertIn('ChatRateInput("How much bots talk")', text)
+        self.assertIn('Caption("HOW MUCH BOTS TALK")', text)
+        self.assertNotIn("THEY TALK", text)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -147,7 +147,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(voices, _voices, null, "Period chat lines from 2002–2003, chosen by realm, class, level and moment, each bot in its own writing style.");
         Dependent(_debates, Add(voices, _debates, null, "Spec arguments, relic alerts and long threads in /faction, every 30–45 minutes while you play. Needs bot voices."),
             v => v.Voices);
-        Dependent(Caption("HOW MUCH THEY TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
+        Dependent(Caption("HOW MUCH BOTS TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
             "2 (the default) sounds like a busy server; 1 is calmer, 3 very busy; 0 only answers. Chat still follows the hour and the bots online. Needs bot voices."), v => v.Voices);
 
         var living = Card("SERVER LIFE", DaocTheme.Gold, 20);
