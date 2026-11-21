@@ -102,8 +102,10 @@ namespace DOL.GS
             string className = d.Class == 0 ? "-" : ScriptMgr.FindCharacterClass((int)d.Class)?.Name ?? d.Class.ToString();
             long cost = HiredCompanions165.NextCost(player);
             string price = cost == 0 ? "no fee (your first companion)" : $"a fee of {Money.GetString(cost)}";
-            player.Out.SendCustomDialog($"Contract of Service: {d.Name}, a level 5 {d.Race} {className}, enters your service for {price}, " +
-                "with a training weapon and nothing else. Sign it?", (p, response) =>
+            int level = HiredCompanions165.StartingLevel(player.Level);
+            player.Out.SendCustomDialog($"Contract of Service: {d.Name}, a level {level} {d.Race} {className}, enters your service for {price}, " +
+                (HiredCompanions165.GetsBasicGear(level) ? "trained and in basic merchant gear. Sign it?" : "trained, with a training weapon. Sign it?"),
+                (p, response) =>
             {
                 if (response != 0x01)
                     return;

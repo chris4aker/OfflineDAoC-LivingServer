@@ -73,6 +73,7 @@ namespace DOL.GS.Commands
         public static readonly string[] HelpLines =
         [
             "/hire beside a healer opens the hire window. Your first companion is free; slots open at levels 5, 10, 15, 20, 30, 40 and 45.",
+            "A companion joins at your level, its specs trained (respec is free) and, above level 5, in basic merchant gear.",
             "/hire race+ race- class+ class- gender look+ look- hair+ hair- height+ height- look (random) - design the companion.",
             "/hire name <name> names them (/hire name alone: a random name), /hire confirm hires them. /hire list shows your companions, numbered.",
             "/hire summon <n> (beside a healer), dismiss <n>, release <n>, revive <n> (beside a healer, free).",
@@ -362,7 +363,7 @@ namespace DOL.GS.Commands
                 return $"Companion to hire: {d.Name}, {d.Race} {className}, {sex}, look {d.Face + 1} of {Hire165.LookCount(d)}" +
                        (hair > 1 ? $", hair color {d.HairColour + 1} of {hair}" : string.Empty) +
                        $", {height}. Cost: {price}. /hire confirm to hire, /hire name <name> to name.";
-            return $"A companion for you: {d.Name} [new name] (or /hire name <name>), a level 5 {className} " +
+            return $"A companion for you: {d.Name} [new name] (or /hire name <name>), a level {HiredCompanions165.StartingLevel(player.Level)} {className} " +
                    $"[previous class] [next class], {d.Race} [previous race] [next race], {sex} [other sex], " +
                    $"look {d.Face + 1} of {Hire165.LookCount(d)} [previous look] [next look] [random look]" +
                    (hair > 1 ? $", hair color {d.HairColour + 1} of {hair} [next hair color]" : string.Empty) +
