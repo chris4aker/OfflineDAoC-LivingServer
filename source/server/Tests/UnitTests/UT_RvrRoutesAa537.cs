@@ -21,4 +21,28 @@ public class UT_RvrRoutesAa537
         Assert.That(PlayerInitRequestHandler.MovesOffUnsafeKeep(ePrivLevel.Player, enemyKeep: false, keepInCombat: true), Is.True);
         Assert.That(PlayerInitRequestHandler.MovesOffUnsafeKeep(ePrivLevel.Player, enemyKeep: false, keepInCombat: false), Is.False);
     }
+
+    // ---- Midgard's defence of Dun nGed marched with 0 bots (16:38:53) ------------------------------------------------
+
+    [Test]
+    public void DefenseMusterDeadline_NoForceAssigned_StandsDown()
+    {
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(0, 0, 64, playerDefense: false, extended: false),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.StandDown));
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(0, 3, 64, playerDefense: true, extended: true),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.StandDown), "stale muster entries are no defenders");
+    }
+
+    [Test]
+    public void DefenseMusterDeadline_WithDefenders_KeepsTheOldRule()
+    {
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(16, 10, 64, playerDefense: false, extended: false),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.Extend));
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(16, 10, 64, playerDefense: false, extended: true),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.March));
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(16, 10, 64, playerDefense: true, extended: false),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.March));
+        Assert.That(AutonomousRvrEventLayer.DefenseMusterDeadline(40, 32, 64, playerDefense: false, extended: false),
+            Is.EqualTo(AutonomousRvrEventLayer.DefenseMusterDeadlineOutcome.March));
+    }
 }
