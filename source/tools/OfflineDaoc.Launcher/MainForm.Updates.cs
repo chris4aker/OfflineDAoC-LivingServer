@@ -110,7 +110,7 @@ internal sealed partial class MainForm
     {
         _updateStatus.Text = text;
         _updateStatus.ForeColor = color;
-        _helpTip.SetToolTip(_updateStatus, tip ?? text);
+        SetTip(_updateStatus, tip ?? text);
     }
 
     /// <summary>Runs after the window opens (asked: false) and from the link (asked: true). Silent on failure unless asked.</summary>
@@ -167,15 +167,19 @@ internal sealed partial class MainForm
             $"Living Server {release.Version.DisplayName}{Environment.NewLine}{string.Join(Environment.NewLine, notes)}");
         _startButton.Text = "GET UPDATE";
         ((RuneButton)_startButton).Accent = DaocTheme.Gold;
-        _helpTip.SetToolTip(_startButton, $"Living Server {release.Version.DisplayName} is out. Click to install it, or choose Later to start the server.");
+        SetTip(_startButton, $"Living Server {release.Version.DisplayName} is out. Click to install it, or choose Later to start the server.");
     }
+
+    // A fixed tip rather than none: removing the tip from the focused button mid-timer is one way to trip the WinForms
+    // keyboard tooltip bug (ToolTipFaultFilter).
+    private const string StartButtonTip = "Start the game server.";
 
     private void ClearUpdateOffer()
     {
         _updateOffer = null;
         _startButton.Text = "START SERVER";
         ((RuneButton)_startButton).Accent = StartAccent;
-        _helpTip.SetToolTip(_startButton, null);
+        SetTip(_startButton, StartButtonTip);
     }
 
     /// <summary>START SERVER, or the update dialog while an update is offered.</summary>
