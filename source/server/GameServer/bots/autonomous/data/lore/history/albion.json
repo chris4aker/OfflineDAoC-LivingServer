@@ -117,7 +117,7 @@
       "id": "alb-the-old-kingdoms",
       "order": 3,
       "name": "The Old Kingdoms (Uther and Arthur)",
-      "summary": "Rome left, and kings rose. Uther took the throne and was buried, the chronicles say, inside the ring of stones; in his day the Roman lord Articus died on Dartmoor with all his house, and the Duke of Cornwall's son came back alone and would not say what he had seen. Arthur was king in Camelot. He chained the afanc of Llyn Barfog, sailed Prydwen to Caer Sidi and came home with seven, and fell at Camlann to Mordred. Merlin taught in the colleges of Avalon, and so did his pupil Morgana, who wanted her brother's throne.",
+      "summary": "Rome left, and kings rose. Uther took the throne and was buried, the chronicles say, inside the ring of stones; in his day the Roman lord Articus died on Dartmoor with all his house, and the Duke of Cornwall's son came back alone and would not say what he had seen. Arthur was king in Camelot, and the Round Table that came to him with his queen held the best knights of the age: Kay his foster-brother and seneschal, Lancelot of the Lake, Tristan of Lyonesse, Percival out of the Welsh woods, Bors and the rest, until the Grail drew them out of the hall and few came back. He chained the afanc of Llyn Barfog, sailed Prydwen to Caer Sidi and came home with seven, and fell at Camlann to Mordred. Merlin taught in the colleges of Avalon, and so did his pupil Morgana, who wanted her brother's throne.",
       "events": [
         {
           "text": "Arthur's horse dragged the afanc from Llyn Barfog (Welsh folklore).",
@@ -173,6 +173,16 @@
           "text": "Bedivere lives out his life as a hermit at Glastonbury, near the tomb of Arthur.",
           "provenance": "myth",
           "source": "Malory, Le Morte d'Arthur, book 21 (the burial of Arthur and the hermit's life of Bedivere)"
+        },
+        {
+          "text": "Tristan, son of King Meliodas of Lyonesse and nephew of King Mark of Cornwall, kills the Irish champion Marhaus in Cornwall's quarrel over tribute and is later given Marhaus's seat at the Round Table.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur (the book of Sir Tristram)"
+        },
+        {
+          "text": "After the passing of Arthur, Lancelot comes to the hermitage near Glastonbury, takes the habit and becomes a priest there, and dies there; his body is carried to Joyous Gard, where his brother Sir Ector de Maris, come too late, speaks the lament that he was the courtliest knight that ever bore shield.",
+          "provenance": "myth",
+          "source": "Malory, Le Morte d'Arthur, book 21 (the death of Sir Lancelot)"
         }
       ],
       "places": [
@@ -183,7 +193,10 @@
         "forest-sauvage",
         "caer-sidi",
         "camelot-hills",
-        "avalon-marsh"
+        "avalon-marsh",
+        "camelot",
+        "lyonesse",
+        "cornwall"
       ],
       "bosses": [
         "wrath-of-mordred",
