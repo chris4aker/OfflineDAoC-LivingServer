@@ -109,7 +109,7 @@
     "keyword": "Pathfinder Folar",
     "text": "The Shade Seekers' pathfinder, who finds where each lost dead of the south belongs so that [Boligar]'s order can lead it home. The [Remnants] tell of a skogsra who walked beside Hrefna. See [skogsra]."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: I got lost in the south once, properly lost, in the cold that comes up out of the Iarnwood, and walked in circles until dark. My own tracks kept meeting me in the snow, and each time they looked fresher. Then a woman stepped out of the trees ahead of me and said, in our tongue, that Hagall was that way, and pointed. I went that way and was home by midnight. I have told no one this but my wife. She said I was a fool to follow a skogsra. I said she had been right. My wife said: that is what frightens me.",
+  "bookPage": "I got lost in the south once, properly lost, Solvi of Hagall's trap-lines admit, in the cold that comes up out of the Iarnwood, and walked in circles until dark. My own tracks kept meeting me in the snow, and each time they looked fresher. Then a woman stepped out of the trees ahead of me and said, in our tongue, that Hagall was that way, and pointed. I went that way and was home by midnight. I have told no one this but my wife. She said I was a fool to follow a skogsra. I said she had been right. My wife said: that is what frightens me.",
   "chronicle": {
     "win": "{raidLeader} of {realm} killed Pathfinder Folar of the Shade Seekers in Faraheim in {minutes} minutes.",
     "loss": "Pathfinder Folar led {raidLeader}'s party from {realm} the wrong way after {minutes} minutes."

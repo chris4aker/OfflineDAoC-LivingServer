@@ -136,7 +136,7 @@
   "keyword": "vone",
   "text": "Earl Vone, clerk of Grand Chancellor [Adremal], who cannot read and so cuts exactly the lines he is shown in chalk. He has cut all ten Rolls of the court and every line struck from them, and in the Ninth Roll he cut [Mystemas] small."
  },
- "bookPage": "From the notes of a Camelot stonemason who went down behind a column of knights to copy the approach walls: The cutting is the best I have seen, better than any in the city, and the chalk is still on the newest line. Every stroke is even. Every gouge is clean to the same depth. I watched the one who cuts. He held the chisel as I hold mine and set it to a chalk mark and struck, and when I spoke to him he looked at me with no understanding at all. He cannot read what he cuts. A mason who cannot read cannot carve a mistake. I envied him for that, and I am ashamed of it.",
+ "bookPage": "A Camelot stonemason went down behind a column of knights to copy the approach walls, and his notes say: The cutting is the best I have seen, better than any in the city, and the chalk is still on the newest line. Every stroke is even. Every gouge is clean to the same depth. I watched the one who cuts. He held the chisel as I hold mine and set it to a chalk mark and struck, and when I spoke to him he looked at me with no understanding at all. He cannot read what he cuts. A mason who cannot read cannot carve a mistake. I envied him for that, and I am ashamed of it.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} struck the chisel from Earl Vone's hand in {minutes} minutes.",
   "loss": "Earl Vone cut {realm}'s raid under {raidLeader} into the Roll of the Visitors, already struck."

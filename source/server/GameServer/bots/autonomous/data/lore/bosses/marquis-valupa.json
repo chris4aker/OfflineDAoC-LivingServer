@@ -135,7 +135,7 @@
   "keyword": "valupa",
   "text": "The Marquis of the Approach, answering only to [Legion], who sets Legion's Own on the slope so that no raid meets them out of order. It is the one demon that always knows where Duke [Satori] stands, and it has never said."
  },
- "bookPage": "From The Slope, a Midgard skald's verse turned into plain speech: Down the slope to the Master's door the demons stand like men in a shield-wall that has been set by someone who has fought a great many battles: knights here, flayers there, a questioner in the middle, and a marquis above them all looking down the slope at you as a jarl looks down a hall. We tried to come down in our own order. The marquis moved one knight three paces to the left, and our whole order was wrong. I have never seen so small a move do so much.",
+ "bookPage": "Down the slope to the Master's door, in The Slope, a Midgard skald's verse turned into plain speech, the demons stand like men in a shield-wall that has been set by someone who has fought a great many battles: knights here, flayers there, a questioner in the middle, and a marquis above them all looking down the slope at you as a jarl looks down a hall. We tried to come down in our own order. The marquis moved one knight three paces to the left, and our whole order was wrong. I have never seen so small a move do so much.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} broke the slope-keeper, Marquis Valupa, in {minutes} minutes.",
   "loss": "Marquis Valupa set Legion's Own against {realm}'s raid under {raidLeader}, and every piece was in its place."

@@ -109,7 +109,7 @@
     "keyword": "Luso",
     "text": "A scimitar cat lost as a cub on the road from Aegirhamn, grown up among the [terror birds] of the middle country; it walks like a bird now, and two birds stand with it. Not of [Valmak]'s flock."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: I set a cat trap once in the middle country, the kind we use for scimitar cats in the west, heavy jaws and a lure of fresh liver. Luso walked up to it with the two birds behind, looked at it, and stood beside it for the rest of the day without moving. At dusk one of the birds stepped on the trap and broke it with its foot, and then the three of them walked away together. I took the trap home. I do not set cat traps in the middle country now.",
+  "bookPage": "I set a cat trap once in the middle country, writes Solvi of Hagall on his trap-lines, the kind we use for scimitar cats in the west, heavy jaws and a lure of fresh liver. Luso walked up to it with the two birds behind, looked at it, and stood beside it for the rest of the day without moving. At dusk one of the birds stepped on the trap and broke it with its foot, and then the three of them walked away together. I took the trap home. I do not set cat traps in the middle country now.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Luso and its birds in Faraheim in {minutes} minutes.",
     "loss": "Luso and its two birds outwaited {raidLeader}'s party from {realm} after {minutes} minutes."

@@ -109,7 +109,7 @@
     "keyword": "Bokko",
     "text": "Chief of the southern tradklan trunks, larger and older than [Cronk], who says the right of fire was his on the night the houses burned until [Trude] chose. His people live cold. See [tree-clan]."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: the southern trunks are the coldest place I know of in the western woods, and I have slept in snow. No smoke. No hearth. The tradklan there eat their meat raw and their children sleep in heaps for the warmth. Their breath freezes on the furs, and in the mornings the mothers knock the rime off with the backs of their hands. I saw the clay pot once, carried by a medicine man on a cord round his neck, and asked through the kobold what was in it. The medicine man opened it for me. It was a black coal, cold as a stone. He said: the next chief. Then he closed it again.",
+  "bookPage": "The southern trunks are the coldest place I know of in the western woods, runs a note on the trap-lines of Solvi of Hagall, and I have slept in snow. No smoke. No hearth. The tradklan there eat their meat raw and their children sleep in heaps for the warmth. Their breath freezes on the furs, and in the mornings the mothers knock the rime off with the backs of their hands. I saw the clay pot once, carried by a medicine man on a cord round his neck, and asked through the kobold what was in it. The medicine man opened it for me. It was a black coal, cold as a stone. He said: the next chief. Then he closed it again.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Bokko's cold trunks in Faraheim in {minutes} minutes.",
     "loss": "Bokko and the southern trunks left {raidLeader}'s party from {realm} cold after {minutes} minutes."

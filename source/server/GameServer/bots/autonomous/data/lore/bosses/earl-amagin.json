@@ -141,7 +141,7 @@
   "keyword": "amagin",
   "text": "The Master's Examiner, once an Inquisitor of Prince [Ba'alorien]'s cloister, who reads each condemned demon its struck line at the door before Marquis [Haurian] carves it. He keeps an account of every voice in [Legion]; the one blank in it is the [Chamberlain]'s name."
  },
- "bookPage": "From an imp's account of the door, told to a Midgard skald in the Midgard hall for a cup of mead: They brought one of the great ones down the slope between knights, horned and taller than a pine. The grey one by the door read to it from the wall, slowly, and then read the same words again with one word changed, and asked it whether it had heard. The great one said no. The grey one read again. The third time the great one said yes, very quietly, and the Carver came forward with his hooks. I was close enough to hear the grey one say afterwards, to nobody, that it would know that voice again.",
+ "bookPage": "They brought one of the great ones down the slope between knights, horned and taller than a pine: an imp's account of the door, told to a Midgard skald in the Midgard hall for a cup of mead. The grey one by the door read to it from the wall, slowly, and then read the same words again with one word changed, and asked it whether it had heard. The great one said no. The grey one read again. The third time the great one said yes, very quietly, and the Carver came forward with his hooks. I was close enough to hear the grey one say afterwards, to nobody, that it would know that voice again.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} silenced Earl Amagin, the Master's Examiner, in {minutes} minutes.",
   "loss": "Earl Amagin read {realm}'s raid under {raidLeader} its line at the Master's door, twice."

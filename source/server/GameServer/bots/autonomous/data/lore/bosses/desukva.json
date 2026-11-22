@@ -104,7 +104,7 @@
     "keyword": "Desukva",
     "text": "The reckoner of the [svartalfar]'s eastern camps, who keeps her clan's tally of the grey stone of [the ruins] on a height above the [Kariig] twins. She counts everything except one."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: the reckoner on the eastern height copies our beam. I know because her copy was brought to me once by a scout who had killed her and carried off a bundle of her sticks. They were our marks in her hand, every death on the beam for forty winters, and one stick that had nothing on it but a single notch near the top, very old, and then nothing, as if she had started to count something and stopped. I gave the sticks back. The scout thought me mad. She is up there again now. I hope they reached her.",
+  "bookPage": "The reckoner on the eastern height copies our beam, writes Brisa the beam-cutter of Svarhamr. I know because her copy was brought to me once by a scout who had killed her and carried off a bundle of her sticks. They were our marks in her hand, every death on the beam for forty winters, and one stick that had nothing on it but a single notch near the top, very old, and then nothing, as if she had started to count something and stopped. I gave the sticks back. The scout thought me mad. She is up there again now. I hope they reached her.",
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Desukva's count on the eastern height of Malmohus in {minutes} minutes.",
     "loss": "Desukva tallied {raidLeader}'s party from {realm} on her height after {minutes} minutes."

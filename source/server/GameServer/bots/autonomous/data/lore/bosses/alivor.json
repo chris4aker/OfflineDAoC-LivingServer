@@ -109,7 +109,7 @@
     "keyword": "Alivor",
     "text": "Elder of the Remnants' watch at the [post], a tracker who walked the island with [Orri]. He holds that the right number of people digging at the [bones] is none, and attacks those the dwarves do not trust."
   },
-  "bookPage": "From the slates of Orri of Hagall: Alivor walked with me the first season. He is a better tracker than I am a slate-writer, and he read the ground round the bones for a day and then sat down and would not go nearer. I asked him what he had read. He said the beasts of the vigil had all come there walking, from every side of the island, a long time ago, and none of them had ever walked away. He said a dwarf does not need a slate to know what that means. I wrote it down anyway.",
+  "bookPage": "Alivor walked with me the first season, Orri of Hagall writes on his slate. He is a better tracker than I am a slate-writer, and he read the ground round the bones for a day and then sat down and would not go nearer. I asked him what he had read. He said the beasts of the vigil had all come there walking, from every side of the island, a long time ago, and none of them had ever walked away. He said a dwarf does not need a slate to know what that means. I wrote it down anyway.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke the Remnants' watch at Alivor's post in Modernagrav in {minutes} minutes.",
     "loss": "Alivor and the Remnants' watch turned {raidLeader}'s party from {realm} back from the bones after {minutes} minutes."

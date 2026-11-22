@@ -93,7 +93,7 @@
     "keyword": "Valmak",
     "text": "The terror bird the others wait for. When he cries, everything near him stops and stares for a long minute, and he uses that minute well."
   },
-  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the deer graze right up to the great birds' feet, and the birds do not look at them, and the deer do not look up. I watched for a whole afternoon. Once, the largest bird struck, too fast to see, and cried, and four deer near the one it struck stood stock still with their heads up, not running, not grazing, for as long as it would take a skald to sing a short song. The rest of the herd, further off, ran. By the time the four could move again, there were three.",
+  "bookPage": "The deer graze right up to the great birds' feet, in A Map That Lies by Gunnvor of Jordheim, and the birds do not look at them, and the deer do not look up. I watched for a whole afternoon. Once, the largest bird struck, too fast to see, and cried, and four deer near the one it struck stood stock still with their heads up, not running, not grazing, for as long as it would take a skald to sing a short song. The rest of the herd, further off, ran. By the time the four could move again, there were three.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Valmak the terror bird in {minutes} minutes.",
     "loss": "Valmak's cry held {raidLeader}'s party from {realm} still for {minutes} minutes, and that was enough."

@@ -109,7 +109,7 @@
     "keyword": "Sallours",
     "text": "An old shade far in the lower halls, among the ancient shadows of the morvalt dead the [mound] would not take. It asked Ottkel the cloak-walker whether the mound was open again. See [Troll Fathers]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: kobolds bury their dead in small places, close, where they can be visited, and I have always been glad of it. In Trollheim I understood why. The Valkyn guide pointed down a long hall toward the north-west and said that the morvalt dead were down there, all the ones from the first days, waiting with an old shade for someone to carry them. I said: can't the morvalt carry them? She said they were never shown how, and the ones who knew are gone. She said it as if it were her own fault.",
+  "bookPage": "Kobolds bury their dead in small places, close, where they can be visited, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and I have always been glad of it. In Trollheim I understood why. The Valkyn guide pointed down a long hall toward the north-west and said that the morvalt dead were down there, all the ones from the first days, waiting with an old shade for someone to carry them. I said: can't the morvalt carry them? She said they were never shown how, and the ones who knew are gone. She said it as if it were her own fault.",
   "chronicle": {
     "win": "{raidLeader} of {realm} laid Sallours to rest in Trollheim's lower halls in {minutes} minutes.",
     "loss": "Sallours and the ancient shadows kept {raidLeader}'s party from {realm} after {minutes} minutes."
