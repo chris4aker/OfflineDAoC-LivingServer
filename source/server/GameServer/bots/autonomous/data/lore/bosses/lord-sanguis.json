@@ -31,7 +31,7 @@
       "source": "https://en.wikipedia.org/wiki/Caerwent"
     },
     {
-      "text": "The book pages after the first (the entry from Titus Senecio's daybook) are Living Server writing.",
+      "text": "The book pages after the first (the entry from Gaius Senecio's granary daybook at Venta, with his grandson Titus's margin note) are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
     }
@@ -111,7 +111,7 @@
   },
   "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Our captain shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. None of us could look straight at it; we struck where the heat was. When it fell the second time, the floor went from red to grey, and stayed grey.",
   "bookPages": [
-    "The Ides. Forty measures out to the garrison, eleven to the poor, the rest dry. The magistrate sat late again; three men of the river gang were sent in to him in the morning, and none has come out. My clerk will not carry the tally to the basilica after dark, nor will any man of mine, so I carried it myself, and the magistrate thanked me and asked after my father, whom he knew as a boy. My father is seventy this winter. The magistrate has not changed since I was a boy myself. The floor under his chair has a red stone in it that the slaves will not wash. Eleven measures out to the poor tomorrow, if any come; fewer come each month. Written in the daybook of Titus Senecio, keeper of the public granary at Venta, and copied out of the old wax into ink by the canons of Caerwent."
+    "The Ides. Forty measures out to the garrison, eleven to the poor, the rest dry. The magistrate sat late again; three men of the river gang were sent in to him this morning, and none has come out. My clerk will not carry the tally to the basilica after dark, so I carried it myself, and the magistrate thanked me and asked after my father, whom he knew as a boy. My father is seventy this winter. The magistrate has not changed since I was a boy myself. The floor under his chair has a red stone in it that the slaves will not wash. So Gaius Senecio, keeper of the public granary at Venta before his grandson Titus, in the old wax, which the canons of Caerwent copied into ink. In the margin, in Titus's hand, the year the legions sailed: the basilica is empty now; I have been told why, and I do not believe it."
   ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
