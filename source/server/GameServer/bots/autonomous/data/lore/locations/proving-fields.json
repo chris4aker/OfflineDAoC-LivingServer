@@ -92,20 +92,72 @@
  "legend": "The battlegrounds are the four small lands of the realm war for the young, from their last years before seasoning to the edge of hardened veterans: Abermenai for the young not yet seasoned, Thidranki for bands new to their seasoning, Murdaigean for seasoned bands well along, and Caledonia for the most seasoned, on the edge of veterans. Any of the realm's porters sends you to the one that matches your seasoning and no other, and once you outgrow it you cannot go back. Die there and you wake at your own portal keep, a short run from the fighting. Each has three portal keeps whose guards are beyond any muster and kill any enemy in reach, and a central keep held by renegades (Thidranki's by whoever took it last). Everyone remembers their first one, and everyone complains about the ones kitted out far beyond their seasons. The renegade keeps get harder field by field: in Abermenai guards each a seasoned band's foe and a chieftain near the top of that strength; in Murdaigean guards at a seasoned band's hardest and a chieftain for hardened veterans; in Caledonia guards for hardened veterans and a chieftess well up among them; while Thidranki's keep has no renegades at all.",
  "atmosphere": {
   "firstEntry": [
-   "Four small fields, and the young of three realms."
+   "Four small fields, and the young of three realms.",
+   "The fields count the war in you, not your years.",
+   "Three realms' young, and one keep in the middle.",
+   "Hazel, charge or geis: every realm has its reason."
+  ],
+  "areas": [
+   {
+    "name": "the Albion road in Thidranki",
+    "region": 252,
+    "x": 35195,
+    "y": 45316,
+    "z": 0,
+    "radius": 1500,
+    "lines": [
+     "The same strides from gate to keep as in every field.",
+     "A mason's chalk mark on a stone, half rubbed away.",
+     "The road runs as straight as if someone measured it."
+    ]
+   },
+   {
+    "name": "the Hibernian road in Murdaigean",
+    "region": 251,
+    "x": 25725,
+    "y": 28264,
+    "z": 0,
+    "radius": 1500,
+    "lines": [
+     "Halfway from the gate to the keep, to the stride.",
+     "Ogham on a marker stone, too worn to read.",
+     "The way back to the gate is the same in every field."
+    ]
+   }
   ]
  },
  "botLines": {
   "lore": [
    "albs say the bgs are from camlann, mids say its hazel law, hibs say its a geis. [nobody agrees|go figure]",
-   "the portal keeps are in the exact same spots in all four bgs. [nobody knows why|weird if you think about it]"
+   "the portal keeps are in the exact same spots in all four bgs. [nobody knows why|weird if you think about it]",
+   "the bgs count the war in you, not your years. outgrow one and it [puts you out|wont take you back]",
+   "albs say the fields keep a charge laid after camlann, that the young never get spent in their elders' quarrel again",
+   "camlann started at a parley. an adder bit a knight, he drew on it, and both hosts saw the blade",
+   "mids say the bgs are hazelled ground, like vinheath in egil's saga. you only fight your match",
+   "hibs say the fields lie under a geis, the other half of macha's curse, the one that passed over the boys of emain",
+   "thrice fifty boys of emain went south to stand by the one holding the fords. none came home. hibs tell it at the bg gates",
+   "an alb mason walked all four bgs. same strides from gate to keep in every one, [to his foot|within a foot]",
+   "every realm cuts its gate runes on the same stone in every bg. fourth course up, left side. nobody chose it",
+   "all three realms say they raised their bg portal keeps the same week. none of them ever asked the others",
+   "the renegades in the bg keeps are grown soldiers. the fields let them in and [nobody knows why|nobody agrees why]"
   ],
   "rumour": [
-   "[heard|someone said] the masters at the bg portal keeps never go one step past the gate"
+   "[heard|someone said] the masters at the bg portal keeps never go one step past the gate",
+   "[heard|someone said] the bg portal keeps were standing before any realm built them and the realms just moved in",
+   "heard one surveyor walked all four bgs before the realms came. nobody knows whose he was",
+   "[heard|word is] if you could stay in a bg past your seasoning youd see the field change round you",
+   "someone said the gate stones in the bgs are warm on the fourth course. [all of them|in every field]",
+   "heard a mid skald say egil buried his brother beside the first hazelled field and the bgs remember it",
+   "[heard|someone said] the renegade chieftains were young in the bgs once and never left",
+   "heard the masters at the bg gates [have never been beaten|cant be beaten]. nobody tested it twice"
   ],
   "tell": [
    "the battlegrounds? four little realm war fields, young to nearly hardened. abermenai, thid, murd, cale. the porters send you to yours",
-   "bgs are where you learn the realm war before the frontier. die there and you wake at your own pk"
+   "bgs are where you learn the realm war before the frontier. die there and you wake at your own pk",
+   "which bg do i go to? the porters only send you to the one for your seasoning. abermenai first, then thid, murd, cale",
+   "what happens if i die in a bg? you wake at your own portal keep, a short run from the fighting",
+   "are the bg portal keeps safe? yes, the guards there kill any enemy in reach. everything between them isnt",
+   "who holds the bg keeps? renegades in abermenai, murd and cale, harder each field. thid faste is whoever took it last"
   ]
  },
  "loremaster": {
@@ -127,7 +179,8 @@
   "pages": [
    "Hywel, master mason of Caerwent, to the Academy. You asked me to walk the four fields from Albion's gate and set down the measure of each, and I have done it. From the gate of our portal keep to the gate of the keep in the middle is the same number of strides in Abermenai as in Caledonia, and the same in Thidranki and Murdaigean, within the length of my foot. I thought at first that our masons had worked to one drawing. Then I stood on our wall and took the bearings of the other realms' keeps, and they also stand in the same places in every field. I have no drawing that explains that, and I would ask the Academy not to send me again to look for one.",
    "Arngrim the rune-cutter, as he told it to the jarl's steward. I cut the runes on the way at our gate in all four fields, as my master did before me. The jarl wanted to know whether the Albions and the Hibernians cut the same runes on theirs, so in the summer of the truce I crossed the hazel line under a white shield and looked. They do not. Each realm keeps its own way in its own fashion, the Albions with wizards' letters and the Hibernians with ogham. But every way is cut on the same stone of the same course of the gate, the fourth from the ground, on the left as you come in. Nobody in any of the three realms could tell me who chose it.",
-   "Fionnait the harper, for the filidh of Tir na Nog. The rolls of all three realms name the summer their portal keeps were raised, and I have read all three, which took some arranging. All three name the same summer, and the same week of it. Three realms raised twelve keeps in one week, in four countries none of them could walk to, and each believes it did so alone. I used to think that was the strangest thing about the fields. Now I think the strangest thing is that in all the years since, none of the three has ever thought to ask the others."
+   "Fionnait the harper, for the filidh of Tir na Nog. The rolls of all three realms name the summer their portal keeps were raised, and I have read all three, which took some arranging. All three name the same summer, and the same week of it. Three realms raised twelve keeps in one week, in four countries none of them could walk to, and each believes it did so alone. I used to think that was the strangest thing about the fields. Now I think the strangest thing is that in all the years since, none of the three has ever thought to ask the others.",
+   "The copyist's note, at the end of the book. I am a clerk of the Academy, and I copied these three accounts into one book because the masters asked me to, and they asked me to because the three had come to them by three roads in the same season and nobody could decide which shelf they belonged on. I have walked none of the fields. I am too old for any of them, and I was too old before they were found. But I have read the mason's strides against the rune-cutter's stone and the harper's week, and I have drawn all three on one sheet, and the sheet is very neat. I have put it away in the press with the book. The masters have not asked to see it."
   ]
  },
  "bosses": [],
