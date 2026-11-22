@@ -31,6 +31,19 @@ review's findings and the work left to do.
    lore never mentions a companion. `tools/lore/tests` checks the list in `Hire165.cs` against `name_counts.py` HEROES.
    Gareth, Isolde, Diarmuid and Deirdre left the list; companions already hired keep their names.
 
+### Owner notes for later passes (2026-11-21; do not undo)
+
+- **Keep the St Patrick's Day holiday chat line** (`holidays.lines`). It is a present-day holiday line, not Hibernian
+  legend, and the rule against Saint Patrick in legend does not reach it. Later passes must not remove it.
+- **Leave the present-day "Sir Bors" in `tepoks-mine`** as he is. He is the game's Hidden Insurrection quest NPC, not
+  the Grail knight. Don't rename him. The counter's Bors count includes him.
+- **Keep the Shrouded Isles hint** that the first of the nine sisters of the Isle of Apples has a name close to
+  Morgana's.
+- **Caer Sidi's toll is settled:** the third company went up eighty strong and came home **sixty-seven**. It lost nine in
+  the crypts, two in Ilron's gallery and two to the Silencer. No period source gives a number, so the owner had the
+  files made to agree. Keep every file to these numbers.
+- **King Mark is Duke Marcus's son**, the son who came home alone from Dartmoor (`cornwall`, `dartmoor`; `original`).
+
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
@@ -169,6 +182,35 @@ are not added yet:
       - `UT_LoreBible` was not run, because there is no dotnet in that environment.
     - **Open for the owner:** whether King Mark is Duke Marcus's son (A9 in the review), and the hired-companion
       names that match legend names.
+  - **Third pass: deepening (HANDOFF 1.5)**, on branch `wt3/lore3-review`. Text was only added or reworded; nothing was
+    cut.
+    - **Writers:**
+      - Albion, `dde65a09`: King Mark as Duke Marcus's son; the Caer Sidi labels ("the priest" no longer means Ilron);
+        every Albion location and boss at its DepthReport floors; the epic summaries at 500 words; the Isle of Apples,
+        the Inconnu and two letters in the Shrouded Isles; five thin minor bosses; book pages at 100 words.
+      - Midgard and Neutral, `3a20336a`: the four proving fields and their overview (Cad Goddeu and Myrddin in
+        Caledon, the Second and Fourth Branches in Abermenai, Thidrandi and the dísir, Keating's tests, Vinheath and
+        Dunheath); Luso and six minor bosses; saga-voice chapters for Lydsyg, Dyranapur and Hurjavelen.
+      - Hibernia, `7c1e1b71`: Blight, the Cursed Forest and 14 thin bosses, from the Mythological, Ulster and Fenian
+        cycles.
+    - **Independent review** ([REVIEW-THIRD-PASS.md](REVIEW-THIRD-PASS.md), fixes in `d9763dd5`): 1 High, 4 Medium,
+      13 Low. All are fixed.
+      - The High: the companion name Gráinne told of in `giant-caithor` (decision 7).
+      - The Mediums:
+        - Caer Sidi's toll (now 67 of 80 everywhere);
+        - *De Gabáil in t-Sída* reversed (the Mac Óc tricks the Dagda; Elcmar is *Tochmarc Étaíne*);
+        - Clíodhna's birds, which are not in the *Dindshenchas*;
+        - the Academy's Merlin searchers in Caledon, now doubters of the Crystal Cave account.
+      - The Lows include the two Ferguses, Egil's chapters, Hlöd as half-brother, Keating's third article and the
+        repeated teller formulas.
+      - No `myth` fact needed relabelling `original`.
+      - The last "Catacombs-era" label in `hibernia-wilds` is reworded.
+      - `UT_LoreBible` was not run (no dotnet).
+    - **Open for the owner:**
+      - the four older facts that cite "Mythic's Catacombs lore" (review X3; recommendation: keep them, and show their
+        date);
+      - adding legend names such as Gráinne to the companion-name test;
+      - rewording the Avalon City summary that repeats its chapter.
 - **Next:**
   1. **Decision 5, second pass.** Done and reviewed (see above). Show the owner samples before merging. The list it
      worked from:
@@ -180,6 +222,11 @@ are not added yet:
      repetitive, and restore more names (up to the cap) where the reviewer finds a scene that needs one.
   3. **Independent prose review.** Run one after each batch. The reviewer must not be the writer. Apply its fixes.
      Show the owner samples before merging.
-  4. **Then** HANDOFF.md step 1.5: deepen the thin entries.
+  4. **HANDOFF.md step 1.5, deepening.** The third pass (above) did Albion, the proving fields, Blight, the Cursed Forest
+     and the thinnest Hibernian and Midgard bosses. What is left:
+     - the rest of the 484 bosses with no Mythic canon, against the DepthReport floors (`UT_LoreBible` lists them);
+     - Midgard's and Hibernia's locations below the floors;
+     - an epic voice for each realm beyond the three Midgard saga chapters.
+     Show the owner samples from the third pass before merging, and run `UT_LoreBible` in CI or on the owner's PC.
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.
