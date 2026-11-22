@@ -103,7 +103,7 @@
     "phases": [
       {
         "trigger": "health<=90",
-        "text": "Hurika's wings raise a gale. Hold on to the ice: someone leaves the ground!"
+        "text": "Hurika's wings raise a gale. Someone leaves the ground!"
       },
       {
         "trigger": "health<=50",

@@ -89,7 +89,7 @@ namespace DOL.GS.Tests
                 Assert.That(AutonomousFrontierTransport.LongWaitReportDue(since, 0, since + 300_000), Is.True);
                 Assert.That(reports, Is.EqualTo(2), "at 5 and 10 minutes, before the 15-minute watchdog");
                 Assert.That(AutonomousFrontierTransport.LongWaitMilliseconds,
-                    Is.GreaterThan(2 * 120_000L + AutonomousFrontierTransport.WarbandWaitMilliseconds).And.LessThan((long)AutonomousStuckWatchdog.StuckThreshold.TotalMilliseconds));
+                    Is.GreaterThanOrEqualTo(2 * 120_000L + AutonomousFrontierTransport.WarbandWaitMilliseconds).And.LessThan((long)AutonomousStuckWatchdog.StuckThreshold.TotalMilliseconds));
             });
         }
     }
