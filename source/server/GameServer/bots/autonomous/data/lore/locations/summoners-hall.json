@@ -217,7 +217,7 @@
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
+    "intro": "Loremaster Svanlaug says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
     "topics": {
       "stairs": "Each realm's old frontier dungeon digs down to the same hall: Albion's Hall of the Corrupt, Midgard's Dodens Gruva, Hibernia's Marfach Caverns. Each realm's raid comes down its own stair and meets the others below.",
       "summoners": "Cunovinda the white hound, who puts you on the ledges; Lossren the gatherer, who keeps the dead in pieces; Roesia, who makes sure the price hurts.",
@@ -296,7 +296,7 @@
         ]
       },
       "loremaster": {
-        "intro": "Loremaster Sigrun says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
+        "intro": "Loremaster Svanlaug says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
         "topics": {
           "voices": "The summoners call the dead of every realm. Ours heard them through the floor of Dodens Gruva.",
           "Aros": "The spiritmaster of Dodens Gruva, who bound the dead miners to the mine rather than let the calling have them.",

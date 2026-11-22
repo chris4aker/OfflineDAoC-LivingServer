@@ -215,7 +215,7 @@
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"The housing villages, beyond the gate east of Mularn. Nine of them: [Erikstaad], [Arothi], [Carlingford], [Wyndham], [Frisia], [Kaupang], [Holmestrand], [Nittedal] and [Stavgaard]. Nothing there wants to kill you, which is the point. Ask about [raising] a house.\"",
+    "intro": "Loremaster Svanlaug says, \"The housing villages, beyond the gate east of Mularn. Nine of them: [Erikstaad], [Arothi], [Carlingford], [Wyndham], [Frisia], [Kaupang], [Holmestrand], [Nittedal] and [Stavgaard]. Nothing there wants to kill you, which is the point. Ask about [raising] a house.\"",
     "topics": {
       "Erikstaad": "The first of the villages, where the road from the Vale ends and the busiest: its market, its consignment bankers and Market Explorers, and the gothi Goreg and Annark who send travellers on. Named for the first jarl who built there, the villagers say, though they cannot agree which Erik.",
       "Arothi": "The northern village, quiet and smoky, where old names are cut over doors that nobody in the village can now explain, and Stor Gothi Magra keeps the gods' word and the road to the others.",

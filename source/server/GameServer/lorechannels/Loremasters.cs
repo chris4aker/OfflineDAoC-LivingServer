@@ -47,7 +47,7 @@ namespace DOL.GS.LoreChannels
             // Camelot's library: Librarian Pelan (world Mob, region 10). Model 279 is the Avalonian scholar Librarian Ophus wears.
             new(LoreRealm.Albion, "Loremaster Aldwin", 10, 279, 50, eGender.Male, new(34667, 30504, 8207), 428, "Librarian Pelan"),
             // Jordheim's temple of the gods: the Gothi of Ymir (region 101). Model 217, a Norse woman of the town.
-            new(LoreRealm.Midgard, "Loremaster Sigrun", 101, 217, 50, eGender.Female, new(34083, 32649, 8030), 3288, "Gothi of Ymir"),
+            new(LoreRealm.Midgard, "Loremaster Svanlaug", 101, 217, 50, eGender.Female, new(34083, 32649, 8030), 3288, "Gothi of Ymir"),
             // Tir na Nog, by the bards: Filidh Meilseior (region 201). Model 313, the Celt the filidh wear elsewhere.
             new(LoreRealm.Hibernia, "Loremaster Eithne", 201, 313, 50, eGender.Female, new(34496, 36123, 8098), 1513, "Filidh Meilseior"),
         ];
