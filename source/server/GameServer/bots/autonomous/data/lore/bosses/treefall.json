@@ -24,7 +24,7 @@
     }
   ],
   "story": "The riders of the tops say Treefall is a walking oak of the Grimwood that stopped across the eastern road when the farms emptied and has stood there since. The druids of Castle Sauvage say that is half the truth. Treefall was a druid first, they say, a keeper of the Grimwood who stood in the road one autumn to bar it against the men coming to cut his trees, and stood so long, and so stubbornly, that the wood took him at his word and rooted him there. There is a face in the bark, if one looks at it from the right side, and it is a man's.\n\nThe gnarled fellwoods of the Grimwood stand round him as a congregation stands round a priest, and the riders ride round them all, wide, and never tie a horse to anything in that wood. Treefall does not move from the road. Those who come too close, it moves toward.\n\nMaster Gerol of the Academy has learned something from Treefall's bark that frightens him: there is a mark grown into it that Caelin Finan of Castle Sauvage knows, and it is Morgana's, and it means she has been asking the old keepers of the wood how the things that sleep under it might be woken. Gerol wants the bark. The Grimwood, which has never given anything up willingly, is not likely to agree.",
-  "legend": "Treefall, level 46, stands across the eastern road of the southern Pennines with about nine gnarled fellwoods (45) around him, all Grimwood faction: they come with him. Clear the fellwoods from the edge, then Treefall. Plain melee, no spells, hits like a tree. Kill him and take his remains (the bark) for Symbol of the Broken to Caelin Finan in Castle Sauvage. Respawn five minutes.",
+  "legend": "Treefall, a foe for a hardened band of veterans, stands across the eastern road of the southern Pennines with about nine gnarled fellwoods of the same tier around him, all Grimwood faction: they come with him. Clear the fellwoods from the edge, then Treefall. Plain melee, no spells, hits like a tree. Kill him and take his remains (the bark) for Symbol of the Broken to Caelin Finan in Castle Sauvage. He returns five minutes after he falls.",
   "yells": {
     "aggro": [
       "The road is shut.",
@@ -49,7 +49,7 @@
   "botLines": {
     "briefing": [
       "treefall on the east road, nine fellwoods round him, all same faction",
-      "pull the fellwoods off first, then the tree"
+      "draw the fellwoods off first, then the tree"
     ],
     "aftermathWin": [
       "treefall down. got the bark for caelin",

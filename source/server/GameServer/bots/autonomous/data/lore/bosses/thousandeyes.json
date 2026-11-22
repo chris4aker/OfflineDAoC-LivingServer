@@ -19,7 +19,7 @@
     }
   ],
   "story": "The flies of Inishail are many and the dragonflies of the isle are worse, and the orcs of Toca's village hate all of them, but there is one they fear. It is small, no bigger than a hawk, and it has too many eyes, far too many, set all over its head like the seeds of a poppy, and it hangs over the south-eastern shore where the lammia Veena lives alone and makes her poisons.\n\nThe orcs say ThousandEyes watches for her. When an orc goes down to that shore to steal from her, or to settle a score, the little dragonfly is already there, hanging in the air, looking at him with every eye at once; and by the time he reaches her door Veena knows he is coming, and the poison is ready. Veena says she has never asked it to watch for anyone. She makes her poisons from the flies of the isle, she says, and ThousandEyes is the only one of them she has never once caught, and she thinks it is watching to see whether she ever will.\n\nThe readers' stolen tome, the orcs' margins say, has a page on it, with a line drawn round it and a single word in the orcs' hand: LOOKING.",
-  "legend": "ThousandEyes, level 48, a small dragonfly with a lot of eyes on the south-eastern shore of Inishail, west of Veena, with a couple of inishail flies. No faction, plain melee, no spells, but it is a 48 and hits harder than its size. Respawn 80 seconds. A group in the mid forties takes it easily; the flies come too if you pull close.",
+  "legend": "ThousandEyes, a small dragonfly with a lot of eyes and a foe for a hardened band of veterans at the top of that tier, on the south-eastern shore of Inishail, west of Veena, with a couple of inishail flies. No faction, plain melee, no spells, but it is nearly a match for the realm's best and hits harder than its size. It rises again eighty seconds after it falls. A hardened band of veterans takes it easily; the flies come too if you draw it close to them.",
   "yells": {
     "aggro": [
       "It has seen you already.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "thousandeyes on the se shore of inishail, 48 small dragonfly, a couple of flies with it",
+      "thousandeyes on the se shore of inishail, small dragonfly but nearly a match for our best, a couple of flies with it",
       "it hits harder than it looks, mid forties group"
     ],
     "aftermathWin": [
