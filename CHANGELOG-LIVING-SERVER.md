@@ -8,7 +8,7 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## 1.2.1 (in development)
+## 1.2.1 — [RELEASE DATE]
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
 1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
@@ -64,8 +64,10 @@ The raid fixes (#407-#415) are added under **Bosses** as their branches merge. P
   drops measured on Uthgard (hides, teeth, gems, vendor loot, period gear) to monsters that have no loot of their own,
   at Uthgard's rates (whole percents; rarer than 0.5% rounds up to 1%). Monsters with their own drops keep them, and
   random magic items and coin drop as before. `build_release_037.py --uthgard-drops <pipeline data>` puts them in the
-  release world, and the update carries them to existing worlds. The pipeline data is not in Git, so this runs on the
-  owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the real world yet.
+  release world, and a world update made from it (`make_patch.py`) carries them to existing worlds. The pipeline data is
+  not in Git, so this runs on the owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the
+  real world yet. **Not in 1.2.1's world:** the 1.2.1 package changes the server and launcher only, and Setup installs
+  the unchanged 0.37 world, so the drops ship with the first release whose world is built with them.
 - Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
   debug level.
 

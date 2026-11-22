@@ -12,8 +12,10 @@ Before publishing:
 - **Raid results:** replace the `@@RAID_RESULTS@@` line in "Bosses and raids" with what the raid branches merged
   (#428, #430, #431, #432 or their successors), from the changelog's **Bosses** lines, each one **tests only** unless
   an owner PC log shows the win. `publish_release.py notes` refuses the notes while the marker is there.
-- **Uthgard's drops:** replace `@@UTHGARD_DROPS@@` with "This release's world update adds them." if the release world
-  was built with `build_release_037.py --uthgard-drops`, or delete that whole bullet if it wasn't.
+- **Uthgard's drops:** filled in (2026-11-22). The Living Server package is built by CI (server, launcher, scripts) and
+  installs over the 0.37 world; release.yml, installer.yml and Setup build no release world, and no
+  `build_release_037.py --uthgard-drops` world was built for 1.2.1. If one is built and shipped as a world update before
+  publishing, change the bullet back to "This release's world update adds them." 
 - **Seen in game:** if an owner PC log shows a 1.2.1 change before publishing, move it from "Tests only" to "Seen in
   game", with the build and the log line.
 - **Automated results:** update the CI numbers in "How this was tested" to the release candidate's run, naming its
@@ -122,9 +124,11 @@ Everything in this list passed CI, and none of it has been seen in a real game.
   bonus) and, outside battlegrounds, bounty points. A bot killed again within five minutes is still worth nothing.
 - **Named drops in gamebot-led groups.** A kill you finished in a group a gamebot leads dropped none of the monster's
   own loot (coin and random items still dropped). It drops again.
-- **Uthgard's drop tables.** Classic-era drops measured on the Uthgard server (hides, teeth, gems, vendor loot,
-  period gear) are added to monsters that have no loot of their own, at Uthgard's rates. Monsters with their own drops
-  keep them; random magic items and coin drop as before. @@UTHGARD_DROPS@@
+- **Uthgard's drop tables: not in this release's world.** The tool that adds the classic-era drops measured on the
+  Uthgard server (hides, teeth, gems, vendor loot, period gear) to monsters with no loot of their own is in the release
+  tools, but 1.2.1 has no world update: a new install gets Offline DAoC 0.37's world as before, and an update changes
+  the server and the launcher only. The drops come with the first release whose world is built with them; random magic
+  items and coin stay as they are.
 - **Quieter start-up log:** loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source,
   with a count.
 

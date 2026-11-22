@@ -179,5 +179,60 @@ class Run(unittest.TestCase):
         self.assertEqual(self.publish(gh, "--dry-run", "--release-json", str(path)), 0)
 
 
+# 1.2.1 on: a dry run before the release exists checks against docs/RELEASE-NOTES-<version>.md (--unpublished-notes).
+NOTES_121 = ("# Living Server 1.2.1: release notes (draft)\n\nMaintainer text.\n\n---\n\n# Living Server 1.2.1\n\n"
+             "### Files\n\n| File | SHA-256 |\n|---|---|\n"
+             "| `LivingServer-Setup-1.2.1.exe` | (filled in when the exe is built) |\n"
+             "| `OfflineDAoC-LivingServer-1.2.1.zip` | (zip SHA-256: filled in by hand at publish) |\n")
+
+
+class Unpublished(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        d = Path(self.dir.name)
+        self.notes = d / "RELEASE-NOTES-1.2.1.md"
+        self.notes.write_text(NOTES_121, encoding="utf-8")
+        self.exe, self.zip = d / "LivingServer-Setup-1.2.1.exe", d / "LivingServer.zip"
+        self.exe.write_bytes(b"setup 1.2.1")
+        self.zip.write_bytes(b"package 1.2.1")
+
+    def tearDown(self):
+        self.dir.cleanup()
+
+    def test_plan_without_a_release_stops_unless_notes_are_given(self):
+        gh = FakeGitHub(None)
+        self.assertEqual(ps.run(["plan", "--tag", "v1.2.1"], gh), 1)
+        self.assertEqual(ps.run(["plan", "--tag", "v1.2.1", "--unpublished-notes", str(self.notes)], gh), 0)
+
+    def test_plan_stops_on_notes_without_the_placeholders(self):
+        self.notes.write_text(NOTES_121.replace("(filled in when the exe is built)", "TBD"), encoding="utf-8")
+        self.assertEqual(ps.run(["plan", "--tag", "v1.2.1", "--unpublished-notes", str(self.notes)], FakeGitHub(None)), 1)
+
+    def test_markers_left_to_fill_warn_but_the_setup_row_is_still_checked(self):
+        self.notes.write_text(NOTES_121 + "- @@RAID_RESULTS@@\n", encoding="utf-8")
+        self.assertEqual(ps.run(["plan", "--tag", "v1.2.1", "--unpublished-notes", str(self.notes)], FakeGitHub(None)), 0)
+        rel = ps.stand_in("v1.2.1", self.notes, sha(b"package 1.2.1"))
+        result = ps.decide(rel, "v1.2.1", sha(b"setup 1.2.1"), sha(b"package 1.2.1"))
+        self.assertIn(f"| `LivingServer-Setup-1.2.1.exe` | `{sha(b'setup 1.2.1')}` |", result["body"])
+
+    def test_dry_run_fills_the_setup_row_of_the_stand_in(self):
+        rel = ps.stand_in("v1.2.1", self.notes, sha(b"package 1.2.1"))
+        self.assertNotIn("Maintainer text", rel["body"], "the stand-in's body is what publish-release would publish")
+        self.assertIn(f"`{sha(b'package 1.2.1')}`", rel["body"])
+        result = ps.decide(rel, "v1.2.1", sha(b"setup 1.2.1"), sha(b"package 1.2.1"))
+        self.assertTrue(result["upload"])
+        self.assertIn(f"| `LivingServer-Setup-1.2.1.exe` | `{sha(b'setup 1.2.1')}` |", result["body"])
+        gh = FakeGitHub(None)
+        self.assertEqual(ps.run(["publish", "--tag", "v1.2.1", "--exe", str(self.exe), "--package", str(self.zip),
+                                 "--dry-run", "--unpublished-notes", str(self.notes)], gh), 0)
+        self.assertEqual((gh.uploads, gh.edits), ([], []))
+
+    def test_a_real_publish_never_uses_the_stand_in(self):
+        gh = FakeGitHub(None)
+        self.assertEqual(ps.run(["publish", "--tag", "v1.2.1", "--exe", str(self.exe), "--package", str(self.zip),
+                                 "--unpublished-notes", str(self.notes)], gh), 1)
+        self.assertEqual((gh.uploads, gh.edits), ([], []))
+
+
 if __name__ == "__main__":
     unittest.main()

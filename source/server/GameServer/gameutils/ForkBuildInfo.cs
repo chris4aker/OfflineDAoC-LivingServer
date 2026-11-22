@@ -18,9 +18,9 @@ public static class ForkBuildInfo
     /// The fork's build name (Living Server); bump it with each fork release. Up to 1.1.4 the releases were betas
     /// ("1.1.4-beta", tag v1.1.4-beta); from 1.2 on they are final releases (owner, 2026-11-19): "1.2", tag v1.2. The
     /// package folder (LivingServer-&lt;name&gt;), its zip and BUILD-INFO.txt, Setup's exe and the launcher's own build are
-    /// all named from it, and the launchers' update check compares it with the release tag (1.1.4-beta &lt; 1.2).
+    /// all named from it, and the launchers' update check compares it with the release tag (1.1.4-beta &lt; 1.2 &lt; 1.2.1).
     /// </summary>
-    public const string BuildName = "1.2";
+    public const string BuildName = "1.2.1";
 
     /// <summary>
     /// The Offline DAoC release(s) this build installs on; the installer checks the game against them. Comma-separated

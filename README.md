@@ -17,7 +17,7 @@
 
 ### Where Legends Wake and the Realms are Alive. Offline. Never alone.
 
-**1.2 is out.**
+**1.2.1 is out.**
 
 ![Living Server](tools/installer/src/Assets/hero.jpg)
 
@@ -29,9 +29,9 @@ tell your whole realm what happens next. All of it is running on your PC.
 and fight. **Living Server** is the part of it, maintained by [chris4aker](https://github.com/chris4aker), that gives those bots a life: they talk like 2003 players, keep their own hours, join guilds,
 remember you, craft and trade, call their own raids, take each other's keeps, and invite you along.
 
-> **[Download Living Server 1.2](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)**: one Setup
+> **[Download Living Server 1.2.1](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)**: one Setup
 > installs Offline DAoC 0.37 and Living Server from nothing, or adds Living Server to the 0.37 game you have.
-> [What's new in 1.2](docs/RELEASE-NOTES-1.2.md) · [Known issues](docs/KNOWN-ISSUES.md)
+> [What's new in 1.2.1](docs/RELEASE-NOTES-1.2.1.md) · [All of 1.2](docs/RELEASE-NOTES-1.2.md) · [Known issues](docs/KNOWN-ISSUES.md)
 
 Formerly the **Social Expansion** (0.36-se.1 to 0.37-se.2). Install over any earlier build and keep everything.
 
@@ -116,7 +116,8 @@ builds on it. **Tests only** means it is in the release but hasn't been seen wor
 ## Seen, and tests only
 
 A feature counts as working only once it has been seen working on the owner's PC. 1.2's notes say, feature by feature,
-what has been seen and on which build, and what is still tests only. The parts still tests only include most of Bots as
+what has been seen and on which build, and what is still tests only. Everything new in 1.2.1 is tests only
+([the 1.2.1 notes](docs/RELEASE-NOTES-1.2.1.md)). The parts still tests only include most of Bots as
 people, era builds on a fresh world, crafting as a player, a session played with a friend, and every fix made after the
 last test build the owner ran. See [the 1.2 notes](docs/RELEASE-NOTES-1.2.md#3-seen-and-tests-only).
 
@@ -130,7 +131,7 @@ last test build the owner ran. See [the 1.2 notes](docs/RELEASE-NOTES-1.2.md#3-s
 ## Install
 
 **With Setup.**
-1. Download `LivingServer-Setup-1.2.exe` from the [release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)
+1. Download `LivingServer-Setup-1.2.1.exe` from the [release](https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/latest)
    and run it. No game yet? It downloads Offline DAoC 0.37 from the project's own copy of the 0.37 release files
    and checks every file. Have the game? It adds Living Server.
 2. Windows SmartScreen may say "Windows protected your PC", because the exe isn't code-signed. Click **More info**, then
@@ -138,9 +139,9 @@ last test build the owner ran. See [the 1.2 notes](docs/RELEASE-NOTES-1.2.md#3-s
 3. Open the launcher. It has a **Living Server** tab.
 
 **By hand.** Have Offline DAoC 0.37 or 0.37b ([0.37 files](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37)),
-unzip `OfflineDAoC-LivingServer-1.2.zip` into your game folder, close the game and server, and run `INSTALL.cmd`.
+unzip `OfflineDAoC-LivingServer-1.2.1.zip` into your game folder, close the game and server, and run `INSTALL.cmd`.
 
-**On 0.36, 0.36b or 0.36c?** Setup updates the game to 0.37, keeping your saves, then adds Living Server (**tests only** for 1.2: not yet run on the owner's PC). On 0.36 with the Social Expansion, run `PREPARE-FOR-UPDATE.cmd` from this package first.
+**On 0.36, 0.36b or 0.36c?** Setup updates the game to 0.37, keeping your saves, then adds Living Server (**tests only**: not yet run on the owner's PC). On 0.36 with the Social Expansion, run `PREPARE-FOR-UPDATE.cmd` from this package first.
 
 ## Update
 
@@ -155,7 +156,7 @@ unzip `OfflineDAoC-LivingServer-1.2.zip` into your game folder, close the game a
    adds 10, Ctrl adds 100). Raids need level 50s; a realm needs 8 bots of level 5 or higher before it forms a guild.
 2. **START SERVER**, then **ENTER REALM**. Your local account is made the first time.
 3. Stand in your capital in the evening with /faction open. Type `/lfg`. Ask a bot something.
-4. `runtime\server\logs\server.log` has a `FORK_BUILD name=1.2` line listing what's on.
+4. `runtime\server\logs\server.log` has a `FORK_BUILD name=1.2.1` line listing what's on.
 
 ## Handy commands
 

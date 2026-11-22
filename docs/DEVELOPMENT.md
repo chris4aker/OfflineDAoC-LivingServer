@@ -182,6 +182,14 @@ Run workflow with the tag. **Dry run** is on by default: it builds and tests, th
 notes it would write, with a read-only token. On publish the workflow runs from the tag's commit; by hand, from the
 branch you pick (GitHub only offers it once the file is on main).
 
+**Before the release exists** (1.2.1 on): a dry run can also be given `package_run_id`, a successful build-and-test run
+whose package is named for the tag (`OfflineDAoC-LivingServer-<build>-<sha7>`). Setup is then built from that run's
+package, and the Setup row is checked against `docs/RELEASE-NOTES-<version>.md` as publish-release would publish it.
+Nothing is uploaded or edited; a real run ignores the input. For example:
+`gh workflow run release.yml --ref <branch> -f tag=v1.2.1 -f dry_run=true -f e2e=true -f package_run_id=<run id>`.
+The update from the previous release is tested by `candidate-install` (`update12`: 1.2's published Setup, then this
+build's).
+
 ### Recommended settings for main
 
 Not applied by any script; the owner sets them under Settings → Branches (or Rules):
