@@ -27,7 +27,7 @@
     }
   ],
   "story": "Lieutenant Elva was the granddaughter of Gwenllian, armourer of Castle Sauvage in the old frontier wars, and she carried Gwenllian's calfskin book of the black paste and the grey oil north under her pillow for nineteen years. The book's margins say what each poison was used against in one word each: walked on, sat down, and, underlined beside the black paste, stopped. She asked to go north at sixteen and came in Lord Gildas's first year, the youngest officer of the watch, to keep its armoury, and she let no one else touch it, not Heathyr and not the wizard.\n\nShe fought with two short blades in leather, as Sauvage's armourers fought, slipping aside from a swing and answering the miss, and she would not let a man look away from her. She sat by Meade's card table with a whetstone, listening for the note that was wrong. Gwenllian's rule for the paste, one dose to a wound, became a Long Dale saying.\n\nShe was the first to say that Atwell's cut was not natural. She dressed every blade in the armoury, began the inventory she never finished (its last item, a blade by the door, is entered as half dressed), and wrote to Castle Sauvage for more grey oil and a fletcher. The fletcher was her own father; Hob would not carry him on from Long Dale, so he went up in the spring with Sir Hamon's riders, came down, gave back the oil unopened, and never made another arrow.\n\nShe keeps her armoury still, the lightest of the officers to bring down and the hardest to hit, and what her blades open burns long afterwards, one dose at a time, until the bitter cup of Caer Ulfwych takes it out. Gwenllian's book is at Castle Sauvage now. Its last entry is Elva's, under her grandmother's underlined word: no.",
-  "legend": "Elva is a ghost lieutenant, level 50, only 5,000 health, with two light blades. She evades about half of all melee swings and answers with evade styles, and she takes a third less from melee and a quarter less from magic, so nukes still do the most. About one hit in three poisons the target, 55 body every three seconds for thirty seconds, but only when the target has no poison on already: one cure poison after each dose is all it needs. Her taunt styles keep her on the tank. Tether 1,500: drawn further she takes no damage and resets to full. The lieutenants and sergeants stand close in the middle of the hall (Meade about 800 from her, Saxe about 880), so fight her by her armoury and do not back into the corridor. Old hands leave the half-dressed blade by the door alone. It does nothing. Nobody touches it anyway.",
+  "legend": "Elva is a ghost lieutenant, a foe for the realm's best, a full band of them, and no harder to bring down than two or three champions, with two light blades. She slips aside from about half of all melee swings and answers with styles that follow a dodge, and blades lose a third against her and spells a quarter, so bolts and blasts still do the most. About one hit in three poisons the target, a body wound every three seconds for thirty seconds, but only when the target has no such burn on already: one cure poison after each dose is all it needs. Her taunting styles keep her on the shield-bearer. She follows no farther than about fifty paces from her post: drawn further nothing harms her and she goes home whole. The lieutenants and sergeants stand close in the middle of the hall (Meade about twenty-seven paces from her, Saxe about thirty), so fight her by her armoury and do not back into the corridor. Old hands leave the half-dressed blade by the door alone. It does nothing. Nobody touches it anyway.",
   "yells": {
     "aggro": [
       "Who touches the watch's stores?",
@@ -61,9 +61,9 @@
   },
   "botLines": {
     "briefing": [
-      "elva poisons, 55 every 3 sec. one cure poison per dose, it doesnt stack",
-      "she evades half the melee, casters burn her. only 5k hp",
-      "tether 1500, fight her at the armoury, off it shes immune",
+      "elva poisons, every 3 sec for 30 sec. one cure poison per dose, it doesnt pile up",
+      "she dodges half the melee, casters burn her. only as tough as two or three of us",
+      "she follows 50 paces at most, fight her at the armoury, off it nothing hurts her",
       "meade and saxe are close, dont back into the corridor"
     ],
     "aftermathWin": [
@@ -74,10 +74,10 @@
       "poison cured, clean"
     ],
     "aftermathLoss": [
-      "someone dragged her off her post again. immune out there",
+      "someone dragged her off her post again. untouchable out there",
       "nobody had cure poison",
       "backed into meade's corridor and got two",
-      "the melee whiffed and she ate the tank"
+      "the melee whiffed and she ate the shield-bearer"
     ],
     "rumour": [
       "heard elva in the hall of the corrupt poisons her blades",

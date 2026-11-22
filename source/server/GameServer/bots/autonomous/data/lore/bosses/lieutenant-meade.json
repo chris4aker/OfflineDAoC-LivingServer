@@ -27,7 +27,7 @@
     }
   ],
   "story": "Lieutenant Meade was the best wrestler at the Old Sarum midsummer fair for four summers, a shield-bearers' game of the knock and the turn: ring a man's head with the board, step to his side while it rings, put him down from where he cannot see. The fair's rolls say he was never in front of a man when the man fell. He also wrote verses, badly, from boyhood, and the abbot gave up whipping him and taught him to spell. He came north with the Salisbury Plains levies in Lord Gildas's sixth year, and was the only officer ever to put Captain Atwell on the flags.\n\nFor fourteen years he sat at the head of the sergeants' card table in the middle corridor and wrote a verse for every name-day; the clerk Tobias copied them into his reports because they were what the watch was like (Darryn's voice, Bardalph's questions, Darra's sickroom rhymed with quick doom). He grew thyme and rue in a box on the sill for the sickroom. He was the watch's cheerful man, so when the despair of the last winter settled on him first the hall noticed at once: the verses stopped, the thyme went grey, and the men at his end of the table could not lift their cups.\n\nHis last verse asks his friends to keep from his elbow when he is low. The Camelot loremasters read it as a warning to keep their distance, the Church as a confession, the bards sing it backwards, and Old Sarum's fair judges say it is a turner's verse: do not let the turner reach your side while your head is ringing.\n\nHe keeps the card table still, between Reede's stair and Saxe's corridor, dazing a man with his shield and striking from his side, the cloak of the last winter heavy on all who crowd him. Long Dale companies leave a pot of thyme on his sill when he falls; it is always grey when the next company comes.",
-  "legend": "Meade is a sword-and-shield lieutenant, level 50, 5,000 health. His Aching Curse is not on his target: it pulses all fight in a small ring around HIM (350), and everyone inside it does about a fifth less melee damage. Keep the group outside the ring and let casters and archers do the work; only the tank needs to be in reach. He opens with a shield slam to stun, and once his target is stunned he steps round to its side and hits it with a side style, so a stun-immune tank (or a purge) takes most of the sting out of him; against a stun-immune target he only taunts. He takes a third less from melee anyway. Sergeant Reede's stair and Lieutenant Saxe's corridor are each only about 530 away, so fight him by his table and keep the fight from sliding toward either. Drawn off his post he cannot be hurt. Long Dale folk leave thyme on his sill.",
+  "legend": "Meade is a sword-and-shield lieutenant, a foe for the realm's best, a full band of them, and no harder to bring down than two or three champions. His Aching Curse is not on the one he fights: it pulses all fight in a small ring around HIM (about twelve paces), and everyone inside it strikes about a fifth less hard with their blades. Keep the group outside the ring and let casters and archers do the work; only the shield-bearer needs to be in reach. He opens with a shield slam that leaves his target senseless, and once it is he steps round to its side and hits it with a side style, so a shield-bearer who cannot be dazed (or one who can shake it off) takes most of the sting out of him; against such a one he only taunts. Blades lose a third against him anyway. Sergeant Reede's stair and Lieutenant Saxe's corridor are each only about eighteen paces away, so fight him by his table and keep the fight from sliding toward either. Drawn off his post he cannot be hurt. Long Dale folk leave thyme on his sill.",
   "yells": {
     "aggro": [
       "Why fight? Why does anyone fight?",
@@ -61,8 +61,8 @@
   },
   "botLines": {
     "briefing": [
-      "meade's aching curse is around him, 350 radius, melee does 21% less inside. stay out of it",
-      "he slams to stun then steps to your side. stun immune tank makes him easy",
+      "meade's aching curse is around him, 12 paces, blades hit a fifth softer inside. stay out of it",
+      "he slams to daze you then steps to your side. a shield-bearer who cant be dazed makes him easy",
       "casters and archers on meade, melee stays back",
       "reede and saxe are both close, keep the fight at his table"
     ],
@@ -74,10 +74,10 @@
       "on to the captains"
     ],
     "aftermathLoss": [
-      "someone dragged him off his post again. immune out there",
+      "someone dragged him off his post again. untouchable out there",
       "everyone stood in the curse and did nothing",
       "slid toward the stair and got reede too",
-      "tank got stunned and flanked over and over"
+      "shield-bearer got dazed and flanked over and over"
     ],
     "rumour": [
       "heard meade in the hall of the corrupt saps your will to fight",

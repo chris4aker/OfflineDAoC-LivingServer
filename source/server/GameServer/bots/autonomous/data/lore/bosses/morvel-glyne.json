@@ -24,7 +24,7 @@
     }
   ],
   "story": "The forest poachers of Albion run a road of their own, and it does not appear on Camelot's maps. It goes from the high woods of the Pennines south along the hill paths and the dry stream-beds, and it ends in the east of Tepok's Mine, at a landing in the galleries where the goblin snatchers bring what goes out and take what comes in. The Glyne cousins keep that landing.\n\nMorvel is the elder Glyne and does the talking, which is not much. Morvel learned the poachers' road from the Pennine end and walked it south when the Pennine farms emptied and there was nothing left in the high woods worth taking, and found at the end of it a goblin with a ledger who wanted carriers and asked no questions of anyone who asked none of him. Morvel has kept that bargain better than the dwarves keep theirs. The snatchers trust nobody, and they stand at Morvel's shoulder.\n\nSilver goes out by the landing in bars, and bundles of letters come in by it from the north, in the fair folk's hand, carried along the poachers' road by a courier named Delfina. Neither Glyne reads them. Twr ap Alsig of Barfog, who does, says the letters ask after the silver and the lions and the host in the north halls, and that the Glynes are the only men in Albion paid by goblins, and that they are paid well.",
-  "legend": "Morvel Glyne, 34-37, forest poachers faction, stands right next to Tuder Glyne at the eastern landing of Tepok's Mine with two goblin snatchers and the goblin monitor. You fight both Glynes at once: they are the same faction and a step apart. Mez or root one, kill the other, and keep the snatchers off your casters. Plain melee, no spells.",
+  "legend": "Morvel Glyne, of the forest poachers faction, a foe for a seasoned band at the least and a hardened band of veterans at the most, stands right next to Tuder Glyne at the eastern landing of Tepok's Mine with two goblin snatchers and the goblin monitor. You fight both Glynes at once: they are the same faction and a step apart. Mesmerize one or hold it to the ground, kill the other, and keep the snatchers off your casters. Plain melee, no spells.",
   "yells": {
     "aggro": [
       "Nobody comes to the landing by this road.",
@@ -49,7 +49,7 @@
   "botLines": {
     "briefing": [
       "the glynes are a pair, morvel and tuder, a step apart, both come",
-      "mez tuder, kill morvel, mind the snatchers"
+      "mesmerize tuder, kill morvel, mind the snatchers"
     ],
     "aftermathWin": [
       "morvel down. tuder next",

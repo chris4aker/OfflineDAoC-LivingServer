@@ -19,7 +19,7 @@
     }
   ],
   "story": "Two passes cross the south of Snowdonia, one toward the southern valleys and one toward the Pennines, and both are older than the roads Rome laid over them. The shepherds say the soldiers who keep them are older than the roads too: dead men in harness of a pattern no armourer of Camelot can name, from a war before the last legion came, who were set to hold the passes by someone who never came back to relieve them.\n\nNasher keeps the southern pass, and he keeps it as a toll-man keeps a bridge. He stands in the middle of the way and asks every traveller something in a tongue nobody speaks, and when they do not answer, as nobody can, he takes his toll, which is everything. The drovers of the fortress say his name is what the old shepherds made of the sound he makes when he asks. The Church sends no errands by the southern pass. Neither do the drovers, if they can help it; they go the long way round, by the Pennine road, and meet the other one.",
-  "legend": "Nasher, level 39 ghost legionnaire, on the southern pass of Snowdonia. Alone, plain melee, no spells. He is in the road, so anyone riding the pass meets him: kill him or go round. Undead, so crush works best on the bones. A group in the high thirties handles him. Respawn ten minutes. Ride the long way round by the Pennine road if you are low.",
+  "legend": "Nasher, a ghost legionnaire and a foe for a hardened band of veterans, on the southern pass of Snowdonia. Alone, plain melee, no spells. He is in the road, so anyone riding the pass meets him: kill him or go round. Undead, so crush works best on the bones. A hardened band of veterans handles him. He returns ten minutes after he falls. Ride the long way round by the Pennine road if you are young yet.",
   "yells": {
     "aggro": [
       "Halt. Answer.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "nasher, 39 ghost legionnaire, standing in the southern pass road",
+      "nasher, ghost legionnaire, veteran band job, standing in the southern pass road",
       "crush on nasher, hes all bones"
     ],
     "aftermathWin": [

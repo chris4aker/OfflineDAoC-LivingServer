@@ -32,7 +32,7 @@
     }
   ],
   "story": "The hill folk of Llyn Barfog gave it no name but what it is: a mouth. It lives in a den on the eastern slope above the hobgoblins' hills, where the ground itself looks chewed, the turf bitten down to the stone in half-moons the size of cart wheels, and it eats. That is all it does. The old men of Barfog say it came through the lake's door the night the lady took her cattle home, because it was hungry, and that it has never once stopped being hungry since.\n\nWhen it fights, it eats from whoever it is fighting. Its bite takes more than flesh: something of the bitten man's strength goes into it, and whatever it takes it keeps, so that the longer a man stands in front of it, the longer it stands too. The hobgoblins, who have lost more to it than anyone, say a man should never be left to be chewed on long without someone pouring strength back into him, because a mouth that is fed does not tire.\n\nIt has get. Smaller mouths, its own kind, come to it while it fights, one after another, from wherever they were in the hills, and each is hungry as it is. The hill folk believe they come for the meal, not to save it. When the great mouth is still, the small ones are still too, and the hobgoblins say that is the only proof anyone has that they are its children and not just its neighbours.\n\nA man called Crim lives on the slope below the den, alone, and watches it. He has watched it for years. Twr ap Alsig says Crim lost his brother to it and has been waiting for someone to shut it ever since. Crim says nothing of the kind, but he keeps a count of the companies that go up, and of those that come down.",
-  "legend": "Mouth, level 62, 30k, in its den on the eastern slope of Llyn Barfog. 30% of its hits add a 500 body lifedrain on its target, and the drain heals it, so keep the tank healed hard and keep dps on it: the longer it chews, the longer it lives. Every 20 to 35 seconds a minion (55-59) appears next to it; have someone pick each one up or kill it fast, and they all die when Mouth does. No mez, no stun. Body resist on the tank helps. A wipe resets it to full and clears the minions; it respawns about an hour after death.",
+  "legend": "Mouth, a foe for several bands of the realm's best together and as much killing as fifteen champions, in its den on the eastern slope of Llyn Barfog. About three blows in ten of its drain the life of the one it bites, a quarter of a champion's strength each time, and the drain heals it, so keep the shield-bearer who holds it healed hard and keep the blows coming: the longer it chews, the longer it lives. Every twenty to thirty-five seconds a minion, a foe for the realm's best, appears next to it; have someone pick each one up or kill it fast, and they all die when Mouth does. Nothing mesmerizes or dazes it. Wards against body on the shield-bearer help. If every raider falls it goes home whole and the minions vanish; it returns about an hour after death.",
   "yells": {
     "aggro": [
       "The ground cracks open in a ring of teeth.",
@@ -70,21 +70,21 @@
   },
   "botLines": {
     "briefing": [
-      "mouth, 62, 30k. 30% of its hits drain 500 off the tank and heal it. heal the tank hard",
-      "a minion pops every 20-35 sec, grab it or kill it fast",
+      "mouth, several bands' job, killing of 15 of us. 3 bites in 10 drain a quarter of the shield-bearer and heal it. heal him hard",
+      "a minion turns up every 20-35 sec, grab it or kill it fast",
       "minions die when mouth dies. dont chase them at the end",
-      "cant cc it. body resist on the tank helps"
+      "nothing holds it. body wards on the shield-bearer help"
     ],
     "aftermathWin": [
       "mouth is shut",
       "that thing was just teeth",
-      "kept the tank up and it starved. nice",
+      "kept the shield-bearer up and it starved. nice",
       "go tell crim"
     ],
     "aftermathLoss": [
-      "it kept draining the tank back to full itself",
+      "it kept draining the shield-bearer back to full itself",
       "minions piled up, we ignored them too long",
-      "the tank went down to two drains in a row",
+      "the shield-bearer went down to two drains in a row",
       "not enough damage, it healed faster than we hit"
     ],
     "rumour": [

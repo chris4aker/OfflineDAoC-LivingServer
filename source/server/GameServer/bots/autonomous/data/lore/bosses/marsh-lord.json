@@ -22,7 +22,7 @@
     }
   ],
   "story": "The bogmen say the shamblers are the marsh standing up: moss and mud and the roots of the reeds, bound round something underneath that the reed-folk do not name. The greatest of them stands in the south-western meres, taller than a house, with the water to its knees and herons on its shoulders, and the bogmen call it the lord of the marsh. The Camelot loremasters call it the Marsh Lord too, though they mean less by it.\n\nWhat it is lord of is the oldest question in the marsh. The bogmen say it is the marsh's own memory, grown so heavy over the ages of sea and lake and fen that it had to stand up to carry it; the readers of Avalon, before the mist, wrote that every marsh in the west remembers the sea it was, and that this one remembered more than most. The Church says it is a heap of rot and should be burned.\n\nIt has never once raised a hand to anyone who did not raise one first. The bogmen fish in its shadow and cut reeds around its feet. Knights of Camelot ride past it with their swords out, and it lets them go by too. When a blade does bite it, it answers slowly and heavily, as the marsh answers everything, and the bogmen say that the lord of the marsh has never yet lost a quarrel it did not start. They also say that each time it falls, the meres are quiet for a little while, and then it is standing in them again.",
-  "legend": "The Marsh Lord is a big shambler in the south-western meres of Avalon Marsh, level 32 to 35, and it never starts a fight: you can walk right past it. If you want it, it is a plain melee mob with no spells, so a group of low thirties handles it easily; the risk is the shamblers around it, which do aggro, so clear them first. It respawns fast (about 80 seconds, by the raiders' count), so do not sit in the mere afterwards. Good for a group passing through, not worth a trip on its own.",
+  "legend": "The Marsh Lord is a big shambler in the south-western meres of Avalon Marsh, a foe for a seasoned band, the strongest of its kind almost a match for a hardened band of veterans, and it never starts a fight: you can walk right past it. If you want it, it is a plain melee beast with no spells, so a seasoned band handles it easily; the risk is the shamblers around it, which do attack on sight, so clear them first. It comes back fast (about eighty seconds, by the raiders' count), so do not sit in the mere afterwards. Good for a group passing through, not worth a trip on its own.",
   "yells": {
     "aggro": [
       "The mere heaves. Something tall turns toward you.",
@@ -46,15 +46,15 @@
   },
   "botLines": {
     "briefing": [
-      "marsh lord, sw meres, low to mid 30s. wont aggro, plain melee",
-      "clear the shamblers round it first, those do aggro"
+      "marsh lord, sw meres, job for a seasoned band. wont attack, plain melee",
+      "clear the shamblers round it first, those do attack"
     ],
     "aftermathWin": [
       "marsh lord down, now get out of the mere before it stands up again",
       "easy, it doesnt even cast"
     ],
     "aftermathLoss": [
-      "pulled three shamblers with it, my bad"
+      "drew three shamblers with it, my bad"
     ],
     "rumour": [
       "[heard|someone said] the marsh lord has never started a fight in its life",
