@@ -146,6 +146,32 @@ public static class RealmRaidReturnWave
         return beenWithRaid ? DragonRaider.Returning : DragonRaider.NotYet;
     }
 
+    /// <summary>A returning dragon raider standing this close to the lair is back in the fight (the lair's radius,
+    /// DragonLairPlacement.LairRadius; the staging ring is 3,600-6,100 out, so a raider waiting there is never this close).</summary>
+    public const float DragonBackInFightDistance = 2_000;
+
+    /// <summary>
+    /// As <see cref="ClassifyDragonRaider(bool, bool, bool, float)"/>, for a raider the encounter may have moved (#415, 1.2.1,
+    /// tests only). Two living raiders were held at the staging ring for a return wave while the fight went on:
+    /// <list type="bullet">
+    /// <item>A raider the dragon threw (<paramref name="displaced"/>: its EncounterDisplacementRecovery walk, or moved in the
+    /// last 20 s). Four of Golestandt's five throw spots are 7,300-12,200 from her lair and three of Cuuldurach's 7,900-10,900,
+    /// past the 6,700 line, while only one of Gjalpinulva's is (7,200; the others 300-5,500), the one dragon of the three the
+    /// bots keep beating on the owner's PC. A thrown raider was never released: it walks back to its party by itself.</item>
+    /// <item>A raider resurrected where it fell: it went on the list as fallen and stayed "on its way back" after the rez,
+    /// so with a wave gathering it was sent from the fight out to its staging post. Back within the lair it is with the raid.</item>
+    /// </list>
+    /// </summary>
+    public static DragonRaider ClassifyDragonRaider(bool alive, bool beenWithRaid, bool returning, float distanceToLair, bool displaced)
+    {
+        if (alive && beenWithRaid)
+        {
+            if (displaced && !returning) return DragonRaider.WithTheRaid;
+            if (returning && distanceToLair <= DragonBackInFightDistance) return DragonRaider.WithTheRaid;
+        }
+        return ClassifyDragonRaider(alive, beenWithRaid, returning, distanceToLair);
+    }
+
     /// <summary>
     /// What the raiders outside the dungeon do now. <paramref name="outside"/>: living raiders not in the dungeon;
     /// <paramref name="fallen"/>: raiders down, who will release and walk back unless resurrected;

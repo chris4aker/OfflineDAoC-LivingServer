@@ -84,6 +84,8 @@ namespace DOL.GS
             /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
             public bool ReturnGathering;
             public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>When a dragon raid last logged REALM_RAID_RETURN_NOT_HELD (#415: at most once a minute).</summary>
+            public long ReturnNotHeldLogTick;
             /// <summary>The return wave walking in together now (RealmRaidReturnWave.WalkTogether), or null; how many have
             /// formed; its last headway (the stall clock's, RealmRaidReturnWave.Stalled); and the returners waiting outside.</summary>
             public ReturnWalk Walk;
@@ -2053,17 +2055,23 @@ namespace DOL.GS
                 return;
             }
             Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
-            int outside = 0, waiting = 0, fallen = 0;
+            int outside = 0, waiting = 0, fallen = 0, thrownFar = 0, backInFight = 0;
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
                 long id = b.DatabaseID;
                 bool inRegion = b.CurrentRegionID == raid.Definition.Region;
                 float lair = inRegion ? Vector2.Distance(new(b.X, b.Y), new(home.X, home.Y)) : float.MaxValue;
-                switch (RealmRaidReturnWave.ClassifyDragonRaider(b.IsAlive, raid.BeenInside.Contains(id),
-                            raid.ReturningToDragon.Contains(id), lair))
+                // #415: a raider the dragon threw walks back to its party by itself (EncounterDisplacementRecovery); it was
+                // never released, so it is not held for a return wave even when it landed past the 6,700 line.
+                bool displaced = EncounterDisplacementRecovery.IsRecovering(b) || EncounterDisplacementRecovery.WasDisplaced(b, now);
+                bool wasReturning = raid.ReturningToDragon.Contains(id);
+                switch (RealmRaidReturnWave.ClassifyDragonRaider(b.IsAlive, raid.BeenInside.Contains(id), wasReturning, lair, displaced))
                 {
                     case RealmRaidReturnWave.DragonRaider.WithTheRaid:
                         raid.BeenInside.Add(id);
+                        // Resurrected where it fell, or back in the fight: no longer on its way back (#415).
+                        if (wasReturning && raid.ReturningToDragon.Remove(id)) backInFight++;
+                        if (displaced && lair > RealmRaidReturnWave.DragonReturnDistance) thrownFar++;
                         break;
                     case RealmRaidReturnWave.DragonRaider.Fallen:
                         raid.ReturningToDragon.Add(id);
@@ -2075,6 +2083,12 @@ namespace DOL.GS
                         if (IsStaged(raid, b)) waiting++;
                         break;
                 }
+            }
+            if ((thrownFar > 0 || backInFight > 0) && now - raid.ReturnNotHeldLogTick >= 60_000)
+            {
+                raid.ReturnNotHeldLogTick = now;
+                Log.Info($"REALM_RAID_RETURN_NOT_HELD event={raid.Definition.Id} thrownFar={thrownFar} backInFight={backInFight} " +
+                         $"outside={outside} fallen={fallen} reason=\"thrown or resurrected raiders stay with the fight, not held for a return wave\"");
             }
             if (waiting == 0) raid.ReturnWaitingSince = 0;
             else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;
