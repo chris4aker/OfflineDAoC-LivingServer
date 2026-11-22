@@ -15,12 +15,12 @@ namespace DOL.GS.Tests
         {
             var missing = new LootMissingItems("LootTemplate");
             for (int i = 0; i < 300; i++)
-                Assert.That(missing.Add("mob" + i % 30, "old_item_" + i % 120), Is.True, "each row is new once: it is named at debug level");
+                Assert.That(missing.Add("mob" + i / 10, "old_item_" + i % 120), Is.True, "each row is new once: it is named at debug level");
 
             string line = missing.Summary();
 
             Assert.That(line, Does.StartWith("LOOT_ITEMS_MISSING source=LootTemplate rows=300 templates=30 items=120 "));
-            Assert.That(line, Does.Contain("examples=[mob0:old_item_0, mob1:old_item_1, mob2:old_item_2, mob3:old_item_3, mob4:old_item_4]"));
+            Assert.That(line, Does.Contain("examples=[mob0:old_item_0, mob0:old_item_1, mob0:old_item_2, mob0:old_item_3, mob0:old_item_4]"));
             Assert.That(line, Does.Not.Contain("old_item_5,"), "a few examples, not the list");
         }
 
