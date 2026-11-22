@@ -17,8 +17,14 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
   "You must select a target for this spell!". A resurrection cast with nothing dead selected now goes to a dead bot of
   your realm in range: the one you named with `/target <name>`, otherwise one from your group, otherwise the nearest. A
-  line says who it goes to. Companions, hired companions and gamebots alike. Bots still don't fall when they die in the
-  original client, and their bodies still can't be clicked there.
+  line says who it goes to. Companions, hired companions and gamebots alike. Their bodies still can't be clicked there.
+- **Bots fall when they die in the original client.** A companion, hired companion or gamebot now falls and lies like a
+  monster's corpse instead of standing at zero health. Raised, it gets up where it lay; released, it appears at its bind
+  point with no second body left behind (the 2026-10-30 bug came from a corpse left at release, and nothing is sent at
+  the death spot now). The new client already showed the fall and gets exactly what it got before: the server tells
+  the clients apart by the build in their first packet (`CLIENT_HANDSHAKE ... client=original|new-or-unknown`).
+  Setting `bot_death_animation` ("Bots fall when they die" in the launcher), on by default; off, every packet is as
+  before. GM check: `/lstest deathanim [raise|release|off]` on a targeted bot lists each packet sent or held.
 - **Hired companions join at your level** instead of level 5, with their spec points spent in their class's build
   (respec stays free) and, above level 5, plain merchant armour, a weapon and a shield where their class carries one.
   Companions hired on 1.2 catch up once, the next time they come to you: they keep their gear, bag, coin, realm points
