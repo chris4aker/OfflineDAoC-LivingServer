@@ -27,8 +27,11 @@ public static partial class AutonomousBotGroupCoordinator
                 session.RaidMusterEvent != null, session.Ending, session.Phase, session.Group.MemberCount, session.Group.MaximumMemberCount))
             return false;
         long now = GameLoop.GameLoopTime;
+        // A look for one more member (#423) gives way to the replacement for the member who left.
+        if (session.Replacement?.OpenSeat == true)
+            session.Replacement = null;
         // One search at a time: a second leaver while one runs keeps the first role (the party only takes one at a time).
-        session.Replacement ??= new AutonomousPartyReplacement.Search(role, now, !viable);
+        session.Replacement ??=new AutonomousPartyReplacement.Search(role, now, !viable);
         session.Replacement.HoldsParty |= !viable;
         if (Log.IsInfoEnabled)
             Log.Info($"BOT_LED_RECRUIT outcome=searching group={session.Id} role={session.Replacement.Role} left=\"{who}\" holds={session.Replacement.HoldsParty}");
@@ -38,10 +41,14 @@ public static partial class AutonomousBotGroupCoordinator
     /// <summary>One pass of the search. True when the party ended (it gave up without a core).</summary>
     private static bool StepReplacement(Session session, GameBot[] members, GameBot leader)
     {
-        AutonomousPartyReplacement.Search search = session.Replacement;
-        if (search == null || session.Ending)
+        if (session == null || session.Ending)
             return false;
         long now = GameLoop.GameLoopTime;
+        if (session.Replacement == null)
+            TryStartOpenSeat(session, members, now);
+        AutonomousPartyReplacement.Search search = session.Replacement;
+        if (search == null)
+            return false;
         bool viable = HasViablePveComposition(session, members);
         switch (AutonomousPartyReplacement.Next(search, now, viable))
         {
@@ -49,11 +56,15 @@ public static partial class AutonomousBotGroupCoordinator
                 return false;
             case AutonomousPartyReplacement.Step.GiveUpCarryOn:
                 session.Replacement = null;
-                AnnounceToHosted(session, leader, BotLedGroups.Lead.RecruitGaveUp);
+                session.NextOpenSeatAt = now + AutonomousPartyReplacement.OpenSeatEveryMs;
+                // Nobody came for a free seat: the party just goes on as it was (nothing to tell the player).
+                if (!search.OpenSeat)
+                    AnnounceToHosted(session, leader, BotLedGroups.Lead.RecruitGaveUp);
                 LogRecruit("gave_up", session, search, null, "carry_on");
                 return false;
             case AutonomousPartyReplacement.Step.GiveUpEnd:
                 session.Replacement = null;
+                session.NextOpenSeatAt = now + AutonomousPartyReplacement.OpenSeatEveryMs;
                 LogRecruit("gave_up", session, search, null, "end");
                 session.FarewellLine = BotLedGroups.Lead.RecruitEnd;
                 FinishGroupTask(session, $"No replacement {search.Role} found in {AutonomousPartyReplacement.GiveUpAfterMs / 60_000} minutes");
@@ -67,6 +78,44 @@ public static partial class AutonomousBotGroupCoordinator
         if (recruit != null)
             TakeRecruit(session, leader, recruit, search);
         return false;
+    }
+
+    /// <summary>
+    /// 1.2.1 (#423): a party on its way or at its camp with a seat free starts a look for one more member
+    /// (<see cref="AutonomousPartyReplacement.OpenSeatWanted"/>): the first <see cref="AutonomousPartyReplacement.OpenSeatFirstMs"/>
+    /// after it sets off, then <see cref="AutonomousPartyReplacement.OpenSeatEveryMs"/> after each search. The role is the
+    /// one it lacks (a healer, a tank, else damage). The search is the replacement's own (the /lfg ask once, a free waiting
+    /// gamebot of the role and level through the lease, at most one recruit), but it never holds or ends the party. While it
+    /// runs the leader's /lfg post says there is a seat (<see cref="RecruitingPost"/>), so a player asking gets the invite
+    /// box the usual way (BotLedGroups.OnPlayerAsked).
+    /// </summary>
+    private static void TryStartOpenSeat(Session session, GameBot[] members, long now)
+    {
+        bool raidParty = AutonomousRealmRaid.GetView(session.Group) != null || session.RaidMusterEvent != null;
+        if (!AutonomousPartyReplacement.OpenSeatWanted(session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve, raidParty,
+                session.Ending, session.Recovery?.IsRegrouping == true, session.Phase, session.Group.MemberCount,
+                session.Group.MaximumMemberCount, session.Replacement != null) || members.Length < 2)
+            return;
+        if (session.NextOpenSeatAt <= 0)
+        {
+            // The party has just set off: the first look comes a little later.
+            session.NextOpenSeatAt = now + AutonomousPartyReplacement.OpenSeatFirstMs;
+            return;
+        }
+        if (!AutonomousPartyReplacement.OpenSeatDue(now, session.NextOpenSeatAt))
+            return;
+        bool player = HostedPlayerPresent(session);
+        int tanks = members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Tank) +
+                    (player && session.PlayerRole == BotPveGroupRole.Tank ? 1 : 0);
+        int healers = members.Count(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) && role == BotPveGroupRole.Healer) +
+                      (player && session.PlayerRole == BotPveGroupRole.Healer ? 1 : 0);
+        session.Replacement = new AutonomousPartyReplacement.Search(AutonomousPartyReplacement.OpenSeatRole(tanks, healers), now, false)
+        {
+            OpenSeat = true,
+        };
+        if (Log.IsInfoEnabled)
+            Log.Info($"BOT_LED_RECRUIT outcome=searching kind=open_seat group={session.Id} role={session.Replacement.Role} " +
+                     $"phase=\"{session.Phase}\" members={session.Group.MemberCount}/{session.Group.MaximumMemberCount} hosting={player}");
     }
 
     private static GameBot FindRecruit(Session session, GameBot[] members, GameBot leader, BotPveGroupRole role)
@@ -131,6 +180,7 @@ public static partial class AutonomousBotGroupCoordinator
         TryBuildRendezvousSlots(session, members);
         session.Recovery.Observe(RecoveryMembers(session, members, false), false);
         session.Replacement = null;
+        session.NextOpenSeatAt = GameLoop.GameLoopTime + AutonomousPartyReplacement.OpenSeatEveryMs;
         AnnounceToHosted(session, leader, BotLedGroups.Lead.Recruited);
         WriteSessionMetadata(session, members);
         LogRecruit("recruited", session, search, recruit, "found");
@@ -174,7 +224,7 @@ public static partial class AutonomousBotGroupCoordinator
     private static void LogRecruit(string outcome, Session session, AutonomousPartyReplacement.Search search, GameBot recruit, string reason)
     {
         if (Log.IsInfoEnabled)
-            Log.Info($"BOT_LED_RECRUIT outcome={outcome} group={session.Id} role={search.Role} recruit=\"{recruit?.Name}\" " +
+            Log.Info($"BOT_LED_RECRUIT outcome={outcome} kind={(search.OpenSeat ? "open_seat" : "replacement")} group={session.Id} role={search.Role} recruit=\"{recruit?.Name}\" " +
                      $"level={recruit?.Level ?? 0} tries={search.Tries} seconds={(GameLoop.GameLoopTime - search.Since) / 1000} reason={reason}");
     }
 

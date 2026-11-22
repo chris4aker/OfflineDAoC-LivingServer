@@ -96,7 +96,9 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 - **Replies still guess from your words.** A bot doesn't know what you are doing beyond what you type. A bot that
   remembers you may ask your level right after you said it. Chat has been tested one line at a time more than as long
   conversations.
-- **Bot parties never take a new member once they set off**, so an "lfm" from a bot party is a last call while it forms.
+- **Bot parties take new members on the way only now and then** (1.2.1, #423, tests only): a party that set off with a seat free
+  looks for one more for five minutes, two minutes after it leaves and then every ten. Between those looks its "lfm" has stopped, and
+  it takes one member at a time.
 
 ## Bots that play with you, and companions
 

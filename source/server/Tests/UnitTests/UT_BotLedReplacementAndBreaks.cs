@@ -213,6 +213,126 @@ namespace DOL.UnitTests
 
         #endregion
 
+        #region One more on the way (1.2.1, #423)
+
+        [Test]
+        public void APartyOnItsWayOrAtCampWithASeatFreeLooksForOneMore()
+        {
+            Assert.Multiple(() =>
+            {
+                foreach (string phase in new[] { "Choosing group target", "Traveling", "Grinding" })
+                    Assert.That(R.OpenSeatWanted(true, false, false, false, phase, 5, 8, false), Is.True, phase);
+                Assert.That(R.OpenSeatWanted(false, false, false, false, "Grinding", 5, 8, false), Is.False, "RvR parties keep their warbands");
+                Assert.That(R.OpenSeatWanted(true, true, false, false, "Grinding", 5, 8, false), Is.False, "a raid refills its own parties");
+                Assert.That(R.OpenSeatWanted(true, false, true, false, "Grinding", 5, 8, false), Is.False, "ending");
+                Assert.That(R.OpenSeatWanted(true, false, false, true, "Grinding", 5, 8, false), Is.False, "regrouping after a wipe");
+                Assert.That(R.OpenSeatWanted(true, false, false, false, "Meeting up", 5, 8, false), Is.False, "the meetup recruits its own way");
+                Assert.That(R.OpenSeatWanted(true, false, false, false, "Leader staging", 5, 8, false), Is.False);
+                Assert.That(R.OpenSeatWanted(true, false, false, false, "Grinding", 8, 8, false), Is.False, "no seat free");
+                Assert.That(R.OpenSeatWanted(true, false, false, false, "Grinding", 5, 8, true), Is.False, "one search at a time");
+                Assert.That(R.OpenSeatWanted(true, false, false, false, null, 5, 8, false), Is.False);
+                Assert.That(R.OpenSeatDue(5 * Minute, 0), Is.False, "not timed yet");
+                Assert.That(R.OpenSeatDue(5 * Minute, 6 * Minute), Is.False);
+                Assert.That(R.OpenSeatDue(6 * Minute, 6 * Minute), Is.True);
+                Assert.That(R.OpenSeatEveryMs, Is.GreaterThan(R.GiveUpAfterMs), "a party is not always recruiting");
+            });
+        }
+
+        [Test]
+        public void AnOpenSeatAsksForTheRoleThePartyLacks()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(R.OpenSeatRole(tanks: 1, healers: 0), Is.EqualTo(BotPveGroupRole.Healer));
+                Assert.That(R.OpenSeatRole(tanks: 0, healers: 0), Is.EqualTo(BotPveGroupRole.Healer), "a healer first");
+                Assert.That(R.OpenSeatRole(tanks: 0, healers: 1), Is.EqualTo(BotPveGroupRole.Tank));
+                Assert.That(R.OpenSeatRole(tanks: 1, healers: 2), Is.EqualTo(BotPveGroupRole.Attacker));
+                Assert.That(R.PostNeed(BotPveGroupRole.Healer), Is.EqualTo("healer"));
+                Assert.That(R.PostNeed(BotPveGroupRole.Tank), Is.EqualTo("tank"));
+                Assert.That(R.PostNeed(BotPveGroupRole.Attacker), Is.EqualTo("dps"));
+                Assert.That(R.PostNeed(BotPveGroupRole.Buffer), Is.EqualTo("dps"));
+            });
+        }
+
+        [Test]
+        public void AnOpenSeatSearchNeverHoldsOrEndsTheParty()
+        {
+            var search = new R.Search(BotPveGroupRole.Healer, 0, holdsParty: false) { OpenSeat = true };
+            Assert.Multiple(() =>
+            {
+                Assert.That(R.HoldsParty(search, Minute), Is.False);
+                Assert.That(R.Next(search, R.GiveUpAfterMs, viable: false), Is.EqualTo(R.Step.GiveUpCarryOn),
+                    "nobody came: the party goes on as it was");
+                Assert.That(R.Next(search, R.GiveUpAfterMs, viable: true), Is.EqualTo(R.Step.GiveUpCarryOn));
+            });
+        }
+
+        private static void StartOpenSeat(object session, GameBot[] members, long now) =>
+            typeof(AutonomousBotGroupCoordinator).GetMethod("TryStartOpenSeat", HiddenStatic)!.Invoke(null, [session, members, now]);
+
+        [Test]
+        public void ABotOnlyPartyThatSetOffLooksForOneMoreAfterAWhile()
+        {
+            Bot tank = Gamebot(20), hitter = Gamebot(20), other = Gamebot(20);
+            Group group = GroupOf(tank, hitter, other);
+            object session = Session(group, "Traveling", hadPlayer: false, lockedSize: 3);
+            var roles = (Dictionary<long, BotPveGroupRole>)SessionType.GetProperty("PveRoles")!.GetValue(session)!;
+            roles[tank.DatabaseID] = BotPveGroupRole.Tank;
+            roles[hitter.DatabaseID] = BotPveGroupRole.Attacker;
+            roles[other.DatabaseID] = BotPveGroupRole.Attacker;
+            GameBot[] members = [tank, hitter, other];
+            PropertyInfo next = SessionType.GetProperty("NextOpenSeatAt")!;
+            PropertyInfo replacement = SessionType.GetProperty("Replacement")!;
+
+            StartOpenSeat(session, members, 10 * Minute);
+            Assert.Multiple(() =>
+            {
+                Assert.That((long)next.GetValue(session)!, Is.EqualTo(10 * Minute + R.OpenSeatFirstMs), "the first look is timed");
+                Assert.That(replacement.GetValue(session), Is.Null, "not at once");
+            });
+            StartOpenSeat(session, members, 11 * Minute);
+            Assert.That(replacement.GetValue(session), Is.Null, "not yet");
+            StartOpenSeat(session, members, 10 * Minute + R.OpenSeatFirstMs);
+            var search = (R.Search)replacement.GetValue(session)!;
+            Assert.Multiple(() =>
+            {
+                Assert.That(search, Is.Not.Null);
+                Assert.That(search.OpenSeat, Is.True);
+                Assert.That(search.Role, Is.EqualTo(BotPveGroupRole.Healer), "the party has no healer");
+                Assert.That(search.HoldsParty, Is.False);
+            });
+
+            // A member leaving a hosting party: the replacement for that member takes over the look for one more.
+            SessionType.GetProperty("HadHostedPlayer")!.SetValue(session, true);
+            Assert.That(Start(session, BotPveGroupRole.Tank, [hitter, other], viable: false), Is.True);
+            var replaced = (R.Search)replacement.GetValue(session)!;
+            Assert.Multiple(() =>
+            {
+                Assert.That(replaced.OpenSeat, Is.False);
+                Assert.That(replaced.Role, Is.EqualTo(BotPveGroupRole.Tank));
+                Assert.That(replaced.HoldsParty, Is.True);
+            });
+        }
+
+        [Test]
+        public void APartyMeetingUpOrFullTakesNoOpenSeatLook()
+        {
+            Bot tank = Gamebot(20), hitter = Gamebot(20);
+            Group group = GroupOf(tank, hitter);
+            object meeting = Session(group, "Meeting up", hadPlayer: false, lockedSize: 2);
+            StartOpenSeat(meeting, [tank, hitter], 10 * Minute);
+            Assert.That((long)SessionType.GetProperty("NextOpenSeatAt")!.GetValue(meeting)!, Is.EqualTo(0L),
+                "the clock starts only once the party sets off");
+
+            Bot[] eight = Enumerable.Range(0, 8).Select(_ => Gamebot(20)).ToArray();
+            object full = Session(GroupOf(eight), "Grinding", hadPlayer: false, lockedSize: 8);
+            SessionType.GetProperty("NextOpenSeatAt")!.SetValue(full, 1L);
+            StartOpenSeat(full, eight, 10 * Minute);
+            Assert.That(SessionType.GetProperty("Replacement")!.GetValue(full), Is.Null, "no seat free");
+        }
+
+        #endregion
+
         #region The natural break
 
         [Test]
