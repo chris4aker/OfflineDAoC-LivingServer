@@ -40,9 +40,12 @@ internal static class DeadBots
             if (line == null)
                 throw new PlaytestException("no helper joined; the server said: " + SystemSince(owner, asked));
             string name = Joined.Match(line.Text).Groups["name"].Value;
-            ScenarioContext.Check(Names.Valid(name), $"the helper's name \"{name}\" is not one word (/target takes one word)");
+            ScenarioContext.Check(name.Length > 0 && !name.Any(char.IsWhiteSpace), $"the helper's name \"{name}\" is not one word (/target takes one word)");
             helper = await owner.SeeAsync(name, ctx.Options.NetTimeout, mark)
                 ?? throw new PlaytestException($"{name} joined but was never created for {owner.CharacterName}");
+            // The server keeps each object's "what is near me" list for half a second (GameObject.GetObjectsInRadius): a
+            // /target within that time of the spawn may not find the new helper yet (CI 2026-11-22, not a 1.2.1 matter).
+            await Task.Delay(1500);
             return $"{name} (object {helper.ObjectId}): {line.Text[..Math.Min(80, line.Text.Length)]}";
         });
         return helper!;
