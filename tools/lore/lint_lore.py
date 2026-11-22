@@ -22,8 +22,16 @@ TEMPLATE_LABEL = re.compile(r"(?:^|\n\n|(?<=[.!?]) )(Superstition|Nicknames?|Rum
 TEMPLATE_LABEL_CAP = 69  # 39 Superstition + 28 Nicknames + 2 Nickname on 2026-11-20; step 1.2.1/lore-4 rewrites them
 
 def texts(d):
-    for k in ("legend", "bookPage", "story"):
+    for k in ("legend", "story"):
         if isinstance(d.get(k), str): yield k, d[k]
+    # "bookPage" and "bookPages" may each be one page (text) or a list of pages; LoreBible.BookPagesOf joins both,
+    # so every page of either is checked.
+    for k in ("bookPage", "bookPages"):
+        v = d.get(k)
+        if isinstance(v, str): yield k, v
+        elif isinstance(v, list):
+            for i, p in enumerate(v):
+                if isinstance(p, str): yield f"{k}[{i}]", p
     for i, c in enumerate(d.get("chapters") or []):
         if isinstance(c.get("text"), str): yield f"chapters[{i}]", c["text"]
 
