@@ -20,7 +20,7 @@
     }
   ],
   "story": "Muroi was a lady of Queen Cliodna's court among the reeds, the bog folk say, in the days when the queen's birds sang the sick to sleep and healed them. When the song changed and the birds began to sing the healthy to sleep and not wake them, Muroi left the court. She went north-west, as far from the queen's reeds as the bog would let her, and stands there now among the siabra mireguards, who do not trouble her and whom she does not trouble.\n\nThe Alainn Bin folk say she is the only one of the court who remembers the old song, the healing one, and that she hums it under her breath when she thinks no one is near. They say if anyone could sing the queen back to healing, it would be Muroi. They also say she would not, because she has heard what the queen sings now.",
-  "legend": "Muroi (40) stands in the north-west of the Bog of Cullen (about 365k/726k) among siabra mireguards (38-41), which are social. Pull her clear. Group of 40ish. Plain spawn, 80-second respawn. Queen Cliodna (70) is far to the east in her reeds; no link between them in this world. She is a plain spawn with no tricks. Come in from the Cullen road side, where the mireguards are thinnest, and do not drag her east toward the queen's reeds.",
+  "legend": "Muroi, a foe for a hardened band of veterans, stands in the north-west of the Bog of Cullen (about 365k/726k) among siabra mireguards (about her equals), which come to each other's aid. Draw her clear. A hardened band of veterans. Plain, no tricks; she returns eighty seconds after she falls. Queen Cliodna (a foe for a war party of the realm's champions) is far to the east in her reeds; no link between them in this world. She is a plain fight with no tricks. Come in from the Cullen road side, where the mireguards are thinnest, and do not drag her east toward the queen's reeds.",
   "yells": {
     "aggro": [
       "You come from the queen's reeds. I can smell the song.",
@@ -43,8 +43,8 @@
   },
   "botLines": {
     "briefing": [
-      "muroi is 40 in the north west bog among mireguards",
-      "pull her clear of the mireguards"
+      "muroi is in the north west bog among mireguards",
+      "draw her clear of the mireguards"
     ],
     "aftermathWin": [
       "muroi down. [the lady|grats]",
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "mireguards joined. [rip|ouch]",
-      "too many siabra. [oops|wipe]"
+      "too many siabra. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] muroi left queen cliodna's court when the song changed",

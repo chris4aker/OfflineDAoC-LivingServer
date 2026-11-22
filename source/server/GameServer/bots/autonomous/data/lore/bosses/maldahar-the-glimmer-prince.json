@@ -32,7 +32,7 @@
     }
   ],
   "story": "Maldahar the Glimmer Prince appeared the spring after the sky tore over Sheeroe, riding the prince's road below his father's lair on a horse of cold light, and the Glimmer parted for him. The name came from the Azure, who say they heard the light call him so. Whether he is Cuuldurach's son by blood the bards still argue; the shepherds settled it for themselves by the way he looks back toward the lair when he rides.\n\nHis duty is the borders. The saying about never counting the glimmers aloud dates from his first season, when a herder's boy named Fergal counted a camp for a wager and the prince came down within the minute. Six young hunters of Ardee found that no sleep, root or stunning blow took hold of him, because, the druids say, he is not wholly on this side of the Veil. A Connacht company under Gormflaith of Druim Ligen found something crueller: they drew back for a breath to bind their cuts, and he was whole again. Gormflaith also saw the glimmer camps leave their places and run to their prince when he was struck, as a household runs to its heir.\n\nHe rides further than his father's court, as far as Lough Gur, where the Melancholic Fairy Queen weeps beside a shut door; whether he courts her, scouts her, or is only lonely, the realm keeps all three accounts. When he falls every glimmer on the ridge dims for a breath and the king turns his head, and the Cullen watch leaves the ridge quickly. Like his father he returns. The Azure, who fight every other light on Sheeroe, are forbidden by their leader Dsaldor to raise a hand against him, though they have burned his father's courtiers for years, and will not say why; Coseal their preacher says only that the son is not the father.",
-  "legend": "Mezz and root are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Pull him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears. He is a group's target, not a raid's: a strong group with no tricks can do it if it commits and does not stop. Pull him well away from the glimmer camps. Superstition: never call him by name on the ridge, call him 'the rider', or he hears you and comes. The shepherds say he dims the ridge when he dies, and that you should not be standing on the ridge when the king notices.",
+  "legend": "An enchanter's trance and a binding of roots are wasted on him, so bring damage, not tricks. Commit to the fight: if your group drifts off for a minute he heals to full and you start again. Draw him away from the glimmer camps so the court does not join. And never count the glimmers aloud on the ridge, or so every Sheeroe veteran swears. He is a band's quarry, not a raid's, though by his strength alone he would be counted a foe for a war party of the realm's champions: a strong group with no tricks can do it if it commits and does not stop. Draw him well away from the glimmer camps. Superstition: never call him by name on the ridge, call him 'the rider', or he hears you and comes. The shepherds say he dims the ridge when he dies, and that you should not be standing on the ridge when the king notices.",
   "yells": {
     "aggro": [
       "My father's hills do not want you.",
@@ -70,9 +70,9 @@
   },
   "botLines": {
     "briefing": [
-      "no cc on maldahar, dont waste the mezz. [burn him|all in]",
-      "if we break off he resets in a minute. [commit or dont pull|all or nothing]",
-      "pull him well away from the glimmer camps, [or the court joins|or the camps add]",
+      "nothing holds maldahar, dont waste the mez. [burn him|all in]",
+      "if we break off hes whole again in a minute. [commit or dont start|all or nothing]",
+      "draw him well away from the glimmer camps, [or the court joins|or the camps join]",
       "a strong group can do him, [no tricks|just damage]"
     ],
     "aftermathWin": [
@@ -83,9 +83,9 @@
     ],
     "aftermathLoss": [
       "we stopped to rest and he was full again. [told you|knew it]",
-      "mezz didnt stick, root didnt stick, [nothing sticks|told you]",
-      "pulled him into a glimmer camp. [adds everywhere|bad pull]",
-      "he forgot his wounds while we rezzed. [one minute is all he needs|reset]"
+      "mez didnt stick, roots didnt stick, [nothing sticks|told you]",
+      "drew him into a glimmer camp. [glimmers everywhere|bad draw]",
+      "he forgot his wounds while we rezzed. [one minute is all he needs|back to whole]"
     ],
     "rumour": [
       "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]",
