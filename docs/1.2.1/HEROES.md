@@ -105,6 +105,10 @@ review's findings and the work left to do.
    - Hibernia's epic review (2026-11-22, the reviewer's recommendations taken): each company lays a second stone at the
      Gleann Glas cairn besides the one on the sill; the seven triad pages and four "whence the name?" openings stay;
      Scoth watches the stitched giant throw one of its own before any fight.
+   - Midgard's epic review (2026-11-22): Dyranapur carried the cup for 31 dark moons, and the slate's forty winters
+     are the years she lived after (the rule of cool). The Behemoth's fifth chapter, "Under the Heading of Weather",
+     is approved. Chapter and page titles don't count toward the cap of 12 (`name_counts.py` skips them), so the
+     Gjalpinulva beam names Hallbjorn again.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
