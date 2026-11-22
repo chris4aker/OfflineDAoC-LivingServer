@@ -71,7 +71,7 @@
   "botLines": {
     "briefing": [
       "larionne, lammia at the north end of clifton, a match for our best. lost treasure apple sap",
-      "good lammia faction = talk to her. bad faction = kill her, she wont attack you while youre on the step",
+      "good lammia standing = talk to her. bad standing = kill her, she wont attack you while youre on the step",
       "no spells, melee, two of our best is fine",
       "back 80 sec after she dies. sorceress about 35 paces off"
     ],
@@ -82,7 +82,7 @@
       "80 sec, next person can have her"
     ],
     "aftermathLoss": [
-      "bad faction, wasnt on the step, she came for us",
+      "bad standing, wasnt on the step, she came for us",
       "drew the sorceress too",
       "fell off the cliff at the north end lol",
       "that lammia hits harder than you think"

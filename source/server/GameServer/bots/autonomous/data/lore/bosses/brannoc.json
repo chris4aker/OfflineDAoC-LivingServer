@@ -19,7 +19,7 @@
     }
   ],
   "story": "The granite giants of Dartmoor stand on the moor so still that the drovers of the Cornish road have driven past them for generations thinking them tors, and five of them have names the drovers know. Brannoc is the one they will not drive past. He stands in the west of the moor with his face toward the terraces of the Stonecrush ogres. All five come at a man on sight, and he is the one the drovers fear most.\n\nThe Hext drovers say it is not men he hates. The Stonecrush clan eat granite: they grind the moor's stone into their bread and their forge, and they have eaten giants, the old Hexts swear, the slow ones that stood too near the terraces for too many years and were broken up a piece at a time and carried off in baskets. Brannoc's kin were among them. He has stood facing the terraces since, and he does not look away from them, and anything that comes up behind him on that side of the moor he takes for an ogre with a basket.\n\nThere is a heap of shed stone at his feet, grey flakes the size of plates, and the drovers say he sheds it as an old man sheds tears. Kez of the Stonecrush has been digging toward the Bed for years; the drovers say that if Kez ever comes up the hill on Brannoc's side, the moor will hear it from end to end.",
-  "legend": "Brannoc, granite giant, a foe on the last step below the realm's best in this world (only a match for a hardened band of veterans by the older count), west Dartmoor facing the Stonecrush terraces. He attacks on sight like every great giant on the moor (he goes about in a gatherer's shape, so you may see him as a granite giant gatherer, standing out on the slope that faces the terraces), and other Granite Giants of Dartmoor near him are his faction, so come at him with the area clear. Plain melee, no spells, hits like a falling tor. He rises again about eighty seconds after he falls. A band on the last steps below the realm's best.",
+  "legend": "Brannoc, granite giant, a foe on the last step below the realm's best in this world (only a match for a hardened band of veterans by the older count), west Dartmoor facing the Stonecrush terraces. He attacks on sight like every great giant on the moor (he goes about in a gatherer's shape, so you may see him as a granite giant gatherer, standing out on the slope that faces the terraces), and other Granite Giants of Dartmoor near him are his kin and come to his call, so come at him with the area clear. Plain melee, no spells, hits like a falling tor. He rises again about eighty seconds after he falls. A band on the last steps below the realm's best.",
   "yells": {
     "aggro": [
       "No baskets. Not again.",
@@ -44,7 +44,7 @@
   "botLines": {
     "briefing": [
       "brannoc in west dartmoor attacks on sight, all the big giants there do",
-      "clear the granite giants round him first, same faction"
+      "clear the granite giants round him first, same kin"
     ],
     "aftermathWin": [
       "brannoc down. he'll settle back up in a minute",
