@@ -31,7 +31,8 @@
   "yells": {
     "aggro": [
       "Not as small as I look, am I?",
-      "Big folk! In my wood!"
+      "Big folk! In my wood!",
+      "I helped raise the Veil, I did! Well, I watched it."
     ],
     "phases": [
       {
@@ -40,11 +41,13 @@
       }
     ],
     "death": [
-      "The fire... is getting out..."
+      "The fire... is getting out...",
+      "Out you go, little spark... out you go..."
     ],
     "slay": [
       "Too slow, big folk.",
-      "Small, was I?"
+      "Small, was I?",
+      "Quick folk win, big folk fall!"
     ]
   },
   "atmosphere": {

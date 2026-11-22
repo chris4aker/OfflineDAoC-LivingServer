@@ -36,7 +36,8 @@
   "yells": {
     "aggro": [
       "Who cuts the thorn?",
-      "Iron. You brought iron. Clever."
+      "Iron. You brought iron. Clever.",
+      "Tie a rag and walk on. You did not. Now the thorn has you."
     ],
     "phases": [
       {
@@ -50,7 +51,8 @@
     ],
     "slay": [
       "Another rag on the branches.",
-      "Thorned."
+      "Thorned.",
+      "Hung on the thorn for luck."
     ]
   },
   "atmosphere": {

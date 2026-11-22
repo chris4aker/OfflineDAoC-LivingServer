@@ -26,7 +26,8 @@
   "yells": {
     "aggro": [
       "The pool heaves and opens into a mouth.",
-      "Hungry. Always hungry."
+      "Hungry. Always hungry.",
+      "Fall in. Everything falls in."
     ],
     "phases": [
       {
@@ -40,7 +41,8 @@
     ],
     "slay": [
       "Swallowed.",
-      "Gone down."
+      "Gone down.",
+      "Down into the green."
     ]
   },
   "atmosphere": {

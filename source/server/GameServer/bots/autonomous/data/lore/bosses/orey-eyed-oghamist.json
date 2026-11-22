@@ -31,7 +31,8 @@
   "yells": {
     "aggro": [
       "I have read your name in the stones.",
-      "Hold still. I am writing."
+      "Hold still. I am writing.",
+      "Every stroke I cut is a curse. Let me read you yours."
     ],
     "phases": [
       {
@@ -40,11 +41,13 @@
       }
     ],
     "death": [
-      "The last word... unwritten..."
+      "The last word... unwritten...",
+      "The stone... reads me now..."
     ],
     "slay": [
       "Cut into the stone with the rest.",
-      "Written."
+      "Written.",
+      "Your name ends here, at the edge of the stone."
     ]
   },
   "atmosphere": {

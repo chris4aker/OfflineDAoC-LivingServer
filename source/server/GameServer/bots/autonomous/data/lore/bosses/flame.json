@@ -31,7 +31,8 @@
   "yells": {
     "aggro": [
       "The ghost-fire flares toward you.",
-      "Warm. Warm enough."
+      "Warm. Warm enough.",
+      "Sit by the hearth. Bargain with me."
     ],
     "phases": [
       {
@@ -45,7 +46,8 @@
     ],
     "slay": [
       "Ash.",
-      "Burned on nothing."
+      "Burned on nothing.",
+      "Fed to the old fire."
     ]
   },
   "atmosphere": {

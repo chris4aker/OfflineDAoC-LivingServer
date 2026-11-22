@@ -41,7 +41,8 @@
   "yells": {
     "aggro": [
       "The earth splits and something smoulders out.",
-      "Fire. Rot. Flesh. Bone."
+      "Fire. Rot. Flesh. Bone.",
+      "The scorch, the rot, the flesh. You will learn all three."
     ],
     "phases": [
       {
@@ -59,7 +60,8 @@
     ],
     "slay": [
       "Into the soil with you.",
-      "Another bone for my true form."
+      "Another bone for my true form.",
+      "The field takes you back."
     ]
   },
   "atmosphere": {

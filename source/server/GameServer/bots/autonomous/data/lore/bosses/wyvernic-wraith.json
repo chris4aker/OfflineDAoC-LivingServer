@@ -26,7 +26,8 @@
   "yells": {
     "aggro": [
       "A ghostly wyvern shrieks and dives.",
-      "Master? No. Prey."
+      "Master? No. Prey.",
+      "The wraith circles once, crackling, and comes down."
     ],
     "phases": [
       {
@@ -35,11 +36,13 @@
       }
     ],
     "death": [
-      "The wraith scatters on the wind."
+      "The wraith scatters on the wind.",
+      "The old roost is empty now. The wind is quiet."
     ],
     "slay": [
       "Prey.",
-      "Dropped."
+      "Dropped.",
+      "Fed to the hatchling. Fed."
     ]
   },
   "atmosphere": {

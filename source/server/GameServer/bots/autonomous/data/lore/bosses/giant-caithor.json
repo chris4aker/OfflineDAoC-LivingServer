@@ -36,7 +36,8 @@
   "yells": {
     "aggro": [
       "Who has loosed me?",
-      "The dark men are dead. Then I am free to kill you."
+      "The dark men are dead. Then I am free to kill you.",
+      "I have waited in the earth longer than your kin have had names."
     ],
     "phases": [
       {
@@ -45,11 +46,13 @@
       }
     ],
     "death": [
-      "Free... at last..."
+      "Free... at last...",
+      "The dark men will bind me again... let them try..."
     ],
     "slay": [
       "Another for the dark men.",
-      "Into the earth with me."
+      "Into the earth with me.",
+      "Small bones. The giants of old would laugh."
     ]
   },
   "atmosphere": {
