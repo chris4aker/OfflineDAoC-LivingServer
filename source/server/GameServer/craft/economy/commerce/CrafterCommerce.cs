@@ -72,6 +72,9 @@ namespace DOL.GS.CraftingEconomy
         private static readonly ConcurrentDictionary<(long Bot, string Customer), CrafterTalk.Deal> AwaitingDeposit = new();
         private static readonly ConcurrentDictionary<string, string> ReadyTold = new(StringComparer.Ordinal);
         private static readonly ConcurrentDictionary<string, byte> HandingOver = new(StringComparer.Ordinal);
+        /// <summary>The break (assignment id) in which a crafter last tried to hand a buyer's made pieces over unasked, by
+        /// "crafter|buyer": one try a break, so a pulse never opens window after window.</summary>
+        private static readonly ConcurrentDictionary<string, string> HandOverTried = new(StringComparer.Ordinal);
         private static readonly ConcurrentDictionary<string, long> LastTradePost = new(StringComparer.OrdinalIgnoreCase);
         private static int _registered;
 
@@ -124,6 +127,7 @@ namespace DOL.GS.CraftingEconomy
                     return;
                 PayOwedOnline();
                 PulseHolds();
+                PulseDeliveries();
             }
 
             public void Flush(bool wait) => CrafterCustomers.Flush(wait);
@@ -135,6 +139,7 @@ namespace DOL.GS.CraftingEconomy
             AwaitingDeposit.Clear();
             ReadyTold.Clear();
             HandingOver.Clear();
+            HandOverTried.Clear();
             LastTradePost.Clear();
             Holds.Clear();
             FindPlayer = DefaultFindPlayer;
@@ -318,7 +323,7 @@ namespace DOL.GS.CraftingEconomy
                 case CrafterTalk.Act.OpenTrade:
                     Deals.TryRemove(key, out _);
                     CrafterTalk.Deal sale = reply.Deal;
-                    Schedule(bot, 2_500, () => OpenStockTrade(bot, player, sale));
+                    Schedule(bot, 2_500, () => OpenStockTradeOrSay(bot, player, key, sale));
                     break;
                 case CrafterTalk.Act.Status when reply.Topic == "craft_ready_here":
                     Schedule(bot, 2_500, () => HandOver(bot, player));
@@ -592,20 +597,77 @@ namespace DOL.GS.CraftingEconomy
             return false;
         }
 
-        private static void DeliverOnLoop(GameBot crafter, CraftOrder order)
+        /// <summary>
+        /// Game loop, once a second (the stores' pulse): every made player piece whose crafter is on its break now is handed
+        /// over to the player standing near (one try a break) or announced to the player in the game (once a break).
+        /// <para>Root cause of issue #422's lapsed orders: the board calls <see cref="DeliverToPlayer"/> only at the two ends of a
+        /// break. At its start the bot is not yet between tasks (its new assignment is written after the hook), so
+        /// <see cref="AtBreak"/> is false; at its end the hand-over is scheduled a second later, by which time the next task
+        /// is assigned and <see cref="AtBreak"/> is false again. A made piece was never handed over or announced, and the
+        /// order lapsed unless the player happened to say "ready" beside the crafter during the break. Returns the pieces acted on.</para>
+        /// </summary>
+        public static int PulseDeliveries()
+        {
+            int acted = 0;
+            foreach (CraftOrder order in AutonomousBotCraftOrders.All()
+                         .Where(o => o.Source == CraftOrderSource.Player && o.State == CraftOrderState.Made).ToArray())
+            {
+                GameBot crafter = FindBot(order.CrafterBotId);
+                if (crafter == null || !AtBreak(crafter))
+                    continue;
+                string key = crafter.DatabaseID + "|" + order.BuyerId;
+                if (!HandingOver.TryAdd(key, 0))
+                    continue;
+                try
+                {
+                    if (DeliverOnLoop(crafter, order))
+                        acted++;
+                }
+                finally
+                {
+                    HandingOver.TryRemove(key, out _);
+                }
+            }
+            return acted;
+        }
+
+        /// <summary>ECON_PLAYER_ORDER outcome="ready_told" (the player was told where to collect) or "handover_tried".</summary>
+        private static void LogReady(GameBot crafter, GamePlayer player, CraftOrder order, string outcome, params (string Key, object Value)[] more)
+        {
+            if (!Log.IsInfoEnabled)
+                return;
+            var pairs = new List<(string Key, object Value)>
+            {
+                ("outcome", outcome), ("order", order.OrderId), ("realm", crafter.Realm), ("player", player.Name), ("crafter", crafter.Name),
+                ("crafterId", crafter.DatabaseID), ("item", order.ProductName), ("pay", order.PayUpFront ? "upfront" : "delivery"),
+                ("zone", AutonomousLivingServer.PlaceOf(crafter)),
+            };
+            if (more != null)
+                pairs.AddRange(more);
+            Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, pairs.ToArray()));
+        }
+
+        private static bool DeliverOnLoop(GameBot crafter, CraftOrder order)
         {
             GamePlayer player = FindPlayer(CrafterCustomers.CharacterIdOf(order.BuyerId));
             if (player == null || player.Realm != crafter.Realm || !AtBreak(crafter))
-                return;
+                return false;
+            string breakId = crafter.PersistentRecord?.ObjectiveAssignmentId ?? string.Empty;
             if (IsNear(crafter, player))
             {
-                HandOver(crafter, player);
-                return;
+                // One unasked try a break (a full bag or an open window is told once; "ready" tries again).
+                string tried = crafter.DatabaseID + "|" + order.BuyerId;
+                if (HandOverTried.TryGetValue(tried, out string triedIn) && triedIn == breakId)
+                    return false;
+                HandOverTried[tried] = breakId;
+                int given = HandOver(crafter, player);
+                LogReady(crafter, player, order, "handover_tried", ("given", given), ("window", player.TradeWindow is BotTradeWindow));
+                return true;
             }
-            string breakId = crafter.PersistentRecord?.ObjectiveAssignmentId ?? string.Empty;
             if (ReadyTold.TryGetValue(order.OrderId, out string told) && told == breakId)
-                return;
+                return false;
             ReadyTold[order.OrderId] = breakId;
+            LogReady(crafter, player, order, "ready_told");
             var slots = new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 ["item"] = order.ProductName.ToLowerInvariant(), ["zone"] = AutonomousLivingServer.PlaceOf(crafter), ["customer"] = player.Name,
@@ -726,6 +788,79 @@ namespace DOL.GS.CraftingEconomy
                         ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID), ("item", piece.Name), ("quality", piece.Quality),
                         ("copper", deal.Ask), ("pay", "trade"), ("paid", true)));
             });
+        }
+
+        /// <summary>
+        /// The crafter said "ok, opening a trade"; the window opens a moment later. Issue #422: when it could not open (the player
+        /// stepped out of reach, had another trade open, the crafter went into a fight, the piece was gone), the deal was already
+        /// dropped and nothing was said, so the player's next "yes" found no deal. Now the crafter says why and the deal stays on
+        /// the table, so "yes" opens it again; a window closed without the trade keeps the deal the same way. Returns the window.
+        /// </summary>
+        public static BotTradeWindow OpenStockTradeOrSay(GameBot crafter, GamePlayer player, (long Bot, string Customer) key, CrafterTalk.Deal deal)
+        {
+            if (crafter == null || player == null || deal?.Piece == null)
+                return null;
+            BotTradeWindow window = OpenStockTrade(crafter, player, deal);
+            if (window != null)
+            {
+                Action<BotTradeWindow, bool> closed = window.Closed;
+                window.Closed = (w, completed) =>
+                {
+                    closed?.Invoke(w, completed);
+                    if (!completed)
+                        KeepDeal(key, deal);
+                };
+                return window;
+            }
+            (string why, string text) = StockTradeBlocker(crafter, player, deal);
+            if (why == "gone")
+                ReleaseHold(deal.Piece.ObjectId, "gone");
+            else
+                KeepDeal(key, deal);
+            var slots = new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["item"] = deal.ItemText, ["price"] = CrafterTalk.PriceText(deal.Ask), ["zone"] = AutonomousLivingServer.PlaceOf(crafter),
+                ["customer"] = player.Name,
+            };
+            // Fixed words (no corpus topic): the reason is a fact the player needs.
+            Say(crafter, player, new CrafterTalk.Reply(text, CrafterTalk.Act.Status, null, null, slots), 800);
+            if (Log.IsInfoEnabled)
+                Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, ("outcome", "stock_trade_failed"), ("why", why), ("realm", crafter.Realm),
+                    ("player", player.Name), ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID), ("item", deal.Piece.Name),
+                    ("copper", deal.Ask), ("atBreak", AtBreak(crafter)), ("near", IsNear(crafter, player))));
+            return null;
+        }
+
+        /// <summary>Why a stock trade window did not open, and the crafter's words for it.</summary>
+        public static (string Why, string Text) StockTradeBlocker(GameBot crafter, GamePlayer player, CrafterTalk.Deal deal)
+        {
+            string item = deal?.ItemText ?? "it";
+            bool inBag = crafter?.Inventory?.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
+                .Any(i => i != null && i.ObjectId == deal?.Piece?.ObjectId) == true;
+            bool heldForOther = deal?.Piece != null && Holds.TryGetValue(deal.Piece.ObjectId, out StockHold held) && held.CustomerId != CustomerIdOf(player);
+            DbInventoryItem piece = inBag
+                ? crafter.Inventory.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack).First(i => i != null && i.ObjectId == deal.Piece.ObjectId)
+                : null;
+            if (!inBag || heldForOther || AutonomousBotCraftOrders.IsHeldForOrder(piece))
+                return ("gone", $"sorry, the {item} is gone");
+            if (player.TradeWindow != null)
+                return ("window", "close your trade window and say yes");
+            if (!IsNear(crafter, player))
+                return ("far", $"come closer and say yes, im in {AutonomousLivingServer.PlaceOf(crafter)}");
+            if (!AtBreak(crafter) && !FreeToTrade(crafter))
+                return ("busy", "busy right now, say yes again in a minute");
+            return ("other", "cant open a trade right now, say yes again in a bit");
+        }
+
+        /// <summary>Puts an agreed stock deal back on the table for at least another quote's lifetime (its hold with it).</summary>
+        private static void KeepDeal((long Bot, string Customer) key, CrafterTalk.Deal deal)
+        {
+            DateTime until = UtcNow() + CrafterTalk.DealLifetime;
+            if (deal.UntilUtc > until)
+                until = deal.UntilUtc;
+            Deals[key] = deal with { UntilUtc = until };
+            if (deal.Piece != null && Holds.TryGetValue(deal.Piece.ObjectId, out StockHold hold) && hold.CustomerId == key.Customer && hold.UntilUtc < until)
+                Holds.TryUpdate(deal.Piece.ObjectId, hold with { UntilUtc = until }, hold);
         }
 
         #endregion

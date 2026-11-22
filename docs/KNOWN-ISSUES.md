@@ -119,10 +119,14 @@ era-built world yet. Whether the original client shows a sitting bot is still to
 
 - **Crafting as a player** hasn't been seen yet, and needs the original client.
 - **Trading with a crafter bot:** tried on `b1b6846`; a reply was cut mid-word, a different piece was offered, and the
-  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet.
+  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet. Since then (issue #422): a made commission was
+  never handed over or announced, because the hand-over ran only at the very edges of the crafter's break, where it saw no
+  break; the crafter now hands it over, or says where to collect it, while its break lasts. A stock trade window that could
+  not open now says why and keeps the deal. **Tests only.**
 - **Craft orders** often lapsed on `19e7037` (156 made, 163 expired). Orders now go only to crafters who stay online and
   are withdrawn from busy ones; on `c81eb5d` 44 were made and 1 expired (server log).
-- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces.
+- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces. `ECON_INDEX` now also
+  carries `craftedListed20` (crafted bot listings of level 20 and up, what the Exchange's upgrade buyers can use).
 - **The launcher's crafter card and economy page** haven't been checked on the owner's PC.
 
 ## Lore

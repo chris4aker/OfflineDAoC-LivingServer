@@ -507,5 +507,133 @@ namespace DOL.UnitTests
 
         #endregion
 
+        #region Issue #422: a trade that never finished
+
+        /// <summary>
+        /// The board calls the hand-over only at the two ends of a break: at its start the crafter is not yet between tasks, and
+        /// at its end the next task is assigned before the scheduled hand-over runs. Both see no break, so a made piece was
+        /// never handed over or announced. The game-loop pulse hands it over while the break lasts.
+        /// </summary>
+        [Test]
+        public void AMadeOrderIsHandedOverWhileTheBreakLastsNotOnlyAtItsEnds()
+        {
+            GameBot crafter = Crafter();
+            GamePlayer player = PlayerNamed("Tamsin", 100_000);
+            _online = player;
+            CrafterCommerce.FindBot = id => id == crafter.DatabaseID ? crafter : null;
+            CrafterTalk.Deal deal = Quote("can you make a chain hauberk lvl 20", Customer(player));
+            CraftOrder order = CrafterCommerce.Place(crafter, player, Customer(player), deal, upFront: true).Single();
+            DbInventoryItem piece = Make(crafter, order);
+
+            CrafterCommerce.AtBreak = _ => false;
+            AutonomousBotCraftOrders.Deliver(crafter);
+            Assert.That(_received, Is.Empty, "the board's call at a break's edge finds no break");
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(0), "still hunting");
+
+            CrafterCommerce.AtBreak = _ => true;
+            crafter.PersistentRecord.ObjectiveAssignmentId = "break-1";
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(1));
+            Assert.That(_received, Is.EquivalentTo(new[] { piece }), "handed over in the break");
+            Assert.That(AutonomousBotCraftOrders.OfBuyer("player:Tamsin"), Is.Empty, "the order is closed");
+            Assert.That(_purses[crafter.DatabaseID], Is.EqualTo(deal.Ask), "the escrow paid the crafter");
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(0), "nothing left to hand over");
+        }
+
+        [Test]
+        public void AFarPlayerIsToldOnceABreakAndOneWindowOpensWhenTheyComeNear()
+        {
+            GameBot crafter = Crafter();
+            GamePlayer player = PlayerNamed("Tamsin", 50_000);
+            _online = player;
+            CrafterCommerce.FindBot = id => id == crafter.DatabaseID ? crafter : null;
+            CrafterTalk.Deal deal = Quote("can you make a chain hauberk lvl 20", Customer(player, CrafterCustomers.Standing.Regular));
+            CraftOrder order = CrafterCommerce.Place(crafter, player, Customer(player, CrafterCustomers.Standing.Regular), deal, upFront: false).Single();
+            DbInventoryItem piece = Make(crafter, order);
+            CrafterCommerce.AtBreak = _ => true;
+            CrafterCommerce.IsNear = (_, _) => false;
+            crafter.PersistentRecord.ObjectiveAssignmentId = "break-1";
+            _tells.Clear();
+
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(1));
+            Assert.That(_tells.Single(), Does.Contain("chain hauberk"), "told where to collect it");
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(0), "once a break");
+            Assert.That(_tells, Has.Count.EqualTo(1));
+
+            CrafterCommerce.IsNear = (_, _) => true;
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(1), "the player came near: the hand-over");
+            var window = player.TradeWindow as BotTradeWindow;
+            Assert.That(window, Is.Not.Null);
+            Assert.That(window.Pieces, Is.EquivalentTo(new[] { piece }));
+            window.CloseTrade();
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(0), "one unasked try a break, no window after window");
+            Assert.That(player.TradeWindow, Is.Null);
+
+            CrafterTalk.Reply ready = CrafterCommerce.Handle(player, crafter, "ready");
+            Assert.That(ready.Topic, Is.EqualTo("craft_ready_here"), ready.Text);
+            Assert.That(player.TradeWindow, Is.InstanceOf<BotTradeWindow>(), "\"ready\" opens it again");
+            ((BotTradeWindow)player.TradeWindow).CloseTrade();
+
+            CrafterCommerce.IsNear = (_, _) => false;
+            crafter.PersistentRecord.ObjectiveAssignmentId = "break-2";
+            _tells.Clear();
+            Assert.That(CrafterCommerce.PulseDeliveries(), Is.EqualTo(1), "the next break tells again");
+            Assert.That(_tells.Single(), Does.Contain("chain hauberk"));
+        }
+
+        [Test]
+        public void AStockTradeThatCannotOpenSaysWhyAndKeepsTheDeal()
+        {
+            (GameBot crafter, GamePlayer player, DbInventoryItem piece) = AgreeStockSale();
+            CrafterCommerce.AtBreak = _ => true;
+            CrafterCommerce.IsNear = (_, _) => true;
+            player.TradeWindow = new BotTradeWindow(player, crafter);
+            _tells.Clear();
+
+            CrafterTalk.Reply yes = CrafterCommerce.Handle(player, crafter, "yes");
+            Assert.That(yes.Act, Is.EqualTo(CrafterTalk.Act.OpenTrade), yes.Text);
+            Assert.That(_tells.Last(), Does.Contain("close your trade window"), "the crafter says why");
+            Assert.That(CrafterCommerce.HoldsNow.Single().ObjectId, Is.EqualTo(piece.ObjectId), "still set aside");
+
+            player.TradeWindow = null;
+            yes = CrafterCommerce.Handle(player, crafter, "yes");
+            Assert.That(yes.Act, Is.EqualTo(CrafterTalk.Act.OpenTrade), "the deal stood: " + yes.Text);
+            var window = player.TradeWindow as BotTradeWindow;
+            Assert.That(window?.Pieces, Is.EquivalentTo(new[] { piece }));
+
+            window.CloseTrade();
+            yes = CrafterCommerce.Handle(player, crafter, "yes");
+            Assert.That(yes.Act, Is.EqualTo(CrafterTalk.Act.OpenTrade), "a window closed without the trade keeps the deal: " + yes.Text);
+            Assert.That(player.TradeWindow, Is.InstanceOf<BotTradeWindow>());
+        }
+
+        [Test]
+        public void AStockPieceThatIsGoneIsSaidSoAndReleased()
+        {
+            (GameBot crafter, GamePlayer player, DbInventoryItem piece) = AgreeStockSale();
+            CrafterCommerce.AtBreak = _ => true;
+            CrafterCommerce.IsNear = (_, _) => true;
+            crafter.Inventory.RemoveItemWithoutDbDeletion(piece);
+            _tells.Clear();
+            CrafterCommerce.Handle(player, crafter, "yes");
+            Assert.That(player.TradeWindow, Is.Null);
+            Assert.That(_tells.Last(), Does.Contain("is gone"));
+            Assert.That(CrafterCommerce.HoldsNow, Is.Empty, "released");
+        }
+
+        [Test]
+        public void NoTradeWindowIsBuiltForAPlayerAlreadyTrading()
+        {
+            GameBot crafter = Crafter();
+            GamePlayer player = PlayerNamed("Tamsin", 0);
+            DbInventoryItem piece = OwnWork(crafter);
+            var other = new BotTradeWindow(player, crafter);
+            player.TradeWindow = other;
+            Assert.That(BotTradeWindow.Open(player, crafter, [piece], 100, "stock:" + piece.ObjectId, null), Is.Null);
+            Assert.That(BotTrades.IsHeld(crafter), Is.False, "no trade hold for a window never shown");
+            Assert.That(player.TradeWindow, Is.SameAs(other));
+        }
+
+        #endregion
+
     }
 }

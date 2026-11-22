@@ -124,6 +124,10 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
     /// <summary>Crafted pieces gamebots posted since the last hourly line, by realm (PC log 2026-11-17: the night showed only
     /// crafted sales, exchange_crafted, so whether crafters posted at all could not be read).</summary>
     private readonly int[] _craftedPosted = new int[4];
+
+    /// <summary>The level from which a crafted listing counts as sellable work in ECON_INDEX's craftedListed20 (the Exchange's
+    /// upgrade buyers are level 20 and up; practice pieces are below).</summary>
+    public const int SellableCraftedLevel = 20;
     private const int MaxNames = 50_000;
     private long _nextHourTick;
     private const long HourMilliseconds = 60 * 60_000;
@@ -268,6 +272,10 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
     {
         var stock = new Dictionary<MarketBand, int>();
         var craftedListed = new int[4];
+        // Issue #422: most crafted listings are practice work below level 20, which the Exchange's upgrade buyers (level 20 and
+        // up) never take; this counts the crafted bot listings a buyer of 20+ could use, so a night shows whether sellable
+        // pieces are listed at all.
+        var craftedListed20 = new int[4];
         foreach (DbInventoryItem item in Market() ?? [])
         {
             if (item == null || item.SellPrice <= 0 || !RealmExchangeBroker.IsExchangeOwnerLot(item.OwnerLot) ||
@@ -275,7 +283,11 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
                 continue;
             MarketBand band = BandOf(item);
             if (item.IsCrafted && AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out _))
+            {
                 craftedListed[Math.Clamp((int)band.Realm, 0, 3)]++;
+                if (item.Level >= SellableCraftedLevel)
+                    craftedListed20[Math.Clamp((int)band.Realm, 0, 3)]++;
+            }
             RememberName(band, item.Name);
             stock[band] = stock.GetValueOrDefault(band) + 1;
             stock[AllRealms(band)] = stock.GetValueOrDefault(AllRealms(band)) + 1;
@@ -293,7 +305,8 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
                 ("stock", bands.Sum(pair => pair.Value.Stock)), ("demand", bands.Sum(pair => pair.Value.Demand)),
                 ("sales", bands.Sum(pair => pair.Value.Sales)), ("medianFactor", factors[factors.Length / 2]),
                 ("flooded", factors.Count(f => f <= PriceIndexMath.MinFactor)), ("starved", factors.Count(f => f >= PriceIndexMath.MaxFactor)),
-                ("craftedListed", craftedListed[(int)realm]), ("craftedPosted", Interlocked.Exchange(ref _craftedPosted[(int)realm], 0))));
+                ("craftedListed", craftedListed[(int)realm]), ("craftedPosted", Interlocked.Exchange(ref _craftedPosted[(int)realm], 0)),
+                ("craftedListed20", craftedListed20[(int)realm])));
         }
         if (Writes)
         {
