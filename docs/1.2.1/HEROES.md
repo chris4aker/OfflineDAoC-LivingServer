@@ -118,6 +118,18 @@ review's findings and the work left to do.
      chapters carry the depth. `LoreBible.DepthReport` and `tools/lore/depth_report.py` no longer hold epic places to
      the generic 500+ story floor (every other location floor still applies). A short book page gets only a real detail
      (a fact, an image, a consequence that fits the file), never filler; where none fits, the page is left and listed.
+11. **The NPC pass** (2026-11-22, answering NPC-PASS-SAMPLE.md):
+   - **A real moment, not a name swap.** A named present-day NPC gets a moment of their own where it earns its place: a
+     line of speech, a habit, a stake in the story. Still tight (decision 10): every sentence adds a fact, an image or
+     a consequence.
+   - **Untitled chroniclers stay exempt from the cap of 12** (Wenna, Adremal, Elowen, Lisín, Aodhan, Tobias, Nóra and
+     the like). They are the realms' tellers. Titled names and the folklore heroes keep the cap.
+   - **Lore tellers avoid gamebot first names** (Sigrun, Ragnhild, Hallveig and any other name a gamebot can be given),
+     as hired companions already avoid the lore's heroes (decision 7). A teller who has one is renamed consistently.
+   - **The recurring voices are approved:** Sven (Jordheim's skald trainer), Morlin Caan (the smith by the temple) and
+     Grimma (Jordheim's shaman trainer) for Midgard; Daray (Tir na Nog's druid trainer), Lasairiona (the champion
+     trainer) and Ilisa (Mag Mell's weaponsmith) for Hibernia. Albion keeps Elowen, with Lady Fridwulf as a second voice.
+
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
