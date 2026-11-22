@@ -437,6 +437,10 @@ def role_map(world, roster):
         if "regions" in d: locations[d["id"]] = d
     out = []
     pats = {s: re.compile(r"\b" + s + r"\b", re.I) for s in STAND_INS}
+    # Bosses whose own name carries a role word ("Chieftain Caimheul", "the Priest of Arawn", "Warden Bimure"): where a file
+    # names one, its "the chieftain" may be that boss, not a present-day stand-in.
+    titled = [b for b in name_counts.boss_names() if b and any(re.search(r"\b" + s[4:] + r"\b", b, re.I)
+                                                              for s in STAND_INS if s != "the third company")]
     for f in lore_files():
         d = json.load(open(f, encoding="utf-8"))
         rel = os.path.relpath(f, LORE_DIR).replace(os.sep, "/")
@@ -456,6 +460,17 @@ def role_map(world, roster):
         for s, n in sorted(uses.items(), key=lambda kv: -kv[1]):
             sug = suggest(world, roster, realm, s, anchor) if realm in REALMS.values() else None
             item = {"stand_in": s, "count": n, "suggested": sug}
+            maybe = set()
+            for b in titled:
+                if b.lower() == s or not re.search(r"\b" + s[4:] + r"\b", b, re.I): continue
+                core = re.sub(r"\b(?:the|of|field|high|grand|" + s[4:] + r")\b", " ", b, flags=re.I).split()
+                if core and " ".join(core).islower() and len(" ".join(core)) < 6: continue   # "the warden of the east"
+                if core and all(len(w) > 2 for w in core) and re.search(r"\b" + re.escape(" ".join(core)) + r"\b", text):
+                    maybe.add(b)
+            maybe = sorted(maybe)
+            if maybe:
+                item["may_mean"] = maybe
+                if sug: sug["fit"] = "check"
             if s == "the third company": item["note"] = "a present-day company (Caer Sidi), not one person; keep the label"
             elif sug is None: item["note"] = "no real NPC fits this place and role; keep the role or a Living Server name"
             entry["stand_ins"].append(item)
@@ -503,7 +518,8 @@ def main():
         json.dump({"about": "The generic role stand-ins of each lore file (narrative strings, facts and titles out, the boss "
                             "itself excluded) with a suggested real NPC from npc_roster.json. fit: local (same region, "
                             f"within {LOCAL} units of the place or its entrance), realm (the capital's trainer or the "
-                            "nearest in the region). A suggestion is a starting point for the writer, not a ruling.",
+                            "nearest in the region), check (the file also names a boss whose title holds the role word, "
+                            "listed in may_mean, so the stand-in may be that boss). A suggestion is a starting point for the writer, not a ruling.",
                    "counts": {"files": len(rmap), "stand_in_uses": sum(len(e["stand_ins"]) for e in rmap),
                               "by_fit": dict(fits)}, "files": rmap}, fh, indent=1, ensure_ascii=False); fh.write("\n")
     print(json.dumps(meta["counts"]), json.dumps(dict(fits)))

@@ -1,11 +1,12 @@
 {
- "about": "The generic role stand-ins of each lore file (narrative strings, facts and titles out, the boss itself excluded) with a suggested real NPC from npc_roster.json. fit: local (same region, within 40000 units of the place or its entrance), realm (the capital's trainer or the nearest in the region). A suggestion is a starting point for the writer, not a ruling.",
+ "about": "The generic role stand-ins of each lore file (narrative strings, facts and titles out, the boss itself excluded) with a suggested real NPC from npc_roster.json. fit: local (same region, within 40000 units of the place or its entrance), realm (the capital's trainer or the nearest in the region), check (the file also names a boss whose title holds the role word, listed in may_mean, so the stand-in may be that boss). A suggestion is a starting point for the writer, not a ruling.",
  "counts": {
   "files": 229,
   "stand_in_uses": 313,
   "by_fit": {
-   "realm": 151,
-   "local": 78,
+   "realm": 149,
+   "local": 71,
+   "check": 9,
    "none": 84
   }
  },
@@ -88,9 +89,12 @@
       "name": "Sister Finella",
       "role": "Cleric trainer",
       "near": "Fort Gwyntell",
-      "fit": "realm",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "the priest of the barrow"
+     ]
     }
    ]
   },
@@ -109,9 +113,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     },
     {
      "stand_in": "the druid",
@@ -306,9 +313,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     },
     {
      "stand_in": "the smith",
@@ -588,9 +598,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     },
     {
      "stand_in": "the druid",
@@ -631,9 +644,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     },
     {
      "stand_in": "the smith",
@@ -824,6 +840,9 @@
      "stand_in": "the marshal",
      "count": 21,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1163,6 +1182,9 @@
      "stand_in": "the marshal",
      "count": 11,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1179,6 +1201,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1211,6 +1236,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1233,6 +1261,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1249,6 +1280,9 @@
      "stand_in": "the marshal",
      "count": 3,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1286,6 +1320,9 @@
      "stand_in": "the marshal",
      "count": 2,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1318,6 +1355,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1627,6 +1667,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -1801,6 +1844,9 @@
      "stand_in": "the marshal",
      "count": 4,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -2529,6 +2575,9 @@
      "stand_in": "the marshal",
      "count": 6,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -2545,6 +2594,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -3040,9 +3092,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     }
    ]
   },
@@ -3562,9 +3617,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     }
    ]
   },
@@ -3969,6 +4027,9 @@
      "stand_in": "the marshal",
      "count": 3,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -4043,6 +4104,9 @@
      "stand_in": "the chieftain",
      "count": 2,
      "suggested": null,
+     "may_mean": [
+      "the chieftain of the ones who ran"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -4201,9 +4265,12 @@
       "name": "Sister Finella",
       "role": "Cleric trainer",
       "near": "Fort Gwyntell",
-      "fit": "realm",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "the priest of the barrow"
+     ]
     }
    ]
   },
@@ -4440,6 +4507,9 @@
      "stand_in": "the marshal",
      "count": 1,
      "suggested": null,
+     "may_mean": [
+      "Field Marshal Nebir"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     }
    ]
@@ -4810,9 +4880,12 @@
       "name": "Chieftain Da Behnn",
       "role": "keep lord of Dun Da Behnn (or Chieftess)",
       "near": "Dun Da Behnn",
-      "fit": "local",
+      "fit": "check",
       "era": "probable"
-     }
+     },
+     "may_mean": [
+      "Chieftain Caimheul"
+     ]
     },
     {
      "stand_in": "the smith",
@@ -5019,6 +5092,9 @@
      "stand_in": "the chieftain",
      "count": 2,
      "suggested": null,
+     "may_mean": [
+      "Chieftain Caimheul"
+     ],
      "note": "no real NPC fits this place and role; keep the role or a Living Server name"
     },
     {
