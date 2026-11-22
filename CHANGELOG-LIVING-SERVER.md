@@ -45,6 +45,14 @@ or run where it was written; CI on pull request #398 is the first build.
   and, outside battlegrounds, bounty points. A bot killed again within five minutes is still worth nothing.
 - **Named drops in gamebot-led groups.** A kill you finished in a group a gamebot leads dropped none of the monster's
   template loot (coin and random items still dropped). It drops again.
+- **Uthgard's drop tables** (owner 2026-11-21). A new tool, `source/tools/uthgard_drops_content.py`, adds the classic-era
+  drops measured on Uthgard (hides, teeth, gems, vendor loot, period gear) to monsters that have no loot of their own,
+  at Uthgard's rates (whole percents; rarer than 0.5% rounds up to 1%). Monsters with their own drops keep them, and
+  random magic items and coin drop as before. `build_release_037.py --uthgard-drops <pipeline data>` puts them in the
+  release world, and the update carries them to existing worlds. The pipeline data is not in Git, so this runs on the
+  owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the real world yet.
+- Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
+  debug level.
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
