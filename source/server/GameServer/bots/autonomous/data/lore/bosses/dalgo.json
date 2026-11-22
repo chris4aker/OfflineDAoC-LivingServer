@@ -103,7 +103,7 @@
     "keyword": "Dalgo",
     "text": "Warden of the skogsra's deep wood in Faraheim. His greenhands close the paths behind you; his woodsmen walk them."
   },
-  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: I met the warden on a path I had drawn the day before. He was larger than I had been told, and gentler, and seven of his people stood among the trees behind him without seeming to have arrived. He asked to see my map. I showed it to him. He looked at it a long time, tracing the paths with one long finger, and nodded, and gave it back, and said it had been a very good map yesterday. Then he stepped aside to let me pass. The path behind him was not on it.",
+  "bookPage": "I met the warden on a path I had drawn the day before, Gunnvor of Jordheim writes in A Map That Lies. He was larger than I had been told, and gentler, and seven of his people stood among the trees behind him without seeming to have arrived. He asked to see my map. I showed it to him. He looked at it a long time, tracing the paths with one long finger, and nodded, and gave it back, and said it had been a very good map yesterday. Then he stepped aside to let me pass. The path behind him was not on it.",
   "chronicle": {
     "win": "{raidLeader} of {realm} cut through Dalgo's wood in {minutes} minutes.",
     "loss": "Dalgo's wood closed over {raidLeader}'s party from {realm} after {minutes} minutes."

@@ -114,7 +114,7 @@
     "keyword": "Olen den Bartender",
     "text": "The keeper of the bar in the hall of counsel, among the drunken watch. [Jarala den Kvinnlig] stands at the end of his bar. See [Olen]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: I went to the door of the hall of counsel with a Valkyn guide, once, and looked in. The drunken watch were singing, if that is the word, and on the bar was a cup, a Fathers' cup of grey stone, full, set apart from the others with nobody touching it. The guide said it is always there and always full and that Olen will kill any morvalt who drinks from it. I asked her who it was for. She did not answer, but she stood very straight in the doorway for a while before we went.",
+  "bookPage": "I went to the door of the hall of counsel with a Valkyn guide, once, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and looked in. The drunken watch were singing, if that is the word, and on the bar was a cup, a Fathers' cup of grey stone, full, set apart from the others with nobody touching it. The guide said it is always there and always full and that Olen will kill any morvalt who drinks from it. I asked her who it was for. She did not answer, but she stood very straight in the doorway for a while before we went.",
   "chronicle": {
     "win": "{raidLeader} of {realm} closed Olen's bar in Trollheim's hall of counsel in {minutes} minutes.",
     "loss": "Olen and the drunken watch threw {raidLeader}'s party from {realm} out of the hall of counsel after {minutes} minutes."

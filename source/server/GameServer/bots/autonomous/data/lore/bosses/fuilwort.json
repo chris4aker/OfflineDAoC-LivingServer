@@ -95,7 +95,7 @@
     "keyword": "Fuilwort",
     "text": "The blood-wort on the west road into Altan Garran in [Cothrom Gorge], said to have grown where Dremcis first fed. A pole on the town's west wall holds a rag for each trader it took."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: our oldest story is that Dremcis fed for the first time on the west road, on one of our garda who went out alone after a stag, and the gorge sent up Fuilwort to drink the spilled blood. The wardens call it an outlander story. The leaves are the colour of a fresh cut. It does not reach into the walls as Tachtwort does; it waits by the road, and every season a trader on the way to Domnann does not come home. There is a pole on our west wall with a rag for each of them. It is full.",
+  "bookPage": "Our oldest story, Noirin the enchanter of Altan Garran tells, is that Dremcis fed for the first time on the west road, on one of our garda who went out alone after a stag, and the gorge sent up Fuilwort to drink the spilled blood. The wardens call it an outlander story. The leaves are the colour of a fresh cut. It does not reach into the walls as Tachtwort does; it waits by the road, and every season a trader on the way to Domnann does not come home. There is a pole on our west wall with a rag for each of them. It is full.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Fuilwort in Cothrom Gorge in {minutes} minutes.",
     "loss": "Fuilwort turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."

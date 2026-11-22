@@ -104,7 +104,7 @@
     "keyword": "Gorp",
     "text": "The hunter of [Bokko]'s cold southern trunks, who stands among the deer like a terror bird until they forget him. He once stood a day within sight of [Valmak] and moved north after. See [terror birds]."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: I took Gorp for a stump the first time. He was standing in the grazing with the deer round him, perfectly still, and a doe walked past within an arm's length, and he did not move, and she did not see him. I watched until my legs cramped. When I looked back he was gone and so was the doe. I have hunted all my life and I do not know how he did it, and I would not like to be a deer in the middle country, or a trapper who stands still too long.",
+  "bookPage": "I took Gorp for a stump the first time, Solvi of Hagall set down with his trap-lines. He was standing in the grazing with the deer round him, perfectly still, and a doe walked past within an arm's length, and he did not move, and she did not see him. I watched until my legs cramped. When I looked back he was gone and so was the doe. I have hunted all my life and I do not know how he did it, and I would not like to be a deer in the middle country, or a trapper who stands still too long.",
   "chronicle": {
     "win": "{raidLeader} of {realm} caught Gorp the tradklan hunter in Faraheim in {minutes} minutes.",
     "loss": "Gorp outwaited {raidLeader}'s party from {realm} in the deer country after {minutes} minutes."

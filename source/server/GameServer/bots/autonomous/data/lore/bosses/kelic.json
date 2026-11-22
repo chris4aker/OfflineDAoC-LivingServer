@@ -108,7 +108,7 @@
     "keyword": "Kelic",
     "text": "A clansman who cursed his own clan through a totem. Deserters left him dead at Raumarik's snowline. He did not stay dead."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: Galplen tells the curse plainly. The clan let a man's wife and son die of a winter fever rather than open its stores, and he carved a totem from their pyre and promised the clan the same death: slowly, of being let go. When it worked, the clan sent deserters to carry him north and kill him, and thought that ended it. The Galplen folk think the clan got the curse it deserved and the man got the death he did not. They think that is why he will not lie down.",
+  "bookPage": "Galplen tells the curse plainly, and Thyri of Galplen set it down so in Fenrir's Folly. The clan let a man's wife and son die of a winter fever rather than open its stores, and he carved a totem from their pyre and promised the clan the same death: slowly, of being let go. When it worked, the clan sent deserters to carry him north and kill him, and thought that ended it. The Galplen folk think the clan got the curse it deserved and the man got the death he did not. They think that is why he will not lie down.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Kelic's curse in {minutes} minutes.",
     "loss": "Kelic's curse held against {raidLeader}'s party from {realm} for {minutes} minutes."

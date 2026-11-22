@@ -44,7 +44,7 @@ cutting).
 | **tawi-shon-forty-winters**: Tawi Shon kept the boats' fire on the Cliffs of Moher for forty winters. | 2: `tawi-shon`, `cliffs-of-moher` | - |
 | **orlaith-hundred-and-forty**: Orlaith of Tir na Nog, who lives in Necht now (the real 1.65 NPC there, so she keeps her name though gamebots share it), led the hundred and forty into Galladoria. | 9: `aroon-the-urlamhai`, `corrupt-primal-of-air`, `corrupt-primal-of-earth`, `easmarach`, `olcasar-geomancer`, `olcasgean` and 3 more | - |
 | **esras-no-churchman**: Esras of the Cliffs of Moher is a hermit who was a bard of Tir Urphost, never a churchman: Hibernia has no Church (the game's NPC is titled Brother; the lore drops it). | 2: `aoife`, `cliffs-of-moher` | - |
-| **king-mark-duke-marcus**: King Mark is Duke Marcus's son, the son who came home alone from Dartmoor. | 15: `asutri`, `captain-bardalph`, `captain-heathyr`, `clan-matron`, `dagar`, `golestandt` and 9 more | - |
+| **king-mark-duke-marcus**: King Mark is Duke Marcus's son, the son who came home alone from Dartmoor. | 16: `apocalypse`, `asutri`, `captain-bardalph`, `captain-heathyr`, `clan-matron`, `dagar` and 10 more | - |
 | **arthur-is-dead**: At 1.65 Arthur is dead; his knights are legends of the past and never stand in a present-day scene. | 48: `agidad`, `apocalypse`, `bellum`, `captain-atwell`, `fames`, `funus` and 42 more | - |
 | **sven-names-only-the-dead**: Sven of Jordheim puts only the dead in his songs; he does not name the living. | 13: `gjalpinulva`, `grand-summoner-govannon`, `hati`, `icelord-kvasir`, `legion`, `lydsyg` and 7 more | - |
 | **geirlaug-song-never-whole**: Geirlaug's song takes a verse for every waking of the dragon, so nobody alive sings all of it; the skalds of the south sing the warband's part whole, and Sven stops one verse short. | 3: `gjalpinulva`, `malmohus`, `myrkwood-forest` | - |
@@ -86,6 +86,7 @@ thirty and thirty-one fights), some are worth a ledger entry or a look.
 | Alun's | companies | **2**: `aidon-the-archwizard`; **6**: `lord-gildas` |
 | Baelerdoth's | rolls | **7**: `duke-harboris`; **10**: `marquis-scottiax` |
 | Caer | men | **40**: `crystal-cave`; **80**: `lich-lord-ilron` |
+| Caer | names | **2**: `fulafeallan`; **11**: `bane-of-hope` |
 | Chancellor | demons | **2**: `inquisitors`; **3**: `duke-sallis` |
 | Chthonic | orders | **2**: `grand-chancellor-adremal`; **3**: `duke-bimure` |
 | Connacht | names | **4**: `corrupt-primal-of-earth`; **5**: `spindler-broodmother` |
@@ -110,5 +111,4 @@ thirty and thirty-one fights), some are worth a ledger entry or a look.
 | Sheeroe | doors | 4: `balor`, `cuuldurach-the-glimmer-king`, `connacht` +1 |
 | Arward | best | 30: `golestandt`, `albion`, `dartmoor` |
 | Atlantis | realms | 2: `albion`, `hibernia`, `midgard` |
-| Blood | quarters | 4: `field-marshal-nebir`, `gatekeeper-dommel`, `high-lord-baelerdoth` |
-| Breifine | keeners | 3: `black-lady`, `tinka`, `hibernia` |
+| Avalon | chests' | 9: `bellum`, `scurceol-hyrde`, `valnir-mordeth` |

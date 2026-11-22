@@ -135,7 +135,7 @@
   "keyword": "focalleste",
   "text": "A marquis of High Lord [Baelerdoth]'s household who gathers, in black glass jars, the wards his master's thirst strips from the raids. He holds a part of every realm above and says he is waiting to see which realm's are worth keeping."
  },
- "bookPage": "From a Hibernian druid's letter to her college: The jars were on shelves from floor to roof, and they glowed, each one a little, the way a ward glows when it is first laid on. On the nearest shelf was a jar with a label in a demon's hand, and I could read it, because it was my own name. It held the blessing I had laid on our company at the head of the eastern stair, not an hour before. I knew it the way you know your own handwriting. When we had killed the marquis I broke the jar, and the blessing went back into me like breath.",
+ "bookPage": "The jars were on shelves from floor to roof, a Hibernian druid wrote in a letter to her college, and they glowed, each one a little, the way a ward glows when it is first laid on. On the nearest shelf was a jar with a label in a demon's hand, and I could read it, because it was my own name. It held the blessing I had laid on our company at the head of the eastern stair, not an hour before. I knew it the way you know your own handwriting. When we had killed the marquis I broke the jar, and the blessing went back into me like breath.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} broke Marquis Focalleste's jars in {minutes} minutes.",
   "loss": "Marquis Focalleste added every ward of {realm}'s raid under {raidLeader} to his shelves."

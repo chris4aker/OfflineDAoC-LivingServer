@@ -95,7 +95,7 @@
     "keyword": "Treal",
     "text": "The old treant at the heart of Altan Garran in [Cothrom Gorge], who walked back from the edge when the gorge split. The outlanders built around him. Bring him [Marfoirwort]'s root, and he buries it."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: Treal walked back from the edge when the gorge split, the only tree that did, and an Erea asked him if we might build around him. He gave the town one instruction, long ago: bring me the root of the thing at the head of the gorge. The strangers who kill Marfoirwort bring it to him. I have watched him take it. He puts it among his roots and the ground closes over it, and for a season the worts nearest us are slower. We think he is eating it. The wardens think he is holding it.",
+  "bookPage": "Treal walked back from the edge when the gorge split, in the account of Noirin the enchanter of Altan Garran, the only tree that did, and an Erea asked him if we might build around him. He gave the town one instruction, long ago: bring me the root of the thing at the head of the gorge. The strangers who kill Marfoirwort bring it to him. I have watched him take it. He puts it among his roots and the ground closes over it, and for a season the worts nearest us are slower. We think he is eating it. The wardens think he is holding it.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Treal in Altan Garran in Cothrom Gorge in {minutes} minutes.",
     "loss": "Treal turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."

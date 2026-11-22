@@ -111,7 +111,7 @@
     "keyword": "Tarek",
     "text": "Chief of the iarn dwarves who still live under the iron trees. She trusts no outsider; any stranger might be a Servant of Iarnvidiur. The Remnants are her kin and remember who harms her."
   },
-  "bookPage": "From Eldrid of Bjarken, gatherer of bark: I met the chief once, the morning after my one night. She is small, even for a dwarf, and she looked at me the way a smith looks at a blade for a flaw. She asked where I had cut my bark and I told her, tree by tree, and she nodded at every one, because she knew them. Then she asked whether any had grown. I said no. She said: good. I asked why good. She said a wood that does not grow is a wood that is still holding its breath, and she would rather it went on holding it. Her four sat behind her the whole time, axes across their knees.",
+  "bookPage": "I met the chief once, the morning after my one night, Eldrid of Bjarken, gatherer of bark, tells. She is small, even for a dwarf, and she looked at me the way a smith looks at a blade for a flaw. She asked where I had cut my bark and I told her, tree by tree, and she nodded at every one, because she knew them. Then she asked whether any had grown. I said no. She said: good. I asked why good. She said a wood that does not grow is a wood that is still holding its breath, and she would rather it went on holding it. Her four sat behind her the whole time, axes across their knees.",
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Chief Tarek in the Iarnwood in {minutes} minutes; the Remnants will remember.",
     "loss": "Chief Tarek's council drove {raidLeader}'s party from {realm} out of the Iarnwood after {minutes} minutes."

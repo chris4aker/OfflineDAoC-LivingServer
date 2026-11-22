@@ -122,7 +122,7 @@
     "keyword": "Ulfketill",
     "text": "The wolf-kettle of the Vanern jotuns, who serves Loki's mischief and makes his own guards from swamp clay."
   },
-  "bookPage": "From the count of Arnkel the ferryman: the wolf-kettle is a potter, and keeps a potter's habits. Three in the kiln and never more, or one is lost. Nothing made in anger, because it cracks. A kobold who carried his water told me that when men from Fort Atla came for him and broke two of his three guards, he did not make more while they fought; he could not, he said, with his blood up. He went home after, ate, and was whole by morning, and the two were back by the next night, the clay still warm. The kobold said Ulfketill was sorry about the two. Not the men. The pots.",
+  "bookPage": "The wolf-kettle is a potter, in the count of Arnkel the ferryman, and keeps a potter's habits. Three in the kiln and never more, or one is lost. Nothing made in anger, because it cracks. A kobold who carried his water told me that when men from Fort Atla came for him and broke two of his three guards, he did not make more while they fought; he could not, he said, with his blood up. He went home after, ate, and was whole by morning, and the two were back by the next night, the clay still warm. The kobold said Ulfketill was sorry about the two. Not the men. The pots.",
   "chronicle": {
     "win": "{raidLeader} of {realm} cooled Ulfketill's kettle in {minutes} minutes.",
     "loss": "Ulfketill's clay guards drove off {raidLeader}'s party from {realm} after {minutes} minutes."

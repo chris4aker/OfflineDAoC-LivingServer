@@ -419,6 +419,49 @@ public static class RealmRaidRecruitmentPolicy
         int lowestBefore, int healthPercent) =>
         named > namedBefore || wipes > wipesBefore || target != null && target == targetBefore && healthPercent < lowestBefore;
 
+    /// <summary>What the stall rule remembers of the raid's last look (<see cref="WatchStep"/>): named and wipes so far, the
+    /// retry pulls after a wipe so far, the named or boss it fights, the lowest health seen on it, and whether a wipe re-arms
+    /// that low once the encounter is back at full.</summary>
+    public readonly record struct ProgressWatch(int Named, int Wipes, int Retries, string Target, int Lowest, bool LowRearmed)
+    {
+        public static ProgressWatch Start => new(0, 0, 0, null, 101, false);
+    }
+
+    /// <summary>An encounter at this health or more after a wipe has reset: its low is the new attempt's from here.</summary>
+    public const int ResetLowPercent = 95;
+
+    /// <summary>
+    /// One look of the stall rule (pure). Progress as <see cref="MadeProgress"/>, and two more, each at most once per wipe (so
+    /// bounded by the raid's two tries): the raid's retry pull after a wipe, and a new low of the retry. Owner's PC, build
+    /// ccba364, 2026-11-17 (Trollheim, #411): the raid wiped at Nosdoden at 00:12 and ended "Timed out" at 01:12 with no kill,
+    /// no new low and no wipe in the hour. A wipe resets the boss to full, but the rule kept the first attempt's low, so the
+    /// retry's damage counted only once it went below it (or after his first essence wave changed the route's target), and
+    /// its pull was no progress at all: a retry that came late in the hour was ended in its first minutes. Now the pull
+    /// restarts the clock and, once the boss is back at <see cref="ResetLowPercent"/> or more, his low is the retry's.
+    /// </summary>
+    public static (ProgressWatch Next, bool Progress, bool LowReset) WatchStep(ProgressWatch before, int named, int wipes,
+        int retries, string target, int healthPercent)
+    {
+        bool progress = MadeProgress(before.Named, named, before.Wipes, wipes, before.Target, target, before.Lowest, healthPercent) ||
+                        retries > before.Retries;
+        bool rearmed = before.LowRearmed || wipes > before.Wipes;
+        bool reset = false;
+        int lowest;
+        if (target != before.Target)
+        {
+            lowest = healthPercent;
+            rearmed = false;
+        }
+        else if (rearmed && target != null && healthPercent >= ResetLowPercent && healthPercent > before.Lowest)
+        {
+            lowest = healthPercent;
+            rearmed = false;
+            reset = true;
+        }
+        else lowest = Math.Min(before.Lowest, healthPercent);
+        return (new ProgressWatch(named, wipes, retries, target, lowest, rearmed), progress, reset);
+    }
+
     /// <summary>A raid party that lost members (but still exists) takes replacements up to its size when it joined.</summary>
     public static bool NeedsReplacement(int target, int members) => members > 0 && members < target;
 

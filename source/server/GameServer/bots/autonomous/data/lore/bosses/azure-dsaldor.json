@@ -90,7 +90,7 @@
     "keyword": "Dsaldor",
     "text": "Leader of the Order of the [Azure] on Sheeroe's northern slopes, in the highest camp. He forbids his people to raise a hand against [Maldahar], and has never said why."
   },
-  "bookPage": "From Cuán's account of Sheeroe: the blue folk came up the north slopes the summer after the sky tore, and Dsaldor has never come down from their highest camp since. His people burn the glimmers and anything else that glows. He gave them one law no shepherd understands: they may not raise a hand against the prince. Coseal says the son is not the father. The watch thinks there was a bargain. A captain of the realm who spoke with Dsaldor under truce told me he was asked whether he had come to kill the king, and when he said yes, Dsaldor wished him the open sky.",
+  "bookPage": "The blue folk came up the north slopes the summer after the sky tore, Cuán's account of Sheeroe begins, and Dsaldor has never come down from their highest camp since. His people burn the glimmers and anything else that glows. He gave them one law no shepherd understands: they may not raise a hand against the prince. Coseal says the son is not the father. The watch thinks there was a bargain. A captain of the realm who spoke with Dsaldor under truce told me he was asked whether he had come to kill the king, and when he said yes, Dsaldor wished him the open sky.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Azure Dsaldor in Sheeroe Hills in {minutes} minutes.",
     "loss": "Azure Dsaldor turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."
