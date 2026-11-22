@@ -26,9 +26,14 @@
       "text": "Swedish sma sten is 'small stones'.",
       "provenance": "myth",
       "source": "Swedish (to verify)"
+    },
+    {
+      "text": "How the dwarf king gave out the keys in the steam and Dellingstad's children's game of small stones are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Smastein is the small stones, the least of the three golems of the caldera who keep the dwarven king's keys. Ornulf's note says the dwarf king gave the first key to the smallest keeper so that those who came for the gem would be tempted to think the rest would be as easy. The dwellers of Dellingstad say this is the cleverest part of the story and the only part the dwarf king meant as a joke.\n\nSmastein is pumice and pebble held together by the caldera's heat, a heap of little stones that walks, among the pumice golems in the fumes of the southern floor. It is the first key every seeker takes. The soothsayers say it rattles when it moves, and that the young who hear the rattle and laugh are the ones who end up beside Klippe. Nobody in the town has ever seen it sit still.",
+  "story": "Smastein is the small stones, the least of the three golems of the caldera who keep the dwarven king's keys. Ornulf's note says the dwarf king gave the first key to the smallest keeper so that those who came for the gem would be tempted to think the rest would be as easy. The dwellers of Dellingstad say this is the cleverest part of the story and the only part the dwarf king meant as a joke.\n\nOrnulf's note tells how the keys were given out. The dwarf king came down into the caldera with the three keys on a ring of iron, and stood in the steam until three of the crater's stones got up to see who he was. He gave the first key to the smallest because it reached him first: the boulder was still getting up, and the cliff had not yet decided to. Dellingstad's children play a game they call small stones, in which one child guards a pebble inside a ring of others and the rest try to take it without touching the ring. The guard rattles a cup of gravel the whole time and is allowed to throw it, and usually does.\n\nSmastein is pumice and pebble held together by the caldera's heat, a heap of little stones that walks, among the pumice golems in the fumes of the southern floor. It is the first key every seeker takes. The soothsayers say it rattles when it moves, and that the young who hear the rattle and laugh are the ones who end up beside Klippe. Nobody in the town has ever seen it sit still.",
   "legend": "Smastein is a level 37 caldera golem among pumice golems (37) and noxious fumes on the south of the caldera floor; the first and easiest key for Gem of the Dwarven King. Elements of the Caldera faction. He's the easiest of the three golem keys, so most groups start with him. The noxious fumes drift around the floor and hit hard for their level. Pumice golems are its level.",
   "yells": {
     "aggro": [
