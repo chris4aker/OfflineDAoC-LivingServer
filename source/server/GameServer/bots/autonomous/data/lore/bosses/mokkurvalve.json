@@ -130,7 +130,7 @@
     "keyword": "Mokkurvalve",
     "text": "The jotuns of Vanern never stopped building clay giants after the one that stood with Hrungnir. Mokkurvalve is their greatest attempt. He comes apart as he fights, and the parts get up."
   },
-  "bookPage": "From the count of Arnkel the ferryman: I saw the clay giant broken once, from the boat, at a long distance, which is the right distance. Some Jordheim men had been at him all afternoon. Bits of him kept dropping off into the reeds and getting up, and the men kept knocking them down, and I thought: they will do it. Then they did it. He did not fall. He went up like a bag of grain dropped from a loft, and where he had stood there was a crowd of little clay men, and all of them turned at once. I poled away. Two of the Jordheim men came to the boathouse that night, wet. I did not notch the others. I did not know their names.",
+  "bookPage": "I saw the clay giant broken once, from the boat, Arnkel the ferryman counts, at a long distance, which is the right distance. Some Jordheim men had been at him all afternoon. Bits of him kept dropping off into the reeds and getting up, and the men kept knocking them down, and I thought: they will do it. Then they did it. He did not fall. He went up like a bag of grain dropped from a loft, and where he had stood there was a crowd of little clay men, and all of them turned at once. I poled away. Two of the Jordheim men came to the boathouse that night, wet. I did not notch the others. I did not know their names.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke the clay giant Mokkurvalve in {minutes} minutes.",
     "loss": "Mokkurvalve's pieces buried {raidLeader}'s party from {realm} after {minutes} minutes."

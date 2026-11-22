@@ -44,7 +44,7 @@ Marfach and the three Ladies (`locations/marfach-caverns`, `bosses/chieftain-cai
 **Coll of the Domnann guides.** *Ours* (a Sylvan guide). Mentions **21, over**: 20 Hy Brasil pages open "From Coll of the
 Domnann guides" (`bosses/zytka`, `bosses/razorbeak`, `bosses/goldenleaf`...).
 
-**Fiachra of Howth.** *Ours.* Mentions **33, over** (8 files): went into Fomor as a young man and kept his promise not to
+**Flann of Howth.** *Ours.* Mentions **33, over** (8 files): went into Fomor as a young man and kept his promise not to
 describe the room with the hooks, "mostly" (`locations/fomor`, `bosses/krackenschtein`, `bosses/nogoribando`).
 
 **Hervelina the hermit of Treibh Caillte.** *Ours.* Mentions **36, over** (11 files).

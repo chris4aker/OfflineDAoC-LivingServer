@@ -109,7 +109,7 @@
     "keyword": "Serk",
     "text": "The great wyvern of Jamtland's western ridge, whose poison only its own sac can cure. The mystics take it for Aud the healer to save Arnfinn of Vasudheim. His ridge is the one place [the Daggers' roads] loop round."
   },
-  "bookPage": "From The Four Roads, by Halldor, road-warden of Glenlock: I watched Serk hunt once from the far side of the valley, which is as close as I mean to come. The snow was blowing off the tops that day, and even through it you could see how big he was. He dropped off the ridge onto a lynx and was back on the ridge before the lynx had stopped moving, and then he sat and looked down at the hills where the Albion tents are, the whole afternoon, the way a dog looks at a door it is not allowed through. I do not know what he wants with Albion. I know the Albion men keep their fires low.",
+  "bookPage": "I watched Serk hunt once from the far side of the valley, which is as close as I mean to come, says The Four Roads, by Halldor, road-warden of Glenlock. The snow was blowing off the tops that day, and even through it you could see how big he was. He dropped off the ridge onto a lynx and was back on the ridge before the lynx had stopped moving, and then he sat and looked down at the hills where the Albion tents are, the whole afternoon, the way a dog looks at a door it is not allowed through. I do not know what he wants with Albion. I know the Albion men keep their fires low.",
   "chronicle": {
     "win": "{raidLeader} of {realm} took Serk's poison sac on Jamtland's western ridge in {minutes} minutes.",
     "loss": "Serk threw {raidLeader}'s party from {realm} off the western ridge after {minutes} minutes."

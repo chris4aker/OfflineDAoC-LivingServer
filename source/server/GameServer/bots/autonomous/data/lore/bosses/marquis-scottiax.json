@@ -132,7 +132,7 @@
   "keyword": "scottiax",
   "text": "A marquis of High Lord [Baelerdoth]'s household and the fence of the court, who buys what the imps steal and pays them by keeping them from being stepped on. Duke [Aypol] wants him struck off; the imps call him friend."
  },
- "bookPage": "From the account book of an Albion merchant who traded at the imp stalls: The imp Kodo sold me a dented sapphire plate at a fair price and told me, unasked, where it came from. A knight of their court lost it to a fiend, the fiend lost it to a family of imps, the imps sold it to a marquis between the eastern halls, and the marquis sold it back to the stall. I asked why the marquis did not keep it. Kodo said the marquis never keeps anything; he only buys it, and that buying is a kind of keeping in that place, since a thing bought is a thing nobody else can steal.",
+ "bookPage": "The imp Kodo sold me a dented sapphire plate at a fair price, says the account book of an Albion merchant who traded at the imp stalls, and told me, unasked, where it came from. A knight of their court lost it to a fiend, the fiend lost it to a family of imps, the imps sold it to a marquis between the eastern halls, and the marquis sold it back to the stall. I asked why the marquis did not keep it. Kodo said the marquis never keeps anything; he only buys it, and that buying is a kind of keeping in that place, since a thing bought is a thing nobody else can steal.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} closed Marquis Scottiax's account in {minutes} minutes.",
   "loss": "Marquis Scottiax bought {realm}'s raid under {raidLeader} cheap, and kept everything they dropped."

@@ -140,7 +140,7 @@
   "keyword": "dortaleon",
   "text": "A marquis of High Lord [Baln]'s household who died in the Sixth Roll and kept his seat, since the bargain does not require a marquis to be alive. The Inquisitors found a burning back and the smell of rot, the signs of the plague the [kitchen] later sent up into the capitals."
  },
- "bookPage": "From a cleric's notes, Camelot, in the season of the Black Plague: I smelled it before I saw him, on the road out of the southern hall. I knew it at once. It was the smell in the sickroom of the guard Sister Elaydith nursed, and in every room in Camelot where someone woke with their back on fire. The marquis was dead, plainly dead, and standing, and correct in every particular, and he told me to leave his road. I asked him whether the Cook had done it. He did not answer, but he looked north, toward the kitchens, for a long moment, and then he drew.",
+ "bookPage": "I smelled it before I saw him, on the road out of the southern hall, a cleric of Camelot wrote in his notes in the season of the Black Plague. I knew it at once. It was the smell in the sickroom of the guard Sister Elaydith nursed, and in every room in Camelot where someone woke with their back on fire. The marquis was dead, plainly dead, and standing, and correct in every particular, and he told me to leave his road. I asked him whether the Cook had done it. He did not answer, but he looked north, toward the kitchens, for a long moment, and then he drew.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} put Marquis Dortaleon down in {minutes} minutes; he was already dead.",
   "loss": "Marquis Dortaleon kept his road against {realm}'s raid under {raidLeader}, dead and correct."

@@ -213,7 +213,14 @@ def stand_in(tag, notes_path, package_sha=None):
     try:
         body = publish_release.release_body(text, build, package_sha or "0" * 64)
     except publish_release.Stop as e:
-        raise Stop(f"{notes_path}: {e}")
+        if not str(e).startswith("the notes still have placeholders"):
+            raise Stop(f"{notes_path}: {e}")
+        # Markers left for a person to fill in (@@RAID_RESULTS@@): publish-release refuses them, so say so loudly, but
+        # the dry run still checks the Setup row and builds and tests Setup.
+        notice("warning", "Notes not ready", f"{notes_path}: {e}. publish-release refuses the notes until they are filled in")
+        lines = text.splitlines(keepends=True)
+        start = next(i for i, line in enumerate(lines) if line.strip() == "---")
+        body = "".join(lines[start + 1:]).lstrip("\n")
     digest = {"digest": f"sha256:{package_sha}"} if package_sha else {}
     return {"tag_name": tag, "draft": False, "body": body, "assets": [{"name": zip_name, **digest}]}
 

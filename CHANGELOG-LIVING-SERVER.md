@@ -10,8 +10,12 @@ Older entries below keep the names they were written with.
 
 ## 1.2.1 — [RELEASE DATE]
 
-Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
-or run where it was written; CI on pull request #398 is the first build.
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
+1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
+results so far: CI on `fix/1.2.1` at `d56adeda` (9,258 server tests passed, 0 failed, 1 skipped), and the playtester's
+`bot-death`, `bot-corpse-target` and `bot-rez` scenarios on `b644529a`, which check packets, not what the client draws.
+The raid fixes (#407-#415) are added under **Bosses** as their branches merge. Player notes:
+[docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
@@ -60,8 +64,10 @@ or run where it was written; CI on pull request #398 is the first build.
   drops measured on Uthgard (hides, teeth, gems, vendor loot, period gear) to monsters that have no loot of their own,
   at Uthgard's rates (whole percents; rarer than 0.5% rounds up to 1%). Monsters with their own drops keep them, and
   random magic items and coin drop as before. `build_release_037.py --uthgard-drops <pipeline data>` puts them in the
-  release world, and the update carries them to existing worlds. The pipeline data is not in Git, so this runs on the
-  owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the real world yet.
+  release world, and a world update made from it (`make_patch.py`) carries them to existing worlds. The pipeline data is
+  not in Git, so this runs on the owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the
+  real world yet. **Not in 1.2.1's world:** the 1.2.1 package changes the server and launcher only, and Setup installs
+  the unchanged 0.37 world, so the drops ship with the first release whose world is built with them.
 - Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
   debug level.
 
@@ -79,6 +85,16 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
+  one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
+  him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,
+  for a moment when he stays 950 from that court monster while the raid walks to it and pulls it, and 550 from the walk
+  itself. In the simulation an immediate pull brought him in 21-68% of the time and a guarded one never did.
+  `REALM_EXPEDITION_PULL_WAIT_GUARDED`, `..._GUARD_CLEAR`, `..._GUARD_EXPIRED`. He and his court are unchanged.
+- **Galladoria, Spindler Broodmother's newborns (#408; tests only, a simulation).** The parties sent against her newborns
+  could be at most 45% of the raid: a 100-bot raid (13 parties) sent 5 and killed about 62% of what she spawned, so newborns
+  piled up. They may now be 60%: 7 parties (88%, as in the 128-bot raid that killed her in 4 minutes on `ccba364`), and 8
+  from 14 parties. She is unchanged.
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.

@@ -109,7 +109,7 @@
     "keyword": "Alchemist Phorzbreg",
     "text": "The morvalt in the Fathers' still-room at the end of the hall of [the weapons]. The Valkyn say those who drink his brews stopped going up to the surface. Some of it is what [Olen] pours."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the still-room has a door with a carving over it, Fathers' marks, worn. I held my lamp up to it while the alchemist inside paid us no mind, and the Valkyn guide traced the marks with her finger and would not say them. Later, at the fire, she said the Fathers' children who went out into the light were given a cup of something from that room before they left, so that they would forget the way back if they were taken. She said the morvalt have been drinking it for generations.",
+  "bookPage": "The still-room has a door with a carving over it, Fathers' marks, worn, and Ivrik the kobold lamp-carrier of Bjarken told the skalds of it: I held my lamp up to it while the alchemist inside paid us no mind, and the Valkyn guide traced the marks with her finger and would not say them. Later, at the fire, she said the Fathers' children who went out into the light were given a cup of something from that room before they left, so that they would forget the way back if they were taken. She said the morvalt have been drinking it for generations.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Alchemist Phorzbreg's still-room in Trollheim in {minutes} minutes.",
     "loss": "Alchemist Phorzbreg rendered {raidLeader}'s party from {realm} down after {minutes} minutes."

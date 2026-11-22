@@ -115,7 +115,7 @@
     "keyword": "Mokerkialfi",
     "text": "The clay giant of the oldest tale, built with a mare's heart to stand with Hrungnir, who lost his nerve before Thor and fell. The [Seithkona Circle] says he lies on Skona's eastern heights, breathing, listening north for the hammer."
   },
-  "bookPage": "From What the Circle Sees, by Gudny of the Seithkona Circle: I climbed the eastern heights once, against the Circle's advice, to see the clay giant close. It was asleep, if that is the word, a hill of grey clay with a shape in it like a man lying on his side with his knees drawn up. I stood a long time. Then a storm came over the ravine from the north, and at the first thunder the whole hill shuddered and drew its knees up tighter. I came down quickly, but not for fear of it. I did not want it to know it had been seen afraid.",
+  "bookPage": "I climbed the eastern heights once, against the Circle's advice, Gudny of the Seithkona Circle writes in What the Circle Sees, to see the clay giant close. It was asleep, if that is the word, a hill of grey clay with a shape in it like a man lying on his side with his knees drawn up. I stood a long time. Then a storm came over the ravine from the north, and at the first thunder the whole hill shuddered and drew its knees up tighter. I came down quickly, but not for fear of it. I did not want it to know it had been seen afraid.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Mokerkialfi, the clay giant, on Skona's heights in {minutes} minutes.",
     "loss": "Mokerkialfi stood against {raidLeader}'s party from {realm} on Skona's heights for {minutes} minutes."

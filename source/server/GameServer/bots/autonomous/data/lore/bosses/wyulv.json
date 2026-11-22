@@ -109,7 +109,7 @@
     "keyword": "Wyulv",
     "text": "The drakulv on the rise where [dragon] was first seen coming south. He watches the sky; the seeresses say he watches for [the chain] to break. See [the names]."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Wyulv's cuts are made deeper than the others, and I asked my teacher why. She said that when the holy-place wolf dies, nobody watches the sky until another takes the rise, and that the days between are the only days in Malmohus when the end of the world could come without anyone saying so first. We cut deep so that we remember to be afraid on those days. The knife goes in twice on the same line, and the chips fall on our boots. I have counted. There have never been more than four of them together. The drakulv do not leave that rise empty.",
+  "bookPage": "Wyulv's cuts are made deeper than the others, Brisa the beam-cutter of Svarhamr reads, and I asked my teacher why. She said that when the holy-place wolf dies, nobody watches the sky until another takes the rise, and that the days between are the only days in Malmohus when the end of the world could come without anyone saying so first. We cut deep so that we remember to be afraid on those days. The knife goes in twice on the same line, and the chips fall on our boots. I have counted. There have never been more than four of them together. The drakulv do not leave that rise empty.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought Wyulv down from his rise in Malmohus in {minutes} minutes.",
     "loss": "Wyulv kept his rise in Malmohus against {raidLeader}'s party from {realm} for {minutes} minutes."

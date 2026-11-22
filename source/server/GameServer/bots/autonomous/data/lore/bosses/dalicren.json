@@ -104,7 +104,7 @@
     "keyword": "Dalicren",
     "text": "Hostess of the low wood between Hagall and the east, whose [skogsra] move her paths a hand's breadth a night. [Hagall]'s woodcutters tie red cords to the trees. See [Dalgo]."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: my father cut timber in the low wood for nine seasons and swore it never moved. In the tenth he came home and said the stream by his felling place was on the wrong side. We went out together with a rope and staked it from the gate to the stream, and in the morning the stake at the stream end was in a different stream. He did not cut there again. He said he had seen her once, at the edge of the clearing, smiling, and that he had never seen her back.",
+  "bookPage": "My father cut timber in the low wood for nine seasons, Solvi of Hagall's trap-lines tell, and swore it never moved. In the tenth he came home and said the stream by his felling place was on the wrong side. We went out together with a rope and staked it from the gate to the stream, and in the morning the stake at the stream end was in a different stream. We left the rope where it lay. He did not cut there again. He said he had seen her once, at the edge of the clearing, smiling, and that he had never seen her back.",
   "chronicle": {
     "win": "{raidLeader} of {realm} drove Dalicren from her low wood in Faraheim in {minutes} minutes.",
     "loss": "Dalicren kept {raidLeader}'s party from {realm} as guests of the low wood after {minutes} minutes."

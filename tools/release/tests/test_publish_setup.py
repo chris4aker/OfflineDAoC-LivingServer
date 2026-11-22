@@ -208,6 +208,13 @@ class Unpublished(unittest.TestCase):
         self.notes.write_text(NOTES_121.replace("(filled in when the exe is built)", "TBD"), encoding="utf-8")
         self.assertEqual(ps.run(["plan", "--tag", "v1.2.1", "--unpublished-notes", str(self.notes)], FakeGitHub(None)), 1)
 
+    def test_markers_left_to_fill_warn_but_the_setup_row_is_still_checked(self):
+        self.notes.write_text(NOTES_121 + "- @@RAID_RESULTS@@\n", encoding="utf-8")
+        self.assertEqual(ps.run(["plan", "--tag", "v1.2.1", "--unpublished-notes", str(self.notes)], FakeGitHub(None)), 0)
+        rel = ps.stand_in("v1.2.1", self.notes, sha(b"package 1.2.1"))
+        result = ps.decide(rel, "v1.2.1", sha(b"setup 1.2.1"), sha(b"package 1.2.1"))
+        self.assertIn(f"| `LivingServer-Setup-1.2.1.exe` | `{sha(b'setup 1.2.1')}` |", result["body"])
+
     def test_dry_run_fills_the_setup_row_of_the_stand_in(self):
         rel = ps.stand_in("v1.2.1", self.notes, sha(b"package 1.2.1"))
         self.assertNotIn("Maintainer text", rel["body"], "the stand-in's body is what publish-release would publish")

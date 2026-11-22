@@ -95,7 +95,7 @@
     "keyword": "Drygau",
     "text": "The eldest of three Fomorians holding the gap in the Sylvan wall east of Aalid Feie, with [Adwyth] and [Anhylaw]. They keep the last tree maiden of the vale silent. His name means the harms done."
   },
-  "bookPage": "Tieru of Aalid Feie: there was a voice in every great tree once, and the eye burned the vale's trees and their voices with them, all but one, east of here past the gap in the old wall. The Fomorians did not burn that tree. They silenced it, and set three of their own in the gap so nobody could come and sing it free. Drygau stands in the gap and calls, and Adwyth and Anhylaw come. They named themselves, harms and woe and unruliness, in a tongue they found somewhere. Lynara of Domnann knows the song. I know where to send the young who will carry it.",
+  "bookPage": "There was a voice in every great tree once, Tieru of Aalid Feie told me, and the eye burned the vale's trees and their voices with them, all but one, east of here past the gap in the old wall. The Fomorians did not burn that tree. They silenced it, and set three of their own in the gap so nobody could come and sing it free. Drygau stands in the gap and calls, and Adwyth and Anhylaw come. They named themselves, harms and woe and unruliness, in a tongue they found somewhere. Lynara of Domnann knows the song. I know where to send the young who will carry it.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Drygau in the gap east of Aalid Feie in {minutes} minutes.",
     "loss": "Drygau turned back {realm}'s band under {raidLeader} in the gap east of Aalid Feie after {minutes} minutes."

@@ -109,7 +109,7 @@
     "keyword": "Valthjof",
     "text": "Foreman of the [jotuns]' clay yards. He thinks a heart small enough to fire true might be a man's, and kept Cnute of Audliten's son to see. See [mare's heart] and [Mokkurvalve]."
   },
-  "bookPage": "From the count of Arnkel the ferryman: the foreman of the yards asked me once, through the kobold, how big a man's heart is. I showed him my fist. He looked at it a long time and said that it was very small, and that small things fire evenly, and that the first giant's trouble was a heart too timid and the second's a heart too large. I did not know then what he meant. I knew the next spring, when a boy from Audliten with a bag of herbs did not come down to my boat, and a pair of boots stood by the pits.",
+  "bookPage": "The foreman of the yards asked me once, through the kobold, how big a man's heart is: so Arnkel the ferryman's count begins. I showed him my fist. He looked at it a long time and said that it was very small, and that small things fire evenly, and that the first giant's trouble was a heart too timid and the second's a heart too large. I did not know then what he meant. I knew the next spring, when a boy from Audliten with a bag of herbs did not come down to my boat, and a pair of boots stood by the pits.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Valthjof the foreman and brought Cnute's son home in {minutes} minutes.",
     "loss": "Valthjof kept {raidLeader}'s party from {realm} out of the clay yards after {minutes} minutes."

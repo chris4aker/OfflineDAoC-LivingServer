@@ -104,7 +104,7 @@
     "keyword": "Boligar",
     "text": "The best of the skogsra at the old trick of leading travellers astray. A song and you dream; a gesture and you are elsewhere in the woods."
   },
-  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the dwarves pointed out the seeker's clearing to me from griffon-back and would not land within a bowshot of it. A hunting party had gone in that morning. From above I saw the front of them go still all at once, standing in the ferns like posts, and the seeker walking among them. Then one who had hung back was suddenly among the trees beside the clearing, alone, turning round and round. He had not walked there. The dwarf beside me said: that one is lucky. The ones who stand still are the ones he keeps.",
+  "bookPage": "The dwarves pointed out the seeker's clearing to me from griffon-back, Gunnvor of Jordheim writes in A Map That Lies, and would not land within a bowshot of it. A hunting party had gone in that morning. From above I saw the front of them go still all at once, standing in the ferns like posts, and the seeker walking among them. Then one who had hung back was suddenly among the trees beside the clearing, alone, turning round and round. He had not walked there. The dwarf beside me said: that one is lucky. The ones who stand still are the ones he keeps.",
   "chronicle": {
     "win": "{raidLeader} of {realm} found the path past Boligar in {minutes} minutes.",
     "loss": "Boligar led {raidLeader}'s party from {realm} astray for {minutes} minutes."

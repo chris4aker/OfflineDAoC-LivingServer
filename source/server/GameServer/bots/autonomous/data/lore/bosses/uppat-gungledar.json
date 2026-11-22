@@ -114,7 +114,7 @@
     "keyword": "Uppat leader",
     "text": "The leader of the upward order was never a Father: it is the greatest of the growing stones in the eastern halls, and the order took its name from it. The morvalt leave it be. See [Uppat and Nedat] and [Nedat leader]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: I carried a lamp for a Valkyn guide into the eastern halls once, as far as the stones. She stopped me at the edge of the small ones and made me put the lamp down, and we stood in the dark until my eyes were good, and then I saw it, the big one, standing up out of the floor like a tooth in a jaw. She said that was the Uppat leader, and that the Fathers used to come and stand where we stood, and say nothing, and go back to the forges. I asked what it said back. She said: it grows.",
+  "bookPage": "I carried a lamp for a Valkyn guide into the eastern halls once, as far as the stones, Ivrik the kobold lamp-carrier of Bjarken told the skalds. She stopped me at the edge of the small ones and made me put the lamp down, and we stood in the dark until my eyes were good, and then I saw it, the big one, standing up out of the floor like a tooth in a jaw. She said that was the Uppat leader, and that the Fathers used to come and stand where we stood, and say nothing, and go back to the forges. I asked what it said back. She said: it grows.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke the Uppat leader in Trollheim's eastern halls in {minutes} minutes.",
     "loss": "The Uppat leader stood unbroken against {raidLeader}'s party from {realm} after {minutes} minutes."

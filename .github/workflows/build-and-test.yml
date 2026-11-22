@@ -83,6 +83,7 @@ jobs:
           python tools/lore/repetition.py --check
           python tools/lore/reachability.py --check
           python tools/lore/continuity.py --check
+          python tools/lore/depth_report.py --check
           python -m unittest discover -s tools/claude-version/tests -v
           python -m unittest discover -s tools/perf/tests -v
 

@@ -90,7 +90,7 @@
     "keyword": "Cuinn",
     "text": "The small, iron-grey treant at the foot of Treal's ledge in Altan Garran, [Cothrom Gorge]. He guards the ground where [Treal] buries what he holds, and tears up the worts' tendrils when they come for it."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: there are two treants beside Treal and they are opposites. Elnara's is enormous and gentle with her. Cuinn is barely taller than a man, grey as old iron, and gentle with nobody. He grew in Treal's shade with nothing to do but get harder. He guards the ground where Treal buries the roots the strangers bring, and the worts have tried to take them back: we find tendrils torn out of the ledge at his feet in the mornings, torn up as if by hand. He has never spoken. Not even to Treal. When the frost comes he does not drop a leaf, because he has none to drop.",
+  "bookPage": "There are two treants beside Treal and they are opposites, as Noirin the enchanter of Altan Garran explains. Elnara's is enormous and gentle with her. Cuinn is barely taller than a man, grey as old iron, and gentle with nobody. He grew in Treal's shade with nothing to do but get harder. He guards the ground where Treal buries the roots the strangers bring, and the worts have tried to take them back: we find tendrils torn out of the ledge at his feet in the mornings, torn up as if by hand. He has never spoken. Not even to Treal. When the frost comes he does not drop a leaf, because he has none to drop.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Cuinn in Altan Garran in Cothrom Gorge in {minutes} minutes.",
     "loss": "Cuinn turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."
