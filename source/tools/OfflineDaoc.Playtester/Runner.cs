@@ -10,7 +10,7 @@ internal static class Runner
     {
         new LoginSaveRestart(), new ChatBetweenPlayers(), new GroupInvite(), new ClassSwitch(),
         new TellGamebot(), new FactionRate(), new KillQuestInBotGroup(), new DeliveryQuest(), new GuildDues(),
-        new BotDeath(), new BotCorpseTarget(), new BotRez(),
+        new BotDeath(), new BotCorpseTarget(), new BotRez(), new BotJump(),
         new BotClickTarget(), new HireTrain(), new GamebotKillXp(),
     };
 

@@ -18,6 +18,18 @@ The raid fixes (#407-#415) are added under **Bosses** as their branches merge. P
 [docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
+- **Darkness Falls entrance stairs (#438).** Companions following you down a realm's entrance stairs no longer get
+  stuck on a step. The navigation mesh has no walkable stairs there: three landings per realm, each ending in a sheer
+  edge, joined by one-way drops of 128-191 units (Albion x 33508-34301, y ~27955; Midgard and Hibernia the same;
+  `tools/navmesh/README.md`). A companion slid diagonally down each drop, and a new follow order in mid-drop replotted
+  from a point on no polygon, failed, and left it there. Every bot now takes the drops as the certified falls autonomous
+  gamebots already used (off the lip, then down), new orders during a fall only change where it goes after landing,
+  and a bot left in a drop is set down on its landing (`DF_STAIR_LANDING`). No navmesh change. **Tests only.**
+- **GM `/jump <bot> to me` (#438).** `/jump <name> to me`, `/jump <name> to <name>` and `/jump <name> to x y z
+  [region]` now find bots by name (companions, `/spawn` and `/raid` helpers, hired companions, gamebots, buffbots):
+  an exact name first, then the start of a name, your own and your group's bots first. Bots had no client, so the
+  command answered "not in the game". A moved bot drops its fight, path and ride and plans again; a gamebot's watchdog
+  counts the move as progress. Log line `GM_JUMP_BOT ... kind=`. **Tests only.**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
   "You must select a target for this spell!". A resurrection cast with nothing dead selected now goes to a dead bot of
   your realm in range: the one you named with `/target <name>`, otherwise one from your group, otherwise the nearest. A

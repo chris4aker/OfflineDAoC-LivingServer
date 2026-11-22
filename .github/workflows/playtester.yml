@@ -20,6 +20,8 @@ on:
       - "source/server/GameServer/bots/BotCorpseTargeting.cs"
       - "source/server/GameServer/commands/gmcommands/LivingServerTestCommand.cs"
       - "source/server/GameServer/commands/playercommands/target.cs"
+      - "source/server/GameServer/commands/gmcommands/jump.cs"
+      - "source/server/GameServer/commands/gmcommands/JumpBotTargets.cs"
       - "source/server/GameServer/packets/Client/168/PlayerTargetHandler.cs"
       - "source/server/GameServer/mode165/**"
       - "source/server/GameServer/bots/autonomous/AutonomousBotRealmPointRewards.cs"
@@ -87,7 +89,7 @@ jobs:
           set -o pipefail
           dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal-death.db" --server-dir source/server/Release \
-            --scenarios bot-death,bot-corpse-target,bot-rez --out "$RUNNER_TEMP/playtest-death" | tee "$RUNNER_TEMP/death.txt"
+            --scenarios bot-death,bot-corpse-target,bot-rez,bot-jump --out "$RUNNER_TEMP/playtest-death" | tee "$RUNNER_TEMP/death.txt"
           logs=("$RUNNER_TEMP"/playtest-death/server-console-*.log)
           grep -hq "CLIENT_HANDSHAKE .*build=0x2A07 client=original" "${logs[@]}" \
             || { echo "::error::no CLIENT_HANDSHAKE line took the scripted game.dll build as the original client"; exit 1; }

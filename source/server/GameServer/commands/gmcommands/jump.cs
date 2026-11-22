@@ -301,6 +301,12 @@ namespace DOL.GS.Commands
 				{
 					GamePlayer targetPlayer = ClientService.Instance.GetPlayerByPartialName(args[1], out _);
 
+					if (targetPlayer == null && JumpBotTargets.FindPlayerOrBot(client.Player, args[1], out _) is GameBot xyzBot)
+					{
+						if (!JumpBotTargets.TryMove(xyzBot, xyzBot.CurrentRegionID, Convert.ToInt32(args[3]), Convert.ToInt32(args[4]), Convert.ToInt32(args[5]), xyzBot.Heading, client.Player))
+							client.Out.SendMessage($"{xyzBot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						return;
+					}
 					if (targetPlayer == null)
 					{
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[1]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -315,6 +321,12 @@ namespace DOL.GS.Commands
 				{
 					GamePlayer targetPlayer = ClientService.Instance.GetPlayerByPartialName(args[1], out _);
 
+					if (targetPlayer == null && JumpBotTargets.FindPlayerOrBot(client.Player, args[1], out _) is GameBot regionBot)
+					{
+						if (!JumpBotTargets.TryMove(regionBot, Convert.ToUInt16(args[6]), Convert.ToInt32(args[3]), Convert.ToInt32(args[4]), Convert.ToInt32(args[5]), regionBot.Heading, client.Player))
+							client.Out.SendMessage($"{regionBot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						return;
+					}
 					if (targetPlayer == null)
 					{
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[1]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -331,40 +343,59 @@ namespace DOL.GS.Commands
 				#region Jump PlayerName to PlayerCible
 				else if (args.Length == 4 && args[2] == "to")
 				{
-					GamePlayer targetPlayer = ClientService.Instance.GetPlayerByPartialName(args[1], out _);
-					GamePlayer destinationPlayer;
+					// #438 (1.2.1): either name may be a bot (companion, /spawn or /raid helper, hired companion,
+					// gamebot). Bots have no client, so the player lookup alone answered "not in the game" for them.
+					GameLiving target = JumpBotTargets.FindPlayerOrBot(client.Player, args[1], out bool targetAmbiguous);
+					GameLiving destination;
 
-					if (targetPlayer == null)
+					if (target == null)
 					{
-						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[1]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						if (targetAmbiguous)
+							client.Out.SendMessage($"More than one bot's name starts with \"{args[1]}\": type more of it.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						else
+							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[1]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						return;
 					}
+					bool destinationAmbiguous = false;
 					if (args[3] == "me")
-					{
-						destinationPlayer = client.Player;
-					}
+						destination = client.Player;
 					else
+						destination = JumpBotTargets.FindPlayerOrBot(client.Player, args[3], out destinationAmbiguous);
+
+					if (destination == null)
 					{
-						destinationPlayer = ClientService.Instance.GetPlayerByPartialName(args[3], out _);
+						if (destinationAmbiguous)
+							client.Out.SendMessage($"More than one bot's name starts with \"{args[3]}\": type more of it.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						else
+							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[3]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						return;
+					}
+					if (destination == target)
+						return;
+
+					if (target is GameBot bot)
+					{
+						// A bot has no client and no expansion to check; it goes where the GM sends it, beside the
+						// destination (a house's inside is not a place a bot can stand).
+						if (JumpBotTargets.TryMove(bot, destination.CurrentRegionID, destination.X, destination.Y, destination.Z, destination.Heading, client.Player))
+							client.Out.SendMessage($"{bot.Name} jumps to {(destination == client.Player ? "you" : destination.Name)} in {destination.CurrentRegion?.Description}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						else
+							client.Out.SendMessage($"{bot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						return;
 					}
 
-					if (destinationPlayer == null)
+					GamePlayer targetPlayer = (GamePlayer) target;
+					// The expansion check is the jumped player's client; a bot destination has none of its own.
+					GameClient checker = destination is GamePlayer { Client: not null } destinationPlayer ? destinationPlayer.Client : client;
+					if (CheckExpansion(checker, targetPlayer.Client, destination.CurrentRegionID))
 					{
-						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "GMCommands.Jump.PlayerIsNotInGame", args[3]), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						if (destination is GamePlayer housePlayer && housePlayer.CurrentHouse != null && housePlayer.InHouse)
+							housePlayer.CurrentHouse.Enter(targetPlayer);
+						else
+							targetPlayer.MoveTo(destination.CurrentRegionID, destination.X, destination.Y, destination.Z, client.Player.Heading);
 						return;
 					}
-					else
-					{
-						if (CheckExpansion(destinationPlayer.Client, targetPlayer.Client, destinationPlayer.CurrentRegionID))
-						{
-							if (destinationPlayer.CurrentHouse != null && destinationPlayer.InHouse)
-								destinationPlayer.CurrentHouse.Enter(targetPlayer);
-							else
-								targetPlayer.MoveTo(destinationPlayer.CurrentRegionID, destinationPlayer.X, destinationPlayer.Y, destinationPlayer.Z, client.Player.Heading);
-							return;
-						}
-						return;
-					}
+					return;
 				}
 				#endregion Jump PlayerName to PlayerCible
 				#region push/pop
