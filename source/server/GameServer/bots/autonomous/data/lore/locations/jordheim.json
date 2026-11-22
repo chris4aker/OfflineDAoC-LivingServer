@@ -20,9 +20,9 @@
       "source": "runtime/data/opendaoc.sqlite3.db, ZonePoint and Area tables (0.37b world data)"
     },
     {
-      "text": "Mythic's Catacombs lore: Jordheim grew from a Norse village founded by bold heroes; Relder Autansonn found caves beneath the village that became its burial chambers; the founder was laid to rest in a dismantled longboat, and the city was built over the catacombs, so that its foundation 'does literally hold the spirits of the heroes'.",
+      "text": "Camelot Herald (2004), the Catacombs lore pages: Jordheim grew from a Norse village founded by bold heroes; Relder Autansonn found caves beneath the village that became its burial chambers; the founder was laid to rest in a dismantled longboat, and the city was built over the catacombs, so that its foundation 'does literally hold the spirits of the heroes'.",
       "provenance": "mythic",
-      "source": "https://www.camelotherald.com/node/462"
+      "source": "https://www.camelotherald.com/node/462 (Camelot Herald (2004): one of Mythic's lore pages written for Catacombs, December 2004, after the 1.65 era; kept as the only Mythic account of the place, owner decision 8)"
     },
     {
       "text": "Mythic names Jordheim the capital city where Midgard's races meet, and says each of Midgard's callings is attuned to a Norse god.",
@@ -65,9 +65,9 @@
       "source": "runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     },
     {
-      "text": "Mythic's Catacombs lore names Sigrun and Brynhild as the founders of the Valkyries.",
+      "text": "Camelot Herald (2004), the Catacombs lore pages: they name Sigrun and Brynhild as the founders of the Valkyries.",
       "provenance": "mythic",
-      "source": "https://www.camelotherald.com/node/462"
+      "source": "https://www.camelotherald.com/node/462 (Camelot Herald (2004): one of Mythic's lore pages written for Catacombs, December 2004, after the 1.65 era; kept as the only Mythic account of the place, owner decision 8)"
     },
     {
       "text": "Gamebots idle in the city, buy and sell at the Realm Exchange and visit their trainers.",

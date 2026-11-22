@@ -1245,6 +1245,9 @@ public sealed class LoreBible
     /// Fight-guide and game talk (owner rule 2026-11-06 19:26, "chapters are not a fight guide"): the patterns of the
     /// writers' self-check, scratchpad lore/chapter_lint.py, kept the same. Chapters, story and books are history told
     /// inside the world; fight advice belongs in legend, bot lines and yells only.
+    /// Real companies, sites, patches and the software under the world (owner decision 8, 2026-11-21) are a hard CI
+    /// failure in tools/lore/fourth_wall.py (run by lint_lore.py), over every player-visible field; this list stays the
+    /// twin of chapter_lint.py and only warns.
     /// </summary>
     public static readonly string[] GameTalkPatterns =
     [
