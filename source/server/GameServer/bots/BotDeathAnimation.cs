@@ -72,14 +72,34 @@ namespace DOL.GS
             return held;
         }
 
+        /// <summary>Pure: the fall, sent a tick after the death, still goes out: the bot is still hidden (not raised, released or
+        /// revived in between) and still in the world.</summary>
+        public static bool FallStillDue(bool fallShown, bool botDead, bool active) => fallShown && botDead && active;
+
         /// <summary>GameBot.ProcessDeath, after the death itself.</summary>
+        /// <remarks>The fall goes out on the next tick, not now. An object update is queued as UDP and, for a client without UDP,
+        /// written after the tick's TCP packets (PacketProcessor.SendPendingPackets drains the TCP queue first). An update the
+        /// death queued in this tick (its health at 0) then reached the original client after the fall, as an update of an
+        /// object it had just let fall (playtester bot-death, CI 2026-11-22). Hidden first, so nothing new is queued; the
+        /// updates already queued go out at the end of this tick, and the fall after them.</remarks>
         public static void OnDied(GameBot bot)
         {
             if (bot == null || bot.ObjectState != GameObject.eObjectState.Active || !MarksAtDeath(On))
                 return;
 
-            // Hidden first, so no refresh between the fall and the mark sends it again.
+            // Hidden first, so no refresh between the death and the fall sends it again.
             bot.DeathFallShown = true;
+            _ = new ECSGameTimer(bot, _ =>
+            {
+                SendFall(bot);
+                return 0;
+            }, 1);
+        }
+
+        private static void SendFall(GameBot bot)
+        {
+            if (!FallStillDue(bot.DeathFallShown, bot.Health <= 0, bot.ObjectState == GameObject.eObjectState.Active))
+                return;
             int fell = 0;
             foreach (GamePlayer viewer in bot.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
             {

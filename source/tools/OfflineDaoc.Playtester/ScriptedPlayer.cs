@@ -53,6 +53,9 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     private int _realmAsked;
 
     public string Label { get; }
+    /// <summary>The build sent in the handshake (set before connecting): 0 as Living Server's new client, or
+    /// ClientPackets.OriginalClientBuild as game.dll (the server then sends a dead bot's fall, BotDeathAnimation).</summary>
+    public ushort HandshakeBuild { get; set; }
     public string Account { get; private set; } = "";
     public string CharacterName { get; private set; } = "";
     public int Realm { get; private set; }
@@ -101,7 +104,7 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     {
         _net = new DaocConnection();
         using var cancel = new CancellationTokenSource(timeout);
-        await _net.OpenAsync(host, port, cancel.Token);
+        await _net.OpenAsync(host, port, cancel.Token, HandshakeBuild);
         _pump = Task.Run(PumpAsync);
         _ = Task.Run(KeepAliveAsync);
     }
@@ -351,6 +354,13 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
         return living;
     }
 
+    /// <summary>Selects an object by its id, as a click on it does (0: nothing selected, as Escape).</summary>
+    public void TargetObject(int objectId) => Send(ClientPackets.Target(objectId));
+
+    /// <summary>Asks the server to create an object for us (CreateObjectRequest 0xBE), as game.dll does for an update of one it
+    /// does not have.</summary>
+    public void RequestObject(int objectId) => Send(ClientPackets.RequestObject(objectId));
+
     /// <summary>Right-click on a living or object (a quest giver, a merchant, a door).</summary>
     public void Interact(int objectId) => Send(ClientPackets.Interact(objectId, (int)X, (int)Y, _net?.SessionId ?? 0));
 
@@ -406,6 +416,32 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     {
         lock (_sync)
             return _log.Count;
+    }
+
+    /// <summary>The events of a type from a mark on, up to another mark (or now), in the order they came.</summary>
+    public List<T> EventsSince<T>(int since, int? until = null) where T : class
+    {
+        lock (_sync)
+        {
+            var found = new List<T>();
+            int end = Math.Min(until ?? _log.Count, _log.Count);
+            for (int i = Math.Max(0, since); i < end; i++)
+                if (_log[i] is T item)
+                    found.Add(item);
+            return found;
+        }
+    }
+
+    /// <summary>The place in the event log of this very event (as a WaitFor returned it), or -1.</summary>
+    public int PlaceOf(object item)
+    {
+        lock (_sync)
+        {
+            for (int i = 0; i < _log.Count; i++)
+                if (ReferenceEquals(_log[i], item))
+                    return i;
+            return -1;
+        }
     }
 
     public async Task<T> WaitForAsync<T>(Func<T, bool> match, TimeSpan timeout, int since) where T : class

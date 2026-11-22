@@ -11,7 +11,9 @@ internal sealed record RealmAllowed(int Realm) : ServerEvent;
 internal sealed record CharacterList(IReadOnlyList<CharacterSlot> Characters) : ServerEvent;
 internal sealed record PositionAndObjectId(float X, float Y, float Z, int ObjectId, int Heading, int Region) : ServerEvent;
 internal sealed record LivingCreated(int ObjectId, string Name, string Guild, int Level, bool IsPlayer, int X, int Y, int Z) : ServerEvent;
-internal sealed record ObjectRemoved(int ObjectId) : ServerEvent;
+/// <summary>RemoveObject (0xA2): the object and its removal type (PacketLib168.WriteObjectRemove: 0 = leave the corpse to fade,
+/// the original client's death fall; 1 = gone; 2 = a player). ObjectDelete (0xE1) has no type: -1.</summary>
+internal sealed record ObjectRemoved(int ObjectId, int Type = -1) : ServerEvent;
 /// <summary>ObjectUpdate: X / Y are zone-relative (the zone is given), Z absolute.</summary>
 internal sealed record ObjectMoved(int ObjectId, int Health, int Zone, int X, int Y, int Z, int Target) : ServerEvent;
 internal sealed record PlayerMoved(int SessionId, int ObjectId, float X, float Y, float Z) : ServerEvent;
@@ -116,7 +118,8 @@ internal static class ServerPackets
                     items.Add(ReadItem(r));
                 return new InventoryUpdate(items);
             }
-            case 0xA2:                                    // RemoveObject
+            case 0xA2:                                    // RemoveObject: the object, the removal type
+                return new ObjectRemoved(r.Short(), r.Short());
             case 0xE1:                                    // ObjectDelete
                 return new ObjectRemoved(r.Short());
             case 0xAF:                                    // Message (1127): type, "@@" chat window / "##" popup, text

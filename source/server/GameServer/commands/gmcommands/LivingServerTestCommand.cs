@@ -29,7 +29,7 @@ namespace DOL.GS.Commands;
     "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)",
     "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)",
     "/lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls",
-    "/lstest deathanim [raise | release | off] - the death fall in the original client (target a bot): kills it (or shows the fall again on a dead one) and lists every packet about it to your client for 2 minutes; raise brings it back as a rez does, at your side; release sends it to its bind")]
+    "/lstest deathanim [raise | release | rez | off] - the death fall in the original client (target a bot): kills it (or shows the fall again on a dead one) and lists every packet about it to your client for 2 minutes; raise brings it back as a rez does, at your side; release sends it to its bind; rez casts a resurrection as a player's cast goes (with nothing dead selected the server picks the corpse)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -186,6 +186,11 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             Say(client, "Packet list stopped.");
             return;
         }
+        if (arg == "rez")
+        {
+            Rez(client, gm);
+            return;
+        }
         // The original client lets go of a dead bot's selection, so raise and release go to the one being watched.
         GameBot bot = gm.TargetObject as GameBot ?? BotDeathAnimation.Watched;
         if (bot == null || bot.ObjectState != GameObject.eObjectState.Active || bot.CurrentRegion != gm.CurrentRegion)
@@ -237,9 +242,36 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 Say(client, "Then: /lstest deathanim raise (as a rez) or /lstest deathanim release (to its bind).");
                 return;
             default:
-                Say(client, "/lstest deathanim [raise | release | off]");
+                Say(client, "/lstest deathanim [raise | release | rez | off]");
                 return;
         }
+    }
+
+    /// <summary>/lstest deathanim rez (1.2.1, BotCorpseTargeting): the GM casts a resurrection the way a player's cast goes
+    /// (GamePlayer.CastSpell, CastingComponent, SpellHandler.CheckBeginCast) with whatever the GM has selected, so with nothing
+    /// dead selected the server picks the corpse: the bot named with /target, else a groupmate, else the nearest. The spell is
+    /// built here, as Perfect Recovery's is, so a GM of any class can check it (the playtester's bot-rez scenario).</summary>
+    private static void Rez(GameClient client, GamePlayer gm)
+    {
+        DOL.Database.DbSpell rez = new()
+        {
+            Name = "Living Server test resurrection",
+            ClientEffect = 7019,
+            Target = eSpellTarget.CORPSE.ToString(),
+            Type = eSpellType.Resurrect.ToString(),
+            Range = 1500,
+            CastTime = 0,
+            RecastDelay = 0,
+            Power = 0,
+            ResurrectHealth = 100,
+            ResurrectMana = 100,
+        };
+        GameLiving selected = gm.TargetObject as GameLiving;
+        Say(client, selected != null && !selected.IsAlive
+            ? $"Casting a resurrection on your dead target {selected.Name}."
+            : "Casting a resurrection with nothing dead selected: the server picks the corpse.");
+        if (!gm.CastSpell(new Spell(rez, gm.Level), GlobalSpellsLines.RealmSpellsSpellLine))
+            Say(client, "The cast was refused.");
     }
 
     private static void Scene(GameClient client, eRealm realm, string topic, string what)

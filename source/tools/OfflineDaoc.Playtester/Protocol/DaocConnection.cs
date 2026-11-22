@@ -18,12 +18,13 @@ internal sealed class DaocConnection : IDisposable
     public bool IsOpen => _tcp.Connected;
     public ChannelReader<(int Code, byte[] Data)> Inbox => _inbox.Reader;
 
-    public async Task OpenAsync(string host, int port, CancellationToken cancel)
+    /// <param name="build">the handshake build (0: as the new client; ClientPackets.OriginalClientBuild: as game.dll)</param>
+    public async Task OpenAsync(string host, int port, CancellationToken cancel, ushort build = 0)
     {
         await _tcp.ConnectAsync(host, port, cancel);
         _stream = _tcp.GetStream();
         _ = Task.Run(ReadLoopAsync);
-        var (code, body) = ClientPackets.CryptKeyRequest();
+        var (code, body) = ClientPackets.CryptKeyRequest(build);
         Send(code, body);
     }
 
