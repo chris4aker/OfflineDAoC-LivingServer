@@ -72,7 +72,7 @@
   "source/server/GameServer/scripts/namedmobs/Dragons/DragonLairPlacement.cs": "574af55d780a64ce63e2f2de89b20044ce1c67cfeaa150e5125d230efcc23391",
   "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "808d6ed854b4cc407644f0fe53e6c2ab47b62bbc28cea94dc2476f153af6d2fa",
   "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "d8939280fa45b5b6516ffd2a5914a8b35b49f2fac5eac704b29635794c1828cb",
-  "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666",
+  "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "c82d8fef4e71e608ef1dc8c33e62e4d08f73173bf7fcc4c8a2a421127cf6c864",
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
   "source/server/GameServer/scripts/namedmobs/EncounterPacks.cs": "f85b58b56d9582b7029d953040e11f3fb5ed12bfae39e9f92e55abe70ce54cb8",

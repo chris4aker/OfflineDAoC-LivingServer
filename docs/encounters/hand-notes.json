@@ -2684,7 +2684,7 @@
   "open-world/elrotheancient": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "fe70a36041bcff4b46b54dc2cf33cb690854e57d698508cd47e08ec3170b1666"
+    "source/server/GameServer/scripts/namedmobs/ElroTheAncient.cs": "c82d8fef4e71e608ef1dc8c33e62e4d08f73173bf7fcc4c8a2a421127cf6c864"
    }
   },
   "open-world/evern": {
