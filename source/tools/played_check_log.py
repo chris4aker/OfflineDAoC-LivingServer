@@ -1512,6 +1512,29 @@ def _rvr_notice(sec, t, message, level, near):
         sec.ev["notice.player"].add(t, message)
 
 
+@handles("RVR_FRONTIER_WAIT_LONG")
+def _rvr_frontier_wait(sec, t, message, level, near):
+    """#418: a gamebot held at a frontier porter past five minutes, with what held it (notReady=, notReadyMembers=)."""
+    f = kv(message)
+    sec.ev["RVR_FRONTIER_WAIT_LONG"].add(t, message)
+    sec.n[f"porter_wait.{f.get('phase', '?')}:{f.get('notReady', '?')}"] += 1
+    if f.get("id"):
+        sec.lists["porter_wait_bots"].append(f["id"])
+
+
+@handles("RVR_FRONTIER_DEPARTURE")
+def _rvr_frontier_departure(sec, t, message, level, near):
+    sec.ev["RVR_FRONTIER_DEPARTURE"].add(t, message)
+    sec.n["porter_departed"] += num(kv(message).get("count"), 1)
+
+
+def porter_wait_reasons(n: Counter, top: int = 4) -> str:
+    """The commonest phase:notReady pairs of RVR_FRONTIER_WAIT_LONG (pure)."""
+    pairs = sorted(((k[len("porter_wait."):], v) for k, v in n.items() if k.startswith("porter_wait.")),
+                   key=lambda kv_: (-kv_[1], kv_[0]))
+    return ", ".join(f"{k} {v}" for k, v in pairs[:top]) or "none"
+
+
 @handles("RVR_BOT_KILLED")
 def _rvr_killed(sec, t, message, level, near):
     sec.ev["RVR_BOT_KILLED"].add(t, message)
@@ -2380,6 +2403,15 @@ def rvr(j: Judge, sec: Section, c):
           SEEN if c("RVR_SIEGE_STARTED") and keep.count else NOT_SEEN, keep if keep.count else None,
           f"{c('RVR_SIEGE_STARTED')} sieges, {keep.count} keeps taken in the field, "
           f"{c('keep.taken.bg')} in battlegrounds")
+    waits = j.ev("RVR_FRONTIER_WAIT_LONG")
+    wait_detail = (f"{waits.count} wait(s) past 5 minutes by {len(set(sec.lists['porter_wait_bots']))} bot(s) "
+                   f"(phase:notReady {porter_wait_reasons(sec.n)}); {c('RVR_FRONTIER_DEPARTURE')} departures, "
+                   f"{sec.n['porter_departed']:.0f} bots carried")
+    j.add("rvr", "porter_wait", "No gamebot waits at a frontier porter past five minutes (RVR_FRONTIER_WAIT_LONG, #418)",
+          CONTRADICTED if waits.count else (SEEN if c("RVR_FRONTIER_DEPARTURE") else NOT_SEEN),
+          waits if waits.count else (j.ev("RVR_FRONTIER_DEPARTURE") if c("RVR_FRONTIER_DEPARTURE") else None),
+          wait_detail, must=False,
+          note="a build before #418's line logs no wait at all, so Seen there means only that bots departed")
     loaded = c("RVR_CHECKSPOT_LOADED") and c("RVR_CHECKSPOT_VALIDATED") and c("RVR_LANE_LOADED")
     j.add("rvr", "catalogs", "Catalogs load and validate (RVR_CHECKSPOT_LOADED / _VALIDATED, RVR_LANE_LOADED)",
           CONTRADICTED if c("catalog.bad") else (SEEN if loaded else NOT_SEEN),

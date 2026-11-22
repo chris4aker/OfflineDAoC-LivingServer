@@ -17,11 +17,39 @@ public static class AutonomousFrontierTransport
         .Where(p => p.ObjectState == GameObject.eObjectState.Active && p.CurrentRegion == bot.CurrentRegion && p.Realm == bot.Realm)
         .OrderBy(bot.GetDistanceTo).FirstOrDefault();
 
-    public static GameBot[] BoardingParty(GameBot bot, Passage passage) =>
-        HasCommittedSiegePassage(bot, passage) || passage.Medallion == "home_necklace" &&
-        AutonomousObjectiveAssignments.Parse(bot.PersistentRecord?.ObjectiveKind) != eAutonomousObjectiveKind.RvR
-            ? [bot] // Initial PvE meetups can have members returning from different frontiers.
-            : bot.Group?.GetMembersInTheGroup().OfType<GameBot>().ToArray() ?? [bot];
+    /// <summary>How far from its porter a medallion merchant is looked for.</summary>
+    public const int MedallionMerchantRadius = 3000;
+
+    /// <summary>The merchant beside <paramref name="porter"/> that sells <paramref name="medallion"/> to the realm, or null.</summary>
+    public static GameMerchant MedallionMerchantNear(OFTeleporter porter, eRealm realm, string medallion) =>
+        porter?.GetNPCsInRadius(MedallionMerchantRadius).OfType<GameMerchant>()
+            .Where(npc => (npc.Realm == realm || npc.Realm == eRealm.None) &&
+                          npc.TradeItems?.GetAllItems().Values.OfType<DbItemTemplate>().Any(item => item.Id_nb == medallion) == true)
+            .OrderBy(porter.GetDistanceTo).FirstOrDefault();
+
+    /// <summary>
+    /// The porter a bot heads for: the nearest one whose medallion merchant stands beside it, else the nearest one. A realm
+    /// has porters at more places than it sells frontier medallions, and the nearest porter by straight distance could have
+    /// no merchant beside it: a bot without the ticket then stood "Waiting for a frontier teleporter" until the watchdog moved
+    /// it on (#418). A bot that holds the ticket picks the same porter, so a warband with and without tickets meets at one
+    /// circle. Pure: <paramref name="sellsTicket"/> is asked in distance order and only until one answers yes.
+    /// </summary>
+    public static T ChoosePorter<T>(System.Collections.Generic.IEnumerable<(T Porter, double Distance)> candidates,
+        Func<T, bool> sellsTicket) where T : class
+    {
+        var ordered = candidates.Where(c => c.Porter != null).OrderBy(c => c.Distance).Select(c => c.Porter).ToList();
+        if (ordered.Count == 0) return null;
+        foreach (T porter in ordered)
+            if (sellsTicket(porter)) return porter;
+        return ordered[0];
+    }
+
+    /// <summary>The porter <see cref="ChoosePorter{T}"/> picks for this bot and passage.</summary>
+    public static OFTeleporter PorterFor(GameBot bot, Passage passage) =>
+        ChoosePorter(Porters.Keys
+                .Where(p => p.ObjectState == GameObject.eObjectState.Active && p.CurrentRegion == bot.CurrentRegion && p.Realm == bot.Realm)
+                .Select(p => (p, (double)bot.GetDistanceTo(p))),
+            porter => MedallionMerchantNear(porter, bot.Realm, passage.Medallion) != null);
 
     private sealed class BoardingBatch
     {
@@ -30,6 +58,7 @@ public static class AutonomousFrontierTransport
         public System.Collections.Generic.HashSet<GameBot> Handled = new();
         public ECSGameTimer Timer;
         public long OpenUntil;
+        public long LastCeremony;
     }
     private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<OFTeleporter, BoardingBatch> Batches = new();
     public const string RequestKey = "RvrFrontierPassage";
@@ -40,6 +69,21 @@ public static class AutonomousFrontierTransport
     public const int BoardingWindowMilliseconds = 30_000;
     public const long WarbandWaitMilliseconds = 60_000;
     private const string BlockedSinceKey = "RvrFrontierBlockedSince";
+
+    /// <summary>
+    /// A wait at a porter longer than this is logged (RVR_FRONTIER_WAIT_LONG, #418), and again each time this much more has
+    /// passed. The slowest wait that works is about four minutes (a bot reaching the circle just after a boarding window,
+    /// then a warband held for its minute: a departure at the third ceremony, 120 s apart by default), so a bot still there
+    /// after five should have left, and it is named twice before the 15-minute watchdog moves it.
+    /// </summary>
+    public const long LongWaitMilliseconds = 300_000;
+    /// <summary>A gap of more than this between two porter-wait turns starts a new wait.</summary>
+    public const long WaitGapMilliseconds = 30_000;
+
+    public static bool WaitContinues(long lastNote, long now) => lastNote > 0 && now >= lastNote && now - lastNote <= WaitGapMilliseconds;
+
+    public static bool LongWaitReportDue(long waitSince, long lastReport, long now) =>
+        waitSince > 0 && now - waitSince >= LongWaitMilliseconds && (lastReport == 0 || now - lastReport >= LongWaitMilliseconds);
 
     public static bool PartialDepartureDue(long blockedSince, long now) =>
         blockedSince > 0 && now - blockedSince >= WarbandWaitMilliseconds;
@@ -151,16 +195,48 @@ public static class AutonomousFrontierTransport
         .FirstOrDefault(item => item.SlotPosition >= (int)eInventorySlot.FirstBackpack &&
             item.SlotPosition <= (int)eInventorySlot.LastBackpack && item.Count > 0 && item.Id_nb == passage.Medallion);
 
-    public static bool Ready(GameBot bot, OFTeleporter porter, Request request) =>
-        bot is { IsAutonomousWorldBot: true, IsAlive: true } && bot.Realm == porter.Realm &&
-        !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsTemporaryGroupHelper && !bot.IsStunned && !bot.IsMezzed &&
-        bot.ObjectState == GameObject.eObjectState.Active && bot.CurrentRegion == porter.CurrentRegion &&
-        bot.IsWithinRadius(porter, BoardingRadius) && !bot.InCombat && !bot.IsAttacking &&
-        (bot.Brain as BotBrain)?.HasAggro != true && !GameRelic.IsPlayerCarryingRelic(bot) &&
-        CanBoardForObjective(bot.Realm, AutonomousObjectiveAssignments.KindFor(bot), request?.Passage) &&
-        PassageMatchesSiege(bot,request?.Passage) &&
-        request?.Porter == porter && request.ForceId == (bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}") &&
-        Ticket(bot,request.Passage) != null;
+    public static bool Ready(GameBot bot, OFTeleporter porter, Request request) => NotReadyReason(bot, porter, request) == null;
+
+    /// <summary>
+    /// The first boarding check <paramref name="bot"/> fails at <paramref name="porter"/>, null when it may board. The checks
+    /// and their order are <see cref="Ready"/>'s; the names are for RVR_FRONTIER_WAIT_LONG (#418).
+    /// </summary>
+    public static string NotReadyReason(GameBot bot, OFTeleporter porter, Request request)
+    {
+        if (bot is not { IsAutonomousWorldBot: true }) return "not-a-gamebot";
+        if (!bot.IsAlive) return "dead";
+        if (porter == null) return "no-porter";
+        if (bot.Realm != porter.Realm) return "realm";
+        if (BotDutyLeases.IsSpokenForByPlayer(bot)) return "player-lease";
+        if (bot.IsTemporaryGroupHelper) return "group-helper";
+        if (bot.IsStunned || bot.IsMezzed) return "stunned-or-mezzed";
+        if (bot.ObjectState != GameObject.eObjectState.Active) return "inactive";
+        if (bot.CurrentRegion != porter.CurrentRegion) return "other-region";
+        if (!bot.IsWithinRadius(porter, BoardingRadius)) return "outside-circle";
+        if (bot.InCombat || bot.IsAttacking || (bot.Brain as BotBrain)?.HasAggro == true) return "in-combat";
+        if (GameRelic.IsPlayerCarryingRelic(bot)) return "relic";
+        if (!CanBoardForObjective(bot.Realm, AutonomousObjectiveAssignments.KindFor(bot), request?.Passage))
+            return $"objective-{AutonomousObjectiveAssignments.KindFor(bot)}";
+        if (!PassageMatchesSiege(bot, request?.Passage)) return "siege-elsewhere";
+        if (request?.Porter != porter) return "other-porter";
+        if (request.ForceId != (bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}")) return "force-changed";
+        if (Ticket(bot, request.Passage) == null) return "no-ticket";
+        return null;
+    }
+
+    /// <summary>Seconds since <paramref name="porter"/>'s last boarding call (its ceremony), -1 when none was seen.</summary>
+    public static long SecondsSinceCeremony(OFTeleporter porter)
+    {
+        if (porter == null || !Batches.TryGetValue(porter, out var batch) || batch.LastCeremony == 0) return -1;
+        return (GameLoop.GameLoopTime - batch.LastCeremony) / 1000;
+    }
+
+    /// <summary>Seconds this bot's warband has held it back at the circle (0 when not held).</summary>
+    public static long SecondsHeldForWarband(GameBot bot)
+    {
+        long since = bot?.TempProperties.GetProperty<long>(BlockedSinceKey, 0L) ?? 0;
+        return since == 0 ? 0 : (GameLoop.GameLoopTime - since) / 1000;
+    }
 
     public static bool CanBoardForObjective(eRealm realm, eAutonomousObjectiveKind objective, Passage passage)
     {
@@ -176,6 +252,7 @@ public static class AutonomousFrontierTransport
         lock (batch)
         {
         batch.OpenUntil = GameLoop.GameLoopTime + BoardingWindowMilliseconds;
+        batch.LastCeremony = GameLoop.GameLoopTime;
         if (batch.Waiting.OrdinaryCount == 0)
             foreach (var passenger in porter.GetNPCsInRadius(BoardingRadius).OfType<GameBot>()) batch.Waiting.Enqueue(passenger);
         if (batch.Active) return;

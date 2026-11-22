@@ -1719,5 +1719,32 @@ class Sweep7c(unittest.TestCase):
         self.assertEqual(check(only(Log().start(at(0)).run()[1]), "empty_pull_teleport")["status"], pcl.NOT_SEEN)
 
 
+class FrontierPorterWait(unittest.TestCase):
+    """#418: RVR_FRONTIER_WAIT_LONG, a gamebot held at a frontier porter past five minutes."""
+    WAIT = ('RVR_FRONTIER_WAIT_LONG bot=Aelwyn id={id} level=50 realm=Hibernia phase={phase} waited=300s '
+            'at=200:421782,485582,1824 to=100:"Glenlock Faste" passage="Odin Hib" porter="Glasny" porterDist=310 '
+            'ticket={ticket} spotDist=12 notReady={why} party=8 notReadyMembers=none heldForWarband=0s ceremony=40s '
+            'objective=RvR grouped=yes')
+    DEPART = 'RVR_FRONTIER_DEPARTURE force=rvr-7 count=8 porter="Glasny" destination="Odin Hib" region=100'
+
+    def test_a_long_wait_contradicts_and_names_what_held_it(self):
+        log = Log().start(at(0))
+        log.add(at(5), self.DEPART)
+        log.add(at(10), self.WAIT.format(id=11, phase="waiting", ticket="no", why="declined:no-medallion-merchant-at:Glasny"), "WRN")
+        log.add(at(15), self.WAIT.format(id=11, phase="waiting", ticket="no", why="declined:no-medallion-merchant-at:Glasny"), "WRN")
+        log.add(at(16), self.WAIT.format(id=12, phase="boarding", ticket="yes", why="in-combat"), "WRN")
+        row = check(only(log.run()[1]), "porter_wait")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("3 wait(s) past 5 minutes by 2 bot(s)", row["detail"])
+        self.assertIn("waiting:declined:no-medallion-merchant-at:Glasny 2, boarding:in-combat 1", row["detail"])
+        self.assertIn("8 bots carried", row["detail"])
+
+    def test_departures_without_a_long_wait_are_seen(self):
+        log = Log().start(at(0))
+        log.add(at(5), self.DEPART)
+        self.assertEqual(check(only(log.run()[1]), "porter_wait")["status"], pcl.SEEN)
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "porter_wait")["status"], pcl.NOT_SEEN)
+
+
 if __name__ == "__main__":
     unittest.main()
