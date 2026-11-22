@@ -29,7 +29,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
     },
     {
-      "text": "When a GamePlayer killed by Beliathan dies, a Beliathan's Minion (level 50, 550 health) rises at the body and attacks his target; minions vanish with him.",
+      "text": "When a raider (EncounterTargets.AsRaider: a player or a bot) killed by Beliathan dies, a Beliathan's Minion (level 50, 550 health) rises at the body and attacks his target; minions vanish with him.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
     },

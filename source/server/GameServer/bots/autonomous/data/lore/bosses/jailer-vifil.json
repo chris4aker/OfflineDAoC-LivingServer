@@ -31,7 +31,7 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "He sends a player to a fixed spot in the tunnels away from the fight, as if to a cell.",
+      "text": "He sends a raider, a player or a bot, to a fixed spot in the tunnels away from the fight, as if to a cell.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },
@@ -46,7 +46,7 @@
       "source": "Old Norse name, to verify"
     },
     {
-      "text": "When first attacked Vifil places two hrimathursa tormentors (level 78, 20,000 health, 45% melee / 30% magic resists, tether 5,800) at the tunnel to the cells. Every 25-45 s he picks a random raider in his aggro list, bots included, and removes them from it; the original port of that player to the cells is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
+      "text": "When first attacked Vifil places two hrimathursa tormentors (level 78, 20,000 health, 45% melee / 30% magic resists, tether 5,800) at the tunnel to the cells. Every 25-45 s he picks a random raider in his aggro list, bots included, and removes them from it and ports them to the cells (EncounterDisplacement, DisplacementKind.Jail); AllowDisplacement and AllowBotDisplacement ship on for him since 1.2 (EpicEncounterMechanics.ShippedPerEncounter, \"Jailer\"). 100,000 health, 40% melee / 70% magic resists, CC-immune.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs"
     },

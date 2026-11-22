@@ -11,7 +11,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
     },
     {
-      "text": "Every think (500 ms) Oro and each clone take 5% of maximum mana from every GamePlayer within 350.",
+      "text": "Every think (500 ms) Oro and each clone take 5% of maximum mana from every raider within 350 (EncounterTargets.InRadius: players and bots).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
     },

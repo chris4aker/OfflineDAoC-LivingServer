@@ -36,7 +36,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
     {
-      "text": "In the original, cold damage healed him; the Offline DAoC build turns that off for bot raids.",
+      "text": "In the original, cold damage healed him; the Offline DAoC build turned that off for bot raids, and since 1.2 it is on again (no bot casts cold at him).",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },
@@ -51,7 +51,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
     {
-      "text": "The original cold-heal (cold damage healed him a fifth) is OFF in Living Server (EpicEncounterMechanics.AllowKvasirColdHeal). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a raider, bot or player, passes it, then removes itself; nothing else spawns.",
+      "text": "The original cold-heal (each cold hit heals him a fifth of his maximum health and does no damage) is ON since 1.2 (EpicEncounterMechanics.AllowKvasirColdHeal, server property epic_kvasir_cold_heal, default true); no bot casts cold at him (EpicEncounterTactics.ForbidsSpell). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a raider, bot or player, passes it, then removes itself; nothing else spawns.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     }
