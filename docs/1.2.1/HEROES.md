@@ -320,6 +320,13 @@ are not added yet:
   ([REVIEW-DEPTH.md](REVIEW-DEPTH.md)): 0 High, 1 Medium (the Abermenai wren line and fact), 9 Low, all fixed or noted;
   three owner questions (first entries that never show, `LoreBooks.Near` and `z: 0`, a walk of the guessed wall areas).
   Tests only.
+- **NPC pass, phase 1 (decision 10)**, on `wt8/roster`; no lore text changed. The 1.65 NPC roster
+  (`tools/lore/npc_roster.json`, built by `tools/lore/build_npc_roster.py` from the quest scripts, the Herald's captains,
+  the public OpenDAoC database and dated period pages), the role stand-in map (`tools/lore/npc_role_map.json`), the cast
+  sheets ([CAST-ALBION.md](CAST-ALBION.md), [CAST-MIDGARD.md](CAST-MIDGARD.md), [CAST-HIBERNIA.md](CAST-HIBERNIA.md),
+  [CAST-NEUTRAL.md](CAST-NEUTRAL.md)), the voice guides (VOICE-*.md, rule 1 the owner's "phenomenal and tight") and a
+  sample for the owner ([NPC-PASS-SAMPLE.md](NPC-PASS-SAMPLE.md)). Finding: the cap of 12 is checked for titled names
+  only, and many bare-named tellers are far over it (Wenna 129, Elowen 89, Lisín 66, Aodhan 65).
 - **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.
