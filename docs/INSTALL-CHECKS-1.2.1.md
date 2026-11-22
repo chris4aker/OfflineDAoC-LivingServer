@@ -27,7 +27,7 @@ run on the owner's PC.
 
 Each result names its commit. The branch is `release/1.2.1-dryrun` (PR #435).
 
-**Commit `8a6d55b`** (fix/1.2.1 up to #431 and #433 merged):
+**Commit `8a6d55b`** (fix/1.2.1 up to #431 and #433 merged; an earlier tip):
 - build-and-test, push: [run 45053310595](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45053310595). Success, with the server suite at 9,263 passed, 0 failed.
   - `versions` passed (`check_versions.py`: 1.2.1, tag v1.2.1).
   - `candidate-install / setup`, `fresh` (with `smoke` and `classoff`), `update114` and `update12` all passed.

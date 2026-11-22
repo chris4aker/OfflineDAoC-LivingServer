@@ -691,7 +691,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 572
+   "line": 574
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +703,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 573
+   "line": 575
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +715,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 574
+   "line": 576
   },
   {
    "id": "epic-albion",
@@ -727,7 +727,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 575
+   "line": 577
   },
   {
    "id": "epic-midgard",
@@ -740,7 +740,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 576
+   "line": 578
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +752,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 577
+   "line": 579
   },
   {
    "id": "summoners-albion",
@@ -764,7 +764,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 578
+   "line": 580
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 579
+   "line": 581
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 580
+   "line": 582
   },
   {
    "id": "darkness-albion",
@@ -800,7 +800,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 581
+   "line": 583
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 582
+   "line": 584
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 583
+   "line": 585
   },
   {
    "id": "openworld-albion-greenknight",
@@ -836,7 +836,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 2939
+   "line": 2953
   },
   {
    "id": "openworld-albion-coliath",
@@ -848,7 +848,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 2941
+   "line": 2955
   },
   {
    "id": "openworld-albion-emthoro",
@@ -860,7 +860,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 2943
+   "line": 2957
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -872,7 +872,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 2946
+   "line": 2960
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -884,7 +884,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 2948
+   "line": 2962
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 2950
+   "line": 2964
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 2952
+   "line": 2966
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 2954
+   "line": 2968
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 2956
+   "line": 2970
   },
   {
    "id": "openworld-midgard-revenant",
@@ -944,7 +944,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 2958
+   "line": 2972
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -956,7 +956,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 2960
+   "line": 2974
   },
   {
    "id": "openworld-hibernia-evern",
@@ -968,7 +968,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 2963
+   "line": 2977
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -980,7 +980,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 2965
+   "line": 2979
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -992,7 +992,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 2967
+   "line": 2981
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 2969
+   "line": 2983
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 2971
+   "line": 2985
   }
  ],
  "neutralObjectives": {
@@ -28046,7 +28046,7 @@
      "GKTrees"
     ],
     "areaOnClump": true,
-    "summary": "Its realm raid since 1.2: openworld-albion-greenknight (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: 4-5 groups, about Grand Summoner difficulty (Albion epic raid guide, FreddysHouse 115688, Feb 2003)). His fight starts when eight raiders stand within 1,000 of him for 20 s (his script's raid challenge). Might of the Forest (250 heat, 500 around his target, on 30% of his hits): casters, archers and healers outside his target's party stand clear of 500 around it. Every 40-60 s he drops his aggro and goes for a healer: the raid's nearest tank taunts him back. His trees (one at every raider within 4,000 every 25-35 s, 800 health, yellow to a 50): the casters and archers kill them, area casters where most of them and he stand, while the melee stay on him; at each 10% he walks to one of four spots and heals 400 there, and the raid follows and keeps hitting him (a heal it can't stop: uninterruptible).",
+    "summary": "Its realm raid since 1.2: openworld-albion-greenknight (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: 4-5 groups, about Grand Summoner difficulty (Albion epic raid guide, FreddysHouse 115688, Feb 2003)). His fight starts when eight raiders stand within 1,000 of him for 20 s (his script's raid challenge). Might of the Forest (250 heat, 500 around his target, on 30% of his hits): casters, archers and healers outside his target's party stand clear of 500 around it. Every 40-60 s he drops his aggro and goes for a healer: the raid's nearest tank taunts him back. His trees (one at every raider within 4,000 every 25-35 s, 800 health, yellow to a 50): the casters and archers kill them, area casters where most of them and he stand, while the melee stay on him; at each 10% he walks to one of four spots and heals 400 there, and the raid follows and keeps hitting him (a heal it can't stop: uninterruptible). 1.2.1 round 2 (#412, tests only; EpicEncounterTactics.GreenKnight): a tree that hits a caster or healer silences it and a shot pulls a tree onto the shooter, so the casters, archers and healers stand together 750 from him away from his target, every melee raider but his target peels the trees off the area casters, healers and other casters and then kills its own, and only area casters hit the trees. A model wins only past his flood guard (80+ raiders) with kind tree numbers; not fixed at his period size. Log: EPIC_GK_TREES.",
     "since": "1.2"
    },
    "verified": true
@@ -29181,7 +29181,7 @@
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "fightAtHomeRadius": 1000,
-    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets, so the raid fights within 900 of it (a raider further out walks in) and the raider she chases out leads her home past 1,000; her Summoner Pain (150 every 3 s for 36 s on everyone within 1,000 of a random raider, bots included; range 1,800, recast every 20 s, so two casts are always active) is cured: in a raid a healer with Cure Poison or a group cure poison cures it before a top-up heal when two or more raiders in its reach carry it and nobody of its own party is under 50% (sweep 7b, RaidCurePoison; logged as RAID_CURE_POISON; tests only). Build 9a173f4 cured nothing (0 RAID_CURE_POISON): a heal always came first. The split camps of sweep 6f (#359) were removed after the owner's PC (build 9a173f4) showed them failing: her Pain reached both camps and the far camp's casters stood about 1,670 from her, out of range. She is unchanged. Period (ToT Raids Summoner's Hall walkthrough, 2006): kill her nodes and orbs, then melee her down (no nodes in the script). EpicEncounterTactics.SummonersHall.",
+    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets, so the raid fights within 900 of it (a raider further out walks in) and the raider she chases out leads her home past 1,000; her Summoner Pain (150 every 3 s for 36 s on everyone within 1,000 of a random raider, bots included; range 1,800, recast every 20 s, so two casts are always active) is cured: in a raid a healer with Cure Poison or a group cure poison cures it before a top-up heal when two or more raiders in its reach carry it and nobody of its own party is under 50% (sweep 7b, RaidCurePoison; logged as RAID_CURE_POISON; tests only). 1.2.1 (#410, tests only): no realm has a group cure poison (OpenDAoC database; Paladin and Warden have no cure poison at all); a dotted raider holds the cure back only under 25%, a Pain with two thirds of its time left is cured even while a party member is in danger (pastDanger= in RAID_CURE_POISON), and the own party's dotted member with the fewest health points goes first. A model wins from 93 raiders in every realm (13/7/13 of 16 at 93, 16/15/16 at 106); 64 and 80 lose. Build 9a173f4 cured nothing (0 RAID_CURE_POISON): a heal always came first. The split camps of sweep 6f (#359) were removed after the owner's PC (build 9a173f4) showed them failing: her Pain reached both camps and the far camp's casters stood about 1,670 from her, out of range. She is unchanged. Period (ToT Raids Summoner's Hall walkthrough, 2006): kill her nodes and orbs, then melee her down (no nodes in the script). EpicEncounterTactics.SummonersHall.",
     "since": "1.2"
    },
    "verified": true

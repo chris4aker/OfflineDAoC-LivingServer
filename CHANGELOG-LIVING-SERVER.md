@@ -85,6 +85,46 @@ The raid fixes (#407-#415) are added under **Bosses** as their branches merge. P
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Raid simulations for Summoner's Hall, Marfoirwort and the Green Knight (#410, #412; tests only).** Models of the
+  fights on the bosses' own numbers and the bots' own decisions (`UT_RaidSim121SummonersGreenKnight`); no boss changed.
+  - **Marfoirwort:** his Life-leech heals him by the damage it deals to everyone within 350 of his target, and the melee
+    and pets all stood there (about 25 a leech), so he stayed at 79% and above on `ccba364`. Now his target holds 185 from
+    him, the other melee fight from behind him (370-380 from his target), everyone at range stands clear and no bot's pet
+    attacks him. Model: before, 2 of 128 attempts killed him in 30 minutes; after, 128 of 128 in under 10 minutes. Log:
+    `EPIC_LEECH_EXPOSURE ... inside=` (should be 0-1).
+  - **Summoner Roesia:** a raider carrying Summoner Pain now holds the raid cure back only under 25% (was 50%), and a
+    raid curer cures again after 2.5 s (was 5 s). Model, calibrated to `b1b6846`: with a group cure in every party both
+    rules win; with single cures only, the old rule never wins and the new one still loses at 77 raiders but wins 5 of
+    16 at 100 and 15 of 16 at 128 (the win balance grows the raid after a loss). `RAID_CURE_POISON` now prints `groups=`.
+  - **The Green Knight:** the melee outside his target's party kill the tree nearest them (their own first) before going
+    back to him. Model: the raid lasts longer and has fewer trees, but **still loses**; the next PC log (`EPIC_RANGED_ADDS
+    boss="Green Knight" alive=`) is needed to see why.
+  - **Grand Summoner Govannon:** not simulated; no bot raid has reached him since Roesia began winning every time.
+  - **Round 2 (tests only).** No realm has a group cure poison (OpenDAoC database: every Cure Poison is single-target;
+    Cleric, Friar, Healer, Shaman, Druid and Bard have it, Paladin and Warden don't), so the Roesia model now uses each
+    realm's curers. A Summoner Pain with two thirds of its time left is now cured even while a member of the curer's
+    party is in danger, and the own party's dotted member with the fewest health points goes first. Model, 16 attempts a
+    size: wins at 93 / 106 / 128 raiders (the win balance's first, second and fourth steps up from its 80 start) go from
+    6 / 9 / 15 to 13 / 16 / 16 in Midgard, 0 / 0 / 4 to 7 / 15 / 16 in Albion and 0 / 2 / 4 to 13 / 16 / 16 in Hibernia; 64
+    and 80 still lose. `RAID_CURE_POISON` prints `pastDanger=`.
+  - **The Green Knight, round 2 (tests only).** A tree that hits a caster or a healer silences it, and a shot pulls a
+    tree onto the shooter. Now the casters, archers and healers stand together 750 from him away from his target, every
+    melee raider but his target peels the trees off the area casters, the healers and the other casters (then kills its
+    own), and only area casters hit trees. Model: the 1.2 rules and #432 never win; this wins at 80 raiders and more
+    (past his 70-trees-a-wave flood guard) when a raider deals 80 or more a second to a tree and a tree hits for 8 or less,
+    at 50 only in the kindest case. **Not fixed at his period size.** Log: `EPIC_GK_TREES alive= onHealers=` (every 30 s).
+- **Dragon raids keep their thrown and resurrected raiders in the fight (#415, tests only).** Golestandt and Cuuldurach
+  fell apart partway (lost after two wipes on `9a173f4`, `c81eb5d` and `43c43aa`) while Gjalpinulva kept winning. Four of
+  Golestandt's five throw spots and three of Cuuldurach's land 7,300-12,200 from the lair, past the return wave's 6,700
+  line (one of Gjalpinulva's does), and the return wave held such a raider at the staging ring as if it had released; a
+  raider resurrected where it fell was held the same way. Both now stay with the raid (`REALM_RAID_RETURN_NOT_HELD`). No
+  dragon is changed. A simulation on the real return-wave and wipe code (`UT_DragonThrowReturnWave415`) reproduces the
+  pattern (Gjalpinulva wins most fights, the other two about half) and the fix lifts Golestandt and Cuuldurach to about
+  seven in ten; not yet seen in game.
+- **Legion's wounded step out where the healers reach them (#413, tests only).** A raider under 35% stepped straight away
+  from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
+  each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
+  Legion is unchanged; not yet seen in game.
 - **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
   bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
   Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,
