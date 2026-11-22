@@ -21,7 +21,7 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "The fire-keepers' triads on the Primal of Fire's second book page, and the story summary's retelling of the hay meadow and the burned ring, are Living Server lore.",
+      "text": "The new fire-keeper's vow at the stone ring on the Primal of Fire's second book page, and the story summary's retelling of the hay meadow and the burned ring, are Living Server lore.",
       "provenance": "original",
       "source": "Living Server"
     }
@@ -95,7 +95,7 @@
   },
   "bookPage": "Aodhan's note: I have never seen a Sylvan afraid of anything but fire, and I saw one afraid of a story about fire. The fire-keeper of Domnann, of all people, told it: the Root's fire is the slow kind, the fire that sleeps in a wet rick of hay and wakes when no one is watching. It walks at the bridge now, she said, and wherever it walks the stones burn. Senan of Ardee, who fought it in the first spring, told me he lived by leading it in a straight line, never round, so that the fire it left was behind him. The fire-keeper nodded and said that is the way with most things.",
   "bookPages": [
-    "A triad of the fire-keepers of Domnann, said at the stone ring when a new keeper is given her first ember. Three fires a keeper tends: the fire of the ring, the fire that dries the seed, and the small fire laid against the dark at the burned ring by World's End. Three fires a keeper fears: the fire in the thatch, the fire in the forest, and the fire that wakes in wet hay. Three things a keeper does not do: carry fire indoors, leave a ring untended, and feed a ring on the night the realm's company comes up from the bridge. Aodhan asked why the slow fire was feared beside the forest fire. The fire-keeper said the forest fire is seen. The new keeper says the triads three times, holding her ember in a clay dish, and walks once round her village's ring before she lays it in."
+    "The words a new fire-keeper of Domnann says at the stone ring when she is given her first ember, as Aodhan heard them. I will tend the fire of the ring, the fire that dries the seed, and the small fire laid against the dark at the burned ring by World's End. I will watch for the fire in the thatch, the fire in the forest, and the fire that wakes in wet hay. I will carry no fire indoors. I will leave no ring untended. And on the night the realm's company comes up from the bridge I will feed no ring at all, and let mine burn down with the others. Aodhan asked why the slow fire was named beside the forest fire. The fire-keeper said the forest fire is seen. The new keeper says the words three times, holding her ember in a clay dish, and walks once round her village's ring before she lays it in."
   ],
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Fire; {raidLeader}'s raid finished it in {minutes} minutes.",
