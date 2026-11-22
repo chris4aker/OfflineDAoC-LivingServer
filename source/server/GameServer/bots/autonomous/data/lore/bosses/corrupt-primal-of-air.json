@@ -14,6 +14,11 @@
       "text": "Level 83 with only 900 health; it flies, never melees and never walks home. Pets and turrets deal a fixed 5 per hit; direct damage kills it.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs; docs/encounters/hand-notes.json"
+    },
+    {
+      "text": "The words of the seed-time prayer and Fethnat's second half on the Primal of Air's second book page are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw, and Fáelán of Howth found that a single bolt scattered it. The Sylvan say its one gift is that it is easy to forget.\n\nThe Sylvan remember the wind of Hy Brasil as a gentle thing. It carried seeds and rain and the smell of the sea, and on still days it went down into the earth through every crack and cave, because wind goes everywhere. That is how the Root caught it. It went down into the hollow one summer and did not come back up, and the forests had a dry year after, and then a dying one.\n\nWhat hangs over the bridge now is the wind's memory of itself: a knot of stale air with the Root's voice in it. It is the first of the four to speak when strangers come, and the weakest to strike, and it knows both things. So it never comes down. It hangs above the bridge and watches its kin do the killing, and it waits to be forgotten. Beasts and summoned things claw at it and find nothing to claw. One honest spell from below scatters it. The Sylvan say that when it dies a breath of clean wind crosses the bridge, and that those who feel it should say thank you, because the wind was a friend once.\n\nThe wind-singer Fethnat went down after it and did not come back; a mage of Howth named Fáelán first learned, by accident, that a single bolt undoes it; and the Sylvan believe a little of the wind gets home each time the realm frees it.",
@@ -84,6 +89,9 @@
     "text": "The wind of the isle, taken first and kept longest. It barely has a body. One true spell scatters it; claws and pets find nothing."
   },
   "bookPage": "From Aodhan's notes in Domnann: the Sylvan have a little prayer for wind, said at seed-time, asking it to carry the seed and come home. They say it every year still, though the wind they prayed to went down into the hollow long ago. When I asked why, the fire-keeper said: because it might hear. The Howth men who went down with Orlaith tell me that the guardian of air has almost no body at all, that a single bolt undid it, and that a breath of clean air crosses the bridge when it goes. I told the fire-keeper. She went outside and stood in the doorway for a long time, with her face to the night, and said the prayer again.",
+  "bookPages": [
+    "The seed-time prayer to the wind, said at the edge of the sown ground in Domnann, as Aodhan turned it: Wind of the west, wind of the sea, lift the seed and carry it; lay it in the dark, and leave it, and come home. Wind of the caves, wind of the deep, you went down to look and did not come up; the seed is waiting at the field's edge. Come home. The second half was made after the wind went into the hollow, by Fethnat the wind-singer, the spring before she went down after it with her two apprentices. She sang it in the cave mouth on the morning she went, and the apprentices said the air answered her a long way down. The children of Domnann learn the first half when they can carry seed, and the second only when they ask what the first half means."
+  ],
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Air; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Air after {minutes} minutes."

@@ -19,6 +19,11 @@
       "text": "It resets after 30 seconds out of combat.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The two dry summers counted at the stone rings, and the silence kept for the second, on the Conservator's second book page are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Where the titan's sap pools clearest, something keeps it. It was made, the Sylvan think, in the good years, to keep the isle's springs full when the summers were dry. A thing that saves is a good thing to have in a hard country. The trouble with a thing that saves is that it only ever needs to be taught one wrong lesson: that what it saves is its own.\n\nThe Root taught it that, and the Conservator has been hoarding ever since. It sits at its pool and saves: every trickle of the world soul that seeps down the walls, every glimmer of strength in the water, it gathers in and holds. All the sap the mechanism pumps through the galleries passes its pool, and some of it always stays. The pool glows with it, and the bottom is covered in coins of light. It does not hunt and does not wander. It cannot be lured from its water, and in the first years nothing reached it from any distance, as a miser is beyond reach behind his door; the wardens say that door is shut as fast today, and nothing loosed from beyond half a bowshot of the pool has ever touched it. It will spend its hoard only to protect it, but then it spends lavishly. It pours the world soul out as a burning sickness on one foe and as a blast that fills the whole cave, and then it gathers energy from the water again. When the water primal at the bridge dies, the Conservator's pool dims. When the Conservator dies, the mechanism's heartbeat stumbles.\n\nThe springs it kept were Domnann's, and it saved them in the drought of the Summer of the Cracked Fields. Fionnuala of Tir na Nog found, in the first years, that only those at its pool could touch it.",
@@ -97,6 +102,9 @@
     "text": "The keeper of the pool, made to save the isle's springs and taught a miser's heart. It cannot be harmed from beyond its water, and it spends its hoard only on those who try."
   },
   "bookPage": "A Sylvan proverb, with Aodhan's gloss: The spring-keeper keeps the spring for the forest; when the keeper keeps it for himself, the forest dies of thirst beside a full pool. The Sylvan told me the proverb is about the Conservator, who was made in the good years to keep the springs full in drought, and who now sits in Galladoria on a pool full of the isle's strength and spends it only on those who come to take it. Fionnuala of Tir na Nog told me that in her day nobody touched it at all until they stood right at its edge. That is the way of misers, the fire-keeper said: they can only be robbed by those who come close enough to be burned.",
+  "bookPages": [
+    "Two dry summers are counted at the stone rings of Domnann, and the fire-keepers say them together. The first is the Summer of the Cracked Fields, when every spring on the isle sank to a trickle but Domnann's, which ran full because the keeper under the hills let out what it had saved. The fire-keepers went down to its pool to thank it, and it did not answer, as keepers seldom do. The second has no name. The rain stopped at the sowing, the springs of Domnann failed with all the others, and the fire-keepers went down again and found the pool fuller than they had ever seen it, and the keeper at its edge, counting. It did not look up. That autumn the Sylvan buried more of their old than in any year before or since. When the years are counted aloud each spring, the second summer is passed over in silence."
+  ],
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Conservator's pool; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Conservator after {minutes} minutes."
