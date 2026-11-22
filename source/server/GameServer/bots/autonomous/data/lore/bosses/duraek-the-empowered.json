@@ -33,6 +33,11 @@
       "text": "Xanxicar's script has a stomp, a glare and a throw but no breath attack.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs"
+    },
+    {
+      "text": "The added book pages (Elowen's account from the boat on the second night and Sir Kenrick's muster order) are Living Server writing for issue #402, drawn from events the chapters already tell.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Dura'ek is the Empowered, lord of the dry'ak, the drakoran clan that holds doors, and the ruler of occupied Avalon City. Where the drakoran came from is disputed: they say across the western sea at Morgana's call, the readers of Avalon say up out of the isle's ground, the Inconnu say both. Before the burning Dura'ek was one war-lord among five, set apart only by his strict keeping of the dry'ak avowry: more sworn protectors than any other lord keeps, every one bound to die before he does.\n\nMorgana gave the dry'ak the doors when Avalon burned, and Dura'ek took the chancellors' court at the city's heart, where Elowen of Caer Gothwaite saw him standing on the steps listening to the paving. Under it lay the stair to the Crystal Cave. On the third night, when the readers saw a cold light rise from the city, he went down alone. The clans say Xanxicar gave him a gift; dry'ak prisoners of the Inconnu say he stole from a sleeper; the readers say he touched something the dragon lay on. He came up at dawn burning.\n\nXanxicar has two heads and no breath; Dura'ek has two. Fire and frost feed him rather than harm him, and he throws the Flames of Dura'ek, though he has not yet learned to throw frost. The other four lords bow to him, each in their own way, and he rules the drakoran as citizens of the city they burned. The Inconnu mage Talwen died finding that out; Sir Kenrick of the Isle of Glass brought him down to the cry of 'no fire, no frost', and his six avowries died before him, as they had sworn. He wants to be a lord in his own right, not the dragon's servant, and forbids the dragon's name in his court, while every sentry on the stair below says it.",
