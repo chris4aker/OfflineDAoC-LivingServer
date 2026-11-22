@@ -58,6 +58,16 @@ or run where it was written; CI on pull request #398 is the first build.
 - Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
   debug level.
 
+**Crafting (#422)**
+- **A piece you ordered from a crafter bot is handed over.** The hand-over ran only at the very edges of the crafter's
+  break, where the code saw no break, so a made commission was never handed over or announced and lapsed after six
+  hours. Now, while the break lasts, the crafter opens the trade if you are near or tells you once where to collect it
+  (`ECON_PLAYER_ORDER outcome="ready_told"`, `"handover_tried"`).
+- A stock trade window that can't open makes the crafter say why and keeps the deal (`outcome="stock_trade_failed"
+  why=`); a bot never takes a trade hold for a player who is already trading.
+- `ECON_INDEX` gains `craftedListed20`, the crafted bot listings of level 20 and up, to show whether sellable work
+  reaches the Exchange.
+
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
 - Gamebots that logged out beside another realm's frontier keep log in at their capital, as players do
