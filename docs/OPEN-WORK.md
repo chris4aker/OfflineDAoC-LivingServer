@@ -30,8 +30,8 @@ Read [docs/1.2.1/HEROES.md](1.2.1/HEROES.md) and [docs/1.2.1/HANDOFF.md](1.2.1/H
 
 Never weaken a boss. A raid plan counts as working only once it is won on the owner's PC; most of these need the owner's raid log first.
 
-**All open, tests only.** Simulation-based fixes are in pull requests into `fix/1.2.1` (open on 2026-11-22): #428
-(#409, #411), #430 (#413, #414, #415), #431 (#407, #408), #432 (#410, #412). Each issue stays open until its raid is
+**All open, tests only.** Simulation-based fixes go into `fix/1.2.1` by pull request: #431 (#407, #408) merged on
+2026-11-22; #428 (#409, #411), #430 (#413, #414, #415) and #432 (#410, #412) open on 2026-11-22. Each issue stays open until its raid is
 won on the owner's PC.
 
 - [#407](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/407) Caer Sidi: the bot raid loses at the Crypt Lord

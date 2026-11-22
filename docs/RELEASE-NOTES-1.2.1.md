@@ -258,6 +258,7 @@ bot and the bot stands up.
 | `PLAYER_CLICK_TARGET` | Your click on a bot reached the server, and what it did (`result=`) |
 | `LOOT_ITEMS_MISSING` | Loot rows that name a missing item, one line per loot source |
 | `BOT_LED_RECRUIT ... kind=open_seat` | A travelling bot party looking for one more |
+| `REALM_EXPEDITION_PULL_WAIT_GUARDED`, `..._GUARD_CLEAR`, `..._GUARD_EXPIRED` | Caer Sidi: the raid waiting for a safe moment to pull one of the Crypt Lord's court (#407) |
 
 Send the lines, with the `FORK_BUILD` line from the top of the log, in a
 [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues).
