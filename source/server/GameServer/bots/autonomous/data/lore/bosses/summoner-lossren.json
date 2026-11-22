@@ -56,7 +56,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
     },
     {
-      "text": "The book pages after the first (the burial register of the Pennine parish, Grimkel Ulfsson's tale) are Living Server writing.",
+      "text": "The book pages after the first (the burial register of the Pennine parish, Grimkel Thorbrandsson's tale) are Living Server writing.",
       "provenance": "original",
       "source": "Living Server (1.2.1 epic floors, #402)"
     }
@@ -154,7 +154,7 @@
   "bookPage": [
     "From Vigfus Hallason's notes. I asked the magicker why Lossren keeps the ones who come down in pieces. She said the others are sent to their places in the hall, but a soul in pieces has no place, and a gravedigger cannot bear to leave anyone unburied. I asked whether the crowd were his prisoners. She said no, they were his parish. Then she told me he keeps the count of every soul that has answered the calling, and that the Grand Summoner asks him for it sometimes, at night, and Lossren tells him, and Govannon goes away very quiet. She did not know the number. She said she did not want to.",
     "In the register of burials of a parish of the Pennine marches, among the year's dead, in the priest's hand: Wat, son of Hob, the thatcher, buried in the churchyard on the feast of Saint Michael, and afterwards seen by me in the hall under the borders, in the crowd of the gatherer, with his face as it was. I went down with a company out of the Hall of the Corrupt for no other reason. I did not speak to him. The gatherer was cut down and the crowd faded, and I saw Wat's face before it went, and it was eased. I have entered him twice in this register, once among the buried and once among the dead returned, and the bishop may strike out whichever of the two he likes.",
-    "Asgaut, the son of Ulf of Audliten, went down the deep stair of the mine at Dodens Gruva on the night the calling was first heard, before Aros bound the rest of the miners, and he did not come up. His brother Grimkel went down that stair two summers later with forty men out of Jordheim, and in the gatherer's chamber he saw the crowd stream out, and his brother was in it, in two pieces, still wearing his miner's hood. Grimkel told his companions that this one was his. He cut his brother down himself, and then went on cutting until the gatherer fell. He carried nothing up, for there was nothing to carry. He paid a skald to make a verse for Asgaut, and the skald would not take the silver. Here ends the tale of the sons of Ulf."
+    "Asgaut, the son of Thorbrand of Audliten, hauled ore at the mine of Dodens Gruva and was not of the last shift. On the night the shift was lost he heard the calling from the head of the broken stair and went down to it, before Aros came down after the jarl shouting names, and he did not come up. His brother Grimkel went down that stair two summers later with forty men out of Jordheim, and in the gatherer's chamber he saw the crowd stream out, and his brother was in it, in two pieces, still wearing his miner's hood. Grimkel told his companions that this one was his. He cut his brother down himself, and then went on cutting until the gatherer fell. He carried nothing up, for there was nothing to carry. He paid a skald to make a verse for Asgaut, and the skald would not take the silver, and Audliten sings the verse still."
   ],
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Summoner Lossren and freed his gathered souls in {minutes} minutes.",

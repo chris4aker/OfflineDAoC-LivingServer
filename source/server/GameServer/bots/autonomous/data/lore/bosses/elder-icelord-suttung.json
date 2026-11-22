@@ -65,7 +65,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs"
     },
     {
-      "text": "The two pages in bookPages, and the people, objects and sayings first named in them, are Living Server lore written for the epic floors (#402).",
+      "text": "The book pages after the first (the slate-keepers' words over Nyr's shard and the seer's count of the elder's month in the oldest cutting) are Living Server writing for the epic floors (#402).",
       "provenance": "original",
       "source": "Living Server"
     }
@@ -186,7 +186,7 @@
   },
   "bookPage": "The tale of the mead, as the giants tell it, which is not as Jordheim tells it. The wise one, Kvasir, was killed by dwarves and his blood brewed into a mead, and all who drank it became poets. A giant, Suttung, took it from the dwarves as the price of his father's life and hid it inside a mountain with his daughter to guard it. A god came, a stranger with one eye, and seduced the daughter, and drank the mead, and flew away as an eagle. In Jordheim this is told as a clever god. In the glacier it is told as a theft, and the elder who carries that giant's name tells it every winter, so no one forgets.",
   "bookPages": [
-    "Cut on the shelf under the shard in the slate-house at Faraheim, beside the lullaby-stone. Nyr, the son of the slate-keeper Thrain, of the Remnants, carried this down off the crater floor in the twentieth winter of the giants' council, cut from a rib of the bones under the ice. A young giant of the elders' hall saw him on the rim and ran after him across the high ice and the island for days, running and then walking and then running again, and Nyr reached the iron trees a breath ahead of him. The giant stood at the edge of the wood a whole day and went home. The shard is cold on the hottest day of summer. No one sits near it. Nyr asked that it be said here he does not regret it, and the slate-keepers cut that, and then he asked them to cut that he did.",
+    "What the slate-keepers of Faraheim say over the shard, and have cut on the shelf beneath it. Nyr, the son of the slate-keeper Thrain, of the Remnants, carried this down off the crater floor in the twentieth winter of the giants' council, cut from a rib of the bones under the ice. A young giant of the elders' hall saw him on the rim and ran after him across the high ice and the island for days, running and then walking and then running again, and Nyr reached the iron trees a breath ahead of him. The giant stood at the edge of the wood a whole day and went home. The shard is cold on the hottest day of summer. No one sits near it. Nyr asked that it be said here he does not regret it, and the slate-keepers cut that, and then he asked them to cut that he did.",
     "From the seers' count of the elder's month in the oldest cutting, the winter of the army of bone, kept on a staff by the seer who sat at the cutting's mouth. The first day: he went in and sat against the bones. The third: he stopped answering. The seventh: the snow at the mouth stopped melting when the sun was on it. The twelfth: the seer's own breath froze in her hair where she sat, a long stride off. The twentieth: the ice on the walls of the cutting cracked, all at once, with no sound. The twenty-ninth: he came out. He was not thinner. He did not ask for food. He walked past her up the tunnel, and the snow did not settle on the floor where he had walked, nor has it settled within a giant's reach of him since."
   ],
   "chronicle": {

@@ -51,7 +51,7 @@
       "source": "Old Norse, to verify"
     },
     {
-      "text": "The two pages in bookPages, and the people, objects and sayings first named in them, are Living Server lore written for the epic floors (#402).",
+      "text": "The book pages after the first (the salt-traders' reckoning of Orri the blue man and the sentence the wagon never finished) are Living Server writing for the epic floors (#402).",
       "provenance": "original",
       "source": "Living Server"
     }
@@ -168,7 +168,7 @@
   "bookPage": "From the sculptor's account of the Council. Vagn spoke on every question. On the morvalt: a nuisance. On the dwarves: a smaller nuisance. On the Icelords: a large nuisance with good manners when it suits them. On the queen's husband: nothing, while the king was in earshot, and a great deal otherwise. Nokkvi spoke on no question at all. When the vote was called, Vagn raised his hand, and Nokkvi raised his, and that was two votes for whatever Vagn had said. The sculptor said he carved them together, as one block, and that it was the only carving of his the Council ever liked.",
   "bookPages": [
     "From the reckoning of the salt-traders of Dellingstad, the year of the blue man. Orri the salt-trader went up the crater road to the outer seats to complain of the price of the giants' spring ice, for which the town pays in salt and the salt had gone dear. He spoke to the councillor who talks, and the councillor talked back, and Orri spoke again, and for too long. The councillor drew a long breath and the frost came down on Orri where he stood. He was brought down the road in a cart by two rooks, alive and blue to the ears, and set down at the foot of it. The traders' house agreed that night that no trader is to complain at the outer seats again, and that complaints are to be left at the foot of the road with the salt. None has been answered.",
-    "The sentence the wagon never finished, as near as the outer seats remember it. They argue over the words still, but not over where it stopped. And as for the Ice Lords' houses, which have done nothing in sixty winters but ask for war and eat the Council's seal, I will say only this, and the queen may hear it, and the elders' hall may hear it, and the one standing in front of me may hear it best of all, that on the day they are given their war, they will find, as a wagon finds on thin ice, that the road does not hold the weight of a . . . There the elder's hand came across his mouth. The outer seats have tried for a century to finish it for him. The boat, who was sitting beside him, is said to know the end, and has never said it."
+    "The sentence the wagon never finished, as near as the outer seats remember it. They argue over the words still, but not over where it stopped. And as for the Ice Lords' houses, which have done nothing in sixty winters but ask for war and eat the Council's seal, I will say only this, and the queen may hear it, and the elders' hall may hear it, and the one standing in front of me may hear it best of all, that on the day they are given their war, they will find, as a wagon finds on thin ice, that the road does not hold the weight of a . . . There the elder's hand came across his mouth. The outer seats have tried every winter since to finish it for him. The boat, who was sitting beside him, is said to know the end, and has never said it."
   ],
   "chronicle": {
     "win": "{raidLeader} of {realm} unseated Councils Vagn and Nokkvi in {minutes} minutes.",

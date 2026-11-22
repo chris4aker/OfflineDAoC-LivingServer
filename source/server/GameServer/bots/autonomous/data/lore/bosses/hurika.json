@@ -46,7 +46,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
     },
     {
-      "text": "The two pages in bookPages, and the people, objects and sayings first named in them, are Living Server lore written for the epic floors (#402).",
+      "text": "The book pages after the first (the Vind Ryttaren's roll on the cliff-top post and the Jordheim fletcher's price-board) are Living Server writing for the epic floors (#402).",
       "provenance": "original",
       "source": "Living Server"
     }
@@ -159,7 +159,7 @@
   },
   "bookPage": "From the sayings of Asmund of the Vind Ryttaren, as the wind-riders of the cliffs repeat them. The cock is the one you watch. The hen is the one that kills you. I went up seven times and she threw me four, and I never once saw her wings move; I only felt the ledge go away. Hrafn went up four times and on the fourth he flew into her wind instead of away from it. He took the sky from her. I do not know whether that was brave. I know that I am glad I did not do it, and that he does not fly any more, and neither does she.",
   "bookPages": [
-    "The roll of the Vind Ryttaren's attempts on the eastern roost, as the wind-riders cut it on the post at the top of the cliffs. Six riders in the first years; their griffons and they on the crater floor. A rider of the second age, seven attempts, thrown four times; he never saw her wings move. Other riders, many, flying low and tied in, thrown. In the last age a rider of four attempts; on the fourth he flew into her wind and not away from it, and put a spear through the joint of her wing as she beat it. His griffon on the crater floor. He lived. Since then, none. Below the last line the post is cut with a single mark, the riders' sign for a road that is closed, and the riders who pass it at dawn touch it, all but the one who flew into her wind.",
+    "The roll of the Vind Ryttaren's attempts on the eastern roost, as the wind-riders cut it on the post at the top of the cliffs. Six riders in the first years; their griffons and they on the crater floor. A rider of the second age, seven attempts, thrown four times; he never saw her wings move. Other riders, many, flying low and tied in, thrown. In the same age, a younger rider of four attempts; on the fourth he flew into her wind and not away from it, and put a spear through the joint of her wing as she beat it. His griffon on the crater floor. He lived. Since then, none. Below the last line the post is cut with a single mark, the riders' sign for a road that is closed, and the riders who pass it at dawn touch it, all but the one who flew into her wind.",
     "From the price-board of a fletcher's house in Jordheim, which hangs inside the door where the buyers can read it. Goose, grey, by the hundred. Goose, white, by the hundred, dearer. Swan, by the dozen. Eagle of the Vanern, by the feather, and not to be asked where from. Griffon of the cliffs, by the feather, and the rider who brought it to be thanked. Griffon of the eastern ledge of Tuscaran, the white hen's: by arrangement. Not to be asked what for. A buyer who asks is shown the door, politely, and the fletcher's sons still tell of the one who asked twice. The wind-riders say an arrow fletched with the hen's quill flies against the wind. The board does not say so, and the fletchers have never once taken it down to correct it."
   ],
   "chronicle": {

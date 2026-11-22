@@ -41,7 +41,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
     },
     {
-      "text": "The two pages in bookPages, and the people, objects and sayings first named in them, are Living Server lore written for the epic floors (#402).",
+      "text": "The book pages after the first (Leif Asgautsson's account of the one jailer and the runemasters' board asking for a copy of the measurer's wall) are Living Server writing for the epic floors (#402).",
       "provenance": "original",
       "source": "Living Server"
     }
@@ -155,7 +155,7 @@
   },
   "bookPage": "From the sculptor's account. Ozur's wall, he said, is the only honest history Tuscaran has. Every scratch is a threat, and every threat was answered with exactly what it deserved: three giants for three drakulv, one jailer for one spy. He did it for a century and nobody thanked him. Then your people came up the road, and he sat in front of the wall all night with his father's knife and could not decide how long to make the line. I asked why. The sculptor said: because you keep coming back. A threat that comes back cannot be measured once. He said Ozur knew that, and it was the first thing in his life he did not know what to do with.",
   "bookPages": [
-    "From the slates of Faraheim, the account of Leif Asgautsson of the Remnants, who went up the crater wall in the sixtieth winter of the giants' council to see what the giants were cutting. I was found on the second night by one giant, alone, a jailer by his keys. I asked him where the others were. He said I did not need others: one spy, one jailer. He tied my hands with a cord and walked me down through the tunnels to an icelord of the old houses, and gave me to him like a parcel, and went home to his supper. I asked the icelord why they had sent only the one. He said the measurer had measured me, and that I should be glad of the measure, because it was a small one. I came home to Faraheim in the spring. I have not been back up the wall, and nobody has asked me to.",
+    "Leif Asgautsson of the Remnants, who went up the crater wall in the sixtieth winter of the giants' council to see what the giants were cutting, as he told it at his hearth in Faraheim. I was found on the second night by one giant, alone, a jailer by his keys. I asked him where the others were. He said I did not need others: one spy, one jailer. He tied my hands with a cord and walked me down through the tunnels to an icelord of the old houses, and gave me to him like a parcel, and went home to his supper. I asked the icelord why they had sent only the one. He said the measurer had measured me, and that I should be glad of the measure, because it was a small one. I came home to Faraheim in the spring. I have not been back up the wall, and nobody has asked me to.",
     "A letter from the runemasters of Jordheim to the cast-out sculptors at Dellingstad, asking for a copy of the measurer's wall, cut on a board and sent by a trader, with the answer cut on the back of the same board and sent home. We ask for the scratches behind the outer seat, each with its length and its place, so that the realm may know the island's troubles in the giants' century of peace. We will pay in salt. The answer: You may have it for nothing, and it will be worth what you pay. The scratches mean what he says they mean, and he has not said. Measure one yourself and you will have the length of a line in the ice. The board came home to Jordheim and hangs in the runemasters' house, and they have not asked again."
   ],
   "chronicle": {

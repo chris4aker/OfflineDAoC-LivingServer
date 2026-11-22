@@ -56,7 +56,7 @@
       "source": "Swedish, to verify"
     },
     {
-      "text": "The book pages after the first (letters, slates, verses and inscriptions by the realm's in-world witnesses) are Living Server writing for the epic floors, built on this file's own chapters.",
+      "text": "The book pages after the first (the watchers' slate of the army of bone on the north road and the scout's note of the bone king's mist) are Living Server writing for the epic floors (#402).",
       "provenance": "original",
       "source": "Living Server lore, epic book pages (issue #402)"
     }
@@ -174,7 +174,7 @@
   "bookPage": "A song of the iarn dwarves, translated badly by me, Thorgrim of Faraheim. From the south came the dead king, bone upon bone, to drink from the great death in the crater. The ice-queen met him on the white road. She did not raise her axe. She raised her hand, and the dead stood still, every one, with their feet lifted. She walked among them. She gave them a word. They keep it yet. Do not go to the eastern ice, little ones, the song ends, for the dead are keeping a word there, and they will give it to you.",
   "bookPages": [
     "Copied at Faraheim from a slate older than the slate-house, which the Remnants say was cut by watchers at the edge of the Iarnwood in the winter the giants cut the western caves. An army of bone on the north road, coming from the mounds. It does not stop to eat. It does not stop to sleep. It walks in step, and no living army walks in step for long. Its king rides at the front on a horse that is bone also, and he looks straight ahead. They passed the edge of the iron trees in a day and a night and did not look at the trees. We do not know what they want. Dead things are drawn to dead things. Under this, in a later hand: they did not come back down the road.",
-    "From the notes of the Valkyn scout who lay in a crack in Delling's rim, as the guides of Dyrfjall keep them. The dead on the eastern ice do not move, and I lay a long time watching them not move. When a company of Midgard came onto the ice the bone king woke and his seven came to him, and then I saw the thing I had not been told of. He turned his head, slowly, and looked at one of them. Not the one before him. Anyone. His hands glowed, and blue mist came out of the cracks at his feet, and a breath later the frost flew from his hands at the one he looked at. I wrote it down. The mist is the only warning the eastern ice gives, and it is not much of one."
+    "The scout of Delling's rim wrote this on the eastern ice, and the guides of Dyrfjall keep it with the rest of his notes. The dead on the eastern ice do not move, and I lay a long time watching them not move. When a company of Midgard came onto the ice the bone king woke and his seven came to him, and then I saw the thing I had not been told of. He turned his head, slowly, and looked at one of them. Not the one before him. Anyone. His hands glowed, and blue mist came out of the cracks at his feet, and a breath later the frost flew from his hands at the one he looked at. I wrote it down. The mist is the only warning the eastern ice gives, and it is not much of one."
   ],
   "chronicle": {
     "win": "{raidLeader} of {realm} released Issorden from the order of the ice in {minutes} minutes.",
