@@ -19,7 +19,7 @@
     }
   ],
   "story": "Across the wooden bridge the necromancers keep a bank above the stream, and Beath is its master, and Bayn is his second. Beath raises; Bayn counts. Every dead thing the bank calls up out of the dales' ground, Bayn writes down: what it was, where it lay, how long it stood before it fell again. The tally is long, and most of its lines end the same way, because the dales' dead do not stay up for drakoran the way Caldey's stay up for Morgana.\n\nBayn is not ambitious. The other drakoran of the bank say so with some contempt. Bayn has watched Beath's apprentices come and go, and has watched each one given the rod and each one made to carry the rod's weight, and has never once asked to carry it. A second, Bayn says, is the one who is still there afterwards.\n\nThe Priest of Arawn at Fort Gwyntell would like Bayn's tally more than anything on the bank. He says a list of everything that would not stay raised is a list of everything that still belongs to his lord.",
-  "legend": "Bayn, level 45 Drakoran Legion, at Beath's bank across the wooden bridge, with guardsmen (51) and Beath (55) close by. Pull Bayn away from Beath or you get both, and the guardsmen come with either. Plain melee, no spells. Respawn 80 seconds. A group in the high forties is comfortable. The apprentice with the rod is just across the bank.",
+  "legend": "Bayn, a drakoran of the Drakoran Legion and a foe for a hardened band of veterans, stands at Beath's bank across the wooden bridge, with guardsmen and Beath, each a foe for the realm's best, close by. Draw Bayn away from Beath or you get both, and the guardsmen come with either. Plain melee, no spells. He rises again eighty seconds after he falls. A band on the last steps below the realm's best is comfortable. The apprentice with the rod is just across the bank.",
   "yells": {
     "aggro": [
       "Write this down. Another one.",
@@ -43,15 +43,15 @@
   },
   "botLines": {
     "briefing": [
-      "bayn is at beath's bank, pull him away from beath",
+      "bayn is at beath's bank, draw him away from beath",
       "guardsmen come with him, high forties"
     ],
     "aftermathWin": [
-      "bayn down, beath still standing, good pull",
+      "bayn down, beath still standing, clean draw",
       "got bayn"
     ],
     "aftermathLoss": [
-      "got bayn and beath together, bad pull"
+      "got bayn and beath together, bad draw"
     ],
     "rumour": [
       "[heard|someone said] bayn keeps a tally of every dead thing the necromancers raised",

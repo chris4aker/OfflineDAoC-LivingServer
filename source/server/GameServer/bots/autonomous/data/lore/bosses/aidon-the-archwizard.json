@@ -46,7 +46,7 @@
     }
   ],
   "story": "Aidon was the first mage of the Academy of Camelot to master all four elements: the wizards' fire, ice and earth and the theurgists' air. Magus Cerwyn tested him with a brazier, a basin, a stone and an open window, and wrote that she would not see it done again. The Constable sent him to the Pennine watch to learn whether the Summoners' wards on the road to their hall could be broken; Magus Idris had tried before him and never come back.\n\nIn his tower, with his apprentices Merewyn and Tam carrying candles in boxes of a hundred, he learned that the wards are promises: every guardian stands there by a bargain, and a ward is passed by answering it. The Academy says he was deceived, the Church that he sold the watch knowingly, the Inconnu that the Summoners simply made an offer and waited. The Summoners asked for a keeper against each of the four ways a road can be broken, and he gave them four of himself. His four reflections are those selves; he can only renew the payment when all four are spent, and the Inconnu call one reflection left walking the cruellest thing that can be done to him. The fire that wraps him is the Summoners' seal.\n\nHe wrote a list of visitors on Eddison's doubled roster, told the watch on the last night that they would all be kept, and they were. Now he keeps the lower stair to the Summoner's Hall, bound to his floor as the watch is bound to its posts, and is seen at Grand Summoner Govannon's elbow below. The Academy's masters who went to reason with him did not return; Master Ferowl refused to send more. Magus Alun of the Academy killed him with two companies by keeping him one self short. His calm letters to the Constable still come up from the tower, promising to close the road for good.",
-  "legend": "Two groups if you know the trick, the old raiders' account said. When the fight starts Aidon splits into four reflections, fire, ice, air and earth, each with five thousand health and an area spell of its element around its target. Break three of them, one party each, and leave the fourth standing: he calls a new set only when all four are dead, thirty to forty-five seconds after the last one falls. Then everyone on Aidon. His fire shield burns melee for a hundred a hit, which adds up; healers on the melee. He throws a big fire blast into the raid every ten to fifteen seconds, so do not stack. Fight him on his own floor: past his tether he takes no damage and walks home, and the raids that dragged him spent ten minutes hitting a man who could not be hurt. If you see a fourth reflection standing at the end of the fight, nobody touch it until Aidon is down.",
+  "legend": "Two groups if you know the trick, the old raiders' account said, though Aidon himself is a foe for a war party of the realm's champions and takes as much killing as twenty champions. When the fight starts Aidon splits into four reflections, fire, ice, air and earth, each as hard to bring down as two or three champions and each with a spell of its element that bursts around its target. Break three of them, one party each, and leave the fourth standing: he calls a new set only when all four are dead, thirty to forty-five seconds after the last one falls. Then everyone on Aidon. His fire shield burns every blade that strikes him for a twentieth of a champion's strength a blow, which mounts up; healers on the melee. He throws a big fire blast into the raid every ten to fifteen seconds, so do not bunch up. Fight him on his own floor: past his tether nothing harms him and he walks home, and the raids that dragged him spent ten minutes hitting a man who could not be hurt. If you see a fourth reflection standing at the end of the fight, nobody touch it until Aidon is down.",
   "yells": {
     "aggro": [
       "Albion sends me visitors again. How thoughtful.",
@@ -90,7 +90,7 @@
     "briefing": [
       "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
       "one party per illusion, then everyone on aidon. melee eat his damage shield",
-      "fight him on his floor, past his tether hes immune",
+      "fight him on his floor, past his tether nothing hurts him",
       "aidon splits into 4 illusions. kill 3, leave one alive or he makes a new set",
       "dont stack, his fire blast hits around its target"
     ],
@@ -102,8 +102,8 @@
     ],
     "aftermathLoss": [
       "someone killed the fourth illusion and he got a whole new set",
-      "his fire aoe plus four illusions. we stacked too tight",
-      "dragged him out and he was immune",
+      "his fire blasts plus four illusions. we stood too tight",
+      "dragged him out and nothing we hit him with did a thing",
       "melee died to the shield, not enough heals on them"
     ],
     "rumour": [

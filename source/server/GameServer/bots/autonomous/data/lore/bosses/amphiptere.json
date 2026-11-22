@@ -40,7 +40,7 @@
     }
   ],
   "story": "The amphiptere of Caldey is older than the graves. The priests of the dead who kept the burying isle for the colleges found it already roosting on the northern heights when the first barrow was dug, a great winged serpent with feathers on its wings and a mouth full of teeth as long as daggers, and they let it be, because it let them be. The colleges' heralds put a winged serpent in the arms of the burying isle for it. The fishermen of Little Haven say it was there when the sea came in over the drowned country, and that it watched.\n\nIt was not the witch's. It is not dead, and Morgana did not raise it. But the readers of Avalon had a story from the far south, of a hero who sowed a dragon's teeth in a field and reaped armed men, and when the war came the priests learned that the old story was true of Caldey's serpent too. Its teeth are loose in its jaw. A hard blow knocks one out, and where a tooth falls into the burying isle's ground, the dead who lie there come up, ancient and slow, and stand beside the serpent. They do not come up quickly or in crowds; a tooth, then a while, then another; but they keep coming as long as the serpent is struck, and they lie down again when it does. Durval the priest called the falling teeth a blessing. The garrison on the Isle of Glass says Morgana did not have to raise the dead on Caldey; the serpent had been doing it for her.\n\nIt is a fighter of the old kind and does not trust its teeth alone. Its bite burns as if it had been in the fire. It spits a venom that clings and eats for a long while, and breathes a sickness into those near it that makes wounds slow to close, and when it is pressed it folds its feathers over itself for a moment and the next blow slides off them. While it spits and breathes it does not bite, and the clan's spearmen have learned to watch its head.\n\nThe highland clan at Little Haven gathers the teeth after every hunt and buries them at sea, far out, where there are no dead to wake. The clan bard says the serpent will run out of teeth before Caldey runs out of dead, and that is the only comfort the song has.",
-  "legend": "The Amphiptere, level 71, 30k health, in the north of Caldey near Little Haven. When it is hit there is a chance you see 'A blow knocks one of Amphiptere's tooths to the ground', and 5 seconds later an ancient zombie (61-63, 3k) pops within 500 and joins in; then nothing for 25 to 35 seconds. So expect a zombie about every half minute: an off-tank or a dps picks each up as it arrives. Its melee procs a 350 heat hit, so tank with heat resist; cure its 120 s disease so heals land, and heal through the 40 s venom. It throws a 10 s bladeturn on itself, so the first hit after the shimmer does nothing. It cannot be mezzed or stunned, stops meleeing while it casts, and all zombies die with it. A wipe resets it; respawn about an hour.",
+  "legend": "The Amphiptere, a foe for a war party of the realm's champions, takes as much killing as fifteen champions, in the north of Caldey near Little Haven. When it is hit there is a chance you see 'A blow knocks one of Amphiptere's tooths to the ground', and five seconds later an ancient zombie (each a foe for several bands of the realm's best together, and as hard to bring down as a champion and a half) rises within about seventeen paces and joins in; then nothing for twenty-five to thirty-five seconds. So expect a zombie about every half minute: a second shield-bearer or a quick blade picks each up as it arrives. About one blow in three of its bite carries a burst of fire worth a sixth of a champion's strength, so the shield-bearer who holds it wants wards against heat; cure its two-minute disease so heals land, and heal through the forty-second venom. It wraps itself in feathers for ten seconds at a time that turn the next blade, so the first hit after the shimmer does nothing. It cannot be mesmerized or dazed, stops biting while it casts, and all zombies die with it. If everyone falls it goes home whole; it returns about an hour after it is killed.",
   "yells": {
     "aggro": [
       "The serpent rears, feathers spread.",
@@ -86,9 +86,9 @@
   },
   "botLines": {
     "briefing": [
-      "amphiptere, 71, 30k. when you see the tooth message a zombie spawns 5 sec later. one every 30ish sec",
-      "off tank grabs each zombie as it pops. theyre 3k, kill them fast",
-      "its melee procs 350 heat, tank wants heat resist. cure the disease, heal through the venom",
+      "amphiptere, champions' war party job, as much killing as 15 of us. tooth message means a zombie in 5 sec. one every 30ish sec",
+      "second shield grabs each zombie as it comes. theyre a champion and a half each, kill them fast",
+      "its bite throws fire, a sixth of a man's strength, shield-bearer wants heat wards. cure the disease, heal through the venom",
       "it bladeturns itself for 10 sec, dont waste a big style on the shimmer"
     ],
     "aftermathWin": [
@@ -100,7 +100,7 @@
     "aftermathLoss": [
       "let three zombies stack on the healers",
       "nobody cured the disease and the heals stopped landing",
-      "tank had no heat resist and the procs ate him",
+      "shield-bearer had no heat wards and the fire bites ate him",
       "ran out of time, zombies kept coming"
     ],
     "rumour": [

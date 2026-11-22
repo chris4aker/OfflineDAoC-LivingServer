@@ -19,7 +19,7 @@
     }
   ],
   "story": "The drakoran legion's camp in the dales does not sleep, and in the middle of it, among guardsmen by the hundred, sits Bevvny, who is not a guardsman. Bevvny is a wi'voron, of the clan whose elders counsel the legion's commanders, and was sent over the water to advise the camp on the country, the weather, the Avalonian dead and the habits of Albion's fort on the hill.\n\nThe advice has been good. The camp has not taken it. Bevvny told the camp's officers not to build across the wooden bridge where the necromancers now keep their bank, and they built there; told them the households of the dales would not lie down for any rod, and the necromancers tried their rod; told Qan'ris Duros that Fort Gwyntell counts his fires as carefully as he counts the fort's. Gracien Adamson, the fort's registrar, has a page for Bevvny in his second book, with the note that the drakoran's best counsellor is the one they never listen to, which is a thing he understands.\n\nBevvny keeps to the camp's heart, where the guardsmen stand thickest, and offers advice to anyone who comes near, in the legion's tongue. Nobody from the fort has understood it yet.",
-  "legend": "Bevvny, level 49 drakoran (wi'voron), is in the middle of the drakoran camp in the dales with about fifteen guardsmen (52) and archiators (53) round, all Drakoran Legion. You will not get Bevvny alone: work in from the edge of the camp, one pull at a time, with a group of high forties or better. Plain melee, no spells. Respawn 80 seconds, and so do the guards.",
+  "legend": "Bevvny, a drakoran (wi'voron) and a foe for a hardened band of veterans, is in the middle of the drakoran camp in the dales with about fifteen guardsmen and archiators round, each a foe for the realm's best, all Drakoran Legion. You will not get Bevvny alone: work in from the edge of the camp, drawing one at a time, with a band on the last steps below the realm's best or better. Plain melee, no spells. Bevvny rises again eighty seconds after falling, and so do the guards.",
   "yells": {
     "aggro": [
       "I advised against this.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "bevvny is in the middle of the drakoran camp, 15 guards round her, work in from the edge",
+      "bevvny is in the middle of the drakoran camp, fifteen guards round her, work in from the edge",
       "high forties at least for the camp"
     ],
     "aftermathWin": [

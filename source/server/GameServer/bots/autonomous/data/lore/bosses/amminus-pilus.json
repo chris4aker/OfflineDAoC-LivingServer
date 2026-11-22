@@ -29,7 +29,7 @@
     }
   ],
   "story": "Amminus was the first spear of the legion, the senior centurion of its first cohort, the man the emperor of the west trusted with his own body when he died. When Seleucus laid the honour road from his chair to the dead man's crypt and heated its floor from below, as the Romans heated their baths, so that the guard should never stand cold, he gave the road and the crypt to Amminus to keep. Amminus was the fourth to swear the oath and has kept it the longest, because his post is the furthest from the chair, and nobody comes to relieve it.\n\nHe keeps the crypt of the displaced soul at the end of the long hall, past the eques and the magister, and he has never once kept it alone. A first spear does not fight; he calls, and his centurions stand up at his side, and when he has no more need of them they are gone. The heat is still in the floor of the road, and down its middle, where the old flues have cracked, the floor smokes; the centurions who walked it in Seleucus's day walked at the walls, and so do the Cornish who come back.\n\nFall of an Emperor asks for his amulet. Brother Teilo thinks the amulet is the dead emperor's, and that Amminus wears it because there was no one else to give it to.",
-  "legend": "Amminus pilus, 38-42, at the very bottom of Cardova, end of the long hall. When he aggros he shouts 'I require assistance!' and four centurions (37-39) pop at his side: kill them or CC them, they vanish when he dies. The long hall burns anyone standing down its middle (smoke message, 100-250 heat every few seconds, pets too), so walk the edges and fight him in the crypt, not on the road. Offer his amulet in the crypt for Fall of an Emperor.",
+  "legend": "Amminus pilus, a foe for a hardened band of veterans, at the very bottom of Cardova, end of the long hall. When he takes notice of you he shouts 'I require assistance!' and four centurions, each a match for a hardened band in their own right, appear at his side: kill them or mesmerize them, they vanish when he dies. The long hall burns you and any summoned beast standing down its middle (the smoke seeps up first, then fire bites every few seconds, each burn up to an eighth of a champion's strength), so walk the edges and fight him in the crypt, not on the road. Companions and the realm's other adventurers cross that line unburned; it is you and your pets the floor wants. Offer his amulet in the crypt for Fall of an Emperor.",
   "yells": {
     "aggro": [
       "The road is kept. Turn back.",
@@ -59,7 +59,7 @@
   },
   "botLines": {
     "briefing": [
-      "amminus calls four centurions the moment he aggros, mez them or kill them",
+      "amminus calls four centurions the moment he sees you, mesmerize them or kill them",
       "walk the walls of the long hall, the middle burns",
       "fight amminus in the crypt, not on the road"
     ],
