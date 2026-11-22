@@ -113,17 +113,27 @@ NOTES = [
 ]
 
 
+def read_text(path):
+    with open(path, encoding="utf-8-sig", errors="replace") as fh:
+        return fh.read()
+
+
+def read_json(path):
+    with open(path, encoding="utf-8-sig") as fh:
+        return json.load(fh)
+
+
 def load(kind):
     out = []
     for f in sorted(glob.glob(os.path.join(LORE, kind, "*.json"))):
-        d = json.load(open(f, encoding="utf-8-sig"))
+        d = read_json(f)
         d["_file"] = os.path.relpath(f, LORE).replace(os.sep, "/")
         out.append(d)
     return out
 
 
 def zones_by_region():
-    text = open(ZONES_XML, encoding="utf-8-sig").read()
+    text = read_text(ZONES_XML)
     out = collections.defaultdict(list)
     for z, r in re.findall(r"<ZoneID>(\d+)</ZoneID>\s*<RegionID>(\d+)</RegionID>", text):
         out[int(r)].append(int(z))
@@ -133,12 +143,12 @@ def zones_by_region():
 def script_classes():
     names = set()
     for f in glob.glob(os.path.join(SERVER, "**", "*.cs"), recursive=True):
-        names.update(n.lower() for n in re.findall(r"\bclass\s+(\w+)", open(f, encoding="utf-8-sig", errors="replace").read()))
+        names.update(n.lower() for n in re.findall(r"\bclass\s+(\w+)", read_text(f)))
     return names
 
 
 def script_speaks():
-    text = open(os.path.join(SERVER, "bots/autonomous/LoreBossWatch.cs"), encoding="utf-8").read()
+    text = read_text(os.path.join(SERVER, "bots/autonomous/LoreBossWatch.cs"))
     block = text[text.index("ScriptSpeaks = new"):]
     block = block[:block.index("};")]
     return {k: set(re.findall(r'"(\w+)"', v)) for k, v in re.findall(r'\["(\w+)"\]\s*=\s*\[([^\]]*)\]', block)}
@@ -146,7 +156,7 @@ def script_speaks():
 
 def anchor_ok(path, token):
     p = os.path.join(SERVER, path)
-    return os.path.exists(p) and token in open(p, encoding="utf-8-sig", errors="replace").read()
+    return os.path.exists(p) and token in read_text(p)
 
 
 def strs(v):
@@ -238,7 +248,7 @@ def build():
     zones = zones_by_region()
     classes = script_classes()
     speaks = script_speaks()
-    adds = json.load(open(ADDS_JSON, encoding="utf-8"))
+    adds = read_json(ADDS_JSON)
     adds_map = {k.lower() for k in adds.get("adds", {})}
     partners_map = {k.lower() for k in adds.get("partners", {})}
     import mechanic_trigger_coverage as mtc
