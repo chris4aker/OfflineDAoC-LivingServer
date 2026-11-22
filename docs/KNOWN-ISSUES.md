@@ -79,8 +79,10 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
 - **Battleground keeps rarely change hands.** Bots storm the keep lord again and again and mostly fail. The first
   capture was Caer Caledon, taken by Albion on `43c43aa` after its keep levels were repaired (guards 39, lord 46).
-- **Open-field regroups pass between groups more than planned** in dense warbands: 17.4% of regroups on `9a173f4`
-  against a 15% bar. None was passed on a second time.
+- **Open-field regroups pass between groups more often in dense warbands**: 17.4% of regroups on `9a173f4` were
+  started by another group's call. None was passed on a second time and none echoed back. The owner raised the bar to
+  20% on 2026-11-19, so this passes; the log checker now also prints how many groups each call reached, to tell
+  denser warbands from a call that over-fires (#419).
 - **Roaming eight-man groups** rarely find a fight and move on (under investigation).
 - **Some gamebots wait a long time at frontier teleporters** before the server moves them on.
 

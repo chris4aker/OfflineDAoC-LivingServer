@@ -474,6 +474,14 @@ class Rvr(unittest.TestCase):
                       self.regroup(self.named(self.stance_log()))["detail"])
         self.assertEqual(self.regroup(Log().start(at(0)))["status"], pcl.NOT_SEEN)
 
+    def test_the_share_is_read_with_its_fan_out(self):
+        # #419: 17.4% on 9a173f4 with (a), (b) and (c) at 0; sweep 6c read the rise as one hop reaching more groups
+        row = self.regroup(self.stance_log())
+        self.assertIn("fan-out: 2 relaying stance(s) reached 5 group(s) (2.50 each), 0.20 relayed regroup start(s) per "
+                      "group reached", row["detail"])
+        log = Log().start(at(0)).add(at(1), self.REGROUP.format(g=1, r="after the fight", to=0, relay="window"))
+        self.assertIn("fan-out: no relaying stance", self.regroup(log)["detail"])
+
     def test_a_relayed_stance_that_relays_again(self):
         log = self.stance_log()
         log.add(at(3), self.RETREAT.format(g=5, r="relayed retreat", to=2, relay="sent", relayed="True"))

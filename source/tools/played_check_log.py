@@ -1482,6 +1482,9 @@ def _rvr_stance(sec, t, message, level, near):
                    for s, g, w in sec.recent_sends):
                 sec.ev["regroup.c_one_fight"].add(t, f"{message.rstrip()} [group {group} relayed at {stamp(first)[6:]}]")
     if reached:
+        # the fan-out of one hop (sweep 6c, #419): how many groups each relaying stance reached
+        sec.n["relay.sends"] += 1
+        sec.n["relay.delivered"] += num(f.get("relayedTo"))
         if relayed:
             started_by = sender
         elif regroup and reason == "retreat over" and sec.last_retreat.get(group) == "relayed retreat":
@@ -2338,6 +2341,17 @@ def rekill_rows(j: Judge, sec: Section, c):
               f"{kills} route kill(s), no named target killed {REKILL_LOOP + 1}+ times in a row; {passed} TRAIL_GATE_PASSED line(s)")
 
 
+def relay_fan_out(sends: float, delivered: float, relay_started: int) -> str:
+    """The share's two parts (sweep 6c, #419): groups reached per relaying stance, and relayed regroup starts per group
+    reached. A share that rises with the first while the second holds is one hop in denser warbands, not a relay passed
+    on or over-firing (that is what (a), (b) and (c) catch). Pure."""
+    if not sends:
+        return "fan-out: no relaying stance"
+    per_delivery = f"{relay_started / delivered:.2f}" if delivered else "-"
+    return (f"fan-out: {sends:.0f} relaying stance(s) reached {delivered:.0f} group(s) ({delivered / sends:.2f} each), "
+            f"{per_delivery} relayed regroup start(s) per group reached")
+
+
 def rvr(j: Judge, sec: Section, c):
     span = max((sec.run_end() - sec.run_start()).total_seconds(), 60.0) if sec.run_start() else 60.0
     starts, relay_started = c("RVR_REGROUP"), c("regroup.relay_started")
@@ -2356,7 +2370,8 @@ def rvr(j: Judge, sec: Section, c):
     detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
               f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:g}%); (a) relayed stance relayed again: "
               f"{counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, "
-              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}")
+              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}; "
+              f"{relay_fan_out(sec.n['relay.sends'], sec.n['relay.delivered'], relay_started)}")
     bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
     if over:
         bad.append(j.ev("regroup.relay_started"))
