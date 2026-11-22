@@ -298,7 +298,7 @@ internal sealed class BotCorpseTarget : Scenario
             ScenarioContext.Check(fell!.Type == 0, $"removed with type {fell.Type}");
             return $"RemoveObject type {fell.Type}";
         });
-        foreach (var who in new[] { gm, player })
+        foreach (var who in new[] { player, gm })
         {
             await ctx.Step($"{who.Label}: /target {helper.Name} selects the dead bot", async () =>
             {
