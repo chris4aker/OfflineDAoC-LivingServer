@@ -80,10 +80,28 @@ def columns(db, table):
     return {r[1] for r in db.execute(f'PRAGMA table_info("{table}")')}
 
 
+def starter_guilds():
+    """The world's own starting guilds, which build_release_037.py keeps in every release world (world data, not progress)."""
+    try:
+        from build_release_037 import STARTER_GUILDS
+        return set(STARTER_GUILDS)
+    except ImportError:
+        return set()
+
+
 def check_clean(db):
     have = tables(db)
+    starters = starter_guilds()
     for table in progress_tables():
-        if table in have and db.execute(f'SELECT 1 FROM "{table}" LIMIT 1').fetchone():
+        if table not in have:
+            continue
+        if table in ("Guild", "GuildRank") and "GuildID" in columns(db, table) and starters:
+            # a release world keeps its starting guilds and their ranks (clean_world); any other guild was made in play
+            marks = ",".join("?" * len(starters))
+            played = db.execute(f'SELECT 1 FROM "{table}" WHERE GuildID NOT IN ({marks}) LIMIT 1', sorted(starters)).fetchone()
+        else:
+            played = db.execute(f'SELECT 1 FROM "{table}" LIMIT 1').fetchone()
+        if played:
             raise Refused(f"the world has saved progress ({table} has rows): only a clean reference world may be changed")
 
 
