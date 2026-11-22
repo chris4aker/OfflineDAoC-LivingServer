@@ -35,6 +35,24 @@ namespace DOL.UnitTests
             Assert.That(Rally.StrikesFromHere(true, distance, height), Is.EqualTo(strikes));
 
         [Test]
+        public void FrontierKeepAndTowerLordsHaveTheirOwnReach()
+        {
+            Assert.That(GuardLord.DamageRadiusFor(true), Is.EqualTo(GuardLord.KeepDamageRadius));
+            Assert.That(GuardLord.DamageRadiusFor(false), Is.EqualTo(GuardLord.TowerDamageRadius));
+            Assert.That(RvrLordReach.For(true), Is.EqualTo(350f));
+            Assert.That(RvrLordReach.For(false), Is.EqualTo(250f), "a tower's lord: 300, so 250");
+            Assert.That(RvrLordReach.For(true), Is.EqualTo(Rally.LordDamageReach), "the battleground storm uses the same reach");
+        }
+
+        [TestCase(true, 1_800f, false)] // a frontier caster that saw the exposed lord from the courtyard: steps in
+        [TestCase(true, 380f, false)]
+        [TestCase(true, 340f, true)]
+        [TestCase(false, 340f, false)]  // the same distance at a tower's lord: still too far
+        [TestCase(false, 240f, true)]
+        public void AFrontierAttackerStrikesALordOnlyFromWithinReach(bool keep, float distance, bool strikes) =>
+            Assert.That(RvrLordReach.InReach(keep, distance), Is.EqualTo(strikes));
+
+        [Test]
         public void OtherTargetsKeepTheirReach()
         {
             Assert.That(Rally.StrikesFromHere(false, 1_200f, 50f), Is.True, "a guard on its floor is struck from where it stands");

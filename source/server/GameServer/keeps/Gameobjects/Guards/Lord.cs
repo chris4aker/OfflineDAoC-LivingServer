@@ -47,6 +47,11 @@ namespace DOL.GS.Keeps
         /// <see cref="TowerDamageRadius"/> (TakeDamage, unchanged upstream values). Bots read them to strike from close enough.</summary>
         public const int KeepDamageRadius = 400, TowerDamageRadius = 300;
 
+        /// <summary>This lord's damage radius: <see cref="KeepDamageRadius"/> in a keep, <see cref="TowerDamageRadius"/> in a tower.</summary>
+        public int DamageRadius => DamageRadiusFor(Component?.Keep is GameKeep);
+
+        public static int DamageRadiusFor(bool keep) => keep ? KeepDamageRadius : TowerDamageRadius;
+
         public override int RealmPointsValue
         {
             get
@@ -277,11 +282,7 @@ namespace DOL.GS.Keeps
             if (IsBotSource(source) && ShieldedFromBots)
                 return;
 
-            int distance;
-            if (Component != null && Component.Keep != null && Component.Keep is GameKeep)
-                distance = KeepDamageRadius;
-            else
-                distance = TowerDamageRadius;
+            int distance = DamageRadius;
 
             // check to make sure pets and pet casters are in range
             GameLiving attacker = null;
