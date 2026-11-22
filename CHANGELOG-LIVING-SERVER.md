@@ -98,6 +98,13 @@ Bots' breaks are a separate setting and stay on.
   proving fields (Caledonia, Abermenai, Thidranki, Murdaigean), Luso, six Midgard bosses and three saga-voice chapters;
   Hibernia's Blight, the Cursed Forest and fourteen thin bosses from the Mythological, Ulster and Fenian cycles. Nothing
   was cut. Caer Sidi's toll now agrees in every telling: sixty-seven of eighty came home.
+- **No real companies and nothing that breaks the fourth wall** (owner 2026-11-21; #399, review in
+  [docs/1.2.1/REVIEW-FOURTH-WALL.md](docs/1.2.1/REVIEW-FOURTH-WALL.md)). About 860 player-visible lines that named
+  real companies, sites, patches, years or game software are reworded in-world, with nothing cut; real sources stay in
+  the facts' hidden source notes. `tools/lore/fourth_wall.py` makes CI fail if they come back. Seven fight tips that
+  the bosses' own rules contradicted now match them (Saeor, Asmoien, Ba'alorien, Sys'sro, the afanc, Oona, Oro,
+  Krevo). The companion-name check covers every legend the lore tells of (#400), and the Avalon City summary is new
+  writing (#401).
 
 **Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
 and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under
