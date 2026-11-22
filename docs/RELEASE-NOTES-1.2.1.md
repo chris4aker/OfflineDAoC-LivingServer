@@ -166,7 +166,27 @@ Everything in this list passed CI, and none of it has been seen in a real game.
 - **Elro the Ancient's third treant** now comes. His script asked for health under a quarter and over three-tenths
   at once; it now comes between three-tenths and a quarter of his strength left, and his fight advice names all three
   moments.
-- @@RAID_RESULTS@@
+- **Raid fixes, all tests only** (each worked out from the owner's earlier raid logs and checked in a simulation in CI; no
+  boss is changed):
+  - **Caer Sidi, the Crypt Lord (#407):** when the long wait on his court runs out, the raid still waits for his patrol
+    to be clear before it pulls, so he no longer walks in with his whole court.
+  - **Galladoria, Spindler Broodmother (#408):** more parties go after her newborns (7 of 13 instead of 5).
+  - **Tuscaran Glacier (#409):** while Queen Kula lives, nothing but the King's own target hits King Tuscar (no pets,
+    no area spells), so the raid no longer heals her; after she dies, casters keep clear of his hammers.
+  - **Summoner Roesia (#410):** a fresh poison is cured even while someone in the party is hurt, the lowest-health
+    poisoned raider first, and cures go out twice as fast. In the simulation the raid wins once it grows to about 93;
+    the first, smaller attempt can still lose. Grand Summoner Govannon is not simulated.
+  - **Trollheim, Nosdoden (#411):** a retry after a wipe restarts the stall clock, so the raid is no longer ended in
+    its retry's first minutes.
+  - **Marfoirwort (#412):** his target holds close, melee fight from behind him, everyone at range stands clear and no
+    pet attacks him, so his life-leech heals him from one raider instead of about 25.
+  - **The Green Knight (#412):** casters and healers stand together away from his target, and the melee peel his trees
+    off them. The simulation wins at about 80 raiders or more; at the period's 50 it still loses.
+  - **Legion (#413):** the wounded step out toward the raid's healers instead of away from them, so his souls no longer
+    find them alone.
+  - **Golestandt and Cuuldurach (#415):** a raider thrown far by a wing-gust stays part of the fight instead of being
+    held at the staging ring.
+  - **Behemoth, Fomor City and Morgana (#414):** still no bot raid (signed off as exceptions on 2026-11-15).
 - **Every raid fix is tests only**, worked out from the owner's earlier raid logs and from simulations. The raid issues
   (#407 to #415) stay open until each raid is seen won on the owner's PC. See "Known issues".
 
