@@ -5,20 +5,20 @@ Claude Code as `CLAUDE.md`.
 
 ## What this is
 
-Offline DAoC is a single-player DAoC server (OpenDAoC fork, .NET 10, SQLite) with autonomous
-gamebots, companion bots and a Windows launcher. The current release is **0.37**, the first one
-shipped as an **update** to the 0.36 base (0.36 / 0.36b / 0.36c stay the full downloads). It comes in
-three editions:
-- **0.37b:** the custom Hibernian Sluaghbinder class is on.
-- **0.37:** the class is off. The server setting `classes / enable_sluaghbinder` is `False`, and
-  the client is the 0.37b `game.dll` without its two Sluaghbinder patches.
-- **0.37c:** the 0.37b or 0.37 game plus the **new client** (Godot 4, C#) in `new-client\`. Its launcher
-  runs that game's own server, so both clients share one account, bot roster and world. On a 0.37
-  game the launcher starts it with `--custom-class=off` and it offers the classic classes only.
+Offline DAoC Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
+gamebots, companion bots and a Windows launcher. It is its own repository, owned by the project owner, not a fork.
+Releases are numbered **1.x** (1.2 is out, 1.2.1 is next) and ship one edition: the classic classes on the
+**original game client** (`LivingServer-Setup-<version>.exe` and `OfflineDAoC-LivingServer-<version>.zip`).
 
-From 0.37 on a version is a game patch (both editions) plus a new-client patch, built by
-`source/tools/make_patch.py` against `source/tools/release-baselines/0.36/` and applied by
-`source/tools/OfflineDaoc.Patcher` (see [release-baselines/README.md](source/tools/release-baselines/README.md)).
+**One edition from now on** (owner, 2026-11-22: "I will support players who already installed the B and C with basic
+fixes but I don't want to manage the custom class or incomplete Godot transfer. Everything new moves on as its own
+original client version, and I'm about to leave the .37 in the past"):
+- **New work targets the original client only.** No new features for the custom Sluaghbinder class (the old "b"
+  edition) or the new Godot client (the old "c" edition), and no new work that needs either.
+- **Existing b and c installs get basic fixes only:** crashes, data safety and anything that would break their
+  saves. Their code stays in the repository so those players keep working; don't delete it, don't extend it.
+- **The 0.3x line is history.** 0.37 / 0.37b / 0.37c and earlier stay available as legacy releases (see "Keep the old
+  releases"), and their pipelines (`*_037.py`, `make_patch.py`, `release-baselines/`) are kept for reference.
 
 ## Layout
 
