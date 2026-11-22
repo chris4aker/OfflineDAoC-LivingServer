@@ -65,7 +65,7 @@ Fridwulf has each of her clerics read the Job verse aloud before they go down (`
 |---|---|---|
 | Brother Aldric (the first company's chaplain) | Brother Tudno | `locations/darkness-falls`, `bosses/gatekeeper-dommel` |
 | Gunnhild the Lame of Mularn | Jofrid the Lame | `locations/darkness-falls`, `bosses/princess-nahemah` |
-| Ulfhild Long-Memory, skald of Mularn | Geirlaug Long-Memory | `locations/thidranki` (Lydsyg's Ulfhild is a different woman, left to Midgard) |
+| Ulfhild Long-Memory, skald of Mularn | Hallfrid Long-Memory | `locations/thidranki` (Lydsyg's Ulfhild is a different woman, left to Midgard) |
 | Ottar Svertingsson | Hallgeir Svertingsson | `bosses/high-lord-baln` (Hrefna's grandson Ottar is a different man) |
 | Arngrim the rune-cutter | Steinthor the rune-cutter | `locations/proving-fields` (Arngrim is also the berserks' father) |
 | Fionnait the harper | Ligach the harper | `locations/proving-fields` |
