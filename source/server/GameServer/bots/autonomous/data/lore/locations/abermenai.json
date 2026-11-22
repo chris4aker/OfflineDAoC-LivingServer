@@ -62,9 +62,14 @@
    "source": "https://www.gutenberg.org/ebooks/5160"
   },
   {
-   "text": "In the Fourth Branch the boy strikes a wren in the leg with a stone, and Arianrhod, not knowing him, praises the fair one's skilful hand and so gives him his name, Lleu Llaw Gyffes (Guest renders it 'lion').",
+   "text": "In the Fourth Branch the boy, on Gwydion's boat at Arianrhod's gate, shoots or casts at a wren and hits it in the leg between the sinew and the bone, and Arianrhod, not knowing him, praises the fair one's steady hand and so gives him his name, Lleu Llaw Gyffes (Guest renders it 'lion'). Gwydion made the boat of sedge and seaweed on the shore between his own place and Aber Menei.",
    "provenance": "myth",
-   "source": "https://www.gutenberg.org/ebooks/5160"
+   "source": "https://www.gutenberg.org/ebooks/5160; https://maryjones.us/ctexts/math.html"
+  },
+  {
+   "text": "The stone the boy casts at the wren in the story, the book and the bot lines is Living Server's telling; the Fourth Branch does not say what he cast. The bot line's boat 'made below abermenai' follows the shore between Gwydion's place and Aber Menei.",
+   "provenance": "original",
+   "source": "Living Server"
   },
   {
    "text": "The squires who ask at the gate whether they can still speak, the young of Hibernia quoting the huts' name to Albions, and the hut-builders' first dun above the ford are Living Server lore.",
@@ -146,17 +151,33 @@
    "abermenai is the youngest bg, [they opened it last|last one they found]. for the fifteens",
    "the spectres on the abermenai flats [always face the water|face the sea when they cry]",
    "albs named abermenai, hibs named the dun, mids just say they burned it once lol",
-   "[everyone remembers|you never forget] your first night at abermenai"
+   "[everyone remembers|you never forget] your first night at abermenai",
+   "dun abermenai sits right on the ford. salt marks on the walls [head high|higher than a man]",
+   "albs say a kings daughter sailed off the abermenai shore with thirteen ships, and only seven of her island lived through the war after",
+   "the cauldron tale is abermenai's. dead men came out of it fit to fight and never spoke again",
+   "the chaplain at the alb gate of abermenai keeps a book of everyone who wakes there and the first thing they said",
+   "hibs love telling albs the old round huts on the island are called the irishmen's huts. by the albs themselves",
+   "mids call it ongul's isle and say they burned it once. thats their whole claim lol",
+   "the boy with no name sailed in a boat of sedge made below abermenai, and got his name [hitting a wren in the leg|for one cast at a wren]",
+   "no banner over the dun at abermenai. deserters from all three realms hold it and nobody claims them"
   ],
   "rumour": [
    "[heard|someone said] the abermenai spectres are waiting on a ship that never came back",
-   "[my guildie says|heard] the old round houses of the hibs are still under the abermenai dunes"
+   "[my guildie says|heard] the old round houses of the hibs are still under the abermenai dunes",
+   "[heard|someone said] the cauldron broke in four pieces and one piece is still in the abermenai mud",
+   "heard half the squires who wake at the alb gate ask the chaplain if they can still speak. the cauldron tale got to them",
+   "someone said the chieftain took the name abermenai so nobody remembers what he was called before",
+   "[heard|rumour is] the mids never actually burned the island at abermenai, they just like saying it",
+   "someone swore they saw a boat of sedge and seaweed drift out of the abermenai reeds at dusk",
+   "heard the abermenai spectres were drowned the winter the sea came over the flats, and [never went home|still wait for it to go out]"
   ],
   "tell": [
    "abermenai? the bg for the young, before seasoning. [a beach|sand and reeds], renegades in the middle keep",
    "whats in abermenai? boogey spawn, forlorn spectres, beetles, rats, [a few cats|forest cats]",
    "who holds abermenai? [renegades|deserters from all three realms], under the chieftain abermenai. hes a seasoned band's foe and then some",
-   "where is abermenai? ask any of the realm's porters for battlegrounds [once youre nearly seasoned|while youre young and not yet seasoned]"
+   "where is abermenai? ask any of the realm's porters for battlegrounds [once youre nearly seasoned|while youre young and not yet seasoned]",
+   "how bad is abermenai? stay off the flats, the spectres and boogeys go for anyone. the portal keeps are the only safe ground",
+   "whats the dun like at abermenai? guardians, rangers and commanders, all seasoned bands' foes, and the chieftain well past them"
   ]
  },
  "loremaster": {
@@ -178,7 +199,8 @@
   "pages": [
    "I was sent to keep Albion's gate at Abermenai in the summer it was opened, and to pray over any of our young who came back to it dead, and in the first week I found there was nobody to pray over. They go down the slope at dusk, twelve or twenty together, in mail that was their fathers' and does not fit them, and some of them fall on the flats or under the walls of the old fort. They do not stay fallen. They come to themselves on the stones of our gate, cold as the sea and whole, and sit up, and look about them for their swords.",
    "From the second week I kept this book. I wrote in it each one who woke at the gate, and the first words each one spoke. I had meant to record the mercy of God, and I have recorded instead a great many young people asking for their swords, and for water, and for a particular friend, and some of them for their mothers, though seldom aloud. The mothers are mostly at the other end of the way, by the realm's porters in town. Nobody sends them home. I asked the Knight Commander why not, and he said that nobody had asked him to.",
-   "One question is in this book more often than all the others together. They ask whether the day was won. The Academy has since asked me what I told them, and the answer is that I told them I did not know, which was the truth, because the keep cannot be seen from the gate. That is the whole of what I learned at Abermenai, and I set it down for whoever keeps the gate after me. From the gate you never see how it went. You see only that they come back, and it is enough to be going on with."
+   "One question is in this book more often than all the others together. They ask whether the day was won. The Academy has since asked me what I told them, and the answer is that I told them I did not know, which was the truth, because the keep cannot be seen from the gate. That is the whole of what I learned at Abermenai, and I set it down for whoever keeps the gate after me. From the gate you never see how it went. You see only that they come back, and it is enough to be going on with.",
+   "A later leaf, in the same hand: The Academy sent a scholar down to read this book, and he read it in a night by my lamp and asked me why so many of the squires asked whether they could still speak. I told him about the cauldron in Albion's old book of the shore, which the young hear of in their first week, and the dead man who rose from it fit to fight and dumb for the rest of his days. He wrote that down. Then he asked whether any of them had in fact lost their speech. I said that every one of them had spoken to me, most of them a great deal, and that I had written their words in this book for anyone to read. He thanked me and went back up the slope before dawn, and he did not ask to see the flats."
   ]
  },
  "bosses": [],

@@ -46,7 +46,8 @@
   "yells": {
     "aggro": [
       "The crow has smelled a battle. Here it is.",
-      "Scream for me, little soldiers."
+      "Scream for me, little soldiers.",
+      "Over the ford and over the fight, the hooded crow is flying."
     ],
     "phases": [
       {
@@ -60,7 +61,8 @@
     ],
     "slay": [
       "Carrion.",
-      "Pick the bones."
+      "Pick the bones.",
+      "The crow takes the eyes first."
     ]
   },
   "atmosphere": {

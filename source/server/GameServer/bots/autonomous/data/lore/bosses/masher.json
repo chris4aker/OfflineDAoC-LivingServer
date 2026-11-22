@@ -94,7 +94,7 @@
     "keyword": "Masher",
     "text": "The oldest and largest of the Iarnwood's pulverizers, the hammer-beaked birds that open the iron trees for grubs. The [bark] gatherers steer by their knocking. The narfi say the [silver wood] once made songbirds of them."
   },
-  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: we follow the knocking. Where the young pulverizers hammer the trunks, the bark is already split and we can cut it without spoiling our blades, so all of us who gather listen for them. But we listen for the silence too. When the knocking stops all at once, the old one has lifted his head, the dwarves' Masher, and we go back the way we came without talking. I have seen the helmet he left by the trail. It is a dwarf's. The dent goes nearly through.",
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: we follow the knocking. Where the young pulverizers hammer the trunks, the bark is already split and we can cut it without spoiling our blades, so all of us who gather listen for them. On a good day you can hear three or four of them at once, like rain on a roof of shields. But we listen for the silence too. When the knocking stops all at once, the old one has lifted his head, the dwarves' Masher, and we go back the way we came without talking. I have seen the helmet he left by the trail. It is a dwarf's. The dent goes nearly through.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Masher in the Iarnwood in {minutes} minutes.",
     "loss": "Masher hammered {raidLeader}'s party from {realm} into the iron roots after {minutes} minutes."

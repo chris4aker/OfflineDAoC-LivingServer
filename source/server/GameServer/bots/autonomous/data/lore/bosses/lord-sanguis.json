@@ -29,6 +29,11 @@
       "text": "Real-world history, not game canon: Venta Silurum, at modern Caerwent in Monmouthshire, was the Roman market town of the Silures.",
       "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/Caerwent"
+    },
+    {
+      "text": "The book pages after the first (the entry from Gaius Senecio's granary daybook at Venta, with his grandson Titus's margin note) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Lord Sanguis was a magistrate of Venta, the Roman town the realm calls Caerwent, who bought his long life with other men's blood: first the condemned, then more condemned, then the poor, at the end anyone. He learned the art from a priest of an eastern god the legions brought to the Wall, and bought three lifetimes, paying each in full in other men's years. Caerwent still tells children of the judge who never grew old and the red stone under his chair, and Titus Senecio's granary daybook records that nobody would enter the old basilica after dark. Arawn keeps the accounts of the dead, and a debt paid in another man's blood is not paid; the keepers took him to Caer Sidi.\n\nThey gave him a chapel of his own in the middle tiers, whose floor has been red since he came, to sit in judgement on himself until the debt runs out. When the gaol rose his blood mages came to him as his clerks had in Venta; when he is pressed he calls them, and when he falls they rise from the floor. The floor began to drip. He fights like a judge, soft, and takes a sword like any fat man in a toga, while spells go into him like bribes into a purse.\n\nThe third company killed him twice. He asked what charge they brought and said he had never acquitted anyone. He fell easily; then more mages rose, and as the company knelt to his body something stood up out of the red floor at full height, and they had to begin again. The captain dragged Brother Anarawd off the floor by his collar. Caer Gothwaite's priests now ask that his body be left untouched until what comes after him is put down: do not count the money until the second man has paid.\n\nThe Church calls him a usurer of souls; the Inconnu, Arawn's most exact punishment. Caerwent rings the old basilica's bell twice when a company climbs.",
@@ -105,6 +110,9 @@
     "text": "A magistrate of Roman [Caerwent] who bought three lifetimes with other men's blood. The keepers of [Caer Sidi] gave him a chapel with a red floor to judge himself in. He has never once stayed dead: what stands up after him is [Lich Lord Sanguis]."
   },
   "bookPage": "Sanguis we killed once, and the floor of his chapel trembled, and his blood mages rose out of his body like steam out of a pot. Our captain shouted that nobody was to touch his corpse, and nobody did, and six heartbeats later the corpse stood up. It was not the magistrate any more. It was what the magistrate had been paying for all those years, with no man left around it. We fought it in the same red room. None of us could look straight at it; we struck where the heat was. When it fell the second time, the floor went from red to grey, and stayed grey.",
+  "bookPages": [
+    "The Ides. Forty measures out to the garrison, eleven to the poor, the rest dry. The magistrate sat late again; three men of the river gang were sent in to him this morning, and none has come out. My clerk will not carry the tally to the basilica after dark, so I carried it myself, and the magistrate thanked me and asked after my father, whom he knew as a boy. My father is seventy this winter. The magistrate has not changed since I was a boy myself. The floor under his chair has a red stone in it that the slaves will not wash. So Gaius Senecio, keeper of the public granary at Venta before his grandson Titus, in the old wax, which the canons of Caerwent copied into ink. In the margin, in Titus's hand, the year the legions sailed: the basilica is empty now; I have been told why, and I do not believe it."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cut down Lord Sanguis in {minutes} minutes; the red floor stirred.",
     "loss": "Lord Sanguis fed {realm}'s raid to his chapel floor; {raidLeader} never saw the lich."

@@ -29,6 +29,11 @@
       "text": "Eddison's Sauvage tally, Eddison's step, the bow on the peg, the matching of the wizard's names and the company that counted one over are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the verderer's count-roll of the sixty-fourth hind) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Sergeant Eddison was a forester's son of Forest Sauvage who held the tally-stick at the spring deer count from the high stands; at twelve he counted a herd from the stand at Caer Renaris right to the beast, one more than the verderer. He learned the bow on the stands and came north as a Sauvage bowman in Lord Gildas's seventh year. Within four winters he kept the watch's duty roster in his head, and by the sixth he was the sergeant of the middle of the hall, where the corridors met and a man could see the most posts. His dawn count, Eddison's tally, was a count of stones, because men could lie about where they had been.\n\nHe fought as a forester hunts: in close behind the shield, the rim at a man's head, and while the man lay dazed he stepped back to the bow on its peg and put heavy arrows into him until he could stand. The sergeants called the pause Eddison's step, and said a man who could not be dazed never saw the bow come off the peg. From the middle he saw further than any other man, and strangers were never strangers for long.\n\nHe drew up the doubled roster overnight, and the wizard Aidon wrote a list of names at its foot that were no man's of the watch. Eddison folded it into his tunic; Sir Hamon's riders took it to the Academy, which has matched every name since to something seen on the road, all but the last, which the Camelot loremasters call the name of what cut Atwell. Summons (the Church) or warning (the Academy), Eddison read it every night and was the first to stop sleeping.\n\nOn the last morning his count came out one over. Death, say the sisters; Vibius's lamp-boy, say the dalesmen; a stone with a mark of its own, say the Inconnu. He keeps the middle still, among apprentices, widow claws and watchmen, and companies coming up the road count themselves before Long Dale will feed them.",
@@ -97,6 +102,9 @@
     "text": "Sergeant Eddison was the Sauvage forester's son who kept the roster of the Pennine watch and counted its post-stones every dawn. The wizard wrote the [visitors]' names at the foot of his doubled roster; on the last morning his count came out [one over]. See also [Aidon] and [Atwell]."
   },
   "bookPage": "Sergeant Eddison drew up the doubled roster in a single night, as Master Aidon asked. Every man has two posts now, and some three, and Eddison knows them all by heart. He brought the roster to Lord Gildas this morning, and Lord Gildas signed it, and then the wizard asked to see it and wrote something at the bottom in his own hand and gave it back. Eddison showed me afterwards. The wizard had written a list of names. None of them is a man of the watch. When I asked Eddison who they were, he said they were the visitors, and folded it away.",
+  "bookPages": [
+    "The spring count of the king's deer of Forest Sauvage, taken from the high stands and entered in the verderer's count-roll at Caer Renaris. The herd below the north stand, by my own tally: sixty-three, hinds and calves together. By the tally of the forester's boy Eddison, holding the stick on the same stand: sixty-four. I counted twice more and had sixty-three each time. The boy would not change his notches, and his father would not make him. At noon the herd moved off the ride, and a sixty-fourth hind got up out of the bracken where she had lain all morning with her head down, and went after them. I have entered the boy's count and not my own. His father says he will make a forester. I have cut a notch for him on the post of the north stand, where the foresters of Sauvage mark a true count."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Sergeant Eddison from the Pennine watch in {minutes} minutes.",
     "loss": "Sergeant Eddison held the post against {realm}'s raid; {raidLeader} fell back."

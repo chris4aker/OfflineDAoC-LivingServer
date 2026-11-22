@@ -90,6 +90,34 @@ review's findings and the work left to do.
    - Head counts and raid sizes stay numbers, spelled out (Ozur's fifty and a hundred, a raid seventy-four strong).
    - Elro's third treant window, which his script could never reach, is fixed (three-tenths to a quarter of his
      strength left), and his fight advice tells all three.
+10. **Contradictions and present-day characters** (2026-11-22): "Fix the contradictions of the story, erring first on
+   what was actual lore from Mythic, and if none, go with the rule of cool." And: "Present day NPCs can absolutely be a
+   part of the lore, in fact that should be the case to make the realms feel more connected and alive with their
+   stories."
+   - When two texts disagree, Mythic's canon (the Camelot Herald, the Prima guides, the in-game texts) wins. Where
+     Mythic said nothing, reword to the version that tells best, adding words rather than cutting.
+   - Present-day characters (the realm's living NPCs, captains, friars, marshals) belong in the stories, and should
+     turn up across places and bosses so the realms feel connected. A present-day character may share a name with a
+     legend companion (Golestandt's Marshal Gareth stays), as long as the text never makes him the legend's man.
+     Legend heroes stay legends (rule 1) and the 12-mention cap still holds.
+   - Padded summaries (owner, 2026-11-22): "You should first aim to rewrite so it's much better and cooler and rich, but if
+     it's not working out well, trim to where it's tight and perfect." This is the one place trimming is allowed: a
+     summary padded to reach an old floor is rewritten first, and trimmed only if the rewrite doesn't come out better.
+     Every event stays.
+   - First fixes: Iorwerth now sang in the deepest cellar but never went past the walled vein (Crystal Cave and
+     Xanxicar agree); Weno'iak's books are on his shelves, but he moves them before any company comes, and leaves ash.
+   - Hibernia's epic review (2026-11-22, the reviewer's recommendations taken): each company lays a second stone at the
+     Gleann Glas cairn besides the one on the sill; the seven triad pages and four "whence the name?" openings stay;
+     Scoth watches the stitched giant throw one of its own before any fight.
+   - Midgard's epic review (2026-11-22): Dyranapur carried the cup for 31 dark moons, and the slate's forty winters
+     are the years she lived after (the rule of cool). The Behemoth's fifth chapter, "Under the Heading of Weather",
+     is approved. Chapter and page titles don't count toward the cap of 12 (`name_counts.py` skips them), so the
+     Gjalpinulva beam names Hallbjorn again.
+   - Epic places and short pages (2026-11-22): "Stories should be phenomenal and tight", "don't be long for the sake of
+     length". An epic place's `story` is the short telling, held only to the epic 300-500 word summary floor; its
+     chapters carry the depth. `LoreBible.DepthReport` and `tools/lore/depth_report.py` no longer hold epic places to
+     the generic 500+ story floor (every other location floor still applies). A short book page gets only a real detail
+     (a fact, an image, a consequence that fits the file), never filler; where none fits, the page is left and listed.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
@@ -291,6 +319,18 @@ are not added yet:
      - Midgard's and Hibernia's locations below the floors;
      - an epic voice for each realm beyond the three Midgard saga chapters.
      Show the owner samples from the third pass before merging, and run `UT_LoreBible` in CI or on the owner's PC.
+- **Depth floors for the major bosses and the places (#403, #404)**, on `wt6/depth-all`: yells, book pages past 100
+  words, fourth pages, bot lines, areas and first entries; nothing cut. Independent review
+  ([REVIEW-DEPTH.md](REVIEW-DEPTH.md)): 0 High, 1 Medium (the Abermenai wren line and fact), 9 Low, all fixed or noted;
+  three owner questions (first entries that never show, `LoreBooks.Near` and `z: 0`, a walk of the guessed wall areas).
+  Tests only.
+- **NPC pass, phase 1 (decision 10)**, on `wt8/roster`; no lore text changed. The 1.65 NPC roster
+  (`tools/lore/npc_roster.json`, built by `tools/lore/build_npc_roster.py` from the quest scripts, the Herald's captains,
+  the public OpenDAoC database and dated period pages), the role stand-in map (`tools/lore/npc_role_map.json`), the cast
+  sheets ([CAST-ALBION.md](CAST-ALBION.md), [CAST-MIDGARD.md](CAST-MIDGARD.md), [CAST-HIBERNIA.md](CAST-HIBERNIA.md),
+  [CAST-NEUTRAL.md](CAST-NEUTRAL.md)), the voice guides (VOICE-*.md, rule 1 the owner's "phenomenal and tight") and a
+  sample for the owner ([NPC-PASS-SAMPLE.md](NPC-PASS-SAMPLE.md)). Finding: the cap of 12 is checked for titled names
+  only, and many bare-named tellers are far over it (Wenna 129, Elowen 89, Lisín 66, Aodhan 65).
 - **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.

@@ -70,9 +70,12 @@ internal sealed class ScenarioContext : IAsyncDisposable
     }
 
     /// <summary>Connects and logs in a scripted player on a playtester account.</summary>
-    public async Task<ScriptedPlayer> LoginAsync(string label, string account)
+    /// <param name="build">the handshake build: 0 (the default) as Living Server's new client, ClientPackets.OriginalClientBuild
+    /// as game.dll</param>
+    public async Task<ScriptedPlayer> LoginAsync(string label, string account, ushort build = 0)
     {
         ScriptedPlayer player = NewPlayer(label);
+        player.HandshakeBuild = build;
         await Step($"{label}: connect and log in as {account}", async () =>
         {
             var watch = Stopwatch.StartNew();
@@ -93,6 +96,7 @@ internal sealed class ScenarioContext : IAsyncDisposable
                     await player.DisposeAsync();
                     await Task.Delay(3000);
                     player = NewPlayer(label);
+                    player.HandshakeBuild = build;
                 }
             }
         });

@@ -109,7 +109,7 @@
     "keyword": "Vorkald",
     "text": "Keeper of [Dellingstad]'s account with the herd: a box of whiskers, one for every year the morvalt hunters were cleared from above Mammoth Valley. See [the herd's account]."
   },
-  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: Vorkald asked me once, when I was a girl, whether I knew why the town takes a whisker and not a tusk. I said a whisker is smaller. He said a tusk is what you take from a mammoth you have killed, and a whisker is what you take from one that is still walking, and the town wants the herd walking. Then he shut the box. I have thought about that every year since, daughter, when the young men come back from the heights with tusks.",
+  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: Vorkald asked me once, when I was a girl, whether I knew why the town takes a whisker and not a tusk. I said a whisker is smaller. He said a tusk is what you take from a mammoth you have killed, and a whisker is what you take from one that is still walking, and the town wants the herd walking. Then he shut the box. It was a little box of black birch with a brass clasp, and the whiskers inside lay in rows, each tied with a red thread. I have thought about that every year since, daughter, when the young men come back from the heights with tusks.",
   "chronicle": {
     "win": "{raidLeader} of {realm} closed Vorkald's account in Dellingstad in {minutes} minutes. The town will not forget it.",
     "loss": "Dellingstad threw {raidLeader}'s party from {realm} away from Vorkald's table after {minutes} minutes."

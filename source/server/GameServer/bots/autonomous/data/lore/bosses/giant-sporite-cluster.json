@@ -19,6 +19,11 @@
       "text": "Sporites (blue cattail, virulent) grow throughout Galladoria.",
       "provenance": "game",
       "source": "source/server/GameServer/bots/autonomous/data/dungeon_navigation_points.json"
+    },
+    {
+      "text": "The place-lore of the Grey Field on the sporite colony's second book page, with the Connacht cow and the basket of ash, is Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Nothing in the hollow grows alone, and the sporites least of all. The Giant Sporite Cluster is a colony grown so old and so large that it has become one creature with eight bodies, every one of them answering when any is touched. The cold it spits is not its own: the Sylvan say the first spores were shaken from the staff of Xaga, who walks the halls nearby, and the colony still uses her magic as a child uses its mother's words. Strike one bloom and the whole garden turns.\n\nThe colony began, the Sylvan say, as a handful of spores shaken from Xaga's staff when she first came down into the hollow, testing what would grow there. Everything grew. The sporites took to the wet walls of one gallery and spread until they were a single garden, and then a single creature, eight great blooms joined below the floor by threads too fine to see.\n\nTouch one and all of them answer, because there is only one of them. Its cold is borrowed: it bursts out of the blooms in freezing clouds, and the Sylvan who have studied it say the burst is the same spell Xaga carries on her staff, learned the way a child learns its mother's words. The colony is not cruel and not clever. It simply wants the gallery, and the warm bodies that walk into the gallery are good soil. The blue cattail sporites and the virulent ones elsewhere in the hollow are its seedlings, gone wandering.\n\nXaga shook a dull World's End spore-cap from her staff in the wet gallery and it grew into one creature with eight blooms that uses her cold; the Grey Field outside Domnann is why the Sylvan burn the dust off every boot at the hollow's mouth. It grows a few galleries from Xaga's door.",
@@ -89,6 +94,9 @@
     "text": "A colony so old it is one creature with eight bodies. Its cold is borrowed from Xaga's staff. Touch one bloom and all of them answer."
   },
   "bookPage": "Aodhan writes: I asked whether the great sporite garden in the hollow was evil, and the Sylvan gardener I asked laughed at me, which they rarely do. A garden is not evil, she said. It is hungry. Xaga shook the first spores from her staff to see what would grow, and everything did, and now there is one great colony with eight blooms and one mind, and it wants its gallery and whatever walks into it. It uses her cold because it heard her use it. You would do the same, she said, if your mother were Xaga. I was not sure whether that was a joke.",
+  "bookPages": [
+    "No barley has grown in the Grey Field outside Domnann since the summer it took its name. In the second summer of the isles a Connacht company camped in it on the way home from the hollow, tired, and walked through no embers, because there were none yet. By autumn the barley was gone and the field was grey with pale caps no shore of the isle had ever grown, soft underfoot as wool. Lisín's mother, the fire-keeper of that year, walked round it once with a torch, set it alight at the four corners, and watched it burn to the soil. The next day she laid the ring of embers at the hollow's mouth. Nothing has been planted there since. The Connacht men sent a cow every autumn as the price of the barley, until the fire-keeper sent one back with a basket of the field's ash on its back, and no more came."
+  ],
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Giant Sporite Cluster; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Giant Sporite Cluster after {minutes} minutes."

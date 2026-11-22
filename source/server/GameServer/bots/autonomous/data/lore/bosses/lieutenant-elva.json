@@ -24,6 +24,11 @@
       "text": "Gwenllian the armourer of Castle Sauvage and her book, 'one dose to a wound', Elva's father the fletcher and the book's last entry are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the last leaf of Elva's inventory) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Lieutenant Elva was the granddaughter of Gwenllian, armourer of Castle Sauvage in the old frontier wars, and she carried Gwenllian's calfskin book of the black paste and the grey oil north under her pillow for nineteen years. The book's margins say what each poison was used against in one word each: walked on, sat down, and, underlined beside the black paste, stopped. She asked to go north at sixteen and came in Lord Gildas's first year, the youngest officer of the watch, to keep its armoury, and she let no one else touch it, not Heathyr and not the wizard.\n\nShe fought with two short blades in leather, as Sauvage's armourers fought, slipping aside from a swing and answering the miss, and she would not let a man look away from her. She sat by Meade's card table with a whetstone, listening for the note that was wrong. Gwenllian's rule for the paste, one dose to a wound, became a Long Dale saying.\n\nShe was the first to say that Atwell's cut was not natural. She dressed every blade in the armoury, began the inventory she never finished (its last item, a blade by the door, is entered as half dressed), and wrote to Castle Sauvage for more grey oil and a fletcher. The fletcher was her own father; Hob would not carry him on from Long Dale, so he went up in the spring with Sir Hamon's riders, came down, gave back the oil unopened, and never made another arrow.\n\nShe keeps her armoury still, the lightest of the officers to bring down and the hardest to hit, and what her blades open burns long afterwards, one dose at a time, until the bitter cup of Caer Ulfwych takes it out. Gwenllian's book is at Castle Sauvage now. Its last entry is Elva's, under her grandmother's underlined word: no.",
@@ -91,6 +96,9 @@
     "text": "Lieutenant Elva kept the armoury of the Pennine watch with her grandmother [Gwenllian]'s book of the black paste from [Castle Sauvage]. She was the first to say [Atwell]'s cut was not natural, and the half-dressed blade by her door was meant for [Lord Gildas]."
   },
   "bookPage": "To the Constable. Lieutenant Elva has had the armoury poisons brought out and the blades dressed, as for the old wars, because Captain Atwell's cut will not close and she does not trust whatever made it. She says the things that came up the road in her grandmother's day were not alive enough to bleed, and that a poison finds what a blade cannot. She is dressing a sword for Lord Gildas now, by lamplight, and says it will be the finest blade in the hall. I do not know what she thinks it is for. I have not asked her. I think she does not know either.",
+  "bookPages": [
+    "From the inventory of the armoury of the Pennine watch, its last leaf, in the lieutenant's own hand. Item, twelve short swords of the Sauvage pattern, dressed with the black paste, one dose to each, as my grandmother wrote. Item, the spears of the second rack, dressed. Item, forty arrowheads, wanting the grey oil; I have written to the castellan for more, and for a fletcher. Item, a long sword of the hall's old pattern, for my lord Gildas, the edge stoned three days and the paste laid on the first side. Item, the same, the second side, begun. Item, the same. Here the hand grows small and the ink thin, as if the lamp were going out. Item, his blade, laid by the door, half dressed. Nothing is written after it. The leaf is ruled for twenty items more, and every rule is straight, as Gwenllian taught her granddaughter to rule a leaf."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Lieutenant Elva from the Pennine watch in {minutes} minutes.",
     "loss": "Lieutenant Elva held the post against {realm}'s raid; {raidLeader} fell back."

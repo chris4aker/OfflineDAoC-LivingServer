@@ -58,12 +58,18 @@ Optional fields the engine adds to the brief's format:
 
 **Umbrella locations.** Open-world bosses belong to umbrella locations over a realm's open world (`hibernia-wilds`,
 `hy-brasil`) with one atmosphere area per zone or lair. Without `zones`, such a location's `firstEntry` shows once a day on
-coming into that open world. `"regions": []` is allowed (`shrouded-isles`: Gnat has no known region); such a location has
-no first entry, and each of its areas gives its own `region`. Areas are found by their region, whatever location they
-belong to.
+coming into that open world. `"regions": []` is allowed (`shrouded-isles`: Gnat has no known region); each of its areas
+gives its own `region`. Areas are found by their region, whatever location they belong to.
+
+**Overviews (1.2.1).** A location with first-entry lines and no `zones` that no zone ever names (it lists no regions, or
+zone files and narrower files win every zone of its regions: `proving-fields`, `shrouded-isles`, `albion-shrouded-isles`,
+`hy-brasil`, `hibernia-wilds`) shows its `firstEntry` once a day on walking into any region it covers (the regions it lists
+and its areas' regions), narrowest overview first (`LoreEntryRules.OverviewsAt`). It is offered before the zone file's
+own line, so a zone line that is due wins and the overview waits for a later walk in.
 
 Area `x`, `y`, `z` are region coordinates (the boss spawns in `docs/encounters/world-spawns.json` are a good source).
-With `z` set, the area is that floor only (within 800 units of height); `z: 0` means any height.
+With `z` set, the area is that floor only (within 800 units of height); `z: 0` means any height, for the area lines and
+for lore book drops alike (`LoreBookDrops.Near`, within twice the radius; an area of another region never counts).
 
 ### Boss
 
@@ -150,7 +156,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `zones` | | zone ids: the location is those zones only (a lair inside an open-world region). Zone 0 is a zone (Camelot Hills); region 0 is not |
 | `summary` | yes | one sentence |
 | `facts` | yes (1+) | `{text, provenance, source}`; provenance `mythic`, `game`, `legend`, `myth`, `original`; a source for all but `original` |
-| `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary |
+| `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary (the short telling: epic places skip the 500+ story depth floor) |
 | `chapters` | | `[{title, text}]` in order (epic tier: 4-10 of 250-700 words); each title is a loremaster keyword (60 characters, no brackets, unique in the file) |
 | `tier` | | `"epic"`, `"major"`, `"minor"` or left out |
 | `era`, `factions` | | ids in the history files |
@@ -172,7 +178,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `id`, `name`, `realm`, `locationId` | yes | the realm is its location's, or the location is Neutral |
 | `catalogKey` or `npcNames` | one of them | `catalogKey`: the epic-encounters.json id or the script class (`MidGjalpinulva`); `npcNames`: exact spawn names of a plain world spawn (a family may list every member). The engine matches the class first, then the exact name |
 | `tier` | | `"epic"`, `"minor"` (level 35-49, the minor floor), `"order"` (a file of named members, below) or `"major"`/left out |
-| `members` | | tier `"order"` only: `[{name, level, post, story, yells: {aggro, death, slay}, atmosphere: {lairEntry}, loremasterTopic: {keyword, text}}]`, one per named member (the Darkness Falls orders). Each name is one of the file's `npcNames`, which is how a member's spawn finds the file; lines are checked like the boss's own (yells 200, lairEntry 60 characters), stories for game talk. The channels speak the order-wide fields; the members' own lines are kept for later |
+| `members` | | tier `"order"` only: `[{name, level, post, story, yells: {aggro, death, slay}, atmosphere: {lairEntry}, loremasterTopic: {keyword, text}}]`, one per named member (the Darkness Falls orders). Each name is one of the file's `npcNames`, which is how a member's spawn finds the file; lines are checked like the boss's own (yells 200, lairEntry 60 characters), stories for game talk. A member's spawn yells its own aggro, death and slay lines and shows its own lair line (1.2.1, `Boss.AggroFor` and the rest; else the file's). Its post, story and loremaster topic are not shown yet (docs/1.2.1/REACHABILITY.md) |
 | `facts`, `story`, `legend` | yes | as for locations (warnings under 70 / 30 words) |
 | `chapters`, `era`, `factions`, `related`, `aliases` | | as for locations |
 | `yells` | | `{aggro, phases: [{trigger, text}], death, slay}`, 200 characters each |

@@ -99,7 +99,7 @@
     "keyword": "Runil",
     "text": "One of the deserters who carried [Kelic] into Raumarik. He did not get far on the way home."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: the deserter in the east is the one Galplen pities. He ran from a battle, yes, and he held the cursed man's arms while the killing was done, yes. But he was the first to turn for home, the tellers say, and that was the only brave thing he ever did, and the curse took his legs for it a day out from the snowline. The wolves circle him and do not bite. The children of Galplen leave him alone too, the few who go that far east.",
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: the deserter in the east is the one Galplen pities. He ran from a battle, yes, and he held the cursed man's arms while the killing was done, yes. But he was the first to turn for home, the tellers say, and that was the only brave thing he ever did, and the curse took his legs for it a day out from the snowline. The wolves circle him and do not bite. They lie down a spear's length off and watch him drag himself through the snow, as if they were waiting for something he owes them. The children of Galplen leave him alone too, the few who go that far east.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put the deserter Runil to rest in {minutes} minutes.",
     "loss": "Runil's deserters stood their ground against {raidLeader}'s party from {realm} for {minutes} minutes."

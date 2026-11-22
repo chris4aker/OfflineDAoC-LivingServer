@@ -57,6 +57,7 @@ public static class LoreAtmosphere
         public readonly AtmosphereThrottle Throttle = new();
         public readonly HashSet<string> Session = new(StringComparer.OrdinalIgnoreCase);
         public string LocationId;
+        public string RegionId;
         public bool Polled;
         public long NextPoll;
         public long NewsSeen;
@@ -268,11 +269,24 @@ public static class LoreAtmosphere
         ushort region = player.CurrentRegionID;
         LoreBible.Location here = LoreEntryRules.LocationAt(bible, region, player.CurrentZone.ID);
         string previous = state.Polled ? state.LocationId : null;
+        string previousRegion = state.Polled ? state.RegionId : null;
         state.Polled = true;
         state.LocationId = here?.Id;
+        state.RegionId = region.ToString();
         Random random = Random.Shared;
+        string today = LoreEntryRules.Day(DateTime.Now);
+        // An overview no zone ever names (the proving fields, the Shrouded Isles, Hy Brasil, the Hibernian wilds): its
+        // first-entry line on walking into a region it covers, once a day. It is offered before the place's own line, so a
+        // zone line that is due takes the throttle's one waiting slot and the overview waits for a later walk in.
+        if (!string.Equals(previousRegion, state.RegionId, StringComparison.Ordinal))
+            foreach (LoreBible.Location overview in LoreEntryRules.OverviewsAt(bible, region, ZonesOf))
+                if (LoreEntryRules.EntryDue(previousRegion, state.RegionId, EntryDay(player.ObjectId, overview.Id), today))
+                {
+                    Local(player, overview.FirstEntry[random.Next(overview.FirstEntry.Length)], EntryTtlMs, LoreEntryRules.EntryKey(overview.Id), perDay: true);
+                    break;
+                }
         if (here != null && here.FirstEntry.Length > 0 &&
-            LoreEntryRules.EntryDue(previous, here.Id, EntryDay(player.ObjectId, here.Id), LoreEntryRules.Day(DateTime.Now)))
+            LoreEntryRules.EntryDue(previous, here.Id, EntryDay(player.ObjectId, here.Id), today))
             Local(player, here.FirstEntry[random.Next(here.FirstEntry.Length)], EntryTtlMs, LoreEntryRules.EntryKey(here.Id), perDay: true);
         // Every location's areas in this region, not only this place's: an umbrella's lair areas (hibernia-wilds) inside a
         // dragon's zone, and areas of a location with no regions of its own (shrouded-isles).
@@ -287,12 +301,20 @@ public static class LoreAtmosphere
             if (npc is GameBot || !npc.IsAlive)
                 continue;
             LoreBible.Boss boss = LoreBossWatch.BossOf(npc);
-            if (boss == null || boss.LairEntry.Length == 0)
+            string[] lair = boss?.LairEntryFor(npc.Name) ?? [];
+            if (lair.Length == 0)
                 continue;
             string key = LoreEntryRules.LairKey(boss.Id);
             if (!state.Session.Contains(key))
-                Local(player, boss.LairEntry[random.Next(boss.LairEntry.Length)], AreaTtlMs, key);
+                Local(player, lair[random.Next(lair.Length)], AreaTtlMs, key);
         }
+    }
+
+    /// <summary>The zones of a loaded region (none when it is not loaded), for <see cref="LoreEntryRules.OverviewsAt"/>.</summary>
+    private static IReadOnlyCollection<ushort> ZonesOf(ushort region)
+    {
+        Region loaded = WorldMgr.GetRegion(region);
+        return loaded?.Zones == null ? Array.Empty<ushort>() : loaded.Zones.Select(z => z.ID).ToArray();
     }
 
     /// <summary>
@@ -307,6 +329,8 @@ public static class LoreAtmosphere
         LoreBible.Location here = player.CurrentZone == null ? null : LoreEntryRules.LocationAt(bible, player.CurrentRegionID, player.CurrentZone.ID);
         if (here != null)
             Memory.Remove($"{LoreEntryRules.EntryKey(here.Id)}:{player.ObjectId}");
+        foreach (LoreBible.Location overview in LoreEntryRules.OverviewsAt(bible, player.CurrentRegionID, ZonesOf))
+            Memory.Remove($"{LoreEntryRules.EntryKey(overview.Id)}:{player.ObjectId}");
         lock (Forget)
             Forget.Add(player);
         return here == null

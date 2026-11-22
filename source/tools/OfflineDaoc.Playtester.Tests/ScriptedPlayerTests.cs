@@ -80,6 +80,34 @@ public class ScriptedPlayerTests
     }
 
     [Test]
+    public async Task AnOriginalClientSendsItsBuildAndTheFallIsKeptInOrder()
+    {
+        using var server = new FakeServer();
+        await using var player = NewPlayer();
+        player.HandshakeBuild = ClientPackets.OriginalClientBuild;
+        var accept = server.AcceptAsync();
+        await player.ConnectAsync("127.0.0.1", server.Port, TimeSpan.FromSeconds(5));
+        await accept;
+        byte[] crypt = await server.ExpectAsync(0xF4);
+        Assert.That(crypt[5..7], Is.EqualTo(new byte[] { 0x2A, 0x07 }), "game.dll's build, so the server sends the fall");
+        int mark = player.Mark();
+        var update = new PacketWriter();
+        for (int i = 0; i < 8; i++) update.Short(0);
+        update.Short(42); update.Short(0); update.Byte(0); update.Byte(0); update.Byte(1); update.Byte(0);
+        server.Send(0xA1, update);
+        var fall = new PacketWriter();
+        fall.Short(42); fall.Short(0);
+        server.Send(0xA2, fall);
+        var removed = await player.WaitForAsync<ObjectRemoved>(r => r.ObjectId == 42, TimeSpan.FromSeconds(5), mark);
+        Assert.That(removed.Type, Is.EqualTo(0));
+        int place = player.PlaceOf(removed);
+        Assert.That(place, Is.GreaterThanOrEqualTo(mark));
+        var before = player.EventsSince<ServerEvent>(mark, place + 1).Where(e => e is ObjectMoved or ObjectRemoved).ToList();
+        Assert.That(before.Select(e => e.GetType().Name), Is.EqualTo(new[] { "ObjectMoved", "ObjectRemoved" }));
+        Assert.That(player.EventsSince<ObjectRemoved>(place + 1), Is.Empty);
+    }
+
+    [Test]
     public async Task ARefusedLoginSaysWhy()
     {
         using var server = new FakeServer();

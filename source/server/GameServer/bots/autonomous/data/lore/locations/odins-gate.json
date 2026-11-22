@@ -68,6 +68,18 @@
           "A hill of blue ice with a face, waiting at no door.",
           "Scuffed snow far off marks where the thrown came down."
         ]
+      },
+      {
+        "name": "the high snowfield",
+        "x": 642185,
+        "y": 620183,
+        "z": 0,
+        "radius": 2500,
+        "lines": [
+          "Deep drifts, and in them the shapes of men who landed.",
+          "The giant is a blue speck from here. It threw this far.",
+          "Broken crust, and a glove frozen into it, fingers up."
+        ]
       }
     ]
   },

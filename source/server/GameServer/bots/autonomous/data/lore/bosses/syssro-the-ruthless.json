@@ -24,6 +24,11 @@
       "text": "The syhr'phint pit-wardens of the burnt coast and the blood-fed beasts, the cloister well, Ifor's cousin Tegwen, the catchpoles' law and the ledger of the pit are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the leaves of the pit ledger as Elowen copied them) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Sys'sro the Ruthless is lord of the syhr'phint, the other drakoran clan that remembers where it came from: the prison-pits cut in the cooled lava of the burnt coast across the western sea, which the syhr'phint kept as taskers, catchpoles and pit-wardens. He was a pit-warden's son and fed his mother's beasts by hand. By the oldest syhr'phint custom a warden's beasts are fed on the warden's own blood from the day they are whelped, until they are bound to him like a limb: no blade bites them while he lives, and when he dies they lie down beside him. Elowen of Caer Gothwaite was told so under parley and did not believe it.\n\nWhen Dura'ek parted the burned city, Sys'sro got the scholars' cloister and dug his pit where Chancellor Rhydderch's blessed well had been, lined with the cloister's paving by conquered readers who were the first to go in. From the cloister his taskers run the city's work and his catchpoles its streets; his alblasters and dragoons stand at the edge so that no one climbs out alone. Ifor Netmender's cousin Tegwen, caught carrying a book under the drakoran's nets, spent nine days being run slow round the pit floor by beasts that would not kill her.\n\nHe is no duellist. He fights whoever stands in front of him and reaches past to seize one of the others and throw them in: never the one he is fighting, by the catchpoles' law that the pit is for whoever came with your enemy. The readers noted that the ones he throws are strangers who came across the water of their own will. The pit ends as it ended for Albion's first knight and for Tegwen: the companions above go for the lord, and the beasts lie down when he falls.\n\nHis ledger of everyone thrown in, copied by Elowen, shows the thrown one wins whenever the lord loses. The other lords despise and need him. He wants the city to keep order, as a pit keeps order.",
@@ -97,6 +102,9 @@
     "text": "The Ruthless. Fifteen beasts live in his pit, and he throws men into it. Keep your back to the wall."
   },
   "bookPage": "The catchpoles took the cloister, where we used to walk between lectures, and their lord dug a pit in the middle of the garden where the old pear tree stood. My fishermen say he keeps beasts in it, fifteen at the least, and feeds them on thieves and shirkers and anyone he dislikes, including his own kind. One fisherman saw a knight of Albion thrown in. He says the knight's companions did not go down after him. They went for the lord instead, all of them at once, and when the drakoran lord fell the beasts in the pit lay down where they were, and the knight climbed out over them, bloodied and alive. The drakoran, it seems, do not go down after each other.",
+  "bookPages": [
+    "Four columns, in the catchpoles' marks, which I have learned to read only so far as numbers and names go: who was thrown in, by whose word, how many days, and how it ended. Tegwen, cousin of Ifor Netmender, by the lord's word, nine days; the last mark I know now means came out. The knight of Albion, the first, by the lord's word, the same day; came out. In every line where that mark stands, a second mark stands beside the lord's own name, and the fisherman says it is the one the catchpoles cut when their lord has fallen. In every other line the last column holds a mark I have not learned, and I have not asked anyone to teach it to me. So Elowen of Caer Gothwaite, of the ledger of the pit in the cloister garden, which she copied from leaves a fisherman brought out under his catch."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} climbed out of the pit and ended Sys'sro the Ruthless in {minutes} minutes.",
     "loss": "Sys'sro fed {realm}'s raid to his pit one by one; {raidLeader} could not pull them out."

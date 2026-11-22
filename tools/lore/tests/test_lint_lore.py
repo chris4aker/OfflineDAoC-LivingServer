@@ -13,6 +13,14 @@ class LintTests(unittest.TestCase):
             self.assertTrue(DEV_NOTE.search(s), s)
         self.assertFalse(DEV_NOTE.search("The old raiders swore frost healed him."))
 
+    def test_every_book_page_is_read(self):
+        # LoreBible.BookPagesOf joins "bookPage" and "bookPages", each one page or a list, so the lint reads them all.
+        note = "Untested in game with bots: x."
+        for d, key in [({"bookPage": ["A fine page.", note]}, "bookPage[1]"), ({"bookPages": [note]}, "bookPages[0]"),
+                       ({"bookPages": note}, "bookPages"), ({"bookPage": note}, "bookPage")]:
+            hits = [k for k, t in lint_lore.texts(d) if any(DEV_NOTE.search(s) for s in lint_lore.sentences(t))]
+            self.assertEqual(hits, [key], d)
+
     def test_cleaner_drops_dev_notes_and_duplicates_only(self):
         d = {"legend": "He hits hard. Untested in game with bots: x. Bring a healer.", "yells": {"aggro": ["a", "b", "a"]}}
         clean_lore.clean(d)

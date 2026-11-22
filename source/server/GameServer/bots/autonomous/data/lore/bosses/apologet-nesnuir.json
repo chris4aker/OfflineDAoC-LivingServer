@@ -109,7 +109,7 @@
     "keyword": "Apologet Nesnuir",
     "text": "The old morvalt who teaches the young of the city about the Mother, and says the [Valkyn] are her stolen children. [Dagar] counts her days; Nesnuir explains them."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the Valkyn guide would not go near the hall where the old morvalt teaches, and when I asked why, she said I would not understand, being a kobold. Then she said: imagine someone telling you that the trolls stole you from your grandmother, and that she is still waiting, and that he can tell you the way. I said I would not believe him. She said: you would want to. That is the whole of it. You would want to. She did not look back at the hall.",
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the Valkyn guide would not go near the hall where the old morvalt teaches, and when I asked why, she said I would not understand, being a kobold. Then she said: imagine someone telling you that the trolls stole you from your grandmother, and that she is still waiting, and that he can tell you the way. I said I would not believe him. She said: you would want to. That is the whole of it. You would want to. She pulled her hood forward and walked faster, and I had to trot to keep the lamp near her. She did not look back at the hall.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke up Apologet Nesnuir's school in Trollheim in {minutes} minutes.",
     "loss": "Apologet Nesnuir's disciples overwhelmed {raidLeader}'s party from {realm} after {minutes} minutes."

@@ -24,6 +24,11 @@
       "text": "Meade's Old Sarum wrestling ('the knock and the turn'), his name-day verses, the herb box, his last verse and its four readings, and Long Dale's thyme are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the Old Sarum fair roll of Meade's fourth summer and the judges' verse) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Lieutenant Meade was the best wrestler at the Old Sarum midsummer fair for four summers, a shield-bearers' game of the knock and the turn: ring a man's head with the board, step to his side while it rings, put him down from where he cannot see. The fair's rolls say he was never in front of a man when the man fell. He also wrote verses, badly, from boyhood, and the abbot gave up whipping him and taught him to spell. He came north with the Salisbury Plains levies in Lord Gildas's sixth year, and was the only officer ever to put Captain Atwell on the flags.\n\nFor fourteen years he sat at the head of the sergeants' card table in the middle corridor and wrote a verse for every name-day; the clerk Tobias copied them into his reports because they were what the watch was like (Darryn's voice, Bardalph's questions, Darra's sickroom rhymed with quick doom). He grew thyme and rue in a box on the sill for the sickroom. He was the watch's cheerful man, so when the despair of the last winter settled on him first the hall noticed at once: the verses stopped, the thyme went grey, and the men at his end of the table could not lift their cups.\n\nHis last verse asks his friends to keep from his elbow when he is low. The Camelot loremasters read it as a warning to keep their distance, the Church as a confession, the bards sing it backwards, and Old Sarum's fair judges say it is a turner's verse: do not let the turner reach your side while your head is ringing.\n\nHe keeps the card table still, between Reede's stair and Saxe's corridor, dazing a man with his shield and striking from his side, the cloak of the last winter heavy on all who crowd him. Long Dale companies leave a pot of thyme on his sill when he falls; it is always grey when the next company comes.",
@@ -91,6 +96,9 @@
     "text": "Lieutenant Meade was the Old Sarum wrestler and bad poet who kept the card table of the Pennine watch. The despair of the last winter settled on him first, and his [last verse] asks his friends to keep from his elbow. See also [Saxe], who kept away, and [Lady Darra], who used his herbs."
   },
   "bookPage": "Lieutenant Meade asks me to set down his words exactly, so I do. 'The men have lost the will to fight, and cannot say why. I have asked each of them. They say their arms are heavy. They say the road looks very long. They say they do not see the point of a watch when nothing comes. I feel it myself. I find I sit at my desk with the pen in my hand and do not write. I do not know what it is. If it is a sickness, it is not of the body. If it is an enemy, it is already inside.'",
+  "bookPages": [
+    "In the fourth summer, the shield-wrestling won again by Meade of the plain, who in nine bouts was not once in front of a man when the man fell. The last of them, a carter of Amesbury, asked to be thrown a second time so that he might see how it was done, and was thrown, and did not see. Paid to the winner, a cheese and a belt. Fined the winner, one halfpenny, for a verse upon the judges, which is entered here at the judges' own wish, so that it shall be remembered how bad it was: three judges sat beneath the oak, and none of them could take a joke. Below, in a later hand: he went north with the levies at Lammas. The post is kept. So runs the roll of the midsummer fair at Old Sarum, which the abbey keeps."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Lieutenant Meade from the Pennine watch in {minutes} minutes.",
     "loss": "Lieutenant Meade held the post against {realm}'s raid; {raidLeader} fell back."

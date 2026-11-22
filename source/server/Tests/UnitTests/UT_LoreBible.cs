@@ -377,6 +377,13 @@ namespace DOL.GS.Tests
             Assert.That(order.Members.Select(m => (m.Name, m.Level, m.Post, m.LairEntry.Length, m.LoremasterKeyword)),
                 Is.EqualTo(new[] { ("Knight Ain", 70, "the east ward", 1, "knight ain") }));
             Assert.That(bible.BossForName("Knight Ain")?.Id, Is.EqualTo("scurceol-hyrde"), "the order is found by a member's spawn name");
+            // 1.2.1: a member speaks its own yells and lair line; any other spawn of the order speaks the file's.
+            Assert.That(order.AggroFor("Knight Ain"), Is.EqualTo(new[] { "Kneel." }));
+            Assert.That(order.DeathFor("Knight Ain"), Is.EqualTo(new[] { "The Roll..." }));
+            Assert.That(order.SlayFor("Knight Ain"), Is.EqualTo(new[] { "Struck off." }));
+            Assert.That(order.LairEntryFor("Knight Ain"), Is.EqualTo(new[] { "A knight stands in the ward." }));
+            Assert.That(order.AggroFor("Knight Haag"), Is.EqualTo(order.AggroYells), "not a member: the file's yells");
+            Assert.That(order.SlayFor(null), Is.EqualTo(order.SlayYells));
         }
 
         /// <summary>Camelot Hills is zone 0 of region 1: "zones" may hold 0, "regions" may not.</summary>
@@ -497,6 +504,8 @@ namespace DOL.GS.Tests
             Assert.That(bible.LocationById("krondon").IsEpic && bible.LocationById("krondon").Chapters.Length == 5, Is.True);
             Assert.That(bible.BossById("scurceol-hyrde").BookPages, Is.EqualTo(new[] { "first page.", "second page." }));
             Assert.That(bible.DepthReport(), Has.Some.EqualTo("epic locations: 4-10 chapters: 0 of 1 below"));
+            Assert.That(bible.DepthReport(), Has.Some.EqualTo("locations: story 500+ words: 0 of 1 below"),
+                "an epic place's story is held to the epic 300-500 summary floor, not the 500+ story floor (owner 2026-11-22)");
             // Bots stay on their short lines: no chapter text reaches the corpus or an answer.
             Assert.That(LoreChat.CorpusLines(bible).Any(l => l.Text.Contains("word0x")), Is.False);
             Assert.That(bible.TryAnswer("whats in krondon?", new Random(1), out string answer) && !answer.Contains("word0x"), Is.True);

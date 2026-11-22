@@ -161,6 +161,14 @@ Bots' breaks are a separate setting and stay on.
   in every telling, as its code does, and Vagdush plants his own feet rather than rooting you (review in
   [docs/1.2.1/REVIEW-GAME-TERMS.md](docs/1.2.1/REVIEW-GAME-TERMS.md)). The lint is now strict: a game term in any
   player-visible lore fails CI. `tools/lore/schema_mirror.py` runs the C# lore schema checks without dotnet.
+- **Every great foe has its book (#399-#402).** All 157 epic bosses now have at least four chapters, a 300-500 word
+  story and two to four book pages written as documents of their world (letters, tallies, slates, daybooks, triads).
+  The Behemoth has a fifth chapter. Three independent reviews, one per realm, checked every new page against the old
+  chapters and place lore and fixed 27 contradictions by rewording the new text, never cutting the old
+  ([REVIEW-EPICS-ALBION](docs/1.2.1/REVIEW-EPICS-ALBION.md), [-MIDGARD](docs/1.2.1/REVIEW-EPICS-MIDGARD.md),
+  [-HIBERNIA](docs/1.2.1/REVIEW-EPICS-HIBERNIA.md)). Two older ones are fixed by owner decision 10 (Mythic canon
+  first, then the rule of cool): Iorwerth sang in the deepest cellar but never went past the walled vein, and
+  Weno'iak moves his books before any company comes. `tools/lore/depth_report.py` lists every file below a floor.
 
 **Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
 and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under

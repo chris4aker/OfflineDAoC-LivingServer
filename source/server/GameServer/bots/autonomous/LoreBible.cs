@@ -164,6 +164,19 @@ public sealed class LoreBible
             (won ? TakeFor(realm)?.AftermathWin : TakeFor(realm)?.AftermathLoss) is { Length: > 0 } a ? a : won ? AftermathWin : AftermathLoss;
         public string[] RumourFor(eRealm realm) => TakeFor(realm)?.Rumour is { Length: > 0 } r ? r : Rumour;
 
+        /// <summary>The named member of an order file an NPC of this name is (its exact name), or null.</summary>
+        public Member MemberNamed(string npcName) =>
+            string.IsNullOrEmpty(npcName) ? null : Members.FirstOrDefault(m => string.Equals(m.Name, npcName, StringComparison.Ordinal));
+
+        /// <summary>
+        /// The yells and lair lines an NPC of this name speaks: a named member's own (1.2.1; before, the members' lines were
+        /// only checked, never spoken), else the file's.
+        /// </summary>
+        public string[] AggroFor(string npcName) => MemberNamed(npcName)?.Aggro is { Length: > 0 } a ? a : AggroYells;
+        public string[] DeathFor(string npcName) => MemberNamed(npcName)?.Death is { Length: > 0 } d ? d : DeathYells;
+        public string[] SlayFor(string npcName) => MemberNamed(npcName)?.Slay is { Length: > 0 } s ? s : SlayYells;
+        public string[] LairEntryFor(string npcName) => MemberNamed(npcName)?.LairEntry is { Length: > 0 } l ? l : LairEntry;
+
         /// <summary>The boss's script class in lower case ("scurceolhyrde"), from a catalog id or a class name.</summary>
         public string ClassKey => ClassKeyOf(CatalogKey);
     }
@@ -1172,7 +1185,9 @@ public sealed class LoreBible
         static int W(string t) => Words(t);
         var floors = new (string What, Func<Location, bool> Short)[]
         {
-            ("story 500+ words", l => W(l.Story) < 500),
+            // An epic place's story is its short telling, held to the epic floor's 300-500 summary below; its chapters
+            // carry the depth (owner 2026-11-22: "Stories should be phenomenal and tight"). Every other floor here holds.
+            ("story 500+ words", l => !l.IsEpic && W(l.Story) < 500),
             ("legend 120+ words", l => W(l.Legend) < 120),
             ("6+ facts", l => l.Facts.Length < 6),
             ("4-8 firstEntry lines", l => l.FirstEntry.Length < 4),

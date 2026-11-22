@@ -29,6 +29,11 @@
       "text": "The headland and horse-skull standard, the yard as his headland, Sir Emrys and the returned salute, and the rolled-up file are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the Prydwen roll's entry beside Sir Emrys's name) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Warlord Dorinakka was sent to Caer Sidi because he would not lay down his sword. He commanded a warband before the Romans, held a western headland for a summer against three tribes, and died at its neck the last of his band, his horse-skull standard going into the sea. When Arawn's keepers came for his soul he killed two of them, and so they put him in the gaol's yard, where you keep a soldier you cannot trust indoors. The bards call him a hero; the Inconnu, a captain, who never once asked what the war was for.\n\nWhen the gaol rose he found Arawn's crypt knights leaderless in the yard and drilled them, and they march in his file and come when he calls. He salutes the riders' hall, where Bellum rides, before every drill, and after the night war's weapons fell he drilled his knights to stand about their warlord first. He does not leave the yard: a captain who leaves his line is a deserter, and if a battle draws him too far he walks back to his ground and it begins again. The galleries' sorcerers above have done less to the yard than one spearman in the gate; he has always said a battle is won in the line.\n\nThe third company met the best-ordered charge any of them had faced. Its captain held the warlord in the gate with Sir Emrys and rolled up the file from its end in pairs, as the Romans taught on the Wall, her wizards kept against the gate wall. Dorinakka fought on alone and saluted the riders' hall as he fell, and Sir Emrys returned the salute.\n\nThe bounty-masters say he rallies the war-dead; the Inconnu, that the Crypt Lord gives him orders he has not noticed; Prydwen Keep, that he waits for someone to tell him the war is over. Caer Gothwaite's captains now return his salute before his line comes on.",
@@ -96,6 +101,9 @@
     "text": "The warlord in the yard of [Caer Sidi], who would not lay down his sword even for Arawn's keepers. He drilled the leaderless crypt knights into a file and salutes [Bellum]'s hall before every drill. The Inconnu say the [Crypt Lord] gives him orders he has not noticed."
   },
   "bookPage": "In the yard the dead knights were at drill when we came, twelve of them in a line, and their warlord walking the line as a living sergeant would, correcting the angle of a shield here, the set of a foot there. He saw us and did not hurry. He formed them up. He told them the living were at the gate. Then he came at us at their head, and it was the best-ordered charge I have ever faced. Our priest said afterwards that it was almost a pity to break it. I did not think it was a pity at all.",
+  "bookPages": [
+    "Sir Emrys of the third company held the dead warlord in the yard gate of Caer Sidi beside Dame Ysolde, while the company took his file from its far end in pairs, as the old soldiers of the Wall were taught. He reports that the warlord, falling, saluted toward the riders' hall, and that he, Emrys, returned the salute, and he asks that this be entered on the roll, since he does not know whether it was rightly done. Entered. The castellan's opinion, asked: a salute is not owed to an enemy, and is never wrong to give. Below, in a later hand: the captains of Caer Gothwaite now return it before the line comes on, and the warlord's knights ground their shields at the sight, and then come on all the same. From the roll of Prydwen Keep, beside the name of Sir Emrys, in the castellan's hand."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} ended Warlord Dorinakka's bloody muster in {minutes} minutes.",
     "loss": "Dorinakka's crypt knights held the line against {realm}'s raid; {raidLeader} fell back."

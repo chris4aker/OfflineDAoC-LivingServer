@@ -102,7 +102,7 @@
     "keyword": "Cronk",
     "text": "Chief of the tradklan, the tree-clan of Faraheim, with Trude and Unne at his side. He throws fire, which in a tree-clan is a serious thing."
   },
-  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: I was taken before the chief of the tree-clan, who told me that Cronk had the right of fire and that Cronk had never burned a house. He told me this four times. On the fourth I asked why it mattered so much. The one called Trude answered for him: because the chief before Cronk did, and the chief before that, and the clan lived in the ashes for a summer each time. Cronk said Cronk was magnificent. Trude said yes, he was, and did not smile.",
+  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: I was taken before the chief of the tree-clan, who told me that Cronk had the right of fire and that Cronk had never burned a house. He told me this four times. Each time he said it a little louder, as if the trees might be listening for the answer. On the fourth I asked why it mattered so much. The one called Trude answered for him: because the chief before Cronk did, and the chief before that, and the clan lived in the ashes for a summer each time. Cronk said Cronk was magnificent. Trude said yes, he was, and did not smile.",
   "chronicle": {
     "win": "{raidLeader} of {realm} silenced Cronk of the tree-clan in {minutes} minutes.",
     "loss": "Cronk was magnificent against {raidLeader}'s party from {realm} for {minutes} minutes."

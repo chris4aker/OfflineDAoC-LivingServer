@@ -459,15 +459,20 @@ namespace DOL.GS.LoreChannels
         private static readonly LootGeneratorLoreBook Generator = new();
         private static readonly HashSet<int> Registered = new();
 
-        /// <summary>The place a kill at this spot is near (null when none, or the region is shared and no area is near).</summary>
+        /// <summary>
+        /// The place a kill at this spot is near (null when none, or the region is shared and no area is near). An area of
+        /// another region never counts, and an area with <c>z</c> 0 means any height, as the atmosphere lines read it
+        /// (<c>LoreEntryRules.InArea</c>; 1.2.1, REVIEW-DEPTH.md owner question 2).
+        /// </summary>
         public static LoreLocation Near(ILoreSource source, int region, int x, int y, int z)
         {
             var inRegion = source.AllLocations.Where(l => LoremasterDialogue.HasBook(l) && (l.Regions ?? []).Contains(region)).ToList();
             foreach (LoreLocation location in inRegion)
                 foreach (LoreArea area in location.Areas ?? [])
                 {
+                    if (area.Region != 0 && area.Region != region) continue;
                     long dx = x - area.X, dy = y - area.Y, r = Math.Max(300, area.Radius) * 2L;
-                    if (dx * dx + dy * dy <= r * r && Math.Abs(z - area.Z) <= Math.Max(600, r)) return location;
+                    if (dx * dx + dy * dy <= r * r && (area.Z == 0 || Math.Abs(z - area.Z) <= Math.Max(600, r))) return location;
                 }
             var owners = source.AllLocations.Where(l => (l.Regions ?? []).Contains(region)).ToList();
             return owners.Count == 1 && inRegion.Count == 1 ? inRegion[0] : null;

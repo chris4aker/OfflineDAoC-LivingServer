@@ -117,11 +117,12 @@ def person(m):
 
 def strings(v):
     """Every narrative string in a lore file: story, legend, chapters, book pages, loremaster topics, yells, bot lines.
-    The `facts` arrays are left out: they are game-sourced (quest NPCs such as Sir Arward) and repeat names truthfully."""
+    The `facts` arrays are left out: they are game-sourced (quest NPCs such as Sir Arward) and repeat names truthfully.
+    Chapter and page titles are left out too (owner, 2026-11-22: "Titles don't count towards the cap")."""
     if isinstance(v, str): yield v
     elif isinstance(v, dict):
         for k, x in v.items():
-            if k != "facts": yield from strings(x)
+            if k not in ("facts", "title"): yield from strings(x)
     elif isinstance(v, list):
         for x in v: yield from strings(x)
 

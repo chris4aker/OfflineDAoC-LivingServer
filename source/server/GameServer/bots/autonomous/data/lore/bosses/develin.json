@@ -36,7 +36,8 @@
   "yells": {
     "aggro": [
       "You have been killing my little ones.",
-      "A bargain, stranger? No? Then a fight."
+      "A bargain, stranger? No? Then a fight.",
+      "Every pooka in this wood answers to me. Every one of them will come."
     ],
     "phases": [
       {
@@ -45,11 +46,13 @@
       }
     ],
     "death": [
-      "The bargain... is over..."
+      "The bargain... is over...",
+      "Free of them... at last... tell Ardee I was sorry..."
     ],
     "slay": [
       "My pookas will play with your bones.",
-      "Should have bargained."
+      "Should have bargained.",
+      "Another bargain I won. I always win them."
     ]
   },
   "atmosphere": {

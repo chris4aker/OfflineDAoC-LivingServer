@@ -109,7 +109,7 @@
     "keyword": "Ingardild",
     "text": "Captain of one of the two western armguard camps, named for a farmwife who held her yard. She quarrels with [Geirolf] over the runner [Steinolf]. See [the names]."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: there is a night on the beam with four names cut together, two of Geirolf's armguards and two of Ingardild's, and no Midgard mark beside any of them. My teacher cut them. She said she stood on the wall and listened to it, the two western camps tearing at each other over a runner, and thought how glad she was, and then thought that we svartalfar of Svarhamr had once quarrelled the same way over a foreman's chair, before the cold came, and was not glad any more.",
+  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: there is a night on the beam with four names cut together, two of Geirolf's armguards and two of Ingardild's, and no Midgard mark beside any of them. My teacher cut them. Her hand shook on the third, and the cut there runs crooked still. She said she stood on the wall and listened to it, the two western camps tearing at each other over a runner, and thought how glad she was, and then thought that we svartalfar of Svarhamr had once quarrelled the same way over a foreman's chair, before the cold came, and was not glad any more.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Ingardild's yard in western Malmohus in {minutes} minutes.",
     "loss": "Ingardild's armguards held their yard against {raidLeader}'s party from {realm} for {minutes} minutes."

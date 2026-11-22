@@ -31,7 +31,8 @@
   "yells": {
     "aggro": [
       "The dark horse stamps and shows its teeth.",
-      "A rider? No. Food."
+      "A rider? No. Food.",
+      "The horse shakes its black mane and looks for the nearest water."
     ],
     "phases": [
       {
@@ -40,11 +41,13 @@
       }
     ],
     "death": [
-      "The horse falls. Its eyes are still open."
+      "The horse falls. Its eyes are still open.",
+      "The horror horse sinks into the dark and is still."
     ],
     "slay": [
       "Ridden down.",
-      "Trampled."
+      "Trampled.",
+      "Under the water with you."
     ]
   },
   "atmosphere": {

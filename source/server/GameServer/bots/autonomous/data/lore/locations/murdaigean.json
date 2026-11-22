@@ -150,18 +150,33 @@
    "murd was where the fianna ran their young, [before the realm war|way before the bgs]. braided hair and a head start",
    "the knots on the trees in murd [mark where runners got caught|are fianna knots], [hibs say|so the hibs say]",
    "albs call murdaigean the goblin wood, mids call it the wolf wood. [everyone else just says murd|we just say murd]",
-   "the name dun murdaigean says fort twice, [hib bards say|in the old tongue]. [like they werent sure|lol]"
+   "the name dun murdaigean says fort twice, [hib bards say|in the old tongue]. [like they werent sure|lol]",
+   "fianna candidates had to know the twelve books of poetry before they even got to run murd",
+   "part of the fianna test: nine of them cast spears at you from nine ridges off, and you get a shield and a hazel stake",
+   "caílte set the pace in the murd run, [hibs say|so the hib bards say]. nobody in the fianna could outrun him",
+   "the master ranger at the hib gate in murd counted the knots on one oak. stopped at three hundred",
+   "most of the knots in murd are near the hib gate. the fianna caught most runners in the first hundred strides",
+   "five mids followed a wounded rage wolf into deep murd once. came back four, carrying the fifth on a cloak",
+   "the murd goblins help each other and so do the ire and rage wolves. fight one and its kin come running",
+   "the fianna swore four things: a wife for her manners, no violence to a woman, refuse nobody, never give back before nine men"
   ],
   "rumour": [
    "[heard|someone said] some of the webs in murd are grown over old knotted cords",
-   "[heard|word is] the albs drove the murd goblins out of the black mountains. hibs say [the albs sent them|they were sent]"
+   "[heard|word is] the albs drove the murd goblins out of the black mountains. hibs say [the albs sent them|they were sent]",
+   "[heard|someone said] the hib kids braid their hair before going into murd and nobody knows who started it",
+   "heard if a dry stick cracks under you in murd [youve failed the run|a fianna runner is behind you]",
+   "[heard|word is] the wolves in deep murd leave a blood trail on purpose and wait at the end of it",
+   "someone said theres a knot on one of the murd oaks with a name tied into it",
+   "heard the webs in murd get thicker every summer and one day [the paths will close|nobody will get through]",
+   "[heard|someone swore] a runner with braided hair went past them in murd at dusk without a sound"
   ],
   "tell": [
    "murdaigean? the bg for seasoned bands well along. [dark wood|spiders and goblins], dun murdaigean in the middle",
    "is murd hard? the [renegades|keep guards] are tough, guardians at a seasoned band's hardest, the chief for veterans. wood beasts attack on sight too",
    "whats in murdaigean? spiders, corpse crawlers, ire wolves, rage wolves, water badgers, goblins on the south edge",
    "where is murd? ask one of the realm's porters for battlegrounds [once youre seasoned a while|while youre seasoned and not yet the most]",
-   "taking murd keep? [full group and a ram|siege masters at your pk], lots of guardians on the walls"
+   "taking murd keep? [full group and a ram|siege masters at your pk], lots of guardians on the walls",
+   "how do i get through murd wood? stay on the paths, dont fight in the trees, and keep off the south edge and the deep wood"
   ]
  },
  "loremaster": {
@@ -181,9 +196,10 @@
  "book": {
   "title": "The Green Dark, by Cobthach, Master Ranger at Hibernia's gate in Murdaigean",
   "pages": [
-   "I was twenty years a ranger of the Path before they gave me the gate at Murdaigean, and I have not looked on a wood I liked less. The light comes down green and thin and goes out an hour before it should. The spiders have strung every path, the corpse crawlers root in the leaf-mould under them, and the wolves keep the deep wood. On the old oaks by our gate there are cords tied, grey with web and half rotten, and every cord has knots in it.",
-   "My grandmother told me what the knots are. When the Fianna ran their young through this wood, they tied a knot on the nearest tree wherever a runner was caught, so that he would know how far he had come. A grown man would come back years after and find his knot, she said, and stand under it a while. I counted the knots on the one oak by our gate in my first winter here. I stopped at three hundred, because the light had gone, and I have not gone back to finish.",
-   "This summer I noticed that the young of our muster braid their hair before they go down into the wood. None of them could tell me who had told them to, and I did not tell them either. I have only begun walking down with them at dusk as far as the old oak, which is as far as the field will let me, and standing there until the last of them is out of sight among the trees."
+   "I was twenty years a ranger of the Path before they gave me the gate at Murdaigean, and I have not looked on a wood I liked less. The light comes down green and thin and goes out an hour before it should. The spiders have strung every path, the corpse crawlers root in the leaf-mould under them, and the wolves keep the deep wood. At night you hear them answer each other across the dark, and the goblins on the southern edge go quiet to listen. On the old oaks by our gate there are cords tied, grey with web and half rotten, and every cord has knots in it.",
+   "My grandmother told me what the knots are. When the Fianna ran their young through this wood, they tied a knot on the nearest tree wherever a runner was caught, so that he would know how far he had come. A grown man would come back years after and find his knot, she said, and stand under it a while. He would not say what he thought of there, and nobody asked him. I counted the knots on the one oak by our gate in my first winter here. I stopped at three hundred, because the light had gone, and I have not gone back to finish.",
+   "This summer I noticed that the young of our muster braid their hair before they go down into the wood. None of them could tell me who had told them to, and I did not tell them either. Some of them do it badly, with a soldier's thumbs, and the braids come loose on the first branch, and in the morning they sit at the gate with their hair about their faces and say nothing about it. I have only begun walking down with them at dusk as far as the old oak, which is as far as the field will let me, and standing there until the last of them is out of sight among the trees.",
+   "The Midgard band's tale reached our gate by way of the Midgard young themselves, who shout it across the wood at ours, as a warning or a boast; I have never been able to tell which. I have set it down as they shout it. Five of their young followed a wounded rage wolf into the deep wood and tracked its blood for half a day, and the wolf at the end of the trail was neither wounded nor alone. They came back four, carrying the fifth on a cloak. I have walked the edge of that deep wood since, as far as I am let, and I have seen the blood trails the wolves leave. They lead inward, always, and they are always fresh. I have told our young to let a bleeding wolf go. Most of them listen. The ones who do not are back at the gate by morning, sitting under the old oak, and they do not want to talk about wolves."
   ]
  },
  "bosses": [],

@@ -1,0 +1,589 @@
+{
+  "about": "The continuity ledger (1.2.1): facts the lore tells in more than one file, and the forms each may take. tools/lore/continuity.py --check reads every visible string of the lore (and the hidden facts' text, marked) in each entry's scope and flags a statement that differs. Kinds: value (each claim pattern's group v must be one of allowed; numbers are compared as numbers), forbid (a sentence matching any forbid pattern, and no unless pattern, contradicts the fact), requires (a field matching every pattern in all must also match require). Scope: files (lore ids such as bosses/host), locations (a location's file and the files of its bosses), sentence (a sentence must match it to count), exclude (a sentence matching it is not read) and fields (a regex on the field path, such as ^(?!legend) to leave the fight advice out). Patterns are Python regular expressions, case-insensitive. A \"finding\" says what the check found when this ledger was written and what a fix might be.",
+  "facts": [
+    {
+      "id": "caer-sidi-third-up",
+      "fact": "Caer Sidi's third company went up eighty strong.",
+      "source": "HEROES.md owner notes (2026-11-21); REVIEW-THIRD-PASS.md A1",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "sentence": "\\beighty\\b|\\b80\\b|went up|strong|\\bof (?:its|their) \\w+\\b",
+        "exclude": "Arthur|\\bsong\\b|bards|three ships"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) strong\\b",
+        "\\bwent up (?:with |through the crypts with )?(?P<v>[\\w-]+)\\b",
+        "\\b(?P<v>[\\w-]+) went up\\b",
+        "\\bof (?:its|their) (?P<v>[\\w-]+)\\b",
+        "\\b(?P<v>[\\w-]+) in\\.$"
+      ],
+      "allowed": [
+        80
+      ],
+      "numeric": true
+    },
+    {
+      "id": "caer-sidi-third-home",
+      "fact": "Of the eighty, sixty-seven came home.",
+      "source": "HEROES.md owner notes (2026-11-21); REVIEW-THIRD-PASS.md A1",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "exclude": "Arthur|\\bsong\\b|bards|old age|\\bKING\\b|riddle|steersman|Bedivere",
+        "fields": "^(?!chapters\\[\\]\\.title)"
+      },
+      "claim": [
+        "(?<!of )(?<!its )\\b(?P<v>[\\w-]+),? (?:who )?came (?:home|down)\\b",
+        "\\bcame (?:home|down) with (?P<v>[\\w-]+)\\b",
+        "\\b(?P<v>[\\w-]+) of (?:its )?eighty came\\b",
+        "\\b(?P<v>[\\w-]+) out\\.$"
+      ],
+      "allowed": [
+        67
+      ],
+      "numeric": true
+    },
+    {
+      "id": "arthur-seven-came-home",
+      "fact": "In the old song Arthur sailed Prydwen to Caer Sidi with three shiploads of men, and seven came home (Arthur and six).",
+      "source": "Preiddeu Annwfn; locations/caer-sidi, bosses/apocalypse",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "sentence": "Arthur|\\bsong\\b|bards|old age|\\bKING\\b|riddle|steersman|Bedivere",
+        "exclude": "with Arthur|six men|among the six|\\bthe six\\b"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+),? (?:who )?came home\\b",
+        "\\bthe (?P<v>[\\w-]+) who came home\\b",
+        "\\bcame home with (?P<v>[\\w-]+)\\.",
+        "\\bthe bards' (?P<v>[\\w-]+)\\b"
+      ],
+      "allowed": [
+        7
+      ],
+      "numeric": true
+    },
+    {
+      "id": "caer-sidi-crypts-nine",
+      "fact": "The third company lost nine in the crypts (the Crypt Lord's court, the first hall).",
+      "source": "HEROES.md owner notes; REVIEW-EPICS-ALBION.md M6-M7",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "sentence": "third company|\\blost\\b|stayed|fell|we had"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+)(?: of (?:its )?eighty)?(?: who fell)? (?:stayed )?(?:in|to) the (?:crypts|Crypt Lord's court|warden's court)\\b",
+        "\\blost (?P<v>[\\w-]+)(?: of (?:its )?eighty)? (?:in|to) the (?:crypts|Crypt Lord's court|warden's court)"
+      ],
+      "allowed": [
+        9
+      ],
+      "numeric": true
+    },
+    {
+      "id": "caer-sidi-gallery-two",
+      "fact": "The third company lost two in Ilron's gallery, to shadows.",
+      "source": "HEROES.md owner notes; REVIEW-EPICS-ALBION.md M6-M7",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "sentence": "third company|shadows|lost|stayed|we had|company"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) (?:stayed |who fell |of them died |of the company died )?in (?:the|Ilron's) (?:same )?gallery\\b",
+        "\\bin Ilron's gallery (?P<v>[\\w-]+) of them died"
+      ],
+      "allowed": [
+        2
+      ],
+      "numeric": true
+    },
+    {
+      "id": "caer-sidi-silencer-two",
+      "fact": "Two of the third company fell to the Silencer, in the inner halls.",
+      "source": "HEROES.md owner notes; REVIEW-EPICS-ALBION.md M7",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ]
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) (?:fell to the Silencer|to the hush|the hush took|died of being too tired)"
+      ],
+      "allowed": [
+        2
+      ],
+      "numeric": true
+    },
+    {
+      "id": "caer-sidi-tally-counts-the-hush",
+      "fact": "A text that counts the third company's dead (eighty up, nine in the crypts, sixty-seven home) also counts the Silencer's two: 9 + 2 + 2 = 13.",
+      "source": "HEROES.md owner notes (Caer Sidi's toll is settled)",
+      "kind": "requires",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ]
+      },
+      "all": [
+        "\\beighty\\b",
+        "sixty-seven",
+        "\\bnine\\b[^.]{0,40}(?:crypts|court|first hall)"
+      ],
+      "require": "hush|Silencer|inner halls",
+      "finding": "Fixed 2026-11-22."
+    },
+    {
+      "id": "caer-sidi-landing-tally",
+      "fact": "At the steward's landing the captain had lost nine in the crypts, two to the hush and two in the gallery.",
+      "source": "REVIEW-EPICS-ALBION.md M7",
+      "kind": "requires",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "sentence": "\\bnine\\b.*\\bgallery\\b"
+      },
+      "all": [
+        "\\bnine\\b",
+        "gallery",
+        "Sanguis|red chapel|steward"
+      ],
+      "require": "hush|Silencer|inner halls",
+      "within": "sentence",
+      "finding": "Fixed 2026-11-22."
+    },
+    {
+      "id": "caer-sidi-thirteen-dead",
+      "fact": "The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb. Sir Rhun comes home alive among the sixty-seven, but hollow (owner decision 10, the rule of cool).",
+      "source": "HEROES.md owner notes (80 / 67 / 9 + 2 + 2)",
+      "kind": "forbid",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ]
+      },
+      "forbid": [
+        "did not come back from (?:the harbinger|his)\\b",
+        "\\bwhich Sir \\w+ did not\\b"
+      ],
+      "finding": "Fixed 2026-11-22 (owner decision 10): Sir Rhun walks home among the sixty-seven but never lifts a sword or says a whole sentence again; the garrison counts him alive.",
+      "unless": "whole of him|walked home|came back from it whole"
+    },
+    {
+      "id": "caer-sidi-four-riders",
+      "fact": "Four riders stand before the end's door: Fames, Bellum, Morbus and Funus.",
+      "source": "caer-sidi facts (the encounter)",
+      "kind": "value",
+      "scope": {
+        "locations": [
+          "caer-sidi"
+        ],
+        "exclude": "before him|\\bdown\\b|one to go"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) (?:riders|horsemen)\\b"
+      ],
+      "allowed": [
+        4
+      ],
+      "numeric": true
+    },
+    {
+      "id": "dame-nest-eleven",
+      "fact": "Dame Nest walked home calling names and found eleven.",
+      "source": "REVIEW-EPICS-ALBION.md I2",
+      "kind": "value",
+      "scope": {
+        "sentence": "\\bNest\\b"
+      },
+      "claim": [
+        "\\bfound (?P<v>[\\w-]+)\\b",
+        "\\bNest's (?P<v>[\\w-]+)\\b"
+      ],
+      "allowed": [
+        11
+      ],
+      "numeric": true
+    },
+    {
+      "id": "gwennol-keel-up",
+      "fact": "The Gwennol went over and did not right herself; the boats found her at dusk keel up, the boy still holding the tiller, and the sea kept two men and every sack.",
+      "source": "REVIEW-EPICS-ALBION.md M2",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Gwennol|grain-boat"
+      },
+      "forbid": [
+        "right(?:ed)? herself",
+        "\\bnine sacks\\b",
+        "came (?:home|back) to (?:the )?harbou?r"
+      ],
+      "unless": "\\bdid not right|never righted"
+    },
+    {
+      "id": "host-bodies",
+      "fact": "The Host is one soul in eight bodies (one line in the Reckoner's ledger and seven blanks; at the tally, two struck for nothing, the real one, and the other five).",
+      "source": "REVIEW-EPICS-ALBION.md M8",
+      "kind": "value",
+      "scope": {
+        "files": [
+          "bosses/host",
+          "bosses/soul-reckoner"
+        ],
+        "exclude": "with him"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) bodies\\b",
+        "\\b(?P<v>[\\w-]+) in a row\\b"
+      ],
+      "allowed": [
+        8
+      ],
+      "numeric": true
+    },
+    {
+      "id": "host-blanks",
+      "fact": "The Reckoner wrote the Host down once and left seven blanks.",
+      "source": "bosses/soul-reckoner, bosses/host",
+      "kind": "value",
+      "scope": {
+        "files": [
+          "bosses/host",
+          "bosses/soul-reckoner"
+        ]
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) blanks\\b"
+      ],
+      "allowed": [
+        7
+      ],
+      "numeric": true
+    },
+    {
+      "id": "breanainn-never-climbs-again",
+      "fact": "Bréanainn never went back up Tur Suil after the night of Kierac.",
+      "source": "REVIEW-EPICS-HIBERNIA.md M1",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/kierac-the-destroyer",
+          "bosses/master-of-pain",
+          "locations/tur-suil"
+        ],
+        "sentence": "Bréanainn|climb|tower"
+      },
+      "forbid": [
+        "(?<!never )(?<!not )\\bwent back up\\b",
+        "(?<!never )(?<!not )\\bclimbed again\\b",
+        "\\bI did go back\\b"
+      ]
+    },
+    {
+      "id": "dyranapur-dark-moons",
+      "fact": "Ulla carried the dark-moon cup for thirty-one dark moons; the slate's forty winters are the years she lived after.",
+      "source": "HEROES.md decision 10 (Midgard's epic review); REVIEW-EPICS-MIDGARD.md M6",
+      "kind": "value",
+      "scope": {
+        "files": [
+          "bosses/dyranapur"
+        ]
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) dark moons\\b"
+      ],
+      "allowed": [
+        31
+      ],
+      "numeric": true
+    },
+    {
+      "id": "dyranapur-forty-winters-is-after",
+      "fact": "No text has Ulla carry the cup forty winters.",
+      "source": "HEROES.md decision 10",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/dyranapur"
+        ],
+        "sentence": "forty winters"
+      },
+      "forbid": [
+        "carried (?:the cup|it) (?:for )?forty winters"
+      ],
+      "unless": "lived|after she gave"
+    },
+    {
+      "id": "iorwerth-walled-vein",
+      "fact": "Iorwerth sang the Quieting in the deepest cellar but never went past the walled vein (the brick).",
+      "source": "HEROES.md decision 10 (first fixes)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Iorwerth"
+      },
+      "forbid": [
+        "never went down to the cellars",
+        "(?<!never )(?<!never went )\\bwent (?:down )?past the (?:brick|walled vein|wall)\\b"
+      ]
+    },
+    {
+      "id": "iorwerth-forty-years",
+      "fact": "Iorwerth sang the Quieting on the longest night for forty years, and lived forty years more at Caer Gothwaite.",
+      "source": "REVIEW-EPICS-ALBION.md I2",
+      "kind": "value",
+      "scope": {
+        "sentence": "Iorwerth"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) years\\b"
+      ],
+      "allowed": [
+        40
+      ],
+      "numeric": true
+    },
+    {
+      "id": "wenoiak-books",
+      "fact": "Weno'iak's books are on his observatory shelves; he moves them before any company comes, and leaves ash.",
+      "source": "HEROES.md decision 10 (first fixes)",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/wenoiak-the-enlightened",
+          "locations/avalon-city",
+          "bosses/syssro-the-ruthless"
+        ],
+        "sentence": "ash|books|shelves"
+      },
+      "forbid": [
+        "\\bonly ash\\b",
+        "no books\\b",
+        "burned (?:his|the) books"
+      ],
+      "unless": "moves|carries|carried|before any|before anyone|think he|believe he"
+    },
+    {
+      "id": "wenoiak-household-uncounted",
+      "fact": "Weno'iak's household (cuirassiers, reeves, warsteeds) is told without a count. The fight advice (legend) keeps its head counts, as decision 9 keeps head counts in fight advice.",
+      "source": "HEROES.md decision 9",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/wenoiak-the-enlightened",
+          "locations/avalon-city"
+        ],
+        "fields": "^(?!legend)"
+      },
+      "forbid": [
+        "\\b(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|\\d+) (?:horsemen|cuirassiers|warsteeds|reeves|of his faction|riders)\\b"
+      ],
+      "finding": "Fixed 2026-11-22."
+    },
+    {
+      "id": "feast-of-thrones-thirty",
+      "fact": "Thirty lords met at the Feast of Thrones.",
+      "source": "bosses/legion story; the Darkness Falls court",
+      "kind": "value",
+      "scope": {
+        "sentence": "Feast of Thrones|the Feast\\b",
+        "exclude": "hoards?|vault|seals?"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) lords (?:met|on their way)\\b",
+        "\\bthe (?P<v>[\\w-]+) lords\\b",
+        "\\bfirst of the (?P<v>[\\w-]+) lords\\b"
+      ],
+      "allowed": [
+        30
+      ],
+      "numeric": true
+    },
+    {
+      "id": "feast-of-thrones-nineteen",
+      "fact": "The Master ate nineteen of them.",
+      "source": "bosses/duke-eligar, bosses/duke-aypol, bosses/marquis-almen",
+      "kind": "value",
+      "scope": {
+        "sentence": "Feast of Thrones|the Feast\\b|eat|ate"
+      },
+      "claim": [
+        "\\b(?:eat|ate|eaten|eating) (?P<v>[\\w-]+)(?: lords)?\\b"
+      ],
+      "allowed": [
+        19
+      ],
+      "numeric": true
+    },
+    {
+      "id": "feast-of-thrones-eleven",
+      "fact": "Eleven knelt, and the court called him Legion.",
+      "source": "bosses/legion, bosses/high-lord-baelerdoth, bosses/high-lord-baln",
+      "kind": "value",
+      "scope": {
+        "sentence": "knelt|kneel",
+        "exclude": "which of the four"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) (?:left )?knelt\\b",
+        "\\b(?:among|with) the (?P<v>[\\w-]+)\\b",
+        "\\bthere were (?P<v>[\\w-]+) who knelt\\b"
+      ],
+      "allowed": [
+        11
+      ],
+      "numeric": true
+    },
+    {
+      "id": "darkness-falls-ten-rolls",
+      "fact": "Ten Rolls of precedence line the approach; the present one is the Tenth.",
+      "source": "locations/darkness-falls, bosses/grand-chancellor-adremal",
+      "kind": "value",
+      "scope": {
+        "sentence": "Rolls"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) Rolls (?:on the walls|side by side|stand|now|of the court)\\b",
+        "\\blined with (?P<v>[\\w-]+) Rolls\\b",
+        "\\bcut all (?P<v>[\\w-]+) Rolls\\b"
+      ],
+      "allowed": [
+        10
+      ],
+      "numeric": true
+    },
+    {
+      "id": "darkness-falls-three-doors",
+      "fact": "The demons' kingdom has three doors: in Camelot Hills, above Mularn and in Connacht.",
+      "source": "bosses/legion story",
+      "kind": "value",
+      "scope": {
+        "sentence": "doors (?:opened|open)|kingdom has"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) doors (?:opened|open)\\b",
+        "\\bkingdom has (?P<v>[\\w-]+) doors\\b"
+      ],
+      "allowed": [
+        3
+      ],
+      "numeric": true
+    },
+    {
+      "id": "hallbjorn-eighty",
+      "fact": "Hallbjorn Ulfsson's warband mustered at Fort Atla eighty strong.",
+      "source": "bosses/gjalpinulva, locations/malmohus, locations/myrkwood-forest",
+      "kind": "value",
+      "scope": {
+        "sentence": "Hallbjorn|Fort Atla"
+      },
+      "claim": [
+        "\\bHallbjorn's (?P<v>[\\w-]+)\\b",
+        "\\b(?P<v>[\\w-]+) strong\\b"
+      ],
+      "allowed": [
+        80
+      ],
+      "numeric": true
+    },
+    {
+      "id": "galplen-twenty-seven",
+      "fact": "Twenty-seven out of Galplen, who knew Ragnhild's song by heart, killed the dragon twice in one day.",
+      "source": "bosses/gjalpinulva, locations/myrkwood-forest",
+      "kind": "value",
+      "scope": {
+        "sentence": "Galplen",
+        "files": [
+          "bosses/gjalpinulva",
+          "locations/myrkwood-forest",
+          "locations/malmohus"
+        ]
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) out of Galplen\\b",
+        "\\bGalplen (?P<v>[\\w-]+)\\b",
+        "\\bcompany of (?P<v>[\\w-]+) out of Galplen"
+      ],
+      "allowed": [
+        27
+      ],
+      "numeric": true
+    },
+    {
+      "id": "vind-ryttaren-attempts",
+      "fact": "Asmund of the Vind Ryttaren made seven attempts on the roost and was thrown four times; Hrafn made four.",
+      "source": "bosses/hurika, bosses/torst",
+      "kind": "value",
+      "scope": {
+        "sentence": "Asmund"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) attempts\\b"
+      ],
+      "allowed": [
+        7
+      ],
+      "numeric": true
+    },
+    {
+      "id": "tawi-shon-forty-winters",
+      "fact": "Tawi Shon kept the boats' fire on the Cliffs of Moher for forty winters.",
+      "source": "bosses/tawi-shon, locations/cliffs-of-moher",
+      "kind": "value",
+      "scope": {
+        "files": [
+          "bosses/tawi-shon",
+          "locations/cliffs-of-moher"
+        ],
+        "sentence": "Tawi|kept|fire"
+      },
+      "claim": [
+        "\\b(?P<v>[\\w-]+) winters\\b"
+      ],
+      "allowed": [
+        40
+      ],
+      "numeric": true
+    },
+    {
+      "id": "king-mark-duke-marcus",
+      "fact": "King Mark is Duke Marcus's son, the son who came home alone from Dartmoor.",
+      "source": "HEROES.md owner notes (2026-11-21)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "(?-i:\\bMark\\b)|Duke Marcus"
+      },
+      "forbid": [
+        "\\bMark\\b[^.]{0,60}\\bson of (?!Duke Marcus)(?!the Duke)",
+        "Duke Marcus[^.]{0,60}\\b(?:daughter|nephew)\\b"
+      ]
+    },
+    {
+      "id": "arthur-is-dead",
+      "fact": "At 1.65 Arthur is dead; his knights are legends of the past and never stand in a present-day scene.",
+      "source": "HEROES.md canon",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "(?-i:\\bArthur\\b)"
+      },
+      "forbid": [
+        "\\bArthur (?:rides|is riding|waits|sits|stands|holds court|reigns|rules) (?:now|today|still)\\b",
+        "\\bking Arthur is alive\\b"
+      ]
+    }
+  ]
+}

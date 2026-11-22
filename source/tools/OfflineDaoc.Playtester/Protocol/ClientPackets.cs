@@ -38,14 +38,19 @@ internal static class ClientPackets
         return (ushort)(val2 - ((val1 + val2) << 8));
     }
 
-    /// <summary>CryptKeyRequestHandler: client type, version 1.1.27, revision letter, build.</summary>
-    public static (byte, PacketWriter) CryptKeyRequest()
+    /// <summary>The build game.dll 1.127 sends in its handshake (PacketLib1125: "last seen 0x2A 0x07"). Any build but 0 makes
+    /// the server treat the connection as the original client (GameClient.IsOriginalGameClient, 1.2.1).</summary>
+    public const ushort OriginalClientBuild = 0x2A07;
+
+    /// <summary>CryptKeyRequestHandler: client type, version 1.1.27, revision letter, build. Build 0 is what Living Server's
+    /// new client sends (the server then keeps its old behaviour for it); <see cref="OriginalClientBuild"/> is game.dll's.</summary>
+    public static (byte, PacketWriter) CryptKeyRequest(ushort build = 0)
     {
         var w = new PacketWriter();
         w.Byte(ClientType);
         w.Bytes(Version);
         w.Byte((byte)'a');
-        w.Short(0);
+        w.Short(build);
         return (0xF4, w);
     }
 

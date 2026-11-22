@@ -45,7 +45,34 @@
       "A grey shore-bird calls in three accents.",
       "The mist is a door, the Hibernians say."
     ],
-    "areas": []
+    "areas": [
+      {
+        "name": "Gnat's road",
+        "region": 181,
+        "x": 315400,
+        "y": 347300,
+        "z": 0,
+        "radius": 1200,
+        "lines": [
+          "A thin whistle in the heather, then another.",
+          "Bugbear gnats rise off the north road in a cloud.",
+          "The Aalid Feie folk do not count the whistles."
+        ]
+      },
+      {
+        "name": "the Aegir tide-line",
+        "region": 151,
+        "x": 282324,
+        "y": 354456,
+        "z": 0,
+        "radius": 1500,
+        "lines": [
+          "Salt-weed on the tide-line, as on two other isles.",
+          "A grey shore-bird calls. The accent is anyone's guess.",
+          "Wrack, salt-weed, and a bird that nests on three isles."
+        ]
+      }
+    ]
   },
   "botLines": {
     "lore": [
@@ -98,7 +125,7 @@
     "title": "On the Things the Three Isles Share",
     "pages": [
       "I have read the reports of three realms' scholars on the Shrouded Isles, which is more than most scholars of any realm will admit to. I am Ultan of Tir na Nog, who keeps the rain records for Domnann when I am on the isle, and writes letters when I am not. The reports agree on almost nothing. They agree that the isles came out of the mist in one summer, and that the same small things are found on all three. I have spent four summers on Hy Brasil and two on the Albion shore, by leave of a captain who did not ask questions, and I will set down what I saw.",
-      "Each realm has a reason the isles rose, and each reason is about itself. Camelot's scholars say Morgana's war broke the spell on Avalon and the rest came up with it. Jordheim's say the Troll Fathers called Aegir back. Our own say Hy Brasil hid on purpose, or that the mist was the Root's breath. I have yet to read one that allows the isles might have risen for a reason that was not ours. I include my own. The Sylvan, when I asked them, said the mist does not belong to anyone, and changed the subject.",
+      "Each realm has a reason the isles rose, and each reason is about itself. Camelot's scholars say Morgana's war broke the spell on Avalon and the rest came up with it. Jordheim's say the Troll Fathers called Aegir back. Our own say Hy Brasil hid on purpose, or that the mist was the Root's breath. I have yet to read one that allows the isles might have risen for a reason that was not ours. I include my own. I wrote it first, and I was proudest of it. The Sylvan, when I asked them, said the mist does not belong to anyone, and changed the subject.",
       "The shared things, then. A grey shore-bird, nesting on all three coasts, whose call the scholars of each realm swear is in their accent; I have heard it on our shore and on Albion's, and I could not tell the difference, which I do not say in Tir na Nog. A salt-weed on all three tide-lines and no other shore. And certain wanderers, reported on one isle one season and on another the next. The Albions call it proof of a sunken country; the Norse call it rats on longships; we call it a door. All three explanations fit the bird.",
       "The best known wanderer is called Gnat. It is not large and not especially fierce. It whistles, high and thin, and when it is hurt the ground answers with ants that burn. The Albion reports place it in an Avalon marsh, the Norse on a burned slope of Aegir. I place it on the north road of the Vale of Balor, a short walk from Aalid Feie, because that is where I have watched it every summer for six years. The people of Aalid Feie have stopped turning round when it whistles, and they will not count the whistles aloud, and they will not say why.",
       "I have written this to both capitals. Camelot answers that Gnat came over the mist from Avalon and stayed. Jordheim answers that it is a troll-child's pet from Aegir, lost in the Morvalt's war. Neither disputes that it is in our vale now. They dispute that it was always there. I am inclined to believe all three of us, which is why the scholars of two realms no longer answer my letters, and the third does not read them. If the mist is a door, as we say, then something small walked through it before any of us did, and has been whistling at all three realms ever since."

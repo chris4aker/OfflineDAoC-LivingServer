@@ -90,7 +90,7 @@
     "keyword": "Dreaded",
     "text": "The Dreaded Ursine, last smith-shaman of the undivided tribe, guarding the first smiths' forge at the bottom of Treibh Caillte for a people that no longer exists. Immortal Gift ends at its fire."
   },
-  "bookPage": "From Hervelina the hermit's account, as she told it to me over her tea: the Dreaded has stood in front of the forge since before Vian's grandfather. When the tribe split, the forge was the one thing neither side would let the other have, and its keeper let neither near. The quarrel ended. The keeper did not move. It guards the fire for a tribe that does not exist. I think it would step aside for an ursine who came with a thrall's collar in one hand and a warrior's spear in the other. Nobody has tried.",
+  "bookPage": "From Hervelina the hermit's account, as she told it to me over her tea: the Dreaded has stood in front of the forge since before Vian's grandfather. When the tribe split, the forge was the one thing neither side would let the other have, and its keeper let neither near. The quarrel ended. The keeper did not move. It guards the fire for a tribe that does not exist. The coals are still red under the ash; something feeds them. I think it would step aside for an ursine who came with a thrall's collar in one hand and a warrior's spear in the other. Nobody has tried.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Dreaded Ursine in Treibh Caillte in {minutes} minutes.",
     "loss": "Dreaded Ursine turned back {realm}'s band under {raidLeader} in Treibh Caillte after {minutes} minutes."

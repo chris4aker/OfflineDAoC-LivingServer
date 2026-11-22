@@ -31,7 +31,8 @@
   "yells": {
     "aggro": [
       "My garden does not want you.",
-      "Up, my trees. Up."
+      "Up, my trees. Up.",
+      "Who walks on my roots without asking?"
     ],
     "phases": [
       {
@@ -40,11 +41,13 @@
       }
     ],
     "death": [
-      "Who will tend them now?"
+      "Who will tend them now?",
+      "Prune them gently... they were good trees once..."
     ],
     "slay": [
       "Compost.",
-      "Planted."
+      "Planted.",
+      "Mulch for the young oaks."
     ]
   },
   "atmosphere": {

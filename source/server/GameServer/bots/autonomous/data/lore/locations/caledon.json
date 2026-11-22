@@ -162,18 +162,33 @@
    "the grovewood in cale are the trees gwydion woke [to fight arawn|for the battle of the trees]. never got put back",
    "the arawnites in cale [still keep the hills for arawn|are arawn's people]. the church preaches against them",
    "mids never cut green wood in caledonia. [skalds say the trees remember|bad luck, they say]",
-   "caer caledon renegades are [the toughest in any bg|tougher than the other three]. the chieftess is a hardened band's foe, well past anyone in there"
+   "caer caledon renegades are [the toughest in any bg|tougher than the other three]. the chieftess is a hardened band's foe, well past anyone in there",
+   "five mids cut a green alder in cale once to bridge a stream. the cairn by the mid gate is them",
+   "the battle of the trees started over a white roebuck and a whelp stolen out of annwn. thats where cale's wood comes from",
+   "gwydion beat arawn's champion by reading his name, bran, off the alder sprigs on his shield",
+   "albs say arthur fought his seventh battle in the wood of celidon and raised caer caledon after",
+   "old alb song says a wild myrddin lived fifty years in the caledon wood [talking to an apple tree|with the wolves and deer]",
+   "the caer caledon renegades keep their own roll. a scribe who walked away from castle sauvage writes it",
+   "the arawnites call the ghouls at the barrows [arawn's dogs|the king's dogs] and leave them be",
+   "everyone who leaves caledonia goes on to the frontier. [nobody gets back in|no way back into cale after]"
   ],
   "rumour": [
    "[heard|someone said] the grovewood in caledonia all face the arawnite hills. [still lined up|like an army]",
-   "[heard|word is] the hibs say caer caledon was a dun before the albs renamed it"
+   "[heard|word is] the hibs say caer caledon was a dun before the albs renamed it",
+   "[heard|someone said] academy kids go into cale with a list of apple trees looking for merlin [lol|. good luck]",
+   "heard the grovewood would go back to sleep if someone sang them the second song. nobody knows it",
+   "[heard|word is] the chieftess at caer caledon was a captain in one of the realms once. nobody agrees which",
+   "someone said the trees on both banks came down to the water the night the mids cut that alder in cale",
+   "heard the arawnite shamanesses kneel at the barrows listening for the king under the hills to answer",
+   "[heard|someone swore] theres a little pig under an apple tree in the caledon woods that bolts at the sound of hounds"
   ],
   "tell": [
    "caledonia? the bg for the most seasoned, [last one before the frontier|the last bg]. caer caledon in the middle",
    "is cale hard? the keep is. renegades for hardened veterans, the chieftess stronger again, and their casters [hit from far off|reach a long way]",
    "whats in caledonia? grovewood, timber cats, skulking ghouls, and arawnites in the west and north hills",
    "who holds caer caledon? [renegades|the renegade chieftess caledon], deserters from all three realms",
-   "where is cale? ask one of the realm's porters for battlegrounds [once youre well seasoned|while youre seasoned but not yet a veteran]"
+   "where is cale? ask one of the realm's porters for battlegrounds [once youre well seasoned|while youre seasoned but not yet a veteran]",
+   "what do i bring to cale? a full group, siege gear from the siege masters at your portal keep, and healers who can keep up"
   ]
  },
  "loremaster": {
@@ -194,8 +209,9 @@
   "title": "The Chieftess's Roll, kept by a scribe of Caer Caledon",
   "pages": [
    "I keep the roll for the Chieftess, since no realm keeps one for us. We are deserters. I was a scribe of Albion's muster at Castle Sauvage and walked away from it; the woman on the wall beside me was a huscarl of Midgard who walked away from hers, and the ranger at the north gate was a Hibernian of the Path. We hold Caer Caledon because it was empty and old and nobody's. The fields let us in though we are grown. There are three explanations of that in three realms, and they come to the same thing: we belong to nobody, and the fields do not count us.",
-   "The country is older than any of us. The trees stand in ranks facing the western hills, and they do not like axes; we cut nothing green. The painted people in those hills pray to the king under the hills and call the ghouls at the barrows his dogs, and leave them be. So do we. The painted people do not trouble the caer. They trouble the young who come up from the portal keeps, and the young trouble us, and that is the order of things in Caledonia.",
-   "The young come up the slope at us every summer, and we hold the walls, and they fall, and in the morning they are back at their gates and we are where we were. The Chieftess watches them come from the gatehouse. She says they are the best of their realms, and that within the year they will be at the frontier. I asked her once why she takes such care over the walls against children. She said someone has to teach them that a wall can be held, and she would rather it were someone who wished them well."
+   "The country is older than any of us. The trees stand in ranks facing the western hills, and they do not like axes; we cut nothing green. There is a cairn of river stones by the Midgard gate, and the grovewood stand close round it and have never once leaned on it. The painted people in those hills pray to the king under the hills and call the ghouls at the barrows his dogs, and leave them be. So do we. The painted people do not trouble the caer. They trouble the young who come up from the portal keeps, and the young trouble us, and that is the order of things in Caledonia.",
+   "The young come up the slope at us every summer, and we hold the walls, and they fall, and in the morning they are back at their gates and we are where we were. The Chieftess watches them come from the gatehouse. She says they are the best of their realms, and that within the year they will be at the frontier. I asked her once why she takes such care over the walls against children. She said someone has to teach them that a wall can be held, and she would rather it were someone who wished them well.",
+   "There are names in this roll that are not ours. They are the young we have come to know by sight, summer after summer, until one summer they stop coming because the field has let them go on to the frontier. The huscarl touches the alder cairn at the Midgard gate whenever her watch takes her past it, though the five under it were not of her steading. The ranger of the Path talks to the trees on the western side as if they were old neighbours, and they do not answer him, and he does not seem to mind. I keep the roll. When the young of Albion come up the slope I look among them for faces I knew at Castle Sauvage, and I have not seen one yet."
   ]
  },
  "bosses": [],

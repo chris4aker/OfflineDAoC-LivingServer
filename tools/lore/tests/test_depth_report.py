@@ -31,7 +31,7 @@ class FixtureTests(unittest.TestCase):
 
     def test_every_summary_line(self):
         expected = [
-            "locations: story 500+ words: 2 of 5 below",
+            "locations: story 500+ words: 1 of 5 below",
             "locations: legend 120+ words: 2 of 5 below",
             "locations: 6+ facts: 2 of 5 below",
             "locations: 4-8 firstEntry lines: 2 of 5 below",
@@ -83,6 +83,7 @@ class FixtureTests(unittest.TestCase):
             "loremaster topics 6<8", "page 2 99<100", "page 3 0<100", "no era", "no faction"])
         self.assertEqual(s["locations/no-book.json"], ["tell 5<6", "no loremaster", "no book"])
         self.assertIn("locations/epic-good.json", s, "the location floors count epic locations too, as the C# does")
+        self.assertEqual(s["locations/epic-good.json"][0], "legend 0<120", "but not the story 500+ floor: a 300-word epic summary holds")
 
     def test_major_includes_order_and_joins_book_pages(self):
         s = shorts(self.r, "major")
@@ -134,6 +135,22 @@ class CSharpFixtureTests(unittest.TestCase):
         for line in ["locations: story 500+ words: 1 of 1 below", "locations: an era and a faction: 0 of 1 below",
                      "history: Albion: 2 eras, 1 factions", "history: Midgard: no file yet"]:
             self.assertIn(line, s)
+
+    def test_an_epic_krondon_skips_the_story_floor(self):
+        # UT_LoreBible.ChaptersAndTheEpicTierParseAndAreChecked: krondon made epic (183-word story) is not below 500+.
+        if not os.path.isdir(CS_FIX):
+            self.skipTest("no LoreFixtures")
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            dst = os.path.join(tmp, "lore")
+            shutil.copytree(CS_FIX, dst)
+            p = os.path.join(dst, "locations", "krondon.json")
+            with open(p, encoding="utf-8") as f:
+                j = json.load(f)
+            j["tier"] = "epic"
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump(j, f)
+            self.assertIn("locations: story 500+ words: 0 of 1 below", d.report(dst)["summary"])
 
 
 if __name__ == "__main__":
