@@ -17,6 +17,12 @@ public static class AutonomousFrontierTransport
         .Where(p => p.ObjectState == GameObject.eObjectState.Active && p.CurrentRegion == bot.CurrentRegion && p.Realm == bot.Realm)
         .OrderBy(bot.GetDistanceTo).FirstOrDefault();
 
+    public static GameBot[] BoardingParty(GameBot bot, Passage passage) =>
+        HasCommittedSiegePassage(bot, passage) || passage.Medallion == "home_necklace" &&
+        AutonomousObjectiveAssignments.Parse(bot.PersistentRecord?.ObjectiveKind) != eAutonomousObjectiveKind.RvR
+            ? [bot] // Initial PvE meetups can have members returning from different frontiers.
+            : bot.Group?.GetMembersInTheGroup().OfType<GameBot>().ToArray() ?? [bot];
+
     /// <summary>How far from its porter a medallion merchant is looked for.</summary>
     public const int MedallionMerchantRadius = 3000;
 

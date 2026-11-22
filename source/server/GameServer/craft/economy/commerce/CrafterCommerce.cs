@@ -674,6 +674,7 @@ namespace DOL.GS.CraftingEconomy
             };
             Say(crafter, player, new CrafterTalk.Reply($"your {slots["item"]} is done, im in {slots["zone"]} for a bit, come by and say ready",
                 CrafterTalk.Act.Status, null, "craft_ready_tell", slots), 1_000);
+            return true;
         }
 
         /// <summary>
