@@ -115,7 +115,7 @@ are not added yet:
     - Bellum's twelve battles and the Camlann adder: no myth names the knights there.
     - Oscar's lay: its "king's son" detail needs a canon check of its own before anyone names Cairbre.
     - Midgard's present-day warbands (Hallbjorn's eighty): they are not legend-age.
-  - **Gaps:** Tristan, Starkad and Deirdre are in the table but not used yet.
+  - **Gaps:** Tristan, Starkad and Deirdre were in the table but not used yet. The second pass below uses all three.
   - **Companions review fixes** (REVIEW-COMPANIONS.md, applied on `lore/step4-companions`): the Cú Chulainn and
     Fionn antecedents, the Caer Sidi muster contradiction, Murdaigean, the Camelot sentence, Mordred and Gareth, Bors
     for Gareth, Hjalmar the Brave, the Sigurd and Hervor wording, the Fianna and Keating sources, and Hall of the
@@ -130,8 +130,43 @@ are not added yet:
     - Each name is introduced with its role. Roles still carry most mentions.
   - **Small fixes:** the Host's "He wrote" is now Cadoc; Cathbad names Cú Chulainn; and the warp-spasm is described
     from the *Táin*.
+  - **Decision 5, second pass** (branch `wt2/lore-review`; writers `8a616acd`, `348594f0`, `7b417b34`; review fixes
+    `247c5b7a`). Text was only added or reworded; nothing was cut.
+    - **Albion:**
+      - Tristan, son of Meliodas, is in `lyonesse`, `cornwall` (Marhaus, Isoud, Mark at Tintagel) and `camelot`.
+      - The Round Table roll is in `camelot`: Leodegrance, Kay, Lancelot, Tristan and Percival, the Grail Pentecost
+        and Lancelot's 24 days.
+      - Pellinore, Excalibur, the scabbard and Lancelot of the Lake are in `avalon-marsh`.
+      - Accolon and the four queens are in `morgana`.
+      - The child given to Ector, Kay and the sword in the stone are in `shade-of-uther-pendragon`.
+      - In `avalon-city`, the college of healing's bed waits for the barge.
+      - In `history/albion`, Lancelot dies at the hermitage.
+    - **Midgard:**
+      - In `history/midgard`: Ragnar's sons take the news, Ivar's ox-hide, and Starkad, Vikar and Hather.
+      - Beowulf and Thora are in `gotar`, and Beowulf's mere is in `mahattava`.
+      - Starkad is in `cursed-tomb`, Sibilja in `east-svealand`, the wolf-skins in `varulvhamn` and the hairy breeches
+        in `malmohus`.
+      - In `jordheim`, the founders are sung beside Starkad and Ragnar's sons.
+    - **Hibernia:**
+      - Mac Dathó's feast is in `ailbe` and Fergus's terms of the fords in `avartack-the-champion`.
+      - Ferdiad at Ardee is in `connacht`, Medb and the Brown Bull in `cruachan-gorge`, Deirdre and the Red Branch in
+        `emain-macha`, and Scáthach's bridge in `mount-collory`.
+    - **Independent review** ([REVIEW-COMPANIONS-2.md](REVIEW-COMPANIONS-2.md)): 1 High, 5 Medium, 13 Low. All are
+      fixed.
+      - The High was older than this round: Patrick and the churchman are out of the Oisín fact and faction text in
+        `history/hibernia`.
+      - The Mediums were Accolon and the scabbard, the scabbard claim hedged, the Siege Perilous at the Grail
+        Pentecost, Ivar crushing Sibilja, and the hound's head on the chariot pole.
+      - Isolde is now Isoud the Fair, so she is not taken for Dame Ysolde.
+      - Malory book 10 and book 19 are now cited.
+      - The shared repetition is varied: "the songs say", "of the old songs", and the closing "that is why" device.
+      - No `myth` fact needed relabelling.
+      - `UT_LoreBible` was not run, because there is no dotnet in that environment.
+    - **Open for the owner:** whether King Mark is Duke Marcus's son (A9 in the review), and the hired-companion
+      names that match legend names.
 - **Next:**
-  1. **Decision 5, second pass.** Look for more legend-age passages that a companion would honestly improve:
+  1. **Decision 5, second pass.** Done and reviewed (see above). Show the owner samples before merging. The list it
+     worked from:
      - Midgard's Jordheim and dragon legends, which could use Starkad and Ragnar's sons;
      - Hibernia's Red Branch places, such as the Ulster fords in Connacht and Mount Collory's Dún Scáith;
      - Albion's Avalon and Grail lore, which could use Lancelot and Tristan.
