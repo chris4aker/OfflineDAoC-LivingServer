@@ -42,7 +42,7 @@
     }
   ],
   "story": "In the east of Gwyddneau there is a patch of ground where nothing grows. The heather stops at its edge as if cut, and inside it the earth is cracked and burned and smells faintly of brimstone, and the lammia of Clifton call it by the old Welsh name of the drowned country's people, Marw Gwlad, the dead country. It was not always dead. The lammia say a stone fell there, in the years before Morgana's war, out of somewhere that was not the sky, and that the ground has been dying outward from it ever since.\n\nThe stone is Arawn's. The Inconnu of the isles, who serve the lord of the dead, have been looking for it for years: Honayt'rt in Wearyall, N'chever on the village's edge, and O'honat in Caer Diogel, who drinks cider politely and does not finish it. They say it is one of the stones of their master's house, a fire-stone that warmed some hall of Annwn, carried off in a war between powers the Inconnu will not name, and dropped. Where it fell, something came to sit on it.\n\nThat something is Nyaegha. O'honat says it is a demon that likes to torture animals and other creatures, and grows stronger by it; the lammia, who have lost cliff-horses to it, say it does not eat what it takes, only keeps it alive as long as it can. There is a circle of small bones round the edge of the burned ground that the yales of the high plain will not cross. Nyaegha squats in the middle, as large as a cart and the colour of a coal, and mostly it does nothing. It does not come out after travellers. It waits, the lammia say, for someone who is looking for the stone, and those it does not wait for; those it goes to meet.\n\nThe Inconnu say it can be hurt by anything, and does not mind much; that its hide turns a share of every kind of blow, and no more than a share. They say also that it does not fight one man at a time. Whoever stands at the shoulder of the one it is striking feels the ground burn under him, now and then, when a blow of the demon's lands true. And they say it is never long gone. The burned ground is its chair, and the stone keeps the chair warm, and when Nyaegha is put down the fire-stone has another tenant before a man could finish his prayer; whether it is the same tenant, the Inconnu say, is a question for their master.",
-  "legend": "There are two Nyaeghas. The one standing in Marw Gwlad in the east of Gwyddneau is a level 60 demon that does not attack first (aggro 0) and respawns in about ten seconds. The Lost Stone of Arawn one is a level 65 that ambushes anyone on step 4 who walks into the burned circle, and only that one gives the stone. Both fight the same way: about 13,500 to 14,100 health, 20 resist to everything, armour 350, and on one hit in five a 300 spirit blast on everyone within 350 of its target, so spread out and keep only the tank in close. The ambush only spawns if no Nyaegha already exists, and the standing one is inside the circle, so the quest may be blocked while it is up: kill the standing one, step out, and walk back in quickly.",
+  "legend": "There are two Nyaeghas. The one standing in Marw Gwlad in the east of Gwyddneau is a demon, a foe for several bands of the realm's best together, that does not attack first and comes back about ten seconds after it falls. The Lost Stone of Arawn one is a stronger demon of the same tier that ambushes anyone on step 4 who walks into the burned circle, and only that one gives the stone. Both fight the same way: as much killing as about seven champions, a fifth less from every kind of harm, armour as heavy as plate, and on one hit in five a spirit blast worth a seventh of a champion's strength on everyone within twelve paces of the one it hit, so spread out and keep only the shield-bearer in close. The ambush only comes if no Nyaegha already walks the world, and the standing one is inside the circle, so the quest may be blocked while it is up: kill the standing one, step out, and walk back in quickly.",
   "yells": {
     "aggro": [
       "You came for the stone.",
@@ -80,22 +80,22 @@
   },
   "botLines": {
     "briefing": [
-      "nyaegha, demon in marw gwlad e of gwyddneau. the standing one is 60 and wont aggro, quest one is 65 and ambushes",
-      "13-14k hp, 20 resists, af 350. 1 in 5 hits = 300 spirit aoe around its target. spread, only the tank close",
-      "lost stone of arawn folks: as far as anyone knows the ambush wont come while the 60 is up. kill it, step out, walk back in",
-      "only the 65 ambusher gives the stone"
+      "nyaegha, demon in marw gwlad e of gwyddneau. the standing one wont attack, the quest one is stronger and ambushes",
+      "killing of 7 of us, shrugs off a fifth of everything, plate-thick hide. 1 hit in 5 = spirit burst round its target. spread out",
+      "lost stone of arawn folks: as far as anyone knows the ambush wont come while the standing one is up. kill it, step out, walk back in",
+      "only the ambusher gives the stone"
     ],
     "aftermathWin": [
       "stone of arawn, got it. honayt'rt can stop looking",
-      "spread out like i said, nobody ate the aoe",
+      "spread out like i said, nobody ate the burst",
       "the standing one died in seconds and came back in ten",
       "o'honat owes us cider"
     ],
     "aftermathLoss": [
-      "everyone stood on the tank and ate the spirit aoe",
-      "killed the 60 and got no stone. need the ambush one",
+      "everyone stood on the shield-bearer and ate the spirit burst",
+      "killed the standing one and got no stone. need the ambush one",
       "walked in and nothing ambushed us, the standing one was up",
-      "65 demon at 50, ouch"
+      "that demon on folk who'd only just made our best, ouch"
     ],
     "rumour": [
       "[heard|someone said] the burned ground in marw gwlad is where a stone of arawn fell",

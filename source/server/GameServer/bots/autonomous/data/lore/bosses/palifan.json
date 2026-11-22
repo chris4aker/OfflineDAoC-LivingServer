@@ -27,7 +27,7 @@
     }
   ],
   "story": "The priests of the dead who kept Caldey for the colleges were not only gravediggers. They farmed what the isle allowed, and in the middle of it, where the ground sinks into a bowl, they dug fish-stews: square pools fed by a spring and drained by a sluice, where carp were kept for the fast days. The water moved. That was the whole of the priests' craft with it: keep the spring open, keep the sluice clear, and the pools stay sweet.\n\nWhen the witch called and the isle stood up, nobody kept the sluice. The dead do not fast. The spring silted and the pools went still and green, and the guagaran came up into them out of somewhere the fishermen of Little Haven would rather not guess, heavy, slow, wide-mouthed beasts that like nothing better than water that does not move. They are called stagnators now, the ones that wallow there, and the greatest of them, the one that lies in the middle pool where the priests' spring used to rise, Little Haven calls Palifan.\n\nHe does not rule the others as a lord rules; the stagnators wallow where they wallow and do not come when he is troubled, and he does not call. He rules the pools as a stone rules a stream, by lying in the way. Everything that comes down to the water to drink comes past him, and he comes up out of the green at anything that walks to the edge, slow to start and hard to stop.\n\nWhat Little Haven notices about him is how long he stays gone. When the realm's young put him down, the middle pool is empty for a long while, longer than any of the isle's dead stay down, and the fishermen say that is because a guagaran is a living thing and has to be grown, not raised. They have a saying for patience, out of it: \"as long as waiting for Palifan.\" They also say the spring is trying to come back, a little more each time he is gone, and that if the realm put him down often enough the pools might run sweet again. Nobody has tried.",
-  "legend": "Palifan is a level 55 guagaran in the stagnant pools in the middle of Caldey. He is aggressive from about 500 away. He has no faction, so the guagaran stagnators (47 to 54) wallowing 450 to 800 from him do not join unless you walk into their own range: come at him from the side with the fewest. No spells or styles, by every account: a melee kill for a small group of fifties. His respawn is long for a named on Caldey, about twelve minutes, so if someone just killed him, go and do something else; the stagnators are decent experience while you wait, one at a time.",
+  "legend": "Palifan is a guagaran in the stagnant pools in the middle of Caldey, a foe for the realm's best, a full band of them. He attacks on sight from about seventeen paces away. He has no faction, so the guagaran stagnators (from foes for a hardened band to foes for the realm's best) wallowing fifteen to twenty-seven paces from him do not join unless you walk into their own reach: come at him from the side with the fewest. No spells or styles, by every account: a melee kill for a small group of the realm's best. He is slow to return for a great beast of Caldey, about twelve minutes after he falls, so if someone just killed him, go and do something else; the stagnators are good seasoning while you wait, one at a time.",
   "yells": {
     "aggro": [
       "The green water heaves.",
@@ -65,10 +65,10 @@
   },
   "botLines": {
     "briefing": [
-      "palifan, 55 guagaran in the middle pools of caldey. aggros at 500",
+      "palifan, guagaran in the middle pools of caldey, job for our best. comes at you from 17 paces",
       "no faction, stagnators around wont join unless you walk into them. come from the empty side",
-      "no spells, melee, small group of 50s",
-      "12 min respawn, if hes not up go do something else"
+      "no spells, melee, small group of our best",
+      "takes 12 min to come back, if hes not there go do something else"
     ],
     "aftermathWin": [
       "palifan down. as long as waiting for palifan, as they say",
@@ -79,7 +79,7 @@
     "aftermathLoss": [
       "walked through the stagnators to get to him",
       "he hits like a cart for a frog thing",
-      "camped him and the stagnators wandered into us",
+      "waited on him and the stagnators wandered into us",
       "he wasnt even up, we wiped on stagnators"
     ],
     "rumour": [
