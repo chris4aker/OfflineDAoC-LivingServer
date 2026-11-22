@@ -122,12 +122,12 @@
     "briefing": [
       "vagn and nokkvi, they come as a pair. one group holds vagn away, [rest|everyone else] on nokkvi",
       "vagn: melee him, he shrugs off magic. interrupt the frost shock",
-      "vagn and nokkvi reset if dragged or left alone 30 sec",
+      "vagn and nokkvi go home whole if dragged or left alone 30 sec",
       "one group on vagn, rest on nokkvi",
       "vagn: spells do a tenth, blades most of it. melee on vagn",
       "vagns frost shock is interruptible, keep hitting him while he casts",
       "vagn and nokkvi are opposites. melee vagn, blast nokkvi",
-      "they reset if dragged or left alone 30 sec"
+      "drag them or leave them 30 sec and theyre whole again"
     ],
     "aftermathWin": [
       "wagon and boat both sunk lol",

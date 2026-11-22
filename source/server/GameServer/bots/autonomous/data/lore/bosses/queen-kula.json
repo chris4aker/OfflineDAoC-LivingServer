@@ -190,7 +190,7 @@
     "briefing": [
       "kula and tuscar come together, fight at the thrones. everyone on kula, only his shield-bearer on tuscar. [healers|clerics] on the shield-bearers",
       "once kula is under half or tuscar is dead her thors might comes way more often, a bolt on whoever she hits. [heal her shield-bearer|keep him topped]",
-      "dont drag the twins out of the throne room. past their spot they take no damage and reset",
+      "dont drag the twins out of the throne room. past their spot they take no damage and go home whole",
       "kula hits harder when tuscar drops. [save the big heals|healers be ready] for that"
     ],
     "aftermathWin": [
@@ -202,7 +202,7 @@
     "aftermathLoss": [
       "kula at half just kept bolting her shield-bearer. we need more heals on him",
       "[all dead|we all died] at the thrones. tuscar went down and she just went nuts",
-      "we dragged them out of the throne room and they reset. [stay put|never again]",
+      "we dragged them out of the throne room and they went home whole. [stay put|never again]",
       "everyone stacked on tuscar's shield-bearer and the hammers did the rest",
       "kula at half with tuscar dead is just too much damage for our healers"
     ],
