@@ -6,7 +6,7 @@ tells in more than one file and the forms each may take. `--check` reads every v
 contradiction follows HEROES.md decision 10 (Mythic's canon first, else the rule of cool, adding words, never
 cutting).
 
-**32 ledger facts, 0 contradiction(s).**
+**47 ledger facts, 0 contradiction(s).**
 
 ## The ledger
 
@@ -39,11 +39,26 @@ cutting).
 | **darkness-falls-ten-rolls**: Ten Rolls of precedence line the approach; the present one is the Tenth. | 4: `archivist-borath`, `earl-vone`, `grand-chancellor-adremal`, `darkness-falls` | - |
 | **darkness-falls-three-doors**: The demons' kingdom has three doors: in Camelot Hills, above Mularn and in Connacht. | 9: `behemoth`, `chamberlain`, `duke-aypol`, `duke-bimure`, `duke-harboris`, `field-marshal-nebir` and 3 more | - |
 | **hallbjorn-eighty**: Hallbjorn Ulfsson's warband mustered at Fort Atla eighty strong. | 3: `gjalpinulva`, `malmohus`, `myrkwood-forest` | - |
-| **galplen-twenty-seven**: Twenty-seven out of Galplen, who knew Ragnhild's song by heart, killed the dragon twice in one day. | 2: `gjalpinulva`, `myrkwood-forest` | - |
+| **galplen-twenty-seven**: Twenty-seven out of Galplen, who knew Geirlaug's song by heart, killed the dragon twice in one day. | 2: `gjalpinulva`, `myrkwood-forest` | - |
 | **vind-ryttaren-attempts**: Asmund of the Vind Ryttaren made seven attempts on the roost and was thrown four times; Hrafn made four. | 3: `hurika`, `torst`, `tuscaran-glacier` | - |
 | **tawi-shon-forty-winters**: Tawi Shon kept the boats' fire on the Cliffs of Moher for forty winters. | 2: `tawi-shon`, `cliffs-of-moher` | - |
+| **orlaith-hundred-and-forty**: Orlaith of Tir na Nog, who lives in Necht now (the real 1.65 NPC there, so she keeps her name though gamebots share it), led the hundred and forty into Galladoria. | 9: `aroon-the-urlamhai`, `corrupt-primal-of-air`, `corrupt-primal-of-earth`, `easmarach`, `olcasar-geomancer`, `olcasgean` and 3 more | - |
+| **esras-no-churchman**: Esras of the Cliffs of Moher is a hermit who was a bard of Tir Urphost, never a churchman: Hibernia has no Church (the game's NPC is titled Brother; the lore drops it). | 2: `aoife`, `cliffs-of-moher` | - |
 | **king-mark-duke-marcus**: King Mark is Duke Marcus's son, the son who came home alone from Dartmoor. | 15: `asutri`, `captain-bardalph`, `captain-heathyr`, `clan-matron`, `dagar`, `golestandt` and 9 more | - |
 | **arthur-is-dead**: At 1.65 Arthur is dead; his knights are legends of the past and never stand in a present-day scene. | 48: `agidad`, `apocalypse`, `bellum`, `captain-atwell`, `fames`, `funus` and 42 more | - |
+| **sven-names-only-the-dead**: Sven of Jordheim puts only the dead in his songs; he does not name the living. | 13: `gjalpinulva`, `grand-summoner-govannon`, `hati`, `icelord-kvasir`, `legion`, `lydsyg` and 7 more | - |
+| **geirlaug-song-never-whole**: Geirlaug's song takes a verse for every waking of the dragon, so nobody alive sings all of it; the skalds of the south sing the warband's part whole, and Sven stops one verse short. | 3: `gjalpinulva`, `malmohus`, `myrkwood-forest` | - |
+| **grimma-keeps-the-tally**: Grimma, Jordheim's shaman trainer of the eastern hall, reads the omens before a warband leaves and keeps the tally of the realm's dead. | 5: `iarnvidiur`, `leildolf`, `thorkatla`, `dodens-gruva`, `jordheim` | - |
+| **morlin-caan-forge-by-the-temple**: Morlin Caan's forge is in Jordheim, by the temple. | 7: `fostra-orm`, `hurjavelen`, `king-tuscar`, `oona`, `undead-patrol`, `darkness-falls` and 1 more | - |
+| **tilian-one-spelling**: Sir Tilian of Castle Sauvage has one spelling, as the 1.65 world has it (never Sir Tillian). | 3: `belgrik`, `ellyll-seer`, `forest-sauvage` | - |
+| **hedydd-is-she**: Magus Hedydd of the Academy is a woman in every file (the Crystal Cave scene, her hands held out to the light). | 3: `veraerius-the-brave`, `wenoiak-the-enlightened`, `crystal-cave` | - |
+| **rhodri-is-the-captain**: Rhodri in Albion is Captain Rhodri of Snowdonia Fortress; the dead man on Dame Nest's roll is Meirion. | 1: `bane-of-hope` | - |
+| **fridwulf-four-riders**: Lady Fridwulf of the Church in Camelot reads the four riders out of the last book: Fames is the black horse with the balance, Funus the pale horse. | 6: `apocalypse`, `bellum`, `fames`, `funus`, `morbus`, `caer-sidi` | - |
+| **thirteen-remembered**: The third company's thirteen dead are the ones remembered: Lady Fridwulf reads their names at Lent in Camelot, and masses are said for the thirteen at Caer Gothwaite, Father Kenelm saying the first. | 23: `ancient-syver`, `apocalypse`, `bane-of-hope`, `chthonic-knights`, `crypt-lord`, `fames` and 17 more | - |
+| **albion-housing-no-market-explorer**: The housing villages have a market crier, never a Market Explorer (added after 1.65). | 1: `albion-housing` | - |
+| **sven-names-the-dead**: Sven of Jordheim sings the names of the dead and never of the living (Thorhild's account; Hrolf's name left out of Midgard's roll of Legion's first breakers). | 13: `gjalpinulva`, `grand-summoner-govannon`, `hati`, `icelord-kvasir`, `legion`, `lydsyg` and 7 more | - |
+| **siencyn-elaydith-runner**: Sister Elaydith's runner, who fetched the ladle and lived, is Siencyn of Camelot. | 2: `gatekeeper-dommel`, `malroch-the-cook` | - |
+| **tudno-died-at-the-gate**: Brother Tudno, chaplain of Albion's first company, died at the Gate praying; four of the company came back. | 2: `gatekeeper-dommel`, `darkness-falls` | - |
 
 ## Contradictions found
 

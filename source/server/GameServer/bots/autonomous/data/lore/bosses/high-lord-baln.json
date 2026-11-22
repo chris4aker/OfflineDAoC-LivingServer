@@ -6,6 +6,11 @@
   "realm": "Neutral",
   "facts": [
     {
+      "text": "NPC pass (HEROES.md decision 11): Hallgeir Svertingsson (once written Ottar) was renamed away from a gamebot first name; Midgard's Ottar, Hrefna's grandson in droom and stanga, is a different man. Living Server writing.",
+      "provenance": "original",
+      "source": "Living Server (HEROES.md decision 11)"
+    },
+    {
       "text": "Level 70, 100,000 health, immune to crowd control. Every 20-35 seconds he calls eight to twelve Baln minions (level 58).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs"
@@ -26,7 +31,7 @@
       "source": "LORE"
     },
     {
-      "text": "The book pages after the first (the Field Marshal's complaint and the Chancellor's ruling, Ottar Svertingsson's tale) are Living Server writing.",
+      "text": "The book pages after the first (the Field Marshal's complaint and the Chancellor's ruling, Hallgeir Svertingsson's tale) are Living Server writing.",
       "provenance": "original",
       "source": "Living Server (1.2.1 epic floors, #402)"
     }
@@ -106,7 +111,7 @@
   "bookPage": [
     "From Brother Odran's Door-Book, the account of Captain Gruffudd Fras of the garrison of Camelot Hills. I did not need to know what became of the company that struck the high lord from the door to know what not to do. We came in along the edge of his hall and took his host as it sat, a rank at a time, then the dukes one by one; the marquis took an hour. All night the lord watched from his throne, unstruck. When the hall was empty I struck him. Nothing rose but his brood out of the walls, and we burned each crowd as it came. When he fell we did not cheer. We finished the brood first.",
     "To the Grand Chancellor, from the war table in the south hall, by the hand of the Field Marshal: the host cannot be mustered while the walls are giving up demons the host has not counted. Twice in this Roll the high lord has struck the wall in a temper, and twice a crowd of his brood has come out of it and taken places in the ranks that belong to sworn soldiers. They do not answer to the war table. They answer to him, and only while he stands. The Field Marshal asks that the Chancellor rule whose they are. Beneath, in the Chancellor's hand: they are the wall's, and the wall is the high lord's. The host is the Field Marshal's, and the hall it stands in is not. Neither of you will act without the other. So it was ruled on the First Roll, and so it is ruled again.",
-    "A bow made by Sverting of Haggerfel went down into the hollow in the hands of his son Ottar, who could put an arrow through a ring at a hundred paces with it. Ottar came down into the south hall of the hollow with a band out of Mularn, and he saw the high lord sitting on his throne at the far end, and he said there was no need for all of them to walk so far. He shot from the door. The arrow stood in the high lord's shoulder. Then every demon in the hall rose at once from every seat and every corner, the dukes and the plated fiends of the war table and the brood out of the walls, and came to the door together. Three of that band came back to Mularn, and Ottar was not one of them. His father burned the bow. Here ends the tale of Ottar Svertingsson."
+    "A bow made by Sverting of Haggerfel went down into the hollow in the hands of his son Hallgeir, who could put an arrow through a ring at a hundred paces with it. Hallgeir came down into the south hall of the hollow with a band out of Mularn, and he saw the high lord sitting on his throne at the far end, and he said there was no need for all of them to walk so far. He shot from the door. The arrow stood in the high lord's shoulder. Then every demon in the hall rose at once from every seat and every corner, the dukes and the plated fiends of the war table and the brood out of the walls, and came to the door together. Three of that band came back to Mularn, and Hallgeir was not one of them. His father burned the bow. Here ends the tale of Hallgeir Svertingsson."
   ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cut through High Lord Baln's household wave by wave in {minutes} minutes.",
