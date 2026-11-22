@@ -761,6 +761,44 @@
         "market explorer"
       ],
       "unless": "after 1\\.65|in the lore"
+    },
+    {
+      "id": "sven-names-the-dead",
+      "fact": "Sven of Jordheim sings the names of the dead and never of the living (Jofrid's account; Hrolf's name left out of Midgard's roll of Legion's first breakers).",
+      "source": "CAST-MIDGARD.md (Sven's voice); NPC-PASS-NEUTRAL.md",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bSven\\b"
+      },
+      "forbid": [
+        "\\bSven\\b[^.]{0,80}\\b(?:sings|sang|names|named)\\b[^.]{0,30}\\b(?:the )?names? of the living\\b",
+        "\\bSven\\b[^.]{0,80}\\bsings Hrolf's (?:own )?name\\b"
+      ]
+    },
+    {
+      "id": "siencyn-elaydith-runner",
+      "fact": "Sister Elaydith's runner, who fetched the ladle and lived, is Siencyn of Camelot.",
+      "source": "NPC-PASS-NEUTRAL.md (bosses/gatekeeper-dommel, bosses/malroch-the-cook)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Elaydith's runner"
+      },
+      "forbid": [
+        "(?-i:Elaydith's runner, (?!Siencyn\\b)(?!Camelot\\b)[A-Z][a-z]+)",
+        "(?-i:\\b(?!Siencyn\\b)(?!Sister\\b)[A-Z][a-z]+, Sister Elaydith's runner)"
+      ]
+    },
+    {
+      "id": "tudno-died-at-the-gate",
+      "fact": "Brother Tudno, chaplain of Albion's first company, died at the Gate praying; four of the company came back.",
+      "source": "locations/darkness-falls, bosses/gatekeeper-dommel (renamed from Aldric, NPC-PASS-NEUTRAL.md)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bTudno\\b"
+      },
+      "forbid": [
+        "\\bTudno\\b[^.]{0,60}\\b(?:came back|came home|lived|survived|walked out)\\b"
+      ]
     }
   ]
 }

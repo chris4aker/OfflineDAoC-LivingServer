@@ -6,7 +6,7 @@ tells in more than one file and the forms each may take. `--check` reads every v
 contradiction follows HEROES.md decision 10 (Mythic's canon first, else the rule of cool, adding words, never
 cutting).
 
-**32 ledger facts, 0 contradiction(s).**
+**35 ledger facts, 0 contradiction(s).**
 
 ## The ledger
 
@@ -44,6 +44,9 @@ cutting).
 | **tawi-shon-forty-winters**: Tawi Shon kept the boats' fire on the Cliffs of Moher for forty winters. | 2: `tawi-shon`, `cliffs-of-moher` | - |
 | **king-mark-duke-marcus**: King Mark is Duke Marcus's son, the son who came home alone from Dartmoor. | 15: `asutri`, `captain-bardalph`, `captain-heathyr`, `clan-matron`, `dagar`, `golestandt` and 9 more | - |
 | **arthur-is-dead**: At 1.65 Arthur is dead; his knights are legends of the past and never stand in a present-day scene. | 48: `agidad`, `apocalypse`, `bellum`, `captain-atwell`, `fames`, `funus` and 42 more | - |
+| **sven-names-the-dead**: Sven of Jordheim sings the names of the dead and never of the living (Jofrid's account; Hrolf's name left out of Midgard's roll of Legion's first breakers). | 5: `grand-summoner-govannon`, `legion`, `darkness-falls`, `jordheim`, `vale-of-mularn` | - |
+| **siencyn-elaydith-runner**: Sister Elaydith's runner, who fetched the ladle and lived, is Siencyn of Camelot. | 2: `gatekeeper-dommel`, `malroch-the-cook` | - |
+| **tudno-died-at-the-gate**: Brother Tudno, chaplain of Albion's first company, died at the Gate praying; four of the company came back. | 2: `gatekeeper-dommel`, `darkness-falls` | - |
 
 ## Contradictions found
 
