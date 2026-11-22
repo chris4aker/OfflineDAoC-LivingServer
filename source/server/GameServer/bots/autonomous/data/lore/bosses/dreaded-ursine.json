@@ -24,7 +24,7 @@
     }
   ],
   "story": "At the bottom of Treibh Caillte, under the hermit Hervelina's ledge, there is a forge that the ursine say their first smiths lit before the tribe split, and it is still warm. In front of it stands the largest bear-folk anyone has seen, grey-muzzled and scarred, in the robes of a shaman, and the ursine do not give it a name. They call it the Dreaded, and keep away from the forge.\n\nHervelina, who has watched it longer than anyone, thinks it is the last of the smith-shamans, the ursine who kept the forge's fire and its songs in the days when the tribe was one people. When the old quarrel split the tribe and King Vian's line put the losers in collars, the forge was the one thing neither side would let the other have, and its keeper stood in front of it and let neither side near. The quarrel ended. The keeper did not move. It has been standing in front of the forge since before King Vian's grandfather, Hervelina says, and has outlived everyone who remembers what the quarrel was about, and it is guarding the fire for a tribe that does not exist any more.\n\nHursk the Alchemist, on the lowest level, has spent his life trying to understand what the forge makes, and has a book about it in his room that he never finished. The alchemists of Connla, who send the young of the realm down after the Faqist, say the forge makes what Hursk could not: worked in the right order, with the blood and the fang the quest names, it gives a thing that Kinney of Connla first called an immortal gift. The Dreaded Ursine does not care what it makes. It cares that the fire is kept, and that nobody who is not of the tribe touches it.\n\nHervelina's own view is that it is waiting for the tribe to come back together, and that it would step aside for an ursine who came to the forge with a thrall's collar in one hand and a warrior's spear in the other. Nobody has tried.",
-  "legend": "The Dreaded Ursine is a level 51 ursine shaman (size 92) guarding the forge at the bottom of Treibh Caillte (about 30k/31k, z 16,393), the last kill of Immortal Gift before you use the forge for the Faqist. Plain mob, no tricks, 3-minute respawn; a full group of high 40s to 50. Getting there is the hard part: the rocky golems are the stairs, so learn which golem stack sends you where, and expect troglodytes (50) in the deep galleries. Hervelina the hermit is the quest's guide and sits above the forge; she is peaceful. King Vian's hall is on another level entirely, so you do not have to fight him for this.",
+  "legend": "The Dreaded Ursine is an ursine shaman, a foe for the realm's best, a full band of them, bigger than any other of his kind, guarding the forge at the very bottom of Treibh Caillte (about 30k/31k, deep below the entrance), the last kill of Immortal Gift before you use the forge for the Faqist. A plain fight, no tricks; he returns three minutes after he falls; a full band of hardened veterans at their strongest or the realm's best. Getting there is the hard part: the rocky golems are the stairs, so learn which golem stack sends you where, and expect troglodytes (a foe for the realm's best) in the deep galleries. Hervelina the hermit is the quest's guide and sits above the forge; she is peaceful. King Vian's hall is on another floor of the deeps entirely, so you do not have to fight him for this.",
   "yells": {
     "aggro": [
       "(the grey-muzzled bear rises before the forge)",
@@ -62,10 +62,10 @@
   },
   "botLines": {
     "briefing": [
-      "dreaded ursine is 51 at the forge, bottom of treibh caillte. [immortal gift|last kill]",
-      "plain mob, full group high 40s-50",
+      "dreaded ursine is at the forge, bottom of treibh caillte. [immortal gift|last kill]",
+      "plain fight, full band of veterans or our best",
       "learn the golem stairs to get there. [they move you between floors|stand on the spot]",
-      "troglodytes are 50 in the deep galleries"
+      "troglodytes in the deep galleries are tough"
     ],
     "aftermathWin": [
       "dreaded ursine down. [use the forge|faqist time]",
@@ -75,9 +75,9 @@
     ],
     "aftermathLoss": [
       "golem sent us to the wrong floor. [split up|oops]",
-      "troglodytes on the way. [50|ouch]",
-      "group too low for 51",
-      "pulled a warrior pair too"
+      "troglodytes on the way. [tough|ouch]",
+      "group too green for him",
+      "drew a warrior pair too"
     ],
     "rumour": [
       "[heard|someone said] the dreaded ursine has guarded the forge since before king vian's grandfather",

@@ -27,7 +27,7 @@
     }
   ],
   "story": "Dremcis Fuiloltair was a hunter of the gorge Sylvan, the best of them, in the years when the clans of Cothrom still hunted the red deer that came down the gorge in autumn. The gorge folk tell that he went further into the split earth than any hunter had gone, after a white stag that kept just ahead of him for nine days, and that on the ninth night he killed it at the bottom of the gorge, among the rot-flowers, and was so thirsty that he drank from the wound. Whatever was in the gorge was in the stag. He came home on the tenth day and his name had changed: fuil is blood in the old tongue, and the gorge folk say the rest of the name is the drinking.\n\nHe still hunts. He rides out of the deep gorge on a stag of his own, Beomarbhan, which was the finest beast in the clan's herd before Dremcis rode it to death and kept riding. Wherever he has fed, the spilled blood does not soak away into the gorge floor. It gathers itself into clots the size of a dog, the fuilslathach, and when Dremcis is troubled they crawl up out of the stones around him as hounds come to a horn. The gorge folk say they come only once for any one trouble: once he has called them they are spent, and if the trouble goes away they sink back into the stones, and when Dremcis dies they go into the ground with him and do not crawl again.\n\nThe stag comes to him the first time he is troubled and not again, whatever happens to it, until Dremcis himself has died and come back; and it does not outlive him. Every account agrees on that. The gorge folk who have seen Dremcis brought down say Beomarbhan dropped in the same breath, as if the rider had been holding it up all along, and they say it as the one mercy of the story. Nobody on the isle has ever seen the stag felled first and walked away pleased with the trade.\n\nFor the gorge clans he is the warning they give their young hunters, and the reason they do not drink from anything they kill in Cothrom. For the Domnann wardens he is worse: the first Sylvan the gorge took for itself, years before Kontar drank at the edge. They count the corruption of their own people from him.",
-  "legend": "Do not fight the stag. When Dremcis is engaged he brings 4-6 fuilslathach blood blobs (51-59, 2,500 health) and his stag Beomarbhan, who is CC immune and resists 40% melee and 70% magic on 30,000 health. Kill Dremcis and Beomarbhan dies with him and the blobs vanish. Beomarbhan only comes once per Dremcis spawn, so if you wipe after somehow killing the stag it will not be back for the retry, but nobody should plan on that. Off-tank the stag, AoE or tank the blobs, burn Dremcis. Dremcis himself has no spells: it is all melee and numbers. Tether 2,600 like the rest; Gneiss's granidons are not far off, so watch your approach.",
+  "legend": "Do not fight the stag. When Dremcis is engaged he brings four to six fuilslathach blood blobs (each a foe for the realm's best, with a twelfth of his strength) and his stag Beomarbhan, whom no trance, binding or stunning blow holds, who turns aside two-fifths of every blade's bite and seven-tenths of every spell's, and who has as much strength as Dremcis himself. Kill Dremcis and Beomarbhan dies with him and the blobs vanish. Beomarbhan only comes once each time Dremcis returns, so if the whole raid falls after somehow killing the stag it will not be back for the second try, but nobody should plan on that. A second shield-bearer holds the stag, blast or hold the blobs, burn Dremcis. Dremcis himself has no spells: it is all melee and numbers. Drawn well beyond a long bowshot he walks home, like the rest; Gneiss's granidons are not far off, so watch your approach.",
   "yells": {
     "aggro": [
       "Blood. I smell it in you.",
@@ -70,9 +70,9 @@
   "botLines": {
     "briefing": [
       "kill dremcis, not the stag. [beomarbhan dies when he dies|the stag drops with him]",
-      "the stag resists 70% magic and 40% melee. [offtank it|dont waste damage on it]",
-      "4-6 blood blobs, 2.5k each. [aoe them|tank them]",
-      "dremcis has no spells, just melee. [burn him|tank and spank with friends]"
+      "the stag shrugs off most magic and near half of melee. [second shield holds it|dont waste damage on it]",
+      "four to six blood blobs, weak ones. [blast them all at once|hold them]",
+      "dremcis has no spells, just melee. [burn him|hold and hit with friends]"
     ],
     "aftermathWin": [
       "dremcis down and the stag dropped in the same breath. [told you|clean]",
@@ -81,10 +81,10 @@
       "the gorge folk say thats the one mercy in the story"
     ],
     "aftermathLoss": [
-      "we killed the stag first. [took forever|70% resists lol]",
+      "we killed the stag first. [took forever|most of it bounced lol]",
       "blobs on the casters while we [fought the stag|messed around]",
-      "offtank died to the stag and it [ran through us|ate the healers]",
-      "pulled him with gneiss's granidons nearby. [bad|no]"
+      "second shield died to the stag and it [ran through us|ate the healers]",
+      "drew him with gneiss's granidons nearby. [bad|no]"
     ],
     "rumour": [
       "[heard|someone said] dremcis drank from a white stag at the bottom of the gorge",

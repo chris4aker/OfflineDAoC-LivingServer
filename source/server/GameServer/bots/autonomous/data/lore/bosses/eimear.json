@@ -24,7 +24,7 @@
     }
   ],
   "story": "The mantids are not friendly and not enemies; they are busy. The Sylvan have said it of them for as long as there have been Sylvan, and the mantids of Krrzck, the settlement on the high ground of World's End, have never given them reason to say anything else. They trade when trade is useful, through a single go-between at a time, and they keep their town shut. In all the generations of the isle exactly one outsider has been let inside, and she is still there. Her name is Eimear.\n\nShe was an outlander girl of Altan Garran, the gorge folk say, who walked out of the town at fifteen after a quarrel with her family and walked west along the coast until she reached the edge of the world, and sat down outside the mantids' wall, and did not leave. They let her in after a season. Nobody knows why. The Domnann wardens think the mantids wanted someone who could speak to the Sylvan in their own tongue; the outlanders think the mantids simply admired her stubbornness, which is the one quality the mantids are known to admire. Eimear has lived among them since, and wears their colours, and is counted by them as one of the town.\n\nShe speaks for Krrzck now, when it speaks. The Sylvan of Necht who trade with the mantids deal with her, and say that she has become more mantid than they would like: patient, cold, very exact about prices, and quick to strike at anyone who comes too close to the town without having earned the right. A traveller of good standing with the mantids, who has hunted the corrupt Sylvan and the bark-strippers that trouble them, she lets pass. Anyone else she treats as the mantids treat a stranger. Zuraspa, a mantid of the town, is never far from her.\n\nThe mantids have one fear, and Eimear has taken it on with the rest: she will not say the name of the hunter of Allta Fearann aloud, and the Sylvan who have heard her refuse say she has gone pale doing it.",
-  "legend": "Eimear (50) stands by the mantid town of Krrzck in World's End, faction Krrzck, with Zuraspa (46) nearby. Her aggro level is 99 rather than the usual 200, so standing with the Krrzck faction matters: raising mantid faction (the 'Corruptors, Botonids, and Trade' quest talks of killing treecutters and barkstrippers for them) is the polite way past her. As a fight she is a plain level 50 with no tricks, a quick kill for a 50 group, with a 320-second respawn. Killing her will not help your mantid standing, and mantid faction is useful in World's End: the mantids trade, and their town is a safe spot if they like you.",
+  "legend": "Eimear, a foe for the realm's best, a full band of them, stands by the mantid town of Krrzck in World's End, sworn to Krrzck, with Zuraspa, a hardened band's foe, nearby. She is slower to take offence than most of her kind, about half as quick, so your standing with Krrzck matters: earning the mantids' goodwill (the 'Corruptors, Botonids, and Trade' quest talks of killing treecutters and barkstrippers for them) is the polite way past her. As a fight she is plain, with no tricks, a quick kill for a band of the realm's best; she returns a little over five minutes after she falls. Killing her will not help your standing with the mantids, and their goodwill is useful in World's End: the mantids trade, and their town is a safe spot if they like you.",
   "yells": {
     "aggro": [
       "You have not earned the wall.",
@@ -62,21 +62,21 @@
   },
   "botLines": {
     "briefing": [
-      "eimear is 50 by krrzck in world's end. [krrzck faction|zuraspa nearby]",
-      "her aggro is lower, faction matters. [raise mantid faction|or fight her]",
-      "plain 50, no tricks. [quick kill|easy for 50s]",
+      "eimear is by krrzck in world's end. [sworn to krrzck|zuraspa nearby]",
+      "shes slow to anger, standing matters. [get the mantids to like you|or fight her]",
+      "plain fight, no tricks. [quick kill|easy for our best]",
       "killing her wont help your mantid faction lol"
     ],
     "aftermathWin": [
       "eimear down. [the mantids wont like that|oops faction]",
-      "quick one. [50s group|easy]",
+      "quick one. [one good band|easy]",
       "zuraspa too? [shes right there|sure]",
       "the only sylvan in krrzck, and we killed her"
     ],
     "aftermathLoss": [
       "didnt expect zuraspa. [two of them|ugh]",
-      "pulled a mantid patrol with her. [too many|oops]",
-      "group too low for 50. [need 45+|ouch]",
+      "drew a mantid patrol with her. [too many|oops]",
+      "group too green for her. [need hardened folk at least|ouch]",
       "faction went down. [never mind|whatever]"
     ],
     "rumour": [

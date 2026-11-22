@@ -20,7 +20,7 @@
     }
   ],
   "story": "Curmie is a curmudgeon, one of the grumbling hill-folk who fight the siabra over the high country, and he camps just outside Innis Carthaig where the town's guard can see him and cannot be bothered to move him. He complains. He complains about the town's smoke, the lake's damp, the gurites in the hills and the realm's young who come out to fight him on Aziliz's errand, and the town has grown used to it the way a house grows used to a dripping tap.\n\nAziliz says Curmie knows why the gurites stay: the curmudgeons and the siabra have been fighting over the lake country for longer than the town has stood, and he says the gurites stay because they are waiting for something under the lake, and the curmudgeons are waiting to see what. He tells this to anyone who beats him, as a complaint. The town has asked him to move a dozen times. He complains about being asked.",
-  "legend": "Curmie (36) is a named curmudgeon camped just outside Innis Carthaig (about 336k/710k). Occupation of Lough Gur sends you to fight him after Smidget. Easy for a group of mid 30s. Plain spawn, 80-second respawn; he is close enough to town that a bind run is short. Curmudgeon puggards in Cruachan Gorge are his larger cousins. He is alone, so a duo can do him; the town guard will not help or hinder.",
+  "legend": "Curmie, a foe for a hardened band of veterans, is a curmudgeon of some renown who keeps to a spot just outside Innis Carthaig (about 336k/710k). Occupation of Lough Gur sends you to fight him after Smidget. Easy for a hardened band, newly blooded. Plain, no tricks; he returns eighty seconds after he falls; he is close enough to town that the walk back from where your soul is bound is short. Curmudgeon puggards in Cruachan Gorge are his larger cousins. He is alone, so a duo can do him; the town guard will not help or hinder.",
   "yells": {
     "aggro": [
       "Oh, it's you. It's always you.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "curmie is 36 right outside innis carthaig",
+      "curmie is right outside innis carthaig",
       "occupation of lough gur, after smidget"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "he complained us to death. [lol|rip]",
-      "too low for 36. [oops|ouch]"
+      "too green for him. [oops|ouch]"
     ],
     "rumour": [
       "[heard|someone said] curmie says the gurites are waiting for something under the lake",
@@ -61,7 +61,7 @@
   },
   "loremasterTopic": {
     "keyword": "Curmie",
-    "text": "A curmudgeon camped outside Innis Carthaig who complains about everything. He says the gurites stay in Lough Gur waiting for something under the lake, and the curmudgeons are waiting to see what."
+    "text": "A curmudgeon who sits outside Innis Carthaig who complains about everything. He says the gurites stay in Lough Gur waiting for something under the lake, and the curmudgeons are waiting to see what."
   },
   "bookPage": "",
   "chronicle": {

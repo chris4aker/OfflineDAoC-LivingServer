@@ -69,8 +69,8 @@
     "briefing": [
       "develin only shows at night after [twenty to forty pookas|a lot of pookas] die. farm pookas, then he comes",
       "develin only at night, after enough pookas die. [farm pookas|be patient]",
-      "clear his pookas as they come, [then him|kill adds]",
-      "pookas change shape, [dont lose track|watch the adds]"
+      "clear his pookas as they come, [then him|kill the pookas]",
+      "pookas change shape, [dont lose track|watch the pookas]"
     ],
     "aftermathWin": [
       "develin down. [finally|took forty pookas]. worth it",
@@ -81,7 +81,7 @@
     "aftermathLoss": [
       "killed thirty pookas and the sun came up. [no develin|night only]",
       "sun came up before he showed. [night only|tomorrow]",
-      "pookas swarmed the healer. [peel|kill adds]",
+      "pookas swarmed the healer. [peel|kill the pookas]",
       "made a bet in the cursed forest and [look what happened|cursed]"
     ],
     "rumour": [
