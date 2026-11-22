@@ -42,7 +42,7 @@
     }
   ],
   "story": "Kelic was a clansman of Midgard, of a clan the mystics' halls do not name aloud, and he put a curse on his own people. The clan's own account, which Danica of the mystics keeps, says he did it out of grief: his wife and son died of a winter fever that the clan's elders would not spend their stores to treat, and he carved a totem out of the wood of their pyre and wound the curse around it, and said the clan would die as they had, slowly, of being let go.\n\nIt began to work. Children sickened who should not have; old men lost the use of their legs and sat where they fell. The elders could not break it, because a curse wound round a totem holds while the hand that wound it holds the totem. So a man named Jango, who had been a war-leader and was not a patient one, took a band of the clan's deserters, men who had run from the clan's wars and owed it something, and carried Kelic far into Raumarik, and killed him at the snowline under a stand of trees, and left him there with his totem, thinking death would be enough.\n\nDeath was not enough. Even in death Kelic is strong, the note on Danica's map says, and he stands at the snowline still with the totem in his hands and the clan's sickness in his breath. Those who come against him go the way his clan went: a wasting that eats the flesh, a sickness that slows the healing, and legs that twist and will not carry them, so that they stand where he has fixed them. He does it with a word, and no blow interrupts the word. Servants have gathered to him there, who come when he is threatened.\n\nAnd like the other dead things of Raumarik that are bound to a place, he cannot be hurt by anyone who stands off; he belongs to the spot where he was killed, and only those who come to it can reach him. The deserters who carried him did not get far on the road home. One of them, Runil, still stands to the east.\n\nThe mystics are sent to take the totem from him so that Danica can break the curse, and when they bring it, she does, and the clan is safe until the next grief.",
-  "legend": "Kelic is the mystic epic target (runemaster, spiritmaster, bonedancer): the quest spawns him at the snowline in northern Raumarik under a stand of trees; follow Danica's directions. Level 65, 10,000 health, CC-immune, and he takes no damage from anyone standing too far from his spawn, so fight close. On whoever he's targeting he stacks three things, each only if it isn't already on them: a matter DoT, a disease (no healing bonus), and a 99% snare that lasts over a minute. All uninterruptible. Cure disease, purge or remove snare, and keep the target healed. The Servants of Kelic nearby join when you touch him, so clear them first. The map note says bring friends. It means it.",
+  "legend": "Kelic is the target of the mystics' great quest (runemaster, spiritmaster, bonedancer): when the quest calls for him he appears at the snowline in northern Raumarik under a stand of trees; follow Danica's directions. A foe for several bands of the realm's best together; the raiders reckon his strength at ten thousand, no charm or stun holds him, and he takes no damage from anyone standing too far from where he appears, so fight close. On whoever he's targeting he lays three things, each only if it isn't already on them: a lingering matter burn, a disease (no help from heals), and a slow that all but stops them and lasts over a minute. None can be interrupted. Cure disease, purge or break the slow, and keep the target healed. The Servants of Kelic nearby join when you touch him, so clear them first. The map note says bring friends. It means it.",
   "yells": {
     "aggro": [
       "Jango? Is that you? No. Another one come for my totem.",
@@ -80,9 +80,9 @@
   },
   "botLines": {
     "briefing": [
-      "kelic plus his servants, root break and cure disease. mystic epic",
+      "kelic plus his servants, break the slow and cure disease. mystics' quest",
       "fight close, he takes nothing from range",
-      "dot, disease and a 99% snare on his target, all uninterruptible",
+      "a burn, a disease and a slow that all but stops you on his target, none of it can be interrupted",
       "clear the servants of kelic first"
     ],
     "aftermathWin": [
@@ -92,9 +92,9 @@
       "danica broke the curse, clan saved"
     ],
     "aftermathLoss": [
-      "got rooted and diseased and his servants did the rest",
+      "got stuck and diseased and his servants did the rest",
       "casters stood back, did nothing",
-      "no snare removal, stuck the whole fight",
+      "nothing to break the slow, stuck the whole fight",
       "the servants came while we fought him"
     ],
     "rumour": [

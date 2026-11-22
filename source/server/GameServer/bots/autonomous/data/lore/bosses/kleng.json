@@ -43,7 +43,7 @@
     }
   ],
   "story": "The drakulv attendants are the servants of the dragon's court, the ones who carry and fetch, and the svartalfar say they are the only drakulv allowed into her hollow without being sent for. They are kept by a captain called Kleng. There are two of him, and that is a story the drakulv themselves seem to find funny.\n\nWhen the first Kleng grew old, the svartalfar say, he chose his heir himself, as no drakulv captain is supposed to do: the name is the hollow's to give. He chose a young drakulv of his own attendants and taught him the work, the order of the court, who goes in first and who is fed last, and then he did not die. He kept on not dying for so many winters that the heir grew as large as he was, and larger, and the court began to call them both by the name, the old Kleng and the young one. Then the old one died at last, and the young one took the work, and within a moon there was another young one at his side, chosen the same way. The beam-cutters say it has gone on like that ever since. There is always a Kleng and the Kleng who will be.\n\nWhich is which is anyone's guess. The svartalfar who watch the attendants say that some winters the heir is the larger and some winters the keeper, and that a traveller who meets one Kleng in the south-east has no way of telling by looking whether he has met the stronger. One stands among the attendants on the road to the hollow. The other stands further south, near the old drakulv called Ulf, as if learning from him too.\n\nBoth are of the pack, and both call it when struck. Brisa the beam-cutter says the attendants come to a Kleng faster than any holding comes to its captain, because they are servants, and a servant who is slow to answer is no longer a servant in that court.",
-  "legend": "Two Klengs are up in south-east Malmohus: one with three drakulv attendants on the road toward the dragon's hollow, one further south near Ulf. Each rolls level 52 or 56 when it spawns, so check the con before you commit. Plain drakulv otherwise, no abilities, not CC-immune, but Pack Drakulv: hit him and the attendants next to him (51-53) can come along. Pull the attendants' Kleng from range or mez the attendants; the southern Kleng is easier, just don't let it run into Ulf's patch. Both Klengs are big drakulv with a hard swing, so let the tank hold him and keep casters out of the attendants' reach.",
+  "legend": "Two Klengs stand in south-east Malmohus at once: one with three drakulv attendants on the road toward the dragon's hollow, one further south near Ulf. Each, when it rises, is either a foe for the realm's best, a full band of them, or noticeably stronger, so take its measure before you commit. Plain drakulv otherwise, no tricks, and charms, trances and stuns hold them, but they're of the drakulv pack: hit him and the attendants next to him, a match for the realm's best, can come along. Draw the attendants' Kleng with a bow or a spell or entrance the attendants; the southern Kleng is easier, just don't let it run into Ulf's patch. Both Klengs are big drakulv with a hard swing, so let the shield-bearer hold him and keep casters out of the attendants' reach.",
   "yells": {
     "aggro": [
       "Attendants! A guest for the court!",
@@ -81,15 +81,15 @@
   },
   "botLines": {
     "briefing": [
-      "two klengs, each rolls 52 or 56, con before you go",
-      "the one with the attendants brings them, pull from range",
-      "mez the attendants if they come",
+      "two klengs, some days one is a lot tougher, take their measure before you go",
+      "the one with the attendants brings them, draw from range",
+      "entrance the attendants if they come",
       "southern kleng is easier, keep it off ulf"
     ],
     "aftermathWin": [
       "kleng down, the heir will be up soon enough",
       "that was the 56 one, felt it",
-      "attendants mezzed, clean",
+      "attendants entranced, clean",
       "one kleng less, for a while"
     ],
     "aftermathLoss": [

@@ -38,7 +38,7 @@
     }
   ],
   "story": "The sabre-toothed cats of Aegir are older than the crater folk, Kolfinna wrote, and the crater folk have never tried to drive them out of the south-east rocks, because nobody has ever tried twice. The oldest male of them is Khrin. The name is the sound he makes, the soothsayers say, a cough in the dark that the miners of the south wall hear on still nights and stop work for.\n\nHe keeps the rocks above the morvalt mammoth-hunters' fires, and the crater folk say that is not chance. The morvalt came to the heights over Mammoth Valley to hunt the herd and took more than the herd could spare; the cats had hunted the herd since before anyone and taken only the old and the lame. Khrin, the soothsayers say, saw the hunters come and moved his cats down the rocks to watch them, and has watched them ever since, the way one hunter watches another who is hunting too much in his country. When a morvalt of the hunters strays too far from its fires, the cats find it. The morvalt hate the cats more than they hate the town.\n\nThat has made the crater folk fond of him, in their way. Dellingstad pays Midgard's strangers to clear the hunters' fires, and Khrin, the miners say, clears it for nothing, one at a time, at night. The town does not hunt the cats and does not let its young go into the south-east rocks, and when a cat is seen near the town's walls the crossbowmen let it go by. Weaponmaster Zargin, asked once why he did not take his students to shoot at the cats for practice, said that he did not shoot at the only other hunter in the crater who understood range.\n\nKhrin is not the crater folk's, all the same. He is the oldest of the cats and the others come to him when he is threatened, as a pride does, and he comes at strangers who climb into his rocks the way he comes at the hunters: suddenly, from above, with the others behind. The soothsayers say he has outlived three of the hunters' chiefs. They say the hunters know it.",
-  "legend": "Khrin is a level 50 sabre-toothed cat in the south-east rocks of Delling Crater with five sabre-toothed cats (46-49) standing a few paces away, about a thousand units from the morvalt mammut jagare camp. He's Cats of Aegir faction, and so are his cats, so hitting him brings them (bring-a-friend), and they'd see the fight anyway. Pull the cats one at a time from the edges or mez them, then Khrin. No abilities, not CC-immune. Don't drag the fight toward the hunters' camp; the morvalt there are 48-51 and aggressive. No quest needs him; Dellingstad folk say leave him be, he hunts the hunters for free.",
+  "legend": "Khrin is a sabre-toothed cat, a foe for the realm's best, a full band of them, in the south-east rocks of Delling Crater with five sabre-toothed cats, a hardened band's foes, standing a few paces away, some thirty-odd paces from the morvalt mammut jagare camp. He's of the Cats of Aegir, and so are his cats, so hitting him brings them, for they come to each other's call, and they'd see the fight anyway. Draw the cats one at a time from the edges or entrance them, then Khrin. No tricks, and charms, trances and stuns hold him. Don't drag the fight toward the hunters' camp; the morvalt there are a match for the realm's best and attack on sight. No quest needs him; Dellingstad folk say leave him be, he hunts the hunters for free.",
   "yells": {
     "aggro": [
       "(A cough in the dark, then sabre teeth from above.)",
@@ -78,12 +78,12 @@
     "briefing": [
       "khrin is a 50 sabre cat with five cats next to him",
       "cats of aegir faction, they all come",
-      "pull the cats from the edges first",
+      "draw the cats from the edges first",
       "stay away from the morvalt hunters camp"
     ],
     "aftermathWin": [
       "khrin down with the pride",
-      "edge pulls worked",
+      "edge draws worked",
       "the hunters camp didnt notice",
       "easy for a group"
     ],

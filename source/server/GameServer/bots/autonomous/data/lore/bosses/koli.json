@@ -28,7 +28,7 @@
     }
   ],
   "story": "There is a low place in the west of the Iarnwood where the air does not move. The iron trees stand close round it and the ground is wet, and in it hangs the chaotic miasma, a drifting murk that the bark-gatherers walk round and the dwarves call the old one's breath. Things that go into it come out sick, if they come out. The rot is thickest there, the dwarves say, because the miasma is where the rot breathes out.\n\nIn the middle of the miasma there is something that holds it together. The dwarves call it Koli. They do not know what it is; nobody has seen its shape clearly, only a darker thickening in the murk, roughly the size of a man, that moves when the miasma moves and turns when something comes near. The narfi say it is the first breath the old one ever drew in the wood after the singing stopped, and that it has not finished being breathed out. The dwarves' slate-keepers say it is the rot's own heart, if the rot has one, and that if it were broken the miasma would thin and blow away, and the west of the wood would be clean for a season.\n\nIt has been broken. The slates record it: a company from Faraheim went into the murk, and came out coughing, and said the dark thing had come apart under their axes like smoke. The miasma thinned that spring and the bark in the west was good. By the next autumn it was back, and the dark thing in the middle of it, and the dwarves wrote on the slate the word they use for things the wood will not let go.\n\nKoli has no great craft that anyone has noticed, beyond being where it is, in air that sickens. It is the air that does the harm, the gatherers say, not the thing; but the thing keeps the air.",
-  "legend": "Koli is the named mist thing inside the chaotic miasma in the west of the Iarnwood, level 52, with five chaotic miasmas drifting around it, which will join if you fight in the middle of them. Pull Koli out to the edge or clear the miasmas first. It's a plain spawn with no special abilities and isn't CC-immune, and at level 52 it's one of the easier nameds in the wood for a group. Bring cure disease anyway; everything in that hollow carries the rot. The dwarves say it comes back however many times it's killed. That's just respawning, but they write it on a slate every time.",
+  "legend": "Koli is the known mist thing inside the chaotic miasma in the west of the Iarnwood, a foe for the realm's best, a full band of them, with five chaotic miasmas drifting around it, which will join if you fight in the middle of them. Draw Koli out to the edge or clear the miasmas first. It's a plain fighter with no special tricks, and charms, trances and stuns hold it, so it's one of the easier known beasts in the wood for a group. Bring cure disease anyway; everything in that hollow carries the rot. The dwarves say it comes back however many times it's killed. It simply rises again after its wait, like any of its kind, but they write it on a slate every time.",
   "yells": {
     "aggro": [
       "(The miasma thickens and turns toward you.)",
@@ -67,13 +67,13 @@
   "botLines": {
     "briefing": [
       "koli is inside the chaotic miasma, five miasmas around it",
-      "pull it to the edge or clear the miasmas",
-      "plain mob, mez works",
+      "draw it to the edge or clear the miasmas",
+      "plain beast, trances work",
       "cure disease, everything there has the rot"
     ],
     "aftermathWin": [
       "koli down. the air cleared for a second",
-      "pulled it out of the murk, easy",
+      "drew it out of the murk, easy",
       "the dwarves will write it on a slate",
       "easiest named in the iarnwood"
     ],

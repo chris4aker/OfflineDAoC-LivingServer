@@ -37,7 +37,7 @@
     }
   ],
   "story": "Legion is the king of the demon court under the three realms, and a court in a single body. The court's chroniclers tell it as the Feast of Thrones: thirty lords met to settle who would rule, and the thirtieth came hungry, waited, and ate each lord that fell, keeping its voice, until the eleven left knelt and the court called him Legion. The imps tell it smaller, as two princes, one of whom ate the other and found the rival still speaking in him. Albion's priests read him as the many-voiced thing of the gospel, Midgard's skalds call his lair the Glutton-hall, and Hibernia's druids call him a lord made of his own subjects.\n\nHis kingdom has three doors, in Camelot Hills, above Mularn and in Connacht, and they open only for the realm that holds the most frontier keeps. He heals by eating: every mortal who dies in his lair mends him, his withering blows draw life back, and as he weakens the newest-eaten souls tear loose from him. He swallows the turning shells of protection the realms' priests wrap around their fighters, and after a handful he pours out a soul-consuming blast; the Albion friar Ansel, whose prayer he ate, never prayed a ward again. He cannot be harmed from beyond the Choir, the ring where all his voices can hear each other.\n\nHe once called the Behemoth down from its ledge to fight beside him, until it came down and did not stop at the enemy; since then it stays on its ledge and Legion has grown stronger instead. Albion's roll names Sir Aldous Fenn, Midgard's Thane Hrolf the Tall and Hibernia's Ealadhach the bard as the first to break him; the imps say the true first was a company of all three realms trapped below. He wants more voices, and wins whenever anyone dies. The realms disagree only on what he would do with enough of them: open every door at once, break the kingdom below, or simply never stop eating.",
-  "legend": "Three or four groups who stand close and do not die, the old talk said, and a hundred who did not know the fight could not do it. Everyone fights within fourteen hundred of him, casters too, or they hit nothing. Everyone he kills heals him by two and a half percent, so a careless raid gives him back his health in a few deaths; and his body damage heals him a quarter of what it deals. He eats bladeturns, and after five he blasts everyone near him, so healers do not bubble the tank. Kill each graspering soul as it tears loose, one at every five percent. He resets a minute after the fight leaves him. The Behemoth on the ledge used to come down in the early days and end raids; now it stays up there. Do not go up to it.",
+  "legend": "Three or four groups who stand close and do not die, the old talk said, and a hundred who did not know the fight could not do it. Everyone fights within some forty-five paces of him, casters too, or they hit nothing. Everyone he kills heals him by a fortieth of his strength, so a careless raid gives him back his wounds in a few deaths; and his body damage heals him a quarter of what it deals. He eats bladeturns, and after five he blasts everyone near him, so healers do not lay bladeturns on his shield-bearer. Kill each graspering soul as it tears loose, one at every twentieth of his strength. He is whole again a minute after the fight leaves him. The Behemoth on the ledge used to come down in the early days and end raids; now it stays up there. Do not go up to it.",
   "yells": {
     "aggro": [
       "More voices for the choir.",
@@ -89,12 +89,12 @@
     "briefing": [
       "everyone within 1400 of legion, casters too, or you do no damage",
       "every death heals it. dont die. healers, thats on you and on us",
-      "it eats bladeturns and blasts after five. no bubbles on the tank",
-      "kill the graspering souls as they come, one every 5%",
+      "it eats bladeturns and blasts after five. no bladeturns on the shield-bearer",
+      "kill the graspering souls as they come, one every twentieth of him",
       "dont fight outside 1400, everyone in"
     ],
     "aftermathWin": [
-      "legion down. [gg|gg all]. all those voices and none of them ours",
+      "legion down. [well fought|well fought all]. all those voices and none of them ours",
       "nobody died for ten minutes. thats the whole trick",
       "the voices went quiet all at once. creepy",
       "zero deaths in the choir. textbook"
@@ -102,7 +102,7 @@
     "aftermathLoss": [
       "we fed it six deaths and it healed back to full",
       "casters stood back and did nothing. its immune from range",
-      "someone bubbled the tank five times and the blast took the healers",
+      "someone laid bladeturns on the shield-bearer five times and the blast took the healers",
       "too many deaths, he just healed back"
     ],
     "rumour": [

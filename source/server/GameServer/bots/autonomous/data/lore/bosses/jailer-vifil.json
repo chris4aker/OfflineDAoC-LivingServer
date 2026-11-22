@@ -75,7 +75,7 @@
       "text": "At the end of the last row of cells there is one set apart, with a door cut twice the height of the others and wider than any giant needs. It was there before the row was finished. Vifil visits it every morning, before he counts the rest, and stands in front of it for a while, and goes away. Nobody else is allowed down that far, and since Vifil stopped carrying prisoners nobody has been.\n\nNo sound comes from it. Midgard's rumour, which has outlived all the companies that tried to check it, is that the jailer keeps a Troll Father in it: one of the ancient ones who went deeper when Trollheim fell, caught in the glacier on the way. The Valkyn guides do not say yes and do not say no, which the companies take for yes. The cast-out sculptors say it is the last cell of all, the one the row was cut to reach, and that whatever is in it was in the ice before Kula was.\n\nThe companies who have got past the jailer and walked down to the tall door say the same thing, all of them. Once in a long while, to those who stand there long enough, something on the other side knocks. Three times, the Valkyn say when they are asked; the companies say they did not count.\n\nNobody has opened it. Vifil has the only key and has never put it down, and when he falls the companies find that the key is not on him. The sculptors say he has never once carried it to the tall door. He goes there every morning, they say, only to make sure it is still shut."
     }
   ],
-  "legend": "Old raiders' accounts say Vifil ports you into his tunnels. Not here: that's switched off. What he still does, every 25 to 45 seconds, is drop a random raider, companion or not, off his aggro list, so if you're tanking he'll suddenly turn and go for someone else. Keep a second tank ready to taunt him back. When you pull him, two hrimathursa tormentors (20,000 health each, 45% melee resist) appear at the mouth of the cell tunnel; tank them or kill them, they have a long tether. Vifil himself has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Don't drag him past his tether or he resets. And no, nobody has found the Troll Father. Some swear they heard knocking from the last door. His bloodforged legs drop.",
+  "legend": "The tale says Vifil stopped carrying strangers to his cells when the last one filled, and for a while the raiders' accounts agreed. Not now: every 25 to 45 seconds he turns from a random raider, companion, adventurer of the realm or you, drops them from his notice and sends them away to a cell down his tunnels, far from the fight. So if you're the shield-bearer holding him he'll suddenly turn and go for someone else, and you may find yourself walking back up from the cells. Keep a second shield-bearer ready to taunt him back, and whoever is jailed walks back and rejoins quickly. When you draw him, two hrimathursa tormentors appear at the mouth of the cell tunnel; the raiders reckon each at twenty thousand in strength, and nine-twentieths of every blow is lost on them. Hold them or kill them; they follow a long way before they turn home. The raiders reckon Vifil's own strength at a hundred thousand, four-tenths of every blow and seven-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for a war party of the realm's champions. Don't drag him too far from his tunnels or he goes home whole. And no, nobody has found the Troll Father. Some swear they heard knocking from the last door. His bloodforged legs are his prize.",
   "yells": {
     "aggro": [
       "Another for the cells. There is always room.",
@@ -125,13 +125,13 @@
   },
   "botLines": {
     "briefing": [
-      "vifil doesnt port any more, he just drops someone off his aggro every 25-45s. tanks taunt him back",
-      "two tormentors come out, [cc|kill] them",
-      "two tormentors spawn at the cell tunnel when you pull vifil",
-      "tanks keep taunting vifil, he forgets people",
-      "vifil drops someone off his aggro every 25-45s. second tank ready to taunt",
-      "he doesnt port any more",
-      "two tormentors at the cell tunnel when you pull, 20k each",
+      "vifil forgets someone every 25-45s and sends them off to a cell. shield-bearers taunt him back",
+      "two tormentors come out, [hold|kill] them",
+      "two tormentors come out at the cell tunnel when you draw vifil",
+      "shield-bearers keep taunting vifil, he forgets people",
+      "vifil turns from someone every 25-45s and jails them. second shield-bearer ready to taunt",
+      "he jails people again, walk back fast",
+      "two tormentors at the cell tunnel when you draw him, tough ones",
       "fight him in place, he resets if dragged"
     ],
     "aftermathWin": [
@@ -144,19 +144,19 @@
       "bloodforged legs!"
     ],
     "aftermathLoss": [
-      "he dropped the mt and went for the healers",
-      "vifil kept forgetting the tank and walked into the healers",
-      "the tormentors got the rezzer",
-      "vifil dropped the mt twice and went for the healers",
-      "vifil forgot the tank and ate the healers",
-      "nobody picked up vifil when he dropped the tank"
+      "he dropped the main shield-bearer and went for the healers",
+      "vifil kept forgetting the shield-bearer and walked into the healers",
+      "the tormentors got the one who raises the dead",
+      "vifil dropped the main shield-bearer twice and went for the healers",
+      "vifil forgot the shield-bearer and ate the healers",
+      "nobody picked up vifil when he dropped the shield-bearer"
     ],
     "rumour": [
       "the jailer up there has a troll father locked away, my [guild|gran] swears",
       "[i heard|heard] vifil keeps a cell for every enemy kula ever named",
       "somebody heard knocking from the last door in vifil's tunnels. nobody opened it",
       "the last cell's door is cut wider than a giant. [what's in there|troll father?]",
-      "vifil used to carry people to his cells. stopped when the last one filled",
+      "vifil stopped carrying people to his cells when the last one filled. hes started again",
       "people say theres a troll father behind the tall door in vifils cells",
       "something knocks behind the last door, they say"
     ]
