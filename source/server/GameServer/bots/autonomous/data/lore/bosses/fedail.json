@@ -100,7 +100,7 @@
     "keyword": "Fedail",
     "text": "He speaks for Altan Garran, the outlanders' walled town in [Cothrom Gorge], to strangers. He asks them to cut the worts and kill [Marfoirwort], and he does not believe they can."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: Fedail meets the strangers because he has the least patience of any of us, and gets it over quickly. He says the same thing to all of them. The town is dying of the writhing death and does not much care who stops it. Cut the three worts, bring him the remains, which he seals in a jar for me, and then go up the gorge and kill the thing they come from. He does not think it can be done. The garda say he was a Domnann warden once and left over a judgement he would not accept.",
+  "bookPage": "Fedail meets the strangers, by the word of Noirin the enchanter of Altan Garran, because he has the least patience of any of us, and gets it over quickly. He says the same thing to all of them. The town is dying of the writhing death and does not much care who stops it. Cut the three worts, bring him the remains, which he seals in a jar for me, and then go up the gorge and kill the thing they come from. He does not think it can be done. The garda say he was a Domnann warden once and left over a judgement he would not accept.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Fedail in Altan Garran in Cothrom Gorge in {minutes} minutes.",
     "loss": "Fedail turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."

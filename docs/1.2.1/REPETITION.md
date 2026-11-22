@@ -9,57 +9,57 @@ list for the writers (owner: never trim; reword by adding).
 
 | Realm | narrative words | in repeated phrases | top page opening |
 |---|---|---|---|
-| Albion | 289,458 | 7,717 (2.7%) | "Of the" 40 of 692 pages |
-| Midgard | 265,680 | 6,852 (2.6%) | "From the" 90 of 655 pages |
-| Hibernia | 238,090 | 8,589 (3.6%) | "From Derbáil" 27 of 532 pages |
+| Albion | 284,135 | 7,775 (2.7%) | "Of the" 95 of 682 pages |
+| Midgard | 265,680 | 6,846 (2.6%) | "From the" 90 of 655 pages |
+| Hibernia | 245,093 | 8,381 (3.4%) | "The first" 18 of 543 pages |
 | Neutral | 121,326 | 3,928 (3.2%) | "From the" 21 of 277 pages |
 
 ## Narrative phrases (stories, books, chapters, loremasters, atmosphere, history)
 
-1062 phrases recur in 3+ files; the top 40:
+1056 phrases recur in 3+ files; the top 40:
 
 | # | Phrase | files | times | by realm | e.g. |
 |---|---|---|---|---|---|
-| 1 | the druids of tir na nog | 46 | 72 | Hib 52, Neu 20 | `abomos-the-soultrapper`, `anurigunda`, `avartack-the-champion` |
+| 1 | the druids of tir na nog | 46 | 73 | Hib 53, Neu 20 | `abomos-the-soultrapper`, `anurigunda`, `avartack-the-champion` |
 | 2 | is the only one of the | 26 | 29 | Hib 13, Alb 6, Neu 6, Mid 4 | `anhylaw`, `avartack-the-champion`, `azure-coseal` |
 | 3 | the druids of tir na nog say | 23 | 27 | Neu 16, Hib 11 | `beatha`, `behemoth`, `beliathan` |
 | 4 | the wider country it belongs to | 21 | 21 | Hib 21 | `allta-fearann`, `bog-of-cullen`, `breifine` |
 | 5 | at the far end of the | 20 | 26 | Mid 16, Alb 8, Neu 1, Hib 1 | `basilius`, `delegalt`, `drihten-elreden` |
 | 6 | the druids of lough gur say | 19 | 29 | Hib 29 | `ancient-black-oak`, `anurigunda`, `avartack-the-champion` |
-| 7 | from coll of the domnann guides | 19 | 19 | Hib 19 | `adar-llwch-gwin`, `archilus`, `balere` |
-| 8 | for the rest of his life | 17 | 19 | Hib 8, Mid 7, Alb 3, Neu 1 | `abomos-the-soultrapper`, `corrupt-primal-of-air`, `corrupt-primal-of-fire` |
-| 9 | he is the only one of | 15 | 16 | Hib 8, Alb 4, Mid 4 | `anhylaw`, `avartack-the-champion`, `azure-coseal` |
-| 10 | the feud of the blade and the hook | 14 | 26 | Neu 26 | `chthonic-knights`, `director-kobil`, `duke-alloc` |
-| 11 | from the readings of brisa the beam cutter of svarhamr | 14 | 14 | Mid 14 | `arnulv`, `bjornvarg`, `desukva` |
-| 12 | from what ivrik the kobold lamp carrier of bjarken told the skalds | 14 | 14 | Mid 14 | `alchemist-phorzbreg`, `apologet-nesnuir`, `grindvaktare` |
-| 13 | the first company of albion to | 13 | 14 | Alb 13, Neu 1 | `apocalypse`, `beran-the-supply-master`, `deben-se-gecynde` |
-| 14 | from derbáil of ardee's list the | 13 | 13 | Hib 13 | `badb`, `donal`, `faerie-queen` |
-| 15 | the bards of tir na nog | 11 | 14 | Hib 7, Neu 6, Mid 1 | `balor`, `caisha`, `duke-bimure` |
-| 16 | is the only one of them | 11 | 11 | Mid 5, Alb 4, Hib 2 | `dagar`, `deniela`, `funus` |
-| 17 | the druids of tir na nog say the | 11 | 11 | Hib 6, Neu 5 | `corrupt-primal-of-fire`, `grand-summoner-govannon`, `high-lord-baln` |
-| 18 | at the top of the stair | 10 | 18 | Neu 9, Hib 5, Alb 3, Mid 1 | `apocalypse`, `aros-the-spiritmaster`, `fates-chosen` |
-| 19 | on the night of the rising | 10 | 17 | Alb 17 | `bellum`, `fates-chosen`, `funus` |
-| 20 | the drovers of the cornish road | 10 | 13 | Alb 13 | `borimo`, `brannoc`, `draco-magnificens` |
-| 21 | noirin the enchanter of altan garran | 10 | 12 | Hib 12 | `aodhnait`, `cuinn`, `elnara-erea` |
-| 22 | she is the only one of | 10 | 12 | Neu 5, Hib 3, Mid 2, Alb 2 | `deniela`, `gjalpinulva`, `inquisitors` |
-| 23 | for a long time and then | 10 | 11 | Mid 7, Hib 2, Neu 1, Alb 1 | `atur`, `council-nokkvi`, `duke-alloc` |
-| 24 | why does it matter because the | 10 | 10 | Hib 10 | `elro-the-ancient`, `bog-of-cullen`, `cliffs-of-moher` |
-| 25 | why it matters to albion the | 10 | 10 | Alb 10 | `albion-housing`, `black-mountains-north`, `black-mountains-south` |
-| 26 | in the first summer of the | 9 | 14 | Hib 5, Neu 5, Alb 4 | `aodhnait`, `beonoc-dyer`, `cabalist-meical` |
-| 27 | in the second summer of the | 9 | 13 | Alb 7, Hib 5, Neu 1 | `clan-matron`, `deben-se-gecynde`, `draargus-the-mighty` |
-| 28 | the one in front of him | 9 | 13 | Mid 13 | `boligar`, `council-ozur`, `council-vagn` |
-| 29 | from coll of the domnann guides the | 9 | 9 | Hib 9 | `adar-llwch-gwin`, `beomarbhan`, `dremcis-fuiloltair` |
-| 30 | from derbáil of ardee's list grandmother | 9 | 9 | Hib 9 | `blight`, `cailean`, `flame` |
-| 31 | from fenrir's folly as told in galplen by thyri | 9 | 9 | Mid 9 | `hagall-the-red-dagger`, `hugi`, `kelic` |
-| 32 | from the trap lines of solvi of hagall | 9 | 9 | Mid 9 | `bokko`, `dalicren`, `gorp` |
-| 33 | the only one of them who | 9 | 9 | Mid 5, Alb 2, Hib 1, Neu 1 | `captain-heathyr`, `dagar`, `deniela` |
-| 34 | the fishermen of the avalon shore | 8 | 14 | Alb 14 | `draargus-the-mighty`, `fuladl`, `fulafeallan` |
-| 35 | the knight commander of the isle of glass | 8 | 13 | Alb 13 | `fulafeallan`, `jehrog-se-bysen`, `krevo-ricik` |
-| 36 | the cast out sculptors at dellingstad | 8 | 11 | Mid 11 | `council-otrygg`, `council-ozur`, `council-vagn` |
-| 37 | the sylvan of the western coast | 8 | 10 | Hib 10 | `abomos-the-soultrapper`, `balor`, `kierac-the-destroyer` |
-| 38 | stood at the edge of the | 8 | 9 | Mid 3, Hib 3, Alb 2, Neu 1 | `basilius`, `corrupt-primal-of-water`, `elder-icelord-suttung` |
-| 39 | the druids of lough gur say the | 8 | 9 | Hib 9 | `cailean`, `chieftain-caimheul`, `cuuldurach-the-glimmer-king` |
-| 40 | each capital keeps its own count | 8 | 8 | Neu 8 | `beliathan`, `high-lord-baelerdoth`, `high-lord-baln` |
+| 7 | for the rest of his life | 17 | 19 | Hib 8, Mid 7, Alb 3, Neu 1 | `abomos-the-soultrapper`, `corrupt-primal-of-air`, `corrupt-primal-of-fire` |
+| 8 | he is the only one of | 15 | 16 | Hib 8, Alb 4, Mid 4 | `anhylaw`, `avartack-the-champion`, `azure-coseal` |
+| 9 | the feud of the blade and the hook | 14 | 26 | Neu 26 | `chthonic-knights`, `director-kobil`, `duke-alloc` |
+| 10 | from the readings of brisa the beam cutter of svarhamr | 14 | 14 | Mid 14 | `arnulv`, `bjornvarg`, `desukva` |
+| 11 | from what ivrik the kobold lamp carrier of bjarken told the skalds | 14 | 14 | Mid 14 | `alchemist-phorzbreg`, `apologet-nesnuir`, `grindvaktare` |
+| 12 | the first company of albion to | 13 | 14 | Alb 13, Neu 1 | `apocalypse`, `beran-the-supply-master`, `deben-se-gecynde` |
+| 13 | the bards of tir na nog | 11 | 14 | Hib 7, Neu 6, Mid 1 | `balor`, `caisha`, `duke-bimure` |
+| 14 | is the only one of them | 11 | 11 | Mid 5, Alb 4, Hib 2 | `dagar`, `deniela`, `funus` |
+| 15 | the druids of tir na nog say the | 11 | 11 | Hib 6, Neu 5 | `corrupt-primal-of-fire`, `grand-summoner-govannon`, `high-lord-baln` |
+| 16 | at the top of the stair | 10 | 18 | Neu 9, Hib 5, Alb 3, Mid 1 | `apocalypse`, `aros-the-spiritmaster`, `fates-chosen` |
+| 17 | on the night of the rising | 10 | 17 | Alb 17 | `bellum`, `fates-chosen`, `funus` |
+| 18 | the drovers of the cornish road | 10 | 13 | Alb 13 | `borimo`, `brannoc`, `draco-magnificens` |
+| 19 | noirin the enchanter of altan garran | 10 | 12 | Hib 12 | `aodhnait`, `cuinn`, `elnara-erea` |
+| 20 | she is the only one of | 10 | 12 | Neu 5, Hib 3, Mid 2, Alb 2 | `deniela`, `gjalpinulva`, `inquisitors` |
+| 21 | for a long time and then | 10 | 11 | Mid 7, Hib 2, Neu 1, Alb 1 | `atur`, `council-nokkvi`, `duke-alloc` |
+| 22 | from the ledger of little haven kept by mordwywr | 10 | 10 | Alb 10 | `amphiptere`, `clan-matron`, `crypt-guardian` |
+| 23 | why does it matter because the | 10 | 10 | Hib 10 | `elro-the-ancient`, `bog-of-cullen`, `cliffs-of-moher` |
+| 24 | why it matters to albion the | 10 | 10 | Alb 10 | `albion-housing`, `black-mountains-north`, `black-mountains-south` |
+| 25 | in the first summer of the | 9 | 14 | Hib 5, Neu 5, Alb 4 | `aodhnait`, `beonoc-dyer`, `cabalist-meical` |
+| 26 | in the second summer of the | 9 | 13 | Alb 7, Hib 5, Neu 1 | `clan-matron`, `deben-se-gecynde`, `draargus-the-mighty` |
+| 27 | the one in front of him | 9 | 13 | Mid 13 | `boligar`, `council-ozur`, `council-vagn` |
+| 28 | from fenrir's folly as told in galplen by thyri | 9 | 9 | Mid 9 | `hagall-the-red-dagger`, `hugi`, `kelic` |
+| 29 | from the trap lines of solvi of hagall | 9 | 9 | Mid 9 | `bokko`, `dalicren`, `gorp` |
+| 30 | the only one of them who | 9 | 9 | Mid 5, Alb 2, Hib 1, Neu 1 | `captain-heathyr`, `dagar`, `deniela` |
+| 31 | the fishermen of the avalon shore | 8 | 14 | Alb 14 | `draargus-the-mighty`, `fuladl`, `fulafeallan` |
+| 32 | the knight commander of the isle of glass | 8 | 13 | Alb 13 | `fulafeallan`, `jehrog-se-bysen`, `krevo-ricik` |
+| 33 | the cast out sculptors at dellingstad | 8 | 11 | Mid 11 | `council-otrygg`, `council-ozur`, `council-vagn` |
+| 34 | the sylvan of the western coast | 8 | 11 | Hib 11 | `abomos-the-soultrapper`, `balor`, `kierac-the-destroyer` |
+| 35 | stood at the edge of the | 8 | 9 | Mid 3, Hib 3, Alb 2, Neu 1 | `basilius`, `corrupt-primal-of-water`, `elder-icelord-suttung` |
+| 36 | each capital keeps its own count | 8 | 8 | Neu 8 | `beliathan`, `high-lord-baelerdoth`, `high-lord-baln` |
+| 37 | from the door book of the castle ruins | 8 | 8 | Neu 8 | `behemoth`, `beliathan`, `high-lord-oro` |
+| 38 | from the second book of gracien adamson name registrar of fort gwyntell | 8 | 8 | Alb 8 | `adelon`, `beath`, `beonoc-dyer` |
+| 39 | the skalds of jordheim say the | 8 | 8 | Mid 6, Neu 2 | `gjalpinulva`, `grand-summoner-govannon`, `hati` |
+| 40 | on the night of the taking | 7 | 14 | Alb 14 | `drihten-elreden`, `jehrog-se-bysen`, `lurfos-the-herald` |
 
 ## Bot-line phrases
 
@@ -161,9 +161,9 @@ The first two words of every book page and chapter, per realm (the six most used
 
 | Realm | pages | first word "From" | openings |
 |---|---|---|---|
-| Albion | 692 | 7 (1%) | "Of the" 40; "In the" 17; "The first" 15; "On the" 13; "To the" 9; "When the" 9 |
+| Albion | 682 | 78 (11%) | "Of the" 95; "From the" 72; "In the" 17; "The first" 15; "On the" 13; "To the" 9 |
 | Midgard | 655 | 162 (25%) | "From the" 90; "In the" 19; "From what" 14; "When the" 13; "From Thorgrim" 10; "At the" 10 |
-| Hibernia | 532 | 74 (14%) | "From Derbáil" 27; "The Sylvan" 24; "From Coll" 19; "The first" 18; "Of the" 15; "On the" 11 |
+| Hibernia | 543 | 14 (3%) | "The first" 18; "Of the" 15; "On the" 11; "In the" 9; "When the" 8; "At the" 6 |
 | Neutral | 277 | 56 (20%) | "From the" 21; "From a" 19; "In the" 11; "From The" 9; "When the" 8; "Of the" 7 |
 
 ## Set formulas
@@ -172,21 +172,21 @@ Count per realm in narrative text (per 10,000 words in brackets):
 
 | Formula | Albion | Midgard | Hibernia | Neutral | e.g. |
 |---|---|---|---|---|---|
-| teller's list ("From X's list") | - | - | 27 (1.13) | - | `badb`: "From Derbáil of Ardee's list"; `blight`: "From Derbáil of Ardee's list" |
-| "From the readings / ledger / trap lines of" | 1 (0.03) | 29 (1.09) | 1 (0.04) | 3 (0.25) | `arnulv`: "From the readings of"; `bjornvarg`: "From the readings of" |
+| teller's list ("From X's list") | - | - | 1 (0.04) | - | `shadowgnash`: "From Derbáil of Ardee's list" |
+| "From the readings / ledger / trap lines of" | 17 (0.6) | 29 (1.09) | 1 (0.04) | 3 (0.25) | `agidad`: "From the count of"; `amphiptere`: "From the Ledger of" |
 | "From what X told" | - | 15 (0.56) | - | - | `alchemist-phorzbreg`: "From what Ivrik the kobold lamp-carrier of Bjarken told"; `apologet-nesnuir`: "From what Ivrik the kobold lamp-carrier of Bjarken told" |
 | "as told in" | - | 10 (0.38) | 1 (0.04) | - | `hagall-the-red-dagger`: "as told in"; `hugi`: "as told in" |
-| "the druids / bards / skalds of ... say" | - | 31 (1.17) | 55 (2.31) | 31 (2.56) | `ancient-black-oak`: "the druids of Lough Gur say"; `anurigunda`: "The druids of Lough Gur say" |
-| "the wider country it belongs to" | - | - | 21 (0.88) | - | `allta-fearann`: "the wider country it belongs to"; `bog-of-cullen`: "the wider country it belongs to" |
-| "why it matters" / "why does it matter" | 27 (0.93) | - | 18 (0.76) | - | `elro-the-ancient`: "Why does it matter"; `albion-housing`: "Why it matters" |
+| "the druids / bards / skalds of ... say" | 16 (0.56) | 31 (1.17) | 55 (2.24) | 31 (2.56) | `ancient-black-oak`: "the druids of Lough Gur say"; `anurigunda`: "The druids of Lough Gur say" |
+| "the wider country it belongs to" | - | - | 21 (0.86) | - | `allta-fearann`: "the wider country it belongs to"; `bog-of-cullen`: "the wider country it belongs to" |
+| "why it matters" / "why does it matter" | 27 (0.95) | - | 18 (0.73) | - | `elro-the-ancient`: "Why does it matter"; `albion-housing`: "Why it matters" |
 | "whence the name" | - | - | 2 (0.08) | - | `ancient-black-oak`: "whence the name"; `balor`: "whence the name" |
-| "is the only one of" | 11 (0.38) | 9 (0.34) | 16 (0.67) | 7 (0.58) | `anhylaw`: "is the only one of"; `avartack-the-champion`: "is the only one of" |
-| "for the rest of his/her life" | 3 (0.1) | 11 (0.41) | 12 (0.5) | 1 (0.08) | `abomos-the-soultrapper`: "for the rest of his life"; `corrupt-primal-of-air`: "for the rest of his life" |
+| "is the only one of" | 11 (0.39) | 9 (0.34) | 16 (0.65) | 7 (0.58) | `anhylaw`: "is the only one of"; `avartack-the-champion`: "is the only one of" |
+| "for the rest of his/her life" | 3 (0.11) | 11 (0.41) | 12 (0.49) | 1 (0.08) | `abomos-the-soultrapper`: "for the rest of his life"; `corrupt-primal-of-air`: "for the rest of his life" |
 | "the way (s)he said everything" | - | 1 (0.04) | - | - | `wretch-of-winter`: "the way she said everything" |
 | "they do not say how" | - | 1 (0.04) | 1 (0.04) | 1 (0.08) | `gnat`: "they do not say why"; `iarnvidiurs-lair`: "they do not say how" |
-| "to this day" | 2 (0.07) | 2 (0.08) | 4 (0.17) | 4 (0.33) | `chieftain-caimheul`: "to this day"; `chthonic-knights`: "to this day" |
-| "never once" | 79 (2.73) | 51 (1.92) | 31 (1.3) | 38 (3.13) | `adelon`: "never once"; `amminus-pilus`: "never once" |
-| "no one / nobody knows" | 17 (0.59) | 34 (1.28) | 18 (0.76) | 7 (0.58) | `agidad`: "nobody knows"; `chthonic-knights`: "nobody knows" |
+| "to this day" | 2 (0.07) | 2 (0.08) | 4 (0.16) | 4 (0.33) | `chieftain-caimheul`: "to this day"; `chthonic-knights`: "to this day" |
+| "never once" | 79 (2.78) | 51 (1.92) | 31 (1.26) | 38 (3.13) | `adelon`: "never once"; `amminus-pilus`: "never once" |
+| "no one / nobody knows" | 17 (0.6) | 34 (1.28) | 18 (0.73) | 7 (0.58) | `agidad`: "nobody knows"; `chthonic-knights`: "nobody knows" |
 | "it is said" | 2 (0.07) | 5 (0.19) | - | 1 (0.08) | `aros-the-spiritmaster`: "it is said"; `council-nokkvi`: "It is said" |
-| "for a long time, and then" | 1 (0.03) | 7 (0.26) | 2 (0.08) | 1 (0.08) | `atur`: "for a long time, and then"; `council-nokkvi`: "for a long time and then" |
+| "for a long time, and then" | 1 (0.04) | 7 (0.26) | 2 (0.08) | 1 (0.08) | `atur`: "for a long time, and then"; `council-nokkvi`: "for a long time and then" |
 | "at the far end of the" | 8 (0.28) | 15 (0.56) | 1 (0.04) | 1 (0.08) | `basilius`: "at the far end of the"; `delegalt`: "at the far end of the" |

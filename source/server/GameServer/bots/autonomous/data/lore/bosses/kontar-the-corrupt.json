@@ -97,7 +97,7 @@
     "keyword": "Kontar",
     "text": "Chieftain of the Sylvan of [World's End], who drank from the soured springs and called it strength. His menders stayed and keep only him whole now. His kin in Domnann mark his name as wood gone."
   },
-  "bookPage": "From Coll of the Domnann guides: I knew Kontar's clan when I was a sapling; my mother traded with them. They were stubborn, and proud of the hardest ground on the isle, and when the springs went sour Cass of the wardens walked to the edge to tell them to come inland. Kontar said the edge had been sour before. His menders were the best on the coast and they would not leave him. Now they come out of the dark round him and mend him and nobody else, not even each other, and when he falls they fall. That is how the wardens knew the clan was gone. A household that spends all of itself on its chief is not a household.",
+  "bookPage": "I knew Kontar's clan when I was a sapling, Coll of the Domnann guides says; my mother traded with them. They were stubborn, and proud of the hardest ground on the isle, and when the springs went sour Cass of the wardens walked to the edge to tell them to come inland. Kontar said the edge had been sour before. His menders were the best on the coast and they would not leave him. Now they come out of the dark round him and mend him and nobody else, not even each other, and when he falls they fall. That is how the wardens knew the clan was gone. A household that spends all of itself on its chief is not a household.",
   "chronicle": {
     "win": "{realm} rode out to World's End under {raidLeader} and killed Kontar the Corrupt in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} was turned back at World's End by Kontar the Corrupt after {minutes} minutes."

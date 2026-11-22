@@ -95,7 +95,7 @@
     "keyword": "Tachtwort",
     "text": "The choker, a great wort under the south wall of Altan Garran in [Cothrom Gorge]. Its tendrils come up through the town's floors. The outlanders say it is a finger of [Marfoirwort]."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: I have cut a piece out of each of the worts and they are the same growth. Tachtwort under our south wall, Fuilwort to the west, Cronwort on the floor below. They are runners, fingers of one hand, and the hand is Marfoirwort at the head of the gorge. We burned Tachtwort to the root in my grandmother's time and it stood under the wall again by morning. Now Fedail asks strangers to cut it, and keeps what is left in a sealed jar for me. When I have enough pieces I will know where the fingers go.",
+  "bookPage": "I have cut a piece out of each of the worts, writes Noirin the enchanter of Altan Garran, and they are the same growth. Tachtwort under our south wall, Fuilwort to the west, Cronwort on the floor below. They are runners, fingers of one hand, and the hand is Marfoirwort at the head of the gorge. We burned Tachtwort to the root in my grandmother's time and it stood under the wall again by morning. Now Fedail asks strangers to cut it, and keeps what is left in a sealed jar for me. When I have enough pieces I will know where the fingers go.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Tachtwort in Cothrom Gorge in {minutes} minutes.",
     "loss": "Tachtwort turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."
