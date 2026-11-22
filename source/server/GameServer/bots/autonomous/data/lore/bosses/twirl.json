@@ -20,7 +20,7 @@
     }
   ],
   "story": "The children of Necht named the dervishes they could see from the woods' edge, and the two they named first were Twirl and Whirl, because those were the words they had. Twirl is the larger and the elder, and spins in the middle of the dervish woods with the watchful ones around her; Whirl keeps the edge closer to the coast. The children say they are twins, grown from one seed, and the Necht singers do not correct them.\n\nTwirl is the one the realm's young meet when they first go into the dervish woods, and she is not kind to them, but she is not cruel either; she spins, and anything in her way is struck. Mel, the trading dervish, will not stand near her. The Necht folk say Twirl was the first of the young ones to take up Manus's spinning, and that if Manus ever stops, she will be the eldest.",
-  "legend": "Twirl (35) is a named tree dervish in the middle of the dervish woods (about 413k/333k) with watchful dervishes around her. Clear the adds first. A group of mid 30s handles her. 80-second respawn. Whirl (31) is near the coast. Plain spawn with no tricks. Mel, the trading dervish, wanders nearby and is a kill task target in its own right, so do not pull him by mistake.",
+  "legend": "Twirl, a foe for a hardened band of veterans, is a tree dervish of name in the middle of the dervish woods (about 413k/333k) with watchful dervishes around her. Clear the dervishes around her first. A hardened band, newly blooded, handles her. She returns eighty seconds after she falls. Whirl, a seasoned band's foe, is near the coast. A plain fight with no tricks. Mel, the trading dervish, wanders nearby and is wanted dead by an errand of his own, so do not draw him by mistake.",
   "yells": {
     "aggro": [
       "(Twirl spins faster)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "twirl is 35 in the middle of the dervish woods",
+      "twirl is in the middle of the dervish woods",
       "clear the watchful dervishes around her first"
     ],
     "aftermathWin": [

@@ -20,7 +20,7 @@
     }
   ],
   "story": "Xcrzrk lives outside the wall of Krrzck, which is a strange thing for a mantid of the edge to do, and the Sylvan say she is the only one who ever chose to. She is very large, larger than the town's stewards, and she keeps an egg, alone, on the plain west of the gate, among the grazing herds she has taken up with instead of her own people. The Krrzck do not speak of her. Eimear, who speaks for them, says only that Xcrzrk left the town the season before Eimear came in, and that the two of them passed each other on the road without a word.\n\nThe Sylvan of Droighaid have reason to know her. When a Sylvan suffers from the edge's soured water, the cure the Necht herb-woman Evyene makes needs a death shroud's tentacle, a chalico's blood, and Xcrzrk's egg. Some of the realm's young ask her for it, and give Evyene's name, and she gives it. Some do not ask.",
-  "legend": "Xcrzrk (46) is a big peaceful mantid (aggro 0, faction Grazer) on the plain west of Krrzck (about 362k/266k). She is part of The Sylvan's Pain: say [Evyene sent] to her for the egg, or kill her for it. She will not attack first. If you do kill her, she has a 1-hour respawn, so the next person on the quest has to wait. Asking is faster for everyone.",
+  "legend": "Xcrzrk, who would be a foe for a hardened band of veterans, is a big peaceful mantid (she never attacks first, and is sworn to the Grazers) on the plain west of Krrzck (about 362k/266k). She is part of The Sylvan's Pain: say [Evyene sent] to her for the egg, or kill her for it. She will not attack first. If you do kill her, she does not return for an hour, so the next person on the quest has to wait. Asking is faster for everyone.",
   "yells": {
     "aggro": [
       "(the great mantid curls around her egg)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "xcrzrk is a 46 mantid outside krrzck. peaceful",
+      "xcrzrk is a big mantid outside krrzck. peaceful",
       "sylvan's pain: say evyene sent you for the egg. dont kill her"
     ],
     "aftermathWin": [
@@ -51,7 +51,7 @@
       "she's huge. [lol|wow]"
     ],
     "aftermathLoss": [
-      "someone killed her. now 1 hour respawn. [thanks|ugh]",
+      "someone killed her. now shes gone for an hour. [thanks|ugh]",
       "attacked her for no reason. [why|rip]"
     ],
     "rumour": [

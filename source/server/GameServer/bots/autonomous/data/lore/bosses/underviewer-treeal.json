@@ -20,7 +20,7 @@
     }
   ],
   "story": "The underviewers of the Coruscating Mine are pooks, the shape-changers of every hill-tale, a black horse one night and a goat the next and a dark man on the road the night after. Treeal is the eldest of them, the one who keeps the upper galleries at their pace. The collar book says it plainly: Treeal sets the pace, and the collars hum it.\n\nThe Howth miners who have put their ears to the sealed door on their side of the mountain say the picks beyond it keep a rhythm no miner keeps, too even and too long, and that it does not slow at night. That is Treeal's pace. A shift that keeps it does not tire, the captives say, because it has stopped being the kind of thing that tires.\n\nThe other pooks of the court say Treeal has held one shape in the mine for so long that he has forgotten how to change, and that this, not the collars, is why the court trusts him with the upper galleries: a pook that cannot change cannot run. The druids of Howth tell it the other way round. A pook that will not change, they say, has found something it likes too well to leave. They do not say what.",
-  "legend": "Underviewer Treeal (42) walks the upper workings of Coruscating Mine (about 29.4k/30.8k) among silvermine sentries (36-43), gemclickers and gem-dusted skeletons. Scratch (39) is about 900 away and Duga (42) about 1,000: take them one at a time. A group of low 40s; the sentries round him are the real trouble. Plain spawn, no tricks, 3-minute respawn. He is a pook like the unseelie underviewers (42-45) of the same galleries.",
+  "legend": "Underviewer Treeal, a foe for a hardened band of veterans, walks the upper workings of Coruscating Mine (about 29.4k/30.8k) among silvermine sentries (hardened bands' foes, some his equal), gemclickers and gem-dusted skeletons. Scratch, a little weaker, and Duga, his equal, are each about half a bowshot away: take them one at a time. A hardened band of veterans; the sentries round him are the real trouble. Plain, no tricks; he returns three minutes after he falls. He is a pook like the unseelie underviewers (his equals and a little stronger) of the same galleries.",
   "yells": {
     "aggro": [
       "You are out of step.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "treeal is 42 in the upper workings, sentries and gemclickers round him",
+      "treeal is in the upper workings, sentries and gemclickers round him",
       "scratch and duga are both close, one at a time"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "scratch came too. [rip|ouch]",
-      "sentries everywhere. [oops|wipe]"
+      "sentries everywhere. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] the picks below the sealed howth door never slow at night. thats treeal's pace",
