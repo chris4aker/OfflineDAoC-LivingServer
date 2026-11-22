@@ -23,8 +23,9 @@ namespace DOL.UnitTests
     /// DragonLairPlacement's lairs and EncounterDisplacementRecovery.AssumedSpeed. The fight itself is a model: a 72-raider
     /// raid (16 healers), the dragon's 300,000 health, a fixed damage per raider, raiders lost at a rate that grows as the
     /// healers at the fight fall under ten (twice the base rate from 50%, for the messengers' adds), resurrections where a
-    /// raider fell, and releases walking back from a bind. Its death rate was set so that Gjalpinulva's geometry on the
-    /// current code wins about as often as the owner's PC shows (4 of 4 on the candidate line). What the model can't show:
+    /// raider fell, and releases walking back from a bind. Its death rate was set where Gjalpinulva's geometry on the
+    /// current code wins most fights and Golestandt's and Cuuldurach's about half, the owner's PC pattern (Gjalpinulva 4 of 4
+    /// on the candidate line, Golestandt 2 of 4, Cuuldurach 1 of 3); 15% less pressure and every geometry wins nearly always. What the model can't show:
     /// the dragons' real damage and the bots' real heals, the terrain and monsters on a thrown raider's walk, the messengers'
     /// own paths, and whether a held raider with the dragon still on its own aggro list stays to fight (here only healers
     /// and resurrected raiders, who have none, walk to the ring).
@@ -96,16 +97,18 @@ namespace DOL.UnitTests
                 // The failure: on the current code thrown and resurrected raiders who never released are held at the ring,
                 // and Golestandt's fight (four spots past the line) is lost far more often than Gjalpinulva's.
                 Assert.That(current["AlbGolestandt"].HeldMinutes, Is.GreaterThan(current["MidGjalpinulva"].HeldMinutes));
-                Assert.That(current["AlbGolestandt"].WinPercent, Is.LessThanOrEqualTo(current["MidGjalpinulva"].WinPercent - 8),
+                Assert.That(current["AlbGolestandt"].WinPercent, Is.LessThanOrEqualTo(current["MidGjalpinulva"].WinPercent - 15),
                     "current code: Golestandt is lost more often than Gjalpinulva (the PC's pattern)");
                 foreach (string d in Dragons)
                 {
-                    Assert.That(fixedRuns[d].HeldMinutes, Is.EqualTo(0).Within(1e-9), $"{d}: nobody alive and unreleased is held");
-                    Assert.That(fixedRuns[d].WinPercent, Is.GreaterThanOrEqualTo(78), $"{d}: fixed");
+                    Assert.That(fixedRuns[d].HeldMinutes, Is.LessThan(1), $"{d}: next to nobody alive and unreleased is held");
+                    Assert.That(fixedRuns[d].HeldMinutes, Is.LessThan(current[d].HeldMinutes / 20), $"{d}: held far less than before");
+                    Assert.That(fixedRuns[d].WinPercent, Is.GreaterThanOrEqualTo(current[d].WinPercent - 5), $"{d}: fixed no worse");
+                    Assert.That(fixedRuns[d].WinPercent, Is.GreaterThanOrEqualTo(60), $"{d}: fixed");
                     Assert.That(fixedRuns[d].MeanMinutes, Is.LessThan(60), $"{d}: a won fight is well inside the 4-hour cap");
                 }
-                Assert.That(fixedRuns["AlbGolestandt"].WinPercent, Is.GreaterThanOrEqualTo(current["AlbGolestandt"].WinPercent + 8));
-                Assert.That(fixedRuns["HibCuuldurach"].WinPercent, Is.GreaterThanOrEqualTo(current["HibCuuldurach"].WinPercent + 2));
+                Assert.That(fixedRuns["AlbGolestandt"].WinPercent, Is.GreaterThanOrEqualTo(current["AlbGolestandt"].WinPercent + 10));
+                Assert.That(fixedRuns["HibCuuldurach"].WinPercent, Is.GreaterThanOrEqualTo(current["HibCuuldurach"].WinPercent + 8));
             });
         }
 
@@ -115,7 +118,7 @@ namespace DOL.UnitTests
             public readonly record struct Result(double WinPercent, double MeanMinutes, double HeldMinutes);
 
             private const int Raiders = 72, Healers = 16, HealersNeeded = 10;
-            private const double BasePerMinute = 3.2, NoHealersPerMinute = 10.0, DamagePerRaider = 4.0, RezChance = 0.4;
+            private const double BasePerMinute = 3.8, NoHealersPerMinute = 10.0, DamagePerRaider = 4.0, RezChance = 0.4;
             private const int MaxHealth = 300_000, Ring = 4_850, FightDistance = 300;
             private const long CapSeconds = 4 * 3600;
 

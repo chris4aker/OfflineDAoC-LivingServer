@@ -85,7 +85,8 @@ or run where it was written; CI on pull request #398 is the first build.
   line (one of Gjalpinulva's does), and the return wave held such a raider at the staging ring as if it had released; a
   raider resurrected where it fell was held the same way. Both now stay with the raid (`REALM_RAID_RETURN_NOT_HELD`). No
   dragon is changed. A simulation on the real return-wave and wipe code (`UT_DragonThrowReturnWave415`) reproduces the
-  pattern and wins all three with the fix; not yet seen in game.
+  pattern (Gjalpinulva wins most fights, the other two about half) and the fix lifts Golestandt and Cuuldurach to about
+  seven in ten; not yet seen in game.
 - **Legion's wounded step out where the healers reach them (#413, tests only).** A raider under 35% stepped straight away
   from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
   each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
