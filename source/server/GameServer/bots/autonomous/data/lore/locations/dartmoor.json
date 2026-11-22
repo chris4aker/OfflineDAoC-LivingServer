@@ -120,7 +120,7 @@
     }
   ],
   "story": "Dartmoor is a high granite country between the Cornish road and the sea, and it is not the shape it looks. Its tors are not the same number at dawn as at dusk, because some of them are granite giants, and at its southern end the heather stops at a burnt black line beyond which sleeps the stone dragon Golestandt in the hollow the drovers call the Bed. The burnt line stands a little further north on each new map that Prydwen Keep draws, and the Church in Cornwall says the moor is spreading.\n\nThe first people of the moor, whom the loremasters call the hut-builders, left stone rows and round houses whose doors all face away from the Bed. Their walled ring on the north-western hill, Grimspound, now belongs to a band of Stonecrush ogres who left their clan's digging to trade with Albion: Kan the smith, who works steel at a granite forge, Kuz and Kel at the stalls, and their fellows, with the Albion men Dannen and Lamont, the first human apprentice of the granite forge. The rest of the Stonecrush, led by Kez, dig the western slopes, eat the granite and the giants alike, and creep south toward the Bed.\n\nThe giants have trades: herdsmen among the moor's ponies, gatherers and stoneshapers, stonemenders who mend the broken, and elders and oracles who stand not with Golestandt but on Moran's windy hill. Five have names the drovers know, and all five come at a man on sight: Tegbuk, Trahern, Borimo, Agidad and Brannoc. The granite knockers that the old tinners fed with crusts keep time, the drovers say, with something under the Bed.\n\nAlong the northern hem runs the Cornish road of the Hext family of drovers, robbed now by renegades out of Llyn Barfog. The castle of Articus, the Roman who died there with all his house in Uther's day, still stands with its table laid. Duke Marcus of Cornwall's son rode in after his father's lost messengers with a company of knights and rode out alone, burnt, with nothing to say; he was Mark, who would be king at Tintagel, and he kept his silence to the grave.\n\nGenerations later Sir Arward took thirty of his best knights and a scribe onto the moor to learn what the duke's son would not tell. They passed the empty castle, the walking tors, the knocking ground and the western pits where ogres ate the rock, and the scribe wrote all of it down by his lord's order. Then the journal fell scorched out of a clear sky at the feet of Prydwen Keep's guards, burnt through but for one word pressed into its last page: Golestandt.\n\nBelow Grimspound camps Los Ortiz, a stranger from across the southern sea who came to learn the dragon before he faces her, and Kan works Golestandt's shed scales into shields. Camelot, the Church, the ogres, the giants and the wind each claim the moor; the drovers claim nothing, and keep moving.",
-  "legend": "When the dragons first woke, the whole realm stood on Dartmoor just to look at her, and the zone fell over under them. Never say her name inside the moor; old raid leaders swear she listens. Fight her in her lair, never out of it, because outside it nothing harms her. Bring heat resist, and bring it twice: her breath eats it.\n\nGrimspound's merchants and the healer are on top of the hill in the north-west; the path up is steep and easy to miss. All five named giants aggro on sight: Tegbuk in the north by the road, Trahern and Borimo in the middle, Agidad between the lair and Moran's hill, Brannoc in the west. Kez and his Stonecrush start neutral. Watch the brigands on the north road around level 40, and give the Stonecrush terraces in the west a wide berth if you are soloing. Some raid leaders swear the knockers north-east of the lair go quiet just before she wakes.",
+  "legend": "When the dragons first woke, the whole realm stood on Dartmoor just to look at her, and the moor itself gave way under them. Never say her name inside the moor; old raid leaders swear she listens. Fight her in her lair, never out of it, because outside it nothing harms her. Bring wards against heat, and bring them twice: her breath eats them.\n\nGrimspound's merchants and the healer are on top of the hill in the north-west; the path up is steep and easy to miss. All five giants known by name attack on sight: Tegbuk in the north by the road, Trahern and Borimo in the middle, Agidad between the lair and Moran's hill, Brannoc in the west. Kez and his Stonecrush start neutral. Watch the brigands on the north road, foes for hardened veterans, and give the Stonecrush terraces in the west a wide berth if you are alone. Some raid leaders swear the knockers north-east of the lair go quiet just before she wakes.",
   "atmosphere": {
     "firstEntry": [
       "The tors are watching. Some of them breathe.",
@@ -246,7 +246,7 @@
     ],
     "rumour": [
       "never say the dragon's name inside dartmoor. old raid leaders swear she listens",
-      "[heard|someone said] the first time the dragon woke, the whole realm went to dartmoor to look and the zone crashed",
+      "[heard|someone said] the first time the dragon woke, the whole realm went to dartmoor to look and the moor gave way under them",
       "[heard|word is] two dozen good people can kill golestandt now. takes hours though",
       "[heard|someone said] kez is digging toward the dragon's bed. what does an ogre want with that",
       "[heard|word is] the burnt line in dartmoor moves north a bit every year",
@@ -255,12 +255,12 @@
       "[heard|someone said] the roman's house on dartmoor still has the table laid. nobody goes in"
     ],
     "tell": [
-      "dartmoor? raid zone past cornwall. granite giants everywhere, moran on the high ground, golestandt in her lair at the south end",
-      "albion's dragon lives at the bottom of dartmoor. bring heat resist and a raid",
+      "dartmoor? raid country past cornwall. granite giants everywhere, moran on the high ground, golestandt in her lair at the south end",
+      "albion's dragon lives at the bottom of dartmoor. bring heat wards and a raid",
       "big moor full of giants that look like rocks. dont go south alone",
       "grimspound is the friendly ogre camp up the hill in north-west dartmoor. merchants, smith, healer",
       "all five named giants on dartmoor attack on sight, tegbuk trahern borimo agidad and brannoc. kez and the stonecrush dont",
-      "the brigands on the north road of dartmoor are barfog renegades, about level 40"
+      "the brigands on the north road of dartmoor are barfog renegades, a match for hardened veterans"
     ]
   },
   "loremaster": {
