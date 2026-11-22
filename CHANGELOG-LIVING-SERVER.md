@@ -148,7 +148,14 @@ Bots' breaks are a separate setting and stay on.
   (Hurika, Hakr, Vifil, Kvasir, Easmarach, Spindler, Legion), missing mechanics (Golestandt, Cuuldurach, Gjalpinulva,
   Xanxicar, Maldahar), and wrong numbers (Xanxicar's stomp lands seven seconds after his bellow). Stories that
   contradicted the mechanics now tell how the favour came back, with nothing cut. The lore lint now checks every
-  visible field for game terms (`tools/lore/fourth_wall.py`); the remaining hits are warnings until cleared.
+  visible field for game terms (`tools/lore/fourth_wall.py`).
+- **Place lore and bot lines in-world too.** The last 1,756 game terms (levels, numbers, "faction", "zone", "epic",
+  "named", teleporters, battleground level ranges) are reworded on the same standard; a place's level range now says
+  who it suits ("hunting for seasoned bands"). One wording each across the realms: keeps "built up N courses of the
+  ten", named foes "foes of name". The loremaster topics "epics" are now "great quests". The Bane of Hope throws again
+  in every telling, as its code does, and Vagdush plants his own feet rather than rooting you (review in
+  [docs/1.2.1/REVIEW-GAME-TERMS.md](docs/1.2.1/REVIEW-GAME-TERMS.md)). The lint is now strict: a game term in any
+  player-visible lore fails CI. `tools/lore/schema_mirror.py` runs the C# lore schema checks without dotnet.
 
 **Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
 and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under
