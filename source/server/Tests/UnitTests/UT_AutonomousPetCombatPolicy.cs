@@ -512,6 +512,14 @@ public sealed class UT_AutonomousPetCombatPolicy
     }
 
     [Test]
+    public void PetCapsHoldForBotsOnly()
+    {
+        // Owner 2026-11-21: Theurgist and Animist caps are for bots; a real player is never capped.
+        Assert.That(SummonTheurgistPet.PetCapApplies(null), Is.True, "no caster: the cap still holds");
+        Assert.That(typeof(GamePlayer).IsAssignableFrom(typeof(GameBot)), Is.False, "bots are never players here");
+    }
+
+    [Test]
     public void GroupDefenseIsLocalRatherThanMapWide()
     {
         Assert.That(BotBrain.GROUP_DEFENSE_ASSIST_RADIUS, Is.EqualTo(2000));
