@@ -45,15 +45,16 @@ OPENDAOC_REPO = "https://github.com/OpenDAoC/OpenDAoC-Database"
 REALMS = {1: "Albion", 2: "Midgard", 3: "Hibernia"}
 
 # ---- the regions that existed by 1.65 (classic and Shrouded Isles), by the dump's region table -------------------------
-# Left out: housing (2, 102, 202), the tutorial (27), New Frontiers (163), Cathal Valley (165), the later battlegrounds and
+# Housing (2, 102, 202) is in: Foundations went live in July 2003 (worthplaying.com, 2003-08-19: 20,000 houses sold "in
+# less than six weeks"), so its regions, vault keepers and consignment merchants are 1.65. Left out: the tutorial (27), New Frontiers (163), Cathal Valley (165), the later battlegrounds and
 # test regions (230-243), Trials of Atlantis (30-47, 70-91, 123-147 expansion 2) and Catacombs (expansion 3 and 4).
 ERA_REGIONS = {
     # Albion: the realm, Camelot, the classic dungeons, Avalon and the Shrouded Isles dungeons
-    1, 10, 20, 21, 22, 23, 24, 50, 51, 60, 61, 62,
+    1, 2, 10, 20, 21, 22, 23, 24, 50, 51, 60, 61, 62,
     # Midgard
-    100, 101, 125, 126, 127, 128, 129, 150, 151, 160, 161,
+    100, 101, 102, 125, 126, 127, 128, 129, 150, 151, 160, 161,
     # Hibernia
-    200, 201, 220, 221, 222, 223, 224, 180, 181, 190, 191,
+    200, 201, 202, 220, 221, 222, 223, 224, 180, 181, 190, 191,
     # shared: Darkness Falls and its halls, the classic battlegrounds
     244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 276, 277,
 }
@@ -64,8 +65,9 @@ OUTDOOR = {1, 51, 100, 151, 200, 181}
 LATER_CLASSES = {"Mauler", "Heretic", "Warlock", "Vampiir", "Bainshee"}    # Catacombs (2004) and later
 LATER_CLASSTYPES = re.compile(r"Scripts\.|MarketExplorer|SealsMerchant|BountyMerchant|AccountVaultKeeper|EffectNPC|"
                               r"ItemModel|Teleporter|GuildRegistrar|NameRegistrar|EmblemNPC|Recharger|GameGuard$|Keeps\.")
-LATER_GUILDS = re.compile(r"Seals|Diamond|Emerald|Sapphire|Medallion|Necklace|Realm Point|Bindstone|Consignment|Reskin|"
+LATER_GUILDS = re.compile(r"Seals|Diamond|Emerald|Sapphire|Medallion|Necklace|Realm Point|Bindstone|Reskin|"
                           r"Effect|Emissary|^Master Trainer$|Market|Teleporter|Account|Bounty|Registrar|Emblem", re.I)
+# Market Explorers (the housing market search) came well after 1.65; the consignment merchants came with Foundations.
 PLAYER_GUILDS = {"PWNOGRAPHY", "French Corporation", "Malafinja", "Martine Fait Du RvR", "Die Raecher von Hel"}
 GENERIC = set("""Master Dyemaster the of Fletcher Guard Gothi Mistress Captain Lieutenant Barkeep Lady Sister Magus Lord Stor
 Filidh Albion Magess Enchanter Commander Minstrel Gythja crier Crier Chieftain Hibernia Harper Midgard Apprentice Viking Bard
@@ -342,7 +344,7 @@ def build(db, commit):
         for m in name_counts.NAME.finditer(text):
             name = re.sub(r"\s+the\s+\w+$", "", name_counts.person(m))
             if name in name_counts.COURT or (name, realm) in roster or not proper(name): continue
-            if any(b == name or b.endswith(" " + name) for b in bosses) or "housing" in rel: continue
+            if any(b == name or b.endswith(" " + name) for b in bosses): continue
             src = x.get("source", "")
             if not re.search(r"allakhazam|camelotherald|darkageofcamelot|prima|gamebanshee|world data|quest", src, re.I):
                 continue

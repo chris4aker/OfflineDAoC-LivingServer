@@ -4,8 +4,8 @@
   "files": 229,
   "stand_in_uses": 313,
   "by_fit": {
-   "realm": 152,
-   "local": 77,
+   "realm": 151,
+   "local": 78,
    "none": 84
   }
  },
@@ -4603,17 +4603,17 @@
    "file": "locations/hibernia-housing.json",
    "realm": "Hibernia",
    "anchor": {
-    "region": 202,
-    "near": "Hibernia Housing"
+    "region": 200,
+    "near": "Connacht (no town near)"
    },
    "stand_ins": [
     {
      "stand_in": "the druid",
      "count": 5,
      "suggested": {
-      "name": "Daray",
+      "name": "Bidelia",
       "role": "Druid trainer",
-      "near": "Tir na Nog",
+      "near": "Howth",
       "fit": "realm",
       "era": "probable"
      }
@@ -4622,10 +4622,10 @@
      "stand_in": "the smith",
      "count": 1,
      "suggested": {
-      "name": "Banon",
+      "name": "Qunie",
       "role": "smith",
-      "near": "Tir na Nog",
-      "fit": "realm",
+      "near": "between Ardee and the wilds (27k from it)",
+      "fit": "local",
       "era": "probable"
      }
     }
