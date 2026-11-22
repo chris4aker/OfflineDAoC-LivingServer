@@ -58,6 +58,33 @@ class MinimalWorldTests(unittest.TestCase):
         self.assertEqual(mtw.class_switch(con), "off")
         con.close()
 
+    def test_companions_add_an_armsmans_lines_abilities_and_a_merchant_list(self):
+        plain = self.dir / "plain.db"
+        mtw.build_minimal(plain)
+        con = sqlite3.connect(plain)
+        tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        con.close()
+        self.assertNotIn("ItemTemplate", tables, "the other minimal worlds stay as they were")
+        out = self.dir / "companions.db"
+        report = mtw.build_minimal(out, companions=True)
+        self.assertEqual(report["companions"]["item_list"], "playtester_gear")
+        con = sqlite3.connect(out)
+        self.assertEqual(dict(con.execute(f"SELECT Key,Value FROM {mtw.MARKER_TABLE}"))["companions"], "playtester_gear")
+        lines = [k for (k,) in con.execute("SELECT SpecKeyName FROM ClassXSpecialization WHERE ClassID=2 ORDER BY SpecKeyName")]
+        self.assertEqual(lines, sorted(k for k, _, _ in mtw.COMPANION_SPECS))
+        self.assertIn("Two Handed", lines, "a line name of two words, as /hire train reads them (#397)")
+        specs = {k for (k,) in con.execute("SELECT KeyName FROM Specialization")}
+        for spec, key in con.execute("SELECT Spec, AbilityKey FROM SpecXAbility"):
+            self.assertIn(spec, specs)
+            self.assertEqual(con.execute("SELECT COUNT(*) FROM Ability WHERE KeyName=?", (key,)).fetchone()[0], 1, key)
+        listed = con.execute("SELECT COUNT(*) FROM MerchantItem m JOIN ItemTemplate t ON t.Id_nb=m.ItemTemplateID "
+                             "WHERE m.ItemListID='playtester_gear' AND t.Price>0 AND t.Realm=1 AND t.Level<=12").fetchone()[0]
+        self.assertEqual(listed, len(mtw.COMPANION_ITEMS))
+        self.assertEqual(con.execute("SELECT COUNT(DISTINCT MerchantItem_ID) FROM MerchantItem").fetchone()[0], len(mtw.COMPANION_ITEMS))
+        con.close()
+        cli = self.dir / "cli.db"
+        self.assertEqual(mtw.main(["minimal", "--out", str(cli), "--companions"]), 0)
+
     def test_the_passwords_are_plain_so_the_server_hashes_them_at_first_login(self):
         out = self.dir / "minimal.db"
         mtw.build_minimal(out)

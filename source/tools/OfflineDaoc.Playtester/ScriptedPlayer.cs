@@ -357,6 +357,12 @@ internal sealed class ScriptedPlayer : IAsyncDisposable
     /// <summary>Selects an object by its id, as a click on it does (0: nothing selected, as Escape).</summary>
     public void TargetObject(int objectId) => Send(ClientPackets.Target(objectId));
 
+    /// <summary>A left-click on a living (#424): PlayerTarget with the object in view, and with the examine bit when
+    /// <paramref name="examine"/> (the server then answers "You target [Name]."). Unverified against game.dll's exact
+    /// bits: the click scenario sends both.</summary>
+    public void Click(int objectId, bool examine = true) =>
+        Send(ClientPackets.Target(objectId, ClientPackets.TargetInView | (examine ? ClientPackets.TargetExamine : 0)));
+
     /// <summary>Asks the server to create an object for us (CreateObjectRequest 0xBE), as game.dll does for an update of one it
     /// does not have.</summary>
     public void RequestObject(int objectId) => Send(ClientPackets.RequestObject(objectId));
