@@ -42,6 +42,58 @@ HEROES = {
 # Heroes held over the cap at a known count. Empty since the canon pass of 2026-11-20 brought every hero to 12 or fewer.
 HERO_OVER_CAP = {}
 
+HEROES_MD = os.path.join(os.path.dirname(__file__), "..", "..", "docs", "1.2.1", "HEROES.md")
+# Owner decision 7 (2026-11-21): a hired companion's suggested name may be a lesser legend's, never a legend the lore tells
+# of. These ordinary given names are allowed although a legend of the lore bears them, because present-day characters of
+# the lore share them (decision 7 names Edith, Gunnar and Aine): Edith of the wash-house (and the Edith of Camelot in
+# Tuka's topic); Gunnar Alfevson, the shade in Muspelheim (the Volsung Gunnar shares it); Aine the fire-keeper in
+# Abomos's story (the goddess of Lough Gur shares it); Eirik in Audliten, the willow-branch quest giver (Ragnar's son
+# Eirik in history/midgard shares it).
+SHARED_GIVEN_NAMES = {"Edith", "Gunnar", "Aine", "Eirik"}
+_CAPITALISED = re.compile(r"\b[A-Z][a-z]+\b")
+
+def fold(text):
+    """Accents off (Gráinne -> Grainne, Áine -> Aine), so a companion's plain spelling meets the lore's accented one."""
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn")
+
+def legend_names(root=LORE_DIR, heroes_md=HEROES_MD):
+    """Every name the lore tells of as a legend, folded: name -> where it was found.
+      - the HEROES patterns above (the realms' leaders and legend companions);
+      - the roster table in docs/1.2.1/HEROES.md (leaders and companions columns);
+      - every capitalised word of a fact marked "myth" (the folklore texts the lore retells; "legend" and "game" facts
+        cite game guides and the world, so they name present-day NPCs, not legends);
+      - every capitalised word of a player-visible sentence that also names a HEROES legend (a legend-age sentence:
+        "Diarmuid fled with Grainne").
+    Over-inclusion is harmless: only the companion names are looked up in it."""
+    import fourth_wall
+    out = {}
+    def add(word, where): out.setdefault(fold(word), where)
+    for h in HEROES: add(h.split()[0], "name_counts.HEROES")
+    if os.path.exists(heroes_md):
+        rows = [l for l in open(heroes_md, encoding="utf-8") if l.startswith("| Albion") or l.startswith("| Midgard") or l.startswith("| Hibernia")]
+        for row in rows:
+            cells = row.split("|")
+            for cell in cells[2:4]:
+                for w in _CAPITALISED.findall(fold(cell)): add(w, "HEROES.md roster")
+    hero = re.compile(r"\b(?:" + "|".join(HEROES.values()) + r")\b")
+    for f in lore_files(root):
+        d = json.load(open(f, encoding="utf-8"))
+        folder = os.path.basename(os.path.dirname(f)); rel = f"{folder}/{os.path.basename(f)}"
+        for x in all_facts(d):
+            if x.get("provenance") == "myth":
+                for w in _CAPITALISED.findall(fold(x.get("text", ""))): add(w, f"{rel} myth fact")
+        for _, text, _ in fourth_wall.visible(d, folder):
+            for s in sentences(text):
+                if hero.search(s):
+                    for w in _CAPITALISED.findall(fold(s)): add(w, f"{rel} legend-age sentence")
+    return out
+
+def companion_clashes(names, root=LORE_DIR, heroes_md=HEROES_MD):
+    """The suggested companion names that are legends the lore tells of: [(name, where)]."""
+    legends = legend_names(root, heroes_md)
+    return [(n, legends[fold(n)]) for n in names if fold(n) in legends and fold(n) not in SHARED_GIVEN_NAMES]
+
 def hero_count(root=LORE_DIR):
     c = collections.Counter()
     pats = {h: re.compile(r"\b" + rx + r"\b") for h, rx in HEROES.items()}
