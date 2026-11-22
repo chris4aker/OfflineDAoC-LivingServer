@@ -54,6 +54,11 @@
       "text": "Swedish drake means dragon and ulv wolf (the compound 'drakulv' to verify).",
       "provenance": "original",
       "source": "Swedish glossary, to verify"
+    },
+    {
+      "text": "The book pages after the first (letters, slates, verses and inscriptions by the realm's in-world witnesses) are Living Server writing for the epic floors, built on this file's own chapters.",
+      "provenance": "original",
+      "source": "Living Server lore, epic book pages (issue #402)"
     }
   ],
   "story": "Yar is the firstborn of Gjalpinulva, the wolf's daughter of Malmohus: a pup with scales on its back and a wolf's grin that she licked the frost off and named, before the drakulv were a people. The svartalfar of Svarhamr say she bore him; the grandmothers of Gotar say she made him out of the frost of her first winter in the ruins; the drakulv do not discuss it. He is the oldest and strongest of her brood, the most powerful of all the werewolves in the dragonbane's reckoning, and he wears his mother's look more than any of his kin.\n\nHe keeps the south-west of Malmohus, and the drakulv camps there are his. They do not wait to be told when he is in danger. Any of them near enough to hear him come at once, and when he is badly hurt he howls, and a pack of the camps' best comes out of the ruins at his feet. He calls them only once; the drakulv say the firstborn does not ask twice. Left alone long enough to lick his wounds, he rises whole, as his mother does.\n\nThe first company of Midgard to bring him to the edge of death was Gyrd of Nalliten's, out of Gotar, and it went back to bind its wounds after his kin came, and found him whole when it returned. The svartalfar of Svarhamr have paid for his head ever since, through Kiaja, who sends any proven friend after him with a warning to bring enough, and Raxnathor, who rewards those who come back. The dragonbane say a line that loses its eldest has begun to end, and that a dragon in grief breathes less carefully, and they keep a list of everyone who has killed him and dreamed of the mother afterwards. The skalds of Jordheim say he is waiting for the day she flies north to meet her father, when he will run at the front of the brood.",
@@ -149,6 +154,10 @@
     "text": "The firstborn of [Gjalpinulva]'s brood, the oldest and strongest of the drakulv. When he howls, his kin come. The svartalfar say his mother feels it when he dies."
   },
   "bookPage": "From the quest-book of Kiaja of Svarhamr, as a Midgard warrior copied it. 'We thank you. This is an act of great bravery my people will not soon forget.' That is what she said when I came back with the firstborn's head. Then she said I should speak with Skipta, who had earned their trust years before, and that we might share more than I knew. I asked Skipta what Kiaja meant. Skipta said that everyone who kills the firstborn dreams of the mother afterwards, and that the dragonbane keep a list of those who dream. She said my name was on it now.",
+  "bookPages": [
+    "Cut on the beam of the dragonbane at Svarhamr, the first cuttings, from the first winter the wolf's daughter lay in the ruins. All winter nothing came out of the hollow. Then a pup came out into the snow at the mouth of it, small, grey, wrong in the shape of its back, and sat in the frost and looked at the world. The dragon put out her head and licked the frost off it and spoke a word. As near as we heard it, the word was Yar. Beneath this, in a later hand: after him came the rest of the brood, and she ranked them as a court is ranked, and gave him no rank. Beneath that, in a later hand again: the first does not need one.",
+    "From Gyrd of Nalliten, as the skalds of Gotar set it down when he came home. There were twenty of us. We caught the firstborn alone at the edge of his ground and fought him back through the nearest camp against the old walls, and he was bleeding, and I thought we had him. Then he howled, and it was not a wolf's howl and not a dragon's, and out of the ruins at his feet came his kin, the best of the camps, and they fought like folk who had heard their eldest call. We went back over the wall to bind our wounds. When we looked again, the pack was gone, and he stood in the snow whole, without a mark, looking at us the way his mother looks. I came home with nine."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Yar the Firstborn in Malmohus in {minutes} minutes.",
     "loss": "Yar's kin answered his call and drove off {raidLeader}'s party from {realm} after {minutes} minutes."
