@@ -29,6 +29,11 @@
       "text": "Reede's Camelot wash-house origin, her mother Edith, Reede's kneel, the kneeling mark and the laundresses' custom are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the Constable's copy-book answer giving Reede leave) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Sergeant Reede was a laundress's daughter of Camelot's wash-house lane. Her mother Edith had washed the king's linen for thirty years and her hands were failing, so at seventeen Reede chalked the sums on the wash-house wall, found that the frontier's pay would keep them both if she sent all of it home, and signed on at Prydwen Keep without giving her age. She came north in the fifteenth year of the watch with a wash-house cough, and Lady Darra kept her a week in the sickroom and taught her to read the jars because she asked; by the end of the winter she read the lady's books and had sent home every penny.\n\nDarra taught her to lift the wounded from the side, kneeling at a hurt man's shoulder where his arm could not reach, never from the front: Reede's kneel. In Atwell's yard she fought with a short blade and a dagger, quick rather than strong, and whenever a man was dazed she was at his flank before he knew where he was, from habit, with the point at his ribs. Atwell said she could not help winning by being kind; Meade said she had stolen his turn; she said she had stolen it from the lady. Her mark at the foot of the stair is a small kneeling figure.\n\nLord Gildas made her a sergeant in the eighteenth year and gave her the stair to the sickroom, a few strides from Meade's card table. In the last winter she carried the wounded up it every night, slower as the despair lay on her too, and asked Tobias to ask the Constable to let her go home to her mother in the spring. The answer came with Sir Hamon's riders, giving her leave, and lies in its seal on the captains' table.\n\nShe keeps her stair still, and kneels in from the flank on any man struck senseless near her. Edith lived eleven more winters on the pay, and the laundresses of the lane still never let the woman who washed the last basket carry it home.",
@@ -96,6 +101,9 @@
     "text": "Sergeant Reede was a laundress's daughter of [Camelot] who came north at seventeen, learned to read [Lady Darra]'s jars and carried the wounded up the sickroom stair. The Constable's letter giving her leave to go home is still sealed on the [captains' table]. Ask the laundresses about [Reede's kneel]."
   },
   "bookPage": "Sergeant Reede carries the wounded up to the sickroom every night, on her back, one at a time, and the Lady Darra says she would be lost without her. She is the youngest sergeant in the hall and the kindest. Tonight she asked me, quite seriously, whether I thought the Constable would let her go home in the spring, because her mother is old and her hands are bad. I said I would ask. I have asked, in this report, Constable, though I know you have more weighty things to read. She sends all her pay home. She is a good girl. Let her go home in the spring, if there is a spring. Tobias, clerk.",
+  "bookPages": [
+    "From the copy-book of the Constable's office at Camelot, the answer to the clerk of the Pennine watch, sent north with Sir Hamon Brede in the spring. To Tobias, clerk, greeting. Your reports are read, all of them, and the verses too. Tell Lord Gildas that the candles go with this, and the cooper after. As to the sergeant of the stair: let Reede go home to her mother at the spring, with her pay to the quarter and a half-year besides, and let her keep her blade. Albion has other soldiers, and her mother has one daughter. Sealed at Camelot. Below, in the office's later hand: the original was found in its seal on the captains' table, and is left there at the asking of the sisters of Caer Ulfwych. Edith of the wash-house lane was told by the Constable's own clerk, and paid the half-year at her door."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Sergeant Reede from the Pennine watch in {minutes} minutes.",
     "loss": "Sergeant Reede held the post against {realm}'s raid; {raidLeader} fell back."

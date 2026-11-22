@@ -24,6 +24,11 @@
       "text": "Wulfstan and the words 'we stayed', Saxe's corridor ending at the Roman wall over Vibius's gallery, his facing the wall when the riders came, and the spear set by the Long Dale door are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the names cut in the Saxe meal-chest at Long Dale) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Lieutenant Saxe was a Saxon of Long Dale, great-grandson of Wulfstan, one of the twelve spearmen who kept the first watch on the Summoners' road under Captain Leofric at the cold camp by the Roman wall. When Leofric went down and the Summoners sent up a headless spear, the eleven kept the camp until relieved, and Wulfstan brought home his own spear and two words that his family said for four generations like a grace: we stayed. Saxe, big and slow-spoken, signed on at nineteen; his mother made him leave the spear over the hearth, and he went north with a two-handed sword. Lord Gildas made him a lieutenant over cleverer men because in thirteen years he had never once been anywhere but where he was put.\n\nHis post was the long dull corridor from the card table to a blank wall. It was the Roman wall Sextus Vibius built across his miners' gallery, which runs up to the old lead workings and out to the hillside, the one way into the hall that is not the road; by Gildas's day only the lord, who had read Master Wystan's rolls, remembered. Saxe kept it for six years without asking, never sat down, never played at the table, never came to Atwell's yard. For so big a man he moved like a dancer: a man who swung at Saxe swung at where he had been.\n\nThe despair of the last winter touched him least: distance, say the loremasters; a man who never doubted his post, say the Church's priests; Wulfstan, say the Long Dale Saxons. Sir Hamon's riders found every man of the watch dead and facing the road except Saxe, who faced the Roman wall with a clean sword. Nothing came through the wall behind him.\n\nHe keeps his corridor still, with no curse or poison, only a great sword and light feet, and his face is peaceful when he falls. Old soldiers drink to him standing. Long Dale sets Wulfstan's spear by the farm door once a year, point to the hills.",
@@ -91,6 +96,9 @@
     "text": "Lieutenant Saxe was a Saxon of [Long Dale], great-grandson of one of [Leofric]'s twelve spearmen, made lieutenant because he never once left his post. His long dull corridor ends at the [Roman wall]; when the riders came, he alone faced it instead of the road. See also [Lord Gildas] and [Meade]."
   },
   "bookPage": "Lieutenant Saxe asked me today what the reports were for, and I told him they were so that the Constable would know what passes on the road. He said that nothing passes on the road. I said that was what the reports said. He thought about that for a long time and then said that he supposed it was good for the Constable to know that nothing passes, and went back to his corridor. He has kept that corridor for eleven years. It leads nowhere. Lord Gildas says he is the best soldier in the hall, and I think Lord Gildas is right.",
+  "bookPages": [
+    "Cut inside the lid of the meal-chest at the Saxe farm in Long Dale, where the family has kept its names since the first watch on the Summoners' road. Wulfstan, spearman, one of the eleven who kept the cold camp by the wall when Leofric fell, who came home, and said: we stayed. Under his, his son's name, and his son's son's, each cut by the one who came after, and each with the same two words beside it, because each of them said that grace at this table every night of his life. The last name is the lieutenant's, cut by his mother in the spring the riders came home. She did not cut the two words beside it. The dale says she did not need to, because the riders had told her which way he was facing. Below, in chalk, renewed every year by whoever is master of the farm: spear by the door."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Lieutenant Saxe from the Pennine watch in {minutes} minutes.",
     "loss": "Lieutenant Saxe held the post against {realm}'s raid; {raidLeader} fell back."
