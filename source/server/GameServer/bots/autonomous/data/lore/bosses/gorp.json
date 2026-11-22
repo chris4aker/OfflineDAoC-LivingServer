@@ -38,7 +38,7 @@
     }
   ],
   "story": "A tree-clan that has given up fire has to eat, and the southern trunks of the tradklan eat what Gorp brings home. He is Bokko's hunter, the only one of the southern trunks who goes out into the deer country of the middle of Faraheim, alone, and the dwarves of Hagall, who see him there more often than they see any other tradklan, call him the clan's mouth.\n\nHe is not a great hunter. He is a patient one. The deer of the middle country do not run from the terror birds that stand among them, which the dwarves find more unsettling than anything else about the birds, and Gorp, the skogsra say, has made himself as much like a terror bird as a small loud tree-clan can: he stands still among the deer for hours, until they forget him, and then the deer are fewer. The tradklan of the northern trunks, who have fire and can hunt as they please, think it is beneath a tree-clan to hunt like a bird. Gorp thinks it is beneath a tree-clan to hunt like Cronk, loudly, with fire, in a wood.\n\nThe terror birds tolerate him, as far as anyone can tell. The skogsra say he once stood a whole day within sight of Valmak, the one the others wait for, and that the two of them looked at each other across the grazing until dark, and that the next morning Gorp moved his hunting ground a long way north, which the skogsra thought was very sensible of him.\n\nHe carries the meat back to the southern trunks raw, and eats none of it on the road, and the medicine men give him the first piece. He has no one with him and calls no one, because there is no one of the clan within call out there. Anything of the tree-clan that hears him will come, the dwarves say. Nothing of the tree-clan is ever near enough to hear.",
-  "legend": "Gorp is a level 54 tradklan hunter standing alone in the deer country in the middle of Faraheim, with a few deer and a friller wandering nearby. He's Tradklan Tribe, which would let him bring friends, but there's no other tradklan close to him, so in practice he fights alone. No abilities, not CC-immune: an easy named for a group of 50s, or a duo with a good puller. Watch the stags and the friller wandering into the fight, and stay clear of the terror birds' ground to the east, where Valmak and his flock stand. No quest needs him.",
+  "legend": "Gorp is a tradklan hunter, a foe for the realm's best, a full band of them, standing alone in the deer country in the middle of Faraheim, with a few deer and a friller wandering nearby. He's of the Tradklan Tribe, which would let him call friends, but there's no other tradklan close to him, so in practice he fights alone. No tricks, and charms, trances and stuns hold him: an easy known beast for a band of the realm's best, or two with a good drawer. Watch the stags and the friller wandering into the fight, and stay clear of the terror birds' ground to the east, where Valmak and his flock stand. No quest needs him.",
   "yells": {
     "aggro": [
       "Still. I was still. You moved.",
@@ -85,12 +85,12 @@
       "gorp down, easy",
       "duo'd him",
       "a stag wandered in but fine",
-      "quiet named"
+      "quiet hunt"
     ],
     "aftermathLoss": [
       "a terror bird wandered over",
       "friller joined",
-      "pulled a stag with him",
+      "drew a stag with him",
       "too far east, valmaks ground"
     ],
     "rumour": [

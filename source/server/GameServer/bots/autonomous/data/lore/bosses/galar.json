@@ -30,7 +30,7 @@
     }
   ],
   "story": "Galar is the younger brother, and the quiet one. Where Fjalar talks of the mead of poetry, Galar listens to it, Gudny of the Seithkona Circle says: he stands a step behind his brother and looks at the river, and when he speaks it is to say that the giant they drowned in the old tale went into a river like this one. In the story it was Galar who dropped the millstone on the giant's wife when she would not stop weeping. In Skona he lets no millstones fall. He waits for his brother to finish talking and then he fights.\n\nThe skalds of Galplen tell a version where the two dwarves were never caught at all, and walked the world afterwards looking for the mead Odin stole, and that Galar is the one who still believes they will find it. The Circle tells a version where they are two dwarves who liked the story. Galar, asked, says nothing, and looks at the river.",
-  "legend": "Galar (36) is the quieter of the two dwarf brothers in west Skona; he and Fjalar (37) always fight together. No faction, no spells. Raiders usually drop Galar first since he has a bit less health, then Fjalar. Easy for a 40s group. The brothers share a respawn spot by the river, so if you wipe, give it a minute before you go back and check they're both up.",
+  "legend": "Galar is the quieter of the two dwarf brothers in west Skona, a foe for a hardened band of veterans, a hair weaker than Fjalar; he and Fjalar always fight together. They answer to no one, no spells. Raiders usually drop Galar first since he takes a bit less killing, then Fjalar. Easy for a hardened band. The brothers rise again on the same spot by the river, so if the whole group falls, give it a minute before you go back and check they're both up.",
   "yells": {
     "aggro": [
       "(Galar says nothing, and draws.)",
@@ -51,7 +51,7 @@
   "botLines": {
     "briefing": [
       "galar is the quiet one of the dwarf brothers, 36",
-      "always pulls with fjalar"
+      "always comes with fjalar"
     ],
     "aftermathWin": [
       "galar down",

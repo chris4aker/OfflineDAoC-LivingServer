@@ -37,7 +37,7 @@
     }
   ],
   "story": "The blood renders of Faraheim are scaled hunters with jaws built for one thing, and they hunt the east of the island in packs. Goretooth is the oldest jaw among them. The Remnants have slates that name him from the winter they moved their settlement out of the Iarnwood, and he was old then; the dwarves say renders do not live so long, and that Goretooth does not seem to have heard.\n\nHe holds the south of the east, between the skogsra's woods and the iron trees, with four of his kind who have hunted with him for years. The gastornis and the bone crunchers, who are not small, step out of his ground when his pack is moving. He hunts with a hunter's patience. A bite first, which leaves a poison in the blood that works slowly and does not stop; then, when the prey turns to face him, a blow of the head that leaves it standing dazed and helpless while the four close in. The pack comes the moment he is challenged, from wherever they lie.\n\nThe iarn dwarves name their children's nightmares after him. They also leave him alone, and so does everything else, except Shredclaw. The young render to the north has never yet crossed into the old jaw's ground, and the strip of empty wood between their two grounds is the most peaceful place in Faraheim, because nothing that lives will go there. The dwarves say that when Goretooth finally weakens, Shredclaw will come through that strip, and that whichever of them comes out of it will hunt the whole east, and then the whole island.\n\nNothing has ever held him. Hunters' snares part on his scales, and the dwarves' sleep-charms find nothing to take hold of.",
-  "legend": "Goretooth is the old blood render in the south-east of Faraheim, level 68, 30,000 health, and his four renders all come when you touch him. Poison (a DoT, 100 body every few seconds for 30 seconds) and a 6-second stun on whoever he's hitting, both on a 35% chance per hit, so cure poison and have a second tank or stun immunity ready. He's CC-immune, reach 350, resets full if you leave. Kill or hold the four renders; they hit hard too. Shredclaw's pack is in the north-east, far enough away not to join, but don't drag a fight between the two grounds.",
+  "legend": "Goretooth is the old blood render in the south-east of Faraheim, a foe for several bands of the realm's best together; the raiders reckon his strength at thirty thousand, and his four renders all come when you touch him. Poison (a lingering bite, 100 body every few seconds for 30 seconds) and a 6-second stun on whoever he's hitting, each on seven hits in twenty, so cure poison and have a second shield-bearer ready, or wait out the short respite from stuns that follows each one. No charm or stun holds him, he reaches a dozen paces, and he is whole again if you leave. Kill or hold the four renders; they hit hard too. Shredclaw's pack is in the north-east, far enough away not to join, but don't drag a fight between the two grounds.",
   "yells": {
     "aggro": [
       "(A hiss and a click of teeth from the undergrowth.)",
@@ -75,19 +75,19 @@
   },
   "botLines": {
     "briefing": [
-      "goretooth + 4 renders, cure poison, stun break",
-      "stun on his target, have a second tank ready",
+      "goretooth + 4 renders, cure poison, shake off the stuns",
+      "stun on his target, have a second shield-bearer ready",
       "all four come at once",
-      "cc immune, dont bother"
+      "nothing holds him, dont bother"
     ],
     "aftermathWin": [
       "goretooth down",
       "the old jaw is dead. shredclaw will be happy",
-      "two tanks made the stuns easy",
+      "two shield-bearers made the stuns easy",
       "cure poison and it was fine"
     ],
     "aftermathLoss": [
-      "stunned and poisoned, gg",
+      "stunned and poisoned, that was that",
       "the four renders ate the healer",
       "no cure poison, bad idea",
       "we dragged it toward shredclaws ground"

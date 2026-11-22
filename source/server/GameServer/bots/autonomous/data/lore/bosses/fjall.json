@@ -49,7 +49,7 @@
     }
   ],
   "story": "The fenrir of Yggdra are wolf-folk who walk on two legs and take their name from the great wolf, and Fjall leads them. His name means the fell, the bare mountain, and Jana of Vasudheim, who has studied the pack longer than anyone in Midgard, says it was given to him because he does not move: he stands in the far west of the forest among his shredders and prophets the way a mountain stands among trees, and the pack goes round him.\n\nThe fenrir prophets teach that they are the great wolf's children in spirit, and that when the chain breaks they will run beside him to the end of the world. Fjall believes it. What Jana told the seers of Midgard, and what sent them to him on Inaksha's word, is that Fjall has stopped waiting. A season after the bowl last spilled over the bound god's face and the earth shook, a flame came to Fjall in the forest, dancing on nothing, burning without wood among the trees that do not burn, and it has stayed with him since. Loki gives such flames to those he means to use, Jana says. The god who seeks trouble wants the wolf free as much as the fenrir do, and an army of wolf-folk who will run when the chain breaks is a thing he would value; a pack that could be persuaded to help break it, more.\n\nSo the seers go into the far west to take the flame. The prophets around Fjall see them coming and come at them, and the shredders, and Fjall stands where he stands until the struggle reaches him, and then he is not a mountain any more. He has no following that he calls, Jana says; the pack is around him because it is always around him, and it fights because a pack does. Geyra, who runs alone near the pack and carries its messages, is the one fenrir he does not keep close, and the viking captains think that is because she carries messages for others too.\n\nJana says the worst of it is that Fjall knows what the flame is. She asked him once, through a prophet, why he kept a thing the bound god had given him. He said: because it is warm.",
-  "legend": "Fjall is the seer epic fenrir in the far west of Yggdra Forest, level 56. Jana in Vasudheim tells you about him and the fenrir; you find Fjall 'and his fellows' and bring Inaksha the dancing flame. His fellows are right there: two fenrir shredders (46), four prophets (44-45) and a tracker within a few paces, all aggressive. Fjall himself has no faction, so he doesn't call anyone, but the pack is standing on top of him. Clear the prophets and shredders first, or mez them, then Fjall: no special abilities, not CC-immune. A group at the epic level does it. Geyra stands alone about 3,300 away; she's a different epic.",
+  "legend": "Fjall is the fenrir of the seers' great quest in the far west of Yggdra Forest, a foe for the realm's best, a full band of them. Jana in Vasudheim tells you about him and the fenrir; you find Fjall 'and his fellows' and bring Inaksha the dancing flame. His fellows are right there: two fenrir shredders and four prophets, each a foe for a hardened band of veterans, and a tracker within a few paces, all attacking on sight. Fjall himself answers to no one, so he doesn't call anyone, but the pack is standing on top of him. Clear the prophets and shredders first, or entrance them, then Fjall: no special tricks, and charms, trances and stuns hold him. A group of the strength the quest asks does it. Geyra stands alone a hundred-odd paces away; she belongs to a different great quest.",
   "yells": {
     "aggro": [
       "The mountain does not move. You moved.",
@@ -88,19 +88,19 @@
   "botLines": {
     "briefing": [
       "fjall is 56 with the fenrir right on top of him",
-      "kill or mez the prophets and shredders first",
+      "kill or entrance the prophets and shredders first",
       "fjall has no faction, the pack is just there",
       "geyra is 3300 away, separate"
     ],
     "aftermathWin": [
       "got the dancing flame",
       "pack first then fjall, fine",
-      "easy for the epic group",
+      "easy for the group on the seers' quest",
       "inaksha will be pleased"
     ],
     "aftermathLoss": [
       "prophets and shredders at once",
-      "pulled fjall with the whole pack",
+      "drew fjall with the whole pack",
       "too few",
       "geyra wandered over"
     ],

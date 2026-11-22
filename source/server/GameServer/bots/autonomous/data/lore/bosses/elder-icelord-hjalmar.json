@@ -84,7 +84,7 @@
       "text": "Grimolf's hall lies on the road to the throne room, and it has had one elder in it at a time since the night he died. The hrimthursa tell the reason two ways. The Ice Lords say the glacier will not keep both elders awake, because two such giants awake in one hall would bring the roof down. The cast-out sculptors say the glacier simply got tired of listening to them argue.\n\nWhichever is true, one sleeps in the ice of the hall's walls while the other walks, and when the one that walks is killed, the other does not wake at once. The hall stands empty for a while. Then, when the glacier is ready, one of them stands up out of the ice, and no giant and no stranger can say beforehand which it will be. The Valkyn scout's tally of which elder came out of the hall, season after season, is the only record anyone has, and it shows no pattern at all.\n\nWhen the living come near the mouth of the hall, a howl goes through the tunnels, a long sound with no word in it, and then the familiar creak of the glacier comes back. When it is Hjalmar who stands up, he tells the strangers that he is amazed they have come so far and that their journey ends with him; that he warned the Council to destroy those who threatened it before they could destroy it; that they deserve their fate more than he deserves his; and that he will not mourn her beyond the grave. Nobody is sure who she is: the queen, the Council, or the glacier itself.\n\nThe Valkyn guides say it is the glacier. They say Hjalmar is the only giant in Tuscaran who has ever said aloud that the ice will die, and that he said it to warn it, and it did not listen either."
     }
   ],
-  "legend": "You get Hjalmar or Suttung, never both: when the one in the hall dies, the other comes back later at random, and the howl tells you someone's home. If it's Hjalmar: 100,000 health, 40% melee and 70% magic resists, CC-immune, a two-hander that hits much harder from behind, so whoever he's on must face him and never turn to run. One in five of his hits raises a Morkimma next to his target. They have only 1,000 health and hit weakly, and despite the old raiders' accounts they do NOT heal Hjalmar: each one heals only itself. They pile up over a long fight, so a little area damage or one add-killer keeps them under control, and the real work is just burning Hjalmar. Fight him in his hall and don't let him go 30 seconds without a fight or he resets. Old raiders swear the glacier gives you Hjalmar when you brought too few healers.",
+  "legend": "You get Hjalmar or Suttung, never both: when the one in the hall dies, the other comes back later at random, and the howl tells you someone's home. If it's Hjalmar: a foe for a war party of the realm's champions; the raiders reckon his strength at a hundred thousand, four-tenths of every blow and seven-tenths of every spell are lost on him, and no charm or stun holds him. A two-hander that hits much harder from behind, so whoever he's on must face him and never turn to run. One in five of his hits raises a Morkimma next to his target. The raiders reckon their strength at only 1,000 and they hit weakly, and despite the old raiders' accounts they do NOT heal Hjalmar: each one heals only itself. They pile up over a long fight, so a little blasting that strikes everyone near or one fighter set to kill them keeps them under control, and the real work is just burning Hjalmar. Fight him in his hall and don't let him go 30 seconds without a fight or he goes home whole. Old raiders swear the glacier gives you Hjalmar when you brought too few healers.",
   "yells": {
     "aggro": [
       "You walk the halls of the Ice Lords. I am amazed you came so far.",
@@ -142,18 +142,18 @@
   },
   "botLines": {
     "briefing": [
-      "if the howl gives us hjalmar, someone aoe the morkimma, they pile up",
+      "if the howl gives us hjalmar, someone blast the morkimma, they pile up",
       "hjalmar or suttung, we only get one. listen for the howl",
-      "add team: kill every morkimma the second it spawns",
+      "morkimma team: kill every morkimma the second it rises",
       "hjalmar resets if you drag him, fight him in the hall",
       "hjalmar hits way harder from behind. whoever hes on, face him, never turn and run",
-      "morkimma dont heal hjalmar, they only heal themselves. aoe them down, dont panic",
-      "1 in 5 of his hits spawns a morkimma, they pile up in a long fight",
+      "morkimma dont heal hjalmar, they only heal themselves. blast them down, dont panic",
+      "1 in 5 of his hits raises a morkimma, they pile up in a long fight",
       "hjalmar or suttung, never both. listen for the howl"
     ],
     "aftermathWin": [
-      "got hjalmar this time. nice add work everyone",
-      "got hjalmar, add team was on point",
+      "got hjalmar this time. nice work on the morkimma everyone",
+      "got hjalmar, morkimma team was on point",
       "hjalmar down. suttung next time probably",
       "hjalmar's quiver dropped for our hunter",
       "hjalmar never forgets a back. nobody showed him one",
@@ -162,11 +162,11 @@
     ],
     "aftermathLoss": [
       "everyone chased morkimma and nobody hit hjalmar",
-      "add team got distracted. [gg|thats the fight]",
-      "he outlasted the healers. we need more damage or a better add team",
-      "tank turned to run and hjalmar back-styled him",
+      "morkimma team got distracted. [that was that|thats the fight]",
+      "he outlasted the healers. we need more damage or a better morkimma team",
+      "shield-bearer turned to run and hjalmar struck him from behind",
       "we chased morkimma instead of burning him",
-      "too many morkimma by the end, nobody aoed"
+      "too many morkimma by the end, nobody blasted them"
     ],
     "rumour": [
       "there are two elder icelords and only one ever shows up. nobody knows why [hjalmar|it] gets picked",

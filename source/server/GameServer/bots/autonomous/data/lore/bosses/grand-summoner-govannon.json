@@ -130,7 +130,7 @@
       "text": "Govannon is a maker, and a maker makes something. The souls the hall calls are his material, and he has been working them since before Camelot. Nobody knows what the work is, and the realms disagree as usual.\n\nThe scholars of Camelot say he is making an army: the Lords of the Undead, the dead of every realm in one host, bound to the hall and waiting for the day when the realms above have exhausted each other in their war and there is no one left to stop the dead walking up the three stairs at once. The druids of Tir na Nog say he is making a hall, a second Darkness Falls under the borders, a court of his own to rival Legion's, and that the sidhe were only the first of the stewards he will need. The skalds of Jordheim say he is making nothing at all, that a thing out of the dark only takes, and that the smith's name is the last and best of his jokes.\n\nThe magicker who had been his student gave a fourth answer, and the Midgard scholar who heard it wrote it down and then would not discuss it. She said he is making a bridge. She said that under the hall there is a place where the dead of all three realms are the same, and that he is building a way across to it out of the souls of the three realms, one bargain at a time, and that when it is finished he will go across, and the bridge will come with him, and the realms above will find that their dead have nowhere else to go.\n\nEach realm has gone down to the deepest room to stop the work for a season. Midgard has gone for one more reason. In Dodens Gruva, at the head of the stair, Aros the Spiritmaster reads the names of his miners every morning, and has promised that when the calling stops, they may go. Every death of Govannon gives them a season of quiet. None has given them more."
     }
   ],
-  "legend": "Govannon is two fights. At 80% he gets stronger and a sacrifice and a demon walk to his feet from both sides of the room; neither fights, and if both get there the Shade of Aelfgar comes, so kill at least one of them on the way. The shade's shout stuns everyone near its target, and while it lives it throws someone up to the ledge above the room now and then. In a fresh hall the shade is already standing next to him, so kill it first. At 50% he turns demon and heals to full, so pace your power: the second half is the real fight. In demon form he puts the Shroud of Agony on whoever he is hitting and anyone close to them, his hits bleed the tank, and the sacrifice and demon come again at 80%. He shrugs off most magic, so melee and pets do the work, and nothing mezzes or stuns him. Don't drag him off his spot: past his tether he can't be hurt. Period accounts put the hall at four to five groups and the summoner at about forty people and half an hour. Clear all three summoners first, then rest. The shield node story is old raid talk; nobody has found the node.",
+  "legend": "Govannon is two fights. At eight-tenths of his strength he gets stronger and a sacrifice and a demon walk to his feet from both sides of the room; neither fights, and if both get there the Shade of Aelfgar comes, so kill at least one of them on the way. The shade's shout stuns everyone near its target, and while it lives it throws someone up to the ledge above the room now and then. In a fresh hall the shade is already standing next to him, so kill it first. At half his strength he turns demon and heals to full, so pace your power: the second half is the real fight. In demon form he puts the Shroud of Agony on whoever he is hitting and anyone close to them, his hits bleed his shield-bearer, and the sacrifice and demon come again at eight-tenths. He shrugs off most magic, so melee and pets do the work, and no trance or stun holds him. Don't drag him off his spot: drawn too far from it he can't be hurt. Period accounts put the hall at four to five groups and the summoner at about forty people and half an hour. Clear all three summoners first, then rest. The shield node story is old raid talk; nobody has found the node.",
   "yells": {
     "aggro": [
       "You came down through your own floors to me. I have been calling your dead for years. Now I call you.",
@@ -184,10 +184,10 @@
   },
   "botLines": {
     "briefing": [
-      "govannon at 80%: a sacrifice and a demon walk to him from both sides. kill either one before it gets there and no shade of aelfgar",
-      "at 50% he goes demon and heals to full. dont blow everything early, second half is the real fight",
-      "dont pull him off his spot, he goes immune past his tether",
-      "clear all three summoners before govannon, then rest and rebuff",
+      "govannon at eight-tenths: a sacrifice and a demon walk to him from both sides. kill either one before it gets there and no shade of aelfgar",
+      "at half he goes demon and heals to full. dont blow everything early, second half is the real fight",
+      "dont draw him off his spot, nothing hurts him once hes too far from it",
+      "clear all three summoners before govannon, then rest and renew the blessings",
       "govannon shrugs off most magic. melee and pets on him, casters on the walkers and the shade"
     ],
     "aftermathWin": [
@@ -225,7 +225,7 @@
           "govannon: sacrifice dies before it reaches him, thats the whole trick. clerics ready for the shade's stun"
         ],
         "aftermathWin": [
-          "for albion! the summoner is dead. [huzzah|gg all]"
+          "for albion! the summoner is dead. [huzzah|well fought all]"
         ],
         "rumour": [
           "the priests in camelot say the shade of aelfgar was one of ours once. a knight, they say"
