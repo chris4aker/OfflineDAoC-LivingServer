@@ -104,7 +104,7 @@
     "keyword": "Khrin",
     "text": "The oldest sabre-toothed cat of the crater's south-east rocks, who watches the morvalt hunters above Mammoth Valley and thins them at night. [Dellingstad] lets his cats pass its walls. See [the cats]."
   },
-  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: I heard Khrin once, daughter, when I was working late on the south wall, a cough out in the dark like an old man clearing his throat. Every miner on the wall stopped. Then far off, toward the hunters' fires, a morvalt screamed, once, and the fires were very bright for the rest of the night. In the morning the foreman said nothing and we went back to work. That is the cats. They are not ours. But they are on our side of the bowl.",
+  "bookPage": "From The Bowl and the Rim, by Kolfinna of Dellingstad: I heard Khrin once, daughter, when I was working late on the south wall, a cough out in the dark like an old man clearing his throat. It came from below the rim, low and patient, and the lamps on the wall seemed to burn smaller. Every miner on the wall stopped. Then far off, toward the hunters' fires, a morvalt screamed, once, and the fires were very bright for the rest of the night. In the morning the foreman said nothing and we went back to work. That is the cats. They are not ours. But they are on our side of the bowl.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Khrin and his pride in Delling Crater in {minutes} minutes.",
     "loss": "Khrin and the pride dropped on {raidLeader}'s party from {realm} from the rocks after {minutes} minutes."

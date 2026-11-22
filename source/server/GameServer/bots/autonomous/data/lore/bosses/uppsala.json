@@ -114,7 +114,7 @@
     "keyword": "Uppsala",
     "text": "The third of [Cronk]'s household: the clan's memory of its burned houses, or a hostage, or the next to hold the fire, depending who tells it. She watches [Trude] and the chief both. See [tree-clan]."
   },
-  "bookPage": "From the trap-lines of Solvi of Hagall: the kobold who trades with the tree-clan told me the one called Uppsala once recited the whole history of the clan to a medicine man who had doubted a point of it, from the first trunk to Cronk, and that it took from noon to dark, and that when she reached the night of the burning she stopped and would not go on, and the medicine man did not ask her to. The kobold said he had never heard the tradklan quiet before. He said it was like hearing a wood stop.",
+  "bookPage": "From the trap-lines of Solvi of Hagall: the kobold who trades with the tree-clan told me the one called Uppsala once recited the whole history of the clan to a medicine man who had doubted a point of it, from the first trunk to Cronk, and that it took from noon to dark, with the whole clan sitting in the snow around them and none of them getting up to eat, and that when she reached the night of the burning she stopped and would not go on, and the medicine man did not ask her to. The kobold said he had never heard the tradklan quiet before. He said it was like hearing a wood stop.",
   "chronicle": {
     "win": "{raidLeader} of {realm} silenced Uppsala, the tree-clan's memory, in Faraheim in {minutes} minutes.",
     "loss": "Uppsala watched Cronk's household drive off {raidLeader}'s party from {realm} after {minutes} minutes."

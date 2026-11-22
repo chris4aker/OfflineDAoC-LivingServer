@@ -94,7 +94,7 @@
     "keyword": "Koli",
     "text": "The dark thing at the heart of the chaotic miasma in the west of the Iarnwood, which the dwarves call the old one's breath. Break it and the [bark] in the west is good for a season. It comes back. See [waiting]."
   },
-  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: in the spring after a company from Faraheim went into the murk in the west, the air there was clean, and the bark we cut was the best in twenty springs, pale and sound all through. My mother cried over it. By the autumn the murk was back, and the dark thing in the middle of it, and the dwarves wrote their word on the slate, the one for what the wood will not let go. We still talk about that spring. We still walk round the west.",
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: in the spring after a company from Faraheim went into the murk in the west, the air there was clean, and the bark we cut was the best in twenty springs, pale and sound all through. We stacked it to the rafters of the drying shed, and the smell of it filled the whole of Bjarken. My mother cried over it. By the autumn the murk was back, and the dark thing in the middle of it, and the dwarves wrote their word on the slate, the one for what the wood will not let go. We still talk about that spring. We still walk round the west.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Koli, the heart of the miasma, in {minutes} minutes.",
     "loss": "The old one's breath turned {raidLeader}'s party from {realm} back after {minutes} minutes."

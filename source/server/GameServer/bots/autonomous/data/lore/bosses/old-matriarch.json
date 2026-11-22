@@ -109,7 +109,7 @@
     "keyword": "Old Matriarch",
     "text": "The oldest mammoth of Aegir, who leads the great herd through [Mammoth Valley] every year. The [bergklan] call her the one who remembers the road, and will not hunt her."
   },
-  "bookPage": "From Under the Claw, by Sigvor of Bjarken: I went up to the valley once to see the herd come through. It took all day. The bulls came first and the families after, the matriarchs with the calves under them, and at the end, when the dust had gone past, one great cow stood alone at the head of the valley and watched the last of them go by. Then she turned and followed. A bergklan hunter beside me put his spear down on the grass while she passed. I asked him why. He said: so she knows.",
+  "bookPage": "From Under the Claw, by Sigvor of Bjarken: I went up to the valley once to see the herd come through. It took all day. The ground hummed under my feet from morning until the light went long, and the birds would not settle anywhere near. The bulls came first and the families after, the matriarchs with the calves under them, and at the end, when the dust had gone past, one great cow stood alone at the head of the valley and watched the last of them go by. Then she turned and followed. A bergklan hunter beside me put his spear down on the grass while she passed. I asked him why. He said: so she knows.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down the Old Matriarch in Gripklosa in {minutes} minutes. The herd stands still.",
     "loss": "The Old Matriarch got her herd through past {raidLeader}'s party from {realm} after {minutes} minutes."

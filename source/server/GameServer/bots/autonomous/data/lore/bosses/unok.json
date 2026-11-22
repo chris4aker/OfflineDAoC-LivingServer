@@ -94,7 +94,7 @@
     "keyword": "Unok",
     "text": "The pot-keeper of the Iarnwood's [redcaps], who boils every band's share and gives back the broth that keeps their caps red. The dwarves say he made a bargain with the old one's Servants. See [stockade]."
   },
-  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: the dwarves will not let a bark company go into the far south-west, toward the hollow, and the reason they give is not the old one but the pot. They say a redcap who keeps a pot lives there, and that every band of them in the wood brings him a share, and that the smell carries a long way on a still day. I smelled it once. I will not describe it. The dwarf with me said it was the reason the encampment counts its children every evening.",
+  "bookPage": "From Under the Iron Trees, by Eldrid of Bjarken: the dwarves will not let a bark company go into the far south-west, toward the hollow, and the reason they give is not the old one but the pot. They say a redcap who keeps a pot lives there, and that every band of them in the wood brings him a share, and that the smell carries a long way on a still day. I smelled it once. It came through the iron trees on a windless afternoon, and the dwarf beside me spat and turned us round before I had taken a second breath. I will not describe it. The dwarf with me said it was the reason the encampment counts its children every evening.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put out Unok's fire in the Iarnwood in {minutes} minutes.",
     "loss": "Unok added {raidLeader}'s party from {realm} to the pot after {minutes} minutes."

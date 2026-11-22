@@ -105,7 +105,7 @@
     "keyword": "Hagall",
     "text": "Captain of the [Red Daggers], named for the hail rune. A huscarl of the Jamtland frontier once, he sells the realm's back roads to Albion. His second, [Red Hagen], keeps the map."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: a man of the Red Daggers came to Galplen once to buy dried fish and paid in Albion silver, and when the fishwife asked where he had it from he laughed and said hail falls on everyone alike. That is their captain's saying. My uncle went to the jarl about it. The jarl's steward said the Daggers had been dealt with three times already. My uncle said: then why do they still have a captain? The steward did not answer, and the fishwife kept the silver.",
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: a man of the Red Daggers came to Galplen once to buy dried fish and paid in Albion silver, and when the fishwife asked where he had it from he laughed and said hail falls on everyone alike. He said it with his mouth full of her fish, and wiped his fingers on a cloak that was Albion blue under the dirt. That is their captain's saying. My uncle went to the jarl about it. The jarl's steward said the Daggers had been dealt with three times already. My uncle said: then why do they still have a captain? The steward did not answer, and the fishwife kept the silver.",
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Hagall the Red Dagger in Raumarik in {minutes} minutes.",
     "loss": "Hagall the Red Dagger kept his roads from {raidLeader}'s party from {realm} after {minutes} minutes."

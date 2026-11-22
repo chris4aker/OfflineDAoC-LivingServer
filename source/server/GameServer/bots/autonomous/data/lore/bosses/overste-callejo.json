@@ -105,7 +105,7 @@
     "keyword": "Overste Callejo",
     "text": "The colonel who stands among the Fathers' hanging weapons and believes they obey him. They only stay, as [the weapons] were made to. [Alchemist Phorzbreg] keeps the still-room beyond."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: we went through the hall of weapons with our hands under our arms. The Valkyn guide made me do it, and did it herself, and we walked down the middle of that hall between spears hanging in the air like fish in a still pool, and not one of them turned. At the far end a morvalt was shouting at a shield. My guide said he has been shouting at it since her grandmother's time. I said he must be very patient. She said no; the shield is.",
+  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: we went through the hall of weapons with our hands under our arms. The Valkyn guide made me do it, and did it herself, and we walked down the middle of that hall between spears hanging in the air like fish in a still pool, and not one of them turned. I could hear them, though, a sound like wire in the wind, and the hair on my arms stood up under my sleeves. At the far end a morvalt was shouting at a shield. My guide said he has been shouting at it since her grandmother's time. I said he must be very patient. She said no; the shield is.",
   "chronicle": {
     "win": "{raidLeader} of {realm} relieved Overste Callejo of his command in Trollheim in {minutes} minutes.",
     "loss": "Overste Callejo held his hall of weapons against {raidLeader}'s party from {realm} for {minutes} minutes."

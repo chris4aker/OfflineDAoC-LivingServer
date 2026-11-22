@@ -102,7 +102,7 @@
     "keyword": "Wretch of Winter",
     "text": "Raumarik's cold with no shape of its own. It borrows the bodies of what died in the snow: scorpion, spider, jotun, lich, nine that anyone has counted."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: my grandmother said the Wretch is the cold, tired of waiting for things to die. My grandfather, who was a skald and liked a better story, said it was a jarl's son who ran from a battle and froze hiding in a snowdrift, too ashamed for the valkyries and too dishonoured even for the tomb, and that he has been trying on other creatures' deaths ever since, looking for one that fits. My grandmother said that was not better. It was worse. She was right. It usually was.",
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: my grandmother said the Wretch is the cold, tired of waiting for things to die. She said it with her hands held out to the fire, the way she said everything about winter. My grandfather, who was a skald and liked a better story, said it was a jarl's son who ran from a battle and froze hiding in a snowdrift, too ashamed for the valkyries and too dishonoured even for the tomb, and that he has been trying on other creatures' deaths ever since, looking for one that fits. My grandmother said that was not better. It was worse. She was right. It usually was.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put down a Wretch of Winter in {minutes} minutes.",
     "loss": "A Wretch of Winter wore down {raidLeader}'s party from {realm} after {minutes} minutes."

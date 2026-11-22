@@ -103,7 +103,7 @@
     "keyword": "Revenant",
     "text": "Fenrir once snapped at the sun, the tale goes, and spat out a burning splinter in Raumarik's snow. The dead gathered round it, and the greatest of them, the Revenant, walled it in. Win it back and carry it in cold iron."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: they say the first of Raumarik's dead found the splinter by crawling toward its light across a valley in a blizzard, thinking it was a hearth someone had left burning. When he got there he lay down by it and was warm. In the morning the others came crawling after him, and he stood up and drove them off, and began to build. The Galplen folk say that is the saddest thing in all Raumarik: not that he keeps the warmth, but that he was once the one crawling.",
+  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: they say the first of Raumarik's dead found the splinter by crawling toward its light across a valley in a blizzard, thinking it was a hearth someone had left burning. When he got there he lay down by it and was warm. It was the first warmth he had known since the battle, and he wept into the snow beside it. In the morning the others came crawling after him, and he stood up and drove them off, and began to build. The Galplen folk say that is the saddest thing in all Raumarik: not that he keeps the warmth, but that he was once the one crawling.",
   "chronicle": {
     "win": "{raidLeader} of {realm} took the sun-splinter from the Raumarik Revenant in {minutes} minutes.",
     "loss": "The Raumarik Revenant kept the sun-splinter from {raidLeader}'s party from {realm} after {minutes} minutes."

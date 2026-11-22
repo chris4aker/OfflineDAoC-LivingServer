@@ -100,7 +100,7 @@
     "keyword": "Summoned Guardian",
     "text": "Two of Ormarr's door-wardens who died holding [Aros]'s chamber when [the calling] came up [the stair]. Aros called them back first. The old songs say they shielded him; now they only stand."
   },
-  "bookPage": "From The Tally of Dodens Gruva, gathered by Ashild of Glenlock: the slate for the door has two marks on it and no names, and under the marks, in the spiritmaster's own hand, the word kept. I think he wrote their names first and wore them off with speaking, that first night, saying them over and over into the dark as he had promised. The marks are deep. The slate is worn smooth round them, as if many fingers had touched it. The Jamtland families say the saying at the shaft with a gap in it for them.",
+  "bookPage": "From The Tally of Dodens Gruva, gathered by Ashild of Glenlock: the slate for the door has two marks on it and no names, and under the marks, in the spiritmaster's own hand, the word kept. I think he wrote their names first and wore them off with speaking, that first night, saying them over and over into the dark as he had promised. The marks are deep. Whoever cut them leaned his whole weight on the knife, and the slate cracked a little at the second. The slate is worn smooth round them, as if many fingers had touched it. The Jamtland families say the saying at the shaft with a gap in it for them.",
   "chronicle": {
     "win": "{raidLeader} of {realm} laid a Summoned Guardian down at its post in {minutes} minutes.",
     "loss": "A Summoned Guardian held its door against {raidLeader}'s party from {realm} for {minutes} minutes."
