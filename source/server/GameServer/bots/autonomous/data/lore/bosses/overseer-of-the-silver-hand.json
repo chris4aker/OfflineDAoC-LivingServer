@@ -95,7 +95,7 @@
     "keyword": "Overseer",
     "text": "The Overseer of the Silver Hand keeps the western end of the Coruscating Mine's deep workings with three pale-armoured guardians. The druids think his office is older than the mine, and his charge Nuada's silver."
   },
-  "bookPage": "From the scratchings on a collar found in the Coruscating Mine, with the Howth miner's notes below: the court calls its other servants overman and viewer, like any working. Him they call the Overseer of the Silver Hand and nothing else. Nuada lost his hand and could not rule until a silver one was made, and the bards do not say where the silver came from. The overseer keeps three guardians in pale armour, and the collared are never sent to his chamber. Once a season he walks east past Atur, who lets him by, and past the wolf at the vein's end, and comes back up a day later smiling.",
+  "bookPage": "The court calls its other servants overman and viewer, like any working: that much is in the scratchings on a collar found in the Coruscating Mine, with the Howth miner's notes below. Him they call the Overseer of the Silver Hand and nothing else. Nuada lost his hand and could not rule until a silver one was made, and the bards do not say where the silver came from. The overseer keeps three guardians in pale armour, and the collared are never sent to his chamber. Once a season he walks east past Atur, who lets him by, and past the wolf at the vein's end, and comes back up a day later smiling.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Overseer of the Silver Hand in the Coruscating Mine in {minutes} minutes.",
     "loss": "Overseer of the Silver Hand turned back {realm}'s band under {raidLeader} in the Coruscating Mine after {minutes} minutes."

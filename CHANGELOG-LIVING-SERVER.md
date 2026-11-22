@@ -10,8 +10,12 @@ Older entries below keep the names they were written with.
 
 ## 1.2.1 (in development)
 
-Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
-or run where it was written; CI on pull request #398 is the first build.
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
+1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
+results so far: CI on `fix/1.2.1` at `d56adeda` (9,258 server tests passed, 0 failed, 1 skipped), and the playtester's
+`bot-death`, `bot-corpse-target` and `bot-rez` scenarios on `b644529a`, which check packets, not what the client draws.
+The raid fixes (#407-#415) are added under **Bosses** as their branches merge. Player notes:
+[docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
@@ -94,6 +98,16 @@ or run where it was written; CI on pull request #398 is the first build.
     back to him. Model: the raid lasts longer and has fewer trees, but **still loses**; the next PC log (`EPIC_RANGED_ADDS
     boss="Green Knight" alive=`) is needed to see why.
   - **Grand Summoner Govannon:** not simulated; no bot raid has reached him since Roesia began winning every time.
+- **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
+  bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
+  Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,
+  casters and healers outside his target's party keep clear of the hammers that follow his styles, 500 around his
+  target. King and Queen are unchanged.
+- **Trollheim's stall clock after a wipe (#411, tests only).** The raid's hour without progress kept Nosdoden's low from
+  before the wipe and did not count the retry's pull, so a retry that came late in the hour was ended as "Timed out".
+  The retry's pull and, once the boss is back at full, its own low now count, once per wipe
+  (`REALM_RAID_STALL_CLOCK why=retry|low_reset`). `REALM_RAID_STALLED` now says what the route was doing
+  (`status=`, `living=`, `retries=`).
 - **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
   one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
   him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,

@@ -90,7 +90,7 @@
     "keyword": "Aodhnait",
     "text": "The one Hibernian-born outlander of Altan Garran in [Cothrom Gorge], a Lough Derg spear who came with the first swords, lost her company in the gorge and was taken in. She dislikes the realm's companies most."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: Aodhnait came down the gorge with the first Hibernian swords and her company did not come back up. We found her on the west road with a broken leg and a dead stag she had dragged the whole way to offer at the gate, and we took her in, which we do for nobody. She married into the town, a weaver of the lower street, and their children have her red hair. She still goes up to Domnann's markets and brings back mainland news. When Hibernians come to the gate now she speaks to them first, in her Lough Derg accent, so that they know.",
+  "bookPage": "Aodhnait came down the gorge with the first Hibernian swords and her company did not come back up, Noirin the enchanter of Altan Garran remembers. We found her on the west road with a broken leg and a dead stag she had dragged the whole way to offer at the gate, and we took her in, which we do for nobody. She married into the town, a weaver of the lower street, and their children have her red hair. She still goes up to Domnann's markets and brings back mainland news. When Hibernians come to the gate now she speaks to them first, in her Lough Derg accent, so that they know.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Aodhnait in Altan Garran in Cothrom Gorge in {minutes} minutes.",
     "loss": "Aodhnait turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."

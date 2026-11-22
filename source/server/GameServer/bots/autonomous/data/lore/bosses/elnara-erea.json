@@ -95,7 +95,7 @@
     "keyword": "Elnara",
     "text": "Elnara Erea, tree-keeper of Altan Garran in [Cothrom Gorge], of the town's oldest family. Her great treant, raised from a cutting of Treal, follows her like a hound. She wants no strangers in the town."
   },
-  "bookPage": "Noirin the enchanter of Altan Garran: the Ereas asked Treal if we might build around him, and he said yes, and they have kept him ever since. Alastair dyes with his fallen bark and Luiseach makes harps of his windfalls. Elnara keeps the treants, and one above all: a cutting of Treal's she raised in the first bad year of the worts, which is half again the height of any treant in the gorge and follows her like a hound. She never named it. She argues in the square that the Hibernians make the worts grow back angrier. The town listens to an Erea.",
+  "bookPage": "The Ereas asked Treal if we might build around him, Noirin the enchanter of Altan Garran says, and he said yes, and they have kept him ever since. Alastair dyes with his fallen bark and Luiseach makes harps of his windfalls. Elnara keeps the treants, and one above all: a cutting of Treal's she raised in the first bad year of the worts, which is half again the height of any treant in the gorge and follows her like a hound. She never named it. She argues in the square that the Hibernians make the worts grow back angrier. The town listens to an Erea.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Elnara Erea in Altan Garran in Cothrom Gorge in {minutes} minutes.",
     "loss": "Elnara Erea turned back {realm}'s band under {raidLeader} in Altan Garran in Cothrom Gorge after {minutes} minutes."

@@ -88,7 +88,7 @@
     "keyword": "Beomarbhan",
     "text": "The dead stag of [Cothrom Gorge], ridden to death by Dremcis and never let down. Spears and spells barely mark it. It falls when its rider falls, and not before."
   },
-  "bookPage": "From Coll of the Domnann guides: the grandmothers of the gorge fed Beomarbhan by hand when he was a calf. Dremcis rode him three days without stopping and he died under him on the gorge road, and he got up. Spears turn on his loose hide; the gorge singers' binding-songs went into him like water into sand; fire and wind barely mark him. A dead thing cannot be hurt the way a living one can. He is held up by his rider and nothing else. When Dremcis falls, Beomarbhan falls in the same breath. The grandmothers say the kindest thing you can do for the stag is to bring down the man.",
+  "bookPage": "The grandmothers of the gorge fed Beomarbhan by hand when he was a calf, as Coll of the Domnann guides tells it. Dremcis rode him three days without stopping and he died under him on the gorge road, and he got up. Spears turn on his loose hide; the gorge singers' binding-songs went into him like water into sand; fire and wind barely mark him. A dead thing cannot be hurt the way a living one can. He is held up by his rider and nothing else. When Dremcis falls, Beomarbhan falls in the same breath. The grandmothers say the kindest thing you can do for the stag is to bring down the man.",
   "chronicle": {
     "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Beomarbhan in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Beomarbhan after {minutes} minutes."

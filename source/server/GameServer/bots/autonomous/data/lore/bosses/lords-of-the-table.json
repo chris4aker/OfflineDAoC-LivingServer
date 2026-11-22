@@ -125,7 +125,7 @@
     "keyword": "Lords of the Table",
     "text": "The seven werewolf lords of Varulvhamn's middle halls whose names are their natures: Gifttand, Huggtand, Grym, Vild, Brumma, Bete and Ungar, with Tarnkappe's empty chair. See [lords' table]."
   },
-  "bookPage": "From the minutes of Hallkel Thorvaldsson of Skona, kept at the lords' table of Varulvhamn: tonight they argued about the dragon again. Gifttand said the king was right to refuse her. Huggtand agreed. Grym said the dragon had insulted them by asking, and added it to his count. Vild said they should have fought her, and was sent out, and came back. Bete said both. Ungar said the young were hungry. Brumma growled, and they waited, and then they went on. The eighth chair was empty. I drew it again. I have drawn it every night, and every night I am more sure that someone is sitting in it.",
+  "bookPage": "Tonight they argued about the dragon again: so run the minutes of Hallkel Thorvaldsson of Skona, kept at the lords' table of Varulvhamn. Gifttand said the king was right to refuse her. Huggtand agreed. Grym said the dragon had insulted them by asking, and added it to his count. Vild said they should have fought her, and was sent out, and came back. Bete said both. Ungar said the young were hungry. Brumma growled, and they waited, and then they went on. The eighth chair was empty. I drew it again. I have drawn it every night, and every night I am more sure that someone is sitting in it.",
   "chronicle": {
     "win": "{raidLeader} of {realm} cleared the lords' table of Varulvhamn in {minutes} minutes.",
     "loss": "The lords of the table agreed, for once, and threw {raidLeader}'s party from {realm} out after {minutes} minutes."

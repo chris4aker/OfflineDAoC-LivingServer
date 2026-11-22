@@ -97,7 +97,7 @@
     "keyword": "Dremcis",
     "text": "Dremcis Fuiloltair, the blood-drinker of [Cothrom Gorge], once the best hunter of the gorge clans. He rides the dead stag Beomarbhan, and the stag does not outlive him."
   },
-  "bookPage": "From Coll of the Domnann guides: the gorge clans teach their young hunters one thing before any other: do not drink from what you kill in Cothrom. Dremcis did, from a white stag at the bottom of the split earth, and came home with a new name. He rides out still on Beomarbhan, ridden to death and never let down, and spilled blood crawls up out of the stones to him when he is troubled. When he falls the stag falls in the same breath and the blood sinks back. The gorge folk call that the one mercy of the story. The wardens of Domnann count our people's corruption from him.",
+  "bookPage": "The gorge clans teach their young hunters one thing before any other, Coll of the Domnann guides says: do not drink from what you kill in Cothrom. Dremcis did, from a white stag at the bottom of the split earth, and came home with a new name. He rides out still on Beomarbhan, ridden to death and never let down, and spilled blood crawls up out of the stones to him when he is troubled. When he falls the stag falls in the same breath and the blood sinks back. The gorge folk call that the one mercy of the story. The wardens of Domnann count our people's corruption from him.",
   "chronicle": {
     "win": "{realm} rode out to Cothrom Gorge under {raidLeader} and killed Dremcis Fuiloltair in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} was turned back at Cothrom Gorge by Dremcis Fuiloltair after {minutes} minutes."

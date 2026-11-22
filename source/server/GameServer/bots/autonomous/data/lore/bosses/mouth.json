@@ -98,7 +98,7 @@
     "keyword": "mouth",
     "text": "The hill folk gave it no name but what it is. It lives where the ground looks chewed on the eastern slope of Llyn Barfog, eats the strength of whoever it fights and keeps it, and smaller mouths come to it, one after another, for the meal."
   },
-  "bookPage": "From the Barfog Book of Twr ap Alsig. Of Mouth, and of Crim. Crim lives alone on the slope below the den and keeps a count, cut on the post of his door: a notch for every company that goes up, a cross for every one that comes down whole. There are more notches than crosses. I asked him once whether he lost someone to it. He said a mouth that is fed does not tire, and that he had seen companies stand and let it chew on one man with nobody pouring strength back into him, and come down short. I said that was not what I asked. He said it was what he answered.",
+  "bookPage": "Of Mouth, and of Crim, the Barfog Book of Twr ap Alsig has this. Crim lives alone on the slope below the den and keeps a count, cut on the post of his door: a notch for every company that goes up, a cross for every one that comes down whole. There are more notches than crosses. I asked him once whether he lost someone to it. He said a mouth that is fed does not tire, and that he had seen companies stand and let it chew on one man with nobody pouring strength back into him, and come down short. I said that was not what I asked. He said it was what he answered.",
   "chronicle": {
     "win": "{realm}'s company under {raidLeader} shut Mouth for good on Barfog's eastern slope in {minutes} minutes.",
     "loss": "Mouth fed on {raidLeader}'s company of {realm}, and is hungry still."
