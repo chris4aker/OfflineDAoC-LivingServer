@@ -27,9 +27,9 @@ Selia 4, Morlin Caan 4, Captain Circa 1, Captain Astridr 1, Siencyn 2.
 
 ## The five best moments
 
-1. `locations/darkness-falls`, Jofrid's book page.
+1. `locations/darkness-falls`, Thorhild's book page.
    - Before: "Told by Gunnhild the Lame of Mularn, ... to a skald of Jordheim."
-   - After: "Told by Jofrid the Lame of Mularn, ... to Sven, a skald of Jordheim, who has sung it since with every name
+   - After: "Told by Thorhild the Lame of Mularn, ... to Sven, a skald of Jordheim, who has sung it since with every name
      of the dead in it and never hers."
 2. `bosses/legion`, the rolls of the first breakers.
    - Before: Midgard's roll names Thane Hrolf the Tall, who sang each soul's name as he struck.
@@ -64,7 +64,7 @@ Fridwulf has each of her clerics read the Job verse aloud before they go down (`
 | Old | New | Files |
 |---|---|---|
 | Brother Aldric (the first company's chaplain) | Brother Tudno | `locations/darkness-falls`, `bosses/gatekeeper-dommel` |
-| Gunnhild the Lame of Mularn | Jofrid the Lame | `locations/darkness-falls`, `bosses/princess-nahemah` |
+| Gunnhild the Lame of Mularn | Thorhild the Lame (the review changed Jofrid, the name of Aegir's Landing's rogue trainer) | `locations/darkness-falls`, `bosses/princess-nahemah` |
 | Ulfhild Long-Memory, skald of Mularn | Hallfrid Long-Memory | `locations/thidranki` (Lydsyg's Ulfhild is a different woman, left to Midgard) |
 | Ottar Svertingsson | Hallgeir Svertingsson | `bosses/high-lord-baln` (Hrefna's grandson Ottar is a different man) |
 | Arngrim the rune-cutter | Steinthor the rune-cutter | `locations/proving-fields` (Arngrim is also the berserks' father) |

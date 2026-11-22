@@ -95,7 +95,7 @@ The valkyrie Sigrun, who founded the order with Brynhild in Mythic's own text, k
   - Dead or legend figures: Hrafn the wind-rider, Thordis, Jorunn, Sigrid of Sundby, Astrid of the Circle, Ottar,
     Ketil, Thorvald, Orm in Fostra Orm.
   - Real 1.65 NPCs: Vigdis, Elin, Frode, Leif, Gudrun of Svarhamr.
-  - Others: Skeggi of Mularn (`vendo-caverns`) and the sentry Steinar (`hurjavelen`) are one-file witnesses. Rename
-    them too?
+  - Others: Skeggi of Mularn (`vendo-caverns`) and the sentry Steinar (`hurjavelen`) are one-file witnesses. The
+    owner had them renamed (2026-11-22): they are now Tjorvi and Kolli.
 - Ragnhild (now Geirlaug) was already over 12 mentions as an untitled teller (exempt, decision 11). She got no new
   mentions.

@@ -129,6 +129,20 @@ review's findings and the work left to do.
    - **The recurring voices are approved:** Sven (Jordheim's skald trainer), Morlin Caan (the smith by the temple) and
      Grimma (Jordheim's shaman trainer) for Midgard; Daray (Tir na Nog's druid trainer), Lasairiona (the champion
      trainer) and Ilisa (Mag Mell's weaponsmith) for Hibernia. Albion keeps Elowen, with Lady Fridwulf as a second voice.
+   - **Owner rulings on the NPC pass review (2026-11-22):**
+     - Sven, Gareth, Cody and Tobias are off the gamebot name list (`EraBotNames.MaleFirstNames`), and Sven is off the
+       hired-companion list (both changed on `fix/1.2.1`). Sven, Tobias and the lore's Gareth no longer clash.
+     - The one-file witnesses Skeggi (`vendo-caverns`) and the sentry Steinar (`hurjavelen`) are renamed: they are
+       **Tjorvi** of Mularn and the sentry **Kolli**. Skeggi, Ragnfrid's father in `fostra-orm`, is a dead man of another
+       age and keeps his name.
+     - Captain Cody, Hibernia's real Thidranki captain, may be named in `thidranki` with a real moment. He walks each new
+       band past the eldest bwca's corner bareheaded.
+     - Vigfus Hallason and Sir Edric only match generated syllable patterns, not a written list, so they stay.
+     - Krondon's fourth summary paragraph (the old alliance): "Just make it the best possible". It is rewritten with every
+       event kept, and the summary stays at 300-500 words.
+   - **A real NPC keeps their name** although a gamebot can share it (review of the NPC pass, 2026-11-22). The rename rule
+     is for invented tellers. Orlaith of Necht, who led the hundred and forty, is the real Vigilant Rock NPC, so she stays
+     Orlaith, as Eoghan of Lough Derg, Vigdis and Elin do.
 
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 

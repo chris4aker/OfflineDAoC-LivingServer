@@ -66,7 +66,6 @@ were renamed in every lore file and in the chat `.lines`.
 
 | Old | New | Who | Mentions |
 |---|---|---|---|
-| Orlaith (of Tir na Nog, of Necht) | **Uallach** | led the hundred and forty into Galladoria | 51, 16 files |
 | Fiachra of Howth | **Flann of Howth** | went into Fomor; the room with the hooks | 33, 8 files |
 | Eoghan the shepherd (and his grandmother and wife) | **Cuán** | Sheeroe's shepherd-teller | 19, 7 files |
 | Ruadhán | **Ruarc** | the warden of the storm height | 19, 3 files |
@@ -79,6 +78,8 @@ were renamed in every lore file and in the chat `.lines`.
 | Brother Esras | **Esras the hermit** | once a bard of Tir Urphost who gave up the benches for the wind | 6, 2 files |
 
 These names stay as they are:
+- **Orlaith** (of Tir na Nog, now of Necht), who led the hundred and forty. This pass renamed her Uallach; the review
+  put her name back, because she is the real Vigilant Rock NPC (see [REVIEW-NPC-PASS.md](REVIEW-NPC-PASS.md)).
 - **Real NPCs that share a gamebot name:** Eoghan of Lough Derg ("Eoghan's Spell"), Chieftess Niamh, Donnchadh, Tadhg of
   Connla, Gemma, and the trainers Aodh and Blathnaid.
 - **Legends:** Oisín, Niamh of the Golden Hair, Eithne, Cormac Conn Longas.
