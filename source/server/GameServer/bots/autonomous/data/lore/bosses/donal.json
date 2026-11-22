@@ -64,12 +64,12 @@
     "briefing": [
       "donal is captain of the cullen outlaws, wants our best. [four more with him|ide and three more]",
       "draw from the edges or bring an enchanter for trances",
-      "plain fighters, back 80 sec after they drop",
+      "the outlaws are plain fighters, back 80 sec after they drop",
       "no quest wants him here"
     ],
     "aftermathWin": [
       "donal down. [the outlaws are leaderless|got him]",
-      "drew them singly. [worked|nice]",
+      "drew the outlaws one by one. [worked|nice]",
       "the cullen watch will shrug",
       "ide next"
     ],
@@ -77,7 +77,7 @@
       "drew the whole island. [five of them|all dead]",
       "heard the three strokes and [everyone came|oops]",
       "trance broke",
-      "group too low"
+      "group too green for the outlaws"
     ],
     "rumour": [
       "[heard|someone said] donal killed a man at the ardee muster and walked into the bog",

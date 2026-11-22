@@ -60,7 +60,7 @@
       "kunsgnos is a siabra waterwalker in the middle of the bog. [plain fight|no tricks]",
       "between madawg and saemus. [youll meet him anyway|on the path]",
       "clear the siabra waterwalkers around him",
-      "one band of our best is fine"
+      "one band of our best is plenty for kunsgnos"
     ],
     "aftermathWin": [
       "kunsgnos down. [one fewer apprentice|got him]",
@@ -71,7 +71,7 @@
     "aftermathLoss": [
       "drew waterwalkers too. [they stick together|oops]",
       "fell in the black water lol",
-      "group too low",
+      "group too green for the bog",
       "he blasted the healer"
     ],
     "rumour": [

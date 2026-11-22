@@ -22,7 +22,7 @@
     }
   ],
   "story": "The mantids of Allta Fearann are not afraid of much. Allta Fearann is the wild land, the high country north of Vigilant Rock where the forest gives out into scrub and stone, and the mantids have held it since before the Sylvan named it, a hard, busy, unfriendly people who are not enemies of the Sylvan and not friends either. They are afraid of Curengkur. It hunts them, the Sylvan say, and it hunts them where they nest, and they will not say its name above a whisper; the Sylvan have started doing the same.\n\nCurengkur has a nest of its own, and its nest is what the mantids fear most. It sits in a hollow on the high ground of the wild land, and the air above it burns. Whatever lies there, the Sylvan have never seen it plainly, only the shimmer and the scorched stone, but whenever Curengkur is roused the nest wakes with it and the air for a long stone's throw around it sears whatever is standing in it, again and again, as long as the hunter is fighting. Curengkur itself spits an acid that hangs about its prey in a cloud and eats through shell and skin alike, and strikes from further off than any mantid can reach.\n\nAnd the nest feeds it. The mantids' oldest warning, which the Sylvan of Vigilant Rock learned from them in the first years and passed to the Hibernian swords, is that Curengkur is never wounded at home. A hurt that would kill it in the open closes while it stands on its nest, as if the burning hollow were mending it. The mantids do not fight it there. When they must fight it at all, their old hunters go up to the hollow, sting it, and run, and draw it away down the slope until the shimmer is far behind them and the air is cool, and only then turn. Most of the hunters who do it die. The mantids say it is still better than the nest.\n\nWhen Curengkur dies the nest goes cold, and the mantids of the wild land dare to speak again for a while, and the Sylvan say you can hear them for the first time, a dry clicking all over the high country. It never lasts. Curengkur comes back, and the air over the hollow burns again, and Allta Fearann goes quiet. The Sylvan's rule for travellers in the wild land is the one the mantids taught them: if the mantids go quiet, turn round.",
-  "legend": "Draw it off its nest. Within half a bowshot of its nest Curengkur heals a little every second and a half, a fifth of a robed caster's strength each time, and the nest radiation burns everyone within half a bowshot of the nest for as much heat every four seconds. Neither works once the fight is more than half a bowshot from the nest, and it never turns for home, so the one who draws it strikes it and runs it well down the slope before anyone engages. Then it is a straight fight: Curengkur's Strike (a hard blow, half a robed caster's strength, three seconds to gather, reaching a bowshot) on the one it is fighting, and an acid cloud that eats at you (a small bite every three seconds for thirty seconds): cure poison and heal. Kill it and the nest disappears. If the mantids go quiet, turn round, the old hibs say.",
+  "legend": "Draw it off its nest. Within 27 paces of its nest Curengkur heals a little every second and a half, a fifth of a robed caster's strength each time, and the nest radiation burns everyone within 27 paces of the nest for as much heat every four seconds. Neither works once the fight is more than 27 paces from the nest, and it never turns for home, so the one who draws it strikes it and runs it well down the slope before anyone engages. Then it is a straight fight: Curengkur's Strike (a hard blow, two-fifths of a robed caster's strength, three seconds to gather, reaching 50 paces) on the one it is fighting, and an acid cloud that eats at you (a small bite every three seconds for thirty seconds): cure poison and heal. Kill it and the nest disappears. If the mantids go quiet, turn round, the old hibs say.",
   "yells": {
     "aggro": [
       "(the air over the hollow begins to shimmer)",
@@ -64,8 +64,8 @@
   },
   "botLines": {
     "briefing": [
-      "draw curengkur off its nest. [half a bowshot out|well down the slope] before we engage",
-      "on the nest it heals every 1.5 sec and the nest burns everyone within half a bowshot. [never fight it at home|move it]",
+      "draw curengkur off its nest. [27 paces out|well down the slope] before we engage",
+      "on the nest it heals every 1.5 sec and the nest burns everyone within 27 paces. [never fight it at home|move it]",
       "it never goes home, it follows. [whoever draws it runs it out|lead it away first]",
       "acid cloud eats at you, cure poison. strike hits hard from range"
     ],
@@ -79,7 +79,7 @@
       "fought it on the nest. [it healed faster than we hit|radiation killed us all]",
       "the one drawing it died before we got it off the nest",
       "nobody cured the acid. [acid on everyone|ugh]",
-      "didnt draw it far enough, still in the shimmer. [half a bowshot is further than it looks|move more]"
+      "didnt draw it far enough, still in the shimmer. [27 paces is further than it looks|move more]"
     ],
     "rumour": [
       "[heard|someone said] the mantids wont say curengkur out loud",

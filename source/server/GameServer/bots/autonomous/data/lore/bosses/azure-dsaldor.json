@@ -64,7 +64,7 @@
     "briefing": [
       "dsaldor is in the highest azure camp, strongest of the three. [clear the camp first|cleansers and avengers]",
       "tailtiu guards nearby are nasty. [careful|dont draw them]",
-      "plain fight, full band of our best",
+      "dsaldor is plain too, but bring a full band of our best",
       "coseal and thror hold the other two azure camps east"
     ],
     "aftermathWin": [
@@ -76,7 +76,7 @@
     "aftermathLoss": [
       "drew the whole camp. [avengers|all dead]",
       "tailtiu guards joined. [big ones|ouch]",
-      "group too low",
+      "group too green for the high camp",
       "we had a lantern. [they hate lights|lol]"
     ],
     "rumour": [
