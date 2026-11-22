@@ -38,7 +38,7 @@
     }
   ],
   "story": "West of Snowdonia Station the druids of the south keep a burying ground, and in the years after Arthur they buried their own there and some of the realm's dead besides. Then Morgana came through it on her way to somewhere else, and left Sir Gerenth, a knight of Albion, standing up in his grave with his sergeant Cosworth beside him, and handed them to the druids to keep. The stones have not been quiet since. The druids' own dead and their poets walk among them at night, and a necromancer walks with them whom the hill-folk call Leorcelis Grant.\n\nHe came up the road from the south some years after Morgana, through Swanton's gate. Cadwgan the gate-warden asked him the keep's three questions and wrote down the answers: who sent him (his lord), what he carried (the names) and who would answer for him (the dead). His lord is Arawn. He does not deny it. The necromancers of Albion hold the old teaching that the dead are the Lord of the Underworld's, to be lent and not taken, and that a raising made without leave is a theft from him. Morgana raised Sir Gerenth without asking anyone. Leorcelis Grant came to the burying ground to find out how she did it, and he has been reading it ever since.\n\nHe keeps a register. Every stone, every name the druids cut, every dead poet that gets up and walks: he takes their rubbings and writes them in a book. He raises nothing himself. The living he does not look at unless they lay a hand on him, and the farmers who cut through the burying ground on the way to market say he has stood aside on the path for them. But the dead in that ground are not his, and when he is troubled not one of them raises a hand for him. Sir Gerenth stands a few paces off and watches him read; nobody knows what the knight thinks of it.\n\nThree readings of him are given. Lieutenant Brude of the frontier, who wants Sir Gerenth laid and his bone dagger brought home, says Leorcelis is Morgana's watchman and the register a list of what she may call on. The druids say he is a guest of the ground and the only one who has ever written their dead down. The Church at Ludlow says a man who keeps a register of the dead for a god is the same as a clerk in Camelot, and is to be prayed for, not feared. What none of them knows is what he does when the register is complete. He has been seen at the station at dusk, asking the cold lad his name. The lad would not give it, and his books went into the horse-pond.",
-  "legend": "Leorcelis Grant is a level 51-52 necromancer walking the druids' cemetery west of Snowdonia Station in Black Mountains North. He never aggros and has no faction, so the undead druids and filidh around him will not join if you hit him, and neither will Sir Gerenth or Sergeant Cosworth (they bring their own skeletons only if YOU hit them, so do not clip them with area spells). By every account he has no spells and no styles, only a crushing weapon and a little parry and evade: a plain melee kill for two or three fifties. He wanders a few paces among the stones. He respawns in about 80 seconds. Leave him alone below fifty; the lowbies doing Departed Hero for Lieutenant Brude can walk right past him.",
+  "legend": "Leorcelis Grant is a necromancer walking the druids' cemetery west of Snowdonia Station in Black Mountains North, a foe for the realm's best, a full band of them. He never takes notice of anyone and has no faction, so the undead druids and filidh around him will not join if you hit him, and neither will Sir Gerenth or Sergeant Cosworth (they bring their own skeletons only if YOU hit them, so do not clip them with spells that burst over an area). By every account he has no spells and no styles, only a crushing weapon and a little parry and dodge: a plain melee kill for two or three of the realm's best. He wanders a few paces among the stones. He rises again about eighty seconds after he falls. Leave him alone until you are among the realm's best; the young adventurers doing Departed Hero for Lieutenant Brude can walk right past him.",
   "yells": {
     "aggro": [
       "You are not in the register.",
@@ -76,22 +76,22 @@
   },
   "botLines": {
     "briefing": [
-      "leorcelis grant, 51-52 necro in the cemetery west of the station. never aggros, no spells, no faction",
-      "the undead druids round him wont join. dont aoe gerenth or cosworth though, they bring skellies",
-      "plain melee kill. two or three 50s. he wanders a bit between the stones",
-      "respawn is about 80 sec. kill him and clear out so the lowbies can do their quest"
+      "leorcelis grant, necro in the cemetery west of the station, job for our best. never attacks, no spells, no faction",
+      "the undead druids round him wont join. dont catch gerenth or cosworth in a fire burst though, they bring skellies",
+      "plain melee kill. two or three of our best. he wanders a bit between the stones",
+      "back about 80 sec after he dies. kill him and clear out so the young ones can do their quest"
     ],
     "aftermathWin": [
       "necro down, register closed",
       "nobody came for him, like the druids said",
-      "clean, kept the aoe off gerenth",
-      "80 sec respawn, move"
+      "clean, kept the bursts off gerenth",
+      "back in 80 sec, move"
     ],
     "aftermathLoss": [
-      "somebody pbaoe'd and pulled gerenth and all his skellies",
-      "hes 52, not a lowbie mob, should have conned",
-      "lost the tank to the cemetery skellies, not to him",
-      "we chased him into the stones and pulled druids"
+      "somebody let off a burst round himself and woke gerenth and all his skellies",
+      "hes a match for our best, not some beast for the young, should have looked harder",
+      "lost the shield-bearer to the cemetery skellies, not to him",
+      "we chased him into the stones and drew druids"
     ],
     "rumour": [
       "[heard|someone said] leorcelis grant keeps a register of every stone in that cemetery",

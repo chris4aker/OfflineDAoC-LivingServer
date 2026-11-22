@@ -37,7 +37,7 @@
     }
   ],
   "story": "The Host came to Caer Sidi as eight. In life, the Inconnu say, he was a sorcerer of the western marches in the last years of Rome who stole bodies, each younger than the last, as fever took the hill farms' sons; the Church burned the eighth body at a crossroads above the Wye, but he had not quite let go of the other seven. He came down the road to Annwn wearing all of them, eight men walking in step with one face among them that belonged to none. The marches still say never answer a stranger who knows your father's name and not your own, and hang hawthorn over a sick child's door.\n\nThe keepers gave him eight niches, and the Soul Reckoner wrote him down once and left seven blanks. On the night of the rising he walked out of all eight at once and took whatever he met, and keeps a household of archliches, black revenants, cursed laculae, forerunners and heralds of slaughter. When the one that matters is struck down, the rest fall where they stand like coats dropped off their pegs; but there is no mark on that one, no limp, no flinch, and nobody has ever found him except by finding he was the one who fell.\n\nThe captain of the third company believed Ennyn that there was no tell. She shielded her priests against the household and sent her knights out to the eight in small parties to wound and hold each one. Twice a body fell and nothing else happened; the third time all seven others dropped. A knight of Caerwent said there was nothing to choose between it and the others until it fell. The captain had the bodies counted where they lay: count the bodies as they fall, not before.\n\nThe Church calls him many, after the Gospel, and hates the name the keepers gave him. The Inconnu say he wants a ninth body, which is why no squire walks alone in the crypts. Caer Ulfwych's sickrooms now hang the marches' hawthorn.",
-  "legend": "The Host is eight copies, level 79, 30,000 health each, and one of them is the real one, picked at random when they appear. There is no tell: same name, same look, same con, so any guide that says how to spot him is guessing. Kill the real one and the other seven die on the spot; kill a fake and it just stays dead. His household comes with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation, so off-tanks and area damage keep them off the healers. Split the raid into eight small parties, one per copy, each holding its copy and putting damage into it; the party that drops the real one ends it. Or, with fewer people, burn them one at a time. Do not spread the healers thin chasing eight fights. Caer Gothwaite raids count the bodies after, never before.",
+  "legend": "The Host is eight copies, each a foe for a war party of the realm's champions and as much killing as fifteen champions, and one of them is the real one, picked at random when they appear. There is no tell: same name, same look, the same look of danger, so any old account that says how to spot him is guessing. Kill the real one and the other seven die on the spot; kill a false one and it just stays dead. His household comes with him: archliches, black revenants, cursed laculae, forerunners and heralds of trucidation, so second shields and spells that strike many at once keep them off the healers. Split the raid into eight small parties, one per copy, each holding its copy and putting blows into it; the party that fells the real one ends it. Or, with fewer people, burn them one at a time. Do not spread the healers thin chasing eight fights. Caer Gothwaite raids count the bodies after, never before.",
   "yells": {
     "aggro": [
       "We are many. We are one. Guess.",
@@ -70,10 +70,10 @@
   },
   "botLines": {
     "briefing": [
-      "host is eight copies, 30k each, one real, no way to tell which",
-      "kill the real one and the other seven drop. fakes just stay dead",
+      "host is eight copies, killing of 15 of us each, one real, no way to tell which",
+      "kill the real one and the other seven fall. false ones just stay dead",
       "eight small groups, one per copy, or burn them one at a time",
-      "off-tanks and aoe on his household, keep them off the healers"
+      "second shields and burst spells on his household, keep them off the healers"
     ],
     "aftermathWin": [
       "found the real one. all eight down",
@@ -85,13 +85,13 @@
       "we killed four fakes and ran out of mana",
       "nobody called the real one",
       "the archliches got loose",
-      "aoe on eight hosts does nothing"
+      "burst spells on eight hosts does nothing"
     ],
     "rumour": [
       "[heard|word is] the host in caer sidi is eight of him and only one is real",
       "guests dont get breathed on by the host. [old joke|bad joke], i know",
       "heard the host was a body thief who got stuck in eight bodies",
-      "kill the real host and the rest drop like coats, [heard|they say]",
+      "kill the real host and the rest fall like coats, [heard|they say]",
       "heard the host was a body thief who wore eight people",
       "[heard|someone said] the hill farms hang hawthorn against the host"
     ]

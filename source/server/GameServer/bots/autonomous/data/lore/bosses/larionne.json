@@ -32,7 +32,7 @@
     }
   ],
   "story": "At the northern end of Clifton, where the lammia town gives out onto the cliffs, Larionne keeps a jar of sap from an apple tree that does not grow on any island. The lammia of the town will tell a stranger that much and no more. Larionne will tell him the rest, if Clifton has a good opinion of him, and if it has not she will not tell him anything, and he will be lucky to get off the cliff.\n\nThe tree grows under the sea. Before the drowning, the lowland between Gwyddneau's heights had orchards as good as Avalon's, and when the sea came in it came quietly, the lammia say, over a single night, and the trees did not have time to die; they stood in the water and went on. The orchard is there still, at the bottom of the bay below Clifton's north end, grey trees standing in green water with fish in their branches, and on the lowest bough of the oldest of them, every spring, there is sap. Larionne dives for it. She is the only one of the lammia who will, because the orchard is full of the drowned country's dead, and they do not like to be visited.\n\nShe trades the sap or gives it according to the town's reckoning of the one who asks. Ariette in the woods behind Fort Gwyntell sends the realm's young for it, because with the sap and a knife and an archiator's hide a spirit can be called that answers to apple trees, and that spirit knows where a lost statue lies. Larionne knows what the sap is for. She says the spirit that comes is the drowned orchard's own, and that it is glad to be asked something; nobody goes down to the orchard to ask it anything but her.\n\nTo a stranger who comes to her end of the town on the errand, she is courteous; that is the custom of the errand, and she keeps it whether the town likes him or not. To a stranger who comes without it, with Clifton against him, she is a lammia, and the cliffs at the north end are high.",
-  "legend": "Larionne is a level 52 lammia at the northern end of Clifton in Gwyddneau, the apple sap step of Lost Treasure (Ariette, behind Fort Gwyntell). If your standing with Cryptos Mythicos (the lammia) is good enough she talks and gives the sap; if not, the quest says kill her. While you are on that step she leaves you alone either way. Otherwise she is aggressive to anyone the lammia do not like. No spells or styles, by every account: a melee kill for a duo or small group of fifties; a lammia sorceress stands about 1,100 off. Respawn about 80 seconds.",
+  "legend": "Larionne is a lammia at the northern end of Clifton in Gwyddneau, a foe for the realm's best, a full band of them, the apple sap step of Lost Treasure (Ariette, behind Fort Gwyntell). If your standing with Cryptos Mythicos (the lammia) is good enough she talks and gives the sap; if not, the quest says kill her. While you are on that step she leaves you alone either way. Otherwise she attacks anyone the lammia do not like. No spells or styles, by every account: a melee kill for a pair or small group of the realm's best; a lammia sorceress stands about thirty-five paces off. She rises again about eighty seconds after she falls.",
   "yells": {
     "aggro": [
       "Clifton does not know you.",
@@ -70,10 +70,10 @@
   },
   "botLines": {
     "briefing": [
-      "larionne, 52 lammia at the north end of clifton. lost treasure apple sap",
-      "good lammia faction = talk to her. bad faction = kill her, she wont aggro you while youre on the step",
-      "no spells, melee, duo of 50s is fine",
-      "80 sec respawn. sorceress about 1100 off"
+      "larionne, lammia at the north end of clifton, a match for our best. lost treasure apple sap",
+      "good lammia faction = talk to her. bad faction = kill her, she wont attack you while youre on the step",
+      "no spells, melee, two of our best is fine",
+      "back 80 sec after she dies. sorceress about 35 paces off"
     ],
     "aftermathWin": [
       "got the sap, killed her the hard way",
@@ -82,10 +82,10 @@
       "80 sec, next person can have her"
     ],
     "aftermathLoss": [
-      "bad faction, wasnt on the step, she aggroed",
-      "pulled the sorceress too",
+      "bad faction, wasnt on the step, she came for us",
+      "drew the sorceress too",
       "fell off the cliff at the north end lol",
-      "52 lammia hits harder than you think"
+      "that lammia hits harder than you think"
     ],
     "rumour": [
       "[heard|someone said] larionne's apple sap comes from an orchard under the sea",

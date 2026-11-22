@@ -30,7 +30,7 @@
     }
   ],
   "story": "Nobody crowned the King of the Barfog Hills. He crowned himself, the old men of Barfog say, the day the lady of the lake called her white cattle home and left the slopes above the water with nobody to keep them. He came through the open door after the cattle went in, or he was there before and only waited; the old men disagree. What they agree on is that he took the high ground north of the lake that same evening, and that he has kept it since, after his fashion.\n\nHe walks his hill as a king walks his hall. The grass lies flat where he has trodden, in paths that go round the whole of the high ground and back, and the hobgoblins and the bwgan go round his paths and not across them. He does not claim the lake. The afanc has the water and he has the hill, and in all the years the old men have watched them neither has troubled the other, which is more than can be said for anyone else in the hills.\n\nHe cannot be charmed, held, put to sleep or turned. A king does not take orders, the hill folk say, and his subjects never gave him any. He fights with his whole weight, and when he strikes a man the ground jumps under the man and under everyone standing near him, as if the hill itself were angry on its king's behalf; the old men of Barfog say a sensible subject keeps a long way from anyone the king is looking at. Teazanodwc keeps her hollow on the southern edge of his hills without asking his leave, and the old men say that is the only thing that has ever made him look up.\n\nThe ellyllon on the south-western slope call him the king with no crown, and bow when he passes, which is more than anyone else does. He has never once harmed an ellyll. They say it is because they bow. The old men of Barfog say it is because they are too small to notice.",
-  "legend": "The King of the Barfog Hills, level 65, 30k, on the high ground north of the lake. A heavy melee fight with one trick: 20% of his hits add Crush, 400 natural damage to everyone within 800 of whoever he hit. So everyone who does not have to be near the tank stays more than 800 away from the tank, and the melee who do stay keep their health up. He is immune to mez, stun, root and the rest, so no crowd control plans. No adds. Tank, heal, burn. If everyone drops off him he goes home at full, and he respawns about an hour after he dies.",
+  "legend": "The King of the Barfog Hills, a foe for several bands of the realm's best together and as much killing as fifteen champions, on the high ground north of the lake. A heavy melee fight with one trick: one blow in five of his adds Crush, a shock worth a fifth of a champion's strength to everyone within about twenty-seven paces of whoever he hit. So everyone who does not have to be near the shield-bearer who holds him stays farther than that from the shield-bearer, and the melee who do stay keep their wounds healed. Nothing mesmerizes, dazes, roots or otherwise holds him, so no plans to hold him in place. He brings no servants. Hold him, heal, burn. If everyone falls away from him he goes home whole, and he returns about an hour after he dies.",
   "yells": {
     "aggro": [
       "Kneel on my hill!",
@@ -68,26 +68,26 @@
   },
   "botLines": {
     "briefing": [
-      "king of the barfog hills, 65, 30k, cc immune. straight melee fight",
-      "20% of his hits do 400 to everyone within 800 of the tank. stay more than 800 off the tank",
-      "melee near him keep your health up, the crush stacks up fast",
-      "no adds, just tank heal burn"
+      "king of the barfog hills, job for several bands of our best, killing of 15 of us, nothing holds him. straight melee fight",
+      "one hit in five shakes everyone within 27 paces of the shield-bearer. stay farther than that off him",
+      "melee near him keep your wounds healed, the crush piles up fast",
+      "nothing comes with him, just hold heal burn"
     ],
     "aftermathWin": [
       "long live... nobody. the king is dead",
       "dethroned",
-      "nobody stood near the tank who didnt need to. clean",
+      "nobody stood near the shield-bearer who didnt need to. clean",
       "the ellyllon will be sad"
     ],
     "aftermathLoss": [
-      "tried to mez him. he's immune. told you",
-      "the cloth stood right behind the tank and ate every crush",
+      "tried to mesmerize him. nothing holds him. told you",
+      "the cloth stood right behind the shield-bearer and ate every crush",
       "melee went in low and the crush finished them",
-      "pulled him onto the hobgoblins"
+      "drew him onto the hobgoblins"
     ],
     "rumour": [
       "heard the king of the barfog hills crowned himself",
-      "[someone said|heard] you cant mez the king of the barfog hills",
+      "[someone said|heard] you cant mesmerize the king of the barfog hills",
       "heard the ellyllon bow to the barfog king",
       "[heard|someone said] the king and the afanc never fight each other"
     ]
