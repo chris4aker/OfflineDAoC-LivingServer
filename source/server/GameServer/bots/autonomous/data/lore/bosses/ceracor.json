@@ -20,7 +20,7 @@
     }
   ],
   "story": "In Treibh Caillte the stone woke up, the druids say, and some of it stayed awake. The earth golems of the north-east are that waking: rock that stood up out of the walls one day and has been standing ever since, patient as rock is, while the spiders spin between them. Ceracor is the stone that woke hot.\n\nHe stands among the golems like a bull among a herd, larger than any of them and never still, and the rock of his body glows in its cracks as a hearth glows under its ash. Hervelina says the first smiths of the ursine quarried their forge's hearth from the same seam he woke out of, before the tribe split, and that this is why the forge below her ledge is still warm when no ursine has fed it in a lifetime: the hearth and Ceracor are one stone, and it remembers.\n\nThe alchemists of Connla call what they want from him a piece of rock golem, which Hervelina says is like calling the sun a lamp. A piece of him carried down to the forge and laid on its hearth is the one part of the Faqist that cannot be bought or made, because it is the forge's own stone come home. The golems around him have the patience of rock. They do not seem to notice what is taken from him, and he does not seem to miss it.",
-  "legend": "Ceracor (42) is a big magma-bodied stone creature in the north-east of Treibh Caillte (about 34.2k/28.2k), in a crowd of earth golems (39, sixteen of them close) and arachnites; Pericolias (43) is under 1,000 away. Immortal Gift: kill him for a piece of rock golem and take it to Hervelina. Clear the golems first. A group of low to mid 40s. Plain spawn, no tricks, 3-minute respawn.",
+  "legend": "Ceracor, a foe for a hardened band of veterans, is a big magma-bodied stone creature in the north-east of Treibh Caillte (about 34.2k/28.2k), in a crowd of earth golems (each a little weaker than he is, sixteen of them close) and arachnites; Pericolias, his equal, is less than half a bowshot away. Immortal Gift: kill him for a piece of rock golem and take it to Hervelina. Clear the golems first. A hardened band of veterans. Plain, no tricks; he returns three minutes after he falls.",
   "yells": {
     "aggro": [
       "(the hot stone turns, glowing in its cracks)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "ceracor is 42 in the north east, earth golems everywhere round him",
+      "ceracor is in the north east, earth golems everywhere round him",
       "immortal gift: piece of rock golem for hervelina. pericolias is close"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "golems joined. [rip|ouch]",
-      "pericolias joined. [oops|wipe]"
+      "pericolias joined. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] ceracor and the forge hearth are cut from the same stone",

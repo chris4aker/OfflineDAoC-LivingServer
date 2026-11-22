@@ -27,7 +27,7 @@
     }
   ],
   "story": "The Blue Lady was the youngest of the three keeners, named for the colour of new iron and remembered for the sweetest voice in the hills. Her trade was the keen for iron: a broken blade was laid on rushes in the smithy and sung over, then bent double in the forge so that no other hand could take it up, and buried in the black water of the bog. For twenty years most of what she sang over came out of Avartack's fords, and the druids of Lough Gur say that is how she came to love the champion, though nobody told him. At Caimheul's bier she sang over his shield, sword and spear, which were not broken: the first wrong note of the keen.\n\nOn the fourth night she looked back toward the smithy and the bog, and the iron she had sung under the water came back whole, without hands. Swords and axes rise in her room, a war-band's worth, and come again until the room is full. A blade with no hand behind it falls to one good blow, but they reach further than their size and go for anything living near her, and every one falls when she falls. In the first seasons, when a company was lost in her room, the blades wandered the upper halls; now they lie down when nobody is left standing there, and the hill children's tale of swords walking the Breifine road is out of date. Only the chieftain's three weapons on his wall do not answer her.\n\nHer long note, the gol of the old keen, has the cold of every grave in the hill in it. She draws it a long time and lets it out all at once in a great ring around herself; those who stood well back felt it pass like a draught, and those who stood close felt it go through. The keeners' daughters say: step back from the long note. Gobnait of Howth, a smith's widow, ended her song with only her spears close and everyone else on the edges of the room, and laid her husband's bent sword before her. What the youngest wants is to finish the keen. When she falls, the smiths of Howth leave a bent blade on the anvil for her.",
-  "legend": "Every 25-45 seconds she raises summoned swords and axes, up to ten of each. They are weak (500 health each, so AoE drops them fast, and mezz works) but they hit from further away than you expect and go for anyone near her. They all drop when she dies and vanish if she resets. Her Mana Bomb is the killer: a 5-second cast, then 800 cold to everyone within 550 of her, every 25-35 seconds. Casters, healers and archers stand well back from her the whole fight; she can cast it on the move, so the tanks take it, and the healers top them up while the cast bar runs. Her own reach is long too. Fight her in her room: off her tether she takes no damage and walks home at full health. No CC on her. In the early raids, raiders said that after a wipe her swords roamed the dungeon; here the blades vanish when she resets. Superstition: a sword found lying loose in Marfach belongs to her. Leave it, or she comes looking for it.",
+  "legend": "Every twenty-five to forty-five seconds she raises summoned swords and axes, up to ten of each. They are weak (each with a sixtieth of her strength, so blasts that strike all around drop them fast, and an enchanter's trance holds them) but they hit from further away than you expect and go for anyone near her. They all drop when she dies and vanish if she goes home. Her Mana Bomb is the killer: five seconds of casting, then a blast of cold on everyone within a stone's throw of her that takes most of a robed caster's strength, every twenty-five to thirty-five seconds. Casters, healers and archers stand well back from her the whole fight; she can cast it on the move, so the shield-bearers take it, and the healers top them up while she is still gathering it. Her own reach is long too. Fight her in her room: off her tether she takes no damage and walks home at full health. No trance, binding or stunning blow holds her. In the early raids, raiders said that after a raid fell her swords roamed the caverns; here the blades vanish when she goes home. Superstition: a sword found lying loose in Marfach belongs to her. Leave it, or she comes looking for it.",
   "yells": {
     "aggro": [
       "Rise, blades. Your masters are gone, but the fight is not.",
@@ -65,26 +65,26 @@
   },
   "botLines": {
     "briefing": [
-      "blue lady mana bomb: 5 sec cast then 800 cold on everyone within 550 of her. [casters way back|only tanks close]",
-      "swords and axes every 30 sec or so, up to 10 of each. [aoe them|500 hp each, burn them]",
-      "top the tanks up while she casts the bomb. [watch her cast bar|5 sec warning]",
+      "blue lady mana bomb: 5 sec cast then big cold on everyone a stones throw round her. [casters way back|only shields close]",
+      "swords and axes every 25 to 45 sec, up to ten of each. [blast them all at once|theyre weak, burn them]",
+      "top the shields up while she casts the bomb. [watch her gather it|5 sec warning]",
       "fight her in her room. off it shes immune and walks home full",
       "her blades all drop when she dies. [burn her if its close|dont chase blades at the end]"
     ],
     "aftermathWin": [
       "blue lady down and every blade [dropped|clattered to the floor] at once",
-      "nobody but the tanks ate a bomb. [discipline|textbook]",
-      "aoe on the blades was perfect, [not one got to the back|clean]",
+      "nobody but the shields ate a bomb. [discipline|textbook]",
+      "the blasts on the blades were perfect, [not one got to the back|clean]",
       "howth smiths leave a bent blade on the anvil tonight, [they say|old custom]"
     ],
     "aftermathLoss": [
-      "the bomb caught the whole back line. [stay out of 550|way back]",
-      "blades piled up because nobody aoe'd them. [500 hp each|burn the blades]",
-      "tanks ate the bomb at half health. [top them while she casts|watch the cast]",
-      "we wiped. at least the blades [vanished|went with her reset] this time"
+      "the bomb caught the whole back line. [stay a stones throw out|way back]",
+      "blades piled up because nobody blasted them. [theyre weak|burn the blades]",
+      "shields ate the bomb half dead. [top them while she casts|watch the cast]",
+      "we all died. at least the blades [vanished|went when she went home] this time"
     ],
     "rumour": [
-      "[heard|old timers say] her loose swords used to roam the upper halls after a wipe. [not anymore|they vanish now]",
+      "[heard|old hands say] her loose swords used to roam the upper halls after a raid fell. [not anymore|they vanish now]",
       "[heard|someone said] the farm kids in breifine think the clinking at night is the blue lady's swords walking",
       "the blue lady sings to caimheul's own weapons through the wall, they say",
       "[word is|heard] some of her blades are the ones avartack broke at the ford",
