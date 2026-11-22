@@ -58,3 +58,16 @@ class ProvenanceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CompanionNameTests(unittest.TestCase):
+    """Owner 2026-11-21: hired companions may carry lesser legend names, never a name the lore tells of."""
+    def test_no_suggested_companion_name_is_a_lore_hero(self):
+        import re, name_counts
+        root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+        src = open(os.path.join(root, "source", "server", "GameServer", "mode165", "Hire165.cs"), encoding="utf-8").read()
+        block = src[src.index("Names = new()"):src.index("};", src.index("Names = new()"))]
+        names = re.findall(r'"([A-Za-z]+)"', block)
+        self.assertGreater(len(names), 30)
+        clashes = [n for n in names for rx in name_counts.HEROES.values() if re.fullmatch(rx, n)]
+        self.assertEqual(clashes, [])

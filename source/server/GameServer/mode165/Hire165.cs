@@ -59,12 +59,15 @@ namespace DOL.GS
         // stands in front of the player; a later world update that adds the inns can list their spots here.
         private static readonly Dictionary<eRealm, (ushort Region, int X, int Y, int Z, ushort Heading)> PreviewSpots = new();
 
+        // Suggested names. Owner 2026-11-21: companions may carry the names of lesser ("B tier") legend heroes, but never a
+        // name the lore tells of (its heroes and legend companions, docs/1.2.1/HEROES.md): tools/lore/tests checks this list
+        // against tools/lore/name_counts.py HEROES. Companions already hired keep the names they have.
         private static readonly Dictionary<(eRealm, eGender), string[]> Names = new()
         {
-            [(eRealm.Albion, eGender.Male)] = ["Aldric", "Bevis", "Cuthbert", "Edwin", "Gareth", "Osbert"],
-            [(eRealm.Albion, eGender.Female)] = ["Aldith", "Brangwen", "Edith", "Gwendolyn", "Isolde", "Maud"],
-            [(eRealm.Hibernia, eGender.Male)] = ["Aodh", "Brennan", "Colm", "Diarmuid", "Eoghan", "Lorcan"],
-            [(eRealm.Hibernia, eGender.Female)] = ["Aine", "Brigid", "Caoimhe", "Deirdre", "Grainne", "Muirne"],
+            [(eRealm.Albion, eGender.Male)] = ["Aldric", "Bevis", "Cuthbert", "Dinadan", "Edwin", "Osbert"],
+            [(eRealm.Albion, eGender.Female)] = ["Aldith", "Brangwen", "Edith", "Gwendolyn", "Lynette", "Maud"],
+            [(eRealm.Hibernia, eGender.Male)] = ["Aodh", "Brennan", "Colm", "Eoghan", "Loegaire", "Lorcan"],
+            [(eRealm.Hibernia, eGender.Female)] = ["Aine", "Brigid", "Caoimhe", "Fand", "Grainne", "Muirne"],
             [(eRealm.Midgard, eGender.Male)] = ["Arnulf", "Eirik", "Gunnar", "Hakon", "Leif", "Sven"],
             [(eRealm.Midgard, eGender.Female)] = ["Astrid", "Freydis", "Gudrun", "Ingrid", "Sigrid", "Thyra"],
         };

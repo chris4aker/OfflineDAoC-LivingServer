@@ -25,6 +25,11 @@ review's findings and the work left to do.
    and the rest included) where the name gives the scene weight: a death, a last stand, a choice, a record someone
    signs. Elsewhere use the role ("the captain", "the priest"). The 12-mention cap still holds for every name, so no
    witness becomes the default teller again.
+7. **Companions may carry lesser legend names, never the lore's** (2026-11-21): "Companions can be 'B' tier heroes with
+   famous names but nothing referenced in the lore itself." A hired companion's suggested name may be a lesser hero's
+   (Dinadan, Lynette, Brangwen, Loegaire, Fand, Grainne), but never a hero or legend companion the lore tells of, and the
+   lore never mentions a companion. `tools/lore/tests` checks the list in `Hire165.cs` against `name_counts.py` HEROES.
+   Gareth, Isolde, Diarmuid and Deirdre left the list; companions already hired keep their names.
 
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 

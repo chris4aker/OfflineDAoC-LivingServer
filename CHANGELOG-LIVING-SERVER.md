@@ -29,6 +29,9 @@ or run where it was written; CI on pull request #398 is the first build.
   twisting`, or the start of a name, with an optional level to train to (`/hire train 1 smite 10`). Line numbers still
   work, and an unclear line lists the companion's lines and what to type. The trainer window shows the next skill to
   train at the top of each line, so it no longer slides below the window.
+- **Companion names.** The names the hire window suggests no longer include the lore's own heroes: Gareth, Isolde,
+  Diarmuid and Deirdre gave way to Dinadan, Lynette, Loegaire and Fand (owner: lesser legend names are fine, the lore's
+  are not). Companions already hired keep their names.
 
 **Rewards and loot**
 - **Enemy gamebot kills give experience (#396).** They only ever paid realm points. A kill now pays what a player kill
