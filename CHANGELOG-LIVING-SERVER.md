@@ -138,6 +138,17 @@ Bots' breaks are a separate setting and stay on.
   the bosses' own rules contradicted now match them (Saeor, Asmoien, Ba'alorien, Sys'sro, the afanc, Oona, Oro,
   Krevo). The companion-name check covers every legend the lore tells of (#400), and the Avalon City summary is new
   writing (#401).
+- **Fight advice in-world** (owner 2026-11-21, "Rewrite that"). Every boss's legend ("What the raid leaders say") and
+  its bot lines are rewritten without game terms, about 3,800 strings across all 578 bosses: strength as a tier ("a foe
+  for the realm's best, a full band of them"), distance in paces, damage as a share of a robed caster's strength,
+  health as "as much killing as N raiders", times exact. Independent reviews per realm
+  ([Albion](docs/1.2.1/REVIEW-LEGENDS-ALBION.md), [Midgard](docs/1.2.1/REVIEW-LEGENDS-MIDGARD.md),
+  [Hibernia](docs/1.2.1/REVIEW-LEGENDS-HIBERNIA.md)) checked over 300 tips against the bosses' code and fixed every
+  one that was wrong, many older than this pass: throws, jails and cold heals that ship on but were told as off
+  (Hurika, Hakr, Vifil, Kvasir, Easmarach, Spindler, Legion), missing mechanics (Golestandt, Cuuldurach, Gjalpinulva,
+  Xanxicar, Maldahar), and wrong numbers (Xanxicar's stomp lands seven seconds after his bellow). Stories that
+  contradicted the mechanics now tell how the favour came back, with nothing cut. The lore lint now checks every
+  visible field for game terms (`tools/lore/fourth_wall.py`); the remaining hits are warnings until cleared.
 
 **Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
 and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under

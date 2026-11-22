@@ -9,30 +9,30 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **Fields:** `narrative` is told text (story, chapters, book pages, loremaster words, yells, history); `advice` is
   the legend ("What the raid leaders say"); `chat` is the bot lines.
 - **A hit is a word, not a line:** one line can hold several.
-- **Total:** 1910 hits in 346 files.
+- **Total:** 1756 hits in 314 files.
 
 ## By realm and kind
 
 | Realm | aggro | con | health | level | login | mechanic | mob | number | pull | resist | slang | small number | spawn | spell | tank | world | xp | narrative | advice | chat | total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Albion | 6 | 4 | 3 | 151 | 1 | 3 | 40 | 26 | 19 | 7 | 160 | 38 | 8 | 10 | 0 | 29 | 10 | 8 | 245 | 262 | 515 |
-| Midgard | 0 | 1 | 2 | 70 | 1 | 36 | 68 | 115 | 10 | 8 | 39 | 52 | 4 | 4 | 2 | 20 | 10 | 12 | 192 | 238 | 442 |
-| Hibernia | 11 | 1 | 6 | 219 | 3 | 65 | 27 | 302 | 25 | 33 | 27 | 21 | 16 | 17 | 2 | 24 | 2 | 3 | 407 | 391 | 801 |
-| Neutral | 2 | 0 | 3 | 15 | 2 | 16 | 4 | 71 | 0 | 2 | 17 | 8 | 2 | 2 | 0 | 6 | 2 | 13 | 66 | 73 | 152 |
+| Albion | 5 | 2 | 3 | 128 | 1 | 2 | 35 | 23 | 17 | 6 | 160 | 37 | 5 | 4 | 0 | 29 | 10 | 8 | 203 | 256 | 467 |
+| Midgard | 0 | 1 | 1 | 70 | 1 | 13 | 67 | 115 | 6 | 8 | 39 | 52 | 4 | 2 | 0 | 20 | 10 | 12 | 187 | 210 | 409 |
+| Hibernia | 11 | 1 | 6 | 219 | 3 | 10 | 27 | 304 | 25 | 33 | 27 | 21 | 16 | 15 | 2 | 24 | 2 | 3 | 365 | 378 | 746 |
+| Neutral | 2 | 0 | 2 | 11 | 2 | 10 | 4 | 69 | 0 | 2 | 16 | 8 | 1 | 1 | 0 | 6 | 0 | 13 | 57 | 64 | 134 |
 
-## Albion (515 hits, 136 files)
+## Albion (467 hits, 137 files)
 
 - **bosses/adelon.json**
   - `legend`: `faction`
   - `botLines.briefing[]`: `faction`
 - **bosses/aidon-the-archwizard.json**
-  - `botLines.briefing[]`: `4`, `3`, `4`, `3`
+  - `botLines.briefing[]`: `4`, `3`
 - **bosses/amphiptere.json**
   - `botLines.briefing[]`: `30ish`
 - **bosses/angau.json**
   - `legend`: `faction`
 - **bosses/apocalypse.json**
-  - `botLines.briefing[]`: `rebuff`, `1`, `2`
+  - `botLines.briefing[]`: `1`, `2`
   - `botLines.aftermathWin[]`: `gg`, `gg`
 - **bosses/arvida.json**
   - `legend`: `faction`, `faction`
@@ -78,6 +78,8 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `legend`: `faction`, `faction`
 - **bosses/cnieda.json**
   - `legend`: `faction`
+- **bosses/coliath.json**
+  - `botLines.briefing[]`: `7`
 - **bosses/crypt-guardian.json**
   - `botLines.briefing[]`: `faction`
 - **bosses/deben-se-gecynde.json**
@@ -109,11 +111,9 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **bosses/fulafeallan.json**
   - `botLines.briefing[]`: `4`, `5`
 - **bosses/funus.json**
-  - `botLines.aftermathWin[]`: `rebuff`, `rebuff`
   - `botLines.aftermathLoss[]`: `wiped`
 - **bosses/golestandt.json**
   - `botLines.aftermathWin[]`: `gg`, `gg`
-  - `botLines.aftermathLoss[]`: `rebuff`
 - **bosses/gorvos.json**
   - `legend`: `faction`
 - **bosses/green-knight.json**
@@ -134,7 +134,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.aftermathWin[]`: `mid thirties`
 - **bosses/krevo-ricik.json**
   - `botLines.aftermathWin[]`: `gg`
-  - `botLines.aftermathLoss[]`: `nuking`
 - **bosses/lady-darra.json**
   - `botLines.briefing[]`: `4`, `4`
 - **bosses/larionne.json**
@@ -291,12 +290,11 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.tell[]`: `zone`, `50s`, `60s`, `teleporter`, `xp`, `40s`, `50s`
   - `loremaster.topics.caer diogel`: `teleporter`
 - **locations/avalon-city.json**
-  - `legend`: `mobs`, `con`, `red to anyone`
   - `botLines.lore[]`: `leash`, `5`
   - `botLines.rumour[]`: `con`, `red to anyone`
   - `botLines.tell[]`: `pull`, `mobs`
 - **locations/avalon-isle.json**
-  - `legend`: `zone`, `levels 2`, `(68)`, `health`
+  - `legend`: `zone`, `levels 2`, `health`
   - `botLines.rumour[]`: `health`
 - **locations/avalon-marsh.json**
   - `legend`: `levels 1`, `epic`, `nukes`, `10`, `mid thirties`
@@ -310,12 +308,11 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.lore[]`: `pulls`
   - `botLines.tell[]`: `levels 5`
 - **locations/caer-sidi.json**
-  - `legend`: `pull`
   - `botLines.rumour[]`: `mobs`, `pull`
   - `botLines.tell[]`: `epic`, `100`, `epic`, `boss`
 - **locations/caldey.json**
   - `story`: `The named`
-  - `legend`: `levels 4`, `(59)`, `nameds`, `(71)`, `(65)`, `(61)`, `untargetable`, `respawns`
+  - `legend`: `levels 4`
   - `botLines.tell[]`: `xp`
   - `book.pages[]`: `the named`
 - **locations/camelot-hills.json**
@@ -332,14 +329,14 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `legend`: `levels 2`, `pull`
   - `botLines.tell[]`: `pull`
 - **locations/cornwall.json**
-  - `legend`: `zone`, `levels 2`, `epic`, `low forties`, `level 5`, `(45)`, `aggro`
+  - `legend`: `zone`, `levels 2`, `epic`, `low forties`, `(45)`, `aggro`
   - `botLines.tell[]`: `aggros`
 - **locations/crystal-cave.json**
-  - `legend`: `wiped`, `level`, `75`, `health`, `wipe`
+  - `legend`: `wiped`, `health`, `wipe`
   - `botLines.rumour[]`: `wiped`, `wiped`, `level 7`, `respawn`, `wipe`
 - **locations/dales-of-devwy.json**
   - `story`: `teleporter`
-  - `legend`: `zone`, `levels 3`, `teleporter`, `high 30s`, `40s`, `level 6`, `50s`, `nameds`, `(68)`, `(71)`, `(70)`
+  - `legend`: `zone`, `levels 3`, `teleporter`, `high 30s`, `40s`, `50s`
   - `botLines.lore[]`: `3`
   - `botLines.tell[]`: `zone`, `50`, `55`, `50s`, `nameds`, `61`, `xp`, `40s`, `50s`
   - `loremaster.topics.fort gwyntell`: `teleporter`
@@ -348,11 +345,11 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.rumour[]`: `zone`
   - `botLines.tell[]`: `zone`, `heat resist`, `level 4`
 - **locations/forest-sauvage.json**
-  - `legend`: `levels`, `30s`, `pulls`, `10`
+  - `legend`: `levels`, `30s`
   - `botLines.rumour[]`: `release timer`
   - `botLines.tell[]`: `30s`, `79`
 - **locations/gwyddneau.json**
-  - `legend`: `levels 4`, `faction`, `(78)`, `50s`, `60s`, `high 50s`, `60`, `aggros`, `respawns`
+  - `legend`: `levels 4`, `faction`, `50s`, `60s`, `high 50s`
   - `botLines.tell[]`: `78`, `54`, `61`, `xp`
 - **locations/hadrians-wall.json**
   - `legend`: `zone`, `level 1`, `level 5`, `mid thirties`, `low forties`, `in the forties`, `in the fifties`
@@ -362,7 +359,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.rumour[]`: `pull`, `immune`
   - `botLines.tell[]`: `bosses`, `immune`
 - **locations/inishail-island.json**
-  - `legend`: `levels 4`, `50s`, `(65)`, `(77)`, `(55)`, `(48)`, `xp`
+  - `legend`: `levels 4`, `50s`, `xp`
   - `botLines.lore[]`: `farms it`
   - `botLines.tell[]`: `65`, `77`, `xp`, `50s`
 - **locations/isle-of-glass.json**
@@ -375,7 +372,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.rumour[]`: `wiped`, `pull`, `pull`
   - `botLines.tell[]`: `every named`, `13`, `nameds`
 - **locations/llyn-barfog.json**
-  - `legend`: `zone`, `levels 2`, `50s`, `nameds`, `respawn`, `(70)`, `(65)`, `(63)`, `(62)`, `(64)`, `(71)`, `crowd-control`, `immune`
+  - `legend`: `zone`, `levels 2`, `50s`
   - `botLines.lore[]`: `nameds`, `cc`, `immune`
   - `botLines.rumour[]`: `epic`, `xp`
   - `botLines.tell[]`: `pull`, `20s`, `30s`, `nameds`, `nameds`
@@ -385,7 +382,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `legend`: `zone`, `40s`, `50s`, `epic`, `(70)`, `epics`, `(69)`, `epic`, `(90)`, `epic`, `crowd-control`, `immune`, `boss`, `(65-70)`
   - `botLines.tell[]`: `epic`, `50s`, `40s`, `50s`, `epic`, `69`, `70`, `90`
 - **locations/pennine-mountains.json**
-  - `legend`: `zone`, `in the fifties`, `level 6`, `epic`
+  - `legend`: `zone`, `in the fifties`
   - `botLines.lore[]`: `mid fifties`, `zergs`
   - `botLines.rumour[]`: `noobs`
   - `botLines.tell[]`: `zone`, `rvr`, `mobs`, `40s`, `50s`, `61`, `xp`, `40s`, `50`, `zerg`
@@ -409,7 +406,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.rumour[]`: `respawn`
   - `botLines.tell[]`: `level`, `10ish`, `mid teens`, `nameds`
 
-## Midgard (442 hits, 94 files)
+## Midgard (409 hits, 89 files)
 
 - **bosses/ancient-syver.json**
   - `botLines.briefing[]`: `5`, `5`, `5`
@@ -426,15 +423,13 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.aftermathLoss[]`: `ported`
 - **bosses/chief-tarek.json**
   - `botLines.briefing[]`: `4`
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/council-otrygg.json**
-  - `botLines.briefing[]`: `8`, `resets`
+  - `botLines.briefing[]`: `8`
 - **bosses/council-ozur.json**
   - `legend`: `50`, `100`, `50`, `50`
   - `botLines.briefing[]`: `50`, `60s`
 - **bosses/council-vagn.json**
   - `legend`: `3`
-  - `botLines.briefing[]`: `reset`, `reset`
 - **bosses/cronk.json**
   - `botLines.briefing[]`: `8`
 - **bosses/dagar.json**
@@ -448,25 +443,18 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **bosses/dyranapur.json**
   - `botLines.briefing[]`: `7`, `7`
 - **bosses/elder-council-birghir.json**
-  - `botLines.briefing[]`: `reset`, `in range`, `reset`
-  - `botLines.aftermathLoss[]`: `reset`
+  - `botLines.briefing[]`: `in range`
 - **bosses/elder-council-guthlac.json**
   - `botLines.briefing[]`: `35`, `8`
   - `botLines.aftermathLoss[]`: `30`
-- **bosses/elder-icelord-hjalmar.json**
-  - `botLines.briefing[]`: `resets`
 - **bosses/elder-icelord-suttung.json**
   - `botLines.briefing[]`: `20`, `10`, `20s`
 - **bosses/fornfrusenen.json**
   - `legend`: `2`, `3`
-  - `botLines.briefing[]`: `resets`
 - **bosses/fostra-orm.json**
   - `legend`: `a grind`
 - **bosses/gjalpinulva.json**
   - `legend`: `trigger`, `27`, `100`, `74`
-- **bosses/glacier-giant.json**
-  - `botLines.briefing[]`: `resets`, `resets`
-  - `botLines.aftermathLoss[]`: `reset`, `reset`, `reset`
 - **bosses/goretooth.json**
   - `legend`: `6`
   - `botLines.briefing[]`: `4`
@@ -488,12 +476,10 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.briefing[]`: `2`, `2`, `4`
 - **bosses/icelord-kvasir.json**
   - `botLines.briefing[]`: `45`, `60s`
-- **bosses/icelord-steinvor.json**
-  - `botLines.briefing[]`: `reset`, `reset`
 - **bosses/issorden.json**
   - `botLines.briefing[]`: `7`, `7`
 - **bosses/jailer-vifil.json**
-  - `botLines.briefing[]`: `25`, `25`, `resets`
+  - `botLines.briefing[]`: `25`, `25`
 - **bosses/jarala-den-kvinnlig.json**
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/jarl-ormarr.json**
@@ -521,8 +507,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.briefing[]`: `10`
 - **bosses/mokerkialfi.json**
   - `botLines.aftermathLoss[]`: `duo`
-- **bosses/mortufoghus.json**
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/nosdoden.json**
   - `legend`: `42`
 - **bosses/old-matriarch.json**
@@ -531,8 +515,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **bosses/pirmin.json**
   - `botLines.briefing[]`: `17`
 - **bosses/queen-kula.json**
-  - `botLines.briefing[]`: `reset`
-  - `botLines.aftermathLoss[]`: `reset`
   - `botLines.rumour[]`: `boss`
 - **bosses/rotodjur.json**
   - `legend`: `4`, `5`
@@ -558,9 +540,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.briefing[]`: `2`, `6`, `10s`
 - **bosses/undead-patrol.json**
   - `loremasterTopic.text`: `epics`
-- **bosses/yar.json**
-  - `botLines.briefing[]`: `resets`
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/zrit-zrit.json**
   - `legend`: `20`
   - `botLines.briefing[]`: `20`
@@ -580,12 +559,11 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **locations/dodens-gruva.json**
   - `legend`: `pull`, `mobs`, `experience`
   - `botLines.rumour[]`: `xp`
-  - `botLines.tell[]`: `pull`
 - **locations/east-svealand.json**
   - `legend`: `5`, `15`, `zone`, `xp`, `epic`
   - `botLines.tell[]`: `8`, `12`, `12`, `11`
 - **locations/faraheim.json**
-  - `legend`: `teleporter`, `mez`, `wipes`, `level`, `Nameds`, `faction`
+  - `legend`: `teleporter`, `wipes`, `level`, `Nameds`, `faction`
   - `botLines.tell[]`: `nameds`, `nameds`, `teleporter`, `nameds`, `nameds`
 - **locations/gotar.json**
   - `story`: `epic`
@@ -597,7 +575,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **locations/iarnvidiurs-lair.json**
   - `legend`: `Every named`, `health`, `cons`, `A named`, `wiped`
   - `botLines.rumour[]`: `ports you`
-  - `botLines.tell[]`: `64`, `pull`, `30`
+  - `botLines.tell[]`: `64`, `30`
   - `loremaster.topics.the plague`: `Every named`
 - **locations/iarnwood.json**
   - `legend`: `level`, `faction`
@@ -648,14 +626,13 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **locations/spindelhalla.json**
   - `legend`: `late thirties`, `mid forties`, `The named`
   - `botLines.lore[]`: `level`
-  - `botLines.tell[]`: `late 30s`, `xp`, `nameds`, `aggro range`
+  - `botLines.tell[]`: `late 30s`, `xp`, `nameds`
 - **locations/trollheim.json**
   - `legend`: `rez`
-  - `botLines.rumour[]`: `the named`, `epics`, `hp`
+  - `botLines.rumour[]`: `the named`, `epics`
   - `botLines.tell[]`: `64`, `rez`, `of adds`
 - **locations/tuscaran-glacier.json**
-  - `legend`: `tanks`, `an add`, `buff`
-  - `botLines.tell[]`: `100`, `tank`
+  - `botLines.tell[]`: `100`
 - **locations/uppland.json**
   - `legend`: `zone`, `mid 40s`, `xp`, `40s`, `20s`, `30s`, `53`, `epic`, `epic`
   - `botLines.tell[]`: `mid 40s`, `20s`, `30s`, `epic`, `53`
@@ -666,8 +643,7 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **locations/vanern-swamp.json**
   - `botLines.lore[]`: `epic`
 - **locations/varulvhamn.json**
-  - `legend`: `high thirties`, `zone`, `pull`, `pull`
-  - `botLines.rumour[]`: `pull`
+  - `legend`: `high thirties`, `zone`, `pull`
   - `botLines.tell[]`: `xp`, `zone`
 - **locations/vendo-caverns.json**
   - `legend`: `high twenties`, `pull`, `low twenties`, `mid thirties`
@@ -681,28 +657,16 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.tell[]`: `zone`, `epic`, `epic`, `52`, `mid 20s`, `high 40s`
   - `loremaster.topics.the undead patrol`: `epic`
 
-## Hibernia (801 hits, 92 files)
+## Hibernia (746 hits, 66 files)
 
-- **bosses/adwyth.json**
-  - `legend`: `bowshot`
 - **bosses/ancient-black-oak.json**
-  - `legend`: `bowshot`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/anhylaw.json**
-  - `legend`: `bowshot`
 - **bosses/anurigunda.json**
-  - `legend`: `bowshot`
   - `botLines.briefing[]`: `ports you`
   - `botLines.aftermathLoss[]`: `ported`
-- **bosses/archilus.json**
-  - `legend`: `bowshot`
-  - `botLines.briefing[]`: `bowshot`
 - **bosses/avartack-the-champion.json**
-  - `legend`: `bowshot`
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/balere.json**
-  - `legend`: `bowshot`
 - **bosses/balor.json**
   - `botLines.briefing[]`: `immune`
 - **bosses/blue-lady.json**
@@ -711,94 +675,47 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `legend`: `immune`
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/ceracor.json**
-  - `legend`: `bowshot`
-- **bosses/conservator.json**
-  - `legend`: `bowshot`, `bowshot`
 - **bosses/corrupt-primal-of-water.json**
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`, `oom`
-- **bosses/cronwort.json**
-  - `legend`: `bowshot`
-- **bosses/curengkur.json**
-  - `legend`: `bowshot`, `bowshot`, `bowshot`, `bowshot`
-  - `botLines.briefing[]`: `bowshot`, `bowshot`
-  - `botLines.aftermathLoss[]`: `bowshot`
 - **bosses/curmie.json**
   - `legend`: `duo`
 - **bosses/cuuldurach-the-glimmer-king.json**
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
   - `chapters[].text`: `the named`
-- **bosses/dremcis-fuiloltair.json**
-  - `legend`: `bowshot`
-- **bosses/drygau.json**
-  - `legend`: `bowshot`
 - **bosses/duga.json**
-  - `legend`: `bowshot`
+  - `legend`: `30`
 - **bosses/elro-the-ancient.json**
-  - `legend`: `bowshot`, `trigger`, `bowshot`
+  - `legend`: `trigger`
   - `botLines.briefing[]`: `in range`
-  - `botLines.aftermathLoss[]`: `bowshot`
 - **bosses/evern.json**
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/faerie-queen.json**
   - `related[].relation`: `epic`
-- **bosses/fuilwort.json**
-  - `legend`: `bowshots`
 - **bosses/giant-caithor.json**
   - `botLines.aftermathLoss[]`: `despawned`, `despawned`
 - **bosses/giant-sporite-cluster.json**
   - `legend`: `radius`
 - **bosses/glimmer-lords.json**
   - `botLines.briefing[]`: `duo`
-- **bosses/helminth.json**
-  - `legend`: `bowshot`
 - **bosses/kierac-the-destroyer.json**
   - `legend`: `phase`
-  - `botLines.briefing[]`: `phase`, `cooldowns`
-  - `botLines.aftermathWin[]`: `cooldowns`
+  - `botLines.briefing[]`: `phase`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/king-vian.json**
-  - `legend`: `bowshot`
-- **bosses/kontar-the-corrupt.json**
-  - `legend`: `bowshot`
-  - `botLines.briefing[]`: `bowshot`
-- **bosses/krackenschtein.json**
-  - `legend`: `bowshot`
-- **bosses/lair-overseer.json**
-  - `legend`: `bowshot`
-  - `botLines.briefing[]`: `bowshot`
 - **bosses/luriquay.json**
   - `legend`: `duo`
   - `botLines.briefing[]`: `duos`
   - `botLines.aftermathLoss[]`: `duo`
-- **bosses/milo.json**
-  - `legend`: `bowshot`
 - **bosses/mollunero.json**
-  - `legend`: `bowshot`
-  - `botLines.briefing[]`: `duo`, `bowshot`
-- **bosses/myrddraxis.json**
-  - `legend`: `bowshot`, `bowshot`, `bowshot`, `bowshot`
-  - `botLines.briefing[]`: `bowshot`
-  - `botLines.aftermathLoss[]`: `bowshot`
-- **bosses/nogoribando.json**
-  - `legend`: `bowshot`
+  - `botLines.briefing[]`: `duo`
 - **bosses/norsob-the-annihilator.json**
   - `botLines.briefing[]`: `immune`, `immune`
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/olcasgean.json**
-  - `legend`: `bowshot`
   - `botLines.briefing[]`: `immune`
-- **bosses/orey-eyed-oghamist.json**
-  - `legend`: `rebuff`, `rebuff`
 - **bosses/oscar.json**
-  - `legend`: `bowshot`
   - `botLines.briefing[]`: `4k`
-- **bosses/overman-regnal.json**
-  - `legend`: `bowshot`
-- **bosses/pericolias-the-dreaded.json**
-  - `legend`: `bowshot`
 - **bosses/queen-qunilaria.json**
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
@@ -809,31 +726,22 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **bosses/sargan-the-conqueror.json**
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/scratch.json**
-  - `legend`: `bowshot`
 - **bosses/shadowgnash.json**
   - `botLines.briefing[]`: `big named`
 - **bosses/skeaghshee.json**
   - `botLines.briefing[]`: `immune`, `immune`
   - `botLines.aftermathLoss[]`: `immune`, `immune`
-- **bosses/thorg.json**
-  - `legend`: `bowshot`
 - **bosses/tinka.json**
   - `legend`: `bosses`
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/underviewer-treeal.json**
-  - `legend`: `bowshot`
-- **bosses/viewer-etol.json**
-  - `legend`: `bowshot`
+  - `legend`: `30`
 - **bosses/wyvernic-wraith.json**
   - `botLines.briefing[]`: `at range`
 - **bosses/xaga.json**
   - `botLines.briefing[]`: `immune`
   - `botLines.aftermathLoss[]`: `immune`
-- **bosses/zytka.json**
-  - `legend`: `bowshot`
-  - `botLines.briefing[]`: `bowshot`
 - **locations/allta-fearann.json**
   - `legend`: `levels 3`, `64`, `36`, `46`, `(38-49)`, `(40-54)`, `(40-54)`, `(55-61)`, `49`, `64`, `(58)`, `(55)`, `(55)`, `(53)`, `(75)`, `health`, `pull`
   - `botLines.lore[]`: `55`, `61`
@@ -970,13 +878,11 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.rumour[]`: `90`, `spawns`, `trigger`
   - `botLines.tell[]`: `50s`, `pulls`
 
-## Neutral (152 hits, 24 files)
+## Neutral (134 hits, 22 files)
 
 - **bosses/behemoth.json**
   - `legend`: `evade`
   - `botLines.briefing[]`: `evade`
-- **bosses/beliathan.json**
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/chamberlain.json**
   - `botLines.aftermathLoss[]`: `1`, `0`
 - **bosses/duke-aypol.json**
@@ -986,17 +892,13 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.aftermathWin[]`: `solo`
   - `botLines.aftermathLoss[]`: `1`, `0`
 - **bosses/gnat.json**
-  - `botLines.briefing[]`: `reset`
-  - `botLines.aftermathLoss[]`: `solo`, `reset`
+  - `botLines.aftermathLoss[]`: `solo`
 - **bosses/grand-summoner-govannon.json**
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/high-lord-baelerdoth.json**
   - `legend`: `at range`
 - **bosses/high-lord-baln.json**
   - `botLines.briefing[]`: `99`, `8`, `12`
-- **bosses/high-lord-saeor.json**
-  - `botLines.briefing[]`: `resets`
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/legion.json**
   - `botLines.aftermathLoss[]`: `immune`
 - **bosses/prince-asmoien.json**
@@ -1006,7 +908,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
 - **bosses/princess-nahemah.json**
   - `legend`: `at range`
   - `botLines.briefing[]`: `5`, `10`
-  - `botLines.aftermathLoss[]`: `reset`
 - **bosses/summoner-cunovinda.json**
   - `botLines.briefing[]`: `10s`
 - **history/neutral.json**
@@ -1022,7 +923,6 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `botLines.tell[]`: `30`, `35`, `38`, `45`, `long range`, `teleporter`, `30`, `30`, `35`
 - **locations/darkness-falls.json**
   - `legend`: `health`, `health`, `at range`
-  - `botLines.rumour[]`: `level 9`
 - **locations/murdaigean.json**
   - `legend`: `25`, `29`, `32`, `39`, `faction`
   - `botLines.tell[]`: `25`, `29`, `32`, `39`, `mobs`, `aggro`, `teleporter`, `25`, `25`, `29`
@@ -1031,9 +931,9 @@ camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun, line of sight) 
   - `legend`: `RvR`, `zones`, `level 1`, `35`, `15`, `19`, `20`, `24`, `25`, `29`, `30`, `35`, `teleporter`, `level`, `level`, `release to your own portal`, `level 2`, `22`, `29`, `32`, `39`, `38`, `45`
   - `botLines.tell[]`: `rvr`, `zones`, `teleporter`, `rvr`
 - **locations/shrouded-isles.json**
-  - `legend`: `epics`, `spawns`, `level 3`, `95`, `health`, `(30-34)`, `experience`, `AoE`, `solo`, `35`
-  - `botLines.lore[]`: `xp`, `farm them`
-  - `botLines.tell[]`: `level 3`, `duo`
+  - `legend`: `epics`
+  - `botLines.lore[]`: `farm them`
+  - `botLines.tell[]`: `duo`
 - **locations/summoners-hall.json**
   - `legend`: `pops`, `25`
   - `botLines.lore[]`: `mobs`, `faction`
