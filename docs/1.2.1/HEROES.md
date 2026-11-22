@@ -143,6 +143,11 @@ review's findings and the work left to do.
    - **A real NPC keeps their name** although a gamebot can share it (review of the NPC pass, 2026-11-22). The rename rule
      is for invented tellers. Orlaith of Necht, who led the hundred and forty, is the real Vigilant Rock NPC, so she stays
      Orlaith, as Eoghan of Lough Derg, Vigdis and Elin do.
+   - **The lore keeps its names; the bot lists give way** (2026-11-22, the owner: "do what is best"). Orlaith keeps her
+     name (a real 1.65 NPC). Wynflaed, Wystan, Leofric, Eadric, Osric and every other name the lore gives its people
+     are out of the gamebots' lore-name lists (`EraBotNames.LoreNameLists`), replaced by unused period names, and
+     `tools/lore/tests/test_bot_names.py` keeps it so. Duke Satori's second Hrolf is Illugi the Counter, so Legion's
+     Hrolf the Tall is the only Hrolf.
 
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
