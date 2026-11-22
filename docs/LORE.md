@@ -58,12 +58,18 @@ Optional fields the engine adds to the brief's format:
 
 **Umbrella locations.** Open-world bosses belong to umbrella locations over a realm's open world (`hibernia-wilds`,
 `hy-brasil`) with one atmosphere area per zone or lair. Without `zones`, such a location's `firstEntry` shows once a day on
-coming into that open world. `"regions": []` is allowed (`shrouded-isles`: Gnat has no known region); such a location has
-no first entry, and each of its areas gives its own `region`. Areas are found by their region, whatever location they
-belong to.
+coming into that open world. `"regions": []` is allowed (`shrouded-isles`: Gnat has no known region); each of its areas
+gives its own `region`. Areas are found by their region, whatever location they belong to.
+
+**Overviews (1.2.1).** A location with first-entry lines and no `zones` that no zone ever names (it lists no regions, or
+zone files and narrower files win every zone of its regions: `proving-fields`, `shrouded-isles`, `albion-shrouded-isles`,
+`hy-brasil`, `hibernia-wilds`) shows its `firstEntry` once a day on walking into any region it covers (the regions it lists
+and its areas' regions), narrowest overview first (`LoreEntryRules.OverviewsAt`). It is offered before the zone file's
+own line, so a zone line that is due wins and the overview waits for a later walk in.
 
 Area `x`, `y`, `z` are region coordinates (the boss spawns in `docs/encounters/world-spawns.json` are a good source).
-With `z` set, the area is that floor only (within 800 units of height); `z: 0` means any height.
+With `z` set, the area is that floor only (within 800 units of height); `z: 0` means any height, for the area lines and
+for lore book drops alike (`LoreBookDrops.Near`, within twice the radius; an area of another region never counts).
 
 ### Boss
 

@@ -50,7 +50,11 @@ public sealed record LoreLocation(string Id, string Name, string Realm, int[] Re
 public sealed record LoreRealmTake(string Story, string Legend, LoreLoremasterText Loremaster, LoreTopic LoremasterTopic);
 
 /// <summary>An atmosphere area: only its circle matters here (books drop near it).</summary>
-public sealed record LoreArea(string Name, int X, int Y, int Z, int Radius);
+/// <summary>A location's atmosphere area. <c>Z</c> 0 is any height; <c>Region</c> 0 is any of the location's regions.</summary>
+public sealed record LoreArea(string Name, int X, int Y, int Z, int Radius)
+{
+    public int Region { get; init; }
+}
 
 /// <summary>The loremaster's words about a location: an intro and keyword topics ("text with [other keywords]").</summary>
 public sealed record LoreLoremasterText(string Intro, IReadOnlyList<KeyValuePair<string, string>> Topics);
@@ -410,7 +414,7 @@ public static class LoreJson
             atmosphere.TryGetProperty("areas", out JsonElement list) && list.ValueKind == JsonValueKind.Array)
             foreach (JsonElement a in list.EnumerateArray())
                 if (a.ValueKind == JsonValueKind.Object)
-                    areas.Add(new LoreArea(Str(a, "name"), Int(a, "x"), Int(a, "y"), Int(a, "z"), Int(a, "radius")));
+                    areas.Add(new LoreArea(Str(a, "name"), Int(a, "x"), Int(a, "y"), Int(a, "z"), Int(a, "radius")) { Region = Int(a, "region") });
         int[] regions = e.TryGetProperty("regions", out JsonElement r) && r.ValueKind == JsonValueKind.Array
             ? r.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Number).Select(x => x.GetInt32()).ToArray()
             : [];

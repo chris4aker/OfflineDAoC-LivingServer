@@ -127,6 +127,38 @@ public static class LoreEntryRules
         currentLocationId != null && !string.Equals(previousLocationId, currentLocationId, StringComparison.OrdinalIgnoreCase) &&
         lastShownDay != today;
 
+    /// <summary>The regions a location covers: the regions it lists and the regions its areas name (0, no region, left out).</summary>
+    public static ushort[] RegionsCovered(LoreBible.Location location) =>
+        location.Regions.Concat(location.Areas.Select(a => a.Region)).Where(r => r != 0).Distinct().ToArray();
+
+    /// <summary>
+    /// An overview file that <see cref="LocationAt"/> returns for no zone, so its first-entry lines could never show
+    /// (1.2.1, REVIEW-DEPTH.md owner question 1): it has first-entry lines and no zones of its own, and in every region it
+    /// lists a zone file or a narrower file wins every zone. The proving fields and the Shrouded Isles list no regions;
+    /// Albion's Shrouded Isles, Hy Brasil and the Hibernian wilds lose every zone to their zone files. A region whose zones
+    /// are not known (none given) counts as one the file may win.
+    /// </summary>
+    public static bool NeverHere(LoreBible bible, LoreBible.Location location, Func<ushort, IReadOnlyCollection<ushort>> zonesOf)
+    {
+        if (location.Zones.Length > 0 || location.FirstEntry.Length == 0)
+            return false;
+        foreach (ushort region in location.Regions.Distinct())
+        {
+            IReadOnlyCollection<ushort> zones = zonesOf(region) ?? Array.Empty<ushort>();
+            if (zones.Count == 0 || zones.Any(zone => string.Equals(LocationAt(bible, region, zone)?.Id, location.Id, StringComparison.Ordinal)))
+                return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// The overview files whose first-entry line may show on walking into this region (once a day each, like any first entry),
+    /// narrowest first (fewest regions covered), then by id: the <see cref="NeverHere"/> files that cover the region.
+    /// </summary>
+    public static LoreBible.Location[] OverviewsAt(LoreBible bible, ushort region, Func<ushort, IReadOnlyCollection<ushort>> zonesOf) =>
+        bible.Locations.Where(l => RegionsCovered(l).Contains(region) && NeverHere(bible, l, zonesOf))
+            .OrderBy(l => RegionsCovered(l).Length).ThenBy(l => l.Id, StringComparer.Ordinal).ToArray();
+
     /// <summary>Inside an area's circle: 2D within the radius, and, when the area gives a height, within 800 units of it (floors of a dungeon).</summary>
     public static bool InArea(LoreBible.Area area, ushort region, int x, int y, int z)
     {
