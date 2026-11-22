@@ -8,7 +8,7 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## 1.2.1 (in development)
+## 1.2.1 — [RELEASE DATE]
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
 or run where it was written; CI on pull request #398 is the first build.

@@ -6,6 +6,7 @@
 #              login-save-restart scenarios against the installed server (tools/installer/test-installer.ps1 classoff)
 #   update114  Living Server 1.1.4's published Setup installs a game, a character, a roster and changed settings are
 #              seeded, this Setup updates it, and everything seeded is checked kept, also after the server's first start.
+#   update12   the same from Living Server 1.2's published Setup (1.2.1: the update players on 1.2 make).
 # These are TESTS: they never close a row of the gate, which needs the owner's PC (docs/INSTALL-CHECKS-1.2.md).
 name: candidate-install
 
@@ -116,35 +117,48 @@ jobs:
             D:\lstest\smoke\console.log
           if-no-files-found: warn
 
-  update114:
+  # An earlier release's own published Setup installs a game, which is seeded, then this build's Setup updates it.
+  # update114 is the 1.2 gate's row 1 (from Beta 1.1.4); update12 is 1.2.1's (from 1.2, the release players have now).
+  update:
     needs: setup
     runs-on: windows-latest
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scenario: update114
+            tag: v1.1.4-beta
+            exe: LivingServer-Setup-1.1.4-beta.exe
+          - scenario: update12
+            tag: v1.2
+            exe: LivingServer-Setup-1.2.exe
+    name: ${{ matrix.scenario }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: Candidate-Setup
           path: setup
-      - name: Living Server 1.1.4's published Setup
+      - name: The published Setup of ${{ matrix.tag }}
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release download v1.1.4-beta --repo "${{ github.repository }}" --pattern 'LivingServer-Setup-1.1.4-beta.exe' --dir setup114
-      - name: 1.1.4 game, seeded, updated through Setup, kept
+        run: gh release download "${{ matrix.tag }}" --repo "${{ github.repository }}" --pattern '${{ matrix.exe }}' --dir setup-from
+      - name: ${{ matrix.tag }} game, seeded, updated through Setup, kept
         shell: pwsh
         run: |
           $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
           $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
-          $old = (Resolve-Path setup114/LivingServer-Setup-1.1.4-beta.exe).Path
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Scenario update114 -FromSetup '$old'; exit `$LASTEXITCODE"
+          $old = (Resolve-Path 'setup-from/${{ matrix.exe }}').Path
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Scenario ${{ matrix.scenario }} -FromSetup '$old'; exit `$LASTEXITCODE"
           exit $LASTEXITCODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: candidate-update114-logs
+          name: candidate-${{ matrix.scenario }}-logs
           path: |
             D:\lstest\logs\
-            D:\lstest\update114-seed.json
-            D:\lstest\smoke-update114\console.log
+            D:\lstest\${{ matrix.scenario }}-seed.json
+            D:\lstest\smoke-${{ matrix.scenario }}\console.log
           if-no-files-found: warn

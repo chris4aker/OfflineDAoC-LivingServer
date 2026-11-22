@@ -23,6 +23,7 @@
 #   update114 (1.2) Living Server 1.1.4's own published Setup (-FromSetup) installs a new 1.1.4 game; a character, a
 #             gamebot roster and changed settings are seeded (seed_progress.py); this Setup updates the game; everything
 #             seeded must be kept, also after the updated server's first start (smoke on the updated game)
+#   update12  (1.2.1) the same from Living Server 1.2's published Setup (-FromSetup LivingServer-Setup-1.2.exe)
 #
 # Every run except "newest" passes --no-update, so Setup installs the package it embeds and the checks below hold.
 param(
@@ -31,7 +32,7 @@ param(
     [string]$Work = 'C:\lstest',
     [string[]]$Scenario = @('fresh', 'update036'),
     [string]$Shots = '',
-    # update114: Living Server 1.1.4's published Setup exe (LivingServer-Setup-1.1.4-beta.exe)
+    # update114 / update12: the earlier Living Server's published Setup exe (LivingServer-Setup-1.1.4-beta.exe, -1.2.exe)
     [string]$FromSetup = '',
     # classoff: the built playtester (source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll)
     [string]$Playtester = ''
@@ -460,38 +461,48 @@ if ($Scenario -contains 'classoff') {
     }
 }
 
+# An earlier Living Server's own published Setup (-FromSetup) installs a new game of that build, which is seeded, then
+# this Setup updates it and everything seeded must be kept (update114 from 1.2, update12 from 1.2.1).
+function Update-From([string]$label, [string]$fromBuild) {
+    $game = Join-Path $root "playable-$label"
+    $record = Join-Path $Work "$label-seed.json"
+    $seedTool = Join-Path $PSScriptRoot 'seed_progress.py'
+    $shown = $fromBuild -replace '-beta$', ''
+    if (!$FromSetup -or !(Test-Path $FromSetup)) { Check $false "${label}: $shown's Setup is given (-FromSetup '$FromSetup')"; return }
+    $r = Setup "$label-install-$shown" @('--new', '--dest', $game, '--no-shortcuts') -With (Resolve-Path $FromSetup).Path
+    Check ($r.Code -eq 0) "${label}: $shown's Setup installed a new game"
+    $before = Latest-InstallRecord $game
+    Check ($before -and $before.BuildName -eq $fromBuild) "${label}: the game has Living Server $shown ($($before.BuildName))"
+    $seeded = Run-Native 'python' @($seedTool, 'seed', '--game', $game, '--record', $record)
+    Write-Host "   $($seeded.Trim())"
+    Check ($LASTEXITCODE -eq 0) "${label}: a character, a gamebot roster and changed settings seeded"
+    $r = Setup "scan-$label" @('--scan', '--game', $game)
+    Check ($r.Log -match ('LivingServer=OtherBuild \(' + [regex]::Escape($fromBuild) + '\)')) "${label}: this Setup recognises the $shown build"
+
+    $r = Setup "$label-to-this-build" @('--game', $game, '--no-shortcuts')
+    Check ($r.Code -eq 0) "${label}: Setup updated the game"
+    Assert-LivingServer $game $label
+    Check ($r.Log -notmatch 'Recommended settings: exit') "${label}: the player's own settings were not replaced by the suggested ones"
+    $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record)
+    Write-Host $kept
+    Check ($LASTEXITCODE -eq 0) "${label}: the character, its item, the roster, the settings and the files were kept"
+
+    $smokeDir = Join-Path $Work "smoke-$label"
+    $null = Smoke-Game $game $smokeDir $label
+    $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record, '--db', (Join-Path $smokeDir 'data\opendaoc.sqlite3.db'))
+    Write-Host $kept
+    Check ($LASTEXITCODE -eq 0) "${label}: kept after the updated server's first start (the smoke copy of the world)"
+}
+
 if ($Scenario -contains 'update114') {
     # 1.2: a player with Living Server 1.1.4 (its published Setup) updates to this build through Setup and keeps their
     # characters and settings.
-    $game = Join-Path $root 'playable-update114'
-    $record = Join-Path $Work 'update114-seed.json'
-    $seedTool = Join-Path $PSScriptRoot 'seed_progress.py'
-    if (!$FromSetup -or !(Test-Path $FromSetup)) { Check $false "update114: 1.1.4's Setup is given (-FromSetup '$FromSetup')" }
-    else {
-        $r = Setup 'update114-install-1.1.4' @('--new', '--dest', $game, '--no-shortcuts') -With (Resolve-Path $FromSetup).Path
-        Check ($r.Code -eq 0) 'update114: 1.1.4''s Setup installed a new game'
-        $before = Latest-InstallRecord $game
-        Check ($before -and $before.BuildName -eq '1.1.4-beta') "update114: the game has Living Server 1.1.4 ($($before.BuildName))"
-        $seeded = Run-Native 'python' @($seedTool, 'seed', '--game', $game, '--record', $record)
-        Write-Host "   $($seeded.Trim())"
-        Check ($LASTEXITCODE -eq 0) 'update114: a character, a gamebot roster and changed settings seeded'
-        $r = Setup 'scan-114' @('--scan', '--game', $game)
-        Check ($r.Log -match 'LivingServer=OtherBuild \(1\.1\.4-beta\)') 'update114: this Setup recognises the 1.1.4 build'
+    Update-From 'update114' '1.1.4-beta'
+}
 
-        $r = Setup 'update114-to-this-build' @('--game', $game, '--no-shortcuts')
-        Check ($r.Code -eq 0) 'update114: Setup updated the game'
-        Assert-LivingServer $game 'update114'
-        Check ($r.Log -notmatch 'Recommended settings: exit') 'update114: the player''s own settings were not replaced by the suggested ones'
-        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record)
-        Write-Host $kept
-        Check ($LASTEXITCODE -eq 0) 'update114: the character, its item, the roster, the settings and the files were kept'
-
-        $smokeDir = Join-Path $Work 'smoke-update114'
-        $null = Smoke-Game $game $smokeDir 'update114'
-        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record, '--db', (Join-Path $smokeDir 'data\opendaoc.sqlite3.db'))
-        Write-Host $kept
-        Check ($LASTEXITCODE -eq 0) 'update114: kept after the updated server''s first start (the smoke copy of the world)'
-    }
+if ($Scenario -contains 'update12') {
+    # 1.2.1: the same from Living Server 1.2 (LivingServer-Setup-1.2.exe, the v1.2 release).
+    Update-From 'update12' '1.2'
 }
 
 if ($Scenario -contains 'ui') {
