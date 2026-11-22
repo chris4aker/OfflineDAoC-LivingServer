@@ -102,6 +102,9 @@ review's findings and the work left to do.
      Legend heroes stay legends (rule 1) and the 12-mention cap still holds.
    - First fixes: Iorwerth now sang in the deepest cellar but never went past the walled vein (Crystal Cave and
      Xanxicar agree); Weno'iak's books are on his shelves, but he moves them before any company comes, and leaves ash.
+   - Hibernia's epic review (2026-11-22, the reviewer's recommendations taken): each company lays a second stone at the
+     Gleann Glas cairn besides the one on the sill; the seven triad pages and four "whence the name?" openings stay;
+     Scoth watches the stitched giant throw one of its own before any fight.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
