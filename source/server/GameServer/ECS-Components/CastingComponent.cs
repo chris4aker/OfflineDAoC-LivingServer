@@ -216,6 +216,11 @@ namespace DOL.GS
             if (packets == null || target == null || target == Owner)
                 return false;
 
+            // 1.2.1: the checker's client no longer has a dead bot whose fall it was shown (BotDeathAnimation): it can't
+            // judge it, so no check (the cast goes on as with no checker; the range checks stay the server's).
+            if (BotDeathAnimation.HidesFrom(target, spellHandler.LosChecker))
+                return false;
+
             if (LeftTheWorld(Owner, target))
                 return true;
 
@@ -231,6 +236,9 @@ namespace DOL.GS
             var packets = (spellHandler ?? SpellHandler)?.LosChecker?.Out;
             if (packets == null || target == null || target == Owner)
                 return false;
+
+            if (BotDeathAnimation.HidesFrom(target, (spellHandler ?? SpellHandler)?.LosChecker))
+                return false; // 1.2.1: as above
 
             if (LeftTheWorld(Owner, target))
                 return true;

@@ -15,6 +15,7 @@
   "bot_crafters": "True",
   "bot_crafting_pace": "xp",
   "bot_crafting_social": "True",
+  "bot_death_animation": "True",
   "bot_era_builds": "True",
   "bot_era_class_shares": "True",
   "bot_era_offmeta_percent": "10",

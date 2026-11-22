@@ -59,6 +59,9 @@ public sealed record SocialExpansionSettings
     public bool LivingLeeroy { get; init; } = true;
     /// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, docs/LORE.md). On by default.</summary>
     public bool LivingAtmosphere { get; init; } = true;
+    /// <summary>Dead bots fall in the original client and come back standing when raised (bot_death_animation, 1.2.1). On by
+    /// default. A display fix, not a feature: ALL OFF leaves it as it is.</summary>
+    public bool DeathFall { get; init; } = true;
     public string PlayerXpByLevel { get; init; } = "";
     public string BotXpByLevel { get; init; } = "";
     /// <summary>
@@ -191,7 +194,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true,
+        RaidLearnsFromRaiders = true, DeathFall = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -230,6 +233,7 @@ public sealed record SocialExpansionSettings
         ("hired_companions", "bots", "Hired companions (some code from the True 1.65 project): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
+        ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
         ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
@@ -310,6 +314,7 @@ public sealed record SocialExpansionSettings
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
         ["mana_regen_amount_modifier"] = ManaRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["mana_regen_amount_halved_below_50_percent"] = Bool(ManaHalvedBelowHalf),
+        ["bot_death_animation"] = Bool(DeathFall),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
         ["bot_led_group_join_mode"] = JoinMode,
@@ -621,6 +626,7 @@ public sealed record SocialExpansionSettings
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
             ManaRegenModifier = manaRate,
             ManaHalvedBelowHalf = ReadBool("mana_regen_amount_halved_below_50_percent", d.ManaHalvedBelowHalf),
+            DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
             JoinMode = joinMode,

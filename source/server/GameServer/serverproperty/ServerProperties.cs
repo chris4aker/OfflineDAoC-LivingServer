@@ -2943,6 +2943,11 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "living_atmosphere_lines", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first.", true)]
 		public static bool LIVING_ATMOSPHERE_LINES;
 
+		/// <summary>A dead bot falls in the original client (1.2.1, BotDeathAnimation): its removal leaves a corpse, and it comes
+		/// back when raised or released. The new client is not affected; it shows the fall already.</summary>
+		[ServerProperty("bots", "bot_death_animation", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new.", true)]
+		public static bool BOT_DEATH_ANIMATION;
+
 		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count when an epic boss's or epic NPC's armor drops with the number of attackers, at epic_armor_bot_strength_percent of a player: by default each bot takes off half a player's step (0.02 instead of 0.04), and bots alone take off at most half of the full range (an epic boss from 1.6 to 1.0, never to the 0.4 floor). Real players and pets keep their own rule on top, down to 0.4. False is the stock rule: only players and pets count.", true)]
 		public static bool EPIC_ARMOR_COUNTS_BOTS = true;
 

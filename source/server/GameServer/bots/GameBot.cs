@@ -266,12 +266,21 @@ namespace DOL.GS
             set
             {
                 byte oldPercent = HealthPercent;
+                bool wasDead = base.Health <= 0;
                 base.Health = value;
+
+                // 1.2.1: raised, released or revived after its fall was shown: the original clients get it again.
+                if (BotDeathAnimation.EndsAtRaise(DeathFallShown, wasDead, base.Health > 0))
+                    BotDeathAnimation.OnRaised(this);
 
                 if (oldPercent != HealthPercent)
                     Group?.UpdateMember(this, false, false);
             }
         }
+
+        /// <summary>1.2.1: the original clients in range were shown this bot's fall at its death and hold it back until it
+        /// has health again (BotDeathAnimation).</summary>
+        public bool DeathFallShown { get; set; }
 
         public override int Mana
         {
@@ -1122,6 +1131,7 @@ namespace DOL.GS
             }
 
             base.ProcessDeath(killer);
+            BotDeathAnimation.OnDied(this); // 1.2.1: the fall in the original client (bot_death_animation)
             if (IsAutonomousWorldBot && !IsNoLiferBuffBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);

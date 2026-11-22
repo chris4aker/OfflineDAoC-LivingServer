@@ -125,6 +125,9 @@ namespace DOL.GS.PacketHandler
 			if (m_gameClient.Player == null || npc.IsVisibleTo(m_gameClient.Player) == false)
 				return;
 
+			if (BotDeathAnimation.Blocks(m_gameClient, npc, "NPCCreate"))
+				return;
+
 			//Added by Suncheck - Mines are not shown to enemy players
 			if (npc is GameMine)
 			{

@@ -454,7 +454,8 @@ namespace DOL.GS.Spells
 			}
 
 			// Initial LoS state.
-			if (corpseChosenByServer)
+			// 1.2.1: also a dead bot the caster's original client no longer has (its fall was shown, BotDeathAnimation).
+			if (corpseChosenByServer || playerCaster != null && BotDeathAnimation.HidesFrom(Target, playerCaster))
 			{
 				// The client's "target in view" is about what it has selected, not this corpse. The checks during the cast
 				// still ask the client about the corpse itself.

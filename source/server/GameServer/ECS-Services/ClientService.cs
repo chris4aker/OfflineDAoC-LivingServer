@@ -834,7 +834,9 @@ namespace DOL.GS
 
             foreach (GameNPC npc in player.GetObjectsInRadius<GameNPC>(eGameObjectType.NPC, WorldMgr.VISIBILITY_DISTANCE))
             {
-                if (npc.ObjectState is GameObject.eObjectState.Active && npc.IsVisibleTo(player) && player.CanDetect(npc))
+                // 1.2.1: a dead bot whose fall the original client was shown is not refreshed or re-created (BotDeathAnimation).
+                if (npc.ObjectState is GameObject.eObjectState.Active && npc.IsVisibleTo(player) && player.CanDetect(npc) &&
+                    !BotDeathAnimation.Blocks(player.Client, npc, BotDeathAnimation.WorldRefresh))
                     inRangeSet.Add(npc);
             }
 

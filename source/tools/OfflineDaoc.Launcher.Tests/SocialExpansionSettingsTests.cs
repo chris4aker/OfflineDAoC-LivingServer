@@ -235,6 +235,20 @@ public class SocialExpansionSettingsTests
         Assert.That((off with { BotMovementHabits = true }).IsAllOff, Is.False);
     }
 
+    [Test] public void DeathFallIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // 1.2.1 (owner 2026-11-21, "Death animations need fixed absolutely"): bot_death_animation, a display fix in the
+        // original client, on by default and in Setup; ALL OFF (the classic server's features) leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.DeathFall && SocialExpansionSettings.Recommended.DeathFall, Is.True);
+        Assert.That(d.AllOff().DeathFall, Is.True);
+        (d with { DeathFall = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_death_animation"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).DeathFall, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void RaidLearningIsOnByDefaultAndAllOffTurnsItOff()
     {
         // Bots as people WP7 (coordinator's decision, 2026-11-17): ALL OFF is the classic server, so it also turns

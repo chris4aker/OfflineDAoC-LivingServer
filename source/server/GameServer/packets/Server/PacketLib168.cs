@@ -732,6 +732,9 @@ namespace DOL.GS.PacketHandler
 			if (m_gameClient.Player == null || !m_gameClient.Player.IsVisibleTo(obj))
 				return;
 
+			if (BotDeathAnimation.Blocks(m_gameClient, obj, "ObjectUpdate"))
+				return;
+
 			Zone zone = obj.CurrentZone;
 
 			if (zone == null)
@@ -904,6 +907,10 @@ namespace DOL.GS.PacketHandler
 
 		public virtual void SendObjectRemove(GameObject obj)
 		{
+			// 1.2.1: a dead bot whose fall this (original) client was shown is already gone from it (BotDeathAnimation).
+			if (BotDeathAnimation.Blocks(m_gameClient, obj, "RemoveObject"))
+				return;
+
 			int oType = 0;
 
 			if (obj is GamePlayer)
@@ -914,6 +921,18 @@ namespace DOL.GS.PacketHandler
 				// copy at the death spot (owner 2026-10-30, "since 0.1": release moved the dead bot to its bind point).
 				oType = npc is GameBot || npc.Health > 0 ? 1 : 0;
 
+			WriteObjectRemove(obj, oType);
+		}
+
+		/// <summary>1.2.1: a dead bot's fall in the original client (BotDeathAnimation.OnDied): the removal that leaves the
+		/// corpse to fade, sent once at the death, never at a release.</summary>
+		public void SendObjectRemoveLeavingCorpse(GameNPC npc)
+		{
+			WriteObjectRemove(npc, 0);
+		}
+
+		private void WriteObjectRemove(GameObject obj, int oType)
+		{
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.RemoveObject)))
 			{
 				pak.WriteShort(obj.ObjectID);
@@ -1064,6 +1083,9 @@ namespace DOL.GS.PacketHandler
 		public virtual void SendNPCCreate(GameNPC npc)
 		{
 			if (m_gameClient.Player == null || npc.IsVisibleTo(m_gameClient.Player) == false)
+				return;
+
+			if (BotDeathAnimation.Blocks(m_gameClient, npc, "NPCCreate"))
 				return;
 
 			if (npc is GameMovingObject)
