@@ -95,6 +95,11 @@ Everything in this list passed CI, and none of it has been seen in a real game.
 
 ### Bots and companions
 
+- **Companions no longer get stuck on Darkness Falls' entrance stairs (#438).** Going down the stairs from a realm's
+  entrance, a companion could stop on one step and stay there. It now steps off each ledge and lands on the next, as
+  gamebots already did. Albion, Midgard and Hibernia alike. **Tests only.**
+- **GM `/jump <bot name> to me` works (#438)**, for companions, hired companions and gamebots, and so do `/jump
+  <name> to <name>` and `/jump <name> to x y z`. **Tests only.**
 - **Hired companions join at your level**, not level 5, with their spec points spent in their class's build (respec
   stays free). Above level 5 they arrive in plain merchant armour, with a weapon and, where their class carries one, a
   shield.

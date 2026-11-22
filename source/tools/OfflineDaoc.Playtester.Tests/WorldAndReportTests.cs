@@ -104,7 +104,7 @@ public class WorldAndReportTests
         Assert.That(world.CustomClassEnabled, Is.False);
         Assert.That(world.CharactersOf("playtester", 3), Is.EqualTo(new[] { ("Ptnatabc", 53) }));
         Assert.That(Runner.All.Select(s => s.Id), Does.Contain("class-switch"));
-        Assert.That(Runner.All.Select(s => s.Id), Is.SupersetOf(new[] { "bot-death", "bot-corpse-target", "bot-rez" }));
+        Assert.That(Runner.All.Select(s => s.Id), Is.SupersetOf(new[] { "bot-death", "bot-corpse-target", "bot-rez", "bot-jump" }));
         Assert.That(Runner.All.Select(s => s.Id), Is.SupersetOf(new[] { "bot-click-target", "hire-train", "gamebot-kill-xp" }));
         Assert.That(ClassSwitch.CustomClassIds, Is.EquivalentTo(new[] { 16, 62, 63 }));
     }
