@@ -29,7 +29,7 @@
     }
   ],
   "story": "Stripe is the badgers' old one. The woodland badgers of the south of Skona dig their setts on the slope above the road to Malmohus, and they are many and short-tempered, and somewhere under the slope, the varulv say, is the oldest of them, with a white stripe down his back as wide as a hand. Nobody sees him. The badgers come up and fight and die, and more come up, and the hunters who stay long enough and kill enough of them say that at last the ground opens and Stripe comes up himself, because there is nobody left to send.\n\nHalla of Huginfel sends the sturdy sort to find him. The Seithkona Circle says the badgers are the ravine's diggers and Stripe is their patience, and that a hunter who wants to meet him has to be more patient than a badger, which nobody is. The drakulv who come up the road from Malmohus walk round the slope.",
-  "legend": "Stripe (36) is the named badger by the Malmohus entrance in Skona. He's hidden and untargetable until 20 woodland badgers (the 22-23s round him) have died; then he shows up. Kill badgers until he appears, then kill him. For Halla's Stripe quest in Huginfel. The badgers are 22-23, easy for a group in the 30s, and they keep respawning, so the count does get there. It's slow but safe. Don't wander onto the Malmohus road while you farm.",
+  "legend": "Stripe is the known badger, a foe for a hardened band of veterans, by the Malmohus entrance in Skona. He's hidden and can't be found or struck until 20 woodland badgers (each a foe for a seasoned band) round him have died; then he shows up. Kill badgers until he appears, then kill him. For Halla's Stripe quest in Huginfel. The badgers are easy for a hardened band, and they keep rising again, so the count does get there. It's slow but safe. Don't wander onto the Malmohus road while you hunt them.",
   "yells": {
     "aggro": [
       "(The ground heaves. A white-striped head comes up.)",
@@ -50,7 +50,7 @@
   "botLines": {
     "briefing": [
       "stripe only shows after 20 woodland badgers die",
-      "farm the badgers by the malmohus road till he pops"
+      "hunt the badgers by the malmohus road till he shows"
     ],
     "aftermathWin": [
       "stripe finally came up",

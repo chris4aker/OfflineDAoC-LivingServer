@@ -70,7 +70,7 @@
       "text": "In the old days Torst and Hurika flew long circuits over the glacier together, at dawn and dusk, wide slow rings over the crater and back to the ledge, and the giants of the citadel watched the sky for them as men of Midgard watch the sky for weather. The wind-riders timed their attempts on the roost by those circuits, because the nest was alone while the pair were in the air.\n\nThey do not fly now. The season the wind-rider Hrafn made his fourth and last attempt on the roost, he put a spear through Hurika's wing on the ledge, and the lift went out of it. The hen can beat her wings still, and raise a gale, but she cannot leave the ledge. Torst has not flown the circuit since. The wind-riders who have watched say he goes to the edge at dawn, and spreads his wings, and looks back at her, and folds them again.\n\nHe keeps the ledge beside her now, with the nest between them, and his eddies go round and round the roost in their own paths, and the wind-riders have not made an attempt in years. Asmund said, near the end of his life, that he was glad of it. He said the eastern ledge had two griffons on it that would not leave each other, and that a rider who wanted to break that to the saddle had misunderstood what a griffon was.\n\nHrafn no longer flies either. The wind-riders say he goes up onto the cliffs at dawn, like the cock, and looks east, and comes down."
     }
   ],
-  "legend": "Torst and Hurika sit side by side, so expect both. Torst: 100,000 health, 40% melee and 70% magic resists, CC-immune. When he wakes he spits out five eddies (10,000 health each) that wander the ledge on their own paths casting a 110 cold Cold Snap in a 300 radius every few seconds: kill them or keep the healers out of their way. Some of his hits drop a 550 cold blast within 400 of his target. The nasty one: he roots his target now and then, and the moment his target is rooted he drops it and goes for a random raider within 1,500, companion or not. Anyone can be next, so healers stay ready. Keep root-break on the tank, and be ready for him to turn on you. The old 'bolt-pull the bird down off the ledge' trick doesn't apply: neither griffon patrols any more, they stay on their perches. Cold resist for everyone. The griffon mantles are the drops everybody wants.",
+  "legend": "Torst and Hurika sit side by side, so expect both. Torst: the raiders reckon his strength at a hundred thousand, four-tenths of every blow and seven-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for a war party of the realm's champions. When he wakes he spits out five eddies (the raiders reckon each at ten thousand in strength) that wander the ledge on their own paths casting a 110 cold Cold Snap on everyone within ten paces every few seconds: kill them or keep the healers out of their way. Some of his hits drop a 550 cold blast on everyone within some thirteen paces of his target. The nasty one: he pins his target to the ground now and then, and the moment his target is pinned he drops it and goes for a random raider within fifty paces, companion, adventurer of the realm or you. Anyone can be next, so healers stay ready. Keep something that breaks a pinning on his shield-bearer, and be ready for him to turn on you. The old 'shoot the bird down off the ledge with a bolt' trick doesn't apply: neither griffon flies its circuit any more, they stay on their perches. Wards against cold for everyone. The griffon mantles are the prizes everybody wants.",
   "yells": {
     "aggro": [
       "SKRAAAAAH!",
@@ -120,12 +120,12 @@
   },
   "botLines": {
     "briefing": [
-      "torst and hurika, griffons on the ledge. eddies are adds, kill them",
-      "pull the birds down to the flat if you can",
-      "root break on torst, the root sets you up for the eddies",
+      "torst and hurika, griffons on the ledge. kill the eddies too",
+      "draw the birds down to the flat if you can",
+      "something to break the pinning on torst, the pinning sets you up for the eddies",
       "kill both birds together",
-      "torst roots his target then switches to someone random. thats you if youre the only one",
-      "root break on the tank vs torst",
+      "torst pins his target then switches to someone random. thats you if youre the only one",
+      "something to break the pinning on the shield-bearer vs torst",
       "5 eddies wander the ledge, kill them or keep heals clear",
       "birds dont patrol any more, fight them on the perch"
     ],
@@ -139,11 +139,11 @@
       "eddies down first, easy"
     ],
     "aftermathLoss": [
-      "torst rooted the tank, turned on you, and the eddies ate the rest",
+      "torst pinned the shield-bearer, turned on you, and the eddies ate the rest",
       "the eddies froze the healers",
-      "we killed hurika and torst wiped us after",
-      "torst rooted the tank in his eddies",
-      "tank got rooted and torst came straight for you",
+      "we killed hurika and torst killed us all after",
+      "torst pinned the shield-bearer in his eddies",
+      "shield-bearer got pinned and torst came straight for you",
       "healers wandered into an eddy"
     ],
     "rumour": [

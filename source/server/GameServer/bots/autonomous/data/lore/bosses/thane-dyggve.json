@@ -78,7 +78,7 @@
       "text": "He keeps his gallery still, in his thane's harness, the hammer in both hands. He does not walk the rounds with the forty, and they do not come to him. He stands alone, as he has stood since the field below the second fort, with a space round him that nothing in the mine will step into, and when a stranger comes into that space he lifts the hammer and calls the sky.\n\nIt still answers. The companies who have come back from his gallery say it answers slower and colder than any thane's thunder in Jordheim, and harder, as if it had to come a long way down to reach him and gathered weight on the way. The thanes of Jordheim say it comes from a sky the troll can no longer see, and that Thor has never stopped answering him because Dyggve has never stopped meaning it.\n\nThe gothar argue about what he is owed. Their account is that the troll kept his oath and was cheated anyway. He did not die in bed; he died in battle, standing, as he swore, and should have gone to Thor's hall or at the least to Valhalla's benches. But Aros bound him on the stair before any god could have him, and so the name came true after all in a crueller way: like King Dyggvi, the thane was taken by someone who was not the god he served. The spiritmasters say Aros kept a thane in the mine because the mine needed one, and that Dyggve, of all the bound, would have agreed.\n\nThe young thanes of Jordheim who go down to him come back quiet. Some of them leave a hammer-mark on the stone at Glenlock's muster stone on the way out, a small thing scratched with the head of a hammer, and the oldest of those marks are worn almost smooth. When he falls, the steadings of Jamtland hear thunder far off on a cloudless night, one long roll from the direction of the hill, and they say the sky has taken its thane home for a season. In a season he is standing in his gallery again, and the sky is listening."
     }
   ],
-  "legend": "Thane Dyggve is a melee fight with one spell that matters: Command Mjollnir. It starts a couple of seconds after the pull and comes about every 30 seconds after that, a 4-second cast that CANNOT be interrupted (ignore every old raiders' account that says interrupt it). It hits everyone within 350 of whoever he's targeting for 500 energy, so the trick is spacing: the tank holds him, the rest of the melee stagger round him instead of crowding the tank's back, and casters and healers stay well off the tank. Energy resist helps. The 'energy drain' line in his announcements is only flavour; there's no drain. He's CC-immune, reaches about 350, has 30,000 health and around 20% melee and 30% magic resists. He doesn't bring friends, so clear around him and he's yours alone. The shimmering icebound warhammer is the drop every thane wants, and most of them like to bring their own Mjollnir for the story.",
+  "legend": "Thane Dyggve is a melee fight with one spell that matters: Command Mjollnir. It starts a couple of seconds after you draw him and comes about every 30 seconds after that, a 4-second cast that CANNOT be interrupted (ignore every old raiders' account that says interrupt it). It hits everyone within a dozen paces of whoever he's targeting for 500 energy, so the trick is spacing: his shield-bearer holds him, the rest of the melee stagger round him instead of crowding the shield-bearer's back, and casters and healers stay well off the shield-bearer. Wards against energy help. The 'energy drain' line in his announcements is only flavour; there's no drain. No charm or stun holds him, he reaches about a dozen paces, the raiders reckon his strength at thirty thousand, and around a fifth of every blow and three-tenths of every spell are lost on him; he is a foe for several bands of the realm's best together. He doesn't bring friends, so clear around him and he's yours alone. The shimmering icebound warhammer is the prize every thane wants, and most of them like to bring their own Mjollnir for the story.",
   "yells": {
     "aggro": [
       "Thor! Split the rock one more time!",
@@ -130,8 +130,8 @@
       "fast melee on dyggve, long fights go bad",
       "dyggve's mjollnir cant be interrupted, 4 sec cast, dont even try",
       "hammer is 500 energy in 350 round his target, every 30s or so",
-      "melee stagger round him, nobody stands on the tank",
-      "casters and heals stay well off the tank on dyggve"
+      "melee stagger round him, nobody stands on the shield-bearer",
+      "casters and heals stay well off the shield-bearer on dyggve"
     ],
     "aftermathWin": [
       "dyggve down, [glowy hammer!|anyone get the hammer]",
@@ -143,11 +143,11 @@
       "far thunder. the steadings say thats him going home"
     ],
     "aftermathLoss": [
-      "half the group stood on the tank when the hammer came. [ow|everyone died]",
+      "half the group stood on the shield-bearer when the hammer came. [ow|everyone died]",
       "the hammers hit the whole group",
-      "we all bunched on the tank and the hammer took the lot",
+      "we all bunched on the shield-bearer and the hammer took the lot",
       "someone kept trying to interrupt. its uninterruptible",
-      "stood behind the tank like a huscarl. bad idea"
+      "stood behind the shield-bearer like a huscarl. bad idea"
     ],
     "rumour": [
       "theres a troll thane in dodens gruva who still calls lightning. [old frontier days|from before the keeps]",

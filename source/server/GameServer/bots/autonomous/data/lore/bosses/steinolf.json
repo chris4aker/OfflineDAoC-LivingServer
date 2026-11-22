@@ -43,7 +43,7 @@
     }
   ],
   "story": "In the first winters of her court the dragon sent runners from her hollow, and the camps came. Then Gunnolf of the western camps told her that his people would come when she called them herself and not when a runner did, and she never called them herself, and the runners stopped. The svartalfar say the court did not stop needing them. It found one runner it could trust, and gave him a name that is a joke the drakulv appreciate: stone-wolf, for the one drakulv in Malmohus who is never still.\n\nSteinolf belongs to none of the camps. He goes between them, faster than any of the pack, carrying whatever the hollow wants carried: word of a waking, a quarrel between captains, the dragon's anger at a holding that let strangers through. He does not ask the camps to come. He tells them what the court thinks, and leaves, and the camps decide for themselves, which is the only kind of message Gunnolf would ever accept.\n\nThe svartalfar of Svarhamr have tried for generations to follow him and have given up. He is seen in the middle of the ruins, and then on the southern approach, and then in the west among the armguards, and then in the south-east where the attendants walk. Brisa the beam-cutter says the strangest thing about him is what happens when he dies. The ground where he fell does not see a new Steinolf. Some other holding does, at the far end of the ruins, as if the name had run on without its body and found the next one waiting where it was needed. The beam has his name with a little arrow cut after each dot, pointing nowhere in particular, which is the svartalf mark for a death that did not stay put.\n\nMidgard's scouts, who have killed him more than once, say the same thing more plainly: there is no use waiting where Steinolf fell. He will be somewhere else.",
-  "legend": "Steinolf is the wandering named drakulv in Malmohus, level 55. He has one small trick: every time he dies, his spawn point jumps at random to one of four places (south-east, west, south, or the middle of the ruins), so he respawns somewhere else and you have to go looking. He also runs faster than other drakulv (speed 230), so don't try to kite him on foot. Otherwise no abilities, not CC-immune, and Pack Drakulv, so whatever drakulv are near the spot he's in can come along. Check the con and look around first: the west spot is near Ingardild's armguards.",
+  "legend": "Steinolf is the wandering known drakulv in Malmohus, a foe for the realm's best, a full band of them. He has one small trick: every time he dies, the place he rises next jumps at random to one of four places (south-east, west, south, or the middle of the ruins), so he rises somewhere else and you have to go looking. He also runs faster than other drakulv (nearly a fifth faster than a man), so don't try to lead him about on foot. Otherwise no tricks, charms, trances and stuns hold him, and he's of the drakulv pack, so whatever drakulv are near the spot he's in can come along. Take his measure and look around first: the west spot is near Ingardild's armguards.",
   "yells": {
     "aggro": [
       "No time. No time for you.",
@@ -82,7 +82,7 @@
   "botLines": {
     "briefing": [
       "steinolf moves every time he dies, four spots",
-      "hes fast, 230 speed, no kiting on foot",
+      "hes fast, faster than you, dont try to run him about on foot",
       "look around before you hit, the west spot is near ingardilds armguards",
       "55, no tricks, pack drakulv"
     ],
@@ -95,7 +95,7 @@
     "aftermathLoss": [
       "he ran into the armguards",
       "couldnt keep up with him",
-      "pulled the camp at the west spot",
+      "drew the camp at the west spot",
       "lost him and he came back with friends"
     ],
     "rumour": [
