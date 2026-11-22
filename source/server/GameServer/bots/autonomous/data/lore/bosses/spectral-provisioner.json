@@ -95,7 +95,7 @@
     "keyword": "provisioner",
     "text": "The steward of the stores of [Caer Sidi], who served the prisoners from the cauldron of Annwn that would not boil a coward's food. Fire, frost and prayer were his tools, and none of them touch him now; a blade does. As he falls he says that someone must feed them. See [Skeletal Sacristan]."
   },
-  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, and his blows made our swordsmen move as if through deep water. Our captain called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
+  "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, though the shelves behind him had been dusted, and his blows made our swordsmen move as if through deep water. Our captain called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
     "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."
