@@ -1,0 +1,64 @@
+{
+ "id": "thin-major",
+ "name": "T",
+ "realm": "Hibernia",
+ "tier": "order",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "yells": {
+  "aggro": [
+   "a",
+   "b"
+  ],
+  "death": [
+   "d"
+  ],
+  "slay": [
+   "s",
+   "s"
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "l"
+  ],
+  "realmFirstKill": " "
+ },
+ "botLines": {
+  "briefing": [
+   "x",
+   "x",
+   "x"
+  ],
+  "aftermathWin": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "aftermathLoss": [],
+  "rumour": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "",
+  "text": ""
+ },
+ "bookPage": "   ",
+ "bookPages": [
+  "",
+  " "
+ ],
+ "chronicle": {
+  "win": "w"
+ },
+ "era": "",
+ "factions": [],
+ "related": [
+  "not an object"
+ ]
+}

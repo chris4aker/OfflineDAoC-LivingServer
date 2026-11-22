@@ -1,0 +1,109 @@
+{
+ "id": "full",
+ "name": "Full",
+ "realm": "Albion",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "facts": [
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  }
+ ],
+ "atmosphere": {
+  "firstEntry": [
+   "l",
+   "l",
+   "l",
+   "l"
+  ],
+  "areas": [
+   {
+    "name": "a"
+   },
+   {
+    "name": "b"
+   }
+  ]
+ },
+ "botLines": {
+  "lore": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "rumour": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "tell": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ "loremaster": {
+  "intro": "i",
+  "topics": {
+   "t0": "x",
+   "t1": "x",
+   "t2": "x",
+   "t3": "x",
+   "t4": "x",
+   "t5": "x",
+   "t6": "x",
+   "t7": "x"
+  }
+ },
+ "book": {
+  "title": "b",
+  "pages": [
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word"
+  ]
+ },
+ "era": "old-halls",
+ "factions": [
+  "keepers"
+ ]
+}
