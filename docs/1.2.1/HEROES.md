@@ -100,6 +100,10 @@ review's findings and the work left to do.
      turn up across places and bosses so the realms feel connected. A present-day character may share a name with a
      legend companion (Golestandt's Marshal Gareth stays), as long as the text never makes him the legend's man.
      Legend heroes stay legends (rule 1) and the 12-mention cap still holds.
+   - Padded summaries (owner, 2026-11-22): "You should first aim to rewrite so it's much better and cooler and rich, but if
+     it's not working out well, trim to where it's tight and perfect." This is the one place trimming is allowed: a
+     summary padded to reach an old floor is rewritten first, and trimmed only if the rewrite doesn't come out better.
+     Every event stays.
    - First fixes: Iorwerth now sang in the deepest cellar but never went past the walled vein (Crystal Cave and
      Xanxicar agree); Weno'iak's books are on his shelves, but he moves them before any company comes, and leaves ash.
    - Hibernia's epic review (2026-11-22, the reviewer's recommendations taken): each company lays a second stone at the
