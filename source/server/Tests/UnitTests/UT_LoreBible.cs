@@ -377,6 +377,13 @@ namespace DOL.GS.Tests
             Assert.That(order.Members.Select(m => (m.Name, m.Level, m.Post, m.LairEntry.Length, m.LoremasterKeyword)),
                 Is.EqualTo(new[] { ("Knight Ain", 70, "the east ward", 1, "knight ain") }));
             Assert.That(bible.BossForName("Knight Ain")?.Id, Is.EqualTo("scurceol-hyrde"), "the order is found by a member's spawn name");
+            // 1.2.1: a member speaks its own yells and lair line; any other spawn of the order speaks the file's.
+            Assert.That(order.AggroFor("Knight Ain"), Is.EqualTo(new[] { "Kneel." }));
+            Assert.That(order.DeathFor("Knight Ain"), Is.EqualTo(new[] { "The Roll..." }));
+            Assert.That(order.SlayFor("Knight Ain"), Is.EqualTo(new[] { "Struck off." }));
+            Assert.That(order.LairEntryFor("Knight Ain"), Is.EqualTo(new[] { "A knight stands in the ward." }));
+            Assert.That(order.AggroFor("Knight Haag"), Is.EqualTo(order.AggroYells), "not a member: the file's yells");
+            Assert.That(order.SlayFor(null), Is.EqualTo(order.SlayYells));
         }
 
         /// <summary>Camelot Hills is zone 0 of region 1: "zones" may hold 0, "regions" may not.</summary>

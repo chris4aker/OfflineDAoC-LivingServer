@@ -301,11 +301,12 @@ public static class LoreAtmosphere
             if (npc is GameBot || !npc.IsAlive)
                 continue;
             LoreBible.Boss boss = LoreBossWatch.BossOf(npc);
-            if (boss == null || boss.LairEntry.Length == 0)
+            string[] lair = boss?.LairEntryFor(npc.Name) ?? [];
+            if (lair.Length == 0)
                 continue;
             string key = LoreEntryRules.LairKey(boss.Id);
             if (!state.Session.Contains(key))
-                Local(player, boss.LairEntry[random.Next(boss.LairEntry.Length)], AreaTtlMs, key);
+                Local(player, lair[random.Next(lair.Length)], AreaTtlMs, key);
         }
     }
 
