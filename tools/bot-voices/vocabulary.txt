@@ -2472,6 +2472,7 @@ flaky
 flames
 flank
 flanks
+flann
 flashing
 flashy
 flat
@@ -7302,6 +7303,7 @@ tyty
 tyvm
 u
 uafas
+uallach
 uber
 ugh
 uglier

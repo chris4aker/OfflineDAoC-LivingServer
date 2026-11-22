@@ -560,6 +560,34 @@
       "numeric": true
     },
     {
+      "id": "uallach-hundred-and-forty",
+      "fact": "Uallach of Tir na Nog (renamed from Orlaith in the NPC pass, a gamebot name) led the hundred and forty into Galladoria.",
+      "source": "Living Server lore; HEROES.md decision 11",
+      "kind": "value",
+      "scope": {
+        "sentence": "(?-i:\\bUallach\\b)"
+      },
+      "claim": [
+        "\\bhundred and (?P<v>[a-z-]+)\\b"
+      ],
+      "allowed": [
+        "forty"
+      ]
+    },
+    {
+      "id": "esras-no-churchman",
+      "fact": "Esras of the Cliffs of Moher is a hermit who was a bard of Tir Urphost, never a churchman: Hibernia has no Church (the game's NPC is titled Brother; the lore drops it).",
+      "source": "HEROES.md canon; CAST-HIBERNIA.md",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Esras"
+      },
+      "forbid": [
+        "\\bBrother Esras\\b",
+        "\\bEsras\\b[^.]{0,60}\\b(?:priest|monk|church|abbey|friar)\\b"
+      ]
+    },
+    {
       "id": "king-mark-duke-marcus",
       "fact": "King Mark is Duke Marcus's son, the son who came home alone from Dartmoor.",
       "source": "HEROES.md owner notes (2026-11-21)",

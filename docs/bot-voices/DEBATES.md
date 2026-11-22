@@ -11263,7 +11263,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** last he took the isle's four elements, wind, water, fire and stone, and set them at the waterfall bridge to guard his sleep
 - **B:** hibernia's first three hundred and forty broke on his first law. no one near him who does not stand where he allows
 - **E:** *(sometimes)* "we broke on it too, last month" / "two spots. he allows two spots. ask our guild"
-- **B:** orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. one life between them
+- **B:** uallach of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. one life between them
 - **B:** they cut both at once
 - *(quiet for 25 seconds)*
 - **F:** "and when the forest stops pushing? nobody ever says" / "so what is he waiting for out there"
@@ -11630,7 +11630,7 @@ Levels 1–50 · 19 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** the fishers say warm him faster than she cools him. and no charm holds her
 - *(quiet for 25 seconds)*
 - **F:** "so heal the tank and ignore the grandmothers. ok" / "warm him faster. thats the whole fight"
-- **C:** "the fomorians left her twice the catch they left balere, fiachra of howth wrote" / "i will never fish that shore again"
+- **C:** "the fomorians left her twice the catch they left balere, flann of howth wrote" / "i will never fish that shore again"
 
 ### tale myrddraxis
 
