@@ -48,7 +48,7 @@
     }
   ],
   "story": "In the hall of counsel where the Uppat once sat in a ring and kept order, there is a bar, a door laid on two barrels, and a morvalt named Olen keeps it. The skalds of Jordheim tell how he came to it: he was the first morvalt into the hall when the gates broke, and he found the Fathers' ale still in the jars, and drank it, and it was the first thing in his life that was not raw. He has been pouring it ever since.\n\nThe drinkers are the watch. The morvalt of the upper city set a guard on the hall of counsel when they took it, and the guard came in and did not go out again, and the Valkyn call them by the morvalt's own word for them now, the drunken watchmen. There are more of them in that hall than anywhere else in Trollheim, shouting, quarrelling over the stone seats, and every one of them would die for the bar before he would die for the city. Olen pours for all of them. Nobody else is served. The Valkyn say he keeps the jars full from the Fathers' cellars and from something of his own that he brews in the dark, and that the Fathers' ale ran out long ago.\n\nHe is a great heavy morvalt, quicker on his feet than his bulk suggests, and his drinkers' quarrels have made him hard to put down; the Valkyn say no shaman's fog has ever turned his head or closed his eyes, because a man who has stood behind a bar that long has seen every game a drunk can play. When a stranger comes too near the door laid on barrels, he comes round it, and the watch comes with him.\n\nJarala den Kvinnlig stands at the end of his bar. The Valkyn say she is the only one of them he respects, and that she does not drink. Snemel, the captain whose work it is to keep the watch sober, stands further off among the butchers and has not been near the bar in a long time. The trolls of Dyrfjall, who mean to sit in the ring again one day, say Olen is the morvalt they will be sorriest to throw out, and that if the Fathers come home he will be the one who pours for them.",
-  "legend": "Olen den Bartender is a level 67 morvalt in the hall of counsel in Trollheim's upper city, surrounded by about forty drunken watchmen (berusade vaktare, 52-58) with Jarala (60) standing right next to him and bloodthirsty butchers nearby. He fights as an epic-class foe: around 18,000 health, hits 1.5x harder than a normal 67, immune to confusion and nearsight, and he's Morvalt Samhalle so he brings friends. He attacks if you get within 400. Do not fight him in the bar: pull him out with range, clear the edge of the drunks first, and expect Jarala to come too. Bring a full group or two.",
+  "legend": "Olen den Bartender is a morvalt, a foe for several bands of the realm's best together, in the hall of counsel in Trollheim's upper city, surrounded by about forty drunken watchmen (berusade vaktare, each a foe for the realm's best) with Jarala, a little weaker than him, standing right next to him and bloodthirsty butchers nearby. He fights as one of the realm's great foes: the raiders reckon his strength at around 18,000, he hits half again as hard as others of his kind, nothing can confuse him or blur his sight, and he's of the Morvalt Samhalle so he brings friends. He attacks if you come within some thirteen paces. Do not fight him in the bar: draw him out with a bow or a spell, clear the edge of the drunks first, and expect Jarala to come too. Bring a full group or two.",
   "yells": {
     "aggro": [
       "Bar's closed. To you.",
@@ -86,14 +86,14 @@
   },
   "botLines": {
     "briefing": [
-      "olen is epic class, ~18k hp, hits hard, no confuse or ns",
-      "forty drunks in that bar, pull him out",
+      "olen is one of the great ones, takes a long time to wear down, hits hard, cant be confused or blurred",
+      "forty drunks in that bar, draw him out",
       "jarala is right next to him, she comes too",
-      "morvalt samhalle, he brings friends, aggro range 400"
+      "morvalt samhalle, he brings friends, and he notices you a dozen paces off"
     ],
     "aftermathWin": [
       "olen down, we closed the bar",
-      "pulled him clean with jarala, fine",
+      "drew him clean with jarala, fine",
       "never been served but we got the bartender",
       "drunks everywhere but we lived"
     ],
@@ -101,7 +101,7 @@
       "fought in the bar, the whole watch came",
       "jarala plus olen too much",
       "got too close and he came round the bar",
-      "ran out of power halfway through his hp"
+      "ran out of power with half of him left"
     ],
     "rumour": [
       "olen drank the fathers ale when the gates broke, first thing he ever had that wasnt raw",

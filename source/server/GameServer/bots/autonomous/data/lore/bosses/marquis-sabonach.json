@@ -69,7 +69,7 @@
   }
  ],
  "story": "Marquis Sabonach is the smallest peer on the Roll, no bigger than an imp, and he built half the court. He is a mason. In the Uncounted Age the halls of the hollow were caves, holes in the rock with whatever throne their lord had made of its last kill, and Sabonach, a demon of High Lord Oro's household, began cutting them into halls: pillars, arches, stairs, the long gallery of the approach that Adremal later cut his Rolls into. He shaped Oro's hall first, and then, for payment, the halls of the other high lords, and then the chapter house of the Chthonic Knights and the cloisters of the Inquisition. Every arch in the hollow that has not fallen is his.\n\nHe was not always small. The court says each hall he finished took something out of him, that a mason who shapes stone with his own body puts himself into it, and that by the First Roll he had put so much of himself into the halls of the court that what was left would fit on a duke's palm. He did not stop. He has kept building every Roll since, smaller each time.\n\nIn the Tenth Roll Field Marshal Nebir came to him with the one commission he had never been asked for. The Marshal wanted a keep: a keep of the court's own, cut from the rock under the frontier, so that the doors would answer to the court as they answer to the realms. Sabonach drew it. The drawing is in his rooms beside Oro's hall, a keep with towers and a gate and a lord's room, the size of a fingernail. He took it to the Chancellor, who told him the Roll has no line for a keep. Sabonach has started building it anyway, a stone at a time, somewhere he will not say.",
- "legend": "Sabonach is tiny (a fraction of the size of the other marquises) and stands outside High Lord Oro's hall in the north-east with Duke Sallis and Earl Mercur. Do not let the size fool you: level 73, full marquis health, no tricks. Kill him after Sallis and Mercur and before you go near Oro and his clones. Raiders say he is hard to click on in a big fight and easy to lose under a tank, so assist the main assist. Some swear he is building a demon keep somewhere in the dungeon and that one day the doors will open for the demons. That is a story, but it is a good one.",
+ "legend": "Sabonach is tiny (a fraction of the size of the other marquises) and stands outside High Lord Oro's hall in the north-east with Duke Sallis and Earl Mercur. Do not let the size fool you: a foe for a war party of any realm's champions, every bit as hard to wear down as any marquis, no tricks. Kill him after Sallis and Mercur and before you go near Oro and his copies. Raiders say he is hard to pick out in a big fight and easy to lose under a shield-bearer, so take your target from the raid's caller. Some swear he is building a demon keep somewhere in the dungeon and that one day the doors will open for the demons. That is a story, but it is a good one.",
  "yells": {
   "aggro": [
    "Mind the arches. I built them.",
@@ -108,9 +108,9 @@
  "botLines": {
   "briefing": [
    "sabonach is tiny, outside oros hall. [assist the ma|use assist], hes hard to click",
-   "73 full health despite the size. [no tricks|no tricks]",
+   "every bit as tough as a marquis despite the size. [no tricks|no tricks]",
    "order: sallis, mercur, sabonach, then oro and clones",
-   "dont lose sabonach under the tank. [assist|target through the ma]"
+   "dont lose sabonach under the shield-bearer. [follow the caller|take your target from the caller]"
   ],
   "aftermathWin": [
    "sabonach down. [found him|the little one is dead]",
@@ -120,15 +120,15 @@
   ],
   "aftermathLoss": [
    "couldnt find sabonach in the fight. [assist next time|use the ma]",
-   "pulled oro with sabonach. [three oros, gg|wipe]",
-   "sabonach got us. [regroup|rez]",
-   "lost the pull outside oros hall. [slower|one at a time]"
+   "drew oro with sabonach. [three oros, that was that|everyone down]",
+   "sabonach got us. [regroup|raise the fallen]",
+   "lost the draw outside oros hall. [slower|one at a time]"
   ],
   "rumour": [
    "[heard|word is] marquis sabonach built every hall in df. [got smaller each time|tiny now]",
    "sabonach is building the demons a keep. [so the doors open for them|imagine]",
    "[someone said|my guildie says] the field marshal asked sabonach for a demon keep",
-   "the tiny marquis by oros hall is full health. [dont laugh|no joke]"
+   "the tiny marquis by oros hall is as tough as the big ones. [dont laugh|no joke]"
   ]
  },
  "loremasterTopic": {

@@ -39,7 +39,7 @@
     }
   ],
   "story": "The Fathers hung their weapons on the walls of every hall and sealed a word of warding into each, a word the runemasters of Jordheim read as stay. In one long hall south of the hall of counsel the weapons hang thicker than anywhere else in the city, shields and axes and swords and spears and the great sledges of the Fathers' quarries, and in the middle of them stands a morvalt who calls himself the colonel.\n\nOverste Callejo came to the hall of weapons in the first days, the Valkyn say, with a company of warriors under him, to strip the walls. The weapons came down off their hooks when his warriors laid hands on them, and fought, and most of his company died there. Callejo did not run. He stood in the middle of the hall with the weapons hanging in the air around him, and they did not touch him, because he had not touched them; and the morvalt who came after found their colonel standing among the Fathers' weapons as a war-chief stands among his own, and believed he had tamed them.\n\nHe believes it too. He has stood there ever since, giving orders to the shields and the spears in the morvalt tongue, and the weapons hang where they hang and do nothing, which he takes for obedience. The Valkyn say the truth is plainer: the Fathers' word means stay, and the weapons are staying, and they would have stayed whether Callejo was there or not. A stranger who walks through the hall and keeps his hands to himself passes them as the colonel does. A stranger who strikes one has woken it.\n\nThe colonel himself is another matter, and he is quick to anger at any stranger in his hall. The name is a puzzle; it is no morvalt word and no Fathers' word, and the Valkyn think he heard it somewhere and liked it, the way the drakulv take names they hear. Alchemist Phorzbreg keeps the still-room at the far end of the hall, and the two do not speak. Callejo says the alchemist's fumes make the weapons restless.",
-  "legend": "Overste Callejo is a level 65 morvalt standing in the hall of animated weapons in Trollheim, south of the hall of counsel. The weapons around him (animate shields, axes, swords, spears and sledges, 50-54) are PASSIVE: they don't attack unless you hit them, so don't AoE in there. Callejo himself is aggressive at short range (200), has no faction (no friends called), no special abilities and isn't CC-immune. Pull him out of the weapons with range and single-target him. Alchemist Phorzbreg stands about 1,400 units away, also passive. If a weapon does wake, kill it before Callejo; they're weak. Pets with AoE are the usual way it goes wrong.",
+  "legend": "Overste Callejo is a morvalt, a foe for several bands of the realm's best together, standing in the hall of animated weapons in Trollheim, south of the hall of counsel. The weapons around him (animate shields, axes, swords, spears and sledges, each a foe for the realm's best) never strike first: they don't attack unless you hit them, so don't use blasts that strike everyone near in there. Callejo himself attacks anyone who comes within some seven paces, answers to no one (no friends called), has no special tricks, and charms, trances and stuns hold him. Draw him out of the weapons with a bow or a spell and strike him alone. Alchemist Phorzbreg stands some forty-five paces away, and he never strikes first either. If a weapon does wake, kill it before Callejo; they're weak. Pets with blasts that strike everyone near are the usual way it goes wrong.",
   "yells": {
     "aggro": [
       "Shields! Spears! Your colonel commands you!",
@@ -77,9 +77,9 @@
   },
   "botLines": {
     "briefing": [
-      "callejo is in the weapon hall, the weapons are passive dont aoe",
-      "pull callejo out with range",
-      "no faction, no tricks, mez works",
+      "callejo is in the weapon hall, the weapons are passive dont blast",
+      "draw callejo out from range",
+      "answers to nobody, no tricks, trances work",
       "phorzbreg is passive too, leave him unless you want him"
     ],
     "aftermathWin": [
@@ -89,9 +89,9 @@
       "easy once he was out"
     ],
     "aftermathLoss": [
-      "someone aoed and woke every weapon in the hall",
+      "someone blasted and woke every weapon in the hall",
       "hit a shield by accident",
-      "pulled him into the axes",
+      "drew him into the axes",
       "65 hurts"
     ],
     "rumour": [

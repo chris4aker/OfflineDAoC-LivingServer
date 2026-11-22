@@ -112,7 +112,7 @@
       "text": "It came back. In a season, or less, the worm was on the mound again, and the Valkyn who went down found it as before, coiled and slimed and full. The Valkyn elders understood why. The mound is never empty. Ketil's thirty were swallowed there, and Ase's sixty, and every war-band that has fallen there since has left its dead on the mound for the worm to eat, and the vaettir of Aegir still gather there as they always have, because it is the land's own place for the dead. The worm does not need to be born again. It only needs something to lie down on.\n\nMidgard goes down anyway, because every death of the worm lets the dead out. The trolls of Bjarken watch the mountains on the nights a war-band is below the spiral stair, and when the light rises over the Gripklosa peaks they go inside and say the names of their grandfathers. Brohd in Jordheim takes the worm's scale for his mythirians. The Valkyn count the lights.\n\nWhat the worm wants, the Valkyn say, is to be full. It has eaten the dead of the Fathers' whole age and it is still empty, the way the void it calls on is empty. The elders fear the day it has eaten enough: they say it will get up off the mound then, and climb the spiral stair, and come up through the morvalt halls into the light, and that whatever it is under the dragon's shape will be all that is left. The iarn dwarves, who say it came up from below, say it will go back down instead, through the thin place, to wherever the Fathers went, and eat them too.\n\nThe trolls say neither. They say the Fathers will come back up the roads they went down by, one day, and find their mound, and that the worm will discover then what the dead can do when they have someone to come home to."
     }
   ],
-  "legend": "Rez fast or fight your friends: every death makes a ghost with the fallen one's race and class until they are rezzed, and the ghosts keep their classes' tricks, so a dead spiritmaster becomes a ghost with a pet. Assign rezzers who do nothing else. Nine waves of essences come at 90, 80, 70 and on down: add groups clear each wave before the tanks push him to the next tenth, and don't push two tenths at once. Keep casters spread, because his void blast hits everyone near the target, and cure his venom. In the early raids a raid of 42 killed him with three deaths and a dedicated aggro group; another raid did under 10% before its dead outnumbered its living. The realm's raid needed 80 to 100. Nickname: the worm.",
+  "legend": "Raise the fallen fast or fight your friends: every death makes a ghost with the fallen one's people and calling until they are raised, and the ghosts keep their callings' tricks, so a dead spiritmaster becomes a ghost with a pet. Choose some to raise the dead who do nothing else. Nine waves of essences come at nine-tenths of his strength, eight-tenths, seven-tenths and on down: the groups set on the essences clear each wave before the shield-bearers push him to the next tenth, and don't push two tenths at once. Keep casters spread, because his void blast hits everyone near the target, and cure his venom. In the early raids a raid of 42 killed him with three deaths and a group set to hold his anger; another raid took less than a tenth off him before its dead outnumbered its living. The realm's raid needed 80 to 100. Nickname: the worm.",
   "yells": {
     "aggro": [
       "Mmmmore. Bring them closer. I am so empty.",
@@ -181,29 +181,29 @@
   },
   "botLines": {
     "briefing": [
-      "nosdoden: nine add waves, every 10%. add groups clear the wave before tanks push",
-      "if you die you come back as a ghost on his side. [rezzers|healers] rez fast, thats the whole fight",
+      "nosdoden: nine waves of essences, one every tenth of him. essence groups clear the wave before shield-bearers push",
+      "if you die you come back as a ghost on his side. [raisers|healers] raise the dead fast, thats the whole fight",
       "casters spread out, his void blast hits everyone near the target",
-      "rezzers do nothing but rez. if a ghost of someone shows up, rez that person",
-      "dont push two tenths at once on nosdoden, let the add groups breathe"
+      "raisers do nothing but raise the dead. if a ghost of someone shows up, raise that person",
+      "dont push two tenths at once on nosdoden, let the essence groups breathe"
     ],
     "aftermathWin": [
       "the worm is dead!! [did you see the light on the mound|that light after he died tho]",
-      "nosdoden down. nine waves. [gg raid|best rez work ive seen]",
+      "nosdoden down. nine waves. [well fought raid|best raising ive seen]",
       "nosdoden scale dropped!! dragon myths here i come",
-      "best rez rotation ever, gg"
+      "best raising rotation ever, well fought"
     ],
     "aftermathLoss": [
       "my own ghost killed me. [never again|i hate this boss]",
       "wave six got the healers and it all fell apart",
-      "the ghost spiritmaster's pet killed our rezzers",
+      "the ghost spiritmaster's pet killed the ones raising our dead",
       "we pushed too fast, two waves at once"
     ],
     "rumour": [
       "[they say|heard] nosdoden was a dragon before trollheim changed him",
       "the troll fathers' dead are inside nosdoden, my troll friend says. [creepy|thats why the waves]",
       "nosdoden has tentacles. [the tentacle ring drop|seen it], hes a dragon gone wrong",
-      "my ghost killed me after i got rezzed once. [shade timer|no joke]"
+      "my ghost killed me after i got raised once. [it lingers a while|no joke]"
     ]
   },
   "loremasterTopic": {
