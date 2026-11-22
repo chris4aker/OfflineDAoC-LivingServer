@@ -1,8 +1,13 @@
+using System.Reflection;
+using DOL.Logging;
+
 namespace DOL.GS.PacketHandler.Client.v168
 {
     [PacketHandlerAttribute(PacketHandlerType.TCP, eClientPackets.PlayerTarget, "Handle Player Target Change.", eClientStatus.PlayerInGame)]
     public class PlayerTargetHandler : PacketHandler
     {
+        private static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
+
         protected override void HandlePacketInternal(GameClient client, GSPacketIn packet)
         {
             ushort targetId = packet.ReadShort();
@@ -21,8 +26,15 @@ namespace DOL.GS.PacketHandler.Client.v168
         private static void ChangeTarget(GamePlayer actionSource, ushort newTargetId, bool targetInView, bool examineTarget)
         {
             GameObject target = actionSource.CurrentRegion.GetObject(newTargetId);
+            bool inRange = newTargetId == 0 || actionSource.IsWithinRadius(target, WorldMgr.VISIBILITY_DISTANCE);
 
-            if (newTargetId > 0 && !actionSource.IsWithinRadius(target, WorldMgr.VISIBILITY_DISTANCE))
+            // 1.2.1 (#424): a click on a bot, as the server received it. No line after a click in the original client means
+            // the client never sent the target (its own picking, or the tool that clicked); a line with result=set means
+            // the server took the target.
+            if (log.IsInfoEnabled && ClickLogLine(actionSource.Name, newTargetId, target, inRange, targetInView, examineTarget) is { } line)
+                log.Info(line);
+
+            if (newTargetId > 0 && !inRange)
             {
                 actionSource.Out.SendObjectDelete(newTargetId);
                 target = null;
@@ -60,6 +72,30 @@ namespace DOL.GS.PacketHandler.Client.v168
                     actionSource.PrayTimerStop();
                 }
             }
+        }
+
+        /// <summary>
+        /// 1.2.1 (#424): the log line for a click target (the client's PlayerTarget packet; /target is a command and not
+        /// logged here): only for a bot (an autonomous gamebot or a companion) and for an object id the region doesn't
+        /// know; null for anything else, so ordinary clicks on monsters and players stay out of the log. Pure.
+        /// </summary>
+        public static string ClickLogLine(string player, ushort targetId, GameObject target, bool inRange, bool inView, bool examine)
+        {
+            if (targetId == 0)
+                return null;
+            string kind = target switch
+            {
+                null => "unknown_id",
+                GameBot { IsAutonomousWorldBot: true } => "gamebot",
+                GameBot => "companion",
+                _ => null,
+            };
+            if (kind == null)
+                return null;
+            string result = target == null ? "no_object" : !inRange ? "out_of_range" : "set";
+            string alive = target is GameLiving living ? (living.IsAlive ? " alive=True" : " alive=False") : string.Empty;
+            return $"PLAYER_CLICK_TARGET player=\"{player}\" id={targetId} kind={kind} name=\"{target?.Name}\" result={result}{alive} " +
+                   $"inView={inView} examine={examine}";
         }
     }
 }

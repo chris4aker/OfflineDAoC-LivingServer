@@ -27,7 +27,9 @@ or instability, and add the rest to the 1.2.1 list):
   guard covers the crash, not the gap.
 - **Caer Caledon's guards can't be picked with /target** by players (checked as a GM only).
 - **Click-targeting a bot** didn't work for the test helper on `c81eb5d` (`/target` works). Unconfirmed: it may be the
-  test tool, not the game.
+  test tool, not the game. The server has no rule that refuses a click on a living bot: no bot is flagged
+  untargetable or peaceful, only stealth hides one, and the one unusual bit, "has owner" (a bot's brain is a controlled
+  brain, as a pet's is), is the one pets carry, and pets can be clicked; 1.2.1 logs each click on a bot (`PLAYER_CLICK_TARGET`), so one played click settles it.
 - **Old merchant item templates missing at startup:** about 760 error lines at every start from the stock world data. No
   effect seen in play.
 - **A "DrainTo in progress" error from QueuePacket**, seen once (`43c43aa`), with no effect seen.

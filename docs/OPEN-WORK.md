@@ -73,6 +73,8 @@ Build it, then check (GM account where noted):
 10. **Uthgard drops:** run `source/tools/uthgard_drops_content.py` (dry run first) as [UTHGARD-DROPS.md](UTHGARD-DROPS.md) says.
 11. **RvR:** `RVR_DEFENSE_MARCH` never shows `assigned=0`; `RVR_KEEP_ROUTE_RESTART` for Albion in region 1 shows `to=` near Castle Sauvage; a GM `/jump` into an enemy keep stays there.
 12. **Linux (Ryan):** the launcher's tooltips and alt-tab under Wine (#393) and `linux/start-offline-daoc.sh` (#395), both merged to main.
+13. **Click-targeting a bot** ([#424](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/424)), original client, your own mouse (not a tool): left-click a living gamebot standing still near you, then a moving one, then a companion. Each click should select it and log `PLAYER_CLICK_TARGET ... kind=gamebot ... result=set alive=True`. No line at all: the client never sent the click (its picking); `result=no_object` or `out_of_range`: the server dropped it.
+14. **A party picks up one more** ([#423](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/423)): `BOT_LED_RECRUIT outcome=searching kind=open_seat` for parties that set off, then `outcome=recruited kind=open_seat` now and then; in /lfg a travelling party's "lf1m ..." and "ya, 1 spot" to "room?". Join one by /lfg or a tell while it travels.
 
 ## Not planned
 
