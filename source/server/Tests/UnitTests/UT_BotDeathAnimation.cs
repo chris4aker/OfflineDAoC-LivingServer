@@ -53,6 +53,21 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TheFallGoesOutATickLaterOnlyIfTheBotIsStillHidden()
+        {
+            // The fall is sent on the tick after the death (BotDeathAnimation.OnDied): an update the death queued as UDP is
+            // written after the tick's TCP packets for a client without UDP, and reached the original client after the fall
+            // (playtester bot-death, CI 2026-11-22). Tests only.
+            Assert.Multiple(() =>
+            {
+                Assert.That(BotDeathAnimation.FallStillDue(true, true, true), Is.True, "still dead and hidden: the fall goes out");
+                Assert.That(BotDeathAnimation.FallStillDue(false, false, true), Is.False, "raised in between: no fall for a standing bot");
+                Assert.That(BotDeathAnimation.FallStillDue(true, false, true), Is.False, "health again: no fall");
+                Assert.That(BotDeathAnimation.FallStillDue(true, true, false), Is.False, "gone from the world (deleted, its owner quit)");
+            });
+        }
+
+        [Test]
         public void ARaisedBotIsCreatedAgain()
         {
             Assert.Multiple(() =>
