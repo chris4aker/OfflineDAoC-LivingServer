@@ -54,6 +54,12 @@ or run where it was written; CI on pull request #398 is the first build.
 - A GM's `/jump` into an enemy keep's area is no longer sent to the bind point.
 - Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
 
+**Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
+in the server, the launcher's defaults and Recommended, the shipped world and Setup. A world that ran 1.2 with the
+untouched real-clock default moves to off once (`Living Server 1.2.1: bot_schedule_mode set to the new default off`);
+a schedule chosen in the launcher is kept. Settings upgrades now apply in order, so a 1.1.4 world also ends on off.
+Bots' breaks are a separate setting and stay on.
+
 **Chat, targeting and the launcher**
 - **/faction quiet minutes** fill back to about 5 lines, judged over the same 60 seconds as the cap of 7, which still
   holds.
