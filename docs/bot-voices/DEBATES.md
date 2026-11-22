@@ -11630,7 +11630,7 @@ Levels 1–50 · 19 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** the fishers say warm him faster than she cools him. and no charm holds her
 - *(quiet for 25 seconds)*
 - **F:** "so heal the tank and ignore the grandmothers. ok" / "warm him faster. thats the whole fight"
-- **C:** "the fomorians left her twice the catch they left balere, fiachra of howth wrote" / "i will never fish that shore again"
+- **C:** "the fomorians left her twice the catch they left balere, flann of howth wrote" / "i will never fish that shore again"
 
 ### tale myrddraxis
 

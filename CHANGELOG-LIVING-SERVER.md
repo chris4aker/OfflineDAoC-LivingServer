@@ -91,6 +91,16 @@ or run where it was written; CI on pull request #398 is the first build.
   from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
   each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
   Legion is unchanged; not yet seen in game.
+- **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
+  one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
+  him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,
+  for a moment when he stays 950 from that court monster while the raid walks to it and pulls it, and 550 from the walk
+  itself. In the simulation an immediate pull brought him in 21-68% of the time and a guarded one never did.
+  `REALM_EXPEDITION_PULL_WAIT_GUARDED`, `..._GUARD_CLEAR`, `..._GUARD_EXPIRED`. He and his court are unchanged.
+- **Galladoria, Spindler Broodmother's newborns (#408; tests only, a simulation).** The parties sent against her newborns
+  could be at most 45% of the raid: a 100-bot raid (13 parties) sent 5 and killed about 62% of what she spawned, so newborns
+  piled up. They may now be 60%: 7 parties (88%, as in the 128-bot raid that killed her in 4 minutes on `ccba364`), and 8
+  from 14 parties. She is unchanged.
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.

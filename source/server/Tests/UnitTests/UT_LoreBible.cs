@@ -701,7 +701,7 @@ namespace DOL.GS.Tests
             Assert.That(dialogue.Resolve("the Keepers of Krondon").Text, Does.Contain("Its places: [Krondon]"));
             Assert.That(dialogue.Resolve("krondon").Text, Does.Contain("Its tale belongs to [the Old Halls]").And.Contain("[the Keepers of Krondon]"));
             Assert.That(dialogue.Resolve("storm-keeper").Text, Does.Contain("[Krondon] (keeps its weather)"));
-            var midgard = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Sigrun");
+            var midgard = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Svanlaug");
             Assert.That(midgard.Resolve("the Old Halls"), Is.Null, "a realm's history is its own loremaster's");
             var page = LoreChannels.LoreCodex.Find(source, LoreChannels.LoreRealm.Albion, [], "history");
             Assert.That(page.Lines, Has.Some.Contains("[the Old Halls]"));
@@ -772,7 +772,7 @@ namespace DOL.GS.Tests
             Assert.That(midgard.GetLocation("krondon").Legend, Does.StartWith("Jordheim's raid leaders"));
             Assert.That(midgard.GetLocation("krondon").Story, Is.EqualTo(krondon.Story), "what a take leaves out stays shared");
             Assert.That(LoreChannels.LoreRealmView.For(source, LoreChannels.LoreRealm.Albion).GetLocation("krondon").Legend, Is.EqualTo(krondon.Legend));
-            var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Sigrun");
+            var dialogue = new LoreChannels.LoremasterDialogue(source, LoreChannels.LoreRealm.Midgard, "Loremaster Svanlaug");
             Assert.That(dialogue.Resolve("keepers")?.Text, Is.EqualTo("Old masters of weather and law."), "the realm's own topics");
             Assert.That(dialogue.Resolve("warrior queen")?.Text, Does.Contain("ogres"), "and the shared ones");
             var lenient = LoreChannels.LoreJson.ParseLocation(WithTakes(File.ReadAllText(Path.Combine(FixtureDir(RepoRoot()), "locations/krondon.json"))));

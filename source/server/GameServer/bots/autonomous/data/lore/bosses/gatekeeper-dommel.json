@@ -44,6 +44,11 @@
  ],
  "facts": [
   {
+    "text": "NPC pass (HEROES.md decision 11): Sister Elaydith's runner is named Siencyn of Camelot, as in malroch-the-cook; Brother Tudno (once written Aldric) was renamed away from a gamebot first name. Living Server writing.",
+    "provenance": "original",
+    "source": "Living Server (CAST-NEUTRAL.md: Sister Elaydith's runner)"
+  },
+  {
    "text": "Gatekeeper Dommel is level 65 (Allakhazam lists 58) and stands at the crossing near the Albion entrance's way down, with three Chthonic Knights, three Inquisitors and three Mutilators of level 60.",
    "provenance": "game",
    "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
@@ -168,7 +173,7 @@
   "keyword": "dommel",
   "text": "The Gatekeeper of the crossing where every road in the hollow meets, below the Albion hall. He charges a toll; the raids pay it in their dead. In the Fourth Roll he closed the crossing on the warring [chthonic knights] and [mutilators], and since then three of each order, with three [inquisitors], keep the Gate together."
  },
- "bookPage": "From the account of Sister Elaydith's runner, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Aldric there. Afterwards the tenth let us pass and said that we had paid.",
+ "bookPage": "From the account of Sister Elaydith's runner, Siencyn of Camelot, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Tudno there. Afterwards the tenth let us pass and said that we had paid.",
  "bookPages": [
   "The runner went on: On the way back we came through the crossing again with the ladle, fewer than we had been, and the one in the middle did not even stand. I asked the knight beside me why, and he said the Gatekeeper had been paid going in. I thought that was the end of it. But when we reached the stair I looked back, and the roads out of the crossing behind us were longer than they had been, much longer, and I could see the watch standing at the far end of every one of them."
  ],
