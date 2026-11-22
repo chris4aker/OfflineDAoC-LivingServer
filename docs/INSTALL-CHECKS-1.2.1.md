@@ -28,7 +28,18 @@ run on the owner's PC.
 
 Each result names its commit. The branch is `release/1.2.1-dryrun` (PR #435).
 
-**Commit `71679d8`** (fix/1.2.1 at `0c98501`: every raid PR and the filled raid results merged):
+**Commit `a1ba4da`**: the final dry run. This is fix/1.2.1 at `d1e4259` (the one-edition rule in AGENTS.md); its code
+is the same as `71679d8`.
+- build-and-test, push: [run 45074754222](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45074754222). Success, with the server suite at 9,294 passed, 0 failed.
+  - `versions` passed, and so did `candidate-install / setup`, `fresh` (with `smoke` and `classoff`), `update114` and `update12`.
+- release dry run, tag `v1.2.1`, `e2e` on, package from run 45074754222:
+  [run 45077660421](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45077660421). Success.
+  - Every installer job passed, and so did `dry-run`; `publish` was skipped.
+  - It built `LivingServer-Setup-1.2.1.exe` (SHA-256 `00464a9d…`) around package `a685e51e…`, and said it "would upload"
+    the exe and fill in the Setup row.
+  - The notes passed publish-release's placeholder check.
+
+**Commit `71679d8`** (fix/1.2.1 at `0c98501`; an earlier tip):
 - build-and-test, push: [run 45068138261](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45068138261). Success, with the server suite at 9,294 passed, 0 failed.
   - `versions` passed, and so did `candidate-install / setup`, `fresh` (with `smoke` and `classoff`), `update114` and `update12`.
 - release dry run, tag `v1.2.1`, `e2e` on, package from run 45068138261:
