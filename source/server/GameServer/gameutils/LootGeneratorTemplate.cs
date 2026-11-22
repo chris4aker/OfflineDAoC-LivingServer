@@ -247,12 +247,9 @@ namespace DOL.GS
                 GameLiving lootOwner = ResolveLootOwner(killer);
                 GamePlayer player = lootOwner as GamePlayer;
 
-                // allow the leader to decide the loot realm
-                if (player != null && player.Group != null)
-                {
-                    player = player.Group.Leader;
-                    lootOwner = player;
-                }
+                // allow the leader to decide the loot realm (a real player leader only: a gamebot-led group keeps the killer)
+                lootOwner = GroupLootOwner(lootOwner);
+                player = lootOwner as GamePlayer;
 
                 if (lootOwner != null)
                 {

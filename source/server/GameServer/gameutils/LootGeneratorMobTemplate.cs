@@ -244,12 +244,9 @@ namespace DOL.GS
 				if (lootOwner == null)
 					return loot;
 
-				// allow the leader to decide the loot realm
-				if (player?.Group != null)
-				{
-					player = player.Group.Leader;
-					lootOwner = player;
-				}
+				// allow the leader to decide the loot realm (a real player leader only: a gamebot-led group keeps the killer)
+				lootOwner = GroupLootOwner(lootOwner);
+				player = lootOwner as GamePlayer;
 
 				List<DbMobDropTemplate> killedMobXLootTemplates;
 				// MobDropTemplate contains a loot template name and the max number of drops allowed for that template.

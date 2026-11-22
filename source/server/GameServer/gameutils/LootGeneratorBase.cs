@@ -70,6 +70,19 @@ namespace DOL.GS
 			return null;
 		}
 
+		/// <summary>
+		/// "The leader decides the loot realm": a real player's kill counts as their group leader's when that leader is a
+		/// real player. With a gamebot leading the player's group (BotLedGroups) Group.Leader is null, and the killer stays
+		/// the owner; the template generators used to take that null as the owner, so a kill the player landed in a
+		/// gamebot-led group dropped none of the monster's loot-template items.
+		/// </summary>
+		protected static GameLiving GroupLootOwner(GameLiving lootOwner)
+		{
+			if (lootOwner is GamePlayer { Group: Group group } && group.Leader is GamePlayer leader)
+				return leader;
+			return lootOwner;
+		}
+
 		protected static bool CanReceiveRealmDrop(GameLiving owner, DbItemTemplate drop)
 		{
 			if (owner == null || drop == null)
