@@ -8,6 +8,72 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.1 (in development)
+
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
+or run where it was written; CI on pull request #398 is the first build.
+
+**Bots and companions**
+- **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
+  "You must select a target for this spell!". A resurrection cast with nothing dead selected now goes to a dead bot of
+  your realm in range: the one you named with `/target <name>`, otherwise one from your group, otherwise the nearest. A
+  line says who it goes to. Companions, hired companions and gamebots alike. Bots still don't fall when they die in the
+  original client, and their bodies still can't be clicked there.
+- **Hired companions join at your level** instead of level 5, with their spec points spent in their class's build
+  (respec stays free) and, above level 5, plain merchant armour, a weapon and a shield where their class carries one.
+  Companions hired on 1.2 catch up once, the next time they come to you: they keep their gear, bag, coin, realm points
+  and trained lines, spend only their new points, and get basic gear only in empty slots. Their training weapon counts
+  as empty and is swapped for a merchant weapon. Gear that can't be found is tried again at the next summon. Log lines:
+  `HIRED_COMPANION_RAISED`, `HIRED_COMPANION_TRAINED`, `HIRED_COMPANION_GEAR_RETRIED`.
+- **Training hired companions (#397).** `/hire train` reads line names: `/hire train 1 smite`, `/hire train 1 mind
+  twisting`, or the start of a name, with an optional level to train to (`/hire train 1 smite 10`). Line numbers still
+  work, and an unclear line lists the companion's lines and what to type. The trainer window shows the next skill to
+  train at the top of each line, so it no longer slides below the window.
+
+**Rewards and loot**
+- **Enemy gamebot kills give experience (#396).** They only ever paid realm points. A kill now pays what a player kill
+  pays: experience for a player of its level (shared by damage, capped at 125% of your own worth, with the keep bonus)
+  and, outside battlegrounds, bounty points. A bot killed again within five minutes is still worth nothing.
+- **Named drops in gamebot-led groups.** A kill you finished in a group a gamebot leads dropped none of the monster's
+  template loot (coin and random items still dropped). It drops again.
+
+**RvR and travel**
+- Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
+- Gamebots that logged out beside another realm's frontier keep log in at their capital, as players do
+  (`AUTONOMOUS_POSITION_RECOVERY reason="saved beside the enemy keep ..."`).
+- A keep defence with no defenders left stands down (`RVR_DEFENSE_MUSTER_EMPTY`) instead of marching empty.
+- A GM's `/jump` into an enemy keep's area is no longer sent to the bind point.
+- Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
+
+**Chat, targeting and the launcher**
+- **/faction quiet minutes** fill back to about 5 lines, judged over the same 60 seconds as the cap of 7, which still
+  holds.
+- **`/target`** finds a nearby NPC for a player (Caer Caledon's guards), not only for a GM.
+- The launcher's chat setting reads "HOW MUCH BOTS TALK", as the docs.
+
+**Stability**
+- The casting line-of-sight check treats a client it can't ask as no check, instead of leaving a gap behind 1.2's null
+  guard.
+- A packet queued while its queue is drained waits instead of raising "DrainTo in progress".
+- The missing stock merchant item templates at start-up are one warning with a count; the rows are at debug level.
+
+**Lore** (owner decisions in [docs/1.2.1/HEROES.md](docs/1.2.1/HEROES.md); review in
+[docs/1.2.1/REVIEW-COMPANIONS-2.md](docs/1.2.1/REVIEW-COMPANIONS-2.md))
+- The clean-up, provenance, flagship and folklore-hero passes merged into `integration/1.2.1` earlier (#378-#391).
+- Legend companions, second pass: Albion (Tristan, Lancelot and the Round Table in Lyonesse, Cornwall, Camelot, Avalon
+  Marsh, Morgana and the Shade of Uther), Midgard (Starkad, Ragnar's sons and Beowulf in Gotar, the Cursed Tomb,
+  Varulvhamn, Mahattava, Malmohus, East Svealand and Jordheim) and Hibernia (Ferdiad and Láeg at Ardee, Scáthach,
+  the Red Branch and Deirdre, Medb and Fergus, Mac Dathó's feast at Ailbe). Nothing was cut. An independent review
+  checked the myth facts against their sources and fixed what it found, including Saint Patrick taken out of
+  Hibernia's Oisín lore.
+
+**Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
+and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under
+Wine since the review changes.
+
+**Not a change:** #209 (Crownfire Lance, Pendragon Sovereign): that class and spell are not part of Living Server. #34
+(new-client hotbars, Stealth, SELL): already in 1.2's new-client script patches.
+
 ## RvR route traps from the PC log of build 43c43aa: the Cruachan Gorge seam, Odin's Gate muster posts, no exterior route, the rally-delay false alarm, a casting crash (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `43c43aa` (2026-11-19 13:20-14:22, restart 13:40:58; `DIAG-43c-rally`). Owner: "Fix

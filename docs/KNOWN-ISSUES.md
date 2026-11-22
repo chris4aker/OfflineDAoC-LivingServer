@@ -104,7 +104,7 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 - **Hired companions:** joining your fight on a grey monster failed on `b1b6846` and is fixed: **tests only**. The healer's
   [companions] and [hire] links work only with the healer targeted; typed `/hire` words always work. The gear window's
   title reads "House Vault 0" (it reuses the house vault window).
-- **Bots don't fall when they die.** The original client plays the lying-dead pose only for players.
+- **Bots don't fall when they die.** The original client plays the lying-dead pose only for players. From 1.2.1 a resurrection cast with nothing selected reaches a dead bot nearby (tests only).
 
 ## Bots as people and 2003 builds
 
