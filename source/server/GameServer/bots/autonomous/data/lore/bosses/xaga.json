@@ -71,7 +71,7 @@
   "botLines": {
     "briefing": [
       "touch xaga and tine and beatha come too. [kill the spirits first|spirits first], one at a time",
-      "fight xaga in her room, outside it shes immune. [no dragging|stay put]",
+      "fight xaga in her room, outside it shes untouchable. [no dragging|stay put]",
       "xaga, tine, beatha all come together. [one spirit at a time|pick one]",
       "shields hold the two we are not killing. [keep them off healers|hold them]"
     ],
@@ -85,7 +85,7 @@
       "we split on tine and beatha and [neither died|both killed us]",
       "died to tine again. [split damage|stacked]",
       "nobody held beatha and she [cooled the healers|froze us]",
-      "dragged xaga out of her room and [she was immune|did nothing]"
+      "dragged xaga out of her room and [she was untouchable|did nothing]"
     ],
     "rumour": [
       "[heard|someone said] xaga was a sylvan seed keeper who went down to galladoria [on purpose|willingly]",

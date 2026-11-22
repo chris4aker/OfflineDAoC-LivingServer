@@ -137,7 +137,7 @@
   "botLines": {
     "briefing": [
       "ok listen up. four doors, one party on each. nobody leaves a door [for anything|even if i die]",
-      "fight him in the lair. if he drifts out stop hitting, hes immune out there. [let him come back|wait]",
+      "fight him in the lair. if he drifts out stop hitting, hes untouchable out there. [let him come back|wait]",
       "every tenth of his strength gone he breathes. healers spread out, [no stacking|dont clump]",
       "he takes heat badly. casters [go heat|on heat] if you have it",
       "when he inhales, [brace|healers ready], the breath comes right after"
@@ -150,7 +150,7 @@
     ],
     "aftermathLoss": [
       "we lost the [north|east|west|south] door and that was the fight. [next time|again tomorrow]",
-      "someone chased him out of the lair again. [hes immune out there|i said this]. reform at the bog",
+      "someone chased him out of the lair again. [hes untouchable out there|i said this]. reform at the bog",
       "the glare picked a healer and she stood in the middle of us. [step away when glared|move]",
       "ran out of time on the last tenth. [so close|again]",
       "spirit curse and nobody watched the casters. [watch the curse|heal them]"
@@ -202,7 +202,7 @@
     },
     {
       "title": "The Court of Light",
-      "text": "The Glimmer came through the tear behind him and spread out over the slopes as a court comes out into a hall long kept shut. They do not build, or farm, or trade. They attend. The sages of Tir na Nog call them the Glimmer Spirits, and think the word spirit is for once exactly right. A glimmer struck will often let the blow pass, as a courtier lets an insult pass in the king's hall; but the Cullen folk still tell of the Connacht trappers who harried too many of them in a single evening for their dust, and of the whole slope turning on the trappers at once, and of the one boy who got down to the bog to say so.\n\nThe court has ranks, and the realm has learned some of its names. Saumer is the eldest, a glimmer stronger than many dragons' kin, who keeps the high ground nearest the lair and whom the shepherds call the chamberlain, because nothing reaches the king without passing him. Venlar and Kelegur keep the eastern and western slopes. Zeit and Arios watch the lower camps, and Zanllvi, the least of the named, keeps the edge of the prince's road. Whether these are their true names or only what the Azure overheard them called, nobody knows; the Azure say the Glimmer speak in light, and that the names are the sounds the light makes.\n\nGlimmer dust, shaken from the court's lesser members, makes a dye that glows in the dark. Dyers in Ardee sold it for a season before the old women said it brought bad luck, and the trade died. The warm grey stones the king keeps on his mound are another matter, and come later in this story.\n\nAbove the court rides the heir. Maldahar the Glimmer Prince rides the borders of his father's land on a horse of the same cold light, unhurried, impossible to hold, and the Glimmer part for him as he passes. The shepherds' saying was simple: never count the glimmers aloud on the ridge, because the prince hears his father's household being counted and comes to see who is taking stock."
+      "text": "The Glimmer came through the tear behind him and spread out over the slopes as a court comes out into a hall long kept shut. They do not build, or farm, or trade. They attend. The sages of Tir na Nog call them the Glimmer Spirits, and think the word spirit is for once exactly right. A glimmer struck will often let the blow pass, as a courtier lets an insult pass in the king's hall; but the Cullen folk still tell of the Connacht trappers who harried too many of them in a single evening for their dust, and of the whole slope turning on the trappers at once, and of the one boy who got down to the bog to say so.\n\nThe court has ranks, and the realm has learned some of its names. Saumer is the eldest, a glimmer stronger than many dragons' kin, who keeps the high ground nearest the lair and whom the shepherds call the chamberlain, because nothing reaches the king without passing him. Venlar and Kelegur keep the eastern and western slopes. Zeit and Arios watch the lower camps, and Zanllvi, the least of the lords who have names, keeps the edge of the prince's road. Whether these are their true names or only what the Azure overheard them called, nobody knows; the Azure say the Glimmer speak in light, and that the names are the sounds the light makes.\n\nGlimmer dust, shaken from the court's lesser members, makes a dye that glows in the dark. Dyers in Ardee sold it for a season before the old women said it brought bad luck, and the trade died. The warm grey stones the king keeps on his mound are another matter, and come later in this story.\n\nAbove the court rides the heir. Maldahar the Glimmer Prince rides the borders of his father's land on a horse of the same cold light, unhurried, impossible to hold, and the Glimmer part for him as he passes. The shepherds' saying was simple: never count the glimmers aloud on the ridge, because the prince hears his father's household being counted and comes to see who is taking stock."
     },
     {
       "title": "The Order of the Azure",

@@ -68,8 +68,8 @@
   },
   "botLines": {
     "briefing": [
-      "skeaghshee is immune to all magic. [melee and archers only|casters heal and chant]",
-      "immune to all magic, [melee and archers|casters heal], no exceptions",
+      "no spell touches skeaghshee. [melee and archers only|casters heal and chant]",
+      "no spell touches him, [melee and archers|casters heal], no exceptions",
       "tie two rags tomorrow. [old luck rule|do it]",
       "archers count as physical, [shoot away|arrows work]"
     ],
@@ -80,8 +80,8 @@
       "casters kept us alive the whole time. [thanks|nice]"
     ],
     "aftermathLoss": [
-      "half the group were casters and [did nothing|it was immune]. melee next time",
-      "casters tried bolting him anyway. [immune|stop]",
+      "half the group were casters and [did nothing|no spell touched it]. melee next time",
+      "casters tried bolting him anyway. [nothing lands|stop]",
       "not enough melee. [bring swords|more melee]",
       "bad luck all week now. [tied the rags?|no]"
     ],

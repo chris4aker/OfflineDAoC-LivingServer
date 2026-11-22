@@ -93,7 +93,7 @@
     "briefing": [
       "avartack's force goes on whoever he is hitting, every 15 to 25 sec. [heal the shield|keep the shield topped]",
       "main shield faces him the whole time. if whoever hes on turns their back he [back styles|hits way harder]",
-      "fight him on his floor. off it hes immune and [walks home full|goes home]",
+      "fight him on his floor. off it hes untouchable and [walks home full|goes home]",
       "nothing holds him, [dont bother with a trance|no trance no roots no dazing]. melee does more than spells on him",
       "everyone but the shield on his sides and back. [he only swings at who hes facing|stay off his front]"
     ],
@@ -106,7 +106,7 @@
     "aftermathLoss": [
       "the shield turned to run and got [back styled|cut in half]. never turn on him",
       "the force wore the shield down, [heals fell behind|too slow on the shield]",
-      "dragged him off his floor and he [went immune|took no damage] and walked home full",
+      "dragged him off his floor and he [went untouchable|took no damage] and walked home full",
       "nobody picked him up when the shield died and he [went home|went home full]"
     ],
     "rumour": [

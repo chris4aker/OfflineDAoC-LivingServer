@@ -64,8 +64,8 @@
   },
   "botLines": {
     "briefing": [
-      "norsob is just hold and hit but he hits like a cart. [fight him in his hall|dont drag him], hes immune outside it",
-      "norsob is immune outside his hall, [fight him there|no drawing him out]",
+      "norsob is just hold and hit but he hits like a cart. [fight him in his hall|dont drag him], hes untouchable outside it",
+      "norsob is untouchable outside his hall, [fight him there|no drawing him out]",
       "one shield, steady heals, [everyone on him|simple fight]",
       "never draw sargan's hall at the same time. [one warlord at a time|seriously]"
     ],
@@ -79,7 +79,7 @@
       "drew norsob and sargan's hall at once. [never again|one warlord at a time]",
       "drew both warlords and [they did not fight each other|both fought us]",
       "the shield fell over and nobody [picked him up|caught it]",
-      "tried to drag him out and he [was immune|went home]"
+      "tried to drag him out and he [was untouchable|went home]"
     ],
     "rumour": [
       "[heard|someone said] norsob burned a sylvan village in the vale for hiding scouts",

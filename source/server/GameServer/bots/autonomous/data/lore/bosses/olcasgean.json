@@ -118,7 +118,7 @@
   },
   "botLines": {
     "briefing": [
-      "dont touch the titan till all four primals are dead. hes asleep and [immune anyway|we just waste mana]",
+      "dont touch the titan till all four primals are dead. hes asleep and [untouchable anyway|we just waste mana]",
       "when he wakes theres two of him but they share one life. [hit whichever is closest|kill one and both drop]",
       "both bodies hit hard at half. healers [save something|keep a big heal] for that. one party stays on each spot the whole fight",
       "fight starts when the last primal dies, he wakes twenty five seconds later. [be in place|get ready]",

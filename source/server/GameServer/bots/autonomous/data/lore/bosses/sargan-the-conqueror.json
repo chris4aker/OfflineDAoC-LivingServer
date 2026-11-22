@@ -61,7 +61,7 @@
     "briefing": [
       "sargan is like norsob with a spear. [fight him home|no dragging], one shield, steady heals",
       "clear the balorians on the stair on the way up, [dont drag him into them|keep it in his hall]",
-      "sargan is immune outside his hall. [fight him there|stay home]",
+      "sargan is untouchable outside his hall. [fight him there|stay home]",
       "one shield, steady heals, [nothing from norsob's hall|never both halls at once]"
     ],
     "aftermathWin": [
@@ -74,7 +74,7 @@
       "someone dragged sargan into the balorians on the stair. [messy|no]",
       "someone drew him onto the stair and [woke the lot|the balorians joined]",
       "drew norsob's hall as well. [again|never]",
-      "dragged him and he [went home|was immune]"
+      "dragged him and he [went home|was untouchable]"
     ],
     "rumour": [
       "[heard|someone said] sargan named the balorians after the heroes they killed. sick",
