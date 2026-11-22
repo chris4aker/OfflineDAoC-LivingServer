@@ -612,6 +612,64 @@
         "\\bArthur (?:rides|is riding|waits|sits|stands|holds court|reigns|rules) (?:now|today|still)\\b",
         "\\bking Arthur is alive\\b"
       ]
+    },
+    {
+      "id": "sven-names-only-the-dead",
+      "fact": "Sven of Jordheim puts only the dead in his songs; he does not name the living.",
+      "source": "NPC pass (HEROES decision 11): bosses/hati, bosses/mahattava, locations/dodens-gruva",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bSven\\b"
+      },
+      "forbid": [
+        "\\bSven\\b[^.]*\\b(?:names?|sings? of|sang of|puts?)\\b[^.]*\\bthe living\\b",
+        "\\bSven\\b[^.]*\\bnamed? (?:him|her|them) in (?:the|his) (?:song|verse)"
+      ],
+      "unless": "\\bnot\\b|\\bnever\\b|\\bonly the dead\\b|\\bwill not\\b"
+    },
+    {
+      "id": "geirlaug-song-never-whole",
+      "fact": "Geirlaug's song takes a verse for every waking of the dragon, so nobody alive sings all of it; the skalds of the south sing the warband's part whole, and Sven stops one verse short.",
+      "source": "NPC pass: bosses/gjalpinulva, locations/malmohus",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/gjalpinulva",
+          "locations/malmohus",
+          "locations/myrkwood-forest"
+        ],
+        "sentence": "song|sing|sang"
+      },
+      "forbid": [
+        "\\bsings? (?:it|the song|all of it|the whole song) (?:whole|to the end|through)\\b"
+      ],
+      "unless": "warband's part|nobody|never|stops one verse short"
+    },
+    {
+      "id": "grimma-keeps-the-tally",
+      "fact": "Grimma, Jordheim's shaman trainer of the eastern hall, reads the omens before a warband leaves and keeps the tally of the realm's dead.",
+      "source": "NPC pass: bosses/thorkatla, bosses/iarnvidiur, locations/dodens-gruva, locations/jordheim",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bGrimma\\b"
+      },
+      "forbid": [
+        "\\bGrimma\\b[^.]*\\b(?:southern hall|hall of the Aesir|Aesir's hall)\\b",
+        "\\bGrimma (?:of|in) (?!Jordheim)\\w+"
+      ],
+      "unless": "Grimma's quest"
+    },
+    {
+      "id": "morlin-caan-forge-by-the-temple",
+      "fact": "Morlin Caan's forge is in Jordheim, by the temple.",
+      "source": "CAST-MIDGARD.md; NPC pass: bosses/oona, bosses/hurjavelen, bosses/fostra-orm, locations/jordheim",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bMorlin Caan\\b"
+      },
+      "forbid": [
+        "\\bMorlin Caan (?:of|in|at) (?!Jordheim|the forge)\\w+"
+      ]
     }
   ]
 }
