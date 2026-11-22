@@ -1,4 +1,5 @@
 using System.Linq;
+using DOL.Database;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -59,7 +60,7 @@ namespace DOL.UnitTests
             Assert.That(HiredCompanions165.PlanArrival(rule, level, 45).Kind, Is.EqualTo(HiredCompanions165.ArrivalKind.None),
                 "its player levelled since: it levels beside them, as before");
             Assert.That(HiredCompanions165.PlanArrival(rule, 5, 50).Kind, Is.EqualTo(HiredCompanions165.ArrivalKind.None));
-            Assert.That(HiredCompanions165.PlanArrival(HiredCompanions165.LevelRuleNewHire + 5, 5, 50).Kind,
+            Assert.That(HiredCompanions165.PlanArrival(HiredCompanions165.LevelRuleGearPending + 5, 5, 50).Kind,
                 Is.EqualTo(HiredCompanions165.ArrivalKind.None), "a later rule is never taken for an old one");
         }
 
@@ -76,8 +77,8 @@ namespace DOL.UnitTests
         [Test]
         public void BasicGearFillsOnlyTheEmptySlots()
         {
-            // a raised companion wearing what its player gave it: a helm, a chest and a sword (and a training weapon would
-            // count the same: an occupied slot is never wanted)
+            // a raised companion wearing what its player gave it: a helm, a chest and a sword (an occupied slot is never
+            // wanted; only the training weapon is taken out first, see below)
             eInventorySlot[] worn = [eInventorySlot.HeadArmor, eInventorySlot.TorsoArmor, eInventorySlot.RightHandWeapon];
             var wants = AutonomousStarterGear.PlanSlots(slot => worn.Contains(slot), eInventorySlot.RightHandWeapon,
                 eObjectType.SlashingWeapon, 0, shieldBuild: true, savage: false);
@@ -90,6 +91,55 @@ namespace DOL.UnitTests
             // fully dressed: nothing to give
             Assert.That(AutonomousStarterGear.PlanSlots(_ => true, eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, 0,
                 true, false), Is.Empty);
+        }
+
+        /// <summary>The training weapon as GameBot.TryCreateConfiguredStarterWeapon saves it: a generated unique item,
+        /// Creator "GameBot".</summary>
+        private static DbInventoryItem TrainingWeapon() => new()
+        {
+            Creator = nameof(GameBot), UTemplate_Id = "4f1c2a9e-generated", ITemplate_Id = null, Name = "Short Sword",
+        };
+
+        [Test]
+        public void TheTrainingWeaponCountsAsEmpty()
+        {
+            Assert.That(HiredCompanions165.IsTrainingWeapon(TrainingWeapon()), Is.True);
+            Assert.That(HiredCompanions165.TrainingWeaponSlots, Is.EquivalentTo(new[]
+                { eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon }),
+                "weapon slots only: never an armour slot or the bag");
+            // with the training weapon taken out of its hand, the plan wants the hand again
+            eInventorySlot[] worn = [eInventorySlot.TorsoArmor];
+            var wants = AutonomousStarterGear.PlanSlots(slot => worn.Contains(slot), eInventorySlot.RightHandWeapon,
+                eObjectType.SlashingWeapon, 0, shieldBuild: false, savage: false);
+            Assert.That(wants.Select(w => w.Slot), Has.Member(eInventorySlot.RightHandWeapon));
+        }
+
+        [Test]
+        public void AnyOtherWeaponIsNeverTakenForTheTrainingWeapon()
+        {
+            // a merchant or quest weapon the player handed over (an item template row), however low its level
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { ITemplate_Id = "starter_short_sword", Creator = "" }), Is.False);
+            // a crafted weapon (Creator: the crafter) and a unique loot drop (another creator)
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { UTemplate_Id = "crafted-1", Creator = "Brennan" }), Is.False);
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { UTemplate_Id = "loot-1", Creator = "forest giant" }), Is.False);
+            // a "GameBot" creator on a template row, an empty one, and nothing at all
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { ITemplate_Id = "short_sword", Creator = nameof(GameBot) }), Is.False);
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { Creator = nameof(GameBot) }), Is.False);
+            Assert.That(HiredCompanions165.IsTrainingWeapon(new DbInventoryItem { UTemplate_Id = "x", Creator = "gamebot" }), Is.False, "exact creator");
+            Assert.That(HiredCompanions165.IsTrainingWeapon(null), Is.False);
+        }
+
+        [Test]
+        public void GearThatCouldNotBeLookedUpIsTriedAgainAtTheNextSummon()
+        {
+            Assert.That(HiredCompanions165.RuleAfterArrival(basicGearDue: true, gearRetry: true), Is.EqualTo(HiredCompanions165.LevelRuleGearPending));
+            Assert.That(HiredCompanions165.RuleAfterArrival(true, false), Is.EqualTo(HiredCompanions165.LevelRuleDone));
+            Assert.That(HiredCompanions165.RuleAfterArrival(false, true), Is.EqualTo(HiredCompanions165.LevelRuleDone), "level 5: no gear due");
+            // the retry is the gear alone, at its level now: never a second raise or training
+            Assert.That(HiredCompanions165.PlanArrival(HiredCompanions165.LevelRuleGearPending, 30, 35),
+                Is.EqualTo((HiredCompanions165.ArrivalKind.Gear, 30)));
+            Assert.That(HiredCompanions165.PlanArrival(HiredCompanions165.LevelRuleGearPending, 5, 5).Kind,
+                Is.EqualTo(HiredCompanions165.ArrivalKind.None));
         }
 
         [Test]

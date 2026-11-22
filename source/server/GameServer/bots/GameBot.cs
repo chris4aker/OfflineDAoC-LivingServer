@@ -3008,10 +3008,31 @@ namespace DOL.GS
         }
 
         /// <summary>A hired companion's basic gear: the gamebots' starter gear (the best plain item its realm's merchants sell at
-        /// its level) in each empty slot of its build. Nothing it wears or carries is moved or replaced; its coin is untouched.</summary>
+        /// its level) in each empty slot of its build. Nothing it wears or carries is moved or replaced, except its training
+        /// weapon (HiredCompanions165.IsTrainingWeapon; owner 2026-11-21: it counts as an empty slot): put in its bag while
+        /// the gear is chosen, deleted once a merchant weapon took its place, put back where it was otherwise. Its coin is
+        /// untouched. No merchant of its realm found (or an error): nothing changes and the gear is tried at its next summon.</summary>
         private bool GiveHiredCompanionGear(HiredCompanions165.Arrival arrival)
         {
-            AutonomousStarterGear.Result result;
+            if (AutonomousStarterGear.RealmCatalog(Realm).Length == 0)
+            {
+                arrival.GearRetry = true;
+                arrival.Gear = "none (no merchant of its realm found)";
+                return false;
+            }
+            // the training weapons out of their slots, so the plan sees those slots empty
+            var training = new List<(eInventorySlot Slot, DbInventoryItem Item)>();
+            foreach (eInventorySlot slot in HiredCompanions165.TrainingWeaponSlots)
+            {
+                if (Inventory.GetItem(slot) is not { } item || !HiredCompanions165.IsTrainingWeapon(item))
+                    continue;
+                eInventorySlot bag = Inventory.FindFirstEmptySlot(HiredCompanions165.FirstBagSlot, HiredCompanions165.LastBagSlot);
+                if (bag != eInventorySlot.Invalid && Inventory.MoveItem(slot, bag, Math.Max(1, item.Count)))
+                    training.Add((slot, item));
+                else if (Inventory.RemoveItem(item))
+                    training.Add((slot, null));   // a full bag: deleted now; the server makes a new one if no merchant weapon fits
+            }
+            AutonomousStarterGear.Result result = null;
             try
             {
                 result = PlanAndGiveStarterGearCore();
@@ -3019,11 +3040,30 @@ namespace DOL.GS
             catch (Exception exception)
             {
                 log.Error($"HIRED_COMPANION_GEAR bot=\"{Name}\" id={DatabaseID} failed; it keeps what it has", exception);
+                arrival.GearRetry = true;
                 arrival.Gear = "none (error)";
-                return false;
             }
-            arrival.Gear = result.Given ? AutonomousStarterGear.Describe(result.Pieces) : $"none ({result.Reason})";
-            if (!result.Given)
+            var replaced = new List<string>();
+            foreach ((eInventorySlot slot, DbInventoryItem item) in training)
+            {
+                bool leftHand = slot == eInventorySlot.LeftHandWeapon;
+                bool weaponGiven = result?.Pieces.Any(piece => leftHand
+                    ? piece.Slot == eInventorySlot.LeftHandWeapon
+                    : piece.Slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon) == true;
+                if (weaponGiven || item == null)
+                {
+                    if (item != null)
+                        Inventory.RemoveItem(item);
+                    replaced.Add(AutonomousStarterGear.SlotName(slot) + (weaponGiven ? string.Empty : "(deleted, bag full)"));
+                }
+                else if (Inventory.GetItem(slot) == null)
+                    Inventory.MoveItem((eInventorySlot)item.SlotPosition, slot, Math.Max(1, item.Count));   // no merchant weapon: back in its hand
+            }
+            if (replaced.Count > 0)
+                arrival.TrainingWeapon = string.Join(",", replaced);
+            if (result != null)
+                arrival.Gear = result.Given ? AutonomousStarterGear.Describe(result.Pieces) : $"none ({result.Reason})";
+            if (result?.Given != true && replaced.Count == 0)
                 return false;
             MarkAutonomousStateDirty();
             AutonomousBotEconomy.MarkInventoryChanged(this);

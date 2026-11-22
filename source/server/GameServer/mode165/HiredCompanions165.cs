@@ -41,7 +41,8 @@ namespace DOL.GS
         [DataElement(AllowDbNull = false)] public string Options { get; set; } = string.Empty;
         /// <summary>Living Server 1.2.1 (owner 2026-11-21), which level rule this companion is under: 0 = hired on 1.2 at
         /// level 5 (raised once to its player's level at its next summon), 1 = hired on 1.2.1 at its player's level and not
-        /// yet trained, 2 = done (<see cref="HiredCompanions165.PlanArrival"/>). Rows from before the column read 0.</summary>
+        /// yet trained, 2 = done, 3 = done but its basic gear is tried again at the next summon (no merchant found that time;
+        /// <see cref="HiredCompanions165.PlanArrival"/>). Rows from before the column read 0.</summary>
         [DataElement(AllowDbNull = false)] public int LevelRule { get; set; }
     }
 
@@ -198,8 +199,30 @@ namespace DOL.GS
         public const int LevelRuleNewHire = 1;
         /// <summary>Trained or raised: it levels beside its player from here on.</summary>
         public const int LevelRuleDone = 2;
+        /// <summary>Trained or raised, but its basic gear could not be looked up (no merchant of its realm loaded, or an
+        /// error): the gear alone is tried again at its next summon.</summary>
+        public const int LevelRuleGearPending = 3;
 
-        public enum ArrivalKind { None, NewHire, Raise }
+        public enum ArrivalKind { None, NewHire, Raise, Gear }
+
+        /// <summary>The level rule a companion is left under after an arrival that joined: done, unless its gear was due and
+        /// could not be looked up (then only the gear is tried again). Pure.</summary>
+        public static int RuleAfterArrival(bool basicGearDue, bool gearRetry) =>
+            basicGearDue && gearRetry ? LevelRuleGearPending : LevelRuleDone;
+
+        /// <summary>The weapon slots a training weapon can sit in.</summary>
+        public static readonly eInventorySlot[] TrainingWeaponSlots =
+            [eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon];
+
+        /// <summary>
+        /// The training weapon (owner 2026-11-21: it counts as an empty slot for the basic gear). Pure. It is the only item
+        /// GameBot makes itself (GameBot.TryCreateConfiguredStarterWeapon: a GeneratedUniqueItem saved as a unique item,
+        /// Creator "GameBot"), so a weapon the player handed over - merchant, crafted (Creator: the crafter), loot or quest
+        /// (an ItemTemplate row, or a unique item with another creator) - never is, however low its level.
+        /// </summary>
+        public static bool IsTrainingWeapon(DbInventoryItem item) =>
+            item != null && string.Equals(item.Creator, nameof(GameBot), StringComparison.Ordinal) &&
+            !string.IsNullOrWhiteSpace(item.UTemplate_Id) && string.IsNullOrWhiteSpace(item.ITemplate_Id);
 
         /// <summary>What the GameBot constructor does for one hired companion's arrival (GameBot.TrainHiredCompanionArrival
         /// and its gear), and what it reports back for the HIRED_COMPANION_TRAINED / _RAISED line.</summary>
@@ -221,6 +244,10 @@ namespace DOL.GS
             public int Unspent { get; set; }
             public string Specs { get; set; } = string.Empty;
             public string Gear { get; set; } = "none";
+            /// <summary>The gear could not be looked up this time (no merchant of its realm, or an error): try again.</summary>
+            public bool GearRetry { get; set; }
+            /// <summary>The training weapons replaced by a merchant weapon ("RightHand", ...), for the log line.</summary>
+            public string TrainingWeapon { get; set; } = "none";
         }
 
         private static readonly ConcurrentDictionary<long, Arrival> Arrivals = new();
@@ -239,6 +266,8 @@ namespace DOL.GS
         /// </summary>
         public static (ArrivalKind Kind, int Level) PlanArrival(int levelRule, int companionLevel, int playerLevel)
         {
+            if (levelRule == LevelRuleGearPending)
+                return (GetsBasicGear(companionLevel) ? ArrivalKind.Gear : ArrivalKind.None, companionLevel);
             if (levelRule >= LevelRuleDone)
                 return (ArrivalKind.None, companionLevel);
             if (levelRule == LevelRuleNewHire)
@@ -377,6 +406,9 @@ namespace DOL.GS
             if (kind != ArrivalKind.None)
             {
                 arrival = new Arrival(kind, (byte)Math.Clamp(record.Level, 1, 50), record.Experience, GetsBasicGear(arrivalLevel));
+            }
+            if (kind is ArrivalKind.NewHire or ArrivalKind.Raise)
+            {
                 record.Level = arrivalLevel;
                 record.Experience = GamePlayer.GetExperienceAmountForLevel(arrivalLevel - 1);   // the start of that level
                 record.Dirty = true;
@@ -428,15 +460,21 @@ namespace DOL.GS
                 if (hired.LevelRule != LevelRuleDone)
                 {
                     // once only: from here on it levels beside its player as before
+                    string tag = kind switch
+                    {
+                        ArrivalKind.Raise => "HIRED_COMPANION_RAISED",
+                        ArrivalKind.Gear => "HIRED_COMPANION_GEAR_RETRIED",
+                        _ => "HIRED_COMPANION_TRAINED",
+                    };
                     if (arrival != null)
-                        Log.Info($"{(kind == ArrivalKind.Raise ? "HIRED_COMPANION_RAISED" : "HIRED_COMPANION_TRAINED")} owner=\"{player.Name}\" " +
-                                 $"bot={record.BotId} \"{record.Name}\" {record.ClassName} level={arrival.FromLevel}->{bot.Level} " +
+                        Log.Info($"{tag} owner=\"{player.Name}\" bot={record.BotId} \"{record.Name}\" {record.ClassName} level={arrival.FromLevel}->{bot.Level} " +
                                  $"player_level={player.Level} spent={arrival.Spent} unspent={arrival.Unspent} specs=\"{arrival.Specs}\" " +
-                                 $"gear=\"{arrival.Gear}\"");
+                                 $"gear=\"{arrival.Gear}\" training_weapon_replaced=\"{arrival.TrainingWeapon}\" " +
+                                 $"gear_retry={(arrival.BasicGear && arrival.GearRetry ? "next-summon" : "no")}");
                     if (kind == ArrivalKind.Raise)
                         player.Out.SendMessage($"{record.Name} has caught up with you: level {bot.Level}, trained in their build " +
                                                "(respec is free), with basic gear in any empty slot.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                    hired.LevelRule = LevelRuleDone;
+                    hired.LevelRule = arrival == null ? LevelRuleDone : RuleAfterArrival(arrival.BasicGear, arrival.GearRetry);
                 }
                 Save(hired);
                 BotGroupInvite.TryInvite(player, bot);
