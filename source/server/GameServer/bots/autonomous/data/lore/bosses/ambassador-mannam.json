@@ -75,7 +75,7 @@
   }
  ],
  "story": "Ambassador Mannam is the only demon of the court whose work is done above the world, and the court has never decided whether that makes him the most useful peer on the Roll or the least trustworthy. He belongs to Princess Nahemah's bower in the far west, the quarter of the hollow where faces are made. The princess's household has always dealt in wanting: the succubi and lilispawn of the bower learn what a mortal desires and wear it. In the Uncounted Age Mannam was the best of them at a harder craft, which is wearing what a mortal trusts.\n\nHis line was cut out of another demon's fall. Mystemas, then one of the strongest in the Master's army, had told the princes that when the Master moved against the realms above he would be the one to go up, and he had begun to choose the war-band he would take. Duke Satori heard him explain it and carried it to the door, and the Master, who had already decided to send not a war-band but a voice, made Mystemas small. The embassy went to the bower. Adremal wrote Mannam's line as Ambassador of the Court, under the Princess, sent to the throne of Albion, and the court has noticed that Mystemas has wanted two deaths ever since and names them in the same breath.\n\nMannam went up when the Albion door opened. He needed a face that Camelot would let into a king's hall, and the bower had one ready, kept fresh in the well of the princess's own room, where nothing kept ever ages. He carried it up the stair folded in a small dark stone at his belt, and wore it at court. What he said there the hollow knows from his own reports, which the Chancellor seals: that Midgard's jarls and Hibernia's druids were the true danger to the realm, that the hollow under Camelot Hills was a curiosity, and that a wise king spent his knights on the frontier and not on the stair. Adremal records that the reports were received at the throne with interest. Albion's Church, which has since learned whose face it was, preaches that they were received with more than interest.\n\nHe carries more than the princess's errand. Prince Abdin uses the embassy as he uses everything, and the letters Mannam takes up and down the stair carry the prince's plans as well, under the Chancellor's seal, so that no one can open them without the Chancellor knowing. Albion's clerics say they have read some. They will not say what was in them, except that it concerned the Director above the Gate and an army that cannot be counted.\n\nHe is below more often than Camelot knows, standing a few strides from his princess's door with the face folded away, and the bower says he is never far from her when he is home. The imps who watch the Albion stair say he goes up rarely now and comes down quickly, and that each time he comes down, the face in the stone has aged a little, which nothing kept in the princess's well should do.",
- "legend": "Mannam stands in Princess Nahemah's bower in the far west, less than six hundred units from the princess herself, with the well in her room close by. Level 65, no tricks. He is a kill in every realm's Strange Bedfellows quest: Mystemas sends you after Nahemah and Mannam, and Albion and Midgard bring back a soul stone, Hibernia the diplomatic papers. Pull him away from the princess; you do not want her maelstrom while you are on him. He and Caisha both come back in about three minutes, so do the quest kills and move on. Raiders call him the ambassador or the diplomat and swear he really did talk Albion's king out of guarding the Darkness Falls door. Albion raiders do not find that funny. Hibernians think it explains a great deal about Albion, and Midgard just wants to know what he said about them.",
+ "legend": "Mannam stands in Princess Nahemah's bower in the far west, less than twenty paces from the princess herself, with the well in her room close by. A foe for several bands of any realm's best together, with no tricks. He is a kill in every realm's Strange Bedfellows quest: Mystemas sends you after Nahemah and Mannam, and Albion and Midgard bring back a soul stone, Hibernia the diplomatic papers. Draw him away from the princess; you do not want her maelstrom while you are on him. He and Caisha both rise again in about three minutes, so do the quest kills and move on. Raiders call him the ambassador or the diplomat and swear he really did talk Albion's king out of guarding the Darkness Falls door. Albion raiders do not find that funny. Hibernians think it explains a great deal about Albion, and Midgard just wants to know what he said about them.",
  "yells": {
   "aggro": [
    "You have come a long way to interrupt a diplomat.",
@@ -113,9 +113,9 @@
  },
  "botLines": {
   "briefing": [
-   "mannam is right by nahemah. [pull him away|split them]",
+   "mannam is right by nahemah. [draw him away|split them]",
    "65 no tricks, strange bedfellows target. [albs and mids get the stone|grab the soul stone]",
-   "dont fight mannam in her maelstrom. [away from the princess|pull back east]",
+   "dont fight mannam in her maelstrom. [away from the princess|draw back east]",
    "mannam then nahemah, or nahemah then mannam. [ask your quest giver lol|either works]"
   ],
   "aftermathWin": [
@@ -125,8 +125,8 @@
    "the diplomat is dead. [camelot can relax|albion is safe now lol]"
   ],
   "aftermathLoss": [
-   "pulled nahemah with mannam. [maelstrom wipe|wipe]",
-   "mannam got us. [regroup|rez]",
+   "drew nahemah with mannam. [the maelstrom took us all|everyone down]",
+   "mannam got us. [regroup|raise the fallen]",
    "lost the split in the bower. [slower|one at a time]",
    "mannam and the princess together. [too much|told you split]"
   ],

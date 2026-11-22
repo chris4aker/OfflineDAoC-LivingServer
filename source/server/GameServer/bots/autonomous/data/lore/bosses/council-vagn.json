@@ -70,7 +70,7 @@
       "text": "When Midgard came up the crater road and the Council voted for the second time to march, the wagon and the boat did what they had always done. They carried the vote to the outer seats, and then they sat down side by side in the outer council hall and waited, because nobody had told them to do anything else.\n\nThe companies of Midgard who reach the outer hall find them there. They cannot be fought one at a time. When anything rouses Vagn, Nokkvi is already rising, and when anything rouses Nokkvi, Vagn is already talking. The old songs of the companies say that the survivor of the pair grieves for the other and fights the harder for it; the cast-out sculptors at Dellingstad say that is a story the companies tell to make the second one seem worth the trouble, and that the two of them fight exactly as hard apart as together.\n\nThe outer seats have a joke about the pair, very old, from the years when they carried the votes. You stop a wagon with a stick in its wheel, the giants say, and you sink a boat with a word in its hull. The companies who have heard it repeated by the cast-out sculptors have carried it home to Midgard, and not all of them have seen the point of it.\n\nVagn dies talking, the companies say. He is always in the middle of a sentence, and nobody has ever heard the end of one."
     }
   ],
-  "legend": "Vagn and Nokkvi always come together, and the trick is that they are opposites. Vagn resists 90% of magic but only 20% of melee: put your melee on Vagn and don't waste nukes on him. Nokkvi is the reverse (90% melee, 20% magic): your casters should be on Nokkvi. Vagn's Frost Shock is a 3-second, 600 cold cast on his target every 10 to 15 seconds and it CAN be interrupted, so keep hitting him while he casts. Both have 100,000 health, are CC-immune and reset if dragged past their tether or left 30 seconds out of combat. The old story that the survivor grieves and hits harder isn't true here: kill them in whichever order suits your raid. Boots, staffs and a mantle drop.",
+  "legend": "Vagn and Nokkvi always come together, and the trick is that they are opposites. Nine-tenths of every spell is lost on Vagn, but only a fifth of every weapon stroke: put your melee on Vagn and don't waste blasting spells on him. Nokkvi is the reverse (nine-tenths of blows lost, a fifth of spells): your casters should be on Nokkvi. Vagn's Frost Shock is a 3-second, 600 cold cast on his target every 10 to 15 seconds and it CAN be interrupted, so keep hitting him while he casts. The raiders reckon each at a hundred thousand in strength; no charm or stun holds either, and they are whole again if dragged too far from their seats or left alone for 30 seconds. The old story that the survivor grieves and hits harder isn't true here: kill them in whichever order suits your raid. Boots, staffs and a mantle come off them.",
   "yells": {
     "aggro": [
       "Nokkvi, they have come to the Council uninvited.",
@@ -120,13 +120,13 @@
   },
   "botLines": {
     "briefing": [
-      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi",
+      "vagn and nokkvi, they come as a pair. one group holds vagn away, [rest|everyone else] on nokkvi",
       "vagn: melee him, he shrugs off magic. interrupt the frost shock",
       "vagn and nokkvi reset if dragged or left alone 30 sec",
       "one group on vagn, rest on nokkvi",
-      "vagn: 90% magic resist, 20% melee. melee on vagn",
+      "vagn: spells do a tenth, blades most of it. melee on vagn",
       "vagns frost shock is interruptible, keep hitting him while he casts",
-      "vagn and nokkvi are opposites. melee vagn, nuke nokkvi",
+      "vagn and nokkvi are opposites. melee vagn, blast nokkvi",
       "they reset if dragged or left alone 30 sec"
     ],
     "aftermathWin": [
@@ -139,11 +139,11 @@
       "vagn never finished a sentence again"
     ],
     "aftermathLoss": [
-      "vagn's frost shock kept landing on the tank and nobody interrupted it",
+      "vagn's frost shock kept landing on the shield-bearer and nobody interrupted it",
       "vagn's frost shocks chewed through the casters",
-      "the kiting group lost vagn and he came back to the raid",
+      "the group leading vagn about lost him and he came back to the raid",
       "nokkvi died, vagn went mad and hit for double",
-      "casters nuked vagn for nothing, 90% magic resist",
+      "casters blasted vagn for nothing, spells barely touch him",
       "nobody interrupted the frost shock"
     ],
     "rumour": [

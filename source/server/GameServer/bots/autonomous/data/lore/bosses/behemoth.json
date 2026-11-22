@@ -50,7 +50,7 @@
     }
   ],
   "story": "Every account of the hollow agrees that the Behemoth was there first, before the lords, in the Uncounted Age; the Inquisitors say the hollow is only the shape it left when it lay down. It is not a demon, does not speak or bargain or eat souls, and is on no Roll; the Chancellor has never written its name. The Church reads it in Job, the beast of God's first making whom only its maker can approach with a sword; the skalds say it is one of the old ones from before the gods; the druids, a hill that has not yet decided to lie still. The Door-Book kept at the castle ruins gives it one line: the beast on the ledge.\n\nIt lay along the wall of the deepest chamber at the Feast of Thrones. It did not fight or kneel, and when the Master had eaten nineteen lords he looked at it, and it looked back, and he did not try to eat it. The Inquisitors say the bargain is about place and the beast has none; the imps say the Master was afraid. It lies now on a ledge above his lair, breathing like a forge, kept as a man keeps a chained bear.\n\nIt does not need to strike well, only to strike: whatever it swings at it ends, shield or mail or quick feet, landed or not. It is slow to notice anyone not close to its nose. Its hide turns blades and drinks spells. Once the Master called it down, and it did not stop at the enemy, and it went back to its ledge by itself.\n\nSir Cadfan Hir of Camelot Hills, who had killed the Master once, took eighty on to the ledge to see what the Master feared. The beast lifted its head and Cadfan was gone; his company sent a fresh man in front of it all night, and the Door-Book's list of their names fills a leaf. The imps take any odds against its death and have never paid. The Door-Book's last line: do not count it. Count your own and go home.",
-  "legend": "The Behemoth is level 99 with 600,000 health, CC immune, AF 550 with 50% absorb, and 40% melee / 70% other reduction. Every swing it takes kills whatever it swings at, outright: hit, miss, parry, block or evade all end the same way, so no tank survives it and shields or evade do nothing. It sits on the ledge above Legion's lair and only notices you inside 500, so it is easy to leave alone, and that is the advice. Here it does not come down to help Legion. If you insist on trying it, the only theory is a line of throwaway bodies to stand in front of it, one per swing, while everyone else does damage into 600k at those reductions: nobody here has done it, nobody has tested it, and the imps will take your money. Drop out of the fight for 8 seconds and it heals to full.",
+  "legend": "The Behemoth is beyond even the whole muster of any realm, and the raiders reckon its strength at six hundred thousand. No charm or stun holds it, its hide is as good as the finest armour and swallows half of every blow, and on top of that four-tenths of every weapon stroke and seven-tenths of everything else are lost on it. Every swing it takes kills whatever it swings at, outright: hit, miss, parry, block or evade all end the same way, so no shield-bearer survives it and shields or dodging do nothing. It sits on the ledge above Legion's lair and only notices you within fifteen paces, so it is easy to leave alone, and that is the advice. Here it does not come down to help Legion. If you insist on trying it, the only theory is a line of throwaway bodies to stand in front of it, one per swing, while everyone else wears down six hundred thousand at those odds: nobody here has done it, nobody has tried it, and the imps will take your money. Break off the fight for 8 seconds and it is whole again.",
   "yells": {
     "aggro": [
       "...",
@@ -100,13 +100,13 @@
       "odran said dont count it. we counted it"
     ],
     "aftermathLoss": [
-      "told you. level 99. one hit each",
+      "told you. nothing walks away from it. one hit each",
       "told you. every swing kills",
-      "the tank died to a miss. a miss",
-      "we never got it under 99%"
+      "the shield-bearer died to a miss. a miss",
+      "we never even scratched it"
     ],
     "rumour": [
-      "behemoth is level 99, [heard|they say]. nobody kills it. nobody",
+      "behemoth is past anything in the hollow, [heard|they say]. nobody kills it. nobody",
       "[heard|someone said] legion used to call the behemoth down to fight. not anymore",
       "[heard|someone said] the master was afraid to eat the behemoth at the feast",
       "heard the imps will take any bet against the behemoth dying and have never paid out"

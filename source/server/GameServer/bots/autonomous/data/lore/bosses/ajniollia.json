@@ -29,7 +29,7 @@
     }
   ],
   "story": "Ajniollia is a woodwoman, an elder of the skogsfru, fair from the front and hollow behind, and she carries letters. That is how the blind Masrim of Fort Atla put it to the rogues he sends after her: she is the hand that passes Hibernia's word through Midgard's swamp. The Hibernian informer Fionnuala, who stands among the war dead of Yggdra, gives the realm's shadows the one end of the thread; Ajniollia in the south of Vanern is the other, and on her are the scrolls that say who in Midgard has been listening.\n\nWhy a skogsfru would carry for Hibernia, Masrim does not say. The ferrymen of Vanern say the woodwomen have never cared whose war it is, only whose children wander into the trees, and that Hibernia paid her in the only coin a skogsfru takes. The seeresses of the Circle in Skona say she is older than the swamp's jarl and his barrows, and that she has carried messages for every enemy Midgard ever had. When the rogues read her scrolls to Masrim, he laughs, the stories say, and then goes very still.",
-  "legend": "Ajniollia is a level 45 elder skogsfru (Woodwomen faction) alone in Vanern Swamp, the kill step in War Concluded, the rogue epic: Fionnuala in Yggdra first, then Ajniollia for the scrolls, then read them to Masrim in Fort Atla. She's alone, so no friends to worry about. Plain hitter for her level. Don't follow skogsfru into the trees, the old folk say; they're hollow behind.",
+  "legend": "Ajniollia is an elder skogsfru of the Woodwomen, a foe for a hardened band of veterans, alone in Vanern Swamp: the killing in War Concluded, the rogues' great quest. Fionnuala in Yggdra first, then Ajniollia for the scrolls, then read them to Masrim in Fort Atla. She's alone, so no friends to worry about. A plain hitter for her strength. Don't follow skogsfru into the trees, the old folk say; they're hollow behind.",
   "yells": {
     "aggro": [
       "You read other people's letters? So do I.",
@@ -50,7 +50,7 @@
   "botLines": {
     "briefing": [
       "ajniollia is the 45 skogsfru in vanern for war concluded",
-      "she's alone, easy for the epic group"
+      "she's alone, easy for the group on the rogues' quest"
     ],
     "aftermathWin": [
       "got the scrolls, back to masrim",
