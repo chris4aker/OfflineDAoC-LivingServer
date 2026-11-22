@@ -29,6 +29,11 @@
       "text": "Welsh myth, not game canon: Preiddeu Annwfn tells of the cauldron of the Head of Annwn, warmed by the breath of nine maidens, which would not boil the food of a coward; its refrain says only seven came back.",
       "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/Preiddeu_Annwfn"
+    },
+    {
+      "text": "The book pages after the first (the steward's wax tablet from the Caldey villa) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "The Spectral Provisioner kept the stores of Caer Sidi and served the prisoners from the cauldron of the head of Annwn, the one the oldest poem says would not boil a coward's food; every coward in the gaol knew before he reached the head of the line that his bowl would come back cold. The Inconnu say he was the steward of a Roman villa of the west in life, who knew the price of everything and the appetite of everyone, and that he struck any hand that reached past another with a ladle of pale iron, long as a spear, after which the hand was slow for a long while.\n\nHis tools were fire for the cauldron, frost for the stores and prayer for the meal, and when the gaol rose and the cauldron's rim was carried down to the larders, he went after it and took all three into himself: fire, frost and workings of the spirit go into him and are gone, the galleries' other workings reach him only faintly, and a blade he feels. He answers the striking hand with his ladle. The Inconnu say he wakes for one mouth only in any company, the hungriest, and that it is that one his ladle finds.\n\nHe walks a steward's round through the empty larders; his freed kitchen hands will not lift a hand for him. The wizards of the third company threw fire and frost at him to no effect, and its knights did the work, each stepping out when the ladle found him and another stepping in, so that there was always a quick sword before him. A knight of Caerwent said being struck was like being told off by his grandmother.\n\nAs he falls he says that someone must feed them: the prisoners, say the Inconnu; the sacrament, says the Church; the cold cauldron, say the bards. Caer Gothwaite's companies carry a heel of bread each and leave it on his empty shelves on the way down.",
@@ -96,6 +101,9 @@
     "text": "The steward of the stores of [Caer Sidi], who served the prisoners from the cauldron of Annwn that would not boil a coward's food. Fire, frost and prayer were his tools, and none of them touch him now; a blade does. As he falls he says that someone must feed them. See [Skeletal Sacristan]."
   },
   "bookPage": "In the larders of Caer Sidi there is nothing to eat and something guarding it. The Provisioner turned on us the moment we stepped among the empty shelves, and our wizards threw fire at him, and frost, and he did not so much as notice, though the shelves behind him had been dusted, and his blows made our swordsmen move as if through deep water. Our captain called for the other spells, the crushing and the withering and the lightning, and those he felt. When he fell he said that someone must feed them. I do not know who he meant. I hope it is not us.",
+  "bookPages": [
+    "A wax tablet from the ruin of the villa above the Caldey strand, read by the readers of Caer Gothwaite, who think, without proof, that the hand is the Provisioner's own in life. The steward's daybook. Wheat in the long barn, two hundred measures; barley, sixty; the salt fish counted twice and found right. Rations for the household as before, each by his work and none by his asking. The new shepherd reached past the cook for a second loaf at supper and was struck on the hand with the ladle, and will mend by the shearing. The kitchen boy who ran from the wolves at the fold eats cold tonight, by the master's rule, which I keep. I have put back a heel of bread for him all the same, on the shelf by the door, where he will find it after the lamps are out. This is not to be entered in the master's book."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} emptied the larders of Caer Sidi and ended the Spectral Provisioner in {minutes} minutes.",
     "loss": "The Spectral Provisioner turned {realm}'s raid away from the stores; {raidLeader} brought the wrong fire."

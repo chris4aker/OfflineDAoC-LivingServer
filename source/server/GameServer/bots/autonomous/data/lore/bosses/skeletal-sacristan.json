@@ -24,6 +24,11 @@
       "text": "The treasury keeper of the old province, the hour-long chase, the narrow stretch past the chapel door, the chaplain's key, Brother Huw and the clay cups are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the list of the vessels as Ennyn recited it and Brother Huw's entry for the key) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "The Skeletal Sacristan kept the vessels of the chapel of Caer Sidi on its high walk: the cups, the lamps, the vestments and the rim of the cauldron that nine maidens kept warm, lent by Arawn to feed his prisoners. The Inconnu say he was a keeper of the treasury of a great church of the old province who came to Annwn with his keys on his belt. His work was a round from the sacristy to the chapel and back, checking each vessel against his list, fast and never stopping; the prisoners in the yard set their hours by him. When the gaol rose the vessels were broken or carried off and the rim went down to the larders, and he went on with his round, checking for things that are no longer there.\n\nIn the first seasons Albion's companies chased him round the walk for an hour and came down too tired to climb, while the yard laughed; the galleries' sorcerers had long known their spells did little to him. Something went out of his round when the end of the world first fell. Now, struck, he stops and stands as a sacristan stands when someone reaches for the plate, and if the trouble leaves him alone long enough he goes back to his round untouched, because a sacristan does not leave a list half checked.\n\nThe captain of the third company did not chase him. She set her shields across the narrow stretch of the walk past the chapel door and let him come to her; her company's swords did the work, because his bones turned spells as a good lock turns a wrong key. When he fell, his keys fitted nothing on the walk. The company's priest kept one; it hangs in the sacristy at Caer Gothwaite and fits no lock there.\n\nThe Church calls him the one honest worker in Caer Sidi; the Inconnu, the last keeper who keeps his task exactly. His list grows with what companies leave on his walk. Caer Gothwaite's companies leave an unfired clay cup on his shelf.",
@@ -91,6 +96,9 @@
     "text": "The keeper of the chapel's vessels in [Caer Sidi], who still walks his round of the high walk checking for cups that are gone. Once he never stopped; now, struck, he stands. The captain of the third company waited for him on the narrow walk. See [Spectral Provisioner]."
   },
   "bookPage": "On the high walk we heard footsteps going round and round, always the same pace, always the same round, and Ennyn, our guide, said that the companies before ours had chased the Sacristan for an hour and never caught him. So we did not chase him. We stood across the walk in a wall and waited, and he came round to us, still looking for the vessels that are not there, and found us in his way instead. He seemed more puzzled than angry. When he fell he asked who would keep the vessels now. Nobody had an answer that would have comforted him.",
+  "bookPages": [
+    "The list of the vessels of the chapel on the high walk, as Ennyn of the Inconnu recited it to Brother Huw, sacristan of Caer Gothwaite, who wrote it down. Seven cups of the pale stone, for the prisoners' water. Nine lamps, one to a tier. Three vestments, the third unworn. One rim of the cauldron that the nine maidens warm, lent, to be returned. Ennyn says the list was longer once and grows longer still, because the keeper enters whatever is left on his walk: a gauntlet, a broken staff, a clay cup, unfired. Brother Huw has tried the key the third company brought down in every lock of this castle, the chapel's included, and it fits none of them. He has entered it at the foot of his own list of the sacristy, in the same form as the keeper's: one key, of the high walk, kept, to be returned."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} stood in the Sacristan's way and ended his round in {minutes} minutes.",
     "loss": "The Skeletal Sacristan walked on past {realm}'s raid; {raidLeader} could not stop him."
