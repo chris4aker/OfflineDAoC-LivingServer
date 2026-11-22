@@ -7,7 +7,7 @@ Hard rules (always zero):
   - a fact labelled "mythic" whose source is not a Herald page, darkageofcamelot.com or a Mythic note
   - a real company, site, product, patch, developer or game-software word in a player-visible field, or a game term
     in a narrative field (owner decision 8, 2026-11-21; the rules and the field map are in fourth_wall.py)
-Warnings (printed, exit 0) until fourth_wall.GAME_TERMS_FAIL is True, then failures:
+Failures while fourth_wall.GAME_TERMS_FAIL is True (on since 2026-11-22; with it False they print as warnings, exit 0):
   - a game term in ANY player-visible field, legends and bot lines included (owner 2026-11-21, "Rewrite that";
     fourth_wall.GAME_TERMS). The open list is docs/1.2.1/LINT-LEGENDS-HITS.md.
 Ratchets (may only go down; lower the number when you fix some):

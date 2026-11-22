@@ -54,8 +54,8 @@ review's findings and the work left to do.
      (December 2004: `avalon-city`, `morgana`, `caer-sidi`, `jordheim` twice) now read "Camelot Herald (2004)".
    - **Fight advice is in-world too** (owner, 2026-11-21, "Rewrite that"; this replaces the 2026-11-06 rule that kept
      levels, health, resists, timers, "mob" and "respawn" in the legend and bot lines). `fourth_wall.GAME_TERMS` (the
-     three writers' lists merged) checks every visible field. Its hits are warnings until `GAME_TERMS_FAIL = True`; the
-     open list is [LINT-LEGENDS-HITS.md](LINT-LEGENDS-HITS.md) (`python3 tools/lore/fourth_wall.py --report`). Map marks
+     three writers' lists merged) checks every visible field. `GAME_TERMS_FAIL = True` since the clean-up review
+     (2026-11-22, [REVIEW-GAME-TERMS.md](REVIEW-GAME-TERMS.md)): every hit fails the lint. The list (now empty) is [LINT-LEGENDS-HITS.md](LINT-LEGENDS-HITS.md) (`python3 tools/lore/fourth_wall.py --report`). Map marks
      and the chat words melee, casters, group, camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun and line of
      sight wait for the owner (`PENDING_OWNER_DECISION`; `BAN_PENDING = True` bans them).
    - `tools/lore/fourth_wall.py` holds the field map, the word lists and the exceptions; `lint_lore.py` fails CI on any

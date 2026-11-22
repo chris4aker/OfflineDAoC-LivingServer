@@ -180,7 +180,11 @@ class GameTermTests(unittest.TestCase):
             for kind in ("narrative", "advice", "chat", "chatfile"):
                 self.assertTrue([w for _, w in fourth_wall.hits(text, kind)], (kind, text))
 
-    def test_game_terms_warn_until_the_switch_is_thrown(self):
+    def test_game_terms_fail_now_that_the_switch_is_thrown(self):
+        # The clean-up review (2026-11-22) turned the switch on: the lore had 0 game-term hits.
+        self.assertTrue(fourth_wall.GAME_TERMS_FAIL)
+
+    def test_game_terms_warn_while_the_switch_is_off(self):
         import shutil, tempfile
         tmp = tempfile.mkdtemp()
         try:
@@ -188,9 +192,13 @@ class GameTermTests(unittest.TestCase):
             boss = {"id": "x", "name": "X", "legend": "He is level 50 and his adds respawn.", "botLines": {"briefing": ["pull him"]}}
             with open(os.path.join(tmp, "bosses", "x.json"), "w", encoding="utf-8") as fh: json.dump(boss, fh)
             empty_chat = os.path.join(tmp, "chat")
-            self.assertFalse(fourth_wall.GAME_TERMS_FAIL)
-            self.assertEqual(fourth_wall.problems(tmp, empty_chat), [])
-            warned = fourth_wall.warnings(tmp)
+            saved = fourth_wall.GAME_TERMS_FAIL
+            fourth_wall.GAME_TERMS_FAIL = False
+            try:
+                self.assertEqual(fourth_wall.problems(tmp, empty_chat), [])
+                warned = fourth_wall.warnings(tmp)
+            finally:
+                fourth_wall.GAME_TERMS_FAIL = saved
             self.assertTrue(any("legend" in w and "'level 5" in w for w in warned), warned)
             self.assertTrue(any("botLines.briefing[]" in w and "'pull'" in w for w in warned), warned)
             fourth_wall.GAME_TERMS_FAIL = True
@@ -198,7 +206,7 @@ class GameTermTests(unittest.TestCase):
                 self.assertEqual(sorted(fourth_wall.problems(tmp, empty_chat)), sorted(warned))
                 self.assertEqual(fourth_wall.warnings(tmp), [])
             finally:
-                fourth_wall.GAME_TERMS_FAIL = False
+                fourth_wall.GAME_TERMS_FAIL = saved
         finally:
             shutil.rmtree(tmp)
 
