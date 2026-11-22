@@ -36,12 +36,12 @@
       "source": "DataQuest 'Vigilant One Leaves -- Kill Task' (world data, read 2026-11-06)"
     },
     {
-      "text": "A Necht NPC named Uallach (40) gives the Block of Sanidon Sand item quest; Fainche (50) is Necht's champion trainer.",
+      "text": "A Necht NPC named Orlaith (40) gives the Block of Sanidon Sand item quest; Fainche (50) is Necht's champion trainer.",
       "provenance": "game",
       "source": "world data Mob table, region 181 (read 2026-11-06)"
     },
     {
-      "text": "Living Server lore: the Watchers as the rock's oldest sentinels, the tree dervishes' dance, the high valley of the Root's Sylvan, Necht's mantid friends, the Necht custom of naming the great ones before going north, and Uallach's book.",
+      "text": "Living Server lore: the Watchers as the rock's oldest sentinels, the tree dervishes' dance, the high valley of the Root's Sylvan, Necht's mantid friends, the Necht custom of naming the great ones before going north, and Orlaith's book.",
       "provenance": "original",
       "source": "Living Server"
     },
@@ -200,7 +200,7 @@
       "cut a cutthroat vine's root or it grows back by the next tide. [necht says|twisted evil quest]",
       "the sylvan valley west of necht is the root's. luaire and his three took olcasgean's side",
       "when the root is cut in galladoria the valley sylvan stand still for days, necht folk say",
-      "uallach in necht led the hundred and forty against olcasgean. [the first kill|legend]",
+      "orlaith in necht led the hundred and forty against olcasgean. [the first kill|legend]",
       "mel the dervish trades for watcher leaves. the watchers dont forgive it",
       "manus is the eldest dervish, up in the high clearing north east"
     ],
@@ -209,7 +209,7 @@
       "luaire is back in the valley [already|again]. [roots go down|told you]",
       "[word is|heard] killing vigilant ones makes the dervishes stop trading with you",
       "the wretched sanidons north of the rock go up to 52. [ouch|careful]",
-      "[heard|someone said] uallach walks to the shore every morning to watch the root's valley",
+      "[heard|someone said] orlaith walks to the shore every morning to watch the root's valley",
       "someone forgot to name the great ones and razorbeak found them [first|lol]",
       "[word is|heard] manus has been spinning slower this season",
       "the mantas over the shelf at dusk are [pretty|veterans' work]. dont stop to look",
@@ -228,14 +228,14 @@
     ]
   },
   "loremaster": {
-    "intro": "Vigilant Rock, the watching coast. [Necht] keeps the shore; the [Watchers] keep the shelf; the [dervishes] dance inland; the [vines] strangle; and the [Root's valley] climbs into the north-west hills. Ask after [Uallach] if you want the long version.",
+    "intro": "Vigilant Rock, the watching coast. [Necht] keeps the shore; the [Watchers] keep the shelf; the [dervishes] dance inland; the [vines] strangle; and the [Root's valley] climbs into the north-west hills. Ask after [Orlaith] if you want the long version.",
     "topics": {
       "Necht": "The furthest hall the realm keeps on the isle, a village of fishers, outlanders and Sylvan who chose the sea. Zrrazk of the Krrzck keeps its stables. Companies name the four great ones of Allta Fearann in its square before going north.",
       "Watchers": "The vigilant ones, old trees with eyes in their bark, set on the shelf before there were Sylvan to watch the sea. They saw the Fomorians come and could do nothing. Paud and Regan are the eldest.",
       "dervishes": "The tree dervishes, young trees that took to spinning and never stopped. Manus is their eldest, Twirl and Whirl dance below him, and Mel trades the Watchers' leaves. They will not go into Cothrom Gorge.",
       "vines": "The cutthroat vines, which strangle what they touch and root where they kill. Necht cuts their roots with a blessed knife, because a vine killed whole grows back by the next tide.",
       "Root's valley": "The high valley west of [Necht], where a household of Sylvan went up to stand with the Root: Laraida, Luaire, Rinne and Taiore and their kin, corrupt now. Jyrlan of Necht sends the young after Luaire. He comes back.",
-      "Uallach": "Of Tir na Nog, who led the hundred and forty into the hollow and first brought the Root down. She lives in [Necht] now, within sight of the [Root's valley], and walks to the shore every morning to keep the watch the trees could not.",
+      "Orlaith": "Of Tir na Nog, who led the hundred and forty into the hollow and first brought the Root down. She lives in [Necht] now, within sight of the [Root's valley], and walks to the shore every morning to keep the watch the trees could not.",
       "shelf": "The grey stone shelf of the coast, where the [Watchers] stand, and where the sea sends shrouders, shrillers, mantas and sanidons ashore.",
       "mantids": "The mantids of Vigilant Rock's western heights are defenders of the road north. The Krrzck of the edge are friends of [Necht]; Zrrazk keeps its stables.",
       "Fainche": "Necht's champion trainer. The Domnann wardens say she was the young warden who mourned Kierac in the tower and began the custom of saying his name before the end. She teaches the realm's champions now, at the edge of the sea.",
@@ -244,7 +244,7 @@
     }
   },
   "book": {
-    "title": "What the Rock Watches, by Uallach of Necht",
+    "title": "What the Rock Watches, by Orlaith of Necht",
     "pages": [
       "I led a hundred and forty into the hollow under Galladoria when I was young, and came out with fewer, and the realm wrote my name down in Tir na Nog. Some of the names on that roll were older than mine and better. That was the first time. The Root came back. When I was too old to go down again I came here, to Necht, to the shore below the Watchers, because I wanted to live somewhere the island had tried to keep watch and failed, and see whether an old woman could do better than a row of trees. So far it is about even.",
       "The Watchers stand on the shelf in rows and look at the sea. The Sylvan say they were set there before the Sylvan woke. They saw the Fomorians come ashore in the Vale and could not move, because they were made to see and not to do. Lichen grows on their feet and the gulls perch on them. Paud and Regan stand apart, the eldest, and when I asked them once what they were told to watch for, they turned their eyes on me, slowly, and then back to the water, and the fishers say that is the most anyone has ever got out of them.",

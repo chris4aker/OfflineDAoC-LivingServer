@@ -560,12 +560,12 @@
       "numeric": true
     },
     {
-      "id": "uallach-hundred-and-forty",
-      "fact": "Uallach of Tir na Nog (renamed from Orlaith in the NPC pass, a gamebot name) led the hundred and forty into Galladoria.",
+      "id": "orlaith-hundred-and-forty",
+      "fact": "Orlaith of Tir na Nog, who lives in Necht now (the real 1.65 NPC there, so she keeps her name though gamebots share it), led the hundred and forty into Galladoria.",
       "source": "Living Server lore; HEROES.md decision 11",
       "kind": "value",
       "scope": {
-        "sentence": "(?-i:\\bUallach\\b)"
+        "sentence": "(?-i:\\bOrlaith\\b)"
       },
       "claim": [
         "\\bhundred and (?P<v>[a-z-]+)\\b"
