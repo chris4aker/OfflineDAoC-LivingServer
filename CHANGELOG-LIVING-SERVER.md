@@ -79,6 +79,16 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
+  bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
+  Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,
+  casters and healers outside his target's party keep clear of the hammers that follow his styles, 500 around his
+  target. King and Queen are unchanged.
+- **Trollheim's stall clock after a wipe (#411, tests only).** The raid's hour without progress kept Nosdoden's low from
+  before the wipe and did not count the retry's pull, so a retry that came late in the hour was ended as "Timed out".
+  The retry's pull and, once the boss is back at full, its own low now count, once per wipe
+  (`REALM_RAID_STALL_CLOCK why=retry|low_reset`). `REALM_RAID_STALLED` now says what the route was doing
+  (`status=`, `living=`, `retries=`).
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.

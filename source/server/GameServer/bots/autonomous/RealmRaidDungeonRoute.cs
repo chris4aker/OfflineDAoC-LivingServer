@@ -702,9 +702,20 @@ namespace DOL.GS
             _targetProgressTick = now;
         }
 
+        /// <summary>Pulls of an encounter after a counted wipe (the raid's retry; once per wipe): the raid's stall rule counts
+        /// each as progress (RealmRaidRecruitmentPolicy.WatchStep, #411).</summary>
+        public int RetriesBegun { get; private set; }
+        // A counted wipe arms the next pull as a retry.
+        private bool _retryArmed;
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
             _skirmishHeld = false;
+            if (_retryArmed)
+            {
+                _retryArmed = false;
+                RetriesBegun++;
+            }
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
@@ -777,6 +788,7 @@ namespace DOL.GS
                 return true;
             }
             _regrouping = true;
+            _retryArmed = true;
             _regroupSince = _musterSince = now;
             _targetProgressTick = now;
             return true;
@@ -2733,6 +2745,7 @@ namespace DOL.GS
                 return;
             }
             _regrouping = true;
+            _retryArmed = true;
             _regroupSince = _musterSince = now;
             _targetProgressTick = now;
         }
