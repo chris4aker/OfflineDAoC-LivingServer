@@ -379,6 +379,13 @@ namespace DOL.UnitTests
             Assert.That(won[("albion", 93, CureRule.Round2)], Is.GreaterThanOrEqualTo(4));
             Assert.That(won[("albion", 106, CureRule.Round1)] + won[("hibernia", 106, CureRule.Round1)], Is.LessThanOrEqualTo(5),
                 "round 1 with the real curers: Albion and Hibernia still lose at 106");
+            // The Python mirror's exact numbers (sweep 7b, round 1, round 2), so the PR's and the issues' tables are this test's.
+            string mirror = string.Join("; ", new[] { "midgard", "albion", "hibernia" }.SelectMany(realm => RoesiaSizes.Select(n =>
+                $"{realm} {n}: {won[(realm, n, CureRule.Sweep7b)]} {won[(realm, n, CureRule.Round1)]} {won[(realm, n, CureRule.Round2)]}")));
+            Assert.That(mirror, Is.EqualTo(
+                "midgard 64: 0 0 0; midgard 80: 0 2 1; midgard 93: 0 6 13; midgard 106: 0 9 16; midgard 128: 0 15 16; " +
+                "albion 64: 0 0 0; albion 80: 0 1 2; albion 93: 0 0 7; albion 106: 0 0 15; albion 128: 0 4 16; " +
+                "hibernia 64: 0 0 0; hibernia 80: 0 0 3; hibernia 93: 0 0 13; hibernia 106: 0 2 16; hibernia 128: 0 4 16"));
         }
 
         // =============================================================================================================
@@ -897,6 +904,17 @@ namespace DOL.UnitTests
                                                   $"{r.Min(x => x.Minutes):0.0}-{r.Max(x => x.Minutes):0.0} min (mean {r.Average(x => x.Minutes):0.0}), " +
                                                   $"at most {r.Max(x => x.MaxTrees)} trees");
                         }
+            string mirror = string.Join("; ", new[] { 50, 80, 104 }.SelectMany(n => new[] { 5.0, 8.0, 15.0 }.SelectMany(hit =>
+                new[] { 50.0, 80.0, 120.0 }.Select(dps =>
+                    $"{n}/{hit:g}/{dps:g}: {won[(n, hit, dps, GkRule.Before)]} {won[(n, hit, dps, GkRule.Round1)]} {won[(n, hit, dps, GkRule.Round2)]}"))));
+            TestContext.WriteLine(mirror);
+            // The Python mirror's exact numbers, so the PR's and the issues' tables are this test's.
+            Assert.That(mirror, Is.EqualTo(
+                "50/5/50: 0 0 0; 50/5/80: 0 0 0; 50/5/120: 0 0 8; 50/8/50: 0 0 0; 50/8/80: 0 0 0; 50/8/120: 0 0 0; " +
+                "50/15/50: 0 0 0; 50/15/80: 0 0 0; 50/15/120: 0 0 0; 80/5/50: 0 0 0; 80/5/80: 0 0 8; 80/5/120: 0 0 8; " +
+                "80/8/50: 0 0 0; 80/8/80: 0 0 8; 80/8/120: 0 0 8; 80/15/50: 0 0 0; 80/15/80: 0 0 0; 80/15/120: 0 0 0; " +
+                "104/5/50: 0 0 3; 104/5/80: 0 0 8; 104/5/120: 0 4 8; 104/8/50: 0 0 0; 104/8/80: 0 0 8; 104/8/120: 0 3 8; " +
+                "104/15/50: 0 0 0; 104/15/80: 0 0 8; 104/15/120: 0 2 8"));
             int Sum(int n, GkRule rule) => won.Where(w => w.Key.Item1 == n && w.Key.Item4 == rule).Sum(w => w.Value);
             Assert.That(Sum(50, GkRule.Before) + Sum(80, GkRule.Before) + Sum(50, GkRule.Round1) + Sum(80, GkRule.Round1), Is.Zero,
                 "ccba364: the 1.2 catalog and #432 lose");

@@ -379,8 +379,11 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheGreenKnightsTreesAreShotAndHisAreaHitIsSteppedOutOf()
+        public void TheGreenKnightsCastersAndHealersStackClearOfHisAreaHitAndLeaveTheTreesAlone()
         {
+            // 1.2.1 round 2 (#412; tests only): a tree that hits a caster or healer silences it and a shot pulls a tree onto
+            // the shooter, so the casters, archers and healers stand together 750 from him, away from his target (clear of
+            // Might of the Forest's 500 around it), and only area casters hit the trees.
             UseRegion(1);
             var gk = Npc<OFGreenKnight>(592359, 418245, 4988);
             var tank = Npc<Raider>(592500, 418245, 4988);
@@ -388,12 +391,17 @@ namespace DOL.UnitTests
             var tree = Npc<GKTrees>(591000, 418245, 4988);
             var healer = Npc<Raider>(592700, 418245, 4988);
             var wizard = Npc<Raider>(591300, 418245, 4988);
-            var live = new List<GameNPC> { gk, tank, tree, healer, wizard };
+            var stacked = Npc<Raider>(591620, 418245, 4988);
+            var live = new List<GameNPC> { gk, tank, tree, healer, wizard, stacked };
             var step = Decide(healer, gk, live, Cleric);
-            Assert.That(step.Action, Is.EqualTo(T.BotAction.Reposition), "Might of the Forest: 500 around his target");
-            Assert.That(Flat(step.StandAt.Value, At(tank)), Is.EqualTo(500 + T.SpreadStepOut).Within(1));
-            var shoot = Decide(wizard, gk, live, Wizard, shoots: true);
-            Assert.That((shoot.Action, shoot.Target), Is.EqualTo((T.BotAction.Retarget, (GameNPC)tree)), "the casters kill his trees");
+            Assert.That(step.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(Flat(step.StandAt.Value, At(gk)), Is.EqualTo(T.GreenKnightStackDistance).Within(1));
+            Assert.That(Flat(step.StandAt.Value, At(tank)), Is.GreaterThan(500), "clear of Might of the Forest around his target");
+            Assert.That(step.StandAt.Value.X, Is.LessThan(gk.X), "on the side away from his target");
+            var walk = Decide(wizard, gk, live, Wizard, shoots: true);
+            Assert.That((walk.Action, walk.StandAt), Is.EqualTo((T.BotAction.Reposition, step.StandAt)), "one spot for all of them");
+            var shot = Decide(stacked, gk, live, Wizard, shoots: true);
+            Assert.That((shot.Action, shot.Target), Is.EqualTo((T.BotAction.None, (GameNPC)gk)), "no single shot at a tree: on him");
         }
 
         [Test]
