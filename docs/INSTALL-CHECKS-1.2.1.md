@@ -1,6 +1,7 @@
 # The 1.2.1 install checks: what CI covered, the results, and what still needs the owner's PC
 
-1.2.1 has the same three install checks as 1.2 ([INSTALL-CHECKS-1.2.md](INSTALL-CHECKS-1.2.md)), with one change:
+1.2.1 ships one edition, as 1.2 did: the classic classes on the original client, one Setup exe and one zip (owner rule,
+AGENTS.md). It has the same three install checks as 1.2 ([INSTALL-CHECKS-1.2.md](INSTALL-CHECKS-1.2.md)), with one change:
 the update now starts from **1.2**, the release players have, as well as from Beta 1.1.4:
 1. **an update over 1.2** (and over 1.1.4) through Setup, with characters and settings kept;
 2. **a new install** of 1.2.1, as a player gets it from Living Server's downloads;
@@ -26,6 +27,16 @@ run on the owner's PC.
 ## Results
 
 Each result names its commit. The branch is `release/1.2.1-dryrun` (PR #435).
+
+**Commit `71679d8`** (fix/1.2.1 at `0c98501`: every raid PR and the filled raid results merged):
+- build-and-test, push: [run 45068138261](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45068138261). Success, with the server suite at 9,294 passed, 0 failed.
+  - `versions` passed, and so did `candidate-install / setup`, `fresh` (with `smoke` and `classoff`), `update114` and `update12`.
+- release dry run, tag `v1.2.1`, `e2e` on, package from run 45068138261:
+  [run 45071075809](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45071075809). Success.
+  - Its first attempt was cancelled by a GitHub Actions internal error ("GitHub Actions has encountered an internal
+    error when running your job"). The failed jobs were re-run (attempt 2), and every job passed: `plan`, `build`,
+    `setup-newest`, `launcher-update`, `e2e`, `e2e-resume`, `e2e-freshcopy`, `e2e-ui` and `dry-run`. `publish` was skipped.
+  - The notes passed publish-release's placeholder check (no markers left).
 
 **Commit `8a6d55b`** (fix/1.2.1 up to #431 and #433 merged; an earlier tip):
 - build-and-test, push: [run 45053310595](https://github.com/chris4aker/OfflineDAoC-LivingServer/actions/runs/45053310595). Success, with the server suite at 9,263 passed, 0 failed.
