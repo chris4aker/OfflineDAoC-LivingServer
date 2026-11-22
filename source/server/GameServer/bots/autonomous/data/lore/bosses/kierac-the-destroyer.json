@@ -61,13 +61,13 @@
     "briefing": [
       "kierac is phase one. when he dies the master of pain [appears in his room|shows up by the cells]. [save your big arts|dont blow it all on kierac]",
       "kierac keeps a bladeturn up, [open with something cheap|small fast hits strip it]",
-      "kierac is half the fight. [save cooldowns|dont blow it all]",
+      "kierac is half the fight. [save the once-a-fight arts|dont blow it all]",
       "master of pain shows up in his own room fresh and whole. [rest up first|renew the chants before we go in]"
     ],
     "aftermathWin": [
       "kierac and his passenger both down. [gross|nice]",
       "kierac at peace, master of pain dead. [both|two for one]",
-      "saved cooldowns for the second half like we said. [worked|grats]",
+      "saved the big arts for the second half like we said. [worked|grats]",
       "poor kierac. [he never knew|sad one]"
     ],
     "aftermathLoss": [
