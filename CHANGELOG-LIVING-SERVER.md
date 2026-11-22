@@ -43,6 +43,13 @@ or run where it was written; CI on pull request #398 is the first build.
   cap of 12 per player and 10 in one spot no longer applies to players), and a Theurgist's pets have no cap either.
   Companions and gamebots keep their limits.
 
+- **Bot parties take one more on the way (#423).** A bot party that has set off with a seat free looks for the role it
+  lacks (healer, else tank, else damage) two minutes after leaving and then every ten minutes, for five minutes each
+  time: a fitting free gamebot, or you by /lfg or a tell. Its "lfm" in /lfg is true again (`BOT_LED_RECRUIT ...
+  kind=open_seat`). Raid, RvR and regrouping parties never do this.
+- A click on a bot is logged (`PLAYER_CLICK_TARGET ... result=`), so a click that doesn't select one can be traced
+  (#424; no server-side cause found, no gameplay change).
+
 **Rewards and loot**
 - **Enemy gamebot kills give experience (#396).** They only ever paid realm points. A kill now pays what a player kill
   pays: experience for a player of its level (shared by damage, capped at 125% of your own worth, with the keep bonus)
