@@ -62,9 +62,9 @@
   },
   "botLines": {
     "briefing": [
-      "oghamist has a huge energy blast. [spread way out|everyone spread], interrupt him, rebuff str and con",
+      "oghamist has a huge energy blast. [spread way out|everyone spread], interrupt him, chant strength and constitution back up",
       "spread way out, his energy blast is huge. [far|very far]",
-      "rebuff str and con, [buffers|watch it]",
+      "renew strength and constitution, [chanters|watch it]",
       "his words come in a pattern, [blast, wither, cut|watch for the blast]"
     ],
     "aftermathWin": [
@@ -74,9 +74,9 @@
       "the stone stopped glowing. [weird|done]"
     ],
     "aftermathLoss": [
-      "everyone stood together and the energy blast [hit all of us|wiped the group]",
+      "everyone stood together and the energy blast [hit all of us|killed the whole group]",
       "stood together, blasted together. [spread|ugh]",
-      "debuff went unrebuffed. [tank folded|buff]",
+      "his curse went unanswered. [shield folded|chant it back]",
       "his ranged cut killed the cleric. [watch it|heal]"
     ],
     "rumour": [
