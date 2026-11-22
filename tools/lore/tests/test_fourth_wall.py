@@ -128,6 +128,35 @@ class GameTermTests(unittest.TestCase):
                 if kind == "narrative" or "bowshot" not in text and "pulls it" not in text:
                     self.assertEqual(self.words(text, kind), [], (kind, text))
 
+    def test_levels_in_words_and_camp_slang_are_caught(self):
+        # The clean-up review (2026-11-22): what the first lists missed.
+        for text in ["draugr and mora, twenties", "teens to twenties", "thirties and forties", "[four fifties|a full group]",
+                     "a fifty-ish troll", "sixty-plus only", "the mid-forties crowd", "a forty could do it", "any thirty.",
+                     "it heals itself at thirty", "burst it at thirty when it heals", "easmarach at thirty [runs back",
+                     "At sixty he breaks", "lowbie stuff", "not for lowbies", "newbie camps", "noobs", "a noobie",
+                     "complains about twinks", "timed out again", "the lesser named nearby", "Tier A named", "tier C",
+                     "every Midgard character starts"]:
+            for kind in ("advice", "chat"):
+                self.assertTrue(self.words(text, kind), (kind, text))
+        for text in ["a fifty-ish troll", "sixty-plus only", "lowbie stuff", "Tier A named", "timed out again"]:
+            self.assertTrue(self.words(text, "narrative"), text)
+        # Real numbers, ages and plain English stay.
+        for text in ["twenty-eight fish", "keep it under fifty", "at fifty or more he gets stronger", "the thirty lords",
+                     "walked out at fifteen", "about thirty-five paces", "a sergeant at twenty-two", "the young, in their twenties,",
+                     "the twenty-six students", "every fifteen to twenty-five seconds", "the second tier of the fortress",
+                     "Saxe about thirty), so", "a man of good character", "she said it at thirty paces"]:
+            for kind in ("narrative",) + (("advice", "chat") if "twenties" not in text and "character" not in text else ()):
+                self.assertEqual(self.words(text, kind), [], (kind, text))
+
+    def test_the_spraggonoll_boss_and_a_bell_rope_pass(self):
+        for text in ["[heard|someone said] the spraggonolls only know one word of trade tongue. its boss",
+                     "boss is a spraggonoll for a seasoned group in the roofless barn",
+                     "the vetusta abbey bell rings every hour and nobody pulls the rope", "she pulled the bell-rope"]:
+            for kind in ("narrative", "advice", "chat"):
+                self.assertEqual(self.words(text, kind), [], (kind, text))
+        self.assertTrue(self.words("the boss is in the barn", "chat"))
+        self.assertTrue(self.words("pull him to the rope bridge", "chat"))
+
     def test_pending_words_pass_until_the_owner_bans_them(self):
         for text in ["Krogen (about 343k/658k)", "near 21k, 40k", "(62k, 48k)", "melee only", "the casters", "a full group",
                      "the orc camp", "the quest", "keep mana", "lol", "grats", "gz", "the dagger dropped", "poor loot",

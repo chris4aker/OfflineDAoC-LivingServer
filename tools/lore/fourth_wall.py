@@ -83,6 +83,19 @@ GAME_TERMS = [
     ("level", r"\b(?:low|mid|high|early|late)[- ]?(?:\d0s|teens|twenties|thirties|forties|fifties|sixties|seventies)\b"
               r"|\bin the (?:teens|twenties|thirties|forties|fifties|sixties|seventies)\b|\b[1-9]0s\b(?! ?(?:sec|min))"
               r"|\b\d+ish\b|\b\d+\+|\(\d+(?:[-–]\d+)?\)", I),
+    # Levels in words (the clean-up review, 2026-11-22): "twenties", "teens to twenties", "fifty-ish", "sixty-plus",
+    # "four fifties", "a forty could solo it", "heals at thirty" (a share of health in tens). A head count stays: "twenty-
+    # eight fish", "keep it under fifty", "at fifty or more he gets stronger", "the thirty lords", "at fifteen" (an age).
+    ("level", r"\b(?:teens|twenties|thirties|forties|fifties|sixties|seventies|eighties)\b", I, RAIDERS),
+    ("level", r"\b(?:ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|"
+              r"fifty|sixty|seventy|eighty|ninety)(?:-(?:one|two|three|four|five|six|seven|eight|nine))?[- ]?(?:ish|plus)\b", I),
+    ("level", r"\b(?:a|an|any|lone|solo) (?:fifteen|twenty|thirty|forty|fifty|sixty|seventy|eighty)(?:-(?:one|two|three|four|"
+              r"five|six|seven|eight|nine))?\b(?= (?:can|could|will|would|should|alone|duo|solo|healers?|casters?|tanks?|"
+              r"needs?|or)\b|\s*[.,!?;)\]|]|\s*$)", I, RAIDERS),
+    ("health", r"\b(?:heals?|healed|itself|himself|herself|runs?|ran|retreats?|flees?|held|hold|burst \w+|it|he|she) at (?:ten|"
+               r"twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\b(?! (?:paces|seconds|sec|or|and)\b)"
+               r"|\bat (?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\b(?=\s*(?:[.,;]|\[|$|(?:once|when|it|he|she|like)\b))", I, RAIDERS),
+    ("slang", r"\bcharacters?\b", I, RAIDERS),                       # a man of good character stays in a story
     ("xp", r"\bexperience\b", I, RAIDERS),                        # "in my experience" stays in a story
     ("xp", r"\bxp\b|\bexp\b|\bexperience points\b|\brealm points?\b|\brps?\b|\bbounty points?\b|\brespec(?:s|ced|cing)?\b", I),
     ("spawn", r"\b(?:re|de)spawn\w*\b|\brepop\w*\b|\bspawn ?points?\b", I),
@@ -130,6 +143,10 @@ GAME_TERMS = [
               r"|\bscreenshots?\b|\bcampers?\b|\bcamping (?:zone|spot|group)s?\b|\bports? (?:you|him|her|them|us|everyone|in|out|round|back)\b"
               r"|\bported\b|\bport\)|\bteleport\w*\b", I),
     ("slang", r"\bFG\b", 0),
+    # The clean-up review (2026-11-22): the camp chat's words for the young and the catalog's foe tiers.
+    ("slang", r"\blowbies?\b|\blow-?levels?\b|\bnewbies?\b|\bnewbs?\b|\bnoob(?:s|ies?)?\b|\btwinks?\b|\btwinked\b|\btimed out\b"
+              r"|\blesser named\b", I),
+    ("slang", r"\b[Tt]ier [ABC]\b|\bTIER [ABC]\b", 0),
     ("slang", r"\bwip(?:e|es|ed|ing)\b(?! (?:your|their|his|her|my|our) (?:boots|feet|brow|blades?|eyes|face|hands|mouth)\b)"
               r"|\bfactions?\b|\bgrind(?:s|ing)? (?:him|her|it|them|xp|levels?|mobs?|there|here)\b|\b(?:a|the) grind\b"
               r"|\bfarm(?:s|ed|ing)? (?:him|it|them|xp|coin|gold|loot)\b|\bfarming\b"
@@ -152,6 +169,10 @@ GAME_TERM_EXCEPTIONS = [
     r"\b(?:blue|grey|gray|red) to the\b|\bstunning (?:blow|breath)\b|\bthe epic of\b|\b(?:pit|shield|gang|mine) boss(?:es)?\b|\bwho is boss\b"
     r"|\bhave bosses\b",                                                  # the goblins of the mine and their pit bosses
     r"\baithne con\b",                                                    # a loremaster's keyword for Aithne Con
+    # The spraggonoll named Boss in the Silvermine's roofless barn (his name is the one trade word his kind learned),
+    # and a bell rope (the clean-up review, 2026-11-22).
+    r"\bits boss\s*$|^boss is a spraggonoll\b|\bcall(?:s|ed)? (?:their|its|his) (?:leader|chief) Boss\b",
+    r"\bpull(?:s|ed|ing)? the (?:bell[- ]?)?rope\b",
 ]
 # PENDING_OWNER_DECISION: chat words and map marks the writers kept or argued over; the owner has not ruled (2026-11-21).
 # They pass for now. To ban them, set BAN_PENDING = True: they then count as GAME_TERMS.
