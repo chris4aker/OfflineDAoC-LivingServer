@@ -298,7 +298,7 @@ internal sealed class BotCorpseTarget : Scenario
             ScenarioContext.Check(fell!.Type == 0, $"removed with type {fell.Type}");
             return $"RemoveObject type {fell.Type}";
         });
-        foreach (var who in new[] { player, gm })
+        foreach (var who in new[] { gm, player })
         {
             await ctx.Step($"{who.Label}: /target {helper.Name} selects the dead bot", async () =>
             {
@@ -307,7 +307,17 @@ internal sealed class BotCorpseTarget : Scenario
                 var said = await who.WaitForChatAsync(l => l.Text.Contains("You target ", StringComparison.Ordinal) ||
                     l.Text.StartsWith("You don't see ", StringComparison.Ordinal), ctx.Options.NetTimeout, mark)
                     ?? throw new PlaytestException("no answer to /target");
-                ScenarioContext.Check(said.Text.Contains("You target " + helper.Name, StringComparison.Ordinal), said.Text);
+                if (!said.Text.Contains("You target " + helper.Name, StringComparison.Ordinal))
+                {
+                    // Once more, 2 s on, and what the server logged about the bot, for the report.
+                    await Task.Delay(2000);
+                    int again = who.Mark();
+                    who.Command("/target " + helper.Name);
+                    var second = await who.WaitForChatAsync(l => l.Text.Contains("You target ", StringComparison.Ordinal) ||
+                        l.Text.StartsWith("You don't see ", StringComparison.Ordinal), ctx.Options.NetTimeout, again);
+                    var logged = ctx.Server?.ConsoleLinesWith(helper.Name).TakeLast(8).Select(l => l.Length > 220 ? l[..220] : l) ?? Enumerable.Empty<string>();
+                    throw new PlaytestException($"{said.Text} (2 s later: {second?.Text ?? "no answer"}); server lines: {string.Join(" || ", logged)}");
+                }
                 var changed = await who.WaitForOrNullAsync<TargetChanged>(t => t.ObjectId == helper.ObjectId, TimeSpan.FromSeconds(5), mark);
                 ScenarioContext.Check(changed != null, $"no ChangeTarget to object {helper.ObjectId}");
                 return $"{said.Text} ChangeTarget {changed!.ObjectId}";
