@@ -47,7 +47,7 @@
     }
   ],
   "story": "Avartack was the son of Áed Dub, the ferryman who kept the ford of the Erne below the Breifine heights, and he grew up fighting in the water, where a man cannot step back or aside but only reach. He was sent as a fosterling to the eldest keener's house by the lake to be raised beside the boy who became Caimheul, and on the day Caimheul was made chieftain at the stone he named his foster-brother his champion.\n\nFor twenty years Avartack held the fords of Breifine in single combat, as the old hill wars were fought, and never lost in the water. He kept the law of the water: the ford belongs to whoever faces it, and a turned back may be struck down without shame. A force went out of him into the man he faced, through mail, again and again, and reached even a champion who stood off on the far bank; the hill country still says a man in a bad place is only as long-lived as the woman on his bank. No binding-song made him sleep at his post, and the druids' burning words went into him like rain into thatch. The youngest keener sang for every blade he broke.\n\nHis oath, I will stand before you until you have no need of me, had no word in it to end the watch. On the day Caimheul died on the reed-flats, Avartack was holding the ford of the Erne without a death on either side, and came home to the bier. He went down under the hill first and stood at his lord's feet in the grave-chamber, facing the door, until he died on his feet in the third night, so that when the keeners looked back on the fourth he did not need to stand up.\n\nHe holds the floor before his lord's hall still, which he takes for the ford: safe in the grave-peace beyond it, and whole again the moment nobody stands against him. Diarmait of Bri Leith's company came at him in a ring and broke at the back. Echna of Ardee, a ferryman's daughter, faced him and never turned, with her sister on her bank and her company at his sides and back, and said the old word that ends a watch over him when he fell. It did not hold, but the custom did, and the ferrymen of the Erne call the word over the water at night.",
-  "legend": "Fight him on his floor. Drag him off it and he takes no damage and walks home at full health, and if everyone drops off his hate list he resets to full. No mezz, root or stun lands on him. Avartack's Force (300 body damage, instant, every 15-25 seconds, reaches 1,500) always goes at whoever he is fighting, so the main tank eats it all night: heals go on the tank, not the cloth. Never let his target turn away from him. If his target shows him its back he switches to a back style that hits far harder, so the tank faces him the whole fight and nobody runs across his front. Everyone else hits him from the sides and back; he only swings at the one he faces, but his reach on that one is longer than it looks. Melee does better on him than spells: he shrugs off more magic than steel. Hill-country superstition: salute him before the pull, champion to champion, and say 'the ford is held' over him when he drops. The Ardee tanks who do it swear he fights them cleaner.",
+  "legend": "Fight him on his floor. Drag him off it and he takes no damage and walks home at full health, and if nobody is left fighting him he goes home healed. No trance, binding or stunning blow lands on him. Avartack's Force (a hard blow to the body, a third of a robed caster's strength, instant, every fifteen to twenty-five seconds, reaching a bowshot) always goes at whoever he is fighting, so the shield-bearer who holds him eats it all night: heals go on the shield-bearer, not the cloth. Never let the one he fights turn away from him. If that one shows him their back he switches to a back style that hits far harder, so the shield-bearer faces him the whole fight and nobody runs across his front. Everyone else hits him from the sides and back; he only swings at the one he faces, but his reach on that one is longer than it looks. Melee does better on him than spells: he shrugs off more magic than steel. Hill-country superstition: salute him before he is drawn, champion to champion, and say 'the ford is held' over him when he drops. The Ardee shield-bearers who do it swear he fights them cleaner.",
   "yells": {
     "aggro": [
       "No one passes. My lord is resting.",
@@ -91,23 +91,23 @@
   },
   "botLines": {
     "briefing": [
-      "avartack's force goes on whoever he is hitting, every 20 sec or so. [heal the tank|keep the tank topped]",
-      "main tank faces him the whole time. if his target turns its back he [back styles|hits way harder]",
-      "fight him on his floor. off it hes immune and [walks home full|resets]",
-      "no cc on him, [dont bother mezzing|hes cc immune]. melee does more than spells on him",
-      "everyone but the tank on his sides and back. [he only swings at who hes facing|stay off his front]"
+      "avartack's force goes on whoever he is hitting, every 15 to 25 sec. [heal the shield|keep the shield topped]",
+      "main shield faces him the whole time. if whoever hes on turns their back he [back styles|hits way harder]",
+      "fight him on his floor. off it hes immune and [walks home full|goes home]",
+      "nothing holds him, [dont bother with mez|no trance no root no stun]. melee does more than spells on him",
+      "everyone but the shield on his sides and back. [he only swings at who hes facing|stay off his front]"
     ],
     "aftermathWin": [
       "avartack down. [someone say the ford is held|the ford is held]",
-      "tank never turned once. [textbook|thats how you do it]",
-      "the force hit the tank all fight and the heals kept up. [grats druids|nice heals]",
+      "shield never turned once. [textbook|thats how you do it]",
+      "the force hit the shield all fight and the heals kept up. [grats druids|nice heals]",
       "the champion is down, caimheul next. [go|on we go]"
     ],
     "aftermathLoss": [
-      "tank turned to run and got [back styled|cut in half]. never turn on him",
-      "the force wore the tank down, [heals fell behind|too slow on the tank]",
+      "the shield turned to run and got [back styled|cut in half]. never turn on him",
+      "the force wore the shield down, [heals fell behind|too slow on the shield]",
       "dragged him off his floor and he [went immune|took no damage] and walked home full",
-      "nobody picked him up when the tank died and he [reset|went home full]"
+      "nobody picked him up when the shield died and he [went home|went home full]"
     ],
     "rumour": [
       "[heard|someone said] avartack was the chieftain's champion. still guarding him, all these years",

@@ -37,7 +37,7 @@
     }
   ],
   "story": "A crop disease does not arrive all at once. It comes in stages, and the farmers of Hibernia know the names: the fire blight that scorches the leaves, the late blight that rots the root, and the blight in the flesh that the old women do not name at all. The earth of the Cursed Forest learned all three when the court bargain broke there, and something in that earth learned to be them. The sickness has a will.\n\nIt comes up out of the ground in the same order, as if something in the soil sent them: eight fire blights first, smouldering things; then four late blights; then two of flesh, and that is when the wise go home. And if a band is foolish enough to kill all of those, the blight gathers the bones of everything it has ever killed out of the soil in a whirling cloud of gore and stands up as a single giant skeleton, and turns its dreadful stare on whoever is left. The Sylvan call that its true form. Nobody has asked them how they know. The farmers of Ardee burn their fields when they see the first sign of fire blight, and pray it never reaches the third.\n\nThe druids of Lough Gur keep an older account of sickness than the farmers' list, and they give it whenever the blight comes up in talk. When the Tuatha Dé Danann fought the Fomorians at the second Mag Tuired, their physician Dian Cécht had a well called Sláine, and he and his son Octriuil and his daughter Airmed sang spells over it. The Tuatha's dead and dying were thrown into it as they fell, and they came out of it whole and went back to the battle the next day. When the Fomorians learned of the well, Ochtriallach son of Indech had every man of them carry a stone from the river Drowes and throw it in, until the well was a cairn.\n\nThere had been a quarrel in Dian Cécht's house before that. His son Miach was the better physician, and the father killed him for it, and out of Miach's grave grew three hundred and sixty-five herbs, one for each joint and sinew of the body. Airmed spread her cloak and laid them out on it in order, each by the part it healed. Her father came and mixed them all together, so that no one should know their right use.\n\nThe druids think the blight of the Cursed Forest is something like Sláine run backward. The court wood's earth was a garden, kept and sung over, and when the bargain broke the singing stopped and the soil kept only the habit of giving back what was put into it. Into the well went the wounded, and out came the whole. Into the wood's earth went everything the wood had killed, and out of it comes the blight, stage by stage, fire and rot and flesh, and last of all the bones, gathered into a body that does not know it is dead. Derbáil of Ardee's grandmother had never heard of Sláine, and put it in fewer words: the ground gives back what it is given. The warriors who break the skeleton find the earth clean for a season. Then the first fire blight shows on the leaves again, and the Ardee farmers reach for their torches.",
-  "legend": "It is a gauntlet, not a fight: eight fire blights, four late blights, two flesh blights, then Blight itself. Pace the healers and the mana across all four waves. Its true form has a dreadful stare; stay spread and do not pull other things in the forest meanwhile. Pace the healers and mana across all four stages; the skeleton is the hardest and comes last. Superstition: burn a pinch of salt before you start, as the Ardee farmers do before harvest. Nicknames: 'the four', 'the rot'. Ardee farmers burn a pinch of salt before the realm's bands go in, and the bands have taken up the habit.",
+  "legend": "It is a gauntlet, not a fight: eight fire blights, four late blights, two flesh blights, then Blight itself. Pace the healers and the mana across all four waves. Its true form has a dreadful stare; stay spread and do not draw other things in the forest meanwhile. Pace the healers and mana across all four stages; the skeleton is the hardest and comes last. Superstition: burn a pinch of salt before you start, as the Ardee farmers do before harvest. Nicknames: 'the four', 'the rot'. Ardee farmers burn a pinch of salt before the realm's bands go in, and the bands have taken up the habit.",
   "yells": {
     "aggro": [
       "The earth splits and something smoulders out.",
@@ -79,7 +79,7 @@
     "briefing": [
       "blight comes in waves: fire, late, flesh, then the big one. [pace your mana|dont blow everything on wave one]",
       "four stages, the skeleton is the hardest. [save for it|pace mana]",
-      "dont pull anything else while the waves come. [focus|stay put]",
+      "dont draw anything else while the waves come. [focus|stay put]",
       "each stage comes faster than the last, [heal ahead|stay topped]"
     ],
     "aftermathWin": [
@@ -91,8 +91,8 @@
     "aftermathLoss": [
       "we had nothing left for the skeleton. [pace it|save mana]",
       "empty for the skeleton. [pace it|again]",
-      "flesh blights got the casters. [tanks|peel]",
-      "pulled walking trees during the waves. [ugh|focus]"
+      "flesh blights got the casters. [shields|peel]",
+      "drew walking trees during the waves. [ugh|focus]"
     ],
     "rumour": [
       "[heard|someone said] the blight in the cursed forest gathers the bones of everything it ever killed",

@@ -47,7 +47,7 @@
     }
   ],
   "story": "In the realm's myth Balor was king of the Fomorians, whose eye, poisoned by his father's druids' cauldron, destroyed whatever it saw; he shut his daughter Eithne in a tower on Tory against a prophecy, and her son Lugh drove the eye out through his skull at the second battle of Mag Tuired, where it fell facing the Fomorian host and destroyed it.\n\nThe Sylvan of Domnann know a second verse: the eye's bearers, who always walked backwards, wrapped it in seven hides and carried it west; the Fomorians themselves say the eye followed its people of its own will. When the hides slipped on the shore of Hy Brasil it looked on a valley for one breath and burned the Sylvan village of Gleann Glas and everything else in it; that is the Vale of Balor. On the crag above, the Fomorians built Tur Suil, the tower of the eye, with one window, and grew a king around the eye again, with a household: Sargan and Norsob, Kierac and the Master of Pain, Abomos, Queen Qunilaria, and the Balorians.\n\nEochaidh of Ardee's three bands found that his hide turns blade and spell alike, that he cannot bleed outside his chamber, and that as he weakens an eye opens in the roof beyond any weapon, chooses one of those below and burns them until it shuts; Eochaidh was chosen at the last. Fiachna of Howth's small company brought him down the next spring, carrying a smooth stone for Lugh's sake, and every company that has climbed Tur Suil since has carried one. He returns, the Vale glows red more often, Qunilaria's diggers may be near the Root, and the Fomorians wait for the lid to rise fully. Muirgen, who set all this down in 'The Tower of the Eye', ended it with a warning from the old tale: towers do not hold everything, and the realm must keep climbing.",
-  "legend": "His hide resists everything, blades and spells about alike, so it is a long grind for everyone. Every ten percent, if no eye is already open, an eye opens over the room, picks one random person and burns them with heat for about eighteen seconds, then closes. You cannot target it and spreading out does not help: heal whoever it picks and wear heat resists. Fight him in his chamber and kill the adds he calls. Never meet his eye, the old hibs say, and they do not mean it as a joke. Melee and casters both grind; the healers watch the roof. Call his tens aloud so the healers know when the next eye can open, and never chase him if he drifts toward the door. Old hibs end every briefing the same way: never meet his eye.",
+  "legend": "His hide turns aside a part of everything, blades and spells about alike, so it is a long, slow wearing-down for everyone. Each time another tenth of his strength is gone, if no eye is already open, an eye opens over the room, picks one random person and burns them with heat for about eighteen seconds, then closes. No weapon or spell can be turned on it and spreading out does not help: heal whoever it picks and wear your wards against heat. Fight him in his chamber and kill the kin he calls. Never meet his eye, the old hibs say, and they do not mean it as a joke. Melee and casters both wear him down slowly; the healers watch the roof. Call his tens aloud so the healers know when the next eye can open, and never chase him if he drifts toward the door. Old hibs end every briefing the same way: never meet his eye.",
   "yells": {
     "aggro": [
       "You have looked upon Balor. That was enough.",
@@ -101,23 +101,23 @@
   },
   "botLines": {
     "briefing": [
-      "balor resists everything, melee and magic about the same. [long fight|pace yourselves]",
-      "every ten percent an eye opens and burns one random guy with heat. [heal whoever it picks|heat resists up], you cant target it",
-      "two or three groups is enough if [the healers watch the eye|we keep the eye target alive]",
-      "call his tens out loud, [each one can open an eye|eye every ten percent]",
+      "balor shrugs off part of everything, melee and magic about the same. [long fight|pace yourselves]",
+      "every tenth of him gone an eye opens and burns one random guy with heat. [heal whoever it picks|heat wards up], you cant hit it",
+      "two or three groups is enough if [the healers watch the eye|we keep whoever the eye picks alive]",
+      "call his tens out loud, [each one can open an eye|eye every tenth]",
       "if he drifts toward the door [let him go back|stop hitting], he is immune outside"
     ],
     "aftermathWin": [
       "balor down. lugh would be proud. [grats all|nice one]",
       "every eye picked someone and nobody died to it. [good heals|best balor run yet]",
       "the window is dark tonight. [finished lugh's story|grats hibernia]",
-      "healers kept every eye target up. [amazing|well done]",
+      "healers kept everyone the eye picked up. [amazing|well done]",
       "carried my lucky stone all the way up. [worked|didnt need it]"
     ],
     "aftermathLoss": [
-      "the eye picked our main healer and [nobody healed her|she cooked]. watch the eye target",
-      "we lost it at the last eyes. [so close|ten percent]",
-      "no heat resists and the eye [melted people|cooked the casters]",
+      "the eye picked our main healer and [nobody healed her|she cooked]. watch who the eye picks",
+      "we lost it at the last eyes. [so close|one tenth left]",
+      "no heat wards and the eye [melted people|cooked the casters]",
       "melee hit his hide and casters ran out of mana. [balance it|plan]",
       "he called his kin and we [had no one free|got swamped]"
     ],

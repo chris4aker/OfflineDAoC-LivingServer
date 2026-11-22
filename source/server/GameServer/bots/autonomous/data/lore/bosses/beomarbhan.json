@@ -22,7 +22,7 @@
     }
   ],
   "story": "Beomarbhan was the finest stag in the herd of the gorge clans of Cothrom, a red stag the Sylvan children fed by hand, and when Dremcis came home from the bottom of the gorge with blood on his mouth and a new name, it was Beomarbhan he took. He rode it down the gorge and back for three days without stopping, and on the third day it died under him on the gorge road, and he did not get off. It got up.\n\nIts name is a gorge word, and the clans do not agree on it. The older Sylvan say it means something like a living corpse, the dead-alive, and that is how it looks: the hide hangs loose on its bones, its eyes are white as the stag's that Dremcis drank from, and its antlers have kept growing since it died, crooked and black. The younger say it is closer to the stag of the slain, which is what the gorge clans call the deer that come down in autumn to graze the gorge floor where the dead lie. Both meanings fit.\n\nNothing a Sylvan hand can do troubles it much. Spears turn on the loose hide as if it were bark, and bite only now and then; the gorge singers who tried a binding-song on it in the first years say the song went into it like water into sand, and their charms of sleep and holding never caught at all; fire, wind and the green strength of the druids hardly mark it at all. The clans say a dead thing cannot be hurt in the ways a living one can, and that Beomarbhan has been dead longer than most Sylvan have been alive.\n\nIt is held up by its rider, the gorge clans say, and by nothing else. It comes the first time Dremcis is troubled, at a gallop out of the deep gorge, and if it is somehow brought down it does not come again until Dremcis himself has died and returned. When Dremcis falls, Beomarbhan falls in the same breath, as if a hand had let go of a string. The Sylvan pity it more than they fear it. The children who fed it by hand are grandmothers now, and they say the kindest thing anyone can do for it is to bring down the man on its back.",
-  "legend": "Do not kill him. Beomarbhan is a 30,000-health stag with 40% melee and 70% magic resists and full CC immunity, and he dies by himself the instant Dremcis Fuiloltair dies. Put one tank on him, keep him off the healers, and spend everything on Dremcis. He comes only once per Dremcis spawn, so even if a group does kill him, he will not be back on a retry until Dremcis respawns. If you are here for a Beomarbhan kill credit, it counts when he drops with his rider. Casters especially: do not waste mana on him, 70% of it goes nowhere.",
+  "legend": "Do not kill him. Beomarbhan is a stag with three-quarters of Balor's strength, whose hide turns aside two-fifths of every blade's bite and seven-tenths of every spell's, and no trance, binding or stunning blow holds him, and he dies by himself the instant Dremcis Fuiloltair dies. Put one shield-bearer on him, keep him off the healers, and spend everything on Dremcis. He comes only once each time Dremcis returns, so even if a band does kill him, he will not be back on a second try until Dremcis rises again. If you are here to have killed Beomarbhan, it counts when he drops with his rider. Casters especially: do not waste mana on him, seven-tenths of it goes nowhere.",
   "yells": {
     "aggro": [
       "(the dead stag lowers its black antlers)",
@@ -60,21 +60,21 @@
   },
   "botLines": {
     "briefing": [
-      "offtank beomarbhan, kill dremcis. [the stag dies with him|dont waste damage on the stag]",
-      "beomarbhan resists 70% magic, 40% melee. [casters especially leave it|waste of mana]",
-      "no cc on the stag. [cc immune|dont try]",
-      "he only comes once per dremcis spawn. [no second stag|one stag]"
+      "second shield holds beomarbhan, kill dremcis. [the stag dies with him|dont waste damage on the stag]",
+      "beomarbhan shrugs off most magic, near half of melee. [casters especially leave it|waste of mana]",
+      "nothing holds the stag. [no mez no root|dont try]",
+      "he only comes once each time dremcis is back. [no second stag|one stag]"
     ],
     "aftermathWin": [
       "stag dropped with dremcis. [never touched it|like a string let go]",
-      "offtank held the stag the whole fight. [grats|solid]",
+      "second shield held the stag the whole fight. [grats|solid]",
       "beomarbhan at rest. [the sylvan grandmothers would be glad|finally]",
       "two kills for one. [nice|easy credit]"
     ],
     "aftermathLoss": [
-      "casters nuked the stag. [70% resists|wasted all our mana]",
-      "stag ran over the healers. [offtank died|ouch]",
-      "someone tried to mezz the stag. [cc immune|lol]",
+      "casters bolted the stag. [most of it bounced|wasted all our mana]",
+      "stag ran over the healers. [second shield died|ouch]",
+      "someone tried to mez the stag. [nothing holds it|lol]",
       "we were still on the stag when the blobs [got the casters|ate us]"
     ],
     "rumour": [
