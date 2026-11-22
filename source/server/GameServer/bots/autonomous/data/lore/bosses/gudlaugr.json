@@ -43,6 +43,11 @@
       "text": "Gudlaugr (Gudlaugr) is an Old Norse personal name (to verify).",
       "provenance": "original",
       "source": "Old Norse name, to verify"
+    },
+    {
+      "text": "The two pages in bookPages, and the people, objects and sayings first named in them, are Living Server lore written for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Gudlaugr was the jarl's hound, the smallest grey pup of the last litter Ormarr's bitch whelped by the hearth of his hall inside the mine. The jarl's son, Ulf Half-hand, chose him and gave him a great man's name out of the old songs as a joke, and the jarl laughed and let it stand. When Ulf went down on the last shift the pup followed him, though the foreman said no, and sat by the face chewing a bone and watching the dark at the end of the northern gallery, and before the picks broke through he began to whine at it, and then stopped whining and only listened.\n\nWhen the shift died and walked toward the voices, the pup walked with them, because that is what a dog does, and Aros read his name with the rest and bound him with the shift. He lies now at the head of the stair that goes down out of the mine into the Summoner's Hall, small and white with cold, as if waiting for Ulf to come back up it, and he has been listening to the voice below for longer than anything else in the mine.\n\nThe voice has made something of him. The moment steel is drawn near him he grows into it, a demon wolf the height of a troll, and the first time he ever changed he stood up whole, every old wound gone. His bite holds a man back and keeps him bleeding. When it is over he is a pup again and goes back to waiting; when he dies he whimpers once like a puppy, and the dead in the mine stop digging, as if someone had called a dog's name. The companies who go down to the hall pass him last, and come back up past him, and the frontier says never to pet him, for luck or for pity.",
@@ -135,6 +140,10 @@
     "text": "The jarl's hound, too young to be left behind, who followed the shift down. He waits by the stair to the hall below, a pup until roused."
   },
   "bookPage": "From the second slate, in the hand of a hewer of the last shift. The jarl's boy Ulf brought the pup down with him on the last shift, though the foreman said no. The pup sat by the face while we worked and chewed a bone and watched the dark at the end of the tunnel where the seam was. Before we broke through he started to whine at it. Then he stopped whining and just looked. Ulf said he was only a pup and pups are afraid of the dark. The pup was not afraid. The pup was listening. I think he still is. I think he is waiting for Ulf.",
+  "bookPages": [
+    "From the second side of the tally slate, in the hand of Ulf Half-hand, the jarl's son, cut while the cold came up through the seam. They are calling me. Not Half-hand. My name, the one my mother gave me, that nobody uses. I do not know how they know it. The others have put their picks down. Hamar is still swinging. Laugr is pressed against my leg and he is not shaking, and I am. He is looking at the hole the way he looks at the northern gallery, and he does not whine any more. If I go down, someone keep the dog. If I do not come back up, tell my father the pup was not afraid. Tell him I named him too big and he grew into it. The slate ends there, with a mark that may be the start of another word, or may be a slip of the knife.",
+    "Standing word of Glenlock's captains to every company going down past the doorstep, read out at the keep before the march. The pup at the head of the stair is the jarl's hound and was a boy's dog. Do not draw steel within sight of him unless you mean to draw it on him, for he grows into steel as a fire grows into wind. Do not speak to him. Do not say the boy's name where he can hear it, nor his own. Do not pet him, for luck or for pity or for any reason a man thinks of on a cold stair. If he lies still when you come back up, he has let you pass. Go past him quietly, and the last one up the stair does not look back."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} laid the jarl's hound Gudlaugr to rest in {minutes} minutes.",
     "loss": "Gudlaugr the demon wolf ran down {raidLeader}'s party from {realm} after {minutes} minutes."
