@@ -245,7 +245,7 @@ internal sealed class BotClickTarget : Scenario
     public override async Task RunAsync(ScenarioContext ctx)
     {
         var player = await ctx.LoginAsync("player", "playtester", ClientPackets.OriginalClientBuild);
-        await ctx.PlayAsync(player, "Ptclick");
+        await ctx.PlayAsync(player, "Ptsel");   // "Ptclick" names were refused at creation in CI (DupNameCheck 1, three times)
         var helper = await DeadBots.SpawnHelperAsync(ctx, player);
         await ctx.Step($"a click on {helper.Name} standing (examine bit): \"You target [{helper.Name}].\"", async () =>
         {
