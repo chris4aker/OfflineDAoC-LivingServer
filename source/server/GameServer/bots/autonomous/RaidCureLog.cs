@@ -22,13 +22,16 @@ namespace DOL.GS
         {
             public long Start;
             public int Casts;
+            /// <summary>Of <see cref="Casts"/>, the group cures (1.2.1, #410: whether a realm's curers have one decides the Roesia fight).</summary>
+            public int Groups;
             public readonly HashSet<long> Curers = new();
             public readonly HashSet<long> Targets = new();
             public readonly Dictionary<string, int> Dots = new();
 
-            public void Add(long curer, long target, IEnumerable<string> dots)
+            public void Add(long curer, long target, IEnumerable<string> dots, bool group = false)
             {
                 Casts++;
+                if (group) Groups++;
                 Curers.Add(curer);
                 Targets.Add(target);
                 foreach (string d in dots ?? [])
@@ -38,7 +41,7 @@ namespace DOL.GS
             public bool Due(long now) => Casts > 0 && now - Start >= WindowMilliseconds;
 
             public string Line(ushort region, long now) =>
-                $"RAID_CURE_POISON region={region} casts={Casts} curers={Curers.Count} targets={Targets.Count} " +
+                $"RAID_CURE_POISON region={region} casts={Casts} groups={Groups} curers={Curers.Count} targets={Targets.Count} " +
                 $"seconds={(now - Start) / 1000} dots=\"{string.Join(",", Dots.OrderByDescending(d => d.Value).Select(d => $"{d.Key} x{d.Value}"))}\"";
         }
 
@@ -46,7 +49,7 @@ namespace DOL.GS
 
         /// <summary>A raid bot started a cure poison cast on <paramref name="target"/>: counted, and the region's line written
         /// when its minute is over.</summary>
-        public static void Record(GameBot curer, GameLiving target, long now)
+        public static void Record(GameBot curer, GameLiving target, long now, bool group = false)
         {
             if (curer?.IsAutonomousWorldBot != true || target == null || AutonomousRealmRaid.RaidOf(curer.Group) == null) return;
             string[] dots;
@@ -61,7 +64,7 @@ namespace DOL.GS
             {
                 if (!Windows.TryGetValue(curer.CurrentRegionID, out Window w))
                     Windows[curer.CurrentRegionID] = w = new Window { Start = now };
-                w.Add(curer.ObjectID, target.ObjectID, dots);
+                w.Add(curer.ObjectID, target.ObjectID, dots, group);
                 if (w.Due(now))
                 {
                     line = w.Line(curer.CurrentRegionID, now);

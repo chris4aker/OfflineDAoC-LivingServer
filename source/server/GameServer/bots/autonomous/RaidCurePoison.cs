@@ -25,6 +25,22 @@ namespace DOL.GS
     {
         /// <summary>A member of the curer's own party under this is in danger: it is healed first.</summary>
         public const int DangerPercent = 50;
+        /// <summary>A member that carries a curable damage over time is in danger only under this (1.2.1, #410; tests only):
+        /// the cure is its best help, the rest of a Summoner Pain (up to 12 ticks) outlasts any heal.</summary>
+        public const int DottedDangerPercent = 25;
+        /// <summary>A raid curer cures again at most this long after its last raid cure (1.2.1, #410; tests only; was the
+        /// heal turn's 5 s cure delay).</summary>
+        public const long CureDelayMilliseconds = 2_500;
+
+        /// <summary>
+        /// The member holds the raid cure back (pure): under <see cref="DangerPercent"/>%, or under
+        /// <see cref="DottedDangerPercent"/>% when it carries the curable damage over time itself.
+        /// <para>Why (1.2.1, #410; tests only): a deterministic model of the Roesia fight (UT_RaidSim121SummonersGreenKnight),
+        /// calibrated to build b1b6846's first minute (Summoner Pain 124,913 on 71 raiders; the raid wiped at 76%), showed the
+        /// 50% rule block the cure in the parties that needed it most: their dotted members sat between 25% and 50% under
+        /// Pain, so their healers topped them up while the Pain went on ticking.</para>
+        /// </summary>
+        public static bool InDanger(int healthPercent, bool dotted) => healthPercent < (dotted ? DottedDangerPercent : DangerPercent);
         /// <summary>The cure comes first when at least this many raiders in reach carry a curable damage over time.</summary>
         public const int MinDotted = 2;
         /// <summary>A curer looks over the raid for dotted raiders at most this often.</summary>

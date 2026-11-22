@@ -5563,7 +5563,7 @@ namespace DOL.AI.Brain
                     if (deficit > 0)
                     {
                         amountToHeal += deficit;
-                        if (member.HealthPercent < RaidCurePoison.DangerPercent) partyInDanger++;
+                        if (RaidCurePoison.InDanger(member.HealthPercent, member.IsPoisoned)) partyInDanger++;
 
                         if (member.HealthPercent < 65)
                         {
@@ -5960,16 +5960,17 @@ namespace DOL.AI.Brain
                 {
                     // Sweep 6f: a raid's cure poison casts are summed in the log (RAID_CURE_POISON, logging only).
                     if (spellToCast.SpellType == eSpellType.CurePoison && spellTarget != null)
-                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime);
+                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime, spellToCast == BotBody.CurePoisonGroup);
                     // The raid cure waits its delay whether the cure is instant or not: the next turns heal (sweep 7b).
                     if (raidCureFirst && spellToCast == raidCure)
-                        nextCureTime = GameLoop.GameLoopTime + CureDelay;
+                        nextCureTime = GameLoop.GameLoopTime + RaidCurePoison.CureDelayMilliseconds;
                     if (spellToCast.IsInstantCast)
                     {
                         BotBody.TargetObject = oldTarget;
                         startedCasting = false;
                     }
-                    else if (spellToCast.SpellType == eSpellType.CureDisease || spellToCast.SpellType == eSpellType.CurePoison)
+                    else if (!(raidCureFirst && spellToCast == raidCure) &&
+                             (spellToCast.SpellType == eSpellType.CureDisease || spellToCast.SpellType == eSpellType.CurePoison))
                         nextCureTime = GameLoop.GameLoopTime + CureDelay;
                 }
             }

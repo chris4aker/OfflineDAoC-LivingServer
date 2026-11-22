@@ -79,6 +79,21 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Raid simulations for Summoner's Hall, Marfoirwort and the Green Knight (#410, #412; tests only).** Models of the
+  fights on the bosses' own numbers and the bots' own decisions (`UT_RaidSim121SummonersGreenKnight`); no boss changed.
+  - **Marfoirwort:** his Life-leech heals him by the damage it deals to everyone within 350 of his target, and the melee
+    and pets all stood there (about 25 a leech), so he stayed at 79% and above on `ccba364`. Now his target holds 185 from
+    him, the other melee fight from behind him (370-380 from his target), everyone at range stands clear and no bot's pet
+    attacks him. Model: before, 2 of 128 attempts killed him in 30 minutes; after, 128 of 128 in under 10 minutes. Log:
+    `EPIC_LEECH_EXPOSURE ... inside=` (should be 0-1).
+  - **Summoner Roesia:** a raider carrying Summoner Pain now holds the raid cure back only under 25% (was 50%), and a
+    raid curer cures again after 2.5 s (was 5 s). Model, calibrated to `b1b6846`: with a group cure in every party both
+    rules win; with single cures only, the old rule never wins and the new one still loses at 77 raiders but wins 5 of
+    16 at 100 and 15 of 16 at 128 (the win balance grows the raid after a loss). `RAID_CURE_POISON` now prints `groups=`.
+  - **The Green Knight:** the melee outside his target's party kill the tree nearest them (their own first) before going
+    back to him. Model: the raid lasts longer and has fewer trees, but **still loses**; the next PC log (`EPIC_RANGED_ADDS
+    boss="Green Knight" alive=`) is needed to see why.
+  - **Grand Summoner Govannon:** not simulated; no bot raid has reached him since Roesia began winning every time.
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
