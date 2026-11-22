@@ -83,6 +83,18 @@ The raid fixes (#407-#415) are added under **Bosses** as their branches merge. P
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Dragon raids keep their thrown and resurrected raiders in the fight (#415, tests only).** Golestandt and Cuuldurach
+  fell apart partway (lost after two wipes on `9a173f4`, `c81eb5d` and `43c43aa`) while Gjalpinulva kept winning. Four of
+  Golestandt's five throw spots and three of Cuuldurach's land 7,300-12,200 from the lair, past the return wave's 6,700
+  line (one of Gjalpinulva's does), and the return wave held such a raider at the staging ring as if it had released; a
+  raider resurrected where it fell was held the same way. Both now stay with the raid (`REALM_RAID_RETURN_NOT_HELD`). No
+  dragon is changed. A simulation on the real return-wave and wipe code (`UT_DragonThrowReturnWave415`) reproduces the
+  pattern (Gjalpinulva wins most fights, the other two about half) and the fix lifts Golestandt and Cuuldurach to about
+  seven in ten; not yet seen in game.
+- **Legion's wounded step out where the healers reach them (#413, tests only).** A raider under 35% stepped straight away
+  from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
+  each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
+  Legion is unchanged; not yet seen in game.
 - **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
   bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
   Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,

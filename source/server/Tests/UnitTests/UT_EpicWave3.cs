@@ -702,9 +702,14 @@ namespace DOL.UnitTests
             Assert.That(Flat(low.Value.StandAt.Value, At(legion)), Is.GreaterThan(1_400), "past his close range: he can't be hurt from there");
             Assert.That(EpicEncounterTactics.LegionWoundedAdvice(near, 20, true, legion), Is.Null, "his target holds him");
             Assert.That(EpicEncounterTactics.LegionWoundedAdvice(near, 80, false, legion), Is.Null);
-            var waiting = EpicEncounterTactics.LegionWoundedAdvice(new Vector3(21_700, 20_000, 1_000), 20, false, legion);
+            // #413: already out on the raid's side (its spot), it waits there; out on his far side it walks round to that side.
+            Vector3 spot = EpicEncounterTactics.LegionWoundedSpot(At(legion), EpicEncounterTactics.LegionRaidSide, 0, 1_000);
+            var waiting = EpicEncounterTactics.LegionWoundedAdvice(spot, 20, false, legion);
             Assert.That(waiting?.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
-            Assert.That(waiting.Value.StandAt, Is.Null, "already out: it waits there");
+            Assert.That(waiting.Value.StandAt, Is.Null, "already out on the raid's side: it waits there");
+            Vector3 farSide = new(2 * At(legion).X - spot.X, 2 * At(legion).Y - spot.Y, 1_000);
+            Assert.That(EpicEncounterTactics.LegionWoundedAdvice(farSide, 20, false, legion)?.StandAt, Is.Not.Null,
+                "out on his far side: it goes round to the raid's side, where the healers reach it");
         }
 
         [Test]
