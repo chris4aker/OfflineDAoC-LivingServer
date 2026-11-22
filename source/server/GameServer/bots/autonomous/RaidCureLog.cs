@@ -24,14 +24,18 @@ namespace DOL.GS
             public int Casts;
             /// <summary>Of <see cref="Casts"/>, the group cures (1.2.1, #410: whether a realm's curers have one decides the Roesia fight).</summary>
             public int Groups;
+            /// <summary>Of <see cref="Casts"/>, the cures of a fresh damage over time cast while a member of the curer's own
+            /// party was in danger (1.2.1, #410 round 2: RaidCurePoison.IsFresh).</summary>
+            public int PastDanger;
             public readonly HashSet<long> Curers = new();
             public readonly HashSet<long> Targets = new();
             public readonly Dictionary<string, int> Dots = new();
 
-            public void Add(long curer, long target, IEnumerable<string> dots, bool group = false)
+            public void Add(long curer, long target, IEnumerable<string> dots, bool group = false, bool pastDanger = false)
             {
                 Casts++;
                 if (group) Groups++;
+                if (pastDanger) PastDanger++;
                 Curers.Add(curer);
                 Targets.Add(target);
                 foreach (string d in dots ?? [])
@@ -41,7 +45,7 @@ namespace DOL.GS
             public bool Due(long now) => Casts > 0 && now - Start >= WindowMilliseconds;
 
             public string Line(ushort region, long now) =>
-                $"RAID_CURE_POISON region={region} casts={Casts} groups={Groups} curers={Curers.Count} targets={Targets.Count} " +
+                $"RAID_CURE_POISON region={region} casts={Casts} groups={Groups} pastDanger={PastDanger} curers={Curers.Count} targets={Targets.Count} " +
                 $"seconds={(now - Start) / 1000} dots=\"{string.Join(",", Dots.OrderByDescending(d => d.Value).Select(d => $"{d.Key} x{d.Value}"))}\"";
         }
 
@@ -49,7 +53,7 @@ namespace DOL.GS
 
         /// <summary>A raid bot started a cure poison cast on <paramref name="target"/>: counted, and the region's line written
         /// when its minute is over.</summary>
-        public static void Record(GameBot curer, GameLiving target, long now, bool group = false)
+        public static void Record(GameBot curer, GameLiving target, long now, bool group = false, bool pastDanger = false)
         {
             if (curer?.IsAutonomousWorldBot != true || target == null || AutonomousRealmRaid.RaidOf(curer.Group) == null) return;
             string[] dots;
@@ -64,7 +68,7 @@ namespace DOL.GS
             {
                 if (!Windows.TryGetValue(curer.CurrentRegionID, out Window w))
                     Windows[curer.CurrentRegionID] = w = new Window { Start = now };
-                w.Add(curer.ObjectID, target.ObjectID, dots, group);
+                w.Add(curer.ObjectID, target.ObjectID, dots, group, pastDanger);
                 if (w.Due(now))
                 {
                     line = w.Line(curer.CurrentRegionID, now);

@@ -94,6 +94,19 @@ or run where it was written; CI on pull request #398 is the first build.
     back to him. Model: the raid lasts longer and has fewer trees, but **still loses**; the next PC log (`EPIC_RANGED_ADDS
     boss="Green Knight" alive=`) is needed to see why.
   - **Grand Summoner Govannon:** not simulated; no bot raid has reached him since Roesia began winning every time.
+  - **Round 2 (tests only).** No realm has a group cure poison (OpenDAoC database: every Cure Poison is single-target;
+    Cleric, Friar, Healer, Shaman, Druid and Bard have it, Paladin and Warden don't), so the Roesia model now uses each
+    realm's curers. A Summoner Pain with two thirds of its time left is now cured even while a member of the curer's
+    party is in danger, and the own party's dotted member with the fewest health points goes first. Model, 16 attempts a
+    size: wins at 93 / 106 / 128 raiders (the win balance's first, second and fourth steps up from its 80 start) go from
+    6 / 9 / 15 to 13 / 16 / 16 in Midgard, 0 / 0 / 4 to 7 / 15 / 16 in Albion and 0 / 2 / 4 to 13 / 16 / 16 in Hibernia; 64
+    and 80 still lose. `RAID_CURE_POISON` prints `pastDanger=`.
+  - **The Green Knight, round 2 (tests only).** A tree that hits a caster or a healer silences it, and a shot pulls a
+    tree onto the shooter. Now the casters, archers and healers stand together 750 from him away from his target, every
+    melee raider but his target peels the trees off the area casters, the healers and the other casters (then kills its
+    own), and only area casters hit trees. Model: the 1.2 rules and #432 never win; this wins at 80 raiders and more
+    (past his 70-trees-a-wave flood guard) when a raider deals 80 or more a second to a tree and a tree hits for 8 or less,
+    at 50 only in the kindest case. **Not fixed at his period size.** Log: `EPIC_GK_TREES alive= onHealers=` (every 30 s).
 - **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
   one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
   him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,
