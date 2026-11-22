@@ -46,7 +46,7 @@
       "source": "source/server/GameServer/scripts/quests/AtlasQuests/DailyQuests/{Albion,Midgard,Hibernia}/Frontier/Weekly/EpicRvRMobsWeeklyQuest*.cs"
     },
     {
-      "text": "Quests: Kindred of the Fallen (Kuebler, Sir Tillian, Aiellana, two standing stones of power, a wounding stone, a summoned druid); Dugan's Magical Totem (the eyes of Brodecia at the ettin camp north-east of Castle Sauvage); Departed Fellowship (Cadwallen's sacrificial dagger and the hornbeam, silver oaken, gold oaken, knotted and gnarled fellwoods); The Forest Plot (Rob Ria's Mist Hunters).",
+      "text": "Quests: Kindred of the Fallen (Kuebler, Sir Tilian, Aiellana, two standing stones of power, a wounding stone, a summoned druid); Dugan's Magical Totem (the eyes of Brodecia at the ettin camp north-east of Castle Sauvage); Departed Fellowship (Cadwallen's sacrificial dagger and the hornbeam, silver oaken, gold oaken, knotted and gnarled fellwoods); The Forest Plot (Rob Ria's Mist Hunters).",
       "provenance": "game",
       "source": "world data: DataQuest table (0.37b runtime database, world tables only)"
     },
