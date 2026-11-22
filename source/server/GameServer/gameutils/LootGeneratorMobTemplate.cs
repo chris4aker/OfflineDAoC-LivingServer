@@ -90,6 +90,9 @@ namespace DOL.GS
 						return false;
 					}
 
+					// 1.2.1: one warning for the rows naming a missing item, each row at debug level (LootMissingItems)
+					var missing = new LootMissingItems("DropTemplateXItemTemplate");
+
 					if (dbLootTemplates != null)
 					{
 						Dictionary<string, DbDropTemplateXItemTemplate> loot;
@@ -106,8 +109,8 @@ namespace DOL.GS
 
 							if (drop == null)
 							{
-								if (log.IsErrorEnabled)
-									log.Error("ItemTemplate: " + dbTemplate.ItemTemplateID + " is not found, it is referenced from DropTemplateXItemTemplate: " + dbTemplate.TemplateName);
+								if (missing.Add(dbTemplate.TemplateName, dbTemplate.ItemTemplateID) && log.IsDebugEnabled)
+									log.Debug("ItemTemplate: " + dbTemplate.ItemTemplateID + " is not found, it is referenced from DropTemplateXItemTemplate: " + dbTemplate.TemplateName);
 							}
 							else
 							{
@@ -116,6 +119,10 @@ namespace DOL.GS
 							}
 						}
 					}
+
+					string summary = missing.Summary();
+					if (summary != null && log.IsWarnEnabled)
+						log.Warn(summary);
 				}
 
 				log.Info("DropTemplateXItemTemplates pre-loaded.");
