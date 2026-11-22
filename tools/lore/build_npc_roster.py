@@ -65,7 +65,7 @@ LATER_CLASSES = {"Mauler", "Heretic", "Warlock", "Vampiir", "Bainshee"}    # Cat
 LATER_CLASSTYPES = re.compile(r"Scripts\.|MarketExplorer|SealsMerchant|BountyMerchant|AccountVaultKeeper|EffectNPC|"
                               r"ItemModel|Teleporter|GuildRegistrar|NameRegistrar|EmblemNPC|Recharger|GameGuard$|Keeps\.")
 LATER_GUILDS = re.compile(r"Seals|Diamond|Emerald|Sapphire|Medallion|Necklace|Realm Point|Bindstone|Consignment|Reskin|"
-                          r"Effect|Emissary|Master Trainer|Market|Teleporter|Account|Bounty|Registrar|Emblem", re.I)
+                          r"Effect|Emissary|^Master Trainer$|Market|Teleporter|Account|Bounty|Registrar|Emblem", re.I)
 PLAYER_GUILDS = {"PWNOGRAPHY", "French Corporation", "Malafinja", "Martine Fait Du RvR", "Die Raecher von Hel"}
 GENERIC = set("""Master Dyemaster the of Fletcher Guard Gothi Mistress Captain Lieutenant Barkeep Lady Sister Magus Lord Stor
 Filidh Albion Magess Enchanter Commander Minstrel Gythja crier Crier Chieftain Hibernia Harper Midgard Apprentice Viking Bard
@@ -332,8 +332,9 @@ def build(db, commit):
     for rel, realm, x in facts:
         text = x.get("text", "")
         for (name, rrealm), e in roster.items():
-            if rrealm == realm and len(name) > 3 and re.search(r"\b" + re.escape(name) + r"\b", text):
-                s = {"kind": "lore fact", "path": rel, "note": f"{x['provenance']}: {x.get('source', '')[:160]}"}
+            if rrealm == realm and len(name) > 4 and re.search(r"\b" + re.escape(name) + r"\b", text):
+                s = {"kind": "lore fact", "path": rel,
+                     "note": f"name match; {x['provenance']}: {x.get('source', '')[:160]}"}
                 if s not in e["sources"] and sum(1 for q in e["sources"] if q["kind"] == "lore fact") < 3:
                     e["sources"].append(s)
                 if x["provenance"] == "mythic": e["era"] = "confirmed"

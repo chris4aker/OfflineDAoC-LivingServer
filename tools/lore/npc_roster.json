@@ -4,19 +4,19 @@
  "counts": {
   "by_realm": {
    "Albion": 871,
-   "Hibernia": 749,
-   "Midgard": 740
+   "Hibernia": 756,
+   "Midgard": 756
   },
   "by_source_kind": {
-   "OpenDAoC database": 2336,
-   "lore fact": 304,
+   "OpenDAoC database": 2359,
+   "lore fact": 273,
    "period page": 16,
    "quest script": 27,
    "web page": 8
   },
   "by_era": {
-   "probable": 2341,
-   "confirmed": 19
+   "probable": 2365,
+   "confirmed": 18
   }
  },
  "npcs": [
@@ -192,17 +192,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/belgrik.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/delfina.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ellyll-seer.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -423,17 +423,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/belgrik.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/saffron.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tepoks-mine.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -1722,12 +1722,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/shaman-saelonna.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/treefall.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -1881,7 +1881,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -2006,7 +2006,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/hadrians-wall.json",
-     "note": "game: world data: Zones/Keep/Mob tables, region 1 zone 15 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Keep/Mob tables, region 1 zone 15 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -2251,7 +2251,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dales-of-devwy.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -6276,7 +6276,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/emperor-seleucus.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -6641,7 +6641,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/emperor-seleucus.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -8744,7 +8744,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/salisbury-plains.json",
-     "note": "game: world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -10672,7 +10672,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tomb-of-mithra.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -10728,7 +10728,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-isle.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
     }
    ],
    "era": "probable",
@@ -10789,17 +10789,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kings-wight.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/soulfear.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-marsh.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/epic/Defenders50.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/epic/Defenders50.cs"
     }
    ],
    "era": "probable",
@@ -10825,13 +10825,13 @@
     },
     {
      "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-marsh.json",
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/salisbury-plains.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -10858,7 +10858,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/salisbury-plains.json",
-     "note": "game: world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Area/Mob/ZonePoint tables, region 1 zone 1 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -10887,12 +10887,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/aidon-the-archwizard.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/epic/Academy50.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/epic/Academy50.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/shaman-saelonna.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -10921,7 +10921,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-isle.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
     }
    ],
    "era": "probable",
@@ -10955,17 +10955,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/nyaegha.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aldland.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-isle.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/shrouded isles/LostStoneOfArawn.cs"
     }
    ],
    "era": "probable",
@@ -10999,12 +10999,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/keltoi-fogou.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lyonesse.json",
-     "note": "game: source/server/GameServer/scripts/quests/Albion/epic/Church50.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Albion/epic/Church50.cs"
     }
    ],
    "era": "probable",
@@ -11053,7 +11053,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12066,7 +12066,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12215,7 +12215,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12470,12 +12470,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/eralyne.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/larionne.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC a player must talk "
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only); source/server/GameServer/quests/QuestsMgr/QuestTalkTruce.cs (an NPC a player must talk "
     }
    ],
    "era": "probable",
@@ -12504,17 +12504,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/soulfear.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tylwyth-teg-ranger.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12567,17 +12567,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/legendary-afanc.json",
-     "note": "mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
+     "note": "name match; mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-city.json",
-     "note": "legend: https://camelot.allakhazam.com/db/zones.html?czone=63"
+     "note": "name match; legend: https://camelot.allakhazam.com/db/zones.html?czone=63"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "confirmed",
@@ -12704,7 +12704,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/black-mountains-north.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12901,7 +12901,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-isle.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -12978,7 +12978,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -13055,17 +13055,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/treefall.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tylwyth-teg-ranger.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -13310,7 +13310,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/keltoi-fogou.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -13411,7 +13411,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dartmoor.json",
-     "note": "game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
+     "note": "name match; game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
     }
    ],
    "era": "probable",
@@ -13632,12 +13632,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tylwyth-teg-ranger.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/wizard-lichas.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -13690,7 +13690,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dales-of-devwy.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -13859,11 +13859,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob a43c809c-28fa-4137-80a2-38d6ac1984bf (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot-hills.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -14108,7 +14103,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/campacorentin-forest.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -14329,7 +14324,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/llyn-barfog.json",
-     "note": "game: world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -14430,12 +14425,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/celain-elrich.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/llyn-cythraul.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -14939,12 +14934,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kelsanor.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/nalsor.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15069,12 +15064,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/avalon-isle.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dales-of-devwy.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15103,17 +15098,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/adelon.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/cabalist-meical.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/pazia.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15142,7 +15137,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot-hills.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15269,7 +15264,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dartmoor.json",
-     "note": "game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
+     "note": "name match; game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
     }
    ],
    "era": "probable",
@@ -15490,7 +15485,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15546,17 +15541,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/dathmul.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/shade-of-ambrosius-aurelianus.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/shade-of-uther-pendragon.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "confirmed",
@@ -15585,7 +15580,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dartmoor.json",
-     "note": "game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
+     "note": "name match; game: source/server/GameServer/bots/autonomous/AutonomousServiceReachability.cs"
     }
    ],
    "era": "probable",
@@ -15662,7 +15657,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/nalsor.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15859,7 +15854,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kelsanor.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15936,7 +15931,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/saffron.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -15965,17 +15960,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/forgotten-emperor.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/catacombs-of-cardova.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16076,7 +16071,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/eye-of-arawn.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16225,7 +16220,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16394,16 +16389,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 5eddf464-2886-4084-8607-5a7c5aaff750 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/black-mountains-north.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/keltoi-fogou.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16576,17 +16561,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/necromantic-apprentice.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/the-swett-household.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dales-of-devwy.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16831,7 +16816,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kings-wight.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -16860,7 +16845,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/keltoi-fogou.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -17083,13 +17068,13 @@
     },
     {
      "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/history/albion.json",
-     "note": "mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
+     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/golestandt.json",
+     "note": "name match; mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
     },
     {
      "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/dartmoor.json",
-     "note": "mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
+     "path": "source/server/GameServer/bots/autonomous/data/lore/history/albion.json",
+     "note": "name match; mythic: http://www.camelotherald.com/more/193.php (Camelot Herald, 2002-02-07, 1.45 patch notes; the same text first ran in the Pendragon notes, http://www.camelotheral"
     }
    ],
    "era": "confirmed",
@@ -17190,12 +17175,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/snowdon-grim.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -17318,12 +17303,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/black-mountains-north.json",
-     "note": "game: source/server/GameServer/scripts/mobs/AlbionMobs/SgtCosworth.cs, source/server/GameServer/scripts/mobs/AlbionMobs/SgtGerenth.cs"
+     "note": "name match; game: source/server/GameServer/scripts/mobs/AlbionMobs/SgtCosworth.cs, source/server/GameServer/scripts/mobs/AlbionMobs/SgtGerenth.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/black-mountains-north.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -17496,7 +17481,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/forest-sauvage.json",
-     "note": "game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: Zones/Mob/Keep/Area tables, region 1 zone 11 (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -17573,12 +17558,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/camelot.json",
-     "note": "game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table, StartRegionID 10 (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/salisbury-plains.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -17607,7 +17592,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/snowdon-grim.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -18044,17 +18029,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/delfina.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/overseer-tepok.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/llyn-barfog.json",
-     "note": "game: world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only); world data: DataQuest table (0.37b runtime database, world tables onl"
+     "note": "name match; game: world data: Zones/Mob tables, region 1 zone 7 (0.37b runtime database, world tables only); world data: DataQuest table (0.37b runtime database, world tables onl"
     }
    ],
    "era": "probable",
@@ -18155,12 +18140,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/dathmul.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/wizard-lichas.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -19293,7 +19278,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/black-mountains-north.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -19610,17 +19595,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/delfina.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/overseer-tepok.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tepoks-mine.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -20009,12 +19994,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ellyll-seer.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/isolationist-courier.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -20365,7 +20350,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/cirfans.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -20879,7 +20864,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/malefact.json",
-     "note": "game: world data: DataQuest table (0.37b runtime database, world tables only)"
+     "note": "name match; game: world data: DataQuest table (0.37b runtime database, world tables only)"
     }
    ],
    "era": "probable",
@@ -22130,12 +22115,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: DataQuest 'Traces of the Mad Changlings', 'Lysagh's Problem', 'The Anxious Healer' (world data); GAPS-hibernia.md section 3"
+     "note": "name match; game: DataQuest 'Traces of the Mad Changlings', 'Lysagh's Problem', 'The Anxious Healer' (world data); GAPS-hibernia.md section 3"
     }
    ],
    "era": "probable",
@@ -22285,11 +22270,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ad7cac42-4af5-4ed4-a24d-ea78f9240d65 (Enchanter, Enchanter)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mikka.json",
-     "note": "game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
     }
    ],
    "era": "probable",
@@ -22468,11 +22448,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob dad40bf7-c2d7-4ba7-ae41-6198620a7cab (Enchanter, Enchanter)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "confirmed",
@@ -23118,7 +23093,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -23272,7 +23247,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: DataQuest 'Magical Disturbances', 'Protecting the Groves', 'Shade of a Grove', 'In the Interest of Plants' (world data)"
+     "note": "name match; game: DataQuest 'Magical Disturbances', 'Protecting the Groves', 'Shade of a Grove', 'In the Interest of Plants' (world data)"
     }
    ],
    "era": "probable",
@@ -23373,7 +23348,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cruachan-gorge.json",
-     "note": "game: world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -23402,7 +23377,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/breifine.json",
-     "note": "game: world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Keep table (read 2026-11-06); world data ZonePoint table (read 2026-11-06); world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -24105,7 +24080,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
+     "note": "name match; game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
     }
    ],
    "era": "probable",
@@ -24254,7 +24229,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -24835,7 +24810,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -25440,7 +25415,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -25999,17 +25974,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/cronwort.json",
-     "note": "game: DataQuest 'Writhing Death' (world data)"
+     "note": "name match; game: DataQuest 'Writhing Death' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/fedail.json",
-     "note": "game: DataQuest 'Writhing Death' (world data)"
+     "note": "name match; game: DataQuest 'Writhing Death' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/fuilwort.json",
-     "note": "game: DataQuest 'Writhing Death' (world data)"
+     "note": "name match; game: DataQuest 'Writhing Death' (world data)"
     }
    ],
    "era": "probable",
@@ -26658,11 +26633,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 34774de0-0d94-4840-8c11-0e9b056d411b (GameMerchant, Armor Merchant)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -26859,7 +26829,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -27128,7 +27098,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
+     "note": "name match; game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
     }
    ],
    "era": "probable",
@@ -27997,7 +27967,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -28074,17 +28044,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ceracor.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/dreaded-ursine.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/driff-tinel.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -28545,12 +28515,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
+     "note": "name match; game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
     }
    ],
    "era": "probable",
@@ -28723,17 +28693,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: DataQuest 'Traces of the Mad Changlings', 'Lysagh's Problem', 'The Anxious Healer' (world data); GAPS-hibernia.md section 3"
+     "note": "name match; game: DataQuest 'Traces of the Mad Changlings', 'Lysagh's Problem', 'The Anxious Healer' (world data); GAPS-hibernia.md section 3"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -30466,7 +30436,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: DataQuest 'Connla's Well', 'The Touch of Amadan Duhb' (world data)"
+     "note": "name match; game: DataQuest 'Connla's Well', 'The Touch of Amadan Duhb' (world data)"
     }
    ],
    "era": "probable",
@@ -30795,7 +30765,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/eugor.json",
-     "note": "game: DataQuest 'Magic's Scar' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Magic's Scar' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -31150,7 +31120,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -31415,11 +31385,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 854192f1-962d-4d50-859e-d686e7217ffe (GameMerchant, Siege Merchant)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -31448,17 +31413,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/faerie-queen.json",
-     "note": "game: DataQuest 'The Moonstone Twin' (world data); scripts/quests/Hibernia/epic/Essence50.cs"
+     "note": "name match; game: DataQuest 'The Moonstone Twin' (world data); scripts/quests/Hibernia/epic/Essence50.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/rioldna.json",
-     "note": "game: DataQuest 'The Moonstone Twin' (world data); GAPS-hibernia.md"
+     "note": "name match; game: DataQuest 'The Moonstone Twin' (world data); GAPS-hibernia.md"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: DataQuest 'The Moonstone Twin', 'Unnatural Powers', 'The Lost Relics' (world data)"
+     "note": "name match; game: DataQuest 'The Moonstone Twin', 'Unnatural Powers', 'The Lost Relics' (world data)"
     }
    ],
    "era": "probable",
@@ -31487,7 +31452,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
+     "note": "name match; game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
     }
    ],
    "era": "probable",
@@ -31516,7 +31481,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
+     "note": "name match; game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
     }
    ],
    "era": "probable",
@@ -31550,12 +31515,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
+     "note": "name match; game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
     }
    ],
    "era": "probable",
@@ -31584,7 +31549,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: source/server/GameServer/scripts/quests/Hibernia/epic/Harmony50.cs (integration/1.2)"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Hibernia/epic/Harmony50.cs (integration/1.2)"
     }
    ],
    "era": "probable",
@@ -31618,17 +31583,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
+     "note": "name match; game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cothrom-gorge.json",
-     "note": "game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2); world data Mob table, region 181 (read 2026-11-06)"
+     "note": "name match; game: scripts/quests/Hibernia/shrouded isles/TheLostSeed.cs (integration/1.2); world data Mob table, region 181 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -32142,7 +32107,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vigilant-rock.json",
-     "note": "game: DataQuest 'Twisted Evil', 'Corruptors, Botonids, and Trade', 'Face the Twisted' (world data)"
+     "note": "name match; game: DataQuest 'Twisted Evil', 'Corruptors, Botonids, and Trade', 'Face the Twisted' (world data)"
     }
    ],
    "era": "probable",
@@ -32735,7 +32700,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -32790,7 +32755,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: DataQuest 'Two Ales, Ailish!', 'Viraniel's Plague', 'Black Plague' (world data)"
+     "note": "name match; game: DataQuest 'Two Ales, Ailish!', 'Viraniel's Plague', 'Black Plague' (world data)"
     }
    ],
    "era": "probable",
@@ -32819,7 +32784,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/mount-collory.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Magic's Scar', 'Season of Remorse'"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Magic's Scar', 'Season of Remorse'"
     }
    ],
    "era": "probable",
@@ -32920,7 +32885,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -32949,7 +32914,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Area and Teleport tables; DataQuest 'The Status of Information' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Area and Teleport tables; DataQuest 'The Status of Information' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33086,17 +33051,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ceracor.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/dreaded-ursine.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/driff-tinel.json",
-     "note": "game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Immortal Gift' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33149,17 +33114,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/curmie.json",
-     "note": "game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/smidget.json",
-     "note": "game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/smirky.json",
-     "note": "game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Occupation of Lough Gur' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33212,7 +33177,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33333,16 +33298,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 7ce09bfa-b6a5-4fc4-bae9-74595701c0f0 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/amadan-dubh.json",
-     "note": "game: DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33467,7 +33422,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33592,17 +33547,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/morven.json",
-     "note": "game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/raemon.json",
-     "note": "game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ronat.json",
-     "note": "game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Morven's Return' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33679,17 +33634,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tiomoid.json",
-     "note": "game: DataQuest 'Lost Townfolk of Bran Llyr' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Lost Townfolk of Bran Llyr' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
+     "note": "name match; game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
     }
    ],
    "era": "probable",
@@ -33718,7 +33673,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33747,17 +33702,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mikka.json",
-     "note": "game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
+     "note": "name match; game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/coruscating-mine.json",
-     "note": "game: DataQuest 'Secret of Nuada's Silver A' (world data)"
+     "note": "name match; game: DataQuest 'Secret of Nuada's Silver A' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33786,7 +33741,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/bog-of-cullen.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33820,12 +33775,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/manius.json",
-     "note": "game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -33854,7 +33809,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-balor.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     }
    ],
    "era": "probable",
@@ -33907,12 +33862,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
+     "note": "name match; game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34013,7 +33968,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34042,7 +33997,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/amadan-dubh.json",
-     "note": "game: DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34095,12 +34050,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/manius.json",
-     "note": "game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
+     "note": "name match; game: DataQuest 'The Piper's Price', 'Occupation of Lough Gur', 'Lost Townfolk of Bran Llyr', 'Last Heir' (world data)"
     }
    ],
    "era": "probable",
@@ -34129,17 +34084,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/aoife.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/aoife.json",
-     "note": "game: DataQuest 'The West Wind' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'The West Wind' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34207,12 +34162,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: DataQuest 'The Broken Seal', 'Cad Goddeau B', 'Search For The Missing Smith', 'Catch of the Day' (world data)"
+     "note": "name match; game: DataQuest 'The Broken Seal', 'Cad Goddeau B', 'Search For The Missing Smith', 'Catch of the Day' (world data)"
     }
    ],
    "era": "probable",
@@ -34241,17 +34196,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: DataQuest 'The Broken Seal', 'Cad Goddeau B', 'Search For The Missing Smith', 'Catch of the Day' (world data)"
+     "note": "name match; game: DataQuest 'The Broken Seal', 'Cad Goddeau B', 'Search For The Missing Smith', 'Catch of the Day' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/koalinth-caverns.json",
-     "note": "legend: https://camelot.allakhazam.com/zones.html?czone=53"
+     "note": "name match; legend: https://camelot.allakhazam.com/zones.html?czone=53"
     }
    ],
    "era": "probable",
@@ -34352,12 +34307,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mikka.json",
-     "note": "game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
+     "note": "name match; game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34386,17 +34341,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-derg.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34425,7 +34380,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34778,12 +34733,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ixthiar-broodmother.json",
-     "note": "game: DataQuest \"Fylara's Armor\" (world data)"
+     "note": "name match; game: DataQuest \"Fylara's Armor\" (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-balor.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     }
    ],
    "era": "probable",
@@ -34880,11 +34835,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ed95d55d-9698-4345-bb41-f1e2aeb8830a (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: DataQuest 'Secret of Nuada's Silver B', 'Sad Fomorie', 'Scuttle' (world data)"
     }
    ],
    "era": "probable",
@@ -34913,12 +34863,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muire-tomb.json",
-     "note": "game: DataQuest 21402 'Rest in Peace' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 21402 'Rest in Peace' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -34995,7 +34945,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35168,7 +35118,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/bog-of-cullen.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Last Heir' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Last Heir' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35197,7 +35147,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35226,17 +35176,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/amadan-dubh.json",
-     "note": "game: DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'The Touch of Amadan Duhb' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: DataQuest 'Connla's Well', 'The Touch of Amadan Duhb' (world data)"
+     "note": "name match; game: DataQuest 'Connla's Well', 'The Touch of Amadan Duhb' (world data)"
     }
    ],
    "era": "probable",
@@ -35385,7 +35335,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/treibh-caillte.json",
-     "note": "game: world data Mob table, region 224"
+     "note": "name match; game: world data Mob table, region 224"
     }
    ],
    "era": "probable",
@@ -35534,12 +35484,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
+     "note": "name match; game: DataQuest 'Missing Tapestry', 'Poison for Ivy', 'Crace's Desire' (world data)"
     }
    ],
    "era": "probable",
@@ -35564,11 +35514,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 100028705 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
     }
    ],
    "era": "probable",
@@ -35621,17 +35566,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/laraida.json",
-     "note": "game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/luaire.json",
-     "note": "game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/rinne.json",
-     "note": "game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Twisted Evil' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35732,7 +35677,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35785,7 +35730,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35862,7 +35807,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/manius.json",
-     "note": "game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35891,7 +35836,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-balor.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     }
    ],
    "era": "probable",
@@ -35916,11 +35861,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 684b5181-c5fd-4cb4-89f4-7b478fed805c (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -35997,17 +35937,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/fanged-sinach.json",
-     "note": "game: DataQuest 'Catch of the Day' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Catch of the Day' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36036,7 +35976,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36113,17 +36053,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/abbadona.json",
-     "note": "game: DataQuest 'The Lost Relics' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'The Lost Relics' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/geas-bound-protector.json",
-     "note": "game: DataQuest 'The Lost Relics' (world data)"
+     "note": "name match; game: DataQuest 'The Lost Relics' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: DataQuest 'The Moonstone Twin', 'Unnatural Powers', 'The Lost Relics' (world data)"
+     "note": "name match; game: DataQuest 'The Moonstone Twin', 'Unnatural Powers', 'The Lost Relics' (world data)"
     }
    ],
    "era": "probable",
@@ -36176,7 +36116,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36205,7 +36145,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36270,17 +36210,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ide.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/madawg.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/saemus.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     }
    ],
    "era": "probable",
@@ -36357,7 +36297,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36386,7 +36326,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36511,7 +36451,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/eugor.json",
-     "note": "game: DataQuest 'Magic's Scar' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Magic's Scar' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36588,12 +36528,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: DataQuest 'Riona's Revenge', 'Merle's Informant', 'Cad Goddeau C' (world data)"
+     "note": "name match; game: DataQuest 'Riona's Revenge', 'Merle's Informant', 'Cad Goddeau C' (world data)"
     }
    ],
    "era": "probable",
@@ -36670,7 +36610,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/caillte-garran.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     }
    ],
    "era": "probable",
@@ -36771,17 +36711,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/manius.json",
-     "note": "game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
+     "note": "name match; game: DataQuest 'Last Heir' (world data, read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-balor.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); world data Area, Teleport and ZonePoint tables"
     }
    ],
    "era": "probable",
@@ -36810,12 +36750,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36880,7 +36820,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -36957,17 +36897,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mikka.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md; DataQuest 'Cad Goddeau A'-'D'"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md; DataQuest 'Cad Goddeau A'-'D'"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37044,7 +36984,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vigilant-rock.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37097,7 +37037,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37126,12 +37066,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/lhia.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Piaras and Lhia'"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Piaras and Lhia'"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37184,7 +37124,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37285,12 +37225,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: DataQuest 'Riona's Revenge', 'Merle's Informant', 'Cad Goddeau C' (world data)"
+     "note": "name match; game: DataQuest 'Riona's Revenge', 'Merle's Informant', 'Cad Goddeau C' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37415,7 +37355,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Crace's Desire' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37588,7 +37528,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/lough-gur.json",
-     "note": "game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37665,7 +37605,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/shannon-estuary.json",
-     "note": "game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Area table; world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37718,7 +37658,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37767,11 +37707,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob eb16f1c4-d8dd-4c60-834d-bad75ecb57b1 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/connacht.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); DataQuest 'Information is the Key' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37812,7 +37747,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -37889,7 +37824,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/silvermine-mountains.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38160,6 +38095,30 @@
    "notes": []
   },
   {
+   "name": "Allistar",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 200,
+     "zone": "Shannon Estuary",
+     "near": "Connla",
+     "x": 294843,
+     "y": 641102
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 1a6e3627-13aa-4636-86ed-ee3f0ae5360e (BlademasterTrainer, Blademaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Anwar",
    "realm": "Hibernia",
    "role": "Enchanter trainer",
@@ -38182,7 +38141,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38207,11 +38166,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob c4e71392-ed9a-4d21-84da-77051908bffb (EldritchTrainer, Eldritch Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38308,6 +38262,35 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob d07feb0e-1237-452d-9f53-017f15619377 (MagicianTrainer, Magician Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Aurnia",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 181,
+     "zone": "Domnann",
+     "near": "Grove of Domnann",
+     "x": 424641,
+     "y": 446097
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 100028881 (BlademasterTrainer, Blademaster Trainer)"
+    },
+    {
+     "kind": "lore fact",
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
     }
    ],
    "era": "probable",
@@ -38432,7 +38415,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38493,21 +38476,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 3cb2002b-fd8f-4ca7-9889-1f0cfac9254e (StalkerTrainer, Stalker Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mikka.json",
-     "note": "game: DataQuest \"Secret of Nuada's Silver A\" (world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tiomoid.json",
-     "note": "game: DataQuest 'Lost Townfolk of Bran Llyr' (world data, read 2026-11-06)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/cliffs-of-moher.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06); GAPS-hibernia.md; DataQuest 'The West Wind' (world data, read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38800,7 +38768,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -38903,6 +38871,30 @@
    "notes": []
   },
   {
+   "name": "Ea",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 200,
+     "zone": "Silvermine Mts.",
+     "near": "Ardagh",
+     "x": 351072,
+     "y": 552741
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 13c139fc-15f6-43c3-823e-7abcf3431a54 (BlademasterTrainer, Blademaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Eachann",
    "realm": "Hibernia",
    "role": "Mentalist trainer",
@@ -38957,6 +38949,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 6cbeaccb-9ed0-488a-b642-f1599093a278 (ChampionTrainer, Champion Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Eistir",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 181,
+     "zone": "Vigilant Rock",
+     "near": "Necht",
+     "x": 429358,
+     "y": 317892
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob a1c8c807-69d8-41c4-853d-8f10a0db0fd2 (BlademasterTrainer, Blademaster Trainer)"
     }
    ],
    "era": "probable",
@@ -39129,7 +39145,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vigilant-rock.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -39184,6 +39200,30 @@
    "notes": []
   },
   {
+   "name": "Felic",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 181,
+     "zone": "Vale of Balor",
+     "near": "Aalid Feie",
+     "x": 308706,
+     "y": 350657
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 100028804 (BlademasterTrainer, Blademaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Flannery",
    "realm": "Hibernia",
    "role": "Guardian trainer",
@@ -39230,7 +39270,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -39259,7 +39299,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -39528,7 +39568,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -39562,7 +39602,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "confirmed",
@@ -39689,6 +39729,35 @@
    "notes": []
   },
   {
+   "name": "Luighseach",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 201,
+     "zone": "Tir na Nog",
+     "near": "Tir na Nog",
+     "x": 29760,
+     "y": 26445
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob e0f0ed38-0021-433f-b4ec-c8c7ab995b64 (BlademasterTrainer, Blademaster Trainer)"
+    },
+    {
+     "kind": "lore fact",
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Macawld",
    "realm": "Hibernia",
    "role": "Ranger trainer",
@@ -39783,17 +39852,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ide.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/madawg.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/saemus.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     }
    ],
    "era": "probable",
@@ -39818,6 +39887,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ea557ab4-ca02-43c5-9283-4e5125c1fb3f (GuardianTrainer, Guardian Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Meriel",
+   "realm": "Hibernia",
+   "role": "Blademaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 200,
+     "zone": "Valley of Bri Leith",
+     "near": "Druim Cain",
+     "x": 421795,
+     "y": 487463
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob db432e47-4e04-44a7-b0c3-2cec37c683d3 (BlademasterTrainer, Blademaster Trainer)"
     }
    ],
    "era": "probable",
@@ -40110,7 +40203,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -40211,7 +40304,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
     }
    ],
    "era": "probable",
@@ -40264,7 +40357,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/tir-na-nog.json",
-     "note": "game: world data Mob table, region 201 (read 2026-11-06)"
+     "note": "name match; game: world data Mob table, region 201 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -40293,7 +40386,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/domnann.json",
-     "note": "game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
+     "note": "name match; game: world data Mob table, region 181 (read 2026-11-06); DataQuest 'Learn the Paths', 'Spiteful Sylvanshade Head -- Kill Task'"
     }
    ],
    "era": "probable",
@@ -40342,11 +40435,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 4d1cd24e-0102-4587-8a4f-bbe4fe4756df (RangerTrainer, Ranger Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/valley-of-bri-leith.json",
-     "note": "game: world data Mob table, region 200 (read 2026-11-06)"
     }
    ],
    "era": "probable",
@@ -40507,17 +40595,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ide.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/madawg.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/saemus.json",
-     "note": "game: DataQuest 'Unnatural Powers' (world data)"
+     "note": "name match; game: DataQuest 'Unnatural Powers' (world data)"
     }
    ],
    "era": "probable",
@@ -41079,7 +41167,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -41300,7 +41388,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -41829,16 +41917,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 2f8278e6-ca26-460a-8fee-924b7d5e53e5 (GameHealer, Healer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/council-hord.json",
-     "note": "game: docs/encounters/epic-encounters.json"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/council-hord.json",
-     "note": "game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs"
     }
    ],
    "era": "probable",
@@ -41911,11 +41989,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 289aaa0f-4e01-4c29-9495-2428d1a67c76 (GameHealer, Healer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -42304,7 +42377,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jamtland-mountains.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Keep and Area tables (0.37b world data); Mob table"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Keep and Area tables (0.37b world data); Mob table"
     }
    ],
    "era": "probable",
@@ -42669,17 +42742,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/freyana.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/noma-rindasdottir.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/history/midgard.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -43616,11 +43689,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ddd9b17c-fe68-4067-992b-eb80010494fb (GameMerchant, Weapon Merchant)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/burr.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -45403,7 +45471,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -46008,7 +46076,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -46061,7 +46129,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/gunflor.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -46582,12 +46650,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/gunflor.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/myrkwood-forest.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -46732,11 +46800,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 4334e0a9-8581-4ff9-9aae-baf9a487dc8c (GameMerchant, Armor Merchant)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -46957,12 +47020,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/icelord-kvasir.json",
-     "note": "game: docs/encounters/epic-encounters.json"
+     "note": "name match; game: docs/encounters/epic-encounters.json"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/icelord-kvasir.json",
-     "note": "game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
+     "note": "name match; game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     }
    ],
    "era": "probable",
@@ -48163,16 +48226,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 0311327e-5ac5-4b46-8d6a-237daf46d4ec (GameMerchant, Dye Merchant)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/council-ozur.json",
-     "note": "game: docs/encounters/epic-encounters.json"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/council-ozur.json",
-     "note": "game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
     }
    ],
    "era": "probable",
@@ -49775,12 +49828,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/jailer-vifil.json",
-     "note": "game: docs/encounters/epic-encounters.json"
+     "note": "name match; game: docs/encounters/epic-encounters.json"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/jailer-vifil.json",
-     "note": "game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs"
+     "note": "name match; game: source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs"
     }
    ],
    "era": "probable",
@@ -49977,12 +50030,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/munin-sound.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50059,17 +50112,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/freyana.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/jango.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kelic.json",
-     "note": "game: source/server/GameServer/scripts/quests/Midgard/epic/Mystic50.cs"
+     "note": "name match; game: source/server/GameServer/scripts/quests/Midgard/epic/Mystic50.cs"
     }
    ],
    "era": "probable",
@@ -50098,12 +50151,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/geyra.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50142,17 +50195,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/fjall.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/storslange.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/thorkatla.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "confirmed",
@@ -50186,7 +50239,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gripklosa-mountains.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50220,7 +50273,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     }
    ],
    "era": "probable",
@@ -50276,17 +50329,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/albion-leader.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/geyra.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/hagall-the-red-dagger.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50325,17 +50378,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ajniollia.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/oona.json",
-     "note": "legend: https://camelot.allakhazam.com/db/quest/653"
+     "note": "name match; legend: https://camelot.allakhazam.com/db/quest/653"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "confirmed",
@@ -50370,21 +50423,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob cedddfc4-d21f-4c1e-b2f2-275652741506 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/leildolf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/uppland.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "confirmed",
@@ -50418,7 +50456,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     }
    ],
    "era": "probable",
@@ -50445,12 +50483,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: source/server/GameServer/scripts/mobs/TimeDependentSpawnNpc.cs; source/server/GameServer/scripts/mobs/MidgardMobs/ScoutArgyle.cs; runtime/data/opendaoc.sqlite3."
+     "note": "name match; game: source/server/GameServer/scripts/mobs/TimeDependentSpawnNpc.cs; source/server/GameServer/scripts/mobs/MidgardMobs/ScoutArgyle.cs; runtime/data/opendaoc.sqlite3."
     }
    ],
    "era": "confirmed",
@@ -50480,11 +50518,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 41de3cc1-455f-42ce-bc0a-c83c97fa3504 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     }
    ],
    "era": "probable",
@@ -50561,17 +50594,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/serk.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jamtland-mountains.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50624,7 +50657,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50649,11 +50682,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 2abd1e96-a6d1-4f0d-83a8-dd62ab59aa8b (Blacksmith, Smith)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -50932,12 +50960,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/undead-patrol.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "confirmed",
@@ -51134,7 +51162,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/skona-ravine.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -51547,17 +51575,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kampestein.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/klippe.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ornulf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -51610,7 +51638,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -51663,7 +51691,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/west-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -51740,7 +51768,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/myrkwood-forest.json",
-     "note": "game: source/server/GameServer/scripts/mobs/Alina.cs; runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: source/server/GameServer/scripts/mobs/Alina.cs; runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -51985,17 +52013,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/albion-leader.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/hagall-the-red-dagger.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/mista.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52048,7 +52076,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/hresvelgr.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table, 'Werewolf Bane' (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table, 'Werewolf Bane' (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52245,7 +52273,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/faraheim.json",
-     "note": "game: scratchpad/gap/named.json (audit of the 0.37b world data)"
+     "note": "name match; game: scratchpad/gap/named.json (audit of the 0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52274,7 +52302,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52423,7 +52451,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52476,17 +52504,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/old-matriarch.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/vorkald.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/delling-crater.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52583,11 +52611,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ae4b7daf-faa7-4774-bfdd-ab77cd7f123c (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52616,7 +52639,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52741,7 +52764,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/faraheim.json",
-     "note": "game: scratchpad/gap/named.json (audit of the 0.37b world data)"
+     "note": "name match; game: scratchpad/gap/named.json (audit of the 0.37b world data)"
     }
    ],
    "era": "probable",
@@ -52962,12 +52985,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/valthjof.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53116,7 +53139,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53217,12 +53240,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/tebui.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53635,7 +53658,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53712,7 +53735,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/zrit-zrit.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53741,17 +53764,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/urtzi.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/munin-sound.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53780,7 +53803,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/cargila.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -53881,7 +53904,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54030,12 +54053,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/west-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54088,7 +54111,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54141,7 +54164,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54244,7 +54267,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/stripe.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54321,12 +54344,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/myrkwood-forest.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 105 (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 105 (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54375,11 +54398,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 4ba1c242-4c2b-416b-bd82-1cafc24d767e (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/west-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54476,21 +54494,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 710d72d5-1c00-48cf-b403-b343540c5586 (GameNPC)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/fjall.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/yggdra-forest.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54541,7 +54544,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/noma-rindasdottir.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54594,7 +54597,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/munin-sound.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54647,7 +54650,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); source/server/GameServer/scripts/quests/Midgard/shrouded isles/AncestralSecrets.cs"
     }
    ],
    "era": "probable",
@@ -54748,7 +54751,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/kreg.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54849,7 +54852,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -54974,7 +54977,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55195,12 +55198,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/urtzi.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/munin-sound.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55229,17 +55232,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/storslange.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/ulfketill.json",
-     "note": "legend: https://camelot.allakhazam.com/db/quest/720"
+     "note": "name match; legend: https://camelot.allakhazam.com/db/quest/720"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55364,7 +55367,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/aegirs-landing.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55417,7 +55420,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/munin-sound.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55842,12 +55845,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -55876,7 +55879,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/west-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -56097,12 +56100,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/muspelheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 104 (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/west-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -56179,7 +56182,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -56232,12 +56235,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/east-svealand.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/nisses-lair.json",
-     "note": "game: scratchpad/gap/named.json (audit of the 0.37b DataQuest table)"
+     "note": "name match; game: scratchpad/gap/named.json (audit of the 0.37b DataQuest table)"
     }
    ],
    "era": "probable",
@@ -57065,6 +57068,30 @@
    "notes": []
   },
   {
+   "name": "Bera",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 101,
+     "zone": "Jordheim",
+     "near": "Jordheim",
+     "x": 34124,
+     "y": 35786
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob f07e212d-3627-49ad-b2eb-ef805c277dbb (RunemasterTrainer, Runemaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Besja",
    "realm": "Midgard",
    "role": "Shadowblade trainer",
@@ -57111,7 +57138,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57136,11 +57163,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 88994ea3-47f5-4215-b93c-5f210458b1a0 (HunterTrainer, Hunter Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57193,7 +57215,31 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/malmohus.json",
-     "note": "legend: https://camelot.allakhazam.com/db/search.html?cmzone=60"
+     "note": "name match; legend: https://camelot.allakhazam.com/db/search.html?cmzone=60"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Dain",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "West Svealand",
+     "near": "Vindsaul Faste",
+     "x": 703348,
+     "y": 740100
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob fee15dc3-3a04-4cd1-aa11-c6c82549a252 (SpiritmasterTrainer, Spiritmaster Trainer)"
     }
    ],
    "era": "probable",
@@ -57218,11 +57264,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 62406fb9-64ba-4d8e-9958-5bdb6a65602c (ShamanTrainer, Shaman Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57251,7 +57292,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57306,6 +57347,30 @@
    "notes": []
   },
   {
+   "name": "Dyre",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 101,
+     "zone": "Jordheim",
+     "near": "Jordheim",
+     "x": 34013,
+     "y": 35806
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 2d7cfe23-58db-40e4-aa83-4a3ab8cf8c87 (SpiritmasterTrainer, Spiritmaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Elin",
    "realm": "Midgard",
    "role": "Shadowblade trainer",
@@ -57324,11 +57389,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 99582027-5af0-4f1b-bef5-17b92f0aaf72 (ShadowbladeTrainer, Shadowblade Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57358,6 +57418,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 322ad9d8-d972-4597-befc-d6e8d1e9a560 (SkaldTrainer, Skald Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Etta Greavers",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Aegir's Landing",
+     "near": "Aegirhamn",
+     "x": 289273,
+     "y": 355039
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob fcb3eb7d-11aa-4c88-87eb-3ba4d93d69da (RunemasterTrainer, Runemaster Trainer)"
     }
    ],
    "era": "probable",
@@ -57434,7 +57518,31 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Galn",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 101,
+     "zone": "Jordheim",
+     "near": "Jordheim",
+     "x": 34317,
+     "y": 35964
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 2d5ea9f8-edd4-4b38-8ef2-352a309404ff (SpiritmasterTrainer, Spiritmaster Trainer)"
     }
    ],
    "era": "probable",
@@ -57459,11 +57567,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob d0da2264-fa64-4dcc-8e2f-82f1b918efa7 (RogueTrainer, Rogue Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57516,12 +57619,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/leildolf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57546,11 +57649,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 9ecbbcc3-9000-4f09-bf89-47bedbe034c8 (SeerTrainer, Seer Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57603,17 +57701,17 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/arnulv.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/gunnolf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/gunnolf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); Mob table"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data); Mob table"
     }
    ],
    "era": "probable",
@@ -57642,7 +57740,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57671,7 +57769,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57696,24 +57794,9 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 77015216-843b-4855-8746-06af6d2a1d66 (HunterTrainer, Hunter Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/history/midgard.json",
-     "note": "mythic: http://www.camelotherald.com/more/1131.shtml (Camelot Herald, 2003-10-23, 'Trials of Atlantis, an Overview'; Wayback capture 2005-12-26)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
-   "era": "confirmed",
+   "era": "probable",
    "notes": []
   },
   {
@@ -57735,11 +57818,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 67e62fc5-4203-409d-8583-b2b7cf96b3d3 (BerserkerTrainer, Berserker Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57768,12 +57846,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57862,7 +57940,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57891,7 +57969,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -57968,12 +58046,12 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     },
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58026,7 +58104,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58055,7 +58133,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58084,7 +58162,31 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Kelcea",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "Myrkwood Forest",
+     "near": "Galplen",
+     "x": 797700,
+     "y": 892200
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob c9e1ada0-a29a-4a15-a4af-68cdbc49e30f (SpiritmasterTrainer, Spiritmaster Trainer)"
     }
    ],
    "era": "probable",
@@ -58161,7 +58263,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58267,7 +58369,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58297,11 +58399,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob e506db4d-8fe4-4e98-a2b6-a8ff4e2eb92d (SkaldTrainer, Skald Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58354,7 +58451,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58505,6 +58602,54 @@
    "notes": []
   },
   {
+   "name": "Odindisa",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Gripklosa Mountains",
+     "near": "Bjarken",
+     "x": 289243,
+     "y": 303832
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 214d26e4-50b3-4396-b18f-a7c6bea5cfe6 (RunemasterTrainer, Runemaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Odward",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Faraheim",
+     "near": "Hagall",
+     "x": 379074,
+     "y": 388296
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob d2288354-7701-4d0c-adcb-cbbfb4ec24c3 (SpiritmasterTrainer, Spiritmaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Osten",
    "realm": "Midgard",
    "role": "Warrior trainer",
@@ -58527,7 +58672,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58557,6 +58702,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob f4b0847b-40b5-43ca-9a9e-7623801613ea (SkaldTrainer, Skald Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Palda",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Aegir's Landing",
+     "near": "Aegirhamn",
+     "x": 290631,
+     "y": 353903
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 100022116 (SpiritmasterTrainer, Spiritmaster Trainer)"
     }
    ],
    "era": "probable",
@@ -58657,7 +58826,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58706,21 +58875,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 947e56ad-4e01-46ad-b074-776e93b71b7a (HealerTrainer, Healer Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/leildolf.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/bosses/rana.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables (0.37b world data); runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58852,7 +59006,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58929,7 +59083,36 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Sarry",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "Gotar",
+     "near": "Fort Atla",
+     "x": 750104,
+     "y": 815081
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 90d56969-7c20-4b74-838c-ab51db887c03 (SpiritmasterTrainer, Spiritmaster Trainer)"
+    },
+    {
+     "kind": "lore fact",
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -58960,6 +59143,35 @@
    "notes": []
   },
   {
+   "name": "Signa",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 101,
+     "zone": "Jordheim",
+     "near": "Jordheim",
+     "x": 34239,
+     "y": 36185
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob e647a16f-00f3-4975-a0a9-7ec16848d02d (RunemasterTrainer, Runemaster Trainer)"
+    },
+    {
+     "kind": "lore fact",
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Singrid",
    "realm": "Midgard",
    "role": "Hunter trainer",
@@ -58982,7 +59194,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59031,11 +59243,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob cc9007f7-3686-4899-ba6d-2bb45e0ea759 (BonedancerTrainer, Bonedancer Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59064,7 +59271,31 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Skoni",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Faraheim",
+     "near": "Hagall",
+     "x": 380122,
+     "y": 387394
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 8ca1d37f-d926-44de-a722-0732cd758121 (RunemasterTrainer, Runemaster Trainer)"
     }
    ],
    "era": "probable",
@@ -59118,11 +59349,6 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob 80a933ed-3b18-44be-b84f-c0bc72ae81c0 (SkaldTrainer, Skald Trainer)"
-    },
-    {
-     "kind": "lore fact",
-     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59153,6 +59379,35 @@
    "notes": []
   },
   {
+   "name": "Thetus",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "Gotar",
+     "near": "Fort Atla",
+     "x": 749419,
+     "y": 814223
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob b76f3098-5a01-4203-97f8-8a995b4edfb5 (RunemasterTrainer, Runemaster Trainer)"
+    },
+    {
+     "kind": "lore fact",
+     "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Thordia",
    "realm": "Midgard",
    "role": "Warrior trainer",
@@ -59175,7 +59430,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59200,6 +59455,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob ee40f0a2-8179-4778-9918-abcb5ff908f6 (SavageTrainer, Savage Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Toli",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "Myrkwood Forest",
+     "near": "Galplen",
+     "x": 797865,
+     "y": 892267
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob bb665f3b-27e4-4c38-abc1-2fb44629ae97 (RunemasterTrainer, Runemaster Trainer)"
     }
    ],
    "era": "probable",
@@ -59248,6 +59527,30 @@
      "kind": "OpenDAoC database",
      "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
      "note": "mob f8d1b5bd-bf46-4c18-a0ec-1d229f688c55 (SeerTrainer, Seer Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
+   "name": "Truda",
+   "realm": "Midgard",
+   "role": "Spiritmaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 151,
+     "zone": "Gripklosa Mountains",
+     "near": "Bjarken",
+     "x": 289421,
+     "y": 304311
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob 100022144 (SpiritmasterTrainer, Spiritmaster Trainer)"
     }
    ],
    "era": "probable",
@@ -59355,6 +59658,30 @@
    "notes": []
   },
   {
+   "name": "Var",
+   "realm": "Midgard",
+   "role": "Runemaster trainer",
+   "group": "trainer",
+   "places": [
+    {
+     "region": 100,
+     "zone": "West Svealand",
+     "near": "Vindsaul Faste",
+     "x": 704140,
+     "y": 739935
+    }
+   ],
+   "sources": [
+    {
+     "kind": "OpenDAoC database",
+     "path": "https://github.com/OpenDAoC/OpenDAoC-Database/blob/7068aef098300aa19f6664a6b9e7fdabb9a06ba3/opendaoc-db-core/mob.sql",
+     "note": "mob bb268738-5f65-4f82-9342-129d1b431d9a (RunemasterTrainer, Runemaster Trainer)"
+    }
+   ],
+   "era": "probable",
+   "notes": []
+  },
+  {
    "name": "Veikko",
    "realm": "Midgard",
    "role": "Savage trainer",
@@ -59425,7 +59752,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/vale-of-mularn.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59454,7 +59781,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/gotar.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob and NpcTemplate tables, zone 103 (0.37b world data)"
     }
    ],
    "era": "probable",
@@ -59579,7 +59906,7 @@
     {
      "kind": "lore fact",
      "path": "source/server/GameServer/bots/autonomous/data/lore/locations/jordheim.json",
-     "note": "game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
+     "note": "name match; game: runtime/data/opendaoc.sqlite3.db, Mob table, region 101 (0.37b world data)"
     }
    ],
    "era": "probable",
