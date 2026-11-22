@@ -10,8 +10,12 @@ Older entries below keep the names they were written with.
 
 ## 1.2.1 (in development)
 
-Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
-or run where it was written; CI on pull request #398 is the first build.
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
+1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
+results so far: CI on `fix/1.2.1` at `d56adeda` (9,258 server tests passed, 0 failed, 1 skipped), and the playtester's
+`bot-death`, `bot-corpse-target` and `bot-rez` scenarios on `b644529a`, which check packets, not what the client draws.
+The raid fixes (#407-#415) are added under **Bosses** as their branches merge. Player notes:
+[docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
