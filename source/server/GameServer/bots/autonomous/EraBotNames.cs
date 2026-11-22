@@ -437,14 +437,15 @@ public static partial class EraBotNames
     #region Everyday first names (Nate, Faye, Jenna)
 
     // Common in 2003 among adults and teens in the US and the UK. No names that are chat words (Max, Will, Mark, Rose, Grace...).
+    // No names the lore gives its own people (owner, 2026-11-22, HEROES.md decision 11): Sven, Gareth, Cody and Tobias left out.
     private static readonly string[] MaleFirstNames =
     [
         "Dave", "Steve", "Gary", "Kevin", "Brian", "Darren", "Craig", "Gavin", "Nathan", "Nate", "Jason", "Shane", "Wayne", "Keith",
         "Derek", "Trevor", "Neil", "Stuart", "Barry", "Colin", "Graham", "Ian", "Jamie", "Justin", "Kyle", "Ryan",
-        "Travis", "Dustin", "Brandon", "Cody", "Brett", "Todd", "Jeff", "Greg", "Doug", "Scott", "Eric", "Aaron", "Adam",
+        "Travis", "Dustin", "Brandon", "Brett", "Todd", "Jeff", "Greg", "Doug", "Scott", "Eric", "Aaron", "Adam",
         "Simon", "Martin", "Paul", "Jon", "Mike", "Andy", "Pete", "Phil", "Tom", "Ben", "Dan", "Matt", "Josh",
-        "Jake", "Luke", "Sean", "Shaun", "Owen", "Rhys", "Gareth", "Alan", "Carl", "Lars", "Jens", "Sven", "Olle", "Joakim",
-        "Hendrik", "Pieter", "Sander", "Bram", "Tobias", "Jonas", "Florian", "Malik", "Marek", "Tomas",
+        "Jake", "Luke", "Sean", "Shaun", "Owen", "Rhys", "Alan", "Carl", "Lars", "Jens", "Olle", "Joakim",
+        "Hendrik", "Pieter", "Sander", "Bram", "Jonas", "Florian", "Malik", "Marek", "Tomas",
     ];
 
     private static readonly string[] FemaleFirstNames =
