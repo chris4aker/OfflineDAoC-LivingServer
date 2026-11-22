@@ -47,7 +47,7 @@
     }
   ],
   "story": "A kettle-pit is a hole in the ground lined with stones and filled with fire, and the jotuns of Vanern fire their clay in them. Ulfketill got his name, the wolf-kettle, because his pit never went out, and because the clay that came out of it bit. He was a potter first. He made the best clay guards in the swamp, and he made them slowly, in the quiet of the evening, after he had eaten, because a pot made in anger cracks in the firing and every potter knows it.\n\nHe was a potter with a grievance. The jotuns of Vanern were cast down out of the mountains, and Ulfketill never forgave the gods for the mountains or the mud. When the bound god began whispering up through the low places of Midgard, Ulfketill was the first jotun of the swamp to answer. Loki promised him what Loki promises everyone: that the gods would be sorry. Since then, when the bound god wants mischief in Midgard, Ulfketill is one of the hands that makes it, and the seers' halls at Fort Atla send their young after him, by Lyngheid's word, when the whispering gets loud.\n\nHe keeps three guards. Never more, because a potter with more than three pots in the kiln loses one, and never fewer if he can help it. They follow him about the west bank like dogs, and like dogs they come running when anyone lays a hand on him, or on any one of them. But he will not make clay while he is roused. Break one of his guards while he is angry and it stays broken until he has calmed and eaten; the ferrymen say that is the only mercy the wolf-kettle has ever shown, and he does not mean it as one.\n\nHe is not easily held. Rope slides off him and spells of sleep and binding find nothing to hold to, as if he had been fired in his own pit. His arm is long. He does not chase anyone far; when the swamp is quiet again he goes back to his pit and his supper, and the next evening he is whole, and so, soon after, is his household of clay. Around his pit, on the broken bank, limp the guards that came out wrong over the years. He will not unmake them. He is a jotun, and they are his.",
-  "legend": "Ulfketill is the healer and shaman epic target in the west of Vanern Swamp. He starts with three clay jotun guards around him. The thing to know: he only makes new guards when nobody is fighting him. Once the fight starts, every guard you kill stays dead, so kill the three first (5,000 health each, level 50-55) and then you're fighting him alone. Touch him or any guard and all of them come. He's CC-immune, so don't bother rooting or mezzing him, and his reach is long, 350, so casters stand back. 30,000 health, 20% melee and 30% magic resist. If everyone dies or runs, he walks home at full health and refills to three guards. The broken and crippled jotuns nearby are separate mobs; clear them first so they don't wander in. Bring a full group.",
+  "legend": "Ulfketill is the target of the healers' and shamans' great quest in the west of Vanern Swamp, a foe for several bands of the realm's best together. He starts with three clay jotun guards around him. The thing to know: he only makes new guards when nobody is fighting him. Once the fight starts, every guard you kill stays dead, so kill the three first (the raiders reckon each at 5,000 in strength, a foe for the realm's best, a full band of them) and then you're fighting him alone. Touch him or any guard and all of them come. No charm or stun holds him, so don't bother pinning or entrancing him, and his reach is long, a dozen paces, so casters stand back. The raiders reckon his strength at thirty thousand, and a fifth of every blow and three-tenths of every spell are lost on him. If everyone dies or runs, he walks home whole and refills to three guards. The broken and crippled jotuns nearby are separate creatures; clear them first so they don't wander in. Bring a full group.",
   "yells": {
     "aggro": [
       "The god's work is not done. Clay, rise!",
@@ -95,19 +95,19 @@
     "briefing": [
       "ulfketill only makes guards out of combat. kill his three and they stay dead",
       "hit him or any guard and all four come, so be ready",
-      "hes cc immune, dont waste roots or mez",
+      "nothing holds him, dont waste pinnings or trances",
       "his reach is 350, casters stand well back",
       "clear the broken jotuns first or they wander in"
     ],
     "aftermathWin": [
-      "ulfketill down, epic step done",
-      "kettle's cold. epic step done",
+      "ulfketill down, quest step done",
+      "kettle's cold. quest step done",
       "three guards down and none came back, like they said",
       "the pit went out when he died. weird"
     ],
     "aftermathLoss": [
-      "we wiped and he walked home full with three new guards",
-      "someone rooted him. didnt work. never does",
+      "we all died and he walked home whole with three new guards",
+      "someone tried to pin him. didnt work. never does",
       "a broken jotun walked into the middle of it",
       "stood too close, his reach is huge"
     ],

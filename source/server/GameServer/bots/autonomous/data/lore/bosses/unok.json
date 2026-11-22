@@ -28,7 +28,7 @@
     }
   ],
   "story": "The redcaps of the Iarnwood are small, quick and hungry, and they dip their caps in the blood of what they kill, which is why the caps are red. The Blood Reavers they run with are worse, but the redcaps are more numerous, and the dwarves of Tarek's encampment fear them more for it. In the middle country they hunt in bands. In the far south-west, where the wood runs down toward the old one's hollow, there is one who does not hunt at all.\n\nUnok keeps the pot. Every redcap band in the wood brings him a share of what it kills, and he boils it in an iron pot as old as the redcaps' memory, and gives back to each band a cupful of the broth to dip their caps in, so that the red stays fresh. A redcap whose cap goes brown is no longer a redcap, the dwarves say, and dies of shame; so every band keeps faith with Unok, and Unok keeps the pot, and the pot is never empty.\n\nThe dwarves say something worse about him, which is that he made a bargain with the old one's Servants long ago: the redcaps keep away from her hollow and from her wolves, and in return the Servants bring Unok what the redcaps cannot catch. That, the dwarves say, is where the encampment's lost children went, some winters, and why Unok's corner of the wood smells the way it does. The redcaps deny it. Unok does not bother.\n\nHe is bigger than the other redcaps, from the broth, and slower, and he fights from beside his pot with a ladle-handle as long as a spear, and a cannibal of his own kind stands at his shoulder to keep the fire. He has no craft beyond that. He does not need one. Every redcap in the Iarnwood would come to avenge him, the dwarves say, if they ever found out in time.",
-  "legend": "Unok is a big redcap in the far south-west of the Iarnwood, level 55, with a redcap cannibal standing right beside him, so expect two. He's a plain spawn: no special abilities, not CC-immune, so mez the cannibal and kill Unok, or the other way round. Nothing else in this world stands close enough to join, despite what the dwarves say about every redcap in the wood coming for him. He's a decent named for a group at level, and he's close to the lair side of the wood, so watch for the etvarg and the Servants wandering through.",
+  "legend": "Unok is a big redcap, a foe for the realm's best, a full band of them, in the far south-west of the Iarnwood, with a redcap cannibal standing right beside him, so expect two. He's a plain fighter: no special tricks, and charms, trances and stuns hold him, so entrance the cannibal and kill Unok, or the other way round. Nothing else in this world stands close enough to join, despite what the dwarves say about every redcap in the wood coming for him. He's a decent known foe for a group of his strength, and he's close to the lair side of the wood, so watch for the etvarg and the Servants wandering through.",
   "yells": {
     "aggro": [
       "Fresh! Fresh for the pot!",
@@ -67,13 +67,13 @@
   "botLines": {
     "briefing": [
       "unok plus the redcap cannibal next to him",
-      "plain mob, mez the cannibal",
+      "plain fighter, entrance the cannibal",
       "watch for etvarg wandering in",
       "far south west of the iarnwood"
     ],
     "aftermathWin": [
       "unok down, the pot went cold",
-      "mezzed the cannibal, easy",
+      "entranced the cannibal, easy",
       "every redcap in the wood is going to be mad",
       "kicked the pot over. felt good"
     ],
