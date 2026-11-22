@@ -91,6 +91,12 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Roaming eight-man groups find fights (#417).** Their patrols now favour the parts of the frontier where enemy RvR
   bots are, and an eight follows the planner's hunt of an enemy group within 10,000 in its own region instead of
   patrolling past it (`RVR_ROAM_CHASE`, `RVR_ROAM_CIRCUIT enemiesNear=`).
+- **Frontier porters (#418).** A gamebot without a medallion picked the nearest porter by straight line and, where no
+  medallion merchant stood beside it, gave up every turn until the 15-minute watchdog moved it. Bots now go to the
+  nearest porter that sells their medallion, and a wait past 5 minutes logs `RVR_FRONTIER_WAIT_LONG` with what held
+  the bot (checker row `rvr/porter_wait`).
+- The log checker's regroup row shows how far each regroup call spread (#419; the relay itself is unchanged: 9a173f4's
+  17.4% is under the owner's 20% bar of 2026-11-19).
 - Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
 
 **Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
