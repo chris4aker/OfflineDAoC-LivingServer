@@ -9263,7 +9263,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** he ended every one of them and shut his door again. from the inside
 - **B:** the strongest he kept. his harbingers. remade from whoever falls in front of him
 - **E:** *(sometimes)* "cheerful as always {name_b}" / "and people wonder why i skip caer sidi raids"
-- **B:** dame ysolde of caer gothwaite took eighty up there. seventy one came home. first time anyone brought him down
+- **B:** dame ysolde of caer gothwaite took eighty up there. sixty seven came home. first time anyone brought him down
 - **B:** they say the whole fortress stopped turning for one breath
 - *(quiet for 25 seconds)*
 - **F:** "stopped turning. wow" / "and we just... go up there for loot"
