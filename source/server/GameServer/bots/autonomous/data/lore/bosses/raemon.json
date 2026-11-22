@@ -20,7 +20,7 @@
     }
   ],
   "story": "Raemon is Morven's third heir, and he is not a Fomorian. The Breifine keeners are certain of that much and of little else. He keeps an old ruin in the west of Breifine that the frontier calls the cyclops tower, after whatever one-eyed thing built it, and Morven named him heir, the keeners say, because a lord who has lost his people adopts whoever will hold a hill for him.\n\nRaemon holds it, alone. He does not attack everyone who comes near; he watches, and decides, and the garrison of Dun Bolg say he has let realm scouts pass who came to look and not to take. The keeners think he was a Hibernian once, a deserter of the early war who took Morven's bargain because no one else would have him. When the young bring his head to Cathbad with the others, Cathbad looks at it longer than at the Fomorians', and does not say why.",
-  "legend": "Raemon (45) is the third heir of Morven's Return, at the cyclops ruin in west Breifine (about 400k/369k). He is not fully aggressive (aggro 90), so he may let you walk past; he will not let you take his head without a fight. A group of mid 40s. 5-minute respawn. Breifine is frontier; Dun Bolg is nearby. Breifine custom: leave him be if you only came to look.",
+  "legend": "Raemon, a foe for a hardened band of veterans, is the third heir of Morven's Return, at the cyclops ruin in west Breifine (about 400k/369k). He does not always attack on sight, so he may let you walk past; he will not let you take his head without a fight. A hardened band of veterans. He returns five minutes after he falls. Breifine is frontier; Dun Bolg is nearby. Breifine custom: leave him be if you only came to look.",
   "yells": {
     "aggro": [
       "You came to take, not to look.",
@@ -43,8 +43,8 @@
   },
   "botLines": {
     "briefing": [
-      "raemon is 45, third heir, at the cyclops ruin west breifine",
-      "not fully aggro, but he fights for his head"
+      "raemon is the third heir, at the cyclops ruin west breifine",
+      "doesnt always jump you, but he fights for his head"
     ],
     "aftermathWin": [
       "raemon down. [three heads|morven's return done]",

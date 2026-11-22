@@ -32,7 +32,7 @@
     }
   ],
   "story": "Every Hibernian farmer knows the rule. A lone whitethorn in a field belongs to the Good Folk, and you do not cut it, plough round it, or hang washing on it; you tie a rag to it for luck and leave it be. Skeaghshee is the reason for the rule. He is the fairy thorn of the court wood, the thorn under which the courts sat to bargain, grown into the shape of a man when the bargain broke beneath him.\n\nHe is made of the stuff the fairy courts are made of, and magic of every kind runs off him like rain off a slate: body, cold, energy, heat, matter, spirit, none of it can touch him. Only plain iron and wood and a strong arm will do, and even those he turns a little. The farmers of Ardee still tie rags to the thorns in their fields; now you know why. And when the realm's warriors cut down the fairy thorn of the Cursed Forest, the farmers go out the next morning and tie two.\n\nThe smiths of Ardee say the thorn rule is older than the courts, and so is the iron rule that goes with it. When the Tuatha Dé Danann made ready for the second Mag Tuired, their smith Goibniu promised them spearheads that would never miss, and made each one in three strokes of the hammer; Luchta the wright cut the shafts in three cuts, and Credne the brazier made the rivets and cast them into the sockets. The Fomorians sent Ruadán, son of Bres and of the Dagda's daughter, to spy on the smiths. He took up one of the new spears and wounded Goibniu with it. Goibniu drew the spear out of his own body, threw it back and killed him, and Ruadán's mother came to the field and keened him, the first keening ever heard in the land.\n\nThe smiths tell that tale over Skeaghshee for its first half, not its last. Plain iron in a smith's hand did what was needed the night the Tuatha went to war, and the thorn of the court wood keeps the rule that makes such iron needful. Magic of the courts' kind runs off him because he grew in the courts' shade. Iron was never theirs, and so it bites, though not as deep as it would bite a man, because he was a tree first.",
-  "legend": "Spells do nothing to him at all, so this is a melee fight: bring every sword in the realm and leave the casters to heal and buff. Archers and other physical damage still work. And leave the thorn trees alone, the old hibs say. Melee and archers only; casters heal and buff. Superstition: cut the thorn and tie two rags the next morning, or your luck goes for a year. Nicknames: 'the thorn', 'old rag-tree'. Archers love this fight; casters hate it. Shields still help against him; the twenty-in-a-hundred of every blow he turns is the thorn remembering it was wood.",
+  "legend": "Spells do nothing to him at all, so this is a melee fight: bring every sword in the realm and leave the casters to heal and strengthen the fighters. Archers and other physical damage still work. And leave the thorn trees alone, the old hibs say. Melee and archers only; casters heal and chant. Superstition: cut the thorn and tie two rags the next morning, or your luck goes for a year. Nicknames: 'the thorn', 'old rag-tree'. Archers love this fight; casters hate it. Shields still help against him; the twenty-in-a-hundred of every blow he turns is the thorn remembering it was wood.",
   "yells": {
     "aggro": [
       "Who cuts the thorn?",
@@ -68,7 +68,7 @@
   },
   "botLines": {
     "briefing": [
-      "skeaghshee is immune to all magic. [melee and archers only|casters heal and buff]",
+      "skeaghshee is immune to all magic. [melee and archers only|casters heal and chant]",
       "immune to all magic, [melee and archers|casters heal], no exceptions",
       "tie two rags tomorrow. [old luck rule|do it]",
       "archers count as physical, [shoot away|arrows work]"
@@ -81,7 +81,7 @@
     ],
     "aftermathLoss": [
       "half the group were casters and [did nothing|it was immune]. melee next time",
-      "casters tried nuking anyway. [immune|stop]",
+      "casters tried bolting him anyway. [immune|stop]",
       "not enough melee. [bring swords|more melee]",
       "bad luck all week now. [tied the rags?|no]"
     ],

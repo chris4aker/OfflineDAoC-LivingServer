@@ -20,7 +20,7 @@
     }
   ],
   "story": "Ronat is Morven's first heir and the eldest of his household, and he keeps the ground east of Dun Lamfhota, as close to the Spear as a Fomorian can stand without the garrison coming out. The gorge folk say that is on purpose: Morven set his first heir there to watch the keep, because a lord who wants the hills back wants the thing the hills are fought for.\n\nRonat has never tried for the Spear. He watches. When an enemy realm takes the relic from Lamfhota, Ronat is seen on the ridge above the road, watching the thieves go, and the garrison of Dun Ailinne say he is learning how it is done. Lucan, the willow-woman's guardian across the estuary, told the realm the heirs' names, and Ronat's first. Dun Ailinne's chieftain keeps a mark on her wall for every time Ronat has been seen on the ridge during a relic theft, and the marks are a long row.",
-  "legend": "Ronat (47) is Morven's first heir, a big Fomorian east of Dun Lamfhota in Cruachan Gorge (about 375k/369k). First kill of the heirs in Morven's Return (after Cathbad, Sholto, the soul gem, the Enchantress and Lucan). A group of mid to high 40s. 5-minute respawn. Cruachan is frontier, and the relic keep is right there, so mind enemy warbands. He hits hard; keep the tank topped up.",
+  "legend": "Ronat, a foe for a hardened band of veterans, is Morven's first heir, a big Fomorian east of Dun Lamfhota in Cruachan Gorge (about 375k/369k). First kill of the heirs in Morven's Return (after Cathbad, Sholto, the soul gem, the Enchantress and Lucan). A hardened band of veterans. He returns five minutes after he falls. Cruachan is frontier, and the relic keep is right there, so mind enemy warbands. He hits hard; keep the shield-bearer topped up.",
   "yells": {
     "aggro": [
       "Father's claim. Father's hills.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "ronat is 47, first heir, east of dun lamfhota",
+      "ronat is the first heir, east of dun lamfhota",
       "morven's return. watch for enemy warbands at the keep"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "warband came through. [rip|frontier]",
-      "too low for 47. [ouch|oops]"
+      "too green for him. [ouch|oops]"
     ],
     "rumour": [
       "[heard|someone said] ronat watches the enemy realms steal the spear and learns how its done",
