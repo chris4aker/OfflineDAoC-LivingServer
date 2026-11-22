@@ -117,7 +117,7 @@
       "text": "She came back. The dwarves were not surprised. The Iron Wood has always had an old one, they say; when one dies, the wood makes another, or the same one again, the way the rot comes back to a tree that is cut. Midgard has gone down to her door in every age since, and she looks at each company the way a woman looks at weather, and the brood howls in the iron trees when she dies.\n\nWhat she wants is in the song. The old one of the Iron Wood breeds Fenrir's kin for the end of the world, and at the end they will run: Skoll will catch the sun and Hati the moon, and the sky will go dark, and the wolves will come out of the east with their father. She is not in a hurry. The old one's brood never is. They have been waiting for the end of the world for as long as the dwarves have kept slates, and the end has always been coming.\n\nSome in Midgard say she has already bred the worst of it. The grandmothers of Aegir tell their grandchildren that the old one bore a daughter to the Fenris wolf before the chain closed on him, and that the daughter flew south to Malmohus, and that this is why the drakulv of the dragon's brood and the two-headed wolves of the Iarnwood have the same look. The skalds of Jordheim say the dragon's mother was the giantess Gjalp, and the svartalfar of Svarhamr say the dragon had no mother at all. The old one has never said. The dwarves, who have watched her longest, say she sits by the water under the bridge some nights and looks south, toward Malmohus, for a long time. They say a woman looks at weather that way, and a mother at a road."
     }
   ],
-  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough, years after the first raids. Shamans and healers on cure duty, nothing else. Kill Hati and Skoll at the door first. From half health she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the red cons down there. Keep a rezzer near the bridge. Don't let the fight stall or she heals back. The ring drop with parry, strength and constitution is the one everyone wants. My gran said she is the dragon's mother. My gran said a lot.",
+  "legend": "Bring cure disease, lots of it, and a raid big enough to outdamage her healing: thirty was not enough, years after the first raids. Shamans and healers on cure duty, nothing else. Kill Hati and Skoll at the door first. From half her strength she sends people away, often into the water under the bridge; climb the pillars and come back, and watch for the beasts down there that are far beyond you. Keep someone who can raise the fallen near the bridge. Don't let the fight stall or she heals back. The ring with parry, strength and constitution on it is the one everyone wants. My gran said she is the dragon's mother. My gran said a lot.",
   "yells": {
     "aggro": [
       "Who let the pups out? Ah. Not pups. Supper.",
@@ -169,21 +169,21 @@
   "botLines": {
     "briefing": [
       "iarnvidiur heals fast, we need damage and cure disease, [shamans|healers] on cure duty",
-      "from 50% she ports people to the corners. if you land in the water climb the pillars and come back",
+      "from half her strength she sends people to the corners. if you land in the water climb the pillars and come back",
       "kill hati and skoll at the door first",
-      "rezzer by the bridge for the ported people",
+      "someone who can raise the dead by the bridge for the ones she sends away",
       "if the fight stalls she heals back. keep hitting her"
     ],
     "aftermathWin": [
-      "iarnvidiur down! [gg|grats raid] the old wolf mother is dead",
+      "iarnvidiur down! [well fought|grats raid] the old wolf mother is dead",
       "i got ported 4 times and still made it back for the kill",
       "the old one is dead. the dwarves will sing about this",
-      "that ring dropped!! [parry str con|tank ring]"
+      "that ring came off her!! [parry str and constitution|shield-bearer ring]"
     ],
     "aftermathLoss": [
       "she healed faster than we hit, same as last time",
       "half the raid ended up in the water",
-      "the plague made every heal half and the tanks died",
+      "the plague made every heal half and the shield-bearers died",
       "everybody in the water and nobody hitting her"
     ],
     "rumour": [

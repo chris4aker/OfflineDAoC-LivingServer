@@ -46,7 +46,7 @@
     }
   ],
   "story": "The werewolf king took the name of the eagle-giant whose wings make the wind, and the wind goes where it likes, and so does he. His heralds call him by three names, one after another, Hresvelgr, King Hresvelgr and Hresveigr, and the wolfaur say it is because he has three natures, wolf and man and the thing between, and each must be greeted. In his regal chamber all three of them stand: a great wolf crowned, a wolf-man without a crown, and a man in a man's shape, side by side among the royal guard and the advisors, and nobody in the haven ever speaks to only one.\n\nHe answered the dragon of Malmohus with the one law of his people, that a wolf answers to the pack and never to a master, when Gjalpinulva's envoy came to the outer wall, and no werewolf has set foot in Malmohus since. Midgard's gothi send the realm's young into the haven to take the three high lords' essences and then to kill the king, and give them the weapons that bite werewolves for it; the wolfaur say it is the man the hunters kill, and that the wolf and the thing between go on.",
-  "legend": "Hresvelgr is the werewolf king of Varulvhamn, and he's three spawns at the same spot: King Hresvelgr (46, Varulv faction, the big crowned wolf), Hresvelgr (46) and Hresveigr (45, man form), with 13 royal guards and 9 advisors (42) in the regal chamber. Werewolf Bane: kill the three high lords for their essences first, then kill the king. The Varulv-faction king and the guards round him mean it's a big pull. All three are 45-46, so it's a real fight for a mid-40s group with the guards. He's also the quest giver you whisper for the Varulbane weapon at the end.",
+  "legend": "Hresvelgr is the werewolf king of Varulvhamn, and he's three of a kind standing on the same spot: King Hresvelgr (a foe for a hardened band of veterans, Varulv, the big crowned wolf), Hresvelgr (the same) and Hresveigr (a hair weaker, man form), with 13 royal guards and 9 advisors, a little weaker again, in the regal chamber. Werewolf Bane: kill the three high lords for their essences first, then kill the king. The Varulv king and the guards round him mean it's a big draw. All three are of much the same strength, so it's a real fight for a hardened band of veterans with the guards. He's also the quest giver you whisper for the Varulbane weapon at the end.",
   "yells": {
     "aggro": [
       "Greet all three of us, or none.",
@@ -66,7 +66,7 @@
   },
   "botLines": {
     "briefing": [
-      "the werewolf king is three spawns at one spot, king hresvelgr, hresvelgr, hresveigr",
+      "the werewolf king is three of them on one spot, king hresvelgr, hresvelgr, hresveigr",
       "13 royal guards and 9 advisors in the room, bring a full group"
     ],
     "aftermathWin": [

@@ -79,7 +79,7 @@
       "text": "The iarn dwarves of Faraheim would give a great deal for a single thread of the weavers' silk, because it is the only thing on Aegir that mends stone and ice alike, and their slate-house walls are cracking. Thorgrim of Faraheim says the Remnants have asked the giants for it nine times in the slates' memory and been thrown down the crater road, in one way or another, nine times.\n\nMidgard's companies who come home from Hakr's hall bring the royal weavers' hides, and nothing on them is the thread. The weavers' silk, Brannulf wrote, does not outlast the weaver; it melts off the dead serpent like frost off a warm hand. The runemasters of Jordheim have tried to unpick it from the walls of the citadel, and it does not come away. It is part of the ice once it is laid.\n\nThe cast-out sculptors are uneasy about the companies who go to Hakr's hall. They say the four royal weavers are the oldest of their kind and that no other iceweaver in Tuscaran is large enough to mend the deep walls, and that every season the royal ones are dead, before they come again, the deep walls go unmended. They do not say what is behind the deep walls. They say it is the reason the glacier never falls, and leave it there.\n\nHakr knows what the companies come for and does not much care. He keeps his weavers and fights at the one in front of him with his long reach and his short temper, and he dies laughing at his own joke, the companies say, with the weavers' hall gone quiet round him."
     }
   ],
-  "legend": "Icelord Hakr is a melee giant with no spells: 100,000 health, 40% melee and 70% magic resists, CC-immune, long reach (about 350). The fight is his Royal Iceweavers: two lie beside him and join the moment he's hit, and two more wait elsewhere in the area. Each has 20,000 health and a body poison (100 every tick for 30 seconds) on whoever it's biting; the poison doesn't stack, so cure it and it may bite again, but it never piles up. Kill the weavers or keep them off the healers, and bring cure poison. Two old beliefs are wrong here. His 'magic barrier' is only a message when the last weaver dies; you can burn him any time. And he no longer throws anyone: you will still see his 'touchdown!' line every 10 to 20 seconds while the weavers live, but nobody goes anywhere. Clear the hatchlings and trainers nearby first. His hauberk is a good drop.",
+  "legend": "Icelord Hakr is a melee giant with no spells: the raiders reckon his strength at a hundred thousand, four-tenths of every blow and seven-tenths of every spell are lost on him, no charm or stun holds him, and he has a long reach (about a dozen paces); he is a foe for a war party of the realm's champions. The fight is his Royal Iceweavers: two lie beside him and join the moment he's hit, and two more wait elsewhere in the area. The raiders reckon each at twenty thousand in strength, and each lays a body poison (100 every few seconds for 30 seconds) on whoever it's biting; the poison doesn't pile on itself, so cure it and it may bite again, but it never piles up. Kill the weavers or keep them off the healers, and bring cure poison. One old belief is wrong here, and one tale has gone stale. His 'magic barrier' is only a cry when the last weaver dies; you can burn him any time. And the giants' tale that he stopped throwing after the hatchling no longer holds: every 10 to 20 seconds while any weaver lives he shouts 'touchdown!' and really does toss someone up beside him, companions and the realm's adventurers as well as you, so heal whoever comes down. Kill the weavers and the throwing stops. Clear the hatchlings and trainers nearby first. His hauberk is a good prize.",
   "yells": {
     "aggro": [
       "Iceweavers! We have guests who need lifting.",
@@ -131,20 +131,20 @@
   "botLines": {
     "briefing": [
       "hakr has 2 royal iceweavers with him and 2 more nearby, kill them or keep them off healers",
-      "hakr doesnt throw anyone any more, ignore the touchdown spam",
+      "hakr throws again while his weavers live, heal whoever he tosses",
       "hakrs barrier is only a message, burn him whenever",
       "iceweaver tether is long, theyll chase you",
       "hakr has no spells, its all about his 4 royal iceweavers, 20k each",
       "weaver poison doesnt stack, cure it and keep going",
       "his barrier is just a message when the weavers die, burn him any time",
-      "touchdown spam is harmless, he doesnt throw any more"
+      "touchdown means someone goes up. kill the weavers and it stops"
     ],
     "aftermathWin": [
       "hakr dead. the weavers were the real fight [lol|as always]",
       "iceweavers dead first this time, way easier",
       "hakr's hauberk dropped [grats|gz]",
       "nobody died to the poison this time",
-      "touchdown lol. nobody moved",
+      "touchdown lol. up i went",
       "killed the weavers first, easy",
       "hakr's hauberk!"
     ],
@@ -161,7 +161,7 @@
       "one thread of iceweaver silk is worth a fortune to the iarn dwarves",
       "hakr threw a dwarf who came to buy silk. [true story|so they say]",
       "the queen's iceweavers mend every crack in the glacier by morning",
-      "hakr used to throw people. stopped after someone landed on a baby iceweaver",
+      "hakr stopped throwing people after someone landed on a baby iceweaver. well he started again",
       "the iceweavers mend the glacier every night. a dwarf would give his beard for the thread",
       "hakr was a rooks son. raised the first royal iceweaver in his shirt"
     ]

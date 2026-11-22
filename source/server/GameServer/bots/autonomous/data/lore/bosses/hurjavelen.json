@@ -75,7 +75,7 @@
       "text": "There was a dwarf of the Remnants named Gaut, the son of Bodmar. He was a smith at Faraheim and a careful man. It was said of him that he had never lost anything in his life, and that he did not intend to begin.\n\nGaut held that the old one's dagger was the work of his own line. He had this from a mark that a company of Midgard brought up out of the lair, pressed from the dagger's hilt into a wax tablet by a man who did not know what it was. Gaut knew. It was the mark of a smiths' house the slates of Faraheim do not name, and the same mark was cut in the foot of an anvil that had stood in his family's smithy longer than anyone could reckon.\n\nHe went to the slate-house and asked to have his claim cut, so that it would be known. The slate-keepers said there was no slate for a claim on a thing a wolf carries in its teeth. Gaut said, \"Then cut it on the wall.\" They cut it on the wall, beside Hrefna's count of the seasons on Stanga's stone, and it is there yet.\n\nAfter that Gaut went down into the old one's house with every company that would take him, eleven times in eleven winters. Each time he asked the same of the ones who went on to the side passage: that if they took the dagger from the thief-wolf, they should bring it up to him, and he would pay its weight in silver. Twice it was taken. Both times the one who took it sold it in Jordheim for more than its weight in silver, and both times Gaut heard of it and said nothing.\n\nIn the twelfth winter Gaut went down alone, and he did not come back. The next company to reach the side passage found the thief-wolf there with the dagger on him, as before. Beside the wolf, laid out square on the stone, was a smith's hammer with Gaut's mark on the head. No one in Faraheim knows who set it there.\n\nGaut's sons brought the hammer home and hung it in the smithy over the anvil. Then they went to the slate-house and had a second line cut on the wall under their father's claim. It reads: the hammer came back."
     }
   ],
-  "legend": "Hurjavelen has his own spawn in the side passage near Stanga; both are always there (the old 'he's up instead of Stanga' line is wrong here). He comes with seven grymvarg. His Black Plague is a disease cloud within 450 of HIMSELF that lasts two minutes, halves heals and comes back every 20 seconds or so, so healers and casters stay out of that ring and cure disease on the melee. On a third of his hits his bite does 200 and snares everyone within 350 of his target by 40% for 30 seconds, which keeps your melee stuck in his plague: purge or speed help. 30,000 health, 20% melee and 30% magic resists, CC-immune. The pilfered dagger and the demonwolf shields are worth the trip.",
+  "legend": "Hurjavelen stands in his own place in the side passage near Stanga; both are always there (the old 'he's up instead of Stanga' line is wrong here). He comes with seven grymvarg. His Black Plague is a disease cloud within fifteen paces of HIMSELF that lasts two minutes, halves heals and comes back every 20 seconds or so, so healers and casters stay out of that ring and cure disease on the melee. On a third of his hits his bite does 200 and slows everyone within a dozen paces of his target by four-tenths for 30 seconds, which keeps your melee stuck in his plague: a purge or a burst of speed helps. The raiders reckon his strength at thirty thousand, a fifth of every blow and three-tenths of every spell are lost on him, and no charm or stun holds him. The pilfered dagger and the demonwolf shields are worth the trip.",
   "yells": {
     "aggro": [
       "(A wolf with a dagger in its jaws grins at you.)",
@@ -122,28 +122,28 @@
   },
   "botLines": {
     "briefing": [
-      "hurjavelen: 7 grymvarg, snare round the tank, plague round him. cure everything",
-      "purge the snare on hurjavelen or you're stuck in his disease",
+      "hurjavelen: 7 grymvarg, slowing round his shield-bearer, plague round him. cure everything",
+      "purge the slow on hurjavelen or you're stuck in his disease",
       "hurjavelen plague is 450 round him every 20s, heals stay out, cure disease",
-      "his bite snares everyone near the tank, purge or speed",
+      "his bite slows everyone near the shield-bearer, purge or speed",
       "7 grymvarg with him",
-      "hes on his own spawn near stanga, both are up"
+      "he has his own spot near stanga, both are there"
     ],
     "aftermathWin": [
       "got the pilfered dagger!!",
       "luminous demonwolf shield!",
-      "rare spawn and we got him",
+      "rarely seen and we got him",
       "iarnvidiur's pilfered dagger!!",
       "pilfered dagger!",
       "demonwolf shield dropped",
       "nobody got stuck in the plague"
     ],
     "aftermathLoss": [
-      "snared in the disease, [wiped|gg]",
+      "slowed in the disease, [all of us down|that was that]",
       "he went straight for the spiritmaster",
       "seven grymvarg was too many",
-      "snared in the plague ring",
-      "snared in the plague and couldnt get out",
+      "slowed in the plague ring",
+      "slowed in the plague and couldnt get out",
       "healers stood next to him"
     ],
     "rumour": [

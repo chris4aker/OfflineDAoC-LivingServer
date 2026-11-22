@@ -75,7 +75,7 @@
       "text": "He has one more thing, and the Valkyn scout on Delling's rim was the first to write it down. Now and then the bone king turns his head, slowly, and looks at someone. It is not the one in front of him, necessarily, and it is not the strongest or the weakest. The scout wrote that it seemed to be anyone at all who happened to be near, the living and the dead alike, and that the dead are not careful whom they look at.\n\nWhen he looks, his hands begin to glow, and blue mist crawls out of the small cracks in the ice at his feet, and the one he is looking at has a breath, no more, before the frost leaves the king's hands and flies at them. The companies of Midgard know the mist now. They say it is the only warning the eastern ice gives.\n\nThe iarn dwarves of Faraheim say the stare is the queen's word looking out of him: that Kula's order is in the bone king so deeply that it has to go somewhere, and that it goes into anything he looks at long enough. The sculptors say that is a dwarf's way of putting it, and that the king is only angry, in the slow cold way the dead are angry, that he was stopped a stride short.\n\nWhen he falls his army does not move. The companies who have put him down say they half expected the dead of the eastern ice to take their next step, and that they did not. The order holds without him. In a season he is standing at the head of them again, looking straight ahead, and the mist is gone from the cracks at his feet."
     }
   ],
-  "legend": "Issorden is undead, out on the eastern ice away from the main climb, and he brings his seven icebound skeletons with him from the whole area the moment he's engaged, so clear them first or pull from the edge. Two things to watch. His root: every so often everyone within 1,500 of his TARGET is rooted for up to a minute, so keep the healers spread and have purge or root-break ready. And his frosty stare: every 25 to 35 seconds you'll see 'Issorden turns his frosty stare on X', blue mist rises, and two seconds later X takes a 400 cold Frost Sphere that can't be interrupted. It can pick anyone near him, companions included, so whoever's named gets a heal. 100,000 health, 40% melee and 70% magic resists, CC-immune. Undead banes and spirit damage do well. Dragon crystals drop here, so everyone wants him.",
+  "legend": "Issorden is undead, out on the eastern ice away from the main climb, and he brings his seven icebound skeletons with him from the whole area the moment he's engaged, so clear them first or draw him from the edge. Two things to watch. His binding frost: every so often everyone within fifty paces of his TARGET is pinned to the ground for up to a minute, so keep the healers spread and have a purge or something that breaks a pinning ready. And his frosty stare: every 25 to 35 seconds you'll see 'Issorden turns his frosty stare on X', blue mist rises, and two seconds later X takes a 400 cold Frost Sphere that can't be interrupted. It can pick anyone near him, companions and the realm's adventurers included, so whoever's named gets a heal. The raiders reckon his strength at a hundred thousand, four-tenths of every blow and seven-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for a war party of the realm's champions. Weapons that bane the undead and spirit damage do well. Dragon crystals come off him, so everyone wants him.",
   "yells": {
     "aggro": [
       "The order of the ice. None pass.",
@@ -119,38 +119,38 @@
       },
       {
         "trigger": "health<=25",
-        "text": "Issorden's root takes everyone near his target."
+        "text": "Issorden's binding frost takes everyone near his target."
       }
     ],
     "realmFirstKill": "Issorden falls. His army does not take its next step."
   },
   "botLines": {
     "briefing": [
-      "issorden roots everyone, purge ready. kill the 7 skellies first",
-      "spread the healers on issorden, his root is 1500 round the tank",
+      "issorden pins everyone to the ground, purge ready. kill the 7 skellies first",
+      "spread the healers on issorden, his pinning takes everyone fifty paces round his shield-bearer",
       "blue mist under issorden means a bolt on someone in 2 sec",
-      "pull issorden from the edge, skellies come with him",
-      "issordens 7 skellies come from the whole area when you pull, clear or pull from the edge",
-      "his root is 1500 round the tank, healers spread, purge ready",
+      "draw issorden from the edge, skellies come with him",
+      "issordens 7 skellies come from the whole area when you draw him, clear or draw from the edge",
+      "his pinning reaches fifty paces round his shield-bearer, healers spread, purge ready",
       "frosty stare = 400 cold bolt on that person in 2 sec, heal them",
       "the stare can pick companions too, not just you"
     ],
     "aftermathWin": [
       "issorden dropped a dragon crystal!! [grats|gz]",
       "red dragon crystal dropped!! [huge|grats]",
-      "issorden released lol. his skellies didnt move",
-      "issorden down and the root never caught the healers",
+      "issorden freed from her order lol. his skellies didnt move",
+      "issorden down and the pinning never caught the healers",
       "dragon crystal!!",
       "the army didnt move when he died. creepy",
-      "nobody got caught in the root this time"
+      "nobody got pinned this time"
     ],
     "aftermathLoss": [
-      "got rooted and the skellies did the rest",
-      "all the healers rooted together",
-      "we pulled him with the skellies up",
+      "got pinned and the skellies did the rest",
+      "all the healers pinned together",
+      "we drew him with the skellies up",
       "seven skellies and the mist, we never stood a chance",
-      "healers all rooted together",
-      "pulled him with the skellies up and everything came"
+      "healers all pinned together",
+      "drew him with the skellies up and everything came"
     ],
     "rumour": [
       "heard issorden was a dead king who came to take the glacier. kula froze him and kept him as a guard",
