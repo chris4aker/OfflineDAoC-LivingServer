@@ -185,8 +185,8 @@
   "botLines": {
     "lore": [
       "housing for hibs is through the gate west of the tir na nog road in connacht",
-      "the nine villages are a 3 by 3 grid. [meath is by the gate|you come in at meath]",
-      "nothing attacks you in housing. [safest place in the realm|good spot to afk]",
+      "the nine villages lie in three rows of three. [meath is by the gate|you come in at meath]",
+      "nothing attacks you in housing. [safest place in the realm|good spot to step away for a bit]",
       "every housing market has every crafting master. [armour weapons tailor fletch alch sc|all of them]",
       "the lyrists in housing give you speed if you talk to them",
       "meath has the consignment bankers. [sell stuff there|check the market explorer]",
@@ -210,7 +210,7 @@
     ],
     "tell": [
       "where is housing? through the gate west of the tir na nog road in connacht",
-      "whats in housing? nine villages, markets, crafting masters, bankers, consignment in meath, no mobs",
+      "whats in housing? nine villages, markets, crafting masters, bankers, consignment in meath, no beasts",
       "is housing dangerous? no, nothing attacks you there",
       "how do i get a house? find a lot marker with no owner and buy it",
       "which housing village is best? meath for consignment, the rest are the same square",

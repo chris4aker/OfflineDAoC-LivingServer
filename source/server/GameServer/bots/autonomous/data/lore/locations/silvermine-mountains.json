@@ -57,7 +57,7 @@
     }
   ],
   "story": "The Silvermine Mountains are named for what Howth took out of them, and for what was taken from Howth. The hills rise south of Lough Derg in long green shoulders with grey stone under the grass, and the stone has silver in it, and for three generations the miners of Howth followed a vein down and east under the hills until the vein led them somewhere they should not have gone. The Howth men called the working the Glitter. The Unseelie Court calls it the Coruscating Mine now, and its door is the court's. The Howth door, the old one, is still in the Silvermine, sealed with siabra work, and the miners' grandchildren will show it to anyone who asks and will not go near it after dark.\n\nArdagh was the silver market. It sits at the north end of the hills, close to Neasan's Land where Chief Neasan's people keep the old valley, and in the years of the Glitter the silver came up the road from Howth in carts and was weighed and worked and sold in Ardagh, and the town grew rich enough to build halls for every path the capital teaches. It is still the place the young of the lake country go when Mag Mell is too small for them. The silversmiths of Ardagh were the best in the realm, the bards say, and a cup they made for a king's feast was talked of in Tir na Nog for a generation. Nobody in Ardagh now remembers which king.\n\nHowth is the miners' town, at the south end, and it has never stopped being one, though the mine is gone. Its chiefs keep a hut in the middle of the town where every quarrel is heard, and the chief there now, Proinnsias, keeps one quarrel open that is older than any of the others: he says the silver of Nuada's hand came out of the Silvermine, that the king's wrist lies under these hills, and that the Glitter was taken from Howth because of it. He sends the young into the hills southeast of the town to fight the Guardian that keeps the old place, and down to Mag Mell with what they bring back, to an elven smith who knows what a silver hand weighs. The druid Cathbad sits in the same hut and disagrees with him about everything except that.\n\nThe hills themselves are busy. The luricaduanes, cousins of the meadow thieves of Lough Derg, have the valleys south-east of Howth, and they are larger and meaner than their cousins and steal teapots. The walking rocks and walking boulders get up out of the hillsides in the east and go about their business, which nobody understands, and one of them, the one the shepherds call Rolling Stone, carries a bracer the lake folk say is cursed. The sheevra, the siabra of the hills, keep a camp on the eastern heights with swordsmen and archers and skirmishers and chieftains, and they mine: their miners work a cut of their own in the hills there, small and careful, as if they too were following something. Across the loch from Howth, Chieftain Dergal keeps another siabra camp, and the women of Howth have long memories of him.\n\nThe east of the hills is haunted. The gray spectres walk there in numbers, and the shepherds of Ardagh say they are the Howth men who died in the Glitter and could not find the sealed door to come home by, so they walk the hills above the workings looking for another. In the south-east the deamhan of the air and the deamhan of the rock come up out of the ground where the hills break, with the mountain mephits about them, and the shepherds do not take flocks there. On a hill south of Ardagh a small Fomorian called Glom sits and cries, because a badger stole his toy; he is the only Fomorian the realm has ever felt sorry for.\n\nAnd south of Howth an old poet called Amargein lives in a hut, and says he is named for the first poet, the one who sang the land as the ships came in and the land agreed to be sung. He says the Silvermine is the only part of Hibernia that remembers the song. Every hill of it rings, he says, when the weather turns, the way the silver of the Glitter rang when nobody struck it. Howth thinks he is mad. Howth also keeps its windows shut when the hills ring.",
-  "legend": "Silvermine Mountains, south of Lough Derg, levels 5-30. Ardagh (north end, with Neasan's Land beside it) and Howth (south end) are the towns; both have trainers, channelers and stables. The Spraggon Den entrance is on the west side. Leveling camps: luricaduanes (16-25) south-east of Howth, silvermine badgers and walking rocks (23-28) in the east, spraggonilts and spraggonets, the sheevra camp on the eastern heights (22-26, social, chieftains hit hard), gray spectres (22-24) in the east. The deamhan aeir in the south-east go up to 41, so check cons. Howth's chief's hut is quest central: Chief Proinnsias (Nuada's Silver), Keriann, Cathbad (Destructive Forces, Morven's Return, Cad Goddeau). Glom on the hill south of Ardagh wants his toy back from Stinky the badger. Superstition: Howth folk shut their windows when the hills ring in a weather change, and never whistle near the sealed Howth door.",
+  "legend": "Silvermine Mountains, south of Lough Derg, with hunting for young adventurers a few seasons in up to seasoned bands. Ardagh (north end, with Neasan's Land beside it) and Howth (south end) are the towns; both have trainers, channelers and stables. The Spraggon Den entrance is on the west side. Hunting camps: luricaduanes (young adventurers up to seasoned bands) south-east of Howth, silvermine badgers and walking rocks (seasoned bands) in the east, spraggonilts and spraggonets, the sheevra camp on the eastern heights (seasoned bands, they come to each other's call, chieftains hit hard), gray spectres (seasoned bands) in the east. The strongest deamhan aeir in the south-east want hardened veterans, so size them up before you strike. Howth's chief's hut is quest central: Chief Proinnsias (Nuada's Silver), Keriann, Cathbad (Destructive Forces, Morven's Return, Cad Goddeau). Glom on the hill south of Ardagh wants his toy back from Stinky the badger. Superstition: Howth folk shut their windows when the hills ring in a weather change, and never whistle near the sealed Howth door.",
   "atmosphere": {
     "firstEntry": [
       "The Silvermine. Grey stone under green grass.",
@@ -334,7 +334,7 @@
     ],
     "rumour": [
       "[heard|someone said] the hills rang last night. howth shut every window",
-      "the deamhan aeir in the south east go up to 41. [dont go at 25|ouch]",
+      "the deamhan aeir in the south east get as strong as veterans' foes. [dont go while youre only seasoned|ouch]",
       "[word is|heard] the rolling stone has a cursed bracer. [tir na mbeo guardian wants it|careful]",
       "someone whistled by the sealed howth door and [heard picks|a spectre came]",
       "[heard|someone said] the sheevra miners found silver of their own in the east",
@@ -363,20 +363,20 @@
       "is the silvermine dangerous? east and south east yes: sheevra camp, spectres, deamhans up to 41",
       "whats in the silvermine? luricaduanes, walking rocks, sheevra, gray spectres, the spraggon den",
       "where is the spraggon den? west side of the silvermine, in the hillside",
-      "nictol the unkempt is a 28 named way down in the south west of silvermine, alone",
-      "overseer camlin is a 26 named east of the walking hills in silvermine, on his own",
-      "scar-nose is a 26 badger in the walking hills, silvermine. larylle's necklace wants his claw",
-      "pebble is a 25 walking rock in the walking hills near scar-nose",
-      "sargoth is a 25 big spraggonix right outside the spraggon den entrance in silvermine",
-      "chieftain dergal is a 24 sheevra chieftain across the loch from howth. riona's revenge, get his vest",
-      "tracker tremain is a 24 siabra tracker on the heights east of ardagh. not aggro. seek the moonstone c",
-      "rolling stone is a 23 walking rock east of the lake by the sheevra camp. essence of hostility, the bracer",
-      "boss is a 22 spraggonoll in the roofless barn west of ardagh. gormghlaith's tea quest",
-      "ualtar is a 20 ghost in the woods south of howth, by amargein's hut. setting sail quest",
-      "sapper is an 18 ghostly worm in the south woods by amargein's hut, silvermine",
-      "seireadan is the fake lurikeen in the valley west of howth past the ridge, 18. enchanted bandit hunt",
-      "scuttle is a 17 bear cub on the little island east of the guard post between ardagh and howth. scuttle quest",
-      "stinky is a 16 badger in the hills south of ardagh near glom's hill. sad fomorie"
+      "nictol the unkempt is one with a name for a seasoned group way down in the south west of silvermine, alone",
+      "overseer camlin is one with a name for a seasoned group east of the walking hills in silvermine, on his own",
+      "scar-nose is a badger for a seasoned group in the walking hills, silvermine. larylle's necklace wants his claw",
+      "pebble is a walking rock for a seasoned group in the walking hills near scar-nose",
+      "sargoth is a big spraggonix for a seasoned group right outside the spraggon den entrance in silvermine",
+      "chieftain dergal is a sheevra chieftain for a seasoned group across the loch from howth. riona's revenge, get his vest",
+      "tracker tremain is a siabra tracker for a seasoned group on the heights east of ardagh. wont jump you. seek the moonstone c",
+      "rolling stone is a walking rock for a seasoned group east of the lake by the sheevra camp. essence of hostility, the bracer",
+      "boss is a spraggonoll for a seasoned group in the roofless barn west of ardagh. gormghlaith's tea quest",
+      "ualtar is a ghost for a seasoned group, just, in the woods south of howth, by amargein's hut. setting sail quest",
+      "sapper is a ghostly worm for the young in the south woods by amargein's hut, silvermine",
+      "seireadan is the fake lurikeen in the valley west of howth past the ridge, for the young. enchanted bandit hunt",
+      "scuttle is a bear cub for the young on the little island east of the guard post between ardagh and howth. scuttle quest",
+      "stinky is a badger for the young in the hills south of ardagh near glom's hill. sad fomorie"
     ]
   },
   "loremaster": {

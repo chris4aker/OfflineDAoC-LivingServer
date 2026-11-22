@@ -79,7 +79,7 @@
     }
   ],
   "story": "The bards end the song at Mag Tuired; the Sylvan of Hy Brasil know the next verse. The Fomorians, the ones from under the sea, once held the northern islands and took Samhain tribute from Tory of the mainland's corn, milk and children. Broken on the field, they went west to the isle that does not stay found and went down under its western shore to dig a city and give it their own name: Fomor, not a refuge but a waiting-room.\n\nThe shore stair begins in a cleft under the cliffs. The Fomorians shored its first passages with the Sylvan's western groves, and the dark grove phantoms in the lower streets are those trees, left in the dark; the wardens never touch them. The coins on the top step began as Fomorian tribute to the sea; the realm's people add one and take it to mean coming back up. Halfway down the bellers call, and below them the shrillers scream.\n\nIt is a city of trades: bellers who call and choose war-leaders, wolfentries, noctur, feralidin, the old war-ranks of gentarns, creln, hicjer and hofscorian, ugats, the hydrars and the makers. A Fomorian belongs to a household before a trade; households never come to each other's quarrels, but touch one and all of it comes. The passages turn back and end at walls, dug by a people who lost once in the open; armies stay on the shore and small companies go down hall by hall.\n\nThe city has no king but the one in the tower. Its great ones are Anurigunda the eldest by her hearth, Nogoribando the war-leader, oak and hornet, Krackenschtein of the workshop, and Myrddraxis in the lowest cistern, and their quarrels are its politics. The forays up the stair into Domnann brought Hibernia to Hy Brasil at the Sylvan's asking, and the Sylvan count the realm's friendship in quiet seasons. Fiachra of Howth went down first; the companies of Nuala, Ríonach, Lochlann and Bébinn followed, and the great ones return as forests regrow. The whole city waits for the day Balor's eye opens fully and every household climbs the stair together; the Sylvan watch the Vale, the cliff and the stair, and when any of them stirs, the realm comes.",
-  "legend": "Not a place for a raid, the leaders say: the road down to the hydra is too narrow for a hundred, so groups camp the halls instead. Kill a big named and its whole household comes with it, so clear the rooms around first. At the bottom the heads of Myrddraxis feed the body with every bite, so the heads die first. Nicknames: 'the cellar', 'down the stair', and for the hydra 'five-head' or 'the nuts', after an old drop joke nobody can explain. Superstitions: never answer a beller; never touch a dark grove phantom, because the trees remember; and leave a coin on the top step of the shore stair so you come back up. Groups say the city is best done by halls, and that nobody should ever pull two households.",
+  "legend": "Not a place for a raid, the leaders say: the road down to the hydra is too narrow for a hundred, so groups camp the halls instead. Strike a great one with a name and its whole household comes with it, so clear the rooms around first. At the bottom the heads of Myrddraxis feed the body with every bite, so the heads die first. Nicknames: 'the cellar', 'down the stair', and for the hydra 'five-head' or 'the nuts', after an old drop joke nobody can explain. Superstitions: never answer a beller; never touch a dark grove phantom, because the trees remember; and leave a coin on the top step of the shore stair so you come back up. Groups say the city is best done by halls, and that nobody should ever wake two households.",
   "atmosphere": {
     "firstEntry": [
       "Fomor. The losers of Mag Tuired, at home.",
@@ -157,7 +157,7 @@
       "the fomorians went west after mag tuired and [built a city under hy brasil|went down under the shore]. thats fomor",
       "the fomorians think they are the first people of these isles [come home|back for what is theirs]",
       "the hydrars in fomor raised myrddraxis from a hatchling. [it has five heads now|nobody is laughing anymore]",
-      "fomor households all come at once. [pull one great one, get the family|clear first]",
+      "fomor households all come at once. [wake one great one, get the family|clear first]",
       "the hydrars sing to myrddraxis so it never sleeps. [creepy song|eat and be whole]",
       "nogoribando's bellers sound before every fomorian raid on domnann. [listen for them|you can hear it from the shore]",
       "the dark grove phantoms in fomor are the trees they cut to build the stair. [dont touch them|sad]",
@@ -179,8 +179,8 @@
     ],
     "tell": [
       "fomor is the fomorian city on hy brasil. groups camp it, the hydra myrddraxis is at the bottom",
-      "anurigunda, nogoribando, krackenschtein and myrddraxis. pull one and the whole room comes",
-      "is fomor hard? hard if you pull two households. take it one hall at a time with a good group",
+      "anurigunda, nogoribando, krackenschtein and myrddraxis. hit one and the whole room comes",
+      "is fomor hard? hard if you wake two households. take it one hall at a time with a good group",
       "where is fomor? under the shore of hy brasil, down the shore stair",
       "whats in fomor? a whole fomorian city. anurigunda, nogoribando, krackenschtein, and myrddraxis the hydra",
       "can a raid do fomor? the realm raid cant reach the middle. groups do it hall by hall"
