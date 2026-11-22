@@ -228,6 +228,21 @@ internal sealed class ServerHost : IAsyncDisposable
             _started?.TrySetResult(true);
     }
 
+    /// <summary>The console lines of this server start (the log as written so far) that contain the text.</summary>
+    public List<string> ConsoleLinesWith(string text)
+    {
+        var found = new List<string>();
+        string? path = CurrentLog;
+        if (path == null || !File.Exists(path))
+            return found;
+        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        using var reader = new StreamReader(stream);
+        for (string? line = reader.ReadLine(); line != null; line = reader.ReadLine())
+            if (line.Contains(text, StringComparison.Ordinal))
+                found.Add(line);
+        return found;
+    }
+
     /// <summary>A command typed at the server console ("/..." runs as the console's own admin client).</summary>
     public void Console(string line)
     {

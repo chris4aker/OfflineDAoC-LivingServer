@@ -245,6 +245,47 @@ public class ProtocolTests
     }
 
     [Test]
+    public void HandshakeCarriesTheBuildThatTellsTheClientsApart()
+    {
+        // CryptKeyRequestHandler: type, version (3), revision, build (u16, read with ReadShort: big-endian). The server takes a
+        // non-zero build as the original game.dll (GameClient.IsOriginalGameClient), 0 as Living Server's new client.
+        var (code, body) = ClientPackets.CryptKeyRequest();
+        byte[] b = body.ToArray();
+        Assert.That(code, Is.EqualTo(0xF4));
+        Assert.That(b.Length, Is.EqualTo(7), "the server reads the build only when the packet has all 7 bytes");
+        Assert.That(b[..5], Is.EqualTo(new byte[] { ClientPackets.ClientType, 1, 1, 27, (byte)'a' }));
+        Assert.That(b[5..], Is.EqualTo(new byte[] { 0, 0 }), "the default stays the new client's build 0");
+        byte[] original = ClientPackets.CryptKeyRequest(ClientPackets.OriginalClientBuild).Item2.ToArray();
+        Assert.That(original[5..], Is.EqualTo(new byte[] { 0x2A, 0x07 }), "game.dll's build, as PacketLib1125 last saw it");
+    }
+
+    [Test]
+    public void RemoveObjectKeepsItsTypeAndObjectDeleteHasNone()
+    {
+        // PacketLib168.WriteObjectRemove: the object, then the type (0 = leave the corpse: the original client's fall).
+        var w = new PacketWriter();
+        w.Short(1234); w.Short(0);
+        var fall = (ObjectRemoved)ServerPackets.Decode(0xA2, w.ToArray(), 0);
+        Assert.That((fall.ObjectId, fall.Type), Is.EqualTo((1234, 0)));
+        var gone = new PacketWriter();
+        gone.Short(1234); gone.Short(1);
+        Assert.That(((ObjectRemoved)ServerPackets.Decode(0xA2, gone.ToArray(), 0)).Type, Is.EqualTo(1));
+        var delete = new PacketWriter();
+        delete.Short(77); delete.Short(0);
+        var deleted = (ObjectRemoved)ServerPackets.Decode(0xE1, delete.ToArray(), 0);
+        Assert.That((deleted.ObjectId, deleted.Type), Is.EqualTo((77, -1)));
+    }
+
+    [Test]
+    public void ChangeTargetNamesTheObject()
+    {
+        // PacketLib168.SendChangeTarget: the object id, then 0 (the /target answer the corpse scenario reads).
+        var w = new PacketWriter();
+        w.Short(4321); w.Short(0);
+        Assert.That(((TargetChanged)ServerPackets.Decode(0xF6, w.ToArray(), 0)).ObjectId, Is.EqualTo(4321));
+    }
+
+    [Test]
     public void FreshNamesAreNamesTheServerTakes()
     {
         for (int i = 0; i < 50; i++)
