@@ -90,6 +90,18 @@ review's findings and the work left to do.
    - Head counts and raid sizes stay numbers, spelled out (Ozur's fifty and a hundred, a raid seventy-four strong).
    - Elro's third treant window, which his script could never reach, is fixed (three-tenths to a quarter of his
      strength left), and his fight advice tells all three.
+10. **Contradictions and present-day characters** (2026-11-22): "Fix the contradictions of the story, erring first on
+   what was actual lore from Mythic, and if none, go with the rule of cool." And: "Present day NPCs can absolutely be a
+   part of the lore, in fact that should be the case to make the realms feel more connected and alive with their
+   stories."
+   - When two texts disagree, Mythic's canon (the Camelot Herald, the Prima guides, the in-game texts) wins. Where
+     Mythic said nothing, reword to the version that tells best, adding words rather than cutting.
+   - Present-day characters (the realm's living NPCs, captains, friars, marshals) belong in the stories, and should
+     turn up across places and bosses so the realms feel connected. A present-day character may share a name with a
+     legend companion (Golestandt's Marshal Gareth stays), as long as the text never makes him the legend's man.
+     Legend heroes stay legends (rule 1) and the 12-mention cap still holds.
+   - First fixes: Iorwerth now sang in the deepest cellar but never went past the walled vein (Crystal Cave and
+     Xanxicar agree); Weno'iak's books are on his shelves, but he moves them before any company comes, and leaves ash.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
