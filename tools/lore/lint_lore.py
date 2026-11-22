@@ -7,6 +7,9 @@ Hard rules (always zero):
   - a fact labelled "mythic" whose source is not a Herald page, darkageofcamelot.com or a Mythic note
   - a real company, site, product, patch, developer or game-software word in a player-visible field, or a game term
     in a narrative field (owner decision 8, 2026-11-21; the rules and the field map are in fourth_wall.py)
+Warnings (printed, exit 0) until fourth_wall.GAME_TERMS_FAIL is True, then failures:
+  - a game term in ANY player-visible field, legends and bot lines included (owner 2026-11-21, "Rewrite that";
+    fourth_wall.GAME_TERMS). The open list is docs/1.2.1/LINT-LEGENDS-HITS.md.
 Ratchets (may only go down; lower the number when you fix some):
   - template labels such as "Superstition:" and "Nicknames:" at the start of a paragraph
 """
@@ -44,8 +47,16 @@ def lint(root=LORE_DIR):
     if labels > TEMPLATE_LABEL_CAP: problems.append(f"template labels: {labels} found, cap is {TEMPLATE_LABEL_CAP}")
     return problems, labels
 
+def warnings(root=LORE_DIR):
+    """Game terms in legends, bot lines and told text while fourth_wall.GAME_TERMS_FAIL is False (else lint() fails them)."""
+    return fourth_wall.warnings(root)
+
 if __name__ == "__main__":
+    # --game-terms-fail: fail on the game-term warnings too, as CI will once fourth_wall.GAME_TERMS_FAIL is True.
+    if "--game-terms-fail" in sys.argv: fourth_wall.GAME_TERMS_FAIL = True
     problems, labels = lint()
+    warns = warnings()
+    for w in warns: print("LORE LINT WARNING", w)
     for p in problems: print("LORE LINT", p)
-    print(f"lore lint: {len(problems)} problem(s), {labels} template label(s) (cap {TEMPLATE_LABEL_CAP})")
+    print(f"lore lint: {len(problems)} problem(s), {len(warns)} game-term warning(s), {labels} template label(s) (cap {TEMPLATE_LABEL_CAP})")
     sys.exit(1 if problems else 0)

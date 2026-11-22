@@ -52,8 +52,12 @@ review's findings and the work left to do.
      location's or boss's own facts. Ids, catalog keys, spawn names, aliases (matching only) and area names (memory keys)
      are not shown either. So facts keep their real sources, and the five facts from Mythic's Catacombs lore pages
      (December 2004: `avalon-city`, `morgana`, `caer-sidi`, `jordheim` twice) now read "Camelot Herald (2004)".
-   - **Fight advice stays:** the legend and bot lines are raiders talking, so levels, health, resists, timers, "mob" and
-     "respawn" stay there (owner rule 2026-11-06); the software words and the real world do not.
+   - **Fight advice is in-world too** (owner, 2026-11-21, "Rewrite that"; this replaces the 2026-11-06 rule that kept
+     levels, health, resists, timers, "mob" and "respawn" in the legend and bot lines). `fourth_wall.GAME_TERMS` (the
+     three writers' lists merged) checks every visible field. Its hits are warnings until `GAME_TERMS_FAIL = True`; the
+     open list is [LINT-LEGENDS-HITS.md](LINT-LEGENDS-HITS.md) (`python3 tools/lore/fourth_wall.py --report`). Map marks
+     and the chat words melee, casters, group, camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun and line of
+     sight wait for the owner (`PENDING_OWNER_DECISION`; `BAN_PENDING = True` bans them).
    - `tools/lore/fourth_wall.py` holds the field map, the word lists and the exceptions; `lint_lore.py` fails CI on any
      hit. `LoreBible.GameTalkPatterns` stays the twin of `chapter_lint.py` (warnings only, pinned at 38 by `UT_LoreBible`).
 
