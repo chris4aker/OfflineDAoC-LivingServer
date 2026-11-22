@@ -1,0 +1,5315 @@
+{
+ "about": "The generic role stand-ins of each lore file (narrative strings, facts and titles out, the boss itself excluded) with a suggested real NPC from npc_roster.json. fit: local (same region, within 40000 units of the place or its entrance), realm (the capital's trainer or the nearest in the region). A suggestion is a starting point for the writer, not a ruling.",
+ "counts": {
+  "files": 229,
+  "stand_in_uses": 313,
+  "by_fit": {
+   "realm": 152,
+   "local": 77,
+   "none": 84
+  }
+ },
+ "files": [
+  {
+   "file": "bosses/adar-llwch-gwin.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Allta Fearann (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Eersie",
+      "role": "healer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/adwyth.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Aalid Feie"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/alivor.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Modernagrav (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/amphiptere.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/ancient-black-oak.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 6,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Erli",
+      "role": "Druid trainer",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/aodhnait.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 2,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/apocalypse.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 7,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 6,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 5,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/archilus.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/archivist-borath.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/arnulv.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Malmohus (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Sentry Gaaruun",
+      "role": "guard officer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/aros-the-spiritmaster.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Glenlock Faste"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Sentry Stonefist",
+      "role": "guard officer",
+      "near": "between Nalliten and the wilds (33k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": {
+      "name": "Eryk",
+      "role": "Skald trainer",
+      "near": "Vindsaul Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/asutri.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Modernagrav (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/avartack-the-champion.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 6,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Harnol",
+      "role": "smith",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/azure-thror.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Sheeroe Hills (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Dalladva",
+      "role": "smith",
+      "near": "Alainn Bin",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/balor.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Caireann",
+      "role": "Druid trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/bane-of-hope.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the third company",
+     "count": 4,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/bayn.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/beath.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 10,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/behemoth.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 4,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/belgrik.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Caer Berkstead"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Lieutenant Brude",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/beliathan.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/bellum.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 7,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 4,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    }
+   ]
+  },
+  {
+   "file": "bosses/beonoc-dyer.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/beran-the-supply-master.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/black-lady.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 8,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Erli",
+      "role": "Druid trainer",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/blue-lady.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 6,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 4,
+     "suggested": {
+      "name": "Harnol",
+      "role": "smith",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/boligar.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/borimo.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Dartmoor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Lady Lynn",
+      "role": "Cleric trainer",
+      "near": "Adibard's Retreat",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/caisha.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/captain-atwell.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "between Caer Sursbrooke and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Trulion Vrundon",
+      "role": "vault keeper",
+      "near": "Adibard's Retreat",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/captain-heathyr.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "between Caer Sursbrooke and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 4,
+     "suggested": {
+      "name": "Lord Sursbrooke",
+      "role": "keep lord of Caer Sursbrooke (or Lady, by the lord's sex)",
+      "near": "Caer Sursbrooke",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/cauld-lad.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Swanton Keep"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Father Turnis",
+      "role": "Cleric trainer",
+      "near": "Swanton Keep",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/chamberlain.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/chieftain-caimheul.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Harnol",
+      "role": "smith",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/chthonic-knights.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 21,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/corrupt-primal-of-earth.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/corrupt-primal-of-water.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/council-hord.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Dehaan",
+      "role": "healer",
+      "near": "Bjarken",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/council-otrygg.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 3,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/council-vagn.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/crypt-lord.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 28,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 5,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    }
+   ]
+  },
+  {
+   "file": "bosses/cuuldurach-the-glimmer-king.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Sheeroe Hills (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/dagar.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 3,
+     "suggested": {
+      "name": "Dehaan",
+      "role": "healer",
+      "near": "Bjarken",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/dalgo.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 6,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/dalicren.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/delfina.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Caer Berkstead"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Lieutenant Brude",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/develin.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Cursed Forest (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Anayll",
+      "role": "healer",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/donal.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Chieftain Scathaig",
+      "role": "keep lord of Dun Scathaig (or Chieftess)",
+      "near": "Dun Scathaig",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/dreaded-ursine.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Culraid and the wilds (18k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Minarva",
+      "role": "smith",
+      "near": "Culraid",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-alloc.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 11,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-aypol.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-eligar.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-harboris.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-sallis.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/duke-zepor.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/dyranapur.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Iarnwood (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/earl-ipostian.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/earl-mermer.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/earl-zhalzhak.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/ellyll-seer.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "between Caer Berkstead and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 4,
+     "suggested": {
+      "name": "Lieutenant Brude",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/elnara-erea.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/elnaras-pet.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/elro-the-ancient.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/enan.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Chieftain Scathaig",
+      "role": "keep lord of Dun Scathaig (or Chieftess)",
+      "near": "Dun Scathaig",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/eraliwyr.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Neasan's Land and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 4,
+     "suggested": {
+      "name": "Bidelia",
+      "role": "Druid trainer",
+      "near": "Howth",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/fames.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 7,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 4,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    }
+   ]
+  },
+  {
+   "file": "bosses/fates-chosen.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 15,
+     "suggested": {
+      "name": "Paige Lovell",
+      "role": "vault keeper",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 3,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/field-marshal-nebir.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/fjalar.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "between Seithkona Circle and the wilds (27k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Canan",
+      "role": "Seer trainer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/fuilwort.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/funus.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the third company",
+     "count": 7,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/gatekeeper-dommel.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/geirolf.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Malmohus (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Sentry Gaaruun",
+      "role": "guard officer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/gjalpinulva.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Malmohus (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 4,
+     "suggested": {
+      "name": "Vanah",
+      "role": "Skald trainer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/golestandt.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Dartmoor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": {
+      "name": "Lord Renaris",
+      "role": "keep lord of Caer Renaris (or Lady, by the lord's sex)",
+      "near": "Caer Renaris",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/goretooth.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/grand-summoner-govannon.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 248,
+    "near": "Summoner's Hall"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/grindvaktare.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Berge",
+      "role": "smith",
+      "near": "Bjarken",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/hagall-the-red-dagger.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Raumarik (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Hralyvar",
+      "role": "vault keeper",
+      "near": "Svasud Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/high-lord-baelerdoth.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/high-lord-baln.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 4,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/high-lord-oro.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/high-lord-saeor.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/host.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 6,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 3,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/hurionthex.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/icelord-kvasir.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/ide.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 3,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/inquisitors.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/isolationist-courier.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Caer Berkstead"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 4,
+     "suggested": {
+      "name": "Lieutenant Brude",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/ixthiar-broodmother.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "between Aalid Feie and the wilds (27k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/jehrog-se-bysen.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 10,
+     "suggested": {
+      "name": "Father Vernon",
+      "role": "Cleric trainer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/kedyson.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/kez.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Dartmoor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Kan",
+      "role": "smith",
+      "near": "Dartmoor (no town near)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/kierac-the-destroyer.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/king-tuscar.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": {
+      "name": "Astra",
+      "role": "Skald trainer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Alfdis Rannveig",
+      "role": "smith",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/kontar-the-corrupt.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/krackenschtein.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Caillte Garran (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/krevo-ricik.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Father Vernon",
+      "role": "Cleric trainer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/kunsgnos.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Ceri",
+      "role": "healer",
+      "near": "Alainn Bin",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lhia.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Innis Carthaig"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Blyanche",
+      "role": "healer",
+      "near": "Innis Carthaig",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lich-lord-ilron.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 6,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 6,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 4,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lich-lord-sanguis.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the third company",
+     "count": 5,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lieutenants.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/ljornrn.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Malmohus (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Sentry Gaaruun",
+      "role": "guard officer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lord-sanguis.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/luriquay.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Cursed Forest (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Anayll",
+      "role": "healer",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lydsyg.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Iarnwood (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/lysanus.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Necht"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/madawg.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 5,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/manius.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 3,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Ceri",
+      "role": "healer",
+      "near": "Alainn Bin",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/manus.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "between Necht and the wilds (17k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Eersie",
+      "role": "healer",
+      "near": "Necht",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/marquis-dortaleon.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 6,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/marquis-sabonach.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/master-of-pain.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/master-smed.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 6,
+     "suggested": {
+      "name": "Berge",
+      "role": "smith",
+      "near": "Bjarken",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/morbus.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/morvel-glyne.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Black Mtns. South (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Father Turnis",
+      "role": "Cleric trainer",
+      "near": "Swanton Keep",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/mutilators.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/necromantic-apprentice.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/nogoribando.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Caillte Garran (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/noma-rindasdottir.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Vanern Swamp (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Kol Smithir",
+      "role": "smith",
+      "near": "Huginfel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/norsob-the-annihilator.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 4,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/olen-den-bartender.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/organic-energy-mechanism.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/orshom-brong.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Nash",
+      "role": "healer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/oscar.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Aalid Feie"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/overseer-of-the-silver-hand.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Druim Cain and the wilds (23k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Anayll",
+      "role": "healer",
+      "near": "Druim Cain",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/overseer-tepok.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Black Mtns. South (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Commander Jusen",
+      "role": "guard officer",
+      "near": "between Snowdonia Station and the wilds (32k from it)",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/pazia.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/prince-abdin.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 7,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/prince-asmoien.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/princess-nahemah.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/qanris-duros.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Fort Gwyntell and the wilds (19k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/queen-kula.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 4,
+     "suggested": {
+      "name": "Alfdis Rannveig",
+      "role": "smith",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": {
+      "name": "Astra",
+      "role": "Skald trainer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/queen-qunilaria.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/raumarik-revenant.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Raumarik (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Hedonart",
+      "role": "smith",
+      "near": "Vindsaul Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/red-lady.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 7,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/risnir-cruss.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Fort Gwyntell and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/rotodjur.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Dehaan",
+      "role": "healer",
+      "near": "Bjarken",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/saemus.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Siopa and the wilds (19k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 2,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/serk.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Nottmoor Faste"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 2,
+     "suggested": {
+      "name": "Hagdar",
+      "role": "healer",
+      "near": "Svasud Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/silencer.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 5,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 5,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/skeletal-sacristan.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the third company",
+     "count": 5,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/snemel-den-forsumlig.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Bjarken and the wilds (30k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/soul-reckoner.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 7,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/soulfear.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Snowdonia Fortress"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Lieutenant Niane",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/spectral-provisioner.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 4,
+     "suggested": {
+      "name": "Paige Lovell",
+      "role": "vault keeper",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/stanga.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Iarnwood (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 4,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/summoner-lossren.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 248,
+    "near": "Summoner's Hall"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "bosses/syssro-the-ruthless.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Wearyall Village and the wilds (36k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 6,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/tebui.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "between Seithkona Circle and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Itesta",
+      "role": "Healer trainer",
+      "near": "Gna Faste",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/the-hoges-household.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 3,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/the-lindon-household.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/the-swett-household.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/thelod.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Skona Ravine (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 7,
+     "suggested": {
+      "name": "Itesta",
+      "role": "Healer trainer",
+      "near": "Gna Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/thuxra-the-cackler.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/tine.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 3,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/tinka.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 2,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/trude.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/tudeg.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/twirl.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Necht"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Adhamh",
+      "role": "Druid trainer",
+      "near": "Necht",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/ulicia.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/ulor-se-bysen.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Father Vernon",
+      "role": "Cleric trainer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/unok.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Iarnwood (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Keelee",
+      "role": "healer",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/valnir-mordeth.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Dales of Devwy (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/veraerius-the-brave.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Wearyall Village and the wilds (36k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Cearl Smith",
+      "role": "smith",
+      "near": "Wearyall Village",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/vortanos.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/warlord-dorinakka.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 3,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/windskimmer.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Allta Fearann (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Eersie",
+      "role": "healer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/xaga.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Dyrari",
+      "role": "Warden trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/xcrzrk.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Iryne",
+      "role": "vault keeper",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/zinsya.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Cothrom Gorge (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Tegoornaith",
+      "role": "healer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "bosses/zuraspa.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Iryne",
+      "role": "vault keeper",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "history/albion.json",
+   "realm": "Albion",
+   "anchor": null,
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "history/hibernia.json",
+   "realm": "Hibernia",
+   "anchor": null,
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 3,
+     "suggested": {
+      "name": "Daray",
+      "role": "Druid trainer",
+      "near": "Tir na Nog",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 3,
+     "suggested": {
+      "name": "Banon",
+      "role": "smith",
+      "near": "Tir na Nog",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "history/midgard.json",
+   "realm": "Midgard",
+   "anchor": null,
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 2,
+     "suggested": {
+      "name": "Morlin Caan",
+      "role": "smith",
+      "near": "Jordheim",
+      "fit": "realm",
+      "era": "confirmed"
+     }
+    }
+   ]
+  },
+  {
+   "file": "history/neutral.json",
+   "realm": "Neutral",
+   "anchor": null,
+   "stand_ins": [
+    {
+     "stand_in": "the marshal",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/abermenai.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "Castle Sauvage"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 5,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/aegirs-landing.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Aegirhamn"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/albion-shrouded-isles.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Gothwaite Harbor and the wilds (33k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Father Kenelm",
+      "role": "Cleric trainer",
+      "near": "Caer Gothwaite",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/aldland.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caer Diogel"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/avalon-marsh.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Adibard's Retreat"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 2,
+     "suggested": {
+      "name": "Erstal Furlan",
+      "role": "smith",
+      "near": "between Adibard's Retreat and the wilds (18k from it)",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/black-mountains-north.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Swanton Keep"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Lord Hurbury",
+      "role": "keep lord of Caer Hurbury (or Lady, by the lord's sex)",
+      "near": "Caer Hurbury",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/black-mountains-south.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Ludlow Village"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 2,
+     "suggested": {
+      "name": "Master Sceley",
+      "role": "smith",
+      "near": "Ludlow Village",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/bog-of-cullen.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Alainn Bin"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 2,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Chieftain Scathaig",
+      "role": "keep lord of Dun Scathaig (or Chieftess)",
+      "near": "Dun Scathaig",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/caer-sidi.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 7,
+     "suggested": {
+      "name": "Captain Denholm",
+      "role": "guard officer",
+      "near": "Caer Diogel",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the third company",
+     "count": 6,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    },
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/caldey.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Caldey (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 2,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/camelot-hills.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Cotswold Village"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Lord Renaris",
+      "role": "keep lord of Caer Renaris (or Lady, by the lord's sex)",
+      "near": "Caer Renaris",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Captain Bonswell",
+      "role": "guard officer",
+      "near": "Prydwen Keep",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Elvar Ironhand",
+      "role": "smith",
+      "near": "Cotswold Village",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/camelot.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 10,
+    "near": "Camelot"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the healer",
+     "count": 2,
+     "suggested": {
+      "name": "Brother Michel",
+      "role": "healer",
+      "near": "Camelot",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/campacorentin-forest.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Caer Ulfwych"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 7,
+     "suggested": {
+      "name": "Collen Blist",
+      "role": "Cleric trainer",
+      "near": "Caer Ulfwych",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Brother Eurius",
+      "role": "healer",
+      "near": "Caer Ulfwych",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/cliffs-of-moher.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Tir Urphost"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Cinead",
+      "role": "healer",
+      "near": "Tir Urphost",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Qunie",
+      "role": "smith",
+      "near": "between Ardee and the wilds (27k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/connacht.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Ardee"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Erli",
+      "role": "Druid trainer",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/crystal-cave.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 62,
+    "near": "Crystal Cave"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 4,
+     "suggested": {
+      "name": "Lady Fridwulf",
+      "role": "Cleric trainer",
+      "near": "Camelot",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/dales-of-devwy.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "Fort Gwyntell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 8,
+     "suggested": {
+      "name": "Sister Finella",
+      "role": "Cleric trainer",
+      "near": "Fort Gwyntell",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/darkness-falls.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "between Prydwen Keep and the wilds (25k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 11,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the captain",
+     "count": 6,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the marshal",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/dartmoor.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Dartmoor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 2,
+     "suggested": {
+      "name": "Kan",
+      "role": "smith",
+      "near": "Dartmoor (no town near)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Kyr",
+      "role": "healer",
+      "near": "Dartmoor (no town near)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/dodens-gruva.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Glenlock Faste"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 3,
+     "suggested": {
+      "name": "Sentry Stonefist",
+      "role": "guard officer",
+      "near": "between Nalliten and the wilds (33k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/domnann.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Grove of Domnann"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Ciarda",
+      "role": "Druid trainer",
+      "near": "Grove of Domnann",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/east-svealand.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Vasudheim"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Aud",
+      "role": "healer",
+      "near": "Vasudheim",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Arnfinn",
+      "role": "smith",
+      "near": "Vasudheim",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/faraheim.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "between Hagall and the wilds (31k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 3,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Jura",
+      "role": "vault keeper",
+      "near": "Hagall",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/hall-of-the-corrupt.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "between Caer Sursbrooke and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the third company",
+     "count": 1,
+     "suggested": null,
+     "note": "a present-day company (Caer Sidi), not one person; keep the label"
+    }
+   ]
+  },
+  {
+   "file": "locations/hibernia-housing.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 202,
+    "near": "Hibernia Housing"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 5,
+     "suggested": {
+      "name": "Daray",
+      "role": "Druid trainer",
+      "near": "Tir na Nog",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Banon",
+      "role": "smith",
+      "near": "Tir na Nog",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/jamtland-mountains.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Hlidskialf Faste"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Hagdar",
+      "role": "healer",
+      "near": "Svasud Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/keltoi-fogou.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "between Caer Ulfwych and the wilds (29k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 5,
+     "suggested": {
+      "name": "Collen Blist",
+      "role": "Cleric trainer",
+      "near": "Caer Ulfwych",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the druid",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/koalinth-caverns.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Tir Urphost and the wilds (34k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 15,
+     "suggested": {
+      "name": "Bidelia",
+      "role": "Druid trainer",
+      "near": "Howth",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Bidelia",
+      "role": "Druid trainer",
+      "near": "Howth",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/krondon.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 51,
+    "near": "between Caer Diogel and the wilds (28k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Father Vernon",
+      "role": "Cleric trainer",
+      "near": "Caer Diogel",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/lough-derg.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Mag Mell"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Ilisa",
+      "role": "smith",
+      "near": "Mag Mell",
+      "fit": "local",
+      "era": "confirmed"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/lough-gur.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Innis Carthaig"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Siobhan",
+      "role": "smith",
+      "near": "Innis Carthaig",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/malmohus.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Malmohus (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": {
+      "name": "Vanah",
+      "role": "Skald trainer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/marfach-caverns.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Dun Da Behnn and the wilds (16k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 13,
+     "suggested": {
+      "name": "Chieftain Da Behnn",
+      "role": "keep lord of Dun Da Behnn (or Chieftess)",
+      "near": "Dun Da Behnn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Harnol",
+      "role": "smith",
+      "near": "Druim Cain",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/mount-collory.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Dun Dagda"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the chieftain",
+     "count": 3,
+     "suggested": {
+      "name": "Chieftain Scathaig",
+      "role": "keep lord of Dun Scathaig (or Chieftess)",
+      "near": "Dun Scathaig",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/muire-tomb.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Basar and the wilds (20k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Melro",
+      "role": "healer",
+      "near": "between Ardee and the wilds (27k from it)",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/raumarik.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Raumarik (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Hedonart",
+      "role": "smith",
+      "near": "Vindsaul Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/salisbury-plains.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "West Downs"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/sheeroe-hills.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Sheeroe Hills (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the priest",
+     "count": 1,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/silvermine-mountains.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Ardagh"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 3,
+     "suggested": {
+      "name": "Bidelia",
+      "role": "Druid trainer",
+      "near": "Howth",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/skona-ravine.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "between Seithkona Circle and the wilds (27k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 1,
+     "suggested": {
+      "name": "Canan",
+      "role": "Seer trainer",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Gord",
+      "role": "smith",
+      "near": "Galplen",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/snowdonia.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Snowdonia Fortress"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": {
+      "name": "Lieutenant Niane",
+      "role": "guard officer",
+      "near": "Snowdonia Fortress",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/summoners-hall.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 248,
+    "near": "Summoner's Hall"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the chieftain",
+     "count": 2,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    },
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/tepoks-mine.json",
+   "realm": "Albion",
+   "anchor": {
+    "region": 1,
+    "near": "Black Mtns. South (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the captain",
+     "count": 4,
+     "suggested": {
+      "name": "Commander Jusen",
+      "role": "guard officer",
+      "near": "between Snowdonia Station and the wilds (32k from it)",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/thidranki.json",
+   "realm": "Neutral",
+   "anchor": {
+    "region": 1,
+    "near": "Castle Sauvage"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": null,
+     "note": "no real NPC fits this place and role; keep the role or a Living Server name"
+    }
+   ]
+  },
+  {
+   "file": "locations/tir-na-nog.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 201,
+    "near": "Tir na Nog"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 20,
+     "suggested": {
+      "name": "Daray",
+      "role": "Druid trainer",
+      "near": "Tir na Nog",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/treibh-caillte.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "between Culraid and the wilds (18k from it)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Torrance",
+      "role": "Druid trainer",
+      "near": "between Connla and the wilds (14k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/tur-suil.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "Vale of Balor (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the warden",
+     "count": 1,
+     "suggested": {
+      "name": "Naithi",
+      "role": "Warden trainer",
+      "near": "Aalid Feie",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/tuscaran-glacier.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 151,
+    "near": "Delling Crater (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Grenda",
+      "role": "Seer trainer",
+      "near": "Aegirhamn",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the steward",
+     "count": 1,
+     "suggested": {
+      "name": "Gjaflaug Sigrid",
+      "role": "vault keeper",
+      "near": "Bjarken",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Alfdis Rannveig",
+      "role": "smith",
+      "near": "Hagall",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/vale-of-mularn.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Mularn"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the skald",
+     "count": 1,
+     "suggested": {
+      "name": "Eryk",
+      "role": "Skald trainer",
+      "near": "Vindsaul Faste",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Kalbin",
+      "role": "healer",
+      "near": "Mularn",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the captain",
+     "count": 1,
+     "suggested": {
+      "name": "Sentry Stonefist",
+      "role": "guard officer",
+      "near": "between Nalliten and the wilds (33k from it)",
+      "fit": "realm",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the smith",
+     "count": 1,
+     "suggested": {
+      "name": "Vahn",
+      "role": "smith",
+      "near": "Mularn",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/valley-of-bri-leith.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 200,
+    "near": "Caille"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the druid",
+     "count": 1,
+     "suggested": {
+      "name": "Erli",
+      "role": "Druid trainer",
+      "near": "Druim Cain",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the healer",
+     "count": 1,
+     "suggested": {
+      "name": "Dall",
+      "role": "healer",
+      "near": "Brynach",
+      "fit": "local",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/west-svealand.json",
+   "realm": "Midgard",
+   "anchor": {
+    "region": 100,
+    "near": "Huginfel"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the healer",
+     "count": 4,
+     "suggested": {
+      "name": "Saydyn",
+      "role": "healer",
+      "near": "Huginfel",
+      "fit": "local",
+      "era": "probable"
+     }
+    },
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Hyndia",
+      "role": "Seer trainer",
+      "near": "Fort Atla",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  },
+  {
+   "file": "locations/worlds-end.json",
+   "realm": "Hibernia",
+   "anchor": {
+    "region": 181,
+    "near": "World's End (no town near)"
+   },
+   "stand_ins": [
+    {
+     "stand_in": "the elder",
+     "count": 2,
+     "suggested": {
+      "name": "Adhamh",
+      "role": "Druid trainer",
+      "near": "Necht",
+      "fit": "realm",
+      "era": "probable"
+     }
+    }
+   ]
+  }
+ ]
+}
