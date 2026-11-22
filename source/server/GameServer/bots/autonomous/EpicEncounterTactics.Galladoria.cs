@@ -285,8 +285,12 @@ namespace DOL.GS
         /// <summary>What one raider dealt a newborn in a minute (PC log e3b8238's EPIC_FIGHT_LEDGER: 350-700 per attacker,
         /// mesmerizes included), and how many of an add party's eight fight (its healers keep it up).</summary>
         public const int SpindlerRaiderDamagePerMinute = 500, SpindlerFightersPerParty = 6;
-        /// <summary>The add parties never take more than this share of the raid's parties.</summary>
-        public const int SpindlerAddPartyShareMax = 45;
+        /// <summary>The add parties never take more than this share of the raid's parties. 1.2.1 (#408; tests only): 45% until
+        /// then, which at the sweep's period size (100 raiders, 13 parties) gave 5 add parties, a kill rate of 15,000 of the
+        /// 24,000 newborn health she brings a minute (62%), so her newborns piled up over her fight; the 128 raiders that killed
+        /// her in 4.0 minutes on build ccba364 (16 parties, 7 add parties) had 88%. At 60% the 13-party raid has 7 (88%) and a
+        /// raid of 14 parties or more the full 8 its spawn rate asks for (UT_SpindlerBroodSim).</summary>
+        public const int SpindlerAddPartyShareMax = 60;
         /// <summary>Her newborns hunt these first (SBAddsBrain: bard, druid, mentalist, warden at 400 aggro); the druids and
         /// wardens are the raid's main healers and curers (PC log e3b8238, deaths in attempt 1: druid 17, warden 14), so the
         /// add parties are picked without them where the raid allows.</summary>
