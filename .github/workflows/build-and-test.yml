@@ -82,6 +82,7 @@ jobs:
           python tools/lore/lint_lore.py
           python tools/lore/repetition.py --check
           python tools/lore/reachability.py --check
+          python tools/lore/continuity.py --check || echo "::warning title=Lore continuity::contradictions open, see docs/1.2.1/CONTINUITY.md"
           python -m unittest discover -s tools/claude-version/tests -v
           python -m unittest discover -s tools/perf/tests -v
 
