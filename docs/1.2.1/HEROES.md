@@ -228,5 +228,6 @@ are not added yet:
      - Midgard's and Hibernia's locations below the floors;
      - an epic voice for each realm beyond the three Midgard saga chapters.
      Show the owner samples from the third pass before merging, and run `UT_LoreBible` in CI or on the owner's PC.
+- **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.

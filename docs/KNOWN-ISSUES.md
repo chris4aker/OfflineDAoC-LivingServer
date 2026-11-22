@@ -9,6 +9,8 @@ Each result names the build it came from. None of them is from the release build
 the server log's FORK_BUILD line), which is cut when 1.2 is published. The last builds checked on the owner's PC are
 `c81eb5d` and `43c43aa`; the automated results are in the release notes.
 
+Everything still to do, with a GitHub issue each, is in [OPEN-WORK.md](OPEN-WORK.md).
+
 ## Fix list for 1.2.1
 
 Seen on the owner's PC or in its log, and left for 1.2.1 (owner, 2026-11-19: publish unless there are major bugs, crashes

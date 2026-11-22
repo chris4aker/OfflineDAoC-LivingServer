@@ -1,6 +1,6 @@
 # Offline DAoC — instructions for AI assistants and developers
 
-Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). This file is also loaded by
+Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
 Claude Code as `CLAUDE.md`.
 
 ## What this is
