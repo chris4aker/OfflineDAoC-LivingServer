@@ -89,6 +89,11 @@ Bots' breaks are a separate setting and stay on.
   the Red Branch and Deirdre, Medb and Fergus, Mac Dathó's feast at Ailbe). Nothing was cut. An independent review
   checked the myth facts against their sources and fixed what it found, including Saint Patrick taken out of
   Hibernia's Oisín lore.
+- Third pass (deepening, HANDOFF 1.5; review in [docs/1.2.1/REVIEW-THIRD-PASS.md](docs/1.2.1/REVIEW-THIRD-PASS.md)):
+  Albion's six epic places, the Shrouded Isles and five thin bosses, and King Mark made Duke Marcus's son; the neutral
+  proving fields (Caledonia, Abermenai, Thidranki, Murdaigean), Luso, six Midgard bosses and three saga-voice chapters;
+  Hibernia's Blight, the Cursed Forest and fourteen thin bosses from the Mythological, Ulster and Fenian cycles. Nothing
+  was cut. Caer Sidi's toll now agrees in every telling: sixty-seven of eighty came home.
 
 **Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
 and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under
