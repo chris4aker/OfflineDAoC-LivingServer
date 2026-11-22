@@ -109,6 +109,11 @@ review's findings and the work left to do.
      are the years she lived after (the rule of cool). The Behemoth's fifth chapter, "Under the Heading of Weather",
      is approved. Chapter and page titles don't count toward the cap of 12 (`name_counts.py` skips them), so the
      Gjalpinulva beam names Hallbjorn again.
+   - Epic places and short pages (2026-11-22): "Stories should be phenomenal and tight", "don't be long for the sake of
+     length". An epic place's `story` is the short telling, held only to the epic 300-500 word summary floor; its
+     chapters carry the depth. `LoreBible.DepthReport` and `tools/lore/depth_report.py` no longer hold epic places to
+     the generic 500+ story floor (every other location floor still applies). A short book page gets only a real detail
+     (a fact, an image, a consequence that fits the file), never filler; where none fits, the page is left and listed.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in

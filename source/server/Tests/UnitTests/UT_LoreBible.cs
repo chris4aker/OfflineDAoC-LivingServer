@@ -497,6 +497,8 @@ namespace DOL.GS.Tests
             Assert.That(bible.LocationById("krondon").IsEpic && bible.LocationById("krondon").Chapters.Length == 5, Is.True);
             Assert.That(bible.BossById("scurceol-hyrde").BookPages, Is.EqualTo(new[] { "first page.", "second page." }));
             Assert.That(bible.DepthReport(), Has.Some.EqualTo("epic locations: 4-10 chapters: 0 of 1 below"));
+            Assert.That(bible.DepthReport(), Has.Some.EqualTo("locations: story 500+ words: 0 of 1 below"),
+                "an epic place's story is held to the epic 300-500 summary floor, not the 500+ story floor (owner 2026-11-22)");
             // Bots stay on their short lines: no chapter text reaches the corpus or an answer.
             Assert.That(LoreChat.CorpusLines(bible).Any(l => l.Text.Contains("word0x")), Is.False);
             Assert.That(bible.TryAnswer("whats in krondon?", new Random(1), out string answer) && !answer.Contains("word0x"), Is.True);

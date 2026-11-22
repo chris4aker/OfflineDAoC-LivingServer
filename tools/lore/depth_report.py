@@ -6,7 +6,8 @@ LORE-1.2-DEPTH.md can be measured without dotnet, file by file.
     python3 tools/lore/depth_report.py --files --kind major --realm Hibernia
     python3 tools/lore/depth_report.py --json               everything, for machines
 
-Kinds (as DepthReport splits them): location (every location, epic and minor included, as the C# counts them), major (a boss
+Kinds (as DepthReport splits them): location (every location, epic and minor included, as the C# counts them; the story 500+ floor
+skips epic locations, whose story is held to the epic 300-500 summary instead), major (a boss
 neither minor nor epic: "order" files and an empty tier count here), minor, epic-location, epic-boss. --exclude-epic leaves
 epic locations out of the location kind (the C# summary keeps them). --realm filters on the file's own "realm" field.
 With a filter the summary lines count the filtered set only.
@@ -164,7 +165,8 @@ def pages_short(pages, floor):
 
 
 LOCATION_FLOORS = [
-    ("story 500+ words", lambda l: lt("story", words(l["story"]), 500)),
+    # An epic place's story is its short telling, held to the epic floor's 300-500 summary (owner 2026-11-22).
+    ("story 500+ words", lambda l: [] if tier_is(l, "epic") else lt("story", words(l["story"]), 500)),
     ("legend 120+ words", lambda l: lt("legend", words(l["legend"]), 120)),
     ("6+ facts", lambda l: lt("facts", l["facts"], 6)),
     ("4-8 firstEntry lines", lambda l: lt("firstEntry", l["firstEntry"], 4)),

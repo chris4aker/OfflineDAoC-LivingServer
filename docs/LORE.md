@@ -150,7 +150,7 @@ Files under `source/server/GameServer/bots/autonomous/data/lore/`: `locations/<i
 | `zones` | | zone ids: the location is those zones only (a lair inside an open-world region). Zone 0 is a zone (Camelot Hills); region 0 is not |
 | `summary` | yes | one sentence |
 | `facts` | yes (1+) | `{text, provenance, source}`; provenance `mythic`, `game`, `legend`, `myth`, `original`; a source for all but `original` |
-| `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary |
+| `story`, `legend` | yes | no maximum; under 130 / 30 words is a warning. Epic tier: `story` is a 300-500 word summary (the short telling: epic places skip the 500+ story depth floor) |
 | `chapters` | | `[{title, text}]` in order (epic tier: 4-10 of 250-700 words); each title is a loremaster keyword (60 characters, no brackets, unique in the file) |
 | `tier` | | `"epic"`, `"major"`, `"minor"` or left out |
 | `era`, `factions` | | ids in the history files |

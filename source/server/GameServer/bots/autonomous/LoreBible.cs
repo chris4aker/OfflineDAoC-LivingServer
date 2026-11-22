@@ -1172,7 +1172,9 @@ public sealed class LoreBible
         static int W(string t) => Words(t);
         var floors = new (string What, Func<Location, bool> Short)[]
         {
-            ("story 500+ words", l => W(l.Story) < 500),
+            // An epic place's story is its short telling, held to the epic floor's 300-500 summary below; its chapters
+            // carry the depth (owner 2026-11-22: "Stories should be phenomenal and tight"). Every other floor here holds.
+            ("story 500+ words", l => !l.IsEpic && W(l.Story) < 500),
             ("legend 120+ words", l => W(l.Legend) < 120),
             ("6+ facts", l => l.Facts.Length < 6),
             ("4-8 firstEntry lines", l => l.FirstEntry.Length < 4),
