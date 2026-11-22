@@ -52,24 +52,72 @@
   "legend": "The Shrouded Isles are Albion's new lands beyond the mist, hunting for every adventurer from the youngest to several bands of the realm's best together, reached by the ship from Camelot Hills to Gothwaite Harbor. Start on the Isle of Glass, then Avalon Isle and Aldland, then the Dales of Devwy, Caldey, Gwyddneau and Inishail for the realm's best and the bands that go together beyond them. Each isle has its own great foes, known by their names; check the isle's own lore. Avalon City is under Avalon Isle, Krondon's door is on Aldland, Caer Sidi is off Caldey's western strand, the Crystal Cave is reached from Avalon. Learn the trick of a great foe before you draw it. The ship from Camelot Hills lands at Gothwaite Harbor; bind at Caer Gothwaite before you go anywhere. The drakoran on the border camp in groups with casters and healers behind the melee, so draw from the edge, and expect the Roman dead to walk up to the wall at night.",
   "atmosphere": {
     "firstEntry": [
-      "The Shrouded Isles. The dead here march in Roman step."
+      "The Shrouded Isles. The dead here march in Roman step.",
+      "Seven isles beyond the mist, and Albion holds one.",
+      "Apple blossom and ash on the same wind.",
+      "Drakoran banners on the high ground to the north."
     ],
-    "areas": []
+    "areas": [
+      {
+        "name": "the earth wall",
+        "region": 51,
+        "x": 536500,
+        "y": 511000,
+        "z": 0,
+        "radius": 1000,
+        "lines": [
+          "The earth wall. Beyond it, everything Albion lost.",
+          "Tramped earth at the foot of the wall, in rows.",
+          "From the wall you can see the mist on the far isles."
+        ]
+      },
+      {
+        "name": "the wall's western reach",
+        "region": 51,
+        "x": 525250,
+        "y": 510500,
+        "z": 0,
+        "radius": 800,
+        "lines": [
+          "At night the dead come up to the wall, marching in step.",
+          "Ring-fort to ring-fort, the wall is all Albion holds.",
+          "An Inconnu stands on the wall, watching the north."
+        ]
+      }
+    ]
   },
   "botLines": {
     "lore": [
       "the shrouded isles were avalon's. morgana took them with the drakoran and the dead",
       "isle of glass is the last bit albion kept, the rest are behind the wall",
       "morgana raised the roman legions buried in the isles. [thats why they march in step|old dead, new orders]",
-      "seven isles: glass, avalon, aldland, devwy, caldey, gwyddneau, inishail"
+      "seven isles: glass, avalon, aldland, devwy, caldey, gwyddneau, inishail",
+      "the oldest college books call avalon the isle of apples. fields with no plough, orchards with no pruner",
+      "alb chroniclers say the best of swords was forged on avalon before the king ever had it",
+      "nine sisters ruled the isle of apples in the old books. the first of them could heal and fly",
+      "after camlann the wounded king was brought over the sea to avalon to be healed. the colleges read it out every spring",
+      "the inconnu walk with albion because arawn wants his dead back from morgana",
+      "the church calls arawn's worship heresy and takes the inconnu's help anyway. [go figure|cant have it both ways]",
+      "caldey was avalon's burying isle and it stood up when morgana called",
+      "the drakoran on the isle of glass border are soldiers. sergeants, surgeons and a proper watch"
     ],
     "rumour": [
       "[heard|someone said] every isle past the wall has its own named with a trick",
-      "heard gwyddneau is the only isle albion never held"
+      "heard gwyddneau is the only isle albion never held",
+      "[heard|someone said] theres a cold anvil in a burnt college orchard on avalon that no smith was let to use",
+      "heard morgana came over the water just to see if the golden bed on the isle of apples was still kept",
+      "[heard|word is] the isle of glass garrison has a wager on what the thing in gwyddneau guards. a harp, maybe",
+      "someone said the apple tree outside the second ring-fort still bears and the inconnu wont touch the fruit",
+      "heard an inconnu stands by every alb who dies on the border till the priest comes. nobody knows what from",
+      "[heard|someone said] the first of the nine sisters had a name a lot like morgana's. the church hates that page"
     ],
     "tell": [
       "the isles? seven of them. start on the isle of glass, go north and west as you grow seasoned",
-      "si dungeons? avalon city, krondon, caer sidi, crystal cave. all reached from the isles"
+      "dungeons of the isles? avalon city, krondon, caer sidi, crystal cave. all reached from the isles",
+      "how do i get to the isles? the ship from camelot hills to gothwaite harbor. bind at caer gothwaite first",
+      "whats on the isle of glass border? drakoran in groups, casters and healers behind the melee. draw from the edge",
+      "is the isle of glass safe at night? not by the wall. the roman dead march up to it after dark",
+      "where are the inconnu from? they came up out of the ground at caer gothwaite and walk the isles with our companies"
     ]
   },
   "loremaster": {
@@ -143,5 +191,11 @@
       "id": "crystal-cave",
       "relation": "a dungeon beneath the isles, with its own tale"
     }
+  ],
+  "era": "alb-the-shrouded-isles",
+  "factions": [
+    "morgana",
+    "drakoran",
+    "arawn"
   ]
 }
