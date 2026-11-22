@@ -40,7 +40,7 @@
     }
   ],
   "story": "Vortanos keeps a prison on Caldey, in the north-east of the isle, and nobody knows where he takes his prisoners from. The fishermen of Little Haven have a guess. They have watched the turning gaol of Caer Sidi from their doors for longer than anyone can count, and they say that in the first season of the war, when the dead of Caldey stood up, some of the dead who were walking the strand toward Arawn's door never reached it, and that Vortanos was standing on the strand that night. The Inconnu, who serve Arawn, will not speak of him, which the fishermen take as a yes.\n\nHis prisoners sleep in the ground round his post, unwilling and unmoving, the ancient dead and the ghouls and the fell geists, and when strangers come he wakes them, a whole gaol's worth at once, to stand with him. When the strangers are gone or dead he tells them to sleep again, that they are no longer needed, and they go back into the ground. He tells the living that they can never conquer the darkness of death, and that he will have their flesh one piece at a time, and he means it as a gaoler means it: he takes the strength out of a man a little and then a little more, the strength of his arm and the stoutness of his body, the quickness of his hands and his feet, until the man can be led. His fire falls on a little knot of people at once. His acid is quick and does not linger.\n\nAt night he is not there. The garrison on the Isle of Glass says darkness is his own and that when the sun goes down he goes into it; the clan at Little Haven, who have looked, say that at night there is nothing at his post to see or to strike, not even a shadow, and that his prisoners sleep unwatched. The clan goes to the prison by day, and only by day, and comes home before the light goes whether the work is done or not.\n\nArawn's own gaol stands on the water a morning's walk to the west. The fishermen say the gaoler of Caldey keeps his prison in sight of it on purpose, so that the lord of the dead can see what was taken from him, and cannot come out to take it back.",
-  "legend": "Vortanos, level 61, 30k health, in the north-east of Caldey. Go by day: at night he is untargetable and invisible. When he first takes a target, ten servants stand up at his spawn, two fell geists (50-56), four ancient zombies (54-61) and four ghoul desecrators (49-53), 2k health each, and they all join. They are not hard individually, so area damage on them early, or hold them while the main group kills him; they vanish when he dies. His melee hits debuff strength/constitution and dexterity/quickness by 65 for a minute (the D/Q one splashes 350 around), so keep the tank buffed and cure or rebuff. Fire Blast is 450 heat in 350 around his target every 10 seconds or so; spread a little. His acid DoT is short. He cannot be mezzed or stunned. Wipe and he resets; respawn about an hour.",
+  "legend": "Vortanos, a foe for several bands of the realm's best together and as much killing as fifteen champions, in the north-east of Caldey; he notices you from about twenty-seven paces. Go by day: at night nobody can see him or strike him. When he first takes notice of you, ten servants stand up on his ground, two fell geists, four ancient zombies and four ghoul desecrators, from foes for a hardened band to foes for several bands of the realm's best, each no harder to bring down than a single champion, and they all join. They are not hard one by one, so spells that strike many at once on them early, or hold them while the main group kills him; they vanish when he dies. His blows sap strength and toughness, or nimbleness and quickness, by a great deal for a minute (the nimbleness curse spreads twelve paces around), so keep the shield-bearer's blessings on and cure or renew them. Fire Blast is a burst worth nearly a quarter of a champion's strength on everyone within twelve paces of his target every ten seconds or so; spread a little. His acid is short, though it eats a quarter of a champion's strength in its twelve seconds. He cannot be mesmerized or dazed. If every raider falls he goes home whole; he returns about an hour after he is killed.",
   "yells": {
     "aggro": [
       "Your flesh will be mine, one piece at a time!",
@@ -86,22 +86,22 @@
   },
   "botLines": {
     "briefing": [
-      "vortanos, 61, 30k. daytime only, at night you cant even see him",
-      "ten adds pop at his spawn when he aggros, 2k each. aoe them or hold them, they die with him",
-      "his hits debuff str/con and dex/qui by 65. keep the tank buffed",
-      "fire blast is 450 heat in 350 around his target. dont clump"
+      "vortanos, several bands' job, killing of 15 of us. daytime only, at night you cant even see him",
+      "ten servants stand up on his ground when he wakes, one man's toughness each. burst them or hold them, they die with him",
+      "his hits sap strength and toughness or nimbleness and quickness. keep the shield-bearer blessed",
+      "fire blast hits everyone 12 paces round his target. dont clump"
     ],
     "aftermathWin": [
       "vortanos down before dark. nice",
       "the prisoners went back to sleep for good",
-      "aoe on the adds worked like a charm",
+      "burst spells on the servants worked like a charm",
       "clan says thanks, apparently"
     ],
     "aftermathLoss": [
-      "got dark mid pull and he just vanished",
-      "the tank got debuffed to nothing and folded",
+      "got dark mid fight and he just vanished",
+      "the shield-bearer got cursed down to nothing and folded",
       "we clumped and the fire blast hit six of us",
-      "ten adds on the healers, never recovered"
+      "ten servants on the healers, never recovered"
     ],
     "rumour": [
       "[heard|someone said] vortanos stole prisoners off the strand on their way to caer sidi",

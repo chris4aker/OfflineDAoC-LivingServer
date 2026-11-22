@@ -27,7 +27,7 @@
     }
   ],
   "story": "Weno'iak the Enlightened is lord of the wi'voron, the drakoran clan whose work is the joins between the others' work (reeves, acaters, sicklemen, lorimers, and the only drakoran cavalry), and from whom Albion learned most of what it knows of the drakoran. He was a young tally-reeve of the host's grain on the crossing who kept every hold's count in his head, and it was he who told Dura'ek how many days the host could last before it must take Avalon; Dura'ek burned the city on the night he named. He became lord of the wi'voron by being the one the other lords sent for when they could not agree.\n\nThe drau'gyn burned the libraries in the order of a list, and the wi'voron have never denied that their lord made it: Elowen's own list has the same order, the fishermen remember a young drakoran with a reeve's slate selling fish on the cloister steps that season, and Sefin of the Inconnu says whoever made it had read in every library. If so, he also kept back what was on it. Chancellor Rhydderch's commentaries, the star tables and a book of the old tongues are on the observatory shelves, and he reads them by lamplight and says the drakoran burned the wrong things.\n\nHis light is a working of the college of stars turned round: thin, cold Lights that strike one spirit at a time from further than a bow carries, and, when he is pressed, a burst every way that breaks the spirits of all who stand near him. The fishermen say 'stand off from the reeve-lord'; the readers add that a man who stands off had better not stand alone in plain view. Magus Hedydd thought he had learned only half the working.\n\nHis cuirassiers and warsteeds keep the yards. Once he wanted the city fed, then counted; now he reads the charters to learn who first laid stone on the Heart, and why.",
-  "legend": "His yards are full: about six cuirassiers, eight warsteeds and six reeves of his faction stand near him and come in with him, so plan it as one big pull. Spread out against his Annihilate, which hits everyone within 500 of him, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one target at a time; his Annihilate bursts around himself, so the casters stand well back from him.",
+  "legend": "His yards are full: Weno'iak, a foe for several bands of the realm's best together and as much killing as fifteen champions, has about six cuirassiers, eight warsteeds and six reeves of his faction standing near him, and they come in with him, so plan it as one big draw. Spread out against his Annihilate, a spirit burst worth nearly a quarter of a champion's strength on everyone within seventeen paces of him every twenty to twenty-five seconds, and bring wards against spirit; his Lights strike one raider at a time from as far as fifty paces. Second shields on the cavalry, and kill the warsteeds before their riders tire of walking.",
   "yells": {
     "aggro": [
       "Riders! Let them see the light!",
@@ -65,24 +65,24 @@
   },
   "botLines": {
     "briefing": [
-      "wenoiak has cuirassiers, warsteeds and reeves all round him. off tanks on cavalry",
-      "spread for his annihilate, spirit resist up",
-      "annihilate hits everyone within 500 of him. casters stay back, spirit resist up",
+      "wenoiak has cuirassiers, warsteeds and reeves all round him. second shields on cavalry",
+      "spread for his annihilate, spirit wards up",
+      "annihilate hits everyone within 17 paces of him. casters stay back, spirit wards up",
       "kill warsteeds first",
       "the whole yard comes, plan it"
     ],
     "aftermathWin": [
-      "whole yard in one pull. gg",
+      "whole yard in one go. gg",
       "the enlightened one wasnt that bright",
       "the cavalry is unhorsed",
       "casters stayed out of annihilate the whole time"
     ],
     "aftermathLoss": [
-      "we stacked for annihilate. 450 to everyone",
-      "casters stood next to him for annihilate. 450 each",
+      "we bunched up for annihilate. a quarter of everyone gone at once",
+      "casters stood next to him for annihilate. a quarter of each of them gone",
       "the warsteeds trampled the casters",
-      "not enough off tanks",
-      "no spirit resist"
+      "not enough second shields",
+      "no spirit wards"
     ],
     "rumour": [
       "heard weno'iak reads the books the other drakoran burned",
