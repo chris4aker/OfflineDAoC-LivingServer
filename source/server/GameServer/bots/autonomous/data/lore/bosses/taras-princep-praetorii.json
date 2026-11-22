@@ -24,7 +24,7 @@
     }
   ],
   "story": "Taras was the third of the four generals to swear the oath, and the deeds give him the plainest charge: to stand at the chair's side. He stands there still, close enough to Seleucus to touch the chair, in a praetorian's harness with the purple gone grey.\n\nThe Cornish say Taras does not watch the doors, as a guard should. He watches the Forgotten Emperor, the crowned dead man a few paces away who carries a staff of office and is slow to rise, and he has watched him since the legion went underground. Iohannes Aldar thinks Taras was set at the chair to keep Seleucus in it; Grindan Halig thinks he was set there to keep the other one out of it. Brother Teilo, who read the deeds, says the deeds do not say which, and that Taras was the one general Seleucus called friend.\n\nHe does not wander. He does not notice anyone who keeps a little way off from the chair, and he notices at once anyone who comes close to it. Fall of an Emperor asks for his focus, offered in the emperor's hall, where he can see it done.",
-  "legend": "Taras Princep Praetorii, level 36, stands beside Emperor Seleucus in the emperor's hall. Short aggro range (150), so you can work around him, but praetorian guards and the emperors are right there and they all help each other. Pull him off the chair to the doorway. For Fall of an Emperor, kill him second (after Olivarius) and offer his focus in the same hall.",
+  "legend": "Taras Princep Praetorii, a foe for a hardened band of veterans, stands beside Emperor Seleucus in the emperor's hall. He only notices you within about five paces, so you can work around him, but praetorian guards and the emperors are right there and they all help each other. Draw him off the chair to the doorway. For Fall of an Emperor, kill him second (after Olivarius) and offer his focus in the same hall.",
   "yells": {
     "aggro": [
       "Away from the chair!",
@@ -48,7 +48,7 @@
   },
   "botLines": {
     "briefing": [
-      "taras stands right by seleucus, short aggro range, pull him to the doorway",
+      "taras stands right by seleucus, only notices you close up, draw him to the doorway",
       "taras is second for fall of an emperor, offer his focus in the same room"
     ],
     "aftermathWin": [
@@ -56,7 +56,7 @@
       "two generals down, two to go"
     ],
     "aftermathLoss": [
-      "pulled taras and got the whole hall"
+      "drew taras and got the whole hall"
     ],
     "rumour": [
       "[heard|someone said] taras watches the forgotten emperor, not the door",

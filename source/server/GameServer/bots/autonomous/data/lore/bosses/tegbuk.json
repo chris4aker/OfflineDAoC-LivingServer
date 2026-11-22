@@ -19,7 +19,7 @@
     }
   ],
   "story": "The granite giants of Dartmoor stand on the moor so still that the drovers of the Cornish road have driven past them for generations thinking them tors, and five of them have names the drovers know. Tegbuk is the one they see most often, because he stands in the north of the moor nearest the drove road, and he is the one they like best, because in the memory of every Hext he has never once come at a drove that kept to the road. Step off it toward him and he comes like the rest of the five; the Hexts do not step off it.\n\nHe watches the herds go by. Old Jory Hext, who drove the road for fifty years, swore that Tegbuk counts them: that when a drove came through a beast short, the giant's head turned a little further after the last of them, as a drover's does when the tally will not come right. The Hexts took to leaving a stone on the roadside cairn below him each time they passed, one stone for a full drove and none for a short one, and the pile is waist-high now, and the drovers say Tegbuk has not complained.\n\nTamsin Hext's road-book has his name on every page. The last page in her husband's hand, before he went south to look at the moor and did not come back, says only: Tegbuk turned his head. Tamsin has never decided whether it was meant as a warning.",
-  "legend": "Tegbuk, level 47 granite giant in the north of Dartmoor near the drove road. He aggros on sight (aggro 200, range 500), like every named giant on the moor, so give him room when you pass. If you want him, he is a plain melee giant with no spells; other Granite Giants of Dartmoor nearby are his faction. A group in the mid forties kills him. Respawn about 80 seconds. The drovers will not thank you.",
+  "legend": "Tegbuk, a granite giant in the north of Dartmoor near the drove road and a foe for a hardened band of veterans. He attacks on sight, turning on anyone within about seventeen paces, like every great giant on the moor, so give him room when you pass. If you want him, he is a plain melee giant with no spells; other Granite Giants of Dartmoor nearby are his faction. A hardened band of veterans kills him. He rises again about eighty seconds after he falls. The drovers will not thank you.",
   "yells": {
     "aggro": [
       "You had a full drove. You did.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "tegbuk by the drove road in north dartmoor aggros on sight like the other named giants",
+      "tegbuk by the drove road in north dartmoor attacks on sight like the other big giants",
       "plain melee giant, mid forties group"
     ],
     "aftermathWin": [

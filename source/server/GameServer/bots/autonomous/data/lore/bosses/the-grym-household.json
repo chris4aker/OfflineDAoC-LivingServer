@@ -37,7 +37,7 @@
     }
   ],
   "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Gryms kept the colleges' geese a field from the Swetts.\n\nThe readers of Avalon wrote with goose quills, and for a hundred years every quill the colleges cut came off a Grym bird. The household carried the year's feathers up to the college of the old tongues at Michaelmas, in a cart lined with linen, and the readers paid in coin and in old letters they had finished with, which Juliana kept in a box under the bed and could not read. The summer the drakoran came over the hill, Wydo drove the flock into the house and barred the door, and the household died with the geese around them. The geese did not stay; only the people did. Fort Gwyntell's patrols, passing at dusk, hear a goose call once from inside the house and then nothing, and none of them has ever found a feather on the floor.\n\nJuliana Grym asks every visitor whether something is wrong, and does not wait for the answer.\n\nWydo Grym, the father, counts the geese every evening and finds them short.\n\nLucia Grym talks of the market at Avalon, of what she will buy there, and when.\n\nEva Grym plucked the geese for the readers' quills and is white with down.\n\nEverard Grym and Warin Grym, the boys, drove the flock to the colleges and still whistle for a flock that is not there. The Swetts' Bartholomew used to whistle back, and sometimes, at dusk, he still does.",
-  "legend": "The Grym household: Wydo (39), Juliana (38), Lucia (37), Eva (37), Everard (36) and Warin (36) Grym, ghosts a field from the Swetts by the fort road, with Avalonian apparitions drifting between the two houses. They aggro on sight and stand close; pull singles from the edge. Plain melee, no spells, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "legend": "The Grym household: Wydo, the strongest, then Juliana, Lucia, Eva, Everard and Warin Grym, ghosts a field from the Swetts by the fort road, each a foe for a hardened band of veterans, with Avalonian apparitions drifting between the two houses. They attack on sight and stand close; draw them singly from the edge. Plain melee, no spells; each rises again eighty seconds after it falls. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
   "yells": {
     "aggro": [
       "Is something wrong?",
@@ -66,7 +66,7 @@
   },
   "botLines": {
     "briefing": [
-      "grym house by the fort road, six of them, pull singles",
+      "grym house by the fort road, six of them, draw singles",
       "the apparitions drift between the grym and swett houses"
     ],
     "aftermathWin": [

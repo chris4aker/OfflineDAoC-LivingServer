@@ -35,7 +35,7 @@
     }
   ],
   "story": "The colleges of Avalon let the dales to tenant families who farmed and wove and dyed and kept bees for them, and when the war came the families died in their houses in the first summers and stayed. A drakoran rod holds them there now. The Swetts kept the colleges' bees by the fort road, and theirs was one of the last doors opened to the Avalonians fleeing the burning.\n\nAvice Swett speaks to the living, which the others will not, and sends them to the Priest of Arawn, and wants the drakoran rod brought to her so that the household can choose whether to stay.\n\nBeneger Swett, the father, still walks out to hives that are empty.\n\nHawis Swett took the bees' honey to the colleges' kitchens and still sets out a jar for guests.\n\nBeatrix Swett let the Avalonians in on the last night, and they are still drifting round the house.\n\nBartholomew Swett, the youngest, was stung so often he swore the bees were his friends, and waits for them.",
-  "legend": "The Swett household: Beneger (40), Hawis (40), Avice (39), Beatrix (38) and Bartholomew (37) Swett, ghosts by the fort road near Fort Gwyntell, with the Avalonian apparitions drifting round. Avice starts Zombies, Ghosts, and Necromancers. They aggro on sight; pull singles, mind the apparitions. Plain melee, respawn 80 seconds. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
+  "legend": "The Swett household: Beneger and Hawis, the strongest, then Avice, Beatrix and Bartholomew Swett, ghosts by the fort road near Fort Gwyntell, each a foe for a hardened band of veterans, with the Avalonian apparitions drifting round. Avice starts Zombies, Ghosts, and Necromancers. They attack on sight; draw them singly, mind the apparitions. Plain melee; each rises again eighty seconds after it falls. The whole house comes back in about a minute and a half, so clear it and move on rather than resting inside.",
   "yells": {
     "aggro": [
       "You let the cold in.",
@@ -64,7 +64,7 @@
   "botLines": {
     "briefing": [
       "swett house by the fort road, avice is the quest one, apparitions drift round it",
-      "pull singles"
+      "draw singles"
     ],
     "aftermathWin": [
       "cleared the swetts",
