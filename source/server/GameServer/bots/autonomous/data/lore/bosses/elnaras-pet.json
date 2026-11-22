@@ -24,7 +24,7 @@
     }
   ],
   "story": "In the first bad year of the worts, when Tachtwort first put its tendrils into the south wall of Altan Garran and the outlanders understood that garda with knives would not be enough, Elnara Erea went to Treal, the old tree the town is built around, and asked him for a cutting. The Ereas have kept Treal since the town was founded, and they do not ask him for much. He gave it. She planted it on the western edge of the town, where the ledge is widest, and sang to it every evening for a season, as the Sylvan sing to a seed-tree, and it grew.\n\nIt has not stopped growing. The town's bards say Elnara put too much into the song, or that a cutting of Treal has more of the old forest in it than any sapling of the gorge, or that the worts' rot in the soil fed it as it feeds them. Whatever the reason, it stands half again the height of any treant in Cothrom now, with bark as thick as a door, and it follows Elnara along the western edge as a hound follows its keeper. It has never been given a name. Elnara says a tree that size does not need one, and the outlanders call it simply Elnara's.\n\nIt does not speak, as Treal does, or not to anyone but her. The garda of the western wall say that at dusk, when Elnara sings to it still, it leans down until its crown is over her and stays like that until she has finished, and that nothing in the gorge, worts or shrillers or the riders of the deep gorge, comes near the western edge while it is bending. Strangers who come to the western edge meet it before they meet her. The Domnann wardens, who have seen it from the ledge above, say it is the largest thing the Sylvan never made.",
-  "legend": "Elnara's Pet is a level 51 treant of enormous size (155) right beside Elnara Erea (55) on the western edge of Altan Garran. You fight both together: one tank on the treant, one on Elnara. No tricks; plain melee with a lot of body for its level. Count it as part of the Elnara Erea fight rather than its own pull. The town is set aggressive, so pull from the outside of the western edge and keep away from the garda in the square. A full group of 50s does it, and the kill counts as the treant's own, so it is worth taking for anyone collecting the town.",
+  "legend": "Elnara's Pet is a treant, a foe for the realm's best, a full band of them, of enormous size, half again the height of a tall treant, right beside Elnara Erea, a shade stronger, on the western edge of Altan Garran. You fight both together: one shield-bearer on the treant, one on Elnara. No tricks; plain melee with a lot of body for its strength. Count it as part of the Elnara Erea fight rather than a fight of its own. The town is hostile, so draw from the outside of the western edge and keep away from the garda in the square. A full band of the realm's best does it, and the kill counts as the treant's own, so it is worth taking for anyone collecting the town.",
   "yells": {
     "aggro": [
       "(the great treant straightens, and the ledge creaks)",
@@ -52,22 +52,22 @@
   },
   "botLines": {
     "briefing": [
-      "elnaras pet is a huge 51 treant next to elnara. [same fight|two tanks]",
-      "plain melee, lots of health",
-      "pull from outside the west edge. [not the square|garda]",
+      "elnaras pet is a huge treant next to elnara. [same fight|two shields]",
+      "plain melee, lots of body",
+      "draw from outside the west edge. [not the square|garda]",
       "count it as part of the elnara fight"
     ],
     "aftermathWin": [
       "the big treant is down. [timber|huge]",
-      "two tanks held both. [nice|grats]",
+      "two shields held both. [nice|grats]",
       "it fell across the whole ledge lol",
       "elnara next if shes still up"
     ],
     "aftermathLoss": [
       "the treant ate the healer. [huge reach|ouch]",
-      "one tank for both. [nope|wipe]",
-      "garda came out of the square. [aggro town|ugh]",
-      "underestimated a 51. [size 155 is a lot of tree|lesson]"
+      "one shield for both. [nope|all dead]",
+      "garda came out of the square. [whole town hates us|ugh]",
+      "underestimated that treant. [thats a lot of tree|lesson]"
     ],
     "rumour": [
       "[heard|someone said] elnara's treant was cut from treal",

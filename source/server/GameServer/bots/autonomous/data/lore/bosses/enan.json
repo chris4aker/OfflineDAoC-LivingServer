@@ -20,7 +20,7 @@
     }
   ],
   "story": "Enan is the captain of the siabra war-bands in the north of the Bog of Cullen, toward the irewoods, and he is Madawg's sword as Kunsgnos is Madawg's student. The Alainn Bin folk say the two of them hate each other the way a sword hates a pen. Enan was with the magus the day Ysberin the path-keeper was killed for her staff, and the bog folk say it was his blade that did it, and the magus's craft that took the staff, and that Enan has never forgiven Madawg for taking the credit.\n\nHe keeps the northern edge of the bog against anyone coming down off the Cullen road, and the realm's young who come that way to reach the bog meet his war-bands first. He fights like the siabra fight, from cover, in the reeds, and the bog folk say he has never lost a quarrel he chose.",
-  "legend": "Enan (43) is a named siabra in the north of the Bog of Cullen (about 382k/724k), among siabra war-bands (37-47: raiders, wayguards). Social; clear his edges first. Group of low to mid 40s. Plain spawn, 80-second respawn. Madawg (55) is further east. His war-bands fight from the reeds: pull them onto the open mud of the Cullen road edge where casters can see them. The north bog is the lowest siabra country here, so it is the usual way in.",
+  "legend": "Enan, a foe for a hardened band of veterans, is a siabra of name in the north of the Bog of Cullen (about 382k/724k), among siabra war-bands (raiders and wayguards, all a hardened band's foes). They come to each other's aid; clear his edges first. A hardened band of veterans. Plain, no tricks; he returns eighty seconds after he falls. Madawg (a foe for the realm's best) is further east. His war-bands fight from the reeds: draw them onto the open mud of the Cullen road edge where casters can see them. The north bog is the gentlest siabra country here, so it is the usual way in.",
   "yells": {
     "aggro": [
       "My blade killed the path-keeper. Remember that.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "enan is a 43 siabra captain in the north bog",
+      "enan is a siabra captain in the north bog",
       "war-bands around are social, clear first"
     ],
     "aftermathWin": [

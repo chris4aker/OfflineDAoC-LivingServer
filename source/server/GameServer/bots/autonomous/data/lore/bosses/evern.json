@@ -22,7 +22,7 @@
     }
   ],
   "story": "When the elves raised the Veil and withdrew, some of their great ones stayed behind on this side, by choice or by accident, and Evern is one of them, the Sylvan of Hy Brasil and the druids of Tir na Nog agree. He is a lord of the fairy kind, a great one gone strange with age: his ring of stones in Breifine was a gate once, they think, and he stayed to keep it after it closed. The small wraith-fairies of the frontier are his last subjects. They drift in on the wind while he fights and settle on the stones, and from the stones they pour their healing into him, a thousand at a time, two to five of them at once.\n\nHe does not hurry. He walks to his enemy and takes his time about it, and his arm is longer than it looks, so the ring is a smaller place than it seems. Beyond his ring he cannot be hurt, and if he is let alone a little while he is whole. He was standing in Breifine when the frontier was only hills, and the keeps went up around his stones because nobody could move them, or him. The realm's warbands have marched past him for generations without asking. Below him, under Breifine, run the Marfach caves and the road to the Summoners, and the old frontier hands say he sits on the lid, and that what lies under Breifine is worse than he is. If that is true, the realm must decide each time it kills him whether it is lifting it.",
-  "legend": "Fairies first, every one, before they land and heal him. The whole raid looks for wraith fairies while the tanks hold Evern. His reach is longer than his size, so healers stand well back from the tanks. Fight him at his stones; drag him off and nothing hurts him. Keep the fight going or he resets in half a minute. Nicknames: 'the stones', 'old ring'. Superstitions: never count his stones twice, because the fairies move one; never touch a stone and run, though half the frontier dares each other to. The wraith fairies never stop coming; the fight is won by fairy duty. Frontier warbands salute his ring as they pass.",
+  "legend": "Fairies first, every one, before they land and heal him. The whole raid looks for wraith fairies while the shield-bearers hold Evern. His reach is longer than his size, so healers stand well back from the shield-bearers. Fight him at his stones; drag him off and nothing hurts him. Keep the fight going or he is whole again in half a minute. Nicknames: 'the stones', 'old ring'. Superstitions: never count his stones twice, because the fairies move one; never touch a stone and run, though half the frontier dares each other to. The wraith fairies never stop coming; the fight is won by fairy duty. Frontier warbands salute his ring as they pass.",
   "yells": {
     "aggro": [
       "Who walks in my ring?",
@@ -63,7 +63,7 @@
       "evern: kill the fairies first, every single one. [they heal him|fairies on the stones heal him]",
       "he has a long reach, healers stay back. [fight at the stones|dont drag him]",
       "melee only on evern, everyone else out of his reach. [healers back|dont clump]",
-      "half a minute out of combat and he resets, [keep at it|no breaks]"
+      "half a minute out of the fight and hes whole again, [keep at it|no breaks]"
     ],
     "aftermathWin": [
       "evern down. [nobody let a fairy land|great fairy duty everyone]",

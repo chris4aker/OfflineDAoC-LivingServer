@@ -27,7 +27,7 @@
     }
   ],
   "story": "Sylvan children are taught the two keeper-trees together. Aroon was set to keep the hollow under Galladoria when the Root went down into it, and the rot reached him, and he turned. Elro was set at World's End, at the very edge, to keep watch over the place the forests had driven the titan in the Long Pushing, and he held. That is the teaching, and every Sylvan child can recite it: one rotted, one held.\n\nThe older Sylvan add something the children are not taught until they are grown. Elro held, but holding cost him. He was one of the trees that did the pushing, the oldest of them, and he has stood at the edge of the world with the titan's anger under his roots since before the first Sylvan woke. He is too old to be moved by any song: no charm has ever made him sleep, or stand still, or turn aside, and the Sylvan singers stopped trying generations ago. Somewhere in the long watch he stopped knowing friend from enemy. A Sylvan who walks up to him now is a thing at the edge of the world, and everything at the edge of the world is the titan's.\n\nWhen he is wounded, the edge answers. The grove around him is made of the trees that pushed beside him, ancient treants who sank into the sour ground and have slept there ever since, and the Sylvan say Elro wakes them when the first bark comes off him, and again when he is half felled. Each time the grove comes up out of the ground, one old tree for every stranger standing near him, and each tree goes for its own. After that he does not call again. The Domnann wardens think he has nothing left to call; the singers think the last of the grove is keeping the titan down, and will not come up for anything. When Elro falls, every tree he woke falls with him.\n\nWhy does it matter? Because the edge has not moved. The Sylvan who keep the records in Domnann have marked the boundary of the sour ground every spring for longer than Hibernia has had kings, and it has not crept inland in all that time, though the springs around Kontar's camp have soured and the shrouds walk the headland. Something is holding it. Most Sylvan think it is Elro. A few of the Domnann wardens refuse to guide Hibernian companies to him at all, and some traders of the edge will not deal with a Hibernian who has brought him down, until he stands again. He always does.",
-  "legend": "No mezz, root or stun: he is CC immune. The treants are the fight. Every time you hit Elro while he is between 95% and 90%, and again between 60% and 55%, an ancient treant (50-55) spawns for you if you are within 2,500 and goes for you. Companions, the realm's other adventurers and pets do not trigger it and are not counted, so in a group of companions you should stop hitting him in those two windows and let them push him through. The 25-30% wave the old raiders' accounts promise never comes. When Elro dies all the treants die with him. Tether 4,500. Some Sylvan traders sulk afterwards; that is flavour.",
+  "legend": "No trance, binding or stunning blow holds him. The treants are the fight. Every time you hit Elro while he has lost between a twentieth and a tenth of his strength, and again between two-fifths and nine-twentieths, an ancient treant (a foe for the realm's best) rises for you if you are no further from him than a little past a long bowshot, and goes for you. Companions, the realm's other adventurers and pets do not trigger it and are not counted, so in a group of companions you should stop hitting him in those two windows and let them push him through. The wave the old raiders' accounts promise when he is down to his last quarter or so never comes. When Elro dies all the treants die with him. Drawn well beyond bowshot of his place he goes home. Some Sylvan traders sulk afterwards; that is flavour.",
   "yells": {
     "aggro": [
       "The edge is kept.",
@@ -73,22 +73,22 @@
   },
   "botLines": {
     "briefing": [
-      "treants spawn when you hit him at 95-90 and 60-55. [stop hitting in those windows|let the companions do it]",
+      "treants come when you hit him just after he starts to bleed and again a bit before half. [stop hitting in those windows|let the companions do it]",
       "one treant for you if youre in range. [stand back if youre not hitting|range matters]",
-      "no cc on elro. [dont try|cc immune]",
+      "nothing holds elro. [dont try|no mez no root no stun]",
       "all the treants die when he dies. [burn him|finish him]"
     ],
     "aftermathWin": [
       "elro the ancient down. [the treants fell with him|grove went quiet]",
-      "stopped hitting at 95 and 60 like we said. [clean|zero treants]",
+      "stopped hitting in both windows like we said. [clean|zero treants]",
       "the sylvan will sulk. [he'll be back|always is]",
       "one rotted, one held. [and now we felled the one that held|hmm]"
     ],
     "aftermathLoss": [
-      "i kept hitting at 90 and got [three treants|a whole grove] on me",
-      "treants plus elro. [too much|wiped]",
-      "someone tried to root him. [cc immune|nope]",
-      "dragged him past 4500 and he [reset|went home full]"
+      "i kept hitting in the first window and got [three treants|a whole grove] on me",
+      "treants plus elro. [too much|all dead]",
+      "someone tried to bind him in roots. [nothing holds him|nope]",
+      "dragged him way past bowshot and he [went home|went home full]"
     ],
     "rumour": [
       "[heard|someone said] elro is the only thing keeping the titan's anger at the edge",

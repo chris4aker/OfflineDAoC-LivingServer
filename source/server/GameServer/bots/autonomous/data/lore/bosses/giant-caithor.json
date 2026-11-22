@@ -70,7 +70,7 @@
       "caithor is three steps: kill far dorochas till the ghost shows, kill the ghost, then the real giant. [no breaks|keep moving]",
       "kill five far dorocha, then the ghost, then the giant. [no breaks|keep moving]",
       "five minutes idle and the giant sinks. [dont rest|go go]",
-      "the giant hits hard, [main tank ready|big heals]"
+      "the giant hits hard, [main shield ready|big heals]"
     ],
     "aftermathWin": [
       "caithor down. [all three of him|ghost and giant both]",
@@ -81,8 +81,8 @@
     "aftermathLoss": [
       "we stopped for a drink after the ghost and the giant [sank back down|despawned]",
       "rested after the ghost and the giant [sank|despawned]",
-      "the far dorocha [respawned|came back] before we finished",
-      "giant hit harder than we thought. [tank up|heals]"
+      "the far dorocha [rose again|came back] before we finished",
+      "giant hit harder than we thought. [shield up|heals]"
     ],
     "rumour": [
       "[heard|someone said] the far dorocha keep caithor's ghost bound on their own bodies",
