@@ -64,6 +64,13 @@ or run where it was written; CI on pull request #398 is the first build.
   (`AUTONOMOUS_POSITION_RECOVERY reason="saved beside the enemy keep ..."`).
 - A keep defence with no defenders left stands down (`RVR_DEFENSE_MUSTER_EMPTY`) instead of marching empty.
 - A GM's `/jump` into an enemy keep's area is no longer sent to the bind point.
+- **Battleground keep lords take damage from the storm (#416).** A keep lord takes no damage from anyone more than 400
+  away, but stormers struck him from up to 900, so casters, archers and healers in his room did nothing. They now
+  strike him only from within 350 and walk in otherwise (`BG_RALLY_STATUS inLordReach=`). Keep, guard and lord
+  levels are unchanged.
+- **Roaming eight-man groups find fights (#417).** Their patrols now favour the parts of the frontier where enemy RvR
+  bots are, and an eight follows the planner's hunt of an enemy group within 10,000 in its own region instead of
+  patrolling past it (`RVR_ROAM_CHASE`, `RVR_ROAM_CIRCUIT enemiesNear=`).
 - Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
 
 **Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
