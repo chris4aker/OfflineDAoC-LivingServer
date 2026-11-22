@@ -11,6 +11,7 @@ internal static class Runner
         new LoginSaveRestart(), new ChatBetweenPlayers(), new GroupInvite(), new ClassSwitch(),
         new TellGamebot(), new FactionRate(), new KillQuestInBotGroup(), new DeliveryQuest(), new GuildDues(),
         new BotDeath(), new BotCorpseTarget(), new BotRez(),
+        new BotClickTarget(), new HireTrain(), new GamebotKillXp(),
     };
 
     /// <summary>The hook scenarios: what they cannot do yet is reported as Incomplete, never as a pass or a failure.</summary>

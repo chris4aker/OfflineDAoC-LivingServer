@@ -6,6 +6,7 @@ Two kinds of test world, both written to a NEW file; the source is only ever rea
                                            [--bots-per-realm 10]
     python make_test_world.py minimal --out <new test world .db>
     add --class-off to either for a world of the 0.37 edition (classes / enable_sluaghbinder False)
+    add --companions to minimal for the hired-companion scenarios (Armsman lines, their abilities, a merchant list)
 
 from-release (the real test world, on the owner's PC)
     Copies a clean release world (for example the opendaoc.sqlite3.db of a fresh 0.37b install) through SQLite's
@@ -27,6 +28,11 @@ Fixtures in both:
       class-switch scenario's, which needs an account with no character in another realm) and playtestergm (GM, plvl 3).
       Their password is their name; the server stores them hashed at the first login.
     * account creation without the waiting time between new accounts.
+    * minimal with --companions (the hire-train scenario, 1.2.1 #397): the Armsman's eight spec lines (Specialization,
+      ClassXSpecialization for class 2), the weapon, shield and Albion armour abilities those lines give a bot (Ability,
+      SpecXAbility, class 0 as bots read them), and plain level-10 Albion merchant gear (ItemTemplate) in the item list
+      playtester_gear (MerchantItem). No merchant stands in the world: the scenario's GM puts one up (/merchant create,
+      /merchant sell add playtester_gear) once the companion has arrived without gear. Test data, not the release's.
     * with --class-off: classes / enable_sluaghbinder False, the switch of the 0.37 edition (no Sluaghbinder), so the
       class-switch scenario checks the class-off rules. Without it a minimal world has no row (on, the server's
       default) and a from-release world keeps the source's edition: the release builder's clean_world() sets the
@@ -95,6 +101,89 @@ PRIMARY KEY (`Key`))""",
 MINIMAL_REGIONS = [(1, "Region001", "Albion", "127.0.0.1", 10400, 0, 0, 0, 0, "", 1)]
 MINIMAL_ZONES = [(0, 1, "Camelot Hills", 59, 67, 8, 8), (1, 1, "Salisbury Plains", 67, 67, 8, 8)]
 MINIMAL_STARTS = [(574123, 530520, 2933, 3077, 1, 0, 1, 0, 0, 0)]
+
+# --companions (minimal only): what a hired Armsman needs to have spec lines to train and to wear merchant gear. The server
+# rebuilds each table to its own layout at its first start (SqliteObjectDatabase.AlterTable keeps the matching columns).
+COMPANION_SCHEMA = {
+    "Specialization": """CREATE TABLE `Specialization` (`SpecializationID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`KeyName` VARCHAR(100) NOT NULL DEFAULT '', `Name` VARCHAR(255) NOT NULL DEFAULT '', `Icon` UNSIGNED SMALLINT(5) NOT NULL DEFAULT 0,
+`Description` TEXT DEFAULT NULL, `Implementation` VARCHAR(255) DEFAULT NULL,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00')""",
+    "ClassXSpecialization": """CREATE TABLE `ClassXSpecialization` (`ClassXSpecializationID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`ClassID` INT(11) NOT NULL DEFAULT 0, `SpecKeyName` VARCHAR(100) NOT NULL DEFAULT '', `LevelAcquired` INT(11) NOT NULL DEFAULT 0,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00')""",
+    "Ability": """CREATE TABLE `Ability` (`AbilityID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`KeyName` VARCHAR(255) NOT NULL DEFAULT '', `Name` VARCHAR(255) NOT NULL DEFAULT '', `InternalID` INT(11) NOT NULL DEFAULT 0,
+`Description` TEXT DEFAULT NULL, `IconID` INT(11) NOT NULL DEFAULT 0, `Implementation` VARCHAR(255) DEFAULT NULL,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00')""",
+    "SpecXAbility": """CREATE TABLE `SpecXAbility` (`SpecXabilityID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`Spec` VARCHAR(100) NOT NULL DEFAULT '', `SpecLevel` INT(11) NOT NULL DEFAULT 0, `AbilityKey` VARCHAR(100) NOT NULL DEFAULT '',
+`AbilityLevel` INT(11) NOT NULL DEFAULT 0, `ClassId` INT(11) NOT NULL DEFAULT 0,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00')""",
+    "ItemTemplate": """CREATE TABLE `ItemTemplate` (`Id_nb` VARCHAR(255) NOT NULL DEFAULT '', `Name` TEXT NOT NULL DEFAULT '',
+`Level` INT(11) NOT NULL DEFAULT 0, `Durability` INT(11) NOT NULL DEFAULT 0, `MaxDurability` INT(11) NOT NULL DEFAULT 0,
+`Condition` INT(11) NOT NULL DEFAULT 0, `MaxCondition` INT(11) NOT NULL DEFAULT 0, `Quality` INT(11) NOT NULL DEFAULT 0,
+`DPS_AF` INT(11) NOT NULL DEFAULT 0, `SPD_ABS` INT(11) NOT NULL DEFAULT 0, `Hand` INT(11) NOT NULL DEFAULT 0,
+`Type_Damage` INT(11) NOT NULL DEFAULT 0, `Object_Type` INT(11) NOT NULL DEFAULT 0, `Item_Type` INT(11) NOT NULL DEFAULT 0,
+`Weight` INT(11) NOT NULL DEFAULT 0, `Model` INT(11) NOT NULL DEFAULT 0, `IsPickable` TINYINT(1) NOT NULL DEFAULT 1,
+`IsDropable` TINYINT(1) NOT NULL DEFAULT 1, `IsTradable` TINYINT(1) NOT NULL DEFAULT 1, `Price` BIGINT(20) NOT NULL DEFAULT 0,
+`MaxCount` INT(11) NOT NULL DEFAULT 1, `PackSize` INT(11) NOT NULL DEFAULT 1, `Realm` INT(11) NOT NULL DEFAULT 0,
+`AllowedClasses` VARCHAR(255) NOT NULL DEFAULT '', `LevelRequirement` INT(11) NOT NULL DEFAULT 0,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00', `ItemTemplate_ID` VARCHAR(255) DEFAULT NULL,
+PRIMARY KEY (`Id_nb`))""",
+    "MerchantItem": """CREATE TABLE `MerchantItem` (`ItemListID` TEXT NOT NULL DEFAULT '', `ItemTemplateID` TEXT NOT NULL DEFAULT '',
+`PageNumber` INT(11) NOT NULL DEFAULT 0, `SlotPosition` INT(11) NOT NULL DEFAULT 0,
+`LastTimeRowUpdated` DATETIME NOT NULL DEFAULT '2000-01-01 00:00:00', `MerchantItem_ID` VARCHAR(255) NOT NULL DEFAULT '',
+PRIMARY KEY (`MerchantItem_ID`))""",
+}
+COMPANION_CLASS = 2   # Armsman
+# (KeyName, Name, Icon) as SkillConstants' Specs name them; the trainer window and /hire spec sort them by Name
+COMPANION_SPECS = [("Slash", "Slash", 0), ("Thrust", "Thrust", 0), ("Crush", "Crush", 0), ("Two Handed", "Two Handed", 0),
+                   ("Polearm", "Polearm", 0), ("Shields", "Shields", 0), ("Parry", "Parry", 0), ("Crossbows", "Crossbows", 0)]
+# (spec, ability key, ability level): what each line gives at spec level 1 (AbstractServerRules.CheckAbilityToUseItem's keys;
+# ArmorLevel.Plate = 5, a large shield = 3)
+COMPANION_ABILITIES = [("Slash", "Weaponry: Slashing", 1), ("Thrust", "Weaponry: Thrusting", 1), ("Crush", "Weaponry: Crushing", 1),
+                       ("Two Handed", "Weaponry: Two Handed", 1), ("Polearm", "Weaponry: Polearms", 1),
+                       ("Shields", "Shield", 3), ("Shields", "AlbArmor", 5)]
+COMPANION_ITEM_LIST = "playtester_gear"
+# (Id_nb, Name, Object_Type, Item_Type, Hand, Type_Damage, DPS_AF, SPD_ABS): plain level-10 Albion gear, no bonus
+# (AutonomousStarterGear.IsCommonMerchantGear): every one-handed and two-handed Armsman weapon type, a shield, two torsos
+COMPANION_ITEMS = [
+    ("pt_slash_sword", "Playtester Sword", 3, 10, 0, 2, 27, 30),
+    ("pt_thrust_rapier", "Playtester Rapier", 4, 10, 0, 3, 27, 28),
+    ("pt_crush_mace", "Playtester Mace", 2, 10, 0, 1, 27, 32),
+    ("pt_two_handed", "Playtester Greatsword", 6, 12, 1, 2, 27, 45),
+    ("pt_polearm", "Playtester Halberd", 7, 12, 1, 3, 27, 48),
+    ("pt_shield", "Playtester Shield", 42, 11, 0, 1, 10, 20),
+    ("pt_chain_torso", "Playtester Chain Hauberk", 35, 25, 0, 0, 22, 27),
+    ("pt_plate_torso", "Playtester Plate Breastplate", 36, 25, 0, 0, 22, 34),
+]
+
+
+def add_companion_fixtures(con: sqlite3.Connection) -> dict:
+    """--companions: an Armsman's lines and abilities and a merchant list of plain gear (the hire-train scenario)."""
+    stamp = now_text()
+    for ddl in COMPANION_SCHEMA.values():
+        con.execute(ddl)
+    con.executemany("INSERT INTO Specialization (KeyName,Name,Icon,LastTimeRowUpdated) VALUES (?,?,?,?)",
+                    [s + (stamp,) for s in COMPANION_SPECS])
+    con.executemany("INSERT INTO ClassXSpecialization (ClassID,SpecKeyName,LevelAcquired,LastTimeRowUpdated) VALUES (?,?,1,?)",
+                    [(COMPANION_CLASS, key, stamp) for key, _, _ in COMPANION_SPECS])
+    keys = sorted({key for _, key, _ in COMPANION_ABILITIES})
+    con.executemany("INSERT INTO Ability (KeyName,Name,InternalID,LastTimeRowUpdated) VALUES (?,?,?,?)",
+                    [(key, key, 9000 + i, stamp) for i, key in enumerate(keys)])
+    con.executemany("INSERT INTO SpecXAbility (Spec,SpecLevel,AbilityKey,AbilityLevel,ClassId,LastTimeRowUpdated) VALUES (?,1,?,?,0,?)",
+                    [(spec, key, level, stamp) for spec, key, level in COMPANION_ABILITIES])
+    con.executemany("INSERT INTO ItemTemplate (Id_nb,Name,Level,Durability,MaxDurability,Condition,MaxCondition,Quality,DPS_AF,SPD_ABS,"
+                    "Hand,Type_Damage,Object_Type,Item_Type,Weight,Model,Price,Realm,LastTimeRowUpdated,ItemTemplate_ID) "
+                    "VALUES (?,?,10,50000,50000,50000,50000,85,?,?,?,?,?,?,30,1,1000,1,?,?)",
+                    [(i[0], i[1], i[6], i[7], i[4], i[5], i[2], i[3], stamp, i[0]) for i in COMPANION_ITEMS])
+    con.executemany("INSERT INTO MerchantItem (ItemListID,ItemTemplateID,PageNumber,SlotPosition,LastTimeRowUpdated,MerchantItem_ID) "
+                    "VALUES (?,?,0,?,?,?)",
+                    [(COMPANION_ITEM_LIST, item[0], n, stamp, f"pt-merchant-{n}") for n, item in enumerate(COMPANION_ITEMS)])
+    con.execute(f"INSERT OR REPLACE INTO {MARKER_TABLE} (Key,Value) VALUES ('companions',?)", (COMPANION_ITEM_LIST,))
+    return {"companion_class": COMPANION_CLASS, "specs": len(COMPANION_SPECS), "abilities": len(COMPANION_ABILITIES),
+            "items": len(COMPANION_ITEMS), "item_list": COMPANION_ITEM_LIST}
 
 # A few plain names per realm for the test roster (test worlds only; the launcher's generator makes real rosters).
 BOT_NAMES = {
@@ -220,7 +309,7 @@ def class_switch(con: sqlite3.Connection) -> str:
     return "off" if str(row[0]).strip().lower() == "false" else "on"
 
 
-def build_minimal(out: Path, class_off: bool = False) -> dict:
+def build_minimal(out: Path, class_off: bool = False, companions: bool = False) -> dict:
     refuse_paths(out)
     con = sqlite3.connect(out)
     try:
@@ -238,11 +327,16 @@ def build_minimal(out: Path, class_off: bool = False) -> dict:
         if class_off:
             set_class_off(con)
             marker["classes"] = "off"
+        fixtures = add_companion_fixtures(con) if companions else None
+        if fixtures:
+            marker["companions"] = COMPANION_ITEM_LIST
         con.commit()
         report = verify_test_world(con)
     finally:
         con.close()
     report["marker"] = marker
+    if fixtures:
+        report["companions"] = fixtures
     return report
 
 
@@ -362,12 +456,14 @@ def main(argv: list[str] | None = None) -> int:
                      help="the level of each realm's first bot, the kill quest's group mate (default 12, 1 for none)")
     mini = sub.add_parser("minimal", help="a minimal world that needs no game files")
     mini.add_argument("--out", required=True, type=Path, help="the new test world file (must not exist)")
+    mini.add_argument("--companions", action="store_true",
+                      help="Armsman spec lines, their abilities and a merchant list of plain gear (the hire-train scenario)")
     for p in (rel, mini):
         p.add_argument("--class-off", action="store_true",
                        help="classes / enable_sluaghbinder False, as in the 0.37 edition (the class-switch scenario's off case)")
     args = parser.parse_args(argv)
     if args.mode == "minimal":
-        report = build_minimal(args.out, args.class_off)
+        report = build_minimal(args.out, args.class_off, args.companions)
     else:
         if not 0 <= args.bots_per_realm <= len(BOT_NAMES[1]):
             raise SystemExit(f"--bots-per-realm is 0 to {len(BOT_NAMES[1])}")
