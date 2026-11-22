@@ -268,7 +268,8 @@ namespace DOL.GS
 
         /// <summary>
         /// Whether a bot party has a seat for the role a reply asks about (1.1.3, after RC5): a party is formed at its full size and
-        /// never backfilled, so only one still recruiting (assembling with free seats, AutonomousBotGroupCoordinator.RecruitingPost)
+        /// backfilled only while it looks for a member (1.2.1, #423), so only one still recruiting (assembling with free seats, or looking
+        /// for one more on its way or at camp: AutonomousBotGroupCoordinator.RecruitingPost)
         /// has one at all, and "still need a healer?" is yes only while no member already fills that role. A seat of any kind (null,
         /// "dps", "caster", "puller") needs only the free seat. <paramref name="roster"/> is the party's members. Pure.
         /// </summary>

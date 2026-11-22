@@ -53,7 +53,11 @@ namespace DOL.GS.Spells
                 }
             }
 
-            if (Properties.TURRET_AREA_CAP_COUNT > 0)
+            // Owner 2026-11-21: no turret cap for players, per player or per area. Bots (GameBot is not a GamePlayer)
+            // keep both caps, and the turret AI checks them again (AutonomousPetSupport.CanDeployFieldTurretAt).
+            bool capped = SummonTheurgistPet.PetCapApplies(Caster);
+
+            if (capped && Properties.TURRET_AREA_CAP_COUNT > 0)
             {
                 foreach (GameNPC npc in Caster.CurrentRegion.GetNPCsInRadius(Caster.GroundTarget, (ushort) Properties.TURRET_AREA_CAP_RADIUS))
                 {
@@ -67,7 +71,7 @@ namespace DOL.GS.Spells
                 }
             }
 
-            if (Properties.TURRET_PLAYER_CAP_COUNT > 0 & Caster.PetCount >= Properties.TURRET_PLAYER_CAP_COUNT)
+            if (capped && Properties.TURRET_PLAYER_CAP_COUNT > 0 && Caster.PetCount >= Properties.TURRET_PLAYER_CAP_COUNT)
             {
                 if (playerCaster != null)
                     MessageToCaster(LanguageMgr.GetTranslation(playerCaster.Client, "SummonAnimistFnF.CheckBeginCast.TurretPlayerCap"), eChatType.CT_SpellResisted);

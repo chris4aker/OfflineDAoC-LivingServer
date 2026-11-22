@@ -158,6 +158,8 @@ Your world keeps every character's crafting. Exactly what you see:
   so do bot guilds, bot personalities, the Server life parts that were off and the real-clock bot schedule. The server
   changes only a setting the world still holds at the old default it wrote itself; one you set in the launcher's
   Living Server tab is kept. The log says `Living Server 1.2.0.1: <key> set to the new default ...` for each one.
+  1.2.1 turns the bot schedule off again (owner 2026-11-21), the same way: a schedule the server wrote as `clock` moves
+  to `off`, and one you chose in the tab is kept.
 
 ## Buying from crafter gamebots
 

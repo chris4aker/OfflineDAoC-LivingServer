@@ -47,7 +47,7 @@
     }
   ],
   "story": "Allta Fearann means the wild land, and the Sylvan of Necht say it is the only name on Hy Brasil that is a description rather than a memory. It is the high country at the north of the isle, beyond Vigilant Rock, where the forest gives out into scrub and stone and the wind never stops, and nobody has ever lived there who could be called a people except the mantids, and the mantids only pass through.\n\nThe Sylvan say the Long Pushing came this way. When the forests of the isle drove the Root to World's End in the first age, they drove him along the high ground, and the trees that stood in his way broke, and the wind came in behind. What is left is the wild land: treant woods that grew back hard and grey, oaken and ashen and rowan, the oldest of them as tall as the crags; high pools where the waterstriders breed; and the arboreal spirits, which the Necht Sylvan say are the spirits of the broken trees, still standing where their trunks stood. Some of them are kind and some are not, and the remnants among them, the ones that have half forgotten what they were, go about the scrub in bands, foraging and defending nothing. The mantids buy what the remnants carry. The Sylvan do not ask what it is.\n\nAfter the Pushing, the green came back wrong. The kudzu covers the middle of the wild land, flowering and ripening and clinging, a vine that climbs anything and smothers what it climbs, and the Sylvan say it came up the year the Root reached World's End, as if the land were trying to cover the wound with the first thing to hand. It is spreading. The Necht wardens mark its edge each spring with white stones, and each spring the stones are a little further south.\n\nFour great ones keep the wild land, and Necht names them aloud before any company goes north: Windskimmer, the eldest skimmer, who never lands; Goldenleaf, the one tree the wind never beat down, gold-leaved since the autumn of the Long Pushing; Razorbeak, the mother-wyvern of the north-eastern cliffs with a notch in her beak from a Necht egg-thief's knife; and Adar Llwch Gwin, the giant waterstrider of the great pool, named by mainland sailors for the birds in a song. None of them is the realm's enemy. All of them will kill anyone who comes too close to what they keep.\n\nThe fifth thing in the wild land is not named in Necht's square. It is named only in a whisper, by the mantids, and the Sylvan have started whispering it too: Curengkur, the hunter, which keeps a nest in the northern scrub that burns the air around it and mends whatever lies in it. It hunts the mantids, and it is the reason the Krrzck keep only a waystation in Allta Fearann and not a town. South of the nest the podimids graze, old and young, huge slow things nobody has a story for, and the living stones get up out of the hillsides in sizes from a boulder to a monolith and walk toward the sea, very slowly, as if they had been called.\n\nThe Krrzck waystation sits in the south-east where the wild land meets the Vigilant Rock road: a stable kept by a mantid called Calvine, a few explorers and hunters, and Xaxnxi, the go-between, who trades with the realm and speaks for the mantids in the clipped, cold way the Necht folk have learned to like. Xaxnxi's sayings are repeated in Necht more than any Sylvan proverb. The one most often heard is that the wild land is not dangerous; it is only honest.\n\nWhy does it matter? Because it is the oldest wound on the isle that never closed, older than the Gorge, older than the Vale. The Root passed through it and the wind came in, and everything that lives there is something that learned to live in the wind. The realm's companies go north for the great ones' sake and come back weathered, and the Necht Sylvan look at them and say they have been to the wild land, as if that explained it. It does.",
-  "legend": "Allta Fearann is the north end of Hy Brasil, levels 36-64, reached from Vigilant Rock. No realm town: the only friendly spot is the Krrzck waystation in the south-east (Xaxnxi's quests, a mantid stable master). Camps: arboreal spirits and remnants (36-46, west of Xaxnxi; remnants carry the quest bags), kudzu fields in the middle (38-49), rowan, ashen and oaken treants (40-54), waterstriders round the high pools (40-54), wyverns on the north-east cliffs, podimids (55-61) and living stones (49-64, monoliths hit hard) in the north. The four great ones: Windskimmer (58), Goldenleaf (55), Razorbeak (55), Adar Llwch Gwin (53). Curengkur (75) is the big one: its nest pulses heat and it regains health near its spawn, so pull it well away from the nest first. Necht custom: name the four great ones in Necht's square before you go north. Never say Curengkur's name above a whisper at the waystation; the mantids walk off.",
+  "legend": "Allta Fearann is the north end of Hy Brasil, hunting for hardened bands of veterans up to several bands of the realm's best together, reached from Vigilant Rock. No realm town: the only friendly spot is the Krrzck waystation in the south-east (Xaxnxi's quests, a mantid stable master). Camps: arboreal spirits and remnants (hardened veterans' foes, west of Xaxnxi; remnants carry the quest bags), kudzu fields in the middle (hardened veterans' foes), rowan, ashen and oaken treants (hardened veterans up to the realm's best), waterstriders round the high pools (the same), wyverns on the north-east cliffs, podimids (the realm's best, the biggest of them for several bands of the realm's best together) and living stones (hardened veterans up to several bands of the realm's best, monoliths hit hard) in the north. The four great ones: Windskimmer, Goldenleaf, Razorbeak and Adar Llwch Gwin, each a foe for the realm's best, a full band of them (Windskimmer the strongest, Adar Llwch Gwin the least). Curengkur, a foe for a war party of the realm's champions, is the big one: its nest pulses heat and it heals its wounds near its home ground, so draw it well away from the nest first. Necht custom: name the four great ones in Necht's square before you go north. Never say Curengkur's name above a whisper at the waystation; the mantids walk off.",
   "atmosphere": {
     "firstEntry": [
       "Allta Fearann. The wild land.",
@@ -183,27 +183,27 @@
       "the krrzck only keep a waystation in allta fearann because curengkur hunts them",
       "xaxnxi says the wild land isnt dangerous, its only honest. [mantid wisdom|lol]",
       "the living stones in the north are all walking toward the sea. [slowly|weird]",
-      "nobody has a story for the podimids. [huge|55-61]",
+      "nobody has a story for the podimids. [huge|our best and then some]",
       "goldenleaf has been gold since the autumn of the long pushing. [necht cradles use his leaves|pretty]",
       "razorbeak has a notch in her beak from a necht egg thief's knife"
     ],
     "rumour": [
       "[heard|someone said] the kudzu crossed another white stone this spring",
       "dont say curengkur out loud at the waystation. [the mantids walk off|seriously]",
-      "[word is|heard] the living stone monoliths in the north hit like 60s. [they are 60s|ouch]",
+      "[word is|heard] the living stone monoliths in the north hit like they want several bands of our best. [they do|ouch]",
       "someone forgot to name the great ones and windskimmer came down. [first time ever|lol]",
       "[heard|someone said] xaxnxi wants eitn ot pyrk again. [remnants west|bags]",
       "the enraged arboreal spirits are the ones that remember being cut down, necht says",
       "[word is|heard] adar llwch gwin walked on the great pool at noon and the striders scattered",
-      "curengkur's nest burns the air and heals it. [pull it away|dont fight on the nest]"
+      "curengkur's nest burns the air and heals it. [draw it away|dont fight on the nest]"
     ],
     "tell": [
       "allta fearann is the north end of hy brasil, past vigilant rock. 36 to 64, no town",
       "where is the krrzck waystation? south east of allta fearann. xaxnxi and a mantid stable master",
-      "is allta fearann hard? yes. 40s in the middle, 50s-60s in the north. bring a group",
+      "is allta fearann hard? yes. veterans' hunting in the middle, our best and better in the north. bring a group",
       "whats in allta fearann? treants, arboreal spirits, kudzu, waterstriders, wyverns, podimids, living stones",
       "who are the great ones? windskimmer, goldenleaf, razorbeak, adar llwch gwin. and curengkur, quietly",
-      "where is curengkur? on its nest in the north scrub. 75. pull it off the nest"
+      "where is curengkur? on its nest in the north scrub. a war party's fight. draw it off the nest"
     ]
   },
   "loremaster": {
@@ -243,7 +243,7 @@
   "related": [
     {
       "id": "hy-brasil",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "vigilant-rock",

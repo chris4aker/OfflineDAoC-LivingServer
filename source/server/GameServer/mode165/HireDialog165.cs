@@ -102,8 +102,10 @@ namespace DOL.GS
             string className = d.Class == 0 ? "-" : ScriptMgr.FindCharacterClass((int)d.Class)?.Name ?? d.Class.ToString();
             long cost = HiredCompanions165.NextCost(player);
             string price = cost == 0 ? "no fee (your first companion)" : $"a fee of {Money.GetString(cost)}";
-            player.Out.SendCustomDialog($"Contract of Service: {d.Name}, a level 5 {d.Race} {className}, enters your service for {price}, " +
-                "with a training weapon and nothing else. Sign it?", (p, response) =>
+            int level = HiredCompanions165.StartingLevel(player.Level);
+            player.Out.SendCustomDialog($"Contract of Service: {d.Name}, a level {level} {d.Race} {className}, enters your service for {price}, " +
+                (HiredCompanions165.GetsBasicGear(level) ? "trained and in basic merchant gear. Sign it?" : "trained, with a training weapon. Sign it?"),
+                (p, response) =>
             {
                 if (response != 0x01)
                     return;
@@ -148,6 +150,10 @@ namespace DOL.GS
             if (verb == "trainer")
             {
                 CompanionWindows165.SendTrainerWindow(player, hired.Row, bot);
+                // the same by typing, for a line the window has no row to click for (issue #397)
+                player.Out.SendMessage(HireText165.TrainHelp(hired.Row + 1, bot.Name,
+                        CompanionWindows165.Lines(bot).Select(line => line.Name ?? line.KeyName).ToList()),
+                    eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return true;
             }
             HireText165.Run(player, verb, [(hired.Row + 1).ToString()], quiet: true);

@@ -52,7 +52,7 @@
     }
   ],
   "story": "Myrddraxis was an egg once, grey-green and warm, found by a hydrar digging the lowest cistern of Fomor in the black sand under Hy Brasil. The Fomorians call it a gift of the sea; the Sylvan call it a theft from the deep places below the Root's hollow; the druids of Tir na Nog say it is an ollphéist, a great water-worm of the kind the tales of Lough Derg remember in the Caoránach, driven from Hibernia's loughs into the sea as the Fomorians were. It hatched with one head and grew five, and its one hunger has five mouths: whatever any mouth tears from a living thing mends the great body under the water and the other mouths a little. The hydrars sing it in three lines: eat, and be whole; eat, and be many; eat, and be ours.\n\nIt never leaves its mound and never chases; whatever it is fighting that steps out of its reach it burns where it stands. The shrillers on the walls keep it from ever sleeping, and no sleep-song or binding has held it. Words of fire and frost run off its scales like rain off slate; iron does better, and the wardens say a scale is a closed door: bring a key, not a song.\n\nWhen it is hurt deep enough it bellows, and the cistern is left standing still and staring; the deeper the wound, the more often. Before the unmaking it draws in until the water sinks, then breathes fire across the cistern; the hydrars' verse is: the beast draws in; the wise go out. Between breaths one head looks at one person, anyone, and gathers fire slowly enough for all to see, and another spits a poison cloud; the wardens' custom is that the one looked at walks away from the others. Those near its body come away with a fever that slows the hands and keeps wounds from closing, and the herb-wives draw it out with smoke.\n\nRíonach of Tir na Nog's company starved it in the third year of the isles: they cut the mouths one at a time, and when the lesser heads hung in the water the body could not mend. The earth lurched, a light glowed on the mound as where dragons fall, and the hydrars went down into the sand with their spades. It returns, and remembers. On the day the eye in the tower opens fully, the hydrars say, they will break the cistern to the sea and let it swim east.",
-  "legend": "Five heads, one body, and the heads are the problem: every hit a head lands heals the body by half the damage and the other heads by a tenth. Kill the four lesser heads one at a time, whole raid on one neck, then the body. The body never moves and can't be CC'd; it shrugs off 70% of magic and 40% of melee, so melee carries it. Whoever it is fighting has to stay in its reach (550) or it ground-burns them. Stun breath at 80/60/40/20% (5-second warning, 30-second stun on everyone within 1,800): get out or purge fast. Breath of Annihilation at 75/50/25% (6-second warning, 2,000 heat on everyone within 1,800): run out (speed songs) or be full and resisted. Every 35-45 seconds it picks one raider at random, bot or player, for a 5-second fire breath (1,100 heat, 450 radius around them) and another for a poison cloud (800 radius): the chosen one walks away from everyone. Its bites can drop disease and an attack-speed debuff on everyone within 800 of the body: cure disease before you heal. Superstition: shout no insult at the hydra from the ledge. It never sleeps, and it never forgets.",
+  "legend": "Five heads, one body, and the heads are the problem: every hit a head lands heals the body by half the damage and the other heads by a tenth. Kill the four lesser heads one at a time, whole raid on one neck, then the body. The body never moves and no trance, binding or stunning blow holds it; it shrugs off seven-tenths of magic and two-fifths of melee, so melee carries it. Whoever it is fighting has to stay in its reach (18 paces) or it burns the ground under them. Stunning breath each time another fifth of its strength is gone (five seconds' warning, then everyone within 60 paces is left senseless for thirty seconds): get out or purge fast. Breath of Annihilation when it has lost a quarter, a half and three-quarters of its strength (six seconds' warning, then heat on everyone within 60 paces, twice a robed caster's whole strength): run out (speed songs) or be whole and well warded against heat. Every thirty-five to forty-five seconds it picks one raider at random, companion, adventurer of the realm or you, for five seconds of fire breath (a little more than a robed caster's whole strength, on everyone within 15 paces of them) and another for a poison cloud (27 paces round them): the chosen one walks away from everyone. Its bites can drop disease and a curse that slows the arm on everyone within 27 paces of the body: cure disease before you heal. Superstition: shout no insult at the hydra from the ledge. It never sleeps, and it never forgets.",
   "yells": {
     "aggro": [
       "Five heads rise from the cistern, all screaming.",
@@ -107,10 +107,10 @@
   "botLines": {
     "briefing": [
       "heads first, one at a time, everyone on the same neck. [every head hit heals the body|starve it]",
-      "stun breath at 80 60 40 20 and the big breath at 75 50 25. [when you see the warning get out|run out of 1800]",
+      "stunning breath every fifth of it gone and the big breath at each quarter. [when you see the warning get out|run 60 paces out]",
       "if it looks at you for the fire breath, [walk away from the group|get away from us]. same for the poison",
       "melee does the work on the body, it eats spells. [casters on heads|melee on body]",
-      "its target stays in its reach or it burns them. [tank stay on it|dont back off the tank]",
+      "whoever its on stays in its reach or it burns them. [shield stay on it|dont back the shield off]",
       "cure disease before healing anyone who was near the body. [disease halves heals|cure first]"
     ],
     "aftermathWin": [
@@ -120,10 +120,10 @@
       "the tally keepers count it with the dragons. [grats|dragon kill]"
     ],
     "aftermathLoss": [
-      "stood in the annihilation. [run on the warning|out of 1800]",
+      "stood in the annihilation. [run on the warning|60 paces out]",
       "nobody walked away when it looked at them and the fire breath [took the whole group|hit five of us]",
       "heads kept biting and the body kept healing. [kill the heads|starve it first]",
-      "stun breath caught everyone and the heads [ate us|chewed the clerics]. [purge|get out]"
+      "the stunning breath caught everyone and the heads [ate us|chewed the clerics]. [purge|get out]"
     ],
     "rumour": [
       "[heard|someone said] the hydrars found it as an egg in the black sand under the city",

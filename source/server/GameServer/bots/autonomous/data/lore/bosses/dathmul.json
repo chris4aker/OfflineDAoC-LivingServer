@@ -24,7 +24,7 @@
     }
   ],
   "story": "A hollow man is what is left when something takes out of a man everything that made him himself and leaves the shape standing, the way a cooper leaves the staves of a cask when the wine is drunk. The druids of the west know how it is done. They will not say who taught them.\n\nDathmul was a man once, and the shepherds of Caer Hurbury say he was one of theirs, a herdsman of the eastern pass who went up into the hills one autumn after a strayed ewe and came down in the spring with nothing behind his eyes. He stands north of the keep where he stopped walking, and the wind goes through him. He is not empty. Something has been put into him in place of what was taken, a little at a time, and he is full of it now, a focus, the Academy says, for a gathering that runs from Snowdonia to the barrows under Salisbury, where a wizard called Lichas keeps his school, and on to the Scrolls of Fate.\n\nElvinia Dareal of Caer Witrin wants the focus broken before the gathering is finished. Loremaster Alain wants the dust. Nobody in Caer Hurbury has asked for Dathmul's name back, because nobody there can remember what it was.",
-  "legend": "Dathmul, level 47 ghost, the hollow man alone north-north-east of Caer Hurbury in Snowdonia. Plain melee, no spells, nothing around him. Kill him for Feast of the Decadent (then the scroll to Vera Astyrian, then Lichas in the Barrows) or Symbol of the Broken (the dust goes to Loremaster Alain). Respawn five minutes; quest groups queue for him, so ask in the zone before you pull.",
+  "legend": "Dathmul, a ghost and a foe for a hardened band of veterans, the hollow man alone north-north-east of Caer Hurbury in Snowdonia. Plain melee, no spells, nothing around him. Kill him for Feast of the Decadent (then the scroll to Vera Astyrian, then Lichas in the Barrows) or Symbol of the Broken (the dust goes to Loremaster Alain). He returns five minutes after he falls; quest groups queue for him, so ask around the country before you draw him.",
   "yells": {
     "aggro": [
       "Full. Full. Not yet full.",
@@ -48,7 +48,7 @@
   },
   "botLines": {
     "briefing": [
-      "dathmul is nne of caer hurbury, alone, 47 ghost",
+      "dathmul is nne of caer hurbury, alone, a ghost for a veteran band",
       "kill dathmul for feast of the decadent or symbol of the broken"
     ],
     "aftermathWin": [

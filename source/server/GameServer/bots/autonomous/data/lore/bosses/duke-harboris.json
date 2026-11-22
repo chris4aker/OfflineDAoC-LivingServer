@@ -102,7 +102,7 @@
   }
  ],
  "story": "Duke Harboris was High Lord Baelerdoth's firebrand. In the Uncounted Age he carried fire up from the deep cracks in a cage of his own ribs and set it in his master's braziers, and he knew every crack between the halls and the fires. At the Feast of Thrones he lit the deep chamber with his ribs, and so he is the only demon who knows for certain which prince knelt second; both have offered him a duchy for the answer, and he already has one. The First Roll made him Keeper of the Fires.\n\nIn the Seventh Roll the Queen went away. Harboris knew a crack that went up instead of down, toward something cold. In the Eighth Roll he put out the fire in his ribs and climbed it to find her. What came back down at the end of the Roll was his shape without his body. The Chancellor ruled that the bargain does not require a duke to have a body, as it had not required Marquis Dortaleon to be alive, and Harboris kept his duchy. He has lit no fire since.\n\nEach realm says he came up into its land. Albion's priests say the bells of a feast day took his body off him; Midgard's skalds say the snow above Mularn froze it; Hibernia's druids say the Good Folk took it as toll. The imps say he found the Queen and she wears it; the Inquisitors say he found nothing. When the Chamberlain asked if he had seen the Queen, Harboris said she is away.\n\nNebir, Satori and Kobil have all tried to learn the way up from him and failed. He stands in Baelerdoth's hall near Earl Fenex and Marquis Focalleste, and goes back to the bottom of the crack every Roll to look up.",
- "legend": "Harboris is a ghost duke in High Lord Baelerdoth's hall in the east, near Earl Fenex and Marquis Focalleste. Level 67, no script; the ghost look is all he has, he takes damage like anything else. The danger is the room: Baelerdoth is close, and below a quarter of his health the high lord strips the absorption off everyone near him. Kill Harboris, Fenex and Focalleste first, one at a time, out toward the Ward, before you touch Baelerdoth. People say Harboris is the only demon who has been up into the world and come back, and argue about whose land he came up in. Albion players say it was theirs. So does everyone else.",
+ "legend": "Harboris is a ghost duke in High Lord Baelerdoth's hall in the east, near Earl Fenex and Marquis Focalleste. A foe for several bands of any realm's best together, no tricks; the ghost look is all he has, he takes damage like anything else. The danger is the room: Baelerdoth is close, and below a quarter of his strength the high lord strips the armour's guard off everyone near him. Kill Harboris, Fenex and Focalleste first, one at a time, out toward the Ward, before you touch Baelerdoth. People say Harboris is the only demon who has been up into the world and come back, and argue about whose land he came up in. Albion raiders say it was theirs. So does everyone else.",
  "yells": {
   "aggro": [
    "I have been where you come from. It is cold.",
@@ -142,9 +142,9 @@
  "botLines": {
   "briefing": [
    "harboris is the ghost duke in baelerdoths hall. [no tricks|its just a look], kill him like anything else",
-   "harboris, fenex, focalleste first. [one at a time|single pulls], out toward the ward",
-   "dont touch baelerdoth till the room is clear. [he eats your absorb|below 25 he strips abs]",
-   "67, quick kill. [then the earl|then fenex]"
+   "harboris, fenex, focalleste first. [one at a time|single draws], out toward the ward",
+   "dont touch baelerdoth till the room is clear. [he melts your armour|at his last quarter he strips your armour]",
+   "quick kill. [then the earl|then fenex]"
   ],
   "aftermathWin": [
    "harboris down. [ghost is gone|the ghost duke is done]",
@@ -153,10 +153,10 @@
    "harboris done. [room is nearly clear for baelerdoth|baelerdoth soon]"
   ],
   "aftermathLoss": [
-   "pulled baelerdoth with harboris. [no absorb, rip|wards eaten]",
-   "harboris plus focalleste, [wipe|too much]",
-   "the ghost duke got us. [regroup|rez]",
-   "wrong pull in baelerdoths hall. [back up|pull out to the ward]"
+   "drew baelerdoth with harboris. [armour stripped, rip|wards eaten]",
+   "harboris plus focalleste, [everyone down|too much]",
+   "the ghost duke got us. [regroup|raise the fallen]",
+   "wrong draw in baelerdoths hall. [back up|draw out to the ward]"
   ],
   "rumour": [
    "[heard|word is] harboris climbed up into the world once and came back a ghost",

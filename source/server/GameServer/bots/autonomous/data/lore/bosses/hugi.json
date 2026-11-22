@@ -31,7 +31,7 @@
     }
   ],
   "story": "In the old tale Thor went to the hall of Utgard-Loki and was tricked at every game, and his servant Thjalfi raced a lad named Hugi three times and lost all three, and only afterwards was told that Hugi was thought itself, which no runner can outrun. The giants of Utgard laughed about it for an age.\n\nThe giant who walks the south-west of Raumarik is called Hugi too, and the frost cyclopes he stands among say he was given the name as a joke, at his naming, by a father who already knew what he would be. He is not fast. He is huge and one-eyed and slow as a glacier coming down a valley, and he wears hoarfrost like a cloak, and his eye is a lump of blue ice that the cyclopes say sees in the dark and in the past. The joke of his name is lost on him. Or perhaps it is not.\n\nThe hunters who chase him say he is always a step ahead of where they thought: not because he moves quickly, but because he is already there. He stands where they will be. The cyclopes say that is the joke turned round, and that Hugi has spent the long winters of Raumarik thinking, very slowly, about everything, and has arrived at the end of most things before anyone else has started. He does not tell anyone what he arrived at. He has nobody to tell. The frost stallions run for him and the cyclopes keep their distance.\n\nHe has no craft. He does not throw frost or call his kin; he simply hits, with the whole weight of a glacier behind it, and nothing holds him, because rope and charm are things you use on something that might go somewhere, and Hugi is already where he is going.\n\nThe Galplen tellers say that at the end of the world, when the giants march, Hugi will be the last to set out and the first to arrive.",
-  "legend": "Hugi is the big one-eyed frost giant in the south-west of Raumarik among the frost cyclopes, level 74, 30,000 health. No spells, no adds, nothing fancy: he just hits like a landslide, so it's a straight tank and spank. A group of 50s with a good healer and a solid tank can take him. CC-immune, 20% melee and 30% magic resist, aggro range 800, so clear the cyclopes and stallions around him first or they'll come in. He resets full if you leave. People come for the hoarfrost armour and, if they're lucky, his frozen cyclops eye. Don't ask him to race.",
+  "legend": "Hugi is the big one-eyed frost giant in the south-west of Raumarik among the frost cyclopes, a foe for a war party of the realm's champions; he takes as much killing as fifteen raiders. No spells, no servants, nothing fancy: he just hits like a landslide, so it's a straight slugging match with a shield-bearer holding him. A band of the realm's best with a good healer and a solid shield-bearer can take him. No charm or stun holds him, a fifth of every blow and three-tenths of every spell are lost on him, and he notices you from about twenty-five paces, so clear the cyclopes and stallions around him first or they'll come in. He is whole again if you leave. People come for the hoarfrost armour and, if they're lucky, his frozen cyclops eye. Don't ask him to race.",
   "yells": {
     "aggro": [
       "Small. Fast. Not fast enough.",
@@ -69,22 +69,22 @@
   },
   "botLines": {
     "briefing": [
-      "hugi is a big tank and spank giant, healers keep the mt up",
-      "no adds, no spells, just huge hits",
+      "hugi is a big plain slugger of a giant, healers keep the main shield-bearer up",
+      "no helpers, no spells, just huge hits",
       "clear the cyclopes first",
-      "cc immune"
+      "nothing holds him"
     ],
     "aftermathWin": [
       "hugi down, got the cyclops eye!",
-      "straight tank and spank, done",
+      "straight slugging match, done",
       "the cyclopes didnt even react",
       "hoarfrost armour drop finally"
     ],
     "aftermathLoss": [
       "he hits like a landslide",
-      "pulled the cyclopes too",
-      "tank went down in three hits",
-      "no cold resist, bad idea"
+      "drew the cyclopes too",
+      "shield-bearer went down in three hits",
+      "no cold wards, bad idea"
     ],
     "rumour": [
       "hugi was the name of thought itself in the old tale. this hugi isnt very bright though",

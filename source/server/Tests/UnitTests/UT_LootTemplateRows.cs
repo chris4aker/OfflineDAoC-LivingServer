@@ -158,5 +158,93 @@ namespace DOL.UnitTests
                 [new DbMobXLootTemplate { MobName = "Ghoulic Viper", LootTemplateName = "ghoulic_viper_fang", DropCount = 1 }]);
             Assert.That(Counts(loot), Is.EqualTo((0, 1)), "no lootless mob when its only row names a missing table");
         }
+
+        // 2026-11-21 loot report ("the loot tables seem wrong"): "the leader decides the loot realm" took Group.Leader,
+        // which is null when a gamebot leads the player's group (BotLedGroups), so a kill the player landed there dropped
+        // none of the monster's loot-template or drop-template items. The killer now keeps the loot; a real player leader
+        // still decides it as before.
+        private sealed class Player : GamePlayer
+        {
+            private Player() : base(null, null) { }
+        }
+
+        private sealed class MobTemplateGenerator : LootGeneratorMobTemplate
+        {
+            public static void Use(Dictionary<string, Dictionary<string, DbDropTemplateXItemTemplate>> loot)
+            {
+                m_lootTemplates = loot;
+                m_mobXLootTemplates = loot == null ? null : new Dictionary<string, List<DbMobDropTemplate>>();
+            }
+        }
+
+        private static Player PlayerIn(GameLiving leader)
+        {
+            Player player = (Player)RuntimeHelpers.GetUninitializedObject(typeof(Player));
+            typeof(GameLiving).GetField("<TempProperties>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(player, new PropertyCollection());
+            player.Group = new Group(leader ?? player);
+            return player;
+        }
+
+        private static LootList KillBy(GameObject killer, string mobName, Dictionary<string, Dictionary<string, DbLootTemplate>> loot)
+        {
+            Generator.Use(loot, new Dictionary<string, List<DbMobXLootTemplate>>());
+            var generator = (LootGeneratorTemplate)RuntimeHelpers.GetUninitializedObject(typeof(LootGeneratorTemplate));
+            Mob mob = Inert<Mob>();
+            mob.Name = mobName;
+            return generator.GenerateLoot(mob, killer);
+        }
+
+        [Test]
+        public void APlayersKillInAGamebotLedGroupDropsTheTemplateItems()
+        {
+            var own = new Dictionary<string, DbLootTemplate>
+            {
+                ["wolf_pelt"] = Row("grey wolf", "wolf_pelt", 100),
+                ["wolf_fang"] = Row("grey wolf", "wolf_fang", 30),
+            };
+            Player player = PlayerIn((GameLiving)Owner());   // a gamebot leads
+            Assert.That(player.Group.Leader, Is.Null, "Group.Leader is null with a gamebot leading");
+            LootList loot = KillBy(player, "Grey Wolf", new() { ["grey wolf"] = own });
+            Assert.That(Counts(loot), Is.EqualTo((1, 1)), "the 100% item and the 30% roll, as for a player alone");
+        }
+
+        [Test]
+        public void APlayerLeaderStillDecidesTheLoot()
+        {
+            var own = new Dictionary<string, DbLootTemplate> { ["wolf_pelt"] = Row("grey wolf", "wolf_pelt", 100) };
+            Player leader = PlayerIn(null);
+            Player member = PlayerIn(leader);
+            Assert.Multiple(() =>
+            {
+                Assert.That(Counts(KillBy(member, "Grey Wolf", new() { ["grey wolf"] = own })), Is.EqualTo((1, 0)));
+                Assert.That(Counts(KillBy(PlayerIn(null), "Grey Wolf", new() { ["grey wolf"] = own })), Is.EqualTo((1, 0)), "alone");
+            });
+        }
+
+        [Test]
+        public void ADropTemplateKillInAGamebotLedGroupDropsToo()
+        {
+            Items["wolf_pelt"] = new DbItemTemplate { Id_nb = "wolf_pelt", Name = "wolf_pelt", Realm = 0 };
+            MobTemplateGenerator.Use(new()
+            {
+                ["grey wolf"] = new Dictionary<string, DbDropTemplateXItemTemplate>
+                {
+                    ["wolf_pelt"] = new DbDropTemplateXItemTemplate { TemplateName = "grey wolf", ItemTemplateID = "wolf_pelt", Chance = 100, Count = 1 },
+                },
+            });
+            try
+            {
+                var generator = (LootGeneratorMobTemplate)RuntimeHelpers.GetUninitializedObject(typeof(LootGeneratorMobTemplate));
+                Mob mob = Inert<Mob>();
+                mob.Name = "Grey Wolf";
+                LootList loot = generator.GenerateLoot(mob, PlayerIn((GameLiving)Owner()));
+                Assert.That(Counts(loot), Is.EqualTo((1, 0)));
+            }
+            finally
+            {
+                MobTemplateGenerator.Use(null);
+            }
+        }
     }
 }

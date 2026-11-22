@@ -24,7 +24,7 @@
     }
   ],
   "story": "The cyclopes of the north-eastern heights serve whoever pays them best, and for as long as the shepherds of Snowdonia can remember the Followers of Arawn have paid best. They pay in a coin the cyclopes value above silver. A cyclops has one eye, the hill-folk say, because it gave the other away in a bargain before the world was finished, and has wanted a better bargain ever since.\n\nThe greatest of them made the best bargain of all. He gave his one eye to Arawn's service, freely, and in return he was given sight of another kind: he sees what the lord of the dead sees, the hour a man will die and the road he will walk to it. His kin call him the Eye of Arawn and keep away from him, because a cyclops who has no eye and still looks at you is not one of them any longer.\n\nHe stands alone on the heights, where nothing else will stand near him, and he does not hunt. Mistress Ainsliee of Snowdonia Fortress sends the realm to find him, and will not say what she asks him. The Church of the fortress says that whoever goes to him should go knowing the answer already, because the Eye tells every visitor the truth, and the truth he tells is always the same: the road, and the hour.",
-  "legend": "Eye of Arawn, level 49 cyclops of the Followers of Arawn, alone on the north-eastern heights of Snowdonia. Nothing stands near him, so it is a clean fight: plain melee, no spells, but he hits like a 49 cyclops. A group in the mid forties takes him. Passage to Eternity sends you to find him for Mistress Ainsliee. Respawn five minutes.",
+  "legend": "Eye of Arawn, a cyclops of the Followers of Arawn and a foe for a hardened band of veterans at the very top of that tier, alone on the north-eastern heights of Snowdonia. Nothing stands near him, so it is a clean fight: plain melee, no spells, but he hits like a cyclops on the edge of the realm's best. A hardened band of veterans takes him. Passage to Eternity sends you to find him for Mistress Ainsliee. He returns five minutes after he falls.",
   "yells": {
     "aggro": [
       "I have seen your road. It is short.",
@@ -48,7 +48,7 @@
   },
   "botLines": {
     "briefing": [
-      "eye of arawn, 49, alone on the ne heights. clean fight, hits hard",
+      "eye of arawn, alone on the ne heights, veteran band job at the top end. clean fight, hits hard",
       "passage to eternity, find the eye for mistress ainsliee"
     ],
     "aftermathWin": [

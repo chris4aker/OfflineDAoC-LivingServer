@@ -27,7 +27,7 @@
     }
   ],
   "story": "Before letters or law the hall-folk's school taught its children a word: the kindling word, said over a wick until it caught. Wynflaed's slate still hangs behind the teacher's chair with the word cut large and a small lamp drawn under it. Morgus Urgalorg, a slow, patient ogre of the Undercroft who had never been allowed to hold the clan's fire, stood in front of it for a day and a night saying it by shape until the lamp caught; then he shouted it louder, and burned the chair. He thinks it is a shout, and he shouts it at whatever he looks at, and whatever he looks at boils, and so does whatever stands beside it.\n\nHe took the scorched chair and made himself a teacher, gathering the young nobody wanted and calling them by the word over the door, leornere. None of them has ever learned the kindling word. What they learned is to come: when Morgus calls the roll the whole class runs to him from wherever in the hall it is and stands round him with fists up, because they know nothing else. Morgus has never hit anything; he keeps his distance and shouts.\n\nHe has copied the old teachers' habit of throwing clay at the pupil at the back who is not attending: while he shouts at whatever is before him, he flicks a lash of fire at someone further off who thought he was safe. The knight-commander's own men called it the chalk. And unlike Ulor's careful curses, his word cannot be broken: Wenna saw a knight strike him in the mouth mid-word and the word came out anyway. A kindling word was never made to be stopped.\n\nMagus Cerys of the Academy, who argued all winter with Master Ferowl over whether an ogre could be a mage, led the first company to kill him. The knights met the class at the benches; her company stood apart while he boiled whoever he looked at; she recommended thinking oneself in danger everywhere. Her report concluded he was no mage, because a mage knows a word is a word. Ferowl wrote on the cover: as I said.",
-  "legend": "Morgus is level 72 to 75 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether, and he never melees. The moment he gets aggro, all 14 Morgus's leornere anywhere in Krondon come for you: level 58 ogres that only melee. They do not cast and they do not copy his blast, whatever the old guides said. Morgus follows his target to range and chain-casts Ebullient Blast: 400 heat, 3 second cast, on his target and everyone within 250 of them, and it cannot be interrupted, so do not waste stuns or interrupts. Keep a body length or two apart, heat resists up, and heal his target hard. Every so often he throws a 200 heat bolt (Lava's Fury) at a random raider within 2,000 who is not his target, bot or player alike. Tanks and area damage take the class at the benches, then everyone on Morgus.",
+  "legend": "Morgus is a foe for a war party of the realm's champions, as much killing as fifteen raiders; nothing mesmerizes, holds or dazes him, blades lose a fifth against him and everything else three parts in ten, he follows no farther than about a hundred and twenty-five paces from his spot, and he never fights hand to hand. The moment he takes notice of you, all fourteen Morgus's leornere anywhere in Krondon come for you: ogres, each a foe for the realm's best, that only melee. They do not cast and they do not copy his blast, whatever the old raiders' accounts said. Morgus follows the one he fights until he is in reach of his spells and casts Ebullient Blast again and again: a fire blast worth two-fifths of a robed caster's strength, three seconds to call, on that one and everyone within eight paces of them, and it cannot be broken, so do not waste dazes or interruptions. Keep a body length or two apart, wards against heat up, and heal his target hard. Every so often he throws a smaller fire bolt (Lava's Fury), worth a fifth of a robed caster's strength, at a random raider within about seventy paces who is not his target, companions and the realm's adventurers as likely as you. Shield-bearers and spells that strike many at once take the class at the benches, then everyone on Morgus.",
   "yells": {
     "aggro": [
       "Watch, my learners. This is how it is done!",
@@ -66,21 +66,21 @@
   },
   "botLines": {
     "briefing": [
-      "morgus pulls all 14 leornere at once. they are melee, no spells. aoe them",
-      "his blast is 400 heat on the tank and everyone within 250. spread, heat resist",
-      "you cant interrupt his blast, dont waste stuns",
+      "morgus brings all fourteen leornere at once. they are melee, no spells. burst them",
+      "his blast is two fifths of a robed caster on the shield-bearer and everyone within 8 paces. spread, heat wards",
+      "you cant break his blast, dont waste dazes",
       "lava's fury bolts go on anyone but his target. heal up before going in"
     ],
     "aftermathWin": [
-      "class dismissed. gg",
+      "class dismissed. good fight",
       "the students went down faster than the teacher",
-      "aoe group cleared the class in seconds",
+      "burst group cleared the class in seconds",
       "school's out"
     ],
     "aftermathLoss": [
-      "we stood in a heap round the tank and his blast hit five at a time",
+      "we stood in a heap round the shield-bearer and his blast hit five at a time",
       "wasted every interrupt on him. it does nothing",
-      "the whole class came in and nobody was on aoe",
+      "the whole class came in and nobody was on burst spells",
       "i got the chalk three times and died at the back"
     ],
     "rumour": [

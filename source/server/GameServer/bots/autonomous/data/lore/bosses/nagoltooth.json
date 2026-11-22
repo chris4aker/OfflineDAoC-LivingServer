@@ -29,7 +29,7 @@
     }
   ],
   "story": "Nagoltooth is a bear of the western ravine, small for her kind and old beyond it, who has lived alone on the same stretch of the river since before the Seithkona Circle cut its first stone. Her name is the werewolves' word, the Circle says, and it means the bitten-nail tooth: one of her fangs is broken off short, and the varulv say she broke it on one of their own, a young wolfaur who tried to take her fishing place and did not come back to the pack. The werewolves leave her the river. So does everyone else.\n\nGudny of the Circle says the old bear is the ravine's memory of what it was before the varulv came and before the seeresses, when there were only the water and the trees and the things that ate fish. She will not let the young seeresses kill her. Others are less patient, and the bear has outlived all of them. She does not run, and she does not wait to be struck.",
-  "legend": "Nagoltooth is a level 41 bear alone in the west of Skona near the river. No faction, no adds, no tricks; just a big hitter for her level. A group in the high 30s handles her. The werewolves avoid her stretch of the river, so it's a quiet spot to fight. She respawns alone on the same river bend. Old Skona hands say the werewolves cheer when someone takes her down, then complain the river is too quiet.",
+  "legend": "Nagoltooth is a bear, a foe for a hardened band of veterans, alone in the west of Skona near the river. She answers to no one, no helpers, no tricks; just a big hitter for her strength. A hardened band handles her. The werewolves avoid her stretch of the river, so it's a quiet spot to fight. She rises again alone on the same river bend. Old Skona hands say the werewolves cheer when someone takes her down, then complain the river is too quiet.",
   "yells": {
     "aggro": [
       "(A deep growl from the river.)",
@@ -49,8 +49,8 @@
   },
   "botLines": {
     "briefing": [
-      "nagoltooth is a 41 bear by the river in west skona, solo spawn",
-      "no adds, just hits hard"
+      "nagoltooth is a big bear by the river in west skona, always alone",
+      "nobody with her, just hits hard"
     ],
     "aftermathWin": [
       "old bear down",

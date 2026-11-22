@@ -27,7 +27,7 @@
     }
   ],
   "story": "Nogoribando is Fomor's war-leader. The bellers, the city's callers, choose war-leaders by calling every name of fighting age through the halls until one comes back louder than it was called, and his came back from every door; Anurigunda said the bellers had grown deaf. His war-hall by the stair is hung with banners painted for forays that have not happened yet, and his household sits under them sharpening things: creln, gentarns, a hicjer and a hofscorian. Touch him and they all come. When he comes up from asking the beast's blessing with his face dark, the Sylvan call the children of Domnann in from the woods.\n\nThe old songs say the Fomorians were giants and also that they were small and crooked. Nogoribando is both, one after the other. When he fights he swells to twice a man's height and strikes slow and terrible, like an oak; then he shrinks back and his blows come quick and endless, like hornets; then he swells again, as long as he fights. The children of Domnann skip to it: first the oak and then the hornet, first the hornet then the oak. The menders fear the hornet, because the blows come faster than mending can, and hate the oak, because one blow is enough.\n\nThose who stand against him feel their strength go out of them, the one he faces first and whoever stands at that one's shoulder, and it is laid on again as soon as it fades. The wardens of Domnann sing the old strength-songs back into anyone who has stood before him, which the bards say is where the realm's custom began, and they stand at his sides and back, never at the shoulder of the one he is looking at.\n\nNuala of Bri Leith's company killed him in his war-hall in the second year of the isles: band first, door by door, one warden in front and the strength sung back into her each time it left. The bellers were silent for a season and the Sylvan children played in the woods. Then a name came back louder than it was called, and it was his. Each time he falls, Domnann is bought a summer.",
-  "legend": "He swaps forms every 30 seconds for as long as you fight him: big (giant size, huge strength, slow swings that hit like a truck) and small (normal size with a +50% attack-speed haste). The tank eats both; healers spike on the big swings and keep the heals rolling through the haste. He keeps Vitality Dispersal on his target (minus 75 strength and constitution for 60 seconds, recast the moment it drops) and it splashes everyone within 350 of the tank: nobody else stands on the tank, and rebuff the tank. No CC on him, long-ish reach (350). Pulling him brings his band of ten (five creln, three gentarns, a hicjer and a hofscorian) from anywhere within 2,500, so clear the band first. He resets to full if everyone drops off him. Superstition: when you hear the bellers from the shore, go down and kill him before he climbs. The Sylvan children of Domnann get a quiet season out of it.",
+  "legend": "He swaps forms every thirty seconds for as long as you fight him: big (giant size, huge strength, slow swings that hit like a falling tree) and small (normal size, swinging half again as fast). The shield-bearer who holds him eats both; healers spike on the big swings and keep the heals rolling through the haste. He keeps Vitality Dispersal on the one he fights (a curse that saps a great deal of strength and constitution for a minute, laid again the moment it ends) and it splashes everyone within a dozen paces of the shield-bearer: nobody else stands on the shield-bearer, and chant the shield-bearer's strength back. No trance, binding or stunning blow holds him; his reach is long-ish (a dozen paces). Drawing him brings his band of ten (five creln, three gentarns, a hicjer and a hofscorian) from anywhere within 83 paces, so clear the band first. He goes home whole if nobody is left fighting him. Superstition: when you hear the bellers from the shore, go down and kill him before he climbs. The Sylvan children of Domnann get a quiet season out of it.",
   "yells": {
     "aggro": [
       "Sound the bellers! The fight comes to us for once!",
@@ -70,22 +70,22 @@
   "botLines": {
     "briefing": [
       "clear his band of ten first. [door by door|or they all come]",
-      "he goes big then small every 30 sec. [big hits hard|small hits fast], tank eats both",
-      "his str con drain hits everyone near the tank. [stay off the tank|melee on his back]",
-      "rebuff the tank every time the drain lands. [buffbots ready|keep str con up]",
-      "no cc on him. dont bother"
+      "he goes big then small every 30 sec. [big hits hard|small hits fast], shield eats both",
+      "his strength and constitution drain hits everyone near the shield. [stay off the shield|melee on his back]",
+      "chant the shield back up every time the drain lands. [chanters ready|keep strength and constitution up]",
+      "nothing holds him. dont bother"
     ],
     "aftermathWin": [
       "war leader down. [domnann gets a quiet season|sylvan kids get the woods back]",
-      "nobody stood on the tank, drain only hit him. [clean|nice]",
-      "tank lived through three big forms in a row. [heals were on point|grats druids]",
+      "nobody stood on the shield, drain only hit him. [clean|nice]",
+      "shield lived through three big forms in a row. [heals were on point|grats druids]",
       "his banners for the next raid can stay unpainted. [good|ha]"
     ],
     "aftermathLoss": [
       "the band came with him. [clear first|ten extra]",
       "healers fell behind on the fast form. [keep heals rolling|he hits like rain]",
-      "the big form two-shot the tank with no str con. [rebuff|drain]",
-      "everyone stacked on the tank and ate the drain. [spread|back and sides]"
+      "the big form two-shot the shield with no strength left. [chant it back|drain]",
+      "everyone stacked on the shield and ate the drain. [spread|back and sides]"
     ],
     "rumour": [
       "[heard|someone said] the bellers call every name in fomor and the one that comes back loudest leads",

@@ -79,7 +79,7 @@
       "text": "The two crossed marks near the end of his rib are the two votes he lost. The first was the march against the morvalt, after Kvasir screamed. The second was the march against Midgard, after the warbands came up the crater road with the Valkyn; Birghir struck twice for no and was outvoted, and by the time the bone stopped ringing the strangers were already in the tunnels. The sculptors have not cut a mark since.\n\nHe has sat on his rib since then with Guthlac beside him, and the two old councillors have never once been seen apart; when anyone comes to one of them, the other is already rising. Midgard's companies who have reached the ribs say that the first thing Birghir says to them is that it should not have been possible, an outsider here, in the heart of the ice. The second thing is the thing he would not say for a century: the Ice Lords were right, and the giants should have cleared every dangerous thing from the island, and they will begin today.\n\nHe speaks past them still. The companies say his frost goes over the heads of those who stand before him and falls on the living strangers further back, one and then another, while the ones in front of him grow slow and weak in his patience. They say too that he will not be moved from the ribs. Drawn away, he goes back and sits on his rib until he is himself again, and the bone rings when he sits.\n\nJorunn's granddaughters do not believe the Ice Lords were right. They say an old giant who sent ice down a road for a hundred springs was right the first time, and only said the other thing because nobody listened. They leave the salt anyway."
     }
   ],
-  "legend": "The elders are a pair: Birghir and Guthlac always come together, so plan for both. Birghir has 100,000 health, 40% melee and 70% magic resists and is CC-immune. Every 15 to 20 seconds he throws a Frost Sphere (400 cold) or Frost Strike (650 cold) at a random raider within 2,500, bot or player, so anyone can take it: bring cold resist and stay topped up. On his current target he lays a strength/constitution debuff and a haste debuff (a minute each, and he won't stack them), so cleanse the tank. He resets to full if you drag him past his tether or leave him out of combat for 30 seconds, so fight on the ribs and commit. When he gives his speech about the Ice Lords, the old raiders say, the council is finished and he knows it.",
+  "legend": "The elders are a pair: Birghir and Guthlac always come together, so plan for both. Birghir takes as much killing as fifty raiders, four-tenths of every blow and seven-tenths of every spell are lost on him, and no charm or stun holds him; he is a foe for a war party of the realm's champions. Every 15 to 20 seconds he throws a Frost Sphere (two-fifths of a robed caster's strength in cold) or Frost Strike (two-thirds of a robed caster's strength in cold) at a random raider within about eighty paces, companion, adventurer of the realm or you, so anyone can take it: bring wards against cold and stay topped up. On his current target he lays a charm that saps strength and constitution and one that slows the hands (a minute each, and he won't lay one on another), so cleanse his shield-bearer. He is whole again if you drag him too far from the ribs or leave him alone for 30 seconds, so fight on the ribs and commit. When he gives his speech about the Ice Lords, the old raiders say, the council is finished and he knows it.",
   "yells": {
     "aggro": [
       "Outsiders, here? On the ribs? Guthlac! To the King and Queen!",
@@ -135,14 +135,14 @@
   },
   "botLines": {
     "briefing": [
-      "elders next. birghir and guthlac come together, [cure|clear] the str debuff on tanks fast",
+      "elders next. birghir and guthlac come together, [cure|clear] the strength sapping on shield-bearers fast",
       "casters stay out of birghir's line, his frost sphere hurts",
-      "dont drag the elders off the ribs, they reset",
-      "birghir also haste debuffs, cleanse the tanks",
-      "birghirs frost hits anyone in range, stay topped. cold resist and stay topped",
-      "birghir debuffs str/con and haste on the tank, cleanse it",
-      "elders come as a pair, both 100k, cc immune",
-      "fight them on the ribs, drag them off and they reset"
+      "dont drag the elders off the ribs, they go home whole",
+      "birghir also slows their hands, cleanse the shield-bearers",
+      "birghirs frost hits anyone within eighty paces, stay topped. cold wards and stay topped",
+      "birghir saps strength and constitution and slows the hands of his shield-bearer, cleanse it",
+      "elders come as a pair, both huge, nothing holds them",
+      "fight them on the ribs, drag them off and theyre whole again"
     ],
     "aftermathWin": [
       "council down. birghir said the icelords were right right before he died lol",
@@ -154,13 +154,13 @@
       "council's done"
     ],
     "aftermathLoss": [
-      "the elders wiped us. guthlac's spike went off in the middle",
-      "str debuff on both tanks and nobody cleansed",
-      "we pulled the elders off the ribs and they reset at 20%. [ugh|again]",
-      "birghir's frost sphere one-shot our caster group lead",
+      "the elders killed us all. guthlac's spike went off in the middle",
+      "strength sapped on both shield-bearers and nobody cleansed",
+      "we drew the elders off the ribs and they went home whole with a fifth left. [ugh|again]",
+      "birghir's frost sphere killed our caster group lead in one go",
       "birghir frost struck you three times in a row",
-      "tank sat debuffed the whole fight",
-      "we dragged him off the rib and he reset"
+      "shield-bearer sat sapped the whole fight",
+      "we dragged him off the rib and he went home whole"
     ],
     "rumour": [
       "[heard|they say] the council up there were peace lovers once. didnt look peaceful to me",

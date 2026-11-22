@@ -182,7 +182,8 @@ namespace DOL.GS
                 // is battered above (FindReachableEnemyDoor) as soon as the bot stands at it.
                 if (nearLord)
                 {
-                    if (!rally.Hold && bot.IsWithinRadius(lord, BattlegroundLordStrike) &&
+                    // #416: from near enough that the hits count (GuardLord takes nothing from beyond 400); farther, walk on to him.
+                    if (!rally.Hold && bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordDamageReach) &&
                         Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
                         GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
                     {
@@ -697,7 +698,8 @@ namespace DOL.GS
             // the guard or holder that hit it first).
             if (_battlegroundStormLord is { IsAlive: true } stormLord && AutonomousBattlegroundKeepRally.InLordFight(bot, stormLord) &&
                 LordFightTarget(bot, StormKeep(), stormLord, bot.TargetObject as GameLiving) is { } pick &&
-                !ReferenceEquals(bot.TargetObject, pick))
+                // #416: the lord only from near enough that the hits count; farther, the bot walks on to him (not a cast from 900).
+                !ReferenceEquals(bot.TargetObject, pick) && StrikesFromHere(bot, pick))
             {
                 bot.TargetObject = pick;
                 brain.AddToAggroList(pick, Math.Max(100, pick.EffectiveLevel * 12));

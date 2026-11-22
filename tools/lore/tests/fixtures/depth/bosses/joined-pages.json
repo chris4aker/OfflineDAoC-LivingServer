@@ -1,0 +1,86 @@
+{
+ "name": "B",
+ "realm": "Albion",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "facts": [
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  }
+ ],
+ "yells": {
+  "aggro": [
+   "a",
+   "a",
+   "a"
+  ],
+  "death": [
+   "d",
+   "d"
+  ],
+  "slay": [
+   "s",
+   "s",
+   "s"
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "l",
+   "l"
+  ],
+  "realmFirstKill": "first"
+ },
+ "botLines": {
+  "briefing": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "aftermathWin": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "aftermathLoss": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "rumour": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "kw",
+  "text": "t"
+ },
+ "chronicle": {
+  "win": "w",
+  "loss": "l"
+ },
+ "related": [
+  {
+   "id": "full",
+   "relation": "home"
+  }
+ ],
+ "id": "joined-pages",
+ "tier": "major",
+ "bookPage": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "bookPages": [
+  "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+  "   "
+ ]
+}

@@ -30,13 +30,19 @@ namespace DOL.GS.ServerProperties
 	///   the launcher now clears DefaultValue on every save.
 	/// - 1.2, Galladoria's Earthmenders (owner 2026-11-18, "Mutual heal off"): they no longer heal each other by default.
 	///   "1.2.0.2" because worlds that ran an earlier 1.2 build have already recorded "1.2.0.1".
+	/// - 1.2.1 (owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by
+	///   default"): the bot schedule is off again, so the whole roster is online. A world whose row the server wrote as clock
+	///   (1.2.0.1's change, or a fresh 1.2 world) moves to off; a mode the player chose in the launcher is kept.
+	/// A key can change in more than one build. The changes are applied in order, each one seeing the rows as the earlier
+	/// ones left them, so a world that skipped builds ends on the newest default (a 1.1.4 world's untouched off schedule
+	/// goes off -> clock -> off and so stays off).
 	/// </summary>
 	public static class LivingServerSettingsUpgrade
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.2.0.2";
+		public const string Version = "1.2.1";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -81,27 +87,45 @@ namespace DOL.GS.ServerProperties
 			// 1.2 (owner 2026-11-18, "Mutual heal off"): with the Earthmenders healing each other the bot raid can't kill them
 			// (build b1b6846: 1.44M damage in 48 minutes, none below 99%). The class puzzle and the other epic options stay.
 			new("1.2.0.2", "epic_earthmender_mutual_heal", "True", "False"),
+			// 1.2.1 (owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by
+			// default"): the whole roster online, no time-of-day or session schedule. bot_living_breaks is a separate feature
+			// and stays on.
+			new("1.2.1", "bot_schedule_mode", "clock", "off"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>
 		public static readonly string[] TurnedOn = Changes.Where(change => change.Since == "1.1").Select(change => change.Key).ToArray();
 
 		/// <summary>
-		/// The changes to apply, given the version row's value and each key's stored (Value, DefaultValue). Pure. A build is
-		/// applied when it is newer than the recorded one; an empty or unreadable record means none has run yet.
+		/// The changes to apply, in order, given the version row's value and each key's stored (Value, DefaultValue). Pure. A
+		/// build is applied when it is newer than the recorded one; an empty or unreadable record means none has run yet.
+		/// Each change is checked against a working copy of the rows as the earlier planned changes left them (a planned
+		/// change sets that key's Value and DefaultValue to its new default), so a key changed by two builds can be planned
+		/// twice; its last planned change gives its final value.
 		/// </summary>
 		public static Change[] PlanChanges(string doneVersion, IReadOnlyDictionary<string, (string Value, string DefaultValue)> rows)
 		{
 			System.Version done = Parse(doneVersion);
-			return Changes.Where(change => Parse(change.Since) > done &&
-			                               rows.TryGetValue(change.Key, out var row) &&
-			                               SameStoredValue(row.Value, change.OldDefault) &&
-			                               SameStoredValue(row.DefaultValue, change.OldDefault)).ToArray();
+			// The same key matching as the rows given (the server's own dictionary may ignore case).
+			var working = new Dictionary<string, (string Value, string DefaultValue)>(
+				rows is Dictionary<string, (string Value, string DefaultValue)> given ? given.Comparer : StringComparer.Ordinal);
+			foreach (var stored in rows)
+				working[stored.Key] = stored.Value;
+			var planned = new List<Change>();
+			foreach (Change change in Changes)
+			{
+				if (Parse(change.Since) <= done || !working.TryGetValue(change.Key, out var row) ||
+				    !SameStoredValue(row.Value, change.OldDefault) || !SameStoredValue(row.DefaultValue, change.OldDefault))
+					continue;
+				planned.Add(change);
+				working[change.Key] = (change.NewDefault, change.NewDefault);
+			}
+			return planned.ToArray();
 		}
 
-		/// <summary>The keys <see cref="PlanChanges"/> would change. Pure.</summary>
+		/// <summary>The keys <see cref="PlanChanges"/> would change, each once, in the order first planned. Pure.</summary>
 		public static string[] Plan(string doneVersion, IReadOnlyDictionary<string, (string Value, string DefaultValue)> rows) =>
-			PlanChanges(doneVersion, rows).Select(change => change.Key).ToArray();
+			PlanChanges(doneVersion, rows).Select(change => change.Key).Distinct().ToArray();
 
 		/// <summary>The same stored setting: equal text ignoring case, or the same number ("1" and "1.0").</summary>
 		public static bool SameStoredValue(string stored, string expected)
@@ -125,16 +149,25 @@ namespace DOL.GS.ServerProperties
 				var rows = Changes.Select(change => change.Key).Distinct().Where(properties.ContainsKey)
 					.ToDictionary(key => key, key => (properties[key].Item3.Value, properties[key].Item3.DefaultValue));
 				var provider = new CultureInfo("en-US", false).NumberFormat;
-				foreach (Change change in PlanChanges(version.Item3.Value, rows))
+				// One write and one log line per key: a key planned by more than one build takes its last change's new default.
+				foreach (var planned in PlanChanges(version.Item3.Value, rows).GroupBy(change => change.Key))
 				{
-					var (attribute, field, row) = properties[change.Key];
-					object value = Convert.ChangeType(change.NewDefault, attribute.DefaultValue.GetType(), provider);
-					row.Value = change.NewDefault;
-					row.DefaultValue = change.NewDefault;
+					Change first = planned.First(), last = planned.Last();
+					var (attribute, field, row) = properties[planned.Key];
+					string builds = string.Join(", ", planned.Select(change => change.Since));
+					if (SameStoredValue(row.Value, last.NewDefault) && SameStoredValue(row.DefaultValue, last.NewDefault))
+					{
+						// e.g. a 1.1.4 world's untouched schedule: off -> clock (1.2.0.1) -> off (1.2.1), already the newest default.
+						log.Info($"Living Server {builds}: {planned.Key} keeps {last.NewDefault}, already the newest default");
+						continue;
+					}
+					object value = Convert.ChangeType(last.NewDefault, attribute.DefaultValue.GetType(), provider);
+					row.Value = last.NewDefault;
+					row.DefaultValue = last.NewDefault;
 					GameServer.Database.SaveObject(row);
 					field.SetValue(null, value);
-					log.Info($"Living Server {change.Since}: {change.Key} set to the new default {change.NewDefault} (was the untouched old default " +
-					         $"{change.OldDefault}; change it in the launcher's Living Server tab)");
+					log.Info($"Living Server {builds}: {planned.Key} set to the new default {last.NewDefault} (was the untouched old default " +
+					         $"{first.OldDefault}; change it in the launcher's Living Server tab)");
 				}
 				if (version.Item3.Value != Version)
 				{

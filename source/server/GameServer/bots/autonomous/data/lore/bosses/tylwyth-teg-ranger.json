@@ -29,7 +29,7 @@
     }
   ],
   "story": "The Tylwyth Teg, the fair family, hunt the high woods of the Pennines and do not like to be seen, and the riders of the tops know them by their bows and by nothing else. Their rangers walk furthest from the rovers' woods, alone, and carry the family's brew in a horn at their belts.\n\nThe brew is the fair folk's oldest courtesy. A ranger who meets a traveller on the tops, the shepherds say, may offer it, and a traveller who drinks is the family's guest for a night and a day, and a traveller who refuses has insulted the whole family; and a traveller who drinks too much forgets the way home, and is found in the spring dancing in a ring that nobody else can see. Elvinia Dareal of Caer Witrin wants a horn of it for the Feast of the Decadent, and she has not said whether she means to drink it or to learn what is in it.\n\nThe ranger is not quick to start a quarrel. Rangers rarely are. They have bows, and time, and a long memory for anyone who takes the family's brew without being offered it.",
-  "legend": "Tylwyth Teg Ranger, level 46-47, walks alone in the Pennine woods east of the rovers' ground. Aggro level 51, so he often lets you be. Plain melee in the data. Kill one for the Tylwyth Teg brew in Feast of the Decadent and take it to Elvinia Dareal in Caer Witrin. Do not drink it on the way. Respawn five minutes.",
+  "legend": "Tylwyth Teg Ranger, a foe for a hardened band of veterans, walks alone in the Pennine woods east of the rovers' ground. He is slow to take offence, so he often lets you be. Plain melee, by every account. Kill one for the Tylwyth Teg brew in Feast of the Decadent and take it to Elvinia Dareal in Caer Witrin. Do not drink it on the way. He returns five minutes after he falls.",
   "yells": {
     "aggro": [
       "You were not offered.",
@@ -53,7 +53,7 @@
   },
   "botLines": {
     "briefing": [
-      "tylwyth teg ranger, 46, alone, often doesnt aggro",
+      "tylwyth teg ranger, veteran band job, alone, often lets you pass",
       "kill him for the brew, feast of the decadent"
     ],
     "aftermathWin": [

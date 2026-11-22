@@ -13,10 +13,11 @@ public static partial class AutonomousBotGroupCoordinator
     public sealed record RecruitPost(string Need, int Missing, string Where, bool WhereIsDungeon, int Low, int High);
 
     /// <summary>
-    /// The /lfg post a bot's group could make now, or null: only the leader of an autonomous PvE party that is still
-    /// assembling ("Leader staging", "Meeting up") with seats free, never one at its camp, a full one or the player's. A party
-    /// is formed at its full locked size and is not backfilled, so its post is the assembly's last call; it stops when the
-    /// party sets off (AutonomousChatFieldTalk then says "nvm, full" once).
+    /// The /lfg post a bot's group could make now, or null: only the leader of an autonomous PvE party with seats free that
+    /// is still assembling ("Leader staging", "Meeting up"), or (1.2.1, #423) one on its way or at its camp while it looks
+    /// for a member (AutonomousBotGroupCoordinator.Replacement.cs: an open seat or a replacement); never a full one or one
+    /// the player leads. Between searches a party that set off doesn't recruit, so its post stops (AutonomousChatFieldTalk
+    /// then says "nm, heading out" once). A search takes one member at a time, so a set-off party's post asks for one.
     /// </summary>
     public static RecruitPost RecruitingPost(GameBot bot)
     {
@@ -25,12 +26,21 @@ public static partial class AutonomousBotGroupCoordinator
         lock (Sync)
         {
             if (!TryGetSession(bot.Group, out Session session) || session.Ending || session.Leader != bot ||
-                session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve || !IsAssemblyPhase(session.Phase))
+                session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve)
+                return null;
+            bool assembling = IsAssemblyPhase(session.Phase);
+            AutonomousPartyReplacement.Search search = session.Replacement;
+            if (!assembling && search == null)
                 return null;
             GameBot[] members = BotMembers(bot.Group);
-            if (members.Length < 2 || members.Length >= 8)
+            int seated = bot.Group.MemberCount;
+            if (members.Length < 2 || seated >= Math.Min(8, bot.Group.MaximumMemberCount))
                 return null;
             SharedCamp camp = session.PlannedCamp ?? session.Camp;
+            if (!assembling)
+                // On the way or at camp: the one role the search looks for, one seat.
+                return new RecruitPost(AutonomousPartyReplacement.PostNeed(search.Role), 1, camp?.ZoneName, camp?.IsDungeon == true,
+                    members.Min(member => (int)member.Level), members.Max(member => (int)member.Level));
             string[] classes = members.Select(member => member.CharacterClass?.Name ?? member.ClassName).ToArray();
             string need = classes.Any(cls => AutonomousChatFieldTalk.Fills(cls, "healer")) ? null : "healer";
             need ??= classes.Any(cls => AutonomousChatFieldTalk.Fills(cls, "tank")) ? null : "tank";

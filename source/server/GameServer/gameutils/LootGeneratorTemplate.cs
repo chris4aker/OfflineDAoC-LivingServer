@@ -77,6 +77,9 @@ namespace DOL.GS
                         return false;
                     }
 
+                    // 1.2.1: one warning for the rows naming a missing item, each row at debug level (LootMissingItems)
+                    var missing = new LootMissingItems("LootTemplate");
+
                     if (dbLootTemplates != null)
                     {
                         Dictionary<string, DbLootTemplate> loot = null;
@@ -96,8 +99,8 @@ namespace DOL.GS
 
                             if (drop == null)
                             {
-                                if (log.IsErrorEnabled)
-                                    log.Error("ItemTemplate: " + dbTemplate.ItemTemplateID +
+                                if (missing.Add(dbTemplate.TemplateName, dbTemplate.ItemTemplateID) && log.IsDebugEnabled)
+                                    log.Debug("ItemTemplate: " + dbTemplate.ItemTemplateID +
                                               " is not found, it is referenced from loottemplate: " +
                                               dbTemplate.TemplateName);
                             }
@@ -108,6 +111,10 @@ namespace DOL.GS
                             }
                         }
                     }
+
+                    string summary = missing.Summary();
+                    if (summary != null && log.IsWarnEnabled)
+                        log.Warn(summary);
                 }
 
                 log.Info("LootTemplates pre-loaded.");
@@ -247,12 +254,9 @@ namespace DOL.GS
                 GameLiving lootOwner = ResolveLootOwner(killer);
                 GamePlayer player = lootOwner as GamePlayer;
 
-                // allow the leader to decide the loot realm
-                if (player != null && player.Group != null)
-                {
-                    player = player.Group.Leader;
-                    lootOwner = player;
-                }
+                // allow the leader to decide the loot realm (a real player leader only: a gamebot-led group keeps the killer)
+                lootOwner = GroupLootOwner(lootOwner);
+                player = lootOwner as GamePlayer;
 
                 if (lootOwner != null)
                 {

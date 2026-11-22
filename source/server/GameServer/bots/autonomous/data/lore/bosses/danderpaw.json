@@ -20,7 +20,7 @@
     }
   ],
   "story": "Danderpaw is the wolf of the Ceannoi road, a great grey thing of the worg kind that the merchants of Ceannoi have known by name for three generations, though it cannot be the same wolf, they say, and it always is. It follows travellers. It does not attack at first; it walks behind them on the high road, a long way back, and when they stop it stops, and when they hurry it hurries, and somewhere east of Ceannoi, where the road dips, it closes.\n\nThe merchants named it for the way it walks, a little lame in one paw and never slower for it. They say it was a hound of a house on the high road that was burned in the old families' wars, and that it has been looking for its master on the road ever since, and that every traveller it follows is, for a while, him.",
-  "legend": "Danderpaw (36) is a named worg-type wolf near the high road east of Ceannoi in the Shannon Estuary (about 338k/676k). It hits hard for a 36 and follows you along the road before it closes. A group of mid 30s handles it; solo 40s can. Plain spawn, 80-second respawn. Ceannoi custom: do not stop on the high road where it dips.",
+  "legend": "Danderpaw, a foe for a hardened band of veterans, is a worg-like wolf of some renown near the high road east of Ceannoi in the Shannon Estuary (about 338k/676k). It hits hard for its strength and follows you along the road before it closes. A hardened band, newly blooded, handles it; a lone hardened veteran can. Plain, no tricks; it returns eighty seconds after it falls. Ceannoi custom: do not stop on the high road where it dips.",
   "yells": {
     "aggro": [
       "(the grey wolf that has been following you closes)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "danderpaw is a 36 wolf near the ceannoi road",
+      "danderpaw is a big wolf near the ceannoi road",
       "it follows you first, then closes. hits hard"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "didnt notice it following. [rip|oops]",
-      "hits hard for 36. [ouch|lol]"
+      "hits hard for its size. [ouch|lol]"
     ],
     "rumour": [
       "[heard|someone said] danderpaw follows travellers on the ceannoi road looking for its dead master",

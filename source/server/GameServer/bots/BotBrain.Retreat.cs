@@ -342,7 +342,9 @@ namespace DOL.AI.Brain
             }
             if (!BotGroupRetreat.Enabled || bot == null || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper ||
                 bot.Group != null || bot.IsCasting || bot.IsIncapacitated ||
-                Body.TargetObject is not GameNPC target || target is GameBot || !target.IsAlive)
+                Body.TargetObject is not GameNPC target || target is GameBot || !target.IsAlive ||
+                // #416 follow-up: never out of a keep or tower lord's damage radius (GuardLord takes nothing from beyond 400 / 300).
+                target is DOL.GS.Keeps.GuardLord)
                 return false;
             bool rootedOrSnared = IsBreakablyControlled(target) && !target.IsMezzed ||
                 target.effectListComponent?.ContainsEffectForEffectType(eEffect.MovementSpeedDebuff) == true;

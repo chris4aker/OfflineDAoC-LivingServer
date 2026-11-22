@@ -27,7 +27,7 @@
     }
   ],
   "story": "The Skeletal Sacristan kept the vessels of the chapel of Caer Sidi on its high walk: the cups, the lamps, the vestments and the rim of the cauldron that nine maidens kept warm, lent by Arawn to feed his prisoners. The Inconnu say he was a keeper of the treasury of a great church of the old province who came to Annwn with his keys on his belt. His work was a round from the sacristy to the chapel and back, checking each vessel against his list, fast and never stopping; the prisoners in the yard set their hours by him. When the gaol rose the vessels were broken or carried off and the rim went down to the larders, and he went on with his round, checking for things that are no longer there.\n\nIn the first seasons Albion's companies chased him round the walk for an hour and came down too tired to climb, while the yard laughed; the galleries' sorcerers had long known their spells did little to him. Something went out of his round when the end of the world first fell. Now, struck, he stops and stands as a sacristan stands when someone reaches for the plate, and if the trouble leaves him alone long enough he goes back to his round untouched, because a sacristan does not leave a list half checked.\n\nThe captain of the third company did not chase him. She set her shields across the narrow stretch of the walk past the chapel door and let him come to her; her company's swords did the work, because his bones turned spells as a good lock turns a wrong key. When he fell, his keys fitted nothing on the walk. The company's priest kept one; it hangs in the sacristy at Caer Gothwaite and fits no lock there.\n\nThe Church calls him the one honest worker in Caer Sidi; the Inconnu, the last keeper who keeps his task exactly. His list grows with what companies leave on his walk. Caer Gothwaite's companies leave an unfired clay cup on his shelf.",
-  "legend": "The Skeletal Sacristan is level 77 with 100,000 health and walks a fixed loop of the high walk. In the original he never stopped and outran whole raids; here he stops and fights as soon as he is hit, and stays put while the fight keeps going. Melee kill: 40% less from slash, crush and thrust, 55% less from everything else. Set the tanks across the narrow stretch of the walk past the chapel door, let him walk into you, and burn him with steel. Commit when you engage: if the fight goes quiet for a minute he heals to full and goes back to his round. No adds of his own. The old raids that ran after him for an hour still talk about it, and none of them fondly. Caer Gothwaite raids leave a clay cup on his shelf after.",
+  "legend": "The Skeletal Sacristan is a foe for a war party of the realm's champions, as much killing as fifty raiders, and walks a fixed loop of the high walk. In the first seasons he never stopped and outran whole raids; now he stops and fights as soon as he is hit, and stays put while the fight keeps going. A blade's kill: slash, crush and thrust lose four parts in ten against him, everything else more than half. Set the shield-bearers across the narrow stretch of the walk past the chapel door, let him walk into you, and burn him with steel. Commit when you engage: if the fight goes quiet for a minute he heals whole and goes back to his round. No servants of his own. The old raids that ran after him for an hour still talk about it, and none of them fondly. Caer Gothwaite raids leave a clay cup on his shelf after.",
   "yells": {
     "aggro": [
       "The vessels. Where are the vessels?",
@@ -61,7 +61,7 @@
   "botLines": {
     "briefing": [
       "sacristan walks a loop, he stops once hit. dont chase him, let him walk into us",
-      "tanks across the narrow bit past the chapel door",
+      "shield-bearers across the narrow bit past the chapel door",
       "melee kill, spells do about half",
       "a minute quiet and he heals full and walks off, commit"
     ],
@@ -73,8 +73,8 @@
     ],
     "aftermathLoss": [
       "nobody blocked his path",
-      "pulled him and then everyone stopped",
-      "his magic resist ate our casters, should have been steel",
+      "drew him and then everyone stopped",
+      "spells hardly scratch him, it ate our casters, should have been steel",
       "nobody stood in his way and he walked off before anyone had him"
     ],
     "rumour": [

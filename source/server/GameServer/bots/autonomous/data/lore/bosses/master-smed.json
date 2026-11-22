@@ -43,7 +43,7 @@
     }
   ],
   "story": "In the west of Trollheim, below the gate and away from the upper city, the Fathers had a lesser forge for the rough work of the quarries, and a morvalt the others call only Master Smed, the master smith, keeps it. He is not a magister. He has never lit the great forge and says he never wanted to. He mends the butchers' cleavers and the soldiers' axes and he says, to anyone who will listen, that Magister Kurgol's blades are pretty and soft.\n\nHe keeps orms. The blood orms of Trollheim are kin of Fostra Orm, the fostering serpent in the warm water by Dagar's hall, and the Valkyn say the morvalt are afraid of them and with reason. Master Smed is not. He took a clutch of eggs from the warm water when he was young and hatched them in the ashes of his forge, and the orms that came out of the ashes took him for their mother. They coil about the western forge now like dogs about a hearth, and the morvalt have a word for them that means the house-beasts, and none of the butchers who work beside the smith will go near them.\n\nThe butchers are his because the kitchens are next to his forge and he feeds them. That is the whole of his power in the city, and it is more than Kurgol's: the Valkyn say a smith who mends the butchers' blades and keeps orms at his door does not need soldiers. When a stranger comes into the west, the smith comes at him, and the butchers come, and the orms come, all of them at once, as a household turns out for a thief.\n\nHe is hard to kill, harder than any morvalt his size, and the Valkyn say his eyes have been burned clear by the forge so that no shaman's fog will cloud them. Ulfrun of Dyrfjall, the guide Fostra Orm bit, said that the smith's orms were the only ones in Trollheim she was not afraid of, because they had been raised by something that loved them, even a morvalt; and that this made them worse, not better, for anyone who came between them and the forge.",
-  "legend": "Master Smed is a level 58 morvalt smith in the west of Trollheim, with a dozen butchers (52) and seven pet blood orms (53-54) around him. His template makes him an epic-class NPC: about 17,000 health, 1.5x damage, immune to confusion and nearsight. He's aggressive at 350 and Morvalt Samhalle, and the butchers and orms are aggressive and in the same faction, so expect the household when you hit him. Clear the edges, mez what you can, then tank Smed away from the forge. A full group handles it; a small one gets eaten by orms. Don't confuse the orms with Fostra Orm's.",
+  "legend": "Master Smed is a morvalt smith, a foe for the realm's best, a full band of them, in the west of Trollheim, with a dozen butchers, of much his strength, and seven pet blood orms, a shade stronger, around him. He fights as one of the realm's great foes: he takes as much killing as about eight and a half raiders he hits half again as hard as his kind, and nothing can confuse him or blur his sight. He attacks anyone within about a dozen paces and is of the Morvalt Samhalle, and the butchers and orms attack on sight and are sworn the same way, so expect the household when you hit him. Clear the edges, entrance what you can, then have a shield-bearer hold Smed away from the forge. A full group handles it; a small one gets eaten by orms. Don't confuse the orms with Fostra Orm's.",
   "yells": {
     "aggro": [
       "Away from my forge!",
@@ -81,15 +81,15 @@
   },
   "botLines": {
     "briefing": [
-      "master smed is epic class, ~17k hp, hits hard",
-      "butchers and 7 blood orms, the whole household comes",
-      "mez the edges, tank him off the forge",
+      "master smed is one of the great ones, takes a long time to wear down, hits hard",
+      "butchers and seven blood orms, the whole household comes",
+      "entrance the edges, hold him off the forge",
       "no confuse or ns"
     ],
     "aftermathWin": [
       "smed down, the orms were the hard part",
-      "mezzed the butchers, burned the orms",
-      "tough for a 58",
+      "entranced the butchers, burned the orms",
+      "tough for his size",
       "the forge is cold now"
     ],
     "aftermathLoss": [

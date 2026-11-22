@@ -29,7 +29,7 @@
     }
   ],
   "story": "Altan Garran is the only town in Cothrom Gorge, and it is not a Sylvan town. Its people are outlanders: Sylvan and half-Sylvan families who left Domnann over the generations, for quarrels, for debts, for love, for the wardens' law, and went down into the gorge where the wardens do not walk, and built a walled grove of their own on the gorge's eastern ledges. They keep their own garda on the walls, their own bards and sorcerers, their own markets, and their own opinion of strangers, which is low. The Domnann wardens call them the outlanders and trade with them when they must. Hibernians who walk up to the gate unannounced are generally met at it.\n\nThe Ereas are the oldest family of Altan Garran, and the town's tree-keepers. When the first outlanders came down from Domnann they brought no seed-house and no springs, and it was an Erea, the songs say, who walked up to an old treant on the gorge ledge and asked it if they might build around it. It said yes. That is Treal, and the Ereas have kept him ever since: Alastair Erea makes dyes from his fallen bark, Luiseach Erea makes instruments from his windfalls, and Elnara Erea keeps the treants.\n\nShe keeps one above all. The great treant that stands at her side on the western edge of the town was a sapling of Treal's, the outlanders say, that Elnara raised from a cutting in the first bad year of the worts, when the town thought it would need something larger than garda on the walls. It grew larger than anyone expected. It is half again the height of any treant in the gorge now, and follows her as a hound follows its keeper, and the town calls it nothing but Elnara's, because she has never given it a name. She says a tree that size does not need one.\n\nElnara has the family's coldness toward strangers and none of Fedail's practicality. She does not want Hibernians in the town at all. The garda say she has argued in the square that the realm's swords bring the worts closer, not further, by cutting runners that grow back angrier, and the town listens to an Erea. A Hibernian who comes to the western edge comes to her treant first.",
-  "legend": "Elnara Erea (55) stands on the western edge of Altan Garran with Elnara's Pet, a level 51 treant that is huge (size 155), right beside her: expect both at once. Both plain, no scripts; the town is set aggressive (Outland Residents), so garda nearby can join. Two tanks: one on the treant, one on Elnara, and burn Elnara first or the treant first depending on your healers; the treant has less level but a lot of body. A full 50s group. Luiseach Erea, the instrument merchant, is 65 and of the same family, but a merchant. Alastair Erea sells dyes.",
+  "legend": "Elnara Erea, a foe for the realm's best, a full band of them, stands on the western edge of Altan Garran with Elnara's Pet, a treant a shade weaker than she is but huge, half again the height of a tall treant, right beside her: expect both at once. Both plain, no tricks; the town is hostile (Outland Residents), so garda nearby can join. Two shield-bearers: one on the treant, one on Elnara, and burn Elnara first or the treant first depending on your healers; the treant is weaker but has a lot of body. A full band of the realm's best. Luiseach Erea, the instrument merchant, would be a foe for several bands of the realm's best and is of the same family, but a merchant. Alastair Erea sells dyes.",
   "yells": {
     "aggro": [
       "No more strangers in the garran.",
@@ -67,21 +67,21 @@
   },
   "botLines": {
     "briefing": [
-      "elnara erea comes with her huge treant pet. [two at once|two tanks]",
-      "55 and 51, plain melee. [no scripts|tank and spank]",
-      "town is aggro, garda can join. [pull from the west edge|careful]",
-      "full 50s group"
+      "elnara erea comes with her huge treant pet. [two at once|two shields]",
+      "both want our best, plain melee. [no tricks|hold and hit]",
+      "town attacks on sight, garda can join. [draw from the west edge|careful]",
+      "full band of our best"
     ],
     "aftermathWin": [
       "elnara and the big treant down. [nice|clean]",
-      "two tanks worked. [good call|grats]",
+      "two shields worked. [good call|grats]",
       "the ereas will hate us now. [they already did|lol]",
       "luiseach erea is a merchant, leave her"
     ],
     "aftermathLoss": [
       "didnt expect the treant. [it was right there|huge]",
-      "one tank, two big mobs. [no|wipe]",
-      "garda joined from the square. [aggro town|ugh]",
+      "one shield, two big ones. [no|all dead]",
+      "garda joined from the square. [whole town hates us|ugh]",
       "burned the wrong one first. [treant ate the healer|oops]"
     ],
     "rumour": [

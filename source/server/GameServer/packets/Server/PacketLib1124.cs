@@ -52,6 +52,9 @@ namespace DOL.GS.PacketHandler
 
 		public override void SendLivingEquipmentUpdate(GameLiving living)
 		{
+			if (BotDeathAnimation.Blocks(m_gameClient, living, "EquipmentUpdate"))
+				return;
+
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.EquipmentUpdate)))
 			{
 				ICollection<DbInventoryItem> items = NecromancerPetAppearance.Equipment(living);
@@ -122,6 +125,10 @@ namespace DOL.GS.PacketHandler
 		public override void SendNPCCreate(GameNPC npc)
 		{
 			if (m_gameClient.Player == null || npc.IsVisibleTo(m_gameClient.Player) == false)
+				return;
+
+			// 1.2.1: a dead bot whose fall this (original) client was shown stays gone until raised (BotDeathAnimation).
+			if (BotDeathAnimation.Blocks(m_gameClient, npc, "NPCCreate"))
 				return;
 
 			// Mines are not shown to enemy players.

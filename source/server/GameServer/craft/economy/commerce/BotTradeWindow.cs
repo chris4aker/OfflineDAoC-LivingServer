@@ -405,7 +405,9 @@ namespace DOL.GS.CraftingEconomy
         public static BotTradeWindow Open(GamePlayer player, GameBot bot, IEnumerable<DbInventoryItem> pieces, long price, string purpose,
             Action<BotTradeWindow> completed)
         {
-            if (player == null || bot == null)
+            // A player already trading gets no window, and the bot takes no trade hold for one never shown (the hold's timeout
+            // would otherwise close the player's other window with "has to go and closes the trade").
+            if (player == null || bot == null || player.TradeWindow != null)
                 return null;
             var window = new BotTradeWindow(player, bot, pieces, price, purpose) { Completed = completed };
             if (window.BotItems.Count == 0)

@@ -29,7 +29,7 @@
     }
   ],
   "story": "Before there was a town on the eastern ledges of Cothrom Gorge there was a tree. Treal was old when the Long Pushing split the gorge, the outlanders of Altan Garran say, one of the forest's trees that leaned on the Root and felt the earth break under it, and he did not fall into the split: he walked back from the edge, the only tree that did, and stood on the ledge, and has stood there since. When the first outlanders came down from Domnann, an Erea asked him if they might build around him. He said yes. The town is a garran, a grove, because of him.\n\nHe speaks, rarely, and slowly, and only to the Ereas and to those who bring him something. The outlanders say the worts are the one thing he fears. He felt them begin, in the split below him, as a sickness in the soil, and he has felt them climb toward the town every summer since. He gave Elnara a cutting in the first bad year. He gave the town his windfalls for its walls. And he gave Fedail, long ago, the one instruction the outlanders have ever had from him: bring me the root of the thing at the head of the gorge.\n\nSo the strangers who go up the gorge to Marfoirwort and come back with its root bring it to Treal. Noirin the enchanter has watched him take it. He puts it down among his own roots, she says, and the ground closes over it, and for a while, a season or so, the worts nearest the town are slower, and the tendrils in the south wall come fewer. The outlanders think he is eating it. The Domnann wardens think he is holding it, as Elro holds the edge, and that one day he will not be able to. Treal has not said which.\n\nHe does not like strangers, any more than the town does. The ones who come to him without the root find out why the outlanders asked his leave before they built.",
-  "legend": "Treal is a level 52 treant on the western ledge of Altan Garran and the hand-in for Writhing Death: bring him Marfoirwort's root and choose your reward. In the world data he is set aggressive like the rest of the town (Outland Residents), so a Hibernian may be attacked before they can hand in. As a fight he is a plain 52 treant with an 80-second respawn, standing near the garran treants and Cuinn (65). Do not pull Cuinn with him by accident: Cuinn is the harder of the two. The outlanders say he buries what you bring him; be polite about it.",
+  "legend": "Treal is a treant, a foe for the realm's best, a full band of them, on the western ledge of Altan Garran, and the one Writhing Death ends with: bring him Marfoirwort's root and choose your reward. In this world he attacks on sight like the rest of the town (Outland Residents), so a Hibernian may be attacked before they can give it to him. As a fight he is a plain treant who returns eighty seconds after he falls, standing near the garran treants and Cuinn (a foe for several bands of the realm's best together). Do not draw Cuinn with him by accident: Cuinn is the harder of the two. The outlanders say he buries what you bring him; be polite about it.",
   "yells": {
     "aggro": [
       "(the old treant turns, slowly)",
@@ -68,20 +68,20 @@
   "botLines": {
     "briefing": [
       "treal is the writhing death hand in. [bring marfoirwort's root|choose a reward]",
-      "hes set aggro in the data. [hand in untested|careful]",
-      "as a fight, plain 52 treant. [80 sec respawn|easy]",
-      "dont pull cuinn with him. [65|harder]"
+      "he attacks on sight. [nobody knows if he takes the root first|careful]",
+      "as a fight, plain treant. [back 80 sec after he drops|easy]",
+      "dont draw cuinn with him. [hes a monster|harder]"
     ],
     "aftermathWin": [
       "treal down. [poor old tree|the outlanders will hate us]",
-      "didnt pull cuinn. [good|clean]",
+      "didnt draw cuinn. [good|clean]",
       "the ground closed over something when he fell",
       "hope we didnt need to hand in lol"
     ],
     "aftermathLoss": [
-      "pulled cuinn too. [65 treant|no]",
+      "drew cuinn too. [that little treant|no]",
       "garran treants joined. [too many|ouch]",
-      "walked in to hand in and he attacked. [aggro|lol]",
+      "walked in to give him the root and he attacked. [hostile|lol]",
       "the town came for us"
     ],
     "rumour": [

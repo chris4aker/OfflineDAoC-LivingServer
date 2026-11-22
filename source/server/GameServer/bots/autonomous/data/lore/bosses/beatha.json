@@ -22,7 +22,7 @@
     }
   ],
   "story": "Beatha was the green force that pushes a shoot up out of a seed, the Sylvan say, the life in a thing that wants to live. Xaga, keeper of seeds, knew that force better than anyone, and when she went down into the hollow she learned to turn it inside out. She bound it as she bound Tine, with the old words, and named it Beatha, life.\n\nInside out, life empties. What Beatha touches does not grow; it goes cold and thin, a void of cold that spreads from her in a ring and leaves everyone in it a little less alive. In the old tellings what she took went straight to her mistress, so that Xaga drank her enemies' strength through her spirit and grew whole; the Sylvan believe that binding has since broken, and that Beatha now keeps what she takes. She circles the room on the air beside her sister Tine and comes down the moment Xaga is touched. The Sylvan think Beatha the cruellest thing in the seed-keeper's room, and in the whole hollow. Not for what she does, but for what she was.\n\nBeatha is the green force of life that Xaga turned inside out; Xaga also carried down a seed of the great oak of Cluain Dara, and the Sylvan believe the shoot that grows in her room when Beatha dies is that seed.",
-  "legend": "The pale one. Her cold burst hits everyone near her: spread out and keep cold resists up. The old guides said every hurt she did healed Xaga twice over, so veterans still kill her before Xaga out of habit. She comes with Tine and calls her. Cold resists on the healers above all, because her void hits whoever stands near, and a cold healer is a dead healer. She holds low enough for melee while she fights. Superstition: look at the floor when she dies. Something green will grow there. Sylvan raiders always stop to look, and the raid always waits for them.",
+  "legend": "The pale one. Her cold burst hits everyone near her: spread out and keep your wards against cold up. The old raiders' accounts said every hurt she did healed Xaga twice over, so veterans still kill her before Xaga out of habit. She comes with Tine and calls her. Wards against cold on the healers above all, because her void hits whoever stands near, and a cold healer is a dead healer. She holds low enough for melee while she fights. Superstition: look at the floor when she dies. Something green will grow there. Sylvan raiders always stop to look, and the raid always waits for them.",
   "yells": {
     "aggro": [
       "The pale spirit drops without a sound.",
@@ -65,26 +65,26 @@
   "botLines": {
     "briefing": [
       "beatha is the pale one, cold burst. [spread|dont clump]. kill her before xaga",
-      "beatha is cold, cold resists up esp healers. [her void hits everyone near|spread]",
+      "beatha is cold, cold wards up esp healers. [her void hits everyone near|spread]",
       "old habit, kill beatha before xaga. [habit|always]",
       "shes pale and quiet, dont lose track of her. [watch the pale one|eyes on beatha]"
     ],
     "aftermathWin": [
       "beatha down. [the room felt warmer after|swear the air came back]",
       "beatha down and something green grew in the floor, saw it. [nice|sylvan were right]",
-      "cold resists did their job. [spread works|grats]",
+      "cold wards did their job. [spread works|grats]",
       "both spirits gone, xaga is alone. [finish her|go]"
     ],
     "aftermathLoss": [
-      "beatha's cold went through the whole raid. [resists next time|spread out]",
-      "her void froze the healers. [cold resists|spread]",
-      "split damage between beatha and tine, [neither died|wipe]",
+      "beatha's cold went through the whole raid. [cold wards next time|spread out]",
+      "her void froze the healers. [cold wards|spread]",
+      "split damage between beatha and tine, [neither died|all dead]",
       "nobody held her and [she drifted over the casters|bad]"
     ],
     "rumour": [
-      "[old guides said|someone told me] beatha's hits used to heal xaga [double|twice over]",
+      "[old raiders said|someone told me] beatha's hits used to heal xaga [double|twice over]",
       "[heard|someone said] beatha was the life in a seed before xaga turned her inside out",
-      "[old guides said|my guild leader swears] beatha's damage used to heal xaga double",
+      "[old raiders said|my guild leader swears] beatha's damage used to heal xaga double",
       "the sylvan think beatha the cruellest thing in galladoria"
     ]
   },

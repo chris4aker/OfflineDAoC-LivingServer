@@ -19,9 +19,19 @@
       "text": "The púca is a shape-changing spirit.",
       "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/P%C3%BAca"
+    },
+    {
+      "text": "In Echtra Fergusa maic Léti, the lúchorpáin carry the sleeping Fergus mac Léti toward the sea; he seizes three, who ransom themselves with the power to go under water, forbidding him only Loch Rudraige, where a water-monster's sight disfigures him.",
+      "provenance": "myth",
+      "source": "Echtra Fergusa maic Léti (The Adventure of Fergus mac Léti)"
+    },
+    {
+      "text": "Living Server lore: the brehons reading Develin as Fergus mac Léti's bargain told the Ardee way.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "The Ardee folk tell it as a warning. There was a man called Develin, a good Hibernian name, which the Ardee folk find worse than if he had none, who went into the court wood to bargain with the pookas, the shape-changers who serve neither court and both. He got the better of the bargain. That was his mistake. A man who beats the pookas at their own game becomes theirs, and Develin has been their master ever since, and has regretted it every night.\n\nLike any master he does not show himself until his servants have been badly treated. Kill one pooka and nothing happens; kill twenty, thirty, forty, and some night there is a new figure among the trees, watching. Only at night: by day he is not there at all. When he is fought his pookas still come when he calls, to his side, and fight for him, as servants do for a master they resent. A small band can do it if it is patient enough to earn him, and the Ardee folk say he looks almost grateful when he falls.",
+  "story": "The Ardee folk tell it as a warning. There was a man called Develin, a good Hibernian name, which the Ardee folk find worse than if he had none, who went into the court wood to bargain with the pookas, the shape-changers who serve neither court and both. He got the better of the bargain. That was his mistake. A man who beats the pookas at their own game becomes theirs, and Develin has been their master ever since, and has regretted it every night.\n\nLike any master he does not show himself until his servants have been badly treated. Kill one pooka and nothing happens; kill twenty, thirty, forty, and some night there is a new figure among the trees, watching. Only at night: by day he is not there at all. When he is fought his pookas still come when he calls, to his side, and fight for him, as servants do for a master they resent. A small band can do it if it is patient enough to earn him, and the Ardee folk say he looks almost grateful when he falls.\n\nThe brehons have a name for the moral, and it is older than Develin. Fergus mac Léti, a king of Ulster in the oldest days, long before the Red Branch and its own Fergus, the son of Róich, fell asleep on a strand and woke to find the lúchorpáin, the little water-folk, carrying him out to sea. He caught three of them as his feet touched the water, and they bought their lives from him with a gift: he might go under the sea and the lakes and breathe there as in the air. One water was forbidden him, Loch Rudraige in his own country. The king went into it anyway, because a king does not like to be told where he may not go, and met a monster under the water whose look twisted his face for the rest of his life. He had beaten the small folk at their bargain, and the bargain had a sting in its tail all the same.\n\nDevelin is that tale told the Ardee way, the brehons say, with a pooka for the lúchorpán and a cursed wood for the loch. The small folk do not mind losing a bargain. They put the cost of it in the terms, and Develin, who read the terms and won, has been paying ever since among the trees, where his servants watch him every night as he watches them.",
   "legend": "You have to earn him: kill pookas at night until he appears, somewhere between twenty and forty. Then his pookas come to his side, so clear them as they come. A small band can do it if they are patient. Farm pookas at night until he comes, somewhere between twenty and forty. Then clear his pookas as they arrive. Superstition: never make a bargain in the Cursed Forest, even a joking one, even a bet. Nicknames: 'the master', 'pooka-man'. Superstition: if you hear laughter between the trees in the Cursed Forest, do not laugh back; that is how bargains start.",
   "yells": {
     "aggro": [
@@ -59,8 +69,8 @@
     "briefing": [
       "develin only shows at night after [twenty to forty pookas|a lot of pookas] die. farm pookas, then he comes",
       "develin only at night, after enough pookas die. [farm pookas|be patient]",
-      "clear his pookas as they come, [then him|kill adds]",
-      "pookas change shape, [dont lose track|watch the adds]"
+      "clear his pookas as they come, [then him|kill the pookas]",
+      "pookas change shape, [dont lose track|watch the pookas]"
     ],
     "aftermathWin": [
       "develin down. [finally|took forty pookas]. worth it",
@@ -71,7 +81,7 @@
     "aftermathLoss": [
       "killed thirty pookas and the sun came up. [no develin|night only]",
       "sun came up before he showed. [night only|tomorrow]",
-      "pookas swarmed the healer. [peel|kill adds]",
+      "pookas swarmed the healer. [peel|kill the pookas]",
       "made a bet in the cursed forest and [look what happened|cursed]"
     ],
     "rumour": [

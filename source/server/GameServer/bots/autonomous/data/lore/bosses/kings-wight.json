@@ -33,7 +33,7 @@
     }
   ],
   "story": "Every king the chroniclers name is buried in the upper halls of the barrows or the west. Below them, below the Saxons and the Celtic dead of the ossuary and the druids' grove that was buried standing and turned to stone, at the lowest point the barrow-builders dug, lies a king whom no chronicle names. He was laid there before there were chronicles. The minstrels call him the King's Wight because there is nothing else to call him.\n\nThe Lethantis Association, which keeps the oldest learning in Campacorentin and says it is older than the Academy, thinks he was the first. The first people to raise a ring on the Plains buried their priests under it and their warriors over those, and over all of them, at the deepest point, their king; and he was the first king of the island, the Lethantis say, and his was the first crown that ever broke, when the people who raised the first ring were gone and nobody remembered whose land it had been. That is why they want his skull. A heart that watched the land break and did not break, and the skull of the first king whose realm broke: the society has a working that needs the two, and sends the realm's young first to the Cornish cliffs for the old drake Cirfans's heart and then down to the bottom of the barrows, and afterwards makes something of both and sends it to Lidmann Halsey.\n\nHe is huge, as the barrow-builders made their kings, and he lies among the tomb wights of his household as he must have lain among his warriors, and he does not stir for the living until they are at his shoulder. Then he stands, and the wights of the tombs about him do not stand with him; they are his dead but not his men, and each of them keeps its own mound. He fights alone, with the blade they buried him with, and he fights like a king who has never once in his life been told to yield.\n\nThe barrow-keepers of the Plains say he is the reason the barrows have a bottom at all: that the first people dug down until they reached a place deep enough for a king, and stopped. When he is laid, he is up again in the time it takes to climb back to the stair.",
-  "legend": "The King's Wight is a level 50 wight, huge, at the very bottom of Stonehenge Barrows: the skull step of Symbol of the Broken (after Cirfans's heart, for Scholar Nenet of the Lethantis Association). He only notices you inside about 200 and has no faction, so the tomb wights and ghoulic vipers packed round him do not come to his call, but they stand very close (70 to 100) and will aggro on you themselves: clear them before you pull him. He hits with a slashing blade and has no spells or styles in the data, a melee fight for a group of fifties. Respawn about five minutes, so the next Symbol group will not wait long.",
+  "legend": "The King's Wight is a huge wight at the very bottom of Stonehenge Barrows, a foe for the realm's best, a full band of them: the skull step of Symbol of the Broken (after Cirfans's heart, for Scholar Nenet of the Lethantis Association). He only notices you inside about seven paces and is sworn to no one, so the tomb wights and ghoulic vipers packed round him do not come to his call, but they stand very close (two or three paces) and will turn on you themselves: clear them before you draw him. He hits with a slashing blade and has no spells or styles by every account, a melee fight for a band of the realm's best. He returns about five minutes after he falls, so the next Symbol group will not wait long.",
   "yells": {
     "aggro": [
       "Who comes to the bottom of the world?",
@@ -71,21 +71,21 @@
   },
   "botLines": {
     "briefing": [
-      "kings wight, 50, huge, very bottom of the barrows. symbol of the broken skull",
-      "200 aggro, no faction, but tomb wights and vipers are 70-100 off and aggro you anyway. clear them",
-      "slash melee, no spells. group of 50s",
-      "grab the skull, back to nenet. 5 min respawn"
+      "kings wight, huge, very bottom of the barrows, job for our best. symbol of the broken skull",
+      "notices you at 7 paces, sworn to nobody, but tomb wights and vipers are two or three paces off and come for you anyway. clear them",
+      "slash melee, no spells. full band of our best",
+      "grab the skull, back to nenet. back 5 min after he dies"
     ],
     "aftermathWin": [
       "skull's in the bag, nenet next",
       "cleared the tomb wights first, easy",
-      "big for a 50",
+      "big for what he is",
       "heart and skull, the dagger's next"
     ],
     "aftermathLoss": [
-      "pulled him with three tomb wights stuck to him",
+      "drew him with three tomb wights stuck to him",
       "the vipers ate the casters",
-      "got lost on the way down and pulled half the ossuary",
+      "got lost on the way down and drew half the ossuary",
       "he was back before we climbed out"
     ],
     "rumour": [

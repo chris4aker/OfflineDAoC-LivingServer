@@ -22,7 +22,7 @@
     }
   ],
   "story": "Fuladl, the foul sickness, grew in the lowest passage of Krondon's drains, where the seepage of the whole hill gathers before it runs to the sea. The hall-folk's leech, Hrothwyn, followed her sick down the water to it, and sat three nights in front of it with a lamp on her knee, writing in the hall's book of the sick. A sickness, she wrote, is many small things that agree to be one: a great body, with pieces of itself crawling out into the side drains and home again.\n\nThe sweepers had thrust torches into the body and it took fire as wet peat does; hooks went into it as into water. Hrothwyn saw why. While the pieces crawled, whatever went into the body the pieces bore; the rot lived in its pieces, and the body was only where they came home. So the sweepers burned the pieces first, one by one down the side drains, and then the body burned like dry heather in a night. Every scrap is burned, the small first: the ghosts keep the custom still. Because the rot comes out of the stone itself, the hall-folk bricked the passage and cut its name over the bricks.\n\nThe ogres broke the bricks in their first summer looking for a storeroom. The Foreman of the Wall went in first and came out alone with the grey crust on his hands. The ogres throw their rubbish down the drain-mouths, feeding what they fear, and below the hill the eel-beds of the Avalon shore sickened and the fishermen's hands crusted.\n\nThe first company to kill Fuladl came from the hospice of Caer Ulfwych. Sister Gwerful, who had buried three crusted fishermen, went down with the harbor's torch-bearers and knights of the Isle of Glass, found Hrothwyn's page wedging a door, and read it by her lamp. The knights put up their swords while the torch-bearers burned every piece; then the body took the fire. The hospice sends a sister to the shore every summer. The rot came back within the season, out of the stone.",
-  "legend": "Fuladl is level 77 with 30,000 health, CC immune, and a 3,800 tether. The moment it is engaged, four or five Parts of Fuladl (level 65 to 68, 3,000 health each) crawl out beside it. While even one part is alive, Fuladl takes 95% less from everything, so hitting the big rot is wasted effort. Kill every part first, with area damage and a couple of off-tanks, while one tank just holds the big one. When the last part dies Fuladl drops to normal 20% melee / 30% other and goes down fast. The parts are ordinary mobs: they can be mezzed or rooted if you need time. If you leave and it resets, the parts vanish and a fresh set comes on the next pull. It sits in the lowest drain passage under the stores and guards nothing on the way to the queen, so some raids skip it.",
+  "legend": "Fuladl is a foe for a war party of the realm's champions, as much killing as fifteen raiders; nothing mesmerizes, holds or dazes it, and it will follow you about a hundred and twenty-five paces from its spot, no farther. The moment it is engaged, four or five Parts of Fuladl (each a foe for several bands of the realm's best together, as hard to bring down as a raider and a half) crawl out beside it. While even one part is alive, Fuladl shrugs off nineteen parts in twenty of everything, so hitting the big rot is wasted effort. Kill every part first, with spells that strike many at once and a couple of second shields, while one shield-bearer just holds the big one. When the last part dies Fuladl is back to losing only a fifth of a blade's bite and three parts in ten of anything else, and goes down fast. The parts are ordinary beasts: they can be mesmerized or held to the ground if you need time. If you leave and it goes home whole, the parts vanish and a fresh set comes the next time you draw it. It sits in the lowest drain passage under the stores and guards nothing on the way to the queen, so some raids skip it.",
   "yells": {
     "aggro": [
       "...",
@@ -60,9 +60,9 @@
   },
   "botLines": {
     "briefing": [
-      "fuladl takes 95% less dmg while any of its 4-5 parts live. parts first",
-      "one tank holds the big rot, everyone else kills the parts",
-      "aoe the parts, mez or root them if they spread out",
+      "fuladl shrugs off nearly everything while any of its four or five parts live. parts first",
+      "one shield-bearer holds the big rot, everyone else kills the parts",
+      "burst spells on the parts, mesmerize or hold them if they spread out",
       "last part dies, then everything on fuladl. it melts after that"
     ],
     "aftermathWin": [
@@ -72,9 +72,9 @@
       "no healer died to the pieces"
     ],
     "aftermathLoss": [
-      "half the raid was hitting the big rot with parts still up. 95% reduction, people",
+      "half the raid was hitting the big rot with parts still up. it shrugs off nineteen parts in twenty, people",
       "one part crawled off and we forgot it. fuladl never went soft",
-      "we left the passage, it reset and spat out a fresh set of parts",
+      "we left the passage, it went home and spat out a fresh set of parts",
       "nobody held the big one while we cleared parts"
     ],
     "rumour": [

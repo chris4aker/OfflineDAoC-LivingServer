@@ -20,7 +20,7 @@
     }
   ],
   "story": "The sylvanshades of Hy Brasil are shadows of Sylvan that came loose in the hollow under Galladoria and came home without their owners, the guides of Domnann say. Most of them have forgotten whose they were. Lysanus has not. It walks the south of the vine woods above Necht, slinking with the others, and says one name over and over, and the Necht Sylvan know the name: a warden of the coast who went down with the first companies and did not come up.\n\nThe warden's family still lives in Necht. They will not go into the vine woods, and they will not let anyone else say the name aloud near them, because they are afraid of what would answer. The guides call Lysanus by the shade's own name instead, which it took from somewhere, and which nobody in Necht has ever heard anywhere else. The guides of Domnann say a shade that remembers is more dangerous than one that has forgotten, because it is still looking.",
-  "legend": "Lysanus (40) is a named sylvanshade in the south of the vine woods (about 423k/344k), with slinking sylvanshades (38-44) around it and cutthroat vines nearby. Clear the area and pull. 80-second respawn. Plain spawn with no script. The cutthroat vines (37-42) are thick on the north side of its patch and root where they kill, so come in from the south. It hits like the slinking shades around it, only harder; a group of 40s is plenty.",
+  "legend": "Lysanus, a foe for a hardened band of veterans, is a sylvanshade of name in the south of the vine woods (about 423k/344k), with slinking sylvanshades (hardened bands' foes, some stronger than it) around it and cutthroat vines nearby. Clear the area and draw it. It returns eighty seconds after it falls. A plain fight with no tricks. The cutthroat vines (hardened bands' foes too) are thick on the north side of its patch and take root where they kill, so come in from the south. It hits like the slinking shades around it, only harder; a hardened band of veterans is plenty.",
   "yells": {
     "aggro": [
       "(the shade says a name, and it is not yours)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "lysanus is a 40 sylvanshade in the south vine woods",
+      "lysanus is a big sylvanshade in the south vine woods",
       "slinking shades and vines around, clear first"
     ],
     "aftermathWin": [

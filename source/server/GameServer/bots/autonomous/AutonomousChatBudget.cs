@@ -327,6 +327,17 @@ public static class AutonomousChatBudget
         linesLastMinute + Math.Max(0, exchangesRunning) + 2 <= paceMax + 1e-9;
 
     /// <summary>
+    /// Whether /faction runs under its floor as the listener hears it (1.2.1; owner's PC, build 43c43aa: 4.9 lines a minute on
+    /// average, but 13 of 39 minutes under 5, some at 2): every line of the last minute (<see cref="PaceWindowMs"/>, the window
+    /// the pace's 7 is counted over) against the band's floor (5 at a full realm and the default rate). The ambient gate reads
+    /// its floor over two minutes and the ambient lines only, and the "thin" test over two minutes too, so after a busy minute
+    /// (a tale, a long thread) the next could fall to 2 and still read as at the floor; meanwhile the gap an opener had drawn
+    /// before the sink held it kept the channel waiting. Under this floor an opener starts whenever a bot has one; the pace
+    /// (<see cref="OpenerFitsPace"/>, at the sink) still keeps it under 7. Pure.
+    /// </summary>
+    public static bool UnderPaceFloor(int linesLastMinute, double floor) => floor > 0.0005 && linesLastMinute < floor - 1e-9;
+
+    /// <summary>
     /// When a running scene's next line may be said (1.2): a scene owns /faction while it plays (every other line but an event or
     /// one to the player waits for it), so its own pace is the channel's. Its next line comes no sooner than a minute over the
     /// scene pace after the channel's last line (10 s at 6 a minute), and only while the last minute holds fewer lines than
@@ -368,15 +379,17 @@ public static class AutonomousChatBudget
 
     /// <summary>
     /// The ambient gate, pure: above the ceiling nothing starts; under the floor a line starts whenever a bot has one;
-    /// otherwise when the channel's gap since its last unprompted line is over.
+    /// otherwise when the channel's gap since its last unprompted line is over. <paramref name="underPaceFloor"/> (1.2.1,
+    /// /faction): the listener's last minute ran under the floor (<see cref="UnderPaceFloor"/>), which counts as under the floor.
     /// </summary>
-    public static Verdict Decide(double measuredPerMinute, (double Floor, double Target, double Ceiling) band, long now, long nextDue)
+    public static Verdict Decide(double measuredPerMinute, (double Floor, double Target, double Ceiling) band, long now, long nextDue,
+        bool underPaceFloor = false)
     {
         if (band.Target <= 0.0005)
             return Verdict.HoldGap;
         if (measuredPerMinute >= band.Ceiling)
             return Verdict.HoldCeiling;
-        if (measuredPerMinute < band.Floor)
+        if (measuredPerMinute < band.Floor || underPaceFloor)
             return Verdict.SpeakUnderFloor;
         return now >= nextDue ? Verdict.Speak : Verdict.HoldGap;
     }
@@ -539,16 +552,18 @@ public static class AutonomousChatBudget
         /// <summary>
         /// The ambient gate for one channel moment: decides, and on a yes sets the next gap. It counts the channel's ambient lines
         /// over the window its target needs (1.2: before, every line over two minutes, so replies took the openers' turns and a slow
-        /// channel's floor could not be seen).
+        /// channel's floor could not be seen). <paramref name="underPaceFloor"/>: the listener's last minute ran under the floor
+        /// (<see cref="UnderPaceFloor"/>, 1.2.1 /faction), so the gap is not waited for.
         /// </summary>
-        public Verdict TryStart(Channel channel, long key, long now, (double Floor, double Target, double Ceiling) band, Random random)
+        public Verdict TryStart(Channel channel, long key, long now, (double Floor, double Target, double Ceiling) band, Random random,
+            bool underPaceFloor = false)
         {
             lock (_rings)
             {
                 Ring ring = For(channel, key);
                 long window = CountsEveryLineOverTwoMinutes ? WindowMs : AutonomousChatBudget.WindowMs(band.Target);
                 Verdict verdict = Decide(CountIn(ring, now, window, CountsEveryLineOverTwoMinutes ? null : LineKind.Ambient) * 60_000.0 / window,
-                    band, now, ring.NextDue);
+                    band, now, ring.NextDue, underPaceFloor);
                 if (verdict is Verdict.Speak or Verdict.SpeakUnderFloor && now - ring.LastLine < MinSpacingMs && now >= ring.LastLine)
                     verdict = Verdict.HoldGap;
                 if (verdict is Verdict.Speak or Verdict.SpeakUnderFloor)

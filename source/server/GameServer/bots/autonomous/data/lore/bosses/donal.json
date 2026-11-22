@@ -24,7 +24,7 @@
     }
   ],
   "story": "On the eastern edge of the Bog of Cullen, where the marsh gives onto a low island of firm ground, there is a camp that the people of Alainn Binn call the Cullen outlaws. It has been there for a generation: mainland men and women who could not stay in Ardee or Howth or Connacht for one reason or another, and went into the bog where the realm does not follow, and kept going until they reached ground that would hold a fire. They do not rob the villages. They do not trade with them either. They fight anyone who comes onto their island, and the villages have learned to leave them alone.\n\nDonal is their captain, because somebody has to be and he was the one who found the island. He was a spearman of Ardee, the Alainn Binn folk say, the year the Cullen watch was first set at the foot of the Sheeroe pass, and he killed a man at the muster over something that was said about his sister, and walked out of the watch-house before the captain could have him taken. He went into the bog because nobody would follow him there, and he walked until the ground held, and lit a fire, and others who could not go home found the fire.\n\nHe runs the camp the way the Cullen watch is run, which the watch finds funny and he does not: there is a tally of who came in and when, a watch on the island's edges every night, and a bell, which is a cracked pot struck with a spear-butt, three slow strokes for strangers on the firm ground. Deniela, Jannet and Manius keep the edges with him. Ide keeps them alive. Saemus kept the bog off them for one summer, and Donal has not forgiven himself for letting him go to the siabra for it.\n\nThe Cullen watch knows exactly where he is and has never come for him. The old watch captains say it is because the outlaws on the eastern edge of the bog are a second watch that costs the realm nothing: nothing comes out of the eastern marsh toward Alainn Binn without passing Donal's fire first. Donal says that is not why he keeps the watch, and the old captains say that it does not matter why.",
-  "legend": "Donal (50) is the captain of the Cullen outlaws on the eastern edge of the Bog of Cullen (about 404k/759k), standing with Ide (52) and Deniela, Jannet and Manius (48). Expect several at once; pull from the edges or bring CC. Plain mobs, no scripts, 80-second respawns. Not a quest target in this world's data, but Ide beside him is (Unnatural Powers), so you will meet him there. The old Cullen watch captains call his camp the second watch: nothing comes out of the eastern marsh without passing it. Come in from the Alainn Binn side, and rest before the pull: five named on one island hit hard.",
+  "legend": "Donal, a foe for the realm's best, a full band of them, is the captain of the Cullen outlaws on the eastern edge of the Bog of Cullen (about 404k/759k), standing with Ide, a little stronger, and Deniela, Jannet and Manius, each a hardened band's foe. Expect several at once; draw from the edges or bring an enchanter to hold the rest in a trance. Plain fighters, no tricks; each returns eighty seconds after falling. No errand sends you after him in this world, but Unnatural Powers sends you after Ide beside him, so you will meet him there. The old Cullen watch captains call the camp he keeps the second watch: nothing comes out of the eastern marsh without passing it. Come in from the Alainn Binn side, and rest before you draw him: five of name on one island hit hard.",
   "yells": {
     "aggro": [
       "Three strokes! Strangers on the firm ground!",
@@ -62,28 +62,28 @@
   },
   "botLines": {
     "briefing": [
-      "donal is 50, captain of the cullen outlaws. [several named with him|ide and three more]",
-      "pull from the edges or bring cc",
-      "plain mobs, 80 sec respawns",
-      "not a quest target here"
+      "donal is captain of the cullen outlaws, wants our best. [four more with him|ide and three more]",
+      "draw from the edges or bring an enchanter for trances",
+      "the outlaws are plain fighters, back 80 sec after they drop",
+      "no quest wants him here"
     ],
     "aftermathWin": [
       "donal down. [the outlaws are leaderless|got him]",
-      "pulled singly. [worked|nice]",
+      "drew the outlaws one by one. [worked|nice]",
       "the cullen watch will shrug",
       "ide next"
     ],
     "aftermathLoss": [
-      "pulled the whole island. [five named|wipe]",
+      "drew the whole island. [five of them|all dead]",
       "heard the three strokes and [everyone came|oops]",
-      "cc broke",
-      "group too low"
+      "trance broke",
+      "group too green for the outlaws"
     ],
     "rumour": [
       "[heard|someone said] donal killed a man at the ardee muster and walked into the bog",
       "the cullen outlaws strike a cracked pot three times for strangers, like the watch bell",
       "[word is|heard] the cullen watch knows where donal is and never comes for him",
-      "the old watch captains call donal's camp the second watch"
+      "the old watch captains call the camp donal keeps the second watch"
     ]
   },
   "loremasterTopic": {

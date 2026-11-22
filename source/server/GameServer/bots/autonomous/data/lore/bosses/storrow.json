@@ -48,7 +48,7 @@
     }
   ],
   "story": "Below the upper city, down the long ways toward the lower halls, the morvalt keep a training ground, and the Valkyn say it is the reason the morvalt of Trollheim are not the morvalt of the surface. On the surface the morvalt fight as they always have, in a rush. In the training ground they are taught: spear-work by the spear masters, the trollkarl's craft by the wizards who teach it, and the order of a war-band by the old group-leaders who have led one. Over all of it stands Storrow.\n\nThe name is not a morvalt word and not a Fathers' word, and the trolls of Dyrfjall, who do not like it, say it means great and something, and leave it there. Storrow was a war-chief once, of the war-bands that swept across Aegir, and he is the one who decided, the Valkyn say, that a people who had taken the Fathers' city would need to fight like the Fathers' children if they meant to keep it. He made the training ground out of a Fathers' hall where the Uppat had trained their own wardens, and he has stood in it ever since, watching.\n\nHe does not fight in it himself. The trainers and the masters do that, and the young morvalt sent down to them, and a stranger who comes into the training ground is a test for them all. Storrow watches it as a smith watches a quench. If the test goes badly for his people, he steps in, and the Valkyn say he is something to see then: a morvalt who has outlived every war-chief of his age, broad and slow-seeming and very hard to wear down, whose eyes no shaman's fog will close because he has been watching the same floor too long to be blinded on it.\n\nThe Valkyn guides do not go down to the training ground, but they know it well. Every morvalt in Trollheim who has been there fights better for it, and every Valkyn who has died in the city in all the years of Midgard's companies has died, they say, to something Storrow taught. Trollkarl Bonchar's shamans were trained there before the Rift; the Valkyn say Storrow warned Bonchar against it, and was not heard, and has not spoken to the trollkarl since.",
-  "legend": "Storrow is a level 64 epic-class morvalt (GameEpicNPC: about 18,000 health, 1.5x damage, immune to confusion and nearsight) low in Trollheim, in a training ground with wizard trainers (64), spear masters (61) and a veteran group-leader (64). Storrow himself is PASSIVE and has no faction, but everything around him is aggressive and high level. Clear the trainers carefully, then decide if you want an 18k-health 64 that hits half again as hard as a normal one. No quest, no special abilities beyond the epic stats. If you just want the trainers, leave Storrow standing; he won't come to them. No quest needs him.",
+  "legend": "Storrow is a morvalt, a foe for several bands of the realm's best together, and one of the realm's great foes (he takes as much killing as about nine raiders he hits half again as hard as his kind, and nothing can confuse him or blur his sight), low in Trollheim, in a training ground with wizard trainers of his own strength, spear masters a little weaker and a veteran group-leader his match. Storrow himself never strikes first and answers to no one, but everything around him attacks on sight and is strong. Clear the trainers carefully, then decide if you want a great foe that takes so long to wear down and hits half again as hard as others of his kind. No quest, no special tricks beyond a great foe's strength. If you just want the trainers, leave Storrow standing; he won't come to them. No quest needs him.",
   "yells": {
     "aggro": [
       "So. You have been taught something. Show me.",
@@ -86,22 +86,22 @@
   },
   "botLines": {
     "briefing": [
-      "storrow is epic class, 18k hp, hits like a truck, passive though",
-      "trainers 64, spear masters 61, all aggro, clear carefully",
+      "storrow is one of the great ones, takes ages to wear down, hits like a falling wall, never strikes first though",
+      "trainers and spear masters are tough and attack on sight, clear carefully",
       "no confuse or ns on storrow",
       "do we even want him? hes no quest"
     ],
     "aftermathWin": [
-      "storrow down, that hp pool was huge",
+      "storrow down, he just would not wear down",
       "trainers first, then him, worked",
-      "epic npc but no tricks",
+      "a great one but no tricks",
       "the training ground is empty"
     ],
     "aftermathLoss": [
       "trainers chewed us before we even touched him",
-      "ran out of power on his hp",
-      "pulled two trainers",
-      "64 epic, too much for us"
+      "ran out of power before he wore down",
+      "drew two trainers",
+      "one of the great ones, too much for us"
     ],
     "rumour": [
       "storrow made the training ground that taught the morvalt to fight like the fathers children",

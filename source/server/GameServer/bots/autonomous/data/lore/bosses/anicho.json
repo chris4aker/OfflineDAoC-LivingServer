@@ -24,7 +24,7 @@
     }
   ],
   "story": "Anicho is young, for a hrimthursa. The rime giants of Tuscaran set a watch on Delling's north-eastern rim, the giants' watch that guards the way up to the glacier, and they put their young on it to be taught patience: a giant who has stood a winter on the rim looking down at Dellingstad's smoke is a giant who will not be in a hurry about anything again. Anicho has stood several. He is still in a hurry.\n\nThe cast-out sculptor of Tuscaran, who talks to Dellingstad's people more than any giant should, says Anicho asked to be sent to the outer watch the season the Icelords argued for war, because he wanted to be first. The Council sent him to the rim instead, with two guards to keep him there. He fights anything that climbs to him, gladly, because nothing else ever happens. The sculptor says he will make a fine Icelord one day, if he lives.",
-  "legend": "Anicho is a level 45 young hrimthursa on Delling's north-east rim with two hrimthursa guards (41-44). Hrimthursa faction. It's high up on the rim on the way toward Tuscaran. The two hrimthursa guards stand right with him. The rim is a long climb from the crater floor, so bring everyone you need before you go up. He's Hrimthursa faction like the guards; they're 41-44 and hit like giants. A group in the mid 40s is right. Good xp, and the view of Tuscaran's ice from up there is worth the climb.",
+  "legend": "Anicho is a young hrimthursa, a foe for a hardened band of veterans, on Delling's north-east rim with two hrimthursa guards of much the same strength or a little less. He stands with the Hrimthursa. It's high up on the rim on the way toward Tuscaran. The two hrimthursa guards stand right with him. The rim is a long climb from the crater floor, so bring everyone you need before you go up. He's Hrimthursa like the guards; they're nearly his match and hit like giants. A hardened band of veterans is right. The hunt teaches a good deal, and the view of Tuscaran's ice from up there is worth the climb.",
   "yells": {
     "aggro": [
       "At last! Something to fight!",
@@ -44,8 +44,8 @@
   },
   "botLines": {
     "briefing": [
-      "anicho is a 45 young giant on the north east rim of delling, two guards",
-      "hrimthursa faction"
+      "anicho is a hardened-band young giant on the north east rim of delling, two guards",
+      "hes hrimthursa, they stand together"
     ],
     "aftermathWin": [
       "anicho down",

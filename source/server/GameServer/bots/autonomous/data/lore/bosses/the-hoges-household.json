@@ -42,7 +42,7 @@
     }
   ],
   "story": "The Hoges farmed in the far west of the dales beside the old burying ground, which was a burying ground before there were colleges to bury anyone, and they held their land from the colleges by the year, and paid their tithe at midsummer to the colleges' reeve, who came out from Avalon with his book and his boy and his two mules. The custom of the dales was that the head of the house met the reeve at the gate and gave every name in the house, in order, so that he could write them down and tithe them; and Idonea Hoges, who was the head of that house in all but name, gave them better than anyone. Her own name first, as the one who kept the book of the house. Then her husband's, Hamon. Then her daughters', Eunice, Clarice and Sibyl, eldest to youngest.\n\nShe gives them still. Morgana's dead came through the western dales in the first summer of the war, out of the old burying ground itself, and the Hoges died in their house and their garden; and when the registrar of Fort Gwyntell came out to ask, years after, Idonea answered him across her own garden with the names in order, as if he were the reeve. He wrote them down. He did not go into the garden.\n\nEach of them keeps the house in their own way. Hamon was a hedger, and walks the line of the hedge he laid, a little apart from the house, as if he had just come in from it. Eunice, the eldest, keeps two places, the house and the far end of the garden by the gate, and is seen at both, and the households say she was courting and never decided. Clarice keeps at her mother's elbow, close enough to touch. Sibyl, the youngest, keeps a little behind, as the youngest does. None of them calls the others; each comes for a stranger who walks into their own part of the garden. But it is a small garden, and a stranger who walks in finds out how small.\n\nThe Priest of Arawn holds that the drakoran necromancer Beath keeps them in their house, and that they are the hardest of the dales' dead to speak to and to leave because Valnir Mordeth's larder lies to the north and their own burying ground is under their feet. The Hoges themselves say nothing about it. They give their names, in order, and the gate stays shut.",
-  "legend": "The Hoges household are five named ghosts (50 to 55) in their garden in the far west of the Dales of Devwy, by the old burying ground, with the Lindons' house about 1,300 south. All are aggressive from about 500 away. None has a faction, so nobody is called in, but they stand so close together (Clarice is 60 from Idonea, Sibyl 410, Hamon about 580, Eunice by the house and again at the far end) that walking into the garden pulls several. Pull from the outside: Hamon on his hedge line and the far Eunice first, then the rest one at a time, Idonea (55) last. No spells or styles in the data: melee ghosts, a group of fifties. Respawn about 80 seconds each, so keep moving. Valnir Mordeth's pit is well to the north; do not wander into it.",
+  "legend": "The Hoges household are five ghosts of note, each a foe for the realm's best, a full band of them, in their garden in the far west of the Dales of Devwy, by the old burying ground, with the Lindons' house about forty-odd paces south. All attack on sight from about seventeen paces away. None is sworn to anyone, so nobody is called in, but they stand so close together (Clarice is two paces from Idonea, Sibyl fourteen, Hamon about nineteen, Eunice by the house and again at the far end) that walking into the garden draws several. Draw from the outside: Hamon on his hedge line and the far Eunice first, then the rest one at a time, Idonea, the strongest of them, last. No spells or styles, by every account: melee ghosts, a band of the realm's best. Each rises again about eighty seconds after it falls, so keep moving. Valnir Mordeth's pit is well to the north; do not wander into it.",
   "yells": {
     "aggro": [
       "Idonea Hoges, of this house. Hamon. Eunice. Clarice. Sibyl.",
@@ -80,22 +80,22 @@
   },
   "botLines": {
     "briefing": [
-      "hoges house, 5 named ghosts 50-55 in the far west of the dales. all aggro at 500, all standing close",
-      "no faction, nobody gets called, but walking in pulls 3 or 4. pull from the outside",
-      "hamon on the hedge and the far eunice first, idonea is 55, last",
-      "80 sec respawns, keep moving. valnir's pit is north, dont wander up there"
+      "hoges house, five ghosts in the far west of the dales, each a match for our best. all come at you from 17 paces, all standing close",
+      "sworn to nobody, nobody gets called, but walking in draws three or four. draw from the outside",
+      "hamon on the hedge and the far eunice first, idonea is the strongest, last",
+      "back 80 sec after they fall, keep moving. valnir's pit is north, dont wander up there"
     ],
     "aftermathWin": [
       "hoges cleared. idonea read us the whole list again",
-      "pulled from the outside, worked",
-      "80 sec respawns though, go",
+      "drew from the outside, worked",
+      "back in 80 sec though, go",
       "the lindons are next door if you want more"
     ],
     "aftermathLoss": [
       "walked straight into the garden, got all five",
       "forgot eunice has two spots",
       "wandered north into valnir's larder after",
-      "the respawns caught up with us"
+      "the ones we killed first came back and caught up with us"
     ],
     "rumour": [
       "[heard|someone said] idonea hoges gives every name in her house in order like you were the tithe reeve",

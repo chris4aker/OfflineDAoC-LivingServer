@@ -8,6 +8,167 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.1 (in development)
+
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
+or run where it was written; CI on pull request #398 is the first build.
+
+**Bots and companions**
+- **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
+  "You must select a target for this spell!". A resurrection cast with nothing dead selected now goes to a dead bot of
+  your realm in range: the one you named with `/target <name>`, otherwise one from your group, otherwise the nearest. A
+  line says who it goes to. Companions, hired companions and gamebots alike. Their bodies still can't be clicked there.
+- **Bots fall when they die in the original client.** A companion, hired companion or gamebot now falls and lies like a
+  monster's corpse instead of standing at zero health. Raised, it gets up where it lay; released, it appears at its bind
+  point with no second body left behind (the 2026-10-30 bug came from a corpse left at release, and nothing is sent at
+  the death spot now). The new client already showed the fall and gets exactly what it got before: the server tells
+  the clients apart by the build in their first packet (`CLIENT_HANDSHAKE ... client=original|new-or-unknown`).
+  Setting `bot_death_animation` ("Bots fall when they die" in the launcher), on by default; off, every packet is as
+  before. GM check: `/lstest deathanim [raise|release|off]` on a targeted bot lists each packet sent or held.
+- **Hired companions join at your level** instead of level 5, with their spec points spent in their class's build
+  (respec stays free) and, above level 5, plain merchant armour, a weapon and a shield where their class carries one.
+  Companions hired on 1.2 catch up once, the next time they come to you: they keep their gear, bag, coin, realm points
+  and trained lines, spend only their new points, and get basic gear only in empty slots. Their training weapon counts
+  as empty and is swapped for a merchant weapon. Gear that can't be found is tried again at the next summon. Log lines:
+  `HIRED_COMPANION_RAISED`, `HIRED_COMPANION_TRAINED`, `HIRED_COMPANION_GEAR_RETRIED`.
+- **Training hired companions (#397).** `/hire train` reads line names: `/hire train 1 smite`, `/hire train 1 mind
+  twisting`, or the start of a name, with an optional level to train to (`/hire train 1 smite 10`). Line numbers still
+  work, and an unclear line lists the companion's lines and what to type. The trainer window shows the next skill to
+  train at the top of each line, so it no longer slides below the window.
+- **Companion names.** The names the hire window suggests no longer include the lore's own heroes: Gareth, Isolde,
+  Diarmuid and Deirdre gave way to Dinadan, Lynette, Loegaire and Fand (owner: lesser legend names are fine, the lore's
+  are not). Companions already hired keep their names.
+
+- **No pet cap for players** (owner 2026-11-21). An Animist can place as many turrets as power and casting allow (the
+  cap of 12 per player and 10 in one spot no longer applies to players), and a Theurgist's pets have no cap either.
+  Companions and gamebots keep their limits.
+
+- **Bot parties take one more on the way (#423).** A bot party that has set off with a seat free looks for the role it
+  lacks (healer, else tank, else damage) two minutes after leaving and then every ten minutes, for five minutes each
+  time: a fitting free gamebot, or you by /lfg or a tell. Its "lfm" in /lfg is true again (`BOT_LED_RECRUIT ...
+  kind=open_seat`). Raid, RvR and regrouping parties never do this.
+- A click on a bot is logged (`PLAYER_CLICK_TARGET ... result=`), so a click that doesn't select one can be traced
+  (#424; no server-side cause found, no gameplay change).
+
+**Rewards and loot**
+- **Enemy gamebot kills give experience (#396).** They only ever paid realm points. A kill now pays what a player kill
+  pays: experience for a player of its level (shared by damage, capped at 125% of your own worth, with the keep bonus)
+  and, outside battlegrounds, bounty points. A bot killed again within five minutes is still worth nothing.
+- **Named drops in gamebot-led groups.** A kill you finished in a group a gamebot leads dropped none of the monster's
+  template loot (coin and random items still dropped). It drops again.
+- **Uthgard's drop tables** (owner 2026-11-21). A new tool, `source/tools/uthgard_drops_content.py`, adds the classic-era
+  drops measured on Uthgard (hides, teeth, gems, vendor loot, period gear) to monsters that have no loot of their own,
+  at Uthgard's rates (whole percents; rarer than 0.5% rounds up to 1%). Monsters with their own drops keep them, and
+  random magic items and coin drop as before. `build_release_037.py --uthgard-drops <pipeline data>` puts them in the
+  release world, and the update carries them to existing worlds. The pipeline data is not in Git, so this runs on the
+  owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the real world yet.
+- Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
+  debug level.
+
+**Crafting (#422)**
+- **A piece you ordered from a crafter bot is handed over.** The hand-over ran only at the very edges of the crafter's
+  break, where the code saw no break, so a made commission was never handed over or announced and lapsed after six
+  hours. Now, while the break lasts, the crafter opens the trade if you are near or tells you once where to collect it
+  (`ECON_PLAYER_ORDER outcome="ready_told"`, `"handover_tried"`).
+- A stock trade window that can't open makes the crafter say why and keeps the deal (`outcome="stock_trade_failed"
+  why=`); a bot never takes a trade hold for a player who is already trading.
+- `ECON_INDEX` gains `craftedListed20`, the crafted bot listings of level 20 and up, to show whether sellable work
+  reaches the Exchange.
+
+**Bosses**
+- **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
+  the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
+  advice tells all three windows.
+
+**RvR and travel**
+- Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
+- Gamebots that logged out beside another realm's frontier keep log in at their capital, as players do
+  (`AUTONOMOUS_POSITION_RECOVERY reason="saved beside the enemy keep ..."`).
+- A keep defence with no defenders left stands down (`RVR_DEFENSE_MUSTER_EMPTY`) instead of marching empty.
+- A GM's `/jump` into an enemy keep's area is no longer sent to the bind point.
+- **Battleground keep lords take damage from the storm (#416).** A keep lord takes no damage from anyone more than 400
+  away, but stormers struck him from up to 900, so casters, archers and healers in his room did nothing. They now
+  strike him only from within 350 and walk in otherwise (`BG_RALLY_STATUS inLordReach=`). Keep, guard and lord
+  levels are unchanged.
+- **Frontier sieges too.** Frontier attackers picked an exposed keep or tower lord from up to 5,000 away and stood
+  there, and an ungrouped caster stepped back from a rooted lord out of his reach. Attackers now walk to within 350 of
+  a keep lord or 250 of a tower lord before striking, and never step back from a lord (`RVR_LORD_STEP_IN`).
+- **Roaming eight-man groups find fights (#417).** Their patrols now favour the parts of the frontier where enemy RvR
+  bots are, and an eight follows the planner's hunt of an enemy group within 10,000 in its own region instead of
+  patrolling past it (`RVR_ROAM_CHASE`, `RVR_ROAM_CIRCUIT enemiesNear=`).
+- **Frontier porters (#418).** A gamebot without a medallion picked the nearest porter by straight line and, where no
+  medallion merchant stood beside it, gave up every turn until the 15-minute watchdog moved it. Bots now go to the
+  nearest porter that sells their medallion, and a wait past 5 minutes logs `RVR_FRONTIER_WAIT_LONG` with what held
+  the bot (checker row `rvr/porter_wait`).
+- The log checker's regroup row shows how far each regroup call spread (#419; the relay itself is unchanged: 9a173f4's
+  17.4% is under the owner's 20% bar of 2026-11-19).
+- Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
+
+**Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
+in the server, the launcher's defaults and Recommended, the shipped world and Setup. A world that ran 1.2 with the
+untouched real-clock default moves to off once (`Living Server 1.2.1: bot_schedule_mode set to the new default off`);
+a schedule chosen in the launcher is kept. Settings upgrades now apply in order, so a 1.1.4 world also ends on off.
+Bots' breaks are a separate setting and stay on.
+
+**Chat, targeting and the launcher**
+- **/faction quiet minutes** fill back to about 5 lines, judged over the same 60 seconds as the cap of 7, which still
+  holds.
+- **`/target`** finds a nearby NPC for a player (Caer Caledon's guards), not only for a GM.
+- The launcher's chat setting reads "HOW MUCH BOTS TALK", as the docs.
+
+**Stability**
+- The casting line-of-sight check treats a client it can't ask as no check, instead of leaving a gap behind 1.2's null
+  guard.
+- A packet queued while its queue is drained waits instead of raising "DrainTo in progress".
+- The missing stock merchant item templates at start-up are one warning with a count; the rows are at debug level.
+
+**Lore** (owner decisions in [docs/1.2.1/HEROES.md](docs/1.2.1/HEROES.md); review in
+[docs/1.2.1/REVIEW-COMPANIONS-2.md](docs/1.2.1/REVIEW-COMPANIONS-2.md))
+- The clean-up, provenance, flagship and folklore-hero passes merged into `integration/1.2.1` earlier (#378-#391).
+- Legend companions, second pass: Albion (Tristan, Lancelot and the Round Table in Lyonesse, Cornwall, Camelot, Avalon
+  Marsh, Morgana and the Shade of Uther), Midgard (Starkad, Ragnar's sons and Beowulf in Gotar, the Cursed Tomb,
+  Varulvhamn, Mahattava, Malmohus, East Svealand and Jordheim) and Hibernia (Ferdiad and Láeg at Ardee, Scáthach,
+  the Red Branch and Deirdre, Medb and Fergus, Mac Dathó's feast at Ailbe). Nothing was cut. An independent review
+  checked the myth facts against their sources and fixed what it found, including Saint Patrick taken out of
+  Hibernia's Oisín lore.
+- Third pass (deepening, HANDOFF 1.5; review in [docs/1.2.1/REVIEW-THIRD-PASS.md](docs/1.2.1/REVIEW-THIRD-PASS.md)):
+  Albion's six epic places, the Shrouded Isles and five thin bosses, and King Mark made Duke Marcus's son; the neutral
+  proving fields (Caledonia, Abermenai, Thidranki, Murdaigean), Luso, six Midgard bosses and three saga-voice chapters;
+  Hibernia's Blight, the Cursed Forest and fourteen thin bosses from the Mythological, Ulster and Fenian cycles. Nothing
+  was cut. Caer Sidi's toll now agrees in every telling: sixty-seven of eighty came home.
+- **No real companies and nothing that breaks the fourth wall** (owner 2026-11-21; #399, review in
+  [docs/1.2.1/REVIEW-FOURTH-WALL.md](docs/1.2.1/REVIEW-FOURTH-WALL.md)). About 860 player-visible lines that named
+  real companies, sites, patches, years or game software are reworded in-world, with nothing cut; real sources stay in
+  the facts' hidden source notes. `tools/lore/fourth_wall.py` makes CI fail if they come back. Seven fight tips that
+  the bosses' own rules contradicted now match them (Saeor, Asmoien, Ba'alorien, Sys'sro, the afanc, Oona, Oro,
+  Krevo). The companion-name check covers every legend the lore tells of (#400), and the Avalon City summary is new
+  writing (#401).
+- **Fight advice in-world** (owner 2026-11-21, "Rewrite that"). Every boss's legend ("What the raid leaders say") and
+  its bot lines are rewritten without game terms, about 3,800 strings across all 578 bosses: strength as a tier ("a foe
+  for the realm's best, a full band of them"), distance in paces, damage as a share of a robed caster's strength,
+  health as "as much killing as N raiders", times exact. Independent reviews per realm
+  ([Albion](docs/1.2.1/REVIEW-LEGENDS-ALBION.md), [Midgard](docs/1.2.1/REVIEW-LEGENDS-MIDGARD.md),
+  [Hibernia](docs/1.2.1/REVIEW-LEGENDS-HIBERNIA.md)) checked over 300 tips against the bosses' code and fixed every
+  one that was wrong, many older than this pass: throws, jails and cold heals that ship on but were told as off
+  (Hurika, Hakr, Vifil, Kvasir, Easmarach, Spindler, Legion), missing mechanics (Golestandt, Cuuldurach, Gjalpinulva,
+  Xanxicar, Maldahar), and wrong numbers (Xanxicar's stomp lands seven seconds after his bellow). Stories that
+  contradicted the mechanics now tell how the favour came back, with nothing cut. The lore lint now checks every
+  visible field for game terms (`tools/lore/fourth_wall.py`).
+- **Place lore and bot lines in-world too.** The last 1,756 game terms (levels, numbers, "faction", "zone", "epic",
+  "named", teleporters, battleground level ranges) are reworded on the same standard; a place's level range now says
+  who it suits ("hunting for seasoned bands"). One wording each across the realms: keeps "built up N courses of the
+  ten", named foes "foes of name". The loremaster topics "epics" are now "great quests". The Bane of Hope throws again
+  in every telling, as its code does, and Vagdush plants his own feet rather than rooting you (review in
+  [docs/1.2.1/REVIEW-GAME-TERMS.md](docs/1.2.1/REVIEW-GAME-TERMS.md)). The lint is now strict: a game term in any
+  player-visible lore fails CI. `tools/lore/schema_mirror.py` runs the C# lore schema checks without dotnet.
+
+**Linux** (merged to main): the launcher's tooltip bleed-through and alt-tab crash under Wine (#393; Windows unchanged)
+and the Linux start script that installs launcher updates and keeps the game fullscreen (#395). Neither has run under
+Wine since the review changes.
+
+**Not a change:** #209 (Crownfire Lance, Pendragon Sovereign): that class and spell are not part of Living Server. #34
+(new-client hotbars, Stealth, SELL): already in 1.2's new-client script patches.
+
 ## RvR route traps from the PC log of build 43c43aa: the Cruachan Gorge seam, Odin's Gate muster posts, no exterior route, the rally-delay false alarm, a casting crash (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `43c43aa` (2026-11-19 13:20-14:22, restart 13:40:58; `DIAG-43c-rally`). Owner: "Fix

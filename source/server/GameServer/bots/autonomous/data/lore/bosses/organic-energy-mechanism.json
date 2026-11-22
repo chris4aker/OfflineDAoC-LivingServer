@@ -22,7 +22,7 @@
     }
   ],
   "story": "Deep in the hollow something beats, and somebody made it. That is what frightens the Sylvan most. Everything else in the hollow grew, or was bent, or went bad; the mechanism looks built. It is a knot of root and stone and wet tissue in a chamber of its own, and it beats, slow as a heart, and with each beat the sap of the isle, the world soul as the Sylvan call it, moves through the galleries of Galladoria. The Sylvan believe the Root grew it to a purpose, the way a tree grows a seed to a purpose. The first Hibernians to see it called it a mechanism because they had no better word.\n\nIt wears the world soul as armour, so that every blow on it is paid back. Every few heartbeats it calls the bottom feeders up out of the pools to clean what it kills. When it singles out a foe, the foe sickens visibly, and a moment later the essence bursts out of him over everyone near. It saps the strength of those who fight it and slows their feet. It is not angry. It is doing its work. Its work is the Root's blood, and the Conservator downstream hoards what it pumps.\n\nThe mechanism is the one thing in the hollow that looks made, the heart that pumps the world soul to the Conservator's purse; Cronán of Bri Leith named it, and the warden Feidhlim's death taught the realm to call the sickening.",
-  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it resets. The mechanism fight rewards discipline: one person calls the sickly mark, the marked one leaves at once, the AoE classes keep the feeders down, melee rotates against the shield. Keep the fight going or it resets. Old hands call it the heart and count its beats to time the feeders: every tenth beat, more come. Kill the heart and the whole hollow goes quiet for a moment, they say.",
+  "legend": "Kill the bottom feeders as they come or they pile up. Melee takes damage back from its shield: rotate and heal. When someone 'looks sickly', they run away from the group before it erupts. Keep the fight going or it is whole again. The mechanism fight rewards discipline: one person calls the sickly mark, the marked one leaves at once, those with blasts that strike all around keep the feeders down, melee rotates against the shield. Keep the fight going or it heals whole and goes home. Old hands call it the heart and count its beats to time the feeders: every tenth beat, more come. Kill the heart and the whole hollow goes quiet for a moment, they say.",
   "yells": {
     "aggro": [
       "The beat in the stone quickens.",
@@ -62,7 +62,7 @@
   },
   "botLines": {
     "briefing": [
-      "mechanism spawns bottom feeders every few seconds, [kill them as they come|aoe them]. if youre marked sickly, run out",
+      "mechanism calls bottom feeders every ten seconds, [kill them as they come|blast them]. if youre marked sickly, run out",
       "if youre marked sickly [run away from the group|get out] right now",
       "melee rotate, it has a big damage shield. [swap|dont sit on it]",
       "call the sickly mark on voice, [one caller|i will call it]"
@@ -70,17 +70,17 @@
     "aftermathWin": [
       "the heart stopped. [the whole cave went quiet|you could hear it]",
       "the heart stopped. [you could hear the whole cave go quiet|silence]",
-      "nobody popped in the group this time. [well run|grats]",
+      "nobody burst in the group this time. [well run|grats]",
       "feeders down, heart down. [conservator next|on to the pool]"
     ],
     "aftermathLoss": [
-      "the sickly guy ran into the healers [instead of away|and popped]",
-      "the marked guy ran into the healers and [popped|took them all]",
-      "feeders piled up while we hit the heart. [aoe them|kill feeders]",
+      "the sickly guy ran into the healers [instead of away|and burst]",
+      "the marked guy ran into the healers and [burst|took them all]",
+      "feeders piled up while we hit the heart. [blast them|kill feeders]",
       "melee sat on the shield and [died|burned out]"
     ],
     "rumour": [
-      "[heard|swear] you can hear the mechanism beating from the galladoria entrance when the zone is quiet",
+      "[heard|swear] you can hear the mechanism beating from the galladoria entrance when the hollow is quiet",
       "[heard|someone said] the sylvan think the root grew the mechanism on purpose, like a seed",
       "[word is|heard] you can hear it beating from the entrance on a still night",
       "the conservator hoards whatever the mechanism pumps, they say"

@@ -6,7 +6,7 @@
   "realm": "Albion",
   "facts": [
     {
-      "text": "Level 72-75, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800. Only on damage from a GamePlayer: 10% the attacker is moved to his position 400 units up; 15% a 'forgoten ghost' (level 62-64, 4,000 health) appears if none is alive.",
+      "text": "Level 72-75, 30,000 health, GetResist 20 melee / 30 other, CC immune, tether 3,800. On damage from any raider (EncounterTargets.IsRaider: a player or any bot): 10% the attacker is moved to his position 400 units up (bots too: AllowBotDisplacement ships on for KrevoRicik); 15% a 'forgoten ghost' (level 62-64, 4,000 health) appears if none is alive.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs"
     },
@@ -22,7 +22,7 @@
     }
   ],
   "story": "In the Undercroft Krevo Ricik was the runt the young ogres threw up the air-shafts for sport; he learned to land and nothing else, and ricik, the ghosts think, means the one who lands. In Krondon he found the dead, whom the other ogres walk through without seeing. He saw them, shouted at one, and saw it flinch: the first thing in his life that was afraid of him. Orylle gave him no title and let him have the passage where the ghosts were thickest, to keep him away from Wynflaed.\n\nThat passage, the ghost walk, holds the doors of the forgotten: the hall-folk whose titles were never read aloud at their burial, the drowned, the lost, the many who died when no one was left to read. Krevo puts his fist into the wall and drags a forgotten ghost out of the stone and sets it on whoever has struck him; he can hold only one at a time. And the dead cannot bear to be held: a nameless ghost held outside its wall swells with fear for about as long as a man can hold his breath, then bursts and throws the stone of the passage about like a cask of pitch.\n\nHe does to men what the seams did to him, and to the ones who hurt him: now and then a man who has wounded him is in the air above the ogre's head, wherever he stood when he struck, an archer at the far end of the walk as surely as a knight, and then on the floor. Krevo laughs while they fall. The young ogres fear him; Orylle has never sent for him.\n\nThe first company to kill him came for the men the knight-commander of the Isle of Glass lost on his first descent. Sir Elgan of the Isle of Glass, brother of one of them, found them at the foot of the walls. His company got up quickly after each throw, and killed each dragged ghost fast or ran from it before it swelled, while the forgotten whispered warnings through the stone. His priest read the titles and the lost men's names aloud, badly; three ghosts went back into their walls with a name.",
-  "legend": "Krevo is level 72 to 75 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether, a plain melee brute with two tricks, and both trigger on hits from anyone, bots included. Each time anyone damages him, melee or spell, there is a 10% chance the hitter is yanked onto Krevo's spot 400 units up and falls, and a 15% chance he drags a forgotten ghost out of the wall (level 62 to 64, 4,000 health), only one at a time. A ghost that is still alive 30 seconds after it appears explodes for 800 matter in a 700 radius and dies. Kill each ghost fast or get 700 away from it. Bots hitting him trigger both, so a bot raid on him sees plenty of ghosts and throws. Ghosts die when he dies. The old hands still read a title on a ghost door aloud before they leave the ghost walk.",
+  "legend": "Krevo is a foe for a war party of the realm's champions, as much killing as fifteen raiders; nothing mesmerizes, holds or dazes him, blades lose a fifth against him and everything else three parts in ten, and he follows no farther than about a hundred and twenty-five paces from his spot: a plain melee brute with two tricks, and both are set off by hits from anyone, companions and the realm's adventurers included. Each time anyone wounds him, melee or spell, there is a one-in-ten chance the hitter is yanked onto Krevo's spot about thirteen paces up and falls, and a three-in-twenty chance he drags a forgotten ghost out of the wall (a foe for several bands of the realm's best together, as hard to bring down as two raiders), only one at a time. A ghost that is still alive thirty seconds after it appears explodes, a blast worth four-fifths of a robed caster's strength on everyone within about twenty-three paces, and dies. Kill each ghost fast or get twenty-three paces away from it. Companions and the realm's adventurers hitting him set off both, so a raid of them on him sees plenty of ghosts and throws. Ghosts die when he dies. The old hands still read a title on a ghost door aloud before they leave the ghost walk.",
   "yells": {
     "aggro": [
       "Up you go!",
@@ -60,22 +60,22 @@
   },
   "botLines": {
     "briefing": [
-      "krevo throws or calls ghosts when anyone hits him. bots hitting him trigger nothing",
-      "a ghost explodes 30 sec after it shows up, 800 matter 700 radius. kill it fast or run",
-      "one ghost at a time, off tank grabs it and burns it",
-      "if you get thrown you land on krevo from 400 up, heal and get back to your spot"
+      "krevo throws or calls ghosts when anyone hits him. companions hitting him set it off too",
+      "a ghost explodes 30 sec after it shows up, four fifths of a robed caster, 23 paces round. kill it fast or run",
+      "one ghost at a time, a second shield grabs it and burns it",
+      "if you get thrown you land on krevo from 13 paces up, heal and get back to your spot"
     ],
     "aftermathWin": [
       "krevo down, the ghosts can rest",
-      "landed every throw. gg",
+      "landed every throw. well fought",
       "the ghosts went back in the walls",
       "nobody died to a fall"
     ],
     "aftermathLoss": [
       "the ghost sat there 30 sec and blew up on the healers",
-      "i kept nuking him and he kept yanking me onto his head",
+      "i kept blasting him and he kept yanking me onto his head",
       "nobody picked up the ghost",
-      "ran him past his tether and he walked home full"
+      "ran him too far from his spot and he walked home full"
     ],
     "rumour": [
       "heard krevo ricik in krondon bullies the ghosts into fighting for him",

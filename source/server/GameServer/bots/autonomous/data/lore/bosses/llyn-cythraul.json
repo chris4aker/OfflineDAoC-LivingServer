@@ -29,7 +29,7 @@
     }
   ],
   "story": "Barfog's lake has a door in it, the hill-folk say, that the lady's cattle left open when they went back under the water, and a great many things came up through it to graze: Arawn's hounds, the cythraul that walk as skeletons, the bwgan of the nursery. The lake's own devil came up last and has never left the water.\n\nIt was a wyvern once, the hunters of Barfog say, a big one, older than the lake, and it drowned when the valley filled, and what came up through the door was what was left of it: pale, huge, cold, a dragon's shape made of water that has forgotten how to be water. It swims in the shallows south-west of the village, slow, round and round, and it does not come out. The children of Barfog are told it is the lake's devil, and that it is only waiting; they go to the water's edge in pairs and never in the evening.\n\nIt has never once come for anyone who left it alone. The hunter Cab'ah Bint Tabat, who has come a long way to hunt it, says that is because it is not hungry. It is guarding something. Twr ap Alsig, who speaks for the village, says the door, and that he would rather Camelot found out what the renegades are for before anyone asks the devil what is behind it.",
-  "legend": "Llyn Cythraul, level 41, a huge ghost wyvern swimming in Llyn Barfog's lake south-west of the merchant building. Aggro 0, it never attacks first. Plain melee, no spells. You fight it in the water, so casters want to stand on the shore and melee will be swimming. Secret Orders needs it dead for Cab'ah Bint Tabat. Respawn about 80 seconds.",
+  "legend": "Llyn Cythraul, a huge ghost wyvern and a foe for a hardened band of veterans, swimming in Llyn Barfog's lake south-west of the merchant building. It never attacks first. Plain melee, no spells. You fight it in the water, so casters want to stand on the shore and melee will be swimming. Secret Orders needs it dead for Cab'ah Bint Tabat. It rises again about eighty seconds after it falls.",
   "yells": {
     "aggro": [
       "The door is not yours.",
@@ -53,7 +53,7 @@
   },
   "botLines": {
     "briefing": [
-      "llyn cythraul in the barfog lake se of the merchants, never aggros, you start it",
+      "llyn cythraul in the barfog lake se of the merchants, never attacks, you start it",
       "melee in the water, casters on the shore"
     ],
     "aftermathWin": [

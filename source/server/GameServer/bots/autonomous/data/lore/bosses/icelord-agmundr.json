@@ -74,7 +74,7 @@
       "text": "Vaka's casting is still on the ice of the western watch. The runemasters of Jordheim who have read it say it is an ordinary seer's casting in the giants' own marks: strangers on the western road; few; tired; no threat. Below it, cut deeper and in a different hand, the same seer has added a line after the fact. The runes do not lie, it says, but they do not say when.\n\nThe runemasters argue about what she meant. One account is that she meant the threat had not come yet: that Bergljot's hundred were indeed no threat to the western watch, and that the threat was something else, still coming. The cast-out sculptors prefer a simpler reading. They say Vaka meant that strangers are few and tired when they arrive and many and rested when they leave, because they come back, and back, and the runes cannot see that far.\n\nAgmundr has never read the second line, the sculptors say. He still believes his seer. He still greets every stranger at the head of the western road with the same courtesy, and tells them that he has asked for no help because they are no threat. His household still comes running anyway. The Valkyn guides say that is the whole of Agmundr: an honest giant who has never once been told the truth by the one he trusts.\n\nHe dies saying the strangers came a long way only to meet a terrible death. The companies who have heard it say he sounds puzzled, as if he were reading it off the ice."
     }
   ],
-  "legend": "Agmundr is a pack pull, and it's worse than it looks: the moment he's engaged, his six hrimthursa (a depredator, two icespines, two icetouch and one more) come from wherever they are in the area and run at your raid at speed 300 with no tether, so they arrive fast and won't reset if you back off. Clear the halls of the western watch first if you can, or plan the pack before you touch him: crowd control isn't wasted on the household, and keep the icetouch off the healers. Agmundr himself has 100,000 health and is CC-immune, and on some of his attacks he drops a 650 cold blast in a 500 radius round his target, so nobody but the tank stands near the tank. His boast that he asked for no reinforcements is a lie: they always come. Rest and rebuff before the pull; raids arrive tired from Fornfrusenen, and more of them die here than at the throne.",
+  "legend": "Agmundr is a whole household to draw at once, and it's worse than it looks: the moment he's engaged, his six hrimthursa (a depredator, two icespines, two icetouch and one more) come from wherever they are in the area and run at your raid faster than a man can run, and they never turn home, so they arrive fast and won't go back if you back off. Clear the halls of the western watch first if you can, or plan the household before you touch him: trances, stuns and holds aren't wasted on the household, and keep the icetouch off the healers. Agmundr takes as much killing as fifty raiders, no charm or stun holds him, and he is a foe for a war party of the realm's champions; on some of his attacks he drops a cold blast worth two-thirds of a robed caster's strength on everyone within about seventeen paces of his target, so nobody but his shield-bearer stands near his shield-bearer. His boast that he asked for no reinforcements is a lie: they always come. Rest and renew the blessings before you draw him; raids arrive tired from Fornfrusenen, and more of them die here than at the throne.",
   "yells": {
     "aggro": [
       "My seer told me you would come. She said you were no threat.",
@@ -124,13 +124,13 @@
   },
   "botLines": {
     "briefing": [
-      "agmundr comes with six giants. [cc|mez] the seer, kill the icetouch first",
+      "agmundr comes with six giants. [stun|entrance] the seer, kill the icetouch first",
       "spread for agmundr's blast, its a big circle",
       "rest up before agmundr, we come off fornfrusenen tired",
-      "tank the depredator and icespines away from the healers",
-      "agmundrs whole household runs in from the area the second you touch him, fast and no tether",
+      "hold the depredator and icespines away from the healers",
+      "agmundrs whole household runs in from the area the second you touch him, fast, and they never turn home",
       "clear the western watch before agmundr if you can",
-      "his cold blast is 500 round the tank, everyone else off the tank",
+      "his cold blast hits everyone near his shield-bearer, everyone else off the shield-bearer",
       "he says he asked for no reinforcements. he lies, they always come"
     ],
     "aftermathWin": [
@@ -143,12 +143,12 @@
       "past agmundr, kula next"
     ],
     "aftermathLoss": [
-      "wiped at agmundr again. the adds were too much",
+      "all of us down at agmundr again. the household was too much",
       "agmundr again. [every time|this guy]",
       "the icetouch got to the healers",
       "the blast hit everyone because we stacked",
-      "the household ran in faster than we could cc",
-      "backed off to reset and the adds just followed us"
+      "the household ran in faster than we could stun or entrance them",
+      "backed off to make him go home and the household just followed us"
     ],
     "rumour": [
       "heard agmundr didnt even call for backup because his seer said we're harmless. [rude|fair enough]",

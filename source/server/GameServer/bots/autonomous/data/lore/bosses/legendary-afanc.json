@@ -14,7 +14,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
     },
     {
-      "text": "Every 25-45 s while it fights, one random raider within 2,500, bots included, is moved to 451486, 393503 on the shore and takes a fifth of their maximum health as falling damage (Disciple classes take none). Bots are not thrown.",
+      "text": "Every 25-45 s while it fights, one random raider within 2,500 (a player or a bot: AllowBotDisplacement ships on for LegendaryAfanc in EpicEncounterMechanics) is moved to 451486, 393503 on the shore and takes a fifth of their maximum health as falling damage (Disciple classes take none). A thrown bot walks back.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs"
     },
@@ -40,7 +40,7 @@
     }
   ],
   "story": "The afanc Arthur dragged out of Llyn Barfog was not the last. She is as old as Arthur's day: its mate, or its mother, or its elder, the old men cannot agree, who went down into the deep places under the lake when Arthur's mare hauled her kin ashore, and who has come back up now to tend her young. The old men of Barfog call her the Legendary Afanc to tell her from the one in the song. She is bigger than the one Arthur took.\n\nShe remembers the chain. The old men are sure of that, because of what she does. When anyone comes into her water to fight her, she does to them what was done to her kin: she takes one of them, not always the one who struck her, and hauls him out and flings him up onto the shore, and he comes down hard by the hoofprint stone where Arthur's mare dug in to drag the first afanc ashore. The fall breaks what it breaks. She does it again and again, as long as anyone stands in her water, and she picks a new man as often as not. Siemus the tracker says she is showing them the stone. Twr ap Alsig says she is only throwing them as far as she can, and the stone happens to be there.\n\nHer young come with her. They swim up out of the reeds, small and quick and many, a few at a time and then a few more, all the while she fights, and they go back into the reeds when she is still again. The children of Barfog are told not to swim at dusk, when the young are about. The children of Barfog swim at dusk anyway, and the afanc, who has never once taken a child of the village, lets them.\n\nShe does not want to leave the lake. She wants everyone else to. The lady who called her cattle home left the door open, the old men say, and since the afanc came back she has been the one thing on the lake guarding it; the trouble is that she cannot tell a man come to shut the door from a man come to go through it, and does not try.",
-  "legend": "The Legendary Afanc, level 70, 30k, in the lake at Llyn Barfog. Every 25 to 45 seconds it picks a random player within 2,500 (anyone, not only its target) and throws them to the shore by the hoofprint stone, for a fifth of their max health in falling damage. The thrown player gets healed and walks back. Bots are not thrown today, but the engineers may change that, so keep everyone topped. Every 15 to 35 seconds it calls 2 to 5 small minions (38-45) that come in fast: area damage or a pet tank handles them, and they die with the afanc. It cannot be mezzed or stunned. Healers on dry land. A wipe resets it to full and clears the minions; it respawns about an hour after death.",
+  "legend": "The Legendary Afanc, a foe for a war party of the realm's champions and as much killing as fifteen raiders, in the lake at Llyn Barfog. Every twenty-five to forty-five seconds it picks a random raider within about eighty paces (anyone, not only the one it is fighting) and throws them to the shore by the hoofprint stone, and the fall takes a fifth of their whole strength. The thrown raider gets healed and walks back. Companions and the realm's other adventurers are thrown as well as you, and they walk back the same way, so keep everyone healed up. Every fifteen to thirty-five seconds it calls two to five small minions, each a foe for a hardened band of veterans, that come in fast: spells that strike many at once or a summoned beast to hold them handles them, and they die with the afanc. It cannot be mesmerized or dazed. Healers on dry land. If every raider falls it goes home whole and the minions vanish; it returns about an hour after death.",
   "yells": {
     "aggro": [
       "The water heaves. Something rises.",
@@ -78,10 +78,10 @@
   },
   "botLines": {
     "briefing": [
-      "afanc, 70, 30k. every 25-45 sec it throws a random player to the shore for 20% of their hp",
+      "afanc, champions' war party job, killing of 15 of us. every 25-45 sec it throws a random raider to the shore, fall takes a fifth of you",
       "thrown people get healed and walk back. dont panic, dont run off",
-      "2-5 small minions every 15-35 sec, aoe or pets on them. they die with it",
-      "healers on dry land, everyone topped, it cant be mezzed or stunned"
+      "two to five small minions every 15-35 sec, burst spells or pets on them. they die with it",
+      "healers on dry land, everyone healed up, it cant be mesmerized or dazed"
     ],
     "aftermathWin": [
       "the afanc is dead. arthur would be proud",
@@ -90,7 +90,7 @@
       "the young went back into the reeds. done"
     ],
     "aftermathLoss": [
-      "got thrown at 20% health and the fall finished me",
+      "got thrown when i was down to a fifth and the fall finished me",
       "minions piled on the healers",
       "everyone got thrown at once it felt like",
       "tried to fight it from the water, bad idea"

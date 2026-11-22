@@ -22,7 +22,7 @@
     }
   ],
   "story": "Balor keeps two warlords, and Norsob is the one he sends when there is nothing to be kept. Annihilator is not a boast; it is a job. The Sylvan remember the village. It stood at the edge of the Vale, and it sheltered three Sylvan scouts who had spied on the tower, and when Balor heard of it he sent Norsob. There is a clearing there now, with nothing in it, not even ash. That is what annihilator means in Tur Suil.\n\nHe is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: no chasing, no ground given, and beyond the hall's edge nothing reaches him. His skin turns part of every blow, spells worse than steel. He despises Sargan, who conquers instead of destroying, who keeps banners and prisoners and taxes, and who named the soldiers on the stair; Sargan despises him back, and each thinks the other's work untidy. Balor keeps them in separate halls because the one time they shared a room a wall came down. When one of them dies, the other is said to laugh.\n\nNorsob, a Fomorian giant who crossed with the eye, holds the west hall and leaves nothing behind him: the village of Coill Bheag is a bare clearing. He and Sargan hate each other; Fearghal of Connacht's band woke both at once, and four came home.",
-  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because outside his tether he cannot be hurt and walks home. One good tank and steady heals, and do not wake Sargan's hall at the same time. One tank, steady heals, everyone else on him. Never pull the far west hall at the same time. The Balorians say he fights harder once Sargan is dead; nothing anyone has seen bears it out. Superstition: lay a leaf in his hall when he falls, for the village at the edge of the Vale. The Sylvan raiders always do, and they do not explain.",
+  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because drawn out of it he cannot be hurt and walks home. One good shield-bearer and steady heals, and do not wake Sargan's hall at the same time. One shield-bearer, steady heals, everyone else on him. Never draw the far west hall at the same time. The Balorians say he fights harder once Sargan is dead; nothing anyone has seen bears it out. Superstition: lay a leaf in his hall when he falls, for the village at the edge of the Vale. The Sylvan raiders always do, and they do not explain.",
   "yells": {
     "aggro": [
       "Nothing will be left. Not even the name.",
@@ -64,26 +64,26 @@
   },
   "botLines": {
     "briefing": [
-      "norsob is a tank and spank but he hits like a cart. [fight him in his hall|dont drag him], hes immune outside it",
-      "norsob is immune outside his hall, [fight him there|no pulling]",
-      "one tank, steady heals, [everyone on him|simple fight]",
-      "never pull sargan's hall at the same time. [one warlord at a time|seriously]"
+      "norsob is just hold and hit but he hits like a cart. [fight him in his hall|dont drag him], hes untouchable outside it",
+      "norsob is untouchable outside his hall, [fight him there|no drawing him out]",
+      "one shield, steady heals, [everyone on him|simple fight]",
+      "never draw sargan's hall at the same time. [one warlord at a time|seriously]"
     ],
     "aftermathWin": [
       "norsob down. [with a name like that|annihilated the annihilator]",
       "norsob down, the sylvan will be glad. [the village|for the scouts]",
       "annihilated the annihilator. [someone had to say it|ok fine]",
-      "no adds from the far hall this time. [clean|good pull]"
+      "nobody from the far hall this time. [clean|good draw]"
     ],
     "aftermathLoss": [
-      "pulled norsob and sargan's hall at once. [never again|one warlord at a time]",
-      "pulled both warlords and [they did not fight each other|both fought us]",
-      "the tank fell over and nobody [picked him up|caught it]",
-      "tried to drag him out and he [was immune|reset]"
+      "drew norsob and sargan's hall at once. [never again|one warlord at a time]",
+      "drew both warlords and [they did not fight each other|both fought us]",
+      "the shield fell over and nobody [picked him up|caught it]",
+      "tried to drag him out and he [was untouchable|went home]"
     ],
     "rumour": [
       "[heard|someone said] norsob burned a sylvan village in the vale for hiding scouts",
-      "[heard|someone said] norsob wiped a sylvan village off the vale for sheltering scouts",
+      "[heard|someone said] norsob burned a sylvan village off the vale for sheltering scouts",
       "[word is|heard] the one time norsob and sargan shared a room a wall came down",
       "norsob laughs when sargan dies, they say. [nice coworkers|charming]"
     ]

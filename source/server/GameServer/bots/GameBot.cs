@@ -266,12 +266,21 @@ namespace DOL.GS
             set
             {
                 byte oldPercent = HealthPercent;
+                bool wasDead = base.Health <= 0;
                 base.Health = value;
+
+                // 1.2.1: raised, released or revived after its fall was shown: the original clients get it again.
+                if (BotDeathAnimation.EndsAtRaise(DeathFallShown, wasDead, base.Health > 0))
+                    BotDeathAnimation.OnRaised(this);
 
                 if (oldPercent != HealthPercent)
                     Group?.UpdateMember(this, false, false);
             }
         }
+
+        /// <summary>1.2.1: the original clients in range were shown this bot's fall at its death and hold it back until it
+        /// has health again (BotDeathAnimation).</summary>
+        public bool DeathFallShown { get; set; }
 
         public override int Mana
         {
@@ -1122,6 +1131,7 @@ namespace DOL.GS
             }
 
             base.ProcessDeath(killer);
+            BotDeathAnimation.OnDied(this); // 1.2.1: the fall in the original client (bot_death_animation)
             if (IsAutonomousWorldBot && !IsNoLiferBuffBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);
@@ -2883,7 +2893,7 @@ namespace DOL.GS
             // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
             // Living Server 1.2: so does one the launcher made for the Thidranki battleground ("+ Lv.20", levels 20-24), which would
             // otherwise fight its battleground with every line at 1 (it trains only at a break between PvE tasks).
-            // A hired companion's points stay unspent: its player places them (True 1.65 owner rule).
+            // A hired companion is trained below instead, once, by its own rule (HiredCompanions165.PlanArrival).
             bool arrivedTrained = !IsInMemoryOnly && !hiredCompanion &&
                 ArrivesTrained(Level, _lastAutonomousTrainedLevel, string.IsNullOrWhiteSpace(record.LastSavedUtc));
             if (arrivedTrained)
@@ -2901,6 +2911,11 @@ namespace DOL.GS
             }
             else if (!IsInMemoryOnly && !hiredCompanion && _lastAutonomousTrainedLevel > 1)
                 ApplySavedSpecPointRefund();
+            // Living Server 1.2.1 (owner 2026-11-21): a hired companion that joins at its player's level, or one hired on 1.2
+            // that is raised to it, arrives trained in its build (and in plain merchant gear above level 5, below).
+            HiredCompanions165.Arrival hiredArrival = hiredCompanion && !IsInMemoryOnly ? HiredCompanions165.TakeArrival(record.BotId) : null;
+            if (hiredArrival != null)
+                TrainHiredCompanionArrival(hiredArrival);
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -2930,13 +2945,13 @@ namespace DOL.GS
                     Inventory.LoadInventory(InternalID, preparedInventory);
                 // Before the starter weapon, so a bot that gets starter gear holds a merchant weapon in an empty weapon slot
                 // and the server makes its own starter weapon only where none fitted.
-                bool starterGearGiven = TryGiveStarterGear(record, arrivedTrained);
+                bool starterGearGiven = TryGiveStarterGear(record, arrivedTrained, hiredArrival);
                 bool starterWeaponAdded = EnsureAutonomousStarterWeapon();
                 starterWeaponAdded |= BotRangedCombat.EnsureStarter(this);
                 starterWeaponAdded |= BotStarterInstruments.Ensure(this);
                 RefreshItemBonuses();
-                if (starterWeaponAdded || !buildLocked || arrivedTrained || starterGearGiven)
-                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained || starterGearGiven);
+                if (starterWeaponAdded || !buildLocked || arrivedTrained || starterGearGiven || hiredArrival != null)
+                    AutonomousBotStatusPersistence.Queue(this, starterWeaponAdded || arrivedTrained || starterGearGiven || hiredArrival != null);
             }
             Experience = Math.Max(0, record.Experience);
             AutonomousRealmPoints = Math.Max(0, record.RealmPoints);
@@ -2964,12 +2979,16 @@ namespace DOL.GS
         /// of its realm for its level in each empty armour slot and its build's empty weapon and shield slots, free, once
         /// (AutonomousStarterGear.Qualifies). Level-1 starters, gamebots that wear armour, Epic Special Forces (never
         /// saved, the constructor's other branch), /spawn companions and players never get here.
+        /// <para>A hired companion (a different bot type) gets the same plain merchant gear only on the arrival its summon
+        /// planned with gear (1.2.1, owner 2026-11-21: hired or raised above level 5), in its empty slots only.</para>
         /// </summary>
-        private bool TryGiveStarterGear(OfflineWorldBotRecord record, bool arrivedTrained)
+        private bool TryGiveStarterGear(OfflineWorldBotRecord record, bool arrivedTrained, HiredCompanions165.Arrival hiredArrival = null)
         {
             _starterGearGiven = AutonomousStarterGear.HasMarker(record.SerializedAbilities);
-            // a hired companion comes with a training weapon and nothing else (True 1.65 owner rule)
-            if (IsEpicSpecialForce || IsTemporaryGroupHelper || Inventory == null || HiredCompanions165.IsHired(record.BotId) ||
+            if (HiredCompanions165.IsHired(record.BotId))
+                return hiredArrival is { BasicGear: true } && !IsEpicSpecialForce && !IsTemporaryGroupHelper && Inventory != null &&
+                       GiveHiredCompanionGear(hiredArrival);
+            if (IsEpicSpecialForce || IsTemporaryGroupHelper || Inventory == null ||
                 !AutonomousStarterGear.Qualifies(Level, arrivedTrained, _starterGearGiven,
                     AutonomousStarterGear.ArmorPiecesWorn(Inventory.GetItem), Realm, record.BindRegionId))
                 return false;
@@ -2993,6 +3012,69 @@ namespace DOL.GS
             if (!result.Given)
                 return false;
             _starterGearGiven = true;
+            MarkAutonomousStateDirty();
+            AutonomousBotEconomy.MarkInventoryChanged(this);
+            return true;
+        }
+
+        /// <summary>A hired companion's basic gear: the gamebots' starter gear (the best plain item its realm's merchants sell at
+        /// its level) in each empty slot of its build. Nothing it wears or carries is moved or replaced, except its training
+        /// weapon (HiredCompanions165.IsTrainingWeapon; owner 2026-11-21: it counts as an empty slot): put in its bag while
+        /// the gear is chosen, deleted once a merchant weapon took its place, put back where it was otherwise. Its coin is
+        /// untouched. No merchant of its realm found (or an error): nothing changes and the gear is tried at its next summon.</summary>
+        private bool GiveHiredCompanionGear(HiredCompanions165.Arrival arrival)
+        {
+            if (AutonomousStarterGear.RealmCatalog(Realm).Length == 0)
+            {
+                arrival.GearRetry = true;
+                arrival.Gear = "none (no merchant of its realm found)";
+                return false;
+            }
+            // the training weapons out of their slots, so the plan sees those slots empty
+            var training = new List<(eInventorySlot Slot, DbInventoryItem Item)>();
+            foreach (eInventorySlot slot in HiredCompanions165.TrainingWeaponSlots)
+            {
+                if (Inventory.GetItem(slot) is not { } item || !HiredCompanions165.IsTrainingWeapon(item))
+                    continue;
+                eInventorySlot bag = Inventory.FindFirstEmptySlot(HiredCompanions165.FirstBagSlot, HiredCompanions165.LastBagSlot);
+                if (bag != eInventorySlot.Invalid && Inventory.MoveItem(slot, bag, Math.Max(1, item.Count)))
+                    training.Add((slot, item));
+                else if (Inventory.RemoveItem(item))
+                    training.Add((slot, null));   // a full bag: deleted now; the server makes a new one if no merchant weapon fits
+            }
+            AutonomousStarterGear.Result result = null;
+            try
+            {
+                result = PlanAndGiveStarterGearCore();
+            }
+            catch (Exception exception)
+            {
+                log.Error($"HIRED_COMPANION_GEAR bot=\"{Name}\" id={DatabaseID} failed; it keeps what it has", exception);
+                arrival.GearRetry = true;
+                arrival.Gear = "none (error)";
+            }
+            var replaced = new List<string>();
+            foreach ((eInventorySlot slot, DbInventoryItem item) in training)
+            {
+                bool leftHand = slot == eInventorySlot.LeftHandWeapon;
+                bool weaponGiven = result?.Pieces.Any(piece => leftHand
+                    ? piece.Slot == eInventorySlot.LeftHandWeapon
+                    : piece.Slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon) == true;
+                if (weaponGiven || item == null)
+                {
+                    if (item != null)
+                        Inventory.RemoveItem(item);
+                    replaced.Add(AutonomousStarterGear.SlotName(slot) + (weaponGiven ? string.Empty : "(deleted, bag full)"));
+                }
+                else if (Inventory.GetItem(slot) == null)
+                    Inventory.MoveItem((eInventorySlot)item.SlotPosition, slot, Math.Max(1, item.Count));   // no merchant weapon: back in its hand
+            }
+            if (replaced.Count > 0)
+                arrival.TrainingWeapon = string.Join(",", replaced);
+            if (result != null)
+                arrival.Gear = result.Given ? AutonomousStarterGear.Describe(result.Pieces) : $"none ({result.Reason})";
+            if (result?.Given != true && replaced.Count == 0)
+                return false;
             MarkAutonomousStateDirty();
             AutonomousBotEconomy.MarkInventoryChanged(this);
             return true;
@@ -3868,6 +3950,46 @@ namespace DOL.GS
             long current = GamePlayer.GetExperienceAmountForLevel(level - 1);
             long next = GamePlayer.GetExperienceAmountForLevel(level);
             return experience >= 1 + current + (next - current) / 2;
+        }
+
+        /// <summary>
+        /// Living Server 1.2.1 (owner 2026-11-21): a hired companion's training on the arrival its summon planned
+        /// (HiredCompanions165.PlanArrival), in its build, as a gamebot that arrives trained. A new hire spends every point
+        /// of its level level by level (SpendSpecPoints, the "+ Lv.50" path); one hired on 1.2 and raised to its player's
+        /// level keeps every line it has and spends only the points it gained (HiredCompanions165.RaisedSpecBudget): what
+        /// its player left unspent stays unspent. The free respec still lets the player redo it.
+        /// </summary>
+        internal void TrainHiredCompanionArrival(HiredCompanions165.Arrival arrival)
+        {
+            if (arrival == null || BotSpec == null || CharacterClass == null)
+                return;
+            int costBefore = TrainedSpecPointCost();
+            if (arrival.Kind == HiredCompanions165.ArrivalKind.NewHire && costBefore == 0)
+            {
+                m_leftOverSpecPoints = 0;
+                SpendSpecPoints(Level, 1);
+            }
+            else if (arrival.Kind == HiredCompanions165.ArrivalKind.NewHire)
+            {
+                // trained already (a first summon that was saved but never joined): only what is left, never twice
+                m_leftOverSpecPoints = CompanionSpecPoints;
+                SpendSpecPoints(Level, Level, addLevelPoints: false);
+            }
+            else if (arrival.Kind == HiredCompanions165.ArrivalKind.Raise)
+            {
+                var lines = GetSpecList().Where(spec => spec.Trainable).Select(spec => (spec.Level, IsAutoTrainLine(spec))).ToList();
+                m_leftOverSpecPoints = HiredCompanions165.RaisedSpecBudget(CharacterClass.SpecPointsMultiplier, arrival.FromLevel,
+                    ReachedSecondStage(arrival.FromLevel, arrival.FromExperience), Level, lines);
+                SpendSpecPoints(Level, Level, addLevelPoints: false);
+            }
+            else
+                return;
+            m_leftOverSpecPoints = CompanionSpecPoints;   // a player's count, as every later training reads it
+            _lastAutonomousTrainedLevel = Level;
+            MarkAutonomousStateDirty();
+            arrival.Spent = Math.Max(0, TrainedSpecPointCost() - costBefore);
+            arrival.Unspent = m_leftOverSpecPoints;
+            arrival.Specs = string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:{spec.Level}"));
         }
 
         /// <summary>Raises one spec line by one level, as the player chose. Returns the problem, or null.</summary>

@@ -28,7 +28,7 @@
     }
   ],
   "story": "The pulverizers of the Iarnwood are great flightless birds with beaks like hammers, and they eat the snails and grubs that live in the bark of the iron trees. Iron bark does not break easily. The birds break it anyway, standing at a trunk and hammering at it with their beaks until the bark gives, and the sound carries all through the middle wood, a slow knocking that the bark-gatherers of Bjarken come to steer by. Where the knocking is, the iron trees are being opened, and where the trees are opened, a gatherer can cut bark without blunting a blade.\n\nMasher is the largest of them, and the oldest. The dwarves of Tarek's encampment gave him the name because of what he does to things that are not bark. He does not hammer trees any more. The young pulverizers open the trunks and he takes what they find, and when anything comes near the flock he goes to meet it, and what he meets he mashes. Gatherers have found helmets in the middle wood with the dent of his beak in them, and a dwarf's axe-head folded nearly in half.\n\nThe narfi say the pulverizers came into the Iarnwood when it was still silver, and that the first of them were small, and ate singing beetles, and sang a little themselves. When the rot came and the bark went hard, the birds that lived were the ones that could break it, and every generation since has been bigger and harder in the beak. Masher, the narfi say, is what the wood has made of a songbird. The dwarves say the narfi say that about everything.\n\nHe has nothing of the rot's craft. He does not drink life or hold the eye as the wood's other terrors do. He is only very big, and very old, and does not like to be disturbed while the young ones are working.",
-  "legend": "Masher is the giant pulverizer in the middle of the Iarnwood, level 64: the biggest bird in a wood full of them. He's a plain spawn with no special abilities and isn't CC-immune, so mez and root work, but he hits like a smith's hammer and the pulverizers and fengundorm around him will join if you're sloppy. Clear the edges, pull him clean, and have a solid tank. Gatherers say you can find him by the knocking: where the young pulverizers are hammering the iron trees, he's close. Good hunting for a full group, and the rest of the flock is decent experience too.",
+  "legend": "Masher is the giant pulverizer in the middle of the Iarnwood, a foe for several bands of the realm's best together: the biggest bird in a wood full of them. He's a plain fighter with no special tricks, and charms, trances and stuns hold him, so trances and pinning work, but he hits like a smith's hammer and the pulverizers and fengundorm around him will join if you're sloppy. Clear the edges, draw him clean, and have a solid shield-bearer. Gatherers say you can find him by the knocking: where the young pulverizers are hammering the iron trees, he's close. Good hunting for a full group, and the rest of the flock is good hunting too.",
   "yells": {
     "aggro": [
       "(A beak like a hammer swings toward you.)",
@@ -66,22 +66,22 @@
   },
   "botLines": {
     "briefing": [
-      "masher is a plain mob, mez and root work",
-      "he hits like a hammer, solid tank",
+      "masher is a plain beast, trances and pinning work",
+      "he hits like a hammer, solid shield-bearer",
       "clear the pulverizers and fengundorm around him",
       "follow the knocking to find him"
     ],
     "aftermathWin": [
       "masher down. the flock went quiet",
-      "mez on the adds worked",
+      "trances on the flock worked",
       "biggest bird in the iarnwood",
       "found a dented helmet near his spot"
     ],
     "aftermathLoss": [
-      "pulled the whole flock",
-      "tank folded like that axe head",
+      "drew the whole flock",
+      "shield-bearer folded like that axe head",
       "fengundorm came up under us",
-      "he hits way harder than 64"
+      "he hits way harder than he looks"
     ],
     "rumour": [
       "the narfi say masher is what the wood made of a songbird",

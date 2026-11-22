@@ -16,10 +16,15 @@
       "text": "Kedyson as one dead man raised twice by two rivals is Living Server writing (the zone file's sketch).",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "Arel Birn's and Ra'ris Delum's master, the shared grave set as a test, and the two skeletons turning toward it are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
-  "story": "Kedyson was a man of the dales once, and nobody remembers what he did, because he has been a skeleton longer than he was anything else. Two young drakoran of the middle ground, Arel Birn and Ra'ris Delum, both claim to have raised him, and both did.\n\nFort Gwyntell's registrar, Gracien Adamson, tells it like this. Arel Birn raised Kedyson first, badly, from a grave by the training dummies, and was proud of it. Ra'ris Delum said the raising was crooked and raised him again, properly, from the same grave, which should not have been possible and was. Now there are two of Kedyson, standing a few paces apart on the middle ground, one beside each drakoran, each exactly like the other, and neither drakoran will give up theirs or say which is the right one.\n\nThe two Kedysons do not look at each other. The Priest of Arawn says that is the only sensible thing anyone on the middle ground has done.",
-  "legend": "Kedyson, level 38 skeleton, is on the middle ground of the dales twice: two spawns a few paces apart, one next to Arel Birn and one next to Ra'ris Delum (both 34). Pull one Kedyson at a time and expect its drakoran to come along. Crush for the bones, plain melee, respawn 80 seconds. Good for a group in the high thirties.",
+  "story": "Kedyson was a man of the dales once, and nobody remembers what he did, because he has been a skeleton longer than he was anything else. Two young drakoran of the middle ground, Arel Birn and Ra'ris Delum, both claim to have raised him, and both did.\n\nFort Gwyntell's registrar, Gracien Adamson, tells it like this. Arel Birn raised Kedyson first, badly, from a grave by the training dummies, and was proud of it. Ra'ris Delum said the raising was crooked and raised him again, properly, from the same grave, which should not have been possible and was. Now there are two of Kedyson, standing a few paces apart on the middle ground, one beside each drakoran, each exactly like the other, and neither drakoran will give up theirs or say which is the right one.\n\nArel Birn and Ra'ris Delum are of the legion's lesser clans, sent to the training ground on the middle ground to learn their trade among the dummies and the graves, and they were set the same grave on the same morning by a master who wanted to see which of them would give way. Neither did. The master went back to the legion's camp in the west and has never come back to settle it, and the two of them have stood by their Kedysons through three winters since, each feeding a little of its own strength into the bones at night to keep its own the steadier. The patrols of Fort Gwyntell have seen the two skeletons turn their heads once, at the same moment, toward the grave they both came out of, and then turn back.\n\nThe two Kedysons do not look at each other. The Priest of Arawn says that is the only sensible thing anyone on the middle ground has done.",
+  "legend": "Kedyson, a skeleton and a foe for a hardened band of veterans, is on the middle ground of the dales twice over: two of him a few paces apart, one next to Arel Birn and one next to Ra'ris Delum (both foes for a seasoned band). Draw one Kedyson at a time and expect its drakoran to come along. Crush for the bones, plain melee; each rises again eighty seconds after it falls. Good for a hardened band of veterans.",
   "yells": {
     "aggro": [
       "I was raised properly.",
@@ -43,7 +48,7 @@
   },
   "botLines": {
     "briefing": [
-      "two kedysons on the middle ground, pull one at a time",
+      "two kedysons on the middle ground, draw one at a time",
       "crush on kedyson, his drakoran comes with him"
     ],
     "aftermathWin": [
@@ -51,7 +56,7 @@
       "both kedysons down. arel birn and ra'ris delum are furious"
     ],
     "aftermathLoss": [
-      "pulled both kedysons and both drakoran"
+      "drew both kedysons and both drakoran"
     ],
     "rumour": [
       "[heard|someone said] arel birn and ra'ris delum both raised the same dead man",

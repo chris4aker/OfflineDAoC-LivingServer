@@ -69,7 +69,7 @@
       "text": "Dagar has been killed many times since Ottkel, and every time he stands up again in his hall, and the first thing he does is look at the wall. His larlings keep the count while he is down. The Valkyn say a chief's hall with no chief in it is the only place in Trollheim where morvalt have been seen to be quiet, and that the larlings cut the marks very carefully in those days, as if he were watching. When he comes back, he checks every mark they made. Then he cuts the day's.\n\nHallveig took a larling alive once, on the way back up from the bridge, and kept him at Dyrfjall for a winter, and asked him what the count was for. He told her that when the marks came round to the floor again, the Mother would wake. She asked how many marks were left. He looked at her as if she were very stupid and said: fewer.\n\nJordheim takes the count seriously, because the Mother of Modernagrav is a thing Jordheim takes seriously. The runemasters have asked for a copy of the wall more than once; the companies who go past it have never managed to make one, because it is very long and Dagar does not like strangers looking. The skalds have a different view. They say Dagar is the only morvalt who has ever come to think of a tomorrow, and that he has spent it on the end of the world, and that this is the most morvalt thing about him.\n\nHe feeds the house-serpent Fostra Orm himself, in the warm water by his hall, every morning after the mark is cut. The larlings say it is the only creature in Trollheim he does not count as a day. Hallveig says it is the only one he does not count as a mark against him."
     }
   ],
-  "legend": "Dagar is a plain melee fight: no spells, a two-handed maul, a long reach (about 350) and 8,000 health. The catch is his pack: the moment he's engaged his gruppchef and two morvalt larlings join in, so you are always fighting four. Unlike the big epic bosses he is NOT CC-immune, and neither is his pack: mez the larlings, stun or root the gruppchef, and grind Dagar with one tank, or mez Dagar himself while you clean up his count-keepers. The danger is the gruppchef reaching your healer. The Stoneheart quest has you kill him wearing the runed cloak of the trolls, so don't forget it or the step won't count; sometimes his placeholder holds the spot and you wait. Two groups is comfortable, and a good single group can do it with crowd control. His shimmering weapons are popular. Fostra Orm sleeps in the warm water nearby, so pull carefully.",
+  "legend": "Dagar is a plain melee fight: no spells, a two-handed maul, a long reach (about a dozen paces), and he takes as much killing as four raiders. The catch is his pack: the moment he's engaged his gruppchef and two morvalt larlings join in, so you are always fighting four. Unlike the great foes of the realm, charms, trances and stuns DO hold him, and his pack too: entrance the larlings, stun or pin the gruppchef to the ground, and grind Dagar with one shield-bearer, or entrance Dagar himself while you clean up his count-keepers. The danger is the gruppchef reaching your healer. The Stoneheart quest has you kill him wearing the runed cloak of the trolls, so don't forget it or the step won't count; sometimes a lesser morvalt holds his spot in his stead and you wait. Two groups is comfortable, and a good single group can do it with trances, stuns and holds. His shimmering weapons are popular. Fostra Orm sleeps in the warm water nearby, so draw carefully.",
   "yells": {
     "aggro": [
       "Another day. Another mark on the wall. You.",
@@ -115,13 +115,13 @@
   },
   "botLines": {
     "briefing": [
-      "dagar is a tank and spank with 3 adds. [wear the cloak|cloak on] if you're on stoneheart",
-      "pull dagar to the quiet corner and grind him",
+      "dagar is a plain slugfest with 3 of his pack. [wear the cloak|cloak on] if you're on stoneheart",
+      "draw dagar to the quiet corner and wear him down",
       "kill the gruppchef first",
-      "one tank on dagar, one on the gruppchef",
-      "dagar brings his gruppchef and 2 larlings the second you touch him",
-      "dagar isnt cc immune, mez the larlings, stun the gruppchef",
-      "one tank on dagar, keep the gruppchef off the healer",
+      "one shield-bearer on dagar, one on the gruppchef",
+      "dagar brings his gruppchef and two larlings the second you touch him",
+      "trances and stuns hold dagar, entrance the larlings, stun the gruppchef",
+      "one shield-bearer on dagar, keep the gruppchef off the healer",
       "cloak on for stoneheart or it doesnt count"
     ],
     "aftermathWin": [
@@ -130,15 +130,15 @@
       "dagar's count is over lol",
       "stoneheart step done finally",
       "count interrupted lol",
-      "mezzed the larlings and it was easy",
+      "entranced the larlings and it was easy",
       "shimmering axe!"
     ],
     "aftermathLoss": [
       "forgot the cloak. [again|ugh]",
-      "dagar plus the snake. [nope|bad pull]",
-      "the gruppchef held the tank while dagar ate the healer",
-      "he didnt spawn, his placeholder did. [wasted trip|ugh]",
-      "nobody mezzed the larlings",
+      "dagar plus the snake. [nope|bad draw]",
+      "the gruppchef held the shield-bearer while dagar ate the healer",
+      "he wasnt there, a lesser one stood in his place. [wasted trip|ugh]",
+      "nobody entranced the larlings",
       "gruppchef ran straight for the healer",
       "forgot the cloak again"
     ],

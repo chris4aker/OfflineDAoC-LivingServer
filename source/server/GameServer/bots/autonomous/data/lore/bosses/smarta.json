@@ -30,7 +30,7 @@
     }
   ],
   "story": "Smarta is a svartalf, and a thrall, and the spiders' overseer of thralls, all three. The arachites found long ago that svartalfar work harder for one of their own than for a spider, and so they chose the hardest of the thralls and gave her the arbetare, the workers, to drive. Her name means pain. The thralls gave it to her. She keeps it.\n\nThe silk-frames have more prayers about Smarta than about any arachite. Some ask for her death. Some ask for her forgiveness, because she drives the workers so the spiders will not, and fewer of them are husked when Smarta is watching. Odell of Svarhamr has her name on both sides of his list, the thralls and the ones who went over, and has never decided which line is the true one. She fights strangers with the workers behind her, because strangers mean trouble, and trouble means the spiders come down.",
-  "legend": "Smarta is a level 37 svartalf overseer in Spindelhalla among svartalf arbetare and thralls (36-41), blindsnakes and arachite tunnelhosts. She's on The Svartalfar faction, and the workers stand all round her, so plan for more than one. Lots of bodies in that room; bring a full group or pull carefully. Te'Bui is close by. Kill her first and the workers are just workers.",
+  "legend": "Smarta is a svartalf overseer, a foe for a hardened band of veterans, in Spindelhalla among svartalf arbetare and thralls of much her strength, blindsnakes and arachite tunnelhosts. She's sworn to the Svartalfar, and the workers stand all round her, so plan for more than one. Lots of bodies in that room; bring a full group or draw carefully. Te'Bui is close by. Kill her first and the workers are just workers.",
   "yells": {
     "aggro": [
       "Back to work! All of you!",
@@ -50,8 +50,8 @@
   },
   "botLines": {
     "briefing": [
-      "smarta is the 37 svartalf overseer among the workers in spindelhalla",
-      "svartalfar faction, the workers join"
+      "smarta is the hardened-band svartalf overseer among the workers in spindelhalla",
+      "svartalfar, the workers join"
     ],
     "aftermathWin": [
       "smarta down",

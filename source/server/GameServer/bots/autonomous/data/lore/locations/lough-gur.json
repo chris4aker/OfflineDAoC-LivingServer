@@ -67,7 +67,7 @@
     }
   ],
   "story": "Lough Gur is ringed with doors. The hills around the lake are hollow, the people of Innis Carthaig say, and the doors into them are everywhere, in the faces of rocks and under old trees and at the bottoms of pools, and most of them have been shut since the Veil came down. On summer nights there is music under the water, trumpets and harps, the court of the lake keeping its feasts, and every grandmother of the realm says the same thing about it: if the trumpets sound after dark, go home.\n\nTwo women of the lake have been shut out. The Melancholic Fairy Queen sits by a door in the hills of the south-west that will not open for her; she was shut out of her own kingdom on the night the courts quarrelled in the Cursed Forest, the Ardee folk say, and she comes to the door every night with her guard behind her, to a fanfare from no instrument anyone can find, and weeps by the water until morning. The melancholic fairies of her court weep with her in the hills, and the militant ones stand over them. Lhia was of the court under the water until Piaras of Howth broke the condition she set him, a year and a day and never by daylight, and the court shut its door on her. She walks the shore looking for him, and takes everyone for him at first.\n\nThere are worse things on the lake roads. The dullahans ride the middle shore, headless, and the old people of Innis Carthaig say that a dullahan stopping at a house means a death in it before the month is out. The far liath comes off the western hills as fog and leads walkers into the water. The scanradh, whose name is only the word for fright, wait in the high ground of the south-west. And the gurite, the siabra of the lake country, hold camps all round the shore, waylayers and footpads and ambushers who rob the lake roads and lookouts who watch them.\n\nThe lake has a lord of the mice. Luchtigern keeps a hall in the west of the lake country among the irewoods, and the luch, the great mice of Lough Gur, large and greater, are his, and the luch catchers and hunters who track them are trying to get to him. The bards of Innis Carthaig sing an old satire in which a poet mocked the king of cats and the mice laughed, and say Luchtigern is the mouse who laughed loudest. The rats are another matter. Rats came into Innis Carthaig and stole the staff the smith Glennard made for the chieftess, and carried it to their den on the hillside, and the town has been paying pipers ever since.\n\nInnis Carthaig is the lake's chief town, on its eastern shore, where Chieftess Niamh keeps her hall and Sholto and Kern the enchanter keep the lake's errands, and the realm's companies stop on their way to Shannon or the bog. Culraid stands in the north-west, smaller and older, under Chief Bran Llyr, whose townsfolk have gone missing into the lake country and who sends the realm after them. In the west the irewoods grow thick, and beyond them is the entrance to Treibh Caillte, where King Vian's lost tribe keep their halls. Old Donnchadh keeps a camp in the east hills with a nightshade commander, and knows about the beast the Last Heir hunts.\n\nWhy does it matter? Because Lough Gur is where the realm keeps its manners with the Otherworld. The druids of Lough Gur, the oldest in the realm, were taught at this lake, Brónach among them; they say that every door around it is a promise one side or the other made and has not kept, and that the lake is the nearest the realm comes to the courts' own country. The trumpets sound most nights. The realm goes home.",
-  "legend": "Lough Gur is the south-west lake zone, levels 22-56. Innis Carthaig (east shore) is the town: channeler, merchants, Chieftess Niamh, Sholto and Kern for Morven's Return and Occupation of Lough Gur. Culraid (north-west) has Chief Bran Llyr. The Treibh Caillte entrance is in the west. Camps: irewood saplings (22-37) in the west, large luch (32-37) and dampwood mites by Innis Carthaig, giant ants, the gurite siabra camps all round the lake (30-49, social), melancholic fairies (45-50) in the south-west hills, dullahans and pookas (49-56) on the middle shore, deamhans in the south. The Melancholic Fairy Queen (65) comes at night with trumpets and five guards; Lhia (53) is the last kill of Piaras and Lhia. Lots of tier B named (Smidget, Smirky, Curmie, Tiomoid, Ailbe). Superstition: if you hear trumpets after dark, go home, and never answer a dullahan at your door.",
+  "legend": "Lough Gur is the south-west lake land, with hunting for seasoned bands up to the realm's best. Innis Carthaig (east shore) is the town: channeler, merchants, Chieftess Niamh, Sholto and Kern for Morven's Return and Occupation of Lough Gur. Culraid (north-west) has Chief Bran Llyr. The Treibh Caillte entrance is in the west. Camps: irewood saplings (seasoned bands up to the youngest veterans) in the west, large luch (seasoned bands and the youngest veterans) and dampwood mites by Innis Carthaig, giant ants, the gurite siabra camps all round the lake (seasoned bands up to hardened veterans, and they come to each other's call), melancholic fairies (hardened veterans and the realm's best) in the south-west hills, dullahans and pookas (the same) on the middle shore, deamhans in the south. The Melancholic Fairy Queen (a foe for several bands of the realm's best together) comes at night with trumpets and five guards; Lhia (a foe for the realm's best) is the last kill of Piaras and Lhia. Lots of foes of name for hardened bands of veterans (Smidget, Smirky, Curmie, Tiomoid, Ailbe). Superstition: if you hear trumpets after dark, go home, and never answer a dullahan at your door.",
   "atmosphere": {
     "firstEntry": [
       "Lough Gur. The hills are hollow here.",
@@ -245,8 +245,8 @@
     "rumour": [
       "[heard|someone said] the trumpets sounded at noon today. [never happens|bad sign]",
       "a dullahan stopped outside the innis carthaig inn [last night|again]",
-      "[word is|heard] the militant melancholic fairies are 55. [two of them|careful]",
-      "banghaisgidheach only shows at certain hours and you cant touch her. [weird|time spawn]",
+      "[word is|heard] the militant melancholic fairies want our best. [two of them|careful]",
+      "banghaisgidheach only shows at certain hours and you cant touch her. [weird|she keeps hours]",
       "[heard|someone said] the rats took something else from innis carthaig. [the piper again|lol]",
       "someone followed the fog off the west hills and [ended up in the lake|swam home]",
       "[word is|heard] smidget and smirky are cluricauns occupying something. [occupation of lough gur|ask bran llyr]",
@@ -257,16 +257,16 @@
       "[heard|someone said] revelin wont say where the twin of cailean's horn is"
     ],
     "tell": [
-      "lough gur is the south west lake zone. innis carthaig is the town. 22 to 56",
+      "lough gur is the south west lake land. innis carthaig is the town. seasoned up to our best",
       "where is innis carthaig? east shore of lough gur. channeler there",
-      "is lough gur hard? 30s around town, gurite camps 30s-40s, the south west fairies and dullahans 45-56",
+      "is lough gur hard? seasoned around town, gurite camps seasoned to veterans, the south west fairies and dullahans veterans to our best",
       "whats in lough gur? the melancholic fairy queen, lhia, dullahans, gurite siabra, luch, irewoods",
       "where is treibh caillte? the door is in the west of lough gur past the irewoods",
       "where is culraid? north west of lough gur. chief bran llyr",
-      "luchtigern is a 32 giant mouse lord in the mouse hall in the western irewoods. day spawn only",
-      "trefor is a 29 gurite in the raider camp south west of the lake. occupation of lough gur. hes aggro, mind",
-      "brannigan is a 28 leprechaun in the hills above the south shore of lough gur. long respawn",
-      "revelin is by donnchadh's camp in lough gur. the horn twin epic: kill cailean in the cursed forest"
+      "luchtigern is a giant mouse lord for a seasoned group in the mouse hall in the western irewoods. only there by day",
+      "trefor is a gurite for a seasoned group in the raider camp south west of the lake. occupation of lough gur. he goes for you on sight, mind",
+      "brannigan is a leprechaun for a seasoned group in the hills above the south shore of lough gur. slow to come back",
+      "revelin is by donnchadh's camp in lough gur. the horn twin great quest: kill cailean in the cursed forest"
     ]
   },
   "loremaster": {
@@ -315,7 +315,7 @@
   "related": [
     {
       "id": "hibernia-wilds",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "treibh-caillte",

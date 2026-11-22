@@ -14,10 +14,20 @@
       "text": "Irish uafás 'horror' + capall 'horse': the horror horse. Bot chat glosses it the same way.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In Tóraigheacht an Ghiolla Dheacair, the Gilla Decair's mare maims the Fianna's horses; Conán Maol mounts her, thirteen more climb on, a fifteenth catches her tail, and she carries them over the sea, so that the Fianna must follow to bring them back.",
+      "provenance": "myth",
+      "source": "Tóraigheacht an Ghiolla Dheacair (The Pursuit of the Gilla Decair)"
+    },
+    {
+      "text": "Living Server lore: the stablemasters of Hibernia comparing Uafas Capall with the Gilla Decair's mare, a horse that waits for enough riders.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Every Hibernian child hears the story of the water-horse: a fine dark steed that stands quietly by a lake to be mounted, and then runs, and does not stop until its rider is under the water or over a cliff. The pooka can take the same shape. Uafas Capall, the horror horse in the old tongue, is what happens when such a creature gives up pretending to be tame. It grazes in the Cursed Forest under the moon, a great dark horse with eyes like wet stones, and it has not let anyone near it in a very long time.\n\nIts hooves strike with the cold of the moon. It stays near its grazing ground and turns home if it is drawn too far. The Ardee folk say if you hear it galloping at night, do not look out of the window; they close their shutters on galloping nights, because it is looking for a rider, and a horse that has given up on tameness is not looking for a kind one.",
-  "legend": "A big hitter with a cold strike: cold resists and a sturdy tank. It stays near its grazing ground, so fight it there. Do not try to ride it, the old hibs say, and they say it with a straight face. A big cold hitter: cold resists, a solid tank, fight it where it grazes. Superstition: never whistle for a horse in the Cursed Forest. Something will come. Nicknames: 'the horror horse', 'nightmare'. It is a horse: it kicks behind as well as in front. Healers stand to its side, never behind, and the tank keeps its head, not its flank.",
+  "story": "Every Hibernian child hears the story of the water-horse: a fine dark steed that stands quietly by a lake to be mounted, and then runs, and does not stop until its rider is under the water or over a cliff. The pooka can take the same shape. Uafas Capall, the horror horse in the old tongue, is what happens when such a creature gives up pretending to be tame. It grazes in the Cursed Forest under the moon, a great dark horse with eyes like wet stones, and it has not let anyone near it in a very long time.\n\nIts hooves strike with the cold of the moon. It stays near its grazing ground and turns home if it is drawn too far. The Ardee folk say if you hear it galloping at night, do not look out of the window; they close their shutters on galloping nights, because it is looking for a rider, and a horse that has given up on tameness is not looking for a kind one.\n\nThe stablemasters of Hibernia prefer an older tale, because it has the Fianna in it and a horse that did take riders. A great ugly churl came to the Fianna's hunting camp one day, leading a grey mare as big and ugly as himself, and called himself the Gilla Decair, the troublesome servant, and asked to take service with them for a year. His mare was turned out among the Fianna's horses and began at once to maim them. Conán Maol, never a patient man, got up on her to ride her to death for it, and she would not stir. Thirteen more of the Fianna climbed on behind him to make her go, and still she stood. Then the Gilla Decair walked off in a temper, and the mare went after him, and the fourteen found they could not get down. One more caught her tail as she passed and was dragged along. She went into the sea with them and across it, and the Fianna had to take ship after their comrades and go a long way into the otherworld to bring them home.\n\nThe hero-tale ends well enough for the Fianna. What the stablemasters keep from it, out at the Cursed Forest, is the mare's part: a horse of the otherworld does not run from riders. It waits for enough of them. Uafas Capall has been waiting a long time, and the Ardee folk say that when it gallops at night it is counting the houses.",
+  "legend": "A big hitter with a cold strike: wards against cold and a sturdy shield-bearer. It stays near its grazing ground, so fight it there. Do not try to ride it, the old hibs say, and they say it with a straight face. A big cold hitter: cold wards, a solid shield-bearer, fight it where it grazes. Superstition: never whistle for a horse in the Cursed Forest. Something will come. Nicknames: 'the horror horse', 'nightmare'. It is a horse: it kicks behind as well as in front. Healers stand to its side, never behind, and the shield-bearer keeps its head, not its flank.",
   "yells": {
     "aggro": [
       "The dark horse stamps and shows its teeth.",
@@ -52,21 +62,21 @@
   },
   "botLines": {
     "briefing": [
-      "uafas capall hits with cold. [cold resists|resist buffs], solid tank, fight it where it grazes",
-      "cold resists up, [moon strike hurts|resists], solid tank",
+      "uafas capall hits with cold. [cold wards|ward chants], solid shield, fight it where it grazes",
+      "cold wards up, [moon strike hurts|wards], solid shield",
       "fight it where it grazes. [it walks home|no dragging]",
       "nobody stands behind it, [it kicks|rear hoof]"
     ],
     "aftermathWin": [
       "the horror horse is down. [nobody tried to ride it|good]",
       "horror horse down. [nobody tried to ride it|good]",
-      "cold resists did the work. [grats|nice]",
+      "cold wards did the work. [grats|nice]",
       "its eyes stayed open. [creepy|ugh]"
     ],
     "aftermathLoss": [
-      "it kicked the tank across the clearing and [ran over the healers|trampled us]",
-      "it kicked through the tank. [solid tank|heals]",
-      "no cold resists. [buffs|ouch]",
+      "it kicked the shield across the clearing and [ran over the healers|trampled us]",
+      "it kicked through the shield. [solid shield|heals]",
+      "no cold wards. [chants|ouch]",
       "someone whistled for their horse. [why|something came]"
     ],
     "rumour": [
@@ -80,7 +90,7 @@
     "keyword": "Uafas Capall",
     "text": "The horror horse. It grazes in the Cursed Forest under the moon and no longer pretends to be tame. Its hooves strike cold."
   },
-  "bookPage": "From Derbáil of Ardee's list: grandmother told the water-horse story as every grandmother does, and then added a piece I have never heard anyone else tell. The horses of that kind used to pretend, she said, standing sweetly by the lakes. One of them in the court wood gave up pretending on the night the bargain broke. Uafas Capall, they call it, the horror horse, and it grazes in the Cursed Forest and does not stand sweetly for anyone. If you hear it galloping, she said, do not look out of the window. It is looking for a rider.",
+  "bookPage": "From Derbáil of Ardee's list: grandmother told the water-horse story as every grandmother does, and then added a piece I have never heard anyone else tell. The horses of that kind used to pretend, she said, standing sweetly by the lakes. One of them in the court wood gave up pretending on the night the bargain broke. Uafas Capall, they call it, the horror horse, and it grazes in the Cursed Forest and does not stand sweetly for anyone. If you hear it galloping, she said, do not look out of the window. It is looking for a rider. She knew the Fenian tale of the troublesome servant's mare, too, that carried fourteen of the Fianna into the sea on its back, and a fifteenth by the tail. Uafas Capall is cleverer than that mare, she said. It has never once let anybody up.",
   "chronicle": {
     "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Uafas Capall in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Uafas Capall's head after {minutes} minutes."

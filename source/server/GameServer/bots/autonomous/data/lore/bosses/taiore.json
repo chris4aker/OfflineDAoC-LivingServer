@@ -20,7 +20,7 @@
     }
   ],
   "story": "Taiore was a child when his mother Laraida took the household up the valley, and he is the youngest of the four still. The Necht Sylvan say that is the saddest thing about the high valley: that Taiore never chose. He went up because his mother went, and grew up among the Root's trees, and has never seen Domnann except as a green line on the horizon from the valley's edge.\n\nHe is the least of them in strength and the most in temper, and the realm's companies say he fights like a child, all at once and without caring. The Domnann wardens who keep the stone have argued for years about whether his name belongs on it. They have never decided, and so it is not there, and the space where it would go is kept clear. The Necht children, who have never been up the valley either, call him the boy on the hill, and leave him small carved toys at the valley's foot, which are gone by morning.",
-  "legend": "Taiore (35) is the weakest of the four Root's Sylvan in the high valley (with Laraida, Luaire, Rinne). Easy to kill once separated, but he is right next to the others. Twisted Evil target. About a 9-minute respawn. Bring a healer who can keep up, since the valley fights tend to become all four at once. The stilters on the valley road are 43-51 and worse than any of the four, so take the long way up the ridge.",
+  "legend": "Taiore, a foe for a hardened band of veterans, is the weakest of the four Root's Sylvan in the high valley (with Laraida, Luaire, Rinne). Easy to kill once separated, but he is right next to the others. Twisted Evil sends you after him. He returns about nine minutes after he falls. Bring a healer who can keep up, since the valley fights tend to become all four at once. The stilters on the valley road are hardened bands' foes, the worst for the realm's best, and worse than any of the four, so take the long way up the ridge.",
   "yells": {
     "aggro": [
       "Mother! Strangers!",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "taiore is 35, weakest of the four but stuck to them",
+      "taiore is the weakest of the four but stuck to them",
       "part of twisted evil, kill him last if you can"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "he brought his mum. [laraida|rip]",
-      "pulled three. [oops|wipe]"
+      "drew three. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] taiore was a child when his mother took him up the valley. he never chose",

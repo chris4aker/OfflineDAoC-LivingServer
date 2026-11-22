@@ -19,7 +19,7 @@
     }
   ],
   "story": "The Order of the Azure is the realm's strangest ally against the Glimmer King, and the realm is not sure it is an ally at all. They are firbolg kin who paint themselves blue and pray to the open sky, and they came up onto Sheeroe's northern slopes the summer after the sky tore, to make war on the light. They burn the Glimmer. They burn anything that glows. Their guards are named for Tailtiu, the foster-mother who made the first games for Lugh of the long arm, and the Azure say the open sky is Lugh's, and the Glimmer's light is stolen from it.\n\nCoseal is their preacher. His camp is the Order's preaching-ground, on the eastern side of the northern slopes, a flat of grey turf where the blue folk gather at dawn and dusk and turn their faces up and sing to the open sky while he speaks. The Cullen shepherds who have heard him from a distance say he speaks well, too well, and that the song the Order sings after him is the most beautiful thing on Sheeroe, which is a hard thing to say of a hill that has a court of lights on it.\n\nHe trains the Voices of the Azure, the little companies of blue-painted preachers who go down off the hill into Connacht, to the market at Basar and the road below Druim Ligen, and preach the light that does not burn to anyone who will stop. The farmers' sons who listened to the Voices are the young Azure of the farms now, Bas and Windaille and the others, who burn lamps and marsh-lights in the Order's name. Coseal did not tell them to. When the realm's captains have asked him to tell them to stop, he has said that he preaches the sky, and that what the farms hear in it is the farms' affair.\n\nHe is the only one of the Order who has ever explained, a little, Dsaldor's law. Asked why the Azure will not touch the Glimmer Prince, Coseal says the son is not the father, and that the Order's quarrel is with the king and the light he stole, and he will say nothing more however he is asked. The druids of Lough Gur have written it down in their book of Sheeroe as the only sentence the Order has ever spoken about the prince.",
-  "legend": "Azure Coseal (55) holds the Order's preaching camp on the eastern side of Sheeroe's northern slopes (about 400k/667k), with Thror (52) not far west. Hostile Azure camp: cleansers, banishers and avengers (45-56) around him, so clear first. Plain mob, no script, 80-second respawn; a full 50s group. The Voices of the Azure who preach in Connacht (Basar, Druim Ligen) are low-level and his; the young Azure of the farms (Bas, Windaille) are quest targets in Connacht (Destructive Forces). Expect the preaching camp to be busy: several cleansers stand in the open on the grey turf, so a puller who can bring them one at a time saves the group. He resets to full if everyone drops off him, like every named here.",
+  "legend": "Azure Coseal, a foe for the realm's best, a full band of them, holds the Order's preaching camp on the eastern side of Sheeroe's northern slopes (about 400k/667k), with Thror, a little weaker, not far west. Hostile Azure camp: cleansers, banishers and avengers (from hardened veterans' foes to the realm's best's) around him, so clear first. Plain, no tricks; he returns eighty seconds after he falls; a full band of the realm's best. The Voices of the Azure who preach in Connacht (Basar, Druim Ligen) are weak and his; the young Azure of the farms (Bas, Windaille) are the ones Destructive Forces sends you after in Connacht. Expect the preaching camp to be busy: several cleansers stand in the open on the grey turf, so someone who can draw them one at a time saves the group. He goes home healed if nobody is left fighting him, like every foe of name here.",
   "yells": {
     "aggro": [
       "Sing, and listen. No? Then fight.",
@@ -57,9 +57,9 @@
   },
   "botLines": {
     "briefing": [
-      "coseal is 55 in the azure preaching camp. [clear the camp|cleansers and avengers]",
+      "coseal wants our best, in the azure preaching camp. [clear the camp|cleansers and avengers]",
       "thror is close, west. [dont chain them|careful]",
-      "plain mob, full 50s group",
+      "coseal is a plain fight, full band of our best",
       "his voices preach in basar and druim ligen"
     ],
     "aftermathWin": [
@@ -69,9 +69,9 @@
       "thror too"
     ],
     "aftermathLoss": [
-      "pulled thror's camp as well. [oops|two named]",
-      "avengers everywhere. [too many|wipe]",
-      "group too low",
+      "drew thror's camp as well. [oops|two of them]",
+      "avengers everywhere. [too many|all dead]",
+      "group too green for the preaching camp",
       "stood and listened to the song lol"
     ],
     "rumour": [

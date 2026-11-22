@@ -172,11 +172,16 @@ public static partial class AutonomousBotChatCoordinator
         bool factionAudience = HasFactionAudience(starter.Realm);
         bool factionFree = factionAudience && !AutonomousBotDebates.IsRunning(starter.Realm) &&
                            !QuietAfterPlayer(LastPlayerFactionLine.GetValueOrDefault(starter.Realm), now);
+        // 1.2.1: /faction under its floor as the listener hears it (every line of the last minute, the window the pace's 7 is
+        // counted over): any bot with a line tries it first and the gap isn't waited for (43c43aa: 13 of 39 minutes under 5).
+        bool factionUnderPace = false;
         if (factionFree)
         {
             var factionBand = AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, realmBots);
+            factionUnderPace = AutonomousChatBudget.UnderPaceFloor(
+                meter.LinesIn(AutonomousChatBudget.Channel.Faction, (long)starter.Realm, now, AutonomousChatBudget.PaceWindowMs), factionBand.Floor);
             // "Thin" is what the player hears: every line, replies too.
-            if (regular || Random.Shared.NextDouble() < AutonomousChatRegulars.OthersShare ||
+            if (regular || factionUnderPace || Random.Shared.NextDouble() < AutonomousChatRegulars.OthersShare ||
                 meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)starter.Realm, now) < AutonomousChatRegulars.OthersBelow * factionBand.Target)
                 Add(AutonomousChatBudget.Channel.Faction, (long)starter.Realm);
         }
@@ -195,11 +200,11 @@ public static partial class AutonomousBotChatCoordinator
         if (count == 0)
             return false;
         var random = Random.Shared;
-        // Round 5: a regular talks in /faction first when its gap is over.
-        if (regular && options[0].Channel == AutonomousChatBudget.Channel.Faction)
+        // Round 5: a regular talks in /faction first when its gap is over; 1.2.1: anyone does while /faction is under its floor.
+        if ((regular || factionUnderPace) && options[0].Channel == AutonomousChatBudget.Channel.Faction)
         {
             AmbientChoice first = options[0];
-            var firstVerdict = meter.TryStart(first.Channel, first.Key, now, first.Band, random);
+            var firstVerdict = meter.TryStart(first.Channel, first.Key, now, first.Band, random, factionUnderPace);
             if (firstVerdict is AutonomousChatBudget.Verdict.Speak or AutonomousChatBudget.Verdict.SpeakUnderFloor &&
                 SpeakIn(starter, context, first, firstVerdict == AutonomousChatBudget.Verdict.SpeakUnderFloor, broadcastListeners))
                 return true;
@@ -1267,7 +1272,7 @@ public static partial class AutonomousBotChatCoordinator
             {
                 lines.Add(new AutonomousChatExchange.Line(1, reply.Text, AutonomousChatArbiter.DelayMs(said.Text, reply.Text, 40, 0, random), "answerer"));
                 // A bot party has a seat only while it is still recruiting, and for a role only one it still lacks (1.1.3, after RC5: any
-                // party under eight answered "ya, 1 spot", but parties are formed at their full size and never backfilled).
+                // party under eight answered "ya, 1 spot"; since 1.2.1, #423, a party that set off recruits only while it looks for a member).
                 bool recruiting = AutonomousBotGroupCoordinator.RecruitingPost(poster) != null;
                 bool spot = AutonomousChatMarket.SpotFor(reply.Role, recruiting,
                     poster.Group?.GetMembersInTheGroup().OfType<GameBot>().Select(member => (member.CharacterClass?.Name ?? member.ClassName, IsHealer(member))));

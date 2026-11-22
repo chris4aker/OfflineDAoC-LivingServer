@@ -90,7 +90,7 @@
   }
  ],
  "story": "The Chamberlain is the only member of the demon court who was not born a demon. Each realm tells where he came from differently: Camelot's priests say he was a seneschal of the old kings who followed a woman's voice under his storeroom floor; the skalds say he was a jarl's steward sent under the mountains after a stolen hoard; the druids say he was older than the realms. The court says only that in the Third Roll a mortal came down a crack in its roof unarmed and asked the Queen, Lilith, for service, and she kept him.\n\nA mortal has no line on the Roll of Precedence, and the bargain of the Feast of Thrones protects only those who do. So Grand Chancellor Adremal wrote him a line with no name in it, which can never be struck off, and the Chamberlain paid for it by speaking his name at the Master's door. Legion swallowed it; one voice in the Master's chorus is said to be politer than the rest. Over the Rolls his body grew into a duke's horned shape, though the realms' bestiaries still list him as a man.\n\nIn the Seventh Roll the Queen left. The Chancellor calls her absent by leave of the Master; the imps say Legion ate her; Albion's Church says she walks among the living; Hibernia's druids say she went into the otherworld. The Chamberlain keeps her chair beside the Master's door and lets nobody sit in it. When Duke Satori tried, the Chamberlain set him on the floor, and Satori has gone about unseen ever since.\n\nNow he keeps Legion's door, below the Behemoth's ledge, and announces every visitor in the court's form, mortals by realm and number. He keeps a tally of the mortals who pass him, and of the few who come back. When he falls he is written back the same day, because there is no name on his line to strike.",
- "legend": "The chamberlain stands on the last stretch before Legion's lair, a few strides from the door. He is a plain level 79 with no script, but he hits like a prince and has the health to match, and he is the last thing between a raid and Legion. Clear the approach first: Legion's Own (the knights, Mutilators and the Inquisitor Famuel on the way down) will join if you fight in the middle of them. Pull him back up the approach rather than fighting on Legion's doorstep. People swear he says your realm's name when you aggro him. Albion's guilds call him the doorman; Midgard's call him the steward; Hibernia's call him the man in the demon.",
+ "legend": "The chamberlain stands on the last stretch before Legion's lair, a few strides from the door. He is a plain foe for a war party of any realm's champions with no tricks, but he hits like a prince and is as hard to wear down as one, and he is the last thing between a raid and Legion. Clear the approach first: Legion's Own (the knights, Mutilators and the Inquisitor Famuel on the way down) will join if you fight in the middle of them. Draw him back up the approach rather than fighting on Legion's doorstep. People swear he says your realm's name when he turns on you. Albion's guilds call him the doorman; Midgard's call him the steward; Hibernia's call him the man in the demon.",
  "yells": {
   "aggro": [
    "You are expected. Rank and seat, if you please. No? Realm and number, then.",
@@ -137,10 +137,10 @@
  },
  "botLines": {
   "briefing": [
-   "chamberlain is the doorman before legion. 79, hits like a prince. clear legions own on the approach first",
-   "pull the chamberlain back up the approach, [dont fight him on legions doorstep|not at the door]. then rest before the door",
-   "no tricks on the chamberlain, he just hits hard. [tanks rotate|rotate tanks], healers watch the mt",
-   "after the chamberlain its legion. [stack up|buff up] and nobody releases"
+   "chamberlain is the doorman before legion. a war party's fight, hits like a prince. clear legions own on the approach first",
+   "draw the chamberlain back up the approach, [dont fight him on legions doorstep|not at the door]. then rest before the door",
+   "no tricks on the chamberlain, he just hits hard. [shield-bearers rotate|rotate shield-bearers], healers watch the main shield-bearer",
+   "after the chamberlain its legion. [stack up|blessings up] and nobody lets their spirit go"
   ],
   "aftermathWin": [
    "chamberlain down. [the door is ours|nobody keeps legions door now]",
@@ -149,10 +149,10 @@
    "thats the chamberlain. [legion next|on to legion] if we have the people"
   ],
   "aftermathLoss": [
-   "chamberlain wiped us at the door. [he just doesnt stop|too much health]",
-   "we fought him too close to legion's lair and everything joined. [pull him back next time|my bad]",
-   "doorman 1, us 0. [regroup up the approach|rez and rebuff]",
-   "lost the mt to the chamberlain and it went downhill. [next time rotate|need more tanks]"
+   "chamberlain killed us all at the door. [he just doesnt stop|he never wears down]",
+   "we fought him too close to legion's lair and everything joined. [draw him back next time|my bad]",
+   "doorman one, us nothing. [regroup up the approach|raise the fallen and renew the blessings]",
+   "lost the main shield-bearer to the chamberlain and it went downhill. [next time rotate|need more shield-bearers]"
   ],
   "rumour": [
    "[heard|word is] the chamberlain was a man once. a steward who went down [on his own feet|of his own free will]",

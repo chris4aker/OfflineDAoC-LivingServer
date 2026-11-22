@@ -20,7 +20,7 @@
     }
   ],
   "story": "Regan is the second of the eldest Watchers, a little smaller than Paud and a little nearer the water, and the Necht Sylvan say it was Regan who saw the Fomorian boat first, the night the eye came west: a dark hull on the water, drawn toward Gleann Glas's watch-fire, and Regan watching it all the way in and unable to so much as creak. When the valley burned, Regan saw the light of it over the hills, and that, the Sylvan say, is when the Watchers began to turn their eyes on anything that comes up from the shore.\n\nThe fishers of Necht leave bread at Regan's roots on the anniversary of the burning, and the bread is gone in the morning, and the fishers do not ask where. They say Regan is still sorry. They say a tree that is sorry is dangerous to stand near. Some of the Necht fishers say the bread is only taken by the beach shrouders. The others say a shrouder has never yet eaten bread.",
-  "legend": "Regan (38) stands beside Paud (39) below the vigilant-one rows, about 412k/319k. Both are Watcher treants; fight them as a pair or not at all. 10-minute respawn. Killing them costs faction with the vigilant ones. Regan and Paud are plain spawns with no script, but treant hits are slow and heavy, so keep the tank topped up and the casters at range. Pull them toward the open shelf so the vigilant ones on the slope above stay out of it.",
+  "legend": "Regan, a foe for a hardened band of veterans, stands beside Paud, a shade stronger, below the vigilant-one rows, about 412k/319k. Both are Watcher treants; fight them as a pair or not at all. Each returns ten minutes after falling. Killing them costs you the vigilant ones' goodwill. Regan and Paud are plain fights with no tricks, but treant hits are slow and heavy, so keep the shield-bearer topped up and the casters well back. Draw them toward the open shelf so the vigilant ones on the slope above stay out of it.",
   "yells": {
     "aggro": [
       "(the treant creaks, at last)",
@@ -43,16 +43,16 @@
   },
   "botLines": {
     "briefing": [
-      "regan is 38, next to paud. two treants together",
-      "watcher faction"
+      "regan is next to paud. two treants together",
+      "sworn to the watchers"
     ],
     "aftermathWin": [
       "regan and paud down. [timber|grats]",
-      "the eldest watchers are quiet. [for now|10 min]"
+      "the eldest watchers are quiet. [for now|for ten minutes]"
     ],
     "aftermathLoss": [
       "two treants. [rip|ouch]",
-      "pulled the vigilant ones too. [oops|wipe]"
+      "drew the vigilant ones too. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] regan saw the fomorian boat come in and couldnt move",

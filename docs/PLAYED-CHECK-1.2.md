@@ -342,6 +342,7 @@ below). Then `4be6fab`, 06:18-06:48.
 | March lanes arrive | must | On `19e7037`: 47 lane assignments (`RVR_LANE_ASSIGN`), 17 fallbacks, 15 rejected. Four marches reached their keep and started a siege ("the marching army reached the keep"). Arrival by lane is not counted yet. Open |
 | Sieges still happen and keeps change hands | must | **Seen** on `19e7037`: 4 sieges started (02:03, 03:16, 04:05, 04:55), 2 keeps taken: Caer Erasleigh by Midgard (02:15), then back by Albion (03:39) |
 | Catalogs rebuilt from a clean release world | must | Loaded and walked on `19e7037`: 98 check spots and 18 circuits (400 walks, 0 failed), 318 of 332 lanes validated (14 rejected). Whether the shipped catalogs were built from a clean release world is not in the log. Open |
+| No gamebot waits at a frontier porter past five minutes (checker row `porter_wait`, #418) | | No line on any build yet (`RVR_FRONTIER_WAIT_LONG` is new in `wt4/rvr-a`). A bot without a ticket now heads for the nearest porter with its medallion merchant beside it, not the nearest porter (tests only, `UT_FrontierPorterWait418`). Owed: no `RVR_FRONTIER_WAIT_LONG`; where there is one, its `phase=` and `notReady=` (or `declined:`) name what held the bot |
 
 ## RvR route traps: the PC log of 2026-11-19 (build `43c43aa`, `fix/rvr-route-traps`)
 

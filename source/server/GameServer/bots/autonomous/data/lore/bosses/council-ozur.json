@@ -60,7 +60,7 @@
       "text": "He carries a sickness, and the sculptors say he has always carried it, as his father did: the rot of the cells at the bottom of the citadel, where the prisoners lay and the jailers lived among them. The jailers do not die of it. They give it.\n\nWhen Ozur has looked at the one in front of him long enough to take his measure, the rot settles on that one and on everyone standing close round him, a grey sickness that stays a long while and makes every remedy work at half its strength while it stays. Then the councillor looks away, and some time later looks again, and the rot settles again. The splitters who went to Hord with it in the old days called it the measurer's sickness, and said Hord could ease it but not stop it, and that the giants who stood away from the one Ozur was measuring did not catch it.\n\nHe stands in the outer hall now near Hord's heaped seat, the companies say, between the two of them the whole of the Council's idea of itself: the one who measured threats and the one who mended what the threats did. The sculptors say that is why the strangers should not fight them together.\n\nWhen Ozur dies, the companies say, he looks at the wall behind his seat, at the scratch he never finished, as if he had just decided how long it should be. The sculptors say nobody has ever stayed to see whether he cuts it, and that the knife is still in his belt."
     }
   ],
-  "legend": "Ozur's famous 'he hits harder the more people are on him' counts everyone, bots included: at 50 or more he gets stronger, at 100 or more stronger but softer. Bots count, so in Living Server a full bot raid can set it off; with fewer than 50 of you around, he gets +20% to every resist instead. So the old 'polite pull' still matters: under 50 he is tough, over 50 he hits hard. 100,000 health, CC-immune. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within 400 of his target for two minutes and halves their heals, so keep the healers and casters away from the tank and cure disease on whoever is near him. He's next to Hord, so pull them separately. His skull ring drops.",
+  "legend": "Ozur's famous 'he hits harder the more people are on him' counts everyone, companions and the realm's adventurers included: at fifty or more he gets stronger, at a hundred or more stronger but softer. Companions count, so a full raid of companions can set it off; with fewer than fifty of you around, he turns a fifth more of every blow and spell instead. So the old 'polite draw' still matters: under fifty he is tough, over fifty he hits hard. He takes as much killing as fifty raiders, and no charm or stun holds him. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within about thirteen paces of his target for two minutes and halves their heals, so keep the healers and casters away from the shield-bearer who holds him and cure disease on whoever is near him. He's next to Hord, so draw them separately. His skull ring comes off him.",
   "yells": {
     "aggro": [
       "How many of you? Let me count before I answer.",
@@ -110,17 +110,17 @@
   },
   "botLines": {
     "briefing": [
-      "ozur counts everyone, bots too. under 50 of us he has +20% resists. cure his disease",
-      "pull ozur and hord separately",
-      "cure disease on ozur, it hits everyone near the tank",
+      "ozur counts everyone, companions too. under 50 of us he turns a fifth more of everything. cure his disease",
+      "draw ozur and hord separately",
+      "cure disease on ozur, it hits everyone near his shield-bearer",
       "ozur: cure the disease, thats the whole fight",
-      "ozurs crowd thing counts bots too, keep it under 50. he just has +20% resists",
-      "ozurs disease is 400 round the tank, every 60s. heals off the tank, cure disease"
+      "ozurs crowd thing counts companions too, keep it under fifty. he just turns a fifth more of everything",
+      "ozurs disease hits a dozen paces round his shield-bearer, every 60 sec. healers off the shield-bearer, cure disease"
     ],
     "aftermathWin": [
       "cured the disease on ozur every time, easy",
       "ozur down, cures were on point",
-      "ozur had +20% resists and we still did it",
+      "ozur turned a fifth more of everything and we still did it",
       "ozur's skull ring dropped",
       "measured lol",
       "cured the disease every time, easy",
@@ -129,15 +129,15 @@
     "aftermathLoss": [
       "nobody cured ozurs disease and the heals did half",
       "fifteen people ran in on ozur and he hit for double",
-      "somebody pulled hord with ozur",
+      "somebody drew hord with ozur",
       "he counted us and hit like a landslide",
-      "healers stood next to the tank and all got diseased",
-      "pulled ozur with hord again"
+      "healers stood next to the shield-bearer and all got diseased",
+      "drew ozur with hord again"
     ],
     "rumour": [
       "ozur counts you, they say. bring a crowd and he gets mean",
       "every scratch on ozur's wall is a threat he measured. theres a lot of scratches",
-      "ozur hits harder the more people are there. offline thats never [lol|so just cure]",
+      "ozur hits harder the more people are there. with just us thats never [lol|so just cure]",
       "ozur measures every threat and answers in kind. [fair giant|fairest giant up there]",
       "ozur scratched every threat he ever measured on his wall. the last scratch isnt finished",
       "the old songs say ozur gets angrier the more of you there are. a few of you just make him tougher",

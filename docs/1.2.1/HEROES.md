@@ -25,7 +25,71 @@ review's findings and the work left to do.
    and the rest included) where the name gives the scene weight: a death, a last stand, a choice, a record someone
    signs. Elsewhere use the role ("the captain", "the priest"). The 12-mention cap still holds for every name, so no
    witness becomes the default teller again.
+7. **Companions may carry lesser legend names, never the lore's** (2026-11-21): "Companions can be 'B' tier heroes with
+   famous names but nothing referenced in the lore itself." A hired companion's suggested name may be a lesser hero's
+   (Dinadan, Lynette, Brangwen, Loegaire, Fand, Grainne), but never a hero or legend companion the lore tells of, and the
+   lore never mentions a companion. `tools/lore/tests` checks the list in `Hire165.cs` against every legend name the
+   lore tells of (`name_counts.legend_names`: HEROES, the roster table below, the names in `myth` facts and in sentences
+   that name a HEROES legend), less the ordinary given names present-day characters share (`SHARED_GIVEN_NAMES`: Edith,
+   Gunnar, Áine, and Eirik, the Audliten quest giver, though Ragnar's son Eirik is in `history/midgard`).
+   Gareth, Isolde, Diarmuid and Deirdre left the list; companions already hired keep their names.
+8. **No real companies, nothing that breaks the fourth wall** (2026-11-21): "Nothing in the lore should reference real
+   companies or break the 4th wall so to speak." No player-visible lore text names Mythic, the Camelot Herald as a
+   website, Prima, Allakhazam, GameBanshee, Uthgard, EA or Broadsword, a patch or its number, an expansion as a product
+   (Catacombs, Trials of Atlantis, Shrouded Isles as "SI"), developers, real years, or the software under the world
+   (bots, NPCs, the server, scripts, templates, world data, "real players", quest logs, game hours). Narrative fields
+   also never use game terms as game terms (levels, mobs, respawns, xp). In-world words that only look alike stay:
+   a royal herald, Lurfos the Herald and the Herald's chronicle (the realm's own herald), Cryptos Mythicos, a patch of
+   ground, the Catacombs of Cardova, the scriptorium, a crowd of winds "in a mob".
+   - **What a player sees** (traced from the code): the `/lore` codex (`LoreCodex.cs`: summary, story, chapters, legend
+     as "What is said", relations, history era and faction text, and each history fact's **text**), the loremasters
+     (`LoremasterDialogue.cs`: intro, topics, boss topics, chapters, era text with its facts' text), lore books
+     (`LoreBooks.cs`: title, pages, boss pages, the summary in the delve), the Herald's chronicle and the Bestiary
+     (`LoreHerald.cs`, the launcher's `BestiaryControl.cs`: name, place, story, legend as "What the raid leaders say",
+     chronicle sentences), boss yells and mechanic lines (`LoreBossWatch.cs`), atmosphere lines (`LoreAtmosphere.cs`),
+     first-kill lines, bot lines (`LoreChat.cs`) and the tales and lore chat files.
+   - **Never shown:** every fact's `provenance` and `source` (no code reads them but the schema check), and the text of a
+     location's or boss's own facts. Ids, catalog keys, spawn names, aliases (matching only) and area names (memory keys)
+     are not shown either. So facts keep their real sources, and the five facts from Mythic's Catacombs lore pages
+     (December 2004: `avalon-city`, `morgana`, `caer-sidi`, `jordheim` twice) now read "Camelot Herald (2004)".
+   - **Fight advice is in-world too** (owner, 2026-11-21, "Rewrite that"; this replaces the 2026-11-06 rule that kept
+     levels, health, resists, timers, "mob" and "respawn" in the legend and bot lines). `fourth_wall.GAME_TERMS` (the
+     three writers' lists merged) checks every visible field. `GAME_TERMS_FAIL = True` since the clean-up review
+     (2026-11-22, [REVIEW-GAME-TERMS.md](REVIEW-GAME-TERMS.md)): every hit fails the lint. The list (now empty) is [LINT-LEGENDS-HITS.md](LINT-LEGENDS-HITS.md) (`python3 tools/lore/fourth_wall.py --report`). Map marks
+     and the chat words melee, casters, group, camp, quest, mana, lol, grats, dropped, loot, pets, taunt, stun and line of
+     sight wait for the owner (`PENDING_OWNER_DECISION`; `BAN_PENDING = True` bans them).
+   - `tools/lore/fourth_wall.py` holds the field map, the word lists and the exceptions; `lint_lore.py` fails CI on any
+     hit. `LoreBible.GameTalkPatterns` stays the twin of `chapter_lint.py` (warnings only, pinned at 38 by `UT_LoreBible`).
 
+### Owner notes for later passes (2026-11-21; do not undo)
+
+- **Keep the St Patrick's Day holiday chat line** (`holidays.lines`). It is a present-day holiday line, not Hibernian
+  legend, and the rule against Saint Patrick in legend does not reach it. Later passes must not remove it.
+- **Leave the present-day "Sir Bors" in `tepoks-mine`** as he is. He is the game's Hidden Insurrection quest NPC, not
+  the Grail knight. Don't rename him. The counter's Bors count includes him.
+- **Keep the Shrouded Isles hint** that the first of the nine sisters of the Isle of Apples has a name close to
+  Morgana's.
+- **Caer Sidi's toll is settled:** the third company went up eighty strong and came home **sixty-seven**. It lost nine in
+  the crypts, two in Ilron's gallery and two to the Silencer. No period source gives a number, so the owner had the
+  files made to agree. Keep every file to these numbers.
+- **King Mark is Duke Marcus's son**, the son who came home alone from Dartmoor (`cornwall`, `dartmoor`; `original`).
+
+
+9. **Owner rulings on the fight advice and stories** (2026-11-22, answering the reviews' questions):
+   - The Bane of Hope throws again in every telling, as its code does; the old "has not moved a man since" stays as its past.
+   - Maldahar stays the war party's foe his script makes him (40,000 health, a life drain and an energy burst).
+   - Weno'iak's household is told without a count (the texts disagreed: 20, 13, 16).
+   - Map positions such as "(about 32k/37k)" become in-world landmarks where the lore already names one near the spot;
+     otherwise they stay as the raiders' map marks.
+   - The everyday words of 2003 players stay in fight advice and bot chat: melee, casters, group, camp, quest, mana,
+     pets, taunt, stun, line of sight, purge, dropped, loot, lol, grats, gz (`fourth_wall.PENDING_OWNER_DECISION` is
+     allowed for good; `BAN_PENDING` stays False).
+   - "Foes of name" / "great foes" everywhere, bot chat included.
+   - The Behemoth may go one step past the top strength tier ("certain death, beyond even the whole muster of any
+     realm").
+   - Head counts and raid sizes stay numbers, spelled out (Ozur's fifty and a hundred, a raid seventy-four strong).
+   - Elro's third treant window, which his script could never reach, is fixed (three-tenths to a quarter of his
+     strength left), and his fight advice tells all three.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
@@ -115,7 +179,7 @@ are not added yet:
     - Bellum's twelve battles and the Camlann adder: no myth names the knights there.
     - Oscar's lay: its "king's son" detail needs a canon check of its own before anyone names Cairbre.
     - Midgard's present-day warbands (Hallbjorn's eighty): they are not legend-age.
-  - **Gaps:** Tristan, Starkad and Deirdre are in the table but not used yet.
+  - **Gaps:** Tristan, Starkad and Deirdre were in the table but not used yet. The second pass below uses all three.
   - **Companions review fixes** (REVIEW-COMPANIONS.md, applied on `lore/step4-companions`): the Cú Chulainn and
     Fionn antecedents, the Caer Sidi muster contradiction, Murdaigean, the Camelot sentence, Mordred and Gareth, Bors
     for Gareth, Hjalmar the Brave, the Sigurd and Hervor wording, the Fianna and Keating sources, and Hall of the
@@ -130,8 +194,89 @@ are not added yet:
     - Each name is introduced with its role. Roles still carry most mentions.
   - **Small fixes:** the Host's "He wrote" is now Cadoc; Cathbad names Cú Chulainn; and the warp-spasm is described
     from the *Táin*.
+  - **Decision 5, second pass** (branch `wt2/lore-review`; writers `8a616acd`, `348594f0`, `7b417b34`; review fixes
+    `247c5b7a`). Text was only added or reworded; nothing was cut.
+    - **Albion:**
+      - Tristan, son of Meliodas, is in `lyonesse`, `cornwall` (Marhaus, Isoud, Mark at Tintagel) and `camelot`.
+      - The Round Table roll is in `camelot`: Leodegrance, Kay, Lancelot, Tristan and Percival, the Grail Pentecost
+        and Lancelot's 24 days.
+      - Pellinore, Excalibur, the scabbard and Lancelot of the Lake are in `avalon-marsh`.
+      - Accolon and the four queens are in `morgana`.
+      - The child given to Ector, Kay and the sword in the stone are in `shade-of-uther-pendragon`.
+      - In `avalon-city`, the college of healing's bed waits for the barge.
+      - In `history/albion`, Lancelot dies at the hermitage.
+    - **Midgard:**
+      - In `history/midgard`: Ragnar's sons take the news, Ivar's ox-hide, and Starkad, Vikar and Hather.
+      - Beowulf and Thora are in `gotar`, and Beowulf's mere is in `mahattava`.
+      - Starkad is in `cursed-tomb`, Sibilja in `east-svealand`, the wolf-skins in `varulvhamn` and the hairy breeches
+        in `malmohus`.
+      - In `jordheim`, the founders are sung beside Starkad and Ragnar's sons.
+    - **Hibernia:**
+      - Mac Dathó's feast is in `ailbe` and Fergus's terms of the fords in `avartack-the-champion`.
+      - Ferdiad at Ardee is in `connacht`, Medb and the Brown Bull in `cruachan-gorge`, Deirdre and the Red Branch in
+        `emain-macha`, and Scáthach's bridge in `mount-collory`.
+    - **Independent review** ([REVIEW-COMPANIONS-2.md](REVIEW-COMPANIONS-2.md)): 1 High, 5 Medium, 13 Low. All are
+      fixed.
+      - The High was older than this round: Patrick and the churchman are out of the Oisín fact and faction text in
+        `history/hibernia`.
+      - The Mediums were Accolon and the scabbard, the scabbard claim hedged, the Siege Perilous at the Grail
+        Pentecost, Ivar crushing Sibilja, and the hound's head on the chariot pole.
+      - Isolde is now Isoud the Fair, so she is not taken for Dame Ysolde.
+      - Malory book 10 and book 19 are now cited.
+      - The shared repetition is varied: "the songs say", "of the old songs", and the closing "that is why" device.
+      - No `myth` fact needed relabelling.
+      - `UT_LoreBible` was not run, because there is no dotnet in that environment.
+    - **Open for the owner:** whether King Mark is Duke Marcus's son (A9 in the review), and the hired-companion
+      names that match legend names.
+  - **Third pass: deepening (HANDOFF 1.5)**, on branch `wt3/lore3-review`. Text was only added or reworded; nothing was
+    cut.
+    - **Writers:**
+      - Albion, `dde65a09`: King Mark as Duke Marcus's son; the Caer Sidi labels ("the priest" no longer means Ilron);
+        every Albion location and boss at its DepthReport floors; the epic summaries at 500 words; the Isle of Apples,
+        the Inconnu and two letters in the Shrouded Isles; five thin minor bosses; book pages at 100 words.
+      - Midgard and Neutral, `3a20336a`: the four proving fields and their overview (Cad Goddeu and Myrddin in
+        Caledon, the Second and Fourth Branches in Abermenai, Thidrandi and the dísir, Keating's tests, Vinheath and
+        Dunheath); Luso and six minor bosses; saga-voice chapters for Lydsyg, Dyranapur and Hurjavelen.
+      - Hibernia, `7c1e1b71`: Blight, the Cursed Forest and 14 thin bosses, from the Mythological, Ulster and Fenian
+        cycles.
+    - **Independent review** ([REVIEW-THIRD-PASS.md](REVIEW-THIRD-PASS.md), fixes in `d9763dd5`): 1 High, 4 Medium,
+      13 Low. All are fixed.
+      - The High: the companion name Gráinne told of in `giant-caithor` (decision 7).
+      - The Mediums:
+        - Caer Sidi's toll (now 67 of 80 everywhere);
+        - *De Gabáil in t-Sída* reversed (the Mac Óc tricks the Dagda; Elcmar is *Tochmarc Étaíne*);
+        - Clíodhna's birds, which are not in the *Dindshenchas*;
+        - the Academy's Merlin searchers in Caledon, now doubters of the Crystal Cave account.
+      - The Lows include the two Ferguses, Egil's chapters, Hlöd as half-brother, Keating's third article and the
+        repeated teller formulas.
+      - No `myth` fact needed relabelling `original`.
+      - The last "Catacombs-era" label in `hibernia-wilds` is reworded.
+      - `UT_LoreBible` was not run (no dotnet).
+    - **Open for the owner (done on `wt3/fourthwall`, below):**
+      - the four older facts that cite "Mythic's Catacombs lore" (review X3): kept, dated "Camelot Herald (2004)";
+      - adding legend names such as Gráinne to the companion-name test (#400);
+      - rewording the Avalon City summary that repeats its chapter (#401).
+  - **Decision 8 and the review's open items** (branch `wt3/fourthwall`, #399-#401). Text was only reworded; nothing was
+    cut.
+    - 468 player-visible strings in 315 files (lore JSON and the lore chat files) reworded in-world. A word-subsequence
+      check of every old visible string against the new one found only the fourth-wall words themselves removed. Where a
+      history fact's text lost a real-world detail (a patch number, a date, "Mythic's quest"), the detail went into its
+      source note, so nothing is lost from the file.
+    - Bots are "companions" (hired companions, or the realm's warbands and adventurers for gamebots), a real player is
+      "you", "no script" is "no tricks", "the old guides" are "the old raiders' accounts", a real year is "the early
+      raids" or "the first winter of the war".
+    - Avalon City's summary is new writing at 498 words with every event kept.
+    - The companion-name test covers every legend the lore tells of; Eirik is allowed as a shared given name (owner to
+      confirm).
+    - Tests only: `UT_LoreBible` was not run (no dotnet).
+    - **Independent review** (`docs/1.2.1/REVIEW-FOURTH-WALL.md`): 137 more visible strings the first pass and its
+      lint missed ("no spells or styles in the data", "spawn data", "data quests", "flagged aggressive", relations "with
+      its own file" and "the region overview", "zone" in told text) are reworded, and the lint now catches them. Seven
+      fight tips that contradicted their boss's code (Saeor, Sys'sro, the Afanc, Oona, Oro, Krevo, the two Princes'
+      lines) now agree with it. "Companions" in a raid legend means anyone of the raid who is not you.
 - **Next:**
-  1. **Decision 5, second pass.** Look for more legend-age passages that a companion would honestly improve:
+  1. **Decision 5, second pass.** Done and reviewed (see above). Show the owner samples before merging. The list it
+     worked from:
      - Midgard's Jordheim and dragon legends, which could use Starkad and Ragnar's sons;
      - Hibernia's Red Branch places, such as the Ulster fords in Connacht and Mount Collory's Dún Scáith;
      - Albion's Avalon and Grail lore, which could use Lancelot and Tristan.
@@ -140,6 +285,12 @@ are not added yet:
      repetitive, and restore more names (up to the cap) where the reviewer finds a scene that needs one.
   3. **Independent prose review.** Run one after each batch. The reviewer must not be the writer. Apply its fixes.
      Show the owner samples before merging.
-  4. **Then** HANDOFF.md step 1.5: deepen the thin entries.
+  4. **HANDOFF.md step 1.5, deepening.** The third pass (above) did Albion, the proving fields, Blight, the Cursed Forest
+     and the thinnest Hibernian and Midgard bosses. What is left:
+     - the rest of the 484 bosses with no Mythic canon, against the DepthReport floors (`UT_LoreBible` lists them);
+     - Midgard's and Hibernia's locations below the floors;
+     - an epic voice for each realm beyond the three Midgard saga chapters.
+     Show the owner samples from the third pass before merging, and run `UT_LoreBible` in CI or on the owner's PC.
+- **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.

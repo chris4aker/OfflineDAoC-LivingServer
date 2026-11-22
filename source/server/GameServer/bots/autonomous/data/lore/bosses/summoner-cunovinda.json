@@ -75,7 +75,7 @@
       "text": "Each of the three students wants something from the Grand Summoner, the magicker says, and Cunovinda's want is the plainest. She wants him to say she has surpassed him. He never has. He has never said it to any of them, and the magicker thinks he never will, because a maker who tells his apprentice she is finished has no more use for her. Lossren does not care. Roesia pretends not to. Cunovinda is the only one of the three who knows he never will, and goes on trying anyway, the way a hound goes on bringing back the stick.\n\nWhen she dies, the companies say, she speaks to him and not to them: she tells him his best student was not enough. Then she is back in her room of high seats in a season or less, because the pattern of the hall holds her place as it holds his, and the first thing she does, the stewards say, is go to the foot of the deep room's stair and wait to see if he will come out and say something. He never does.\n\nThe three realms say different things about her end. Camelot's priests pray that the white hound will be let off her leash. The druids say she chose her master and must keep him. The skalds of Jordheim say she is the most dangerous thing in the hall, because she is the only one in it who is still trying to get better, and nothing that is still trying ever stays beaten for long."
     }
   ],
-  "legend": "Cunovinda's the hardest of the three summoners, most old hands say. Every time she takes a hit there's a chance she bolts someone with cold and throws them up to the ledges at the top of her room, and she does it again every ten seconds or so while you keep hitting her. If it's you, climb down and come straight back; the stewards won't help. She shrugs off most magic, takes less from melee than you'd like, and nothing mezzes, roots or stuns her. Don't drag her off her spot: past her tether she can't be hurt. Leave her alone for half a minute and she's back to full. One skilled full group can do her, the old hands say, but three or four groups do it faster, and the healers should be ready to catch whoever comes down hurt.",
+  "legend": "Cunovinda's the hardest of the three summoners, most old hands say; a foe for a war party of any realm's champions. Every time she takes a hit there's a chance she bolts someone with cold and throws them up to the ledges at the top of her room, and she does it again every ten seconds or so while you keep hitting her. If it's you, climb down and come straight back; the stewards won't help. She shrugs off most magic, takes less from melee than you'd like, and no trance, pinning or stun holds her. Don't drag her off her spot: drawn too far from it she can't be hurt. Leave her alone for half a minute and she's whole again. One skilled full group can do her, the old hands say, but three or four groups do it faster, and the healers should be ready to catch whoever comes down hurt.",
   "yells": {
     "aggro": [
       "Up you go, little hound. Look down on your friends.",
@@ -118,9 +118,9 @@
   "botLines": {
     "briefing": [
       "cunovinda throws people up to the ledges. if you go up, climb down and come back",
-      "dont pull her off her spot, tether immune",
-      "cunovinda shrugs off magic and nothing cc's her. melee and patience",
-      "if she throws you up to the ledges climb down fast, she'll do it again every 10s or so",
+      "dont draw her off her spot, nothing hurts her once shes too far from it",
+      "cunovinda shrugs off magic and nothing holds her. melee and patience",
+      "if she throws you up to the ledges climb down fast, she'll do it again every 10 sec or so",
       "dont stop hitting cunovinda for half a minute or she's back to full"
     ],
     "aftermathWin": [
@@ -132,7 +132,7 @@
     "aftermathLoss": [
       "whoever she threw up to the ledges was too slow coming back",
       "she wore us down while someone was stuck up on the ledges",
-      "we pulled her past her tether and she went immune",
+      "we drew her too far off her spot and nothing hurt her",
       "we let her sit for half a minute and she was full again"
     ],
     "rumour": [

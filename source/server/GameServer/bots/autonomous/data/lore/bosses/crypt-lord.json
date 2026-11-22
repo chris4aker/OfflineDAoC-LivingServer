@@ -27,7 +27,7 @@
     }
   ],
   "story": "The Crypt Lord was Arawn's warden over the deep rows of Caer Sidi, where the prisoners lay between their reckonings, and the best of all the keepers: he slept a night in every niche, and walked a square round of the crypts without stopping so that no prisoner knew which side he would come from. The Inconnu say he was a gaoler of the cells under a Roman forum; the Church, a Saxon turnkey; the company's priest wrote only that he seemed to be counting. The prisoners said the warden never comes back to his post because he never left it: the rows are his post, every yard, and he finishes things where they stand.\n\nWhen the gaol rose he waited, let the prisoners break the lesser keepers, then walked out on his round and told them to form up, and they did. His court stands in ranks for an inspection: dark lights, forerunners, reckoned souls and fate's bearers. A rank that is struck is struck for all; when any of his court fights within his sight he comes, and the whole court with him, past any door. The Soul Reckoner below never turned and writes nothing while the warden stands at his table.\n\nThe third company lost nine in his first hall, beginning with the squire Iolo of Gothwaite Harbor, whose arrow at a dark light on the edge of a rank turned the warden from his round. The company held because the captain never let it stop to breathe, and he fell at the corner of his own round.\n\nThe bounty-masters say he commands Caer Sidi's dead; the Inconnu, that he commands them for himself and gives Dorinakka his orders; the priest, that he is a steward keeping the house of a lord who went away. Caer Gothwaite's companies now enter the crypts silent, bows unstrung, and Iolo's mother pours her first cup on the alehouse step.",
-  "legend": "The Crypt Lord is level 86 with 100,000 health, the highest below the riders, and a melee kill (40% less from melee, 70% less from everything else). His court is 43 dead: dark lights, forerunners, fate's bearers and reckoned souls. When he gets a target, every one of them joins and follows anywhere, with no leash. Worse, if any court member is fighting within sight of him, he joins that fight and brings the rest, so you cannot clear his court a corner at a time near him. He walks a square round of the crypts when idle and jumps anyone, bot or player, who comes within 400 of him on it. He never walks home; he finishes the fight where it is. Pick the spot first, with a wall at your back, AoE groups ready and tanks rotating. Do not let it stall: a minute with nobody fighting him and he is back to full. Old hands enter the crypts with weapons sheathed until the leader says go.",
+  "legend": "The Crypt Lord is a foe for a war party of the realm's champions, as much killing as fifty raiders, the strongest below the riders, and a blade's kill (blades lose four parts in ten against him, everything else seven in ten). His court is forty-three dead: dark lights, forerunners, fate's bearers and reckoned souls. When he has someone to fight, every one of them joins and follows anywhere, never turning back. Worse, if any court member is fighting within sight of him, he joins that fight and brings the rest, so you cannot clear his court a corner at a time near him. He walks a square round of the crypts when idle and jumps anyone, companions and the realm's adventurers as much as you, who comes within thirteen paces of him on it. He never walks home; he finishes the fight where it is. Pick the spot first, with a wall at your back, groups ready with spells that strike many at once, and shield-bearers taking turns. Do not let it stall: a minute with nobody fighting him and he is whole again. Old hands enter the crypts with weapons sheathed until the leader says go.",
   "yells": {
     "aggro": [
       "Rise, all of you. The warden calls the count.",
@@ -60,16 +60,16 @@
   },
   "botLines": {
     "briefing": [
-      "crypt lord brings all 43 of his court, no leash, they follow anywhere",
-      "dont pull his court near him, any of them fighting in his sight brings him and the rest",
+      "crypt lord brings all 43 of his court, they never turn back, they follow anywhere",
+      "dont draw his court near him, any of them fighting in his sight brings him and the rest",
       "he walks a square round, pick the spot with a wall behind us before he comes",
-      "aoe groups on the court, tanks rotate on him, melee kill",
+      "burst-spell groups on the court, shield-bearers take turns on him, blades kill him",
       "keep it going, a minute quiet and hes full again"
     ],
     "aftermathWin": [
       "crypt lord down. the warden's off duty",
       "cleared the court first, then him. clean",
-      "forty adds and nobody died, wow",
+      "forty of his court and nobody died, wow",
       "the rows are empty now"
     ],
     "aftermathLoss": [
@@ -91,7 +91,7 @@
     "keyword": "crypt lord",
     "text": "Arawn's warden of the deep rows of [Caer Sidi], the best of the keepers, who walks a square round of the crypts. When the gaol rose he told the prisoners to form up, and they did. A rank of his court that is struck is struck for all. See [Soul Reckoner] and [Dorinakka]."
   },
-  "bookPage": "We lost nine of eighty in the crypts, in the first hall, among the warden's ranks. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
+  "bookPage": "We lost nine of eighty in the crypts, in the first hall, among the warden's ranks. The dead stand there in ranks, rows upon rows, as if waiting for an inspection, and their lord walks among them. He did not shout when we came. He looked at us as a gaoler looks at new arrivals, and said that we walked in his crypts uninvited, and every head in every rank turned at once. I have never heard so many dead men move so quietly. The Inconnu say he was Arawn's best warden. I believe it. He is still a warden. He has only changed masters, and the master is himself.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} cleared the crypts and broke the Crypt Lord's command in {minutes} minutes.",
     "loss": "The Crypt Lord's court rose as one against {realm}'s raid; {raidLeader} was buried in the rows."

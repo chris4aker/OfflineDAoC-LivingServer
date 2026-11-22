@@ -36,7 +36,7 @@
     }
   ],
   "story": "A tree-clan lives in trees, and so a tree-clan fears fire more than any other people on Aegir. The tradklan of Faraheim's north-west keep their oldest law around it: one of the clan, and one only, may carry fire, and that one is chief. It is called the right of fire. The chief lights the clan's hearths, burns its dead, and burns its enemies, and if the chief burns carelessly, the clan's houses go up with everything else, and the clan finds a new chief among the ashes.\n\nCronk has held the right of fire longer than any chief the clan remembers, and he has never burned a house. He would like everyone to know this. He speaks of himself by name, as tradklan chiefs do when they are being formal, and Cronk is always being formal. He has Trude and Unne at his side, his two wives or his two sisters depending on who tells it, and Uppsala, who is neither and will not say what she is, and darters and medicine men and a tribesman of the old blood around him. They come when he calls, and he calls whenever anyone so much as touches him.\n\nWhen he fights, he burns. Almost every blow he lands is followed by fire, as soon as the fire has come back to him, because a chief who holds back the right of fire is no chief. And when he is pressed, he draws the quickness out of the one in front of him and out of everyone standing near, so that they move like old men while the darters find them. The tradklan think he is magnificent. So does Cronk. The iarn dwarves think that a tree-clan chief who throws fire so freely in the middle of a wood is going to burn something important one day, and that it will probably be Cronk.",
-  "legend": "Cronk is the tradklan chief in the north-west of Faraheim, level 63, 30,000 health, and eight come with him: two darters, two medicine men, a tribesman, Trude, Unne and Uppsala. Kill the medicine men first or they keep everyone up. Cronk's Fire Blast is 400 heat and goes off on most of his hits, as often as every 20 seconds, so his tank needs heat resist and steady heals. He also drops a big dex/quick debuff (78 for a minute) with a 350 radius around his target: don't bunch on the tank, and cure it. Trude fights like a chief herself. CC-immune, reach 350, resets full if you leave. Costs Tradklan Tribe faction. He talks about himself in the third person.",
+  "legend": "Cronk is the tradklan chief in the north-west of Faraheim, a foe for several bands of the realm's best together; he takes as much killing as fifteen raiders, and eight come with him: two darters, two medicine men, a tribesman, Trude, Unne and Uppsala. Kill the medicine men first or they keep everyone up. Cronk's Fire Blast is two-fifths of a robed caster's strength in heat and goes off on most of his hits, as often as every 20 seconds, so his shield-bearer needs wards against heat and steady heals. He also lays a big charm that saps dexterity and quickness (deeply, enough to leave a fighter slow and clumsy, for a minute) on everyone within about a dozen paces of his target: don't bunch on the shield-bearer, and cure it. Trude fights like a chief herself. No charm or stun holds him, he reaches a dozen paces, and he is whole again if you leave. Costs you standing with the Tradklan Tribe. He talks about himself in the third person.",
   "yells": {
     "aggro": [
       "Cronk sees you! Trude! Unne! Darts!",
@@ -74,21 +74,21 @@
   },
   "botLines": {
     "briefing": [
-      "cronk + 8 tradklan. medicine men first, cure the dex/qui debuff",
-      "fire blast is 400 heat on most hits, heat resist on the tank",
-      "debuff has a 350 radius, dont stack on the tank",
+      "cronk + eight tradklan. medicine men first, cure the dex/qui sapping",
+      "fire blast is two-fifths of a robed caster in heat on most hits, heat wards on the shield-bearer",
+      "the sapping takes everyone a dozen paces round, dont stack on the shield-bearer",
       "trude hits like a chief too"
     ],
     "aftermathWin": [
       "cronk down. so quiet now",
       "medicine men first made it easy",
-      "nobody got the debuff twice, nice",
+      "nobody got sapped twice, nice",
       "the tree clan has no chief now. they will pick one in the ashes"
     ],
     "aftermathLoss": [
       "the medicine men kept healing everybody",
-      "tank burned down, no heat resist",
-      "everyone stacked and got the debuff",
+      "shield-bearer burned down, no heat wards",
+      "everyone stacked and got sapped",
       "trude ate the casters"
     ],
     "rumour": [

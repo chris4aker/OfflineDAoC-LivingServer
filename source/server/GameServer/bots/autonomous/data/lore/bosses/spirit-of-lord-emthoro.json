@@ -46,7 +46,7 @@
     }
   ],
   "story": "Lord Emthoro held Inishail in the last years before the war, and the colleges' rolls have lost his name, or never had it; his people called him by it and that is the only record. He held the isle the old way, by being on it. He walked his bounds every season. He heard his tenants at his own door. And he would not take an order, a summons or a letter from anyone who would not first come up and stand on his ground to give it: the college of the old tongues wrote, with some irritation, that its messengers were twice obliged to walk up from the shore. To those who did, he was courteous.\n\nWhen the war came he would not leave. When it reached the island he was standing before his door, and he is standing there now, a spirit on the patch of ground that was the last thing he held. Morgana did not raise him; he was already there when her dead came, and the readers at Caer Gothwaite think he is the only dead thing in the isles that her war did not make. She counts him among her own anyway. He has not been asked.\n\nHis old way holds. Nothing reaches him from beyond his ground. Arrows from the edge fall as if they had nothing to say, spells pass through him like light through glass, and the orcs say a thrown stone is not even noticed. Only those who come up and stand on his ground can lay a hand on him, and they find he can lay one on them: something goes out of everyone who stands there, a little at a time, and comes to him. The more who stand there, the more comes. He does not step off his ground to follow anyone. He never had to. A lord does not chase his tenants down the road; he waits at his door, and they come.\n\nThey do come. By the old custom of Inishail, a tenant owes the lord service after death as well as before, and the lord's household has always included the dead. When the orcs who ran from Krondon built their village beside his ground, they became his tenants without being asked, and their dead come to his door when he calls, with the older dead of the isle beside them. Chieftain Toca's soothsayers read stolen Avalonian books by firelight, looking for the words that end a tenancy. The lammia say the words are simple: you go up, and stand on his ground, and you do not leave until he does.",
-  "legend": "The Spirit of Lord Emthoro, level 77, 30k health, just north of the orc village on Inishail. The whole trick: he takes NO damage from anyone more than 440 units from his spawn point. That counts players, pets and bots alike, so everyone, casters and archers included, stands on his ground or does nothing. He cannot move while his target is off his ground, so do not kite. His Lifedrain Pulse hits everyone within 440 of him for 80 spirit every 10 seconds and heals him for every point it does, so a big group heals him more each pulse: heal through it and keep the dps high. Every 25 to 40 seconds a servant (an orc or a zombie, 55-59) appears at his spawn, right in the middle of you; kill it. No mez or stun on him. Servants die with him. A wipe resets him; respawn about an hour.",
+  "legend": "The Spirit of Lord Emthoro, a foe for a war party of the realm's champions and as much killing as fifteen raiders, just north of the orc village on Inishail. The whole trick: nothing harms him from anyone standing more than about fifteen paces from his own ground. That counts you, pets, companions and the realm's adventurers alike, so everyone, casters and archers included, stands on his ground or does nothing. He cannot move while the one he fights is off his ground, so do not try to lead him away. His Lifedrain Pulse takes about a twelfth of a robed caster's strength from everyone within fifteen paces of him every ten seconds and heals him for every drop of it, so a big group heals him more each pulse: heal through it and keep the blows coming hard. Every twenty-five to forty seconds a servant (an orc or a zombie, a foe for the realm's best) appears on his ground, right in the middle of you; kill it. Nothing mesmerizes or dazes him. Servants die with him. If every raider falls he goes home whole; he returns about an hour after he is killed.",
   "yells": {
     "aggro": [
       "You stand on my land. Kneel.",
@@ -84,10 +84,10 @@
   },
   "botLines": {
     "briefing": [
-      "emthoro, 77, 30k. he takes zero damage from anyone more than 440 from his spawn. everyone in close, casters too",
-      "that includes bots and pets. if youre at range youre doing nothing",
-      "his pulse is 80 spirit to everyone on his ground every 10 sec and heals him. heal through, keep the damage up",
-      "a servant pops at his spawn every 25-40 sec, right on top of us. kill it fast"
+      "emthoro, champions' war party job, killing of 15 of us. nothing hurts him from over 15 paces off his ground. everyone close, casters too",
+      "that includes companions and pets. if youre hanging back youre doing nothing",
+      "his pulse drains everyone on his ground every 10 sec and heals him. heal through, keep the damage up",
+      "a servant turns up on his ground every 25-40 sec, right on top of us. kill it fast"
     ],
     "aftermathWin": [
       "emthoro down. inishail is free for an hour",
@@ -98,7 +98,7 @@
     "aftermathLoss": [
       "half the casters stood back and did nothing",
       "the pulse healed him faster than we hit, not enough damage",
-      "tried to kite him off his ground, he just stood there",
+      "tried to lead him off his ground, he just stood there",
       "servants on the healers"
     ],
     "rumour": [

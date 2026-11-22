@@ -27,7 +27,7 @@
     }
   ],
   "story": "Where the lake drains away west of the hills into a mire, the reeds are black and the air is sour, and Fester lives in it. The old men of Barfog say it was a sickness before it was a creature. When the lady of the lake called her white cattle home, nothing clean grazed the banks any more, and the banks began to rot: first the grass, then the reeds, then the water that ran out of the lake to the west. The rot gathered in the mire. Somewhere, sometime in the years after, it learned to walk.\n\nIt is a sickness still, the hill folk say, only one with legs. Whoever it strikes takes the sickness away with him in his blood, a slow sickness that makes every wound close late and every hand that tries to close it work twice as hard. And when it is angry it breathes, and the breath is a sour cloud that clings and burns, and does not stay on the one it breathes at but spreads to everyone standing near him, so that a knot of men round one sick man all burn together. The bwgan of the western ridge, who have to live near the mire, will not gather in threes or fours when Fester is about; they stand apart, each alone, and the old men of Barfog say the bwgan are not as stupid as they look.\n\nIt cannot be charmed or held. The druids who used to come up from the south to bless the lake tried once to bind it, the village remembers, and their binding slid off it as water slides off the black reeds.\n\nTwr ap Alsig has a theory that Fester will stop when the cattle come back, because the cattle were what kept the banks clean. The old men say the cattle are not coming back, and that if they did, the first thing they would eat is the mire.",
-  "legend": "Fester, level 64, 30k, in the black-reed mire west of the lake. Two problems. First, 35% of its hits give the target a 2 minute disease, which cuts healing, so cure disease on the tank every time. Second, Fester's Venom is an acid DoT, 80 every 4 seconds for 20 seconds, that hits everyone within 600 of its target, so everyone who does not need to be near the tank spreads well away from the tank. It recasts every 20 to 30 seconds. It cannot be mezzed or stunned, and has no adds. A wipe resets it to full; it respawns about an hour after death.",
+  "legend": "Fester, a foe for several bands of the realm's best together and as much killing as fifteen raiders, in the black-reed mire west of the lake. Two problems. First, about one blow in three of its gives the target a two-minute disease, which cuts healing, so cure disease on the shield-bearer who holds it every time. Second, Fester's Venom is an acid that eats at everyone within twenty paces of the one it is fighting every four seconds for twenty seconds, two-fifths of a robed caster's strength over its course, so everyone who does not need to be near the shield-bearer spreads well away from him. It casts it again every twenty to thirty seconds. It cannot be mesmerized or dazed, and brings no servants. If every raider falls it goes home whole; it returns about an hour after death.",
   "yells": {
     "aggro": [
       "The black reeds part. Something sour rises.",
@@ -65,22 +65,22 @@
   },
   "botLines": {
     "briefing": [
-      "fester, 64, 30k. its hits disease the tank for 2 min, cure disease every time",
-      "its acid dot hits everyone within 600 of the tank, 80 a tick for 20 sec. spread off the tank",
-      "dot recasts every 20-30 sec. no adds",
-      "cant mez or stun it"
+      "fester, job for several bands of our best, killing of 15 of us. its hits disease the shield-bearer for 2 min, cure it every time",
+      "its acid cloud gets everyone within 20 paces of the shield-bearer, eats at you for 20 sec. spread off him",
+      "acid comes again every twenty to thirty sec. nothing comes with it",
+      "cant mesmerize or daze it"
     ],
     "aftermathWin": [
       "fester down. someone burn the mire",
       "cure disease saved that",
-      "spread out and the dot only hit the tank. nice",
+      "spread out and the acid only got the shield-bearer. nice",
       "the air smells better already"
     ],
     "aftermathLoss": [
       "nobody had cure disease. the heals did nothing",
-      "we all stood behind the tank and the cloud got everyone",
-      "the dot ticked down the cloth one by one",
-      "tank stayed diseased the whole fight"
+      "we all stood behind the shield-bearer and the cloud got everyone",
+      "the acid ate down the cloth wearers one by one",
+      "shield-bearer stayed diseased the whole fight"
     ],
     "rumour": [
       "heard fester was a sickness in the lake before it was a monster",

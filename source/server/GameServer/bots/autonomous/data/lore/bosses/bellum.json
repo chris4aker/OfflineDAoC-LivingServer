@@ -42,7 +42,7 @@
     }
   ],
   "story": "Bellum is War, the second rider before the first cell of Caer Sidi, and the first prisoner Arawn ever locked there who had never been a man: the second shadow that walks beside every army, caught on the road after a forgotten battle and given a body so that it could be held. Every soldier who died in his service left him the harness he died in, and he wears them all, so that a blade glances off him like hail off slate; but no army ever armoured itself against a word, and neither has war. His bearer is the first man killed by another, a herdsman of the hut-builders who walks beside him with open hands.\n\nHe calls war's three oldest shapes, hammer, blade and spear, and each calls its file after it until the hall is full of iron. The dead of the lich's company learned the other half on the night of the rising: when Bellum fell, every weapon fell with him at once. Warlord Dorinakka, who salutes the riders' hall before every drill, made a saying of it that the knights of the Isle of Glass now keep: strike the captain, and the file lies down.\n\nThe frontier keeps' moment of silence before a line closes is called Bellum's minute, and war grants exactly that courtesy. In the third company a knight of Caerwent laughed at it, then held the iron off the wizards while their fire and frost brought war down, because his own sword rang on Bellum like a bell. He hung that sword in the chapel at Caer Gothwaite.\n\nThe Church calls Bellum the red horse of the last book; the bards put him at all twelve of Arthur's battles and on both sides at Camlann. The Inconnu say war does not want to win, only to go on. Prydwen Keep has cut his minute into its gate: one minute, then the captain.",
-  "legend": "Bellum comes a minute after Fames: level 83, 100,000 health, crowd-control immune. Melee is nearly wasted on him: his slash, crush and thrust resists sit at the 70% cap on top of AF 350 and 20% absorb, while his magic resists are 10% below zero, so spells hit him harder than normal. Casters do the killing. As he wakes, three war incarnate weapons rise (crush, slash, thrust) and each calls four more of its kind: about fifteen weapons, level 75, 10,000 health each. Do not try to clear them. Every one of them dies the moment Bellum dies, so the melee and tanks peel weapons off the casters and healers while everything with a spell burns Bellum. His fate's bearer comes too; kill it early. If the fight resets the weapons vanish and he is full again. Morbus comes a minute after he dies, so rest then. Prydwen Keep veterans touch the gate going out.",
+  "legend": "Bellum comes a minute after Fames: a foe for a war party of the realm's champions, as much killing as fifty raiders, and nothing mesmerizes, holds or dazes him. Melee is nearly wasted on him: slash, crush and thrust lose seven parts in ten against him, the most any harness can turn, and his heaped armour, as thick as the heaviest plate, swallows a fifth more of what is left, while spells bite him a tenth harder than they would a man with no wards at all. Casters do the killing. As he wakes, three war incarnate weapons rise (crush, slash, thrust) and each calls four more of its kind: about fifteen weapons, each a foe for a war party of the realm's champions alone and as hard to bring down as five raiders. Do not try to clear them. Every one of them dies the moment Bellum dies, so the melee and the shield-bearers peel weapons off the casters and healers while everything with a spell burns Bellum. His fate's bearer comes too; kill it early. If everyone falls back and he goes home, the weapons vanish and he is whole again. Morbus comes a minute after he dies, so rest then. Prydwen Keep veterans touch the gate going out.",
   "yells": {
     "aggro": [
       "Prepare yourselves for war. One minute, you are granted.",
@@ -82,7 +82,7 @@
     "briefing": [
       "bellum: melee does almost nothing to him, casters burn him, spells hit him extra",
       "about fifteen weapons come up. dont kill them, they all die when bellum dies",
-      "melee and tanks peel the weapons off the casters and healers",
+      "melee and shield-bearers peel the weapons off the casters and healers",
       "kill his fate's bearer early",
       "morbus is a minute after bellum, rest then"
     ],
@@ -104,14 +104,14 @@
       "heard dorinakka's knights salute toward bellum's hall",
       "bellum was a war spirit before he was a horseman, [they say|heard]",
       "heard the frontier keeps call the quiet before a fight bellum's minute",
-      "[heard|someone said] all of bellum's weapons drop when he does"
+      "[heard|someone said] all of bellum's weapons fall when he does"
     ]
   },
   "loremasterTopic": {
     "keyword": "bellum",
     "text": "War, the second of the [four riders]: the shadow that walks beside every army, caught and kept. He wears the harness of every soldier who died for him, and no blade troubles him; no army ever armoured itself against a word. When he falls his weapons fall with him, as [Dorinakka]'s yard learned. See [Fames] and [Morbus]."
   },
-  "bookPage": "War gave us one minute, as Fames had given us two, and I understood then that the riders were not mocking us; they were keeping a rule. When the minute ended the air of the hall rang like a smithy, and three weapons lifted from the floor where no hand had held them: a hammer, a sword, a spear. They fought us as soldiers fight, without anger and without rest. Our sword-arms did little against the rider himself. It was our wizards who brought War down, and they say still that they have never felt anything so heavy fall.",
+  "bookPage": "War gave us one minute, as Fames had given us two, and I understood then that the riders were not mocking us; they were keeping a rule. When the minute ended the air of the hall rang like a smithy, and three weapons lifted from the floor where no hand had held them: a hammer, a sword, a spear. They fought us as soldiers fight, without anger and without rest. The hammer was the worst of them; it knew where a shield would be before the man who held it did. Our sword-arms did little against the rider himself. It was our wizards who brought War down, and they say still that they have never felt anything so heavy fall.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} broke the weapons of Bellum and unhorsed War in {minutes} minutes.",
     "loss": "Bellum's war incarnate cut through {realm}'s raid; {raidLeader} lost the second rider."

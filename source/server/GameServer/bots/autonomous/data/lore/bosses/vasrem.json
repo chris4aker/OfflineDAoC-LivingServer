@@ -42,7 +42,7 @@
     }
   ],
   "story": "Before the dwarves came, before even the narfi's silver wood went black, there was a man who lived on the bald hill in the south-east of what is now the Iarnwood. Nobody knows his people. The narfi say he was a wanderer who came across the ice in the age before the dwarves and liked the hill because from it he could see the whole wood singing. They say his name was Vasrem and that he was the first to die when the rot came, because he was sitting under the trees listening when the singing stopped.\n\nHe did not stay dead. The rot gets into everything in the Iarnwood, and the dead are no exception; it got into him first because he was first, and he sat up out of the leaf-mould on his hill while the trees were still turning black around him. The narfi say he sat up thirsty. He has been thirsty ever since.\n\nWhat he drinks is life. He does not need to touch it. He sits on his hill and looks at whatever has come up it, and what is in it runs out toward him the way water runs downhill, from further off than an arrow carries, and goes into him and keeps him. He does not come down to his prey; he has never needed to. He lets it come to him, and he drinks it as it climbs, and the more he drinks the longer he lasts. The bark-gatherers say you feel the cord before you see him. Those who go up the hill feel it worst of all: the arm goes weak first, then the legs, then everyone standing near the one he is looking at goes slow and stupid with him.\n\nNothing interrupts him. The Remnants once sent a runemaster up the hill to break his drawing with a word of binding, and she said the word, and the drawing went on, and she came down a week later than she went up, white-haired. Nothing holds him either; he is not, the dwarves say, entirely in the place where he seems to sit.\n\nThe trees on his hill lean away from him. It is the only place in the Iarnwood where the iron trees have moved at all, in all the dwarves' slates. The two renders that walk the hilltop with him are as dead as he is, and the gatherers think they were the last beasts of the silver wood, that came up the hill to him when he still had a voice, and stayed. The dwarves count him among the old one's Servants, since the rot is hers. The narfi will not. They say Vasrem was the wood's first mourner, and that he is still mourning, and that a mourner drinks.",
-  "legend": "Vasrem is the lich on the bald hill in the south-east of the Iarnwood, level 70, 30,000 health, with two spectral renders up there with him. He drains life: 450 body damage per cast from 1,800 range, uninterruptible, cast on the move, and every point heals him, so the fight is a race. First thing he does to a new target is a strength/con debuff and then a dex/quick debuff that hits everyone within 350 of that target; don't bunch up on whoever he's on, and cure or buff it back. He doesn't come to you, he stays at casting range, so melee has to run up to him and casters can just open up. Body resist helps a lot. CC-immune, 20% melee and 30% magic resist. He resets full if you leave. Kill or pull the renders away first. A strong group can do it; a weak one feeds him.",
+  "legend": "Vasrem is the lich on the bald hill in the south-east of the Iarnwood, a foe for a war party of the realm's champions; he takes as much killing as fifteen raiders, with two spectral renders up there with him. He drains life: nearly half a robed caster's strength in body damage per cast from sixty paces, which cannot be interrupted, cast on the move, and every point heals him, so the fight is a race. First thing he does to a new target is a charm that saps strength and constitution and then one that saps dexterity and quickness on everyone within about a dozen paces of that target; don't bunch up on whoever he's on, and cure it or bless it back. He doesn't come to you, he stays where his spells reach, so melee has to run up to him and casters can just open up. Wards against body help a lot. No charm or stun holds him, and a fifth of every blow and three-tenths of every spell are lost on him. He is whole again if you leave. Kill the renders or draw them away first. A strong group can do it; a weak one feeds him.",
   "yells": {
     "aggro": [
       "Warm. You are so warm.",
@@ -80,12 +80,12 @@
   },
   "botLines": {
     "briefing": [
-      "vasrem lifetaps and debuffs, cure and burn him",
-      "he drains 450 a cast from 1800 range and heals off it. this is a damage race",
-      "dont stack on his target, the dex quick debuff has a 350 radius",
+      "vasrem drinks your life and saps you, cure and burn him",
+      "he drains nearly half a robed caster a cast from sixty paces and heals off it. this is a damage race",
+      "dont stack on his target, the dex quick sapping takes everyone a dozen paces round",
       "he wont come to melee, melee runs up the hill to him",
-      "uninterruptible and cc immune, dont waste it",
-      "body resist if you have it"
+      "cant be interrupted and nothing holds him, dont waste it",
+      "body wards if you have them"
     ],
     "aftermathWin": [
       "vasrem's eye dropped!",
@@ -94,8 +94,8 @@
       "renders first then him, worked fine"
     ],
     "aftermathLoss": [
-      "he drained the tanks",
-      "everyone stood on the tank and got the debuff",
+      "he drained the shield-bearers",
+      "everyone stood on the shield-bearer and got sapped",
       "he healed faster than we hit",
       "we went up the hill too slow"
     ],

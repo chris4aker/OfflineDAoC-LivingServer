@@ -64,21 +64,21 @@
   },
   "botLines": {
     "briefing": [
-      "water primal runs to its pool at thirty. [stop hitting|hold your damage] till it comes back, its immune in there",
+      "water primal runs to its pool at three-tenths. [stop hitting|hold your damage] till it comes back, nothing touches it in there",
       "water primal: when it walks to its pool call hold. [nobody casts|stop everything] till it comes back",
       "dont chase the water primal to its pool, it cant be hurt while it walks. [let it go|wait at the edge]",
       "burst it the moment it comes out of the pool. [everything|all in]"
     ],
     "aftermathWin": [
       "water down, [and nobody wasted their mana on the pool|good discipline]",
-      "held at thirty like pros, burst it on the way back. [clean|lovely]",
+      "held at three-tenths like pros, burst it on the way back. [clean|lovely]",
       "the conservator's pool dimmed when the water died, someone saw it from the gallery. [creepy|cool]",
       "water down, nobody wasted a spell on the pool. [discipline|nice]"
     ],
     "aftermathLoss": [
-      "half the raid burned mana into the pool while it was immune. [again|every time]",
-      "kept casting into the pool and [had no mana when it came back|went oom]",
-      "half the casters nuked it on the walk to the pool and [were empty when it came back|had nothing left]",
+      "half the raid burned mana into the pool while it was untouchable. [again|every time]",
+      "kept casting into the pool and [had no mana when it came back|ran dry]",
+      "half the casters bolted it on the walk to the pool and [were empty when it came back|had nothing left]",
       "it came back healed and we [had nothing|were empty]"
     ],
     "rumour": [

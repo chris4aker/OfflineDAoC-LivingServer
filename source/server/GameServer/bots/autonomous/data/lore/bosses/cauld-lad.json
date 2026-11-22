@@ -33,7 +33,7 @@
     }
   ],
   "story": "Before there was a station in the middle valley there was a posting-house, and before that a Roman one, with a stable for the post horses on the road north to the mines. In Uther's day it was kept by a man the hill-folk do not name, and his stable boy was a lad called Gwas, which in the hill speech is only \"boy\", so perhaps he had no other name. Gwas was slow. One night a rider of the king's came up the valley in the rain shouting for a fresh horse, and the lad was slow to bring it, and the master struck him with the pitchfork that stood by the door and put the body in the horse-pond behind the stable and told the rider the boy had run off.\n\nHe did not run far. That winter the grooms found the stable mucked out each morning before they woke, the tack hung straight, the horses quiet. When they left it in a mess it was set to rights. When they left it tidy, to see what he would do, they found it thrown about, the harness in the straw, as if he could not bear to have nothing to do. A groom's wife left a cloak on the corn-bin to thank him, and in the morning the cloak was gone and the stable was a ruin, and the lad has never worked in that stable since. Ever after he has wandered the road east of the station in the long dusk, cold as the pond, and works at night in whatever stable will have him.\n\nThe station keeps a custom for him that it calls the rule of the stable: say nothing to him, give him nothing, and strike nothing. He has never once laid a hand on anyone who kept it. And no other spirit in the valley answers when he is troubled; the ghost miners on the hill do not come down for him, the dead of the druids' ground do not know him. He is a household's ghost, and his household is a stable.\n\nThere are four accounts of what he is. The hill-folk say he is the boy, and angry. The ostlers of the station say he was the master's own son, which is why the master hid him. The priest at Ludlow says he is held by his own anger and will go when he forgives. The loremasters of Camelot say he is one of the old household spirits, like the bwca of the Pennine farms, and the only one who never turned ugly, because his house never left. All four agree on one thing, because the lad sings it himself: the acorn has not yet fallen from the tree that will make the cradle of the child who will lay him. Mathien of the station planted an oak by his stable thirty years ago. When the lad is put down he is back by the next feed, and the station says that is because the oak is not yet tall enough.",
-  "legend": "The Cauld Lad is a level 53-55 ghost on the road east of Snowdonia Station in Black Mountains North, a 10-30 zone. He never aggros (aggro level zero), so lowbies can ride right past him; leave him alone below fifty. He has no spells or styles in the data and no faction, so nothing comes to help him: a straight melee kill for two or three fifties or a small group. He is small and see-through, and wanders a little. He respawns in about 80 seconds, so do not park a lowbie on his road after you kill him. The old hands at the station say never thank him and never give him anything, or he wrecks the stable; Mathien leaves his stable door open for him and says nothing.",
+  "legend": "The Cauld Lad is a ghost on the road east of Snowdonia Station in Black Mountains North, a country for young adventurers and seasoned bands, though he himself is a foe for the realm's best, a full band of them. He never takes notice of anyone, so the young can ride right past him; leave him alone until you are among the realm's best. By every account he has no spells or styles and is sworn to no one, so nothing comes to help him: a straight melee kill for two or three of the realm's best or a small group. He is small and see-through, and wanders a little. He is back about eighty seconds after he is killed, so do not leave a young adventurer on his road after you kill him. The old hands at the station say never thank him and never give him anything, or he wrecks the stable; Mathien leaves his stable door open for him and says nothing.",
   "yells": {
     "aggro": [
       "You should not have struck.",
@@ -71,9 +71,9 @@
   },
   "botLines": {
     "briefing": [
-      "cauld lad, 53-55 ghost on the road east of the station. never aggros, no spells, nothing comes with him",
-      "straight melee kill, two or three 50s is plenty. hes small, dont lose him in the trees",
-      "he respawns in like 80 sec so dont leave lowbies standing on that road",
+      "cauld lad, ghost on the road east of the station, job for our best. never attacks, no spells, nothing comes with him",
+      "straight melee kill, two or three of our best is plenty. hes small, dont lose him in the trees",
+      "he comes back in like 80 sec so dont leave the young ones standing on that road",
       "and nobody thank him in say. old station joke but do it anyway"
     ],
     "aftermathWin": [
@@ -83,10 +83,10 @@
       "mathien's oak still isnt big enough apparently"
     ],
     "aftermathLoss": [
-      "he's 55 and we're not, should have checked",
+      "he's far beyond us, should have looked harder before swinging",
       "lost him in the dusk, he's see-through",
-      "someone aoe'd near the road and woke the whole hill",
-      "he came back before we'd rezzed, whatever"
+      "someone threw a fire burst near the road and woke the whole hill",
+      "he came back before we'd been raised, whatever"
     ],
     "rumour": [
       "[heard|someone said] the cauld lad was a stable boy killed with a pitchfork for being slow",

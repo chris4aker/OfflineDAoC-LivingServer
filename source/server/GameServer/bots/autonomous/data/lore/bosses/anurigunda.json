@@ -27,7 +27,7 @@
     }
   ],
   "story": "Anurigunda is older than Fomor. When the Fomorians went down under the shore of Hy Brasil after Mag Tuired, she did not come down the stair with them; she came up, out of the sea-floor rock that runs liquid, where she had lived in the fire under the water. Her skin has never cooled, her hall's walls have run like honey and set, and the Sylvan call her the hearth. She was at Mag Tuired and remembers it from the field; she does not remember who won, only who lived. The druids of Tir na Nog cannot find her in the accounts of the battle and do not take that for proof of anything.\n\nShe sits in her hall as a grandmother sits by the fire, among the largest household in the city, and touch her and every one of them comes. Every little while the rock of her skin rises off her in a ring of molten stone over everyone standing near her, and it sticks and burns a long while; Fomorian children are taught not to sit too close to the fire. When she is pressed she calls the city, and when she is pressed harder, at the last, she calls more. She settles the city's quarrels and has never thought her own with Nogoribando worth her time.\n\nShe will not have anyone stand between her and her own door. Bláthín, a warden of Domnann, stood in it holding a captive child's hand and found herself back by the hearth without feeling herself moved; the wardens still call any place easy to enter and hard to leave the eldest's door. Companies that fought her between her and her doorway were set back by the hearth among the burning ring; those who drew her into the body of her hall were never moved.\n\nBébinn of Howth's company cleared the passages first, drew her away from the door, kept only the spears at her knee and everyone else back from the fire, and were ready when she called and called again. The eldest gave Bébinn the look Fiachra of Howth had written of, the look of someone who expected to outlive her, and she did: she returns, still burning, and Bébinn died old in Howth. The Sylvan meet each returning company with blankets and ask whether everyone wiped their boots.",
-  "legend": "Clear her household before you touch her: pulling her brings every one of them within 2,500, fourteen in all (anteen, batravian, harrien, a bolach and a shawilet). Touch of Flames is a lava ring around her (radius 350) every 10-15 seconds: 45 heat every 2 seconds for a full minute, and it stacks up on whoever stays close, so only the tanks stand at her and everyone else stays out of 350. At 40% she calls four more Fomorians and at 20% five more (5,000 health each): tanks ready for both waves. Fight her in the middle of her hall, not by the doorway: anyone, bot or player, who ends up right next to her on the doorway side gets moved back by her hearth. She resets to full and her called Fomorians vanish if everyone drops off her. Nicknames: 'grandmother', 'the lava lady'. Superstition: wipe your boots before you enter her hall. Nobody knows why it started. Nobody stops.",
+  "legend": "Clear her household before you touch her: drawing her brings every one of them from as far as 83 paces off, fourteen in all (anteen, batravian, harrien, a bolach and a shawilet). Touch of Flames is a lava ring around her, a dozen paces wide, every ten to fifteen seconds: a small burn every two seconds for a full minute, and it stacks up on whoever stays close, so only the shield-bearers stand at her and everyone else stays more than a dozen paces off. When three-fifths of her strength is gone she calls four more Fomorians, and when four-fifths is gone five more (each taking as much killing as two and a half raiders): shield-bearers ready for both waves. Fight her in the middle of her hall, not by the doorway: anyone, companion or not, who ends up right next to her on the doorway side gets moved back by her hearth. She walks home healed and her called Fomorians vanish if nobody is left fighting her. Nicknames: 'grandmother', 'the lava lady'. Superstition: wipe your boots before you enter her hall. Nobody knows why it started. Nobody stops.",
   "yells": {
     "aggro": [
       "I stood at Mag Tuired. You are not Lugh.",
@@ -78,22 +78,22 @@
   "botLines": {
     "briefing": [
       "clear all fourteen of her household first. [every one|they all come]",
-      "lava ring every 10-15 sec, 350 around her. [only tanks close|casters out of 350]",
-      "more fomorians at 40 and more again at 20. [tanks pick them up|ready for both waves]",
-      "drag her into the middle of the hall, [not by the door|away from the door], or she ports you back by her chair",
+      "lava ring every 10-15 sec, dozen paces round her. [only shields close|casters stay a dozen paces out]",
+      "more fomorians when shes lost three fifths and more again at four fifths. [shields pick them up|ready for both waves]",
+      "drag her into the middle of the hall, [not by the door|away from the door], or she sends you back by her chair",
       "wipe your boots. [i mean it|old custom]"
     ],
     "aftermathWin": [
       "the eldest is down. [her fire is cold|for now]",
-      "nobody but the tanks stood in the lava. [clean|nice]",
-      "both waves picked up clean. [tanks were great|grats]",
+      "nobody but the shields stood in the lava. [clean|nice]",
+      "both waves picked up clean. [shields were great|grats]",
       "everyone wiped their boots. [and we lived|coincidence]"
     ],
     "aftermathLoss": [
       "the household came with her. [clear first|fourteen extra]",
-      "casters stood in the lava ring. [out of 350|the fire stacks]",
-      "second wave at 20 overran the healers. [tanks ready for it|its five not four]",
-      "fought her by the door and kept getting [ported back|moved to her chair]. [middle of the hall|away from the door]"
+      "casters stood in the lava ring. [stay a dozen paces out|the fire stacks]",
+      "second wave at four fifths overran the healers. [shields ready for it|its five not four]",
+      "fought her by the door and kept getting [sent back|moved to her chair]. [middle of the hall|away from the door]"
     ],
     "rumour": [
       "[heard|someone said] anurigunda came up out of the sea floor rock, not down the stair",

@@ -59,12 +59,15 @@ namespace DOL.GS
         // stands in front of the player; a later world update that adds the inns can list their spots here.
         private static readonly Dictionary<eRealm, (ushort Region, int X, int Y, int Z, ushort Heading)> PreviewSpots = new();
 
+        // Suggested names. Owner 2026-11-21: companions may carry the names of lesser ("B tier") legend heroes, but never a
+        // name the lore tells of (its heroes and legend companions, docs/1.2.1/HEROES.md): tools/lore/tests checks this list
+        // against tools/lore/name_counts.py HEROES. Companions already hired keep the names they have.
         private static readonly Dictionary<(eRealm, eGender), string[]> Names = new()
         {
-            [(eRealm.Albion, eGender.Male)] = ["Aldric", "Bevis", "Cuthbert", "Edwin", "Gareth", "Osbert"],
-            [(eRealm.Albion, eGender.Female)] = ["Aldith", "Brangwen", "Edith", "Gwendolyn", "Isolde", "Maud"],
-            [(eRealm.Hibernia, eGender.Male)] = ["Aodh", "Brennan", "Colm", "Diarmuid", "Eoghan", "Lorcan"],
-            [(eRealm.Hibernia, eGender.Female)] = ["Aine", "Brigid", "Caoimhe", "Deirdre", "Grainne", "Muirne"],
+            [(eRealm.Albion, eGender.Male)] = ["Aldric", "Bevis", "Cuthbert", "Dinadan", "Edwin", "Osbert"],
+            [(eRealm.Albion, eGender.Female)] = ["Aldith", "Brangwen", "Edith", "Gwendolyn", "Lynette", "Maud"],
+            [(eRealm.Hibernia, eGender.Male)] = ["Aodh", "Brennan", "Colm", "Eoghan", "Loegaire", "Lorcan"],
+            [(eRealm.Hibernia, eGender.Female)] = ["Aine", "Brigid", "Caoimhe", "Fand", "Grainne", "Muirne"],
             [(eRealm.Midgard, eGender.Male)] = ["Arnulf", "Eirik", "Gunnar", "Hakon", "Leif", "Sven"],
             [(eRealm.Midgard, eGender.Female)] = ["Astrid", "Freydis", "Gudrun", "Ingrid", "Sigrid", "Thyra"],
         };
@@ -118,7 +121,7 @@ namespace DOL.GS
                 .Select(r => r.ID).OrderBy(r => r).ToList();
         }
 
-        /// <summary>The advanced classes a hired companion of this race can be (it is hired at level 5, past its base class).</summary>
+        /// <summary>The advanced classes a hired companion of this race can be (it is hired at level 5 or above, past its base class).</summary>
         public static List<eCharacterClass> Classes(eRealm realm, eRace race)
         {
             var disabled = Util.SplitCSV(ServerProperties.Properties.DISABLED_CLASSES ?? string.Empty, true);
@@ -422,9 +425,9 @@ namespace DOL.GS
             Text(player, 7, cost == 0 ? "Cost: free (your first companion)" : $"Cost: {Money.GetString(cost)}");
             Text(player, 8, s.Problem);
             Text(player, 9, $"Companions: {roster.Count} of {open} slots" + (next > 0 ? $" (next at level {next})" : string.Empty));
-            Text(player, 10, $"A level 5 {className} who joins you with a training");
-            Text(player, 11, "weapon and nothing else. Give them gear and train");
-            Text(player, 12, s.Test ? "(GM test window)" : "their specs from the GEAR and SPEC buttons.");
+            Text(player, 10, $"A level {HiredCompanions165.StartingLevel(player.Level)} {className} who joins you trained,");
+            Text(player, 11, "in basic merchant gear (a training weapon at 5).");
+            Text(player, 12, s.Test ? "(GM test window)" : "Better gear and a free respec: GEAR and SPEC buttons.");
             for (int r = 0; r < 8; r++)
             {
                 OfflineHiredCompanionRecord hired = roster.FirstOrDefault(h => h.Row == r);

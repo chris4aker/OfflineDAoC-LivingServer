@@ -81,9 +81,11 @@ public readonly record struct RvrRoamStep(RvrRoamWalk Walk, RvrRoamAction Action
 
 /// <summary>
 /// Live prey at a spot for one walking realm: enemy levelling bots (a PvE goal) inside the spot's radius at the last
-/// sample, and when any were last seen there.
+/// sample, and when any were last seen there. <see cref="Roamers"/> (#417): enemy RvR gamebots (warbands, eights,
+/// soloers, siege armies and defenders) within <see cref="RvrRoamCircuits.RoamerDrawRadius"/> of the spot at the last
+/// sample; they move, so only the live count weighs, never a "seen recently".
 /// </summary>
-public readonly record struct RvrSpotPrey(int Now, long LastSeenAt);
+public readonly record struct RvrSpotPrey(int Now, long LastSeenAt, int Roamers = 0);
 
 /// <summary>
 /// The pure rules of circuits and check spots (work package 6): a walk's route, its dwell at each spot (30-60 s), the
@@ -107,6 +109,19 @@ public static class RvrRoamCircuits
     public const float JoinRadius = 4_000;
 
     public const double PreyWeight = 4.0;
+    /// <summary>
+    /// #417: each enemy RvR gamebot near a spot draws a roaming eight (a fight is what it roams for), up to
+    /// <see cref="RoamerCountCap"/> a spot so one siege army does not pull every eight of the realm onto one circuit.
+    /// </summary>
+    public const double RoamerWeight = 1.5;
+    public const int RoamerCountCap = 12;
+    /// <summary>#417: enemy RvR bots this far beyond a spot's own radius still count for it (a group moves; a siege sits by a keep).</summary>
+    public const int RoamerDrawRadius = 4_000;
+    /// <summary>
+    /// #417: a roaming eight goes after the live enemy force the RvR planner picked (rvr-enemy-*) when it is in the
+    /// eight's region and this near; farther ones are left to the circuits, which the enemy count now draws as well.
+    /// </summary>
+    public const float ChaseRadius = 10_000;
     public const double RecentBonus = 1.0;
     public const double BaseWeight = 0.15;
     /// <summary>"Spots with nobody recently get low weight": prey seen in the last 20 minutes still counts a little.</summary>
@@ -315,6 +330,20 @@ public static class RvrRoamCircuits
         BaseWeight + Math.Max(0, prey.Now) * PreyWeight +
         (prey.LastSeenAt > 0 && now - prey.LastSeenAt <= RecentMilliseconds ? RecentBonus : 0);
 
+    /// <summary>
+    /// A roaming eight's weight for a spot (#417): <see cref="SpotWeight"/> plus the enemy RvR bots near it. Owner's PC
+    /// (`19e7037`): 96 checks, 4 hunts; the circuits were weighed by enemy levellers only, and with none about every
+    /// circuit weighed the same, so the eights walked at random past the fights.
+    /// </summary>
+    public static double EightSpotWeight(RvrSpotPrey prey, long now) =>
+        SpotWeight(prey, now) + Math.Clamp(prey.Roamers, 0, RoamerCountCap) * RoamerWeight;
+
+    /// <summary>
+    /// #417: whether a roaming eight follows the planner's hunt of a live enemy force instead of its circuit. Until #417
+    /// the circuit always replaced it, so an eight never went toward an enemy it was not already standing beside.
+    /// </summary>
+    public static bool EightFollowsHunt(bool sameRegion, float distance) => sameRegion && distance <= ChaseRadius;
+
     /// <summary>Whether a spot has prey now or had some recently (what "something else has prey" means).</summary>
     public static bool HasPrey(RvrSpotPrey prey, long now) =>
         prey.Now > 0 || prey.LastSeenAt > 0 && now - prey.LastSeenAt <= RecentMilliseconds;
@@ -332,8 +361,17 @@ public static class RvrRoamCircuits
     {
         double weight = 0;
         foreach (string id in RouteFor(circuit, catalog, reserveMode, out _))
-            weight += SpotWeight(prey(catalog.Spot(id)), now);
+            weight += EightSpotWeight(prey(catalog.Spot(id)), now);
         return weight;
+    }
+
+    /// <summary>#417: the enemy RvR bots a walker of <paramref name="walker"/>'s realm would meet on the circuit (the sum over its route).</summary>
+    public static int CircuitRoamers(RvrRoamCircuit circuit, RvrCheckSpotCatalog catalog, Func<RvrFrontierPoi, RvrSpotPrey> prey, bool reserveMode)
+    {
+        int roamers = 0;
+        foreach (string id in RouteFor(circuit, catalog, reserveMode, out _))
+            roamers += Math.Max(0, prey(catalog.Spot(id)).Roamers);
+        return roamers;
     }
 
     /// <summary>
@@ -372,7 +410,8 @@ public static class RvrRoamCircuits
     /// The live count of one sample: for each spot, how many enemy levelling bots of each realm stand inside its radius.
     /// <paramref name="prey"/> lists the levelling bots in the frontiers (region, position, realm). Pure.
     /// </summary>
-    public static Dictionary<string, int[]> Tally(RvrCheckSpotCatalog catalog, IEnumerable<(ushort Region, float X, float Y, eRealm Realm)> prey)
+    public static Dictionary<string, int[]> Tally(RvrCheckSpotCatalog catalog, IEnumerable<(ushort Region, float X, float Y, eRealm Realm)> prey,
+        int extraRadius = 0)
     {
         var counts = new Dictionary<string, int[]>(StringComparer.Ordinal);
         var byRegion = catalog.Frontiers.ToDictionary(frontier => frontier.Region);
@@ -383,7 +422,8 @@ public static class RvrRoamCircuits
             foreach (RvrFrontierPoi spot in frontier.Spots)
             {
                 float dx = x - spot.Position.X, dy = y - spot.Position.Y;
-                if (dx * dx + dy * dy > (float)spot.Radius * spot.Radius)
+                float radius = spot.Radius + Math.Max(0, extraRadius);
+                if (dx * dx + dy * dy > radius * radius)
                     continue;
                 if (!counts.TryGetValue(spot.Id, out int[] byRealm))
                     counts[spot.Id] = byRealm = new int[4];
@@ -403,9 +443,10 @@ public static class RvrRoamPrey
 {
     public const long SampleMilliseconds = 3 * 60_000;
 
-    private sealed record Snapshot(long At, Dictionary<string, int[]> Now, Dictionary<string, long[]> LastSeen);
+    private sealed record Snapshot(long At, Dictionary<string, int[]> Now, Dictionary<string, long[]> LastSeen,
+        Dictionary<string, int[]> Roamers);
 
-    private static Snapshot _snapshot = new(long.MinValue, new(), new());
+    private static Snapshot _snapshot = new(long.MinValue, new(), new(), new());
     private static int _sampling;
 
     public static long SampledAt => Volatile.Read(ref _snapshot).At;
@@ -422,7 +463,11 @@ public static class RvrRoamPrey
         if (spot != null && snapshot.LastSeen.TryGetValue(spot.Id, out long[] seen))
             for (int realm = 1; realm <= 3; realm++)
                 if (realm != (int)walker) last = Math.Max(last, seen[realm]);
-        return new(now, last);
+        int roamers = 0;
+        if (spot != null && snapshot.Roamers.TryGetValue(spot.Id, out int[] near))
+            for (int realm = 1; realm <= 3; realm++)
+                if (realm != (int)walker) roamers += near[realm];
+        return new(now, last, roamers);
     }
 
     /// <summary>Takes a new sample when the last is older than <see cref="SampleMilliseconds"/>. Cheap otherwise.</summary>
@@ -435,13 +480,21 @@ public static class RvrRoamPrey
         try
         {
             using var profile = AiProfile.Scope(AiSystem.RvrTactics);
-            var prey = AutonomousBotRegistry.Snapshot()
-                .Where(bot => bot != null && bot.IsAlive && bot.CurrentRegionID is 1 or 100 or 200 &&
-                              (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.SoloPve) ||
-                               AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.GroupPve)))
+            GameBot[] frontier = AutonomousBotRegistry.Snapshot()
+                .Where(bot => bot != null && bot.IsAlive && bot.CurrentRegionID is 1 or 100 or 200)
+                .ToArray();
+            var prey = frontier
+                .Where(bot => AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.SoloPve) ||
+                              AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.GroupPve))
                 .Select(bot => (bot.CurrentRegionID, (float)bot.X, (float)bot.Y, bot.Realm))
                 .ToArray();
             Dictionary<string, int[]> counts = RvrRoamCircuits.Tally(catalog, prey);
+            // #417: the enemy RvR gamebots (not hidden), counted over a wider ring: where the fights are.
+            var rvr = frontier
+                .Where(bot => !bot.IsStealthed && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR))
+                .Select(bot => (bot.CurrentRegionID, (float)bot.X, (float)bot.Y, bot.Realm))
+                .ToArray();
+            Dictionary<string, int[]> roamers = RvrRoamCircuits.Tally(catalog, rvr, RvrRoamCircuits.RoamerDrawRadius);
             var lastSeen = before.LastSeen.ToDictionary(pair => pair.Key, pair => (long[])pair.Value.Clone(), StringComparer.Ordinal);
             foreach ((string spot, int[] byRealm) in counts)
             {
@@ -450,14 +503,15 @@ public static class RvrRoamPrey
                 for (int realm = 1; realm <= 3; realm++)
                     if (byRealm[realm] > 0) seen[realm] = now;
             }
-            Volatile.Write(ref _snapshot, new Snapshot(now, counts, lastSeen));
+            Volatile.Write(ref _snapshot, new Snapshot(now, counts, lastSeen, roamers));
         }
         finally { Volatile.Write(ref _sampling, 0); }
     }
 
     /// <summary>For tests: replaces the sample.</summary>
-    public static void Set(long at, Dictionary<string, int[]> now, Dictionary<string, long[]> lastSeen) =>
-        Volatile.Write(ref _snapshot, new Snapshot(at, now ?? new(), lastSeen ?? new()));
+    public static void Set(long at, Dictionary<string, int[]> now, Dictionary<string, long[]> lastSeen,
+        Dictionary<string, int[]> roamers = null) =>
+        Volatile.Write(ref _snapshot, new Snapshot(at, now ?? new(), lastSeen ?? new(), roamers ?? new()));
 }
 
 /// <summary>

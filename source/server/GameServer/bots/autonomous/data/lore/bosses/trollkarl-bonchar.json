@@ -83,7 +83,7 @@
       "text": "He has stood in his chamber ever since with a sorcerer's face and a sorcerer's patience, as if listening. The Valkyn guides who take Midgard's companies through the middle city walk them past his door with their hands at their sides, and tell them the one thing every Valkyn child is told about Bonchar: do not touch the listener. If he is touched, the split opens, and the Rift is there again, and the door is open, and the dark comes through it for as long as anyone stands against it.\n\nNothing the Valkyn know will hold him in either shape. Their wise-women have sung their sleep-songs at him and the songs have gone over him; their trollkarls have bound him with the Fathers' own words, and the words have slid off. Ragnfrid said that was the Fathers' teaching too. They gave him more of themselves than they gave anyone, she said, and the Fathers were never held by anything.\n\nMidgard does not agree about him. The skalds of Jordheim say he is a warning against grief: the boy who would not let his fathers go, and opened a hole in the world to follow them. The runemasters say the morkenhet are not from anywhere; they are the dark of the Fathers' road itself, given a shape, and that the road is real. The Valkyn elders of Dyrfjall say both things are true, and that if Bonchar ever remembers what he was listening for, he will finish opening the door, and then everyone will know where the Fathers went.\n\nHallveig has one more thing to say about him, and she says it only at the bridge, on the way back up. Her grandmother asked her, near the end, to go into his chamber once, while he was himself, and not touch him, and tell him that the Valkyn were still standing on their own. Hallveig did. She says he opened his eyes and looked at her for a long time, and then he said: so am I. Then he shut them again and went on listening."
     }
   ],
-  "legend": "Trollkarl Bonchar is a Valkyn sorcerer standing still until you touch him; then he turns into the Rift and the real fight starts. Two facts matter. The Rift calls out a morkenhet every 10 to 20 seconds for as long as it is in combat, 5,000 health each and they hit hard, so the adds never stop on their own. And when the Rift dies, every morkenhet in the zone vanishes with it. So the classic answer is one or two groups on add control (the morkenhet are NOT CC-immune: stuns, mez and roots all work) while everyone else burns the Rift as fast as they can. The Rift itself is CC-immune, hits with energy and throws Rift Strike, 300 energy every 6 to 10 seconds that can't be interrupted. It has 30,000 health. Keep it in its chamber: drag it past its tether (about 3,500) and it walks home and resets, adds cleared. Use target-nearest on the Rift; it's easy to lose in the crowd. Back in 2003 it dropped nothing and people killed it anyway; these days the Rift's helm and leggings drop.",
+  "legend": "Trollkarl Bonchar is a Valkyn sorcerer standing still until you touch him; then he turns into the Rift and the real fight starts. Two facts matter. The Rift calls out a morkenhet every 10 to 20 seconds for as long as it is fighting; each takes as much killing as two and a half raiders and they hit hard, so the morkenhet never stop on their own. And when the Rift dies, every morkenhet in the place vanishes with it. So the classic answer is one or two groups set to hold the morkenhet (stuns, trances and pinning all hold them) while everyone else burns the Rift as fast as they can. No charm or stun holds the Rift itself; it hits with energy and throws Rift Strike, three-tenths of a robed caster's strength in energy every 6 to 10 seconds that can't be interrupted. It takes as much killing as fifteen raiders, and it is a foe for several bands of the realm's best together. Keep it in its chamber: drag it more than some hundred and fifteen paces from its spot and it walks home whole, its morkenhet cleared. Keep your eye on the Rift; it's easy to lose in the crowd. Back in the early days it carried nothing and people killed it anyway; these days the Rift's helm and leggings come off it.",
   "yells": {
     "aggro": [
       "Wait. Do not touch me. It is coming through. It is coming thr-",
@@ -138,14 +138,14 @@
   },
   "botLines": {
     "briefing": [
-      "bonchar turns into the rift when pulled. [add team|2 groups] on the morkenhet, rest on the rift",
-      "use target nearest for the rift",
-      "healers at the base of the stone, aggro magnets with them",
-      "dont pull the rift past its tether",
-      "the rift spawns a morkenhet every 10-20 sec forever. kill the rift and they all vanish",
-      "add team cc the morkenhet, they arent immune. rift is",
-      "rift strike 300 energy every 6-10s, cant interrupt",
-      "keep the rift in its room, tether is about 3500"
+      "bonchar turns into the rift when you touch him. [a team|two groups] on the morkenhet, rest on the rift",
+      "keep your eyes on the rift",
+      "healers at the base of the stone, the ones who draw the morkenhet's anger with them",
+      "dont draw the rift too far from its spot",
+      "the rift calls a morkenhet every 10-20 sec forever. kill the rift and they all vanish",
+      "the holding team stun and entrance the morkenhet, it works on them. not on the rift",
+      "rift strike three-tenths of a robed caster in energy every 6-10 sec, cant interrupt",
+      "keep the rift in its room, it goes home past about a hundred and fifteen paces"
     ],
     "aftermathWin": [
       "rift closed. no loot. [classic|typical]",
@@ -158,12 +158,12 @@
     ],
     "aftermathLoss": [
       "morkenhet just kept coming",
-      "the adds got the healers at the stone",
-      "lost the rift target and nuked adds for 5 minutes",
+      "the morkenhet got the healers at the stone",
+      "lost the rift and blasted morkenhet for 5 minutes",
       "morkenhet piled up faster than we killed them",
       "we killed morkenhet for 10 minutes and never touched the rift",
-      "pulled the rift too far and it walked home full",
-      "add team lost control and they ate the casters"
+      "drew the rift too far and it walked home whole",
+      "the holding team lost control and they ate the casters"
     ],
     "rumour": [
       "heard the sorcerer in trollheim opened a hole to wherever the troll fathers went. [it opened him instead|didnt end well]",

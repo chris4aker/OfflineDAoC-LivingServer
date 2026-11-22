@@ -32,7 +32,7 @@
     }
   ],
   "story": "The Dyers and the Tinctors coloured the colleges' gowns in the hamlet on the stream in the north-east of the dales, one craft with two names, and they quarrelled for three generations over which name was older. The Dyers' stretch of the stream ran blue. Beonoc was the head of the house when the war came, the eldest, the keeper of the blue vat, and his hands were blue to the wrist and had been since he was a boy. The households say that is how you know him still.\n\nThe colleges' gowns were blue for the readers and red for the masters and green for the college of healing, and the blue was the Dyers', and Beonoc held that blue was therefore the oldest colour, because there had been readers before there were masters. The Tinctors held otherwise. The quarrel went to the chancellors' court in Avalon twice and was sent back undecided both times, and Beonoc said that proved it, and so did the Tinctors.\n\nWhen the drakoran came across the dales in the first summer of the war, the hamlet stayed, because the dyers would not leave their vats; a vat left cold for a week is spoiled, and a dyer who spoils his blue has nothing. The Dyers died in their house beside the blue stretch, and Beonoc died at the vat. The registrar at Fort Gwyntell writes that the vat is still warm, which he cannot explain, and that the stream below the Dyers' house still runs a little blue in the morning.\n\nBeonoc keeps his house as the other households keep theirs. He gives his name to whoever asks, and the names of his house after it, and he will not suffer a stranger in the dye-yard, and comes at anyone who walks in among the vats. His household are about him, close, but each of them keeps the house in his own way, and none of them comes to Beonoc's help when he is troubled, nor he to theirs, unless the stranger has walked into their own corner of the yard too. The Priest of Arawn says that is how the dead are when they are held and not released: together, and each alone.",
-  "legend": "Beonoc Dyer is a level 50 ghost, the head of the Dyer household in the dyers' hamlet in the north-east of the Dales of Devwy. He is aggressive from about 500 away. He has no faction, and neither do the other Dyers around him (Edyo, Earma, Celm and Cerdic, 44 to 48, between 75 and 560 away), so nobody is called in, but they stand so close that walking into the yard aggros several of them at once. Pull Beonoc from the edge, or clear the house from the outside in. No spells or styles in the data: melee ghosts, a group of fifties clears the house. Respawn about 80 seconds.",
+  "legend": "Beonoc Dyer is a ghost and a foe for the realm's best, a full band of them, the head of the Dyer household in the dyers' hamlet in the north-east of the Dales of Devwy. He attacks on sight from about seventeen paces away. He is sworn to no one, and neither are the other Dyers around him (Edyo, Earma, Celm and Cerdic, each a foe for a hardened band of veterans, standing between two or three and nineteen paces from him), so nobody is called in, but they stand so close that walking into the yard brings several of them at once. Draw Beonoc from the edge, or clear the house from the outside in. No spells or styles, by every account: melee ghosts, a band of the realm's best clears the house. He rises again about eighty seconds after he falls.",
   "yells": {
     "aggro": [
       "Beonoc Dyer, of the blue vat. And you?",
@@ -70,20 +70,20 @@
   },
   "botLines": {
     "briefing": [
-      "beonoc dyer, 50 ghost, head of the dyers' house ne dales. aggros at 500",
-      "no faction but the other dyers stand right on top of him, walking in grabs several",
-      "pull him from the edge. melee ghosts, group of 50s",
-      "80 sec respawn"
+      "beonoc dyer, ghost, head of the dyers' house ne dales, job for our best. comes at you from 17 paces",
+      "sworn to nobody but the other dyers stand right on top of him, walking in grabs several",
+      "draw him from the edge. melee ghosts, full band of our best",
+      "back 80 sec after he dies"
     ],
     "aftermathWin": [
       "old beonoc down",
-      "pulled him off the edge, only edyo came",
+      "drew him off the edge, only edyo came",
       "blue hands, he wasnt lying",
       "80 sec, back out of the yard"
     ],
     "aftermathLoss": [
       "walked into the middle of the yard and got the whole house",
-      "forgot ghosts dont care that we're 52",
+      "forgot ghosts dont care how strong we are",
       "lost track of who was who in the yard",
       "he was back before we got out"
     ],

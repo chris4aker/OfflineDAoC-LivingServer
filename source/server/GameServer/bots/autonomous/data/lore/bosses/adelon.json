@@ -32,7 +32,7 @@
     }
   ],
   "story": "On the hill outside Fort Gwyntell, right of the gate, there is a small tree, and under it Adelon sits and watches the hall of making across the valley. He has been watching it since the first summer of the war. The fort's soldiers bring him bread. He eats it without looking away.\n\nHe was the old master's last apprentice. The school of making sent its readers out to the hall to learn from Master Meical at the bench, and Adelon was the last of them, the one who was there on the final evening, when the smoke came up from the south and the master sent him home. He did not go home. He went to the hill, and when the master did not come down from the tower, he went back once, by night, as far as the bench, and carried out what he could hold: a few leaves of the master's mark-book, the ones that lay on top. He has given them to Lady Lurlei of Caer Gothwaite one by one, as she has needed them. He has never gone back in.\n\nHe knows the hall better than anyone living. He knows the key on the hook in the house below and the sphere at the bench on the second floor, and he knows what the thing at the top of the hall would need to wake, because he watched the master build most of it. When the realm's young come to the hill to ask the way, he tells them, and sends word to Lady Lurlei of whoever is fool enough to go, and watches them cross the valley. He does not go with them. The fort's soldiers say that is the only thing he has ever been afraid of; Adelon says it is not fear, but that the master sent him home, and he has not been released from it.\n\nHe has no quarrel with anyone who comes to the tree. He has never once raised a hand, not to the soldiers, not to the drakoran scouts who come up the hill at dusk, not to the young who come to ask. If he is struck down, the fort is without its watcher a while, and then he is back under the tree, looking at the hall, as if he had only gone to fetch water. He planted the tree himself, on the first morning, from a seed out of the master's garden.",
-  "legend": "Adelon is a level 50 NPC sitting by a small tree on the hill right of the Fort Gwyntell gate in the Dales of Devwy. He never aggros and has no faction, no spells, nothing: he is the start of Restoring the Magic (Lady Lurlei), so talk to him, do not kill him. If someone does kill him, he respawns in about ten minutes and everyone waiting for the quest has to wait too. The quest runs: Pazia's key in the house below the hall, Tyian's sphere on the second floor, the orb to the lifeless creation at the top, Cabalist Meical, his box and note, then the pendant on the broken orb.",
+  "legend": "Adelon sits by a small tree on the hill right of the Fort Gwyntell gate in the Dales of Devwy, a man who would be a foe for the realm's best, a full band of them, if anyone ever fought him. He never takes notice of anyone, is sworn to no one and owes nobody anything, and has no spells, nothing: he is the start of Restoring the Magic (Lady Lurlei), so talk to him, do not kill him. If someone does kill him, he is back in about ten minutes and everyone waiting for the quest has to wait too. The quest runs: Pazia's key in the house below the hall, Tyian's sphere on the second floor, the orb to the lifeless creation at the top, Cabalist Meical, his box and note, then the pendant on the broken orb.",
   "yells": {
     "aggro": [
       "Why? I have done nothing.",
@@ -70,8 +70,8 @@
   },
   "botLines": {
     "briefing": [
-      "adelon, 50, by the little tree right of the fort gate. hes the quest guy for restoring the magic. dont kill him",
-      "never aggros, no faction, no spells. if someone kills him he's gone 10 min",
+      "adelon, the old man by the little tree right of the fort gate. hes the quest guy for restoring the magic. dont kill him",
+      "never attacks anyone, sworn to nobody, no spells. if someone kills him he's gone 10 min",
       "order: pazia's key, tyian's sphere upstairs, orb to the creation, meical, box, pendant on the orb",
       "talk to him first, he tells lurlei you're going"
     ],
@@ -82,7 +82,7 @@
       "great, the quest guy is dead"
     ],
     "aftermathLoss": [
-      "he's 50 and we're 45, and he didnt even fight back properly",
+      "he could take a band of our best and we're not quite there yet, and he didnt even fight back properly",
       "attacked the quest giver by accident lol",
       "someone tab-targeted adelon instead of a drakoran scout",
       "nobody should be losing to adelon"

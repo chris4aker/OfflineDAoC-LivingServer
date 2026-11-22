@@ -5,7 +5,7 @@
   "regions": [
     200
   ],
-  "summary": "Region overview of old Hibernia's haunted places; each zone (Cursed Forest, Bog of Cullen, Lough Gur, Breifine and the rest) has its own file.",
+  "summary": "The haunted places of old Hibernia, told together; each land (Cursed Forest, Bog of Cullen, Lough Gur, Breifine and the rest) has its own tale.",
   "facts": [
     {
       "text": "Region 200's named epics stand in four zones: twelve in the Cursed Forest, Badb and Queen Cliodna in the Bog of Cullen, the Melancholic Fairy Queen at Lough Gur, and Evern in Breifine.",
@@ -48,7 +48,7 @@
       "source": "source/server/GameServer/scripts/dbupdater/insert/Zones.xml; docs/RAID-SIZES.md"
     },
     {
-      "text": "The Catacombs-era Herald lore says the elves raised the Veil and withdrew into the Otherworld after quarrels with the firbolg, and that the Lurikeens helped them.",
+      "text": "Mythic's Camelot Herald lore of Hibernia says the elves raised the Veil and withdrew into the Otherworld after quarrels with the firbolg, and that the Lurikeens helped them.",
       "provenance": "mythic",
       "source": "https://www.camelotherald.com/node/461"
     },
@@ -59,7 +59,7 @@
     }
   ],
   "story": "Hibernia is a kind country by day. The old people say that is because it is so careful at night. Every family knows the places the realm does not go after dark, and they are not hidden: they are on every map, with names that nobody bothered to soften.\n\nThe worst is the Cursed Forest. It was a wood of the courts once, the Sylvan say, a place where the Seelie and the Unseelie met to bargain, and something was spilled there that neither court would take back. Now its trees walk and rot. Its fires burn without fuel. A blight climbs out of its earth in four shapes. A horror horse grazes under the moon, the fairy thorn grows in the shape of a man, a dark man's ghost waits for his servants to die, and a thing called Juggernaut walks through all of it as though it were an open field. Even the courts step around him.\n\nThe Bog of Cullen has its own: Badb, the crow of war, who wakes at dusk and smells battle coming, and Queen Cliodna, whose birds once sang the sick to sleep and now sing the healthy to death. At Lough Gur a fairy queen sits by the water at night, weeping, and trumpets sound when she comes. And on the frontier in Breifine, where the keeps went up long after, a ring of stones stands round Evern, whom the fairies keep alive.\n\nNone of them is the realm's enemy, exactly. They were here first. Hibernia has learned to live beside them, and now and then, with a hosting at its back, to remind them it is there.\n\nEach of these places has its own story, and the realm's loremasters keep them separately now: the Cursed Forest, the Bog of Cullen, Lough Gur, Breifine and the others each have their own telling. What they share is older than any of them. Hibernia was the elves' country before it was anyone's, the sages of Tir na Nog say, and when the firbolg and the Celts came, the elves quarrelled with them and raised the Veil, and withdrew behind it into the Otherworld, the Lurikeens helping. The Veil was never a wall. It was a cloth, and cloth wears thin. Wherever it wore thin, something stayed on this side or came back through: a court that met in a wood, a queen by a lake, a ring of stones on a hill.\n\nThe courts are the heart of it. The bright court and the dark court, Seelie and Unseelie, were never at peace, but they bargained, and their bargaining ground was the wood the realm now calls Cursed. When a bargain broke there, the wood went bad, and the creatures of the broken wood are its legacy: the blight that climbs out of its earth, the trees that walk, the fires that burn on nothing, the horror horse and the fairy thorn and the thing called Juggernaut. The dark court went on to take the mines of Silvermine. The bright court went quiet and watched. Some of its people lost their way home: the Melancholic Fairy Queen at Lough Gur weeps beside a door that will not open, and Evern in Breifine keeps a ring of stones the frontier keeps were built around.\n\nOlder still are the powers of the bogs and lakes, which were never anyone's courtiers. Badb, the crow of war, wakes at dusk in the Bog of Cullen and smells battles coming. Queen Cliodna holds court among its reeds with a song that once healed. Hibernians have lived beside all of these for as long as there have been Hibernians. The old grandmothers' lists of places not to go after dark are, in the end, a map of where the Veil is thin.",
-  "legend": "Learn the hours: half the old named come only at night, and some only after you have killed their servants. In the Cursed Forest pull one thing at a time, because everything there has friends. Fairies first at Evern's stones. Steel, not spells, for the fairy thorn. And never whistle on the Cullen road after dark. Players call region 200 'the old country' and the frontier 'the hills'. Most of the realm's named old ones keep hours, the veterans say: Badb and the fairy queen only by night, Develin only after his pookas suffer. Every guild has a grandmother's list. Ours says: the Cursed Forest never, the Cullen road not after dusk. Never whistle on any of these roads after dark.",
+  "legend": "Learn the hours: half the foes of name come only at night, and some only after you have killed their servants. In the Cursed Forest draw one thing at a time, because everything there has friends. Fairies first at Evern's stones. Steel, not spells, for the fairy thorn. And never whistle on the Cullen road after dark. Raiders call the realm's first lands 'the old country' and the frontier 'the hills'. Most of the realm's named old ones keep hours, the veterans say: Badb and the fairy queen only by night, Develin only after his pookas suffer. Every guild has a grandmother's list. Ours says: the Cursed Forest never, the Cullen road not after dusk. Never whistle on any of these roads after dark.",
   "atmosphere": {
     "firstEntry": [
       "Hibernia is kind by day. Mind the night.",
@@ -205,7 +205,7 @@
   "related": [
     {
       "id": "sheeroe-hills",
-      "relation": "the zone the Glimmer King holds"
+      "relation": "the country the Glimmer King holds"
     },
     {
       "id": "marfach-caverns",
@@ -225,55 +225,55 @@
     },
     {
       "id": "lough-derg",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "silvermine-mountains",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "shannon-estuary",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cliffs-of-moher",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "lough-gur",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "bog-of-cullen",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "valley-of-bri-leith",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "connacht",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cursed-forest",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "mount-collory",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cruachan-gorge",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "breifine",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "emain-macha",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     }
   ]
 }

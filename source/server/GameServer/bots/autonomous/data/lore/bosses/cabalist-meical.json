@@ -38,7 +38,7 @@
     }
   ],
   "story": "The name over the door of the hall of making is Meical, and it was the old master's. The one who answers to it now is a drakoran, and the fort's name registrar writes his name in the second book with a mark beside it that means borrowed. What he was called before he came to the hall, nobody in the dales knows. Martley, the only drakoran who ever studied at the colleges, says he never knew him and would have; whoever this is learned his making from the old master's books, alone, after the burning, which Martley thinks is the most dangerous way there is to learn anything.\n\nHe came to the empty hall in the first summer of the war, while the colleges were still smoking, and found the master's books on the bench and the servants standing where they had stopped. He read the books. He set the servants going again. He took the name over the door, perhaps because the households kept calling him by it and it was simpler, perhaps because he believed that a man who could read the master's books was the master. He calls himself the cabalist. The households say Master Meical, as they always did, and the servants know better.\n\nThey know better and obey worse every year. The Guardian at the stair will not let him up. The Keeper gives him nothing. Tyian ignores his hand at the bench and Pazia keeps him out of the house. When he is troubled in his own hall, no servant of it comes to him; the sentries in their line and the heavy metals in the yard go on with what they were doing. He has the master's books and none of the master's hands.\n\nAt the top of the hall stands the lifeless creation, finished in every part but its heart, and below it the orb is broken. Lady Lurlei of Caer Gothwaite says the two are one working: the cabalist means to wake his creation with what the orb held, and the breaking of it is why the wards of Caer Gothwaite part before drakoran craft. Adelon on the hill says the creation is the old master's, the last thing he made, and that the drakoran only finished it. The realm finds out the only way it can. When someone sets a heart in the creation and tries to wake it, the cabalist comes up to the top of his hall to defend it. That is the one thing in the dales he will always come out for.",
-  "legend": "Cabalist Meical is the level 58 drakoran who runs Meical's Hall in the Dales of Devwy, and he only shows for Restoring the Magic (Lady Lurlei): after you give the orb to the lifeless creation at the top of the hall, he comes to defend it. Kill him, take his box (Pazia's key opens it), read the note, then cleanse the broken orb with the pendant. He is aggressive but has no faction, so none of the hall's constructs come to help him; the sentries and heavy metals nearby can still aggro on you by themselves, so clear the top of the hall first. No spells or styles in the data: a melee fight with a 58, a full group of fifties is comfortable. If you lose him, he is back in about ten minutes.",
+  "legend": "Cabalist Meical is the drakoran who runs Meical's Hall in the Dales of Devwy, a foe for the realm's best, a full band of them, and he only shows for Restoring the Magic (Lady Lurlei): after you give the orb to the lifeless creation at the top of the hall, he comes to defend it. Kill him, take his box (Pazia's key opens it), read the note, then cleanse the broken orb with the pendant. He attacks on sight but nothing in the hall is sworn to him, so none of the hall's constructs come to help him; the sentries and heavy metals nearby can still turn on you by themselves, so clear the top of the hall first. No spells or styles, by every account: a melee fight with a strong drakoran near the top of that tier, and a full band of the realm's best is comfortable. If you lose him, he is back in about ten minutes.",
   "yells": {
     "aggro": [
       "Hands off my creation!",
@@ -76,9 +76,9 @@
   },
   "botLines": {
     "briefing": [
-      "cabalist meical, 58, only shows for restoring the magic after you give the orb to the creation",
-      "no faction, the constructs wont help him. clear the sentries at the top first anyway",
-      "no spells, melee. full group of 50s is comfy",
+      "cabalist meical, job for our best, only shows for restoring the magic after you give the orb to the creation",
+      "nothing's sworn to him, the constructs wont help him. clear the sentries at the top first anyway",
+      "no spells, melee. full band of our best is comfy",
       "kill him, box, read the note, cleanse the orb with the pendant. 10 min if we fail"
     ],
     "aftermathWin": [
@@ -89,9 +89,9 @@
     ],
     "aftermathLoss": [
       "didnt clear the top and three sentries joined him",
-      "gave the orb with half the group afk",
+      "gave the orb with half the group off staring at the walls",
       "forgot the pendant step after all that",
-      "wiped and have to wait ten minutes for him"
+      "all dead and have to wait ten minutes for him"
     ],
     "rumour": [
       "[heard|someone said] the meical in the hall is a drakoran who took a dead master's name",

@@ -24,10 +24,25 @@
       "text": "Bot chat: a crow of war nesting in the Bog of Cullen, who smells battles coming.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In the tale of the first battle of Mag Tuired (and the Lebor Gabála), Badb, Macha and the Morrígan rain mist, cloud, fire and blood on the Fir Bolg from the Mound of the Hostages at Tara for three days; after the second battle the Morrígan proclaims the victory and prophesies the end of the world.",
+      "provenance": "myth",
+      "source": "Cath Maige Tuired Cunga; Lebor Gabála Érenn; Cath Maige Tuired"
+    },
+    {
+      "text": "In Bruiden Da Choca, Cormac Conn Longas meets the Badb at a ford washing the harness of those about to die.",
+      "provenance": "myth",
+      "source": "Bruiden Da Choca (Da Choca's Hostel)"
+    },
+    {
+      "text": "Living Server lore: the Cullen folk's belief that the Badb still sings her own song of Mag Tuired, and the frontier guards who will not water their horses in the bog.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "She is older than the courts, the druids say, older than the Veil: a power of the bog country who was here before anyone came to fight over it. In the old songs she flew over battles as a hooded crow, screaming until men lost their nerve, and at Mag Tuired, some tellings say, she fought on the side of the Tuatha. Whether the Badb of the Bog of Cullen is that same one, worn thin by the ages, or only something that took her name, the Cullen folk do not argue. Whatever she was then, she is thin with age now and hungry for the thing she was made for.\n\nBy day her nest is empty and the crows sit quiet on the posts of the Cullen road. At dusk she wakes, and she is there all night, and the crows all turn to face the same way. Her voice is the cold scream of every battle she remembers, a Voice of Pain that freezes the blood of whoever she turns it on. Three raven wraiths that are not quite birds come down when she calls, and she does not stray far from her nest. The frontier guards say she has been restless every evening since the keeps began to change hands; she can smell the realm war from the bog.",
-  "legend": "Night only: do not bother looking for her by day. When she pulls, three raven wraiths come with her; kill them or hold them while the rest burn her. Her scream is cold damage over the group, so spread and keep cold resists. Do not drag her far from her nest. Superstitions: never whistle on the Cullen road after dusk; count the crows on the posts, and if they all face one way, go home. Nicknames: 'the crow', 'the bog wife'. She keeps hours, so plan the pull for night. Bring a bard to sing over the crow. Never kill a crow on the Cullen road. Ever.",
+  "story": "She is older than the courts, the druids say, older than the Veil: a power of the bog country who was here before anyone came to fight over it. In the old songs she flew over battles as a hooded crow, screaming until men lost their nerve, and at Mag Tuired, some tellings say, she fought on the side of the Tuatha. Whether the Badb of the Bog of Cullen is that same one, worn thin by the ages, or only something that took her name, the Cullen folk do not argue. Whatever she was then, she is thin with age now and hungry for the thing she was made for.\n\nBy day her nest is empty and the crows sit quiet on the posts of the Cullen road. At dusk she wakes, and she is there all night, and the crows all turn to face the same way. Her voice is the cold scream of every battle she remembers, a Voice of Pain that freezes the blood of whoever she turns it on. Three raven wraiths that are not quite birds come down when she calls, and she does not stray far from her nest. The frontier guards say she has been restless every evening since the keeps began to change hands; she can smell the realm war from the bog.\n\nThe old tales give her two sisters and a place in both battles of Mag Tuired. Before the first, Badb, Macha and the Morrígan went to the Mound of the Hostages at Tara and loosed sorcery on the Fir Bolg, fog and cloud and showers of fire and blood, so that the Fir Bolg could neither see nor rest for three days and nights. After the second, it was the Morrígan who went to the hills and the rivers and the great of the land to cry the victory, and then sang a second song, of a world to come that she would not love: summer without flowers, cattle without milk, women without shame, men without courage. The tale says nothing of the Badb's own song that day. The Cullen folk think she has been singing it ever since.\n\nShe has another shape in the tales, and the Cullen folk fear it more than the crow. At a ford on the road to a battle, a woman is seen kneeling in the water washing a heap of bloody harness and clothes, and when she is asked whose they are, she names the man who asked. Cormac Conn Longas, the king of Ulster's son, met her at the ford on his last road, in the tale of Da Choca's hostel, and rode on, because a king's son does not turn back at a ford. The frontier guards who ride the Cullen road at night keep their horses thirsty past every pool of the bog and water them at the river.",
+  "legend": "Night only: do not bother looking for her by day. When she is drawn, three raven wraiths come with her; kill them or hold them while the rest burn her. Her scream is cold damage over the group, so spread and keep your wards against cold. Do not drag her far from her nest. Superstitions: never whistle on the Cullen road after dusk; count the crows on the posts, and if they all face one way, go home. Nicknames: 'the crow', 'the bog wife'. She keeps hours, so plan to draw her by night. Bring a bard to sing over the crow. Never kill a crow on the Cullen road. Ever.",
   "yells": {
     "aggro": [
       "The crow has smelled a battle. Here it is.",
@@ -63,10 +78,10 @@
   },
   "botLines": {
     "briefing": [
-      "badb only shows at night. three raven wraiths come with her, [tanks grab them|cc the ravens]",
+      "badb only shows at night. three raven wraiths come with her, [shields grab them|trance the ravens]",
       "night only, she doesnt exist by day. [check the clock|wait for dark]",
-      "her scream is cold, [resists|spread]",
-      "the ravens swap targets, [tanks keep them|peel]"
+      "her scream is cold, [cold wards|spread]",
+      "the ravens jump from one of us to the next, [shields keep them|peel]"
     ],
     "aftermathWin": [
       "badb down. [the crows all left at once|every crow in cullen flew off]. eerie",
@@ -75,10 +90,10 @@
       "ravens held, crow dead. [nice|grats]"
     ],
     "aftermathLoss": [
-      "her scream ate the casters. [spread out|cold resists] next time",
-      "ravens got the healers. [cc them|hold them]",
+      "her scream ate the casters. [spread out|cold wards] next time",
+      "ravens got the healers. [trance them|hold them]",
       "her scream froze everyone stacked. [spread|again]",
-      "waited all night, she spawned at dawn. [no she didnt|wrong hour]"
+      "waited all night, she showed at dawn. [no she didnt|wrong hour]"
     ],
     "rumour": [
       "[heard|word is] badb has been restless every night since the keeps started changing hands",

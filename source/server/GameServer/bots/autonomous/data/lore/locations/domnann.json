@@ -57,7 +57,7 @@
     }
   ],
   "story": "The Sylvan guides say Domnann is the only country of Hy Brasil that is still entirely itself, and they say it the way a family says a house is the only room the fire did not reach. It is the forest of the isle's heart, between the lost grove in the west and the wild lands to the north, and its Grove is the nearest thing the Sylvan have to a town. Nobody built it. The trees of the Grove grew the shape the Sylvan needed when the Sylvan asked, a room at a time, over longer than any Hibernian family has a name, and the Sylvan live and teach and sleep in them. The realm's companies, when they first came, were given the first tree on the right and the tree behind it, and have been given more trees every season since.\n\nThe mainland's bards, hearing the name, thought of the Fir Domnann of the old books, one of the peoples who came to Hibernia before the gods, and asked whether the Sylvan were their kin. The Sylvan said no, politely, and that the name was older than the mainland's books, and that it meant something like 'the deep place' in a speech nobody speaks any more, because the forest's roots go down further than its trees go up. The sages of Tir na Nog have not stopped arguing about it.\n\nEverything the Sylvan keep is in Domnann. The springs are here, the named ones, Tobar Lisín and Tobar na Craoibhe among them, dry now, because their water bent toward the hollow of Galladoria in the years the Root grew strong, and the water-tasters still go to them every morning with a twist of grey bark. Xaga's seed-house is here, its jars of every plant of the isle sealed and dated, no new seed-keeper chosen since she went down. The wardens' stone is here, with the names of the Domnann wardens who died at Tur Suil and in the hollow. The banners are here, the lost clans' banners brought down from the tower, Clann na Fuinseoige's hanging first. And Ultan of Tir na Nog keeps the rain records in a tree near the gate, because the rains of Domnann fall heavier in the seasons after a company has gone down into the hollow, and he wants to know why.\n\nThe forest outside the Grove is not what it was. North of the Grove there is a stretch the Sylvan call the Grey Field, where in the second summer after the Root's garden began to bloom the grass went grey overnight with spore-caps, and the sporites that walk it now came up out of that grey: small, pale, wandering things, and the maundering ones further north that drift and mutter and spread it. The botonids grow beside them, plants that have learned to walk and do not like it. The sylvanshades are worse: shadows of Sylvan, the guides say, that came loose from their owners in the hollow and came home without them, and the catty ones near the Grove gate bite the young and the stalking ones in the west follow travellers for days.\n\nIn the north-east the cniogcrag have the forest. The Sylvan say they were the forest's rot-eaters once, small useful things that cleaned the dead wood, and that the rot of the hollow got into them and taught them to want living wood instead; now they come in herds with herders, and infesters and blighters, and parasites that hang in the branches, and where they have been for a season the trees stand hollow. The wardens burn their trails. The shaders walk the northern woods, and the shrouders the lake shore, and the tangleweeds eat the Grove's own roots just outside its gates, so that every new Hibernian in Domnann is handed a necklace on the first morning and sent to cut them back.\n\nOn the forest's northern edge, at the end of the guarded road, is Bann-didein, where the outlanders and the Hibernian traders keep the market the Grove will not keep inside its trees: smiths, merchants, a stable, the smell of a forge. The Sylvan go there to buy what they need and leave before dark. The Priestess of the Watch keeps her post beyond it on a rise to the north-west, and she watches the Grey Field, and counts it.\n\nWhy does Domnann matter? Because it is what the realm came to Hy Brasil to keep. The Fomorians want it, the Root wants its water, the tower takes its paths, and the Sylvan who asked the realm for swords asked for them for this forest. Every company the Grove sends out is walked to the gate by a guide, and every one that comes back is counted at the wardens' stone, and the Grove grows another room for it.",
-  "legend": "Domnann is the Hibernian Shrouded Isles starting zone, levels 1-22, and the busiest SI zone. The Grove of Domnann (south) is the town: trainers live in the trees (hero in the first tree on the right, blademaster behind the guardian trainer), crafters, vault, registrars, Niara the Priestess, and the channeler/portal back to Druim Ligen. Bann-didein on the northern edge is the second town (merchants, smiths, stable, vault). Camps: tangle and tendril weeds and lungers at the Grove gates (1-8), catty sylvanshades west (5-9), sporites and botonids central and north (9-18), shaders north (16-21), shrouders and shrillers on the lake shore, and the cniogcrag in the north-east (7-22, social herds with herders; the infesters come in numbers). Stalking sylvanshades in the west follow you. Tier C named here: Insidious Samn (20), Norag, Aileiss, Bloinigein (Magical Branches). Sylvan custom: touch the bark of the Grove gate on the way out, or the forest forgets you are coming back.",
+  "legend": "Domnann is where the young of the Hibernian Shrouded Isles begin, with hunting from a first day's outing up to the youngest seasoned bands, and the busiest land of the Shrouded Isles. The Grove of Domnann (south) is the town: trainers live in the trees (hero in the first tree on the right, blademaster behind the guardian trainer), crafters, vault, registrars, Niara the Priestess, and the channeler/portal back to Druim Ligen. Bann-didein on the northern edge is the second town (merchants, smiths, stable, vault). Camps: tangle and tendril weeds and lungers at the Grove gates (the very young), catty sylvanshades west (the same), sporites and botonids central and north (young adventurers), shaders north (young adventurers near the end of their first seasons), shrouders and shrillers on the lake shore, and the cniogcrag in the north-east (the very young up to seasoned bands, herds with herders that come to each other's call; the infesters come in numbers). Stalking sylvanshades in the west follow you. Lesser foes of name here: Insidious Samn (a foe for a seasoned band, just), Norag, Aileiss, Bloinigein (Magical Branches). Sylvan custom: touch the bark of the Grove gate on the way out, or the forest forgets you are coming back.",
   "atmosphere": {
     "firstEntry": [
       "Domnann. The forest is still itself here.",
@@ -282,9 +282,9 @@
       "[word is|heard] a stalking sylvanshade followed someone all the way to droighaid",
       "the cniogcrag herders have been moving north [lately|again]. the wardens are worried",
       "[heard|someone said] one of the dry springs ran for an hour after the water primal fell",
-      "jack on the second floor of the tree wants a spiteful sylvanshade head. [47+|balor vale]",
+      "jack on the second floor of the tree wants a spiteful sylvanshade head. [veterans' work|balor vale]",
       "[word is|heard] the grove grew a new room overnight for a company that came back",
-      "insidious samn is out with the cniogcrag in the north east. [20|named]",
+      "insidious samn is out with the cniogcrag in the north east. [seasoned work|one of name]",
       "[heard|someone said] insidious samn is the cniogcrag that taught the rest to eat live wood",
       "[heard|someone said] norag eats cart spokes on the north road while the carters sleep",
       "[heard|someone said] aileiss was a domnann warden before she went over to the shaders",
@@ -295,20 +295,20 @@
       "[heard|someone said] celendir is the only sylvanshade in domnann that remembers its name"
     ],
     "tell": [
-      "domnann is the hib si start zone. the grove of domnann is the town, 1 to 22",
+      "domnann is where hibs start on the isles. the grove of domnann is the town, first day up to seasoned",
       "where is the grove of domnann? south part of domnann. channeler there, portal back to druim ligen",
       "is domnann safe? near the grove yes. north east cniogcrag herds are social, careful",
       "whats in domnann? weeds, sylvanshades, sporites, botonids, shaders, shrouders, cniogcrag",
       "where is bann-didein? north edge of domnann down the guarded road. merchants, smith, stable",
       "where do i go after domnann? west to caillte garran (droighaid) or north to vigilant rock (necht)",
-      "who is insidious samn? a 20 named cniogcrag in the north east woods of domnann, bigger than the infesters",
-      "norag? small named cniogcrag on the west edge of the cniogcrag woods in domnann, 18. easy",
-      "aileiss is a 16 named shader in the northern woods of domnann, with a few shaders round her",
-      "derbidich angurich? 16 named shader between the northern woods and bann-didein in domnann",
-      "moioch fhearian is a 16 named by the grey field in domnann, sporites round her",
-      "bloinigein is the named tangleweed for magical branches in domnann, 11. take the second branch from it",
-      "leptus? a 6 named botonid in domnann, there are two of them far apart",
-      "celendir is a 4 named sylvanshade east of the grove. it doesnt attack, leave it"
+      "who is insidious samn? a cniogcrag of name in the north east woods of domnann, bigger than the infesters, seasoned work",
+      "norag? small cniogcrag of name on the west edge of the cniogcrag woods in domnann, for the young. easy",
+      "aileiss is a shader of name, for the young, in the northern woods of domnann, with a few shaders round her",
+      "derbidich angurich? shader of name, for the young, between the northern woods and bann-didein in domnann",
+      "moioch fhearian is one of name, for the young, by the grey field in domnann, sporites round her",
+      "bloinigein is the tangleweed of name for magical branches in domnann, for the young. take the second branch from it",
+      "leptus? a botonid of name for the very young in domnann, there are two of them far apart",
+      "celendir is a little sylvanshade of name east of the grove. it doesnt attack, leave it"
     ]
   },
   "loremaster": {
@@ -350,7 +350,7 @@
   "related": [
     {
       "id": "hy-brasil",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "galladoria",

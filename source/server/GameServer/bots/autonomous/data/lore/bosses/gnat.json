@@ -27,7 +27,7 @@
     }
   ],
   "story": "Every realm has a Gnat story, and every one of them begins the same way: with a whistle, high and thin, from somewhere you cannot see. On Hy Brasil the somewhere is the north road of the Vale of Balor, a short walk from the camp of Aalid Feie, where a small grey whistling thing has walked the heather among the bugbear gnats for as long as the camp has stood. The camp's people have heard it so often they no longer turn round. They do not count the whistles aloud, which is the one custom of Aalid Feie that every visitor learns on the first night, and they do not say why.\n\nThe Albions tell it as a marsh-sprite of Avalon, a small spiteful thing burned out of the isle's drowned orchards when the drakoran came, that whistles the old gardeners' frost-warning and brings the fire after it. The Norse tell it as a troll-child's pet from Aegir, lost when the Morvalt drove the Troll Fathers off the isle, still calling for a master who will not come. The Hibernians say only that it chose the vale, and that the mist is a door. Ultan of Tir na Nog, who keeps Domnann's rain records and wrote to two capitals about it, thinks all three stories are true at once, and has stopped receiving answers.\n\nAll three agree on what happens when it is troubled. Gnat is not strong and not large, and a passing traveller can hurt it, and the moment he does it whistles, and the ground of the vale cracks open around it and fiery ants come boiling out, a swarm of them, hot as coals, and they fight for it as if it were their queen. They come once for each trouble; the vale folk say the ground has only so many in it at a time, and that if a traveller walks away and comes back, the ground has filled again. The ants are nothing to anyone afterwards. The Aalid Feie herbalists will not take them for any remedy, and the vale's own birds will not eat them, and they are left where they fall.\n\nThe camp's oldest story is that Gnat was the first thing to come through the mist when the isle opened, before the Sylvan came down to the shore and before the realm's ships, and that it walked straight to the Vale of Balor as if it had been there before. The Sylvan of Aalid Feie do not deny it. They point out that the vale was Gleann Glas then, green, before the eye in Tur Suil looked at it once, and that Gnat is the only thing in the vale that does not seem to have noticed the difference.",
-  "legend": "Hy Brasil, Vale of Balor, on the north road near Aalid Feie, level 35. The first time it drops below 95% health it whistles and seven fiery ants (30-34) burst out of the ground around it and join the fight; they give no experience, so do not farm them. One swarm per engagement: if you break off and come back, it gets a fresh swarm. A group of three or four can burst Gnat down and let the ants die with nothing to defend, or AoE the ants first; a solo player near its level will not enjoy seven ants. Tether 2,000. The Albions say Avalon and the Norse say Aegir; it does not care. Never count the whistles aloud, the Aalid Feie folk say.",
+  "legend": "Hy Brasil, Vale of Balor, on the north road near Aalid Feie; a foe for a hardened band of veterans. The first time it drops below nineteen-twentieths of its strength it whistles and seven fiery ants, each a foe for a seasoned band, burst out of the ground around it and join the fight; they teach a hunter nothing, so do not hunt them over and over. One swarm each time you take it on: if you break off and come back, it gets a fresh swarm. A group of three or four can burst Gnat down and let the ants die with nothing to defend, or blast the ants first; a lone raider who is a fair match for it will not enjoy seven ants. It turns home if drawn more than about seventy paces from its spot. The Albions say Avalon and the Norse say Aegir; it does not care. Never count the whistles aloud, the Aalid Feie folk say.",
   "yells": {
     "aggro": [
       "Gnat lets loose a high pitch whistle.",
@@ -65,21 +65,21 @@
   },
   "botLines": {
     "briefing": [
-      "gnat whistles up seven fire ants under 95%. [burst it|aoe the ants]",
-      "the ants give no xp. [dont bother farming|just kill gnat]",
-      "one swarm per fight. [dont reset it|leave and it gets a new swarm]",
-      "vale of balor near aalid feie. [level 35|bring three or four]"
+      "gnat whistles up seven fire ants as soon as its hurt. [burst it|blast the ants]",
+      "the ants teach you nothing. [dont bother hunting them|just kill gnat]",
+      "one swarm per fight. [dont let it go home|leave and it gets a new swarm]",
+      "vale of balor near aalid feie. [its tougher than it looks|bring three or four]"
     ],
     "aftermathWin": [
       "gnat down. [the albs will say it was theirs|now everyone claims it]",
       "burst it before the ants did much. [easy|nice]",
       "the whistle stopped. [aalid feie can sleep|ahh quiet]",
-      "ants everywhere and not a point of xp. [typical|lol]"
+      "ants everywhere and not a thing learned. [typical|lol]"
     ],
     "aftermathLoss": [
       "seven ants on a group of four. [we laughed at it|it is not funny]",
-      "tried to solo gnat. [ants|never again]",
-      "reset it and got a fresh swarm. [dont do that|oops]",
+      "tried gnat alone. [ants|never again]",
+      "let it go home and got a fresh swarm. [dont do that|oops]",
       "the ants chased the caster into the [bugbear gnats|vale]"
     ],
     "rumour": [

@@ -19,7 +19,7 @@
     }
   ],
   "story": "Some of the miners of the Glitter have gone mad from the silver, the Howth men say, and some have gone wolf, and Lobigan was the first who went wolf. He was a hewer of the court's first shift, a mainland man taken from the Ardagh road with the first collared hands, and he worked the deepest face of the mine for a year without speaking. Then one night the collar on his neck stopped humming, and in the morning there was a wolf at the face with the collar on, and the face had been cut further in the night than a whole shift could have cut it.\n\nThe court did not put him down. It kept him. The Unseelie, the Howth miners say, were delighted: a wolf made by the silver itself, who could smell the vein through rock, was worth a hundred hewers, and they gave him the far end of the deep gallery, past Atur's breach, where the vein ends or begins. He keeps it. The silver-maddened wolves that prowl the lower workings came after him, every one of them a hewer who stopped working one night, and they keep the depths as his pack. The miners call it the old irony of the Silvermine and say it under their breath: the one metal a wolf is meant to fear, and it made them.\n\nThe court's servants say Lobigan is the only one of the mine's creatures who has seen what lies at the vein's end and come back to his post afterwards. The overseer of the Silver Hand goes down to look and comes back up smiling. Lobigan goes down to look and comes back and lies across the gallery again with his head on his paws, and the miners who have glimpsed him from the breach say that he looks, for a wolf, very tired.",
-  "legend": "Lobigan is a level 51 werewolf at the far end of the Coruscating Mine's deep gallery (about 32.5k/24.6k), past Atur (52). Plain mob, no script, 3-minute respawn. The silver-maddened werewolves (52) of the depths are around, so clear first. The deep end runs to the mid-50s, so a full 50s group. He shares his body with the Midgard fenrir, which Hibernians find very funny. Silver jokes are mandatory. Atur stands in the breach on the way to him, so you will fight the ghost first; rest between the two, because the pack around Lobigan comes quickly if you pull loose. A strong group of 50-52s is the comfortable size for both.",
+  "legend": "Lobigan is a werewolf, a foe for the realm's best, a full band of them, at the far end of the Coruscating Mine's deep gallery (about 32.5k/24.6k), past Atur, a shade stronger. A plain fight, no tricks; he returns three minutes after he falls. The silver-maddened werewolves of the depths, a shade stronger than he is, are around, so clear first. The deep end is the realm's best's country throughout, so a full band of the realm's best. He shares his body with the Midgard fenrir, which Hibernians find very funny. Silver jokes are mandatory. Atur stands in the breach on the way to him, so you will fight the ghost first; rest between the two, because the pack around Lobigan comes quickly if you draw loosely. A strong full band of the realm's best is the comfortable size for both.",
   "yells": {
     "aggro": [
       "(a wolf with a collar on rises across the gallery)",
@@ -57,10 +57,10 @@
   },
   "botLines": {
     "briefing": [
-      "lobigan is a 51 werewolf at the far end of coruscating's deep gallery. [past atur|plain mob]",
-      "silver maddened werewolves around him. [clear first|52]",
-      "full 50s group for the deep end",
-      "3 min respawn"
+      "lobigan is a werewolf at the far end of coruscating's deep gallery. [past atur|plain fight]",
+      "silver maddened werewolves around him. [clear first|tougher than him]",
+      "full band of our best for the deep end",
+      "lobigan comes back 3 min after he drops. [keep moving|no camping]"
     ],
     "aftermathWin": [
       "lobigan down. [silver bullet joke|grats]",
@@ -70,15 +70,15 @@
     ],
     "aftermathLoss": [
       "the werewolf pack came. [too many|oops]",
-      "weeweres on the way. [ouch|56]",
-      "group too low",
+      "weeweres on the way. [ouch|big ones]",
+      "group too green for the deep end",
       "he hits like a fenrir lol"
     ],
     "rumour": [
       "[heard|someone said] lobigan was the first miner the silver turned wolf",
       "the silver made the werewolves in coruscating. [the irony|of all metals]",
       "[word is|heard] lobigan has seen the end of the vein and came back tired",
-      "lobigan uses the fenrir model. [midgard would be proud|lol]"
+      "lobigan looks just like a midgard fenrir. [midgard would be proud|lol]"
     ]
   },
   "loremasterTopic": {

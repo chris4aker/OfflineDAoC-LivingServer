@@ -1,7 +1,7 @@
 {
   "realm": "Midgard",
   "id": "midgard",
-  "summary": "Midgard's history as the Living Server tells it: Mythic's canon where it exists, Norse myth as inspiration, and original writing where both are silent.",
+  "summary": "Midgard's history as its loremasters tell it: the realm's own chronicles where they speak, the old Norse songs beside them, and the loremasters' own telling where both are silent.",
   "eras": [
     {
       "id": "mid-era-ice",
@@ -20,12 +20,12 @@
           "source": "Snorri, Gylfaginning (public domain)"
         },
         {
-          "text": "Living Server: a dragon died in the ice of Aegir long before any people came; Kula later raised Tuscaran's citadel on its bones.",
+          "text": "A dragon died in the ice of Aegir long before any people came; Kula later raised Tuscaran's citadel on its bones.",
           "provenance": "original",
-          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines (Living Server writing)"
         },
         {
-          "text": "Living Server: Fornfrusenen was frozen into the north wall of the glacier in this age, and the bones of Modernagrav were buried.",
+          "text": "Fornfrusenen was frozen into the north wall of the glacier in this age, and the bones of Modernagrav were buried.",
           "provenance": "original",
           "source": "Living Server writing"
         }
@@ -51,12 +51,12 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=65"
         },
         {
-          "text": "Living Server: the Troll Fathers raised a mound of the dead under Trollheim's last hall; Nosdoden later lay down on it.",
+          "text": "The Troll Fathers raised a mound of the dead under Trollheim's last hall; Nosdoden later lay down on it.",
           "provenance": "original",
           "source": "Living Server writing"
         },
         {
-          "text": "Living Server: Iarnvidiur, the old one of the Iarnwood, was on Aegir before the iarn dwarf clans; Mahattava's lake was older still.",
+          "text": "Iarnvidiur, the old one of the Iarnwood, was on Aegir before the iarn dwarf clans; Mahattava's lake was older still.",
           "provenance": "original",
           "source": "Living Server writing"
         }
@@ -99,12 +99,12 @@
           "source": "Voluspa 40 (Poetic Edda, public domain)"
         },
         {
-          "text": "Gjalpinulva's own taunts name an aunt who keeps a place in Niflheim for her victims; bot chat calls her the Fenris wolf's daughter.",
+          "text": "Gjalpinulva's own taunts name an aunt who keeps a place in Niflheim for her victims; Midgard's tavern talk calls her the Fenris wolf's daughter.",
           "provenance": "game",
-          "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+          "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs (told in Midgard bot chat)"
         },
         {
-          "text": "The quest 'The Legend of Fenrir's Folly' sends players to win a sun fragment back from the Raumarik Revenant.",
+          "text": "The quest 'The Legend of Fenrir's Folly' sends the realm's young to win a sun fragment back from the Raumarik Revenant.",
           "provenance": "legend",
           "source": "https://camelot.allakhazam.com/db/quest/1770"
         },
@@ -163,9 +163,9 @@
           "source": "Hervarar saga ok Heidreks (public domain)"
         },
         {
-          "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
+          "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste, and was lost when the frontier was remade.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+          "source": "https://camelot.allakhazam.com/zones.html?czone=68 (removed by New Frontiers (2004))"
         },
         {
           "text": "The Cursed Tomb holds the dishonoured warriors and kings whom the gods would not admit to Valhalla.",
@@ -173,12 +173,12 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=40"
         },
         {
-          "text": "Summoner's Hall connects the zones of the three realms; Midgard reaches it from Dodens Gruva.",
+          "text": "Summoner's Hall connects the lands of the three realms; Midgard reaches it from Dodens Gruva.",
           "provenance": "legend",
           "source": "https://camelot.allakhazam.com/zones.html?czone=74"
         },
         {
-          "text": "Living Server: Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
+          "text": "Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -188,7 +188,7 @@
           "source": "https://www.camelotherald.com/node/462"
         },
         {
-          "text": "Living Server: the houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
+          "text": "The houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -198,7 +198,7 @@
           "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
         },
         {
-          "text": "Living Server: Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
+          "text": "Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -251,6 +251,31 @@
           "text": "Angantyr warns Hervor that the sword Tyrfing kills a man whenever it is drawn and will destroy her kin, but gives it to her when she curses the barrow-dead to rot in their mounds.",
           "provenance": "myth",
           "source": "Hervarar saga ok Heidreks; The Waking of Angantyr (Hervararkvida)"
+        },
+        {
+          "text": "Told of the raider-king's death in the snake pit, his sons each betray it: Björn Ironside grips his spear until the shaft keeps the print of his hand, Hvitserk squeezes a playing-piece until blood starts from his nails, Snake-in-the-Eye cuts to the bone paring his nails, and Ivar the Boneless asks how his father died and changes colour. Ivar asks Aella for as much land as an ox-hide covers, cuts the hide into strips to enclose a stronghold, and wins Aella's men from him; the brothers take Aella and carve the eagle on his back.",
+          "provenance": "myth",
+          "source": "Ragnars saga lodbrokar (the sons' vengeance)"
+        },
+        {
+          "text": "Starkad, a warrior of giant stock, is given three lifetimes and victory in every battle by Odin, and Thor answers each gift with a curse, among them a nithing's deed in each lifetime. Chosen by lot for Odin in a storm, his king Vikar is hanged by him in what was meant as a mock sacrifice, with a calf's gut for a noose and a reed for a spear, which turn into a rope and a spear as he strikes.",
+          "provenance": "myth",
+          "source": "Gautreks saga (public domain); Saxo Grammaticus, Gesta Danorum, also tells of Vikar hanged for the gods"
+        },
+        {
+          "text": "In his old age Starkad, who killed King Olo for gold and repented of it, hangs the gold round his neck to pay the man who will kill him rather than die in his bed; Hather, whose father he had slain, takes the gold and strikes off his head, and the head bites the earth as it falls.",
+          "provenance": "myth",
+          "source": "Saxo Grammaticus, Gesta Danorum (public domain)"
+        },
+        {
+          "text": "Beowulf of the Geats tears the arm from Grendel of the giant-kin in the Danish king's hall, follows Grendel's mother down into her mere and kills her with a giant-made sword whose blade melts in her blood, rules the Geats for fifty winters, and dies in his old age killing a dragon.",
+          "provenance": "myth",
+          "source": "Beowulf (Old English, public domain)"
+        },
+        {
+          "text": "The grandmothers of Gotar keep Beowulf's song and the winning of Thora as the two old songs of the Gautar; the Cursed Tomb's tellers argue Starkad's place; Varulvhamn's wolfaur sing the Volsungs' wolf-skins; Svarhamr's furs are called the hairy breeches; Vasudheim's skalds sing Ivar and the cow Sibilja; Jordheim's skalds sing the founders beside Starkad and the raider-king's sons.",
+          "provenance": "original",
+          "source": "Living Server writing"
         }
       ],
       "places": [
@@ -317,7 +342,7 @@
       "id": "mid-era-realm-war",
       "order": 5,
       "name": "The War of the Realms",
-      "summary": "After Arthur's death the three realms go to war. Keeps rise on the frontiers, the Glacier Giant throws all comers, Hibernia's champions raid Raumarik, and Midgard's heroes earn their epics.",
+      "summary": "After Arthur's death the three realms go to war. Keeps rise on the frontiers, the Glacier Giant throws all comers, Hibernia's champions raid Raumarik, and Midgard's heroes win through their great quests.",
       "events": [
         {
           "text": "The conflict between Albion, Midgard and Hibernia began with the power vacuum left by King Arthur's death.",
@@ -325,7 +350,7 @@
           "source": "https://camelotherald.com/node/5"
         },
         {
-          "text": "Midgard's epic quests send healers and shamans after Loken, hunters and shadowblades after Oona, and the mystics after Kelic.",
+          "text": "Midgard's great quests send healers and shamans after Loken, hunters and shadowblades after Oona, and the mystics after Kelic.",
           "provenance": "game",
           "source": "source/server/GameServer/scripts/quests/Midgard/epic/"
         },
@@ -383,9 +408,9 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=116"
         },
         {
-          "text": "The Shrouded Isles expansion added Tuscaran Glacier, Trollheim and Iarnvidiur's Lair as Midgard's epic dungeons (2002).",
+          "text": "When Aegir rose out of the mist, Tuscaran Glacier, Trollheim and Iarnvidiur's Lair became Midgard's greatest dungeons.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/zones.html?czone=76"
+          "source": "https://camelot.allakhazam.com/zones.html?czone=76 (the Shrouded Isles expansion, 2002)"
         }
       ],
       "places": [
@@ -486,12 +511,12 @@
       "id": "mid-era-present",
       "order": 7,
       "name": "The Present Day",
-      "summary": "The Living Server's own time: the realm raids the old places, the Herald records the kills, and the dead of every era still wait for an answer.",
+      "summary": "The present age: the realm raids the old places, the Herald records the kills, and the dead of every era still wait for an answer.",
       "events": [
         {
-          "text": "Living Server raids each epic place with sizes taken from period accounts.",
+          "text": "The realm raids each great place with as many as the old accounts say it took.",
           "provenance": "game",
-          "source": "docs/RAID-SIZES.md"
+          "source": "docs/RAID-SIZES.md (Living Server raid sizes)"
         },
         {
           "text": "A band of dwarves seeking to strengthen Midgard found the frostalfs, who agreed to fight beside the realm, knowing their fate was still bound to it.",
@@ -1188,7 +1213,7 @@
       "id": "ragnar-lodbrok",
       "name": "Ragnar Lodbrok, who sang in the pit",
       "summary": "The raider-king of the sagas, who won his queen by killing the serpent coiled around her bower and died singing in a pit of adders.",
-      "text": "The skalds of Midgard sing Ragnar Lodbrok as the king who laughed at his own death. He won his name, Hairy-Breeches, before he won his crown: Jarl Herraud of Gautland had a daughter, Thora, whose bower was ringed by a lindworm that had grown from a gift in a box until it circled the house, and Ragnar wore a cloak and trousers of shaggy hide, tarred and rolled in sand, and killed it. He took Thora for his wife, and after her Aslaug, the daughter of Sigurd and Brynhild, raised as a peasant girl and famous for her wit, whose sons Ivar the Boneless, Bjorn Ironside and Sigurd Snake-Eye fought across the western seas. Ragnar himself sailed to Northumbria with two ships and too few men, was taken by King Aella and thrown into a pit of vipers. The saga gives him the words every Midgard warrior knows from the pit itself: that the little pigs would grunt if they knew how the old boar suffered. His death-song, the Krakumal, gives the rest: a list of the battles he fought, the ale that waits in Odin's hall in curved horns, and the promise that he would die laughing. He died laughing. His sons came back for Aella with a great army, and the saga of that vengeance is the one every young raider asks to hear.",
+      "text": "The skalds of Midgard sing Ragnar Lodbrok as the king who laughed at his own death. He won his name, Hairy-Breeches, before he won his crown: Jarl Herraud of Gautland had a daughter, Thora, whose bower was ringed by a lindworm that had grown from a gift in a box until it circled the house, and Ragnar wore a cloak and trousers of shaggy hide, tarred and rolled in sand, and killed it. He took Thora for his wife, and after her Aslaug, the daughter of Sigurd and Brynhild, raised as a peasant girl and famous for her wit, whose sons Ivar the Boneless, Björn Ironside and Sigurd Snake-in-the-Eye fought across the western seas. Ragnar himself sailed to Northumbria with two ships and too few men, was taken by King Aella and thrown into a pit of vipers. The saga gives him the words every Midgard warrior knows from the pit itself: that the little pigs would grunt if they knew how the old boar suffered. His death-song, the Krakumal, gives the rest: a list of the battles he fought, the ale that waits in Odin's hall in curved horns, and the promise that he would die laughing. He died laughing. His sons came back for Aella with a great army, and the saga of that vengeance is the one every young raider asks to hear. It begins with the news. The messengers found the brothers each at his own work, the saga says, and each took it his own way: Björn was holding a spear, and gripped the shaft so hard that the wood kept the print of his hand; Hvitserk was at the board, and squeezed a playing-piece until the blood started from under his nails; the brother called Snake-in-the-Eye was paring his nails with a knife, and cut to the bone without feeling it. Ivar, who could not walk and was carried on a litter of poles, asked only how his father had died, and asked again, and changed colour as he listened. Then he went to Aella, not with an army but with a request: as much land as an ox-hide would cover. He cut the hide into a thread so fine that it went round ground enough for a stronghold, and from that stronghold he won Aella's own men away with gifts, and when his brothers came with their army Aella had few left to stand with him. The saga says they carved the eagle on his back. The skalds of Midgard sing the four brothers in the order the news found them, the spear, the board, the knife and the question, and say that a young raider who asks for the song should be told afterwards which brother he is.",
       "places": [
         "uppland",
         "east-svealand"

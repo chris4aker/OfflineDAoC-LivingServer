@@ -54,6 +54,47 @@ public static class AutonomousBotRealmPointRewards
         return Math.Max(0, realmPoints);
     }
 
+    /// <summary>
+    /// What a gamebot is worth in experience to the player who kills it: a player of its level
+    /// (GamePlayer.ExperienceValue is four times the monster value). Issue #396: gamebots paid realm
+    /// points only, so a hundred kills in Thidranki gave no experience.
+    /// </summary>
+    public static long GetPlayerEquivalentExperienceValue(long monsterExperienceValueForLevel) =>
+        Math.Max(0, monsterExperienceValueForLevel) * 4;
+
+    /// <summary>The bounty point value of a player of this level (GamePlayer.BountyPointsValue).</summary>
+    public static int GetPlayerEquivalentBountyPointValue(byte level) => (int)(1 + level * 0.6);
+
+    /// <summary>
+    /// The player-kill experience rule (AbstractServerRules.AwardPlayerOnPlayerKill) before the damage share:
+    /// the victim's value split between the contributors, capped at XP_PVP_Cap_Percent of the awarder's own value.
+    /// </summary>
+    public static long CalculateCappedExperienceShare(long victimExperienceValue, long awarderExperienceValue,
+        int participantCount, int pvpCapPercent)
+    {
+        if (victimExperienceValue <= 0 || awarderExperienceValue <= 0 || participantCount <= 0 || pvpCapPercent <= 0)
+            return 0;
+
+        return Math.Min(victimExperienceValue / participantCount, awarderExperienceValue * pvpCapPercent / 100);
+    }
+
+    /// <summary>
+    /// The player-kill bounty point rule: the victim's value split between the contributors, capped at twice
+    /// the awarder's own value, then by damage share. Nothing in a battleground unless allow_bps_in_bgs is on.
+    /// </summary>
+    public static int CalculateBountyPointReward(int victimBountyPointValue, int awarderBountyPointValue,
+        int participantCount, double damagePercent, bool victimInBattleground, bool allowInBattlegrounds)
+    {
+        if (victimBountyPointValue <= 0 || awarderBountyPointValue <= 0 || participantCount <= 0 ||
+            damagePercent <= 0 || (victimInBattleground && !allowInBattlegrounds))
+        {
+            return 0;
+        }
+
+        int baseBountyPoints = Math.Min(victimBountyPointValue / participantCount, awarderBountyPointValue * 2);
+        return Math.Max(0, (int)(baseBountyPoints * Math.Min(1.0, damagePercent)));
+    }
+
     private static readonly DOL.Logging.Logger RvrLog = DOL.Logging.LoggerManager.Create(typeof(AutonomousBotRealmPointRewards));
 
     /// <summary>
@@ -163,10 +204,38 @@ public static class AutonomousBotRealmPointRewards
 
                     if (realmPointsEarned > 0)
                         player.GainRealmPoints(realmPointsEarned, true);
+
+                    // Issue #396: a gamebot stands in for an enemy player, so its killer earns the bounty points
+                    // and experience of a player kill too (AbstractServerRules.AwardPlayerOnPlayerKill), not only
+                    // realm points. Like a player kill the experience is not multiplied by the XP rates.
+                    int bountyPoints = CalculateBountyPointReward(
+                        GetPlayerEquivalentBountyPointValue(killedBot.Level), player.BountyPointsValue,
+                        contributorCount, damagePercent, killedBot.CurrentZone?.IsBG == true,
+                        Properties.ALLOW_BPS_IN_BGS);
+                    if (bountyPoints > 0)
+                    {
+                        if (DOL.GS.Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Bounty_Points_5, player.Realm))
+                            bountyPoints += (int)(bountyPoints / 100.0 * 5);
+                        else if (DOL.GS.Keeps.KeepBonusMgr.RealmHasBonus(DOL.GS.Keeps.eKeepBonusType.Bounty_Points_3, player.Realm))
+                            bountyPoints += (int)(bountyPoints / 100.0 * 3);
+                        player.GainBountyPoints(bountyPoints);
+                    }
+
+                    long cappedExperience = CalculateCappedExperienceShare(
+                        GetPlayerEquivalentExperienceValue(GameServer.ServerRules.GetExperienceForLiving(killedBot.Level)),
+                        player.ExperienceValue, contributorCount, Properties.XP_PVP_CAP_PERCENT);
+                    long experience = (long)(cappedExperience * damagePercent);
+                    if (cappedExperience > 0)
+                        experience += DOL.GS.ServerRules.AbstractServerRules.CalculateOutpostExperienceBonus(player, cappedExperience);
+                    if (experience > 0)
+                        player.GainExperience(eXPSource.Player, experience);
                 }
                 else
                 {
-                    player.Out.SendMessage($"{AutonomousNameMask.NameFor(player, killedBot, 0, true)} has been killed recently and is worth no realm points!",
+                    string victimName = AutonomousNameMask.NameFor(player, killedBot, 0, true);
+                    player.Out.SendMessage($"{victimName} has been killed recently and is worth no realm points!",
+                        eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                    player.Out.SendMessage($"{victimName} has been killed recently and is worth no experience!",
                         eChatType.CT_Important, eChatLoc.CL_SystemWindow);
                 }
 

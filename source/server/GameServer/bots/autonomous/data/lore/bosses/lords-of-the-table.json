@@ -59,7 +59,7 @@
     }
   ],
   "story": "In the middle halls of Varulvhamn there is a table, and seven lords sit at it whose names are their natures, and they argue more than they govern. The wolfaur say the table was made so that the court's quarrels would happen in one room instead of in every corridor, and that it has worked, mostly. Hallkel Thorvaldsson of Skona sat in a corner of that room for a winter and wrote down what he could. These are the lords as he drew them.\n\nGifttand, the poison tooth, is the eldest and the strongest of them, and speaks last, and what he says is usually the thing everyone else had been afraid to. Huggtand, the striking fang, sits at his right hand and agrees with him before he has finished. Grym is grim, and proud of it, and keeps the count of every insult the court has ever suffered from Midgard, which is long.\n\nVild is wild, the youngest of the table in temper though not in years, who has been sent out of the room more often than any lord in the haven's memory and always comes back. Brumma growls. That is what his name means and all he does; Hallkel wrote that he never once heard Brumma say a word at the table, and that the others always waited for the growl before they went on.\n\nBete is the one who bites and the one who grazes, both, which the court thinks very funny: a lord who will eat anything, an argument included, and has been known to take both sides of one in a single night. Ungar is the cubs' lord, the young ones', who speaks for the churls and scruffs of the upper tunnels and is the only lord at the table they listen to.\n\nThere is an eighth chair, always empty, which is High Lord Tarnkappe's. The seven argue in front of it as if it were full. When strangers come into their chamber, the argument stops, the bodyguards and the nobles and the grimnoughts close in, and for once the table agrees.",
-  "legend": "The Lords of the Table are the seven named werewolf lords in Varulvhamn's lords' chamber: Gifttand (41), Brumma and Ungar (39), Bete, Grym, Huggtand and Vild (38), all Varulv faction, packed into one room with an unnamed werewolf lord (44), werewolf bodyguards (37-41), nobles (38-42), grimnoughts and wolfaur quixots. They're close enough that pulling one usually means several, and the faction brings the room. Bring a full group in the mid 40s, clear the bodyguards at the edge, and take the lords one at a time if you can. Gifttand is the toughest. Old court saying: when strangers come in, for once the table agrees.",
+  "legend": "The Lords of the Table are the seven known werewolf lords in Varulvhamn's lords' chamber: Gifttand, Brumma and Ungar, and Bete, Grym, Huggtand and Vild, in that order of strength, each a foe for a hardened band of veterans, all Varulv, packed into one room with a nameless werewolf lord, stronger than any of them, werewolf bodyguards and nobles of much their strength, grimnoughts and wolfaur quixots. They're close enough that drawing one usually means several, and the Varulv bring the room. Bring a full hardened band of veterans, clear the bodyguards at the edge, and take the lords one at a time if you can. Gifttand is the toughest. Old court saying: when strangers come in, for once the table agrees.",
   "yells": {
     "aggro": [
       "(Gifttand) Strangers at the table. Now we agree.",
@@ -98,8 +98,8 @@
   "botLines": {
     "briefing": [
       "seven werewolf lords in one room in varulvhamn, gifttand brumma ungar bete grym huggtand vild",
-      "varulv faction, the bodyguards and nobles come too",
-      "gifttand is the 41 and the toughest, save him",
+      "varulv, the bodyguards and nobles come too",
+      "gifttand is the toughest, save him",
       "clear the edges before you touch a lord"
     ],
     "aftermathWin": [
@@ -109,7 +109,7 @@
       "seven lords, one room, done"
     ],
     "aftermathLoss": [
-      "pulled three lords and the bodyguards",
+      "drew three lords and the bodyguards",
       "the grimnoughts flanked us",
       "too many in that room",
       "vild came running from the back"

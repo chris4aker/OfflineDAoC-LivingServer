@@ -37,7 +37,7 @@
     }
   ],
   "story": "Shredclaw is the young one. He came out of the old jaw's own pack, the dwarves say, a render who would not wait his turn, and was driven north across the empty strip with three others who would not wait either. They took the north of the east as their ground and have held it since, and he has grown into it, and the claw-marks he leaves on the trunks there are deeper every year.\n\nWhere Goretooth bites, Shredclaw tears. His claws open wounds that will not close and leave a poison in them besides, and he does not stop to let the prey be still; he goes on tearing, and the three come in from the sides. A hunter who goes into his ground comes out bleeding or does not come out. The skogsra of Dalgo's wood, who are his nearest neighbours, move their paths away from his trunks.\n\nHe has never crossed the strip. The dwarves have watched him from griffon-back walk to its edge, and stand, and look south toward the old jaw's ground for a long time, and go back. They think he is waiting for Goretooth to weaken. They also think he does not know how to wait, which is the only reason they sleep at all: a render who cannot wait will go through the strip one day before the old jaw is ready to lose, and the old jaw will kill him, and the east will be quiet again for a generation. The dwarves would like that very much. They are not sure enough of it to bet a griffon.\n\nLike the old jaw, he has never been held by snare or charm. The dwarves say renders are made that way: slippery as a fish and twice as cold.",
-  "legend": "Shredclaw is the younger blood render in the north-east of Faraheim, level 66, 30,000 health, with three renders that come when you touch him. Poison (100 body over 30 seconds) and a bleed (45 over 30 seconds) on whoever he's hitting, each on a 35% chance per hit; neither stacks, so it's steady pressure rather than a spike. Bring cure poison and keep steady heals on the tank. A bit easier than Goretooth; still a full-group pull. CC-immune, reach 350, resets full if you leave. He's well away from Goretooth, so the packs won't mix unless you drag the fight.",
+  "legend": "Shredclaw is the younger blood render in the north-east of Faraheim, a foe for several bands of the realm's best together; he takes as much killing as fifteen raiders, with three renders that come when you touch him. Poison (a tenth of a robed caster's strength in body over 30 seconds) and a bleed (nearly a twentieth of a robed caster's strength over 30 seconds) on whoever he's hitting, each on seven hits in twenty; neither piles on itself, so it's steady pressure rather than a sudden blow. Bring cure poison and keep steady heals on his shield-bearer. A bit easier than Goretooth; still a full group's draw. No charm or stun holds him, he reaches a dozen paces, and he is whole again if you leave. He's well away from Goretooth, so the packs won't mix unless you drag the fight.",
   "yells": {
     "aggro": [
       "(Claws rake bark, close by.)",
@@ -75,10 +75,10 @@
   },
   "botLines": {
     "briefing": [
-      "shredclaw + 3 renders, bleeds and poison. cures and bandages",
+      "shredclaw + three renders, bleeds and poison. cures and bandages",
       "neither the poison nor the bleed stacks, steady heals",
       "all three come when we touch him",
-      "cc immune"
+      "nothing holds shredclaw either"
     ],
     "aftermathWin": [
       "shredclaw down",
@@ -90,7 +90,7 @@
       "bled out",
       "the three renders flanked the casters",
       "no cures, long fight",
-      "pulled the skogsra too"
+      "drew the skogsra too"
     ],
     "rumour": [
       "goretooth and shredclaw never meet. [good|the day they do, run]",

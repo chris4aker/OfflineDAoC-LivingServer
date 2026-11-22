@@ -32,7 +32,7 @@
     }
   ],
   "story": "Dra'argus the Mighty is lord of the drau'gyn, one of the two drakoran clans who remember where they came from: a burning mountain on the coast across the western sea. Every drau'gyn lord's hearth-sphere is lit from his father's, back to a coal carried from the mountain in a clay pot; Dra'argus's campaigners told Elowen of Caer Gothwaite it is forty-one fathers deep. He won it by carrying it across the sea in a ship's hold for three weeks after his elder brother dropped it on the shingle; the Avalon fishermen remember a low ship that steamed in the cold.\n\nOn the first night of the burning he went past the libraries to the college of stars, the oldest college, raised on Caradoc's warm Heart. His campaigners broke the great astrolabe and its lenses went down toward the Crystal Cave, a gift to someone. He set his sphere where the astrolabe had stood: for the warm floor, says Elowen; to listen to whatever the city's lid is on, said the master of stars. Dura'ek came after him and took the chancellors' court and the overlordship, and the drau'gyn have never forgiven it.\n\nHe wears his hearth in his skin as well, and burns those who strike him close; Sir Maelon's knights came off the first bridge with their mail fused while the archers could not mark him. While the sphere burns upstairs nothing reaches him and he does not lift his hand. Magus Corwen's company learned that when the sphere is struck it bursts in fire again and again and draws in the living at its edge: those against the walls and those close in came down, the one who hung between did not. The Academy still says of any fire, be in it or be out of it.\n\nHe watches the stair to the Crystal Cave still, to go down (Elowen), to be first to whatever comes up (Sefin of the Inconnu), or to keep it from Dura'ek (the fishermen). When his sphere is relit he stands at its edge.",
-  "legend": "He cannot be hurt while the flaming orb upstairs burns. Send a group up to break it, and only then put the raid on him. Melee eat his damage shield. Players were puzzling this out in January 2003.\n\nPlayers found the orb upstairs in January 2003 and wondered if he was bugged; he is not. While the sphere burns he takes nothing and does not even swing. Break it, and then he dies like anyone. The 2003 posts said guards came when it broke; here nothing comes, the sphere is the whole trick. Send three or four to the upper floor. Once struck, the sphere bursts for 300 fire around itself every four seconds, and it drags anyone hovering at its edge into the middle, so go in close or stay well out. Melee on Dra'argus need steady heals for the burning shield.",
+  "legend": "He cannot be hurt while the flaming orb upstairs burns. Dra'argus is a foe for several bands of the realm's best together, and takes as much killing as fifteen raiders; the orb itself is as hard to break as five raiders. Send a group up to break it, and only then put the raid on him. Melee eat his fire shield, an eighth of a robed caster's strength back on every blade that strikes him. Raiders were puzzling this out in the second winter of the war.\n\nRaiders found the orb upstairs that same winter and wondered if some flaw in the world shielded him; none does. While the sphere burns he takes nothing and does not even swing. Break it, and then he dies like anyone. The old raiders' accounts said guards came when it broke; here nothing comes, the sphere is the whole trick. Send three or four to the upper floor. Once struck, the sphere bursts with fire around itself every four seconds, each burst worth three-tenths of a robed caster's strength on everyone within about seventeen paces, and it drags anyone hovering at its edge into the middle, companions and the realm's adventurers as well as you, so go in close or stay well out, and send the healers up with that group. Melee on Dra'argus need steady heals for the burning shield.",
   "yells": {
     "aggro": [
       "Strike, then. Strike all you like.",
@@ -70,10 +70,10 @@
   },
   "botLines": {
     "briefing": [
-      "break the orb upstairs first or dra'argus is immune. he wont even swing while it burns",
+      "break the orb upstairs first or nothing hurts dra'argus. he wont even swing while it burns",
       "melee watch his damage shield",
       "group up the stairs, rest hold him",
-      "orb bursts 300 fire around it every 4 sec, healers on the orb group"
+      "orb bursts fire around it every 4 sec, three tenths of a robed caster each, healers on the orb group"
     ],
     "aftermathWin": [
       "someone finally looked up the stairs",
@@ -83,7 +83,7 @@
     ],
     "aftermathLoss": [
       "we hit him for five minutes with the orb still up",
-      "the orb burned the group upstairs, 300 a pop",
+      "the orb burned the group upstairs, burst after burst",
       "his shield ate the melee",
       "nobody went up the stairs"
     ],

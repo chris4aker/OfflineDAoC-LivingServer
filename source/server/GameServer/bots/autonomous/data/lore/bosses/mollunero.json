@@ -22,7 +22,7 @@
     }
   ],
   "story": "Mollunero is the strongest of the three mothers, the one the Sylvan fishers do not name when they are on the water. She lies in the deep pool below the World's End cliffs on the southern shore, where the sea comes in through a gap in the rock and stays cold even in high summer. The fishers say the cold is hers. Lines that touch her come up stiff with frost; a Sylvan boy who put his hand in the pool on a dare kept the hand and lost the feeling in it, and is an old man in Domnann now, and still wears a glove in summer.\n\nThere is a fishers' story that she lets her brood fight for her and comes out of the water only when every child is dead, and every Sylvan grandmother on the edge tells it. Coll of the Domnann guides, who has seen her come up, says it is a story for grandchildren. Mollunero comes up with her young, not after them, and her young are not small: they are grown things, near as heavy as a man, the strongest brood on the shore, and they come off her in a body the moment she rises. The grandmothers' story has one true thing in it. The children never outlive her. When the mother sinks, the brood sinks with her.\n\nHer arms are the worst of her. Whoever she holds is caught in the cold of the deep pool, and the cold goes into the one she is holding as if it were poured, again and again, until that one is grey. The fishers who have dragged a man away from her say the only cure is to warm him faster than she cools him. Like her sisters she cannot be sung to sleep or held by any charm; a mother with her young round her listens to nothing.\n\nThe Fomorians, Fiachra of Howth wrote, called her the cold one and left her twice the share of the catch they left Balere, and never fished the southern pool at all. The Sylvan do not fish it either. When the realm's companies first came out to World's End in the second summer of the isles, it was Mollunero's pool that the Domnann guides would not lead them to, and the first Hibernians who found it without a guide are the reason the edge has a cairn on the cliff above it.",
-  "legend": "The strongest mother: 75, with 7-8 young at 50-55 who appear with her the moment she is engaged (not after, whatever the old posts say). Every young octonoid vanishes when Mollunero dies or resets, so either AoE the brood down or hold it and kill her. On about a quarter of her hits she adds Cold Blast, 450 cold, on her target: the main tank takes melee plus big cold spikes, so heal the tank first and bring cold resist buffs. CC immune; resists 20% melee, 30% magic. Tether 2,600. Do not fight her with Zytka's or Balere's brood loose; they are down the same shore.",
+  "legend": "The strongest mother: a foe for a war party of the realm's champions, with seven or eight young, each a foe for the realm's best, who appear with her the moment she is engaged (not after, whatever the old stories say). Every young octonoid vanishes when Mollunero dies or goes home, so either blast the brood down all at once or hold it and kill her. On about a quarter of her hits she lays Cold Blast on the one she fights, nearly half a robed caster's strength: the shield-bearer who holds her takes melee plus big blasts of cold, so heal the shield-bearer first and bring chants that ward against cold. No trance, binding or stunning blow holds her; she turns aside a fifth of every blade's bite and three-tenths of every spell's. Drawn more than 87 paces she walks home. Do not fight her with Zytka's or Balere's brood loose; they are down the same shore.",
   "yells": {
     "aggro": [
       "Cold. Come and be cold.",
@@ -64,21 +64,21 @@
   },
   "botLines": {
     "briefing": [
-      "mollunero is 75 and her young are 50-55. [bring a full group|not a duo]",
+      "mollunero is the big mother and even her young want our best. [bring a full group|not a pair]",
       "the brood comes with her right away. kill her and they [vanish|all go]",
-      "she cold blasts her target for 450 on some hits. [heal the tank|cold resist on the tank]",
-      "no cc, she resets if dragged past 2600. [fight her by the pool|stay put]"
+      "she cold blasts whoever shes on, hard, on some hits. [heal the shield|cold ward on the shield]",
+      "nothing holds her, and she goes home if dragged past 87 paces. [fight her by the pool|stay put]"
     ],
     "aftermathWin": [
       "mollunero down. [the cold one|strongest mother] is dead",
-      "tank survived the cold blasts. [nice heals|grats]",
+      "shield survived the cold blasts. [nice heals|grats]",
       "brood vanished with her. [didnt need to kill them|saved time]",
       "all three mothers done? [check zytka|yep]"
     ],
     "aftermathLoss": [
-      "tank got cold blasted twice in a row and [dropped|died]",
+      "shield got cold blasted twice in a row and [dropped|died]",
       "brood ate us before she was halfway",
-      "dragged her too far and she [reset|went home full with a new brood]",
+      "dragged her too far and she [went home|went home full with a new brood]",
       "woke zytka too. [never again|ugh]"
     ],
     "rumour": [

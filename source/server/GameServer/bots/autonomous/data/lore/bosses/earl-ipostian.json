@@ -70,7 +70,7 @@
   }
  ],
  "story": "Earl Ipostian has not touched the ground since the Fourth Roll. Before that it was Prince Asmoien's challenge-bearer, a winged demon of the west who flew the prince's challenges to his rivals and came back with their answers, and in the feud of the Blade and the Hook it carried more challenges than any messenger of the court before or since. In the last dark of the Fourth Roll it was flying the Hook's final challenge over the central crossing to Prince Abdin's chapter house when the knights and the Mutilators met beneath it, and Gatekeeper Dommel closed every road out of the crossing at once.\n\nEvery demon of both orders on the ground was shut in the crossing until there were too few of either to matter. Ipostian, overhead, was on no road. It hung above the slaughter for the whole length of it and watched, and when the roads opened again it flew back west with no answer and an account of the end of the feud that nobody else had, because nobody else had seen it from above. Field Marshal Nebir sent for that account when he drew up the Gate watch. Ipostian drew its own conclusion: a road can be closed, but the air above it cannot. It has flown ever since and says it will never land again, so that no one will ever close a road on it.\n\nIt is the overseer of the pit now. It hangs over the Mutilators' pit in the west near Asmoien's hall, above Mutilators Vorazax, Xazbalor and Yooginroth of the prince's guard, and watches the unmaking below as it watched the crossing, from out of reach. The Mutilators find it unsettling to be watched by something that will not come down to their floor, and Mutilator Xagalith, the master of the pit, has complained to the prince that the earl has not set foot in the pit since the feud. Asmoien answers that a messenger's work is to see. The knights of the north-west say Ipostian is the only demon of the Hook they respect, because it is the only one that saw the Blade hold.",
- "legend": "Ipostian is the flying earl hanging over the Mutilators' pit in the west, under nine hundred units from Prince Asmoien, with Mutilators Vorazax, Xazbalor and Yooginroth of the prince's guard close by. Level 71, flagged as flying, no script. It hovers, so watch where you stand: chasing it over the pit edge drags you into the rest of the Mutilators. Kill the prince's guard first, then the earl, then Asmoien. Players call it the herald or the bat and swear it saw the whole demon civil war from the air. Albion archers like to brag about it, since it is one of the few things in Darkness Falls they can claim they shot down, and Midgard groups like to point out that the archers missed twice.",
+ "legend": "Ipostian is the flying earl hanging over the Mutilators' pit in the west, under thirty paces from Prince Asmoien, with Mutilators Vorazax, Xazbalor and Yooginroth of the prince's guard close by. A foe for a war party of any realm's champions, a flier, no tricks. It hovers, so watch where you stand: chasing it over the pit edge drags you into the rest of the Mutilators. Kill the prince's guard first, then the earl, then Asmoien. Raiders call it the herald or the bat and swear it saw the whole demon civil war from the air. Albion archers like to brag about it, since it is one of the few things in Darkness Falls they can claim they shot down, and Midgard groups like to point out that the archers missed twice.",
  "yells": {
   "aggro": [
    "I see you. I have always seen you.",
@@ -109,9 +109,9 @@
  "botLines": {
   "briefing": [
    "ipostian is the flyer over the pit by asmoien. [prince's guard first|kill the guard first]",
-   "dont chase ipostian over the pit edge. [youll pull the pit|stay up top]",
+   "dont chase ipostian over the pit edge. [youll wake the pit|stay up top]",
    "vorazax, xazbalor, yooginroth, then ipostian. [then the prince|asmoien last]",
-   "71 no tricks, it just hovers. [watch where you stand|mind the edge]"
+   "no tricks, it just hovers. [watch where you stand|mind the edge]"
   ],
   "aftermathWin": [
    "ipostian down. [the bat fell|grounded it]",
@@ -120,10 +120,10 @@
    "the herald finally touched ground. [lol|about time]"
   ],
   "aftermathLoss": [
-   "chased ipostian into the pit. [pulled half of it|wipe]",
+   "chased ipostian into the pit. [drew half of it|everyone down]",
    "ipostian brought the prince's guard. [too much|mess]",
-   "ipostian got us. [regroup|rez]",
-   "lost the pull over the pit. [slower|stay on the edge]"
+   "ipostian got us. [regroup|raise the fallen]",
+   "lost the draw over the pit. [slower|stay on the edge]"
   ],
   "rumour": [
    "[heard|word is] earl ipostian hasnt touched the ground since the demon civil war",

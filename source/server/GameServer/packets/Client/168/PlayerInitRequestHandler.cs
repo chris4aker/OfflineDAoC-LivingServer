@@ -16,6 +16,14 @@ namespace DOL.GS.PacketHandler.Client.v168
     {
         private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Whether entering a region next to an enemy keep, or a keep in combat, sends the player to their bind point
+        /// ("This area isn't currently secure"). A GM or admin (PrivLevel above Player) is never moved: on the owner's PC
+        /// (build aa537ce) a GM's /jump to a bot inside an enemy keep sent the GM to Cotswold. Players are unchanged.
+        /// </summary>
+        public static bool MovesOffUnsafeKeep(ePrivLevel privLevel, bool enemyKeep, bool keepInCombat) =>
+            privLevel <= ePrivLevel.Player && (enemyKeep || keepInCombat);
+
         protected override void HandlePacketInternal(GameClient client, GSPacketIn packet)
         {
             GamePlayer player = client.Player;
@@ -155,7 +163,7 @@ namespace DOL.GS.PacketHandler.Client.v168
                 if (keep == null)
                     return;
 
-                if (GameServer.KeepManager.IsEnemy(keep, player) || keep.InCombat)
+                if (MovesOffUnsafeKeep((ePrivLevel)player.Client.Account.PrivLevel, GameServer.KeepManager.IsEnemy(keep, player), keep.InCombat))
                 {
                     player.Out.SendMessage("This area isn't currently secure and you are being transported to a safer location.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     player.MoveToBind();

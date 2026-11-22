@@ -192,6 +192,8 @@ public static partial class AutonomousBotGroupCoordinator
         // for a replacement; the natural break ("last pull then town"); the leader's goodbye when the party ends.
         public bool HadHostedPlayer { get; set; }
         public AutonomousPartyReplacement.Search Replacement { get; set; }
+        // 1.2.1 (#423): when the party next looks for one more member for a free seat (0: not timed yet, it has not set off).
+        public long NextOpenSeatAt { get; set; }
         public BotLedGroups.BreakState Break { get; set; }
         public long NextBreakCheck { get; set; }
         public BotLedGroups.Lead? FarewellLine { get; set; }

@@ -2425,6 +2425,8 @@ namespace DOL.GS
                 bot.StopMovingOnPath();
                 SetRvrStatus(bot, "Waiting for a frontier teleporter", destination.MonsterName,
                     $"{destination.ZoneName} is reached by porter, not on foot through the frontier dungeons");
+                // Why TryFrontierTransport declined is in declined= of RVR_FRONTIER_WAIT_LONG (#418).
+                NoteFrontierWait(bot, "waiting", destination, null);
                 return true;
             }
             if (bot.CurrentRegionID != destination.RegionId)

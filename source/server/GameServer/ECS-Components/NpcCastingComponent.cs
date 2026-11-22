@@ -46,8 +46,15 @@ namespace DOL.GS
             GameLiving target,
             GamePlayer losChecker)
         {
-            if (losChecker == null)
+            // 1.2.1: a checker that can't be asked is no checker (see CastingComponent.StartDuringCastLosCheck). Its packet
+            // sender was used unchecked here, and a refused request left the spell waiting for ever.
+            var packets = losChecker?.Out;
+
+            if (packets == null)
                 return base.RequestCastSpellInternal(spell, spellLine, spellCastingAbilityHandler, target, null);
+
+            if (LeftTheWorld(_npcOwner, target))
+                return false;
 
             SpellWaitingForLosCheck spellWaitingForLosCheck = new(spell, spellLine);
 
@@ -59,8 +66,22 @@ namespace DOL.GS
                     _spellsWaitingForLosCheck[target] = [spellWaitingForLosCheck];
             }
 
-            losChecker.Out.SendLosCheckRequest(_npcOwner, target, this);
-            return true; // Consider the NPC is casting while waiting for the reply to prevent it from moving.
+            if (packets.SendLosCheckRequest(_npcOwner, target, this))
+                return true; // Consider the NPC is casting while waiting for the reply to prevent it from moving.
+
+            // Refused (the checker's client is not playing): no answer will come. Take the spell back and cast unchecked.
+            lock (_spellsWaitingForLosCheckLock)
+            {
+                if (_spellsWaitingForLosCheck.TryGetValue(target, out var list))
+                {
+                    list.Remove(spellWaitingForLosCheck);
+
+                    if (list.Count == 0)
+                        _spellsWaitingForLosCheck.Remove(target);
+                }
+            }
+
+            return base.RequestCastSpellInternal(spell, spellLine, spellCastingAbilityHandler, target, null);
         }
 
         protected override GamePlayer GetLosChecker(GameLiving target)

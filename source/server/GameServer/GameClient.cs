@@ -95,6 +95,15 @@ namespace DOL.GS
         public string MinorRev { get; set; } = string.Empty;
         public byte MajorBuild { get; set; } = 0;
         public byte MinorBuild { get; set; } = 0;
+        /// <summary>The build number (u16) at the end of a 1.115+ client's first crypt key request (CryptKeyRequestHandler).
+        /// Living Server's new client sends 0 there (source/new-client DaocClient.Open); the original game.dll sends its
+        /// build. Only read, never echoed back.</summary>
+        public ushort HandshakeBuild { get; set; }
+        /// <summary>True once <see cref="HandshakeBuild"/> was read from the handshake.</summary>
+        public bool HandshakeBuildRead { get; set; }
+        /// <summary>The original game client, told by its handshake (BotDeathAnimation.IsOriginalClient). False when unknown:
+        /// such a client gets what every client got before 1.2.1.</summary>
+        public bool IsOriginalGameClient => BotDeathAnimation.IsOriginalClient(HandshakeBuildRead, HandshakeBuild);
 
         public GameClient(Socket socket) : base(socket) { }
 

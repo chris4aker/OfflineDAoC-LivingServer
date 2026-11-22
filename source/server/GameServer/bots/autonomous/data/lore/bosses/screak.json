@@ -20,7 +20,7 @@
     }
   ],
   "story": "The marine shrillers of the shelf cry at the sea, and the loudest of them the Necht fishers call Screak, for the sound. It is a cousin of the old shriller of Cothrom Gorge, Tudeg, whose tide-cry the gorge clans told the hour by, and Necht uses Screak the same way, only for weather: when Screak cries in the afternoon, the boats stay in.\n\nThe fishers say it has never been wrong. They also say it cries louder when the realm's companies come down the shelf than it does for any storm, and they have started to wonder which of the two it thinks is worse. When the realm's companies first came to Necht, Screak cried at them for three days without stopping, and the boats stayed in for all three, and the fishers have never quite forgiven the realm for it. Tudeg in the gorge cries at the tide; Screak cries at the weather; the Necht singers say the shrillers of the isle between them keep the only clocks it ever had.",
-  "legend": "Screak (42) is a named marine shriller on the shelf (about 425k/312k) near ravaging marine shrillers (44-46). Pull it away from the ravagers. A group of 40s. 80-second respawn. Its cry is loud; do not mistake it for a storm. Plain spawn with no script. Marine shrillers (38-43) are around it too; they are not a threat to a group of 40s. Fight it on the shelf, not at the water's edge.",
+  "legend": "Screak, a foe for a hardened band of veterans, is a marine shriller of some renown on the shelf (about 425k/312k) near ravaging marine shrillers (a little stronger than it). Draw it away from the ravagers. A hardened band of veterans. It returns eighty seconds after it falls. Its cry is loud; do not mistake it for a storm. A plain fight with no tricks. Marine shrillers (about its equals) are around it too; they are not a threat to a hardened band of veterans. Fight it on the shelf, not at the water's edge.",
   "yells": {
     "aggro": [
       "(an ear-splitting cry over the water)",
@@ -43,8 +43,8 @@
   },
   "botLines": {
     "briefing": [
-      "screak is a 42 shriller on the shelf",
-      "ravaging shrillers nearby, pull it away"
+      "screak is a big shriller on the shelf",
+      "ravaging shrillers nearby, draw it away"
     ],
     "aftermathWin": [
       "screak quiet. [finally|grats]",
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "ravagers joined. [rip|ouch]",
-      "pulled the whole shelf. [oops|wipe]"
+      "drew the whole shelf. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] necht boats stay in when screak cries in the afternoon. never wrong",

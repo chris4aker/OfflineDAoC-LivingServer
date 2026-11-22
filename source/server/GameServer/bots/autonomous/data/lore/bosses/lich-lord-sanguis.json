@@ -22,7 +22,7 @@
     }
   ],
   "story": "Lich Lord Sanguis is what stands up out of the red floor of the chapel in Caer Sidi when Lord Sanguis falls: the debt itself, three lifetimes of years the magistrate of Venta bought with other men's blood, standing up at once with no man left around it. The magistrate's body lies where it fell. The thing beside it is gaunt where he was soft, has no manners where he was courteous, and remembers every death he died and resents each. The Church calls it a lich, from the old word for a corpse; the Inconnu say the corpse is the part that does not walk. It takes a sword as the magistrate did, and spells sink into it.\n\nThe debt is made of names: the condemned of Venta, then the poor of the basilica steps and the river quarter, then anyone met after dark. Every one of those lives was taken before its time and holds on, which is why the thing is so angry and why it clings at the end as nothing else in the gaol does. The third company's priest keeps the names the Inconnu know, among them Marcus, a deserter of the Second Legion, and Gwenno who sold eels.\n\nThat company wore it down, and at the very end it went out of every eye, still there and still striking but impossible to look at, like a candle held up to the sun. Her swordsmen could not find it. What finished it was the wasting her priests had already laid in it and the fire her wizards spread over the whole red floor: a debt you cannot see is paid by what is already owed, and by fire on the whole field.\n\nThe debt comes due again; Arawn's accounts are exact, and three lifetimes are owed. When a Caer Gothwaite company comes down past the chapel, its youngest says the eel-girl's name aloud at the edge of the floor.",
-  "legend": "Six seconds after Lord Sanguis dies, Lich Lord Sanguis stands up at full strength: level 81, 100,000 health, crowd-control immune, 40% less from melee and 70% less from everything else, so melee carries again. Keep him inside his 2,000 leash. The catch is the end. At 5% health he goes untargetable for the rest of the fight: you cannot click him and the bots will not fight him. Get your damage-over-time spells on him well before 5% so they keep ticking, and have area damage ready (point-blank and ground-targeted area spells on the spot where he stands) to burn off the last 5,000. If nothing is ticking and nobody has area damage, the fight can stall and reset, so plan for it. Keep the same tanks as on the first Sanguis and fresh healers. Old hands say the eel-girl's name on the way down.",
+  "legend": "Six seconds after Lord Sanguis dies, Lich Lord Sanguis stands up whole: a foe for a war party of the realm's champions, as much killing as fifty raiders; nothing mesmerizes, holds or dazes him; blades lose four parts in ten against him and everything else seven in ten, so melee carries again. Keep him within about seventy paces of his spot. The catch is the end. When he is down to one part in twenty of his strength he becomes almost untouchable for the rest of the fight: nobody can aim a blow or a spell at him and companions and the realm's adventurers will not fight him. Get your lingering spells, the ones that burn on after they land, on him well before then so they keep burning, and have spells ready that strike an area (bursts around the caster and spells thrown at the ground where he stands) to burn off the last of him, about as much killing as two or three raiders. If nothing is burning on him and nobody has such spells, the fight can stall and he goes home whole, so plan for it. Keep the same shield-bearers as on the first Sanguis and fresh healers. Old hands say the eel-girl's name on the way down.",
   "yells": {
     "aggro": [
       "Again. Always again.",
@@ -65,20 +65,20 @@
   "botLines": {
     "briefing": [
       "lich lord stands up 6 sec after sanguis. melee kill again",
-      "at 5% he goes untargetable, get dots on him early",
-      "area spells on his spot to finish the last 5%, nobody can click him",
-      "same tanks as the first sanguis, healers stay fresh"
+      "near the very end nobody can aim at him, get lingering burns on him early",
+      "area spells on his spot to finish the last of him, nobody can aim at him",
+      "same shield-bearers as the first sanguis, healers stay fresh"
     ],
     "aftermathWin": [
       "sanguis really dead this time",
       "the floor stopped being red. creepy",
-      "got him through the 5% wall",
+      "got him through the last wall",
       "two sanguis kills, one night"
     ],
     "aftermathLoss": [
-      "he went untargetable at 5% and nobody had a dot on him",
-      "no area damage for the last 5%, it reset",
-      "we looted the first body and he stood up on the healers",
+      "he went untouchable at the end and nobody had a burn on him",
+      "no area spells for the last of him, he went home whole",
+      "we were going through the first body and he stood up on the healers",
       "the healers sat down after sanguis and the lich caught them"
     ],
     "rumour": [
@@ -87,7 +87,7 @@
       "heard the floor goes grey when sanguis is really dead",
       "the priests say pray for the people whose years he spent",
       "heard caer gothwaite groups say a girl's name at the red chapel on the way out",
-      "[heard|someone said] the lich lord goes untargetable at the very end, bring dots"
+      "[heard|someone said] the lich lord goes untouchable at the very end, bring lingering burns"
     ]
   },
   "loremasterTopic": {

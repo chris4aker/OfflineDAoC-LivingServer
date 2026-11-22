@@ -20,7 +20,7 @@
     }
   ],
   "story": "The hill-tales say the Amadán Dubh, the dark fool, goes about the country at the turn of the year with a bundle of grass in his hand, and whoever he touches with it is never right again: they laugh at nothing, or they cannot move, or they wander off into the hills and are found there years later, still laughing. Connacht's Amadan Dubh keeps the highest of the hills north-east of Basar, and the hills below him are full of the ones he has touched.\n\nBria of the parthanan farm west of Tir na Nog has a son, Davian, who went up into those hills and came down unable to move, and the mender Llyn of Ardee told her what the old cure is: the blood of one of the touched, and then the blood of the fool himself, given back to the one he touched. Harper Cadwr of Connla sends the realm's young to get both. The Ardee folk say the dark fool does not mind; he laughs as he bleeds, and he is back on his hill by dusk.",
-  "legend": "Amadan Dubh (42) stands on the highest Amadan hill in north-east Connacht (about 346k/430k). The hills around him are 29-35 amadan touched, pookhas (33-35) and alp luachra, all aggressive, so lowbies should stay south of Basar. He is the last kill of The Touch of Amadan Duhb (Harper Cadwr in Connla): first a vial of blood from an amadan touched, then his. A group of 40ish handles him. Plain spawn, 80-second respawn. Touched (39) and Amadan (39) are on the neighbouring hills; do not chain them.",
+  "legend": "Amadan Dubh, a foe for a hardened band of veterans, stands on the highest Amadan hill in north-east Connacht (about 346k/430k). The hills around him hold amadan touched and pookhas (a seasoned band's foes, the worst of them for a hardened band) and alp luachra, all of them attacking on sight, so the young should stay south of Basar. He is the last kill of The Touch of Amadan Duhb (Harper Cadwr in Connla): first a vial of blood from an amadan touched, then his. A hardened band of veterans handles him. Plain, no tricks; he returns eighty seconds after he falls. Touched and Amadan, each a little weaker than he is, are on the neighbouring hills; do not chain them.",
   "yells": {
     "aggro": [
       "(the dark fool laughs and holds out his hand)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "amadan dubh is 42 on the high hill north east of basar",
+      "amadan dubh is on the high hill north east of basar, hardened band stuff",
       "touch of amadan duhb: touched blood first, then his"
     ],
     "aftermathWin": [
@@ -51,8 +51,8 @@
       "didnt chain touched or amadan. [nice|clean]"
     ],
     "aftermathLoss": [
-      "pulled the whole hill of touched. [rip|lol]",
-      "chained amadan too. [oops|wipe]"
+      "drew the whole hill of touched. [rip|lol]",
+      "chained amadan too. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] the dark fool's touch makes you laugh at nothing or never move again",

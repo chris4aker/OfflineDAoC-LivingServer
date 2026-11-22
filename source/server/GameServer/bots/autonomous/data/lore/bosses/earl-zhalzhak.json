@@ -79,7 +79,7 @@
   }
  ],
  "story": "High Lord Baln's hall breeds. Its walls in the south of the hollow have always put out more followers than the hall can feed, fanatics who come out of the rock already shouting, and the Field Marshal's first work in the Uncounted Age was standing them in rows. The first thing that ever came out of those walls is still there. The court calls it Earl Zh'alzhak, which is not a name but the sound the rock made, and it is the largest earl on the Roll.\n\nWhen the First Roll was cut, the Chancellor had a difficulty with Baln's hall that he had with no other. The bargain of the Feast protects only demons who hold a line, and the brood of the south came out of the walls faster than Earl Vone could cut them. A demon with no line could be eaten by anyone, and the brood was eating itself. Adremal settled it the way he settles everything, with a line. He wrote Zh'alzhak as Earl of the Brood, under High Lord Baln, and wrote below it that every demon born of the southern walls holds its place through the earl. The whole brood of Baln's hall stands on the Roll on one line. If Zh'alzhak were ever struck off, the Inquisitors say, every fanatic of the south would fall with him, and the Master would have the largest meal since the Feast.\n\nThe brood knows it. They keep the earl at the west end of the hall, near Duke Alloc's standard and Marquis Chaosmar's seat, and they do not let him wander. Zh'alzhak understands very little of this. He speaks the tongue of the walls, which only Baln and the brood hear, and the court says he spends his time with his hands pressed flat to the rock, waiting for the next of his kind to come through, as a midwife waits at a door.\n\nIn the Seventh Roll, the season the Queen left her chair, the walls put out more of the brood in one dark than in the three Rolls before it, and Zh'alzhak led them north out of the hall to look for room. They reached the Gate, and Gatekeeper Dommel charged every one of them a toll none could pay. The Marshal fetched them home in rows. Nebir counts the brood as his host; the earl counts it as his children; Baln, the court says, counts it as himself. None of the three has ever asked the others.",
- "legend": "Zh'alzhak is the huge earl (size 200) at the west end of Baln's hall, with Marquis Chaosmar about seven hundred units away and Dukes Alloc and Aypol close behind. Level 71, no script. He stands close enough to Chaosmar to come with him if you are careless, so kill Chaosmar first or drag the earl east toward the middle of the hall. Kill him before you start on Baln: the high lord's own fight brings minions every half minute or so, and you do not want the earl in it as well. Players say he is the first demon that ever came out of the walls of Baln's hall and that Baln's minions are his children. Midgard players call him the midwife and think it is very funny. It stops being funny when he and Chaosmar both come at once.",
+ "legend": "Zh'alzhak is the huge earl (as big as any demon of the court grows) at the west end of Baln's hall, with Marquis Chaosmar about twenty-five paces away and Dukes Alloc and Aypol close behind. A foe for a war party of any realm's champions, no tricks. He stands close enough to Chaosmar to come with him if you are careless, so kill Chaosmar first or drag the earl east toward the middle of the hall. Kill him before you start on Baln: the high lord's own fight brings minions every half minute or so, and you do not want the earl in it as well. Raiders say he is the first demon that ever came out of the walls of Baln's hall and that Baln's minions are his children. Midgard raiders call him the midwife and think it is very funny. It stops being funny when he and Chaosmar both come at once.",
  "yells": {
   "aggro": [
    "Khh... zh'al... zhak.",
@@ -118,27 +118,27 @@
  "botLines": {
   "briefing": [
    "zhalzhak is the huge one at the west end of balns hall. [chaosmar first|kill chaosmar first]",
-   "pull zhalzhak east, away from chaosmar. [one at a time|single pulls]",
-   "kill zhalzhak before baln. [baln pops minions|dont want him in the baln fight]",
-   "71 no tricks, just big. [watch your angle|hes huge]"
+   "draw zhalzhak east, away from chaosmar. [one at a time|single draws]",
+   "kill zhalzhak before baln. [baln calls up minions|dont want him in the baln fight]",
+   "no tricks, just big. [watch your angle|hes huge]"
   ],
   "aftermathWin": [
    "zhalzhak down. [the midwife is dead lol|big one down]",
    "earl zhalzhak dead. [alloc next|on to alloc]",
    "zhalzhak done, [chaosmar stayed put|clean split]",
-   "the big earl is down. [now baln|rebuff for baln]"
+   "the big earl is down. [now baln|renew the blessings for baln]"
   ],
   "aftermathLoss": [
-   "zhalzhak and chaosmar at once. [wipe|told you chaosmar first]",
-   "pulled zhalzhak into baln. [minions everywhere|gg]",
-   "zhalzhak got us. [regroup|rez]",
-   "lost the pull at the west wall. [slower|one at a time]"
+   "zhalzhak and chaosmar at once. [everyone down|told you chaosmar first]",
+   "drew zhalzhak into baln. [minions everywhere|that was that]",
+   "zhalzhak got us. [regroup|raise the fallen]",
+   "lost the draw at the west wall. [slower|one at a time]"
   ],
   "rumour": [
    "[heard|word is] earl zhalzhak was the first demon to come out of the walls of balns hall",
    "zhalzhak isnt a name its the sound the rock made. [so the lore guys say|apparently]",
    "[someone said|my guildie says] all of balns minions are on the demon roll through zhalzhak",
-   "the zhalzhak and chaosmar pull wipes people every night. [chaosmar first|split them]"
+   "drawing zhalzhak and chaosmar together kills whole raids every night. [chaosmar first|split them]"
   ]
  },
  "loremasterTopic": {

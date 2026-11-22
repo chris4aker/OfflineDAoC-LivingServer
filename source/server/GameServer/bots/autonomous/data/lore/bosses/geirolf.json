@@ -43,7 +43,7 @@
     }
   ],
   "story": "Geirolf keeps the largest camp of armguards in Malmohus, and he is the smallest of the named drakulv who hold one. The svartalfar of Svarhamr think the two facts are connected.\n\nHis name is the spear-wolf's, an old name of war, and the beam-cutters say he did not take it from anyone; the hollow gave it to a drakulv who had asked for nothing, in a winter when the western camps had lost three captains in a season and needed one who would not die. He has not died, or not often. He keeps his armguards close around him, closer than any other captain, and when he is threatened they come in from every side at once, and the svartalfar say that the spear-wolf has never in his life been where a blow could reach him without first going through four or five of his own. A drakulv of Ingardild's holding called him the hedgehog once, in the drakulv growl, and the western camps had their worst night on the beam over it.\n\nHis armguards are the young of the west, the ones who will become axehands and protectors and, if they live, guardians of the hollow. Geirolf trains them. The svartalfar on the walls of Svarhamr have watched him at it, setting two young armguards at each other and stopping it at first blood, over and over through a winter's evening, and Brisa the beam-cutter says it is the only time she has seen drakulv do anything that looked like teaching.\n\nGunnolf, whose holding lies further west, does not like him either, but for another reason. Gunnolf is of the old west, the camps that refused the runners, and Geirolf's holding, the old west says, would answer a runner if the hollow ever sent one. Geirolf has never said whether that is true. His armguards stand closer every year.",
-  "legend": "Geirolf is a small named drakulv (49 or 52) in the west of Malmohus with SEVEN drakulv armguards standing around him, the biggest armguard camp in the zone, plus a scaled varg snarler nearby. He's Pack Drakulv and the armguards are right there, so when you hit him expect most of the camp. Armguards are 46-51, so a full group at 50 can AoE or mez them down; small groups should pick the armguards off from the edges first. No tricks beyond that, not CC-immune. Ingardild's camp is close by, so keep the fight on the far side. There's no quest here.",
+  "legend": "Geirolf is a small known drakulv, a foe for a hardened band of veterans or for the realm's best, a full band of them, depending on which of him stands, in the west of Malmohus with SEVEN drakulv armguards standing around him, the biggest armguard camp in the country, plus a scaled varg snarler nearby. He's of the drakulv pack and the armguards are right there, so when you hit him expect most of the camp. The armguards run from a hardened band's foe to a match for the realm's best, so a full band of the realm's best can blast them down all at once or put them into a trance; small groups should pick the armguards off from the edges first. No tricks beyond that, and charms, trances and stuns hold him. Ingardild's camp is close by, so keep the fight on the far side. There's no quest here.",
   "yells": {
     "aggro": [
       "Armguards! Close up! Close!",
@@ -82,20 +82,20 @@
   "botLines": {
     "briefing": [
       "geirolf has seven armguards, the whole camp comes",
-      "full group: aoe or mez the armguards",
+      "full group: blast or entrance the armguards",
       "small group: pick armguards off the edges first",
-      "hes small himself, 49 or 52"
+      "hes small himself, a hardened band's fight or a bit more"
     ],
     "aftermathWin": [
       "seven armguards and geirolf, nice",
-      "the aoe did it",
+      "the blasts did it",
       "picked the edges, slow but safe",
       "biggest camp in malmohus cleared"
     ],
     "aftermathLoss": [
       "the whole camp came at once",
       "ran into ingardilds camp too",
-      "not enough mez for seven",
+      "not enough trances for seven",
       "the snarler joined as well"
     ],
     "rumour": [

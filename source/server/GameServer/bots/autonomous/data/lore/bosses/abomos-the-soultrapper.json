@@ -17,7 +17,7 @@
     }
   ],
   "story": "When the Sylvan understood what was rising on the crag above the burned valley, they sent their bravest to burn it down. Most of them died on the stair. Abomos caught what was left of them. He is a trapper of souls, Balor's gaoler for the things that cannot be chained, and the spirits of that Burning That Failed hang in his cells along the tower's lower halls still, spectral and tortured, crying in voices too faint to make out.\n\nHe feeds on them. He feeds on those who come to free them too, drinking life out of every wound he gives, and when he has been bled enough to be afraid, at the half, he opens two of the cells and calls out his servants, made from the last of what he has eaten, never more than three at a time. He cannot be harmed outside his own halls. The Sylvan say that every spirit freed from his cells goes home to Domnann on the wind, and that on the nights after he falls the forests there are full of whispers.\n\nAbomos caught the spirits of the Sylvan of the Burning That Failed, led by the fire-keeper Áine, and keeps them in his cells; Ciarán of Bri Leith's band freed them and the forest of Domnann whispered all night.",
-  "legend": "He drains life, so keep heals rolling on whoever he targets. At half health two servants join: tanks pick them up, AoE or kill them, then finish him. Free the Sylvan spirits, the old hibs say, and the Vale grows a little greener. His lifedrain is steady, not sudden: the healers on his target keep it topped and the rest kill. At half, two servants come; tanks pick them up and AoE helps. Clear the spectral Sylvan in his halls before the pull. Superstition: Sylvan raiders whisper the names of their dead into his cells before the pull, so the spirits know help has come. The rest of the raid waits for them to finish.",
+  "legend": "He drains life, so keep heals rolling on whoever he turns on. When half his strength is gone two servants join: the shield-bearers take them up, burn them down with blasts that catch them both, or kill them one by one, then finish him. Free the Sylvan spirits, the old hibs say, and the Vale grows a little greener. His lifedrain is steady, not sudden: the healers on the one he is drinking from keep them whole and the rest kill. At half, two servants come; the shield-bearers take them up and blasts that catch both of them help. Clear the spectral Sylvan in his halls before you draw him. Superstition: Sylvan raiders whisper the names of their dead into his cells before he is drawn, so the spirits know help has come. The rest of the raid waits for them to finish.",
   "yells": {
     "aggro": [
       "Another soul for the cells. A strong one.",
@@ -56,20 +56,20 @@
   },
   "botLines": {
     "briefing": [
-      "abomos lifedrains, keep heals on his target. at half [two servants|adds] come, tanks grab them",
-      "clear the spectral sylvan in his halls first, [no adds|clean room]",
-      "healers on his drain target, [steady not sudden|keep them topped]",
-      "at half two servants come, [tanks grab|pick them up]"
+      "abomos drinks life, keep heals on whoever hes on. at half [two servants|his helpers] come, shield-bearers grab them",
+      "clear the spectral sylvan in his halls first, [no extras|clean room]",
+      "healers on whoever hes drinking, [steady not sudden|keep them topped]",
+      "at half two servants come, [shields grab|pick them up]"
     ],
     "aftermathWin": [
       "abomos down. [the sylvan spirits went quiet|you could hear them sigh]. good",
       "the forests of domnann will be full of whispers tonight. [the spirits are free|good]",
       "abomos down, the cells are empty. [finally|grats]",
-      "kept his drain target topped the whole fight. [nice healing|well done]"
+      "kept whoever he drank from topped the whole fight. [nice healing|well done]"
     ],
     "aftermathLoss": [
-      "the servants got loose on the casters at half. [tanks|grab the adds]",
-      "the servants got loose at half. [tanks|grab them]",
+      "the servants got loose on the casters at half. [shields|grab the servants]",
+      "the servants got loose at half. [shields|grab them]",
       "left the spectral sylvan up and [they joined|messy]",
       "his drain outlasted the healers. [rotate|more heals]"
     ],

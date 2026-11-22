@@ -22,7 +22,7 @@
     }
   ],
   "story": "Stone was the last of the four to fall to the Root and is the hardest to free, because it did not fall alone. When the earth of Hy Brasil was still its own there were earth-tenders among the Sylvan, menders who closed the ground after landslips and healed the scars of floods: guardians, magicians, those of the natural craft and those of the shadowed one. When the Root took the stone, he took them with it, and now the four Earthmenders rise beside the guardian of earth and close its wounds as fast as any blade can open them.\n\nThe guardian itself, the Primal of Earth, barely moves from its place. Stone never did, and it is bound within a few paces of its place on the bridge. It does not need to move. While the menders live it has all the time in the world. Each mender can be hurt only by its own kind of craft, as Orlaith found when she sorted her company into four bands to reach them; only beasts, and the Sylvan's own crafts, reach all four. Since they began to fight back nobody on the bridge can pretend they are not there. They heal only the stone now. The Sylvan call their names when they fall, as if they were the Sylvan's own. They were.\n\nThe four Earthmenders were the last earth-tenders of Domnann, who followed the great slip above Cluain Dara down into the hollow. Orlaith's company split into four bands by craft on Cass's word; the Sylvan call the menders' names as they fall.",
-  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. It will not leave its spot, so do not try to pull it. Bring a tank for each mender, because they fight back now. Experienced raids send one party with a tank at each mender the moment the room starts, and leave the stone itself alone until the last mender falls. Do not try to pull it off its spot; it walks home and heals. Call the mender names as they fall, the Sylvan ask; they were earth-tenders of Domnann once, and their kin like to hear them called.",
+  "legend": "Kill the four Earthmenders first, one party on each, and only then the primal; while they live it heals faster than you hurt it. Each mender can be hurt only by its own crafts: the Guardian Earthmender by blademasters, heroes and champions; the Magical Earthmender by eldritches, enchanters and mentalists; the Natural Earthmender by bards, druids and wardens; the Shadowy Earthmender by nightshades and rangers. Animists and valewalkers hurt all four, and so do pets; every other blow does nothing, so sort the parties by craft, not by number. It will not leave its spot, so do not try to draw it. Bring a shield-bearer for each mender, because they fight back now. Experienced raids send one party with a shield-bearer at each mender the moment the room starts, and leave the stone itself alone until the last mender falls. Do not try to draw it off its spot; it walks home and heals. Call the mender names as they fall, the Sylvan ask; they were earth-tenders of Domnann once, and their kin like to hear them called.",
   "yells": {
     "aggro": [
       "Stone does not fall alone.",
@@ -61,8 +61,8 @@
   "botLines": {
     "briefing": [
       "earth primal: kill the four earthmenders first. [one group each|guardian, magical, natural, shadowy]",
-      "dont pull the earth primal, it wont move. [we go to it|fight it on its spot]",
-      "four menders: guardian, magical, natural, shadowy. [one party each|split four ways] at the start",
+      "dont try to draw the earth primal, it wont move. [we go to it|fight it on its spot]",
+      "four menders: guardian, magical, natural, shadowy. [one party each, sorted by class|split four ways] at the start. each only takes damage from its own classes",
       "dont touch the earth primal till all menders are dead. [waste of mana|it just heals]"
     ],
     "aftermathWin": [
@@ -75,13 +75,13 @@
       "we hit the earth primal with all four menders up and it [never moved off full|healed through everything]",
       "two menders were still up and the rock [healed to full|never moved]",
       "the menders fight back now and [our light party died|we sent cloth to a mender]",
-      "someone pulled the earth primal off its spot and it [walked home healed|reset]"
+      "someone drew the earth primal off its spot and it [walked home healed|went home whole]"
     ],
     "rumour": [
-      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring tanks for each",
+      "[heard|someone said] the earthmenders [fight back now|hit hard]. bring shields for each",
       "[heard|someone said] the earthmenders were sylvan once. earth tenders who mended landslips",
-      "[old guides said|my guild leader says] each mender only takes damage from its own classes. [pets hit all four|animists and vales too]",
-      "[heard|word is] the menders fight back now. bring tanks for each"
+      "[old raiders said|my guild leader says] each mender only takes damage from its own classes. [pets hit all four|animists and vales too]",
+      "[heard|word is] the menders fight back now. bring shields for each"
     ]
   },
   "loremasterTopic": {

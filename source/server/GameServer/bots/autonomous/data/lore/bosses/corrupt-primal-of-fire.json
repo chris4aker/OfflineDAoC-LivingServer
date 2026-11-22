@@ -22,7 +22,7 @@
     }
   ],
   "story": "Hy Brasil is a wet country and burns rarely, and the Sylvan fear fire above every other thing, because a Sylvan can burn. So it grieves them most of all that the Root has a fire of his own. It is not the bright fire of a hearth. It is the heat of rot, the warmth that wakes inside a wet haystack in autumn and smoulders for weeks until the rick goes up: slow, sour and relentless.\n\nThe guardian of fire carries that heat on its skin, so that every blade that bites it is bitten back, and it leaves its footsteps burning on the bridge stones behind it, a new patch at every step. The druids of Tir na Nog say the patches burn lower than they did in the first years, but they still burn. The fire guardian does not chase and does not hurry. It walks, and the floor it has walked on burns, and those who circled it in the first years ended standing in its fire; the Sylvan say anyone who stands still near it ends standing in what it has left. The Sylvan say that when it dies a smell of cut grass comes up out of the stones, as if the bridge remembered being a meadow.\n\nOf the four, fire is the one the Root did not steal but made from his own decay, in the hay of a meadow the hollow closed over. Senan of Ardee found his way through by dragging it in a straight line; the fire-keepers let their rings burn down the night it dies.",
-  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire. Veterans drag it in a long straight line along the bridge with one tank, rotate melee so no one eats the shield for too long, and keep the casters on the far side of the patches. The Sylvan add one piece of advice of their own: when it dies, do not cheer on the bridge. Say nothing, and let the stones cool.",
+  "legend": "It burns whoever hits it, so melee needs steady heals. It leaves fire on the floor behind it: drag it in a line, never in circles, and step out of the patches. A raid that fights it in a ring ends up standing in its own fire. Veterans drag it in a long straight line along the bridge with one shield-bearer, rotate melee so no one eats the shield for too long, and keep the casters on the far side of the patches. The Sylvan give one piece of advice of their own: when it dies, do not cheer on the bridge. Say nothing, and let the stones cool.",
   "yells": {
     "aggro": [
       "Rot is a fire too. Slow. Patient.",
@@ -60,8 +60,8 @@
   },
   "botLines": {
     "briefing": [
-      "fire primal shields back on melee. [healers on the tanks|keep the melee topped]. and get out of the fire on the floor",
-      "fire primal: one tank drags it in a straight line. [no circles|never circle it]",
+      "fire primal shields back on melee. [healers on the shields|keep the melee topped]. and get out of the fire on the floor",
+      "fire primal: one shield drags it in a straight line. [no circles|never circle it]",
       "melee rotate, its shield bites back. [swap in and out|dont sit on it]",
       "casters on the far side of the patches, never between. [range it|stay back]"
     ],

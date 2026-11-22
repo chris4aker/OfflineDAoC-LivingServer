@@ -94,7 +94,7 @@
   }
  ],
  "story": "Duke Sallis is the steward of High Lord Oro's hall and the only peer of the court who has never killed a demon of rank. In the Uncounted Age he survived by being useful and never striking first; he kept Oro's hall and carried his offers of peace to Saeor and Baelerdoth, which were always refused. At the Feast of Thrones he called the Master's eating the first peace he had ever seen, a peace made by appetite, and knelt with relief. His line on the First Roll has never been moved, argued or challenged.\n\nIn the Third Roll Oro went down into the deep fires alone and came back as three high lords of one shape, speaking with one voice. Two are weaker than the first, and nobody, least of all Sallis, knows which is real. Sallis decided on the first night to serve all three exactly alike: three cups, three bows. Visitors say two of the three are not real; he has never asked which two.\n\nThe three Oros started the worst quarrel in the east. Saeor and Baelerdoth each claimed a body, and Warden Bimure refused to carry either claim. Duke Eligar argued that Oro had fallen by becoming three and that his seat should go to the strongest duke. Sallis walked down the approach for the first time, alone, and argued at Adremal's table that the Roll counts names and all three answer to Oro. The Chancellor agreed. Sallis has not spoken to Eligar since, the only grudge he has held.\n\nHe has met the realms' companies before the three high lords and died in their way without taking it personally. Albion's knights call him dangerous because he is sincere; Midgard's huscarls call him a lord's man; Hibernia's bards sing of the three cups, and of the fourth he broke.",
- "legend": "Sallis stands just outside High Lord Oro's hall in the north-east, with Earl Mercur and Marquis Sabonach close by. He is level 68 with no script, the softest of the dukes, and he is in the way of Oro, who brings two clones of himself into the fight. Kill Sallis, Mercur and Sabonach one at a time before anyone goes near the three Oros, then fight the real Oro with the clones held off by a tank each. Players say Sallis never hits first; that is a joke, he aggros like anything else. Hibernians call him the three-cup duke and sing about him at wakes.",
+ "legend": "Sallis stands just outside High Lord Oro's hall in the north-east, with Earl Mercur and Marquis Sabonach close by. He is a foe for several bands of any realm's best together with no tricks, the softest of the dukes, and he is in the way of Oro, who brings two copies of himself into the fight. Kill Sallis, Mercur and Sabonach one at a time before anyone goes near the three Oros, then fight the real Oro with the copies held off by a shield-bearer each. Raiders say Sallis never hits first; that is a joke, he turns on you like anything else. Hibernians call him the three-cup duke and sing about him at wakes.",
  "yells": {
   "aggro": [
    "You did not knock. Visitors knock.",
@@ -133,10 +133,10 @@
  },
  "botLines": {
   "briefing": [
-   "sallis first, outside oros hall. then mercur, then sabonach, [one at a time|single pulls]",
-   "68 no tricks, softest duke. [easy|quick one]",
+   "sallis first, outside oros hall. then mercur, then sabonach, [one at a time|single draws]",
+   "no tricks, softest duke. [easy|quick one]",
    "dont touch oro till those three are down. [oro brings two clones|three oros at once is bad]",
-   "after sallis, tanks pick up oros clones. [one each|a tank per clone]"
+   "after sallis, shield-bearers pick up oros copies. [one each|a shield-bearer per copy]"
   ],
   "aftermathWin": [
    "sallis down. [the steward's done|oros door is open]",
@@ -145,10 +145,10 @@
    "steward down. [now the three oros|clones next]"
   ],
   "aftermathLoss": [
-   "pulled oro with sallis. [three oros and a duke|bad]",
-   "sallis plus mercur at once, [wipe|oops]",
-   "we lost the clones on sallis. [regroup|rez]",
-   "too close to oros hall. [back up next time|pull sallis back]"
+   "drew oro with sallis. [three oros and a duke|bad]",
+   "sallis plus mercur at once, [everyone down|oops]",
+   "we lost the copies on sallis. [regroup|raise the fallen]",
+   "too close to oros hall. [back up next time|draw sallis back]"
   ],
   "rumour": [
    "[heard|word is] sallis never killed another demon. [the peaceful duke|weird for a demon]",

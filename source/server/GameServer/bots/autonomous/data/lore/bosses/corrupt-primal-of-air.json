@@ -17,7 +17,7 @@
     }
   ],
   "story": "The wind of Hy Brasil was the first of the four to be taken, the Sylvan say, because wind goes everywhere and so went down into the hollow before anything else. The Root kept it. Now it circles high over the bridge, a little knot of stale air that has forgotten how to blow. It has almost no body to wound, and it knows it: it never comes down to fight, never closes, never flees, only hangs there while its kin do the killing. Beasts and summoned things claw at it uselessly, for there is nothing to claw, and Fáelán of Howth found that a single bolt scattered it. The Sylvan say its one gift is that it is easy to forget.\n\nThe Sylvan remember the wind of Hy Brasil as a gentle thing. It carried seeds and rain and the smell of the sea, and on still days it went down into the earth through every crack and cave, because wind goes everywhere. That is how the Root caught it. It went down into the hollow one summer and did not come back up, and the forests had a dry year after, and then a dying one.\n\nWhat hangs over the bridge now is the wind's memory of itself: a knot of stale air with the Root's voice in it. It is the first of the four to speak when strangers come, and the weakest to strike, and it knows both things. So it never comes down. It hangs above the bridge and watches its kin do the killing, and it waits to be forgotten. Beasts and summoned things claw at it and find nothing to claw. One honest spell from below scatters it. The Sylvan say that when it dies a breath of clean wind crosses the bridge, and that those who feel it should say thank you, because the wind was a friend once.\n\nThe wind-singer Fethnat went down after it and did not come back; a mage of Howth named Fáelán first learned, by accident, that a single bolt undoes it; and the Sylvan believe a little of the wind gets home each time the realm frees it.",
-  "legend": "Air goes first and it goes fast: one good nuke from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals spawn. Forget it and it will hang over the bridge all night while its kin do the killing. Mages and archers should have a target on it before the others have finished rising. If a raid loses its casters early, a single archer can still do it; it is the cheapest kill of the night and the most often forgotten. The Sylvan ask one thing: when it dies, feel the clean wind, and say thank you.",
+  "legend": "Air goes first and it goes fast: one good bolt from below kills it. Pets and turrets are useless on it, so send them at the others. Casters and archers look up the moment the primals rise. Forget it and it will hang over the bridge all night while its kin do the killing. Mages and archers should have their eyes on it before the others have finished rising. If a raid loses its casters early, a single archer can still do it; it is the cheapest kill of the night and the most often forgotten. The Sylvan ask one thing: when it dies, feel the clean wind, and say thank you.",
   "yells": {
     "aggro": [
       "The wind remembers nothing but the Root.",
@@ -55,14 +55,14 @@
   },
   "botLines": {
     "briefing": [
-      "air primal has like nine hundred hp. [one nuke|first caster to look up] kills it. pets dont work on it",
-      "casters, air primal is your job the second it spawns. [one bolt|one nuke] each, done",
+      "air primal is barely there, weaker than a robed caster. [one bolt|first caster to look up] kills it. pets dont work on it",
+      "casters, air primal is your job the second it rises. [one bolt|one spell] each, done",
       "pets on fire or earth, not on air. [pets do five damage to it|useless on it]",
       "air is a flyer, it never comes down. [shoot it from below|look up]"
     ],
     "aftermathWin": [
       "air down in two seconds, [nice eyes casters|well spotted]",
-      "air dead before the others finished spawning. [best start ever|perfect]",
+      "air dead before the others finished rising. [best start ever|perfect]",
       "felt the clean wind on the bridge when it died. [the sylvan said we would|nice touch]",
       "one bolt. [bards will sing of it|i will sing of it]"
     ],
@@ -73,7 +73,7 @@
       "pets wasted the whole fight on the air primal. [five damage a hit|send them elsewhere]"
     ],
     "rumour": [
-      "somebody said the air primal [only has a handful of hp|dies to one bolt]. sounds too easy",
+      "somebody said the air primal [is barely there|dies to one bolt]. sounds too easy",
       "[heard|someone said] the air primal was the wind of hy brasil once. it went down a cave and never came out",
       "[word is|someone said] a lone archer finished the air primal after every caster died",
       "the sylvan say thank the wind when the air primal dies. [i did|felt silly, did it anyway]"

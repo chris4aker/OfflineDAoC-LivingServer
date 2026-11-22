@@ -28,6 +28,8 @@ CREATE TABLE LootTemplate (LootTemplate_ID TEXT PRIMARY KEY, TemplateName TEXT, 
 CREATE TABLE MobXLootTemplate (MobXLootTemplate_ID TEXT PRIMARY KEY, MobName TEXT, LootTemplateName TEXT, DropCount INT);
 CREATE TABLE DOLCharacters (DOLCharacters_ID TEXT PRIMARY KEY, Name TEXT);
 CREATE TABLE Account (Account_ID TEXT PRIMARY KEY, Name TEXT);
+CREATE TABLE Guild (Guild_ID TEXT PRIMARY KEY, GuildID TEXT, GuildName TEXT);
+CREATE TABLE GuildRank (GuildRank_ID TEXT PRIMARY KEY, GuildID TEXT, RankLevel INT);
 """
 
 
@@ -110,6 +112,23 @@ class TestTrue165PrimaContent(Fixture):
         with self.assertRaises(tpc.Refused):
             tpc.run(self.content, self.world, apply=True)
         self.assertEqual(self.query("SELECT count(*) FROM Mob WHERE Mob_ID='new-1'"), [(0,)])
+
+    def test_a_release_worlds_starting_guilds_are_world_data(self):
+        # build_release_037.py keeps the three starting guilds in every release world; any other guild is played
+        from build_release_037 import STARTER_GUILDS
+        db = sqlite3.connect(self.world)
+        for i, guild in enumerate(STARTER_GUILDS):
+            db.execute("INSERT INTO Guild VALUES (?, ?, ?)", (f"g{i}", guild, f"Starter {i}"))
+            db.execute("INSERT INTO GuildRank VALUES (?, ?, 0)", (f"r{i}", guild))
+        db.commit()
+        db.close()
+        self.assertTrue(tpc.run(self.content, self.world)["added"], "the reference world is not refused")
+        db = sqlite3.connect(self.world)
+        db.execute("INSERT INTO Guild VALUES ('g-made', 'a-player-guild', 'Made In Play')")
+        db.commit()
+        db.close()
+        with self.assertRaises(tpc.Refused):
+            tpc.run(self.content, self.world)
 
     def test_adds_only_what_the_world_lacks(self):
         report = tpc.run(self.content, self.world, apply=True)

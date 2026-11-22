@@ -93,7 +93,7 @@
       "text": "Tuscar wants one thing, and it is not winter. Kula wants the world before the gods. The Council wanted peace, the Icelords wanted war, Vifil wants every enemy in a cell. Tuscar wants something to make. The iarn dwarves who have seen his forge, from cracks in the outer ice or as prisoners carried past it to Vifil's cells, say the saddest thing in the glacier is not the frozen army or the last cell. It is the forge behind the thrones, where the fire is kept lit every day for a king who is only ever asked to make weapons.\n\nHe has made other things. The sculptors say there is a shelf in the forge with things on it that no one asked for: a bell of ice-steel that rings without being struck when the glacier shifts, a pair of tongs too fine for any giant's hand, a hinge, taken from nothing, the exact size of the gate-hinges he forged for the wall of Asgard. Nobody knows what the hinge is for. The iarn dwarves think he is waiting for the wall to be finished, so that he can finish his master's work and be paid at last.\n\nWhen he is killed, the forge-fire goes out. It is the only time it does. In a season or less he is on his throne again, because the glacier will not keep its king dead any more than its queen, and the first thing he does, the sculptors say, is go to the forge and light it. The weapons taken from him, his swords and axes and hammers and bows and his runic shields, are carried now by thanes all over Midgard, and every one of them is a piece of the forge behind the thrones. A weaponsmith of Bjarken asked one of them to let him study the edge. He studied it for a winter and gave it back and never forged ice-steel. He said he understood how it was done, at last, and that he did not want to be the kind of smith who could."
     }
   ],
-  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. A visitor in 2003 said he didn't look like a king at all, just a big giant, and then found out. From the first swing, a blow of his that gets blocked or parried can bring Mjolnir's Fury or Thor's Might down in a ring around whoever he is hitting, so the melee don't bunch up on his tank. At half, or the moment Kula dies, he rages: he hits harder, his styles call the hammers and the thunder, and his Scar of Gods bleed lands on the tank. Kill him first and Kula goes to full strength; kill her first and he rages early. Pick one and be ready for it. Nobody says split them. His weapons drop for every class and every guild wants one.",
+  "legend": "Raid leaders call him the anvil: he looks like any other hrimthursa until you are standing in front of him. A visitor in the early days said he didn't look like a king at all, just a big giant, and then found out. From the first swing, a blow of his that gets blocked or parried can bring Mjolnir's Fury or Thor's Might down in a ring around whoever he is hitting, so the melee don't bunch up on his shield-bearer. At half his strength, or the moment Kula dies, he rages: he hits harder, his styles call the hammers and the thunder, and his Scar of Gods bleed lands on his shield-bearer. Kill him first and Kula goes to full strength; kill her first and he rages early. Pick one and be ready for it. Nobody says split them. His weapons come off him for every calling and every guild wants one.",
   "yells": {
     "aggro": [
       "You came for my steel? Then have it, edge first!",
@@ -148,22 +148,22 @@
   },
   "botLines": {
     "briefing": [
-      "kula first, his tank just holds him. once he rages at half he bleeds that tank, [healers on the mt|keep the mt topped]",
-      "his hammers land around whoever he is hitting. melee [dont stack on his mt|spread around him]",
+      "kula first, his shield-bearer just holds him. once he rages at half he bleeds that shield-bearer, [healers on the main shield-bearer|keep him topped]",
+      "his hammers land around whoever he is hitting. melee [dont stack on his shield-bearer|spread around him]",
       "if kula drops first tuscar goes mental. be ready",
-      "blocks and parries on tuscar call his hammers down, even before half. [spread around his mt|dont bunch up]"
+      "blocks and parries on tuscar call his hammers down, even before half. [spread around his shield-bearer|dont bunch up]"
     ],
     "aftermathWin": [
       "tuscar down, anyone get the sword? [grats|gz] whoever",
-      "the anvil broke! [gg all|nice work raid]",
+      "the anvil broke! [well fought all|nice work raid]",
       "tuscar's sword dropped!! [mine|roll for it]",
       "he really did shout odin's name at half. [weird giant|what]"
     ],
     "aftermathLoss": [
-      "his hammers at half wiped the whole melee train",
+      "his hammers at half killed the whole melee line",
       "we split them by accident. never again",
       "once he raged the bleed and the hammers killed both mts",
-      "we pulled kula into the melee train at his 50%. [bad idea|never again]",
+      "we drew kula into the melee line at his half. [bad idea|never again]",
       "the hammers at half got the whole melee train"
     ],
     "rumour": [

@@ -48,7 +48,7 @@
     }
   ],
   "story": "Basilius's household in the hall at the far end of Modernagrav are the ones the diggers fear: three deadly ones, a grave-worker, the one the morvalt name with their word for dread, and Hoden, who has been at the king's shoulder since Faraheim and hits harder than all of them.\n\nHe was Basilius's shield-man when Basilius was only a war-chief in Faraheim, before the wall came down, and the dwarves of the Remnants remember him from those days as the largest morvalt they had ever seen walk upright. When the shamans began to say that the Mother lay beyond the rockwall and Basilius gave them picks, it was Hoden who swung the first one, the dwarves say, because Basilius told him to, and Hoden has never in his life been told to do anything by Basilius that he did not do.\n\nHe went through the gap at the king's back. He was the one sent to clear the bones the first season, when the vigil of dead beasts stood round them facing inward and the morvalt did not yet know what they were, and he came at Mortufoghus with an axe as if she were a cow in a byre. Orri of Hagall, who was there with the first explorers, wrote that the mammoth did not even turn her head. She walked over him. The morvalt carried what was left back to Basilius's hall, and what was left did not stay dead, and has the grey of the hall's dead now and the strength it always had. The dwarves say that is when Basilius stopped going near the bones.\n\nHoden does not dig and does not call into the bones and does not wait to be called. When anyone lays a hand on the king, the whole hall is on its feet, and Hoden first, because a shield-man's place is the king's shoulder, dead or alive. When anyone lays a hand on Hoden, the king comes; the dwarves have never seen the one fought without the other. They say Basilius keeps Hoden near as a reminder of what the Mother's household does to the morvalt who go too close, and that Hoden, who remembers nothing of the mammoth, keeps near because he always has.",
-  "legend": "Hoden is Basilius's shield-man, a level 60 undead morvalt standing about 270 from Basilius in his hall at the far north-east of Modernagrav. He's in the BasiliusBaf pack: whenever Basilius is in a fight, every BasiliusBaf mob within 2,500 joins, Hoden included; and he stands so close to Basilius (whose aggro range is 800) that you can't really fight Hoden alone. Treat him as part of the Basilius fight: tank him apart from the king, or mez him if your mezzer is reliable (he isn't CC-immune), while the group handles Basilius's stun and bleed. He has no abilities of his own, just big hits. Morvalt Samhalle, so bring-a-friend applies on top.",
+  "legend": "Hoden is Basilius's shield-man, an undead morvalt, a foe for several bands of the realm's best together, standing about nine paces from Basilius in his hall at the far north-east of Modernagrav. He's one of Basilius's hall: whenever Basilius is in a fight, every one of his hall within about eighty paces joins, Hoden included; and he stands so close to Basilius (who notices you from about twenty-five paces) that you can't really fight Hoden alone. Treat him as part of the Basilius fight: have a shield-bearer hold him apart from the king, or entrance him if your enchanter is reliable (trances and stuns hold him), while the group handles Basilius's stun and bleed. He has no tricks of his own, just big hits. He's of the Morvalt Samhalle, so the morvalt around can come to his call on top.",
   "yells": {
     "aggro": [
       "The king's shoulder. Mine.",
@@ -87,19 +87,19 @@
   "botLines": {
     "briefing": [
       "hoden is basilius pack, you fight both",
-      "tank hoden away from basilius or mez him",
-      "60, big hits, no tricks",
-      "basilius aggro range is 800, hoden is 270 from him"
+      "hold hoden away from basilius or entrance him",
+      "a several-bands fight, big hits, no tricks",
+      "basilius notices you from about twenty-five paces, hoden is nine paces from him"
     ],
     "aftermathWin": [
       "hoden down, then the king",
-      "mez on hoden held",
+      "the trance on hoden held",
       "split them, worked",
       "the shield man is dead"
     ],
     "aftermathLoss": [
-      "tried to pull hoden alone, the whole hall came",
-      "mez broke on hoden",
+      "tried to draw hoden alone, the whole hall came",
+      "the trance broke on hoden",
       "hoden plus basilius stuns, nope",
       "too close to the king"
     ],

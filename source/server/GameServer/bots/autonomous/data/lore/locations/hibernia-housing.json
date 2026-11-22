@@ -60,7 +60,7 @@
     }
   ],
   "story": "West of the Tir na Nog road, where Connacht's hills fold in on themselves, there is a gate, and beyond the gate there is a country that the old maps of the realm leave blank. Hibernians call it the quiet country, or the Nine Villages, or simply going home, and it is the one part of the realm where nothing hunts.\n\nThere are three accounts of how it came to be there. The harpers of Tir na Nog say it was always there, a long green valley behind the hills that nobody had bothered to walk into, because the road went the other way. The druids say the Druid Court asked for it: that in the years after the isle in the west came out of the mist, when the realm's families were sending sons and daughters to Hy Brasil and wanted somewhere to keep what they brought back, the court sat a season among the Dream Trees and asked the land behind the hills to be quiet, and it was. The sages of the palace write a third account, as they always do: that the country was elven ground, cleared and fenced before the Veil went up, and that the realm only found the gate.\n\nHowever it came, the court gave it out. Lovernios the Druid Prince granted it in lots, a lot to a household and a larger lot to a company that wanted a hall, and the court's surveyors walked the valley and set a stone at the corner of every lot. The lot-stones are still there. A lot whose stone has no name cut on it is a lot nobody has taken, and the clerks of the villages will sell the right to cut a name on it to anyone with the coin, and keep the rent coming after. A household that stops paying finds, in time, that the stone has been cut smooth again.\n\nThe settlers named the villages for the places in the old stories and the home places of the first families. Meath, the middle, is by the gate; Dunshire and Kilcullen lie on either side of it; Saeranthal, Torrylin and Aberillan make the middle row of the valley; Moycullen, Tullamore and Broughshane the far end. The surveyors laid out every market square to one plan, which is why a carter who knows the square at Dunshire can find the smith at Moycullen in the dark, and why Kilcullen and Broughshane quarrel over which of them copied the other.\n\nEach village is a market first. The keepers of the strongrooms hold what households cannot keep in the house; the masters of the crafts, armour and weapons, cloth and bow, the alchemist's bench and the spellcrafter's, keep stalls for the households who work at home; the decorators sell furnishings and the taxidermists' apprentices sell what the young bring back stuffed and mounted. At Meath the consignment keepers hold the goods that households set out for sale, and in every square there is a market explorer who knows what every stall in every house of the valley is asking, and will tell you for nothing, because the households pay him to. The lyrists of the villages play for travellers, and a traveller who stops to listen walks on faster than he came. The stable masters keep horses in every square and out among the lots, so that nobody need walk the long way between villages.\n\nThe court's last gift was the hearth. A household that lights its hearth and binds itself to it, as the city's people bind themselves to the stone of Tir na Nog, can be sent home to it, and a company to its hall, and the channelers of the realm send travellers to the gate at Meath, where Channeler Glasny stands with a merchant beside him for anyone who forgot to buy bread. The druids say the hearth custom is older than the court and was only remembered in the valley.\n\nIt matters to the realm as a well matters to a village. The Hibernians who went to the isle and the frontier and down into the dark came back to Tir na Nog, because everyone comes back to Tir na Nog; but they came back to the quiet country to stay. The harpers say a realm that has somewhere to go home to fights better away from it.",
-  "legend": "Housing is through the gate west of the Tir na Nog road in Connacht (297k/480k): you come out at the north edge of Meath next to Channeler Glasny. Nothing in there attacks you; it is the safest place in the realm to park a character. Nine villages in a three by three grid: Dunshire, Meath, Kilcullen in the north, Saeranthal, Torrylin, Aberillan in the middle, Moycullen, Tullamore, Broughshane in the south. Every market has vault bankers, every crafting master (armour, weapons, tailoring, fletching, alchemy, spellcraft), merchants, a decorator, taxidermist apprentices, a market explorer that searches every consignment merchant in the valley, and lyrists that cast Speed of the Realm on you if you talk to them. Meath has the consignment bankers. Stable masters in each square and out in the lots save you the long walk. Lots are bought at the lot markers. House superstition: a hearth never left cold, or the house forgets you. The market squares are copies of each other: learn one, know three.",
+  "legend": "Housing is through the gate west of the Tir na Nog road in Connacht (297k/480k): you come out at the north edge of Meath next to Channeler Glasny. Nothing in there attacks you; it is the safest place in the realm to leave yourself standing. Nine villages in a three by three grid: Dunshire, Meath, Kilcullen in the north, Saeranthal, Torrylin, Aberillan in the middle, Moycullen, Tullamore, Broughshane in the south. Every market has vault bankers, every crafting master (armour, weapons, tailoring, fletching, alchemy, spellcraft), merchants, a decorator, taxidermist apprentices, a market explorer that searches every consignment merchant in the valley, and lyrists that cast Speed of the Realm on you if you talk to them. Meath has the consignment bankers. Stable masters in each square and out in the lots save you the long walk. Lots are bought at the lot markers. House superstition: a hearth never left cold, or the house forgets you. The market squares are copies of each other: learn one, know three.",
   "atmosphere": {
     "firstEntry": [
       "The quiet country. Nothing hunts here.",
@@ -185,8 +185,8 @@
   "botLines": {
     "lore": [
       "housing for hibs is through the gate west of the tir na nog road in connacht",
-      "the nine villages are a 3 by 3 grid. [meath is by the gate|you come in at meath]",
-      "nothing attacks you in housing. [safest place in the realm|good spot to afk]",
+      "the nine villages lie in three rows of three. [meath is by the gate|you come in at meath]",
+      "nothing attacks you in housing. [safest place in the realm|good spot to step away for a bit]",
       "every housing market has every crafting master. [armour weapons tailor fletch alch sc|all of them]",
       "the lyrists in housing give you speed if you talk to them",
       "meath has the consignment bankers. [sell stuff there|check the market explorer]",
@@ -210,7 +210,7 @@
     ],
     "tell": [
       "where is housing? through the gate west of the tir na nog road in connacht",
-      "whats in housing? nine villages, markets, crafting masters, bankers, consignment in meath, no mobs",
+      "whats in housing? nine villages, markets, crafting masters, bankers, consignment in meath, no beasts",
       "is housing dangerous? no, nothing attacks you there",
       "how do i get a house? find a lot marker with no owner and buy it",
       "which housing village is best? meath for consignment, the rest are the same square",
@@ -262,7 +262,7 @@
     },
     {
       "id": "hibernia-wilds",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     }
   ]
 }

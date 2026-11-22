@@ -22,7 +22,7 @@
     }
   ],
   "story": "Every Sylvan knows the small fire a wanderer lights in a wet wood to stay alive through the night. Tine was one of those once, the spirit of a hearth-fire on a cold hillside, and Xaga kept her because nothing grows in the dark without a little warmth. Xaga bound her to the staff with the old words and named her plainly: Tine, fire.\n\nBound, Tine warms nothing. She circles her mistress's room on the air with her sister Beatha, and when Xaga is touched she falls from the ceiling and bursts in a ring of heat that fills the room around her, and calls Beatha to do the same, and calls Xaga too. She will come down low enough for a warrior's blade; she will not be caught. The Bri Leith company that reached Xaga's room in a later season died at Tine, not at Xaga. Its two survivors say she burned brighter every time one of them fell, as if the deaths fed her the way kindling feeds a fire. When she dies the Sylvan say a hillside somewhere on the isle gets a little colder, as a wanderer's fire goes out.\n\nTine was a wanderer's fire Xaga lit in a storm above World's End and carried down in a clay pot; the warden Ruadhán, who survived that storm, said the fire spared him at Xaga's door.",
-  "legend": "Fire spirit with a big heat burst: spread out and keep heat resists up. She calls Beatha and Xaga, so be ready for all three. Melee can reach her while she is fought. The realm raid wiped on her not long ago; take her seriously. If the raid kills her first, everyone in heat resists and the healers keep a step back from her burst; if Beatha goes first, Tine's tank keeps her pinned in a corner away from the casters. Superstition: never light a pipe in Xaga's room. Tine notices. The raiders who laugh at that one usually laugh from the floor.",
+  "legend": "Fire spirit with a big heat burst: spread out and keep your wards against heat up. She calls Beatha and Xaga, so be ready for all three. Melee can reach her while she is fought. The realm raid fell to her not long ago; take her seriously. If the raid kills her first, everyone warded against heat and the healers keep a step back from her burst; if Beatha goes first, the shield-bearer on Tine keeps her pinned in a corner away from the casters. Superstition: never light a pipe in Xaga's room. Tine notices. The raiders who laugh at that one usually laugh from the floor.",
   "yells": {
     "aggro": [
       "The spirit of fire flares and dives.",
@@ -65,8 +65,8 @@
   "botLines": {
     "briefing": [
       "tine is the fire one. [spread out|no stacking], the burst hits everyone near",
-      "tine is fire, heat resists up. [spread for the burst|no stacking]",
-      "if we do beatha first, tine's tank [corners her|keeps her away]",
+      "tine is fire, heat wards up. [spread for the burst|no stacking]",
+      "if we do beatha first, tine's shield [corners her|keeps her away]",
       "melee can reach tine while shes fought, [she comes down|she holds low]"
     ],
     "aftermathWin": [
@@ -76,16 +76,16 @@
       "the fire one is out. [beatha next|go]"
     ],
     "aftermathLoss": [
-      "wiped on tine [again|like last time]. everyone was stacked",
-      "tine wiped us [again|like before]",
+      "died to tine [again|like last time]. everyone was stacked",
+      "tine killed us all [again|like before]",
       "she got brighter with every death. [dont die|thats the trick]",
       "stacked under her and [burned|cooked]"
     ],
     "rumour": [
-      "[heard|someone said] the realm raid wiped on tine. the little fire one",
+      "[heard|someone said] the realm raid fell to tine. the little fire one",
       "[heard|someone said] tine was a wanderer's campfire before xaga bound her",
       "[word is|heard] tine burns brighter when people die",
-      "the realm raid wiped on tine, not on xaga. [embarrassing|happens]"
+      "the realm raid fell to tine, not to xaga. [embarrassing|happens]"
     ]
   },
   "loremasterTopic": {

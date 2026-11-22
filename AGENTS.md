@@ -1,6 +1,6 @@
 # Offline DAoC — instructions for AI assistants and developers
 
-Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). This file is also loaded by
+Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
 Claude Code as `CLAUDE.md`.
 
 ## What this is
@@ -76,8 +76,9 @@ In a playable folder:
     only where the row still holds the untouched old default.
   - Only these stay off: diagnostics and verbose log switches, test-only switches, anything this file forbids
     shipping, anything that changes the gameplay rules above, the classic rule options (power halving, secondary caps,
-    classic quality and losses) and the owner's epic encounter options. The Sluaghbinder edition switch stays
-    edition-specific.
+    classic quality and losses), the owner's epic encounter options and the bot schedule (`bot_schedule_mode` off: the
+    whole roster online; owner, 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is
+    off by default"). The Sluaghbinder edition switch stays edition-specific.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**
@@ -128,6 +129,9 @@ In a playable folder:
   - DAoC server names don't matter.
   - Present-day friars and captains may keep a name where it adds gravity, and the 12-mention cap still holds.
   - `tools/lore/lint_lore.py` and `tools/lore/name_counts.py` enforce the mechanical rules in CI.
+  - No game terms and no real companies in any player-visible lore, fight advice included (owner, 2026-11-21;
+    `tools/lore/fourth_wall.py`, strict in CI). Without dotnet, run `python3 tools/lore/schema_mirror.py` for the C# schema
+    checks (`UT_LoreBible`).
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
   catalog rules (no blank lines, terminators, Expansion Only, ID order), confirmed and unconfirmed

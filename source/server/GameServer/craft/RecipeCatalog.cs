@@ -195,6 +195,8 @@ namespace DOL.GS.Crafting
                     if (item != null)
                         AddWorldObject(item);
             }
+            // This walk reads every merchant's list: one warning for all the item templates the world data lacks (1.2.1).
+            MerchantTradeItems.ReportMissingTemplates();
             WorldIndexed = true;
         }
 

@@ -118,7 +118,7 @@
       "text": "Every people in Midgard that has a claim on Trollheim wants something different from it. The trolls want it back. To them it is the grandfathers' house in the hands of thieves, and the trolls of Bjarken and Dyrfjall say that when the morvalt are gone from the upper city they will go in themselves and live there, in the halls their stories describe, and light the forges and fill the granaries and sit in a ring in the hall of counsel again. The kobolds say less, as they always do, but there are kobold families in Midgard who keep a key that fits no lock in any hall above ground, and say it fits one in Trollheim.\n\nThe Valkyn want the dead. Their grandmothers' grandmothers were tamed by the Fathers at the fires, and the Fathers' dead lie on the mound under the worm, and the Valkyn have sworn to go down one day, all of them together, and take them back. Until then they guide, and stop at the bridge, and count the warbands that come up.\n\nMidgard wants its promise kept. The realm swore to the Troll Father in its own great hall that it would take his city back, and every warband that reaches the mound and comes home is a payment on that promise. The skalds of Jordheim say the payments are not finished. The morvalt are still in the halls, and the worm comes back, and the Fathers have not come home to say the debt is paid.\n\nNobody knows what the Fathers want, because nobody knows where they are. They went down, by roads only they knew, and the Father who came to Jordheim said the realm could not follow. Bonchar of the Valkyn believed the road was not a tunnel but a place where the dark is thin, and he found it, and opened it, and what came through it is still standing in his chamber with a rift behind its face. The Valkyn elders of Dyrfjall say that if Bonchar was right, then the Fathers did not go down into the rock at all. They went somewhere else, through the dark, and the door is still open, and the city is waiting for them, the way the weapons on the walls are waiting, the way Olen keeps the jars full. Every hall of it says the same word. The trolls' stories end with the Fathers coming home. The Valkyn's end with the people going down to find them."
     }
   ],
-  "legend": "Trollheim is deep, and first-timers wander for an hour; the halls just keep going down. Trolls tap their shields three times before going in, and trolls come back, so everyone taps. The upper city is morvalt camps all the way down to the bridge; below the spiral stair it gets strange. The weapons on the walls fight back. Don't fight Dagar and the snake together. Clear the back of the east halls before you go near the big mushroom. The Rift gives nothing when it dies and everyone kills it anyway. At the bottom, rez fast or fight your friends: Nosdoden makes ghosts of the dead, nine waves of the fallen spill out of him, and the light that rises from the mound after he dies is the Fathers' dead going home. Nobody has ever been served by Olen the bartender. People keep trying. Nicknames: the worm (Nosdoden), the old country (the trolls' word for the whole city), the bar (Olen's hall, a common meeting spot for groups).",
+  "legend": "Trollheim is deep, and first-timers wander for an hour; the halls just keep going down. Trolls tap their shields three times before going in, and trolls come back, so everyone taps. The upper city is morvalt camps all the way down to the bridge; below the spiral stair it gets strange. The weapons on the walls fight back. Don't fight Dagar and the snake together. Clear the back of the east halls before you go near the big mushroom. The Rift gives nothing when it dies and everyone kills it anyway. At the bottom, raise the fallen fast or fight your friends: Nosdoden makes ghosts of the dead, nine waves of the fallen spill out of him, and the light that rises from the mound after he dies is the Fathers' dead going home. Nobody has ever been served by Olen the bartender. People keep trying. Nicknames: the worm (Nosdoden), the old country (the trolls' word for the whole city), the bar (Olen's hall, a common meeting spot for groups).",
   "atmosphere": {
     "firstEntry": [
       "The halls of the Troll Fathers. The savages live here now.",
@@ -209,8 +209,8 @@
       "a sorcerer in trollheim opened a hole in the dark. now he is the hole",
       "[i tap my shield|tap your shield] three times before trollheim. [laugh all you want|works for me]",
       "the uppat and nedat leaders in trollheim are big passive rocks, the small rocks round them are the problem",
-      "half the named in trollheim dont attack first, its what stands round them that does",
-      "olen, jarala, smed and storrow are epic npcs, big hp and no confuse",
+      "half the foes of name in trollheim dont attack first, its what stands round them that does",
+      "olen, jarala, smed and storrow are the great old ones, a lot of killing each and no confuse",
       "[heard|someone told me] the troll fathers left by a door under the city. bonchar found it",
       "olen the bartender in trollheim has never served anyone. [i keep trying|one day]",
       "the light on the mound after nosdoden dies is the fathers' dead going home",
@@ -222,9 +222,9 @@
       "trollheim? [deep|long] dungeon, morvalt, a big mushroom, the rift and nosdoden. bring a raid for the bottom",
       "its the troll fathers' city. the morvalt hold it now. go down far enough and you meet nosdoden",
       "named all over trollheim: olen and jarala in the bar, smed in the west, storrow down low, two stone leaders east",
-      "is trollheim hard? the top is a group dungeon, the bottom is a raid. nosdoden takes 64",
+      "is trollheim hard? the top is a group dungeon, the bottom is a raid. nosdoden takes sixty-four",
       "where is trollheim? gripklosa mountains on aegir, around 24k 32k. take a horse to bjarken",
-      "the hard part is the bottom. rez fast, nine waves of adds, and dont let your ghost kill your friends"
+      "the hard part is the bottom. raise the fallen fast, nine waves of the fallen, and dont let your ghost kill your friends"
     ]
   },
   "loremaster": {

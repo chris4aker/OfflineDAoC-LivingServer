@@ -45,6 +45,11 @@
       "text": "The stolen dagger, the demonwolf shields and the stair to the Summoner's Hall come from the existing lair lore; the Glenlock sighting and 'the thief-wolf brings the road with him' are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs"
+    },
+    {
+      "text": "Gaut Bodmarsson, the wax impression of the dagger's mark, his claim cut on the slate-house wall and the hammer at the side passage are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Hurjavelen is the wolf who stole from his mother. Long ago, when he was young and quick and the old one was dozing by the water, he took a dagger from her own hand, a dwarf-made blade she had taken from some long-dead dwarf, and ran with it in his jaws out of the lair and into the iron trees. The brood waited for her to punish him. She did not. She watched him go, and when he came back days later with the dagger still in his teeth she let him keep it, and licked his ears, and went back to sleep.\n\nHe has been the brood's traveller ever since. He runs further than any of his kin, past the Iarnwood and past Aegir, and comes home with things that are not the old one's: the demonwolf shields found on him are older than the kennel and tainted with something else, and the dwarves of Faraheim say there is only one place he could be bringing them from, the hall under the frontiers where the dead of every land are called. Somewhere under the earth, they believe, he has found the stair down to the Summoner's Hall.\n\nHe brings the road home with him. His bite drags at the legs of everyone round the one he bites, so that they move as if through deep snow; the plague of the deep hall hangs round him wherever he stands, and comes again soon after it fades, and every remedy works at half its strength in it. Seven grymvarg run with him, the cruel wolves of the herd. He keeps the side passage near his brother Stanga's, and the missing seasons on Stanga's wall are, the dwarves say, the nights the thief stood his brother's post. The dwarves of Faraheim would very much like the dagger back.",
@@ -64,9 +69,13 @@
     {
       "title": "His Brother's Post",
       "text": "He keeps a side passage near his brother Stanga's, when he is home, and the two of them are the only wolves of the first litter still standing in the old one's house apart from the hounds at her door. The dwarves say they are close, in the way such wolves are close, which is to say that Stanga would let no other wolf of the brood take his post, and Hurjavelen is the only one who has.\n\nHrefna's count of the marks on Stanga's wall found seasons missing, here and there in the rows. The dwarves say those are the nights Hurjavelen stood his brother's post and let the dead wolf sleep at the old one's feet. They say the thief comes home from the road for that, more than for anything he brings back.\n\nThe skalds of Jordheim, who call the lair a nursery for the end of the world, say Hurjavelen is the one the old one is raising to find the way. When the wolves run at the end of everything, they say, someone will have to know the roads, and the thief-wolf already knows the one that goes down. The Remnants say the skalds give the old one too much credit for planning.\n\nThe companies of Midgard who come to the side passage find him there, or do not. The dwarves say that when he is not there he is on the road, and that when he comes back he will have something in his teeth."
+    },
+    {
+      "title": "The Claim of Gaut Bodmarsson",
+      "text": "There was a dwarf of the Remnants named Gaut, the son of Bodmar. He was a smith at Faraheim and a careful man. It was said of him that he had never lost anything in his life, and that he did not intend to begin.\n\nGaut held that the old one's dagger was the work of his own line. He had this from a mark that a company of Midgard brought up out of the lair, pressed from the dagger's hilt into a wax tablet by a man who did not know what it was. Gaut knew. It was the mark of a smiths' house the slates of Faraheim do not name, and the same mark was cut in the foot of an anvil that had stood in his family's smithy longer than anyone could reckon.\n\nHe went to the slate-house and asked to have his claim cut, so that it would be known. The slate-keepers said there was no slate for a claim on a thing a wolf carries in its teeth. Gaut said, \"Then cut it on the wall.\" They cut it on the wall, beside Hrefna's count of the seasons on Stanga's stone, and it is there yet.\n\nAfter that Gaut went down into the old one's house with every company that would take him, eleven times in eleven winters. Each time he asked the same of the ones who went on to the side passage: that if they took the dagger from the thief-wolf, they should bring it up to him, and he would pay its weight in silver. Twice it was taken. Both times the one who took it sold it in Jordheim for more than its weight in silver, and both times Gaut heard of it and said nothing.\n\nIn the twelfth winter Gaut went down alone, and he did not come back. The next company to reach the side passage found the thief-wolf there with the dagger on him, as before. Beside the wolf, laid out square on the stone, was a smith's hammer with Gaut's mark on the head. No one in Faraheim knows who set it there.\n\nGaut's sons brought the hammer home and hung it in the smithy over the anvil. Then they went to the slate-house and had a second line cut on the wall under their father's claim. It reads: the hammer came back."
     }
   ],
-  "legend": "Hurjavelen has his own spawn in the side passage near Stanga; both are always there (the old 'he's up instead of Stanga' line is wrong here). He comes with seven grymvarg. His Black Plague is a disease cloud within 450 of HIMSELF that lasts two minutes, halves heals and comes back every 20 seconds or so, so healers and casters stay out of that ring and cure disease on the melee. On a third of his hits his bite does 200 and snares everyone within 350 of his target by 40% for 30 seconds, which keeps your melee stuck in his plague: purge or speed help. 30,000 health, 20% melee and 30% magic resists, CC-immune. The pilfered dagger and the demonwolf shields are worth the trip.",
+  "legend": "Hurjavelen stands in his own place in the side passage near Stanga; both are always there (the old 'he's up instead of Stanga' line is wrong here). He comes with seven grymvarg. His Black Plague is a disease cloud within fifteen paces of HIMSELF that lasts two minutes, halves heals and comes back every 20 seconds or so, so healers and casters stay out of that ring and cure disease on the melee. On a third of his hits his bite does a fifth of a robed caster's strength and slows everyone within about a dozen paces of his target by four-tenths for 30 seconds, which keeps your melee stuck in his plague: a purge or a burst of speed helps. He takes as much killing as fifteen raiders, a fifth of every blow and three-tenths of every spell are lost on him, and no charm or stun holds him. The pilfered dagger and the demonwolf shields are worth the trip.",
   "yells": {
     "aggro": [
       "(A wolf with a dagger in its jaws grins at you.)",
@@ -113,28 +122,28 @@
   },
   "botLines": {
     "briefing": [
-      "hurjavelen: 7 grymvarg, snare round the tank, plague round him. cure everything",
-      "purge the snare on hurjavelen or you're stuck in his disease",
-      "hurjavelen plague is 450 round him every 20s, heals stay out, cure disease",
-      "his bite snares everyone near the tank, purge or speed",
-      "7 grymvarg with him",
-      "hes on his own spawn near stanga, both are up"
+      "hurjavelen: seven grymvarg, slowing round his shield-bearer, plague round him. cure everything",
+      "purge the slow on hurjavelen or you're stuck in his disease",
+      "hurjavelen plague is fifteen paces round him every 20 sec, heals stay out, cure disease",
+      "his bite slows everyone near the shield-bearer, purge or speed",
+      "seven grymvarg with him",
+      "he has his own spot near stanga, both are there"
     ],
     "aftermathWin": [
       "got the pilfered dagger!!",
       "luminous demonwolf shield!",
-      "rare spawn and we got him",
+      "rarely seen and we got him",
       "iarnvidiur's pilfered dagger!!",
       "pilfered dagger!",
       "demonwolf shield dropped",
       "nobody got stuck in the plague"
     ],
     "aftermathLoss": [
-      "snared in the disease, [wiped|gg]",
+      "slowed in the disease, [all of us down|that was that]",
       "he went straight for the spiritmaster",
       "seven grymvarg was too many",
-      "snared in the plague ring",
-      "snared in the plague and couldnt get out",
+      "slowed in the plague ring",
+      "slowed in the plague and couldnt get out",
       "healers stood next to him"
     ],
     "rumour": [

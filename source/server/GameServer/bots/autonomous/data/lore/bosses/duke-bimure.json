@@ -106,7 +106,7 @@
   }
  ],
  "story": "Duke Bimure is the warden of the East Ward, the ground between the halls of High Lords Oro, Baelerdoth and Saeor. In the Uncounted Age those tunnels were the bloodiest under the world. Bimure served Baelerdoth, whose presence drinks the strength from every ward, and his work was to stand in the tunnel between halls and make sure nothing that came through left. At the Feast of Thrones he was the only follower Baelerdoth brought; Saeor laughed, and Bimure remembers it.\n\nThe First Roll left the ground between the eastern halls unwritten, and the high lords' followers died there faster than the Mutilators could carry them away. Adremal cut a line for the ground itself, the East Ward, belonging to no high lord, garrisoned by all three orders in equal number and kept by a warden answering to the Master. He made Bimure warden. The Ward's knights, Mutilators and Inquisitors keep the ground between the halls together, keeping one high lord's people from the next, and the court calls Bimure the most tired duke on the Roll.\n\nIn the Third Roll High Lord Oro came back from the deep fires as three bodies. Saeor and Baelerdoth each claimed one of the extras, and Bimure refused to carry his own old master's claim, because a warden who carries one lord's claim is only a follower with a garrison. Duke Sallis argued that the Roll counts names; Adremal agreed, and Oro kept all three.\n\nHibernia's stair comes down in the east, so the Ward was the first of the court that Hibernia ever met. Hibernians who die there are found later a little further east, laid out in a row facing the stair. Tir na Nog's bards sing of the warden who tidies the dead; Albion calls it a guard's habit; Midgard's skalds call it a strange honour.",
- "legend": "Bimure stands in the east, between the halls of the three eastern high lords, nearest High Lord Baelerdoth's door, and the eighteen of the East Ward stand in mixed camps on the ground around him. He is level 75 with no script. For a Hibernian raid he is often the first big named of the trip; for everyone else he is the duke you clear before Baelerdoth or Saeor. Clear the Ward's camps first, then pull Bimure out toward the stair, away from Baelerdoth, Marquis Scottiax and Duke Harboris. Hibernians swear their dead get moved in the Ward and laid out in a row. It is a story, but rez your dead quickly anyway.",
+ "legend": "Bimure stands in the east, between the halls of the three eastern high lords, nearest High Lord Baelerdoth's door, and the eighteen of the East Ward stand in mixed camps on the ground around him. He is a foe for a war party of any realm's champions, with no tricks. For a Hibernian raid he is often the first great foe of the trip; for everyone else he is the duke you clear before Baelerdoth or Saeor. Clear the Ward's camps first, then draw Bimure out toward the stair, away from Baelerdoth, Marquis Scottiax and Duke Harboris. Hibernians swear their dead get moved in the Ward and laid out in a row. It is a story, but raise your dead quickly anyway.",
  "yells": {
   "aggro": [
    "Ward! Stand between.",
@@ -146,19 +146,19 @@
  "botLines": {
   "briefing": [
    "bimure is in the east ward by baelerdoth's door. [clear the ward camps first|camps first], then him",
-   "pull bimure out toward the stair, [away from baelerdoth|not near baelerdoth or scottiax]",
-   "75 no tricks. [hibs, this is our first big one|first real named for us hibs]",
-   "rez the dead fast in the ward. [the hibs say they get moved|just do it]"
+   "draw bimure out toward the stair, [away from baelerdoth|not near baelerdoth or scottiax]",
+   "no tricks. [hibs, this is our first big one|first real big name for us hibs]",
+   "raise the dead fast in the ward. [the hibs say they get moved|just do it]"
   ],
   "aftermathWin": [
    "bimure down. [the ward is clear|east ward done]",
    "warden's dead. [nobody got tidied|we picked up our own dead this time]",
    "duke bimure done, [baelerdoth next|on to the high lords]",
-   "bimure dead. [nice camps clear|good pulls]"
+   "bimure dead. [nice camps clear|good draws]"
   ],
   "aftermathLoss": [
-   "bimure plus a ward camp, [wiped|gg]. clear the ward first next time",
-   "pulled baelerdoth with bimure. [never again|our wards got eaten]",
+   "bimure plus a ward camp, [all of us down|that was that]. clear the ward first next time",
+   "drew baelerdoth with bimure. [never again|our wards got eaten]",
    "came back for the bodies and they were laid out in a row. [creepy|not funny]",
    "too much in the ward for us. [need more groups|regroup at the stair]"
   ],

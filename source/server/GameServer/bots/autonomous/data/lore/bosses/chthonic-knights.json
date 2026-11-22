@@ -112,7 +112,7 @@
   }
  ],
  "story": "The Chthonic Knights are Prince Abdin's order, the Blade, and the court's oldest soldiery. Abdin founded them in the First Roll in his quarter of the hollow, the north-west, where the rock is hardest and the warm air from the deep fires least reaches. The first knights knelt on the floor of the chapter house and took an oath to the deep earth itself: to hold what is taken whole, and to go down rather than give ground. They wear one shape, plated and black, made for standing, and they have stood in it since. Every knight of the order keeps a post, and a knight is known by where it stands; the realms that have walked the hollow say they have never yet found a knight anywhere but where the last one stood.\n\nThe order's history is a history of quarrels. Abdin and Prince Asmoien both claimed to have knelt second at the Feast of Thrones, and Grand Chancellor Adremal wrote them on one line. From that line came the order's great enemy, Asmoien's Mutilators, the Hook, and the feud of the Blade and the Hook, which broke out in the Fourth Roll and ended at the central crossing when Gatekeeper Dommel closed every road out of it and let the two orders kill each other until neither mattered. Since then knights stand at the Gate beside Mutilators and Inquisitors, sworn to draw no blade there, and the chapter counts the Gate oath the hardest it asks of anyone.\n\nThe chapter has given knights away and lost them. It lent knights to the Field Marshal after the feud, and they stand at the east arch of High Lord Baln's hall to this day, unsure whose they are. It gave four of its best to the Master, who keeps them on the approach as Legion's Own. It sent a garrison to Duke Bimure's East Ward between the eastern halls, and from that garrison High Lord Saeor took the knight Zepor, who is a duke now and the Oathbreaker of the chapter roll. The chapter sends a champion east against him each Roll; none has made him yield. It lost a knight called Mermer to the Inquisition in the feud, and does not say his name. It keeps the Marshal's officer, Lieutenant Persun, in its house, and has never decided whether he is a guest.\n\nThe chapter house stands on Earl Glassalab's tunnels, and the knights know it. Their prince's plans run through those tunnels now, toward Director Kobil's chambers above the Gate and the Army of Shadows. The knights do not like the Army. A shadow cannot hold ground, they say, because it does not know where the ground is.\n\nThe realms have their own names for them. Albion's knights call them the Black Order and argue about whether a demon can keep an oath; Midgard's huscarls respect them more than anything else below the world, because they stand; Hibernia's champions say they are the oldest kind of geis-bound warrior, sworn to the earth instead of to a king, and that the earth keeps them.",
- "legend": "The Chthonic Knights are spread across the whole dungeon, always in the same posts: three with Prince Abdin in the north-west (Gaapoler, Haag, Vosoes), six in the chapter house (Absax, Azea, Zagal, Ronoro, Ukobat, Ezpeth), four of Legion's Own on the approach (Fonath, Carabia, Olov, Tamuel), three at the east arch of Baln's hall (Marbos, Zaeber, Exal), six in the East Ward camps (Aciel, Ain, Babyzu, Carnivon, Prosel, Zafan) and three at the Gate (Exte, Ibeko, Obarus). Levels run 60 to 74, all slashing melee, no scripts. They do not wander; every knight is exactly where the last one was, so you can plan a route. Most come back in about three minutes, but the guard, the chapter house elders and Fonath take half an hour. Players call them the black knights and pull them one camp at a time.",
+ "legend": "The Chthonic Knights are spread across the whole dungeon, always in the same posts: three with Prince Abdin in the north-west (Gaapoler, Haag, Vosoes), six in the chapter house (Absax, Azea, Zagal, Ronoro, Ukobat, Ezpeth), four of Legion's Own on the approach (Fonath, Carabia, Olov, Tamuel), three at the east arch of Baln's hall (Marbos, Zaeber, Exal), six in the East Ward camps (Aciel, Ain, Babyzu, Carnivon, Prosel, Zafan) and three at the Gate (Exte, Ibeko, Obarus). They run from a foe for several bands of any realm's best together to one for a war party of any realm's champions, all slashing blades, no tricks. They do not wander; every knight is exactly where the last one was, so you can plan a route. Most rise again in about three minutes, but the guard, the chapter house elders and Fonath take half an hour. Raiders call them the black knights and draw them one camp at a time.",
  "yells": {
   "aggro": [
    "For the deep earth.",
@@ -152,8 +152,8 @@
   "briefing": [
    "knights are slash melee, no tricks. [one camp at a time|single camps]",
    "the knights never move off their spot. [plan the route|you know where they are]",
-   "abdin's three are 72 and 68, the chapter house elders 70. [rest between|mana between camps]",
-   "legions own knights on the approach, fonath is 74. [last before the door|careful near the chamberlain]"
+   "abdin's three are war party fights, the chapter house elders too. [rest between|mana between camps]",
+   "legions own knights on the approach, fonath is the toughest. [last before the door|careful near the chamberlain]"
   ],
   "aftermathWin": [
    "knight camp down. [next|on to the next one]",
@@ -162,10 +162,10 @@
    "gate knights done. [crossing clear|on through]"
   ],
   "aftermathLoss": [
-   "pulled two knight camps. [wipe|told you one at a time]",
+   "drew two knight camps. [everyone down|told you one at a time]",
    "the knights held. [we didnt|regroup]",
-   "fonath got us at the bottom of the slope. [too close to the door|rez]",
-   "knights respawned on us. [three minutes goes fast|move faster]"
+   "fonath got us at the bottom of the slope. [too close to the door|raise the fallen]",
+   "knights rose again on us. [three minutes goes fast|move faster]"
   ],
   "rumour": [
    "[heard|word is] the chthonic knights swore an oath to the ground itself",

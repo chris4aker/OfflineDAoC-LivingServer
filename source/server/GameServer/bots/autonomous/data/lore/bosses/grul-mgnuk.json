@@ -43,7 +43,7 @@
     }
   ],
   "story": "Basilius rules the morvalt of Modernagrav and keeps away from the dig. Someone has to keep the dig, and that is Grul Mgnuk, the dig-master, who stands on a rise above the diggers' huts in the north-west with the whole of the work below him, and who has not been further from it than the edge of the dig since the wall came down.\n\nHe was a shaman's son, the dwarves of the Remnants say, and not a shaman, which in the morvalt's eyes is a kind of failure; the callers who call into the bones by night are shamans' work, and Grul Mgnuk cannot call. What he can do is count. He knows how many baskets of earth came off the bones each day from the first day on, and how many callers have gone mad, and how many searchers went out across the island looking for the Mother's head and did not come back, and how far the mammoth's round comes toward the camp in each season. He keeps the counts in knots on a cord, the dwarves say, and the cord is longer than he is tall.\n\nUnder him the dig has the shape of a household. The searchers go out and come back with bones, or without. The mixers make the pastes the callers smear on themselves before they call. The callers call. The watchers stand on the edges and watch for Mortufoghus, who walks between the dig and the bones as if the bones were her calf and every digger a wolf, and the andakuva, whose name the dwarves have never been able to translate, walk among the callers and listen to what comes back. Grul Mgnuk listens to the andakuva.\n\nHe fights when the dig is threatened, and the dig fights with him, because the morvalt of Modernagrav have nothing on the island but the dig, and he is the dig. The dwarves at the post have a grudging respect for him that they have for no other morvalt. Orri of Hagall wrote that Grul Mgnuk is the only one of them who has ever asked what happens if they find her. The answer the andakuva gave him is not on the cord.",
-  "legend": "Grul Mgnuk is the morvalt dig-master, level 58, on a rise above the morvalt dig in north-western Modernagrav, surrounded by the dig's morvalt: nine callers (framkalla, 47-52) right beside him, ten watchers (vaktare, 50-53), searchers and andakuva a bit further out. He's aggressive at short range and Morvalt Samhalle, and so is everything around him, so hitting him can bring the dig. Work in from the edges and kill the callers near him first, or pull him off the rise with range. No special abilities on him, not CC-immune, no quest. Mortufoghus walks her round to the south-east of the dig: check where she is before you start, because her stun and thrown players are live.",
+  "legend": "Grul Mgnuk is the morvalt dig-master, a foe for the realm's best, a full band of them, nearly one for several bands, on a rise above the morvalt dig in north-western Modernagrav, surrounded by the dig's morvalt: nine callers (framkalla, from a hardened band's foe to the realm's best) right beside him, ten watchers (vaktare, each a foe for the realm's best), searchers and andakuva a bit further out. He attacks anyone who comes close and is of the Morvalt Samhalle, and so is everything around him, so hitting him can bring the dig. Work in from the edges and kill the callers near him first, or draw him off the rise with bow or spell. No special tricks on him, charms, trances and stuns hold him, no quest. Mortufoghus walks her round to the south-east of the dig: check where she is before you start, because her stun and thrown raiders are real.",
   "yells": {
     "aggro": [
       "The dig! Defend the dig!",
@@ -81,7 +81,7 @@
   },
   "botLines": {
     "briefing": [
-      "grul mgnuk is 58 on the rise above the dig, callers right next to him",
+      "grul mgnuk is a tough one for the realm's best, on the rise above the dig, callers right next to him",
       "work in from the edges, the dig brings friends",
       "check where mortufoghus is first",
       "no tricks on grul himself"
@@ -96,7 +96,7 @@
       "the whole dig came",
       "mortufoghus walked into us",
       "too many callers",
-      "pulled from the wrong side"
+      "drew from the wrong side"
     ],
     "rumour": [
       "grul mgnuk keeps the dig count in knots on a cord",

@@ -43,7 +43,7 @@
     }
   ],
   "story": "The Remnants keep a post on the south-west of Modernagrav, with a griffon and a stablemaster, because the dwarves would rather watch the dig than be surprised by it. The post has a watch. Alivor and Asutri keep it, and they keep it against everyone.\n\nThe dwarves' oldest slates call the island beyond the rockwall by a word that means the place one does not dig, and the clans that crossed to Aegir in the first boats agreed among themselves that nobody would. The morvalt broke that agreement with picks and fire. The Remnants could not stop them, but they could keep the agreement themselves, and they decided at the slate-house, the dwarves say, that the post on Modernagrav would let nobody pass toward the bones who had not earned the dwarves' trust: no morvalt, no sjoalf, no Vendo, and no stranger of Midgard either, whose explorers had come through the gap with the dwarves' own and wanted, the dwarves thought, to dig.\n\nAlivor is the elder of the watch, a tracker by training, who walked the island with Orri of Hagall in the first season and saw what the morvalt found. He came back from it with a single opinion that he has repeated to every traveller since, usually with an axe in his hand: that the bones are not the Mother and are not a cow and are not anything the dwarves have a word for, and that the right number of people digging at them is none. He does not ask whose side a stranger is on. A stranger who has not proved a friend to the Remnants, by the dwarves' long reckoning of deeds, is a stranger walking toward the bones.\n\nHis watch is his clan. The dwarves of the post come when he is struck, as the Remnants have always come for each other, and the slate-house keeps account of everyone who strikes one of them. The griffon at the post flies only friends. Alivor says that is the whole of the dwarves' law in one sentence, and that Midgard would do well to remember it.",
-  "legend": "Alivor is a level 50 iarn dwarf of the Remnants near their post in south-western Modernagrav. He's Remnants faction and AGGRESSIVE: if your standing with the Remnants is low, he attacks you on sight, and the dwarves next to him (an iarn dwarf and a tracker) come too via bring-a-friend. No special abilities, not CC-immune. Think before you kill him: killing faction members shifts your faction standing the usual way, and the Remnants run the griffon post here and in Faraheim. If you're raising Remnants faction, go around; if you don't care, he and Asutri are an easy pair for a group of 50s. Hermione the stablemaster is close by and isn't hostile.",
+  "legend": "Alivor is an iarn dwarf of the Remnants, a foe for the realm's best, a full band of them, near their post in south-western Modernagrav. He's sworn to the Remnants and attacks on sight if your standing with the Remnants is low, and the dwarves next to him (an iarn dwarf and a tracker) come too, because a dwarf of his calls his neighbours. He has no special tricks, and charms, trances and stuns hold him. Think before you kill him: killing the Remnants' own shifts your standing with them the usual way, and the Remnants run the griffon post here and in Faraheim. If you're raising your standing with the Remnants, go around; if you don't care, he and Asutri are an easy pair for a band of the realm's best. Hermione the stablemaster is close by and isn't hostile.",
   "yells": {
     "aggro": [
       "Nobody passes toward the bones.",
@@ -81,22 +81,22 @@
   },
   "botLines": {
     "briefing": [
-      "alivor is remnants faction and aggro if your faction is low",
+      "alivor is remnants and he attacks on sight if your standing with them is low",
       "the dwarves by him come too",
-      "killing him changes your faction standing",
-      "50, easy, but think first"
+      "killing him changes your standing with the remnants",
+      "easy for the realm's best, but think first"
     ],
     "aftermathWin": [
       "killed alivor, the remnants wont like that",
       "easy pair with asutri",
       "hermione didnt care",
-      "faction hit probably"
+      "there goes our standing probably"
     ],
     "aftermathLoss": [
       "the tracker joined",
       "didnt expect dwarves to be hostile",
       "asutri came over",
-      "bad pull"
+      "bad draw"
     ],
     "rumour": [
       "alivor walked the island with orri in the first season",

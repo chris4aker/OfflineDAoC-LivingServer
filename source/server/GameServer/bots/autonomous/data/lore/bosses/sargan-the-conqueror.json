@@ -17,7 +17,7 @@
     }
   ],
   "story": "Sargan is Balor's other warlord, and he thinks of himself as the civilised one. Norsob destroys; Sargan conquers. Conquered things can be kept, put to work, taxed. It was Sargan who thought of giving Balor's soldiers the names of the heroes they had killed, so that every Balorian on the stair would be a reminder. He fights with a spear, neatly, at reach, and he holds his hall on the tower's west side as he would hold a captured town. Beyond its walls he does not trouble himself. He has never needed to.\n\nSargan is the warlord Balor sends when something is to be kept. Conquered things can be put to work, taxed and displayed, and Sargan's hall is full of display: banners of clans the Fomorians have broken hang in neat rows, and the soldiers on the stair carry, by his order, the names of heroes the Fomorians killed long ago. He thinks it a refinement. Every Balorian is a trophy that walks.\n\nHe fights with a spear, neatly, at reach, and his hide turns part of every blow like the rest of the household, spells worse than steel. Beyond his hall he does not trouble himself; the tower will not let him bleed there anyway. He and Norsob have hated each other for an age, the destroyer and the conqueror, and only the king's will keeps them from settling it. When one falls the other is said to be delighted, as if it proved which of them the king should have trusted.\n\nSargan, a Fomorian taker of islands, hangs the banners of every clan the Fomorians broke and named the Balorians for dead heroes; since the bard Seanán brought down the banner of Clann na Fuinseoige, Domnann asks every company that brings him down for one, and the row in the Sylvan hall grows.",
-  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one tank and steady heals, and never pull him together with Norsob's hall. Clear the named Balorians on the stair on the way up, so nothing wanders into the fight; they do not answer his call. Do not drag him onto the stair, or you wake the soldiers there too. Afterwards, one tank, steady heals, and nothing pulled from Norsob's hall. Superstition: take one banner off his wall for the Sylvan of Domnann every time he falls. They hang them in their own hall and sing the broken clans' names again.",
+  "legend": "Like Norsob: hard-skinned, hits hard, cannot be hurt outside his hall. Fight him at home with one shield-bearer and steady heals, and never draw him together with Norsob's hall. Clear the Balorians of name on the stair on the way up, so nothing wanders into the fight; they do not answer his call. Do not drag him onto the stair, or you wake the soldiers there too. Afterwards, one shield-bearer, steady heals, and nothing drawn from Norsob's hall. Superstition: take one banner off his wall for the Sylvan of Domnann every time he falls. They hang them in their own hall and sing the broken clans' names again.",
   "yells": {
     "aggro": [
       "Kneel, and you may keep your name.",
@@ -59,22 +59,22 @@
   },
   "botLines": {
     "briefing": [
-      "sargan is like norsob with a spear. [fight him home|no dragging], one tank, steady heals",
+      "sargan is like norsob with a spear. [fight him home|no dragging], one shield, steady heals",
       "clear the balorians on the stair on the way up, [dont drag him into them|keep it in his hall]",
-      "sargan is immune outside his hall. [fight him there|stay home]",
-      "one tank, steady heals, [nothing from norsob's hall|no double pulls]"
+      "sargan is untouchable outside his hall. [fight him there|stay home]",
+      "one shield, steady heals, [nothing from norsob's hall|never both halls at once]"
     ],
     "aftermathWin": [
       "sargan down. [the conqueror got conquered|grats]",
       "sargan down. [the conqueror got conquered|ha]",
       "took a banner down off his wall on the way out. [souvenir|for the sylvan]",
-      "clean pull, stair cleared first. [good leading|grats]"
+      "clean draw, stair cleared first. [good leading|grats]"
     ],
     "aftermathLoss": [
       "someone dragged sargan into the balorians on the stair. [messy|no]",
-      "someone pulled him onto the stair and [woke the lot|the balorians joined]",
-      "double pulled norsob's hall. [again|never]",
-      "dragged him and he [reset|was immune]"
+      "someone drew him onto the stair and [woke the lot|the balorians joined]",
+      "drew norsob's hall as well. [again|never]",
+      "dragged him and he [went home|was untouchable]"
     ],
     "rumour": [
       "[heard|someone said] sargan named the balorians after the heroes they killed. sick",

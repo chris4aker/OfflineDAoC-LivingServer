@@ -43,7 +43,7 @@
     }
   ],
   "story": "If the bear-wolves are the silence of the southern approach, Hrolleif is its voice. He stands within sight of the southern Bjornvarg, near the protectors at the edge of the ruins, and the svartalfar say the dragon set him there on purpose: a guard who will not call for help needs a neighbour who will.\n\nHis name is a man's name, an old one, and the beam-cutters of Svarhamr think the drakulv took it the way they take many of their names, by hearing it. In the first winters of her court, when the drovers of the last steadings still drove south past Skona looking for summer grazing that had gone, a drover called Hrolleif lost his herd to the drakulv on the southern approach and stood on a rock shouting for his sons until the drakulv came back for him. The svartalfar say the drakulv who killed him liked the shouting and kept the name.\n\nHe has kept the shouting too. When Hrolleif is struck, he howls, and the protectors near him come, and anything else of the pack within the sound of it. The camps of the southern approach are laid out close together for that reason, Brisa the beam-cutter says, the way a steading's houses are built within shouting distance of one another. A stranger who walks up the southern way and hears one howl soon hears several.\n\nThe svartalfar tell a story about the pair that the drovers of Gotar repeat. Once, they say, a company of Midgard's warriors came up the southern approach in a snowstorm, and could not see the camps, and went for the larger shape, thinking it the greater danger. It was Hrolleif. They were still fighting the camp at dawn, and the bear-wolf had stood watching them all night, a stone's throw away, and never moved, because nobody had called him.",
-  "legend": "Hrolleif is the loud one of the southern pair in Malmohus: level 56, big, standing about a thousand units from the southern Bjornvarg near a couple of drakulv protectors. No special abilities and not CC-immune, but he's Pack Drakulv, so when you or your companions hit him he can bring nearby drakulv with him (bring-a-friend, once per fight). Pull him with something long range from as far back as you can, clear the protectors first if you can see them, and don't fight him on top of Bjornvarg. Autonomous gamebots don't set off the bring-a-friend, but you and your companion bots do.",
+  "legend": "Hrolleif is the loud one of the southern pair in Malmohus: a foe for the realm's best, a full band of them, big, standing about thirty-five paces from the southern Bjornvarg near a couple of drakulv protectors. No special tricks, and charms, trances and stuns hold him, but he's of the drakulv pack, so when you or your companions hit him he can bring nearby drakulv with him (he calls them once a fight). Draw him with a bow or a spell from as far back as you can, clear the protectors first if you can see them, and don't fight him on top of Bjornvarg. The realm's free warbands don't set off his call, but you and your hired companions do.",
   "yells": {
     "aggro": [
       "Here! HERE! On the southern way!",
@@ -81,16 +81,16 @@
   },
   "botLines": {
     "briefing": [
-      "hrolleif brings friends, pull from max range",
+      "hrolleif brings friends, draw from as far as you can",
       "dont fight him next to bjornvarg",
       "clear the protectors near him first",
-      "56, no tricks besides the camp coming"
+      "a fight for the realm's best, no tricks besides the camp coming"
     ],
     "aftermathWin": [
       "kept it to him and one protector, nice",
       "hrolleif down, the south is quiet",
-      "pulled clean for once",
-      "good pull, no train"
+      "drew him clean for once",
+      "good draw, nothing followed"
     ],
     "aftermathLoss": [
       "he howled and half the south came",

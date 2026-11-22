@@ -65,7 +65,7 @@
       "text": "When the Valkyn went north to Midgard after the gates broke, Hallveig's grandmother Ragnfrid carried a blood orm's egg in her pack, taken from the steam on the way out. She never said why, any more than the morvalt warrior did. It hatched in a pot by the fire in Aegirhamn and grew as long as a man and lived a long time for a serpent away from the warm water, and it never bit any of them.\n\nWhen it died she would not let them skin it. She said the house-beasts remember the warm water of Trollheim, and that hers had wanted to go home its whole life, and the least they could do was bury it facing east, toward the city. They did. Hallveig says that is the only grave the Valkyn have dug that faces Trollheim, and that her grandmother went and sat by it more often than by her own mother's.\n\nFostra Orm is old now and very large, and it sleeps in the steam coiled like a rope thrown into a pot. Midgard's companies who come home from the warm water bring its remains and its cast skins, and the morvalt rings made from them, the rings of the ancients, which the morvalt say keep off the rot. Nobody in Jordheim has proved it. The skalds say the morvalt think everything that serpent touches is lucky, and that they may be right, because nothing else in Trollheim has lasted as long. In a season it is back in the steam, and Dagar is standing at the edge with meat."
     }
   ],
-  "legend": "Fostra Orm is an easy kill for a level 50 group if you can cure. It has two spells, both on its current target only: Orm Poison, 70 body every 3 seconds for 30 seconds, and a Disease that lasts two minutes and cuts healing on the victim. Neither stacks: it won't recast a spell on someone who still has it, so as soon as you cure the tank it may bite again, but it can never pile two poisons on him. Keep cure poison and cure disease ready on whoever has it and the fight is a grind; without them the disease halves your heals while the poison ticks. Shamans earn their keep here. It has 8,000 health and a long reach (about 350), and it isn't CC-immune. It sits in the warm water near Dagar's hall, so don't pull both at once unless you mean to. Its remains, the ring of the ancients and the morvalt shadow needle are the drops.",
+  "legend": "Fostra Orm is an easy kill for a band of the realm's best if you can cure, though it is itself a foe for several bands of them together. It has two spells, both on its current target only: Orm Poison, about a fifteenth of a robed caster's strength in body every 3 seconds for 30 seconds, and a Disease that lasts two minutes and cuts healing on the victim. Neither piles on itself: it won't cast a spell again on someone who still has it, so as soon as you cure its shield-bearer it may bite again, but it can never pile two poisons on him. Keep cure poison and cure disease ready on whoever has it and the fight is a long slog; without them the disease halves your heals while the poison eats at you. Shamans earn their keep here. It takes as much killing as four raiders, it has a long reach (about a dozen paces), and charms, trances and stuns hold it. It sits in the warm water near Dagar's hall, so don't draw both at once unless you mean to. Its remains, the ring of the ancients and the morvalt shadow needle are its prizes.",
   "yells": {
     "aggro": [
       "(The serpent hisses and uncoils.)",
@@ -108,12 +108,12 @@
   "botLines": {
     "briefing": [
       "fostra orm poisons and diseases. cure both or heals dont land",
-      "cure disease on the tank every bite",
-      "dont pull dagar with the snake",
-      "one healer watches the tank's debuffs only",
+      "cure disease on the shield-bearer every bite",
+      "dont draw dagar with the snake",
+      "one healer watches the shield-bearer's poison and sickness only",
       "fostra orm: poison and disease on its target only. they dont stack",
-      "cure disease and cure poison on the tank, it rebites after a cure",
-      "orm isnt cc immune if you need to reset positions"
+      "cure disease and cure poison on the shield-bearer, it rebites after a cure",
+      "stuns and trances hold the orm if you need to move everyone"
     ],
     "aftermathWin": [
       "snake down, easy",
@@ -125,11 +125,11 @@
       "snake down, cured everything"
     ],
     "aftermathLoss": [
-      "pulled dagar with the snake by accident [oops|my bad]",
+      "drew dagar with the snake by accident [oops|my bad]",
       "no cure disease and the poison won",
       "the snake brought dagar. [great|ugh]",
       "nobody had cure disease and the heals did half",
-      "pulled the snake and dagar together"
+      "drew the snake and dagar together"
     ],
     "rumour": [
       "the morvalt keep snakes as pets in trollheim. house snakes. [nope|no thanks]",

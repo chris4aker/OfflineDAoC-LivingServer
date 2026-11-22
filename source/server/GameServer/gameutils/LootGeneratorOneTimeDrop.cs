@@ -53,6 +53,8 @@ namespace DOL.GS
 				if (lootOTDs != null && lootOTDs.Count > 0)
 				{
 					int count = 0;
+					// 1.2.1: one warning for the rows naming a missing item, each row at debug level (LootMissingItems)
+					var missing = new LootMissingItems("LootOTD");
 
 					foreach (DbLootOtd l in lootOTDs)
 					{
@@ -68,7 +70,8 @@ namespace DOL.GS
 
 						if (item == null)
 						{
-							log.ErrorFormat("Can't find ItemTemplate {0} for OTD MobName {1}", l.ItemTemplateID, l.MobName);
+							if (missing.Add(l.MobName, l.ItemTemplateID) && log.IsDebugEnabled)
+								log.DebugFormat("Can't find ItemTemplate {0} for OTD MobName {1}", l.ItemTemplateID, l.MobName);
 							continue;
 						}
 
@@ -95,6 +98,10 @@ namespace DOL.GS
 						}
 
 					}
+
+					string summary = missing.Summary();
+					if (summary != null && log.IsWarnEnabled)
+						log.Warn(summary);
 
 					log.InfoFormat("One Time Drop generator pre-loaded {0} drops.", count);
 				}

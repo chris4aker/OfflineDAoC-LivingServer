@@ -37,7 +37,7 @@
     }
   ],
   "story": "Little Haven counts lamps. From its doors on a clear night the fishermen can see the lamps of Arawn's gaol across the strand, and the custom of the village, older than the war, is to count them before bed, as Hedd the ferryman counted them, and to sleep easier when the count is right. Huidelon Cariston keeps the village's own lamps, the ones on the quay and at the outpost gate and over the long room where Rose sews, and has done since he was a boy. He is the lamp-keeper. In a village that counts lamps, that is not a small office.\n\nThe dead of Caldey put lamps out. Nobody knows why; the priests of the dead used to say it was because the dead dislike being seen, and the fishermen say it is because the dead remember the dark of the grave and want it back. They come down to the village edge at night, not to fight, only to put out a light and go away again, and the worst of them are the skeletons of pitch: black, crackling dead whose bones were tarred, the village thinks, by some old burying custom of the colleges' boatmen, and whose hands, when they are struck off, burn for a while like torches.\n\nHuidelon pays for those hands. The ledger of Little Haven says so in his own words: every hand that comes to him is one that will not reach for a lamp of his. But the fishermen know the other reason, because they have seen it. On the nights when the oil runs short, Huidelon lights the quay lamp with a pitch hand. It burns longer than oil and brighter, and the dead do not put it out. He says the only light on Caldey the dead will leave alone is one they made themselves.\n\nHe is a quiet man, and has never raised a hand to the living. The clan's defenders count the village as theirs and him with it, and the clan's bard has a verse about the lamp-keeper that the fishermen sing when the count of the gaol lamps is right.",
-  "legend": "Huidelon Cariston is a level 54 villager of Little Haven on Caldey who buys Crackling Pitch Skeleton Hands (his turn-in, levels 49 to 50). He is not hostile: the Caldey Outpost faction starts neutral and he leaves players of his quest's level band alone. Hitting him brings the clan's barbarian defenders (same faction) and sours your standing with the outpost. No spells or styles in the data; there is no quest to kill him. The pitch skeletons whose hands he wants are on Caldey itself; bring the hands at 49 or 50 and he pays in experience. Rose and Tristram Adamson buy other parts nearby.",
+  "legend": "Huidelon Cariston is a villager of Little Haven on Caldey, a foe for the realm's best, a full band of them, who buys Crackling Pitch Skeleton Hands (his errand, taken only by adventurers on the last rung below the realm's best or the first rung of it). He is not hostile: the Caldey Outpost starts out neither friend nor foe and he leaves adventurers of his errand's seasoning alone. Hitting him brings the clan's barbarian defenders (sworn to the same outpost) and sours your standing with the outpost. No spells or styles, by every account; there is no quest to kill him. The pitch skeletons whose hands he wants are on Caldey itself; bring the hands when you stand on that last rung or the first rung of the realm's best and he pays you in seasoning. Rose and Tristram Adamson buy other parts nearby.",
   "yells": {
     "aggro": [
       "Not the lamps!",
@@ -75,10 +75,10 @@
   },
   "botLines": {
     "briefing": [
-      "huidelon cariston, 54, lamp keeper in little haven. turn-in npc, not a mob",
-      "clan is neutral, he wont aggro. hitting him brings the defenders and kills your standing",
+      "huidelon cariston, lamp keeper in little haven, could take a band of our best. errand guy, not a target",
+      "clan is neutral, he wont attack. hitting him brings the defenders and kills your standing",
       "no spells, no quest to kill him",
-      "bring him crackling pitch skeleton hands at 49-50"
+      "bring him crackling pitch skeleton hands when youre just about at our best"
     ],
     "aftermathWin": [
       "huidelon down, why",
@@ -88,8 +88,8 @@
     ],
     "aftermathLoss": [
       "defenders came off the wall",
-      "aoe clipped him, whole clan came",
-      "he's 54 and the clan is 50s",
+      "a fire burst clipped him, whole clan came",
+      "he's a match for our best and so is every one of the clan",
       "do not hit the lamp keeper"
     ],
     "rumour": [

@@ -58,3 +58,52 @@ class ProvenanceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CompanionNameTests(unittest.TestCase):
+    """Owner 2026-11-21 (decision 7): hired companions may carry lesser legend names, never a name the lore tells of.
+    The check covers every legend name the lore tells of (name_counts.legend_names: HEROES, the HEROES.md roster, the
+    names in "myth" facts and in legend-age sentences), less the ordinary given names present-day characters share."""
+    def suggested(self):
+        import re
+        root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+        src = open(os.path.join(root, "source", "server", "GameServer", "mode165", "Hire165.cs"), encoding="utf-8").read()
+        block = src[src.index("Names = new()"):src.index("};", src.index("Names = new()"))]
+        return re.findall(r'"([A-Za-z]+)"', block)
+
+    def test_no_suggested_companion_name_is_a_lore_hero(self):
+        import re, name_counts
+        names = self.suggested()
+        self.assertGreater(len(names), 30)
+        clashes = [n for n in names for rx in name_counts.HEROES.values() if re.fullmatch(rx, n)]
+        self.assertEqual(clashes, [])
+
+    def test_no_suggested_companion_name_is_a_legend_the_lore_tells_of(self):
+        import name_counts
+        self.assertEqual(name_counts.companion_clashes(self.suggested()), [])
+
+    def test_a_legend_told_in_the_lore_is_caught(self):
+        # Review H3: Grainne was told of by name in giant-caithor while "Grainne" was a suggested companion.
+        import json, shutil, tempfile, name_counts
+        tmp = tempfile.mkdtemp()
+        try:
+            os.makedirs(os.path.join(tmp, "bosses"))
+            boss = {"id": "giant-caithor", "name": "Giant Caithor",
+                    "facts": [{"text": "Diarmuid fled with Gráinne.", "provenance": "myth", "source": "Toraigheacht"}],
+                    "story": "Diarmuid and Gráinne slept under the quicken tree."}
+            json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
+            self.assertIn("Grainne", [n for n, _ in name_counts.companion_clashes(self.suggested(), tmp)])
+            # Told only in a legend-age story, not in a fact, it is still caught.
+            boss["facts"] = [{"text": "x", "provenance": "original"}]
+            json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
+            self.assertIn("Grainne", [n for n, _ in name_counts.companion_clashes(["Grainne"], tmp)])
+            # Told beside a god who is not a HEROES legend (independent review), it is caught too.
+            boss["story"] = "In the old tale Fand left the sea-god Manannán for a mortal."
+            json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
+            self.assertIn("Fand", [n for n, _ in name_counts.companion_clashes(["Fand"], tmp)])
+            # A present-day character's ordinary name (decision 7: Edith, Gunnar, Aine) is not a clash.
+            boss["story"] = "Cu Chulainn's charioteer drank with Aine and Gunnar."
+            json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
+            self.assertEqual(name_counts.companion_clashes(["Aine", "Gunnar", "Maud"], tmp), [])
+        finally:
+            shutil.rmtree(tmp)

@@ -9,6 +9,8 @@ Each result names the build it came from. None of them is from the release build
 the server log's FORK_BUILD line), which is cut when 1.2 is published. The last builds checked on the owner's PC are
 `c81eb5d` and `43c43aa`; the automated results are in the release notes.
 
+Everything still to do, with a GitHub issue each, is in [OPEN-WORK.md](OPEN-WORK.md).
+
 ## Fix list for 1.2.1
 
 Seen on the owner's PC or in its log, and left for 1.2.1 (owner, 2026-11-19: publish unless there are major bugs, crashes
@@ -25,7 +27,9 @@ or instability, and add the rest to the 1.2.1 list):
   guard covers the crash, not the gap.
 - **Caer Caledon's guards can't be picked with /target** by players (checked as a GM only).
 - **Click-targeting a bot** didn't work for the test helper on `c81eb5d` (`/target` works). Unconfirmed: it may be the
-  test tool, not the game.
+  test tool, not the game. The server has no rule that refuses a click on a living bot: no bot is flagged
+  untargetable or peaceful, only stealth hides one, and the one unusual bit, "has owner" (a bot's brain is a controlled
+  brain, as a pet's is), is the one pets carry, and pets can be clicked; 1.2.1 logs each click on a bot (`PLAYER_CLICK_TARGET`), so one played click settles it.
 - **Old merchant item templates missing at startup:** about 760 error lines at every start from the stock world data. No
   effect seen in play.
 - **A "DrainTo in progress" error from QueuePacket**, seen once (`43c43aa`), with no effect seen.
@@ -75,8 +79,10 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
 - **Battleground keeps rarely change hands.** Bots storm the keep lord again and again and mostly fail. The first
   capture was Caer Caledon, taken by Albion on `43c43aa` after its keep levels were repaired (guards 39, lord 46).
-- **Open-field regroups pass between groups more than planned** in dense warbands: 17.4% of regroups on `9a173f4`
-  against a 15% bar. None was passed on a second time.
+- **Open-field regroups pass between groups more often in dense warbands**: 17.4% of regroups on `9a173f4` were
+  started by another group's call. None was passed on a second time and none echoed back. The owner raised the bar to
+  20% on 2026-11-19, so this passes; the log checker now also prints how many groups each call reached, to tell
+  denser warbands from a call that over-fires (#419).
 - **Roaming eight-man groups** rarely find a fight and move on (under investigation).
 - **Some gamebots wait a long time at frontier teleporters** before the server moves them on.
 
@@ -94,7 +100,9 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 - **Replies still guess from your words.** A bot doesn't know what you are doing beyond what you type. A bot that
   remembers you may ask your level right after you said it. Chat has been tested one line at a time more than as long
   conversations.
-- **Bot parties never take a new member once they set off**, so an "lfm" from a bot party is a last call while it forms.
+- **Bot parties take new members on the way only now and then** (1.2.1, #423, tests only): a party that set off with a seat free
+  looks for one more for five minutes, two minutes after it leaves and then every ten. Between those looks its "lfm" has stopped, and
+  it takes one member at a time.
 
 ## Bots that play with you, and companions
 
@@ -104,7 +112,7 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 - **Hired companions:** joining your fight on a grey monster failed on `b1b6846` and is fixed: **tests only**. The healer's
   [companions] and [hire] links work only with the healer targeted; typed `/hire` words always work. The gear window's
   title reads "House Vault 0" (it reuses the house vault window).
-- **Bots don't fall when they die.** The original client plays the lying-dead pose only for players.
+- **Bots don't fall when they die** in the original client (1.2). From 1.2.1 they fall and lie like a monster's corpse, and a resurrection cast with nothing selected reaches a dead bot nearby (tests only).
 
 ## Bots as people and 2003 builds
 
@@ -117,10 +125,14 @@ era-built world yet. Whether the original client shows a sitting bot is still to
 
 - **Crafting as a player** hasn't been seen yet, and needs the original client.
 - **Trading with a crafter bot:** tried on `b1b6846`; a reply was cut mid-word, a different piece was offered, and the
-  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet.
+  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet. Since then (issue #422): a made commission was
+  never handed over or announced, because the hand-over ran only at the very edges of the crafter's break, where it saw no
+  break; the crafter now hands it over, or says where to collect it, while its break lasts. A stock trade window that could
+  not open now says why and keeps the deal. **Tests only.**
 - **Craft orders** often lapsed on `19e7037` (156 made, 163 expired). Orders now go only to crafters who stay online and
   are withdrawn from busy ones; on `c81eb5d` 44 were made and 1 expired (server log).
-- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces.
+- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces. `ECON_INDEX` now also
+  carries `craftedListed20` (crafted bot listings of level 20 and up, what the Exchange's upgrade buyers can use).
 - **The launcher's crafter card and economy page** haven't been checked on the owner's PC.
 
 ## Lore

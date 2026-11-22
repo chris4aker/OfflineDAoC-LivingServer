@@ -506,3 +506,13 @@ posts it again; the realm's piece is handed over at the station as soon as it is
 count sales, not posts: the night's crafted pieces are mostly practice work below level 10 (about 90% of the own-work
 sessions are recipe level under 200), and the Exchange's upgrade buyers are level 20 and up; `ECON_INDEX` now carries
 `craftedListed` (live crafted bot listings) and `craftedPosted` (posted in the hour). Tests only.
+
+Issue #422 (2026-11-21, after `b1b6846`): a player's made commission was never handed over. The board calls the hand-over
+at the two ends of the crafter's break (`AutonomousObjectiveAssignments.TryBeginBetweenTaskServices` and
+`CompleteBetweenTaskServices`); at the start the bot is not yet between tasks, and at the end the hand-over was scheduled a
+second later, after the next task was assigned, so `CrafterCommerce.DeliverOnLoop` always saw no break and did nothing:
+no hand-over, no "your piece is done" tell, and the order lapsed (a pay-on-delivery one counted against the player). Now a
+game-loop pulse (`CrafterCommerce.PulseDeliveries`, once a second) hands a made piece over while the break lasts, one try a
+break when the player is near, else one tell a break (`ECON_PLAYER_ORDER outcome="handover_tried"` / `"ready_told"`). A
+stock trade window that does not open says why and keeps the deal (`outcome="stock_trade_failed" why=`), and a window closed
+without the trade keeps it too. `ECON_INDEX` adds `craftedListed20`: crafted bot listings of level 20 and up. Tests only.

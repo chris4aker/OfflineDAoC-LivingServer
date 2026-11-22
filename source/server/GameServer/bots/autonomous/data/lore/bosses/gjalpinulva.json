@@ -145,7 +145,7 @@
       "text": "The old songs say that at the end the wolf will break free. Gleipnir will part, Fenrir will run with his jaws so wide that the lower one scrapes the earth and the upper one the sky, and he will swallow Odin. The ship of nails will sail from the north. The dead of Nastrand, the shore of corpses where oath-breakers lie, will rise. And Hel will come with her host out of Niflheim.\n\nGjalpinulva knows all this. She is the only one of the three realms' dragons who speaks of the end, and she speaks of it as a promise. When she tells a warrior that Odin will have to do without his aid at Ragnarok, she means it as a fact about the coming battle: the warrior will be in Niflheim with her aunt, and the gods will be one spear short. Every soul she claims in her court is one fewer for the valkyries to carry to Valhalla, and one more for the host that comes out of the north at the end.\n\nThe svartalfar of Svarhamr believe she is waiting for the chain to break, and that while she lives Gleipnir is not finished, because she was born in the time before the last of its six things was found. That is why some of them hope for her death, and why some of them, quietly, fear it: if her death finishes the chain, it may also start the end. The skalds of Jordheim believe she is waiting for her father, and that the day he runs she will fly north to meet him with her brood behind her, Yar at the front and her adolescent dragons grown at last. The grandmothers of Aegir believe nothing so grand. They say she is a daughter waiting for her father to come home, and that there is no creature more dangerous.\n\nSome in Midgard look at the dead dragon under Tuscaran Glacier, the one the rime giants built on, and wonder whether the end was tried once before and failed. Gjalpinulva has never said. When she dies, she howls for her father, and the svartalfar say that somewhere under the earth the chain shivers. When it breaks, they say, she will be the first to know, and Svarhamr means to be the second."
     }
   ],
-  "legend": "Fight her in the lair, never outside: out there she can't be hurt and she knows it, and a Dec 2002 comment warned that attacks from outside trigger her area breath anyway. Cold resists up and keep them up, because every breath at each 10% strips them; healers re-buff after each one. When she stares at someone (the warning comes about six seconds early), that someone runs away from the group: the glare hits everyone within about 1000 of them. Stun breaks for the long roar, which lasts thirty seconds. Her babies come one at a time as she drops, about every 15% from 85% on, six at most; kill each before the next. In Living Server they no longer run off to fetch the camps. Period kills ran from 27 people to over 100; a 74-strong raid once lasted three minutes. Old raiders swore that killing Yar first made her breathe less; the heralds never said so, but people still do it. Never say her name inside the ruins.",
+  "legend": "Fight her in the lair, never outside: out there she can't be hurt and she knows it, and an old raider warned that attacks from outside set off her breath on everyone near anyway. Wards against cold up and keep them up, because every breath at each tenth of her strength strips them; healers renew the wards after each one. When she stares at someone (the warning comes about six seconds early), that someone runs away from the group: the glare hits everyone within about thirty-five paces of them. Something to shake off the stun for the long roar, which lasts thirty seconds. Every minute or so (60 to 80 seconds) of the fight her wings throw two to five raiders who are not her target, anyone within about eighty paces, companions and the realm's adventurers as much as you, high above the lair floor; the fall can take more than half your strength, so heal the thrown first. Her babies come one at a time as she drops, about every three-twentieths of her strength from seventeen-twentieths on, six at most; kill each before the next. Once she is down to half her strength, every minute and a half or so a flight of her messengers sets out across the ruins, and where each one's road ends it calls up drakulv to her side, so casters and archers run the messengers down before they get there. Period kills ran from twenty-seven people to over a hundred; a raid seventy-four strong once lasted three minutes. Old raiders swore that killing Yar first made her breathe less; the heralds never said so, but people still do it. Never say her name inside the ruins.",
   "yells": {
     "aggro": [
       "You walk into my hall with your little gods' names in your mouths. Spit them out.",
@@ -214,27 +214,27 @@
   "botLines": {
     "briefing": [
       "gjalpinulva: fight in the lair, out of it she cant be hurt",
-      "cold resist up, she debuffs it every breath, every 10%",
-      "when she stares at you, run. stun break ready for the roar",
+      "cold wards up, she strips them every breath, every tenth of her",
+      "when she stares at you, run. something to shake off the stun ready for the roar",
       "kill her babies before they get to the healers",
       "her babies come one at a time as she drops, kill each before the next one",
-      "healers rebuff cold resist after every breath"
+      "healers renew cold wards after every breath"
     ],
     "aftermathWin": [
-      "the wolf is dead!! [gg midgard|gratz everyone]",
-      "did you hear that howl when she died? [chills|whole zone heard it]",
+      "the wolf is dead!! [well fought midgard|gratz everyone]",
+      "did you hear that howl when she died? [chills|the whole country heard it]",
       "dragon scales! [roll|who needs them]",
       "she said odin would do without me. jokes on her",
-      "gg midgard. the wolf is dead"
+      "well fought midgard. the wolf is dead"
     ],
     "aftermathLoss": [
       "she breathed twice in a row and we were done",
-      "somebody pulled her out of the lair. [never again|stop doing that]",
-      "the glare one-shot our main tank",
+      "somebody drew her out of the lair. [never again|stop doing that]",
+      "the glare killed our main shield-bearer in one go",
       "thirty second stun and a breath right after. nothing we could do"
     ],
     "rumour": [
-      "[heard|they say] gjalpinulva talks to your corpse after she kills you. [never stuck around to listen|i always release too fast to hear]",
+      "[heard|they say] gjalpinulva talks to your corpse after she kills you. [never stuck around to listen|i always go back to my bindstone too fast to hear]",
       "kill yar first and she breathes less. [old raid leaders swear by it|probably a myth]",
       "her aunt in niflheim is hel, if shes really fenris's daughter",
       "the svartalfar say when she dies the chain on fenris shivers"

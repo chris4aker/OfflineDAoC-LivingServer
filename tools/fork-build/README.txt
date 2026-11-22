@@ -34,8 +34,8 @@ Server feature is on by default, and only diagnostics and test switches stay off
   - Server life: bots remember
     you, grats, server firsts,
     rezzes, frontier alarms,
-    nemeses, bot schedules,
-    breaks, linkdeads and body
+    nemeses, breaks,
+    linkdeads and body
     language ...................... docs\LIVING-SERVER.md
   - Camelot Herald (a news page; button in the Living Server tab)
 
@@ -47,6 +47,8 @@ YOUR CHOICE (launcher -> Living Server tab):
     levels 1-19 / 20-34 / 35-50.)
   - The classic rule options (power halving, crafting's secondary caps, classic quality and
     losses) and the epic encounter options not yet played through stay off.
+  - The bot schedule (by your PC's clock or by sessions) is off by default since 1.2.1, so the
+    whole roster is online (owner 2026-11-21). Pick Real clock or Session in the tab.
 
 Known issues and what hasn't been tested in game yet: docs\KNOWN-ISSUES.md
 

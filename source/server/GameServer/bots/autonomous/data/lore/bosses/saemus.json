@@ -24,7 +24,7 @@
     }
   ],
   "story": "On the eastern edge of the Bog of Cullen, where the marsh gives onto a low island of firm ground, there is a camp that the people of Alainn Binn call the Cullen outlaws. It has been there for a generation: mainland men and women who could not stay in Ardee or Howth or Connacht for one reason or another, and went into the bog where the realm does not follow, and kept going until they reached ground that would hold a fire. They do not rob the villages. They do not trade with them either. They fight anyone who comes onto their island, and the villages have learned to leave them alone.\n\nSaemus was one of them, once. He came into the bog with Ide from the same trouble in Lough Gur, and while she went to Ysberin the path-keeper to learn the marsh slowly, he went to the siabra to learn something quickly. The siabra are generous with the young and the angry. They gave him a crystal, black-green, cut from something under the bog, and told him that what he held in his hand would hold the bog in his.\n\nIt did, for a while. The outlaws remember a summer when nothing in the Cullen marsh came near their island, because Saemus stood at its western edge with the crystal raised and the mist turned round him. Then the summer ended and he did not come back to the fire. Ide found him at the western edge in the morning, still standing, still holding it, and he did not know her. The druids who have heard the story from Lovernios say the crystal was not a tool but a mouth, and that it has been eating Saemus slowly ever since, and that what stands west of the outlaws' island now is mostly crystal with a man's shape round it.\n\nHe lives alone, if it is living. The outlaws will not cross to his side of the marsh, and he does not cross to theirs. Lovernios wants the crystal for the Druid Court, to learn how the siabra cut it and from what. Ide wants it out of his hand. Nobody, the outlaws say, has asked Saemus what he wants, and he would not be able to answer.",
-  "legend": "Saemus is a level 52 standing alone west of the Cullen outlaws' island in the Bog of Cullen (about 374k/735k). Plain mob, no script, 80-second respawn; a 50 group handles him. He holds the crystal for the Mavelle version of Unnatural Powers: kill him and bring the crystal to Lovernios. Unlike Ide he is on his own, so he is an easy single pull; the siabra camps of the bog are nearby, so check your approach. The outlaws' island is east of him; do not run that way if the pull goes wrong, or you will have the outlaws too.",
+  "legend": "Saemus, a foe for the realm's best, a full band of them, stands alone west of the Cullen outlaws' island in the Bog of Cullen (about 374k/735k). A plain fight, no tricks; he returns eighty seconds after he falls, and a band of the realm's best handles him. He holds the crystal for the Mavelle version of Unnatural Powers: kill him and bring the crystal to Lovernios. Unlike Ide he is on his own, so he is easy to draw alone; the siabra camps of the bog are nearby, so check your approach. The outlaws' island is east of him; do not run that way if the fight goes wrong, or you will have the outlaws too.",
   "yells": {
     "aggro": [
       "(the crystal in his hand flares green)",
@@ -62,20 +62,20 @@
   },
   "botLines": {
     "briefing": [
-      "saemus is 52, alone, west of the cullen outlaws. [easy single|plain mob]",
+      "saemus is alone, west of the cullen outlaws. [easy, just him|plain fight]",
       "he has the crystal for unnatural powers (mavelle). [bring it to lovernios|kill him]",
-      "50 group fine",
+      "saemus needs one band of our best, no more",
       "siabra camps nearby. [check approach|careful]"
     ],
     "aftermathWin": [
       "saemus down, crystal taken. [to lovernios|done]",
-      "easy single pull",
+      "easy, drew him alone",
       "ide will be... something",
       "poor guy"
     ],
     "aftermathLoss": [
-      "pulled a siabra camp on the way. [oops|faction]",
-      "group too small for 52",
+      "drew a siabra camp on the way. [oops|they stick together]",
+      "group too small for him",
       "got lost in the bog. [again|lol]",
       "he hit harder than expected"
     ],

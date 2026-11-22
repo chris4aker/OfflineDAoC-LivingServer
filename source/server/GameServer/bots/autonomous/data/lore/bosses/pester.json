@@ -32,7 +32,7 @@
     }
   ],
   "story": "East of the orc camp the air hums. The flies of Inishail breed in the slime marsh in the middle of the island and swarm out over the high ground in summer, and the orcs call the small ones nuisances and the big ones worse, and the biggest of all, a dragonfly as long as a boat with wings like panes of the colleges' coloured glass, they call Pester. The orcs did not name it for a joke. The ones who ran have few jokes.\n\nThe orcs say it is the lord's. Lord Emthoro's ground lies just north of their village, and he takes his tenants' rent in whatever they have; and what the orcs have is blood, and Pester takes it. An orc who sleeps outside the huts on a summer night is bitten, and the bite swells, and the orcs believe that what Pester drinks goes north to the lord's door, the way the dead go. The soothsayers have tried to read the tomes for a charm against it and found none, and the oracles have tried nets of the lammia's weaving, and Pester went through the nets as if they were cobweb.\n\nVeena, on the south-east shore, says the orcs are wrong about the lord and right about the bite. She makes poisons out of the island's flies, and she says Pester's sting is the strongest venom on Inishail and that it is nobody's servant: it is only hungry, and the biggest, and alone. The other flies do not follow it. It does not lead them. It hangs over the humming ground east of the camp and falls on whatever comes near, quick and straight as a thrown spear, and goes back up into the hum.\n\nWhen it is killed, the orcs say, there is a night or two when nobody is bitten; then it is back over the high ground, because the marsh never stops breeding, and the lord never stops collecting.",
-  "legend": "Pester is a level 55 giant dragonfly over the high ground east of the orc camp on Inishail, where the buzzing nuisances for Orcs with Spellbooks are. It is aggressive from about 500 away and stabs (thrust damage), but has no faction and nothing else within 800, so it comes alone; the nuisances do not join it unless you walk into them. No spells or styles in the data: a melee kill for a duo or small group of fifties; cloth wearers feel the stabs. The orc village is west, do not chase it there, or you will have the battlers too. Respawn about 80 seconds.",
+  "legend": "Pester is a giant dragonfly over the high ground east of the orc camp on Inishail, where the buzzing nuisances for Orcs with Spellbooks are, a foe for the realm's best, a full band of them. It attacks on sight from about seventeen paces away and stabs (thrusting blows), but is kin to nothing and has nothing else within about twenty-seven paces, so it comes alone; the nuisances do not join it unless you walk into them. No spells or styles, by every account: a melee kill for a pair or small group of the realm's best; cloth wearers feel the stabs. The orc village is west, do not chase it there, or you will have the battlers too. It rises again about eighty seconds after it falls.",
   "yells": {
     "aggro": [
       "A hum, then a dive.",
@@ -70,20 +70,20 @@
   },
   "botLines": {
     "briefing": [
-      "pester, 55 giant dragonfly e of the orc camp. aggros at 500, stabs hard",
-      "no faction, nothing near, it comes alone. the nuisances dont join unless you walk into them",
-      "no spells, melee, duo of 50s works",
-      "dont chase it west into the orc village. 80 sec respawn"
+      "pester, giant dragonfly e of the orc camp, job for our best. comes at you from 17 paces, stabs hard",
+      "kin to nothing, nothing near, it comes alone. the nuisances dont join unless you walk into them",
+      "no spells, melee, two of our best works",
+      "dont chase it west into the orc village. back 80 sec after it dies"
     ],
     "aftermathWin": [
       "pester down, the orcs can sleep outside tonight lol",
       "came alone like i said",
-      "duo'd it, nice",
-      "back in 80, get your stingers"
+      "two of us did it, nice",
+      "back in 80 sec, get your stingers"
     ],
     "aftermathLoss": [
       "chased it into the orc village",
-      "pulled nuisances on the way in",
+      "woke nuisances on the way in",
       "thrust damage hurts on cloth",
       "it was back while we got stingers"
     ],

@@ -32,6 +32,41 @@ public static class AutonomousPartyReplacement
     public static bool Wanted(bool hostsOrHostedPlayer, bool raidParty, bool ending, string phase, int members, int maxMembers) =>
         hostsOrHostedPlayer && !raidParty && !ending && phase != null && RecruitingPhases.Contains(phase) && members < maxMembers;
 
+    /// <summary>
+    /// 1.2.1 (#423): a party on its way or at its camp with a seat free looks for one more member now and then, as 2003
+    /// groups picked people up on the way. The first look comes this long after the party sets off...
+    /// </summary>
+    public const long OpenSeatFirstMs = 2 * 60_000L;
+    /// <summary>...and the next this long after the last search ended (a recruit found or not).</summary>
+    public const long OpenSeatEveryMs = 10 * 60_000L;
+
+    /// <summary>
+    /// 1.2.1 (#423): a PvE party, bot-only or hosting the player, takes a new member on the way or at its camp (not a raid's
+    /// party, not while meeting up, regrouping after a wipe or ending, not while a search already runs) when a seat is free.
+    /// Whether it is time for a look is <see cref="OpenSeatDue"/>.
+    /// </summary>
+    public static bool OpenSeatWanted(bool pve, bool raidParty, bool ending, bool regrouping, string phase, int members, int maxMembers,
+        bool searching) =>
+        pve && !raidParty && !ending && !regrouping && !searching && phase != null && RecruitingPhases.Contains(phase) && members < maxMembers;
+
+    /// <summary>It is time for the next open-seat look (<paramref name="nextAt"/> is 0 before the first look was timed).</summary>
+    public static bool OpenSeatDue(long now, long nextAt) => nextAt > 0 && now >= nextAt;
+
+    /// <summary>
+    /// The role an open seat asks for, by the existing role rules: a healer when the party has none, else a tank when it
+    /// has none, else a damage dealer (the player's own role counts).
+    /// </summary>
+    public static BotPveGroupRole OpenSeatRole(int tanks, int healers) =>
+        healers == 0 ? BotPveGroupRole.Healer : tanks == 0 ? BotPveGroupRole.Tank : BotPveGroupRole.Attacker;
+
+    /// <summary>The role as the /lfg market's recruit post says it ("healer", "tank", "dps").</summary>
+    public static string PostNeed(BotPveGroupRole role) => role switch
+    {
+        BotPveGroupRole.Healer => "healer",
+        BotPveGroupRole.Tank => "tank",
+        _ => "dps",
+    };
+
     /// <summary>One search for a missing role.</summary>
     public sealed class Search
     {
@@ -50,6 +85,8 @@ public static class AutonomousPartyReplacement
         public bool HoldsParty { get; set; }
         public bool Asked { get; set; }
         public int Tries { get; set; }
+        /// <summary>1.2.1 (#423): a look for one more member for a free seat, not a replacement for one who left.</summary>
+        public bool OpenSeat { get; init; }
     }
 
     public enum Step { Wait, TryNow, GiveUpCarryOn, GiveUpEnd }
@@ -63,7 +100,7 @@ public static class AutonomousPartyReplacement
         if (search == null)
             return Step.Wait;
         if (now - search.Since >= GiveUpAfterMs)
-            return viable ? Step.GiveUpCarryOn : Step.GiveUpEnd;
+            return viable || search.OpenSeat ? Step.GiveUpCarryOn : Step.GiveUpEnd;
         return now >= search.NextTry ? Step.TryNow : Step.Wait;
     }
 

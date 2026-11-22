@@ -48,7 +48,7 @@
     }
   ],
   "story": "The Troll Fathers had two orders, the Uppat who kept the living halls and the Nedat who kept the holy ones, and each order had a leader. The Valkyn say the Fathers never gave the leaders names, because a leader was a place in the city and not a person. When the morvalt broke the gates, their war-chiefs went through the upper city looking for the Uppat leader, to kill it and sit in its seat, and found the seat at the head of the ring in the hall of counsel empty. They never found the leader. It was not a Father.\n\nIt stands in the eastern halls of Trollheim, past the hall of counsel, where the floor of the city grows and the roof comes down in teeth. It is a stone, the greatest of the stones that grow upward from the floor, and around it stand lesser ones of its own kind that the Valkyn call by the same word. The trolls of Dyrfjall say the Fathers did not carve it. They found it growing when they first dug the eastern halls, older than the city, and they built the order of the living halls around it the way a steading is built around a spring: the Uppat leader is the thing that grows, and the order that kept the forges and the granaries and the roads to the surface took its name from it.\n\nIt is alive in the way the stone of Trollheim is alive, slowly. It does not move against anything that leaves it alone, and the morvalt, who walk round it, have long since chosen to leave it alone. The lesser stones around it are quicker to anger; the Valkyn guides say a stranger who comes among them unwatchful will have woken the small ones long before the great one turns. The great one is a different matter. Those who have struck it say it is harder than anything else in the eastern halls, and that the growing stone of Trollheim has had longer than the city to grow.\n\nRotodjur keeps the growing halls beyond, and the Valkyn say the gardener and the leader have never troubled each other. One grows the city's floor. The other is what the floor was before there was a city.",
-  "legend": "Uppat gungledar is a level 77 stone creature (the stalagmite/stalactite model) in Trollheim's eastern halls, toward Rotodjur's growing halls, with nine uppat korkigen (56) around it and stalactites close by. It does NOT attack first (aggro 0) and has no faction, so it never brings friends. The danger is the korkigen and stalactites around it: those are aggressive and you'll walk into them first. Clear the small stones, then decide whether you want a level 77 at all: it's no quest target, it has no special abilities, it's simply very high level. Nedat gungledar stands about 2,900 units away, also passive.",
+  "legend": "Uppat gungledar is a stone creature (a great stalagmite or stalactite to look at), a foe for a war party of the realm's champions, in Trollheim's eastern halls, toward Rotodjur's growing halls, with nine uppat korkigen, each a foe for the realm's best, a full band of them, around it and stalactites close by. It does NOT strike first and answers to no one, so it never brings friends. The danger is the korkigen and stalactites around it: those attack on sight and you'll walk into them first. Clear the small stones, then decide whether you want something that strong at all: it's no quest target, it has no special tricks, it's simply very strong. Nedat gungledar stands nearly a hundred paces away, and it never strikes first either.",
   "yells": {
     "aggro": [
       "The stone turns. Slowly. Completely.",
@@ -86,20 +86,20 @@
   },
   "botLines": {
     "briefing": [
-      "uppat gungledar is 77 but passive, it wont come unless you hit it",
-      "the korkigen round it are aggro, clear them first",
-      "no quest needs it, its just very high level",
-      "no faction, nothing gets called"
+      "uppat gungledar is a war party's fight but never strikes first, it wont come unless you hit it",
+      "the korkigen round it attack on sight, clear them first",
+      "no quest needs it, its just very strong",
+      "answers to nobody, nothing gets called"
     ],
     "aftermathWin": [
-      "we killed a 77 rock, why",
+      "we killed a war party's rock, why",
       "korkigen first, then the big one, worked",
       "took forever but it fell",
       "nedat next?"
     ],
     "aftermathLoss": [
       "walked into the korkigen",
-      "a 77 is a 77",
+      "big is big",
       "should have left it alone",
       "the stalactites joined"
     ],

@@ -43,7 +43,7 @@
     }
   ],
   "story": "The morvalt have few names, and the ones they have are mostly earned, and Troloss earned his the hard way. The Valkyn read it as the morvalt's form of an old word for faithless, and the morvalt use it the same way. He has sworn to every war-chief in Trollheim and kept faith with none of them.\n\nHe swore first to Dagar, the Valkyn say, when Dagar was young and had only begun to count the days to the Mother's waking. Troloss counted with him for a season and then walked away, saying the Mother could count her own days. He swore to the butchers of the kitchens, and left them when the food ran short. He swore to Bonchar, when the Rift was new and Bonchar's shamans were the power in the lower city, and left him when the Rift began to eat shamans. Now he stands among the chaos warriors in the galleries north of Dagar's hall, the ones who carry Kurgol's wordless blades, and the Valkyn say it is only a matter of time.\n\nStrangely, the morvalt do not kill him for it. A faithless morvalt is useful, the Valkyn explain: he always knows who is strongest, because he has always just left the one who was not. War-chiefs who want to know how the city stands watch where Troloss is standing. He does not pick quarrels. He watches strangers walk through the galleries and lets them go by, because he has not decided yet whose side they are on, and the chaos warriors around him, who have no such doubts, are the ones who come.\n\nThe trolls of Dyrfjall tell a story about him that the Valkyn will not confirm. They say that when Midgard's first companies came into Trollheim with their Valkyn guides, Troloss watched them from the galleries for a long time, and was seen once, alone, at the edge of the bridge, looking across at the Valkyn on the far side as if weighing them; and that he went back to the chaos warriors afterwards without a word. The trolls say even Troloss could not bring himself to swear to his uncles' tame cousins. The Valkyn say he has simply not been asked.",
-  "legend": "Troloss is a level 54 morvalt north of Dagar's hall in Trollheim, standing among chaos warriors (62), bowmen and seasoned soldiers. He's PASSIVE (aggro 0) with no faction, so he never starts it and never brings anyone; the chaos warriors around him are the danger, and they're aggressive and much higher level than he is. Clear the chaos warriors with care, then he's an easy kill. No special abilities, not CC-immune, no quest. The chaos warriors (kaos krigsman) are the same wordless-blade lot found in the galleries around Kurgol's workshop, so if you've cleared those you know the drill. Check for the bowmen on the edges; they add up.",
+  "legend": "Troloss is a morvalt, a foe for the realm's best, a full band of them, north of Dagar's hall in Trollheim, standing among chaos warriors (each a foe for several bands of the realm's best together), bowmen and seasoned soldiers. He never strikes first and answers to no one, so he never starts it and never brings anyone; the chaos warriors around him are the danger, and they attack on sight and are much stronger than he is. Clear the chaos warriors with care, then he's an easy kill. No special tricks, charms, trances and stuns hold him, no quest. The chaos warriors (kaos krigsman) are the same wordless-blade lot found in the galleries around Kurgol's workshop, so if you've cleared those you know the drill. Check for the bowmen on the edges; they add up.",
   "yells": {
     "aggro": [
       "Wrong side. You chose the wrong side.",
@@ -82,19 +82,19 @@
   "botLines": {
     "briefing": [
       "troloss is passive, its the chaos warriors round him that kill you",
-      "kaos krigsman are 62, careful",
+      "kaos krigsman are several-bands fights, careful",
       "clear them, troloss is easy after",
-      "no faction, no friends"
+      "answers to nobody, no friends"
     ],
     "aftermathWin": [
       "troloss down, the chaos warriors were the fight",
-      "easy 54 once the 62s were dead",
+      "easy once the chaos warriors were dead",
       "faithless and dead",
       "good clear"
     ],
     "aftermathLoss": [
       "the chaos warriors chewed us",
-      "pulled two 62s at once",
+      "drew two chaos warriors at once",
       "bowmen joined",
       "shouldnt have bothered"
     ],

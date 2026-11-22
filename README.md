@@ -53,7 +53,8 @@ builds on it. **Tests only** means it is in the release but hasn't been seen wor
   crafters who make for guildmates at cost *(1.2)*.
 - **They remember you** *(1.0; 1.1.3)*: your rezzes, your insults, your dings.
 - **Server life** *(1.0)*: grats, server firsts, rezzes and corpse runs, frontier alarms, nemeses, breaks, body language,
-  and a real-clock schedule so the capital is busiest in the evening.
+  and an optional real-clock schedule so the capital is busiest in the evening (off by default since 1.2.1: the whole
+  roster stays online).
 - **Names like a 2003 server** *(1.1)* and **the Herald** *(1.0)*, your world's news page.
 - **They dress up** *(1.2)*: dyes and weapon lusters at the merchants' prices. Never glows.
 - **Arguments that run for days** in /faction *(1.1; ten more in 1.2)*.

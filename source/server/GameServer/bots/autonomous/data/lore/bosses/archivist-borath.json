@@ -63,7 +63,7 @@
   }
  ],
  "story": "Archivist Borath keeps what the Chancellor does not cut. The ten Rolls on the walls of the approach say who holds which place, and nothing else; everything else the court has ever written down, the Inquisition's findings, the Marshal's counts, the wagers of the princes, the court's old remedies and older sicknesses, is copied on slates and kept in Borath's records, high above the centre of the hollow near the chambers over the Gate. Borath answers to Grand Chancellor Adremal and to nobody else.\n\nHe was a Chthonic Knight once, the only one of the first chapter who could read, and the Chancellor took him out of the chapter house in the Second Roll to keep the slates. He still wears the knights' shape, though years bent over records have shrunk it to half a knight's height. He taught the knight Tamuel to read, which the Chancellor has not forgiven either of them.\n\nWhen the court wanted a sickness for the realms, it was Borath who found one in the records: a rot of the Uncounted Age that began in the back, as if the sufferer had lain on coals. He copied it out for Malroch the Cook. Hibernia's druids traced the plague up from Tir na Nog's sickbeds to his slates, and Hibernia came for him; the stoppered cure he keeps is the record's own remedy, written on the slate below the sickness. The court says Borath copied both, because he copies everything.",
- "legend": "Borath is the Hibernian target of the Black Plague quest: Waljan sends you, and you kill him high above the middle of Darkness Falls, near Director Kobil's chambers over the Gate, for the stoppered potion. Level 40, a plain NPC, small, with the Chthonic Knight look shrunk to half size. The climb is the hard part; mind the Gate watch on the way. He respawns in about five minutes. Kobil is within a long pull, so do not fight Borath toward the Director's rooms unless you mean to do Breaking the Blade too.",
+ "legend": "Borath is the Hibernian target of the Black Plague quest: Waljan sends you, and you kill him high above the middle of Darkness Falls, near Director Kobil's chambers over the Gate, for the stoppered potion. A foe for a hardened band of veterans, a plain beast of name from that place, small, with the Chthonic Knight look shrunk to half size. The climb is the hard part; mind the Gate watch on the way. He rises again in about five minutes. Kobil is within a long draw, so do not fight Borath toward the Director's rooms unless you mean to do Breaking the Blade too.",
  "yells": {
   "aggro": [
    "Do not touch the slates.",
@@ -88,15 +88,15 @@
  "botLines": {
   "briefing": [
    "borath is way up above the middle, near kobil's rooms. [hib plague quest|black plague]",
-   "40, normal npc. [the climb is the hard part|mind the gate on the way up]"
+   "hes nothing special for a hardened band. [the climb is the hard part|mind the gate on the way up]"
   ],
   "aftermathWin": [
    "borath down. [potion got|got the potion]",
    "the archivist is dead. [back to waljan|turn it in]"
   ],
   "aftermathLoss": [
-   "pulled kobil with borath. [oops|now we do blade too]",
-   "the gate got us on the way to borath. [slower|wipe]"
+   "drew kobil with borath. [oops|now we do blade too]",
+   "the gate got us on the way to borath. [slower|all of us down]"
   ],
   "rumour": [
    "[heard|word is] archivist borath found the black plague in the demon records",

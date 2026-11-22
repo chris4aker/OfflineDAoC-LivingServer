@@ -20,7 +20,7 @@
     }
   ],
   "story": "Fachtna is a garda of Altan Garran, one of the town's guards, and he keeps the ground at the foot of Treal's ledge where the old treant buries what the realm brings him. He stands beside Cuinn, the small iron-grey treant, and the two of them have kept that ground together for so long that the town children say Fachtna has started to grow bark. He does not laugh at the joke.\n\nHe has a grudge, like everyone in Altan Garran. His brother went out of the town to cut the choker's tendrils from the south wall in the first summer of the worts and was taken by them, and the Sylvan guides on the high road saw it and did not come down. Fachtna stands at the ledge with his spear and watches every stranger who comes near the buried roots, and the realm's companies who come to give Treal what he wants are watched hardest of all.",
-  "legend": "Fachtna (44) is a named garda inside Altan Garran by Treal's ledge (about 337k/316k), close to Zinsya (43) and Declan (40) and next to Cuinn (65). Pulling him almost always brings the others, so either bring a group able to handle three outlanders and a treant or leave him alone. Plain spawn, 80-second respawn. The town is hostile to Hibernians throughout.",
+  "legend": "Fachtna, a foe for a hardened band of veterans, is a garda of name inside Altan Garran by Treal's ledge (about 337k/316k), close to Zinsya and Declan (a little weaker) and next to Cuinn (a foe for several bands of the realm's best together). Drawing him almost always brings the others, so either bring a group able to handle three outlanders and a treant or leave him alone. Plain, no tricks; he returns eighty seconds after he falls. The town is hostile to Hibernians throughout.",
   "yells": {
     "aggro": [
       "Away from the roots.",
@@ -43,16 +43,16 @@
   },
   "botLines": {
     "briefing": [
-      "fachtna is 44 at treal's ledge with zinsya, declan and cuinn close",
-      "pull him and the others come. [careful|big group]"
+      "fachtna is at treal's ledge with zinsya, declan and cuinn close",
+      "draw him and the others come. [careful|big group]"
     ],
     "aftermathWin": [
       "fachtna down. [ledge clear|grats]",
-      "didnt pull cuinn. [nice|lucky]"
+      "didnt draw cuinn. [nice|lucky]"
     ],
     "aftermathLoss": [
-      "pulled cuinn. [65|rip]",
-      "three outlanders and a treant. [lol|wipe]"
+      "drew cuinn. [hes a monster|rip]",
+      "three outlanders and a treant. [lol|all dead]"
     ],
     "rumour": [
       "[heard|someone said] fachtna's brother was taken by the choker in the first summer",

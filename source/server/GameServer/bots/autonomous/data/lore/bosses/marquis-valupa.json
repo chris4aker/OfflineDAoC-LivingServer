@@ -69,7 +69,7 @@
   }
  ],
  "story": "Marquis Valupa keeps the slope. The approach to the Master's door is the most important ground in the hollow after the Master's lair itself, and since the doors opened it has been walked by every mortal company that went looking for the Master, and somebody has to decide where Legion's Own stand on it. That is Valupa's office. The Roll names it Marquis of the Approach, under the Master, and it is the only post in the court that answers to neither a prince nor a high lord nor the Chancellor, though the Chancellor's table is part of the ground Valupa keeps.\n\nValupa was a marquis without a master before that, which in the court is a dangerous thing to be. In the Uncounted Age it served whoever had last fed it, and at the Feast of Thrones it served nobody and was nearly eaten for it; it knelt with the eleven by walking out of the crowd at the back of the deep chamber and kneeling at the end of the line, and the Master, the court says, had already eaten enough. The First Roll gave it a line under the Master directly, with no seat at all. It took the slope as its seat by standing on it, and nobody has moved it.\n\nIts great talent is knowing where everyone is. It sets Legion's Own on the slope, the knights Fonath and Carabia and Olov and Tamuel, the Mutilators Konapher and Oprionach and the rest, Inquisitor Famuel, Earl Amagin and Marquis Haurian, so that nothing can come down the approach without meeting them in the order Valupa chose. It is also the only demon in the court that knows where Duke Satori is standing at any moment, because Satori always stands near it. It has never said a word about him. The court regards that as Valupa's other talent.",
- "legend": "Valupa stands on the approach to Legion's lair, below the Chancellor and above the Mutilators and knights of Legion's Own, and Duke Satori is stealthed nearby. Level 73, no script. Sweep for Satori before you pull Valupa, or you will have both at once. After Valupa, the rest of Legion's Own on the slope come one cluster at a time. Players call it the slope-keeper and say it places the demons on the approach like chess pieces. Whether that is true or not, the approach is the one stretch in Darkness Falls where careless pulling kills raids. Bring a second set of eyes for stealth and do not rush the slope.",
+ "legend": "Valupa stands on the approach to Legion's lair, below the Chancellor and above the Mutilators and knights of Legion's Own, and Duke Satori is hidden nearby. A foe for a war party of any realm's champions, no tricks. Sweep for Satori before you draw Valupa, or you will have both at once. After Valupa, the rest of Legion's Own on the slope come one cluster at a time. Raiders call it the slope-keeper and say it places the demons on the approach like chess pieces. Whether that is true or not, the approach is the one stretch in Darkness Falls where careless drawing kills raids. Bring a second set of eyes for hidden things and do not rush the slope.",
  "yells": {
   "aggro": [
    "Wrong order. You came down the slope in the wrong order.",
@@ -108,20 +108,20 @@
  "botLines": {
   "briefing": [
    "valupa is on the approach, satori is stealthed next to it. [sweep first|find satori first]",
-   "73 no tricks. after valupa, legions own [one cluster at a time|one pack at a time]",
-   "this slope kills raids. [slow pulls|no rushing]",
-   "valupa then haurian and the mutilators. [mana check|rebuff]"
+   "no tricks. after valupa, legions own [one cluster at a time|one pack at a time]",
+   "this slope kills raids. [slow draws|no rushing]",
+   "valupa then haurian and the mutilators. [mana check|renew the blessings]"
   ],
   "aftermathWin": [
    "valupa down. [slope keeper is done|the approach is ours]",
    "marquis valupa dead. [satori next if hes still up|find satori]",
-   "valupa done, [clean|good pull]",
+   "valupa done, [clean|good draw]",
    "slope-keeper dead. [legions own next|on down]"
   ],
   "aftermathLoss": [
-   "pulled valupa and satori together. [wipe|told you sweep]",
+   "drew valupa and satori together. [everyone down|told you sweep]",
    "valupa brought half the slope. [too fast|slow down]",
-   "valupa got us. [regroup|rez]",
+   "valupa got us. [regroup|raise the fallen]",
    "the approach ate us again. [slower|one at a time]"
   ],
   "rumour": [

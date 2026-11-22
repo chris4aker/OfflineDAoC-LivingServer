@@ -57,7 +57,7 @@
     }
   ],
   "story": "West of the capital the land falls away to a long lake, and the lake is red at sunset more often than water should be. The shore folk give two reasons. The fishers say a great worm lived in the lake in the first days, a thing of the deep cold that came up the rivers from the sea, and a hero of the old tales went down its throat and cut it open from inside, and its blood is still in the water. The druids of Mag Mell say the lake is red because the first families named everything around it after the country beyond the sunset, and the lake has been trying to look like that country ever since.\n\nThe names are certainly theirs. Mag Mell, the plain of delight, is the first town past the capital's west gate, a crowded place of stables and smiths and teachers where the young of the realm learn which end of a spear goes forward. Tir na mBeo, the land of the living, stands on the lake's south shore, with its well and its tavern, its huts, and the ruined tower where a man called Macnol keeps a signet ring he should not have. Mardagh lies between them, a hamlet of shops where an elven weaponsmith sells to anyone, and the scryer Muwn reads the water for anyone who pays. With Tir na Nog itself, three of the realm's oldest places are named after the land the dead and the blessed go to, and the bards of Mag Mell say that is the most Hibernian thing about Hibernia: it named its front door after paradise and its kitchen after the afterlife.\n\nThe lake country is busy and mostly kind. Its troubles are small and many, and every one has a name. The leprechauns of the meadows are thieves: the lucradans and the lucragans steal anything not tied down, and Hazard of their kind once stole the sealskin of Resa, a roane maiden of the lake, so that she could not go back into the water, and the women of Connla on the coast still talk about it. The roane maidens come ashore on the east side at night, and the shore folk leave them be. In the orchards the nippers bite, and one of them is a ghost of a nipper, which nobody can explain. In the woods northwest of Tir na mBeo the blackthorns grow and walk, and the lunantishee guard them: the shore folk keep a truce with the blackthorn, and nobody cuts it in the old feast seasons, and the lunantishee Prunar, who keeps half of Fagan's wand, does not care which season it is.\n\nThe east shore is not kind. The siabra hold it, the elves' cousins who stayed on this side of the Veil and never forgave the realm for being there: dergan furies and dergan enchanters in their camps, and the ghostly and ghastly siabra who walk around a standing stone on the eastern slope at night, where a thing the realm calls the Fallen One stands among them and does not speak. The siabra fight the curmudgeons for the hill country there, and both sides take any Hibernian who comes near for a spy. Beyond them the parthanans keep their farm, great slow tillers of the soil who are not friendly to anyone, and past the farm the empyrean orbs drift down from the high ground toward Bri Leith.\n\nTwo shadows lie close to the towns. East of Mag Mell a stone obelisk stands in the fields, and a summoner comes to it, one of the black-robed callers of the dead, and the skeletal things that wander the downs below Mag Mell are what he calls; every trainer in Mag Mell sends the young out to put him down, and he always comes back. And near the town, by the roadside, there is the old crossing to the west: a place where the channelers say the way to Domnann on Hy Brasil runs closest to the mainland, and companies have gone out over the sea from it since the Sylvan first came asking for swords.\n\nWhy does Lough Derg matter? Because the realm is made there. More young Hibernians have learned their trade on the lake shore than anywhere else, and more errands start there than anywhere else, most of them at the door of a woman called Aziliz who lives within sight of the island and seems to know what every village in the realm is short of. The lake is red at sunset because the country beyond it is red, the druids say. The fishers say it is the worm. The young of Mag Mell, who have been bitten by everything on the shore, say it is them.",
-  "legend": "Lough Derg is the starter zone west of Tir na Nog, levels 1-20, and the busiest zone in Hibernia. Mag Mell (by the capital's west gate) and Tir na mBeo (south shore) are the hubs, with trainers, stables and channelers; Mardagh between them is the shop stop. Easy camps: lough wolves, badgers, water beetles, spraggons, eirebugs, orchard nippers and the leprechauns (lucradans steal, kill them anyway). Blackthorns and lunantishee in the woods northwest of Tir na mBeo are 8-10 and social. The east shore is siabra country: dergan furies and enchanters 12-17, ghastly siabra round the standing stone at night (Fallen One for Essence of Hostility); do not wander there at 10. Parthanans (17-18) on their farm east. Roane maidens come out at night (Resa for Roane Skin). The summoner at the obelisk east of Mag Mell is a trainer quest and his skeletons wander the downs. Aziliz by the island shore has a huge list of item quests. Old lake custom: throw a crust in the water at sunset so the worm in the lake stays asleep.",
+  "legend": "Lough Derg is the land west of Tir na Nog where the young begin, with hunting from a first day's outing up to the youngest seasoned bands, and the busiest land in Hibernia. Mag Mell (by the capital's west gate) and Tir na mBeo (south shore) are the hubs, with trainers, stables and channelers; Mardagh between them is the shop stop. Easy camps: lough wolves, badgers, water beetles, spraggons, eirebugs, orchard nippers and the leprechauns (lucradans steal, kill them anyway). Blackthorns and lunantishee in the woods northwest of Tir na mBeo are for the young in their first seasons, and they come to each other's call. The east shore is siabra country: dergan furies and enchanters (young adventurers a few seasons in), ghastly siabra round the standing stone at night (Fallen One for Essence of Hostility); do not wander there in your first seasons. Parthanans (the young, near the end of their first seasons) on their farm east. Roane maidens come out at night (Resa for Roane Skin). The summoner at the obelisk east of Mag Mell is a trainer quest and his skeletons wander the downs. Aziliz by the island shore has a huge list of item quests. Old lake custom: throw a crust in the water at sunset so the worm in the lake stays asleep.",
   "atmosphere": {
     "firstEntry": [
       "Lough Derg. The lake is red at sunset.",
@@ -397,14 +397,14 @@
       "macnol in the tir na mbeo ruins has a signet ring he shouldnt. [moonstone quest|he attacks you]",
       "the dergan furies and the curmudgeons fight over the east hills. [stay out|both hate you]",
       "theres a ghost orchard nipper in lough derg. nobody knows why. [spooky|lol]",
-      "the parthanans on their farm dont like help. [17-18|leave them]",
+      "the parthanans on their farm dont like help. [for the not so young|leave them]",
       "the old crossing to hy brasil is right outside mag mell"
     ],
     "rumour": [
       "[heard|someone said] the fallen one by the standing stone is a siabra lord who lost his name",
       "throw a crust in lough derg at sunset so the worm stays asleep. [old custom|my gran did]",
       "[word is|heard] hazard still has a second roane skin hidden somewhere",
-      "someone cut a blackthorn on a feast day and the whole wood got up. [wipe|lol]",
+      "someone cut a blackthorn on a feast day and the whole wood got up. [everyone died|lol]",
       "[heard|someone said] the scryer in mardagh saw balor's eye in the lake water",
       "spykit is out again near mag mell. [two of them|at night]",
       "[word is|heard] tangua the leprechaun only shows in the huts behind the parthanan farm",
@@ -432,33 +432,33 @@
       "[heard|someone said] tir na mbeo has never once forgotten sabha's fish. nobody knows what happens if they do"
     ],
     "tell": [
-      "lough derg is the starter zone west of tnn. mag mell and tir na mbeo are the towns. 1 to 20",
+      "lough derg is where the young start, west of tnn. mag mell and tir na mbeo are the towns. first day up to seasoned",
       "where is mag mell? right outside the tnn west gate",
-      "is lough derg safe? mostly. stay off the east shore under 15, thats siabra country",
+      "is lough derg safe? mostly. stay off the east shore till youre a few seasons in, thats siabra country",
       "whats in lough derg? wolves, leprechauns, blackthorns, siabra camps, a summoner, parthanans",
       "where is tir na mbeo? south shore of the lake, south of mag mell past mardagh",
       "where do i go after lough derg? south to the silvermine (ardagh, howth) or east to bri leith",
-      "satefe is a 20 named parthanan on the parthanan farm, east lough derg. eoghan's spell wants her wheat",
-      "tangua? a 20 named leprechaun, rare, seen up by mardagh. seeking glory quest",
-      "fallen one? 19, night only, at the standing stone east of the lake. essence of hostility: give him the bracer, he attacks",
-      "tharl is a 19 curmudgeon trapper in the curmudgeon camp on the south east shore. lesser of two evils",
-      "hughar is a 16 named curmudgeon poacher south east of the parthanan farm. alastriona's chest",
-      "bertha is a 14 boar at hughar's poacher camp. she wont attack you, and she has a long respawn",
-      "duana is a 14 wolf at the old ruin among the dergan siabra near the parthanan farm. seek the moonstone b and c",
-      "bristle is a 13 badger on the hill southwest of tir na mbeo. the hunt for bristle, talk to reidie first",
-      "lelly is a 13 named roane maiden on the shore north west of the parthanan farm. beautiful music",
-      "nock is a 13 named sheevra on the island shore near aziliz. seek the moonstone: take his head",
-      "morty is an 11 toad south of mag mell, only there in the game morning, and he doesnt attack",
-      "prunar is a 10 lunantishee in the blackthorn wood north west of tir na mbeo. fagan's wand, one half",
-      "spectral orchard nipper is a 10 ghost sprite south of tir na mbeo, flying. easy",
-      "clik is a 9 water beetle in the small bay southeast of mag mell. clik's raids",
-      "hazard is a 9 leprechaun in the meadows west of tir na mbeo. roane skin: get resa's skin back",
-      "dacyn is an 8 named south of the blackthorn wood in lough derg. low level, but he attacks",
-      "xerxes is a 6 skeleton with skeletal pawns and minions east of the crossing near mag mell",
-      "spackit and spykit are 4 spraggons northeast of mag mell. they dont attack. spicket isnt around",
-      "spykit is a 4 spraggon just over the hill northeast of mag mell. there are two of him",
-      "dwayne is a 3 leprechaun north of mag mell with the lucradans. he doesnt attack",
-      "sabha is a 3 small folk by the pond northwest of tir na mbeo. give him breeda's fish, he wont attack"
+      "satefe is a parthanan of name, seasoned work just, on the parthanan farm, east lough derg. eoghan's spell wants her wheat",
+      "tangua? a leprechaun of name, seasoned work just, rare, seen up by mardagh. seeking glory quest",
+      "fallen one? nearly seasoned work, night only, at the standing stone east of the lake. essence of hostility: give him the bracer, he attacks",
+      "tharl is a curmudgeon trapper for the young near seasoned, in the curmudgeon camp on the south east shore. lesser of two evils",
+      "hughar is a curmudgeon poacher of name, for the young, south east of the parthanan farm. alastriona's chest",
+      "bertha is a boar for the young at hughar's poacher camp. she wont attack you, and she is slow to come back",
+      "duana is a wolf for the young at the old ruin among the dergan siabra near the parthanan farm. seek the moonstone b and c",
+      "bristle is a badger for the young on the hill southwest of tir na mbeo. the hunt for bristle, talk to reidie first",
+      "lelly is a roane maiden of name, for the young, on the shore north west of the parthanan farm. beautiful music",
+      "nock is a sheevra of name, for the young, on the island shore near aziliz. seek the moonstone: take his head",
+      "morty is a toad for the young south of mag mell, only up before noon, and he doesnt attack",
+      "prunar is a lunantishee for the young in the blackthorn wood north west of tir na mbeo. fagan's wand, one half",
+      "spectral orchard nipper is a ghost sprite for the young south of tir na mbeo, flying. easy",
+      "clik is a water beetle for the very young in the small bay southeast of mag mell. clik's raids",
+      "hazard is a leprechaun for the very young in the meadows west of tir na mbeo. roane skin: get resa's skin back",
+      "dacyn is one of name south of the blackthorn wood in lough derg. for the very young, but he attacks",
+      "xerxes is a skeleton for the very young with skeletal pawns and minions east of the crossing near mag mell",
+      "spackit and spykit are little spraggons northeast of mag mell. they dont attack. spicket isnt around",
+      "spykit is a little spraggon just over the hill northeast of mag mell. there are two of him",
+      "dwayne is a tiny leprechaun north of mag mell with the lucradans. he doesnt attack",
+      "sabha is one of the tiny small folk by the pond northwest of tir na mbeo. give him breeda's fish, he wont attack"
     ]
   },
   "loremaster": {
@@ -523,7 +523,7 @@
     },
     {
       "id": "hibernia-wilds",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "hy-brasil",
