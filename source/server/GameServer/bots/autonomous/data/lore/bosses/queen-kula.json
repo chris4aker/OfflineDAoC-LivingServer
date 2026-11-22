@@ -188,8 +188,8 @@
   },
   "botLines": {
     "briefing": [
-      "kula and tuscar come together, fight them at the thrones. everyone on kula, only his shield-bearer on tuscar. [healers|clerics] stay on the main shield-bearers",
-      "once kula is under half or tuscar is dead her thors might comes way more often. its a bolt on whoever she is hitting, [heal her shield-bearer|keep her shield-bearer topped]",
+      "kula and tuscar come together, fight at the thrones. everyone on kula, only his shield-bearer on tuscar. [healers|clerics] on the shield-bearers",
+      "once kula is under half or tuscar is dead her thors might comes way more often, a bolt on whoever she hits. [heal her shield-bearer|keep him topped]",
       "dont drag the twins out of the throne room. past their spot they take no damage and reset",
       "kula hits harder when tuscar drops. [save the big heals|healers be ready] for that"
     ],
