@@ -20,7 +20,7 @@
     }
   ],
   "story": "The ursine have their own word for the office, and nobody outside the caves has ever learned it. The realm calls him the Lair Overseer. He keeps the door below King Vian's hall, and the thralls of the south work in sight of him, and every night when the work is done he counts them in.\n\nThe count is always the same. That is the one thing everyone who has watched him agrees on, and the thing the firbolg of Lough Derg tell in their own way. On the first night of winter, they say, when the bowl of milk is set out at the long tunnel's mouth, one of the thralls of the south goes out to it in the dark and drinks, and comes back before the count, and the Lair Overseer counts the same number he always counts, and either he has not noticed in all these years or he has noticed every year and said nothing to the king.\n\nHervelina, who has seen the bowl in the morning, says it is always empty, and that the lair worms do not drink milk. She also says that the Lair Overseer is the only ursine in the caves who has ever brought her anything: a loaf, once, in a hard season, left on the golem stair without a word. She keeps the cloth it was wrapped in. She has not decided what it means.",
-  "legend": "The Lair Overseer (39) stands with a crowd of thralls (35) and a few ursine (a dweller, a warrior, a sorcerer and a shaman, 36-39) in the south of Treibh Caillte (about 31.6k/34.0k), about 1,500 from King Vian (43). Clear the thralls first, then take him without drifting toward the king's hall. A group of high 30s. Plain spawn, no tricks, 3-minute respawn.",
+  "legend": "The Lair Overseer, a foe for a hardened band of veterans, stands with a crowd of thralls (weaker) and a few ursine (a dweller, a warrior, a sorcerer and a shaman, up to his own strength) in the south of Treibh Caillte (about 31.6k/34.0k), about a bowshot from King Vian, a little stronger. Clear the thralls first, then take him without drifting toward the king's hall. A hardened band, newly blooded. Plain, no tricks; he returns three minutes after he falls.",
   "yells": {
     "aggro": [
       "You are not in the count.",
@@ -43,12 +43,12 @@
   },
   "botLines": {
     "briefing": [
-      "lair overseer is 39 south, thralls and a few ursine round him",
-      "king vian is about 1500 off, dont drift"
+      "lair overseer is south, thralls and a few ursine round him",
+      "king vian is about a bowshot off, dont drift"
     ],
     "aftermathWin": [
       "overseer down. [count's short|grats]",
-      "didnt pull the king. [nice|clean]"
+      "didnt draw the king. [nice|clean]"
     ],
     "aftermathLoss": [
       "the king's hall woke up. [rip|ouch]",

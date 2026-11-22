@@ -20,7 +20,7 @@
     }
   ],
   "story": "Jannet is Deniela's sister and followed her into the bog, the outlaws say, not because she believed the numbers but because she would not let her sister walk into the reeds alone. She keeps the island's boats, the flat reed-boats the outlaws pole across the pools, and she knows the bog's paths better than anyone since Ysberin, though the paths have moved and keep moving.\n\nShe is the one who poles the outlaws out at night to the Siopa side for what they need, and back before the watch changes. The people of Alainn Bin say they have seen her boat on the eastern pools at dusk, and that she lifts a hand to them, and that they lift a hand back, and that this is the oldest bargain in the Cullen country. When the realm's companies come to the island, it is Jannet's boats that are pushed out first, empty, to confuse the counting of the watch on the shore, and the trick has worked more often than Donal admits.",
-  "legend": "Jannet (48) is a Cullen outlaw on the island at the east edge of the Bog of Cullen (about 404k/759k), next to Deniela and Manius (48), Ide (52) and Donal (50). Pull carefully; they stand close. Group of high 40s. Plain spawn, 80-second respawn. Black wraiths on the eastern pools are nearby too. Pull from the landing side, away from Donal and Ide.",
+  "legend": "Jannet, a foe for a hardened band of veterans, is a Cullen outlaw on the island at the east edge of the Bog of Cullen (about 404k/759k), next to Deniela and Manius (her equals), Ide and Donal (each a foe for the realm's best). Draw carefully; they stand close. A hardened band of veterans at its strongest. Plain, no tricks; she returns eighty seconds after she falls. Black wraiths on the eastern pools are nearby too. Draw from the landing side, away from Donal and Ide.",
   "yells": {
     "aggro": [
       "You came by the wrong path.",
@@ -43,16 +43,16 @@
   },
   "botLines": {
     "briefing": [
-      "jannet is 48 on the outlaws' island",
-      "five outlaws close together, pull one at a time"
+      "jannet is on the outlaws' island",
+      "five outlaws close together, draw one at a time"
     ],
     "aftermathWin": [
       "jannet down. [the boatwoman|grats]",
       "one of five. [keep going|next]"
     ],
     "aftermathLoss": [
-      "pulled three. [rip|ouch]",
-      "wraiths from the pools. [oops|wipe]"
+      "drew three. [rip|ouch]",
+      "wraiths from the pools. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] jannet followed her sister deniela into the bog so she wouldnt go alone",

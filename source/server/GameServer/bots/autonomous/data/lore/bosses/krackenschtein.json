@@ -27,7 +27,7 @@
     }
   ],
   "story": "Krackenschtein is the stitched champion of Fomor's workshop, a long room under the eastern quarter of the city hung with hooks around a table larger than any table has reason to be. The old songs call the Fomorians misshapen; the Fomorians of Hy Brasil made it a craft. Their makers kept the strongest parts of the strongest dead and, over a long winter, stitched them together into a champion meant to hold the top of the shore stair against anything the realm sent down. No two makers agreed which parts were strongest, so the thing on the table is everyone's choice at once. The Sylvan laugh at its name and will not say why.\n\nThe makers woke it with lightning brought down a copper-lined shaft from the cliffs in the first autumn storm, and the storm never went out of it. Arrows from across the workshop break against it and words thrown from the doorway die before they reach it; only those close enough to smell the stitches have ever drawn its blood. It calls its birth-bolt down on whoever catches its eye, one and then another, and it stamps without stopping, and every stamp goes up through the feet of everyone in the room, near and far.\n\nIts household, the gentarns and the wolfentry set to guard the door, come when it does. And it throws: it takes hold of someone, anyone, and flings them across the room above the hooks, and after a little does it to someone else. Scoth, the warden of Domnann who first watched it, named it the throw. The companies that came out whole were the ones whose thrown went straight back to the giant's side, and the Connacht barracks say of a soldier knocked out of line: he has been to the hooks. It means go back.\n\nLochlann of Connacht brought it down with every close-handed fighter he could find, shouting each thrown name until they came back, and the stitches gave way from the head down. It returns when lightning goes down the shaft again. It has never left its workshop or done one thing the city wanted, and the Sylvan have a word for that: they call it a Fomorian.",
-  "legend": "He takes no damage at all from anyone further than 300 from him, so this is a melee fight: tanks, melee, pets and any caster willing to stand in close. Everything he does hurts the whole room anyway. Thunder Stomp is a 3-second cast every 4-8 seconds, 250 energy to everyone within 1,000 of him (basically the workshop), so healers heal the room. Every 15-20 seconds he picks anyone near him at random for Bolt of Doom, companions too (2-second cast, 250 cold; a shield can block a bolt). Every 25-35 seconds he grabs a random raider, companion or not, and throws them to one of four spots around the workshop: get straight back in. Pulling him brings his household, seven gentarns and a wolfentry, so clear them first. No tether trick: he resets to full if everyone drops off him. Superstition: never say his name three times in the workshop. The Sylvan laugh at it, and he can hear laughter. Nicknames: 'stitches', 'the table', 'the champion nobody ordered'.",
+  "legend": "He takes no damage at all from anyone more than a few paces from him, so this is a melee fight: shield-bearers, melee, pets and any caster willing to stand in close. Everything he does hurts the whole room anyway. Thunder Stomp takes him three seconds to gather, every four to eight seconds, and strikes everyone within half a bowshot of him (basically the workshop) with energy that takes a quarter of a robed caster's strength, so healers heal the room. Every fifteen to twenty seconds he picks anyone near him at random for Bolt of Doom, companions and the realm's adventurers too (two seconds to gather, a cold bolt as hard as the stomp; a shield can block a bolt). Every twenty-five to thirty-five seconds he grabs a random raider, companion, adventurer of the realm or you, and throws them to one of four spots around the workshop: get straight back in. Drawing him brings his household, seven gentarns and a wolfentry, so clear them first. No trick of distance: he goes home whole if nobody is left fighting him. Superstition: never say his name three times in the workshop. The Sylvan laugh at it, and he can hear laughter. Nicknames: 'stitches', 'the table', 'the champion nobody ordered'.",
   "yells": {
     "aggro": [
       "The stitched giant lurches off its table.",
@@ -70,11 +70,11 @@
   },
   "botLines": {
     "briefing": [
-      "krackenschtein only takes damage from inside 300. [melee and pets only|casters get in close or heal]",
+      "krackenschtein only takes damage from a few paces in. [melee and pets only|casters get in close or heal]",
       "his stomp hits the whole room every few seconds. [heal the room|everyone takes it]",
       "if he throws you, [run straight back|get back in], dont stand around in the corner",
       "clear the gentarns and the wolfentry first or they come with him",
-      "bolt of doom on a random person, shields can block it. [tanks dont worry|watch your hp]"
+      "bolt of doom on a random person, shields can block it. [shields dont worry|watch your health]"
     ],
     "aftermathWin": [
       "stitches came apart from the head down. [gross|grats]",
@@ -83,7 +83,7 @@
       "somewhere a sylvan is laughing. [let them|fair]"
     ],
     "aftermathLoss": [
-      "half the group stood back casting and did [zero damage|nothing]. inside 300 or heal",
+      "half the group stood back casting and did [zero damage|nothing]. get in close or heal",
       "got thrown and stood in the corner looking lost. [go back|run back in]",
       "stomp wore the healers down. [heal the room|too much stomp]",
       "forgot the gentarns. [his household came|eight extra]"
