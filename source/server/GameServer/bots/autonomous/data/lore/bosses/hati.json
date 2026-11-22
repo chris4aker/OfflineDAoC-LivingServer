@@ -74,7 +74,7 @@
       "text": "He lies at the old one's door with his brother, a long stride apart, the two of them like hounds before a hall. The door behind them is the only iron tree that was ever cut, the one that broke the first clan's hammer, and the companies of Midgard who come to it come to the moon-chaser first.\n\nThe skalds of Jordheim say that if Hati ever catches the moon, the howl will not stop. The quiet will go out from him and not come back, and every farm and hall on Aegir will sleep, and the sleepers will not wake, because there will be nothing left awake to wake them. They sing it at the end of the year, when the nights are longest, and then the children of Jordheim are sent to bed.\n\nThe iarn dwarves say the skalds have the song the wrong way round. They say Hati does not want the moon at all. He wants the quiet that comes with it, the hush of a moonlit night when nothing moves, and that he has made it his whole life at the old one's door because it is the only thing he ever wanted. They say a wolf that puts everything to sleep is only a wolf that wants to be left alone.\n\nWhen he falls, the companies say, the howl stops in the middle, and every sleeper in the ring wakes at once, and the moon-chaser lies on his side by the black water like a pup asleep."
     }
   ],
-  "legend": "Hati lies at Iarnvidiur's door, some fifty paces from Skoll, so you can usually take them one at a time. His trance is the whole fight: every 30 seconds or so he entrances everyone within fifteen paces of HIMSELF for up to 29 seconds. So only his shield-bearer (and whoever has to be close) stands in that ring; casters and healers stay well outside it, and have a cure for trances or a minstrel ready for the melee. A blow breaks the trance, so an entranced shield-bearer wakes up when Hati bites him; his bite (260 on a third of his hits) only lands on his target. The raiders reckon his strength at thirty thousand, a fifth of every blow and three-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for several bands of the realm's best together. Fight him at the door, never inside the old one's room. His moonstone axe is a nice prize.",
+  "legend": "Hati lies at Iarnvidiur's door, about fifty paces from Skoll, so you can usually take them one at a time. His trance is the whole fight: every 30 seconds or so he entrances everyone within fifteen paces of HIMSELF for up to 29 seconds. So only his shield-bearer (and whoever has to be close) stands in that ring; casters and healers stay well outside it, and have a cure for trances or a minstrel ready for the melee. A blow breaks the trance, so an entranced shield-bearer wakes up when Hati bites him; his bite (about a quarter of a robed caster's strength, on one hit in three) only lands on his target. He takes as much killing as fifteen raiders, a fifth of every blow and three-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for several bands of the realm's best together. Fight him at the door, never inside the old one's room. His moonstone axe is a nice prize.",
   "yells": {
     "aggro": [
       "(A long, silver howl rises.)",
@@ -124,9 +124,9 @@
       "hati and skoll as a pair, one shield-bearer each",
       "minstrels on trance cures for hati",
       "hati entrances everything within fifteen paces of himself every 30s. only his shield-bearer in that ring",
-      "casters and heals stay out past 450 on hati",
+      "casters and heals stay out past fifteen paces on hati",
       "cure the trance on the melee, hati's bite wakes the shield-bearer anyway",
-      "hati and skoll are 1600 apart, take them one at a time"
+      "hati and skoll are about fifty paces apart, take them one at a time"
     ],
     "aftermathWin": [
       "hati down, the moon is safe lol",

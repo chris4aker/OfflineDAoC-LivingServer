@@ -148,8 +148,8 @@
  "botLines": {
   "briefing": [
    "mutilators hit crush or slash, [check your armour|bring both]. no tricks",
-   "xagalith is 77, biggest in the pit. [last in the west|after the guard]",
-   "legions own mutilators are 74 on the approach. [one at a time|careful near the door]",
+   "xagalith is the biggest in the pit. [last in the west|after the guard]",
+   "legions own mutilators on the approach are war party fights. [one at a time|careful near the door]",
    "namox is at the stair up to gress. [mids on the plague quest|plague quest goes past him]"
   ],
   "aftermathWin": [

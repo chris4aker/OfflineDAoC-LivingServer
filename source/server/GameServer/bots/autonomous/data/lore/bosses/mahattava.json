@@ -76,7 +76,7 @@
       "text": "The companies of Midgard who come down the wet steps to the lake find Thorgerd's saying is not a figure of speech. When anything lays a hand on the fin, the whole school comes out of the black water at once, all of the fjarskafinn that lie near the shore, finned and muck-scaled and slow and very many, up the wet steps together like the tide coming in. The companies say the first sight of it is the moment most of them decide whether the scale is worth it.\n\nSome of them decide it is not. The skalds of Jordheim tell of two warriors of the realm who took a tenth of the fin's strength off it, alone, and looked at the lake behind it, and went home. The skalds tell it as a joke on the warriors. The dwarves of the encampment tell it as the wisest thing anyone from Midgard has done in the old one's house.\n\nThe skalds have a song for the other choice as well, and it is not about a fin. Beowulf of the Geats went down into a mere after Grendel's mother, into water so deep that it was the most part of a day before he saw the bottom. On the shore the Danes watched the blood come up through the water, and gave him up, and went home. Only his own Geats sat on, sick at heart, staring at the lake. He came up at last with her son's head and the hilt of a giant's sword whose blade had melted in her blood. The skalds sing it to the companies who stand at the top of the wet steps deciding. The dwarves listen politely, and say only that Beowulf's mere had a bottom.\n\nWhen the fin falls it sinks back into the black water, the companies say, and the school goes down with it, and the sound of the waterfall comes back into the cave. In a season the fin is moving on the lake again. The dwarves say it does not die at all. They say it goes down, the way the lake goes down, to wherever the bottom is, and comes up again when it has a mind to.\n\nThe old one has never once gone down the wet steps since the night of the treaty. The narfi say she is afraid of the lake. The dwarves say she is the only creature in her house with sense."
     }
   ],
-  "legend": "Mahattava brings twenty-eight fjarskafinn. That is not a slip of the tongue: the whole school in the area comes the moment you touch it. Blasts that strike everyone near, a wall of shield-bearers at the lake edge, and patience; draw it to the shore so the fish come up the steps in a line. Mahattava itself has a simple rule: if its target has no lingering hurt on it, it casts its Infection (80 every few seconds for 20 seconds); if its target already has one, it hits for 300 every 10 to 15 seconds instead. So curing the infection on its shield-bearer as soon as it lands means it spends its casts re-infecting rather than striking. The raiders reckon its strength at thirty thousand, a fifth of every blow and three-tenths of every spell are lost on it, and no charm or stun holds it. Two raiders took a tenth off it in the early days and decided against the rest. Its fish-scale shield is a fine prize, with a charged cold blast.",
+  "legend": "Mahattava brings twenty-eight fjarskafinn. That is not a slip of the tongue: the whole school in the area comes the moment you touch it. Blasts that strike everyone near, a wall of shield-bearers at the lake edge, and patience; draw it to the shore so the fish come up the steps in a line. Mahattava itself has a simple rule: if its target has no lingering hurt on it, it casts its Infection (about a twelfth of a robed caster's strength every few seconds for 20 seconds); if its target already has one, it hits for three-tenths of a robed caster's strength every 10 to 15 seconds instead. So curing the infection on its shield-bearer as soon as it lands means it spends its casts re-infecting rather than striking. It takes as much killing as fifteen raiders, a fifth of every blow and three-tenths of every spell are lost on it, and no charm or stun holds it. Two raiders took a tenth off it in the early days and decided against the rest. Its fish-scale shield is a fine prize, with a charged cold blast.",
   "yells": {
     "aggro": [
       "(The lake boils with fins.)",
@@ -125,7 +125,7 @@
       "blast groups ready, 28 fish",
       "cure the infection on shield-bearers",
       "mahattava: 28 fish come at once, blasts ready, shield-bearers on the shore",
-      "cure its infection fast, it only strikes for 300 while the infection is on",
+      "cure its infection fast, it only strikes for three-tenths of a robed caster while the infection is on",
       "draw to the shore so the school comes in a line"
     ],
     "aftermathWin": [
@@ -141,7 +141,7 @@
       "the lake emptied at us",
       "blast group ran out of power at fish 20",
       "the fish turned on the blast group",
-      "mahattava hit our main shield-bearer for 400 a swing and he folded",
+      "mahattava hit our main shield-bearer for two-fifths of a robed caster a swing and he folded",
       "nobody cured the infection and it struck the shield-bearer every 10 sec",
       "the fish got the blast group"
     ],

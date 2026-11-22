@@ -38,7 +38,7 @@
     }
   ],
   "story": "Giant cicadas sing in Faraheim's woods all summer, so loud that Hagall's guards stop their ears, and the cicada-killers hunt them. The dwarves of the Remnants, who keep slates on everything, say the cicadas spend most of their lives under the ground and come up only to sing and breed and die, and that the length of time they spend under the ground is different for every brood, and that one brood in the north-east of Faraheim has not been seen to come up in living memory, except for one of them.\n\nThat one is Morbax. The dwarves think he came up too early. He is larger than any cicada of the western woods and heavier, and he does not sing; the slates say he has never been heard to make a sound. He lives in the north-east near the ground where Shredclaw's young render pack hunts, alone among a few lesser cicadas that came up after him, and the render pack, which eats everything else in that part of Faraheim, does not eat him. The dwarves have watched the renders walk round him.\n\nThe skogsra have a story that the Remnants find more frightening than the slates. They say Morbax is waiting for his brood. Somewhere under the north-east woods, the skogsra say, the rest of his kind are still in the ground, a brood the size of a forest, and they are coming up, slowly, a year at a time, and Morbax came first to see whether the world was ready for them. When they come, the skogsra say, Faraheim will not hear itself think.\n\nHe is a creature of the swarm, like the cicada-killers and the gnats of the south, and the swarm comes when he is struck. The Remnants' slate on him ends with a line that the slate-keepers have copied for every slate since: count the cicadas in spring. If there are more than last year, tell Hagall.",
-  "legend": "Morbax is a known giant cicada (an insect), a foe for the realm's best, a full band of them, in the north-east of Faraheim, near Shredclaw's render ground. He's of the Swarm of Aegir, so when you hit him the swarm insects nearby can come too, for they answer each other's call; the lesser giant cicadas, hardened-band foes, and a cicada-killer, a shade stronger than him, stand some thirty-odd paces away, so draw him toward the west and you'll usually get him alone. No tricks, charms, trances and stuns hold him, small for a known beast. Mind Shredclaw's renders: their ground is close, and his bleeds and poison on top of Morbax is a bad mix. No quest. He is small for a known beast and easy to lose behind the trees, so keep him targeted.",
+  "legend": "Morbax is a known giant cicada (an insect), a foe for the realm's best, a full band of them, in the north-east of Faraheim, near Shredclaw's render ground. He's of the Swarm of Aegir, so when you hit him the swarm insects nearby can come too, for they answer each other's call; the lesser giant cicadas, hardened-band foes, and a cicada-killer, a shade stronger than him, stand some about thirty-five paces away, so draw him toward the west and you'll usually get him alone. No tricks, charms, trances and stuns hold him, small for a known beast. Mind Shredclaw's renders: their ground is close, and his bleeds and poison on top of Morbax is a bad mix. No quest. He is small for a known beast and easy to lose behind the trees, so keep him targeted.",
   "yells": {
     "aggro": [
       "(The great cicada makes no sound at all.)",
@@ -76,8 +76,8 @@
   },
   "botLines": {
     "briefing": [
-      "morbax is a 56 giant cicada, swarm of aegir faction",
-      "draw him west, the other cicadas are thirty-odd paces off",
+      "morbax is a giant cicada, a fight for the realm's best, swarm of aegir",
+      "draw him west, the other cicadas are about thirty-five paces off",
       "shredclaws renders are close, dont mix them",
       "no tricks"
     ],

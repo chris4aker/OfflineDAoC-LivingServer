@@ -32,7 +32,7 @@
     }
   ],
   "story": "The Master eats those who fall from their place, and Prince Ba'alorien made himself the one who decides who has fallen. He took the north of the hollow and the Inquisition with it, and wrote their law of portions on the first night of the First Roll: a soul of rank that falls is the Master's; a soul that came of its own will is the Master's portion too; and one that came at another's bidding, a beast, a bound spirit, a sworn follower, belongs to no one until the Blood claim it. Earl Mermer keeps the cloister doors. The Albion priests pray for the dead before they reach the north cloisters, so that they will have been judged once kindly.\n\nHe piles the bones of everything he has eaten beside his throne at shoulder height and rests his arm on it; his brother Asmoien counts knots, he counts bones, and he is ahead. When a company enters his hall its followers falter and he breathes in, and the nearest is gone into him and mends him, and then the next. The skalds sing that his throne has an armrest of hounds.\n\nHibernia learned it from Fionnuala, a druid of Connacht whose grey wolf sat down in his hall, looked at her, and was gone, while the prince was whole again. He did not touch her: she had come of her own will. The bard Ciarnat of Connacht made the song, which ends: leave the hound at the top of the stair. Fionnuala went back the next winter with nothing at her heel, and Hibernia counts the blow she struck as its first kill of him.\n\nAlbion's first company was Father Ieuan's of Caer Ulfwych, a canon lawyer who held the prince bound by his own verdicts. Every man came of his own will and said so at the cloister door, and no one brought a follower; in the hall nothing came to the prince, and he rose in honest anger and fell by his bone pile.",
-  "legend": "Prince Ba'alorien is Asmoien's twin in the north: a foe for any realm's whole muster; the raiders reckon his strength at a hundred thousand, no charm or stun holds him, four-tenths of every weapon stroke and seven-tenths of everything else are lost on him, and he has the same devour. Every 5 seconds while he is fighting he kills the nearest pet within a long bowshot and heals by its whole strength; companions are bound servants too, but the devour skips them, so nobody in the raid is eaten, only the pets. In a raid full of pets, companions' pets too, that is a dead pet and a big heal every 5 seconds. Out of the fight for 8 seconds beyond his reach and he walks home whole. He is one of the four Blood (with Abdin, Asmoien and Nahemah) who must all be dead before Beliathan can rise. Hibernians will tell you their druid killed him first.",
+  "legend": "Prince Ba'alorien is Asmoien's twin in the north: a foe for any realm's whole muster; he takes as much killing as fifty raiders, no charm or stun holds him, four-tenths of every weapon stroke and seven-tenths of everything else are lost on him, and he has the same devour. Every 5 seconds while he is fighting he kills the nearest pet within about seventy paces and heals by its whole strength; companions are bound servants too, but the devour skips them, so nobody in the raid is eaten, only the pets. In a raid full of pets, companions' pets too, that is a dead pet and a big heal every 5 seconds. Out of the fight for 8 seconds beyond his reach and he walks home whole. He is one of the four Blood (with Abdin, Asmoien and Nahemah) who must all be dead before Beliathan can rise. Hibernians will tell you their druid killed him first.",
   "yells": {
     "aggro": [
       "Asmoien will be so jealous.",
@@ -70,8 +70,8 @@
   },
   "botLines": {
     "briefing": [
-      "baalorien eats the nearest pet within 2000 every 5 sec, heals off it. companions are safe, pets are not",
-      "companions' pets count, not just ours. keep as many of us outside 2000 as we can",
+      "baalorien eats the nearest pet within about seventy paces every 5 sec, heals off it. companions are safe, pets are not",
+      "companions' pets count, not just ours. keep as many of us outside seventy paces as we can",
       "pets dismissed at the top of the stair. leave the hound, like the hibs say",
       "he is one of the four royals for beliathan"
     ],
@@ -82,10 +82,10 @@
       "the north cloister is quiet"
     ],
     "aftermathLoss": [
-      "three pets in range. he never dropped below 80",
-      "he ate a pet every 5 sec and never dropped below 80",
+      "three pets in range. he never lost more than a fifth",
+      "he ate a pet every 5 sec and never lost more than a fifth",
       "three pets in range, back to full",
-      "everyone stood inside 2000 of him"
+      "everyone stood inside seventy paces of him"
     ],
     "rumour": [
       "heard ba'alorien and asmoien keep score on how many pets they eat",

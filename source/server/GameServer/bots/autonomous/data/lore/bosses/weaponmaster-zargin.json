@@ -72,14 +72,14 @@
   },
   "botLines": {
     "briefing": [
-      "zargin is 54 in dellingstads training yard",
+      "zargin is a fight for the realm's best in dellingstads training yard",
       "students attack on sight and are dellingstad's, they come",
-      "killing town folk hurts your dellingstad faction",
+      "killing town folk hurts your standing with dellingstad",
       "no tricks on zargin"
     ],
     "aftermathWin": [
       "zargin down, the students too",
-      "faction hit for sure",
+      "our standing took a hit for sure",
       "easy-ish",
       "fortifiers didnt notice"
     ],

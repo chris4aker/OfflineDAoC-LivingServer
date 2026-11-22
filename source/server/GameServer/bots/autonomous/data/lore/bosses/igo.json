@@ -38,7 +38,7 @@
     }
   ],
   "story": "Below the arachites' farm the spider-folk do not go easily. Cave trows hold the deep, with sorcerers of their own, and their chief is Igo. The thralls call him the doorman, because he holds the place where the farm ends and the deep begins.\n\nThe cave trows came down into the hall of lamps after the arachites, the free svartalfar say, from some cave of their own in the roots of Myrkwood, looking for warmth and silk and anything soft to eat. They found the arachites above and the deep below and the thing named evil sitting on the deep road, and they did what trows do: they found the one place where nobody else wanted to live and moved in. That place is the edge, the stretch of passages between the bottom of the farm and the top of the deep, and the trows have held it ever since, with the silksters' webs above them and the deeplurks below.\n\nIgo is not the strongest trow. He is the one who made the bargain. The arachites leave the edge to the trows, and the trows let nothing up out of the deep into the farm; and in return the trows take a share of what the huskers carry, the husks that hang about the edge in heaps, emptied, which the trows burn for the little warmth they give. The thralls hate the trows less than they hate the arachites, which is not saying a great deal. A thrall who runs from the farm runs down, the thralls say, because up is the arachites, and down is Igo, and Igo sometimes looks the other way.\n\nHis sorcerers stand close round him, the trollkarl of the cave trows, and the silksters' webs hang thick over his passages, and he is quick to rise against any stranger close by and in no hurry to chase one who keeps away. The free svartalfar of Malmohus say that Igo is the only creature in Spindelhalla who has ever traded with the thralls: a husk's worth of warmth for news of what moves on the deep road. They say he is afraid of Ond. They say he has every reason.",
-  "legend": "Igo is the cave trow chief, a foe for the realm's best, a full band of them, at the edge between Spindelhalla's silk farm and the deep, with cave trow trollkarl, nearly his match, a few paces away, cave trows and spindel silksters around, and Kalph (one of the lesser known beasts) some twenty-five paces off. He notices you only within some seven paces and answers to no one, so he doesn't call anyone, but the trollkarl and trows beside him attack on sight and will see it. Kill or entrance the trollkarl first, they're the casters. No special tricks on Igo, and charms, trances and stuns hold him: an easy kill for a band of the realm's best. The husks lying around are each a foe for a young adventurer and never strike first, so ignore them.",
+  "legend": "Igo is the cave trow chief, a foe for the realm's best, a full band of them, at the edge between Spindelhalla's silk farm and the deep, with cave trow trollkarl, nearly his match, a few paces away, cave trows and spindel silksters around, and Kalph (one of the lesser known beasts) about twenty-five paces off. He notices you only within about seven paces and answers to no one, so he doesn't call anyone, but the trollkarl and trows beside him attack on sight and will see it. Kill or entrance the trollkarl first, they're the casters. No special tricks on Igo, and charms, trances and stuns hold him: an easy kill for a band of the realm's best. The husks lying around are each a foe for a young adventurer and never strike first, so ignore them.",
   "yells": {
     "aggro": [
       "Doorman says no.",
@@ -76,10 +76,10 @@
   },
   "botLines": {
     "briefing": [
-      "igo is 50, cave trow chief, trollkarl right next to him",
+      "igo is a fight for the realm's best, cave trow chief, trollkarl right next to him",
       "kill or entrance the trollkarl first",
       "answers to nobody, only notices you up close",
-      "kalph is 800 off, dont drag it there"
+      "kalph is about twenty-five paces off, dont drag it there"
     ],
     "aftermathWin": [
       "igo down, easy",

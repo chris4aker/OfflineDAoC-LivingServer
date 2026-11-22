@@ -49,7 +49,7 @@
     }
   ],
   "story": "A pack that waits for the end of the world in a frozen forest still needs to know what is happening outside it, and the fenrir of Yggdra have Geyra for that. She is their runner, the one fenrir who goes out of the far west of the forest and comes back, and she does not live with the pack. She stands alone a little way off, near enough to hear Fjall's prophets and far enough not to be counted among them.\n\nThe fenrir say a messenger must not belong to anyone, or she carries only one side of every message. Geyra has taken that further than the pack meant. She carries messages for the fenrir to the werewolves of Skona and back, for the bone-eaters, for anyone in the frontier with something to say and a way to pay, and some seasons ago she began to carry them for the Red Daggers. The band that sells Midgard's back roads to Albion needed a runner who could cross the frontier between the Raumarik heights and the Jamtland hills without being seen, and a fenrir who goes everywhere and belongs nowhere was exactly that. Red Hagen pays her in the band's own way, with marks on his map.\n\nThat is how the trail found her. A warrior of Mularn brought Elizabeth one of the Daggers' red-hilted blades, Elizabeth knew the hand that had bound its hilt, Lynnleigh on Strider Island knew the road it had travelled, and the road ran through Geyra. The viking epic sends Midgard's warriors to her in the forest before it sends them to Red Hagen, because without her the map is only a map: nothing on it reaches the Albion men waiting in the hills.\n\nShe fights alone, as she lives. The pack would come if it were near, because she is still of it, but it is not near, and she has never asked it to be. The fenrir prophets, asked about her after she has been killed and another runner has taken her place, say only that a messenger who carries for everyone is owed by no one. Fjall, Jana says, says nothing at all.",
-  "legend": "Geyra is a werewolf of the Fenrir Pack (a fenrir), a foe for the realm's best, a full band of them, standing alone in the far west of Yggdra Forest, a hundred-odd paces from Fjall's pack. The vikings' great quest An End to the Daggers sends you to slay her after Elizabeth in Mularn and Lynnleigh on Strider Island, before Red Hagen in Raumarik. She's of the Fenrir Pack, so she could call fenrir if any were close, but nothing stands near her: as long as you don't fight her on top of Fjall's pack it's a clean one-on-one. No special tricks, and charms, trances and stuns hold her. A small group of the strength the quest asks kills her easily, then it's back to Lynnleigh.",
+  "legend": "Geyra is a werewolf of the Fenrir Pack (a fenrir), a foe for the realm's best, a full band of them, standing alone in the far west of Yggdra Forest, about a hundred and ten paces from Fjall's pack. The vikings' great quest An End to the Daggers sends you to slay her after Elizabeth in Mularn and Lynnleigh on Strider Island, before Red Hagen in Raumarik. She's of the Fenrir Pack, so she could call fenrir if any were close, but nothing stands near her: as long as you don't fight her on top of Fjall's pack it's a clean one-on-one. No special tricks, and charms, trances and stuns hold her. A small group of the strength the quest asks kills her easily, then it's back to Lynnleigh.",
   "yells": {
     "aggro": [
       "Message for you: you are dead.",
@@ -88,7 +88,7 @@
   "botLines": {
     "briefing": [
       "geyra is alone in west yggdra, for the vikings' quest",
-      "fenrir pack faction but nothing near her",
+      "fenrir pack but nothing near her",
       "dont fight her near fjalls pack",
       "easy one on one"
     ],
@@ -101,7 +101,7 @@
     "aftermathLoss": [
       "dragged her toward fjall, the pack came",
       "too few of us",
-      "she hits harder than a 52",
+      "she hits harder than she looks",
       "bad draw"
     ],
     "rumour": [

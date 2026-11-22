@@ -74,7 +74,7 @@
       "text": "He does not rise without Birghir and Birghir does not rise without him. The giants of the citadel say the two old councillors were the last two of the Council who never voted against each other, and that when the second crossed mark was cut on the eldest rib, it was Guthlac who struck twice for no beside Birghir, the only time anyone heard him strike hard enough to make the bone ring in the north halls.\n\nThe cast-out sculptors at Dellingstad have a story about the end of the Council that Midgard's companies have since carried home as true. They say that when Birghir falls, Guthlac stops listening to the ice for the first time in a hundred years. He takes his ear off the rib and stands up, and puts both hands flat on the cracked council floor, and lets the glacier do what it has been wanting to do since the fortieth winter. The sculptors say that is the closest anyone in Tuscaran has come to hearing what is under the ice, and that the companies who have heard it do not say what it sounded like.\n\nThe icesplitters, who owe him their lives a hundred times over, will not speak against him even now. They say the old one told the Council where the glacier would break, and when, and the Council did not listen, and then it broke. They say that if anyone in the citadel has the right to let it, it is Guthlac. Hrimgrim, an old giant with a ruined arm, still sits by the crack in the council floor, the sculptors say, and when strangers step over it he tells them to watch the ice."
     }
   ],
-  "legend": "Guthlac is the elder who kills raids. Every 35 to 60 seconds an Ice Spike appears on a random raider, companion, adventurer of the realm or you (with nobody near, it appears by Guthlac). The raiders reckon its strength at 5,000, cold does almost nothing to it, and after 25 seconds it explodes for 2,500 cold across the whole room. So assign a melee kill team that breaks every spike with weapons the moment it appears, and whoever it lands on runs it away from the healers while they work. Every 35 to 45 seconds he also pins to the ground and blinds (sapping dexterity and quickness) a random raider who isn't his target, so carry something that breaks a pinning and a purge. His Rune of Mazing hits his shield-bearer for 550 energy and slows him, over and over. The raiders reckon Guthlac's strength at a hundred thousand, no charm or stun holds him, he is a foe for a war party of the realm's champions, and he always comes with Birghir. Fight them on the ribs and don't let them go home whole.",
+  "legend": "Guthlac is the elder who kills raids. Every 35 to 60 seconds an Ice Spike appears on a random raider, companion, adventurer of the realm or you (with nobody near, it appears by Guthlac). It takes as much killing as two and a half raiders, cold does almost nothing to it, and after 25 seconds it explodes for two and a half times a robed caster's strength in cold across the whole room. So assign a melee kill team that breaks every spike with weapons the moment it appears, and whoever it lands on runs it away from the healers while they work. Every 35 to 45 seconds he also pins to the ground and blinds (sapping dexterity and quickness) a random raider who isn't his target, so carry something that breaks a pinning and a purge. His Rune of Mazing hits his shield-bearer for a little over half a robed caster's strength in energy and slows him, over and over. Guthlac takes as much killing as fifty raiders, no charm or stun holds him, he is a foe for a war party of the realm's champions, and he always comes with Birghir. Fight them on the ribs and don't let them go home whole.",
   "yells": {
     "aggro": [
       "You should not have made me remember how ice breaks.",
@@ -132,10 +132,10 @@
       "dont group up under guthlac, his pinning and the spike together is how raids die there",
       "two people on spike duty for guthlac, nothing else",
       "guthlac pins you to the ground then spikes. purge ready",
-      "guthlacs ice spike lands on anyone, check if its you. 25 sec then 2500 cold to the whole room",
-      "spike has 5k and takes almost no cold. melee break it, casters dont bother with frost",
+      "guthlacs ice spike lands on anyone, check if its you. 25 sec then two and a half times a robed caster in cold to the whole room",
+      "spike takes two and a half raiders of killing and almost no cold. melee break it, casters dont bother with frost",
       "guthlac pins and blinds someone who isnt his target every 35-45s. something to break the pinning ready",
-      "rune of mazing on his shield-bearer every 8-15s, 550 and a slow"
+      "rune of mazing on his shield-bearer every 8-15s, a little over half a robed caster and a slow"
     ],
     "aftermathWin": [
       "nobody stood on a spike this time. [proud of you all|miracle]",
@@ -156,7 +156,7 @@
       "pinned next to the spike. that was that"
     ],
     "rumour": [
-      "heard guthlac's spikes go off for like 2500. [no thanks|i'll stand at the back]",
+      "heard guthlac's spikes go off for like two and a half robed casters. [no thanks|i'll stand at the back]",
       "guthlac listened to the ice for a hundred years. thats how he knows where it breaks",
       "[heard|they say] guthlac never said a word on the council. just voted with birghir",
       "the giants ask guthlac where to cut tunnels. he listens to the ice and tells them",

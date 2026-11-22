@@ -109,7 +109,7 @@
  "botLines": {
   "briefing": [
    "kobil is up in the rooms above the gate. [hes a flyer|he hangs over the braziers]",
-   "53, easiest of the big names. [breaking the blade starts here|kobil first then abdin]",
+   "easiest of the big names. [breaking the blade starts here|kobil first then abdin]",
    "kobil rises again fast. [get the quest kill and go|dont hang around]",
    "after kobil, abdin. [renew the blessings before the prince|mana check]"
   ],
@@ -129,7 +129,7 @@
    "[heard|word is] director kobil used to put on shadow plays for the demons",
    "kobil is building prince abdin an army of shadows. [kill him first|break the blade]",
    "[someone said|my guildie says] the gatekeeper hates kobil's army. [cant be counted|cant charge it toll]",
-   "kobil is the only big demon in df under 60. [free kill|easy]"
+   "kobil is the only big demon in df a single band of the realm's best can take. [free kill|easy]"
   ]
  },
  "loremasterTopic": {

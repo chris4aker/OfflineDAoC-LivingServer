@@ -107,7 +107,7 @@
    "mercur is outside oros hall. [draw him away from the door|away from the door]",
    "dont wake the three oros with mercur. [we're done if you do|three high lords, no]",
    "order: sallis, mercur, sabonach, then the oros. [mana check|renew the blessings]",
-   "71 no tricks, small earl, [easy to lose in the fight|assist the ma]"
+   "no tricks, small earl, [easy to lose in the fight|take your target from the caller]"
   ],
   "aftermathWin": [
    "mercur down. [the mirror is broken|no more shiny]",

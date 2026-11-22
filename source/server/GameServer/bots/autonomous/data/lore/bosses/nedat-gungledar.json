@@ -86,10 +86,10 @@
   },
   "botLines": {
     "briefing": [
-      "nedat gungledar is 70 and passive",
+      "nedat gungledar is a war party's fight and never strikes first",
       "eleven stalactites round it, those attack on sight",
       "clear the stalactites then hit it",
-      "no faction, no friends, no quest"
+      "answers to nobody, no friends, no quest"
     ],
     "aftermathWin": [
       "nedat leader down",
@@ -100,7 +100,7 @@
     "aftermathLoss": [
       "the stalactites swarmed us",
       "drew too many stones",
-      "70 is still a 70",
+      "big is still big",
       "lost a caster to a stalactite"
     ],
     "rumour": [

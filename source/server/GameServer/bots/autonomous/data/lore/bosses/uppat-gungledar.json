@@ -86,20 +86,20 @@
   },
   "botLines": {
     "briefing": [
-      "uppat gungledar is 77 but passive, it wont come unless you hit it",
+      "uppat gungledar is a war party's fight but never strikes first, it wont come unless you hit it",
       "the korkigen round it attack on sight, clear them first",
       "no quest needs it, its just very strong",
-      "no faction, nothing gets called"
+      "answers to nobody, nothing gets called"
     ],
     "aftermathWin": [
-      "we killed a 77 rock, why",
+      "we killed a war party's rock, why",
       "korkigen first, then the big one, worked",
       "took forever but it fell",
       "nedat next?"
     ],
     "aftermathLoss": [
       "walked into the korkigen",
-      "a 77 is a 77",
+      "big is big",
       "should have left it alone",
       "the stalactites joined"
     ],

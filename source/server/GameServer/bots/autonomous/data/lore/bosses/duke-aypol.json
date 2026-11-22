@@ -135,7 +135,7 @@
  "botLines": {
   "briefing": [
    "aypol next, east side of balns hall. [draw him east|east], away from baln and dortaleon",
-   "75 no tricks. he doesnt drop seals, [stop asking|dont ask]",
+   "no tricks. he doesnt drop seals, [stop asking|dont ask]",
    "keep it tight, the marshal's table is further east. [dont overpull|careful]",
    "aypol, then eligar. [blessings check|mana check] first"
   ],

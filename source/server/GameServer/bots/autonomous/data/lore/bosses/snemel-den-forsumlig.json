@@ -35,7 +35,7 @@
     }
   ],
   "story": "When the morvalt took the upper city, the war-chiefs set a guard on the hall of counsel, and they set a captain over the guard, and the captain's name was Snemel. Every morvalt in Trollheim knows what happened next, and the morvalt, who have little use for names, gave him a second one for it. Snemel den Forsumlig: the negligent.\n\nHis watch went into the hall of counsel to hold it, and found Olen pouring the Fathers' ale, and did not come out. Snemel went in after them to bring them back to their posts, the Valkyn say, and Olen poured for him too, and Snemel drank, and the next thing he knew the watch had become the drunken watch and the war-chiefs were calling him by his new name in front of the butchers. He has not been back to the bar since. He stands outside the hall among the bloodthirsty butchers, who despise the watch, and glares at the door, and the drunken watchmen who wander out are as likely to meet his blade as anyone's.\n\nThe Valkyn find him funny, and the trolls of Dyrfjall find him sad, and the skalds of Jordheim, who have heard the story from both, say it is the oldest story of a conquered city: the conquerors find the cellars. Snemel's shame has made him dangerous. He is quick to anger and quicker to shout, and the butchers around him come when he shouts, because shouting is the one thing his watch never did for him.\n\nThe morvalt say a captain who lost his watch to a bar has only one way to get a new name, and Snemel has been waiting for a stranger to come through the upper city who is worth killing in front of the butchers. A Valkyn guide who heard that said Snemel should be careful what he wishes for, and that the Fathers had a word for a guard who drinks at his post, and that the word did not mean negligent.",
-  "legend": "Snemel den Forsumlig is a morvalt captain, a foe for several bands of the realm's best together, in Trollheim's upper city, outside the hall of counsel among bloodthirsty butchers, each a foe for the realm's best, a full band of them, and some drunken watchmen. He attacks anyone who comes within some seven paces and is of the Morvalt Samhalle, so when you hit him the butchers next to him can come in too. No special tricks, charms, trances and stuns hold him: just a strong morvalt with friends. Draw from range, entrance the butchers, and keep the fight away from Olen's bar, which is some sixty paces off. No quest needs him. The Valkyn joke is that he's the only morvalt in the upper city who wants you to come to him. If the bar's drunks start wandering over, back off east and let them go home.",
+  "legend": "Snemel den Forsumlig is a morvalt captain, a foe for several bands of the realm's best together, in Trollheim's upper city, outside the hall of counsel among bloodthirsty butchers, each a foe for the realm's best, a full band of them, and some drunken watchmen. He attacks anyone who comes within about seven paces and is of the Morvalt Samhalle, so when you hit him the butchers next to him can come in too. No special tricks, charms, trances and stuns hold him: just a strong morvalt with friends. Draw from range, entrance the butchers, and keep the fight away from Olen's bar, which is about sixty paces off. No quest needs him. The Valkyn joke is that he's the only morvalt in the upper city who wants you to come to him. If the bar's drunks start wandering over, back off east and let them go home.",
   "yells": {
     "aggro": [
       "At last! Someone worth a name!",
@@ -73,7 +73,7 @@
   },
   "botLines": {
     "briefing": [
-      "snemel is 65, outside the bar with butchers",
+      "snemel is a several-bands fight, outside the bar with butchers",
       "he brings the butchers, entrance them",
       "keep away from olens bar",
       "no tricks, stuns and trances hold him"
@@ -87,7 +87,7 @@
     "aftermathLoss": [
       "butchers came with him",
       "drifted toward the bar and the drunks joined",
-      "65 hits hard",
+      "he hits hard",
       "too many butchers"
     ],
     "rumour": [
