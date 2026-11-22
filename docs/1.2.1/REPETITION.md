@@ -9,14 +9,14 @@ list for the writers (owner: never trim; reword by adding).
 
 | Realm | narrative words | in repeated phrases | top page opening |
 |---|---|---|---|
-| Albion | 283,714 | 7,781 (2.7%) | "Of the" 95 of 682 pages |
-| Midgard | 265,235 | 6,874 (2.6%) | "From the" 90 of 655 pages |
-| Hibernia | 237,236 | 8,582 (3.6%) | "From Derbáil" 27 of 532 pages |
-| Neutral | 120,960 | 3,918 (3.2%) | "From the" 21 of 277 pages |
+| Albion | 283,806 | 7,785 (2.7%) | "Of the" 95 of 682 pages |
+| Midgard | 265,348 | 6,874 (2.6%) | "From the" 90 of 655 pages |
+| Hibernia | 237,722 | 8,618 (3.6%) | "From Derbáil" 27 of 532 pages |
+| Neutral | 120,991 | 3,932 (3.2%) | "From the" 21 of 277 pages |
 
 ## Narrative phrases (stories, books, chapters, loremasters, atmosphere, history)
 
-1059 phrases recur in 3+ files; the top 40:
+1063 phrases recur in 3+ files; the top 40:
 
 | # | Phrase | files | times | by realm | e.g. |
 |---|---|---|---|---|---|
@@ -176,16 +176,16 @@ Count per realm in narrative text (per 10,000 words in brackets):
 | "From the readings / ledger / trap lines of" | 17 (0.6) | 29 (1.09) | 1 (0.04) | 3 (0.25) | `agidad`: "From the count of"; `amphiptere`: "From the Ledger of" |
 | "From what X told" | - | 15 (0.57) | - | - | `alchemist-phorzbreg`: "From what Ivrik the kobold lamp-carrier of Bjarken told"; `apologet-nesnuir`: "From what Ivrik the kobold lamp-carrier of Bjarken told" |
 | "as told in" | - | 10 (0.38) | 1 (0.04) | - | `hagall-the-red-dagger`: "as told in"; `hugi`: "as told in" |
-| "the druids / bards / skalds of ... say" | 16 (0.56) | 36 (1.36) | 58 (2.44) | 32 (2.65) | `ancient-black-oak`: "the druids of Lough Gur say"; `anurigunda`: "The druids of Lough Gur say" |
-| "the wider country it belongs to" | - | - | 21 (0.89) | - | `allta-fearann`: "the wider country it belongs to"; `bog-of-cullen`: "the wider country it belongs to" |
+| "the druids / bards / skalds of ... say" | 16 (0.56) | 36 (1.36) | 58 (2.44) | 32 (2.64) | `ancient-black-oak`: "the druids of Lough Gur say"; `anurigunda`: "The druids of Lough Gur say" |
+| "the wider country it belongs to" | - | - | 21 (0.88) | - | `allta-fearann`: "the wider country it belongs to"; `bog-of-cullen`: "the wider country it belongs to" |
 | "why it matters" / "why does it matter" | 27 (0.95) | - | 18 (0.76) | - | `elro-the-ancient`: "Why does it matter"; `albion-housing`: "Why it matters" |
 | "whence the name" | - | - | 2 (0.08) | - | `ancient-black-oak`: "whence the name"; `balor`: "whence the name" |
 | "is the only one of" | 11 (0.39) | 9 (0.34) | 16 (0.67) | 7 (0.58) | `anhylaw`: "is the only one of"; `avartack-the-champion`: "is the only one of" |
-| "for the rest of his/her life" | 3 (0.11) | 11 (0.41) | 12 (0.51) | 1 (0.08) | `abomos-the-soultrapper`: "for the rest of his life"; `corrupt-primal-of-air`: "for the rest of his life" |
+| "for the rest of his/her life" | 3 (0.11) | 11 (0.41) | 12 (0.5) | 1 (0.08) | `abomos-the-soultrapper`: "for the rest of his life"; `corrupt-primal-of-air`: "for the rest of his life" |
 | "the way (s)he said everything" | - | 1 (0.04) | - | - | `wretch-of-winter`: "the way she said everything" |
 | "they do not say how" | - | 1 (0.04) | 1 (0.04) | 1 (0.08) | `gnat`: "they do not say why"; `iarnvidiurs-lair`: "they do not say how" |
 | "to this day" | 2 (0.07) | 2 (0.08) | 4 (0.17) | 4 (0.33) | `chieftain-caimheul`: "to this day"; `chthonic-knights`: "to this day" |
-| "never once" | 79 (2.78) | 51 (1.92) | 31 (1.31) | 38 (3.14) | `adelon`: "never once"; `amminus-pilus`: "never once" |
+| "never once" | 79 (2.78) | 51 (1.92) | 31 (1.3) | 38 (3.14) | `adelon`: "never once"; `amminus-pilus`: "never once" |
 | "no one / nobody knows" | 17 (0.6) | 34 (1.28) | 18 (0.76) | 7 (0.58) | `agidad`: "nobody knows"; `chthonic-knights`: "nobody knows" |
 | "it is said" | 2 (0.07) | 5 (0.19) | - | 1 (0.08) | `aros-the-spiritmaster`: "it is said"; `council-nokkvi`: "It is said" |
 | "for a long time, and then" | 1 (0.04) | 7 (0.26) | 2 (0.08) | 1 (0.08) | `atur`: "for a long time, and then"; `council-nokkvi`: "for a long time and then" |

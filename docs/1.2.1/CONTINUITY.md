@@ -6,7 +6,7 @@ tells in more than one file and the forms each may take. `--check` reads every v
 contradiction follows HEROES.md decision 10 (Mythic's canon first, else the rule of cool, adding words, never
 cutting).
 
-**32 ledger facts, 7 contradiction(s).**
+**32 ledger facts, 0 contradiction(s).**
 
 ## The ledger
 
@@ -17,10 +17,10 @@ cutting).
 | **arthur-seven-came-home**: In the old song Arthur sailed Prydwen to Caer Sidi with three shiploads of men, and seven came home (Arthur and six). | 2: `apocalypse`, `caer-sidi` | - |
 | **caer-sidi-crypts-nine**: The third company lost nine in the crypts (the Crypt Lord's court, the first hall). | 4: `apocalypse`, `crypt-lord`, `fates-chosen`, `caer-sidi` | - |
 | **caer-sidi-gallery-two**: The third company lost two in Ilron's gallery, to shadows. | 3: `apocalypse`, `fates-chosen`, `lich-lord-ilron` | - |
-| **caer-sidi-silencer-two**: Two of the third company fell to the Silencer, in the inner halls. | 4: `apocalypse`, `fates-chosen`, `lich-lord-ilron`, `silencer` | - |
-| **caer-sidi-tally-counts-the-hush**: A text that counts the third company's dead (eighty up, nine in the crypts, sixty-seven home) also counts the Silencer's two: 9 + 2 + 2 = 13. | 1: `apocalypse` | 2 |
-| **caer-sidi-landing-tally**: At the steward's landing the captain had lost nine in the crypts, two to the hush and two in the gallery. | 1: `fates-chosen` | 1 |
-| **caer-sidi-thirteen-dead**: The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb. | 18: `apocalypse`, `bane-of-hope`, `bellum`, `crypt-lord`, `fames`, `fates-chosen` and 12 more | 3 |
+| **caer-sidi-silencer-two**: Two of the third company fell to the Silencer, in the inner halls. | 5: `apocalypse`, `fates-chosen`, `lich-lord-ilron`, `silencer`, `soul-reckoner` | - |
+| **caer-sidi-tally-counts-the-hush**: A text that counts the third company's dead (eighty up, nine in the crypts, sixty-seven home) also counts the Silencer's two: 9 + 2 + 2 = 13. | 2: `apocalypse`, `soul-reckoner` | - |
+| **caer-sidi-landing-tally**: At the steward's landing the captain had lost nine in the crypts, two to the hush and two in the gallery. | 1: `fates-chosen` | - |
+| **caer-sidi-thirteen-dead**: The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb. Sir Rhun comes home alive among the sixty-seven, but hollow (owner decision 10, the rule of cool). | 18: `apocalypse`, `bane-of-hope`, `bellum`, `crypt-lord`, `fames`, `fates-chosen` and 12 more | - |
 | **caer-sidi-four-riders**: Four riders stand before the end's door: Fames, Bellum, Morbus and Funus. | 7: `apocalypse`, `bellum`, `fames`, `fates-chosen`, `funus`, `morbus` and 1 more | - |
 | **dame-nest-eleven**: Dame Nest walked home calling names and found eleven. | 2: `bane-of-hope`, `caer-sidi` | - |
 | **gwennol-keel-up**: The Gwennol went over and did not right herself; the boats found her at dusk keel up, the boy still holding the tiller, and the sea kept two men and every sack. | 3: `scurceol-hyrde`, `camelot`, `krondon` | - |
@@ -32,7 +32,7 @@ cutting).
 | **iorwerth-walled-vein**: Iorwerth sang the Quieting in the deepest cellar but never went past the walled vein (the brick). | 3: `draargus-the-mighty`, `xanxicar`, `crystal-cave` | - |
 | **iorwerth-forty-years**: Iorwerth sang the Quieting on the longest night for forty years, and lived forty years more at Caer Gothwaite. | 3: `draargus-the-mighty`, `xanxicar`, `crystal-cave` | - |
 | **wenoiak-books**: Weno'iak's books are on his observatory shelves; he moves them before any company comes, and leaves ash. | 3: `syssro-the-ruthless`, `wenoiak-the-enlightened`, `avalon-city` | - |
-| **wenoiak-household-uncounted**: Weno'iak's household (cuirassiers, reeves, warsteeds) is told without a count. The fight advice (legend) keeps its head counts, as decision 9 keeps head counts in fight advice. | 2: `wenoiak-the-enlightened`, `avalon-city` | 1 |
+| **wenoiak-household-uncounted**: Weno'iak's household (cuirassiers, reeves, warsteeds) is told without a count. The fight advice (legend) keeps its head counts, as decision 9 keeps head counts in fight advice. | 2: `wenoiak-the-enlightened`, `avalon-city` | - |
 | **feast-of-thrones-thirty**: Thirty lords met at the Feast of Thrones. | 4: `duke-satori`, `gatekeeper-dommel`, `grand-chancellor-adremal`, `legion` | - |
 | **feast-of-thrones-nineteen**: The Master ate nineteen of them. | 6: `behemoth`, `duke-aypol`, `duke-eligar`, `marquis-almen`, `neutral`, `darkness-falls` | - |
 | **feast-of-thrones-eleven**: Eleven knelt, and the court called him Legion. | 7: `behemoth`, `high-lord-baelerdoth`, `high-lord-baln`, `high-lord-saeor`, `legion`, `marquis-valupa` and 1 more | - |
@@ -47,41 +47,7 @@ cutting).
 
 ## Contradictions found
 
-### caer-sidi-tally-counts-the-hush
-
-Ledger: A text that counts the third company's dead (eighty up, nine in the crypts, sixty-seven home) also counts the Silencer's two: 9 + 2 + 2 = 13. (HEROES.md owner notes (Caer Sidi's toll is settled))
-
-Finding: Medium. `apocalypse` chapter "The Third Company" counts eighty up, nine in the Crypt Lord's court, two in Ilron's gallery and sixty-seven home, and never tells the Silencer's two (80 - 9 - 2 = 69). Low: `soul-reckoner` chapter "Whom He Counts For" has "eighty in" and "sixty-seven out" beside "the nine of the crypts"; it names, it does not add up, but a reader can count. Fix by adding the two in the inner halls, as REVIEW-EPICS-ALBION M7 did for the pages.
-
-- `bosses/apocalypse` chapters[].text: "They lost nine to the Crypt Lord's court in the first hall." (says **does not count it**)
-- `bosses/soul-reckoner` chapters[].text: "Arthur's seven are in it, the Inconnu say, and the lich's company, and Sir Tegid, and the nine of the crypts, and everyone who has climbed since, written once as they passed his table; and the line for the end of the world in the first cell is still blank." (says **does not count it**)
-
-### caer-sidi-landing-tally
-
-Ledger: At the steward's landing the captain had lost nine in the crypts, two to the hush and two in the gallery. (REVIEW-EPICS-ALBION.md M7)
-
-Finding: Medium. `fates-chosen` chapter "The Captain's Test": "She had lost nine in the Crypt Lord's court, two in Ilron's gallery and none to Sanguis" at the steward's landing. The Silencer comes before the landing (M7), and the same file's book page already says "nine in the crypts, two to the hush in the inner halls and two in the gallery". The chapter was not brought along.
-
-- `bosses/fates-chosen` chapters[].text: "She had lost nine in the Crypt Lord's court, two in Ilron's gallery and none to Sanguis, and she stood the company at the foot of the steward's landing and told them what she meant to do." (says **does not count it**)
-
-### caer-sidi-thirteen-dead
-
-Ledger: The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb. (HEROES.md owner notes (80 / 67 / 9 + 2 + 2))
-
-Finding: Medium, for the owner. Sir Rhun of Caer Gothwaite "did not come back from the harbinger he went to meet" (`apocalypse` chapters, twice; `bellum` chapter: "which Sir Rhun did not"). The owner settled the toll at thirteen dead placed in the crypts (9), the inner halls (2) and the gallery (2), so Rhun is a fourteenth, and 80 - 14 = 66. Rule-of-cool fixes that add words: Rhun is carried back from the harbinger and dies at Caer Gothwaite after the count (the sill would then carry fourteen names, a change to the settled count), or one of the gallery's or the hush's dead is Rhun, fallen earlier; the owner decides.
-
-- `bosses/apocalypse` chapters[].text: "Sir Rhun of Caer Gothwaite did not come back from the harbinger he went to meet, and the knights of that garrison do not speak of the harbingers' faces." (says **did not come back from the harbinger**)
-- `bosses/apocalypse` chapters[].text: "When the harbingers came, two of the company's knights, Sir Rhun and a knight of Caerwent, took one each with their companies, and Sir Rhun did not come back from his." (says **did not come back from his**)
-- `bosses/bellum` chapters[].text: "The knight went on to take one of the harbingers of the end with his own company, and came back from it, which Sir Rhun did not." (says **which Sir Rhun did not**)
-
-### wenoiak-household-uncounted
-
-Ledger: Weno'iak's household (cuirassiers, reeves, warsteeds) is told without a count. The fight advice (legend) keeps its head counts, as decision 9 keeps head counts in fight advice. (HEROES.md decision 9)
-
-Finding: Low. `avalon-city` area line (the yards): "Sixteen riders and steeds keep the yards." Decision 9 tells his household without a count, and sixteen is one of the counts that disagreed. Area lines are short (60 characters): "His riders and their steeds keep the yards." would fit.
-
-- `locations/avalon-city` atmosphere.areas[].lines[]: "Sixteen riders and steeds keep the yards." (says **Sixteen riders**)
-
+None.
 
 ## Candidates not in the ledger (`--suggest`)
 

@@ -145,7 +145,7 @@
         "\\bnine\\b[^.]{0,40}(?:crypts|court|first hall)"
       ],
       "require": "hush|Silencer|inner halls",
-      "finding": "Medium. `apocalypse` chapter \"The Third Company\" counts eighty up, nine in the Crypt Lord's court, two in Ilron's gallery and sixty-seven home, and never tells the Silencer's two (80 - 9 - 2 = 69). Low: `soul-reckoner` chapter \"Whom He Counts For\" has \"eighty in\" and \"sixty-seven out\" beside \"the nine of the crypts\"; it names, it does not add up, but a reader can count. Fix by adding the two in the inner halls, as REVIEW-EPICS-ALBION M7 did for the pages."
+      "finding": "Fixed 2026-11-22."
     },
     {
       "id": "caer-sidi-landing-tally",
@@ -165,11 +165,11 @@
       ],
       "require": "hush|Silencer|inner halls",
       "within": "sentence",
-      "finding": "Medium. `fates-chosen` chapter \"The Captain's Test\": \"She had lost nine in the Crypt Lord's court, two in Ilron's gallery and none to Sanguis\" at the steward's landing. The Silencer comes before the landing (M7), and the same file's book page already says \"nine in the crypts, two to the hush in the inner halls and two in the gallery\". The chapter was not brought along."
+      "finding": "Fixed 2026-11-22."
     },
     {
       "id": "caer-sidi-thirteen-dead",
-      "fact": "The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb.",
+      "fact": "The third company's dead are the thirteen: nine, two and two. No one else of it dies on the climb. Sir Rhun comes home alive among the sixty-seven, but hollow (owner decision 10, the rule of cool).",
       "source": "HEROES.md owner notes (80 / 67 / 9 + 2 + 2)",
       "kind": "forbid",
       "scope": {
@@ -181,7 +181,8 @@
         "did not come back from (?:the harbinger|his)\\b",
         "\\bwhich Sir \\w+ did not\\b"
       ],
-      "finding": "Medium, for the owner. Sir Rhun of Caer Gothwaite \"did not come back from the harbinger he went to meet\" (`apocalypse` chapters, twice; `bellum` chapter: \"which Sir Rhun did not\"). The owner settled the toll at thirteen dead placed in the crypts (9), the inner halls (2) and the gallery (2), so Rhun is a fourteenth, and 80 - 14 = 66. Rule-of-cool fixes that add words: Rhun is carried back from the harbinger and dies at Caer Gothwaite after the count (the sill would then carry fourteen names, a change to the settled count), or one of the gallery's or the hush's dead is Rhun, fallen earlier; the owner decides."
+      "finding": "Fixed 2026-11-22 (owner decision 10): Sir Rhun walks home among the sixty-seven but never lifts a sword or says a whole sentence again; the garrison counts him alive.",
+      "unless": "whole of him|walked home|came back from it whole"
     },
     {
       "id": "caer-sidi-four-riders",
@@ -391,7 +392,7 @@
       "forbid": [
         "\\b(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|\\d+) (?:horsemen|cuirassiers|warsteeds|reeves|of his faction|riders)\\b"
       ],
-      "finding": "Low. `avalon-city` area line (the yards): \"Sixteen riders and steeds keep the yards.\" Decision 9 tells his household without a count, and sixteen is one of the counts that disagreed. Area lines are short (60 characters): \"His riders and their steeds keep the yards.\" would fit."
+      "finding": "Fixed 2026-11-22."
     },
     {
       "id": "feast-of-thrones-thirty",
