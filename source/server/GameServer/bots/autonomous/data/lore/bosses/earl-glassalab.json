@@ -137,7 +137,7 @@
   "keyword": "glassalab",
   "text": "Prince [Abdin]'s earl, a crawler grown to a duke's height, which grew rich in the Uncounted Age by not digging under lords who paid. It is digging the [Army of Shadows] a road from the chapter house to Director [Kobil]'s chambers that does not pass through the Gate."
  },
- "bookPage": "From the report of a Midgard war-band's scout, given at Jordheim: The black knights' house stands on nothing. I put my ear to its floor while the others rested and heard digging under it, steady, the way a beetle digs in rotten wood, and then I heard it stop, and something under the floor listened back. In the hall beside the house there is a thing like a beetle the height of a longhouse, plated and still, and the knights keep their distance from it. I think the house knows that if it ever displeases the beetle it will go down into the dark all at once, and I think the knights know it too.",
+ "bookPage": "The black knights' house stands on nothing, the scout of a Midgard war-band reported at Jordheim. I put my ear to its floor while the others rested and heard digging under it, steady, the way a beetle digs in rotten wood, and then I heard it stop, and something under the floor listened back. In the hall beside the house there is a thing like a beetle the height of a longhouse, plated and still, and the knights keep their distance from it. I think the house knows that if it ever displeases the beetle it will go down into the dark all at once, and I think the knights know it too.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} stopped Earl Glassalab's digging in {minutes} minutes.",
   "loss": "Earl Glassalab took the ground from under {realm}'s raid under {raidLeader}."

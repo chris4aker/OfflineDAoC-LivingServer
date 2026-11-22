@@ -286,6 +286,16 @@ public class ProtocolTests
     }
 
     [Test]
+    public void AClickIsATargetWithTheObjectInViewAndTheExamineBit()
+    {
+        // PlayerTargetHandler reads the object id, then the flags: 0x4000 | 0x2000 in view, 0x8000 examine (#424).
+        byte[] click = ClientPackets.Target(1234, ClientPackets.TargetInView | ClientPackets.TargetExamine).Item2.ToArray();
+        byte[] plain = ClientPackets.Target(1234).Item2.ToArray();
+        Assert.That(click, Is.EqualTo(new byte[] { 0x04, 0xD2, 0xE0, 0x00 }));
+        Assert.That(plain, Is.EqualTo(new byte[] { 0x04, 0xD2, 0x60, 0x00 }));
+    }
+
+    [Test]
     public void FreshNamesAreNamesTheServerTakes()
     {
         for (int i = 0; i < 50; i++)

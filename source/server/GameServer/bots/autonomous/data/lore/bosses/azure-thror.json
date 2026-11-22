@@ -85,7 +85,7 @@
     "keyword": "Thror",
     "text": "The arm of the Order of the [Azure], who keeps the war-camp on Sheeroe's northern slopes and leads the burnings of the Glimmer's lesser lights. He stood aside for the prince, once, with his hammer in his hand."
   },
-  "bookPage": "From Cuán's account of Sheeroe: the watch keeps a column in its tally book for the blue folk's burnings, and Thror heads it. He was a smith of the firbolg kin, they say, and walked up the hill with his hammer and a pot of blue paint the summer the glimmers came, and has not walked down. His people are the young who joined for the burning, not the song. The watch saw him stand aside on the south road while the prince rode past within a spear's cast. It is the only entry in the column that is not a burning.",
+  "bookPage": "The watch keeps a column in its tally book for the blue folk's burnings, and Thror heads it, Cuán's account of Sheeroe notes. He was a smith of the firbolg kin, they say, and walked up the hill with his hammer and a pot of blue paint the summer the glimmers came, and has not walked down. His people are the young who joined for the burning, not the song. The watch saw him stand aside on the south road while the prince rode past within a spear's cast. It is the only entry in the column that is not a burning.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Azure Thror in Sheeroe Hills in {minutes} minutes.",
     "loss": "Azure Thror turned back {realm}'s band under {raidLeader} in Sheeroe Hills after {minutes} minutes."

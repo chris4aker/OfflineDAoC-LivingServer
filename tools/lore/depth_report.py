@@ -284,6 +284,7 @@ def main(argv=None):
     ap.add_argument("--exclude-epic", action="store_true", help="leave epic locations out of the location kind")
     ap.add_argument("--by-realm", action="store_true", help="with --files: group the files by realm, with counts")
     ap.add_argument("--json", action="store_true", help="the whole report as JSON")
+    ap.add_argument("--check", action="store_true", help="exit 1 if any file is below a floor (CI)")
     a = ap.parse_args(argv)
     r = report(a.lore, a.realm, a.kind, a.exclude_epic)
     if a.json:
@@ -313,6 +314,10 @@ def main(argv=None):
             else:
                 for f in g["files"]:
                     print(file_line(g["kind"], f))
+    below = sum(len(g["files"]) for g in r["groups"])
+    if a.check:
+        print(f"lore depth: {below} file(s) below a floor")
+        return 1 if below or r["problems"] else 0
     return 0
 
 

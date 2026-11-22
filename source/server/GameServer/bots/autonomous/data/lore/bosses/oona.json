@@ -107,7 +107,7 @@
     "keyword": "Oona",
     "text": "A champion of Hibernia, named for a fairy queen, who holds the river fork in Raumarik with a guard of the Norse dead she has raised."
   },
-  "bookPage": "From Fenrir's Folly, as told in Galplen, by Thyri: my uncle went to the fork once to see the green light, and came back, and would not say what he saw for years. When he was old he told me: a woman on the point of land, singing, and a ring of dead men round her facing outward, and one of them, near enough to the bank that he could see the face, was Hallvard the cooper's son from our own street, who had gone south with the hunters the winter before. He still wore his mother's brooch. My uncle did not tell her.",
+  "bookPage": "My uncle went to the fork once to see the green light, Thyri of Galplen tells in Fenrir's Folly, and came back, and would not say what he saw for years. When he was old he told me: a woman on the point of land, singing, and a ring of dead men round her facing outward, and one of them, near enough to the bank that he could see the face, was Hallvard the cooper's son from our own street, who had gone south with the hunters the winter before. He still wore his mother's brooch. My uncle did not tell her.",
   "chronicle": {
     "win": "{raidLeader} of {realm} took Oona's head at the river fork in {minutes} minutes.",
     "loss": "Oona added {raidLeader}'s party from {realm} to her guard after {minutes} minutes."

@@ -362,6 +362,13 @@ are not added yet:
   [CAST-NEUTRAL.md](CAST-NEUTRAL.md)), the voice guides (VOICE-*.md, rule 1 the owner's "phenomenal and tight") and a
   sample for the owner ([NPC-PASS-SAMPLE.md](NPC-PASS-SAMPLE.md)). Finding: the cap of 12 is checked for titled names
   only, and many bare-named tellers are far over it (Wenna 129, Elowen 89, Lisín 66, Aodhan 65).
+- **Epic voice and teller openings (#405, #406)**, on `wt11/voice-all`: ten Albion chapters (annal, romance, vow,
+  hermit) and eleven Hibernian ones (the old Irish tale's forms), and the teller openings varied in all four realms
+  ([EPIC-VOICE-ALBION.md](EPIC-VOICE-ALBION.md), [EPIC-VOICE-HIBERNIA.md](EPIC-VOICE-HIBERNIA.md),
+  [OPENINGS-MIDGARD-NEUTRAL.md](OPENINGS-MIDGARD-NEUTRAL.md)). Independent review
+  ([REVIEW-EPIC-VOICE.md](REVIEW-EPIC-VOICE.md)): 0 High, 2 Medium (the Dartmoor annal against the Herald's text; four
+  Midgard pages under 100 words), 8 Low, all fixed. Reviewer's calls on the owner's questions: Angharad's barge question,
+  the brehon's claim by entry and the Fomorians' three islands all stay. Tests only.
 - **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.

@@ -77,7 +77,7 @@
     "keyword": "Gunflor",
     "text": "A svartalf go-between who took the house on the [island] in the lake, looked too long into its well and died there without stopping. The shamans say the alliance of the [arachites] and the werewolves went out from his house."
   },
-  "bookPage": "From The Lake Book, by Asgeir of Galplen: I rowed close to the island once, on a dare, when I was young. The house has a door on the side away from the shore and a window on the side toward it, and someone stood in the window and watched me, and I knew he was dead because he did not blink in the wind. He called out, not loudly. He asked whose word I carried. I said nobody's, and he laughed and said then I was the only free man on the lake. I rowed home. The outcasts bought my fish that week for twice what it was worth, and did not say why.",
+  "bookPage": "I rowed close to the island once, on a dare, when I was young, Asgeir of Galplen writes in The Lake Book. The house has a door on the side away from the shore and a window on the side toward it, and someone stood in the window and watched me, and I knew he was dead because he did not blink in the wind. He called out, not loudly. He asked whose word I carried. I said nobody's, and he laughed and said then I was the only free man on the lake. I rowed home. The outcasts bought my fish that week for twice what it was worth, and did not say why.",
   "chronicle": {
     "win": "{raidLeader} of {realm} took Gunflor's head from the well island of Myrkwood in {minutes} minutes.",
     "loss": "Gunflor's well kept {raidLeader}'s party from {realm} after {minutes} minutes."

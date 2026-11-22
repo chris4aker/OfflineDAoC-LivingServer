@@ -171,8 +171,14 @@ internal static class ClientPackets
         return (0xAF, w);
     }
 
+    /// <summary>PlayerTargetHandler's flags: both line-of-sight bits (the target is in view).</summary>
+    public const int TargetInView = 0x6000;
+    /// <summary>PlayerTargetHandler's "examine" bit: the server answers with "You target [Name]." and the examine lines, as
+    /// it does for a click in the client (#424 sends the click both with and without it).</summary>
+    public const int TargetExamine = 0x8000;
+
     /// <summary>PlayerTargetHandler: the target's object id (0 = none); 0x6000 = in view.</summary>
-    public static (byte, PacketWriter) Target(int objectId, int flags = 0x6000)
+    public static (byte, PacketWriter) Target(int objectId, int flags = TargetInView)
     {
         var w = new PacketWriter();
         w.Short((ushort)objectId);

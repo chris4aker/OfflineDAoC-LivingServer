@@ -123,7 +123,7 @@
     "keyword": "Ydenia",
     "text": "A seithkona, a seeress of the old north, who turned her songs from telling to taking. She keeps a high seat on an island in Vanern and sings the unwary into the bog."
   },
-  "bookPage": "From the count of Arnkel the ferryman: my mother poled the seeress out to the island, the first time, alive. She paid in silver and said she would not need the boat back. Her two sisters carried the boards of her high seat. My mother heard her sing every night for a season, and on the morning she had foretold the water came up round the island, and in the evening there was only a seat on it. That night the singing began again. Of the eleven I have fished out of that cold pool, every one had been standing in front of her. Not one had been beside her.",
+  "bookPage": "My mother poled the seeress out to the island, the first time, alive, by the count of Arnkel the ferryman. She paid in silver and said she would not need the boat back. Her two sisters carried the boards of her high seat. My mother heard her sing every night for a season, and on the morning she had foretold the water came up round the island, and in the evening there was only a seat on it. That night the singing began again. Of the eleven I have fished out of that cold pool, every one had been standing in front of her. Not one had been beside her.",
   "chronicle": {
     "win": "{raidLeader} of {realm} emptied Ydenia's high seat in {minutes} minutes.",
     "loss": "Ydenia sang {raidLeader}'s party from {realm} into the bog after {minutes} minutes."

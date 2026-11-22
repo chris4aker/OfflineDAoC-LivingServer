@@ -115,7 +115,7 @@
     "keyword": "Fjall",
     "text": "Leader of the [fenrir], named for the bare fell because he does not move. A flame the bound god gave him dances beside him; the seers take it for Inaksha. [Jana] has studied him. See [Geyra]."
   },
-  "bookPage": "From The Wind Through the Ash, by Arnhild of Grallarhorn: my father took me once to the edge of the fenrir's wood, as far as the huscarls ever go, and from behind a tree I saw Fjall. He was standing in the snow with his pack moving round him, and beside him in the air was a little flame, bright as a candle, with nothing under it. The snow around his feet was melted in a ring. My father said: that is what the bound god pays with. I asked what Fjall had sold. My father said: nothing yet. That is why the god keeps him warm.",
+  "bookPage": "My father took me once to the edge of the fenrir's wood, Arnhild of Grallarhorn writes in The Wind Through the Ash, as far as the huscarls ever go, and from behind a tree I saw Fjall. He was standing in the snow with his pack moving round him, and beside him in the air was a little flame, bright as a candle, with nothing under it. The snow around his feet was melted in a ring. My father said: that is what the bound god pays with. I asked what Fjall had sold. My father said: nothing yet. That is why the god keeps him warm.",
   "chronicle": {
     "win": "{raidLeader} of {realm} took the dancing flame from Fjall in Yggdra in {minutes} minutes.",
     "loss": "Fjall and the fenrir kept the dancing flame from {raidLeader}'s party from {realm} after {minutes} minutes."

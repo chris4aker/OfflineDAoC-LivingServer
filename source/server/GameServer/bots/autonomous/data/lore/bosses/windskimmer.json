@@ -85,7 +85,7 @@
     "keyword": "Windskimmer",
     "text": "The eldest skimmer of [Allta Fearann], first of the wild land's four great ones, who never lands. His shadow ripples on the scrub like water. He comes down only for what climbs to the high pools."
   },
-  "bookPage": "From Coll of the Domnann guides: before you go north into the wild land, the Necht Sylvan say, name the four great ones so that they know you know them. Windskimmer first, because you will see him first: the eldest skimmer, always in the air, with the young skimmers and mantas looping after him. His shadow on the scrub ripples like water, and the hares lie flat when it passes. He is gentle until something climbs toward the high pools; then he comes down flat as a blade. He has never come down for the hunter of the mantids, and the mantids have not forgotten.",
+  "bookPage": "Before you go north into the wild land, the Necht Sylvan say, and Coll of the Domnann guides with them, name the four great ones so that they know you know them. Windskimmer first, because you will see him first: the eldest skimmer, always in the air, with the young skimmers and mantas looping after him. His shadow on the scrub ripples like water, and the hares lie flat when it passes. He is gentle until something climbs toward the high pools; then he comes down flat as a blade. He has never come down for the hunter of the mantids, and the mantids have not forgotten.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Windskimmer in Allta Fearann in {minutes} minutes.",
     "loss": "Windskimmer turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."

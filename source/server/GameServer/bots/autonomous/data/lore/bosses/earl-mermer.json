@@ -145,7 +145,7 @@
   "keyword": "mermer",
   "text": "Earl of the Cloister under Prince [Ba'alorien]: a Chthonic Knight sent north in the feud of the Blade and the Hook, examined for a whole Roll, and kept. He questions in a murmur, and the knights of the chapter house do not say his name."
  },
- "bookPage": "From a Hibernian bard's account of the northern cloister, made for the College at Tir na Nog: Among the grey questioners stood one shaped like the black knights of the west, but he did not stand like them. They stand as if the floor might be taken from under them. He stood as if he had forgotten there was a floor. He spoke to our captain as we came in, and she leaned toward him to hear, and so did I, and so did every one of us, and I do not know what he said. Our captain does. She left the company that winter and went to the druids, and has not spoken above a whisper since.",
+ "bookPage": "Among the grey questioners stood one shaped like the black knights of the west, a Hibernian bard's account of the northern cloister tells, made for the College at Tir na Nog, but he did not stand like them. They stand as if the floor might be taken from under them. He stood as if he had forgotten there was a floor. He spoke to our captain as we came in, and she leaned toward him to hear, and so did I, and so did every one of us, and I do not know what he said. Our captain does. She left the company that winter and went to the druids, and has not spoken above a whisper since.",
  "chronicle": {
   "win": "{realm}'s raid under {raidLeader} silenced Earl Mermer in the northern cloister in {minutes} minutes.",
   "loss": "Earl Mermer murmured to {realm}'s raid under {raidLeader}, and they leaned in."

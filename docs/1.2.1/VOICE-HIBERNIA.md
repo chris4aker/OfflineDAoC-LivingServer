@@ -70,3 +70,40 @@ brackets), with the same one-off scan as VOICE-ALBION.md.
 | "Plain, no tricks; ..." / "A hardened band ..." as advice openings | 47 (47) / 46 (45) | vary the advice's first words |
 | "Nobody ..." as an opening | 113 (66) | the person who did not |
 | "says" / "say" | 1,604 (208) | one teller per paragraph |
+
+## The epic voice (#405, 2026-11-22)
+
+Midgard's epics have the saga (Lydsyg, Dyranapur, Hurjavelen). Hibernia's have the old Irish tale and its learned forms:
+the teller is a poet, a brehon or a keeper of place-lore, and the form itself is part of what is told. Eleven epic
+encounters carry one chapter each in this voice (listed in [EPIC-VOICE-HIBERNIA.md](EPIC-VOICE-HIBERNIA.md)).
+
+**Forms** (use one per chapter, and say which in the first lines, the way the tale-lists name their kinds):
+- **The tale and its kind.** An adventure behind the water, a voyage, a death, a contention for the champion's portion.
+  It opens on a person and a place ("Sétna was one of the three hundred and forty...") and closes by naming itself
+  ("That is the adventure of Sétna behind the water"), with the custom that came of it.
+- **The watchman on the height.** One looks out and describes; one who knows names ("Not hard to know him"). Good for a
+  company coming up a stair or a pass, told from the other side.
+- **Place-lore (dindshenchas).** A name, why it is so called, what was done there, in prose ("Log Fliuch, the wet hollow.
+  So called for...") or in quatrains that begin and end on the name, like a ring. The four "whence the name?" pages
+  stay; new place-lore uses "So called because" or "why so called", not the capped formula.
+- **The triad.** Three things and the turn; a set of triads may end on one that breaks the pattern on purpose.
+- **The rhetoric (rosc) and its gloss.** Short, dark, unrhymed lines, then a glossator's line-by-line "that is", with the
+  disagreements left in and one line left unglossed.
+- **The brehon's judgment.** The pleas, the brehon's questions, the judgment in the law's own words, and the fee.
+- **The colloquy.** Question and answer, a line each, with the one question that is not answered.
+- **The charm.** Said through smoke or water, three turnings, a verse that answers the thing it unsays, and the rule
+  that came with it.
+
+**Cadence:** plain English, short clauses, the verb late when it carries weight ("Shape-walkers the Sylvan have always
+had"); questions answered "Not hard"; place-names glossed once; verse unrhymed or half-rhymed, never jingling. Each
+chapter ends on a custom still kept or a line left open, not on a moral.
+
+**Avoid:** the saga's "There was a man named X, son of Y" and "Here ends" (Midgard's); saints, monks, scribes'
+blessings, "Amen" (Hibernia has no Church); stage-Irish and Celtic-twilight mist; a form for its own sake (every line
+of a triad or a gloss adds a fact); "myth" labels on new writing (the forms are old, the chapters are `original`); the
+capped heroes (Fionn and Cú Chulainn are at or near the cap of 12: tell of the gods and the present-day tellers instead);
+"whence the name", "never once" and "the druids of ... say" (capped formulas).
+
+**Openings (#406):** a page opens in the scene, the document or the image, and the teller comes inside it ("The Cullen
+road after dusk is on Derbáil of Ardee's list"). The counts in the tics table above are from before #406; the new ones
+are in EPIC-VOICE-HIBERNIA.md.

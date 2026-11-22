@@ -54,6 +54,39 @@ journal. The voice is that of a document that knows it may be the only one left.
 
    A walkthrough. The same facts read in-world: who keeps the key, who wants the sphere and why.
 
+## The epic voice: romance and chronicle (#405)
+
+Midgard's epics have the saga ("There was a dwarf named Bodvar... Here ends the tale"). Albion's have the matter of
+Britain: the chronicle that records and the romance that tells. An epic chapter takes one of four forms, and says so in
+its first lines (a document named once, or the cadence itself). The teller stays a person of the realm: a reader, a
+clerk, a sexton, a hermit. The legends are told of, never present.
+
+| Form | What it is | Cadence | Model |
+|---|---|---|---|
+| **The annal** | A line to a year, nothing set down that was not seen. The old Welsh annals are the pattern. | "Year seventy-two. The battle of Badon..." Short entries, a year or a night as the heading, no adjective. A later hand in the margin is the only comment, and it is one word or one line. | `bosses/bellum` "Under the Years of the Battles"; `bosses/duraek-the-empowered` "The Annal of the Three Nights"; `locations/dartmoor` "The Annal on the Back of the Map"; `bosses/scurceol-hyrde` "The Weather-Book's Last Leaves" |
+| **The romance's adventure** | An event told in the cadence of the old romances: "Now leave we... and tell we", "and so", "Thus it went". Long sentences joined by "and". | Parataxis, plain verbs, the turn marked by "Then" or "Now". It may end, as Malory does, on what the book could not find out. | `bosses/silencer` "How the Ten Went In"; `locations/avalon-city` "The Hermitage Between Two Holts"; `bosses/warlord-dorinakka` "The Lay of the Headland" (with its refrain) |
+| **The vow** | The words sworn, set out line by line in the first person, then who wrote them and what each line answers. | "I will... If I am... I will not..." Each line a deed the encounter asks for, so the fight is in the oath, never as advice. | `bosses/bane-of-hope` "The Walkers' Vow"; `locations/hall-of-the-corrupt` "The Oath of the Post" |
+| **The hermit's interpretation** | As in the Grail romances, a knight brings a sign (a dream, a lintel, a wound) to a hermit, who reads it back to him. | "Now I shall tell you what these numbers betoken." One reading per sign, then the question the hermit will not answer for him. | `bosses/apocalypse` "The Hermit Reads the Lintel" |
+
+**Avoid:**
+- Pastiche spelling ("ye olde", "-eth" on every verb). The cadence carries it; "betoken" and "Now leave we" are enough.
+- An annal that comments on itself. The comment goes in the margin, in another hand, and is short.
+- A vow that is fight advice in disguise ("I will interrupt his casting"). The vow says what a person does for the one
+  beside him; the deed is the same, the words are not.
+- New "myth": only what the cited text says (the Welsh annals, the *Historia Brittonum*, Malory) is marked `myth`. The
+  in-world copy, its margins and every reading of it are `original`.
+- The heroes at the cap (Bedivere, Gawain, Lancelot at 12): give them their deed by epithet ("the king's last knight",
+  "Sir Lucan's brother").
+
+## Teller openings (#406)
+
+An Albion page used to open by naming its document: "From the Ledger of Little Haven, kept by Mordwywr." (72 pages) or by
+a section heading, "Of the cattle." (95). The page now starts with its first fact, image or line ("Paid nothing: so the
+Ledger of Little Haven, kept by Mordwywr, enters it."; "To Tobias, clerk, greeting."), and the document and its keeper
+come after, in the same passage. Keep it so: name the document once, after the first fact, and vary how (a clause, a
+colon, "as X records it", the keeper as the subject). `tools/lore/repetition.py --check` holds the counts
+([EPIC-VOICE-ALBION.md](EPIC-VOICE-ALBION.md) has them).
+
 ## Tics to stop repeating
 
 Counted over the player-visible narrative and advice of the 198 Albion files, bot chat left out (sentences; files in
@@ -62,7 +95,7 @@ with `lore_text.sentences`.
 
 | Tic | Count | Instead |
 |---|---|---|
-| "From the ..." as an opening | 81 (76 files); 98 openings with "From" | name the document once, in the page title, and start with its first fact |
+| "From the ..." as an opening | 81 (76 files); 98 openings with "From" (page openings after #406: "From the" 1 of 692, "From" 7) | name the document once, after the first fact, and start with the fact |
 | "From the Ledger of Little Haven, kept by Mordwywr" | 10 (10) | vary the frame, or start with the entry itself |
 | "From the second book of Gracien Adamson, name registrar of Fort Gwyntell" | 8 (8) | the same |
 | "The Inconnu say ..." | 97 (28) | a named Inconnu guide (Sefin is at the cap), or the claim without a frame |

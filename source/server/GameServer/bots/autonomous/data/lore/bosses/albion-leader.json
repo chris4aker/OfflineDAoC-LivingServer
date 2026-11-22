@@ -113,7 +113,7 @@
     "keyword": "Albion leader",
     "text": "The Albion man in the hills below Nottmoor who buys Midgard's back roads from the Red Daggers. The vikings' great quest ends with him. See [the Daggers' roads] and [Halldor]."
   },
-  "bookPage": "From The Four Roads, by Halldor, road-warden of Glenlock: I went down to the Albion tents once under a truce flag, to ask him to stop. He gave me hot wine and talked for an hour about the passes, which he knew better than I did, and about the light on the cold shoulders at dawn, and the lynx, and the old cockatrices. He said Albion has nothing like it. Then he said he would not stop, and that if I stopped him, another would come, and would not love the place, and I would like him less. He was right. I did.",
+  "bookPage": "I went down to the Albion tents once under a truce flag, to ask him to stop, Halldor, road-warden of Glenlock, writes in The Four Roads. He gave me hot wine and talked for an hour about the passes, which he knew better than I did, and about the light on the cold shoulders at dawn, and the lynx, and the old cockatrices. He said Albion has nothing like it. Then he said he would not stop, and that if I stopped him, another would come, and would not love the place, and I would like him less. He was right. I did.",
   "chronicle": {
     "win": "{raidLeader} of {realm} removed the Albion leader from Jamtland's hills in {minutes} minutes.",
     "loss": "The Albion leader kept his tents in Jamtland against {raidLeader}'s party from {realm} after {minutes} minutes."

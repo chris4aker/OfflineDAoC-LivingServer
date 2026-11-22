@@ -10,8 +10,12 @@ Older entries below keep the names they were written with.
 
 ## 1.2.1 (in development)
 
-Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
-or run where it was written; CI on pull request #398 is the first build.
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
+1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
+results so far: CI on `fix/1.2.1` at `d56adeda` (9,258 server tests passed, 0 failed, 1 skipped), and the playtester's
+`bot-death`, `bot-corpse-target` and `bot-rez` scenarios on `b644529a`, which check packets, not what the client draws.
+The raid fixes (#407-#415) are added under **Bosses** as their branches merge. Player notes:
+[docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
@@ -107,6 +111,28 @@ or run where it was written; CI on pull request #398 is the first build.
     own), and only area casters hit trees. Model: the 1.2 rules and #432 never win; this wins at 80 raiders and more
     (past his 70-trees-a-wave flood guard) when a raider deals 80 or more a second to a tree and a tree hits for 8 or less,
     at 50 only in the kindest case. **Not fixed at his period size.** Log: `EPIC_GK_TREES alive= onHealers=` (every 30 s).
+- **Dragon raids keep their thrown and resurrected raiders in the fight (#415, tests only).** Golestandt and Cuuldurach
+  fell apart partway (lost after two wipes on `9a173f4`, `c81eb5d` and `43c43aa`) while Gjalpinulva kept winning. Four of
+  Golestandt's five throw spots and three of Cuuldurach's land 7,300-12,200 from the lair, past the return wave's 6,700
+  line (one of Gjalpinulva's does), and the return wave held such a raider at the staging ring as if it had released; a
+  raider resurrected where it fell was held the same way. Both now stay with the raid (`REALM_RAID_RETURN_NOT_HELD`). No
+  dragon is changed. A simulation on the real return-wave and wipe code (`UT_DragonThrowReturnWave415`) reproduces the
+  pattern (Gjalpinulva wins most fights, the other two about half) and the fix lifts Golestandt and Cuuldurach to about
+  seven in ten; not yet seen in game.
+- **Legion's wounded step out where the healers reach them (#413, tests only).** A raider under 35% stepped straight away
+  from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
+  each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
+  Legion is unchanged; not yet seen in game.
+- **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
+  bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
+  Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,
+  casters and healers outside his target's party keep clear of the hammers that follow his styles, 500 around his
+  target. King and Queen are unchanged.
+- **Trollheim's stall clock after a wipe (#411, tests only).** The raid's hour without progress kept Nosdoden's low from
+  before the wipe and did not count the retry's pull, so a retry that came late in the hour was ended as "Timed out".
+  The retry's pull and, once the boss is back at full, its own low now count, once per wipe
+  (`REALM_RAID_STALL_CLOCK why=retry|low_reset`). `REALM_RAID_STALLED` now says what the route was doing
+  (`status=`, `living=`, `retries=`).
 - **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
   one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
   him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,
@@ -140,7 +166,14 @@ or run where it was written; CI on pull request #398 is the first build.
   the bot (checker row `rvr/porter_wait`).
 - The log checker's regroup row shows how far each regroup call spread (#419; the relay itself is unchanged: 9a173f4's
   17.4% is under the owner's 20% bar of 2026-11-19).
-- Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
+- **Repeated pocket rescues stop (#420).** A bot moved off disconnected ground by an audited pocket escape, and
+  back where the same route fails again, was moved again with no end (the Connacht hill camp at 200:314846,471535 lies
+  inside the 4,000-unit pocket whose escape is the road 3,300 units off). After two identical rescues for one goal within
+  half an hour the third is not made: the goal is given up as any failed route is (camp route quarantine, a new camp)
+  and `AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP` names the bot, the from and to points, the camp, its target and the goal.
+  `AUTONOMOUS_ROUTE_POCKET_ESCAPE` now names the camp, target, goal and `sameEscapes`. No navmesh or pocket changed;
+  the spot fixes themselves still need those PC log lines (the two Lough Derg / Bri Leith seam spots of #421 lie in no
+  audited pocket, so this does not reach them).
 
 **Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
 in the server, the launcher's defaults and Recommended, the shipped world and Setup. A world that ran 1.2 with the

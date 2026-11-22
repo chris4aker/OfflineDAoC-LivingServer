@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -38,22 +39,56 @@ namespace DOL.GS
         public const ushort DarknessFallsRegion = 249;
 
         private static Advice? LegionWounded(RuleContext c) =>
-            LegionWoundedAdvice(c.At, c.Raider.HealthPercent, c.Target.TargetObject == c.Raider, c.Target);
+            LegionWoundedAdvice(c.At, c.Raider.HealthPercent, c.Target.TargetObject == c.Raider, c.Target, c.Raider.ObjectID);
 
         /// <summary>
         /// Legion heals 2.5% of his health by each raider he kills (EnemyKilled; flood guard Legion.KillHeal) and his adds and
         /// blast finish the wounded. A raider under <see cref="LegionWoundedPercent"/> who is not the one he fights steps out
-        /// to <see cref="LegionWoundedStandOff"/> on its side and comes back once its healers have it up again; the healers
-        /// near him take anyone under half first (KillHealBosses). His target stays: running would drag him onto the raid.
+        /// to <see cref="LegionWoundedStandOff"/> on the raid's side (<see cref="LegionWoundedSpot"/>) and comes back once its
+        /// healers have it up again; the healers near him take anyone under half first (KillHealBosses). His target stays:
+        /// running would drag him onto the raid.
+        /// <para>
+        /// #413 (1.2.1, tests only): it stepped out "on its side", straight away from him. The raid's healers stand 1,200 from
+        /// him on the raid's side (LegionRangedSpot), so a melee raider wounded on his far side went to 1,700 beyond him,
+        /// 2,500-2,900 from every healer, past their 2,000 heal range: nobody could heal it back, his graspering souls
+        /// (aggro 1,500) found it alone, and its death healed him 2.5% (the owner's PC on e3b8238: Hibernia's tries ended at
+        /// 92% and 60% with his kill heals undoing the raid's work). Now it steps out toward the raid's side, about 500 behind
+        /// the healers' line; one already that far out waits only where its healers reach it.
+        /// </para>
         /// </summary>
-        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion)
+        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion) =>
+            LegionWoundedAdvice(raider, healthPercent, isHisTarget, legion, 0);
+
+        /// <summary>A wounded raider out of his reach and within this of its spot waits where it is.</summary>
+        public const int LegionWoundedSpotTolerance = 400;
+        /// <summary>The wounded spots spread across the corridor, this far apart.</summary>
+        public const int LegionWoundedSlotSpacing = 150;
+
+        /// <summary>As above, with the raider's id spreading the wounded across the corridor.</summary>
+        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion, long id)
         {
             if (isHisTarget || healthPercent >= LegionWoundedPercent) return null;
             Vector3 boss = At(legion);
-            if (Flat(raider, boss) >= LegionWoundedStandOff - 100) return new(BotAction.StandOff, legion, null,
-                "legion-wounded: out of his reach until healed (each death heals him)");
-            return new(BotAction.StandOff, legion, PointAway(raider, boss, LegionWoundedStandOff),
-                "legion-wounded: out of his reach until healed (each death heals him)", "epic_legion_wounded");
+            Vector3 spot = LegionWoundedSpot(boss, LegionRaidSide, id, raider.Z);
+            if (Flat(raider, boss) >= LegionWoundedStandOff - 100 && Flat(raider, spot) <= LegionWoundedSpotTolerance)
+                return new(BotAction.StandOff, legion, null, "legion-wounded: out of his reach until healed (each death heals him)");
+            return new(BotAction.StandOff, legion, spot,
+                "legion-wounded: out of his reach on the raid's side until healed (each death heals him)", "epic_legion_wounded");
+        }
+
+        /// <summary>Where a wounded raider waits (pure): <see cref="LegionWoundedStandOff"/> from him toward the raid's side
+        /// (behind the healers' line at 1,200), at one of five spots across by its id.</summary>
+        public static Vector3 LegionWoundedSpot(Vector3 boss, Vector3 raidSide, long id, float z)
+        {
+            Vector2 d = new(raidSide.X - boss.X, raidSide.Y - boss.Y);
+            if (d.Length() < 300) d = new(raidSide.X - LegionLairCenter.X, raidSide.Y - LegionLairCenter.Y);
+            Vector2 dir = d.Length() < 1 ? new Vector2(0, -1) : Vector2.Normalize(d);
+            Vector2 across = new(-dir.Y, dir.X);
+            int slot = (int)(Math.Abs(id) % 5);
+            float lateral = (slot - 2) * LegionWoundedSlotSpacing;
+            float along = MathF.Sqrt(LegionWoundedStandOff * LegionWoundedStandOff - lateral * lateral);
+            Vector2 at = new Vector2(boss.X, boss.Y) + dir * along + across * lateral;
+            return new Vector3(at.X, at.Y, z);
         }
 
         private static DOL.GS.Scripts.Legion _legion;

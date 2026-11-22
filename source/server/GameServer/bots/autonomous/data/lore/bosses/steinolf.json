@@ -109,7 +109,7 @@
     "keyword": "Steinolf",
     "text": "The stone-wolf, the one runner the hollow kept after [Gunnolf] refused runners. He belongs to no camp, and when he dies he is next seen at the far end of [the ruins]. See [the names]."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: we had a boy at Svarhamr once who swore he would follow the stone-wolf from one end of the ruins to the other and draw his road on a hide. He came back after nine days with a hide covered in lines that crossed and crossed again and went nowhere, and said there was no road, only a drakulv who was always already leaving. My teacher kept the hide. It hangs under the beam. When a child asks what the arrows after Steinolf's name mean, we show them the hide, and they stop asking.",
+  "bookPage": "We had a boy at Svarhamr once, Brisa the beam-cutter writes in her readings, who swore he would follow the stone-wolf from one end of the ruins to the other and draw his road on a hide. He came back after nine days with a hide covered in lines that crossed and crossed again and went nowhere, and said there was no road, only a drakulv who was always already leaving. My teacher kept the hide. It hangs under the beam. When a child asks what the arrows after Steinolf's name mean, we show them the hide, and they stop asking.",
   "chronicle": {
     "win": "{raidLeader} of {realm} caught Steinolf the runner in Malmohus in {minutes} minutes. He will be somewhere else.",
     "loss": "Steinolf outran {raidLeader}'s party from {realm} in Malmohus after {minutes} minutes."
