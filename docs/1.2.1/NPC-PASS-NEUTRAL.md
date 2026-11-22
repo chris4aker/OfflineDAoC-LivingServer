@@ -51,7 +51,7 @@ Selia 4, Morlin Caan 4, Captain Circa 1, Captain Astridr 1, Siencyn 2.
    - After: "Captain Circa, who sends Albion's young out of the southern portal keep, tells Thidranki as ... Circa has
      every new band lay a hand on the oldest ram's iron before it climbs, and counts the hands again at dusk." And:
      "Captain Astridr looks at the stone below the Midgard gate before a band rides out, and sends back any youth who
-     left nothing on it." (Geirlaug's own page has the girl of Mularn who leaves the crust anyway.)
+     left nothing on it." (Hallfrid's own page has the girl of Mularn who leaves the crust anyway.)
 
 Also: Sven keeps the Grand Summoner's name out of every verse, "because a mask has no name to sing"
 (`bosses/grand-summoner-govannon`). Sven's verse of Midgard's first dead is sung "at the southern gates to every warband
