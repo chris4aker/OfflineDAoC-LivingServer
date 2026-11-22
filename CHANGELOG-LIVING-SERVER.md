@@ -102,7 +102,7 @@ or run where it was written; CI on pull request #398 is the first build.
   the bot (checker row `rvr/porter_wait`).
 - The log checker's regroup row shows how far each regroup call spread (#419; the relay itself is unchanged: 9a173f4's
   17.4% is under the owner's 20% bar of 2026-11-19).
-- **Repeated pocket rescues stop (#420)** A bot moved off disconnected ground by an audited pocket escape, and
+- **Repeated pocket rescues stop (#420).** A bot moved off disconnected ground by an audited pocket escape, and
   back where the same route fails again, was moved again with no end (the Connacht hill camp at 200:314846,471535 lies
   inside the 4,000-unit pocket whose escape is the road 3,300 units off). After two identical rescues for one goal within
   half an hour the third is not made: the goal is given up as any failed route is (camp route quarantine, a new camp)
