@@ -19,7 +19,7 @@
     }
   ],
   "story": "The fishers of Tir Urphost keep their lamps covered on the cliff path at night, and every child of the coast knows why: Tawi Shon. In the old days, before the koalinth came up and before the isle rose in the west, the Cliffs of Moher had a watcher, a man of the cliff-dweller families who kept a fire on the highest point of the cliffs so the boats coming home in the dark would know where the rocks were. His name was Tawi Shon, which the coast folk say was a cliff-dwellers' name and means nothing in the speech of Tir Urphost, and he kept the fire for forty winters.\n\nThe story differs on why he stopped. The fishers say he fell asleep one night in a storm and the fire went out and his own sons' boat broke on the rocks below him, and in the morning he walked off the cliff. The cliff dwellers, who are not on good terms with Tir Urphost, say the fishers put the fire out themselves to wreck a Midgard trader for its cargo, and his sons were aboard it, and he walked off the cliff in the morning rather than live among them. Both stories end in the same place, on the rocks under the highest point of the cliffs.\n\nHe walks there still. The coast folk see a light on the cliff-top on storm nights, swinging as a lamp swings in a man's hand, and the boats that steer by it break on the rocks. That is why the lamps of Tir Urphost are covered on the cliff path: a lamp seen from the sea on a storm night might be taken for his, and a lamp seen by Tawi Shon might be taken for the one that put his fire out. The druids of Tir Urphost, Tobryn among them, have tried to lay him more than once. He is very large, for a ghost, the druids say, as if grief had stretched him, and he does not listen to anyone who comes to the cliff-top with a light.",
-  "legend": "Tawi Shon is a level 55 ghost on the highest point of the Cliffs of Moher (about 245k/450k). Plain mob, no script, 80-second respawn; a strong 50s group handles him. The cliff dwellers' camps along the path are a different faction and can get in the way, so come along the top. Mind the edge: falling off the Cliffs of Moher is its own fight. Tir Urphost fishers keep their lamps covered on the cliff path at night, and the bot-chat superstition is the same: do not bring a lit lamp up to him. Tobryn of Tir Urphost, the Broken Seal druid, is a little way inland if you need a break.",
+  "legend": "Tawi Shon is a level 55 ghost on the highest point of the Cliffs of Moher (about 245k/450k). Plain mob, no tricks, 80-second respawn; a strong 50s group handles him. The cliff dwellers' camps along the path are a different faction and can get in the way, so come along the top. Mind the edge: falling off the Cliffs of Moher is its own fight. Tir Urphost fishers keep their lamps covered on the cliff path at night, and the raiders' superstition is the same: do not bring a lit lamp up to him. Tobryn of Tir Urphost, the Broken Seal druid, is a little way inland if you need a break.",
   "yells": {
     "aggro": [
       "Who lit that? WHO LIT THAT?",
@@ -57,7 +57,7 @@
   },
   "botLines": {
     "briefing": [
-      "tawi shon is a 55 ghost on top of the cliffs of moher. [plain mob|no script]",
+      "tawi shon is a 55 ghost on top of the cliffs of moher. [plain mob|no tricks]",
       "come along the top, not through the cliff dweller camps",
       "mind the edge. [long way down|dont get knocked off]",
       "strong 50s group"

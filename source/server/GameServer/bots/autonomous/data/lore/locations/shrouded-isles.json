@@ -115,7 +115,7 @@
   "realmTakes": {
     "albion": {
       "story": "Albion's scholars of the Isle of Glass say the isles rose because Morgana's war on Avalon broke the oldest hiding-spell in the west, the one the colleges of Avalon wove round their country when the Romans came, and that Aegir and Hy Brasil came up with it the way the far shore of a lake rises when a stone is dropped on the near side. They point to the shared salt-weed as proof that the three isles were one country under the mist, sunk together and raised together. Gnat, to an Albion, is a marsh-sprite of Avalon's drowned orchards, burned out by the drakoran and fled over the mist; the whistle is the orchard's frost-warning that the old Avalon gardeners kept, and the ants are the fire that came after.",
-      "legend": "Albion players say Gnat 'visits' Hy Brasil and will be back in an Avalon marsh one of these seasons, and that the Hibernians are only borrowing it.",
+      "legend": "Albion raiders say Gnat 'visits' Hy Brasil and will be back in an Avalon marsh one of these seasons, and that the Hibernians are only borrowing it.",
       "botLines": {
         "lore": [
           "the hibs think gnat is theirs. its an avalon marsh sprite, [burned out by the drakoran|fled over the mist]",
@@ -128,7 +128,7 @@
     },
     "midgard": {
       "story": "Midgard's skalds say the Troll Fathers called Aegir back out of the mist when the Morvalt drove them from it, and everything else in the mist rose because it stood too close to the call. The Norse do not think the isles are kin. They think small things travel, the way rats travel on longships, and that the grey shore-bird is a gull with a good sense of direction. Gnat, to a Norseman, is a troll-child's pet from the burned slopes of Aegir, lost when the Morvalt came, whistling for a master who will not come for it; the skalds say it has only gone where the whistling is answered, and that in Hy Brasil the ants answer.",
-      "legend": "Midgard players say Gnat is a lost pet and that the polite thing is to kill it quickly. They also say the Hibernians are welcome to it.",
+      "legend": "Midgard raiders say Gnat is a lost pet and that the polite thing is to kill it quickly. They also say the Hibernians are welcome to it.",
       "botLines": {
         "lore": [
           "gnat is a troll kids pet from aegir. [lost in the morvalt war|whistling for its master]",
@@ -141,7 +141,7 @@
     },
     "hibernia": {
       "story": "Hibernia says the mist is a door, and doors open both ways. The druids of Tir na Nog think the mist round Hy Brasil was the Root's breath and thinned as the realm went down into Galladoria; the Sylvan say the isle hid on purpose from the Fomorians; either way, the isle is Hibernia's, and so, to a Hibernian, is everything on it. Gnat whistles on the north road of the Vale of Balor and has done so for as long as there has been a camp at Aalid Feie, and Ultan of Tir na Nog, who keeps Domnann's rain records, has watched it there every summer. The Hibernians do not claim Gnat was always in the vale. They claim it chose the vale, which is better.",
-      "legend": "Hibernian players say Gnat is ours because it lives here, which is the one argument nobody else can make. The Aalid Feie folk never count the whistles aloud.",
+      "legend": "Hibernian raiders say Gnat is ours because it lives here, which is the one argument nobody else can make. The Aalid Feie folk never count the whistles aloud.",
       "botLines": {
         "lore": [
           "gnat lives in the vale of balor. [ours|the albs and norse can argue all they like]",

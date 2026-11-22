@@ -29,7 +29,7 @@
     }
   ],
   "story": "Mista went with Ydenia. When the seeress of the Circle walked out of Skona into Vanern Swamp to take the high seat the dark seithkona keep for her still, a handful of the Circle's women went with her, and Mista was the one who went furthest. She is dead now, a cursed spirit with a dark seithkona initiate at her side, and she still teaches.\n\nHer last pupil was Arica, the sister of Audun of Jordheim, who drinks in the city's tavern and talks about the Red Daggers to anyone with a sword. Arica went into the swamp to bring Mista home and did not come back, and Audun sends the young after the evil the two of them spread among their seithkona, and asks them to bring back a note in his sister's hand. He reads it at his table and puts it inside his shirt, and nobody in the tavern has ever seen what it says. The Seithkona Circle says only that Arica went to save a teacher and found one instead.",
-  "legend": "Mista is a level 44 cursed spirit in east Vanern with a dark seithkona initiate (44) beside her, for the Arica-and-Mista step of An End to the Daggers (Audun's version): deal with them and bring Arica's note to Audun. Arica isn't actually in the world data, only Mista. Pull the initiate with her and kill both; no faction on Mista herself.",
+  "legend": "Mista is a level 44 cursed spirit in east Vanern with a dark seithkona initiate (44) beside her, for the Arica-and-Mista step of An End to the Daggers (Audun's version): deal with them and bring Arica's note to Audun. Arica isn't actually in this world, only Mista. Pull the initiate with her and kill both; no faction on Mista herself.",
   "yells": {
     "aggro": [
       "The high seat is kept for her. Kneel, or lie down.",

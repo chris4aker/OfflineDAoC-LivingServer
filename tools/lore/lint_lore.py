@@ -5,12 +5,15 @@ Hard rules (always zero):
   - developer notes in player-facing text (DEV_NOTE in lore_text.py)
   - duplicate entries inside a yell or bot-line pool
   - a fact labelled "mythic" whose source is not a Herald page, darkageofcamelot.com or a Mythic note
+  - a real company, site, product, patch, developer or game-software word in a player-visible field, or a game term
+    in a narrative field (owner decision 8, 2026-11-21; the rules and the field map are in fourth_wall.py)
 Ratchets (may only go down; lower the number when you fix some):
   - template labels such as "Superstition:" and "Nicknames:" at the start of a paragraph
 """
 import json, re, sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 from lore_text import *
+import fourth_wall
 
 TEMPLATE_LABEL = re.compile(r"(?:^|\n\n|(?<=[.!?]) )(Superstition|Nicknames?|Rumou?rs?|Trivia):")
 TEMPLATE_LABEL_CAP = 69  # 39 Superstition + 28 Nicknames + 2 Nickname on 2026-11-20; step 1.2.1/lore-4 rewrites them
@@ -37,6 +40,7 @@ def lint(root=LORE_DIR):
         for name, pool in pools:
             t = [entry_text(e) for e in pool_entries(pool)]
             if len(t) != len(set(t)): problems.append(f"{rel} {name}: duplicate entry")
+    problems += fourth_wall.problems(root)
     if labels > TEMPLATE_LABEL_CAP: problems.append(f"template labels: {labels} found, cap is {TEMPLATE_LABEL_CAP}")
     return problems, labels
 

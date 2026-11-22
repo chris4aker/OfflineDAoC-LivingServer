@@ -24,7 +24,7 @@
     }
   ],
   "story": "The outlanders of Altan Garran have two great treants beside Treal, the old tree their town is built around, and they are opposites. Elnara Erea's is enormous, half again the height of anything in the gorge, and gentle with its keeper. Cuinn is small, barely taller than a man, knotted and dense and grey as old iron, and gentle with nobody. The Ereas say he is the oldest of Treal's own offspring, a seedling that fell among the old tree's roots before the town was built and grew there in the shade, slowly, with nothing to do but get harder.\n\nHis name in the outlanders' speech is close to the word for a quiet man, and he is quiet; the Ereas say he has never once spoken, not even to Treal. What he does is guard. He stands at the foot of Treal's ledge, where the roots go down into the stone and where Treal buries the roots of Marfoirwort that strangers bring him, and nothing goes near that ground. The garda give him a wide berth. Elnara's treant, which follows its keeper everywhere else in the town, will not cross Cuinn's patch either.\n\nNoirin the enchanter thinks Cuinn is the reason Treal's burying works at all. Something has to keep the worts' own runners from coming up through the stone to take back what Treal is holding, she says, and the worts have tried: the outlanders have found tendrils torn out of the ledge at Cuinn's feet, in the mornings, torn up and broken as if by hand. Every one of those mornings the little treant was standing exactly where he always stands.\n\nHe is the hardest thing in Altan Garran, harder than any garda or asarlai, and the outlanders know it. When a Hibernian company comes down the ledge toward Treal, the town's people watch to see whether it will walk round Cuinn. The ones who do not are a story the bards tell.",
-  "legend": "Cuinn is a level 65 treant, small in size (48) but hard, at the foot of Treal's ledge in Altan Garran. Plain melee, no script, 80-second respawn. At 65 he is much harder than Treal (52) beside him: a full group of 50s will struggle, so bring a strong group or leave him. Pull Treal away from him if you want Treal alone. The town is set aggressive (Outland Residents); keep the garda out of it. Elnara's huge treant stands on the western edge a short way off. Do not chain the three treants of the garran into one pull.",
+  "legend": "Cuinn is a level 65 treant, small in size (48) but hard, at the foot of Treal's ledge in Altan Garran. Plain melee, no tricks, 80-second respawn. At 65 he is much harder than Treal (52) beside him: a full group of 50s will struggle, so bring a strong group or leave him. Pull Treal away from him if you want Treal alone. The town is set aggressive (Outland Residents); keep the garda out of it. Elnara's huge treant stands on the western edge a short way off. Do not chain the three treants of the garran into one pull.",
   "yells": {
     "aggro": [
       "(the small grey treant does not move, then does)",
@@ -63,7 +63,7 @@
   "botLines": {
     "briefing": [
       "cuinn is 65 even though hes small. [hard|dont underestimate him]",
-      "plain melee, no script. [strong group|or skip]",
+      "plain melee, no tricks. [strong group|or skip]",
       "treal is next to him at 52. [pull treal away|separate]",
       "town is aggro. [watch the garda|careful]"
     ],

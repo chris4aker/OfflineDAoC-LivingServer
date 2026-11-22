@@ -24,7 +24,7 @@
     }
   ],
   "story": "Sargan the Conqueror taught the Fomorians of Tur Suil to wear the names of dead heroes, and the custom spread down off the crag into the Vale of Balor with the households that went down to hold it. Most of them took the names of Sylvan wardens they had killed. The household of the western vale, on the slopes below the tower where the Gleann Glas road used to run, did something stranger. Its chief went down to the coast and listened to the mainland fishers who came to trade at Aalid Feie, and took the greatest name he heard there.\n\nMilo is what a Fomorian mouth makes of Míl, the father of the Gaels, the ancestor every family of the mainland counts back to. The Hibernians of Aalid Feie laughed when they first heard it, and then stopped laughing, because the chief who calls himself Milo understood exactly what he had taken. In the vale's telling he says it plainly to every Hibernian who comes up the western slopes: your fathers took an island from a people who were there before them, and so did mine, and the island is the same island, and you came west to take this one too.\n\nHe is a huge thing, heavy-shouldered, the strongest of the household, and he keeps the western slope as a chieftain keeps a border, with the rest of the vale's Fomorians around him. The Sylvan of Aalid Feie say he has never once come east of the old road, and never once let a Sylvan cross it. The Domnann wardens think he is keeping a line Balor drew. The traders of Aalid Feie think he is keeping one he drew himself, and that if the eye in the tower ever closed for good, Milo would still be standing on the western slope with a borrowed name, waiting for someone to try to take it back.",
-  "legend": "Milo is a level 56 Fomorian on the western slopes of the Vale of Balor, at about 287k/372k, with no script: a straight, heavy melee fight. He is of the Fomorian faction, and the fomorian condlers and gristlers (54-66) of the western vale stand around his slope: clear them first. Oscar (55) stands about 4,000 units west of him and is not of the faction. A level 50 group with a healer handles him. The Aalid Feie traders say never say his name back to him, and the older Hibernians say he chose it well. Oscar, his old champion, is the easier warm-up to the west.",
+  "legend": "Milo is a level 56 Fomorian on the western slopes of the Vale of Balor, at about 287k/372k, with no tricks: a straight, heavy melee fight. He is of the Fomorian faction, and the fomorian condlers and gristlers (54-66) of the western vale stand around his slope: clear them first. Oscar (55) stands about 4,000 units west of him and is not of the faction. A level 50 group with a healer handles him. The Aalid Feie traders say never say his name back to him, and the older Hibernians say he chose it well. Oscar, his old champion, is the easier warm-up to the west.",
   "yells": {
     "aggro": [
       "You come west to take an island? So did I.",
@@ -63,7 +63,7 @@
   "botLines": {
     "briefing": [
       "milo is a 56 fomorian on the west slope of the vale. [clear the condlers first|fomorian faction]",
-      "no script on milo. [straight melee|tank and spank]",
+      "no tricks on milo. [straight melee|tank and spank]",
       "oscar is 4k west of him. [separate pull|not linked]",
       "dont pull the gristlers with him. [54-62|they help]"
     ],

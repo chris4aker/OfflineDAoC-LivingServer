@@ -20,7 +20,7 @@
     }
   ],
   "story": "On the western hills of Lough Gur, near the mouse-lord's hall, there is a place where the lake folk say a woman-warrior stands at night. Nobody has seen her. The name they give her is only the old word for a heroine, banghaisgidheach, because they do not know her own. She is there only after dark, and she cannot be touched, and she does not speak, and the people of Culraid who walk that way at night say they feel her as you feel someone standing behind you in a doorway.\n\nThe harpers of Innis Carthaig have a song about a woman of the old families who held the western hill against a hosting of the siabra for a night and a day so that Culraid's children could cross the lake, and was never found afterwards. They say that is who stands there. The Culraid folk say the song is newer than the feeling. Either way they leave a little salt on the hilltop at the dark of the moon, and walk on.",
-  "legend": "Banghaisgidheach (37) is not a fight: she is a nameless, untargetable, peaceful NightSpawn in the western hills of Lough Gur (about 303k/707k), present only at night. You cannot attack her or talk to her; bots ignore her. She is listed here because the world data names her. Culraid custom: leave a little salt on the hilltop at the dark of the moon.",
+  "legend": "Banghaisgidheach (37) is not a fight: she is a nameless, untargetable, peaceful NightSpawn in the western hills of Lough Gur (about 303k/707k), present only at night. You cannot attack her or talk to her; companions ignore her. She is listed here because the realm's records name her. Culraid custom: leave a little salt on the hilltop at the dark of the moon.",
   "yells": {
     "aggro": [
       "(you feel someone standing behind you)",

@@ -22,7 +22,7 @@
     }
   ],
   "story": "Every water that runs into Galladoria runs out over the great falls, and the falls have a will. The Sylvan call it Easmarach, a name with the old word for a waterfall at its start. It is the last door before the sanctum: while it lives the current is a wall, and in the first years anyone who pressed too close was caught and thrown behind the curtain of water to find their way back. It is strong only where it is rooted, at the foot of its own falls, and when it is hurt badly it does what a river does in flood: it draws back into itself, forgets its enemies, and gathers again. When it dies at last, the roar falls to a murmur, and the way to the bridge is open.\n\nThe great falls are older than the Root's coming. Every water that runs into the hollow runs out over them, and a falls that old has a will. The Sylvan named it Easmarach long ago, and in the good years it was a door that kept things out of the hollow. Now it keeps things in, and its will is the Root's.\n\nIn the first years it was strong only where it was rooted, at its own foot, and nothing could hurt it from anywhere else; the Sylvan say the current has slackened since. Those who pressed too close were caught by the current and thrown behind the curtain onto a ledge, a long wet walk from where they had stood, until the falls stopped throwing anyone back. When it is badly hurt it does what a river does in flood. It draws back into the falls, forgets everyone it was fighting, gathers itself, and comes out stronger. Then it comes out again, looking for the first living thing it meets.\n\nThe bridge lies beyond it. While Easmarach lives the current at the bridge is fierce, and the Sylvan say that is why the three hundred and forty failed: they went for the bridge with the falls still roaring. When Easmarach dies the current slackens to a murmur and the way to the sanctum is open. The water primal and the falls were kin once, the Sylvan say, two parts of the same river.\n\nThe falls were a door the Sylvan set to keep the deep places, the Underneath, shut; the Root turned it round. Orlaith's company killed it before the bridge; Sétna of Howth wrote songs about the ledge and the murmur.",
-  "legend": "The old guides said you had to fight it in the spray at the foot of the falls and that the current threw people behind the waterfall; neither happens today, it takes damage from anywhere. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. Its hits still land hard on whoever holds it. Kill it and the bridge gets easier. Fight it where the healers can see the falls, because that is where it comes back out. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
+  "legend": "The old raiders' accounts said you had to fight it in the spray at the foot of the falls and that the current threw people behind the waterfall; neither happens today, it takes damage from anywhere. At thirty it runs back into the waterfall and wipes its hate list: tanks, be ready to grab it again when it comes out. Its hits still land hard on whoever holds it. Kill it and the bridge gets easier. Fight it where the healers can see the falls, because that is where it comes back out. When it goes back into the falls, healers top everyone, tanks stand ready, and the first tank to taunt when it comes out keeps it. Kill it before the bridge, never after.",
   "yells": {
     "aggro": [
       "The falls do not part for you.",
@@ -65,7 +65,7 @@
   "botLines": {
     "briefing": [
       "easmarach at thirty [runs back into the falls|retreats], heals some and drops aggro. tanks grab it when it comes out",
-      "old guides say stand in easmarach's spray or you cant hurt it. [not anymore|range works now]",
+      "old raiders say stand in easmarach's spray or you cant hurt it. [not anymore|range works now]",
       "watch the falls when it runs, [first taunt keeps it|grab it as it comes out]",
       "kill easmarach before the bridge, never after. [current is a wall|the falls first]"
     ],
@@ -82,7 +82,7 @@
       "we tried the bridge with easmarach still up. [never again|the current]"
     ],
     "rumour": [
-      "[heard|old guides say] easmarach used to throw people behind the waterfall. [doesnt now|not anymore]",
+      "[heard|old raiders say] easmarach used to throw people behind the waterfall. [doesnt now|not anymore]",
       "[heard|someone said] the first galladoria raids failed because they skipped the falls",
       "[word is|heard] easmarach and the water primal were the same river once",
       "theres a ledge behind the waterfall in galladoria. [nobody goes there now|sétna's walk, the bards call it]"

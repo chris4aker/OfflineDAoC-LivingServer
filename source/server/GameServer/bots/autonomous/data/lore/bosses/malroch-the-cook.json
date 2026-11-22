@@ -71,7 +71,7 @@
   }
  ],
  "story": "Malroch the Cook keeps the kitchen of the north, between Prince Ba'alorien's hall and the cloisters of the Inquisition, and he has fed the questioners and their prince since the First Roll. A kitchen in the court is a strange office, since demons eat what they kill, and Malroch has always said his trade is not feeding but improving: taking what a demon would eat anyway and making it do something on the way down.\n\nThe Black Plague was his finest dish. The court wanted a sickness to send up into the realms after the doors opened, one that would keep the capitals busy with their own beds, and the Archivist found the old recipe in the records and Malroch cooked it. He tried it first on somebody who could not complain to a prince: Marquis Dortaleon, in the Sixth Roll, who began to rot and did not stop. The Inquisitor Haap examined the Cook over it and reports that he answered every question with a recipe. He keeps a stoppered jar of the first batch in his kitchen, which the court says is both the sickness at its strongest and the only thing that will undo it.\n\nAlbion's clerics traced the plague down to him, and Albion killed him for it, and the court has done something for Malroch it has done for nobody else: it mourned. The Master promised every demon of the hollow a reward for the head of the mortal who did it. The kitchen is still warm. Somebody has gone on cooking.",
- "legend": "Malroch is the Albion target of the Black Plague quest: Sister Elaydith sends you down, and you kill him in his kitchen in the north, between Prince Ba'alorien's hall and the Inquisitors, for the stoppered potion. Level 43, a plain NPC, alone in his room, so a small group does it. He comes back in about three minutes. Inquisitor Haap and Earl Mermer are close, so do not wander into the cloister after. Kill him and every demon in Darkness Falls wants your head, or so Mystemas says.",
+ "legend": "Malroch is the Albion target of the Black Plague quest: Sister Elaydith sends you down, and you kill him in his kitchen in the north, between Prince Ba'alorien's hall and the Inquisitors, for the stoppered potion. Level 43, a plain named, alone in his room, so a small group does it. He comes back in about three minutes. Inquisitor Haap and Earl Mermer are close, so do not wander into the cloister after. Kill him and every demon in Darkness Falls wants your head, or so Mystemas says.",
  "yells": {
   "aggro": [
    "Out of my kitchen!",
@@ -98,7 +98,7 @@
  "botLines": {
   "briefing": [
    "malroch is in the kitchen in the north, near the cloister. [albion plague quest|black plague]",
-   "43, normal npc, small group is fine. [grab the potion|dont forget the potion]"
+   "43, normal named, small group is fine. [grab the potion|dont forget the potion]"
   ],
   "aftermathWin": [
    "malroch down. [potion got|got the stoppered potion]",

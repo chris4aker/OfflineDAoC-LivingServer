@@ -1,7 +1,7 @@
 {
   "realm": "Midgard",
   "id": "midgard",
-  "summary": "Midgard's history as the Living Server tells it: Mythic's canon where it exists, Norse myth as inspiration, and original writing where both are silent.",
+  "summary": "Midgard's history as its loremasters tell it: the realm's own chronicles where they speak, the old Norse songs beside them, and the loremasters' own telling where both are silent.",
   "eras": [
     {
       "id": "mid-era-ice",
@@ -20,12 +20,12 @@
           "source": "Snorri, Gylfaginning (public domain)"
         },
         {
-          "text": "Living Server: a dragon died in the ice of Aegir long before any people came; Kula later raised Tuscaran's citadel on its bones.",
+          "text": "A dragon died in the ice of Aegir long before any people came; Kula later raised Tuscaran's citadel on its bones.",
           "provenance": "original",
-          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+          "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines (Living Server writing)"
         },
         {
-          "text": "Living Server: Fornfrusenen was frozen into the north wall of the glacier in this age, and the bones of Modernagrav were buried.",
+          "text": "Fornfrusenen was frozen into the north wall of the glacier in this age, and the bones of Modernagrav were buried.",
           "provenance": "original",
           "source": "Living Server writing"
         }
@@ -51,12 +51,12 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=65"
         },
         {
-          "text": "Living Server: the Troll Fathers raised a mound of the dead under Trollheim's last hall; Nosdoden later lay down on it.",
+          "text": "The Troll Fathers raised a mound of the dead under Trollheim's last hall; Nosdoden later lay down on it.",
           "provenance": "original",
           "source": "Living Server writing"
         },
         {
-          "text": "Living Server: Iarnvidiur, the old one of the Iarnwood, was on Aegir before the iarn dwarf clans; Mahattava's lake was older still.",
+          "text": "Iarnvidiur, the old one of the Iarnwood, was on Aegir before the iarn dwarf clans; Mahattava's lake was older still.",
           "provenance": "original",
           "source": "Living Server writing"
         }
@@ -99,12 +99,12 @@
           "source": "Voluspa 40 (Poetic Edda, public domain)"
         },
         {
-          "text": "Gjalpinulva's own taunts name an aunt who keeps a place in Niflheim for her victims; bot chat calls her the Fenris wolf's daughter.",
+          "text": "Gjalpinulva's own taunts name an aunt who keeps a place in Niflheim for her victims; Midgard's tavern talk calls her the Fenris wolf's daughter.",
           "provenance": "game",
-          "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs"
+          "source": "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs (told in Midgard bot chat)"
         },
         {
-          "text": "The quest 'The Legend of Fenrir's Folly' sends players to win a sun fragment back from the Raumarik Revenant.",
+          "text": "The quest 'The Legend of Fenrir's Folly' sends the realm's young to win a sun fragment back from the Raumarik Revenant.",
           "provenance": "legend",
           "source": "https://camelot.allakhazam.com/db/quest/1770"
         },
@@ -163,9 +163,9 @@
           "source": "Hervarar saga ok Heidreks (public domain)"
         },
         {
-          "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste and was removed by New Frontiers.",
+          "text": "Dodens Gruva lay on the old Jamtland frontier east of Glenlock Faste, and was lost when the frontier was remade.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/zones.html?czone=68"
+          "source": "https://camelot.allakhazam.com/zones.html?czone=68 (removed by New Frontiers (2004))"
         },
         {
           "text": "The Cursed Tomb holds the dishonoured warriors and kings whom the gods would not admit to Valhalla.",
@@ -178,7 +178,7 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=74"
         },
         {
-          "text": "Living Server: Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
+          "text": "Jarl Ormarr's miners broke into the Summoner's Hall and their spiritmaster Aros bound them to the mine.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -188,7 +188,7 @@
           "source": "https://www.camelotherald.com/node/462"
         },
         {
-          "text": "Living Server: the houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
+          "text": "The houses of the gods were given two temple halls in Jordheim, a street apart, by an old peace over Loki's house.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -198,7 +198,7 @@
           "source": "runtime/data/opendaoc.sqlite3.db, DataQuest table (0.37b world data)"
         },
         {
-          "text": "Living Server: Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
+          "text": "Svan's sons are the Alfevsons: Siv and Coplin, spirits; Ove, a werewolf of Askheim; Gunnar, a shade in Muspelheim.",
           "provenance": "original",
           "source": "Living Server writing"
         },
@@ -273,7 +273,7 @@
           "source": "Beowulf (Old English, public domain)"
         },
         {
-          "text": "Living Server: the grandmothers of Gotar keep Beowulf's song and the winning of Thora as the two old songs of the Gautar; the Cursed Tomb's tellers argue Starkad's place; Varulvhamn's wolfaur sing the Volsungs' wolf-skins; Svarhamr's furs are called the hairy breeches; Vasudheim's skalds sing Ivar and the cow Sibilja; Jordheim's skalds sing the founders beside Starkad and the raider-king's sons.",
+          "text": "The grandmothers of Gotar keep Beowulf's song and the winning of Thora as the two old songs of the Gautar; the Cursed Tomb's tellers argue Starkad's place; Varulvhamn's wolfaur sing the Volsungs' wolf-skins; Svarhamr's furs are called the hairy breeches; Vasudheim's skalds sing Ivar and the cow Sibilja; Jordheim's skalds sing the founders beside Starkad and the raider-king's sons.",
           "provenance": "original",
           "source": "Living Server writing"
         }
@@ -408,9 +408,9 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=116"
         },
         {
-          "text": "The Shrouded Isles expansion added Tuscaran Glacier, Trollheim and Iarnvidiur's Lair as Midgard's epic dungeons (2002).",
+          "text": "When Aegir rose out of the mist, Tuscaran Glacier, Trollheim and Iarnvidiur's Lair became Midgard's greatest dungeons.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/zones.html?czone=76"
+          "source": "https://camelot.allakhazam.com/zones.html?czone=76 (the Shrouded Isles expansion, 2002)"
         }
       ],
       "places": [
@@ -511,12 +511,12 @@
       "id": "mid-era-present",
       "order": 7,
       "name": "The Present Day",
-      "summary": "The Living Server's own time: the realm raids the old places, the Herald records the kills, and the dead of every era still wait for an answer.",
+      "summary": "The present age: the realm raids the old places, the Herald records the kills, and the dead of every era still wait for an answer.",
       "events": [
         {
-          "text": "Living Server raids each epic place with sizes taken from period accounts.",
+          "text": "The realm raids each great place with as many as the old accounts say it took.",
           "provenance": "game",
-          "source": "docs/RAID-SIZES.md"
+          "source": "docs/RAID-SIZES.md (Living Server raid sizes)"
         },
         {
           "text": "A band of dwarves seeking to strengthen Midgard found the frostalfs, who agreed to fight beside the realm, knowing their fate was still bound to it.",

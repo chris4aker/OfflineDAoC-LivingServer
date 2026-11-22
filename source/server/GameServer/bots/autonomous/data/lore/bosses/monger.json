@@ -19,7 +19,7 @@
     }
   ],
   "story": "Every swarm has to eat, and the ixthiar of the Vale of Balor eat what the vale gives them, which since the burning of Gleann Glas has mostly been the dead. Monger is the one who finds it. The Sylvan of Aalid Feie named him from the mainland word the Hibernian traders used for a dealer, a fish-monger, a rag-monger, because that is what he does: he goes out across the western vale and comes back with whatever has died there, a stag, a bugbear, a Fomorian of Milo's household, a careless traveller, and he carries it to the nests and deals it out.\n\nHe is bigger than any reaper and nearly as big as the broodmother, and the swarm treats him as something between a servant and a lord. The reapers give way to him. The callers fall silent when he passes. The armorers of Aalid Feie, who know the swarm better than anyone, say that he alone of the ixthiar wears the swarm's mark on his shell, a ridge of pale scars where the doomcallers have touched him, and that the swarm follows the mark. Kill a reaper and the nest is angry. Kill Monger and the nests go hungry, and a hungry swarm is a quiet one.\n\nThe Sylvan have a grimmer use for him. A Sylvan who dies in the western vale and is not found by her own people within the day is found by Monger, and the wardens of Domnann keep a custom because of it: they walk the western slopes every evening, in pairs, looking for anyone who did not come home, so that Monger will not have them. They call the walk the monger's round. In the worst summers, when Fomorian forays come down off the crag, the round is long and the wardens are tired, and the swarm eats well.\n\nHe has never come near Aalid Feie itself. The camp's people say it is because the camp burns its dead, as the Sylvan do, and there is never anything for him there.",
-  "legend": "Monger is a level 54 ixthiar on the western side of the Vale of Balor (about 275k/352k), of the Ixthiar Swarm faction. No script; plain heavy melee, and he hits harder than the reapers around him. Clear the reapers, decimaters and callers near his path first, because callers bring more of the swarm. A level 50 group with a healer is enough. Domnann wardens walk 'the monger's round' every evening to find the dead before he does; if a guildie dies out west, run back for the body. He respawns fast for a named (about 80 seconds in the world data), so do not rest on his spot afterwards.",
+  "legend": "Monger is a level 54 ixthiar on the western side of the Vale of Balor (about 275k/352k), of the Ixthiar Swarm faction. No tricks; plain heavy melee, and he hits harder than the reapers around him. Clear the reapers, decimaters and callers near his path first, because callers bring more of the swarm. A level 50 group with a healer is enough. Domnann wardens walk 'the monger's round' every evening to find the dead before he does; if a guildie dies out west, run back for the body. He respawns fast for a named (about 80 seconds in this world), so do not rest on his spot afterwards.",
   "yells": {
     "aggro": [
       "(Monger's mandibles open wide)",
@@ -57,7 +57,7 @@
   },
   "botLines": {
     "briefing": [
-      "monger is 54, western vale. [plain melee|no script] but he hits hard",
+      "monger is 54, western vale. [plain melee|no tricks] but he hits hard",
       "clear the callers near him first. [they bring the swarm|kill callers]",
       "level 50 group with a healer is fine",
       "dont fight him next to a nest. [reapers join|pull him out]"

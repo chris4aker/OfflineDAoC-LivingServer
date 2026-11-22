@@ -1,7 +1,7 @@
 {
   "realm": "Hibernia",
   "id": "hibernia",
-  "summary": "Hibernia's history as the Living Server tells it: Mythic's canon where it exists, Irish myth as inspiration, and original writing where both are silent. From the first earth and the Fomorians of Tory, through the old families of the hills and the thinning of the Veil, to the realm war, the Shrouded Isles and the Glimmer King, and the present, in which everything the realm brings down returns and the realm keeps going back.",
+  "summary": "Hibernia's history as its loremasters tell it: the realm's own chronicles where they speak, the old Irish tales beside them, and the loremasters' own telling where both are silent. From the first earth and the Fomorians of Tory, through the old families of the hills and the thinning of the Veil, to the realm war, the Shrouded Isles and the Glimmer King, and the present, in which everything the realm brings down returns and the realm keeps going back.",
   "eras": [
     {
       "id": "hib-before-the-names",
@@ -292,7 +292,7 @@
       "summary": "The three realms fight over the frontiers: Hibernia raises keeps in Emain Macha, Breifine, Cruachan Gorge and Mount Collory, guards its relics at Dun Dagda and Dun Lamfhota, and finds that its own dead under Breifine answer a keen.",
       "events": [
         {
-          "text": "Hibernia's frontier keeps in the world data include Dun Bolg, Dun Crimthain, Dun Da Behnn and Dun nGed in Breifine, Dun Ailinne and Dun Lamfhota in Cruachan Gorge, Dun Dagda and Dun Scathaig in Mount Collory, and Dun Crauchon in Emain Macha; Dun Dagda and Dun Lamfhota hold the realm's relics.",
+          "text": "Hibernia's frontier keeps include Dun Bolg, Dun Crimthain, Dun Da Behnn and Dun nGed in Breifine, Dun Ailinne and Dun Lamfhota in Cruachan Gorge, Dun Dagda and Dun Scathaig in Mount Collory, and Dun Crauchon in Emain Macha; Dun Dagda and Dun Lamfhota hold the realm's relics.",
           "provenance": "game",
           "source": "keep table (GAPS-hibernia.md, world data read 2026-11-06)"
         },

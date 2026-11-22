@@ -60,7 +60,7 @@
       "text": "Svanhild is long dead. Her seat in the outer hall is empty, and the sculptors say Nokkvi looks at it sometimes. He sits beside Vagn still, in the outer council hall, and when anything rouses either of them the other is already rising, and the companies of Midgard who reach the outer hall meet the wagon and the boat together.\n\nThey find what the young icelords found in the training hall. Blades turn on him. The companies say a melee of Midgard's best can stand round the boat for a long time and do little more than the young icelords did, and come home with their own edges turned. And they find what Svanhild found: that the craft of words gets in. The spoken and the cast reach him where steel does not, as if a century of sitting quietly beside the giant who never stopped talking had left him with no defence at all against anything said.\n\nThe old songs of the companies say the survivor of the pair grieves for the other and fights the harder for it. The cast-out sculptors say it is not so; the boat fights as he always has, silently, steadily, and does not change when the wagon stops. They say the companies made the story up because they could not believe the two did not love each other. The sculptors say they did, in the way of the outer seats, and that neither of them would have shown it.\n\nWhen Nokkvi dies he looks at his hand, the companies say, as if there were a cut on it."
     }
   ],
-  "legend": "Nokkvi is the wall of the pair, but only against weapons: he resists 90% of melee and only 20% of magic. So the old advice to 'debuff and melee, don't waste nukes' is exactly backwards: put your casters on Nokkvi and your melee on Vagn (who is the reverse, 90% magic, 20% melee). Nokkvi has no spells at all, 100,000 health and CC immunity; he and Vagn always come together and reset if dragged past their tether or left 30 seconds out of combat. A 2005 thane wrote that his styles were hitting Nokkvi for one, which fits. There is no grief mechanic when one of them dies, so kill them in whatever order your raid's mix suits. His mauler is a good drop.",
+  "legend": "Nokkvi is the wall of the pair, but only against weapons: he resists 90% of melee and only 20% of magic. So the old advice to 'debuff and melee, don't waste nukes' is exactly backwards: put your casters on Nokkvi and your melee on Vagn (who is the reverse, 90% magic, 20% melee). Nokkvi has no spells at all, 100,000 health and CC immunity; he and Vagn always come together and reset if dragged past their tether or left 30 seconds out of combat. A thane wrote long afterwards that his styles were hitting Nokkvi for one, which fits. There is no grief mechanic when one of them dies, so kill them in whatever order your raid's mix suits. His mauler is a good drop.",
   "yells": {
     "aggro": [
       "...",
@@ -115,7 +115,7 @@
       "every tank on nokkvi, the kiter holds vagn",
       "nokkvi first, everything on him, vagn's kiter holds",
       "nokkvi: 90% melee resist, 20% magic. casters on nokkvi",
-      "melee on nokkvi does nothing, the old guides got it backwards",
+      "melee on nokkvi does nothing, the old raiders got it backwards",
       "no spells on nokkvi, just a wall vs weapons"
     ],
     "aftermathWin": [

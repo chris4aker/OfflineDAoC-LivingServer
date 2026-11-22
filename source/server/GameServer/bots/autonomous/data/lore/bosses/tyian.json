@@ -37,7 +37,7 @@
     }
   ],
   "story": "On the second floor of the hall of making was the old master's bench, and at the bench stood Tyian. It was not built to fight, or to carry, or to guard; it was built to hand things. Master Meical would hold out his hand without looking up and Tyian would put the right tool in it, the right file, the right length of wire, and at the end of a day's work the last thing it handed him was the sphere, the small heavy thing of metal that went into the heart of each servant to make it go. The households called Tyian the master's other hand.\n\nThe master's bench is laid still. The tools are where he left them on the last evening, the file across the vice, the wire coiled, and the last sphere he made sits in Tyian's keeping, because the master never held out his hand for it. At the top of the hall stands the thing the master was making, or the thing the drakoran who wears his name is making, the households are not sure which: the lifeless creation, finished in every part but one. A sphere would wake it.\n\nThe fort's registrar has two readings of why Tyian will not hand it over. The households say Tyian is waiting for the master's hand and will give the sphere to no other, and that the new Meical has held out his hand at that bench a hundred times and been ignored. Lady Lurlei of Caer Gothwaite, who sends the realm's young to take it, says Tyian knows exactly what the sphere would wake, and is keeping it from everybody, and is right to.\n\nTyian keeps the bench alone. The lesser servants of the hall are not its fellows and do not come up the stair for it. It comes at anyone who walks onto the second floor as it would at a hand reaching for the master's tools, and when it is broken it is back at the bench almost at once, with the sphere, as if it had only stepped away to fetch something.",
-  "legend": "Tyian is a level 55 construct on the upper floor of Meical's Hall in the south of the Dales of Devwy, next to the lifeless creation. It is aggressive from about 500 away but has no faction in its template, so the hall's other constructs do not come for it (watch for anything that aggros on its own as you climb). No spells or styles in the data: a melee kill for a group of fifties or a strong duo. It holds the metal sphere for Restoring the Magic (Lady Lurlei), which you give to the lifeless creation at the top. Respawn about 80 seconds.",
+  "legend": "Tyian is a level 55 construct on the upper floor of Meical's Hall in the south of the Dales of Devwy, next to the lifeless creation. It is aggressive from about 500 away but has no faction, so the hall's other constructs do not come for it (watch for anything that aggros on its own as you climb). No spells or styles in the data: a melee kill for a group of fifties or a strong duo. It holds the metal sphere for Restoring the Magic (Lady Lurlei), which you give to the lifeless creation at the top. Respawn about 80 seconds.",
   "yells": {
     "aggro": [
       "Not the master's hand.",
@@ -90,7 +90,7 @@
       "pulled heavy metals on the way up and fought them on the stair",
       "duo at 50 vs a 55, close but no",
       "forgot the sphere, killed it again",
-      "came back as we were reading the quest log"
+      "came back as we were reading the quest journal"
     ],
     "rumour": [
       "[heard|someone said] tyian handed the old master his tools and still keeps his bench laid",

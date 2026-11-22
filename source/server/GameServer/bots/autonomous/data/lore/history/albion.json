@@ -20,7 +20,7 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=24"
         },
         {
-          "text": "The stone circle and its barrows predate every named king in Living Server lore.",
+          "text": "The stone circle and its barrows predate every named king the realm remembers.",
           "provenance": "original",
           "source": "LORE"
         }
@@ -84,9 +84,9 @@
           "source": "https://solarspell-dls.sfis.asu.edu/mea/wikipedia/wp/m/Mithraic_mysteries.htm"
         },
         {
-          "text": "A Roman legion and an emperor no one can name lie in the catacombs of Cardova; Mythic's quest names him Seleucus.",
+          "text": "A Roman legion and an emperor no one can name lie in the catacombs of Cardova; the old quest-tellers of the realm name him Seleucus.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/quests.html?cquest=508"
+          "source": "https://camelot.allakhazam.com/quests.html?cquest=508 (the name is from Mythic's quest)"
         },
         {
           "text": "Morgana raised the undead remains of Roman soldiers to serve in her army.",
@@ -130,9 +130,9 @@
           "source": "https://www.camelotherald.com/node/464"
         },
         {
-          "text": "Albion bot chat tells of a Roman lord whose household vanished on Dartmoor in Uther's day, and of Sir Arward's thirty knights.",
+          "text": "Albion's tavern talk tells of a Roman lord whose household vanished on Dartmoor in Uther's day, and of Sir Arward's thirty knights.",
           "provenance": "original",
-          "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines"
+          "source": "source/server/GameServer/bots/autonomous/data/chat/gen_alb_threads.lines (told in Albion bot chat)"
         },
         {
           "text": "In Uther's time Articus, whose father was a man of rank in Rome, settled on Dartmoor to escape Rome's politics; about ten years later the Duke of Cornwall's son found him and all his household dead, and came home alone.",
@@ -228,9 +228,9 @@
           "source": "https://camelot.allakhazam.com/zones.html?czone=156"
         },
         {
-          "text": "Darkness Falls opened in patch 1.49 (April 2002); its door opens for the realm holding the most keeps.",
+          "text": "Darkness Falls opened in the first spring of the realm war; its door opens for the realm holding the most keeps.",
           "provenance": "legend",
-          "source": "https://camelot.allakhazam.com/zones.html?czone=62"
+          "source": "https://camelot.allakhazam.com/zones.html?czone=62 (patch 1.49, April 2002)"
         },
         {
           "text": "Goblins of the Black Mountains seized Tepok's Mine from the townsfolk.",
@@ -427,9 +427,9 @@
       "summary": "Now Albion's guilds raid the places the old ages left behind: the turning gaol, the ogre hall, the burned city and its dragon, the stone dragon's moor, the demon court below. The Herald records each realm's first kill. The war on the isles is not won; Morgana has sworn to return; the door below changes hands with the keeps.",
       "events": [
         {
-          "text": "Raids, first kills and the Herald's records are Living Server features.",
+          "text": "In the present age the realm sends its raids into the old places, and the Herald records each first kill.",
           "provenance": "game",
-          "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+          "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs (Living Server features)"
         },
         {
           "text": "Sir Arward and thirty of his best fighters went deep into Dartmoor; only his scribe's singed journal came back, falling from the sky before Prydwen Keep with one legible word, Golestandt.",
