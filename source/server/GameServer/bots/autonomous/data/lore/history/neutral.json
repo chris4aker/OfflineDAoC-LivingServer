@@ -263,7 +263,7 @@
    "summary": "After Camlann the three realms went to war over the frontier, and in the first years each buried more of its young than it could raise. Then each realm found the way open into four small walled countries off the frontier: Thidranki first, the farm of Thidrand; then the dark wood of Murdaigean and the old wild of Caledonia; and last, for the youngest of all, the drowned shore of Abermenai. The way into a field opens only for soldiers of one seasoning, and whoever falls inside wakes at their own realm's portal keep. Albion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel; Midgard, that they are hazelled ground where a man fights only his match; Hibernia, that they lie under a geis, the other half of Macha's curse. Each realm raised its own portal keeps, in the same week by every realm's own rolls, and in every field they stand in the same three places. The keeps at the fields' hearts were held by renegades when the realms came, under chieftains who take the keeps' names. In the second winter all three realms marched on Thidranki Faste in the same week without knowing the others were coming, and its renegades went out by the back gate in the snow; the Faste has belonged to whoever took it last ever since.",
    "events": [
     {
-     "text": "The four period battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon); level is the only limit.",
+     "text": "The four period battlegrounds are Abermenai (the young not yet seasoned, Dun Abermenai), Thidranki (bands new to their seasoning, Thidranki Faste), Murdaigean (seasoned bands well along, Dun Murdaigean) and Caledonia (the most seasoned, on the edge of hardened veterans, Caer Caledon); seasoning is the only limit.",
      "provenance": "game",
      "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
     },
@@ -273,7 +273,7 @@
      "source": "world data: Keep table, regions 250-253"
     },
     {
-     "text": "The central keeps start neutral in the release world.",
+     "text": "The central keeps start neutral when the world is new, held by no realm.",
      "provenance": "game",
      "source": "source/tools/release-world-defaults.json"
     },

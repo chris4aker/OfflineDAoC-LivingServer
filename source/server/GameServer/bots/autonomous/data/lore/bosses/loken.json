@@ -80,12 +80,12 @@
   },
   "botLines": {
     "briefing": [
-      "loken: 2 wolves, fight him close to his spot",
+      "loken: two wolves, fight him close to his spot",
       "healers and shamans, this is your great quest's step",
       "everyone stands close to his spot or you do no damage at all",
       "he wont move if his target is far, dont try to draw him away",
       "searing blast nonstop, heat wards and heals",
-      "2 wolves, they dont come back until after"
+      "two wolves, they dont come back until after"
     ],
     "aftermathWin": [
       "got the ball of flame! [quest step done|finally]",
@@ -95,7 +95,7 @@
     ],
     "aftermathLoss": [
       "searing blast hurts more than i thought",
-      "the casters stood back and did nothing, immune from range",
+      "the casters stood back and did nothing, nothing from afar touches him",
       "no heat wards, burned",
       "tried to draw him to us, he just stood there"
     ],

@@ -125,11 +125,11 @@
   },
   "botLines": {
     "briefing": [
-      "vifil forgets someone every 25-45s and sends them off to a cell. shield-bearers taunt him back",
+      "vifil forgets someone every 25-45 sec and sends them off to a cell. shield-bearers taunt him back",
       "two tormentors come out, [hold|kill] them",
       "two tormentors come out at the cell tunnel when you draw vifil",
       "shield-bearers keep taunting vifil, he forgets people",
-      "vifil turns from someone every 25-45s and jails them. second shield-bearer ready to taunt",
+      "vifil turns from someone every 25-45 sec and jails them. second shield-bearer ready to taunt",
       "he jails people again, walk back fast",
       "two tormentors at the cell tunnel when you draw him, tough ones",
       "fight him in place, he goes home whole if dragged"

@@ -120,26 +120,26 @@
   },
   "botLines": {
     "briefing": [
-      "mahattava brings 28 fish. yes 28. blasts ready, shield-bearers on the shore",
+      "mahattava brings twenty-eight fish. yes twenty-eight. blasts ready, shield-bearers on the shore",
       "draw mahattava to the shore so the fish come out in a line",
-      "blast groups ready, 28 fish",
+      "blast groups ready, twenty-eight fish",
       "cure the infection on shield-bearers",
-      "mahattava: 28 fish come at once, blasts ready, shield-bearers on the shore",
+      "mahattava: twenty-eight fish come at once, blasts ready, shield-bearers on the shore",
       "cure its infection fast, it only strikes for three-tenths of a robed caster while the infection is on",
       "draw to the shore so the school comes in a line"
     ],
     "aftermathWin": [
-      "28 fish and the big one. [what a draw|well fought]",
+      "twenty-eight fish and the big one. [what a draw|well fought]",
       "muck-covered fish scale shield!!",
       "fish fry tonight lol",
       "dorsal fin dropped. trophy",
       "throw a stone at the fin and the whole lake throws back. we threw back harder",
       "scale shield!",
-      "28 fish down lol"
+      "twenty-eight fish down lol"
     ],
     "aftermathLoss": [
       "the lake emptied at us",
-      "blast group ran out of power at fish 20",
+      "blast group ran out of power at the twentieth fish",
       "the fish turned on the blast group",
       "mahattava hit our main shield-bearer for two-fifths of a robed caster a swing and he folded",
       "nobody cured the infection and it struck the shield-bearer every 10 sec",
@@ -151,7 +151,7 @@
       "a mahattava scale shield never burns through, the dwarves say",
       "mahattava was in that lake before the old one came",
       "dwarf saying: throw a stone at the fin and the whole lake throws back",
-      "a dwarf woman pulled the first mahattava scale out on a fishing line",
+      "a dwarf woman hauled the first mahattava scale out on a fishing line",
       "iarnvidiur herself wont go near mahattavas lake"
     ]
   },

@@ -342,7 +342,7 @@
       "id": "mid-era-realm-war",
       "order": 5,
       "name": "The War of the Realms",
-      "summary": "After Arthur's death the three realms go to war. Keeps rise on the frontiers, the Glacier Giant throws all comers, Hibernia's champions raid Raumarik, and Midgard's heroes earn their epics.",
+      "summary": "After Arthur's death the three realms go to war. Keeps rise on the frontiers, the Glacier Giant throws all comers, Hibernia's champions raid Raumarik, and Midgard's heroes win through their great quests.",
       "events": [
         {
           "text": "The conflict between Albion, Midgard and Hibernia began with the power vacuum left by King Arthur's death.",
@@ -350,7 +350,7 @@
           "source": "https://camelotherald.com/node/5"
         },
         {
-          "text": "Midgard's epic quests send healers and shamans after Loken, hunters and shadowblades after Oona, and the mystics after Kelic.",
+          "text": "Midgard's great quests send healers and shamans after Loken, hunters and shadowblades after Oona, and the mystics after Kelic.",
           "provenance": "game",
           "source": "source/server/GameServer/scripts/quests/Midgard/epic/"
         },

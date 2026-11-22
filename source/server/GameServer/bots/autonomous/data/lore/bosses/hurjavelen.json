@@ -122,11 +122,11 @@
   },
   "botLines": {
     "briefing": [
-      "hurjavelen: 7 grymvarg, slowing round his shield-bearer, plague round him. cure everything",
+      "hurjavelen: seven grymvarg, slowing round his shield-bearer, plague round him. cure everything",
       "purge the slow on hurjavelen or you're stuck in his disease",
-      "hurjavelen plague is fifteen paces round him every 20s, heals stay out, cure disease",
+      "hurjavelen plague is fifteen paces round him every 20 sec, heals stay out, cure disease",
       "his bite slows everyone near the shield-bearer, purge or speed",
-      "7 grymvarg with him",
+      "seven grymvarg with him",
       "he has his own spot near stanga, both are there"
     ],
     "aftermathWin": [

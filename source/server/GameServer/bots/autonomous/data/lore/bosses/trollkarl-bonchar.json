@@ -138,13 +138,13 @@
   },
   "botLines": {
     "briefing": [
-      "bonchar turns into the rift when you touch him. [a team|2 groups] on the morkenhet, rest on the rift",
+      "bonchar turns into the rift when you touch him. [a team|two groups] on the morkenhet, rest on the rift",
       "keep your eyes on the rift",
       "healers at the base of the stone, the ones who draw the morkenhet's anger with them",
       "dont draw the rift too far from its spot",
       "the rift calls a morkenhet every 10-20 sec forever. kill the rift and they all vanish",
       "the holding team stun and entrance the morkenhet, it works on them. not on the rift",
-      "rift strike three-tenths of a robed caster in energy every 6-10s, cant interrupt",
+      "rift strike three-tenths of a robed caster in energy every 6-10 sec, cant interrupt",
       "keep the rift in its room, it goes home past about a hundred and fifteen paces"
     ],
     "aftermathWin": [

@@ -24,7 +24,7 @@
     }
   ],
   "story": "Zrit-Zrit is the timberland badgers' chief, and he ate a warrior. Gautr of Nalliten says so, and the warrior's kin say so, and the sidhe of the draoi fires nearby, who have little reason to agree with anyone in Midgard, say so too: a man in good armour went into the timberland setts north-east of their fires and did not come out, and something he carried is inside the badger still. The badgers name their chief for the sound he makes, which the sidhe say is the only honest name in the ravine.\n\nLike Stripe of the south slope, Zrit-Zrit lets his diggers do the fighting. The timberland badgers come up out of the ground at anyone who walks their setts, and keep coming, and only when enough of them are dead does the chief come up to see why. The hunters of Nalliten call it the badgers' law, and say it is the same law that keeps every jarl alive: let the shield-wall go first.",
-  "legend": "Zrit-Zrit is the known timberland badger, a foe for a hardened band of veterans, north-east of the Sidhe Draoi camp in Skona. Like Stripe, he's hidden until 20 timberland badgers (each a foe for a seasoned band) die, then appears. Kill him for the warrior's item in Gautr's quest. Bring a group for the long badger hunt; they're a seasoned band's foes. The setts are near the Sidhe Draoi camp, so watch for sidhe wandering in. Once he shows he's a plain hitter for his strength.",
+  "legend": "Zrit-Zrit is the known timberland badger, a foe for a hardened band of veterans, north-east of the Sidhe Draoi camp in Skona. Like Stripe, he's hidden until twenty timberland badgers (each a foe for a seasoned band) die, then appears. Kill him for the warrior's item in Gautr's quest. Bring a group for the long badger hunt; they're a seasoned band's foes. The setts are near the Sidhe Draoi camp, so watch for sidhe wandering in. Once he shows he's a plain hitter for his strength.",
   "yells": {
     "aggro": [
       "(Zrit! Zrit!)",
@@ -44,7 +44,7 @@
   },
   "botLines": {
     "briefing": [
-      "zrit zrit shows himself after 20 timberland badgers die",
+      "zrit zrit shows himself after twenty timberland badgers die",
       "north east of the sidhe draoi camp"
     ],
     "aftermathWin": [
