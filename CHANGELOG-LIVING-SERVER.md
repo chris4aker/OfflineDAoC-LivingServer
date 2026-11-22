@@ -75,6 +75,11 @@ or run where it was written; CI on pull request #398 is the first build.
 - `ECON_INDEX` gains `craftedListed20`, the crafted bot listings of level 20 and up, to show whether sellable work
   reaches the Exchange.
 
+**Bosses**
+- **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
+  the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
+  advice tells all three windows.
+
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
 - Gamebots that logged out beside another realm's frontier keep log in at their capital, as players do

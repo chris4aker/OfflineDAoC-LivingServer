@@ -168,7 +168,7 @@ namespace DOL.GS.Scripts
 					
 				}
 				
-				else if (this.HealthPercent < 25 && this.HealthPercent > 30)
+				else if (this.HealthPercent < 30 && this.HealthPercent > 25)
 				{
 					new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(timer => CastTreant(timer, player)), 1000);
 					

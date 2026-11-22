@@ -74,6 +74,22 @@ review's findings and the work left to do.
   files made to agree. Keep every file to these numbers.
 - **King Mark is Duke Marcus's son**, the son who came home alone from Dartmoor (`cornwall`, `dartmoor`; `original`).
 
+
+9. **Owner rulings on the fight advice and stories** (2026-11-22, answering the reviews' questions):
+   - The Bane of Hope throws again in every telling, as its code does; the old "has not moved a man since" stays as its past.
+   - Maldahar stays the war party's foe his script makes him (40,000 health, a life drain and an energy burst).
+   - Weno'iak's household is told without a count (the texts disagreed: 20, 13, 16).
+   - Map positions such as "(about 32k/37k)" become in-world landmarks where the lore already names one near the spot;
+     otherwise they stay as the raiders' map marks.
+   - The everyday words of 2003 players stay in fight advice and bot chat: melee, casters, group, camp, quest, mana,
+     pets, taunt, stun, line of sight, purge, dropped, loot, lol, grats, gz (`fourth_wall.PENDING_OWNER_DECISION` is
+     allowed for good; `BAN_PENDING` stays False).
+   - "Foes of name" / "great foes" everywhere, bot chat included.
+   - The Behemoth may go one step past the top strength tier ("certain death, beyond even the whole muster of any
+     realm").
+   - Head counts and raid sizes stay numbers, spelled out (Ozur's fifty and a hundred, a raid seventy-four strong).
+   - Elro's third treant window, which his script could never reach, is fixed (three-tenths to a quarter of his
+     strength left), and his fight advice tells all three.
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
