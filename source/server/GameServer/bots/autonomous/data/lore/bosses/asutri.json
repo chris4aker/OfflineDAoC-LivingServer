@@ -104,7 +104,7 @@
     "keyword": "Asutri",
     "text": "The dwarf who keeps the Remnants' [post] itself and decides who flies. She has charted [Mortufoghus]'s round for years. Hermione the stablemaster once stood between her and a jarl's son. See [Alivor]."
   },
-  "bookPage": "From the slates of Orri of Hagall: Asutri showed me her chart once, by the griffon's pen. The mammoth's round is a loop drawn on the slate over and over, a hundred loops, each scratched a little differently, so that the whole slate is grey with them. In the middle is a mark for the bones. She pointed to where the loops pulled toward the dig and said: there, that is when they call too long. Then she pointed to one loop that went wide, out past the dig, almost to the post, and said nothing, and put the slate away.",
+  "bookPage": "Asutri showed me her chart once, by the griffon's pen, and Orri of Hagall kept the day on his slates. The mammoth's round is a loop drawn on the slate over and over, a hundred loops, each scratched a little differently, so that the whole slate is grey with them. In the middle is a mark for the bones. She pointed to where the loops pulled toward the dig and said: there, that is when they call too long. Then she pointed to one loop that went wide, out past the dig, almost to the post, and said nothing, and put the slate away.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Asutri's post in Modernagrav in {minutes} minutes.",
     "loss": "Asutri turned {raidLeader}'s party from {realm} back from the post after {minutes} minutes."

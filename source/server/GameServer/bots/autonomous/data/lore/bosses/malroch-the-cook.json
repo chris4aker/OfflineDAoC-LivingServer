@@ -40,6 +40,11 @@
  ],
  "facts": [
   {
+    "text": "NPC pass (HEROES.md decision 11): Sister Elaydith's runner is named Siencyn, as in gatekeeper-dommel. Living Server writing.",
+    "provenance": "original",
+    "source": "Living Server (CAST-NEUTRAL.md: Sister Elaydith's runner)"
+  },
+  {
    "text": "Malroch the Cook is a level 43 plain GameNPC of the Demon Lords faction in the north of Darkness Falls, about 1,760 units from Inquisitor Haap and 1,770 from Earl Mermer, respawning in 180 seconds.",
    "provenance": "game",
    "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
@@ -117,7 +122,7 @@
   "keyword": "malroch",
   "text": "Malroch the Cook, who keeps the kitchen between Prince [Ba'alorien]'s hall and the cloisters. He cooked the Black Plague from the Archivist's recipe, tried it on Marquis [Dortaleon], and keeps a stoppered jar of the first batch. Albion killed him for it, and the court mourned."
  },
- "bookPage": "From the daybook of Sister Elaydith's runner, Camelot: The kitchen was warm, the only warm room we found below. There were pots on every fire and nobody stirring them, and a smell I knew from the sickrooms at home. The cook was a squat thing in an apron of hide, and he looked up at us as a cook looks up at boys come to steal tarts. When he fell he held out a stoppered jar and told us to choke on it. We did not. Sister Elaydith says it was the cure. I have not been able to eat a stew since.",
+ "bookPage": "The kitchen was warm, the only warm room we found below, by the daybook of Siencyn, Sister Elaydith's runner, at Camelot. There were pots on every fire and nobody stirring them, and a smell I knew from the sickrooms at home. The cook was a squat thing in an apron of hide, and he looked up at us as a cook looks up at boys come to steal tarts. When he fell he held out a stoppered jar and told us to choke on it. We did not. Sister Elaydith says it was the cure. I have not been able to eat a stew since.",
  "chronicle": {
   "win": "{realm}'s company under {raidLeader} put out the fires of Malroch's kitchen in {minutes} minutes."
  }

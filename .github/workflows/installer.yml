@@ -31,9 +31,18 @@ on:
         description: "Run the real-download end-to-end tests"
         type: boolean
         default: true
+      package_run_id:
+        description: "Instead of the release's package: a build-and-test run's package artifact (release.yml dry runs before the release exists)"
+        type: string
+        default: ''
+      package_artifact:
+        description: "That run's package artifact (OfflineDAoC-LivingServer-<build>-<sha7>)"
+        type: string
+        default: ''
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   build:
@@ -44,9 +53,32 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: The package (build-and-test run ${{ inputs.package_run_id }})
+        if: ${{ inputs.package_run_id }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.package_artifact }}
+          path: candidate-package
+          run-id: ${{ inputs.package_run_id }}
+          github-token: ${{ github.token }}
+      # With a run's package (a dry run before the release is published): the same zip publish-release attaches
+      # (tools/release/publish_release.py write_zip), then Setup built around it, as candidate-install does.
       - name: Build Setup
         shell: bash
-        run: python tools/installer/build.py --release "${{ inputs.package_release || 'v1.0-beta' }}"
+        env:
+          RUN_ID: ${{ inputs.package_run_id }}
+          RELEASE: ${{ inputs.package_release || 'v1.0-beta' }}
+        run: |
+          set -euo pipefail
+          if [ -z "$RUN_ID" ]; then python tools/installer/build.py --release "$RELEASE"; exit 0; fi
+          folder=$(ls -d candidate-package/LivingServer-* | head -n 1)
+          [ -f "$folder/BUILD-INFO.txt" ] || { echo "::error::no LivingServer-<build> folder in the artifact"; ls -R candidate-package | head; exit 1; }
+          build="${folder##*/LivingServer-}"
+          [ "v$build" = "$RELEASE" ] || { echo "::error::run $RUN_ID's package is $build, not the build of $RELEASE"; exit 1; }
+          mkdir -p candidate-zip
+          python -c "import sys; sys.path.insert(0, 'tools/release'); import publish_release as p; p.write_zip(sys.argv[1], sys.argv[2])" "$folder" "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
+          python tools/installer/build.py --package "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
+          echo "::notice title=Setup from run $RUN_ID::$build ($(grep '^Commit=' "$folder/BUILD-INFO.txt" | tr -d '\r'))"
       - name: Pictures of every page (100 % and 150 %)
         shell: pwsh
         run: |

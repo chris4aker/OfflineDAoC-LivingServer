@@ -5,6 +5,10 @@
 # Safe to run again (tools/release/publish_setup.py): an exe attached with the same SHA-256 isn't uploaded twice,
 # notes that show it aren't edited, and an attached exe with another SHA-256 is never replaced (the run stops).
 # A dry run does everything except upload and edit, with a read-only token.
+#
+# Before the release is published (1.2.1 on): a dry run with package_run_id builds Setup from that build-and-test run's
+# package instead of the release's zip, and checks the Setup row against docs/RELEASE-NOTES-<version>.md instead of the
+# release's notes. It cannot upload or edit anything: the release doesn't exist yet, and a real run ignores the input.
 name: release
 
 on:
@@ -23,9 +27,14 @@ on:
         description: "Dry runs only: run the real-download end-to-end tests (a real run always runs them)"
         type: boolean
         default: true
+      package_run_id:
+        description: "Dry runs before the release exists: a successful build-and-test run whose package Setup embeds"
+        required: false
+        default: ''
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: release-${{ github.event.release.tag_name || inputs.tag }}
@@ -41,6 +50,9 @@ jobs:
       e2e: ${{ steps.what.outputs.e2e }}
       done: ${{ steps.release.outputs.done }}
       setup_name: ${{ steps.release.outputs.setup_name }}
+      package_run_id: ${{ steps.run.outputs.run_id }}
+      package_artifact: ${{ steps.run.outputs.artifact }}
+      notes: ${{ steps.run.outputs.notes }}
     steps:
       - uses: actions/checkout@v4
       - name: Which release, and a real run or a dry run
@@ -63,11 +75,36 @@ jobs:
           echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
           echo "e2e=$e2e" >> "$GITHUB_OUTPUT"
           echo "::notice title=Release::$tag (dry run: $dry_run, end-to-end tests: $e2e)"
+      - name: The build-and-test run whose package stands in for the release's (dry runs before publishing)
+        id: run
+        if: steps.what.outputs.dry_run == 'true' && inputs.package_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.package_run_id }}
+          TAG: ${{ steps.what.outputs.tag }}
+        run: |
+          set -euo pipefail
+          run=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID")
+          name=$(jq -r .name <<<"$run"); conclusion=$(jq -r .conclusion <<<"$run"); commit=$(jq -r .head_sha <<<"$run")
+          branch=$(jq -r .head_branch <<<"$run"); event=$(jq -r .event <<<"$run")
+          echo "run $RUN_ID: $name, $event on $branch, $conclusion, commit $commit"
+          [ "$name" = build-and-test ] || { echo "::error::run $RUN_ID is $name, not build-and-test"; exit 1; }
+          [ "$conclusion" = success ] || { echo "::error::run $RUN_ID ended $conclusion"; exit 1; }
+          build="${TAG#v}"
+          want="OfflineDAoC-LivingServer-$build-${commit:0:7}"
+          found=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$want\" and .expired == false) | .name")
+          [ -n "$found" ] || { echo "::error::run $RUN_ID has no artifact $want (is ForkBuildInfo.BuildName $build?)"; exit 1; }
+          version="${build%-beta}"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "artifact=$want" >> "$GITHUB_OUTPUT"
+          echo "notes=docs/RELEASE-NOTES-$version.md" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Package from a run::$want (run $RUN_ID, $event on $branch); the release itself is not read"
       - name: Check the release and what is left to do
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 tools/release/publish_setup.py plan --tag "${{ steps.what.outputs.tag }}"
+          NOTES: ${{ steps.run.outputs.notes }}
+        run: python3 tools/release/publish_setup.py plan --tag "${{ steps.what.outputs.tag }}" ${NOTES:+--unpublished-notes "$NOTES"}
 
   # The installer workflow's own build and end-to-end jobs, with this release's package. Skipped when a real run finds
   # nothing left to do; a dry run always builds and tests.
@@ -78,6 +115,8 @@ jobs:
     with:
       package_release: ${{ needs.plan.outputs.tag }}
       e2e: ${{ needs.plan.outputs.e2e == 'true' }}
+      package_run_id: ${{ needs.plan.outputs.package_run_id }}
+      package_artifact: ${{ needs.plan.outputs.package_artifact }}
 
   publish:
     needs: [plan, installer]
@@ -118,8 +157,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SETUP_NAME: ${{ needs.plan.outputs.setup_name }}
+          NOTES: ${{ needs.plan.outputs.notes }}
         run: |
           exe=$(find setup -type f -name "$SETUP_NAME" | head -n 1)
           pkg=$(find setup -type f -name LivingServer.zip | head -n 1)
           [ -n "$exe" ] || { echo "::error::No $SETUP_NAME in the build (the package's BUILD-INFO names another build?)"; ls -R setup; exit 1; }
-          python3 tools/release/publish_setup.py publish --tag "${{ needs.plan.outputs.tag }}" --exe "$exe" --package "$pkg" --dry-run
+          python3 tools/release/publish_setup.py publish --tag "${{ needs.plan.outputs.tag }}" --exe "$exe" --package "$pkg" --dry-run ${NOTES:+--unpublished-notes "$NOTES"}

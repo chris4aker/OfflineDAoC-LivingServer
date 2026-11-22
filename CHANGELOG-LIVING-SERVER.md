@@ -8,12 +8,28 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## 1.2.1 (in development)
+## 1.2.1 — [RELEASE DATE]
 
-Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only.** None of it was built
-or run where it was written; CI on pull request #398 is the first build.
+Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
+1.2.1 ships with every change that passes CI, each one labelled; [plan](docs/1.2.1/RELEASE-PLAN-1.2.1.md)). Automated
+results so far: CI on `fix/1.2.1` at `d56adeda` (9,258 server tests passed, 0 failed, 1 skipped), and the playtester's
+`bot-death`, `bot-corpse-target` and `bot-rez` scenarios on `b644529a`, which check packets, not what the client draws.
+The raid fixes (#407-#415) are added under **Bosses** as their branches merge. Player notes:
+[docs/RELEASE-NOTES-1.2.1.md](docs/RELEASE-NOTES-1.2.1.md).
 
 **Bots and companions**
+- **Darkness Falls entrance stairs (#438).** Companions following you down a realm's entrance stairs no longer get
+  stuck on a step. The navigation mesh has no walkable stairs there: three landings per realm, each ending in a sheer
+  edge, joined by one-way drops of 128-191 units (Albion x 33508-34301, y ~27955; Midgard and Hibernia the same;
+  `tools/navmesh/README.md`). A companion slid diagonally down each drop, and a new follow order in mid-drop replotted
+  from a point on no polygon, failed, and left it there. Every bot now takes the drops as the certified falls autonomous
+  gamebots already used (off the lip, then down), new orders during a fall only change where it goes after landing,
+  and a bot left in a drop is set down on its landing (`DF_STAIR_LANDING`). No navmesh change. **Tests only.**
+- **GM `/jump <bot> to me` (#438).** `/jump <name> to me`, `/jump <name> to <name>` and `/jump <name> to x y z
+  [region]` now find bots by name (companions, `/spawn` and `/raid` helpers, hired companions, gamebots, buffbots):
+  an exact name first, then the start of a name, your own and your group's bots first. Bots had no client, so the
+  command answered "not in the game". A moved bot drops its fight, path and ride and plans again; a gamebot's watchdog
+  counts the move as progress. Log line `GM_JUMP_BOT ... kind=`. **Tests only.**
 - **Resurrecting a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered
   "You must select a target for this spell!". A resurrection cast with nothing dead selected now goes to a dead bot of
   your realm in range: the one you named with `/target <name>`, otherwise one from your group, otherwise the nearest. A
@@ -60,8 +76,10 @@ or run where it was written; CI on pull request #398 is the first build.
   drops measured on Uthgard (hides, teeth, gems, vendor loot, period gear) to monsters that have no loot of their own,
   at Uthgard's rates (whole percents; rarer than 0.5% rounds up to 1%). Monsters with their own drops keep them, and
   random magic items and coin drop as before. `build_release_037.py --uthgard-drops <pipeline data>` puts them in the
-  release world, and the update carries them to existing worlds. The pipeline data is not in Git, so this runs on the
-  owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the real world yet.
+  release world, and a world update made from it (`make_patch.py`) carries them to existing worlds. The pipeline data is
+  not in Git, so this runs on the owner's PC ([docs/UTHGARD-DROPS.md](docs/UTHGARD-DROPS.md)); nothing has run on the
+  real world yet. **Not in 1.2.1's world:** the 1.2.1 package changes the server and launcher only, and Setup installs
+  the unchanged 0.37 world, so the drops ship with the first release whose world is built with them.
 - Loot rows that name a missing item are one `LOOT_ITEMS_MISSING` warning per loot source with a count; the rows are at
   debug level.
 
@@ -79,6 +97,66 @@ or run where it was written; CI on pull request #398 is the first build.
 - **Elro the Ancient's third treant.** His script asked for health under a quarter and over three-tenths at once, so
   the third treant never came. It now comes between three-tenths and a quarter of his strength left, and his fight
   advice tells all three windows.
+- **Raid simulations for Summoner's Hall, Marfoirwort and the Green Knight (#410, #412; tests only).** Models of the
+  fights on the bosses' own numbers and the bots' own decisions (`UT_RaidSim121SummonersGreenKnight`); no boss changed.
+  - **Marfoirwort:** his Life-leech heals him by the damage it deals to everyone within 350 of his target, and the melee
+    and pets all stood there (about 25 a leech), so he stayed at 79% and above on `ccba364`. Now his target holds 185 from
+    him, the other melee fight from behind him (370-380 from his target), everyone at range stands clear and no bot's pet
+    attacks him. Model: before, 2 of 128 attempts killed him in 30 minutes; after, 128 of 128 in under 10 minutes. Log:
+    `EPIC_LEECH_EXPOSURE ... inside=` (should be 0-1).
+  - **Summoner Roesia:** a raider carrying Summoner Pain now holds the raid cure back only under 25% (was 50%), and a
+    raid curer cures again after 2.5 s (was 5 s). Model, calibrated to `b1b6846`: with a group cure in every party both
+    rules win; with single cures only, the old rule never wins and the new one still loses at 77 raiders but wins 5 of
+    16 at 100 and 15 of 16 at 128 (the win balance grows the raid after a loss). `RAID_CURE_POISON` now prints `groups=`.
+  - **The Green Knight:** the melee outside his target's party kill the tree nearest them (their own first) before going
+    back to him. Model: the raid lasts longer and has fewer trees, but **still loses**; the next PC log (`EPIC_RANGED_ADDS
+    boss="Green Knight" alive=`) is needed to see why.
+  - **Grand Summoner Govannon:** not simulated; no bot raid has reached him since Roesia began winning every time.
+  - **Round 2 (tests only).** No realm has a group cure poison (OpenDAoC database: every Cure Poison is single-target;
+    Cleric, Friar, Healer, Shaman, Druid and Bard have it, Paladin and Warden don't), so the Roesia model now uses each
+    realm's curers. A Summoner Pain with two thirds of its time left is now cured even while a member of the curer's
+    party is in danger, and the own party's dotted member with the fewest health points goes first. Model, 16 attempts a
+    size: wins at 93 / 106 / 128 raiders (the win balance's first, second and fourth steps up from its 80 start) go from
+    6 / 9 / 15 to 13 / 16 / 16 in Midgard, 0 / 0 / 4 to 7 / 15 / 16 in Albion and 0 / 2 / 4 to 13 / 16 / 16 in Hibernia; 64
+    and 80 still lose. `RAID_CURE_POISON` prints `pastDanger=`.
+  - **The Green Knight, round 2 (tests only).** A tree that hits a caster or a healer silences it, and a shot pulls a
+    tree onto the shooter. Now the casters, archers and healers stand together 750 from him away from his target, every
+    melee raider but his target peels the trees off the area casters, the healers and the other casters (then kills its
+    own), and only area casters hit trees. Model: the 1.2 rules and #432 never win; this wins at 80 raiders and more
+    (past his 70-trees-a-wave flood guard) when a raider deals 80 or more a second to a tree and a tree hits for 8 or less,
+    at 50 only in the kindest case. **Not fixed at his period size.** Log: `EPIC_GK_TREES alive= onHealers=` (every 30 s).
+- **Dragon raids keep their thrown and resurrected raiders in the fight (#415, tests only).** Golestandt and Cuuldurach
+  fell apart partway (lost after two wipes on `9a173f4`, `c81eb5d` and `43c43aa`) while Gjalpinulva kept winning. Four of
+  Golestandt's five throw spots and three of Cuuldurach's land 7,300-12,200 from the lair, past the return wave's 6,700
+  line (one of Gjalpinulva's does), and the return wave held such a raider at the staging ring as if it had released; a
+  raider resurrected where it fell was held the same way. Both now stay with the raid (`REALM_RAID_RETURN_NOT_HELD`). No
+  dragon is changed. A simulation on the real return-wave and wipe code (`UT_DragonThrowReturnWave415`) reproduces the
+  pattern (Gjalpinulva wins most fights, the other two about half) and the fix lifts Golestandt and Cuuldurach to about
+  seven in ten; not yet seen in game.
+- **Legion's wounded step out where the healers reach them (#413, tests only).** A raider under 35% stepped straight away
+  from him to 1,700, so on his far side it stood 2,500-2,900 from the healers' line, out of heal range; souls found it and
+  each death healed him 2.5%. It now steps out toward the raid's side, about 500 behind the healers (`UT_LegionWounded413`).
+  Legion is unchanged; not yet seen in game.
+- **Tuscaran Glacier's twins (#409, tests only).** While Queen Kula lives every point dealt to King Tuscar heals her. No
+  bot's pet now attacks him or defends its owner against him, and no bot but his own target hits him, area spells at
+  Kula that would reach him included, as the period raids did ("kill all pets", "no AoE"). Once Kula is dead,
+  casters and healers outside his target's party keep clear of the hammers that follow his styles, 500 around his
+  target. King and Queen are unchanged.
+- **Trollheim's stall clock after a wipe (#411, tests only).** The raid's hour without progress kept Nosdoden's low from
+  before the wipe and did not count the retry's pull, so a retry that came late in the hour was ended as "Timed out".
+  The retry's pull and, once the boss is back at full, its own low now count, once per wipe
+  (`REALM_RAID_STALL_CLOCK why=retry|low_reset`). `REALM_RAID_STALLED` now says what the route was doing
+  (`status=`, `living=`, `retries=`).
+- **Caer Sidi, the Crypt Lord's court (#407; tests only, a simulation).** When the raid's wait for a safe moment to pull
+  one of his court ran out (20 minutes, unchanged), it pulled at once, wherever he walked: on build `b1b6846` that brought
+  him and his whole court in and ended the raid. After the 20 minutes the pull now still waits, at most 20 minutes more,
+  for a moment when he stays 950 from that court monster while the raid walks to it and pulls it, and 550 from the walk
+  itself. In the simulation an immediate pull brought him in 21-68% of the time and a guarded one never did.
+  `REALM_EXPEDITION_PULL_WAIT_GUARDED`, `..._GUARD_CLEAR`, `..._GUARD_EXPIRED`. He and his court are unchanged.
+- **Galladoria, Spindler Broodmother's newborns (#408; tests only, a simulation).** The parties sent against her newborns
+  could be at most 45% of the raid: a 100-bot raid (13 parties) sent 5 and killed about 62% of what she spawned, so newborns
+  piled up. They may now be 60%: 7 parties (88%, as in the 128-bot raid that killed her in 4 minutes on `ccba364`), and 8
+  from 14 parties. She is unchanged.
 
 **RvR and travel**
 - Albion bots whose route out of Castle Sauvage failed restart from the army's muster at the border keep.
@@ -102,7 +180,14 @@ or run where it was written; CI on pull request #398 is the first build.
   the bot (checker row `rvr/porter_wait`).
 - The log checker's regroup row shows how far each regroup call spread (#419; the relay itself is unchanged: 9a173f4's
   17.4% is under the owner's 20% bar of 2026-11-19).
-- Not changed: the Connacht hunting-camp rescues and the Lough Derg / Bri Leith seam loops need their PC log lines.
+- **Repeated pocket rescues stop (#420).** A bot moved off disconnected ground by an audited pocket escape, and
+  back where the same route fails again, was moved again with no end (the Connacht hill camp at 200:314846,471535 lies
+  inside the 4,000-unit pocket whose escape is the road 3,300 units off). After two identical rescues for one goal within
+  half an hour the third is not made: the goal is given up as any failed route is (camp route quarantine, a new camp)
+  and `AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP` names the bot, the from and to points, the camp, its target and the goal.
+  `AUTONOMOUS_ROUTE_POCKET_ESCAPE` now names the camp, target, goal and `sameEscapes`. No navmesh or pocket changed;
+  the spot fixes themselves still need those PC log lines (the two Lough Derg / Bri Leith seam spots of #421 lie in no
+  audited pocket, so this does not reach them).
 
 **Bot schedule off by default** (owner 2026-11-21): `bot_schedule_mode` now defaults to `off`, the whole roster online,
 in the server, the launcher's defaults and Recommended, the shipped world and Setup. A world that ran 1.2 with the

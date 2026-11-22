@@ -217,12 +217,12 @@
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
+    "intro": "Loremaster Svanlaug says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
     "topics": {
       "stairs": "Each realm's old frontier dungeon digs down to the same hall: Albion's Hall of the Corrupt, Midgard's Dodens Gruva, Hibernia's Marfach Caverns. Each realm's raid comes down its own stair and meets the others below.",
       "summoners": "Cunovinda the white hound, who puts you on the ledges; Lossren the gatherer, who keeps the dead in pieces; Roesia, who makes sure the price hurts.",
       "Grand Summoner": "Govannon, named for a smith of the old tales. He wears a sidhe's face until half his strength is gone, then the demon steps out, whole again. Stop his sacrifice reaching his feet.",
-      "meeting place": "The druids say the sidhe built it so the peoples of the three lands could talk without crossing each other's borders. Each came down its own stair and left its weapons on the [shelves]. The [stewards] kept one law.",
+      "meeting place": "The sidhe built it, the druids say, so the peoples of the three lands could talk without crossing each other's borders. Each came down its own stair and left its weapons on the [shelves]. The [stewards] kept one law.",
       "shelves": "Waist-high stone shelves at the foot of every stair, swept every day. Guests laid their weapons there. Nobody has since the summoner came; the [stewards] are waiting to see who will be first.",
       "stewards": "The sidhe of the hall: protectors, magickers, the grey and black nobles, and a high lord, [Kieren]. Their law: no guest is an enemy until he strikes, and then he is the enemy of the whole hall.",
       "Kieren": "Ard Tiarna Kieren, high lord of the hall's sidhe. He walks among the [stewards] and has never lifted a hand for the summoner or against him. The druids call his silence a price still being paid.",
@@ -296,7 +296,7 @@
         ]
       },
       "loremaster": {
-        "intro": "Loremaster Sigrun says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
+        "intro": "Loremaster Svanlaug says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
         "topics": {
           "voices": "The summoners call the dead of every realm. Ours heard them through the floor of Dodens Gruva.",
           "Aros": "The spiritmaster of Dodens Gruva, who bound the dead miners to the mine rather than let the calling have them.",

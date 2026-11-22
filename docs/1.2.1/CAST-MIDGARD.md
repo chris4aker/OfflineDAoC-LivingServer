@@ -1,5 +1,9 @@
 # Midgard's present-day cast (NPC pass, phase 1)
 
+Phase 2 ([NPC-PASS-MIDGARD.md](NPC-PASS-MIDGARD.md)) renamed the tellers who shared a gamebot name: Loremaster Sigrun is
+now Loremaster Svanlaug, Ragnhild Geirlaug, Hallveig Oddbjorg, Ingunn Thurid, Herdis Vilborg, Thorunn Tofa and Ingvild
+Asvor. The names below are as phase 1 found them.
+
 The people a story of Midgard can hand a line to. Owner decision 10 (2026-11-22): present-day characters belong in the
 stories and recur across places and bosses; legends stay legends ([HEROES.md](HEROES.md)); nothing after 1.65.
 

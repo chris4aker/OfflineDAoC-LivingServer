@@ -49,6 +49,7 @@ namespace DOL.GS
                 ClearFirstOf = CourtClearsFirst,
                 PullWait = (target, live, now) => CourtPullWindow(target, live, now, null),
                 WalkPullWait = CourtPullWindow,
+                LapsedPullWait = CourtLapsedPullWait,
                 MusterDangers = CryptLordMusterDangers,
                 ClearsAgainBeforePull = true,
             },
@@ -729,6 +730,58 @@ namespace DOL.GS
             return $"lord={(int)at.X},{(int)at.Y},{(int)at.Z} next={(int)to.X},{(int)to.Y} " +
                    $"courtClosest={(int)CourtPullApproach(at, next, At(target))} " +
                    $"walkClosest={(walkNear == float.MaxValue ? -1 : (int)walkNear)} horizon={(int)CourtWalkHorizonSeconds(walk)}";
+        }
+
+        // ---- after the 20-minute lapse: the guard a court pull still keeps (1.2.1, #407; tests only) ----------------------
+
+        /// <summary>After the hold's lapse a court pull still waits until his patrol keeps this far from the court monster
+        /// (his court link, <see cref="CryptLordCourtLink"/>, plus <see cref="CourtWalkMargin"/>)...</summary>
+        public const int CourtLapsedClearance = CryptLordCourtLink + CourtWalkMargin;
+        /// <summary>...for the raid's walk to it plus this long: the pull, and the court monster's run after its target back
+        /// to the muster, where the raid holds (<see cref="CourtLeash"/>) and the fight is out of his link.</summary>
+        public const int CourtLapsedRunSeconds = 15;
+
+        /// <summary>How long the raid takes to walk <paramref name="walk"/> at <see cref="RaidWalkSpeed"/> (pure).</summary>
+        public static float CourtWalkSeconds(IReadOnlyList<Vector3> walk)
+        {
+            float length = 0;
+            for (int i = 1; i < (walk?.Count ?? 0); i++) length += Vector3.Distance(walk[i - 1], walk[i]);
+            return length / RaidWalkSpeed;
+        }
+
+        /// <summary>
+        /// Why a court pull still waits after the tactic's 20-minute hold has lapsed (pure), or null: the Crypt Lord, at
+        /// <paramref name="lord"/> walking to <see cref="CryptLordPatrol"/>[<paramref name="next"/>], comes within
+        /// <see cref="CourtLapsedClearance"/> of the court monster at <paramref name="spot"/> during the walk plus
+        /// <see cref="CourtLapsedRunSeconds"/>, or within <see cref="CourtWalkClearance"/> of the raid's walk while it walks.
+        /// Owner's PC, build b1b6846, 2026-11-18 (07:38-07:59): the re-clear held on a reckoned soul for the 20 minutes, the
+        /// pull after the lapse took no account of him, he came in and the raid ended. The lapse is unchanged (the owner's
+        /// call): what lapses is the strict window (1,200 for 35 s, 550 from the walk for its time plus 35 s), which for the
+        /// western forerunner is open about 7 s of his 131 s loop; this guard is open about 23 s of it there.
+        /// </summary>
+        public static string CourtLapsedGuard(Vector3 lord, int next, Vector3 spot, IReadOnlyList<Vector3> walk)
+        {
+            float walkSeconds = CourtWalkSeconds(walk);
+            float near = ClosestApproach(PredictPatrol(lord, CryptLordPatrol, next, CryptLordWalkSpeed, walkSeconds + CourtLapsedRunSeconds), spot);
+            if (near < CourtLapsedClearance)
+                return $"lapsed-guard: the Crypt Lord's patrol comes within {(int)near} of it in the next " +
+                       $"{(int)(walkSeconds + CourtLapsedRunSeconds)} s (his court link is {CryptLordCourtLink})";
+            if (walk is not { Count: > 1 }) return null;
+            float onWalk = float.MaxValue;
+            foreach (Vector3 p in PredictPatrol(lord, CryptLordPatrol, next, CryptLordWalkSpeed, MathF.Max(1, walkSeconds)))
+                onWalk = MathF.Min(onWalk, DistanceToWalk(p, walk));
+            return onWalk >= CourtWalkClearance ? null
+                : $"lapsed-guard: the Crypt Lord's patrol comes within {(int)onWalk} of the raid's walk while it walks " +
+                  $"({(int)walkSeconds} s; he aggroes within {CryptLordWalkAggro})";
+        }
+
+        /// <summary>The guard of <see cref="CourtLapsedGuard"/> for a court monster (null: not one, or he fights).</summary>
+        private static string CourtLapsedPullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
+        {
+            if (!IsCryptLordCourt(target) || BossNear(target, live, nameof(CryptLord), CryptLordCourtRange) is not { } lord ||
+                lord.InCombat)
+                return null;
+            return CourtLapsedGuard(At(lord), CryptLordNextPoint(lord), At(target), walk);
         }
 
         /// <summary>No muster lies this close to his patrol loop while he walks it (a court monster fighting within

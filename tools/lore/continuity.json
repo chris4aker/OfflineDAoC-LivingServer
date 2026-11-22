@@ -502,7 +502,7 @@
     },
     {
       "id": "galplen-twenty-seven",
-      "fact": "Twenty-seven out of Galplen, who knew Ragnhild's song by heart, killed the dragon twice in one day.",
+      "fact": "Twenty-seven out of Galplen, who knew Geirlaug's song by heart, killed the dragon twice in one day.",
       "source": "bosses/gjalpinulva, locations/myrkwood-forest",
       "kind": "value",
       "scope": {
@@ -560,6 +560,34 @@
       "numeric": true
     },
     {
+      "id": "orlaith-hundred-and-forty",
+      "fact": "Orlaith of Tir na Nog, who lives in Necht now (the real 1.65 NPC there, so she keeps her name though gamebots share it), led the hundred and forty into Galladoria.",
+      "source": "Living Server lore; HEROES.md decision 11",
+      "kind": "value",
+      "scope": {
+        "sentence": "(?-i:\\bOrlaith\\b)"
+      },
+      "claim": [
+        "\\bhundred and (?P<v>[a-z-]+)\\b"
+      ],
+      "allowed": [
+        "forty"
+      ]
+    },
+    {
+      "id": "esras-no-churchman",
+      "fact": "Esras of the Cliffs of Moher is a hermit who was a bard of Tir Urphost, never a churchman: Hibernia has no Church (the game's NPC is titled Brother; the lore drops it).",
+      "source": "HEROES.md canon; CAST-HIBERNIA.md",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Esras"
+      },
+      "forbid": [
+        "\\bBrother Esras\\b",
+        "\\bEsras\\b[^.]{0,60}\\b(?:priest|monk|church|abbey|friar)\\b"
+      ]
+    },
+    {
       "id": "king-mark-duke-marcus",
       "fact": "King Mark is Duke Marcus's son, the son who came home alone from Dartmoor.",
       "source": "HEROES.md owner notes (2026-11-21)",
@@ -583,6 +611,193 @@
       "forbid": [
         "\\bArthur (?:rides|is riding|waits|sits|stands|holds court|reigns|rules) (?:now|today|still)\\b",
         "\\bking Arthur is alive\\b"
+      ]
+    },
+    {
+      "id": "sven-names-only-the-dead",
+      "fact": "Sven of Jordheim puts only the dead in his songs; he does not name the living.",
+      "source": "NPC pass (HEROES decision 11): bosses/hati, bosses/mahattava, locations/dodens-gruva",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bSven\\b"
+      },
+      "forbid": [
+        "\\bSven\\b[^.]*\\b(?:names?|sings? of|sang of|puts?)\\b[^.]*\\bthe living\\b",
+        "\\bSven\\b[^.]*\\bnamed? (?:him|her|them) in (?:the|his) (?:song|verse)"
+      ],
+      "unless": "\\bnot\\b|\\bnever\\b|\\bonly the dead\\b|\\bwill not\\b"
+    },
+    {
+      "id": "geirlaug-song-never-whole",
+      "fact": "Geirlaug's song takes a verse for every waking of the dragon, so nobody alive sings all of it; the skalds of the south sing the warband's part whole, and Sven stops one verse short.",
+      "source": "NPC pass: bosses/gjalpinulva, locations/malmohus",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/gjalpinulva",
+          "locations/malmohus",
+          "locations/myrkwood-forest"
+        ],
+        "sentence": "song|sing|sang"
+      },
+      "forbid": [
+        "\\bsings? (?:it|the song|all of it|the whole song) (?:whole|to the end|through)\\b"
+      ],
+      "unless": "warband's part|nobody|never|stops one verse short"
+    },
+    {
+      "id": "grimma-keeps-the-tally",
+      "fact": "Grimma, Jordheim's shaman trainer of the eastern hall, reads the omens before a warband leaves and keeps the tally of the realm's dead.",
+      "source": "NPC pass: bosses/thorkatla, bosses/iarnvidiur, locations/dodens-gruva, locations/jordheim",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bGrimma\\b"
+      },
+      "forbid": [
+        "\\bGrimma\\b[^.]*\\b(?:southern hall|hall of the Aesir|Aesir's hall)\\b",
+        "\\bGrimma (?:of|in) (?!Jordheim)\\w+"
+      ],
+      "unless": "Grimma's quest"
+    },
+    {
+      "id": "morlin-caan-forge-by-the-temple",
+      "fact": "Morlin Caan's forge is in Jordheim, by the temple.",
+      "source": "CAST-MIDGARD.md; NPC pass: bosses/oona, bosses/hurjavelen, bosses/fostra-orm, locations/jordheim",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bMorlin Caan\\b"
+      },
+      "forbid": [
+        "\\bMorlin Caan (?:of|in|at) (?!Jordheim|the forge)\\w+"
+      ]
+    },
+    {
+      "id": "tilian-one-spelling",
+      "fact": "Sir Tilian of Castle Sauvage has one spelling, as the 1.65 world has it (never Sir Tillian).",
+      "source": "CAST-ALBION.md caution; NPC pass, Albion (2026-11-22)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Till?ian"
+      },
+      "forbid": [
+        "\\bTillian\\b"
+      ]
+    },
+    {
+      "id": "hedydd-is-she",
+      "fact": "Magus Hedydd of the Academy is a woman in every file (the Crystal Cave scene, her hands held out to the light).",
+      "source": "CAST-ALBION.md contradiction; NPC pass, Albion (2026-11-22)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Hedydd"
+      },
+      "forbid": [
+        "Hedydd[^.]*\\b(?:his own|himself)\\b",
+        "\\bhis own school failed him\\b"
+      ]
+    },
+    {
+      "id": "rhodri-is-the-captain",
+      "fact": "Rhodri in Albion is Captain Rhodri of Snowdonia Fortress; the dead man on Dame Nest's roll is Meirion.",
+      "source": "CAST-ALBION.md caution; NPC pass, Albion (2026-11-22)",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/bane-of-hope"
+        ],
+        "sentence": "Meirion|Rhodri"
+      },
+      "forbid": [
+        "\\bRhodri\\b"
+      ],
+      "unless": "renamed|until the NPC pass"
+    },
+    {
+      "id": "fridwulf-four-riders",
+      "fact": "Lady Fridwulf of the Church in Camelot reads the four riders out of the last book: Fames is the black horse with the balance, Funus the pale horse.",
+      "source": "NPC pass, Albion (2026-11-22)",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "bosses/fames",
+          "bosses/funus",
+          "bosses/bellum",
+          "bosses/morbus",
+          "bosses/apocalypse",
+          "locations/caer-sidi"
+        ],
+        "sentence": "horse"
+      },
+      "forbid": [
+        "\\bFames\\b[^.]*\\bpale horse\\b",
+        "\\bFunus\\b[^.]*\\bblack horse\\b"
+      ]
+    },
+    {
+      "id": "thirteen-remembered",
+      "fact": "The third company's thirteen dead are the ones remembered: Lady Fridwulf reads their names at Lent in Camelot, and masses are said for the thirteen at Caer Gothwaite, Father Kenelm saying the first.",
+      "source": "NPC pass, Albion (2026-11-22); caer-sidi-thirteen-dead",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bLent\\b|\\bmasses\\b"
+      },
+      "forbid": [
+        "\\b(?:eleven|twelve|fourteen|fifteen|sixteen|nine|ten)\\b[^.]*\\bdead\\b[^.]*\\bafter it\\b",
+        "masses said at Caer Gothwaite for the (?!thirteen)\\w+"
+      ]
+    },
+    {
+      "id": "albion-housing-no-market-explorer",
+      "fact": "The housing villages have a market crier, never a Market Explorer (added after 1.65).",
+      "source": "NPC-PASS-SAMPLE.md (weakest pages); NPC pass, Albion (2026-11-22)",
+      "kind": "forbid",
+      "scope": {
+        "files": [
+          "locations/albion-housing"
+        ],
+        "sentence": "market"
+      },
+      "forbid": [
+        "market explorer"
+      ],
+      "unless": "after 1\\.65|in the lore"
+    },
+    {
+      "id": "sven-names-the-dead",
+      "fact": "Sven of Jordheim sings the names of the dead and never of the living (Thorhild's account; Hrolf's name left out of Midgard's roll of Legion's first breakers).",
+      "source": "CAST-MIDGARD.md (Sven's voice); NPC-PASS-NEUTRAL.md",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bSven\\b"
+      },
+      "forbid": [
+        "\\bSven\\b[^.]{0,80}\\b(?:sings|sang|names|named)\\b[^.]{0,30}\\b(?:the )?names? of the living\\b",
+        "\\bSven\\b[^.]{0,80}\\bsings Hrolf's (?:own )?name\\b"
+      ]
+    },
+    {
+      "id": "siencyn-elaydith-runner",
+      "fact": "Sister Elaydith's runner, who fetched the ladle and lived, is Siencyn of Camelot.",
+      "source": "NPC-PASS-NEUTRAL.md (bosses/gatekeeper-dommel, bosses/malroch-the-cook)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "Elaydith's runner"
+      },
+      "forbid": [
+        "(?-i:Elaydith's runner, (?!Siencyn\\b)(?!Camelot\\b)[A-Z][a-z]+)",
+        "(?-i:\\b(?!Siencyn\\b)(?!Sister\\b)[A-Z][a-z]+, Sister Elaydith's runner)"
+      ]
+    },
+    {
+      "id": "tudno-died-at-the-gate",
+      "fact": "Brother Tudno, chaplain of Albion's first company, died at the Gate praying; four of the company came back.",
+      "source": "locations/darkness-falls, bosses/gatekeeper-dommel (renamed from Aldric, NPC-PASS-NEUTRAL.md)",
+      "kind": "forbid",
+      "scope": {
+        "sentence": "\\bTudno\\b"
+      },
+      "forbid": [
+        "\\bTudno\\b[^.]{0,60}\\b(?:came back|came home|lived|survived|walked out)\\b"
       ]
     }
   ]

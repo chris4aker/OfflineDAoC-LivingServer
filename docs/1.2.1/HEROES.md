@@ -118,6 +118,37 @@ review's findings and the work left to do.
      chapters carry the depth. `LoreBible.DepthReport` and `tools/lore/depth_report.py` no longer hold epic places to
      the generic 500+ story floor (every other location floor still applies). A short book page gets only a real detail
      (a fact, an image, a consequence that fits the file), never filler; where none fits, the page is left and listed.
+11. **The NPC pass** (2026-11-22, answering NPC-PASS-SAMPLE.md):
+   - **A real moment, not a name swap.** A named present-day NPC gets a moment of their own where it earns its place: a
+     line of speech, a habit, a stake in the story. Still tight (decision 10): every sentence adds a fact, an image or
+     a consequence.
+   - **Untitled chroniclers stay exempt from the cap of 12** (Wenna, Adremal, Elowen, Lisín, Aodhan, Tobias, Nóra and
+     the like). They are the realms' tellers. Titled names and the folklore heroes keep the cap.
+   - **Lore tellers avoid gamebot first names** (Sigrun, Ragnhild, Hallveig and any other name a gamebot can be given),
+     as hired companions already avoid the lore's heroes (decision 7). A teller who has one is renamed consistently.
+   - **The recurring voices are approved:** Sven (Jordheim's skald trainer), Morlin Caan (the smith by the temple) and
+     Grimma (Jordheim's shaman trainer) for Midgard; Daray (Tir na Nog's druid trainer), Lasairiona (the champion
+     trainer) and Ilisa (Mag Mell's weaponsmith) for Hibernia. Albion keeps Elowen, with Lady Fridwulf as a second voice.
+   - **Owner rulings on the NPC pass review (2026-11-22):**
+     - Sven, Gareth, Cody and Tobias are off the gamebot name list (`EraBotNames.MaleFirstNames`), and Sven is off the
+       hired-companion list (both changed on `fix/1.2.1`). Sven, Tobias and the lore's Gareth no longer clash.
+     - The one-file witnesses Skeggi (`vendo-caverns`) and the sentry Steinar (`hurjavelen`) are renamed: they are
+       **Tjorvi** of Mularn and the sentry **Kolli**. Skeggi, Ragnfrid's father in `fostra-orm`, is a dead man of another
+       age and keeps his name.
+     - Captain Cody, Hibernia's real Thidranki captain, may be named in `thidranki` with a real moment. He walks each new
+       band past the eldest bwca's corner bareheaded.
+     - Vigfus Hallason and Sir Edric only match generated syllable patterns, not a written list, so they stay.
+     - Krondon's fourth summary paragraph (the old alliance): "Just make it the best possible". It is rewritten with every
+       event kept, and the summary stays at 300-500 words.
+   - **A real NPC keeps their name** although a gamebot can share it (review of the NPC pass, 2026-11-22). The rename rule
+     is for invented tellers. Orlaith of Necht, who led the hundred and forty, is the real Vigilant Rock NPC, so she stays
+     Orlaith, as Eoghan of Lough Derg, Vigdis and Elin do.
+   - **The lore keeps its names; the bot lists give way** (2026-11-22, the owner: "do what is best"). Orlaith keeps her
+     name (a real 1.65 NPC). Wynflaed, Wystan, Leofric, Eadric, Osric and every other name the lore gives its people
+     are out of the gamebots' lore-name lists (`EraBotNames.LoreNameLists`), replaced by unused period names, and
+     `tools/lore/tests/test_bot_names.py` keeps it so. Duke Satori's second Hrolf is Illugi the Counter, so Legion's
+     Hrolf the Tall is the only Hrolf.
+
 ## Canon (from CANON-REVIEW-HEROES.md, checked against the Camelot Herald archive)
 
 - At 1.65 **Arthur is dead** ("the late King of Camelot"), and the Round Table belongs to a lost age. Albion is in
@@ -331,6 +362,13 @@ are not added yet:
   [CAST-NEUTRAL.md](CAST-NEUTRAL.md)), the voice guides (VOICE-*.md, rule 1 the owner's "phenomenal and tight") and a
   sample for the owner ([NPC-PASS-SAMPLE.md](NPC-PASS-SAMPLE.md)). Finding: the cap of 12 is checked for titled names
   only, and many bare-named tellers are far over it (Wenna 129, Elowen 89, Lisín 66, Aodhan 65).
+- **Epic voice and teller openings (#405, #406)**, on `wt11/voice-all`: ten Albion chapters (annal, romance, vow,
+  hermit) and eleven Hibernian ones (the old Irish tale's forms), and the teller openings varied in all four realms
+  ([EPIC-VOICE-ALBION.md](EPIC-VOICE-ALBION.md), [EPIC-VOICE-HIBERNIA.md](EPIC-VOICE-HIBERNIA.md),
+  [OPENINGS-MIDGARD-NEUTRAL.md](OPENINGS-MIDGARD-NEUTRAL.md)). Independent review
+  ([REVIEW-EPIC-VOICE.md](REVIEW-EPIC-VOICE.md)): 0 High, 2 Medium (the Dartmoor annal against the Herald's text; four
+  Midgard pages under 100 words), 8 Low, all fixed. Reviewer's calls on the owner's questions: Angharad's barge question,
+  the brehon's claim by entry and the Fomorians' three islands all stay. Tests only.
 - **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.

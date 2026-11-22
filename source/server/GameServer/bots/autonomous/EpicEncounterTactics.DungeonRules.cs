@@ -115,6 +115,11 @@ namespace DOL.GS
             /// for it yet); asked instead of <see cref="PullWait"/> when set (the Crypt Lord's court: his patrol must keep clear
             /// of the walk too).</summary>
             public Func<GameNPC, IReadOnlyList<GameNPC>, long, IReadOnlyList<Vector3>, string> WalkPullWait { get; init; }
+            /// <summary>Why the raid still must not pull this monster now once the hold of <see cref="PullWait"/> has lapsed
+            /// (RealmRaidDungeonRoute.PullWaitLimitMilliseconds), or null: a looser guard the raid keeps after the strict window
+            /// gave way, held at most as long again (the Crypt Lord's court, #407: he must still keep out of the pull's link).
+            /// The walk is the raid's from its muster to the monster (null: none yet).</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, long, IReadOnlyList<Vector3>, string> LapsedPullWait { get; init; }
             /// <summary>A fixed point the raid musters for this encounter at instead of where it stands (the Host's ambush on
             /// his patrol: the muster chased him every 10 s); null: none.</summary>
             public Func<GameNPC, Vector3?> MusterAnchor { get; init; }
@@ -133,6 +138,7 @@ namespace DOL.GS
         {
             public DungeonRule[] ClearFirsts { get; } = All.Where(r => r.ClearFirstOf != null).ToArray();
             public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null || r.WalkPullWait != null).ToArray();
+            public DungeonRule[] LapsedPullWaits { get; } = All.Where(r => r.LapsedPullWait != null).ToArray();
             public DungeonRule[] Anchors { get; } = All.Where(r => r.MusterAnchor != null).ToArray();
             public DungeonRule[] Dangers { get; } = All.Where(r => r.MusterDangers != null).ToArray();
         }
@@ -283,6 +289,22 @@ namespace DOL.GS
                         return why;
                 }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pull-wait {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return null;
+        }
+
+        /// <summary>Why the raid still must not pull <paramref name="target"/> after a tactic's hold on it has lapsed (a dungeon
+        /// rule's <see cref="DungeonRule.LapsedPullWait"/>; the first that objects), or null. A monster in combat is never held.</summary>
+        public static string LapsedPullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
+        {
+            if (target == null || target.InCombat || live == null) return null;
+            foreach (DungeonRule rule in DungeonRuleSet.LapsedPullWaits)
+            {
+                try
+                {
+                    if (rule.LapsedPullWait(target, live, now, walk) is string why) return why;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon lapsed pull-wait {rule.Encounter} failed: {ex.Message}"); }
             }
             return null;
         }

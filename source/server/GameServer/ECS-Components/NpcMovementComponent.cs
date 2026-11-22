@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Numerics;
 using DOL.AI.Brain;
 using DOL.Database;
@@ -43,6 +44,7 @@ namespace DOL.GS
         private bool _autonomousTravelArrival;
         private SeamContinuation _seamContinuation;
         private FallContinuation _fallContinuation;
+        private static int _stairLandingLogs;
         private long _petStuckSince;
         private Vector3 _petStuckAnchor;
         private enum FallStage { WalkOffLip, Descend }
@@ -56,7 +58,8 @@ namespace DOL.GS
             FallContinuation fall = _fallContinuation;
             if (fall == null) return false;
             Vector3 expected = fall.Stage == FallStage.WalkOffLip ? fall.Air : fall.Landing;
-            if (Owner is not GameBot { IsAutonomousWorldBot: true } bot ||
+            // #438: player-led companions take the stair falls too (UsesStairFalls).
+            if (Owner is not GameBot bot ||
                 bot.CurrentRegionID != fall.Region || bot.Group != fall.Group ||
                 bot.PersistentRecord?.ObjectiveAssignmentId != fall.Assignment || !bot.IsAlive ||
                 bot.IsOnStableMasterRoute || Vector3.DistanceSquared(_ownerPosition, expected) > 16 * 16)
@@ -291,10 +294,22 @@ namespace DOL.GS
             // The controller may reissue the same travel order every tick.
             // Do not restart a certified fall between its lip and landing.
             if (_fallContinuation is { } fall &&
-                Owner is GameBot { IsAutonomousWorldBot: true } &&
-                Owner.CurrentRegionID == fall.Region &&
-                Vector3.DistanceSquared(destination, fall.Final) <= 64 * 64)
-                return;
+                Owner is GameBot fallingBot &&
+                Owner.CurrentRegionID == fall.Region)
+            {
+                if (fallingBot.IsAutonomousWorldBot && Vector3.DistanceSquared(destination, fall.Final) <= 64 * 64)
+                    return;
+                // #438: a companion re-orders its formation slot every think while its player walks on. Restarting
+                // the path between the lip and the landing replotted from inside the drop, where the navmesh has no
+                // polygon in the pick box, and the companion stood there for good ("stuck on one of the steps").
+                // It finishes the fall and then walks to the newest slot. Only while the fall is under way: a fall
+                // whose walk was stopped is dropped, so it can never swallow a companion's orders.
+                if (!fallingBot.IsAutonomousWorldBot && IsFlagSet(MovementState.WalkTo))
+                {
+                    _fallContinuation = fall with { Final = destination, Speed = speed > 0 ? speed : fall.Speed };
+                    return;
+                }
+            }
             _seamContinuation = null;
             _fallContinuation = null;
             _movementRequest.Set(MovementRequestType.Path, destination, speed);
@@ -727,11 +742,17 @@ namespace DOL.GS
             if (_pathfinder.TryGetNextNode(zone, _ownerPosition, destination, out Vector3? _nextNode))
             {
                 ClearAutonomousPathFailure();
-                if (Owner is GameBot { IsAutonomousWorldBot: true } bot &&
+                // #438 (1.2.1): every bot walks Darkness Falls' entrance stair drops as certified falls (off the lip,
+                // then down), not only autonomous gamebots. A companion used to slide diagonally from the lip into the
+                // lower landing and could be left inside the drop (see the DF_STAIR_LANDING case below).
+                Vector3 air = default, landing = default;
+                if (Owner is GameBot bot &&
                     zone.ID == AutonomousDarknessFallsPolicy.RegionId &&
-                    _pathfinder.PathfindingStatus == PathfindingStatus.PathFound &&
-                    AutonomousDarknessFallsNavigation.TryGetCertifiedFall(_ownerPosition,
-                        _nextNode.Value, out Vector3 air, out Vector3 landing))
+                    (bot.IsAutonomousWorldBot
+                        ? _pathfinder.PathfindingStatus == PathfindingStatus.PathFound &&
+                          AutonomousDarknessFallsNavigation.TryGetCertifiedFall(_ownerPosition, _nextNode.Value, out air, out landing)
+                        : _pathfinder.PathfindingStatus is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound &&
+                          AutonomousDarknessFallsNavigation.TryGetStairFall(_ownerPosition, _nextNode.Value, out air, out landing)))
                 {
                     _fallContinuation = new(air, landing, destination, bot.CurrentRegionID,
                         bot.Group, bot.PersistentRecord?.ObjectiveAssignmentId, speed, FallStage.WalkOffLip);
@@ -752,6 +773,25 @@ namespace DOL.GS
 
             switch (_pathfinder.PathfindingStatus)
             {
+                // #438: a bot left inside one of Darkness Falls' entrance stair drops (a stop or a new order between the
+                // lip and the landing) is on no polygon: every path from there fails and it stood on the step for good.
+                // It is set down on the drop's certified landing, the floor it was falling to, and paths on from there.
+                case PathfindingStatus.NoPathFound when allowFloorRepair && Owner is GameBot stairBot &&
+                    zone.ID == AutonomousDarknessFallsPolicy.RegionId &&
+                    AutonomousDarknessFallsNavigation.TryGetStairFallLanding(_ownerPosition, out Vector3 stairLanding):
+                {
+                    Vector3 inDrop = _ownerPosition;
+                    _ownerPosition = stairLanding;
+                    UpdateMovement(0);
+                    _pathfinder.ForceReplot = true;
+                    if (Interlocked.Increment(ref _stairLandingLogs) <= 200)
+                        BotPetStuckRecovery.Log.Warn($"DF_STAIR_LANDING bot=\"{stairBot.Name}\" " +
+                            $"kind={(stairBot.IsAutonomousWorldBot ? "gamebot" : "companion")} region={Owner.CurrentRegionID} " +
+                            $"from={(int) inDrop.X},{(int) inDrop.Y},{(int) inDrop.Z} " +
+                            $"to={(int) stairLanding.X},{(int) stairLanding.Y},{(int) stairLanding.Z}");
+                    PathToInternal(destination, speed, false);
+                    break;
+                }
                 case PathfindingStatus.NoPathFound when allowFloorRepair &&
                     Owner is GameBot { IsAutonomousWorldBot: true, IsOnStableMasterRoute: false, InCombat: false }:
                 {

@@ -30,6 +30,10 @@ public static class AutonomousBotRegistry
     public static GameBot[] HiredSnapshot() =>
         Hired.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();
 
+    /// <summary>The Epic Special Forces members in the world now.</summary>
+    public static GameBot[] SpecialForcesSnapshot() =>
+        SpecialForces.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();
+
     /// <summary>The buffbots in the world now.</summary>
     public static GameBot[] BuffBotSnapshot() =>
         BuffBots.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();

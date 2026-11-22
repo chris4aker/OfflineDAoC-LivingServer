@@ -114,7 +114,7 @@
     "keyword": "Jarala den Kvinnlig",
     "text": "The morvalt woman who stood alone on the bridge until the last Father went down, and stands now at [Olen den Bartender]'s bar without drinking. The Valkyn respect her. See [morvalt]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the Valkyn guide I carried for had a grandmother who saw the gates break, and she told me what her grandmother said about the morvalt woman on the bridge. That she stood with her blade down, and the Fathers going past her down the stair, and that she looked at each one as it went, the way a ferryman looks at his passengers. That none of them looked back at her. That one of the last was carrying a child, and Jarala stepped aside to let her by, which the grandmother could not forgive, though she could not have said why.",
+  "bookPage": "A grandmother who saw the gates break: the Valkyn guide I carried for had one, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and she told me what her grandmother said about the morvalt woman on the bridge. That she stood with her blade down, and the Fathers going past her down the stair, and that she looked at each one as it went, the way a ferryman looks at his passengers. That none of them looked back at her. That one of the last was carrying a child, and Jarala stepped aside to let her by, which the grandmother could not forgive, though she could not have said why.",
   "chronicle": {
     "win": "{raidLeader} of {realm} cut down Jarala den Kvinnlig in Trollheim's hall of counsel in {minutes} minutes.",
     "loss": "Jarala den Kvinnlig stood in front and threw back {raidLeader}'s party from {realm} after {minutes} minutes."

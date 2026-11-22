@@ -294,6 +294,23 @@ public class UpdatePolicyTests
     }
 
     [Test]
+    public void The121IsOfferedTo12AndEvery11xLauncher()
+    {
+        // v1.2.1 (a final release, like 1.2) is what releases/latest names once it is published: offered to the 1.2
+        // launchers players have now, and to every 1.1.x launcher still running the check.
+        foreach (string build in new[] { "1.1.2-beta", "1.1.3-beta", "1.1.4-beta", "1.2-beta", "1.2", "1.2.1-beta" })
+            Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2.1"), BuildVersion.Parse(build), new UpdateSettings(), asked: false),
+                Is.True, build);
+        Assert.That(Release("v1.2.1").Package!.Name, Is.EqualTo("OfflineDAoC-LivingServer-1.2.1.zip"));
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2.1"), BuildVersion.Parse("1.2.1"), new UpdateSettings(), asked: true),
+            Is.False, "a 1.2.1 launcher isn't offered its own build");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2"), BuildVersion.Parse("1.2.1"), new UpdateSettings(), asked: true),
+            Is.False, "nor 1.2");
+        Assert.That(UpdatePolicy.ShouldOffer(Release("v1.2.1"), BuildVersion.Parse("1.2"),
+            new UpdateSettings { SkippedVersion = "1.2.1" }, asked: false), Is.False, "skipping 1.2.1 skips it");
+    }
+
+    [Test]
     public void APrereleaseOf12BetaIsNotOffered()
     {
         // GitHub's /releases/latest leaves pre-releases out, and a pre-release is never offered: v1.2-beta must be
@@ -462,6 +479,20 @@ public class UpdatePackageTests
             Throws.TypeOf<PackageRefusedException>().With.Message.Contains("names build 1.2-beta"));
     }
 
+    [Test]
+    public void The121PackageMustBeBuiltAs121()
+    {
+        // The release zip a 1.2 launcher downloads for v1.2.1: one LivingServer-1.2.1 folder, BUILD-INFO BuildName=1.2.1.
+        BuildVersion next = BuildVersion.Parse("v1.2.1")!;
+        Assert.That(next.DisplayName, Is.EqualTo("1.2.1"));
+        PackageContents contents = PackageCheck.Inspect(Write(UpdateFixtures.Package("1.2.1")), next);
+        Assert.That(contents.TopFolder, Is.EqualTo("LivingServer-1.2.1"));
+        Assert.That(contents.BuildName, Is.EqualTo("1.2.1"));
+        // A 1.2 package put in the v1.2.1 release is refused, not installed as 1.2.1.
+        Assert.That(() => PackageCheck.Inspect(Write(UpdateFixtures.Package("1.2")), next),
+            Throws.TypeOf<PackageRefusedException>().With.Message.Contains("LivingServer-1.2.1 folder"));
+    }
+
     [TestCase("BUILD-INFO.txt")]
     [TestCase("INSTALL.cmd")]
     [TestCase("ROLLBACK.cmd")]
@@ -545,6 +576,23 @@ public class UpdateDownloadTests
         Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.zip")));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2")));
         Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2\r\n"));
+    }
+
+    [Test]
+    public void A12LauncherChecksAndPreparesThe121()
+    {
+        // The 1.2 → 1.2.1 path end to end without the window, as above.
+        byte[] package = UpdateFixtures.Package("1.2.1");
+        var web = new FakeReleaseWeb { Json = UpdateFixtures.ReleaseJson("v1.2.1", package), File = package };
+        var updater = new LauncherUpdater(_game, web);
+        ReleaseInfo? offered = updater.Check(BuildVersion.Parse("1.2"), false, DateTime.UtcNow, out string? problem);
+        Assert.That(problem, Is.Null);
+        Assert.That(offered?.TagName, Is.EqualTo("v1.2.1"));
+        PreparedUpdate prepared = updater.PrepareFromRelease(offered!, null, CancellationToken.None);
+        Assert.That(prepared.Build.Name, Is.EqualTo("1.2.1"));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.1.zip")));
+        Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2.1")));
+        Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2.1\r\n"));
     }
 
     [Test]

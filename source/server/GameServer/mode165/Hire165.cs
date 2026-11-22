@@ -68,7 +68,7 @@ namespace DOL.GS
             [(eRealm.Albion, eGender.Female)] = ["Aldith", "Brangwen", "Edith", "Gwendolyn", "Lynette", "Maud"],
             [(eRealm.Hibernia, eGender.Male)] = ["Aodh", "Brennan", "Colm", "Eoghan", "Loegaire", "Lorcan"],
             [(eRealm.Hibernia, eGender.Female)] = ["Aine", "Brigid", "Caoimhe", "Fand", "Grainne", "Muirne"],
-            [(eRealm.Midgard, eGender.Male)] = ["Arnulf", "Eirik", "Gunnar", "Hakon", "Leif", "Sven"],
+            [(eRealm.Midgard, eGender.Male)] = ["Arnulf", "Eirik", "Gunnar", "Hakon", "Leif", "Torstein"],
             [(eRealm.Midgard, eGender.Female)] = ["Astrid", "Freydis", "Gudrun", "Ingrid", "Sigrid", "Thyra"],
         };
 

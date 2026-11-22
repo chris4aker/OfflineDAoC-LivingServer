@@ -17,6 +17,10 @@ Safe to run again:
 - only the placeholder in the Setup row is changed, and the rest of the notes, line ends included, stay as they are.
 
 --dry-run does every check and prints what it would upload and the new notes, without changing the release.
+--unpublished-notes docs/RELEASE-NOTES-<version>.md (plan, and publish with --dry-run; 1.2.1 on): when the release isn't
+  published yet, check against a stand-in made from that notes file instead: its body is what publish_release.py would
+  publish (the zip row filled in with the package's SHA-256), and its zip is the package Setup embeds. A real publish
+  never uses it: it stops while the release doesn't exist.
 --release-json FILE reads the release from a file instead of GitHub (tests and local checks).
 Needs GITHUB_TOKEN (or GH_TOKEN) to change a release; reading a public release works without one.
 """
@@ -26,9 +30,13 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import publish_release  # noqa: E402  (release_body: the notes as publish-release publishes them)
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "chris4aker/OfflineDAoC-LivingServer")
 API = os.environ.get("GITHUB_API_URL", "https://api.github.com")
@@ -158,7 +166,13 @@ class GitHub:
         return json.loads(raw) if raw else None
 
     def release(self, tag):
-        return self.request("GET", f"{API}/repos/{REPO}/releases/tags/{urllib.parse.quote(tag)}")
+        """The release, or None when there is no release with this tag."""
+        try:
+            return self.request("GET", f"{API}/repos/{REPO}/releases/tags/{urllib.parse.quote(tag)}")
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return None
+            raise
 
     def upload(self, release, path, name):
         url = release["upload_url"].split("{", 1)[0] + "?" + urllib.parse.urlencode({"name": name})
@@ -189,6 +203,28 @@ def load(a, gh):
     return gh.release(a.tag)
 
 
+def stand_in(tag, notes_path, package_sha=None):
+    """The release as publish-release would create it from the notes file, before it exists (dry runs only)."""
+    build, _, zip_name = names(tag)
+    try:
+        text = Path(notes_path).read_text(encoding="utf-8-sig")
+    except OSError as e:
+        raise Stop(f"can't read the notes {notes_path}: {e}")
+    try:
+        body = publish_release.release_body(text, build, package_sha or "0" * 64)
+    except publish_release.Stop as e:
+        if not str(e).startswith("the notes still have placeholders"):
+            raise Stop(f"{notes_path}: {e}")
+        # Markers left for a person to fill in (@@RAID_RESULTS@@): publish-release refuses them, so say so loudly, but
+        # the dry run still checks the Setup row and builds and tests Setup.
+        notice("warning", "Notes not ready", f"{notes_path}: {e}. publish-release refuses the notes until they are filled in")
+        lines = text.splitlines(keepends=True)
+        start = next(i for i, line in enumerate(lines) if line.strip() == "---")
+        body = "".join(lines[start + 1:]).lstrip("\n")
+    digest = {"digest": f"sha256:{package_sha}"} if package_sha else {}
+    return {"tag_name": tag, "draft": False, "body": body, "assets": [{"name": zip_name, **digest}]}
+
+
 def run(argv=None, gh=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="command", required=True)
@@ -200,11 +236,25 @@ def run(argv=None, gh=None):
             p.add_argument("--exe", required=True, help="the built Setup exe")
             p.add_argument("--package", required=True, help="the package zip Setup embeds (payload/LivingServer.zip)")
             p.add_argument("--dry-run", action="store_true", help="check and show, change nothing")
+        p.add_argument("--unpublished-notes", help="before the release exists (dry runs): check against a stand-in "
+                                                   "made from this notes file")
     a = ap.parse_args(argv)
     gh = gh or GitHub()
     try:
         build, exe_name, zip_name = names(a.tag)
         release = load(a, gh)
+        if release is None:
+            if not a.unpublished_notes:
+                raise Stop(f"there is no release {a.tag}: publish it first (or give --unpublished-notes for a dry run)")
+            if a.command == "publish" and not a.dry_run:
+                raise Stop(f"there is no release {a.tag}: a real run needs the published release")
+            package_sha = sha256_file(a.package) if a.command == "publish" else None
+            release = stand_in(a.tag, a.unpublished_notes, package_sha)
+            notice("notice", "Not published yet", f"{a.tag} has no release: checked against a stand-in made from "
+                   f"{a.unpublished_notes}" + (f" and the package Setup embeds (sha256 {package_sha})" if package_sha else ""))
+        elif a.unpublished_notes:
+            notice("notice", "Published", f"{a.tag} is published: its own notes and package are checked, not "
+                   f"{a.unpublished_notes}")
         if a.command == "plan":
             result = decide(release, a.tag)
             for m in result["messages"]:

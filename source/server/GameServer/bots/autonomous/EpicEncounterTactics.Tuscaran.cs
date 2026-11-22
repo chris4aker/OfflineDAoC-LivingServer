@@ -51,8 +51,12 @@ namespace DOL.GS
             new("KingTuscar", ["KingTuscar", "QueenKula"], TuscarAndKula)
             {
                 Summary = "Twin heal: Kula first, only the King's target fights him; out of Kula's frost circle; casters clear of his hammers. " +
-                          "No muster in her frost circle (it stood 288 from its middle, owner's PC 2026-11-16).",
+                          "No muster in her frost circle (it stood 288 from its middle, owner's PC 2026-11-16). While she lives no bot's " +
+                          "pet touches him and no other bot's hit or area spell lands on him; once she is dead casters and healers " +
+                          "keep clear of his hammers in his own fight.",
                 MusterDangers = KulaFrostMusterDanger,
+                NoPets = TuscarNoPets,
+                MustNotHit = TuscarMustNotHit,
             },
             new("Kvasir", ["Kvasir"], c => KvasirScream(c) ?? KvasirColdCarrier(c))
             {
@@ -348,8 +352,38 @@ namespace DOL.GS
             if (c.Target == queen && king?.TargetObject is GameLiving kingTarget && !SameParty(c.Raider, kingTarget) &&
                 SpreadSpot(c.At, PosOf(king), PosOf(kingTarget), TuscarHammerRadius, c.AtRange) is Vector3 clear)
                 return new(BotAction.Reposition, queen, clear, $"clear of the King's hammers ({TuscarHammerRadius} around \"{kingTarget.Name}\")");
+            // Living Server 1.2.1 (#409): once Kula is dead his styles bring Mjolnir's Fury (600) and Thor's Might (350) after
+            // them, 500 around his target, as well as the block and parry casts (KingTuscar.OnAttackEnemy). Casters, archers and
+            // healers outside his target's party keep clear of it; melee fight on (they can't clear it) and are healed.
+            if (queen == null && c.Target == king && king.InCombat && king.TargetObject is GameLiving anchor &&
+                !SameParty(c.Raider, anchor) &&
+                SpreadSpot(c.At, PosOf(king), PosOf(anchor), TuscarHammerRadius, c.AtRange) is Vector3 away)
+                return new(BotAction.Reposition, king, away,
+                    $"king alone: clear of his hammers ({TuscarHammerRadius} around \"{anchor.Name}\"), Kula is dead");
             return default;
         }
+
+        /// <summary>Queen Kula lives beside this King Tuscar (KingTuscar.IsQueenKulaUp). Settable for tests.</summary>
+        public static Func<GameNPC, bool> KulaLivesBeside = king => king is KingTuscar real && real.IsQueenKulaUp();
+
+        /// <summary>The twin heal leaks into Kula from <paramref name="npc"/>: it is King Tuscar, the heal is on and Kula lives.</summary>
+        public static bool TwinHealGuardsKing(GameNPC npc) =>
+            npc != null && IsOfType(npc, "KingTuscar") && EpicEncounterMechanics.AllowTuscarTwinHeal && KulaLivesBeside(npc);
+
+        /// <summary>
+        /// Living Server 1.2.1 (#409): while Kula lives every point dealt to the King heals her (KingTuscar.TakeDamage), so no
+        /// bot's pet attacks him, takes him from its owner's orders or defends its owner against him (ControlledMobBrain asks
+        /// <see cref="PetMustNotHit"/>). The period raid did the same: "Kill all pets, because pets can aggro the King and
+        /// Queen" (CARNE-TG, Tuscaran Glacier guide, 2003; docs/research/raid-sources/web-midgard-hibernia.md).
+        /// </summary>
+        private static bool TuscarNoPets(GameNPC npc) => TwinHealGuardsKing(npc);
+
+        /// <summary>
+        /// Living Server 1.2.1 (#409): while Kula lives no bot but the King's own target hits him, area spells included
+        /// (BotBrain refuses a blast at Kula that would reach him): "No AoE" (CARNE-TG). His target keeps him on itself.
+        /// </summary>
+        private static bool TuscarMustNotHit(GameBot bot, GameNPC npc) =>
+            bot != null && TwinHealGuardsKing(npc) && npc.TargetObject != bot;
 
         // ---- Icelord Kvasir ------------------------------------------------------------------------------------------
 

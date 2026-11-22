@@ -109,7 +109,7 @@
     "keyword": "Master Smed",
     "text": "The master smith of the western forge, who hatched blood orms of [Fostra Orm]'s kin in his ashes and keeps them as house-beasts. Rival of [Magister Kurgol]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: we kobolds know forges, and I wanted to see the smith's. The Valkyn guide let me look from far off. The forge was a Fathers' forge, square and low, and the smith was at it with his back to us, and round his feet the orms lay in the warm ashes with their eyes shut, like cats. One of them lifted its head and looked at my lamp. The smith said something without turning round and it put its head down again. I have never been so glad of a stranger's word.",
+  "bookPage": "We kobolds know forges, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and I wanted to see the smith's. The Valkyn guide let me look from far off. The forge was a Fathers' forge, square and low, and the smith was at it with his back to us, and round his feet the orms lay in the warm ashes with their eyes shut, like cats. One of them lifted its head and looked at my lamp. The smith said something without turning round and it put its head down again. I have never been so glad of a stranger's word.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put out Master Smed's forge in western Trollheim in {minutes} minutes.",
     "loss": "Master Smed and his household threw {raidLeader}'s party from {realm} out of the west after {minutes} minutes."

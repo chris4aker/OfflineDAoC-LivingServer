@@ -378,7 +378,7 @@ All four read the same files and treat the three realms alike. The code is in `s
 - **Who and where.** One per capital, beside a stock NPC of every release world. Each takes the first free spot on the
   floor beside it: in its line of sight, with no other NPC within 85 units, on the anchor's own floor.
   - **Loremaster Aldwin:** Camelot's library, beside Librarian Pelan.
-  - **Loremaster Sigrun:** Jordheim's temple of the gods, beside the Gothi of Ymir.
+  - **Loremaster Svanlaug:** Jordheim's temple of the gods, beside the Gothi of Ymir.
   - **Loremaster Eithne:** Tir na Nog, beside Filidh Meilseior by the bards.
 - **How they are added.** They are script-owned NPCs, the way this fork adds its world NPCs (as the faction emissaries
   are). Nothing is written to the world database, so a played world is never edited. ROLLBACK.cmd takes them out with

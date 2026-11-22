@@ -109,7 +109,7 @@
     "keyword": "Grindvaktare",
     "text": "The gate-keeper, the morvalt who broke Trollheim's gates and was given them. He keeps a custom of guests at the broken gate. [Dagar]'s hall lies further in. See [morvalt]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: the first thing my lamp showed me in Trollheim was the pieces of the gates, stone as thick as a house wall, lying where they fell. The second was a morvalt sitting among them who did not get up. The Valkyn guide walked past him and so did I, close enough to smell him. He watched me go by and said a word in the morvalt tongue. The guide said it was the word for guest. I did not feel like one. Then he looked at the guide, and said it again.",
+  "bookPage": "Stone as thick as a house wall, lying where it fell: the pieces of the gates were the first thing my lamp showed me in Trollheim, Ivrik the kobold lamp-carrier of Bjarken told the skalds. The second was a morvalt sitting among them who did not get up. The Valkyn guide walked past him and so did I, close enough to smell him. He watched me go by and said a word in the morvalt tongue. The guide said it was the word for guest. I did not feel like one. Then he looked at the guide, and said it again.",
   "chronicle": {
     "win": "{raidLeader} of {realm} killed the gate-keeper of Trollheim in {minutes} minutes.",
     "loss": "The gate-keeper of Trollheim shut {raidLeader}'s party from {realm} out after {minutes} minutes."

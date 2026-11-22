@@ -85,7 +85,7 @@
     "keyword": "Tudeg",
     "text": "The eldest shriller of [Cothrom Gorge], in a smooth-worn burrow where the gorge opens to the northern sea. His cry at each turn of the tide carries the length of the gorge, and the gorge folk tell the hour by it."
   },
-  "bookPage": "From Coll of the Domnann guides: the gorge clans tell the hour by Tudeg. He lies where the split opens toward the northern sea, three times the length of any shriller on the ledges, and at every turn of the tide he cries, a sound like a saw on wet stone, and the whole gorge hears it. The young shrillers bring him a share of what they catch. The gorge folk say 'until Tudeg calls' for a long wait. When he has been brought down the gorge is silent at the tide for a season, and the clans say it feels wrong, even to those who hate him.",
+  "bookPage": "The gorge clans tell the hour by Tudeg, Coll of the Domnann guides says. He lies where the split opens toward the northern sea, three times the length of any shriller on the ledges, and at every turn of the tide he cries, a sound like a saw on wet stone, and the whole gorge hears it. The young shrillers bring him a share of what they catch. The gorge folk say 'until Tudeg calls' for a long wait. When he has been brought down the gorge is silent at the tide for a season, and the clans say it feels wrong, even to those who hate him.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Tudeg in Cothrom Gorge in {minutes} minutes.",
     "loss": "Tudeg turned back {realm}'s band under {raidLeader} in Cothrom Gorge after {minutes} minutes."

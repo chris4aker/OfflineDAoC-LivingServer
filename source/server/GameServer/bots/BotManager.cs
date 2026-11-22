@@ -140,6 +140,10 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>Every /bot companion in the world now (GM /jump name lookup, #438).</summary>
+        public static GameBot[] ActiveBotsSnapshot() =>
+            ActiveBots.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active).ToArray();
+
         public static IEnumerable<GameBot> GetBotsForOwner(GamePlayer owner)
         {
             if (owner == null) return Enumerable.Empty<GameBot>();

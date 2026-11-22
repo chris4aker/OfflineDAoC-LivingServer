@@ -437,14 +437,15 @@ public static partial class EraBotNames
     #region Everyday first names (Nate, Faye, Jenna)
 
     // Common in 2003 among adults and teens in the US and the UK. No names that are chat words (Max, Will, Mark, Rose, Grace...).
+    // No names the lore gives its own people (owner, 2026-11-22, HEROES.md decision 11): Sven, Gareth, Cody and Tobias left out.
     private static readonly string[] MaleFirstNames =
     [
         "Dave", "Steve", "Gary", "Kevin", "Brian", "Darren", "Craig", "Gavin", "Nathan", "Nate", "Jason", "Shane", "Wayne", "Keith",
         "Derek", "Trevor", "Neil", "Stuart", "Barry", "Colin", "Graham", "Ian", "Jamie", "Justin", "Kyle", "Ryan",
-        "Travis", "Dustin", "Brandon", "Cody", "Brett", "Todd", "Jeff", "Greg", "Doug", "Scott", "Eric", "Aaron", "Adam",
+        "Travis", "Dustin", "Brandon", "Brett", "Todd", "Jeff", "Greg", "Doug", "Scott", "Eric", "Aaron", "Adam",
         "Simon", "Martin", "Paul", "Jon", "Mike", "Andy", "Pete", "Phil", "Tom", "Ben", "Dan", "Matt", "Josh",
-        "Jake", "Luke", "Sean", "Shaun", "Owen", "Rhys", "Gareth", "Alan", "Carl", "Lars", "Jens", "Sven", "Olle", "Joakim",
-        "Hendrik", "Pieter", "Sander", "Bram", "Tobias", "Jonas", "Florian", "Malik", "Marek", "Tomas",
+        "Jake", "Luke", "Sean", "Shaun", "Owen", "Rhys", "Alan", "Carl", "Lars", "Jens", "Olle", "Joakim",
+        "Hendrik", "Pieter", "Sander", "Bram", "Jonas", "Florian", "Malik", "Marek", "Tomas",
     ];
 
     private static readonly string[] FemaleFirstNames =
@@ -468,14 +469,16 @@ public static partial class EraBotNames
 
     #region Lore names (real Norse, Celtic and Old English names; the realm's old syllable names are the caller's)
 
+    // None of these is a name the lore gives its own people (owner, 2026-11-22, HEROES.md decision 11); tools/lore checks it.
+
     private static readonly Dictionary<(int Realm, bool Female), string[]> LoreNameLists = new()
     {
-        [(1, false)] = ["Eldred", "Osric", "Wulfric", "Godwin", "Leofric", "Aldwin", "Eadric", "Oswin", "Wystan", "Brihtric", "Aelfric", "Beornwulf", "Cynric", "Ealdred", "Wigmund", "Sigeric", "Leofwine", "Eadwig", "Tostig", "Aelfweard"],
-        [(1, true)] = ["Aelfgifu", "Eadgyth", "Leofrun", "Wulfrun", "Godgifu", "Eadburh", "Cyneburh", "Elfrida", "Aelfwynn", "Eadwynn", "Wynflaed", "Leofgyth", "Aldgyth", "Sigeburh", "Ealhswith"],
-        [(2, false)] = ["Ottar", "Eynar", "Asgeirr", "Thorarin", "Svartur", "Kolbeinn", "Ketil", "Hrafn", "Orm", "Thorvald", "Bjarni", "Grimkell", "Skeggi", "Hallvard", "Ulfar", "Vigfus", "Steinar", "Arnbjorn"],
-        [(2, true)] = ["Thorunn", "Gudrun", "Ragnhild", "Sigrid", "Astrid", "Thordis", "Gunnhild", "Hallveig", "Jorunn", "Vigdis", "Asdis", "Ingunn", "Herdis", "Sigrun", "Ulfhild"],
-        [(3, false)] = ["Cormac", "Niall", "Fiachra", "Oisin", "Ruadhan", "Lorcan", "Cathal", "Donnchadh", "Fergal", "Ronan", "Tadhg", "Colm", "Senan", "Eoghan", "Flannan", "Odhran"],
-        [(3, true)] = ["Aoife", "Eithne", "Niamh", "Sadhbh", "Orlaith", "Roisin", "Muirin", "Clodagh", "Saoirse", "Ailbhe", "Caoimhe", "Blathnaid", "Doireann", "Fionnait", "Ornait"],
+        [(1, false)] = ["Eldred", "Wulfric", "Godwin", "Aldwin", "Oswin", "Brihtric", "Aelfric", "Beornwulf", "Cynric", "Ealdred", "Wigmund", "Sigeric", "Leofwine", "Eadwig", "Tostig", "Aelfweard", "Cuthred", "Eadnoth", "Brihtwold", "Aethelnoth"],
+        [(1, true)] = ["Aelfgifu", "Eadgyth", "Leofrun", "Wulfrun", "Godgifu", "Eadburh", "Cyneburh", "Elfrida", "Aelfwynn", "Eadwynn", "Leofgyth", "Aldgyth", "Sigeburh", "Ealhswith", "Eadgifu"],
+        [(2, false)] = ["Eynar", "Asgeirr", "Thorarin", "Svartur", "Kolbeinn", "Bjarni", "Grimkell", "Ulfar", "Arnbjorn", "Thorgils", "Sumarlidi", "Thorbjorn", "Eyjolf", "Ornolf", "Hoskuld", "Ingjald", "Kolskegg", "Mord"],
+        [(2, true)] = ["Thorunn", "Ragnhild", "Hallveig", "Asdis", "Ingunn", "Herdis", "Arnora", "Ingirid", "Ljotunn", "Thorgunna", "Hildigunn", "Ketilrid"],
+        [(3, false)] = ["Niall", "Fiachra", "Oisin", "Ruadhan", "Lorcan", "Fergal", "Ronan", "Colm", "Senan", "Flannan", "Odhran", "Bairre", "Dubhghall", "Fearghus", "Muircheartach", "Flaithri"],
+        [(3, true)] = ["Sadhbh", "Roisin", "Muirin", "Clodagh", "Saoirse", "Ailbhe", "Caoimhe", "Doireann", "Ornait", "Caoilfhionn", "Dearbhail", "Laoise"],
     };
 
     private static string[] LoreNames(int realm, bool female) =>
