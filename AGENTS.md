@@ -129,6 +129,9 @@ In a playable folder:
   - DAoC server names don't matter.
   - Present-day friars and captains may keep a name where it adds gravity, and the 12-mention cap still holds.
   - `tools/lore/lint_lore.py` and `tools/lore/name_counts.py` enforce the mechanical rules in CI.
+  - No game terms and no real companies in any player-visible lore, fight advice included (owner, 2026-11-21;
+    `tools/lore/fourth_wall.py`, strict in CI). Without dotnet, run `python3 tools/lore/schema_mirror.py` for the C# schema
+    checks (`UT_LoreBible`).
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
   catalog rules (no blank lines, terminators, Expansion Only, ID order), confirmed and unconfirmed
