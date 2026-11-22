@@ -310,6 +310,11 @@ are not added yet:
      - Midgard's and Hibernia's locations below the floors;
      - an epic voice for each realm beyond the three Midgard saga chapters.
      Show the owner samples from the third pass before merging, and run `UT_LoreBible` in CI or on the owner's PC.
+- **Depth floors for the major bosses and the places (#403, #404)**, on `wt6/depth-all`: yells, book pages past 100
+  words, fourth pages, bot lines, areas and first entries; nothing cut. Independent review
+  ([REVIEW-DEPTH.md](REVIEW-DEPTH.md)): 0 High, 1 Medium (the Abermenai wren line and fact), 9 Low, all fixed or noted;
+  three owner questions (first entries that never show, `LoreBooks.Near` and `z: 0`, a walk of the guessed wall areas).
+  Tests only.
 - **Issues:** the lore still to do is filed as #399-#406 ([../OPEN-WORK.md](../OPEN-WORK.md)).
 - **Reviews:** [CANON-REVIEW-HEROES.md](CANON-REVIEW-HEROES.md) and [PROSE-REVIEW-STEP4.md](PROSE-REVIEW-STEP4.md).
   Their findings are summarised above. Where they disagree with an owner decision here, the owner decision wins.
