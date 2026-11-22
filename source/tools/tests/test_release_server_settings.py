@@ -85,7 +85,8 @@ class ReleaseServerSettings(unittest.TestCase):
                     "bot_guilds_enabled", "bot_personalities_enabled", "bot_living_breaks", "bot_living_body_language",
                     "bot_nolifer_buffbots", "economy_ledger_enabled", "launcher_level50_kit"):
             self.assertEqual(settings[key], "True", key)
-        self.assertEqual(settings["bot_schedule_mode"], "clock")
+        # Owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by default".
+        self.assertEqual(settings["bot_schedule_mode"], "off")
         for key in ("craft_made_lines", "econ_trade_lines", "crafting_classic_losses", "epic_funus_weapon_puzzle"):
             self.assertEqual(settings[key], "False", key)
         self.assertNotIn("enable_sluaghbinder", settings, "the edition switch is set by set_edition, per edition")
@@ -98,7 +99,7 @@ class ReleaseServerSettings(unittest.TestCase):
                 "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones")
         defaults = code_defaults()
         upgraded = set()
-        for since in ("1.1", "1.1.2", "1.1.2.1", "1.2", "1.2.0.1", "1.2.0.2"):
+        for since in ("1.1", "1.1.2", "1.1.2.1", "1.2", "1.2.0.1", "1.2.0.2", "1.2.1"):
             upgraded |= set(upgrade_changes(since))
         for key in keys:
             self.assertEqual(defaults.get(key), "True", key)
@@ -108,8 +109,20 @@ class ReleaseServerSettings(unittest.TestCase):
     def test_each_default_1_2_changed_is_shipped_at_its_new_value(self):
         changes = upgrade_changes("1.2.0.1")
         self.assertTrue(changes)
+        later = upgrade_changes("1.2.1")
         for key, (_old, new) in changes.items():
-            self.assertEqual(SETTINGS_FILE["Settings"][key], new, key)
+            # A key 1.2.1 changed again ships at 1.2.1's default.
+            self.assertEqual(SETTINGS_FILE["Settings"][key], later.get(key, (None, new))[1], key)
+
+    def test_the_bot_schedule_ships_off_with_its_upgrade_line(self):
+        """Owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by default".
+        Off in the code, in the release world, and moved once from the clock the server wrote on 1.2 worlds."""
+        self.assertEqual(upgrade_changes("1.2.1"), {"bot_schedule_mode": ("clock", "off")})
+        self.assertEqual(code_defaults()["bot_schedule_mode"], "off")
+        self.assertEqual(SETTINGS_FILE["Settings"]["bot_schedule_mode"], "off")
+        self.assertEqual(SETTINGS_FILE["Settings"]["bot_living_breaks"], "True", "breaks are a separate feature")
+        source = (REPO / "source/server/GameServer/serverproperty/LivingServerSettingsUpgrade.cs").read_text(encoding="utf-8")
+        self.assertIn('public const string Version = "1.2.1";', source)
 
     def test_the_earthmenders_mutual_heal_ships_off_with_its_upgrade_line(self):
         """Owner 2026-11-18, "Mutual heal off": off in the code, in the release world, and moved once on older worlds."""

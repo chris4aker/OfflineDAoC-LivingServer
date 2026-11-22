@@ -76,8 +76,9 @@ In a playable folder:
     only where the row still holds the untouched old default.
   - Only these stay off: diagnostics and verbose log switches, test-only switches, anything this file forbids
     shipping, anything that changes the gameplay rules above, the classic rule options (power halving, secondary caps,
-    classic quality and losses) and the owner's epic encounter options. The Sluaghbinder edition switch stays
-    edition-specific.
+    classic quality and losses), the owner's epic encounter options and the bot schedule (`bot_schedule_mode` off: the
+    whole roster online; owner, 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is
+    off by default"). The Sluaghbinder edition switch stays edition-specific.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**

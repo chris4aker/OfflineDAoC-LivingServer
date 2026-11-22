@@ -64,7 +64,7 @@
   "bot_player_guild_economy": "True",
   "bot_raid_invite_player": "True",
   "bot_role_formation": "True",
-  "bot_schedule_mode": "clock",
+  "bot_schedule_mode": "off",
   "bot_siege_supply": "True",
   "bot_skill_growth": "True",
   "bot_skill_profiles": "True",

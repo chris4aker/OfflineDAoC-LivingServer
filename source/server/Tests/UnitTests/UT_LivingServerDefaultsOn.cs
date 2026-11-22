@@ -66,7 +66,9 @@ namespace DOL.GS.Tests
             var defaults = Defaults();
             foreach (string key in TurnedOn)
                 Assert.That(defaults[key], Is.EqualTo(true), key);
-            Assert.That(defaults["bot_schedule_mode"], Is.EqualTo("clock"), "the real-clock schedule (RELEASE-TRAIN phase C)");
+            // Owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by default".
+            Assert.That(defaults["bot_schedule_mode"], Is.EqualTo("off"), "the whole roster online (clock in 1.2)");
+            Assert.That(defaults["bot_living_breaks"], Is.EqualTo(true), "breaks are a separate feature and stay on");
             foreach (string key in KeptOff)
                 Assert.That(defaults[key], Is.EqualTo(false), key + " stays off");
             foreach (string key in BotsAsPeople)
@@ -99,12 +101,22 @@ namespace DOL.GS.Tests
         public void EachChangedDefaultIsTheCodeDefault()
         {
             var defaults = Defaults();
+            // A key a later build changed again (bot_schedule_mode: clock in 1.2.0.1, off in 1.2.1) ends on that build's default.
             foreach (Upgrade.Change change in Upgrade.Changes.Where(change => change.Since == "1.2.0.1"))
+            {
+                Upgrade.Change last = Upgrade.Changes.Last(c => c.Key == change.Key);
+                Assert.That(Upgrade.SameStoredValue(Convert.ToString(defaults[change.Key], System.Globalization.CultureInfo.InvariantCulture),
+                    last.NewDefault), Is.True, change.Key);
+            }
+            foreach (Upgrade.Change change in Upgrade.Changes.Where(change => change.Since == "1.2.1"))
                 Assert.That(Upgrade.SameStoredValue(Convert.ToString(defaults[change.Key], System.Globalization.CultureInfo.InvariantCulture),
                     change.NewDefault), Is.True, change.Key);
             Assert.That(Upgrade.Changes.Where(change => change.Since == "1.2.0.1").Select(change => change.Key),
                 Is.EquivalentTo(TurnedOn.Append("bot_schedule_mode")));
-            Assert.That(Upgrade.Version, Is.EqualTo("1.2.0.2"));
+            Assert.That(Upgrade.Changes.Where(change => change.Since == "1.2.1").Select(change => (change.Key, change.OldDefault, change.NewDefault)),
+                Is.EqualTo(new[] { ("bot_schedule_mode", "clock", "off") }));
+            Assert.That(Upgrade.Version, Is.EqualTo("1.2.1"));
+            Assert.That(Upgrade.Version, Is.EqualTo(Upgrade.Changes.Last().Since), "the newest build with a change");
         }
 
         [Test]
@@ -130,9 +142,14 @@ namespace DOL.GS.Tests
             // A 1.1.4 world: the server wrote each old default and nobody changed it.
             var untouched = TurnedOn.ToDictionary(key => key, _ => ("False", "False"));
             untouched["bot_schedule_mode"] = ("off", "off");
-            Assert.That(Upgrade.Plan("1.1.2.1", untouched), Is.EquivalentTo(untouched.Keys));
+            Assert.That(Upgrade.Plan("1.1.2.1", untouched), Is.EquivalentTo(untouched.Keys), "each key once");
             Assert.That(Upgrade.Plan("1.2", untouched), Is.EquivalentTo(untouched.Keys), "a world that ran an earlier 1.2 build");
             Assert.That(Upgrade.Plan("1.2.0.1", untouched), Is.Empty, "once only");
+            // The schedule goes off -> clock (1.2.0.1) -> off (1.2.1): applied in order, so the world ends on off.
+            Assert.That(Upgrade.PlanChanges("1.2", untouched).Where(change => change.Key == "bot_schedule_mode")
+                    .Select(change => (change.Since, change.NewDefault)),
+                Is.EqualTo(new[] { ("1.2.0.1", "clock"), ("1.2.1", "off") }));
+            Assert.That(Upgrade.PlanChanges("1.1.2.1", untouched).Last(change => change.Key == "bot_schedule_mode").NewDefault, Is.EqualTo("off"));
 
             var chosen = new Dictionary<string, (string Value, string DefaultValue)>
             {
@@ -143,7 +160,47 @@ namespace DOL.GS.Tests
                 ["bot_upkeep"] = ("True", "True"),               // a fresh 1.2 world
             };
             Assert.That(Upgrade.Plan("1.2", chosen), Is.Empty);
-            Assert.That(Upgrade.PlanChanges("1.2", untouched).Single(change => change.Key == "bot_schedule_mode").NewDefault, Is.EqualTo("clock"));
+        }
+
+        [Test]
+        public void TheBotScheduleMovesOffOnceWhereTheServerWroteClock()
+        {
+            // Owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by default".
+            // A 1.2 world holds ("clock", "clock") from 1.2.0.1's change or from a fresh 1.2 start.
+            var clock = new Dictionary<string, (string Value, string DefaultValue)> { ["bot_schedule_mode"] = ("clock", "clock") };
+            foreach (string done in new[] { "1.2.0.1", "1.2.0.2" })
+            {
+                Assert.That(Upgrade.Plan(done, clock), Is.EqualTo(new[] { "bot_schedule_mode" }), done);
+                Assert.That(Upgrade.PlanChanges(done, clock).Single().NewDefault, Is.EqualTo("off"), done);
+            }
+            Assert.That(Upgrade.Plan("1.2.1", clock), Is.Empty, "once only");
+            Assert.That(Upgrade.Plan("1.2", new Dictionary<string, (string, string)> { ["bot_schedule_mode"] = ("CLOCK", "clock") }),
+                Is.EqualTo(new[] { "bot_schedule_mode" }), "the server's match ignores case");
+            foreach (var row in new[]
+                     {
+                         ("clock", ""),        // chosen in the launcher (it clears DefaultValue on every save)
+                         ("session", "clock"), // another mode
+                         ("session", "off"),
+                         ("session", ""),
+                         ("off", "clock"),     // already off
+                         ("clock", "off"),     // a player's clock on a row an earlier build wrote as off
+                     })
+                Assert.That(Upgrade.PlanChanges("1.2.0.2", new Dictionary<string, (string, string)> { ["bot_schedule_mode"] = row }), Is.Empty,
+                    row.ToString());
+            // ("clock", "off") from an earlier build too: 1.2.0.1 needs both off, 1.2.1 both clock.
+            Assert.That(Upgrade.PlanChanges("1.1.4", new Dictionary<string, (string, string)> { ["bot_schedule_mode"] = ("clock", "off") }), Is.Empty);
+        }
+
+        [Test]
+        public void AKeyWithTwoOldDefaultsInOneBuildMovesOnce()
+        {
+            // The chained plan must not change realm_raid_largest_size_percent's two 1.1.2.1 lines (100 or 150 -> 200).
+            foreach (string old in new[] { "100", "150" })
+            {
+                var rows = new Dictionary<string, (string Value, string DefaultValue)> { ["realm_raid_largest_size_percent"] = (old, old) };
+                Assert.That(Upgrade.PlanChanges("1.1.2", rows).Select(change => (change.OldDefault, change.NewDefault)),
+                    Is.EqualTo(new[] { (old, "200") }), old);
+            }
         }
     }
 }

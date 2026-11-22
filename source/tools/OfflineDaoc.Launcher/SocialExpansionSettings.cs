@@ -37,8 +37,9 @@ public sealed record SocialExpansionSettings
     public bool LivingDeath { get; init; } = true;
     public bool LivingAlarms { get; init; } = true;
     public bool LivingNemesis { get; init; } = true;
-    /// <summary>off, session or clock (AutonomousBotSchedule); clock by default since Living Server 1.2.</summary>
-    public string ScheduleMode { get; init; } = "clock";
+    /// <summary>off, session or clock (AutonomousBotSchedule). Off by default since Living Server 1.2.1 (owner 2026-11-21: "set the
+    /// server settings so the 'bot schedule' based on time or sessions is off by default"); clock was the 1.2 default.</summary>
+    public string ScheduleMode { get; init; } = "off";
     public bool LivingBreaks { get; init; } = true;
     public bool LivingBodyLanguage { get; init; } = true;
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
@@ -170,7 +171,7 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// The server's defaults. Since Living Server 1.2 (owner 2026-11-16: "all our living server features should be in by
-    /// default if someone downloads our installer") every feature and Server life part is on, with the real-clock schedule;
+    /// default if someone downloads our installer") every feature and Server life part is on, with the bot schedule off (owner 2026-11-21);
     /// off stay the classic rules (power halving, secondary caps, classic quality and losses) and both XP ranges (rates, not
     /// switches: Setup's <see cref="Recommended"/> sets them).
     /// </summary>
@@ -178,7 +179,7 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// What Setup turns on for a first install (owner 2026-10-28: "every setting turned on and to our suggested level"):
-    /// every feature and Server life part on, the suggested XP ranges, and the real-clock bot schedule. The guild share and
+    /// every feature and Server life part on, the suggested XP ranges, and the bot schedule off (the whole roster online). The guild share and
     /// lowest level keep their defaults. Bot crafters and their craft orders are on too (owner 2026-11-16, replacing Crafting
     /// 2.0's earlier rule that every bot-side switch defaults off). Since 1.2 this is <see cref="Defaults"/> plus the XP ranges.
     /// </summary>
@@ -188,7 +189,7 @@ public sealed record SocialExpansionSettings
         PlayerGuildEconomy = true, ManaRegenModifier = DefaultManaRegenModifier, ManaHalvedBelowHalf = false,
         Personalities = true, Voices = true, Debates = true,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
-        ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingBuffBots = true, LivingDeeds = true,
+        ScheduleMode = "off", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingBuffBots = true, LivingDeeds = true,
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, Thanksgiving = "us", LivingLeeroy = true,
         LivingAtmosphere = true, HiredCompanions = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
@@ -219,7 +220,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_death", "bots", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness."),
         ("bot_living_alarms", "bots", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes."),
         ("bot_living_nemesis", "bots", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted."),
-        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
+        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off (the default) = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits)."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),

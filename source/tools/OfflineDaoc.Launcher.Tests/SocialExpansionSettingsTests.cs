@@ -69,13 +69,15 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(SocialExpansionSettings.Defaults));
         Assert.That(problems, Is.Empty);
         // Since Living Server 1.2 (owner 2026-11-16: "all our living server features should be in by default if someone
-        // downloads our installer") every feature is on with no row: guilds, personalities, every Server life part, the real-clock
-        // schedule and the bot crafters with their orders. The XP ranges are rates, not switches: empty (Setup sets them).
+        // downloads our installer") every feature is on with no row: guilds, personalities, every Server life part and the bot
+        // crafters with their orders. The XP ranges are rates, not switches: empty (Setup sets them). The bot schedule is off
+        // since 1.2.1 (owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by
+        // default"): the whole roster online.
         var d = SocialExpansionSettings.Defaults;
         Assert.That(d.Voices && d.LivingMemory && d.LivingGrats && d.LivingBeggars, Is.True);
         Assert.That(d.BotGuilds && d.Personalities && d.LivingFirsts && d.LivingDeath && d.LivingAlarms && d.LivingNemesis &&
                     d.LivingBreaks && d.LivingBodyLanguage && d.BotCrafters && d.BotCraftOrders, Is.True);
-        Assert.That(d.ScheduleMode, Is.EqualTo("clock"));
+        Assert.That(d.ScheduleMode, Is.EqualTo("off"));
         Assert.That(d.ManaHalvedBelowHalf || d.CraftingSecondaryCaps || d.CraftingClassicQuality || d.CraftingClassicLosses, Is.False,
             "the classic rules stay off");
         Assert.That(d.PlayerXpByLevel + d.BotXpByLevel, Is.Empty);
@@ -99,7 +101,7 @@ public class SocialExpansionSettingsTests
         Assert.That(switches.Where(p => !(bool)p.GetValue(r)!).Select(p => p.Name), Is.Empty);
         Assert.That(r.PlayerXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedPlayerXp));
         Assert.That(r.BotXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedBotXp));
-        Assert.That(r.ScheduleMode, Is.EqualTo("clock"));
+        Assert.That(r.ScheduleMode, Is.EqualTo("off"), "the bot schedule is off for a first install too (owner 2026-11-21)");
         Assert.That((r.ManaRegenModifier, r.ManaHalvedBelowHalf), Is.EqualTo((1.5, false)));
         Assert.That((r.BotCrafters, r.BotCraftOrders, r.ExchangeTaxPercent, r.BotCrafterSharePercent), Is.EqualTo((true, true, 0, 7)),
             "bot crafters and their orders are on for a first install too (owner 2026-11-16)");

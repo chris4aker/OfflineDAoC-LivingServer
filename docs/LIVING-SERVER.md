@@ -29,7 +29,7 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Rezzes and corpse runs | `bot_living_death` | True (since 1.2) |
 | Frontier alarms | `bot_living_alarms` | True (since 1.2) |
 | Nemeses | `bot_living_nemesis` | True (since 1.2) |
-| Bot schedule | `bot_schedule_mode` | `clock` since 1.2 (also `off`, `session`) |
+| Bot schedule | `bot_schedule_mode` | `off` since 1.2.1 (`clock` in 1.2; also `session`) |
 | Breaks and linkdeads | `bot_living_breaks` | True (since 1.2) |
 | Body language | `bot_living_body_language` | True (since 1.2) |
 | Beggars | `bot_living_beggars` | True |
@@ -208,11 +208,12 @@ Each character gets at most one grats chain every 20 seconds. This is separate f
   with this switch on, one-kill rows older than a week are forgotten at server start.
 
 ### Bot schedule (`bot_schedule_mode`)
-- `off`: every bot stays online (the default before 1.2).
+- `off` (the default since 1.2.1; owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or
+  sessions is off by default"): every bot stays online. It was also the default before 1.2.
 - `session`: each bot plays sessions of 1–4 hours, with 20 minutes to 2 hours away. Timing is
   counted from server start. About two-thirds of the roster is online at any time.
   - No Lifers play longer and are away less; Socialites play a little longer.
-- `clock` (the default since 1.2): follows your PC's clock like a 2002 North American server.
+- `clock` (the default in 1.2 only): follows your PC's clock like a 2002 North American server.
   - About 95% of the roster is online from 8 to 10 p.m.
   - About 20% at 4–5 a.m.
   - Weekends (from Friday 6 p.m.) are busier in the daytime.
@@ -634,8 +635,8 @@ them:
 
 Writes are batched off the game loop every 5 seconds, under the same database lock as bot status
 saves. Since 1.2 the release builder (`build_release_037.py`) writes every `bot_living_*` setting and `bot_schedule_mode`
-at its release value from `source/tools/release-server-settings.json`, so releases ship with every part on and the
-real-clock schedule (the 0.36 builder deleted them, and releases shipped with everything off).
+at its release value from `source/tools/release-server-settings.json`, so releases ship with every part on (the 0.36 builder
+deleted them, and releases shipped with everything off). The schedule ships `off` since 1.2.1 (`clock` in 1.2).
 
 ## Checking it in game: /lstest (GMs)
 

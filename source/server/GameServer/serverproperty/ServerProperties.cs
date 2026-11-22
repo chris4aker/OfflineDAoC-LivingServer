@@ -2840,7 +2840,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_LIVING_NEMESIS;
 
 		/// <summary>When bots are online: the whole roster (off), shaped around your session, or by the real clock.</summary>
-		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "clock")]
+		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off (the default) = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "off")]
 		public static string BOT_SCHEDULE_MODE;
 
 		/// <summary>Bots take short breaks (brb) and now and then go linkdead and come back.</summary>
