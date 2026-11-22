@@ -76,7 +76,7 @@
       "text": "Ulla was a svartalf of Aegir, the daughter of Kjar, who carried the dark-moon cup before her. She was small even for her people and sharp in the tongue, and it is said that she was the only one of them the queen ever let stand close.\n\nShe carried the cup for thirty-one dark moons. At each of them she went up alone to the hollow above the old one's house with the cup in both hands, and set it on the warning stone, and waited until the hum came up through the rock. Then she went down without looking back. That was the law of the cup, and Ulla kept it.\n\nAt the thirty-second dark moon she did not come down. Her brother Kolr went up at dawn and found the cup on the stone, empty, and Ulla sitting beside it with her back against the rock. She was alive. She told him that she had looked back.\n\nKolr asked her what she had seen. Ulla said, \"The queen drinks first.\" Kolr asked her what else. Ulla said, \"That is all there is to see.\" She said nothing more of it, then or afterward.\n\nUlla did not carry the cup again. She lived a long time among the svartalfar and was thought wise, and when the young asked her about the queen she gave them the answer she had given her brother. The arachites sent to her once to ask what she had seen at the stone. She sent their messenger home with an empty cup.\n\nKolr carried the cup after her. It is told that he never once looked back, and that he lived to be old, which among those who carry the cup is not common.\n\nHere ends what is told of Ulla."
     }
   ],
-  "legend": "Dyranapur is a small-raid named in the waterfall room: a group of seven took her in the early raids. She comes with seven skuggande the moment she's engaged, and the spray hides the bugs on the walls, so look before you pull. She drains her target for 250 every 10 to 15 seconds, so the tank needs steady heals, and almost half her hits leave Black Plague on everyone within 450 of her target: a disease that halves heals and lasts about FIFTY minutes. Cure it before you move on, especially if Iarnvidiur is next. 10,000 health, 20% melee and 30% magic resists, CC-immune. The Slender Skuggande Leg staff drops for spiritmasters, runemasters and bonedancers. Killing her costs you Svartalfar faction and buys you Arachite and Varulv faction.",
+  "legend": "Dyranapur is a known beast for a small raid in the waterfall room: a group of seven took her in the early raids. She comes with seven skuggande the moment she's engaged, and the spray hides the bugs on the walls, so look before you draw. She drains her target for 250 every 10 to 15 seconds, so the shield-bearer who holds her needs steady heals, and almost half her hits leave Black Plague on everyone within fifteen paces of her target: a disease that halves heals and lasts about FIFTY minutes. Cure it before you move on, especially if Iarnvidiur is next. The raiders reckon her strength at ten thousand, a fifth of every blow and three-tenths of every spell are lost on her, and no charm or stun holds her; she is a foe for the realm's best, a full band of them, nearly one for several. The Slender Skuggande Leg staff comes off her for spiritmasters, runemasters and bonedancers. Killing her costs you standing with the Svartalfar and buys you standing with the Arachites and the Varulv.",
   "yells": {
     "aggro": [
       "(The hum under the waterfall rises to a shriek.)",
@@ -123,11 +123,11 @@
   "botLines": {
     "briefing": [
       "dyranapur in the waterfall room, 7 skuggande, cure plague",
-      "dyranapur drains her target, keep the tank topped",
+      "dyranapur drains her target, keep the shield-bearer topped",
       "kill the skuggande first, then her",
       "cure plague after, it lasts an hour",
       "dyranapur: 7 skuggande, look at the walls first",
-      "she drains her target, keep the tank topped",
+      "she drains her target, keep her shield-bearer topped",
       "plague is 450 round her target and lasts 50 min, cure it before moving on",
       "killing her costs svartalfar faction"
     ],
@@ -145,7 +145,7 @@
       "she drained the healer",
       "the swarm was too thick",
       "the spray hid half the swarm",
-      "pulled the walls by accident",
+      "drew the bugs off the walls by accident",
       "went to iarnvidiur with the plague still on"
     ],
     "rumour": [

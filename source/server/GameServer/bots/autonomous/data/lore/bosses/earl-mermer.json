@@ -79,7 +79,7 @@
   }
  ],
  "story": "Earl Mermer wears a Chthonic Knight's shape and speaks for the Inquisition, and both orders would rather he did neither. In the Fourth Roll, when the feud of the Blade and the Hook was at its worst, Prince Abdin sent a knight of his chapter house north to Prince Ba'alorien's cloister to demand that the Inquisition examine the Mutilators of the west and find them false to the Roll. The knight's name in the chapter was Mermer. He carried the demand, and Ba'alorien received it, and then the prince observed that a demand so grave required a witness, and that the witness must be examined first.\n\nThe Inquisition examined Mermer for a whole Roll. Nobody outside the cloister knows what was asked. When Dommel closed the crossing and the feud ended, Abdin sent for his knight, and Ba'alorien sent back a demon in a knight's shape who had forgotten which order he was sworn to, and who answered every question in a murmur so low that the questioner had to lean close to hear it. The chapter house would not take him back. The Inquisition kept him. Grand Chancellor Adremal, asked to rule on a knight who was no longer a knight, cut him a new line as Earl of the Cloister, under Ba'alorien, and the knights have not forgiven the Chancellor either.\n\nMermer turned out to be the Inquisition's best questioner. A demon who must lean close to hear him lowers its own voice to answer, and a demon whispering will tell what it would never shout. He takes the hardest examinations of the north cloister, and the Inquisitors say he has never once raised his voice or failed to get an answer. He stands among them in the prince's cloister, beside Inquisitors Zazinol and Haap, a short walk from Malroch the Cook's kitchen.\n\nThe Chthonic Knights do not say his name at all, which in their house is worse than saying it. Lieutenant Persun, the Marshal's officer in the chapter house, once went north and asked Mermer whether he still remembered his oath to the deep earth. Mermer leaned close and murmured something. Persun has not repeated it to anyone, the Marshal included, and the knights have stopped asking him.",
- "legend": "Mermer stands in Prince Ba'alorien's cloister in the north, practically shoulder to shoulder with Inquisitors Zazinol and Haap, with the prince about fifteen hundred units off. Level 71, no tricks, and he uses the Chthonic Knight model even though he stands with the Inquisitors, so do not let the look of him fool your assist. Clear the two Inquisitors before you pull him or expect all three, and keep the fight away from Ba'alorien's room. Malroch the Cook's kitchen is close, so Albion groups on the plague quest sometimes walk into him by accident. Raiders call him the whisperer and say his voice makes you lean in. Knights of every realm swear he was a Chthonic Knight once, and that the other knights pretend he does not exist.",
+ "legend": "Mermer stands in Prince Ba'alorien's cloister in the north, practically shoulder to shoulder with Inquisitors Zazinol and Haap, with the prince about fifty paces off. A foe for a war party of any realm's champions, no tricks, and he wears the Chthonic Knight's shape even though he stands with the Inquisitors, so do not let the look of him fool whoever calls the targets. Clear the two Inquisitors before you draw him or expect all three, and keep the fight away from Ba'alorien's room. Malroch the Cook's kitchen is close, so Albion groups on the plague quest sometimes walk into him by accident. Raiders call him the whisperer and say his voice makes you lean in. Knights of every realm swear he was a Chthonic Knight once, and that the other knights pretend he does not exist.",
  "yells": {
   "aggro": [
    "Come closer. I speak softly.",
@@ -119,20 +119,20 @@
   "briefing": [
    "mermer is with zazinol and haap. [clear them first|three at once if you dont]",
    "he looks like a chthonic knight but hes an earl. [check your target|dont trust the model]",
-   "keep mermer away from baalorien's room. [pull him south|pull back]",
-   "71 no tricks. [single pull|one at a time]"
+   "keep mermer away from baalorien's room. [draw him south|draw back]",
+   "no tricks. [single draw|one at a time]"
   ],
   "aftermathWin": [
    "mermer down. [cloister's quiet|no more whispering]",
    "earl mermer dead. [baalorien next|on to the prince]",
    "mermer done, [good split|clean]",
-   "the whisperer is dead. [rebuff for the prince|mana check]"
+   "the whisperer is dead. [renew the blessings for the prince|mana check]"
   ],
   "aftermathLoss": [
-   "pulled zazinol haap and mermer. [wipe|three at once]",
-   "mermer brought baalorien. [gg|mess]",
-   "mermer got us. [regroup|rez]",
-   "lost the pull in the cloister. [slower|one at a time]"
+   "drew zazinol haap and mermer. [everyone down|three at once]",
+   "mermer brought baalorien. [that was that|mess]",
+   "mermer got us. [regroup|raise the fallen]",
+   "lost the draw in the cloister. [slower|one at a time]"
   ],
   "rumour": [
    "[heard|word is] earl mermer was a chthonic knight before the inquisitors got him",

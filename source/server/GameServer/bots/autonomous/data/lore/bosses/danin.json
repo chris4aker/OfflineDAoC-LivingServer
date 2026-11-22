@@ -24,7 +24,7 @@
     }
   ],
   "story": "Danin is a duegar, one of the dwarf thieves who come into Spindelhalla from the edges after silk, and he is the one who made the deal. The arachites will not let a dwarf near the silksters, and the cave trows of the deep roads will not let a dwarf past the edge, but Danin found something the trows wanted more than they wanted him dead, and now the duegar come up the trows' road and the trows look the other way. The tailors of Jordheim have never sold Spindelhalla silk. The duegar have, the thralls' frames say, and Danin keeps the count.\n\nWhat he paid the trows nobody knows. Odell of Svarhamr suspects it was names: that the duegar tell the trows which svartalfar on the upper farm are sick, and the trows come up for the husks first. Danin stands among the tunnelhosts and the trows as if he belonged there, which, the thralls say, he now does. He fights for his road.",
-  "legend": "Danin is a level 41 duegar in Spindelhalla among arachite tunnelhosts (36-43), cave trows and trollkarls (48-52), hallaratta and crushers (49-50). He's on the Duegar faction. The trows and crushers around him are the dangerous part; pull Danin out to you. He's lower than the trows by a fair bit, so the trick is getting him alone. Don't get close to the trows while you set up the pull. Good for a group in the mid 40s.",
+  "legend": "Danin is a duegar, a foe for a hardened band of veterans, in Spindelhalla among arachite tunnelhosts, from a seasoned band's foe to a hardened band's, cave trows and trollkarls, each a foe for the realm's best or close to it, and hallaratta and crushers of much the same strength. He's sworn to the Duegar. The trows and crushers around him are the dangerous part; draw Danin out to you. He's a fair bit weaker than the trows, so the trick is getting him alone. Don't get close to the trows while you set up the draw. Good for a hardened band of veterans.",
   "yells": {
     "aggro": [
       "The road is bought and paid. You are not on the list.",
@@ -45,7 +45,7 @@
   "botLines": {
     "briefing": [
       "danin is the 41 duegar among the trows in spindelhalla",
-      "pull him away from the 50ish trows and crushers"
+      "draw him away from the trows and crushers, theyre far tougher"
     ],
     "aftermathWin": [
       "danin down",

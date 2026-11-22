@@ -37,7 +37,7 @@
     }
   ],
   "story": "Where Boligar leads strangers astray, Dalgo makes sure they stay that way. He is the warden of the skogsra's deep wood in the east of Faraheim, and his people tend its paths as farmers tend a hedge: the greenhands move them at night, root and stone and stream, so that a path walked in the evening is somewhere else by morning, and the woodsmen walk the new ones and see that nobody follows the old.\n\nThe skogsra say the warden's office is older than the skogsra, and that Dalgo holds it as his mother held it, and her father before her, back to the first skogsra who agreed with the wood that it should keep what wandered into it. The wood, they say, chose the warden. The iarn dwarves say the wood chose badly, and fly high over his part of it.\n\nHe has never needed guile. He is the strongest of the forest folk on Aegir and the oldest of the wardens, and he keeps his seven close: three greenhands who know every path he has ever moved, and four woodsmen who have walked every one. They go everywhere with him and they come when he is touched, all of them, at once, from wherever in the wood they stood. A stranger who meets the warden meets the wood's whole household. Nothing holds him; the skogsra say he is the wood's own arm, and an arm is not a thing that can be tied.\n\nGunnvor of Jordheim, who tried to map his wood, wrote that she met him once on a path she had drawn the day before, and that he looked at her map and then at her and said, quite kindly, that it had been a very good map yesterday.",
-  "legend": "Dalgo is a pack pull in the east of Faraheim: level 70, 30,000 health, and seven skogsra come with him the moment you touch him, three greenhands and four woodsmen. Kill the greenhands first, hold the woodsmen, then Dalgo. He has no spells, he just hits like a level 70, reach 350. CC-immune, 20% melee and 30% magic resist, resets full if you leave. For most people this is a two-group job. Don't fight it near Boligar's camp or you'll get his mez too. The paths around his wood really do look different every time you come; that's the story, anyway.",
+  "legend": "Dalgo is a whole household to draw at once in the east of Faraheim: a foe for a war party of the realm's champions, the raiders reckon his strength at thirty thousand, and seven skogsra come with him the moment you touch him, three greenhands and four woodsmen. Kill the greenhands first, hold the woodsmen, then Dalgo. He has no spells, he just hits as hard as you'd fear from one so strong, and reaches a dozen paces. No charm or stun holds him, a fifth of every blow and three-tenths of every spell are lost on him, and he is whole again if you leave. For most people this is a two-group job. Don't fight it near Boligar's camp or you'll get his trance too. The paths around his wood really do look different every time you come; that's the story, anyway.",
   "yells": {
     "aggro": [
       "Greenhands, close the paths. Woodsmen, with me.",
@@ -78,17 +78,17 @@
       "dalgo + 7 skogsra, greenhands first",
       "all seven come at once when we touch him",
       "he has no spells, just big hits",
-      "cc immune, dont try"
+      "nothing holds him, dont try"
     ],
     "aftermathWin": [
       "dalgo down, deep woods open",
       "greenhands first worked",
-      "seven and the warden. good pull",
+      "seven and the warden. good draw",
       "two groups made it easy"
     ],
     "aftermathLoss": [
       "the woodsmen and dalgo together were too much",
-      "we pulled near boligar and got mezzed too",
+      "we drew him near boligar and got entranced too",
       "one group isnt enough",
       "lost the greenhands in the trees"
     ],

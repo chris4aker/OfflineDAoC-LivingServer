@@ -66,7 +66,7 @@
   }
  ],
  "story": "Earl Mercur is the only demon who saw High Lord Oro become three, and he has told it three ways. He was Oro's lamp-bearer in the Uncounted Age, a small bright demon whose skin runs like quicksilver and gives back whatever light is near it, and when Oro went down alone into the deep fires in the Third Roll he was not quite alone. Mercur went ahead of him down the cracks, carrying the light on his own skin. What came back up was three high lords of one shape, speaking with one voice, with Mercur walking in front of them, brighter than before.\n\nThe court sent him to the Inquisitors. He told the north cloister that the deep fire had a face in it like still water, and that Oro looked into it and it looked back twice. He told Duke Sallis, who asked him in private, that Oro had divided himself on purpose, so that no rival would ever know which body to strike. He told the imps, who paid him, that Oro never came back at all, and that the three are the fire's own reflections wearing his shape. The Inquisitors examined all three accounts and reported that Mercur believed each of them completely while he was telling it. The Chancellor wrote on the Roll that the high lord's line was unchanged and the earl's testimony received, which is the Chancellor's way of saying it was not.\n\nSince then Mercur has carried messages for the three Oros, and he is the only courier in the hollow who never needs to ask which of them sent him. He stands outside their hall in the north-east with Duke Sallis and Marquis Sabonach, and his skin shows each Oro a slightly different picture of whatever stands in front of him. Marquis Chaosmar, found in two halls two Rolls later, came to Mercur to ask how a demon lives in more than one place. Mercur told him. The court has three versions of that as well.",
- "legend": "Mercur stands outside High Lord Oro's hall in the north-east, closer to the Oros than to anything else (one of the three is barely eight hundred units away), with Marquis Sabonach and Duke Sallis nearby. Level 71, no tricks, a small earl. Pull him away from the hall door and toward Sallis's end so you do not wake the three Oros early; three high lords at once is not something your raid will survive. Raiders call him the mirror earl, because his skin shows you yourself, and the bards like to say he is the only one who knows which Oro is real. He has told three people three different things, so do not trust any of them, and do not trust the one your guildmate heard either.",
+ "legend": "Mercur stands outside High Lord Oro's hall in the north-east, closer to the Oros than to anything else (one of the three is barely twenty-five paces away), with Marquis Sabonach and Duke Sallis nearby. A foe for a war party of any realm's champions, no tricks, a small earl. Draw him away from the hall door and toward Sallis's end so you do not wake the three Oros early; three high lords at once is not something your raid will survive. Raiders call him the mirror earl, because his skin shows you yourself, and the bards like to say he is the only one who knows which Oro is real. He has told three people three different things, so do not trust any of them, and do not trust the one your guildmate heard either.",
  "yells": {
   "aggro": [
    "Look. That is you. Do you like it?",
@@ -104,9 +104,9 @@
  },
  "botLines": {
   "briefing": [
-   "mercur is outside oros hall. [pull him away from the door|away from the door]",
-   "dont wake the three oros with mercur. [gg if you do|three high lords, no]",
-   "order: sallis, mercur, sabonach, then the oros. [mana check|rebuff]",
+   "mercur is outside oros hall. [draw him away from the door|away from the door]",
+   "dont wake the three oros with mercur. [we're done if you do|three high lords, no]",
+   "order: sallis, mercur, sabonach, then the oros. [mana check|renew the blessings]",
    "71 no tricks, small earl, [easy to lose in the fight|assist the ma]"
   ],
   "aftermathWin": [
@@ -116,10 +116,10 @@
    "the mirror earl is dead. [now the three oros|full mana for oro]"
   ],
   "aftermathLoss": [
-   "woke the oros pulling mercur. [three high lords lol|wipe]",
+   "woke the oros drawing mercur. [three high lords lol|everyone down]",
    "mercur and sallis together. [too much|mess]",
-   "mercur got us. [regroup|rez]",
-   "lost the pull at oros door. [slower|one at a time]"
+   "mercur got us. [regroup|raise the fallen]",
+   "lost the draw at oros door. [slower|one at a time]"
   ],
   "rumour": [
    "[heard|word is] earl mercur saw high lord oro split into three",
