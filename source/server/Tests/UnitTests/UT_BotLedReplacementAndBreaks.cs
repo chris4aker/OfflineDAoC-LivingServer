@@ -315,6 +315,38 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void WhileTheOpenSeatLookRunsTheLeadersLfgPostHasASeat()
+        {
+            // #423: a party that set off posts no "lfm" until its look for one more starts; while it runs the post asks for
+            // the one role it lacks (AutonomousBotGroupCoordinator.RecruitingPost, read by the /lfg talk).
+            Bot leader = Gamebot(20), hitter = Gamebot(22), other = Gamebot(21);
+            Group group = GroupOf(leader, hitter, other);
+            object session = Session(group, "Traveling", hadPlayer: false, lockedSize: 3);
+            SessionType.GetProperty("Leader")!.SetValue(session, leader);
+            var sessions = (System.Collections.IDictionary)typeof(AutonomousBotGroupCoordinator).GetField("Sessions", HiddenStatic)!.GetValue(null)!;
+            sessions[group] = session;
+            try
+            {
+                Assert.That(AutonomousBotGroupCoordinator.RecruitingPost(leader), Is.Null, "set off and not looking: no seat posted");
+                SessionType.GetProperty("Replacement")!.SetValue(session,
+                    new R.Search(BotPveGroupRole.Healer, 0, holdsParty: false) { OpenSeat = true });
+                AutonomousBotGroupCoordinator.RecruitPost post = AutonomousBotGroupCoordinator.RecruitingPost(leader);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(post, Is.Not.Null, "the look for one more posts a seat");
+                    Assert.That(post!.Need, Is.EqualTo(R.PostNeed(BotPveGroupRole.Healer)));
+                    Assert.That(post.Missing, Is.EqualTo(1), "one seat at a time");
+                    Assert.That((post.Low, post.High), Is.EqualTo((20, 22)));
+                    Assert.That(AutonomousBotGroupCoordinator.RecruitingPost(hitter), Is.Null, "only the leader posts");
+                });
+            }
+            finally
+            {
+                sessions.Remove(group);
+            }
+        }
+
+        [Test]
         public void APartyMeetingUpOrFullTakesNoOpenSeatLook()
         {
             Bot tank = Gamebot(20), hitter = Gamebot(20);
