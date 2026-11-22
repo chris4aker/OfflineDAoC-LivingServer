@@ -22,7 +22,7 @@
     }
   ],
   "story": "Fate's Chosen stands at a post where the galleries of Caer Sidi end and the long stair to the riders begins, and the fate's bearers bow to it as servants bow to a steward. The Inconnu say it was one of the quiet dead who built the fortress, the mason who laid the last step of the riders' stair, and that Fames chose it as he chooses a face and set it there before the rising. The prisoners of the galleries say it is the dead man who answered yes for the lich, sent back down by the end of the world. The company's priest saw a stone-cutter's scarred knuckles on it.\n\nIt learns the name of everyone who climbs past it, and the bearers carry the names up, so that Fames knows every face before a company reaches him. Words go into it and nothing comes out; the galleries' sorcerers say their spells sink into it like water into a mortar bed, and the Inconnu's mason-saying fits it: you do not argue with a wall, you take it down stone by stone. It keeps no court, because the riders want to see what a company does against one servant with nothing to hide behind.\n\nThe captain made it her company's test and swore that if anyone died at its post they would all turn back. They passed it whole, the knights of the Isle of Glass taking it down a course at a time. A knight of Caerwent said the frontier formula of relief over it as it fell, which Ennyn said no one had ever done; when the company came down from the riders, it stood at its post again.\n\nThe Inconnu say only Fames, who posted it, may relieve it. Caer Gothwaite's companies say the formula over it anyway, and Dame Morwen Penhallow, who said the same words to her great-uncle in the Hall of the Corrupt, approves.",
-  "legend": "Fate's Chosen is the last named before the riders: level 81, 40,000 health, and it fights alone, no adds, no tricks. It is a melee kill: it takes 40% less from slash, crush and thrust but 70% less from everything else, so let the melee carry it and keep the casters' mana for the riders. Tank it, heal through it, burn it with steel. It resets to full if the fight ends. Use it as the check: if anyone dies here, your raid is not ready for Fames, Bellum, Morbus and Funus, and you should go home and come back. Do not blow cooldowns; nothing here needs them. After it falls, rest up fully before you walk up to Fames, because Fames picks someone the moment you are near him. Caer Gothwaite raids say 'you are relieved, go and rest' over it as it dies, for luck.",
+  "legend": "Fate's Chosen is the last great foe before the riders: a foe for a war party of the realm's champions, as much killing as twenty champions, and it fights alone, no servants, no tricks. It is a blade's kill: slash, crush and thrust lose four parts in ten against it but everything else seven in ten, so let the melee carry it and keep the casters' power for the riders. Hold it, heal through it, burn it with steel. If the fight ends it goes home whole. Use it as the check: if anyone dies here, your raid is not ready for Fames, Bellum, Morbus and Funus, and you should go home and come back. Do not spend your great once-a-fight arts; nothing here needs them. After it falls, rest up fully before you walk up to Fames, because Fames picks someone the moment you are near him. Caer Gothwaite raids say 'you are relieved, go and rest' over it as it dies, for luck.",
   "yells": {
     "aggro": [
       "The riders will know your names.",
@@ -55,9 +55,9 @@
   },
   "botLines": {
     "briefing": [
-      "fate's chosen is the test. 40k, no adds, melee kill, casters save mana",
+      "fate's chosen is the test. as much killing as 20 of us, alone, blades kill it, casters save power",
       "if anyone dies here we go home, no riders tonight",
-      "no cooldowns on this one",
+      "dont spend your big once-a-fight arts on this one",
       "rest full after it, fames picks someone as soon as we get close"
     ],
     "aftermathWin": [
@@ -68,8 +68,8 @@
     ],
     "aftermathLoss": [
       "if we cant beat fates chosen we're not ready for the top",
-      "three deaths on a tank and spank",
-      "we wasted cooldowns on it",
+      "three deaths on a stand-and-hit fight",
+      "we spent our big arts on it",
       "people got sloppy"
     ],
     "rumour": [
