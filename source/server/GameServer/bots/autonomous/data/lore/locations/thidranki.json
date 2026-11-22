@@ -156,18 +156,33 @@
    "thidranki was a farm before it was a bg. [the faste sits on the longhouse|the keep is on top of the old farmhouse]",
    "tomte and bwca are the old farm spirits. [no farmer left|nobody to work for], so they fight each other and us",
    "haluka is the oldest bwca in thid. [still waiting for his cream|nobody ever brought the cream]",
-   "the renegades walked out of thid faste the winter all three realms showed up [the same week|at once]"
+   "the renegades walked out of thid faste the winter all three realms showed up [the same week|at once]",
+   "thidrand went out to a knock on the winter nights against the seer's word. nine in black got him before the nine in white came",
+   "the seer said the riders at thid were the household's own disir. [the dark ones were nearer|the dark ones came first]",
+   "the tomte came over the water with the northmen. the bwca were on the thid hill already",
+   "old tale: a farmer hid the butter under the porridge and the tomte killed his best cow before he found it",
+   "a bwca spins and washes for a bowl of milk and bread. learn his name and he drops the wheel and runs",
+   "thid faste has worn more realms' colours than any keep there is. [never stays put|changes hands all the time]",
+   "mid kids leave a crust or some porridge on a stone at thid for the tomte. [they still get jumped|doesnt help]",
+   "the bwca in thid wander about, so [watch your back if you rest out there|dont rest in the open fields]"
   ],
   "rumour": [
    "[heard|someone said] the skalds say nine riders in black killed the farmer at thid. [the white ones were late|creepy]",
-   "[heard|word is] the bwca in thid hate albs most. [every realm says that|everyone says that about their own realm]"
+   "[heard|word is] the bwca in thid hate albs most. [every realm says that|everyone says that about their own realm]",
+   "[heard|someone said] the bwca in thid is called gwarwyn-a-throt and if you shout it he runs",
+   "heard haluka would leave his corner if anyone ever brought him cream. [nobody has|nobody tried]",
+   "[heard|word is] theres a cow somewhere near thid that isnt the one it was. a tomte swapped it one night",
+   "someone said the knock still comes at thid faste on the winter nights, three times",
+   "heard the old longhouse is still under thid faste, hearth and all",
+   "[heard|someone swore] they saw nine riders on the hill at thid, dark against the snow"
   ],
   "tell": [
    "thidranki? the bg for the newly seasoned. [old farm|tomte and bwca], thidranki faste in the middle",
    "whats in thidranki? tomte, bwca, boars, badgers, beetles. [haluka by the hib pk|a big bwca called haluka]",
    "who holds thidranki faste? [no renegades|whoever took it last]. it changes hands all the time",
    "need rams in thid? [siegemasters at your pk|buy from the siegemasters at the portal keep]",
-   "where is thid? ask one of the realm's porters for battlegrounds [once youre just seasoned|while youre newly seasoned]"
+   "where is thid? ask one of the realm's porters for battlegrounds [once youre just seasoned|while youre newly seasoned]",
+   "is thid dangerous outside the keep? tomte and bwca go for anyone, and haluka by the hib pk is as strong as anyone thid lets in"
   ]
  },
  "loremaster": {
@@ -189,8 +204,9 @@
   "title": "The Farm under the Faste, as Ulfhild Long-Memory, skald of Mularn, set it down",
   "pages": [
    "I have sung Thidrand's farm at three funerals, and I set it down now before I lose a verse. The farm stood on the hill where the Faste stands. The grandfather came over the water with his cattle and his tomte, and found a bowl of cream already set out on a stone, with nobody near it, and he had the sense not to drink it. The cream was for the bwca, who were on the hill before him, and he let them keep their corner. In his grandson's time it was a good farm. The beasts were minded and the night's work was done, and the household forgot neither kind of spirit.",
-   "Then came the winter nights on which Thidrand went out to the knocking, and in the spring the household left the hill, and the spirits did not. A tomte without a farmer has nobody to punish but strangers. A bwca without his cream turns on whoever is nearest. They have blamed each other for the farm ever since and fought over it in the long grass, and the young we send there are only the latest strangers. The eldest bwca sits in his corner below the Hibernians' gate and does not fight anyone he can wait out.",
-   "I was at the Faste in the second winter. We came up the hill in the snow with our ram, and found Albion's ram already at the gate and Hibernia's coming up the far slope, and none of us had known. The renegades went out by the back gate while we stood looking at each other. Nobody has held the Faste long since then. The tomte watched us take it that day without any interest at all. A keep is not a farm, and we are not the farmer."
+   "Then came the winter nights on which Thidrand went out to the knocking, and in the spring the household left the hill, and the spirits did not. A tomte without a farmer has nobody to punish but strangers. A bwca without his cream turns on whoever is nearest. He wanders the long grass at night, looking for the bowl. They have blamed each other for the farm ever since and fought over it in the long grass, and the young we send there are only the latest strangers. The eldest bwca sits in his corner below the Hibernians' gate and does not fight anyone he can wait out.",
+   "I was at the Faste in the second winter. We came up the hill in the snow with our ram, and found Albion's ram already at the gate and Hibernia's coming up the far slope, and none of us had known. For a long breath the three rams stood in the snow on three sides of one hill, and nobody moved, and the breath of the crews steamed above them. The renegades went out by the back gate while we stood looking at each other. Nobody has held the Faste long since then. The tomte watched us take it that day without any interest at all. A keep is not a farm, and we are not the farmer.",
+   "Our young leave a little on the hill when they go down to it, a crust or a spoon of porridge on a flat stone below the Midgard gate, and they think the custom is theirs. It is older than they are. The grandfather's household set the same stone with the same spoon, and the tomte took what was left as his right and still punished the careless. Now the tomte take the crust and fight our young in the long grass all the same, because the young are not the farmer and a crust is not a wage. I told this to a girl of Mularn who asked why the spirits would not leave her be when she had fed them. She said she would leave the crust anyway, and she went down the hill with it in her fist."
   ]
  },
  "bosses": [],
