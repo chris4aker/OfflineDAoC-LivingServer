@@ -39,8 +39,9 @@ Before publishing:
 A fix release for **1.2**: bots that fall when they die, rezzing a dead bot in the original client, hired companions
 at your level, experience for enemy gamebot kills, RvR and crafting fixes, and a lot more lore.
 
-It's for Offline DAoC **0.37 and 0.37b**, with or without the **0.37c** new client. Everything Living Server does is
-still described in the [1.2 release notes](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RELEASE-NOTES-1.2.md).
+It installs over Offline DAoC **0.37** and plays on the **original game client**. Existing 0.37b and 0.37c installs keep
+working and get these fixes, but from now on new Living Server features are made for the original client only.
+Everything Living Server does is still described in the [1.2 release notes](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RELEASE-NOTES-1.2.md).
 
 ## How to read these notes
 
