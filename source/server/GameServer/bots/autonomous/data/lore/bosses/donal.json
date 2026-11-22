@@ -63,7 +63,7 @@
   "botLines": {
     "briefing": [
       "donal is captain of the cullen outlaws, wants our best. [four more with him|ide and three more]",
-      "draw from the edges or bring mez",
+      "draw from the edges or bring an enchanter for trances",
       "plain fighters, back 80 sec after they drop",
       "no quest wants him here"
     ],
@@ -76,7 +76,7 @@
     "aftermathLoss": [
       "drew the whole island. [five of them|all dead]",
       "heard the three strokes and [everyone came|oops]",
-      "mez broke",
+      "trance broke",
       "group too low"
     ],
     "rumour": [

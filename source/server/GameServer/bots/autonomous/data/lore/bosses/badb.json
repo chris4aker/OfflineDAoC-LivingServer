@@ -78,7 +78,7 @@
   },
   "botLines": {
     "briefing": [
-      "badb only shows at night. three raven wraiths come with her, [shields grab them|mez the ravens]",
+      "badb only shows at night. three raven wraiths come with her, [shields grab them|trance the ravens]",
       "night only, she doesnt exist by day. [check the clock|wait for dark]",
       "her scream is cold, [cold wards|spread]",
       "the ravens jump from one of us to the next, [shields keep them|peel]"
@@ -91,7 +91,7 @@
     ],
     "aftermathLoss": [
       "her scream ate the casters. [spread out|cold wards] next time",
-      "ravens got the healers. [mez them|hold them]",
+      "ravens got the healers. [trance them|hold them]",
       "her scream froze everyone stacked. [spread|again]",
       "waited all night, she showed at dawn. [no she didnt|wrong hour]"
     ],

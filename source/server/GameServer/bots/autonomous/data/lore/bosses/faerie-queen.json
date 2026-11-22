@@ -63,7 +63,7 @@
   "botLines": {
     "briefing": [
       "faerie queen has five queen's maids almost as tough as her. [its a court|six at once]",
-      "mez and draw maids off the edges first. [queen last|careful]",
+      "trance and draw maids off the edges first. [queen last|careful]",
       "moonstone twin wants her. [brigit's long quest|after rioldna]",
       "plain fighters, full group"
     ],
@@ -75,7 +75,7 @@
     ],
     "aftermathLoss": [
       "drew all six. [court|all dead]",
-      "mez broke on two maids. [ouch|oops]",
+      "trance broke on two maids. [ouch|oops]",
       "group too green for the maids",
       "she asked us a question. [we didnt like it|lol]"
     ],

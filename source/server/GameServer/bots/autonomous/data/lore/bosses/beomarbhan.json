@@ -62,7 +62,7 @@
     "briefing": [
       "second shield holds beomarbhan, kill dremcis. [the stag dies with him|dont waste damage on the stag]",
       "beomarbhan shrugs off most magic, near half of melee. [casters especially leave it|waste of mana]",
-      "nothing holds the stag. [no mez no root|dont try]",
+      "nothing holds the stag. [no trance no roots|dont try]",
       "he only comes once each time dremcis is back. [no second stag|one stag]"
     ],
     "aftermathWin": [
@@ -74,7 +74,7 @@
     "aftermathLoss": [
       "casters bolted the stag. [most of it bounced|wasted all our mana]",
       "stag ran over the healers. [second shield died|ouch]",
-      "someone tried to mez the stag. [nothing holds it|lol]",
+      "someone tried to trance the stag. [nothing holds it|lol]",
       "we were still on the stag when the blobs [got the casters|ate us]"
     ],
     "rumour": [

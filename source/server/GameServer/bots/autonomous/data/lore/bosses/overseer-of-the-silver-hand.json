@@ -68,7 +68,7 @@
   "botLines": {
     "briefing": [
       "overseer of the silver hand has three guardians as tough as he is. [four at once|full group]",
-      "mez the guardians or split them. [draw them one by one|careful]",
+      "trance the guardians or split them. [draw them one by one|careful]",
       "clear regnal and etol first. [theyre close|same workings]",
       "back 3 min after they drop"
     ],
@@ -79,7 +79,7 @@
       "proinnsias will want to hear"
     ],
     "aftermathLoss": [
-      "four of them at once. [no mez|all dead]",
+      "four of them at once. [no trances|all dead]",
       "drew regnal too. [five|oops]",
       "guardians on the healer",
       "group too low"

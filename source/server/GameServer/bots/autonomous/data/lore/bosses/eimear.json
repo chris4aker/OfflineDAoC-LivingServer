@@ -65,10 +65,10 @@
       "eimear is by krrzck in world's end. [sworn to krrzck|zuraspa nearby]",
       "shes slow to anger, standing matters. [get the mantids to like you|or fight her]",
       "plain fight, no tricks. [quick kill|easy for our best]",
-      "killing her wont help your mantid faction lol"
+      "killing her wont help you with the mantids lol"
     ],
     "aftermathWin": [
-      "eimear down. [the mantids wont like that|oops faction]",
+      "eimear down. [the mantids wont like that|oops, there goes our standing]",
       "quick one. [one good band|easy]",
       "zuraspa too? [shes right there|sure]",
       "the only sylvan in krrzck, and we killed her"
@@ -77,7 +77,7 @@
       "didnt expect zuraspa. [two of them|ugh]",
       "drew a mantid patrol with her. [too many|oops]",
       "group too green for her. [need hardened folk at least|ouch]",
-      "faction went down. [never mind|whatever]"
+      "the mantids like us less now. [never mind|whatever]"
     ],
     "rumour": [
       "[heard|someone said] eimear walked out of altan garran at fifteen and sat outside the mantids' wall",

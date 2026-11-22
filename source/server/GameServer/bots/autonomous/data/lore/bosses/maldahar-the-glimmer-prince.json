@@ -70,7 +70,7 @@
   },
   "botLines": {
     "briefing": [
-      "nothing holds maldahar, dont waste the mez. [burn him|all in]",
+      "nothing holds maldahar, dont waste the trance. [burn him|all in]",
       "if we break off hes whole again in a minute. [commit or dont start|all or nothing]",
       "draw him well away from the glimmer camps, [or the court joins|or the camps join]",
       "a strong group can do him, [no tricks|just damage]"
@@ -83,9 +83,9 @@
     ],
     "aftermathLoss": [
       "we stopped to rest and he was full again. [told you|knew it]",
-      "mez didnt stick, roots didnt stick, [nothing sticks|told you]",
+      "trance didnt stick, roots didnt stick, [nothing sticks|told you]",
       "drew him into a glimmer camp. [glimmers everywhere|bad draw]",
-      "he forgot his wounds while we rezzed. [one minute is all he needs|back to whole]"
+      "he forgot his wounds while we raised our dead. [one minute is all he needs|back to whole]"
     ],
     "rumour": [
       "someone counted glimmers on the ridge [again|last night]. maldahar came down [within a minute|right after]",
