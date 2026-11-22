@@ -22,7 +22,7 @@
     }
   ],
   "story": "Deben se Gecynde has one argument: Krondon was built on his people's roof. In the Undercroft he was the clan's horn, the ogre allowed to shout, who called every digging crew out of every side-tunnel when a roof fell. He took the name gecynde, the natural, the rightful, the kindred, the week the hall fell. Wenna of Caer Gothwaite went to look and found the hall-folk's footings laid squarely across an older tunnel marked by picks that were not the hall-folk's. The ghosts, asked if he is right, do not deny it and do not answer.\n\nHe blows the hall-folk's own war-horn now, a sea-beast's horn carved with the titles of every cempa who answered it, which the last muster-master, Eormen, never had to sound in earnest. Every ogre who hears it comes, to the horn and not to the enemy: they gather at the muster-master's side and form there. Eormen's saying is cut beneath the muster law: a muster cut down as it gathers never makes a line. The horn calls as long as Deben stands, and those already called stay called; Deben has never dismissed anyone.\n\nHis comers take titles off doors they cannot read. The sceotan, the shooters, broke every bow in the archers' gallery and carry two-handed blades instead. The abrecan, the breakers, learned fire and frost by shape and speak slowly; a breaker jostled in the middle of a word loses it.\n\nThe first company to kill Deben was the garrison of Caer Gothwaite under Tegwared, sergeant-at-arms of the outer wall. He set a dozen men to watch the place at Deben's side where the comers formed, call each one aloud and cut it down before it took a step, and put his best on the breakers: a breaker has to finish his word, so do not let him. The muster never made a line. He lost three men, all after Deben fell, to comers the silence did not send home.",
-  "legend": "Deben is level 80 with 30,000 health, CC immune, 20% melee / 30% other reduction and a 3,800 tether. He only melees. The fight is his muster: every 45 to 70 seconds, one to three thrawn ogre sceotan (level 65 to 68, 3,000 health, big two-handed blades, no bows despite the name) and one to three thrawn abrecan mages (level 65 to 68, 2,000 health) appear right beside him. The mages cast 300 heat or 300 cold nukes with a 3 second cast that can be interrupted, so interrupt them and kill them first. Keep a few people on the spot next to Deben and kill each wave as it appears, before it reaches the healers; waves that live stack with the next. One party holds Deben and grinds him down. Adds still alive when Deben dies do not vanish: finish them. A reset clears them. Caer Gothwaite raids count each wave out loud.",
+  "legend": "Deben is a foe for a war party of the realm's champions, as much killing as fifteen champions; nothing mesmerizes, holds or dazes him, blades lose a fifth against him and everything else three parts in ten, and he will follow you about a hundred and twenty-five paces from his spot, no farther. He only fights hand to hand. The fight is his muster: every forty-five to seventy seconds, one to three thrawn ogre sceotan (each a foe for several bands of the realm's best together and as hard to bring down as a champion and a half, big two-handed blades, no bows despite the name) and one to three thrawn abrecan mages (as strong, and as hard to bring down as a single champion) appear right beside him. The mages throw bolts of fire or frost, each worth a seventh of a champion's strength, that take three seconds to call and can be broken, so break them and kill the mages first. Keep a few people on the spot next to Deben and kill each wave as it appears, before it reaches the healers; waves that live pile up with the next. One party holds Deben and grinds him down. Servants still alive when Deben dies do not vanish: finish them. Only if he goes home whole are they cleared. Caer Gothwaite raids count each wave out loud.",
   "yells": {
     "aggro": [
       "This hall is ours by right! To arms, Krondon!",
@@ -61,10 +61,10 @@
   },
   "botLines": {
     "briefing": [
-      "every 45-70 sec deben gets 1-3 sceotan and 1-3 abrecan mages right beside him",
-      "kill each wave as it shows up, mages first. interrupt their 3 sec nukes",
-      "one party holds deben, a few hitters camp the spot next to him",
-      "adds left alive when he dies stay up. finish them before anyone sits"
+      "every 45-70 sec deben gets one to three sceotan and one to three abrecan mages right beside him",
+      "kill each wave as it shows up, mages first. break their 3 sec fire and frost bolts",
+      "one party holds deben, a few hitters wait on the spot next to him",
+      "his men left alive when he dies stay up. finish them before anyone sits"
     ],
     "aftermathWin": [
       "kept the waves down, deben never had a chance",
@@ -73,9 +73,9 @@
       "the horn is quiet"
     ],
     "aftermathLoss": [
-      "two waves stacked and the mages chain nuked the healers",
+      "two waves piled up and the mages bolted the healers one after another",
       "nobody interrupted the abrecan mages",
-      "we cheered when deben dropped and his last wave killed three of us",
+      "we cheered when deben fell and his last wave killed three of us",
       "the sceotan carry two handers, not bows. they walked right into the casters"
     ],
     "rumour": [

@@ -27,7 +27,7 @@
     }
   ],
   "story": "Captain Atwell was a billman of the Humberton levy in the Black Mountains, given his grandfather's bill at fifteen (the grandfather died at Camlann) and asking only that its haft be cut a hand longer. He came north in Lord Gildas's third year and by the tenth held the inner gate of the Pennine watch. Unordered, he walked the road below the outer gate every dusk as far as the last lamp, because a man who kept a gate ought to know what it was shut against.\n\nFor twenty years he ran the officers' practice in the yard behind the inner gate with an unblunted bill, and the small cuts it left were called Atwell's kisses; only Captain Bardalph, who was never where the hook arrived, and Lieutenant Saxe, who never left his post to come, went a winter without one. In the last winter he came in from his dusk walk with a cut that would not close, kept up his practice rather than admit to a scratch, and the officers' kisses stopped closing too. Then he hung up the bill until the last night.\n\nWhat cut him is argued three ways: the first of the wizard's expected visitors (the Camelot loremasters); the tablet of Sextus Vibius giving the road to the gods below, which he touched for luck every dusk (the dalesmen of Long Dale); or his own wish to meet what was coming before it reached the gate, as his only letter to his sister Annis at Humberton suggests (the priests of Humberton).\n\nHe keeps the inner gate still, with fresh linen on his forearm, and the cuts his bill leaves go on running long after the blow unless they are bound at once and kept bound; Long Dale's children say linen in the left hand before the bill is in the right. The Constable's pay roll was never closed, so his pay still goes to Humberton each quarter, and Annis's grandchildren send every penny of it to the linen-weavers of Long Dale for whoever is going down.",
-  "legend": "Atwell is a two-handed polearm captain with 30,000 health, level 62-65, alone at the inner gate: nobody else stands near his post, so he is the easiest captain to take by himself. About one hit in three he lands also puts a bleed on the target, 65 body damage every three seconds for thirty seconds. Cure poison also clears a bleed, and the tank is bleeding most of the fight, so keep a healer with a cure on whoever he is hitting from the first swing. He takes a fifth less from slash, crush and thrust; casters help. He cannot be mezzed or stunned. Fight him on his stone at the inner gate: drawn past his tether he takes no damage at all and heals to full, and if the fight goes quiet for half a minute he is back to full too, so do not stop and start. Old hands say Long Dale linen is lucky down there; it does nothing, and everyone carries it.",
+  "legend": "Atwell is a two-handed polearm captain, as much killing as fifteen champions and a foe for several bands of the realm's best together, alone at the inner gate: nobody else stands near his post, so he is the easiest captain to take by himself. About one hit in three he lands also bleeds the target, a body wound that runs every three seconds for thirty seconds and takes about a third of a champion's strength before it stops. Cure poison also clears a bleed, and the shield-bearer who holds him is bleeding most of the fight, so keep a healer with a cure on whoever he is hitting from the first swing. Slash, crush and thrust lose a fifth against him; casters help. He cannot be mesmerized or dazed. Fight him on his stone at the inner gate: drawn past his tether nothing harms him at all and he heals whole, and if the fight goes quiet for half a minute he is whole again too, so do not stop and start. Old hands say Long Dale linen is lucky down there; it does nothing, and everyone carries it.",
   "yells": {
     "aggro": [
       "The road is held. Turn back.",
@@ -61,10 +61,10 @@
   },
   "botLines": {
     "briefing": [
-      "atwell bleeds you, 65 every 3 sec for 30 sec. healers keep the tank topped from the first swing",
-      "fight him on his post at the inner gate, off his tether hes immune and heals full",
+      "atwell bleeds you, every 3 sec for 30 sec, a third of a man's strength. healers keep the shield-bearer up from the first swing",
+      "fight him on his post at the inner gate, off his tether nothing hurts him and he heals whole",
       "nobody stands near atwell, take him on his own",
-      "dont mezz or stun him, cc immune. cure poison clears his bleed too"
+      "dont try to mesmerize or daze him, nothing holds him. cure poison clears his bleed too"
     ],
     "aftermathWin": [
       "captain atwell down, one less on the watch",
@@ -74,9 +74,9 @@
       "bleeds cured, clean kill"
     ],
     "aftermathLoss": [
-      "someone dragged him off his post again. immune out there",
-      "the bleeds ran on the tank the whole fight and the heals fell behind",
-      "the tank ran dry on the bleeds",
+      "someone dragged him off his post again. untouchable out there",
+      "the bleeds ran on the shield-bearer the whole fight and the heals fell behind",
+      "the shield-bearer ran dry on the bleeds",
       "we stopped to rest mid fight and he went back to full"
     ],
     "rumour": [

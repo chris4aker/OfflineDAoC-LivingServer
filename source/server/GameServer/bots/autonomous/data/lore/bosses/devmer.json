@@ -19,7 +19,7 @@
     }
   ],
   "story": "Caldey was Avalon's burying isle, and its priests of the dead kept a custom for a man who died far from home: they buried him twice, once where his body lay and once, empty, in the ground he came from, so that he should not wander between them looking for his grave. When Morgana raised the isles the custom turned on itself. Devmer was a ferryman of the western strand who drowned off Caer Sidi's rock and was buried twice: his body where the sea gave it back on the west shore, and his empty grave higher up the western slope where his house had been. Both graves opened. Now there are two of him, walking the western slope, one from each grave, and neither will lie down in the other's.\n\nThe highland clan's bard, who harms nobody and asks everything, has asked the clan for three summers which Devmer is the real one, and no one in the outpost will answer. The fishermen of Little Haven say the question is the wrong one. Both are Devmer, they say. Neither is home. One of them belongs to Morgana's dead, and the other belongs to nobody at all, which on Caldey is worse.",
-  "legend": "Devmer, level 46 skeleton, is on the western slopes of Caldey twice: two spawns of the same named, one with no faction that comes back in about 80 seconds, one with the Undead Servants of Morgana that takes about 13 minutes. Headless footmen and ebon skeletons are close. Plain melee, no spells; crush for the bones. If you need him for anything, the fast one is the one to camp.",
+  "legend": "Devmer, a skeleton and a foe for a hardened band of veterans, walks the western slopes of Caldey twice over: two of him, one with no faction that comes back about eighty seconds after he falls, one with the Undead Servants of Morgana that takes about thirteen minutes. Headless footmen and ebon skeletons are close. Plain melee, no spells; crush for the bones. If you need him for anything, the fast one is the one to wait on.",
   "yells": {
     "aggro": [
       "My grave is up the hill.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "devmer is on the west slopes of caldey twice, two spawns, one comes back fast",
+      "devmer is on the west slopes of caldey twice, two of him, one comes back fast",
       "crush on devmer, headless footmen nearby"
     ],
     "aftermathWin": [
