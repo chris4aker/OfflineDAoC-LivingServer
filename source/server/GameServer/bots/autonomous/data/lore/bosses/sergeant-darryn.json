@@ -32,7 +32,7 @@
     }
   ],
   "story": "Sergeant Darryn was the ferryman's son of the Severn crossing below Caerwent, where he shouted the crossings from the bow at eight; Caerwent still says a very loud man 'could call the ferry at flood'. He also learned the ferrymen's pole-fighting on the landing stages, whose trick was never to strike first: let the blow come, turn it along your own pole, and bring the butt round in the same movement. They called it the turn, and he found it worked as well with the two-handed sword he took north in Lord Gildas's fifth year. Gildas gave him the west passage, and the whole hall learned what calling the ferry at flood meant.\n\nHe married Maud of Camelot and had a son, Brice, whom he saw four times and wrote to every month, dictating to the clerk Tobias at a volume that let the whole hall follow the boy's croup and his fights: stand straight, mind your mother, hit him first. A hundred and thirty letters survive in Camelot. The last, from the last winter, stops in the middle, the only time Tobias knew him to fall quiet.\n\nLord Gildas quartered the wizard Aidon's apprentices, Merewyn and Tam among them, in the west passage, and Darryn never forgave either: a passage of watchmen and wizards' boys was a lodging-house. Master Ferowl of the Academy refused to move them. Darryn taught them the turn with a broom handle; Tam learned that every blow aimed at the sergeant came back along your own broom. The wizard's household is still lodged among his posts.\n\nIn the third spring after the hall was found, Brice, a loud Prydwen sergeant himself, went down with a company of Camelot Hills, answered his father's shout ('I am standing straight, father'), and struck the last blow. The bards sing that Darryn knew him; the company's account says only that he stood still for the length of a short prayer.",
-  "legend": "Darryn is a two-handed sergeant, level 50, 5,000 health, in the west passage. He parries a lot and answers a parry with a follow-up style, so a crowd of melee on him gets punished; tank him, put two or three melee on him at most and let the casters finish him (he still takes a quarter less from magic). His taunt keeps him on the tank. He calls nobody, whatever the old chat says: the danger near him is the wizard's apprentices who loiter in the passage around his post, so clear the nearest of them first, then fight Darryn on his stone. Drawn off his post he takes no damage and walks back at full health. Old Prydwen hands shout 'I am standing straight' at him on the way in; it does nothing, and the bards say it should.",
+  "legend": "Darryn is a two-handed sergeant in the west passage, a foe for the realm's best, a full band of them, and no harder to bring down than two or three champions. He parries a lot and answers a parry with a follow-up style, so a crowd of melee on him gets punished; hold him with a shield-bearer, put two or three melee on him at most and let the casters finish him (spells still lose a quarter against him). His taunt keeps him on the shield-bearer. He calls nobody, whatever the old chat says: the danger near him is the wizard's apprentices who loiter in the passage around his post, so clear the nearest of them first, then fight Darryn on his stone. Drawn off his post nothing harms him and he walks back whole. Old Prydwen hands shout 'I am standing straight' at him on the way in; it does nothing, and the bards say it should.",
   "yells": {
     "aggro": [
       "On your feet, you dead dogs! Visitors!",
@@ -68,8 +68,8 @@
     "briefing": [
       "darryn parries and hits back off the parry. light melee, casters finish",
       "he doesnt call anyone, its the wizard apprentices round his post. clear the close ones first",
-      "fight him on his stone, off it hes immune",
-      "5k hp, quick kill"
+      "fight him on his stone, off it nothing hurts him",
+      "only as tough as two or three of us, quick kill"
     ],
     "aftermathWin": [
       "sergeant darryn down, one less on the watch",
@@ -79,8 +79,8 @@
       "west passage is clear"
     ],
     "aftermathLoss": [
-      "someone dragged him off his post again. immune out there",
-      "pulled him with the apprentices",
+      "someone dragged him off his post again. untouchable out there",
+      "drew him with the apprentices",
       "too much melee on him, the parry returns ate us",
       "dragged him into the corridor"
     ],

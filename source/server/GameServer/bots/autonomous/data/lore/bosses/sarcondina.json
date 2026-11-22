@@ -35,7 +35,7 @@
     }
   ],
   "story": "Sarcondina is the marsh of Inishail, or the marsh is hers; the tenants of the isle never made the distinction. The reader of the old tongues who wrote the college's description of the island before the war saw a great slow shape move in the middle of it at evening, and smaller ones come to it, and asked the tenants whose the wet ground was. They said the marsh's, and the lord did not contradict them. Lord Emthoro held every other part of Inishail by walking it. He never walked the middle.\n\nShe is older than the lord and older than his line. The lammia of the south-west say she was there when the isles were one country and the sea had not come in, and that she was the low country's marsh then and has simply become smaller. She does not hunt. She does not need to. Whatever comes into the wet ground comes to her in the end, and the smaller slimes and oozes of the marsh, corrosive and viscous and congealed, are her kin and her household, and when she is troubled they come up out of the slime one after another to her side. Her touch clings and eats, and goes on eating after she has let go, though not for long; the slime does not keep its anger.\n\nWhen the orcs who ran from Krondon's ogres crossed to Inishail, they tried first to farm the middle of the isle, because it was flat and wet and they were used to the Aldland shore. The Kulaclan, who stayed behind, tell what happened with some satisfaction: the ogres were only the reason the orcs left Aldland, and Sarcondina was the reason they ended up in the north-west, under the lord's door, which was worse. In the stolen tome in Toca's hut, on the page about the marsh, an orc has written SHE in the margin and drawn a careful line round the whole page.\n\nMorgana's dead have reached the marsh too, and the witch counts Sarcondina among her own, as she counts everything on the isles that kills Albion's soldiers. The lammia say Sarcondina has not noticed. The slime is spreading toward the beaches and the north. The lammia say she has noticed that.",
-  "legend": "Sarcondina, level 65, 30k health, in the slime marsh in the middle of Inishail. A slow melee fight with a steady stream of help: every 25 to 40 seconds a Sarcondina's servant (55-59) comes up next to her and joins in, so have someone pick each one up as it arrives or they stack on the healers. 45% of her hits put an 80 per tick poison on the target (20 seconds), so cure poison on the tank or heal through it. She cannot be mezzed or stunned. Her tether is long (3,800), so do not try to drag her out of the marsh. Servants die when she does. A wipe resets her to full and clears the servants; she respawns about an hour after she dies.",
+  "legend": "Sarcondina, a foe for several bands of the realm's best together and as much killing as fifteen champions, in the slime marsh in the middle of Inishail. A slow melee fight with a steady stream of help: every twenty-five to forty seconds a Sarcondina's servant, a foe for the realm's best, comes up next to her and joins in, so have someone pick each one up as it arrives or they pile up on the healers. Nearly half her blows put a poison on the target that eats a fifth of a champion's strength over twenty seconds, so cure poison on the shield-bearer who holds her or heal through it. She cannot be mesmerized or dazed. She follows you a long way (about a hundred and twenty-five paces from her spot), so do not try to drag her out of the marsh. Servants die when she does. If every raider falls she goes home whole and the servants vanish; she returns about an hour after she dies.",
   "yells": {
     "aggro": [
       "The marsh heaves and rises.",
@@ -73,21 +73,21 @@
   },
   "botLines": {
     "briefing": [
-      "sarcondina, 65, 30k. a servant pops next to her every 25-40 sec. someone grab each one",
-      "45% of her hits poison the target, 80 a tick for 20 sec. cure poison on the tank",
-      "cant mez or stun her. long tether, dont try to drag her out of the marsh",
+      "sarcondina, several bands' job, killing of 15 of us. a servant comes up next to her every 25-40 sec. someone grab each one",
+      "nearly half her hits poison the target, eats at you for 20 sec. cure poison on the shield-bearer",
+      "cant mesmerize or daze her. she follows a long way, dont try to drag her out of the marsh",
       "servants die when she does. dont chase them if shes almost down"
     ],
     "aftermathWin": [
       "sarcondina down. the marsh is ours for an hour",
       "nobody let the servants stack. nice",
-      "cure poison on the tank was the whole fight",
+      "cure poison on the shield-bearer was the whole fight",
       "the orcs owe us one"
     ],
     "aftermathLoss": [
       "three servants on the cleric, gone",
       "the poison never got cured",
-      "tried to pull her out and she just walked home healed",
+      "tried to draw her out and she just walked home healed",
       "took too long and the servants piled up"
     ],
     "rumour": [

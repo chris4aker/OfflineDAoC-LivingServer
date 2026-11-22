@@ -32,7 +32,7 @@
     }
   ],
   "story": "The hall-folk of Krondon did not make their storm-keepers; they found them at sea. When a gale came up the strait that the old keeper could not turn, the fishermen of the Avalon shore took the hall's boys out in an open boat, the storm-ship, and the boy who stood up in it and was not thrown out became its shepherd. Master Cynfelyn of the college of stars marked the last choosing in his weather-book with a small drawn boat: one stood.\n\nThe keeper took an air from each quarter of the sky and set them high in the corners of his chamber, where no hand could reach them from the floor. While they stand bound nothing struck at him there bites, and his arm comes down with a gale behind it. The airs hate him and answer whoever strikes them, a breath late, by taking him up and letting him fall elsewhere in the room. An air once loosed goes back to the sky; he cannot catch a wind twice in one life. With every corner dark he is an old man in a cold room. A lifetime of leaning into gales taught him to turn blades as a weathervane turns, and the shore says: come at him from his back.\n\nFor his chamber he gave Orylle his weather. The squalls off Caldey under a clear sky are his; one put the Gwennol, Gothwaite Harbor's grain-boat, on her side in a flat calm. Yet Morfudd Fisher says his storms are short and sullen now, and the sea-wolves bolder.\n\nThe first company to reach him came for the squalls: Elffin the sea-captain of Gothwaite Harbor and Heledd, a reader of the college of stars who had carried the weather-book out of burning Avalon. They put the lights out from the floor with bows, walking back into the wind each time it threw them, and when the last went dark the keeper sat down and said: let the weather go where it will. By the next autumn his corners were lit again.",
-  "legend": "Scurceol Hyrde is level 81 with 30,000 health, CC immune, parry 70 and 20% melee / 30% other reduction. Four Lyft Miht lights (level 90, 15,000 health, 40% melee / 50% other) float high in the corners of his room. While any light lives he takes no damage at all and hits harder (Strength 320, not 260). The lights never attack. Put all four out first, with ranged and casters from the floor under each corner. Anyone who hits a light has a 25% chance to be thrown 8 to 15 seconds later, landing somewhere on the floor of his room for a fifth of their health. Companions get thrown too; so whoever strikes the lights should be topped up first, companion or not. Dead lights stay dead through a wipe; only his own respawn brings them back. Then fight him from behind if you melee, because he parries most of what comes from the front, or burn him with spells. Leave his room and he walks home at full health.",
+  "legend": "Scurceol Hyrde is a foe for a war party of the realm's champions, as much killing as fifteen champions; nothing mesmerizes, holds or dazes him, he turns aside seven blows in ten from his front, and blades lose a fifth against him and everything else three parts in ten. Four Lyft Miht lights float high in the corners of his room, each beyond any war party's match and as hard to put out as seven or eight champions; blades lose four parts in ten against them and spells half. While any light lives nothing harms him at all and he hits harder (about a quarter harder than once they are out). The lights never attack. Put all four out first, with ranged and casters from the floor under each corner. Anyone who hits a light has a one-in-four chance to be thrown eight to fifteen seconds later, landing somewhere on the floor of his room, and the fall takes a fifth of their strength. Companions and the realm's adventurers get thrown too; so whoever strikes the lights should be healed up first, whoever they are. Dead lights stay dead even if every raider falls; only his own return brings them back. Then fight him from behind if you melee, because he parries most of what comes from the front, or burn him with spells. Leave his room and he walks home whole.",
   "yells": {
     "aggro": [
       "The air is mine. Every breath you take, I lend you.",
@@ -78,10 +78,10 @@
   },
   "botLines": {
     "briefing": [
-      "four lights in the corners, he takes zero dmg till all four are out",
+      "four lights in the corners, nothing hurts him till all four are out",
       "lights are high up, ranged and casters from the floor under each one",
-      "hitting a light can throw you for 20% hp, companions too",
-      "dead lights stay dead if we wipe. then melee from behind, he parries 70%"
+      "hitting a light can throw you, the fall takes a fifth of you, companions too",
+      "dead lights stay dead even if we all die. then melee from behind, he parries 7 in 10"
     ],
     "aftermathWin": [
       "all four lights first, then him. textbook",
@@ -90,10 +90,10 @@
       "no squalls off caldey tonight"
     ],
     "aftermathLoss": [
-      "somebody went in on him with lights still up. zero dmg, every swing",
+      "somebody went in on him with lights still up. nothing, every swing",
       "melee stood in front of him the whole time and he parried everything",
-      "we left his room and he walked home full health",
-      "i struck a light at half hp and the fall finished me"
+      "we left his room and he walked home whole",
+      "i struck a light when i was half dead and the fall finished me"
     ],
     "rumour": [
       "the storm keeper in krondon has four lights in the corners of his room. [kill the lights|put the lights out] first or [dont bother|you are hitting a wall]",

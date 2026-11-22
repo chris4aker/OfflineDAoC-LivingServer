@@ -32,7 +32,7 @@
     }
   ],
   "story": "Sergeant Eddison was a forester's son of Forest Sauvage who held the tally-stick at the spring deer count from the high stands; at twelve he counted a herd from the stand at Caer Renaris right to the beast, one more than the verderer. He learned the bow on the stands and came north as a Sauvage bowman in Lord Gildas's seventh year. Within four winters he kept the watch's duty roster in his head, and by the sixth he was the sergeant of the middle of the hall, where the corridors met and a man could see the most posts. His dawn count, Eddison's tally, was a count of stones, because men could lie about where they had been.\n\nHe fought as a forester hunts: in close behind the shield, the rim at a man's head, and while the man lay dazed he stepped back to the bow on its peg and put heavy arrows into him until he could stand. The sergeants called the pause Eddison's step, and said a man who could not be dazed never saw the bow come off the peg. From the middle he saw further than any other man, and strangers were never strangers for long.\n\nHe drew up the doubled roster overnight, and the wizard Aidon wrote a list of names at its foot that were no man's of the watch. Eddison folded it into his tunic; Sir Hamon's riders took it to the Academy, which has matched every name since to something seen on the road, all but the last, which the Camelot loremasters call the name of what cut Atwell. Summons (the Church) or warning (the Academy), Eddison read it every night and was the first to stop sleeping.\n\nOn the last morning his count came out one over. Death, say the sisters; Vibius's lamp-boy, say the dalesmen; a stone with a mark of its own, say the Inconnu. He keeps the middle still, among apprentices, widow claws and watchmen, and companies coming up the road count themselves before Long Dale will feed them.",
-  "legend": "Eddison is the sergeant in the middle of the hall, level 50, 5,000 health, and he sees you from twice as far as the other sergeants (800), so he joins early if the group wanders. Two wizard apprentices, a pair of widow claws and the restless watchmen stand around his post: clear them first, then fight him on his stone. He slams to stun whoever he is on, and when the stun lands he switches to his bow for about ten seconds and shoots very hard at the stunned target before going back to melee. A stun-immune tank (or a purge the moment the stun lands) takes that away; against a stun-immune target he only uses his taunt style. He parries well and takes a third less from melee, so casters finish him. Drawn off his post he takes no damage and walks back whole. Old hands count the group at the top of the road after. Nobody laughs.",
+  "legend": "Eddison is the sergeant in the middle of the hall, a foe for the realm's best, a full band of them, no harder to bring down than two or three champions, and he sees you from twice as far as the other sergeants (about twenty-seven paces), so he joins early if the group wanders. Two wizard apprentices, a pair of widow claws and the restless watchmen stand around his post: clear them first, then fight him on his stone. He slams to leave whoever he is on senseless, and when the slam lands he switches to his bow for about ten seconds and shoots very hard at the dazed target before going back to melee. A shield-bearer who cannot be dazed (or one who shakes it off the moment the slam lands) takes that away; against such a one he only uses his taunt style. He parries well and blades lose a third against him, so casters finish him. Drawn off his post nothing harms him and he walks back whole. Old hands count the group at the top of the road after. Nobody laughs.",
   "yells": {
     "aggro": [
       "You are not on the roster.",
@@ -66,11 +66,11 @@
   },
   "botLines": {
     "briefing": [
-      "eddison sees you from 800, twice the other sergeants. dont wander near the middle",
-      "he slams to stun then shoots the stunned guy hard for 10 sec. stun immune tank or purge",
+      "eddison sees you from 27 paces, twice the other sergeants. dont wander near the middle",
+      "he slams to daze then shoots the dazed guy hard for 10 sec. a shield-bearer who cant be dazed, or shake it off fast",
       "clear the apprentices, widow claws and watchmen round his post first",
-      "fight him on his stone, off it hes immune",
-      "5k hp, parries a lot, casters finish"
+      "fight him on his stone, off it nothing hurts him",
+      "only as tough as two or three of us, parries a lot, casters finish"
     ],
     "aftermathWin": [
       "sergeant eddison down, one less on the watch",
@@ -80,9 +80,9 @@
       "middle of the hall is clear"
     ],
     "aftermathLoss": [
-      "someone dragged him off his post again. immune out there",
+      "someone dragged him off his post again. untouchable out there",
       "he saw us from way off and came in with the apprentices",
-      "tank got stunned and shot to bits",
+      "shield-bearer got dazed and shot to bits",
       "too slow on him, the watchmen piled in"
     ],
     "rumour": [

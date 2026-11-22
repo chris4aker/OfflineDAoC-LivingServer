@@ -32,7 +32,7 @@
     }
   ],
   "story": "Sergeant Reede was a laundress's daughter of Camelot's wash-house lane. Her mother Edith had washed the king's linen for thirty years and her hands were failing, so at seventeen Reede chalked the sums on the wash-house wall, found that the frontier's pay would keep them both if she sent all of it home, and signed on at Prydwen Keep without giving her age. She came north in the fifteenth year of the watch with a wash-house cough, and Lady Darra kept her a week in the sickroom and taught her to read the jars because she asked; by the end of the winter she read the lady's books and had sent home every penny.\n\nDarra taught her to lift the wounded from the side, kneeling at a hurt man's shoulder where his arm could not reach, never from the front: Reede's kneel. In Atwell's yard she fought with a short blade and a dagger, quick rather than strong, and whenever a man was dazed she was at his flank before he knew where he was, from habit, with the point at his ribs. Atwell said she could not help winning by being kind; Meade said she had stolen his turn; she said she had stolen it from the lady. Her mark at the foot of the stair is a small kneeling figure.\n\nLord Gildas made her a sergeant in the eighteenth year and gave her the stair to the sickroom, a few strides from Meade's card table. In the last winter she carried the wounded up it every night, slower as the despair lay on her too, and asked Tobias to ask the Constable to let her go home to her mother in the spring. The answer came with Sir Hamon's riders, giving her leave, and lies in its seal on the captains' table.\n\nShe keeps her stair still, and kneels in from the flank on any man struck senseless near her. Edith lived eleven more winters on the pay, and the laundresses of the lane still never let the woman who washed the last basket carry it home.",
-  "legend": "Reede is the sergeant at the foot of the sickroom stair, level 50-51, 5,000 health, with a blade and a dagger. She evades a lot, and if her target is stunned by anyone she steps round to its side half a second later and hits it with side styles, which hurt. She has no stun of her own; the stuns come from Lieutenant Meade, whose table is only about 540 away, so never fight the two together: kill Meade first on his own, or fight Reede at her stair with the tank stun-immune. Ghostly knights stand close around her too; clear them. She takes a third less from melee and a quarter less from magic. Off her post she takes no damage and walks back whole. Rest after her: the stair leads up to Lady Darra's sickroom. Old hands leave the Constable's letter at her feet. It changes nothing. They do it anyway.",
+  "legend": "Reede is the sergeant at the foot of the sickroom stair, a foe for the realm's best, a full band of them, no harder to bring down than two or three champions, with a blade and a dagger. She dodges a lot, and if her target is left senseless by anyone she steps round to its side half a second later and hits it with side styles, which hurt. She cannot daze anyone herself; the dazing comes from Lieutenant Meade, whose table is only about eighteen paces away, so never fight the two together: kill Meade first on his own, or fight Reede at her stair with a shield-bearer who cannot be dazed. Ghostly knights stand close around her too; clear them. Blades lose a third against her and spells a quarter. Off her post nothing harms her and she walks back whole. Rest after her: the stair leads up to Lady Darra's sickroom. Old hands leave the Constable's letter at her feet. It changes nothing. They do it anyway.",
   "yells": {
     "aggro": [
       "Not up the stair. Not up.",
@@ -66,10 +66,10 @@
   },
   "botLines": {
     "briefing": [
-      "reede flanks anyone who gets stunned, side styles hurt. stun immune tank",
-      "kill meade first, his stuns feed reede. never both at once",
+      "reede flanks anyone who gets dazed, side styles hurt. shield-bearer who cant be dazed",
+      "kill meade first, his slams feed reede. never both at once",
       "clear the ghostly knights round the stair",
-      "fight her at her stair, off it shes immune",
+      "fight her at her stair, off it nothing hurts her",
       "rest after her, darra is up the stair"
     ],
     "aftermathWin": [
@@ -79,10 +79,10 @@
       "she held it well, poor kid"
     ],
     "aftermathLoss": [
-      "someone dragged her off her post again. immune out there",
-      "pulled meade and reede together, stun flank stun flank",
+      "someone dragged her off her post again. untouchable out there",
+      "drew meade and reede together, daze flank daze flank",
       "chased her up the stair",
-      "pulled darra by accident"
+      "woke darra by accident"
     ],
     "rumour": [
       "heard reede carried the wounded up to lady darra every night",
