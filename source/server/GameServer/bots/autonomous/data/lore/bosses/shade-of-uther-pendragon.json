@@ -49,7 +49,7 @@
     }
   ],
   "story": "The chroniclers of Camelot bury Uther Pendragon inside the Giants' Dance, below his brother Ambrosius, in a chamber cut for him under the west halls, and they say he was laid there in his harness with the banner of the dragon of fire he took his name from. They do not say that he did not lie quiet. The barrow-keepers of the Plains say he never once has.\n\nWhat troubles him, the Church at Old Sarum has always said, is Tintagel. On the night his son was begotten, Uther came to Igerna, Gorlois's wife, wearing Gorlois's face, which Merlin had lent him, while Gorlois was dying on the field; and out of that night came Arthur, and out of Arthur came the realm. The Church says Uther cannot rest because the realm was made out of a lie and he knows it. The minstrels say he cannot rest because he never once regretted it. Loremaster Alain of the Academy, who sends the realm's young down to lay him, says the shade still wears the borrowed face, and that anyone who comes close enough to see it will not be able to say afterwards whose it was.\n\nWhat he gave away. The borrowed face had a price, the old tellers of the court say, and Merlin named it before the night at Tintagel: the child. When the boy was born Uther had him carried out at the postern gate wrapped in cloth of gold and put into Merlin's arms, and Merlin gave him to a knight called Ector to raise with his own son Kay, and the king never saw him again. Two years after, Uther lay sick to death, and Merlin made him say before his lords that his son should be king after him, and not one of the lords knew who the son was. The boy learned it in the churchyard of the greatest church in the land, drawing a sword out of a stone for his foster-brother, who had left his own at their lodging; the foster-brother carried it to his father and said he had drawn it himself, and Ector made him swear on a book, and he told the truth. The barrow-keepers say the shade has heard none of this. He died not knowing what had become of the child he paid for his night, and no one in the barrows has ever gone down to tell him. That, they say, is the other thing he cannot rest for, and the one the priestesses' water will not wash away.\n\nAbove his chamber, in the west halls, two priestesses of Coventina keep a well and pour its water down onto the floor, and the floor takes it, and it drips into the king's chamber below. They say they keep the chamber washed. The Church says they are washing the face off him, a little every day, and that when it is gone he will rest. The priestesses do not come down to him and he does not go up to them. He has nobody in the barrows. His brother is restless in his own hall to the west, and the dead of the Pendragon's household keep their own places, and when the old king is troubled, nothing comes.\n\nHe walks his chamber and does not leave it, and he does not look at the living until they are close enough to touch; then he looks, and draws. Templars came three nights running to defile his tomb, the barrow-keepers say, and were turned back each night by a king in borrowed harness who did not speak. The Academy's young lay him with the dust of a hollow man from Snowdonia, and he goes down, and before long he is walking his chamber again with the water dripping on him, because the face is not yet washed away.",
-  "legend": "The Shade of Uther Pendragon is a level 55 ghost in his chamber directly under Coventina's well in the west halls of Stonehenge Barrows, the kill step of Symbol of the Broken (Dathmul's dust to Loremaster Alain first). He only notices you inside about 200 and has no faction, so nothing in the barrows comes to help him, and the two Priestesses of Purity above do not come down for him (they come as a pair if you fight THEM). No spells or styles, by every account: a melee fight with a 55 with a little parry and evade, a group of fifties. Clear the spectral essences in his chamber first. He respawns in about five minutes.",
+  "legend": "The Shade of Uther Pendragon is a ghost in his chamber directly under Coventina's well in the west halls of Stonehenge Barrows, a foe for the realm's best, a full band of them, the kill step of Symbol of the Broken (Dathmul's dust to Loremaster Alain first). He only notices you inside about seven paces and has no faction, so nothing in the barrows comes to help him, and the two Priestesses of Purity above do not come down for him (they come as a pair if you fight THEM). No spells or styles, by every account: a melee fight with a strong ghost with a little parry and dodge, a band of the realm's best. Clear the spectral essences in his chamber first. He returns about five minutes after he falls.",
   "yells": {
     "aggro": [
       "You come into my chamber? Whose face do you see?",
@@ -87,22 +87,22 @@
   },
   "botLines": {
     "briefing": [
-      "uther's shade, 55, his chamber right under the priestesses' well in the west halls. symbol of the broken kill",
-      "short aggro, about 200. no faction, nothing joins. priestesses above stay put unless you hit them",
-      "no spells, melee with a bit of parry. group of 50s, clear the spectral essences first",
-      "5 min respawn. dont forget dathmul's dust goes to alain first"
+      "uther's shade, his chamber right under the priestesses' well in the west halls, job for our best. symbol of the broken kill",
+      "he only notices you at about 7 paces. no faction, nothing joins. priestesses above stay put unless you hit them",
+      "no spells, melee with a bit of parry. full band of our best, clear the spectral essences first",
+      "back 5 min after he dies. dont forget dathmul's dust goes to alain first"
     ],
     "aftermathWin": [
       "uther laid. symbol people back to your trainer",
       "priestesses never moved, perfect",
       "no one could say what face it had, weird",
-      "5 min respawn, next group"
+      "back in 5 min, next group"
     ],
     "aftermathLoss": [
-      "pulled the priestesses on the way down, wiped to them",
+      "woke the priestesses on the way down, lost to them",
       "forgot the essences in his room",
       "did it before giving alain the dust, no credit",
-      "he's 55, con before you pull"
+      "he's a match for our best, size him up before you draw him"
     ],
     "rumour": [
       "[heard|someone said] uther's shade still wears gorlois's face from tintagel",
