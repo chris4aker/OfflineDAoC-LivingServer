@@ -5,7 +5,7 @@
   "regions": [
     51
   ],
-  "summary": "Overview of Avalon's isles beyond the sea: the seven isles from the Isle of Glass to Inishail, each with its own file, and the dungeons beneath them.",
+  "summary": "Avalon's isles beyond the sea, told together: the seven isles from the Isle of Glass to Inishail, each with its own tale, and the dungeons beneath them.",
   "facts": [
     {
       "text": "Albion's Shrouded Isles are Morgana's and the drakoran's war on Avalon, with Arawn's Inconnu fighting for Albion; Morgana raised the undead remains of Roman soldiers for her army.",
@@ -101,47 +101,47 @@
   "related": [
     {
       "id": "isle-of-glass",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "avalon-isle",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "aldland",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "dales-of-devwy",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "caldey",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "gwyddneau",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "inishail-island",
-      "relation": "an isle of the region, with its own file"
+      "relation": "an isle of the region, with its own tale"
     },
     {
       "id": "avalon-city",
-      "relation": "a dungeon beneath the isles, with its own file"
+      "relation": "a dungeon beneath the isles, with its own tale"
     },
     {
       "id": "krondon",
-      "relation": "a dungeon beneath the isles, with its own file"
+      "relation": "a dungeon beneath the isles, with its own tale"
     },
     {
       "id": "caer-sidi",
-      "relation": "a dungeon beneath the isles, with its own file"
+      "relation": "a dungeon beneath the isles, with its own tale"
     },
     {
       "id": "crystal-cave",
-      "relation": "a dungeon beneath the isles, with its own file"
+      "relation": "a dungeon beneath the isles, with its own tale"
     }
   ]
 }

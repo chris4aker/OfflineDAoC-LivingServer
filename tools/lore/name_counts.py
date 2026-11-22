@@ -50,6 +50,13 @@ HEROES_MD = os.path.join(os.path.dirname(__file__), "..", "..", "docs", "1.2.1",
 # Abomos's story (the goddess of Lough Gur shares it); Eirik in Audliten, the willow-branch quest giver (Ragnar's son
 # Eirik in history/midgard shares it).
 SHARED_GIVEN_NAMES = {"Edith", "Gunnar", "Aine", "Eirik"}
+# Independent review (2026-11-21): a legend told beside a god or a myth figure who is not a HEROES legend ("Fand left
+# Manannan") was missed, so these also mark a sentence as legend-age. Folded spellings; checked against the lore and the
+# companion list (only Eirik, a shared name, sits in such a sentence).
+LEGEND_ANCHORS = ["Arthur", "Merlin", "Morgana", "Arawn", "Mordred", "Uther", "Guinevere", "Nimue", "Ector", "Lamorak",
+                  "Pellinore", "Palomides", "Lucan", "Odin", "Thor", "Loki", "Freyja", "Frigg", "Baldur", "Tyr", "Ivar",
+                  "Beowulf", "Manannan", "Lugh", "Dagda", "Morrigan", "Nuada", "Balor", "Aengus", "Oengus", "Boann", "Oscar",
+                  "Medb", "Conchobar", "Emer", "Scathach", "Ferdiad"]
 _CAPITALISED = re.compile(r"\b[A-Z][a-z]+\b")
 
 def fold(text):
@@ -63,8 +70,8 @@ def legend_names(root=LORE_DIR, heroes_md=HEROES_MD):
       - the roster table in docs/1.2.1/HEROES.md (leaders and companions columns);
       - every capitalised word of a fact marked "myth" (the folklore texts the lore retells; "legend" and "game" facts
         cite game guides and the world, so they name present-day NPCs, not legends);
-      - every capitalised word of a player-visible sentence that also names a HEROES legend (a legend-age sentence:
-        "Diarmuid fled with Grainne").
+      - every capitalised word of a player-visible sentence that also names a HEROES legend or a LEGEND_ANCHORS figure
+        (a legend-age sentence: "Diarmuid fled with Grainne", "Fand left Manannan").
     Over-inclusion is harmless: only the companion names are looked up in it."""
     import fourth_wall
     out = {}
@@ -76,7 +83,7 @@ def legend_names(root=LORE_DIR, heroes_md=HEROES_MD):
             cells = row.split("|")
             for cell in cells[2:4]:
                 for w in _CAPITALISED.findall(fold(cell)): add(w, "HEROES.md roster")
-    hero = re.compile(r"\b(?:" + "|".join(HEROES.values()) + r")\b")
+    hero = re.compile(r"\b(?:" + "|".join(list(HEROES.values()) + LEGEND_ANCHORS) + r")\b")
     for f in lore_files(root):
         d = json.load(open(f, encoding="utf-8"))
         folder = os.path.basename(os.path.dirname(f)); rel = f"{folder}/{os.path.basename(f)}"
@@ -85,7 +92,7 @@ def legend_names(root=LORE_DIR, heroes_md=HEROES_MD):
                 for w in _CAPITALISED.findall(fold(x.get("text", ""))): add(w, f"{rel} myth fact")
         for _, text, _ in fourth_wall.visible(d, folder):
             for s in sentences(text):
-                if hero.search(s):
+                if hero.search(s) or hero.search(fold(s)):
                     for w in _CAPITALISED.findall(fold(s)): add(w, f"{rel} legend-age sentence")
     return out
 

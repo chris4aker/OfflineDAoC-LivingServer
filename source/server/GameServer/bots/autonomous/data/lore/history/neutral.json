@@ -148,7 +148,7 @@
    "summary": "A court that may not eat its own must find other ways to hate, and the court below found many. The longest feud is between the Blade and the Hook: Prince Abdin's Chthonic Knights and Prince Asmoien's Mutilators. The knights hold that a soul should be taken whole and kept; the Mutilators hold that nothing is improved by being left whole. In the Fourth Roll the two orders met in the crossing that Dommel keeps, and the Gatekeeper, who has never cared who wins anything, closed every road out of it until both sides were too few to matter; the Gate watch has been made of all three orders ever since, so that none can hold it alone. In the Fifth Roll Marquis Chaosmar was found in two halls at once, in Baln's and at the Master's door. Neither would admit to being the copy, and the Chancellor, unable to strike off a demon who had not fallen, wrote both onto the Roll. In the Sixth Roll Marquis Dortaleon died in the east, of what nobody will say, and kept his seat, since nothing in the bargain requires a marquis to be alive. In the Seventh the Queen's chair emptied. The court says only that Lilith is away. The Chamberlain, who kept her door, has kept her chair since, and will not let even the Chancellor sit in it. In the Eighth Roll Duke Harboris came back from somewhere as a ghost, and was allowed to keep his duchy on the same ground as Dortaleon. In the Ninth a great demon of the Master's army acted on a plan of its own before the Master had finished deciding on the same plan, and was not eaten but made smaller, into an imp, so that it would spend forever being stood on. Its name is Mystemas. The Roll it sits on now is the Tenth.",
    "events": [
     {
-     "text": "Two spawns of Marquis Chaosmar stand in Darkness Falls, one in High Lord Baln's hall and one near Legion's lair.",
+     "text": "Marquis Chaosmar stands twice over in Darkness Falls, one in High Lord Baln's hall and one near Legion's lair.",
      "provenance": "game",
      "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
     },
@@ -158,7 +158,7 @@
      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62 (Allakhazam's bestiary)"
     },
     {
-     "text": "Duke Harboris spawns with the ghost flag; the other dukes do not.",
+     "text": "Duke Harboris walks as a ghost; the other dukes do not.",
      "provenance": "game",
      "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
     },

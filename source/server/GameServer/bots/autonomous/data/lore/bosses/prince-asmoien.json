@@ -71,7 +71,7 @@
   "botLines": {
     "briefing": [
       "asmoien eats the nearest pet within 2000 every 5 sec and heals off it. dismiss the pets, companions are fine",
-      "yes companions count. keep as few of us inside 2000 as we can, casters at max range",
+      "yes companions' pets count too. keep as few of us inside 2000 as we can, casters at max range",
       "no pets at all. dismiss them at the top of the stair",
       "he is one of the four royals for beliathan"
     ],

@@ -5,7 +5,7 @@
   "regions": [
     200
   ],
-  "summary": "Region overview of old Hibernia's haunted places; each zone (Cursed Forest, Bog of Cullen, Lough Gur, Breifine and the rest) has its own file.",
+  "summary": "The haunted places of old Hibernia, told together; each land (Cursed Forest, Bog of Cullen, Lough Gur, Breifine and the rest) has its own tale.",
   "facts": [
     {
       "text": "Region 200's named epics stand in four zones: twelve in the Cursed Forest, Badb and Queen Cliodna in the Bog of Cullen, the Melancholic Fairy Queen at Lough Gur, and Evern in Breifine.",
@@ -205,7 +205,7 @@
   "related": [
     {
       "id": "sheeroe-hills",
-      "relation": "the zone the Glimmer King holds"
+      "relation": "the country the Glimmer King holds"
     },
     {
       "id": "marfach-caverns",
@@ -225,55 +225,55 @@
     },
     {
       "id": "lough-derg",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "silvermine-mountains",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "shannon-estuary",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cliffs-of-moher",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "lough-gur",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "bog-of-cullen",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "valley-of-bri-leith",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "connacht",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cursed-forest",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "mount-collory",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "cruachan-gorge",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "breifine",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     },
     {
       "id": "emain-macha",
-      "relation": "a zone of the region, with its own file"
+      "relation": "a land of the region, with its own tale"
     }
   ]
 }

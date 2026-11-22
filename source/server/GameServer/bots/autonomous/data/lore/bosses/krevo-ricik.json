@@ -60,7 +60,7 @@
   },
   "botLines": {
     "briefing": [
-      "krevo throws or calls ghosts when anyone hits him. companions hitting him trigger nothing",
+      "krevo throws or calls ghosts when anyone hits him. companions hitting him trigger it too",
       "a ghost explodes 30 sec after it shows up, 800 matter 700 radius. kill it fast or run",
       "one ghost at a time, off tank grabs it and burns it",
       "if you get thrown you land on krevo from 400 up, heal and get back to your spot"

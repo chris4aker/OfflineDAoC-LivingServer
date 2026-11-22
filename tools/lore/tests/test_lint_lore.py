@@ -97,6 +97,10 @@ class CompanionNameTests(unittest.TestCase):
             boss["facts"] = [{"text": "x", "provenance": "original"}]
             json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
             self.assertIn("Grainne", [n for n, _ in name_counts.companion_clashes(["Grainne"], tmp)])
+            # Told beside a god who is not a HEROES legend (independent review), it is caught too.
+            boss["story"] = "In the old tale Fand left the sea-god Manannán for a mortal."
+            json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)
+            self.assertIn("Fand", [n for n, _ in name_counts.companion_clashes(["Fand"], tmp)])
             # A present-day character's ordinary name (decision 7: Edith, Gunnar, Aine) is not a clash.
             boss["story"] = "Cu Chulainn's charioteer drank with Aine and Gunnar."
             json.dump(boss, open(os.path.join(tmp, "bosses", "giant-caithor.json"), "w", encoding="utf-8"), ensure_ascii=False)

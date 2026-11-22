@@ -40,7 +40,11 @@ EVERYWHERE = [
     ("developer", r"\bdevs?\b|\bdevelopers?\b", I),
     ("software", r"\b(?:game)?bots?\b|\bNPCs?\b|\bservers?\b|\bGame(?:Player|NPC|Bot)\b|\bdatabase\b|\bclient\b", I),
     ("software", r"\bscript(?:s|ed)?\b|\btemplates?\b|\bworld(?:'s)? data\b|\b(?:the|its|his|her|their|in) code\b(?! of\b)", I),
-    ("software", r"\bin(?: the|-)? game\b|\bgame (?:hours?|time|morning|evening|night|clock)\b|\bquest (?:log|text)\b", I),
+    ("software", r"\bin(?: the | |-)game\b|\bgame (?:hours?|time|morning|evening|night|clock)\b|\bquest (?:log|text)\b", I),
+    # Review 2026-11-21: "no spells in the data", "spawn data", "data quests", "flagged aggressive", "with its own file".
+    ("software", r"\b(?:the|this|his|her|its|quest|spawn) data\b|\bdata quests?\b|\bflagged (?:aggressive|peaceful|as)\b|\bghost flag\b", I),
+    ("software", r"\bwith (?:its|their) own files?\b|\bfiles? to come\b|\boverview\b|\bdev ?team\b", I),
+    ("software", r"\bAI\b", 0),
     ("software", r"\bclick(?:s|ed|ing)? (?:on )?(?:him|her|it|them)\b|\bGMs?\b|\bgame ?masters?\b", I),
     ("player", r"\bplayers?\b|\bold guides?\b|\bguide map\b", I),
 ]
@@ -50,6 +54,7 @@ NARRATIVE = [
     ("game term", r"\blevels? \d|\blevel (?:fifty|sixty|seventy|eighty)\b|\bxp\b|\bexperience points\b|\bhit ?points\b", I),
     ("game term", r"\brespawn(?:s|ed|ing)?\b|\bmobs?\b|\bRvR\b|\bPvE\b|\bPvP\b|\brealm points\b|\bloot tables?\b", I),
     ("game term", r"\bcons? (?:purple|red|grey|gray|orange|yellow|blue|green)\b|\blogg(?:ed|s|ing) (?:in|on|off|out)\b", I),
+    ("game term", r"\bzones?\b|\b(?:two|three|its|the) spawns\b|\bspawns (?:with|of)\b", I),   # Svarm's brood of spawn stays
 ]
 # The chat line files the lore feeds hold no patch of ground, so there every "patch" is the game's.
 CHAT_FILE = [("patch", r"\bpatch(?:es|ed)?\b(?! of\b)", I)]

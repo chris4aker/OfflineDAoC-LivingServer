@@ -27,12 +27,17 @@ class FourthWallRuleTests(unittest.TestCase):
             for text in ["bots get thrown too", "a level 54 Dellingstad NPC", "in this server's code", "no script, 3-minute respawn",
                          "his template puts him in Morvalt Samhalle", "the world data names her", "only GamePlayer damage counts",
                          "every hit from a real player", "the old guides said", "reading the quest log", "in game he wears a model",
-                         "you cannot click him", "a gm held a funeral", "game hours 10 to 13"]:
+                         "you cannot click him", "a gm held a funeral", "game hours 10 to 13",
+                         # independent review (2026-11-21): what the first pass missed
+                         "No spells or styles in the data", "not in this world's spawn data", "lots of data quests",
+                         "she is flagged aggressive", "an isle of the region, with its own file", "(file to come)",
+                         "the region overview", "the raid AI", "the in-game map"]:
                 self.assertTrue(self.words(text, kind), (kind, text))
 
     def test_game_terms_are_caught_in_narrative_only(self):
         # Raiders' fight advice (legend) and chat voice keep levels, mobs and timers (owner rule 2026-11-06).
-        for text in ["every level 50 knows him", "a plain mob", "an 80-second respawn", "the best xp", "he cons purple"]:
+        for text in ["every level 50 knows him", "a plain mob", "an 80-second respawn", "the best xp", "he cons purple",
+                     "the oldest thing in the zone", "Two spawns of Marquis Chaosmar", "Duke Harboris spawns with him"]:
             self.assertTrue(self.words(text, "narrative"), text)
             self.assertEqual(self.words(text, "advice"), [], text)
             self.assertEqual(self.words(text, "chat"), [], text)
@@ -44,7 +49,9 @@ class FourthWallRuleTests(unittest.TestCase):
                      "the Herald records each first kill", "a harp player of Tara", "The gales come in a mob.",
                      "the scriptorium rises", "labelled in the old script", "drawn in the court's script",
                      "a children's game of it on the Cornish road", "the vault below the hall", "she resets past 2000",
-                     "a man who serves at the king's table", "the quest for the Grail", "the protector of the foundations"]:
+                     "a man who serves at the king's table", "the quest for the Grail", "the protector of the foundations",
+                     "the file lies down", "a file-leader calls his file", "a strip of flagged floor", "Svarm and its brood of spawn",
+                     "under a truce flag", "the Academy's files"]:
             self.assertEqual(self.words(text), [], text)
         # Bot chat keeps fire patches and distances; only the lore's chat files hold no patch of ground.
         self.assertEqual(self.words("we stood in patches", "chat"), [])

@@ -249,6 +249,11 @@ are not added yet:
     - The companion-name test covers every legend the lore tells of; Eirik is allowed as a shared given name (owner to
       confirm).
     - Tests only: `UT_LoreBible` was not run (no dotnet).
+    - **Independent review** (`docs/1.2.1/REVIEW-FOURTH-WALL.md`): 137 more visible strings the first pass and its
+      lint missed ("no spells or styles in the data", "spawn data", "data quests", "flagged aggressive", relations "with
+      its own file" and "the region overview", "zone" in told text) are reworded, and the lint now catches them. Seven
+      fight tips that contradicted their boss's code (Saeor, Sys'sro, the Afanc, Oona, Oro, Krevo, the two Princes'
+      lines) now agree with it. "Companions" in a raid legend means anyone of the raid who is not you.
 - **Next:**
   1. **Decision 5, second pass.** Done and reviewed (see above). Show the owner samples before merging. The list it
      worked from:
