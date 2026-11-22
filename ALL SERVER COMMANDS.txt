@@ -1556,7 +1556,7 @@ GM ONLY COMMANDS
   /lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)
   /lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)
   /lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls
-  /lstest deathanim [raise | release | off] - the death fall in the original client (target a bot): kills it (or shows the fall again on a dead one) and lists every packet about it to your client for 2 minutes; raise brings it back as a rez does, at your side; release sends it to its bind
+  /lstest deathanim [raise | release | rez | off] - the death fall in the original client (target a bot): kills it (or shows the fall again on a dead one) and lists every packet about it to your client for 2 minutes; raise brings it back as a rez does, at your side; release sends it to its bind; rez casts a resurrection as a player's cast goes (with nothing dead selected the server picks the corpse)
   Handler: DOL.GS.Commands.LivingServerTestCommandHandler
 
 /merchant
