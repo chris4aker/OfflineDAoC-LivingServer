@@ -39,6 +39,10 @@ or run where it was written; CI on pull request #398 is the first build.
   Diarmuid and Deirdre gave way to Dinadan, Lynette, Loegaire and Fand (owner: lesser legend names are fine, the lore's
   are not). Companions already hired keep their names.
 
+- **No pet cap for players** (owner 2026-11-21). An Animist can place as many turrets as power and casting allow (the
+  cap of 12 per player and 10 in one spot no longer applies to players), and a Theurgist's pets have no cap either.
+  Companions and gamebots keep their limits.
+
 **Rewards and loot**
 - **Enemy gamebot kills give experience (#396).** They only ever paid realm points. A kill now pays what a player kill
   pays: experience for a player of its level (shared by damage, capped at 125% of your own worth, with the keep bonus)
