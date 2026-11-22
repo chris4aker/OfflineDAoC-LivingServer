@@ -9,10 +9,10 @@ list for the writers (owner: never trim; reword by adding).
 
 | Realm | narrative words | in repeated phrases | top page opening |
 |---|---|---|---|
-| Albion | 289,458 | 7,725 (2.7%) | "Of the" 40 of 692 pages |
-| Midgard | 265,642 | 6,486 (2.4%) | "From the" 43 of 655 pages |
-| Hibernia | 245,093 | 8,397 (3.4%) | "The first" 18 of 543 pages |
-| Neutral | 121,334 | 3,908 (3.2%) | "In the" 11 of 277 pages |
+| Albion | 289,526 | 7,725 (2.7%) | "Of the" 40 of 692 pages |
+| Midgard | 265,669 | 6,474 (2.4%) | "From the" 43 of 655 pages |
+| Hibernia | 245,079 | 8,397 (3.4%) | "The first" 18 of 543 pages |
+| Neutral | 121,336 | 3,908 (3.2%) | "In the" 11 of 277 pages |
 
 ## Narrative phrases (stories, books, chapters, loremasters, atmosphere, history)
 
