@@ -28,8 +28,34 @@ review's findings and the work left to do.
 7. **Companions may carry lesser legend names, never the lore's** (2026-11-21): "Companions can be 'B' tier heroes with
    famous names but nothing referenced in the lore itself." A hired companion's suggested name may be a lesser hero's
    (Dinadan, Lynette, Brangwen, Loegaire, Fand, Grainne), but never a hero or legend companion the lore tells of, and the
-   lore never mentions a companion. `tools/lore/tests` checks the list in `Hire165.cs` against `name_counts.py` HEROES.
+   lore never mentions a companion. `tools/lore/tests` checks the list in `Hire165.cs` against every legend name the
+   lore tells of (`name_counts.legend_names`: HEROES, the roster table below, the names in `myth` facts and in sentences
+   that name a HEROES legend), less the ordinary given names present-day characters share (`SHARED_GIVEN_NAMES`: Edith,
+   Gunnar, Áine, and Eirik, the Audliten quest giver, though Ragnar's son Eirik is in `history/midgard`).
    Gareth, Isolde, Diarmuid and Deirdre left the list; companions already hired keep their names.
+8. **No real companies, nothing that breaks the fourth wall** (2026-11-21): "Nothing in the lore should reference real
+   companies or break the 4th wall so to speak." No player-visible lore text names Mythic, the Camelot Herald as a
+   website, Prima, Allakhazam, GameBanshee, Uthgard, EA or Broadsword, a patch or its number, an expansion as a product
+   (Catacombs, Trials of Atlantis, Shrouded Isles as "SI"), developers, real years, or the software under the world
+   (bots, NPCs, the server, scripts, templates, world data, "real players", quest logs, game hours). Narrative fields
+   also never use game terms as game terms (levels, mobs, respawns, xp). In-world words that only look alike stay:
+   a royal herald, Lurfos the Herald and the Herald's chronicle (the realm's own herald), Cryptos Mythicos, a patch of
+   ground, the Catacombs of Cardova, the scriptorium, a crowd of winds "in a mob".
+   - **What a player sees** (traced from the code): the `/lore` codex (`LoreCodex.cs`: summary, story, chapters, legend
+     as "What is said", relations, history era and faction text, and each history fact's **text**), the loremasters
+     (`LoremasterDialogue.cs`: intro, topics, boss topics, chapters, era text with its facts' text), lore books
+     (`LoreBooks.cs`: title, pages, boss pages, the summary in the delve), the Herald's chronicle and the Bestiary
+     (`LoreHerald.cs`, the launcher's `BestiaryControl.cs`: name, place, story, legend as "What the raid leaders say",
+     chronicle sentences), boss yells and mechanic lines (`LoreBossWatch.cs`), atmosphere lines (`LoreAtmosphere.cs`),
+     first-kill lines, bot lines (`LoreChat.cs`) and the tales and lore chat files.
+   - **Never shown:** every fact's `provenance` and `source` (no code reads them but the schema check), and the text of a
+     location's or boss's own facts. Ids, catalog keys, spawn names, aliases (matching only) and area names (memory keys)
+     are not shown either. So facts keep their real sources, and the five facts from Mythic's Catacombs lore pages
+     (December 2004: `avalon-city`, `morgana`, `caer-sidi`, `jordheim` twice) now read "Camelot Herald (2004)".
+   - **Fight advice stays:** the legend and bot lines are raiders talking, so levels, health, resists, timers, "mob" and
+     "respawn" stay there (owner rule 2026-11-06); the software words and the real world do not.
+   - `tools/lore/fourth_wall.py` holds the field map, the word lists and the exceptions; `lint_lore.py` fails CI on any
+     hit. `LoreBible.GameTalkPatterns` stays the twin of `chapter_lint.py` (warnings only, pinned at 38 by `UT_LoreBible`).
 
 ### Owner notes for later passes (2026-11-21; do not undo)
 
@@ -206,11 +232,23 @@ are not added yet:
       - No `myth` fact needed relabelling `original`.
       - The last "Catacombs-era" label in `hibernia-wilds` is reworded.
       - `UT_LoreBible` was not run (no dotnet).
-    - **Open for the owner:**
-      - the four older facts that cite "Mythic's Catacombs lore" (review X3; recommendation: keep them, and show their
-        date);
-      - adding legend names such as Gráinne to the companion-name test;
-      - rewording the Avalon City summary that repeats its chapter.
+    - **Open for the owner (done on `wt3/fourthwall`, below):**
+      - the four older facts that cite "Mythic's Catacombs lore" (review X3): kept, dated "Camelot Herald (2004)";
+      - adding legend names such as Gráinne to the companion-name test (#400);
+      - rewording the Avalon City summary that repeats its chapter (#401).
+  - **Decision 8 and the review's open items** (branch `wt3/fourthwall`, #399-#401). Text was only reworded; nothing was
+    cut.
+    - 468 player-visible strings in 315 files (lore JSON and the lore chat files) reworded in-world. A word-subsequence
+      check of every old visible string against the new one found only the fourth-wall words themselves removed. Where a
+      history fact's text lost a real-world detail (a patch number, a date, "Mythic's quest"), the detail went into its
+      source note, so nothing is lost from the file.
+    - Bots are "companions" (hired companions, or the realm's warbands and adventurers for gamebots), a real player is
+      "you", "no script" is "no tricks", "the old guides" are "the old raiders' accounts", a real year is "the early
+      raids" or "the first winter of the war".
+    - Avalon City's summary is new writing at 498 words with every event kept.
+    - The companion-name test covers every legend the lore tells of; Eirik is allowed as a shared given name (owner to
+      confirm).
+    - Tests only: `UT_LoreBible` was not run (no dotnet).
 - **Next:**
   1. **Decision 5, second pass.** Done and reviewed (see above). Show the owner samples before merging. The list it
      worked from:
