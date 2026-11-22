@@ -10,7 +10,7 @@
   "renegades",
   "arawn"
  ],
- "summary": "The last and hardest of the proving fields, an old wild country of walking trees around Caer Caledon, where Arawn's people keep the hills (30-35).",
+ "summary": "The last and hardest of the proving fields, an old wild country of walking trees around Caer Caledon, where Arawn's people keep the hills; it takes the most seasoned of the young bands, on the edge of hardened veterans.",
  "facts": [
   {
    "text": "Caledon is the battleground for levels 30 to 35 (region 250); level is the only limit in Offline DAoC.",
@@ -89,7 +89,7 @@
   }
  ],
  "story": "Caledonia is the last of the fields, and the realms send their young there when they are nearly ready for the frontier.\n\nThe name is the one Rome gave the wild north, and Albion has kept it. Albion's chroniclers say Arthur fought his seventh battle in the wood of Celidon and raised Caer Caledon after it. Albion's older tellers go further back, to the battle of the trees, when Gwydion sang the wood awake to fight the host of Arawn; the grovewood, slow and rooted and angry, are those trees, still standing in their ranks. Hibernia says the painted people who held Caledonia before Rome came were cousins of the west, and that the caer was a dun before Albion renamed it. Midgard's skalds call it the grey country, and teach their young never to cut green wood there.\n\nArawn's people still keep the hills of the west and north: warriors along the western ridges, shamanesses at the old barrows, headhunters in the far north. Skulking ghouls dig at the barrows and timber cats hunt between the trees. Caer Caledon itself is held by the strongest renegades of the four fields, soldiers of every realm's training under a chieftess who has taken its name, and its walls reach a long way.\n\nAlbion's old books give the battle of the trees whole. A man of Gwynedd had stolen a white roebuck and a whelp out of Annwn, and Arawn came up out of the earth with a host to take them back. Gwydion had no host to meet him with. He went into the wood and sang, and the trees came down the slope in their ranks with the alders at the head, and they held the king under the hills from morning on. Arawn had a champion who could not be overcome while his name was hidden. Gwydion read the name at last in the sprigs of alder on the champion's shield and called him Bran across the field, and the host of Annwn gave way. The books stop there. Nobody in them sings the trees to sleep again, and the grovewood stand where the song left them, faced toward Arawn's hills.\n\nThe wood has a second tale, younger and sadder, and Albion's chroniclers have never agreed what to make of it. The old Welsh songs tell of a Myrddin who saw his lord Gwenddolau cut down at the battle of Arfderydd and fled the field into the forest of Celyddon. He lived there fifty years among the wolves and the deer, without a roof, and spoke his prophecies to an apple tree that hid him and to a little pig that rooted at his feet, and he warned the pig to keep clear of the hounds of the king who had won. Whether that Myrddin was Arthur's Merlin is an old quarrel. Since Merlin went from the realm it has stopped being an idle one. The Academy's masters hold that Morgana shut him in the crystal under Avalon, but more than one young searcher of the Academy, unwilling to take the masters' word for it, has gone up through Albion's gate into Caledonia looking for an apple tree with a man under it, and been put out on the day the field judged them seasoned, carrying a list of trees.\n\nMidgard's part of the wood is a rule and a cairn. In the first summer of the fields a band of Midgard's young cut a green alder to bridge a stream in the western bottoms, and by evening the trees of both banks had come down to the water. Five had swung the axes. They lie under a cairn of river stones beside the Midgard gate, raised by the ones who carried them back, and the grovewood have let it be.\n\nEvery soldier who leaves Caledonia goes on to the frontier, and none of them is ever let back in.",
- "legend": "Caledonia is the 30-35 battleground, the last before the frontier. Caer Caledon in the middle is the hardest renegade keep of the four: armsmen, armswomen, huscarls, wizards, a runemaster, a hunter and a ranger, all level 38, under Renegade Chieftess Caledon at 45, and the casters and archers have long aggro range, so you get shot well before you reach the walls. Bring a full group, siege gear from the Siege Masters at your portal keep and healers who can keep up. The Arawnite warriors line the western hills and their headhunters sit in the far north; grovewood, timber cats and skulking ghouls are everywhere and aggro. There is a Void Merchant at the Albion portal keep. Raiders call it Cale and say the renegades there are tougher than the realms' own young. Renegade Chieftess Caledon is level 45 in a field where nobody is above 35, so plan on several groups working together, and clear the Arawnite warriors off the western ridge before you set up siege on that side.",
+ "legend": "Caledonia is the battleground for the most seasoned bands, on the edge of hardened veterans, the last before the frontier. Caer Caledon in the middle is the hardest renegade keep of the four: armsmen, armswomen, huscarls, wizards, a runemaster, a hunter and a ranger, all foes for a hardened band of veterans, under Renegade Chieftess Caledon, a hardened band's foe well up among them, and the casters and archers see you and attack from far off, so you get shot well before you reach the walls. Bring a full group, siege gear from the Siege Masters at your portal keep and healers who can keep up. The Arawnite warriors line the western hills and their headhunters sit in the far north; grovewood, timber cats and skulking ghouls are everywhere and attack on sight. There is a Void Merchant at the Albion portal keep. Raiders call it Cale and say the renegades there are tougher than the realms' own young. Renegade Chieftess Caledon is far stronger than anyone the field lets in, so plan on several groups working together, and clear the Arawnite warriors off the western ridge before you set up siege on that side.",
  "atmosphere": {
   "firstEntry": [
    "Grey hills and old woods. The trees stand in ranks.",
@@ -162,18 +162,18 @@
    "the grovewood in cale are the trees gwydion woke [to fight arawn|for the battle of the trees]. never got put back",
    "the arawnites in cale [still keep the hills for arawn|are arawn's people]. the church preaches against them",
    "mids never cut green wood in caledonia. [skalds say the trees remember|bad luck, they say]",
-   "caer caledon renegades are [the toughest in any bg|tougher than the other three]. the chieftess is 45"
+   "caer caledon renegades are [the toughest in any bg|tougher than the other three]. the chieftess is a hardened band's foe, well past anyone in there"
   ],
   "rumour": [
    "[heard|someone said] the grovewood in caledonia all face the arawnite hills. [still lined up|like an army]",
    "[heard|word is] the hibs say caer caledon was a dun before the albs renamed it"
   ],
   "tell": [
-   "caledonia? the 30-35 bg, [last one before the frontier|the last bg]. caer caledon in the middle",
-   "is cale hard? the keep is. renegades at 38, the chieftess at 45, and their casters [hit from far off|have long range]",
+   "caledonia? the bg for the most seasoned, [last one before the frontier|the last bg]. caer caledon in the middle",
+   "is cale hard? the keep is. renegades for hardened veterans, the chieftess stronger again, and their casters [hit from far off|reach a long way]",
    "whats in caledonia? grovewood, timber cats, skulking ghouls, and arawnites in the west and north hills",
    "who holds caer caledon? [renegades|the renegade chieftess caledon], deserters from all three realms",
-   "where is cale? ask a teleporter for battlegrounds [at 30|between 30 and 35]"
+   "where is cale? ask one of the realm's porters for battlegrounds [once youre well seasoned|while youre seasoned but not yet a veteran]"
   ]
  },
  "loremaster": {
