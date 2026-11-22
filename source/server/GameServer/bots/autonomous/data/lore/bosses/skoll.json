@@ -73,7 +73,7 @@
       "text": "He wears a collar. It is a ring of dull red stone round his neck, set into the fur so deeply that it looks as if he grew it, and no dwarf of the Remnants put it there. The dwarves call it the sunstone. When he is angry, which is always, it glows like a coal blown on.\n\nThe skalds of Jordheim say it is a piece of the sun. They say Skoll caught the sun once, long ago, in the age before the gods fixed the sky, and bit a piece out of it before it got away, and has been chasing the rest of it ever since. The iarn dwarves say the skalds will say anything that rhymes. They think the collar came from the hall under the frontiers, as Hurjavelen's shields did, and that the thief-wolf brought it home for his brother.\n\nThe companies who come home from the old one's door bring it sometimes, and the jewellers of Jordheim say it is not any stone they know, and that it is warm on the coldest day. They make it into collars for those who want a story to wear.\n\nHe and Hati lie at the door a long stride apart, and they have never been seen to fight side by side. The Remnants say Skoll is always already running by the time Hati wakes, and that the two brothers who were named for the sky have never once been in it together. The skalds of Jordheim say that is the saddest line in their song, and sing it slowly."
     }
   ],
-  "legend": "Skoll lies at Iarnvidiur's door about 1,600 from Hati, so you can take them separately. He's a debuff fight. On a third of his hits his bite does 250 and leaves a 20-second debuff; he also throws a poison (80 a tick for 20 seconds, never stacked) and a 38% attack-speed debuff (45 seconds, reaches 1,500) on whoever he's on. Keep cure poison and a cleanse on the tank, and a strong tank opens hard, because the haste debuff slows his swings and his threat. 30,000 health, 20% melee and 30% magic resists, CC-immune. Fight him at the door, never with the old one's room open. The sunstone collar is a nice drop for anyone who wants a story to wear.",
+  "legend": "Skoll lies at Iarnvidiur's door some fifty paces from Hati, so you can take them separately. He's a fight against his weakenings. On a third of his hits his bite does 250 and leaves a weakening for 20 seconds; he also throws a poison (80 every few seconds for 20 seconds, never laid twice) and a slowing that takes nearly two-fifths off how fast you swing (45 seconds, reaching fifty paces) on whoever he's on. Keep cure poison and a cleanse on his shield-bearer, and a strong shield-bearer opens hard, because the slowing slows his swings and his hold on Skoll's anger. The raiders reckon his strength at thirty thousand, a fifth of every blow and three-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for several bands of the realm's best together. Fight him at the door, never with the old one's room open. The sunstone collar is a nice prize for anyone who wants a story to wear.",
   "yells": {
     "aggro": [
       "(Skoll snarls and lunges, eyes burning.)",
@@ -115,13 +115,13 @@
   },
   "botLines": {
     "briefing": [
-      "skoll slows attacks and poisons, cleanse tanks",
+      "skoll slows attacks and poisons, cleanse shield-bearers",
       "skoll first, then hati",
-      "tank opens hard on skoll, the haste debuff kills threat",
-      "cleanse the tank on skoll every bite",
-      "skoll: haste debuff 38% on the tank, poison, bite debuff. cleanse and cure poison",
+      "shield-bearer opens hard on skoll, the slowing loses you his anger",
+      "cleanse the shield-bearer on skoll every bite",
+      "skoll: a big slowing on the shield-bearer, poison, the bite's weakening. cleanse and cure poison",
       "skoll's poison doesnt stack, cure it when it lands",
-      "tank opens hard, the haste debuff kills threat",
+      "shield-bearer opens hard, the slowing loses you his anger",
       "skoll is apart from hati, one at a time"
     ],
     "aftermathWin": [
@@ -134,12 +134,12 @@
       "skoll down, the sun is safe"
     ],
     "aftermathLoss": [
-      "skoll's poison stacked on the mt",
-      "poison and debuff stacked on the mt",
+      "skoll's poison piled on the main shield-bearer",
+      "poison and weakening piled on the main shield-bearer",
       "skoll and hati both alive and the healers asleep",
-      "no cleanse, mt dead",
-      "tank swung like an old man and lost threat",
-      "no cure poison on the tank"
+      "no cleanse, main shield-bearer dead",
+      "shield-bearer swung like an old man and skoll turned away",
+      "no cure poison on the shield-bearer"
     ],
     "rumour": [
       "the iarn dwarves joke that skoll stole a piece of the sun. thats his collar",

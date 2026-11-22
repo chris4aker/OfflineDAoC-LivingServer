@@ -132,7 +132,7 @@
       "text": "Kula has never hidden what she wants. She wants the world before the gods: white, still and endless. She cannot have all of it, so she takes what she can. The iarn dwarves of Faraheim, who have kept records on slates for longer than the giants have been on Aegir, say that Tuscaran Glacier has grown in every year of her reign, a little at a time, down the crater walls and out across the floor, and that Dellingstad has moved its outermost houses twice. They say the cold off the dragon's bones has spread into the Gripklosa Mountains, and that the snow on the high passes no longer melts in summer.\n\nThe three accounts of her coming give three ends to her story. The skalds of Jordheim say that if she is not stopped, the glacier will cover Aegir, and then the sea ice between Aegir and Midgard, and that one winter the people of Jordheim will look north and see it coming. The cast-out sculptors say she will never stop, because the brothers who left her behind are dead and she has nothing left to want but the cold. The iarn dwarves say the only question is what she is sitting on, and for whom, and whether it is waking.\n\nThe sculptors also tell one more thing, which none of the others tell. When she is killed, they say, the throne room cracks from end to end, the only crack in Tuscaran that the iceweavers cannot close by morning, and through it, for a moment, the cold of the dragon's bones breathes up into the hall. Then she is on her throne again, in a season or less, because the glacier will not let the queen of winter stay dead. The skalds who sing her end the song the same way: when she dies, the ice will remember her name. Then they look at the door, as if the ice might be listening."
     }
   ],
-  "legend": "The twins come together: touch one and the other is on you, so fight them both at the thrones and never drag them out, because past their spot they take no damage and walk home whole. Every raid leader kills Kula first, because a wound to either closes the other's, and leaves Tuscar to his own tank; the moment she is under half, Kula hits harder and her Thor's Might comes far more often. It is a single energy bolt on whoever she is hitting, from anywhere in the room, and it comes off the blows she takes, so the main tank eats it and the healers stay on him. She still pulls people to the throne, into the circle of frost before it, and whoever stands in the circle is rooted or put to sleep: step out and fight her from outside it. They also say she has never once looked at the King while fighting, and that if you watch closely when he dies, she smiles.",
+  "legend": "The twins come together: touch one and the other is on you, so fight them both at the thrones and never drag them out, because past their spot they take no damage and walk home whole. Every raid leader kills Kula first, because a wound to either closes the other's, and leaves Tuscar to his own shield-bearer; the moment she is under half her strength, Kula hits harder and her Thor's Might comes far more often. It is a single energy bolt on whoever she is hitting, from anywhere in the room, and it comes off the blows she takes, so the main shield-bearer eats it and the healers stay on him. She still drags people to the throne, into the circle of frost before it, and whoever stands in the circle is pinned to the ground or put to sleep: step out and fight her from outside it. They also say she has never once looked at the King while fighting, and that if you watch closely when he dies, she smiles.",
   "yells": {
     "aggro": [
       "You walked past my guardians. They will answer for that. You will answer to me.",
@@ -188,22 +188,22 @@
   },
   "botLines": {
     "briefing": [
-      "kula and tuscar come together, fight them at the thrones. everyone on kula, only his tank on tuscar. [healers|clerics] stay on the mts",
-      "once kula is under half or tuscar is dead her thors might comes way more often. its a bolt on whoever she is hitting, [heal her mt|keep her mt topped]",
+      "kula and tuscar come together, fight them at the thrones. everyone on kula, only his shield-bearer on tuscar. [healers|clerics] stay on the main shield-bearers",
+      "once kula is under half or tuscar is dead her thors might comes way more often. its a bolt on whoever she is hitting, [heal her shield-bearer|keep her shield-bearer topped]",
       "dont drag the twins out of the throne room. past their spot they take no damage and reset",
       "kula hits harder when tuscar drops. [save the big heals|healers be ready] for that"
     ],
     "aftermathWin": [
       "kula down!! [first time|finally] i saw that throne empty",
-      "gg. the ice queen is dead. somebody grab a screenshot of that crown",
+      "well fought. the ice queen is dead. somebody sketch that crown for the hall",
       "kula's crown dropped. [who needs it|somebody roll]",
       "the throne room cracked when she died. [did you hear it|creepy]"
     ],
     "aftermathLoss": [
-      "kula at half just kept bolting her mt. we need more heals on him",
-      "[wiped|we wiped] at the thrones. tuscar went down and she just went nuts",
+      "kula at half just kept bolting her shield-bearer. we need more heals on him",
+      "[all dead|we all died] at the thrones. tuscar went down and she just went nuts",
       "we dragged them out of the throne room and they reset. [stay put|never again]",
-      "everyone stacked on tuscar's tank and the hammers did the rest",
+      "everyone stacked on tuscar's shield-bearer and the hammers did the rest",
       "kula at half with tuscar dead is just too much damage for our healers"
     ],
     "rumour": [
