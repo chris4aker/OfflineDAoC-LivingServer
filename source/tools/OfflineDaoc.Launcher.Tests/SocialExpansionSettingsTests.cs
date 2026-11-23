@@ -396,7 +396,7 @@ public class SocialExpansionSettingsTests
         var loaded = SocialExpansionSettings.Load(_database, new List<string>(), keys);
         loaded.Save(_database, loaded, () => _stopped, keys);
         var rows = Rows();
-        Assert.That(rows["bot_guilds_enabled"], Is.EqualTo("False"), "the unreadable row is repaired");
+        Assert.That(rows["bot_guilds_enabled"], Is.EqualTo("True"), "the unreadable row is repaired, to the default the server uses (1.2.3)");
         Assert.That(rows["bot_guild_share"], Is.EqualTo("0.655"), "a readable row is not rewritten by a repair");
         Assert.That(rows.ContainsKey("bot_personalities_enabled"), Is.False);
 
@@ -626,7 +626,7 @@ public class SocialExpansionSettingsTests
         T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
         Assert.That((Field<CheckBox>("_botCrafters").Checked, Field<NumericUpDown>("_crafterShare").Value, Field<ComboBox>("_commissions").SelectedIndex,
                 Field<NumericUpDown>("_exchangeTax").Value, Field<CheckBox>("_level50Kit").Checked, Field<NumericUpDown>("_buffBotPercent").Value),
-            Is.EqualTo((true, 7m, 2, 50m, false, 0m)));
+            Is.EqualTo((true, 7m, 2, 50m, false, 30m)));
         Color muted = Color.FromArgb(166, 154, 128), parchment = Color.FromArgb(215, 199, 157);
         Assert.That(Field<CheckBox>("_craftOrders").ForeColor, Is.EqualTo(parchment), "craft orders are bright while bot crafters are on");
         Field<CheckBox>("_botCrafters").Checked = false;
