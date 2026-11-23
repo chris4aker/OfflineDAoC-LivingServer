@@ -57,7 +57,7 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 | Raid | Was | Now | What it means |
 |---|---|---|---|
 | **Summoner's Hall** (all three realms) | 64 | **80** | Enough raiders to outlast Summoner Roesia's Pain with 1.2.1's cures. The guides say four to five groups, so 80 is as far as the raise goes; the raid now starts at 100. |
-| **The Green Knight** | 40 | **80** | Enough raiders for 1.2.1's stack and peel to hold against his trees. His trees still stop at 70 a wave. |
+| **The Green Knight** | 40 | **80** | Twice the guides' four to five groups, as far as the raise goes. His trees hit harder than first thought, so 80 alone may not be enough yet, and his fight is still being worked on. His trees still stop at 70 a wave. |
 | **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left when she dies. |
 | **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
 
@@ -84,6 +84,12 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with those lines and the `FORK_BUILD`
   line from the top of `runtime\server\logs\server.log`.
 
+### Companions on the Darkness Falls stairs
+
+- **Your companions now follow you back up the entrance stairs of Darkness Falls**, one flight at a time. Before,
+  they waited at the bottom, or wandered off into the level below when you stood near the arrival point at the top.
+  The server log shows each climb as `DF_STAIR_CLIMB`.
+
 ### Bots on the road
 
 - **No more pacing at the Lough Derg / Valley of Bri Leith border.** Hibernian bots walking from the Valley toward
@@ -91,7 +97,8 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   nowhere, turn back, step on again and finally give up their trip. They now cross where the ground goes on.
 - **Companions on ladders and ledges.** A companion or bot climbing a ladder, a tower or a ledge, or jumping down one,
   no longer stops halfway when you walk on: it finishes the climb and catches up. Darkness Falls' stairs were fixed in
-  1.2.1; this does the same everywhere else.
+  1.2.1; this does the same everywhere else. A bot put back on its feet at the top or bottom shows in the server log
+  as `NAV_LINK_LANDING`.
 
 ## Known issues
 

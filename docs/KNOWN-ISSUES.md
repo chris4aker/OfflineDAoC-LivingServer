@@ -141,9 +141,8 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
   and a resurrection cast with nothing selected reaches a dead bot nearby. CI's playtester checks the packets
   (`b644529a`), not what the client draws: **tests only** (#425). Switch it off with **Bots fall when they die**. Dead
   bots still can't be clicked in the original client; `/target <name>` or a rez with nothing selected works.
-- **Darkness Falls stairs (#438):** companions stuck on a step of the entrance stairs is fixed in 1.2.1: **tests only**.
-  The stairs are one-way in the navigation mesh: a companion following you back **up** them has no path and waits at
-  the bottom. Use the exit portal below, or GM `/jump <name> to me`.
+- **Darkness Falls stairs (#438):** from 1.2.2 companions follow you back up the entrance stairs, one flight at a
+  time (`DF_STAIR_CLIMB` in the server log). If one still stays below, GM `/jump <name> to me`.
 - **Clicking a living bot** may not select it in the original client (#424, unconfirmed); 1.2.1 logs each click
   (`PLAYER_CLICK_TARGET`).
 
