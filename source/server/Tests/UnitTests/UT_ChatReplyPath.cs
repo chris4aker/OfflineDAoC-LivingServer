@@ -166,6 +166,8 @@ public class UT_ChatReplyPath
     [TestCase("is a bard needed in groups?")]
     [TestCase("do i need a group for my epic?")]
     [TestCase("how do i invite someone to a group?")]
+    [TestCase("23 friar looking for a spot to grind, ideas?")]
+    [TestCase("is it better to solo or group at 20?")]
     public void AQuestionAboutGroupingIsAQuestion(string text) => Assert.That(Path.AsksAboutGrouping(text), Is.True, text);
 
     [TestCase("anyone lfg?")]
@@ -214,5 +216,38 @@ public class UT_ChatReplyPath
         Assert.That(answer, Does.Contain("chain"));
         Assert.That(AutonomousChatKnowledge.TryAnswerCommon("do i need a group for my epic?", eRealm.Albion, "Cleric", 30, new FixedRandom(0.0), out answer), Is.True);
         Assert.That(answer, Does.Contain("group"));
+    }
+
+    [Test]
+    public void TheEpicsRewardIsTheArmour()
+    {
+        Assert.That(AutonomousChatKnowledge.TryAnswerCommon("what do i get from the epic?", eRealm.Hibernia, "Druid", 46, new FixedRandom(0.0), out string answer), Is.True);
+        Assert.That(answer, Does.Contain("armor"));
+        Assert.That(AutonomousChatKnowledge.TryAnswerCommon("where do i get my epic armor?", eRealm.Hibernia, "Druid", 46, new FixedRandom(0.0), out answer), Is.True);
+        Assert.That(answer, Does.Contain("trainer"), "where: the chain and who starts it");
+    }
+
+    [TestCase("how do i start my epic?")]
+    [TestCase("how long is the epic?")]
+    [TestCase("whats the epic like?")]
+    public void NoEpicAnswerClaimsTheBotDidIt(string text)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            var random = new Random(i);
+            if (AutonomousChatKnowledge.TryAnswerCommon(text, eRealm.Albion, "Cleric", 46, random, out string answer))
+                Assert.That(answer, Does.Not.Contain("did mine"), text);
+        }
+    }
+
+    // ---- a question to a named bot about itself -----------------------------------------------------------------------------
+
+    [Test]
+    public void ANamedBotAnswersAboutItselfBeforeTheKnowledgeLookup()
+    {
+        Assert.That(Path.KnowledgeFirst("did you finish your epic?", eAutonomousChatIntent.Unknown, false, directed: true), Is.False);
+        Assert.That(Path.KnowledgeFirst("did you finish your epic?", eAutonomousChatIntent.Unknown, false, directed: false), Is.True);
+        Assert.That(Path.KnowledgeFirst("where is the cleric trainer?", eAutonomousChatIntent.Unknown, false, directed: true), Is.True);
+        Assert.That(Path.KnowledgeFirst("anyone in camelot?", eAutonomousChatIntent.Unknown, helpCall: true, directed: false), Is.False);
     }
 }

@@ -86,9 +86,19 @@ public static class AutonomousChatReplyPath
         string t = " " + AutonomousChatQuestions.Normalize(message) + " ";
         if (Regex.IsMatch(t, @" (anyone|any1|anybody|who wants|who s up|whos up|wanna|want to|lf\d|lfm|pst|room for|inv me|invite me) "))
             return false;
-        return Regex.IsMatch(t, @"^ (what|whats|wat|how|why|is (a|an|the)|are|do i|does|should i|can i|which|whats the) ") ||
-               Regex.IsMatch(t, @" (mean|means|stand for|stands for) ");
+        return Regex.IsMatch(t, @"^ (what|whats|wat|how|why|is (a|an|the|it)|are|do i|does|should i|can i|which|whats the) ") ||
+               Regex.IsMatch(t, @" (mean|means|stand for|stands for) ") ||
+               // "23 friar looking for a spot to grind, ideas?": a place to level, not a group.
+               Regex.IsMatch(t, @" (spot|spots|place|zone|camp) to (grind|level|lvl|xp|hunt) | (looking for|lf) a (spot|place|zone|camp) ");
     }
+
+    /// <summary>
+    /// Whether the knowledge lookup answers a line before the bot's own reply: not short talk, not a call for help, and not a
+    /// question to a bot named in the line about itself ("aldwyn did you finish your epic?": its own facts answer, not the
+    /// general "long chain"). Pure.
+    /// </summary>
+    public static bool KnowledgeFirst(string message, eAutonomousChatIntent intent, bool helpCall, bool directed) =>
+        !IsShortTalk(message, intent) && !helpCall && !(directed && AutonomousChatQuestions.SelfQuestion(message) != null);
 
     /// <summary>What a player's line draws, decided once for the line (<see cref="Plan"/>).</summary>
     public enum Step

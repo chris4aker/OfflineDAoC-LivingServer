@@ -191,8 +191,13 @@ public static class AutonomousChatKnowledge
             // "do i need a group for my epic?": the epic's last steps are group fights in every realm.
             pool = ["the last steps yeah, get a group for those", "some parts you can solo, the end fights need a group",
                 "bring a group for the end of it, the rest is running around"];
+        else if (Has(@" epic ") && Has(@" (get|gives|give|reward|rewards|worth) ") && !Has(@" where "))
+            // "what do i get from the epic?", "is the epic worth doing?": the epic armour, a full suit for the class.
+            pool = ["you get your epic armor at the end, the full suit", "worth it for the armor, a full set for your class",
+                "a full set of epic armor, long chain though"];
         else if (Has(@" epic "))
-            pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "did mine, long chain, bring a group"];
+            // Never "did mine": the bot saying it may be level 30 (the bench: "aldwyn did you finish your epic?").
+            pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "long chain, bring a group for the end of it"];
         if (pool == null || pool.Length == 0)
             return false;
         answer = pool[random.Next(pool.Length)];
