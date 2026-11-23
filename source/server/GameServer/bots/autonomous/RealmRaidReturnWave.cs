@@ -131,6 +131,10 @@ public static class RealmRaidReturnWave
 
     public enum DragonRaider { NotYet, WithTheRaid, Returning, Fallen }
 
+    /// <summary>The dragon return wave runs for this raid (pure): a dragon raid's, never an open-world raid's (its fight is
+    /// not at the realm's dragon lair the wave measures to; v1.2 never held anyone there: 1.2.2 regression audit, item 5).</summary>
+    public static bool DragonWaveApplies(bool isOpenWorld) => !isOpenWorld;
+
     /// <summary>
     /// Where a dragon raider stands for the return wave (pure): <paramref name="alive"/>; <paramref name="beenWithRaid"/>,
     /// seen within <see cref="DragonReturnDistance"/> of the lair since the raid began; <paramref name="returning"/>, already

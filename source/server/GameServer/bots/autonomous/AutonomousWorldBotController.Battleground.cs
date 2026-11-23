@@ -189,7 +189,8 @@ namespace DOL.GS
                 if (nearLord)
                 {
                     // #416: from near enough that the hits count (GuardLord takes nothing from beyond 400); farther, walk on to him.
-                    if (!rally.Hold && bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordDamageReach) &&
+                    if (!rally.Hold && bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordStrikeReach(lord,
+                            RvrLordFormation.StandsBack(LordFormationRole(bot)))) &&
                         Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
                         GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
                     {
@@ -541,7 +542,9 @@ namespace DOL.GS
         /// (AutonomousBattlegroundKeepRally.StrikesFromHere).</summary>
         private static bool StrikesFromHere(GameBot bot, GameLiving target) =>
             target is GameKeepDoor ||
-            AutonomousBattlegroundKeepRally.StrikesFromHere(target is GuardLord, bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z));
+            AutonomousBattlegroundKeepRally.StrikesFromHere(target is GuardLord, bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z),
+                target is not GuardLord towerOrKeep || AutonomousBattlegroundKeepRally.IsKeepLord(towerOrKeep),
+                RvrLordFormation.StandsBack(LordFormationRole(bot)));
 
         // Each lord's walk target, worked out at most every 30 s or when he moves (a navmesh query per stormer turn otherwise).
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, (Vector3 Lord, Vector3 Walk, string Kind, long Until)> LordWalks = new();

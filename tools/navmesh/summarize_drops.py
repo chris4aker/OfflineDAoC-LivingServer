@@ -12,8 +12,8 @@ import argparse, json, math
 def lift(x):
     r = abs(x["drop"]); return r >= 300 and r >= 2 * x["xy"]
 
-def commit_leg(x):  # NavLinkLeg.IsCommitLeg
-    r = abs(x["drop"]); return r >= 64 and r >= x["xy"] and x["xy"] <= 320
+def commit_leg(x):  # NavLinkLeg.IsCommitLeg (1.2.2 guard: lifts ride as in 1.2 and are never commit legs)
+    r = abs(x["drop"]); return r >= 64 and r >= x["xy"] and x["xy"] <= 320 and not lift(x)
 
 def main():
     ap = argparse.ArgumentParser()

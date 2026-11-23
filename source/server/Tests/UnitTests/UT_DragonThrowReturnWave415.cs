@@ -49,6 +49,30 @@ namespace DOL.UnitTests
             return (float)Math.Sqrt((double)(s.X - home.X) * (s.X - home.X) + (double)(s.Y - home.Y) * (s.Y - home.Y));
         }
 
+        // ---- 1.2.2 regression audit, items 4 and 5 ---------------------------------------------------------------------
+
+        [TestCase(3_600f)]
+        [TestCase(4_800f)]
+        [TestCase(6_100f)]
+        public void ARaiderWaitingAtTheStagingRingStaysReturning(float ring)
+        {
+            // Golestandt's and Cuuldurach's wins held a released raider at the ring until its wave went: still so.
+            Assert.That(ring, Is.GreaterThan(W.DragonBackInFightDistance));
+            Assert.That(W.ClassifyDragonRaider(true, true, true, ring), Is.EqualTo(W.DragonRaider.Returning), "1.2");
+            Assert.That(W.ClassifyDragonRaider(true, true, true, ring, displaced: false), Is.EqualTo(W.DragonRaider.Returning));
+            Assert.That(W.ClassifyDragonRaider(true, true, true, ring, displaced: true), Is.EqualTo(W.DragonRaider.Returning),
+                "a raider already on its way back stays so, thrown or not");
+        }
+
+        [Test]
+        public void TheDragonReturnWaveNeverRunsForAnOpenWorldRaid()
+        {
+            // PulseDragonReturnWave measured an open-world raid's raiders to its realm's dragon lair: none is ever Returning
+            // there now, as in v1.2 (nobody was ever within that line).
+            Assert.That(W.DragonWaveApplies(isOpenWorld: true), Is.False);
+            Assert.That(W.DragonWaveApplies(isOpenWorld: false), Is.True);
+        }
+
         [Test]
         public void TheThrowSpotsPastTheReturnLineAreWhereTheRaidsLose()
         {

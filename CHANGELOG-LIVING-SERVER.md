@@ -69,6 +69,33 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   64."), and the next raid reads it against the period size today, so a world that ran a 1.2.2 test build at a
   withdrawn size carries on with the same number of bots: "125% of 80" at Summoner's Hall (100 bots) reads as 156.25% of
   64. **Tests only.**
+  80."), and a 1.2.1 record at a raised raid is read against the old size: a Summoner's Hall raid grown to 166% of 64
+  (106 bots) carries on at 132.8% of 80, the same 106. **Tests only.**
+- **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
+  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's 80 takes 160.
+- **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
+- **Raid tactic audit fixes** (everything but the Green Knight; issues #407-#413, #416; **tests only**):
+  - **Marfoirwort:** he stands on his target (his follow distance, 131), so no spot in bot melee reach clears his
+    350 Life-leech; the 1.2.1 rule moved every melee raider every turn and they never swung. Now only his target fights
+    him in melee; the other melee shoot him from clear of the leech with their distance weapon or wait clear of it (no
+    new spot once there), and tanks go in only to take him back from a non-tank. Animist shrooms are planted clear of
+    the leech and fight him; other pets stay off. Sim: each raider counts only while in range; 16 of 16 kills, the
+    1.2.1 rule 0 of 16.
+  - **Paladin, Friar, Warden:** a melee-hybrid rule (`BotPartyRoles.IsMeleeHybridHealer`,
+    `EpicEncounterTactics.FightsFromRange`, `RuleContext.StandsBack`) for the new rules of unwon fights (Marfoirwort,
+    King Tuscar and Kula's spreads, Legion's ranged line, the Sacristan ambush, the Glacier Giant's healers). Won fights
+    keep v1.2's test (the dragons' stun and breath step-out, the catalog's spread and melee-behind, blast roles).
+  - **Legion:** a wounded raider steps out under 35% and comes back only at 60% (no 34-35% shuttle).
+  - **Summoner Roesia:** with its own party in danger a curer cures only its own party's fresh members, never another
+    party's. The 1.2.1 Pain rules (25% dotted danger, fresh override, 2.5 s) apply in Summoner's Hall only; every other
+    raid has v1.2's cure rule again.
+  - **King Tuscar:** his target must hit him to hold him (heals on it give its healers threat), so a tank uses its taunts.
+  - **Keep lords:** the battleground storm's lord reach is the frontier's (350 keep, 250 tower) for casters, archers and
+    healers; melee and tanks keep 1.2's 900 and keep the lord when no walk to him is found.
+  - **Crypt Lord:** the lapsed court guard covers the 35 s court fight and never lapses: after the hold it waits for
+    his next open window (`REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS`), never a blind pull.
+  - **Spindler:** archers with a short bow, crossbow or thrown weapon take a post on the 750 ring, in reach of her.
+  - **Dragons:** the dragon return wave no longer runs for open-world raids (it measured them to the realm's dragon lair).
 
 **Chat**
 - **The /faction answer audit** (owner, 2026-11-22: "smooth clunkiness, errors, or disjointed phrasing", "reduce or
@@ -141,6 +168,28 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   meshes: 15 of 28 trips from the four seam spots cycled before, none after; 72 trips between nine places on the main
   ground of eight Hibernian zones: 62 arrived before, 72 after (the other 10 cycled, 6 of them at 384960,486688). No navmesh,
   seam file or road file changed. **Tests only** (`UT_LoughDergRidgeSeam421`).
+
+**Regression guards (what was seen working on 1.2 stays as it was)**
+- **Guards for 1.2-proven paths** (regression audit of `integration/1.2.2` at `0270e78c`, items 6-9). **Tests only.**
+  - *Lifts ride as in 1.2:* a lift leg (`Pathfinder.IsVerticalLink`: 300 or more up or down, at least twice the run) is
+    no longer a NavLinkLeg commit leg (`NavLinkLeg.IsLiftLeg`). Every stuck-prone link in Tur Suil (190), Iarnvidiur's
+    Lair (161), Aldland (56, Coliath) and Cruachan Gorge (211) is a lift, so those zones' legs behave as in 1.2 except
+    the stranded set-down. 546 of the table's 1,262 links are lifts; `navmesh-drops.json`'s `commit` and
+    `summarize_drops.py` follow (`UT_NavLinkLegs`).
+  - *Seam choice pinned (#421):* on the 1.2 download's region 200 seam lines
+    (`tools/navmesh/seams-region200-v036b.json.gz`), the crossings of the Cruachan Gorge column (Druim Ligen to Dun nGed,
+    seen single file on `aa537ce`) and of the walk to Druim Ligen from both sides of the 211/212 seam equal 1.2's
+    (`seam_route_sim.py --rule old`; `--rule new` picks the same) (`UT_SeamChoiceSince12`).
+  - *Death fall:* a dead bot's removal goes to the original client again when the bot really leaves (logout, removal
+    from the world, a move to another region), so no corpse of a gone bot stays; a move within the region (a release
+    nearby) is still held (`BotDeathAnimation.HoldsRemoval`, `GameBot.MovingWithinRegion`; `UT_BotDeathAnimation`).
+  - *Packet queue:* an add from inside the drain on the draining thread gives up at once, as in 1.2, instead of
+    spinning up to 1 s on the send step (`DrainArray.IsDrainingOnThisThread`; `UT_DrainArray`).
+  - Reviewed, already pinned, no change: the pocket-escape loop (#420; first two escapes as before, `UT_PocketEscapeLoop`),
+    the casting line-of-sight refusal (an accepted check waits for its answer as in 1.2, `UT_CastingLosCheckGap121`), the
+    hired companions' `LevelRule` and the one-time raise of 1.2 hires (raised once, handed-over gear kept, `/hire train`
+    numbers still parse: `UT_HiredCompanionJoinsAtPlayerLevel`, `UT_HireTrainCommand`). `bot_schedule_mode` off (the
+    owner's call, 2026-11-21) keeps the whole roster online: a load note for the overnight stall row, not a code guard.
 
 ## 1.2.1 — 2026-11-22
 

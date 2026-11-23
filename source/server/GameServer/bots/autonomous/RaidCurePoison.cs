@@ -16,7 +16,8 @@ namespace DOL.GS
     /// nothing new) cures first when at least <see cref="MinDotted"/> raiders in its reach carry a curable damage over time
     /// (<see cref="GameLiving.IsPoisoned"/>) and nobody of its own party in reach is under <see cref="DangerPercent"/>% and
     /// no boss mechanic marks a patient. Its own party's emergencies still come first; another party's emergency is that
-    /// party's and the raid's other healers' (each curer cures at most once every 5 seconds, then heals). The group cure is
+    /// party's and the raid's other healers' (each curer cures at most once every 5 seconds, then heals). 1.2.2: while its
+    /// own party has a member in danger, a curer cures only its own party's fresh members, never another party's. The group cure is
     /// preferred when two or more of its own party carry it; otherwise the single cure goes to its own party's lowest dotted
     /// member, then to a raider of another party (a different one for each curer).</para>
     /// No boss is changed: Summoner Roesia and Summoner Pain are as they were. Autonomous gamebots in a realm raid only.
@@ -41,6 +42,26 @@ namespace DOL.GS
         /// Pain, so their healers topped them up while the Pain went on ticking.</para>
         /// </summary>
         public static bool InDanger(int healthPercent, bool dotted) => healthPercent < (dotted ? DottedDangerPercent : DangerPercent);
+
+        /// <summary>
+        /// The 1.2.1 rules for Summoner Pain (the 25% dotted danger, the fresh override, the 2.5 s re-arm, the health-point
+        /// order and 1.2.2's own party first) apply in Summoner's Hall only (pure; 1.2.2 regression audit, item 2). Every other
+        /// raid keeps v1.2's rule (50% danger, no cure while its party is in danger, 5 s): Krondon (Ulor se Bysen's Lance
+        /// Spirit), Marfach (the Red Lady's Soul Drain) and Iarnvidiur's Lair (his Plague) were won with no raid-cure-first rule
+        /// at all, and the 1.2 rule came after them.
+        /// </summary>
+        public static bool PainRules(ushort region) => region == RealmRaidNeutralEvents.SummonersHall;
+
+        /// <summary>The member holds the raid cure back (pure): <see cref="InDanger(int, bool)"/> under
+        /// <paramref name="painRules"/>, else v1.2's: under <see cref="DangerPercent"/>%, dotted or not.</summary>
+        public static bool InDanger(int healthPercent, bool dotted, bool painRules) =>
+            painRules ? InDanger(healthPercent, dotted) : healthPercent < DangerPercent;
+
+        /// <summary>v1.2's delay between a curer's raid cures.</summary>
+        public const long V12CureDelayMilliseconds = 5_000;
+
+        /// <summary>The curer's delay before its next raid cure (pure): 2.5 s under <paramref name="painRules"/>, else 5 s.</summary>
+        public static long CureDelayFor(bool painRules) => painRules ? CureDelayMilliseconds : V12CureDelayMilliseconds;
         /// <summary>The cure comes first when at least this many raiders in reach carry a curable damage over time.</summary>
         public const int MinDotted = 2;
         /// <summary>A curer looks over the raid for dotted raiders at most this often.</summary>
@@ -124,10 +145,32 @@ namespace DOL.GS
         /// This turn's raid cure (pure): which cure and on whom (an index into <paramref name="dotted"/>), or
         /// (<see cref="Cure.None"/>, -1) when the turn's heal comes first. <paramref name="cureReady"/>: the curer's cure delay
         /// is over. <paramref name="partyInDanger"/>: its own party's members in reach under <see cref="DangerPercent"/>%.
+        /// <para>1.2.2 (raid tactic audit finding 8; tests only): with a member of its own party in danger the curer looks
+        /// after its own party only. A dotted member of its own party under <see cref="DottedDangerPercent"/>% is healed first
+        /// (<see cref="InDanger"/>); otherwise it cures its own party's fresh members (two or more), never another party's
+        /// raider; otherwise it heals. <paramref name="ownPartyFirst"/> false: the 1.2.1 rule (any two fresh raiders, another
+        /// party's included), kept for the raid models' comparison. <paramref name="painRules"/> false (outside Summoner's Hall,
+        /// <see cref="PainRules"/>): v1.2's rule.</para>
         /// </summary>
         public static (Cure Cure, int Target) Decide(bool inRaid, bool cureReady, bool canGroup, bool canSingle,
-            IReadOnlyList<Dotted> dotted, int partyInDanger, bool markedPatient, long curerId, Func<long, bool> claimed = null)
+            IReadOnlyList<Dotted> dotted, int partyInDanger, bool markedPatient, long curerId, Func<long, bool> claimed = null,
+            bool ownPartyFirst = true, bool painRules = true)
         {
+            // v1.2's rule outside Summoner's Hall (PainRules): nothing while its party is in danger, the lowest percentage first.
+            if (!painRules)
+            {
+                if (partyInDanger > 0) return (Cure.None, -1);
+                dotted = dotted?.Select(d => d with { Health = 0, Fresh = false }).ToArray();
+            }
+            if (partyInDanger > 0 && !markedPatient && dotted != null && ownPartyFirst)
+            {
+                if (dotted.Any(d => d.OwnParty && InDanger(d.HealthPercent, true))) return (Cure.None, -1);
+                int[] ownFresh = Enumerable.Range(0, dotted.Count).Where(i => dotted[i].OwnParty && dotted[i].Fresh).ToArray();
+                if (ownFresh.Length < MinDotted) return (Cure.None, -1);
+                var (c, p) = Decide(inRaid, cureReady, canGroup, canSingle, ownFresh.Select(i => dotted[i]).ToArray(), 0, false,
+                    curerId, claimed);
+                return p < 0 ? (c, p) : (c, ownFresh[p]);
+            }
             // 1.2.1 (#410 round 2): with a member of its party in danger the curer still cures the fresh ones (IsFresh), when
             // two or more are fresh; the indexes returned are into the whole list.
             if (partyInDanger > 0 && !markedPatient && dotted != null)
