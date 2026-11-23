@@ -241,7 +241,6 @@ call it if they hit the door
 @kind reply
 @intent classtalk
 @who *
-depends on your spec
 fun but squishy
 every class is fine with a good group
 they got nerfed last patch
@@ -316,22 +315,12 @@ haha no, but thats a new one
 @kind reply
 @intent unknown
 @who *
-what?
-lol ok
-true
-hmm
-eh?
 sure, why not
-oh?
-ok
 uh huh
 if you say so
-lol what
 right
-mhm
-heh, maybe
 @answers chat,news
-really?
+really? since when?
 
 @kind reply
 @intent grouping
@@ -375,11 +364,8 @@ evening {player}
 @kind reply
 @intent trading
 @who *
-no idea what its worth
 the exchange might have one
 pst me
-no clue on pc, sorry
-depends who is buying
 wts or wtb?
 how much are you asking?
 might be worth something to a twink
@@ -394,11 +380,10 @@ pst me what you need made
 @kind reply
 @intent help
 @who *
-what is it?
+sure, what do you need a hand with?
 sure, whats up?
 shoot
 try your trainer
-ask around, someone will know
 happy to help if i can
 whats wrong?
 stuck?

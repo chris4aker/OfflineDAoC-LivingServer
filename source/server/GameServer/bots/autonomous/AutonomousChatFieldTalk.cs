@@ -2343,7 +2343,8 @@ public static class AutonomousChatFieldTalk
             "4 v 1, dead", "1 v 5 lol, dead", "train of reds", "mezzed and dead"];
         string[] at = ["", "", $" in {front}", $" in {front}", " at the milegate", " by the bridge", " outside the keep", " near the keep",
             " on the road", " by the portal keep", $" at the {front} milegate", " right outside the gate", " by the lake", " on the bridge"];
-        string[] tail = ["", "", "", " lol", " again", " ugh", ", ugh", " heh", ", never saw them", " zzz"];
+        // Chat audit 1.2.2 (F9): no laugh tacked onto a death ("1 v 5 lol, dead" keeps the one it was told with).
+        string[] tail = ["", "", "", " again", " ugh", ", ugh", ", never saw them", " zzz"];
         var options = new string[24];
         for (int i = 0; i < options.Length; i++)
             options[i] = how[random.Next(how.Length)] + at[random.Next(at.Length)] + tail[random.Next(tail.Length)];

@@ -6,17 +6,13 @@
 @kind reply
 @who *
 @answers followup_why
-dunno, just feels that way
 why not
 no real reason
 long story
 habit i guess
-just how it is
 because thats how it went
 seemed like a good idea at the time
 ask me again in an hour
-heh, good question
-couldnt tell you honestly
 just a hunch
 because i said so lol
 old habits
@@ -35,7 +31,7 @@ solo xp is too slow, thats why
 @topic rvr
 because the {enemy} never stop
 @topic news
-dunno, thats just what i heard
+heard it in {capital} earlier, thats all i got
 @topic chat
 just thinking out loud
 
@@ -43,10 +39,8 @@ just thinking out loud
 @kind reply
 @who *
 @answers followup_really
-yep, really
 yep, no joke
 swear
-really really
 would i lie lol
 100 percent
 every word true
@@ -65,7 +59,7 @@ yep, still cant believe it
 yeah, third time today
 really, its been awful
 @topic joke
-no lol
+no lol, just messing with you
 nah, kidding
 @topic news
 thats what i heard anyway
@@ -81,7 +75,6 @@ yep, they were everywhere
 @answers followup_how
 luck mostly
 patience
-no idea honestly
 trial and error
 lots of practice
 dont ask me how, it just worked
@@ -92,20 +85,19 @@ same way as everyone, the hard way
 i wish i knew
 had help
 just kept at it
-not sure, it just happened
 too many hours in front of a screen
 @topic boast
 slow and steady, lots of potions
 good group, mostly
 pure luck, wont happen again
 @topic complaint
-no clue, one second fine then dead
+one second fine, the next a pat walked right in
 bad pulls and worse luck
 @topic rvr
 zerg, how else
 big group, fast rams
 @topic news
-no idea, wasnt there
+wasnt there myself, a guildie told me
 @topic lfg
 just asking around
 @topic joke
@@ -129,7 +121,6 @@ it made sense in my head
 sorry, half asleep
 oops, nvm
 just thinking out loud again
-nothing nothing
 forget i said anything
 sorry, lag ate half my line
 heh, long story
@@ -153,14 +144,10 @@ the frontier, keep fights
 @answers followup_who
 nobody you know
 some guy from my old guild
-dunno, never got a name
-cant remember the name
-a friend of a friend
-no idea, didnt catch it
 @topic rvr
 the {enemy}, who else
 @topic news
-dunno who exactly, just heard it
+a few people in {capital}, word travels fast
 @topic complaint
 whoever keeps camping my spot
 @topic boast
@@ -173,7 +160,6 @@ me, who else lol
 @answers followup_why
 @topic complaint
 because thats my luck lately
-dunno, it just keeps happening
 @topic boast
 because i put the hours in
 lucky night i guess
@@ -182,7 +168,6 @@ because someone had to say it
 because it made me laugh
 @topic news
 thats what people were saying
-dunno, just passing it on
 @topic lfg
 cant level this one solo
 groups are faster, simple as that
@@ -191,7 +176,6 @@ because someone has to hold the line
 they started it lol
 @topic chat
 just felt like saying it
-dunno, it was on my mind
 @answers followup_really
 @topic complaint
 yep, every time
@@ -213,7 +197,6 @@ yep, saw them myself
 really, it was chaos
 @answers followup_how
 @topic complaint
-no idea, it just went wrong
 same as always, bad luck
 @topic joke
 years of practice lol
@@ -252,13 +235,11 @@ some big group of them
 too many to count
 @topic news
 people in faction
-dunno, word gets around
 @topic complaint
 nobody, just the game
 some random guy
 @topic boast
 me, of course
-all me lol
 
 # ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; follow-ups with no family ----
 # ---- which one? (the bot can't name it, so it says so) --------------------------------------
@@ -267,11 +248,8 @@ all me lol
 @answers followup_which
 the name escapes me lol
 the big one, you cant miss it
-not sure what its called
 the first one you come to
-dunno the name, sorry
 the one everyone uses
-couldnt tell you the name, i just go there
 the usual one heh
 whichever is closest honestly
 i always forget the name
@@ -283,7 +261,6 @@ i always forget the name
 soon i hope
 whenever people show up
 in a bit
-not sure yet
 later tonight maybe
 once i finish here
 no set time
@@ -293,12 +270,9 @@ when enough people are on
 @kind reply
 @who *
 @answers followup_confirm
-yep yep
 yeah that one
 think so
-yea
-pretty sure
-yep, thats it
+yep, thats the one
 i think so anyway
 mhm, that one
 yeah, right there
@@ -322,16 +296,15 @@ lost count honestly
 @kind reply
 @who *
 @answers followup_whereto
-no idea, lost track of them
 looked like they headed north
 didnt see where, sorry
 toward the next keep i think
-they scattered, couldnt tell you
-not sure, i was busy not dying
+they scattered toward the trees
+too busy not dying to watch them go
 @answers followup_detail
 nothing special, but it beats what i had
 decent, not amazing
-cant remember the numbers, it was ok
+a few stat points better than mine
 meh, vendor trash mostly
 better than mine was, thats all i know
 pretty good for the level honestly

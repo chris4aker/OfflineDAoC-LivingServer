@@ -3630,6 +3630,11 @@ public static partial class AutonomousBotChatCoordinator
         if (linesBetween <= 0 || string.IsNullOrWhiteSpace(answer) || string.IsNullOrWhiteSpace(asker) || ContainsMention(answer, asker))
             return answer;
         string first = asker.Split(' ')[0];
+        // Chat audit 1.2.2 (stitching): a tidy writer's answer keeps its capitals ("Wynn, the trainer is in Camelot", not "wynn The
+        // trainer is in Camelot").
+        if (char.IsUpper(answer[0]) && !(answer.Length > 1 && answer[0] == 'I' && !char.IsLetter(answer[1])) && first.Length > 0)
+            return char.ToUpperInvariant(first[0]) + first[1..].ToLowerInvariant() + ", " +
+                   AutonomousChatNames.Capitalize(char.ToLowerInvariant(answer[0]) + answer[1..]);
         return first.ToLowerInvariant() + " " + answer;
     }
 

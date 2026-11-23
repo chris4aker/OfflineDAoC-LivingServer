@@ -126,26 +126,22 @@ ok, moving on
 @answers ask_on
 @who *
 yep, still around
-im here
+im here, out in {zone}
 yep, around
 here, killing stuff
-yo, here
-here here
-yep, still on
+still on, {level} {class}
 around, whats up?
 
 # ---- ask_howareyou ----------------------------------------------------------------------------
 @kind reply
 @answers ask_howareyou
 @who *
-good, you?
+good, xp is coming, you?
 not bad, slow xp
 ok, bit tired
-pretty good, ty
+pretty good ty, {zone} is treating me ok
 doing alright, you?
 eh, could be worse
-fine fine, you?
-good good
 
 # ---- player_goodnews --------------------------------------------------------------------------
 @kind reply
@@ -176,24 +172,16 @@ heh, rough
 @kind reply
 @answers ask_ready
 @who *
-ya
-go
 rdy
 sec
-k, go
-yep here
 wait, sitting
 ready
-go go go
-yes
 one sec
 hold on
 gimme a sec
 ready whenever
 ready, go
-yea go
 almost
-sure thing, go
 need a sec
 yep, set
 go ahead
@@ -203,37 +191,29 @@ all set
 @kind reply
 @answers ask_who
 @who *
-me here
 not me
-i do
-nope
 nah, not me
 i can try
 me i think
 nope, not yet
-dunno, not me
 ask the others, not me
-oh, me
 not yet here
 
 # ---- ask_price: a price check ("pc thrustbender mantle?"), never an answer to a sale (CORPUS-C-007) ----
 @kind reply
 @answers ask_price
 @who *
-no idea, never seen one sell
 few gold maybe
 all about the bonuses
 not much, they drop a lot
 couple gold i think
 never seen one go
-dunno, ask a crafter
+a crafter in {capital} could price it
 not a lot honestly
 more than i have lol
 worth a few gold
-hard to say, really
-depends on the quality
+the quality sets most of the price
 cheap, people vendor those
-no clue on that one
 the exchange would tell you
 
 # ---- ask_xp: "how close are you to a level?", by how far into the level the bot really is (CORPUS-C-011) ----

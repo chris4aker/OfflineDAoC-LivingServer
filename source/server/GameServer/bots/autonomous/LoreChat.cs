@@ -99,15 +99,157 @@ public static class LoreChat
             return false;
         IEnumerable<string> names = location != null ? LoreBible.NamesOf(location.Name, location.Id, location.Aliases)
             : LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases);
-        string[] written = WrittenLoreNaming(corpus, names, realm);
+        string[] nameList = names.ToArray();
+        // Chat audit 1.2.2 (C12, fix F8): a line that opens with its own question ("who is eraliwyr? the alchemist...") is drawn
+        // only for a player's question that asks the same, and is said without its opening.
+        string[] written = WrittenLoreNaming(corpus, nameList, realm).Select(line => FitAnswer(text, line, nameList)).Where(line => line != null).ToArray();
         bool hasTell = location != null && location.TellFor(realm).Length > 0;
         if (written.Length > 0 && (!hasTell || random.Next(3) == 0))
         {
-            answer = written[random.Next(written.Length)];
+            answer = Said(written[random.Next(written.Length)]);
             return true;
         }
-        return bible.TryAnswer(text, random, out answer, realm);
+        string[] pool = location != null
+            ? (location.TellFor(realm) is { Length: > 0 } tell ? tell : location.RumourFor(realm) is { Length: > 0 } rumour ? rumour : location.LoreFor(realm))
+            : boss.RumourFor(realm) is { Length: > 0 } said ? said : boss.BriefingFor(realm);
+        string[] fitting = pool.Select(line => FitAnswer(text, LoreText.Pick(line, random), nameList)).Where(line => !string.IsNullOrEmpty(line)).ToArray();
+        if (fitting.Length == 0 && written.Length > 0)
+            fitting = written;
+        if (fitting.Length == 0)
+            return false;
+        answer = Said(fitting[random.Next(fitting.Length)]);
+        return answer.Length > 0;
     }
+
+    #region Lines that ask and answer (chat audit 1.2.2, C12 and C10)
+
+    /// <summary>What a question asks, as far as a lore line's opening can tell.</summary>
+    public enum Ask { General, What, Hard, Where, Who, Raid }
+
+    private static readonly System.Text.RegularExpressions.Regex OpeningRe = new(@"^\s*([^?.!]{1,60})\?\s+(\S.*)$",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.Singleline);
+
+    private static readonly HashSet<string> AskWords = new(StringComparer.Ordinal)
+    {
+        "who", "whos", "where", "wheres", "what", "whats", "which", "how", "is", "are", "was", "can", "could", "do", "does", "did", "the",
+        "a", "an", "it", "there", "in", "on", "at", "for", "of", "to", "i", "you", "u", "we", "get", "go", "after", "hard", "safe",
+        "dangerous", "seasoned", "big", "holds", "hold", "s", "kill", "bring", "train", "happens", "if", "die", "raid", "do", "share",
+    };
+
+    /// <summary>What a player's question asks (pure): who, where, a raid, how hard (a level, solo, "ok at 24"), what is there, or
+    /// nothing in particular.</summary>
+    public static Ask AskOf(string question)
+    {
+        string q = " " + AutonomousChatQuestions.Normalize(question) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(q, @" (who|whos|who s) "))
+            return Ask.Who;
+        if (q.Contains(" raid", StringComparison.Ordinal))
+            return Ask.Raid;
+        if (System.Text.RegularExpressions.Regex.IsMatch(q, @" (lvl|lvls|level|levels|range|solo|soloable|ok at|ok for|good for|safe|hard|tough|dangerous|seasoned|\d+s?) "))
+            return Ask.Hard;
+        if (System.Text.RegularExpressions.Regex.IsMatch(q, @" (where|wheres|where s|how do i get|how to get|how do you get|way to|entrance|find) "))
+            return Ask.Where;
+        if (System.Text.RegularExpressions.Regex.IsMatch(q, @" (what|whats|what s|wat|anything|tell me|know about|like) "))
+            return Ask.What;
+        return Ask.General;
+    }
+
+    /// <summary>What a lore line's own opening asks ("is the lair hard?" asks how hard), or null when the opening is only a
+    /// name said back ("spindelhalla? spider dungeon..."). Pure.</summary>
+    public static Ask? AskOfOpening(string opening)
+    {
+        string o = " " + AutonomousChatQuestions.Normalize(opening) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(o, @"^ (who|whos|who s) "))
+            return Ask.Who;
+        if (o.Contains(" raid", StringComparison.Ordinal))
+            return Ask.Raid;
+        if (System.Text.RegularExpressions.Regex.IsMatch(o, @"^ (where|wheres|where s|how do i get to) "))
+            return Ask.Where;
+        if (System.Text.RegularExpressions.Regex.IsMatch(o, @"^ (is|are|how seasoned) ") || System.Text.RegularExpressions.Regex.IsMatch(o, @" (hard|safe|dangerous) $"))
+            return Ask.Hard;
+        if (System.Text.RegularExpressions.Regex.IsMatch(o, @"^ (what|whats|what s|which|how|who|where|can|do|does|did) "))
+            return Ask.What;
+        return null;
+    }
+
+    /// <summary>
+    /// A lore line that opens with its own question splits into the opening and the answer after it ("whats in fomor? a whole
+    /// fomorian city" -> "whats in fomor", "a whole fomorian city"). False for any other line. Pure.
+    /// </summary>
+    public static bool TrySplitOpening(string line, out string opening, out string rest)
+    {
+        opening = rest = null;
+        if (string.IsNullOrEmpty(line))
+            return false;
+        System.Text.RegularExpressions.Match m = OpeningRe.Match(line);
+        if (!m.Success)
+            return false;
+        opening = m.Groups[1].Value.Trim();
+        rest = m.Groups[2].Value.Trim();
+        return rest.Length > 0;
+    }
+
+    /// <summary>
+    /// Chat audit 1.2.2 (C12, fix F8): what of a lore line answers the player's <paramref name="question"/> (pure). A line with no
+    /// opening question is said as it is. A line that opens with its own question fits only when the player asks the same
+    /// (who for "who is", where for "where is", how hard for "is it hard?", a raid for "can a raid do", what is there for "whats
+    /// in") about the same subject (the asked place, by one of <paramref name="names"/>, or what the player named); it is said
+    /// without its opening, so the bot does not ask the player's question back. A name said back ("spindelhalla? spider
+    /// dungeon...") fits a what or how-hard question and keeps its echo. Null: the line answers something else.
+    /// </summary>
+    public static string FitAnswer(string question, string line, IEnumerable<string> names = null)
+    {
+        if (string.IsNullOrWhiteSpace(line))
+            return null;
+        if (!TrySplitOpening(line, out string opening, out string rest))
+            return line;
+        Ask asked = AskOf(question);
+        Ask? opens = AskOfOpening(opening);
+        string[] about = AutonomousChatQuestions.Normalize(opening).Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(word => !AskWords.Contains(word)).ToArray();
+        var known = new HashSet<string>(AutonomousChatQuestions.Normalize(question).Split(' ', StringSplitOptions.RemoveEmptyEntries), StringComparer.Ordinal);
+        foreach (string name in names ?? [])
+            known.UnionWith(AutonomousChatQuestions.Normalize(name).Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        // "who is eraliwyr?" to a question about spraggon den: the opening's subject is neither the place nor what was asked.
+        if (about.Any(word => !known.Contains(word) && !known.Contains(word.TrimEnd('s'))))
+            return null;
+        if (opens == null)
+            return asked is Ask.What or Ask.Hard or Ask.General ? line : null;
+        bool same = opens == asked || opens == Ask.What && asked == Ask.General;
+        return same ? rest : null;
+    }
+
+    // The lore lines said lately (as answers and tales), so the style adds no laugh to them (C10, fix F9).
+    private static readonly LinkedList<string> RecentlySaid = new();
+    private const int RecentlySaidCap = 256;
+
+    /// <summary>Notes a lore line as said (an answer, a tale, a briefing) and returns it, for <see cref="IsLoreLine"/>.</summary>
+    public static string Said(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return text;
+        lock (RecentlySaid)
+        {
+            RecentlySaid.AddFirst(text);
+            while (RecentlySaid.Count > RecentlySaidCap)
+                RecentlySaid.RemoveLast();
+        }
+        return text;
+    }
+
+    /// <summary>Whether a text holds a lore line given out lately (<see cref="Said"/>): no style puts a laugh on it.</summary>
+    public static bool IsLoreLine(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        lock (RecentlySaid)
+            foreach (string said in RecentlySaid)
+                if (said.Length >= 12 && text.Contains(said, StringComparison.OrdinalIgnoreCase))
+                    return true;
+        return false;
+    }
+
+    #endregion
 
     /// <summary>
     /// The written lore lines (kind ambient, topic lore, not the bible's own "lore-" lines) of the realm that name one of
@@ -208,7 +350,7 @@ public static class LoreChat
         {
             string text = lines[i];
             AutonomousLivingServer.Later(leader, 3_000 + i * (6_000 + Random.Shared.Next(4_000)), () => leader.IsAlive && FactionHasRoom(leader.Realm),
-                () => AutonomousLivingServer.Speak(leader, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(leader, text)));
+                () => AutonomousLivingServer.Speak(leader, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(leader, text, "lore")));
         }
     }
 
@@ -234,14 +376,14 @@ public static class LoreChat
             {
                 string tale = LoreText.Pick(pool[Random.Shared.Next(pool.Length)], Random.Shared);
                 AutonomousLivingServer.Later(veteran, delay, () => AutonomousLivingServer.CanTalk(veteran) && FactionHasRoom(veteran.Realm),
-                    () => AutonomousLivingServer.Speak(veteran, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(veteran, tale)));
+                    () => AutonomousLivingServer.Speak(veteran, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(veteran, tale, "lore")));
                 delay += LoreAfterTaleMs;
             }
             if (lore.Length > 0)
             {
                 string line = LoreText.Pick(lore[Random.Shared.Next(lore.Length)], Random.Shared);
                 AutonomousLivingServer.Later(veteran, delay, () => AutonomousLivingServer.CanTalk(veteran) && FactionHasRoom(veteran.Realm),
-                    () => AutonomousLivingServer.Speak(veteran, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(veteran, line)));
+                    () => AutonomousLivingServer.Speak(veteran, AutonomousLivingServer.Channel.Faction, AutonomousBotVoices.StyleFor(veteran, line, "lore")));
             }
         }
         catch (Exception exception)

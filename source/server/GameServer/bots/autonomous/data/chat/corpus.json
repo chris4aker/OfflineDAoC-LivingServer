@@ -46715,26 +46715,6 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "ask_findgroup"
-   ],
-   "text": "just ask around, most groups at your level want more people",
-   "id": "29815dccb4ec"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
     "ask_power"
    ],
    "text": "yes, at low levels everyone goes oom fast",
@@ -312230,26 +312210,6 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_charity"
-   ],
-   "text": "heh no",
-   "id": "f7cef8a5ed71"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
    "weight": 0.5,
    "answers": [
     "ask_charity"
@@ -369857,23 +369817,6 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "not sure, i am new too",
-   "id": "5acc3deb0aa5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    19
-   ],
-   "needs": [],
-   "intent": "help",
-   "mood": "",
-   "weight": 1.0,
    "text": "i think the trainer can help, he helped me",
    "id": "a9c1627396a4"
   },
@@ -370016,8 +369959,8 @@
    "intent": "trading",
    "mood": "",
    "weight": 1.0,
-   "text": "depends on the materials, pst me",
-   "id": "08e1614945db"
+   "text": "the materials set the price, pst me",
+   "id": "bc91c6ccb2ee"
   },
   {
    "kind": "lfg",
@@ -370372,26 +370315,6 @@
    "answers": [
     "followup_why"
    ],
-   "text": "dunno, just feels that way",
-   "id": "f8cf59825a10"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
    "text": "why not",
    "id": "0162130bf3d4"
   },
@@ -370472,26 +370395,6 @@
    "answers": [
     "followup_why"
    ],
-   "text": "just how it is",
-   "id": "c2e7bbd0d44a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
    "text": "because thats how it went",
    "id": "d940d81023c9"
   },
@@ -370534,46 +370437,6 @@
    ],
    "text": "ask me again in an hour",
    "id": "7e99aece7588"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
-   "text": "heh, good question",
-   "id": "742efa30e9a5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
-   "text": "couldnt tell you honestly",
-   "id": "a2625164d4c3"
   },
   {
    "kind": "reply",
@@ -370832,8 +370695,8 @@
    "answers": [
     "followup_why"
    ],
-   "text": "dunno, thats just what i heard",
-   "id": "52b1e9401876"
+   "text": "heard it in {capital} earlier, thats all i got",
+   "id": "45f8723078e0"
   },
   {
    "kind": "reply",
@@ -370854,26 +370717,6 @@
    ],
    "text": "just thinking out loud",
    "id": "6be712cabef5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_really"
-   ],
-   "text": "yep, really",
-   "id": "5eeea49f03b2"
   },
   {
    "kind": "reply",
@@ -370914,26 +370757,6 @@
    ],
    "text": "swear",
    "id": "f8dd5709e41f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_really"
-   ],
-   "text": "really really",
-   "id": "81c54df2dd2a"
   },
   {
    "kind": "reply",
@@ -371252,8 +371075,8 @@
    "answers": [
     "followup_really"
    ],
-   "text": "no lol",
-   "id": "4fa74bfd422e"
+   "text": "no lol, just messing with you",
+   "id": "0830b83f15a2"
   },
   {
    "kind": "reply",
@@ -371394,26 +371217,6 @@
    ],
    "text": "patience",
    "id": "05c572f64ada"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_how"
-   ],
-   "text": "no idea honestly",
-   "id": "274e36c42357"
   },
   {
    "kind": "reply",
@@ -371632,26 +371435,6 @@
    "answers": [
     "followup_how"
    ],
-   "text": "not sure, it just happened",
-   "id": "d9c42c26736e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_how"
-   ],
    "text": "too many hours in front of a screen",
    "id": "578ed3269faf"
   },
@@ -371732,8 +371515,8 @@
    "answers": [
     "followup_how"
    ],
-   "text": "no clue, one second fine then dead",
-   "id": "a6d28ecb009e"
+   "text": "one second fine, the next a pat walked right in",
+   "id": "6480928c23aa"
   },
   {
    "kind": "reply",
@@ -371812,8 +371595,8 @@
    "answers": [
     "followup_how"
    ],
-   "text": "no idea, wasnt there",
-   "id": "1409bab6a813"
+   "text": "wasnt there myself, a guildie told me",
+   "id": "e688b57d54d3"
   },
   {
    "kind": "reply",
@@ -372152,26 +371935,6 @@
    "answers": [
     "followup_what"
    ],
-   "text": "nothing nothing",
-   "id": "7857b0ac6bd8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_what"
-   ],
    "text": "forget i said anything",
    "id": "fb18199dff64"
   },
@@ -372397,86 +372160,6 @@
   },
   {
    "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "dunno, never got a name",
-   "id": "0f5faea5105d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "cant remember the name",
-   "id": "481941b1f802"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "a friend of a friend",
-   "id": "84e53224a6a4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "no idea, didnt catch it",
-   "id": "acd5ce758c79"
-  },
-  {
-   "kind": "reply",
    "topic": "rvr",
    "who": [],
    "realm": "*",
@@ -372512,8 +372195,8 @@
    "answers": [
     "followup_who"
    ],
-   "text": "dunno who exactly, just heard it",
-   "id": "e03b6b05bf78"
+   "text": "a few people in {capital}, word travels fast",
+   "id": "8f71de89444e"
   },
   {
    "kind": "reply",
@@ -372574,26 +372257,6 @@
    ],
    "text": "because thats my luck lately",
    "id": "4f13490ba438"
-  },
-  {
-   "kind": "reply",
-   "topic": "complaint",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
-   "text": "dunno, it just keeps happening",
-   "id": "dcdc8407803f"
   },
   {
    "kind": "reply",
@@ -372697,26 +372360,6 @@
   },
   {
    "kind": "reply",
-   "topic": "news",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
-   "text": "dunno, just passing it on",
-   "id": "1676a1d6c6a9"
-  },
-  {
-   "kind": "reply",
    "topic": "lfg",
    "who": [],
    "realm": "*",
@@ -372814,26 +372457,6 @@
    ],
    "text": "just felt like saying it",
    "id": "88a0d6e1adc9"
-  },
-  {
-   "kind": "reply",
-   "topic": "chat",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_why"
-   ],
-   "text": "dunno, it was on my mind",
-   "id": "e2b3e0e12379"
   },
   {
    "kind": "reply",
@@ -373074,26 +372697,6 @@
    ],
    "text": "really, it was chaos",
    "id": "21a44a0c1dff"
-  },
-  {
-   "kind": "reply",
-   "topic": "complaint",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_how"
-   ],
-   "text": "no idea, it just went wrong",
-   "id": "3b3847ce009d"
   },
   {
    "kind": "reply",
@@ -373577,26 +373180,6 @@
   },
   {
    "kind": "reply",
-   "topic": "news",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "dunno, word gets around",
-   "id": "69990cc32063"
-  },
-  {
-   "kind": "reply",
    "topic": "complaint",
    "who": [],
    "realm": "*",
@@ -373657,26 +373240,6 @@
   },
   {
    "kind": "reply",
-   "topic": "boast",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_who"
-   ],
-   "text": "all me lol",
-   "id": "c2f278d65177"
-  },
-  {
-   "kind": "reply",
    "topic": "general",
    "who": [],
    "realm": "*",
@@ -373732,26 +373295,6 @@
    "answers": [
     "followup_which"
    ],
-   "text": "not sure what its called",
-   "id": "0cd0e07e5dfa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
    "text": "the first one you come to",
    "id": "5c3909a8a229"
   },
@@ -373772,48 +373315,8 @@
    "answers": [
     "followup_which"
    ],
-   "text": "dunno the name, sorry",
-   "id": "fb6ece1b11cd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
    "text": "the one everyone uses",
    "id": "0465a2a60e6f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "couldnt tell you the name, i just go there",
-   "id": "f73ebc330408"
   },
   {
    "kind": "reply",
@@ -373952,26 +373455,6 @@
    "answers": [
     "followup_when"
    ],
-   "text": "not sure yet",
-   "id": "47d70594cad8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
    "text": "later tonight maybe",
    "id": "e9d2d9e43d3d"
   },
@@ -374052,26 +373535,6 @@
    "answers": [
     "followup_confirm"
    ],
-   "text": "yep yep",
-   "id": "414da7cbbe88"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
    "text": "yeah that one",
    "id": "4ea0e189255f"
   },
@@ -374112,48 +373575,8 @@
    "answers": [
     "followup_confirm"
    ],
-   "text": "yea",
-   "id": "aa5d81d45afe"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "pretty sure",
-   "id": "0aa541497a10"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yep, thats it",
-   "id": "9dfd5610fb0e"
+   "text": "yep, thats the one",
+   "id": "51ee6f1087ff"
   },
   {
    "kind": "reply",
@@ -374412,26 +373835,6 @@
    "answers": [
     "followup_whereto"
    ],
-   "text": "no idea, lost track of them",
-   "id": "87ee69fdfc3e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
    "text": "looked like they headed north",
    "id": "218cb5667d01"
   },
@@ -374492,8 +373895,8 @@
    "answers": [
     "followup_whereto"
    ],
-   "text": "they scattered, couldnt tell you",
-   "id": "a74a94107f51"
+   "text": "they scattered toward the trees",
+   "id": "765036a197ad"
   },
   {
    "kind": "reply",
@@ -374512,8 +373915,8 @@
    "answers": [
     "followup_whereto"
    ],
-   "text": "not sure, i was busy not dying",
-   "id": "6616553a3cd9"
+   "text": "too busy not dying to watch them go",
+   "id": "e14f66618e8c"
   },
   {
    "kind": "reply",
@@ -374572,8 +373975,8 @@
    "answers": [
     "followup_detail"
    ],
-   "text": "cant remember the numbers, it was ok",
-   "id": "d4fa5257b455"
+   "text": "a few stat points better than mine",
+   "id": "10a3c26eafcf"
   },
   {
    "kind": "reply",
@@ -558268,26 +557671,6 @@
    "answers": [
     "ask_camps"
    ],
-   "text": "ask around, someone always knows a spot",
-   "id": "5348ab7c09ad"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_camps"
-   ],
    "text": "look for monsters that con blue or yellow and settle in",
    "id": "9b7084b8c91a"
   },
@@ -558388,8 +557771,8 @@
    "answers": [
     "ask_campshare"
    ],
-   "text": "ask in /say, if they say no find another spot",
-   "id": "3c979d102830"
+   "text": "check in /say first, if they say no find another spot",
+   "id": "d7c2898fdd83"
   },
   {
    "kind": "reply",
@@ -558668,8 +558051,8 @@
    "answers": [
     "ask_guild"
    ],
-   "text": "ask someone with a guild tag, an officer can invite you",
-   "id": "4b0c8ba9759d"
+   "text": "find someone with a guild tag, an officer can invite you",
+   "id": "cf9b3e5614da"
   },
   {
    "kind": "reply",
@@ -560554,8 +559937,8 @@
    "intent": "dungeon",
    "mood": "",
    "weight": 1.0,
-   "text": "dungeons need a puller who knows the layout",
-   "id": "47ab4dee9c4c"
+   "text": "dungeons need a puller that has the layout down",
+   "id": "ed11d0973ad1"
   },
   {
    "kind": "reply",
@@ -560639,8 +560022,8 @@
    "intent": "dungeon",
    "mood": "",
    "weight": 1.0,
-   "text": "anyone who has been there knows the pulls, ask around",
-   "id": "00c2b7de9cf6"
+   "text": "the pulls go easier with someone who has done it before",
+   "id": "9fd19c6b5f8e"
   },
   {
    "kind": "reply",
@@ -560862,8 +560245,8 @@
    "intent": "trading",
    "mood": "",
    "weight": 1.0,
-   "text": "depends on the bonuses honestly",
-   "id": "83b9ddec0eef"
+   "text": "the bonuses set the price, check the exchange",
+   "id": "8ce77a1e66e5"
   },
   {
    "kind": "reply",
@@ -561117,74 +560500,6 @@
    "intent": "unknown",
    "mood": "",
    "weight": 1.0,
-   "text": "hm",
-   "id": "ad8d61e6f59a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "not sure what you mean",
-   "id": "a143675ea79b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "yeah?",
-   "id": "c66b093d33d4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "could be",
-   "id": "b3486313c28b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
    "text": "interesting",
    "id": "78d6348611ee"
   },
@@ -561238,23 +560553,6 @@
    "weight": 1.0,
    "text": "i will think about it",
    "id": "a48eed1c049d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "huh",
-   "id": "5cc1b869b322"
   },
   {
    "kind": "reply",
@@ -570141,26 +569439,6 @@
    "answers": [
     "ask"
    ],
-   "text": "hm, no clue there",
-   "id": "18dc915b3148"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
    "text": "not sure",
    "id": "1a6391363635"
   },
@@ -570201,88 +569479,8 @@
    "answers": [
     "ask"
    ],
-   "text": "beats me",
-   "id": "270c6976a9da"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
    "text": "no clue",
    "id": "c34b8e30b4ad"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
-   "text": "i was wondering that too",
-   "id": "e3e5ce1f31f1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
-   "text": "hmm not sure",
-   "id": "42d509f237aa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
-   "text": "someone said something about that earlier",
-   "id": "4ddd3585ebae"
   },
   {
    "kind": "reply",
@@ -570321,130 +569519,8 @@
    "answers": [
     "ask"
    ],
-   "text": "no idea, i just got here",
-   "id": "e7702979d672"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
-   "text": "pretty sure yes but dont quote me",
-   "id": "8e113c888b90"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
-   "text": "i think so?",
-   "id": "157f1e200ce3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
    "text": "couldnt say",
    "id": "2013f545924c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
-   "text": "not a clue honestly",
-   "id": "6e8ff265e1a9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask"
-   ],
-   "text": "wish i knew",
-   "id": "3e103118dd90"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask",
-    "ask_where",
-    "ask_advice"
-   ],
-   "text": "ask around maybe",
-   "id": "6a9da03b097e"
   },
   {
    "kind": "reply",
@@ -570545,28 +569621,8 @@
    "answers": [
     "ask_where"
    ],
-   "text": "ask a guard, they know the way",
-   "id": "e2e052eb9b7e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_where"
-   ],
-   "text": "no idea where that is",
-   "id": "e1c093c5dde1"
+   "text": "the guards at the gate know the way",
+   "id": "bcf9ea6544be"
   },
   {
    "kind": "reply",
@@ -570745,28 +569801,8 @@
    "answers": [
     "ask_where"
    ],
-   "text": "cant remember the way sorry",
-   "id": "34811baa2f7c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_where"
-   ],
-   "text": "out the gate, then ask a guard",
-   "id": "4bbc6744abef"
+   "text": "out the gate, then the guards point the way",
+   "id": "ba50fe3616ca"
   },
   {
    "kind": "reply",
@@ -571170,8 +570206,8 @@
     "ask_advice",
     "ask_opinion"
    ],
-   "text": "depends on what you want",
-   "id": "a938d3b69d13"
+   "text": "spec for what you want to do, solo or groups",
+   "id": "b8ff696afd0b"
   },
   {
    "kind": "reply",
@@ -571218,26 +570254,6 @@
    ],
    "text": "lots of practice and lots of coin",
    "id": "0086cecfa2fc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_opinion"
-   ],
-   "text": "depends",
-   "id": "deb3380d5afd"
   },
   {
    "kind": "reply",
@@ -571336,46 +570352,6 @@
    "answers": [
     "ask_opinion"
    ],
-   "text": "yes, do it",
-   "id": "5a093b0c3502"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_opinion"
-   ],
-   "text": "i would",
-   "id": "3bc4133f9bac"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_opinion"
-   ],
    "text": "i wouldnt",
    "id": "c96ade339869"
   },
@@ -571396,48 +570372,8 @@
    "answers": [
     "ask_opinion"
    ],
-   "text": "hard to say",
-   "id": "664b4c0c4da7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_opinion"
-   ],
    "text": "eh, either way",
    "id": "f06b1d24b279"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_opinion"
-   ],
-   "text": "go for it",
-   "id": "b96e94593af5"
   },
   {
    "kind": "reply",
@@ -571955,26 +570891,6 @@
     1,
     50
    ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
-   "text": "depends, what for?",
-   "id": "020b4ac33b2f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
    "needs": [
     "at_camp"
    ],
@@ -572068,8 +570984,8 @@
    "answers": [
     "ask_anyone"
    ],
-   "text": "depends, what level?",
-   "id": "e4d9746e6b74"
+   "text": "what level? im {level}",
+   "id": "46eefe944967"
   },
   {
    "kind": "reply",
@@ -572434,8 +571350,8 @@
    "answers": [
     "ask_permission"
    ],
-   "text": "all yours",
-   "id": "17a7ba654a5c"
+   "text": "all yours, we are moving on",
+   "id": "c0101eece14b"
   },
   {
    "kind": "reply",
@@ -572476,26 +571392,6 @@
    ],
    "text": "sure, holler if you get adds",
    "id": "2988e472a7b8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "depends what you like",
-   "id": "6688d885fc2f"
   },
   {
    "kind": "reply",
@@ -573375,26 +572271,6 @@
    "answers": [
     "ask_know"
    ],
-   "text": "not sure, havent been that way",
-   "id": "1997b1ebc1dc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
    "text": "last i saw, yes",
    "id": "5cdf84a8a7e4"
   },
@@ -573415,8 +572291,8 @@
    "answers": [
     "ask_know"
    ],
-   "text": "was earlier, not sure now",
-   "id": "ec9cc73122ed"
+   "text": "was earlier, could have flipped since",
+   "id": "7445b071f088"
   },
   {
    "kind": "reply",
@@ -573495,68 +572371,8 @@
    "answers": [
     "ask_know"
    ],
-   "text": "dunno, ask in a bit",
-   "id": "0803d953a755"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
-   "text": "no idea, ask a guard",
-   "id": "f72c61e64818"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
-   "text": "pretty sure, yeah",
-   "id": "63fe528c4c06"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_know"
-   ],
-   "text": "heard the same, no idea if its true",
-   "id": "f95891163eb4"
+   "text": "heard the same in {capital}, havent checked it",
+   "id": "a41bece15903"
   },
   {
    "kind": "reply",
@@ -573639,8 +572455,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "here",
-   "id": "a10912a0e0a4"
+   "text": "here, in {zone}",
+   "id": "a25caf26469f"
   },
   {
    "kind": "reply",
@@ -573659,8 +572475,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "yep, on",
-   "id": "2d9bce1c34f5"
+   "text": "on, leveling my {class}",
+   "id": "6bf27b94c34f"
   },
   {
    "kind": "reply",
@@ -573679,8 +572495,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "hi hi",
-   "id": "ea948409d5df"
+   "text": "just got on, still in {zone}",
+   "id": "299b9cd12a49"
   },
   {
    "kind": "reply",
@@ -573699,28 +572515,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "just got on",
-   "id": "5d685a45e890"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_on"
-   ],
-   "text": "still here",
-   "id": "c5a06997c727"
+   "text": "still here, still {level}",
+   "id": "10821274f135"
   },
   {
    "kind": "reply",
@@ -573781,26 +572577,6 @@
    ],
    "text": "here, at the bind",
    "id": "dd034802fb5f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_on"
-   ],
-   "text": "me",
-   "id": "d31572cd974f"
   },
   {
    "kind": "reply",
@@ -573881,8 +572657,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "always on",
-   "id": "58b67ccfc29b"
+   "text": "always on, {level} and counting",
+   "id": "4fe6f1d9446f"
   },
   {
    "kind": "reply",
@@ -574361,48 +573137,8 @@
    "answers": [
     "ask_plans"
    ],
-   "text": "dunno, bring ideas",
-   "id": "474833050a7a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_plans"
-   ],
    "text": "dungeon run maybe",
    "id": "2403adbdd21f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_plans"
-   ],
-   "text": "i am in for anything",
-   "id": "83c54c649e81"
   },
   {
    "kind": "reply",
@@ -574685,8 +573421,8 @@
    "answers": [
     "ask_story"
    ],
-   "text": "a guard killed me once, still not sure why",
-   "id": "04a4786d949a"
+   "text": "a guard killed me once at the bridge, never saw it coming",
+   "id": "9e617d9dc663"
   },
   {
    "kind": "reply",
@@ -586906,13 +585642,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "how much for it?",
-   "family": "794d7860d7",
-   "id": "3525da97f2f4"
+   "text": "how much for it in gold?",
+   "family": "076324c339",
+   "id": "83a3cdf45f8f"
   },
   {
    "kind": "reply",
@@ -586927,13 +585663,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "how much for it, roughly?",
-   "family": "794d7860d7",
-   "id": "457501b613dc"
+   "text": "how much for it in gold, roughly?",
+   "family": "076324c339",
+   "id": "e0d2c0989145"
   },
   {
    "kind": "reply",
@@ -586948,13 +585684,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "how much?",
-   "family": "794d7860d7",
-   "id": "e9e232cf9716"
+   "text": "how much for it in plat?",
+   "family": "076324c339",
+   "id": "edd0d66d8afd"
   },
   {
    "kind": "reply",
@@ -586969,13 +585705,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "how much, roughly?",
-   "family": "794d7860d7",
-   "id": "f7117da83ee7"
+   "text": "how much for it in plat, roughly?",
+   "family": "076324c339",
+   "id": "e9054195f48e"
   },
   {
    "kind": "reply",
@@ -586990,13 +585726,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "what price for it?",
-   "family": "794d7860d7",
-   "id": "4bcf6d788d77"
+   "text": "how much in gold?",
+   "family": "076324c339",
+   "id": "a6726b94206c"
   },
   {
    "kind": "reply",
@@ -587011,13 +585747,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "what price for it, roughly?",
-   "family": "794d7860d7",
-   "id": "d4dc55e40075"
+   "text": "how much in gold, roughly?",
+   "family": "076324c339",
+   "id": "c4eca403819f"
   },
   {
    "kind": "reply",
@@ -587032,13 +585768,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "what price?",
-   "family": "794d7860d7",
-   "id": "a5961a30ca42"
+   "text": "how much in plat?",
+   "family": "076324c339",
+   "id": "2cce51707170"
   },
   {
    "kind": "reply",
@@ -587053,13 +585789,181 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
+   "weight": 0.25,
    "answers": [
     "trade"
    ],
-   "text": "what price, roughly?",
-   "family": "794d7860d7",
-   "id": "9c0427513380"
+   "text": "how much in plat, roughly?",
+   "family": "076324c339",
+   "id": "14c114c6924f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price for it in gold?",
+   "family": "076324c339",
+   "id": "3016decd3dcb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price for it in gold, roughly?",
+   "family": "076324c339",
+   "id": "95fd404fcf86"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price for it in plat?",
+   "family": "076324c339",
+   "id": "42e99cdbf532"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price for it in plat, roughly?",
+   "family": "076324c339",
+   "id": "43720ffa52c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price in gold?",
+   "family": "076324c339",
+   "id": "15bf88eee477"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price in gold, roughly?",
+   "family": "076324c339",
+   "id": "a3d0346f2fd6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price in plat?",
+   "family": "076324c339",
+   "id": "555153c09d10"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "answers": [
+    "trade"
+   ],
+   "text": "what price in plat, roughly?",
+   "family": "076324c339",
+   "id": "f639e8835401"
   },
   {
    "kind": "reply",
@@ -587326,12 +586230,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "nice stuff, gl with it",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "1432d3b5eb08"
   },
   {
@@ -587347,12 +586251,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "nice stuff, hope it sells",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "3b756b3ecd0e"
   },
   {
@@ -587368,33 +586272,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "trade"
-   ],
-   "text": "nice stuff",
-   "family": "2f29e9b3a2",
-   "id": "e8d82abc05a5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "nice item, gl with it",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "53525feb828c"
   },
   {
@@ -587410,12 +586293,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "nice item, hope it sells",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "0f505fac9260"
   },
   {
@@ -587431,33 +586314,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "trade"
-   ],
-   "text": "nice item",
-   "family": "2f29e9b3a2",
-   "id": "aa9d74385a8c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "good stuff, gl with it",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "089a5abb88ff"
   },
   {
@@ -587473,12 +586335,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "good stuff, hope it sells",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "3d05e326574b"
   },
   {
@@ -587494,12 +586356,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "good item, gl with it",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "2a318bea8431"
   },
   {
@@ -587515,34 +586377,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "trade"
    ],
    "text": "good item, hope it sells",
-   "family": "2f29e9b3a2",
+   "family": "58ec9792cd",
    "id": "45d7dc43ec0b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "trade"
-   ],
-   "text": "good item",
-   "family": "2f29e9b3a2",
-   "id": "c0338aeeddc7"
   },
   {
    "kind": "reply",
@@ -595059,8 +593900,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "im here",
-   "id": "1e0b7c2d0105"
+   "text": "im here, out in {zone}",
+   "id": "b2159d28c3f1"
   },
   {
    "kind": "reply",
@@ -595119,48 +593960,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "yo, here",
-   "id": "92244664acfe"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_on"
-   ],
-   "text": "here here",
-   "id": "c355f21e5780"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_on"
-   ],
-   "text": "yep, still on",
-   "id": "1ab87e72c7a5"
+   "text": "still on, {level} {class}",
+   "id": "3c8c9324b7c5"
   },
   {
    "kind": "reply",
@@ -595199,8 +594000,8 @@
    "answers": [
     "ask_howareyou"
    ],
-   "text": "good, you?",
-   "id": "42bfd64a9baf"
+   "text": "good, xp is coming, you?",
+   "id": "b58ae6050322"
   },
   {
    "kind": "reply",
@@ -595259,8 +594060,8 @@
    "answers": [
     "ask_howareyou"
    ],
-   "text": "pretty good, ty",
-   "id": "efd8b894eadf"
+   "text": "pretty good ty, {zone} is treating me ok",
+   "id": "a15160e17c21"
   },
   {
    "kind": "reply",
@@ -595301,46 +594102,6 @@
    ],
    "text": "eh, could be worse",
    "id": "5bc321a1488c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_howareyou"
-   ],
-   "text": "fine fine, you?",
-   "id": "d3eeffb5e524"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_howareyou"
-   ],
-   "text": "good good",
-   "id": "e14898e43572"
   },
   {
    "kind": "reply",
@@ -595659,46 +594420,6 @@
    "answers": [
     "ask_ready"
    ],
-   "text": "ya",
-   "id": "c675de366981"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
-   "text": "go",
-   "id": "349f30f7cc14"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
    "text": "rdy",
    "id": "7f04b885f1a1"
   },
@@ -595739,46 +594460,6 @@
    "answers": [
     "ask_ready"
    ],
-   "text": "k, go",
-   "id": "ef3fa811962f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
-   "text": "yep here",
-   "id": "d19fe734de55"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
    "text": "wait, sitting",
    "id": "bf5b1ba4a14f"
   },
@@ -595801,46 +594482,6 @@
    ],
    "text": "ready",
    "id": "0aaa34f6b4f7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
-   "text": "go go go",
-   "id": "c10df9c2455d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
-   "text": "yes",
-   "id": "3bf5e3ce2e2d"
   },
   {
    "kind": "reply",
@@ -595959,48 +594600,8 @@
    "answers": [
     "ask_ready"
    ],
-   "text": "yea go",
-   "id": "4a88c81333c0"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
    "text": "almost",
    "id": "4101bf0b02a4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_ready"
-   ],
-   "text": "sure thing, go",
-   "id": "c957b8205b91"
   },
   {
    "kind": "reply",
@@ -596099,68 +594700,8 @@
    "answers": [
     "ask_who"
    ],
-   "text": "me here",
-   "id": "20bb2496732a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_who"
-   ],
    "text": "not me",
    "id": "edbce80b3996"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_who"
-   ],
-   "text": "i do",
-   "id": "bad66f04dbd7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_who"
-   ],
-   "text": "nope",
-   "id": "ae6e59e81b59"
   },
   {
    "kind": "reply",
@@ -596259,26 +594800,6 @@
    "answers": [
     "ask_who"
    ],
-   "text": "dunno, not me",
-   "id": "a13e302e6314"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_who"
-   ],
    "text": "ask the others, not me",
    "id": "27111cdfbab6"
   },
@@ -596299,48 +594820,8 @@
    "answers": [
     "ask_who"
    ],
-   "text": "oh, me",
-   "id": "709700e1c299"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_who"
-   ],
    "text": "not yet here",
    "id": "63e61233b45a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_price"
-   ],
-   "text": "no idea, never seen one sell",
-   "id": "eff1bc7fda5c"
   },
   {
    "kind": "reply",
@@ -596459,8 +594940,8 @@
    "answers": [
     "ask_price"
    ],
-   "text": "dunno, ask a crafter",
-   "id": "082bb428495a"
+   "text": "a crafter in {capital} could price it",
+   "id": "1ea256e589de"
   },
   {
    "kind": "reply",
@@ -596539,28 +595020,8 @@
    "answers": [
     "ask_price"
    ],
-   "text": "hard to say, really",
-   "id": "557eb05b7f13"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_price"
-   ],
-   "text": "depends on the quality",
-   "id": "e27a6cf1ddb5"
+   "text": "the quality sets most of the price",
+   "id": "b68bd051bda9"
   },
   {
    "kind": "reply",
@@ -596581,26 +595042,6 @@
    ],
    "text": "cheap, people vendor those",
    "id": "54a068949f5c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_price"
-   ],
-   "text": "no clue on that one",
-   "id": "2ff452db49ae"
   },
   {
    "kind": "reply",
@@ -599948,23 +598389,6 @@
    "intent": "classtalk",
    "mood": "",
    "weight": 1.0,
-   "text": "depends on your spec",
-   "id": "6bfa0dd3cdf0"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "classtalk",
-   "mood": "",
-   "weight": 1.0,
    "text": "fun but squishy",
    "id": "4b0cbcc87d0a"
   },
@@ -600972,127 +599396,8 @@
    "intent": "unknown",
    "mood": "",
    "weight": 1.0,
-   "text": "what?",
-   "id": "149d2d5777e5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "lol ok",
-   "id": "cbe20455fd5c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "true",
-   "id": "9b1868482bb7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "hmm",
-   "id": "dc2e0d9b7ca7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "eh?",
-   "id": "f196768496a3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
    "text": "sure, why not",
    "id": "ba0ba88cc08c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "oh?",
-   "id": "39221d8bb2d6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "ok",
-   "id": "aa474ff7bc63"
   },
   {
    "kind": "reply",
@@ -601142,59 +599447,8 @@
    "intent": "unknown",
    "mood": "",
    "weight": 1.0,
-   "text": "lol what",
-   "id": "5305d3d5a8ed"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
    "text": "right",
    "id": "54af18918cf9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "mhm",
-   "id": "dce3a7597cb6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "unknown",
-   "mood": "",
-   "weight": 1.0,
-   "text": "heh, maybe",
-   "id": "2b065201e5f6"
   },
   {
    "kind": "reply",
@@ -601214,8 +599468,8 @@
     "chat",
     "news"
    ],
-   "text": "really?",
-   "id": "28cc3927cad6"
+   "text": "really? since when?",
+   "id": "cd4d512c666e"
   },
   {
    "kind": "reply",
@@ -601699,23 +599953,6 @@
    "intent": "trading",
    "mood": "",
    "weight": 1.0,
-   "text": "no idea what its worth",
-   "id": "34a8d4b78699"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "trading",
-   "mood": "",
-   "weight": 1.0,
    "text": "the exchange might have one",
    "id": "7b800be5f757"
   },
@@ -601735,40 +599972,6 @@
    "weight": 1.0,
    "text": "pst me",
    "id": "a611d3095853"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "trading",
-   "mood": "",
-   "weight": 1.0,
-   "text": "no clue on pc, sorry",
-   "id": "51d1f7deeb3f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "trading",
-   "mood": "",
-   "weight": 1.0,
-   "text": "depends who is buying",
-   "id": "1e61c997727f"
   },
   {
    "kind": "reply",
@@ -601939,8 +600142,8 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "what is it?",
-   "id": "51785b2c78f4"
+   "text": "sure, what do you need a hand with?",
+   "id": "907de22b4c64"
   },
   {
    "kind": "reply",
@@ -601992,23 +600195,6 @@
    "weight": 1.0,
    "text": "try your trainer",
    "id": "faf194f3e87f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "help",
-   "mood": "",
-   "weight": 1.0,
-   "text": "ask around, someone will know",
-   "id": "1c298b8b5f6c"
   },
   {
    "kind": "reply",

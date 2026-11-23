@@ -712,6 +712,9 @@ public static class AutonomousBotVoices
         if (string.IsNullOrEmpty(text) || voice == null)
             return text;
         var values = new List<string>();
+        // Chat audit 1.2.2 (C10, fix F9): a lore line given out as an answer or a tale takes no laugh.
+        if (kind == null && LoreChat.IsLoreLine(text))
+            kind = "lore";
         // PC check 2026-11-19 (build 5154cae): "a armorcrafter" from a line built in code; the article is put right first.
         string masked = VC.FixArticles(text);
         foreach (string word in (protect ?? []).Where(word => !string.IsNullOrWhiteSpace(word)).Distinct().OrderByDescending(word => word.Length))

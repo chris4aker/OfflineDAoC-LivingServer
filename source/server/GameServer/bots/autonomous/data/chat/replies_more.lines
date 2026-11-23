@@ -6,7 +6,7 @@
 @answers ask_anyone
 @who *
 maybe, what time?
-depends, what level?
+what level? im {level}
 might be up for it later
 could be, tell me more
 
@@ -37,14 +37,13 @@ sure, plenty of room
 np, go ahead
 fine by me
 sure, just dont take the named
-all yours
+all yours, we are moving on
 yep, we are leaving soon anyway
 sure, holler if you get adds
 
 @kind reply
 @answers ask_choice
 @who *
-depends what you like
 the first one
 second one imo
 either is fine honestly
@@ -128,16 +127,12 @@ dunno, been here all day
 @kind reply
 @answers ask_know
 @who *
-not sure, havent been that way
 last i saw, yes
-was earlier, not sure now
+was earlier, could have flipped since
 someone was there an hour ago
 havent seen anyone
 i think so? dont quote me
-dunno, ask in a bit
-no idea, ask a guard
-pretty sure, yeah
-heard the same, no idea if its true
+heard the same in {capital}, havent checked it
 dont think so
 @who Explorer
 was there earlier, looked fine
@@ -149,20 +144,18 @@ yes, been watching it all night
 @kind reply
 @answers ask_on
 @who *
-here
-yep, on
-hi hi
-just got on
-still here
+here, in {zone}
+on, leveling my {class}
+just got on, still in {zone}
+still here, still {level}
 around, kinda
 half here lol
 here, at the bind
-me
 present
 on and grinding
 here, whats up?
 @who NoLifer
-always on
+always on, {level} and counting
 @who Socialite
 here!! whats going on
 
@@ -219,9 +212,7 @@ rvr if enough of us show
 leveling probably
 keep raid sunday?
 whatever gets the most people on
-dunno, bring ideas
 dungeon run maybe
-i am in for anything
 
 # "where to next?", "so where are we heading?": the group's next hunt. Live test of se.4 (2026-10-18): it drew
 # directions ("follow the road"). New writing.
@@ -251,7 +242,7 @@ wherever the xp is best, dont care where
 @who *
 too many to pick one lol
 pulled a whole room once, never again
-a guard killed me once, still not sure why
+a guard killed me once at the bridge, never saw it coming
 fell off a cliff running from a grey con
 drowned in a pond, a tiny one
 a named spawned on top of us at the bind
