@@ -95,6 +95,10 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 - **No more pacing at the Lough Derg / Valley of Bri Leith border.** Hibernian bots walking from the Valley toward
   Connacht, the Darkness Falls portal or Cruachan Gorge could step onto a ridge on the Lough Derg side that leads
   nowhere, turn back, step on again and finally give up their trip. They now cross where the ground goes on.
+- **Companions on ladders and ledges.** A companion or bot climbing a ladder, a tower or a ledge, or jumping down one,
+  no longer stops halfway when you walk on: it finishes the climb and catches up. Darkness Falls' stairs were fixed in
+  1.2.1; this does the same everywhere else. A bot put back on its feet at the top or bottom shows in the server log
+  as `NAV_LINK_LANDING`.
 
 ## Known issues
 
