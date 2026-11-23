@@ -84,6 +84,12 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with those lines and the `FORK_BUILD`
   line from the top of `runtime\server\logs\server.log`.
 
+### Bots on the road
+
+- **No more pacing at the Lough Derg / Valley of Bri Leith border.** Hibernian bots walking from the Valley toward
+  Connacht, the Darkness Falls portal or Cruachan Gorge could step onto a ridge on the Lough Derg side that leads
+  nowhere, turn back, step on again and finally give up their trip. They now cross where the ground goes on.
+
 ### Also in 1.2.2
 
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
