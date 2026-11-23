@@ -152,8 +152,11 @@ No boss is changed; what changed is how the bot raids fight them.
   off them. He still wants a big raid.
 - **Legion (#413):** the wounded step out toward the raid's healers instead of away from them, so his souls no longer
   find them alone.
-- **Golestandt and Cuuldurach (#415):** a raider thrown far by a wing-gust stays part of the fight instead of being held
-  at the staging ring.
+- **The dragons, Golestandt, Cuuldurach and Gjalpinulva (#415):** a raider thrown far by a wing-gust now walks
+  straight back to its party on its own instead of being held at the staging ring for the next return wave, and a
+  raider rezzed where it fell rejoins the fight instead of being sent out to the ring. Golestandt and Cuuldurach throw
+  raiders that far from most of their throw spots, Gjalpinulva from one. Their size (70) and their own fights are as
+  in 1.2.
 - **Behemoth, Fomor City and Morgana (#414):** still no bot raid.
 
 ### Lore
