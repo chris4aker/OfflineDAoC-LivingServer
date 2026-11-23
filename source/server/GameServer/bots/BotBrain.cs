@@ -5771,6 +5771,27 @@ namespace DOL.AI.Brain
                 if (markedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
             }
 
+            // 1.2.2 (#412): in the Green Knight's fight half a heal on a raider his tree hits is threat on that tree, and pulls it
+            // onto the healer, who is then silenced: such a raider waits until under half while another is healed (or none).
+            if (spellTarget != null && displacedPatient == null && spellTarget != Body &&
+                EpicEncounterTactics.GreenKnightHoldsHeal(BotBody, spellTarget))
+            {
+                GameLiving other = EpicEncounterTactics.GreenKnightOtherPatient(BotBody, spellTarget, InSupportReach);
+                if (other != null)
+                {
+                    spellTarget = other;
+                    amountToHeal = Math.Max(amountToHeal, other.MaxHealth - other.Health);
+                    numNeedHealing = Math.Max(1, numNeedHealing);
+                    if (other.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+                }
+                else
+                {
+                    spellTarget = null;
+                    numNeedHealing = 0;
+                    numEmergency = 0;
+                }
+            }
+
             // 1.2 (sweep 7b): inside a raid's fight a damage over time on several raiders (Summoner Pain) is cured before the
             // turn's heal, unless a member of this bot's own party is in danger or a boss mechanic marks a patient (RaidCurePoison).
             bool raidCureFirst = TryRaidCurePoison(partyInDanger, displacedPatient != null || markedPatient != null,

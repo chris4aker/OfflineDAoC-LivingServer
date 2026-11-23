@@ -27,8 +27,9 @@ Before publishing:
 > Living Server is an unofficial, free, non-commercial fan project. It is not affiliated with, endorsed by or
 > connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
-A small release for **1.2.1**: bigger bot raids at four encounters where 1.2.1's tactics work but the raid was too
-small to win: **Summoner's Hall, the Green Knight, Galladoria and Tuscaran Glacier**. No boss was made weaker.
+A small release for **1.2.1**: bigger bot raids at three encounters where 1.2.1's tactics work but the raid was too
+small to win: **Summoner's Hall, Galladoria and Tuscaran Glacier**. And a new plan for **the Green Knight**, who
+keeps his four to five groups. No boss was made weaker.
 
 Uthgard's drop tables and the next round of fixes come in **1.2.3**.
 
@@ -57,16 +58,30 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 | Raid | Was | Now | What it means |
 |---|---|---|---|
 | **Summoner's Hall** (all three realms) | 64 | **80** | Enough raiders to outlast Summoner Roesia's Pain with 1.2.1's cures. The guides say four to five groups, so 80 is as far as the raise goes; the raid now starts at 100. |
-| **The Green Knight** | 40 | **80** | Twice the guides' four to five groups, as far as the raise goes. His trees hit harder than first thought, so 80 alone may not be enough yet, and his fight is still being worked on. His trees still stop at 70 a wave. |
 | **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left when she dies. |
 | **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
 
 **Kept:**
+- **The Green Knight** stays at 40, the guides' four to five groups, and his raid fights him a new way (below).
 - **Caer Sidi** stays at 100: the Crypt Lord problem is about timing the pull, not raid size.
 - **Trollheim** stays at 64: with the 1.2.1 fix the raid's timer no longer runs out, at any size.
 - **The three dragons** stay at 70: the raid already beats them at 70.
 - **Darkness Falls** stays at 64: Legion falls within 20 minutes at that size.
 - **Marfoirwort** stays at 40: the raid beats him at 40, and a bigger raid would win by numbers alone.
+
+### The Green Knight: a new plan against his trees
+
+A tree grows at every raider near him, keeps growing every half minute, and stops a healer or caster it hits from
+casting. A heal on someone a tree is hitting draws the tree onto the healer. The bots now:
+- **send the casters and archers who can't hit a group of trees out of reach**, where no tree grows at them;
+- **keep the healers together, away from him and his strike around his target**. They heal his target first, and
+  leave someone a tree is hitting until they are under half;
+- **have the melee mark every tree near them**, a healer's or caster's tree first, then go back to him and finish the
+  trees on them once those are half dead;
+- **keep the casters with area spells close, guarded by two melee of their group**. They burn the marked trees, but
+  only while their spells won't draw the trees onto themselves.
+
+His trees still stop at 70 a wave.
 
 ### Good to know
 
@@ -75,7 +90,7 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 - **A bigger size needs the bots:**
   - A raid's full size is half the realm's free level 50s, up to its new size.
   - The new sizes take effect with at least 224 free level 50s for Galladoria, 240 for Tuscaran Glacier, and 160 for
-    Summoner's Hall and the Green Knight.
+    Summoner's Hall.
   - With fewer, nothing changes.
 - **GM tools:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
   the old one.

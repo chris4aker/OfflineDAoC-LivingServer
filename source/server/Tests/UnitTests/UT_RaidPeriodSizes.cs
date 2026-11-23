@@ -57,7 +57,6 @@ namespace DOL.UnitTests
         [TestCase("summoners-hibernia", 64, 80)]
         [TestCase("epic-hibernia", 100, 112)]
         [TestCase("epic-midgard", 100, 120)]
-        [TestCase("openworld-albion-greenknight", 40, 80)]
         public void Raised(string id, int before, int now)
         {
             RaidPeriodSizes.Raise raise = RaidPeriodSizes.Of(id);
@@ -76,6 +75,9 @@ namespace DOL.UnitTests
         [TestCase("darkness-hibernia", 64)]
         [TestCase("openworld-hibernia-marfoirwort", 40)]
         [TestCase("dungeon-albion-krondon", 64)]
+        // The Green Knight's raise to 80 was withdrawn on the real stats (owner, 2026-11-22, "option 1"): his period 40, and
+        // his tactic fixed instead (tag and burn, UT_RaidSim122GreenKnight).
+        [TestCase("openworld-albion-greenknight", 40)]
         public void Kept(string id, int size)
         {
             Assert.That(RaidPeriodSizes.Of(id), Is.Null);
@@ -89,7 +91,7 @@ namespace DOL.UnitTests
             EncounterFloodGuard.Reset();
             Assert.Multiple(() =>
             {
-                // The Green Knight's trees stay capped at the Albion dragon raid's 70, not his own raid's new 80.
+                // The Green Knight's trees stay capped at the Albion dragon raid's 70.
                 Assert.That(EncounterFloodGuard.ShippedLimit("OFGreenKnight.Trees"), Is.EqualTo(70));
                 Assert.That(EncounterFloodGuard.Shipped.Single(g => g.Key == "OFGreenKnight.Trees").RaidId, Is.EqualTo("dragon-albion"));
                 Assert.That(EncounterFloodGuard.ShippedLimit("Nosdoden.Spirits"), Is.EqualTo(64));
@@ -107,7 +109,7 @@ namespace DOL.UnitTests
                 // 166% of 64 (106 bots) at Summoner's Hall, written by 1.2.1: 132.8% of 80, the same 106.
                 Assert.That(RaidPeriodSizes.Rebase("summoners-midgard", 166, null), Is.EqualTo(166.0 * 64 / 80).Within(1e-9));
                 Assert.That(RaidPeriodSizes.Rebase("summoners-midgard", 166, 80), Is.EqualTo(166), "written at 80: as it is");
-                Assert.That(RaidPeriodSizes.Rebase("openworld-albion-greenknight", 200, null), Is.EqualTo(100), "80 bots at 40: 100% of 80");
+                Assert.That(RaidPeriodSizes.Rebase("openworld-albion-greenknight", 200, null), Is.EqualTo(200), "his raise withdrawn: unchanged");
                 Assert.That(RaidPeriodSizes.Rebase("epic-midgard", 125, 100), Is.EqualTo(125.0 * 100 / 120).Within(1e-9));
                 Assert.That(RaidPeriodSizes.Rebase("dragon-albion", 145.3, null), Is.EqualTo(145.3), "not raised: unchanged");
                 Assert.That(RaidPeriodSizes.Rebase("summoners-midgard", null, 64), Is.Null);

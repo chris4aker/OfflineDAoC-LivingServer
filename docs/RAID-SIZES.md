@@ -72,7 +72,7 @@ to change it.
 **Not a zerg** means all of these:
 - **At most twice the period source's own figure:** the 2003-2004 guide's group count times 8, or the players it names
   for a comfortable kill (`RaidPeriodSizes.Raise.SourceBots`). Summoner's Hall: "approximately four to five full
-  groups", 40, so at most 80. The Green Knight: "4-5 groups", 40, so 80. Galladoria and Tuscaran Glacier: about 100
+  groups", 40, so at most 80. Galladoria and Tuscaran Glacier: about 100
   people, so 200. Twice is the win balance's own ceiling (200%, owner 2026-11-05), the room for "bots that play worse
   than 2003 players".
 - **Never above the realm's 300** (`RealmRaidRecruitmentPolicy.MaximumBots`).
@@ -80,7 +80,7 @@ to change it.
   as shipped in 1.2) still loses: it wins under a third of its attempts, or misses the mechanism's target. If the old
   rules win at that size too, numbers alone won, and the size is kept.
 - **The bosses are never touched.** A flood guard keeps the cap it had (`EncounterFloodGuard`): the Green Knight's trees
-  stay capped at the Albion dragon raid's 70, not his own raid's new 80, and no guard reads a raised raid's size.
+  stay capped at the Albion dragon raid's 70, and no guard reads a raised raid's size.
 
 After a raise, win-rate sizing works from the new period size exactly as for every raid: a 125% start, 70-200%, the
 Special Forces after a wipe.
@@ -106,7 +106,7 @@ raid sizes in whole parties. "1.2" is the control: the rules before the 1.2.1 ta
 |---|---|---|---|---|---|
 | Summoner's Hall: Summoner Roesia (#410) | `UT_RaidSim121SummonersGreenKnight`, 64 seeds; real stats `UT_RaidRealStats122` | 1.2.1 (assumed melee): wins of 64 at 64 / 80 / 88 / 96 / 104: Midgard 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64. **Real stats (1.2.2)**, 64 / 80 / 88 / 96 / 104 / 112: Midgard 0 / 0 / 0 / 0 / 8 / 42, Albion 0 / 15 / 43 / 58 / 64 / 64, Hibernia 0 / 7 / 29 / 46 / 63 / 64 | 1.2.1: 0-1 of 64 at every size to 128; real stats: 0-5 at 80, 13-27 at 88-96 (Albion, Hibernia) | 80 | **64 → 80 holds**, all three realms: the target (88-112) is past the limit, and at 80 the 1.2 rule still loses |
 | Summoner's Hall: Grand Summoner Govannon | a cruder attrition model on three 80-bot play tests | demon phases won of 64 at 80 / 96 / 104 / 112: 0 / 30 / 60 / 64 (harsher case 0 / 10 / 37 / 57) | no 1.2.1 tactic for him | (same raid) | rides on Roesia's raise; not a reason of its own. Real stats agree with its premise: his demon (STR 800) hits plate for 3,059 (the cap) every 3.6 s, one raider a swing whatever the raid's size |
-| Green Knight (#412) | the same file; real stats `UT_RaidRealStats122`, 64 seeds | 1.2.1 (assumed tree hit 5 / 8 / 15 a second): middle case 0 at 40-64, 4 at 72, 58 at 80. **Real stats (1.2.2)**: a tree hits 22-36 a second on mail and plate and 53-78 on cloth, he hits his target for 234-338: **0 of 64 at every size 40-104** in every case and rule; the stack and the peel win from 120 (low case 59 of 64 at 80 on a tree), 160 in the others | 0 of 64 at 40-120; from 160 the 1.2 catalog wins too | 80 | **40 → 80 stands by the letter of the rule** (the target, 120, lies past the limit: raised to the limit), but at 80 the model never wins: the tactic needs more work before the size helps (#412) |
+| Green Knight (#412) | real stats `UT_RaidRealStats122`; **1.2.2 positional model `UT_RaidSim122GreenKnight`** (Python mirror, 32 seeds) | 1.2.1 model: 0 of 64 at every size 40-104. **Positional model, tag and burn** (wins of 32, 80 a second on a tree; buffed / unbuffed): 40: **17** / 0; 48: 30 / 0; 56: 32 / 0; 64: 32 / 0; 72: 32 / 12; 80: 32 / 23; 104: 32 / 32. At 50 a second on a tree it needs 104; at 120, 14 / 0 at 40 and 29 / 0 at 56 | the 1.2 catalog and 1.2.1 round 2: **0 of 32 at every size 40-80** in every case; round 2 wins only from 104 buffed (4-19 of 32) and at 120 | 80 | **raise withdrawn: 40** (owner, 2026-11-22, "option 1": his period size, and the tactic fixed). The model's buffed raid wins about half its attempts at 40 and nearly all from 48; an unbuffed raid needs 72-80 |
 | Marfoirwort (#412) | the same file; real stats `UT_RaidRealStats122` | at his real swing (2.71 s, no miss; the 1.2.1 model tried 3.0-4.5 s at 85%): 64 of 64 at 40-80 at 200 and 400 a raider-minute (at 100: 0-36 at 40, 64 from 48) | 0 of 64 at 40-56, 0-10 at 64-80 | 80 | **keep 40**: it wins at 40 |
 | Galladoria: Spindler Broodmother (#408) | `UT_SpindlerBroodSim` (her newborns, not a whole fight) | 13 parties (100): 3.41 newborns alive at her death; **14 (112): 1.93**, all 8 add parties; the one PC kill (`ccba364`, 128) had 2.49 | from 16 parties (128) | 200 | **100 → 112** |
 | Tuscaran Glacier: Queen Kula (#409) | `UT_TuscaranTrollheimSim` (Kula's phase, a damage race) | Kula's phase: 23.3 min at 100, 21.6 at 108, **20.0 at 120**; the PC kill (`ccba364`, about 124) took 20.1 | 21.4-27.0 min at 120 | 200 | **100 → 120**. King Tuscar's own fight has no model; two losses to him on `ccba364` were at about 124 |
@@ -210,7 +210,7 @@ to three-group fights by 2003, so most sit at the realm raid's smallest full siz
 |---|---|---|---|---|---|
 | Coliath (Albion Shrouded Isles) | 64 | 80 | 45-128 | "about Legion difficulty": sized as Legion | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
 | Glacier Giant (Odin's Gate) | 48 | 60 | 34-96 | Dec 2003: two guild groups wiped in seven minutes; "done with 5-6 fgs"; earlier kills with 2 groups (2002-2003) | [FreddysHouse, "Glacier Giant", Dec 2003](https://forums.freddyshouse.com/threads/glacier-giant.604/) |
-| Green Knight (Forest Sauvage) | 80 (40 until 1.2.2) | 100 | 56-160 | Feb 2003: about Grand Summoner difficulty, 4-5 groups; 80 (twice that) since 1.2.2, for his trees | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
+| Green Knight (Forest Sauvage) | 40 | 50 | 28-80 | Feb 2003: about Grand Summoner difficulty, 4-5 groups. Oct 2002: three groups tried and failed; Jun 2005: nine players with pets (three Theurgists, a Necromancer) took 40 minutes, "mostly because he runs around". 1.2.2 raised him to 80 for a while; withdrawn for the tag and burn tactic | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [Allakhazam bestiary comments, 2002-2005](https://camelot.allakhazam.com/db/search.html?cmob=3753) |
 | Evern (Breifine) | 40 | 50 | 28-80 | 2003: a full group was beaten, eight killed him in 20 minutes; the Green Knight's equal | Allakhazam (2003); the Albion guide above |
 | Mortufoghus (Modernagrav) | 40 | 50 | 28-80 | Oct 2003: three groups couldn't get it under 50%; Apr 2003: 1.5-3 groups | Allakhazam; JeuxOnline 288849 |
 | Spirit of Lord Emthoro (Inishail Island) | 40 | 50 | 28-80 | 2004: more than one full group | Allakhazam (Mar 2004) |
@@ -246,7 +246,7 @@ Since 1.2 the bosses count and pick bots too. A few mechanics make an add or a h
 200% of its period size would face far more than a full 2003 raid did. `EncounterFloodGuard` caps each such count at
 the period size in the table above (`SuggestedBots`): Legion's adds and kill heals, High Lord Saeor's kill heals and
 Beliathan's minions (Darkness Falls, 64), Nosdoden's spirits (Trollheim, 64), the Green Knight's trees and Oona's undead
-(on the dragon raids' way, 70; the Green Knight has his own raid since 1.2, 80 since 1.2.2, and the cap stays the dragon raid's 70), and Risnir Cruss's apparitions (no raid: 40, the smallest period size). Up to that size
+(on the dragon raids' way, 70; the Green Knight has his own raid of 40 since 1.2, and the cap stays the dragon raid's 70), and Risnir Cruss's apparitions (no raid: 40, the smallest period size). Up to that size
 the mechanic is the original; each cap is its own setting (`EncounterFloodGuard.SetLimit`, 0 = none). The server log's
 `EPIC_FLOOD_GUARD` line shows a cap at work.
 
