@@ -164,6 +164,12 @@ namespace DOL.GS
                 if (_battlegroundStorming && target != null && !StrikesFromHere(bot, target))
                     target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
+                // A caster, archer or healer in the lord's fight takes its formation spot behind the melee first (1.2.2).
+                if (target is GuardLord formationLord && TakeLordFormation(bot, formationLord))
+                {
+                    bot.TargetObject = target;
+                    return true;
+                }
                 if (target != null)
                 {
                     bot.StopMovingOnPath();
@@ -187,6 +193,11 @@ namespace DOL.GS
                         Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
                         GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
                     {
+                        if (lord is GuardLord strikeLord && TakeLordFormation(bot, strikeLord))
+                        {
+                            bot.TargetObject = lord;
+                            return true;
+                        }
                         bot.StopMovingOnPath();
                         bot.StopMoving();
                         bot.TargetObject = lord;

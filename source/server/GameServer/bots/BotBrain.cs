@@ -3376,7 +3376,7 @@ namespace DOL.AI.Brain
                     Body.attackComponent?.AttackState == true,
                     Body.ActiveWeaponSlot,
                     currentBowTarget.IsAlive && currentBowTarget.ObjectState == GameObject.eObjectState.Active &&
-                    (currentBowTarget is not DOL.GS.Keeps.GuardLord || Body.IsWithinRadius(currentBowTarget, 280)),
+                    (currentBowTarget is not DOL.GS.Keeps.GuardLord bowLord || Body.IsWithinRadius(bowLord, LordHoldRadius(bowLord))),
                     Body.attackComponent != null &&
                     Body.IsWithinRadius(currentBowTarget, CapRangeForTarget(currentBowTarget, Body.attackComponent.AttackRange)),
                     directAttacker != null && Body.IsWithinRadius(directAttacker, Body.MeleeAttackRange + 200),
@@ -3432,8 +3432,10 @@ namespace DOL.AI.Brain
 
             if (Body.TargetObject != null)
             {
+                // Close on a keep or tower lord: melee and tanks to 280 (their chase does the rest), casters, archers and
+                // healers only into his reach, where they keep their formation spot behind the melee (1.2.2, RvrLordFormation).
                 if (BotBody.IsAutonomousWorldBot && Body.TargetObject is DOL.GS.Keeps.GuardLord lord &&
-                    !Body.IsWithinRadius(lord, 280))
+                    !Body.IsWithinRadius(lord, LordHoldRadius(lord)))
                 {
                     Body.StopAttack();
                     Body.PathTo(new Point3D(lord.X, lord.Y, lord.Z), Body.MaxSpeed);

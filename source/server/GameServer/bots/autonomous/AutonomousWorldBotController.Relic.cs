@@ -355,8 +355,9 @@ public sealed partial class AutonomousWorldBotController
             return false;
         bool keep = lord.Component?.Keep is GameKeep;
         float reach = RvrLordReach.For(keep);
+        // In reach a caster, archer or healer takes its formation spot behind the melee first (1.2.2, RvrLordFormation).
         if (bot.IsWithinRadius(lord, (int)reach))
-            return false;
+            return TakeLordFormation(bot, lord);
         if (bot.IsCasting) bot.StopCurrentSpellcast();
         if (bot.IsAttacking) bot.StopAttack();
         bool walking = IssuePath(bot, new(lord.X, lord.Y, lord.Z), retargetWhileMoving: true);
