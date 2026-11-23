@@ -215,11 +215,29 @@ int main(int argc, char** argv) {
         //   from x y z        -> "from <poly> <polygons reached>"  (flood from the point's polygon; later lines test it)
         //   at x y z          -> "at <poly> <1 reached | 0 not>"
         //   floors x y zlo zhi -> "floors <z> <reached> ..." every floor under (x, y)
+        //   snap x y z        -> "snap <poly> x y z" the nearest polygon point within game 256 / 512
+        //   los x y z x y z   -> "los <clear> t"     the server's HasLineOfSight raycast
         char line[512]; std::unordered_set<dtPolyRef> set;
         while (fgets(line, sizeof line, stdin)) {
             char c[16]; float x, y, z, w; int n = sscanf(line, "%15s %f %f %f %f", c, &x, &y, &z, &w);
             if (n >= 4 && !strcmp(c, "from")) { float g[3] = {x, y, z}; dtPolyRef r = pick(g); set = flood(r); printf("from %llu %zu\n", (unsigned long long)r, set.size()); }
             else if (n >= 4 && !strcmp(c, "at")) { float g[3] = {x, y, z}; dtPolyRef r = pick(g); printf("at %llu %d\n", (unsigned long long)r, r && set.count(r) ? 1 : 0); }
+            else if (n >= 4 && !strcmp(c, "snap")) {
+                // snap x y z -> "snap <poly> x y z": the nearest polygon point in a wide box (game 256, 256, 512),
+                // as the server's GetClosestPoint with a larger range
+                float g[3] = {x, y, z}, d[3], p[3], gp[3], wide[3] = {8.0f, 16.0f, 8.0f}; toDt(g, d); dtPolyRef r = 0; dtQueryFilter f = filter();
+                q->findNearestPoly(d, wide, &f, &r, p); toGame(p, gp);
+                printf("snap %llu %.0f %.0f %.0f\n", (unsigned long long)r, gp[0], gp[1], gp[2]);
+            }
+            else if (!strcmp(c, "los")) {
+                // los x y z x y z -> "los <0|1> t": the server's HasLineOfSight (DetourInterface.cpp: raycast from the
+                // start's polygon; clear when the ray reaches the end)
+                float a[3], b[3]; if (sscanf(line, "%*s %f %f %f %f %f %f", &a[0], &a[1], &a[2], &b[0], &b[1], &b[2]) != 6) { printf("?\n"); fflush(stdout); continue; }
+                float s0[3], e0[3]; toDt(a, s0); toDt(b, e0); dtQueryFilter f = filter(); dtPolyRef sr = 0;
+                q->findNearestPoly(s0, ext, &f, &sr, nullptr); dtRaycastHit hit{};
+                dtStatus st = sr ? q->raycast(sr, s0, e0, &f, 0, &hit, 0) : DT_FAILURE;
+                printf("los %d %.3f\n", dtStatusSucceed(st) && hit.t > 1.0f - 1e-4f ? 1 : 0, sr ? hit.t : -1.0f);
+            }
             else if (n >= 5 && !strcmp(c, "floors")) { auto fl = floors(x, y, z, w); printf("floors"); for (auto& p : fl) printf(" %.1f %d", p.second, set.count(p.first) ? 1 : 0); printf("\n"); }
             else printf("?\n");
             fflush(stdout);

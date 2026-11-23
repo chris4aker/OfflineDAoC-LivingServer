@@ -64,16 +64,18 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 ### The Green Knight: a new plan against his trees
 
 A tree grows at every raider near him, keeps growing every half minute, and stops a healer or caster it hits from
-casting. A heal on someone a tree is hitting draws the tree onto the healer. The bots now:
-- **send the casters and archers who can't hit a group of trees out of reach**, where no tree grows at them;
-- **keep the healers together, away from him and his strike around his target**. They heal his target first, and
-  leave someone a tree is hitting until they are under half;
-- **have the melee mark every tree near them**, a healer's or caster's tree first, then go back to him and finish the
-  trees on them once those are half dead;
-- **keep the casters with area spells close, guarded by two melee of their group**. They burn the marked trees, but
-  only while their spells won't draw the trees onto themselves.
+casting. A heal on someone a tree is hitting draws the tree onto the healer. Now every raider fights from where its
+spells, arrows and heals reach:
+- **The healers stand together away from him**, out of his strike around his tank and close enough for the melee to
+  pull trees off them. Four of them keep his target up first.
+- **The melee mark every tree near them**, healers' and casters' first, then go back to him.
+- **Area casters burn the marked trees**, guarded by a melee of their group. Other casters and archers shoot the marked
+  trees they can safely take, and him otherwise. Theurgists send their elementals at the trees on the healers and
+  casters.
+- **Necromancers, Cabalists and other pet owners stand back** where no tree grows at them, and send their pets in.
+- **When he walks off to heal, the raid holds its ground** and finishes the trees until he comes back.
 
-His trees still stop at 70 a wave.
+His trees still stop at 70 a wave. He is still the hardest fight for a raid of 40, and we're still working on him.
 
 ### Good to know
 
