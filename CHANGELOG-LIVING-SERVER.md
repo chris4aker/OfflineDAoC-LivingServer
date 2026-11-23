@@ -76,6 +76,7 @@ otherwise.
     on with a thread, and lines to the player and realm events still go (`AutonomousChatExchange.JustSpoke`, held "hog").
   - "almost 6" was a bot's own level opener. Every level opener now says what it counts ("2 bubs to 6"), and "almost 6, 2
     bubs left" only with three bubbles or fewer (`AutonomousChatFieldTalk.LevelProgress`).
+
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
