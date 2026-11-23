@@ -117,6 +117,14 @@ public static class LoreChat
             fitting = written;
         if (fitting.Length == 0)
             return false;
+        // Chat audit 1.2.2: "whats galladoria?" is answered by a line that says what galladoria is, when there is one.
+        if (AskOf(text) is Ask.What or Ask.General)
+        {
+            string[] wanted = nameList.Select(Words).Where(n => n.Trim().Length >= 4).ToArray();
+            string[] naming = fitting.Where(line => wanted.Any(name => Words(line).Contains(name, StringComparison.Ordinal))).ToArray();
+            if (naming.Length > 0)
+                fitting = naming;
+        }
         answer = Said(fitting[random.Next(fitting.Length)]);
         return answer.Length > 0;
     }
