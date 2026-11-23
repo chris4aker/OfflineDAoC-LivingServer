@@ -34,6 +34,14 @@ namespace DOL.GS
         public bool TriggersImmunity { get; set; }
         public int ImmunityDuration { get; protected set; } = 60000;
         public bool IsBeingReplaced { get; set; } // Used externally to force an effect to be silent (no message, no immunity) when being refreshed.
+
+        /// <summary>
+        /// The current start or stop only hands the effect over to another of the same kind on the same owner (1.2.3): a buff
+        /// disabled because a stronger one from another caster took over, a disabled buff enabled again, or a buff ending while
+        /// another of its kind stays on. Its messages stay quiet, because nothing changed for the owner ("Todd's weapon returns
+        /// to normal." while a stronger damage add was on it). Set by <see cref="EffectListComponent"/> before the callback runs.
+        /// </summary>
+        public bool IsQuietHandover { get; set; }
         public ServiceObjectId ServiceObjectId { get; } = new(ServiceObjectType.Effect);
 
         // State properties.
@@ -155,7 +163,7 @@ namespace DOL.GS
         /// <param name="msgArea">If 'true', the system sends a third-person message to all players within range of the target.</param>
         public void OnEffectStartsMsg(bool msgTarget, bool msgSelf, bool msgArea)
         {
-            if (!IsBeingReplaced)
+            if (!IsBeingReplaced && !IsQuietHandover)
                 SendMessages(msgTarget, msgSelf, msgArea, SpellHandler.Spell.Message1, SpellHandler.Spell.Message2);
         }
 
@@ -167,7 +175,7 @@ namespace DOL.GS
         /// <param name="msgArea">If 'true', the system sends a third-person message to all players within range of the target.</param>
         public void OnEffectExpiresMsg(bool msgTarget, bool msgSelf, bool msgArea)
         {
-            if (!IsBeingReplaced)
+            if (!IsBeingReplaced && !IsQuietHandover)
                 SendMessages(msgTarget, msgSelf, msgArea, SpellHandler.Spell.Message3, SpellHandler.Spell.Message4);
         }
 

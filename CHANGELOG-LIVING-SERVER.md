@@ -62,6 +62,17 @@ otherwise.
   a made-up site spelled with zeros, banned a few minutes later.
 
 **The server**
+- **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
+  "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
+  "Kate's...", "Your weapon returns to normal.", XxEvilxX twice). Two group damage adds from different casters coexist
+  (`EffectListComponent.CanCoexist`): the stronger one is on and the weaker one is disabled. Disabling ran the effect's stop,
+  which sent its expiry lines to the owner and everyone nearby, though the weapon still carried a damage add; each new cast
+  did it again (XxEvilxX twice), and enabling the weaker one later sent its start lines. Now a handover between buffs of
+  one family on one owner is quiet (`ECSGameEffect.IsQuietHandover`): a buff disabled by a stronger one, a disabled buff
+  enabled again, and a buff ending while another of its family stays on (`EffectListComponent.KeepsAnotherOfItsKind`, not
+  a disabled concentration buff out of its caster's range). The last buff of a family going still says so, and debuffs and
+  abilities keep every message. Inherited from the base code; every buff family, not only damage adds. Not explained:
+  the corpse flicker (a mob) in the same burst. `UT_QuietBuffHandover123`. **Tests only.**
 - **No endurance regeneration at all** (a r/daoc report on 1.2.1, 0.37b: sitting alone in Camelot with Tireless and a
   Minstrel endurance song, endurance stayed flat; in 1.2 power did too, until the launcher's power rate rewrote that row).
   `ServerProperties.Load` read a value it couldn't parse by leaving the field at its C# default, 0 for
