@@ -76,6 +76,16 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
   in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
   report-only until the fixes land. **Tests only.**
+- **The knowledge holes (audit F2, C8):** bots now answer where the realm sells potions (nobody does: alchemists make
+  them), dyes, poison, spellcraft gems, crafting tools and materials, bags (there are none: the bank), where to sell loot
+  and where the Realm Exchange is; who sells horse tickets; how to get into Darkness Falls (each realm's home entrance and
+  who holds it), the frontier (the porter to the border keep and its medallion teleporter) and the battlegrounds (the
+  porter's bracket for the asker's level); what armour a class wears (the item generator's rule, with the level the
+  heavier kind starts) and its stats (the class script's); who teaches each craft in the capital, how crafting skill rises
+  (recipe colours), what alchemy needs, how spellcraft works; NPC factions as the server keeps them (kill their enemies,
+  the examine line, the realm's emissary); kill tasks (`/task` on a named guard, to 19); and "who sells X" from the world's
+  merchant lists, with prices. New `AutonomousChatGuide`; names and prices from `tools/lore/npc_roster.json` and the public
+  OpenDAoC database. `UT_ChatGuide`. **Tests only.**
 
 **Launcher, GM tools and tests**
 - **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window

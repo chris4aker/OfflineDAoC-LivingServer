@@ -117,6 +117,8 @@ His trees still stop at 70 a wave.
 
 ### Also in 1.2.2
 
+- **Bots know the realm better:** ask in /faction where to buy dyes, how to get into Darkness Falls or how to fix your
+  NPC faction, and a bot names who and where.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
   first), and a gamebot you jump sets off again from where it lands.

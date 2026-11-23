@@ -160,6 +160,8 @@ namespace DOL.GS.Tests
                 return answer;
             if (AutonomousChatKnowledge.TryAnswerDragon(run.Realm, query, out answer))
                 return answer;
+            if (AutonomousChatGuide.TryAnswer(query, run.Realm, run.Q.Cls, run.Q.Level, run.World.DfOwner, false, run.Rng, out answer))
+                return answer;
             if (LoreChat.TryAnswer(LoreBible.Current, run.Corpus.Lines, query, run.Rng, out answer, run.Realm))
                 return answer;
             if (AutonomousChatKnowledge.TryAnswerTimeToCap(query, out answer))
