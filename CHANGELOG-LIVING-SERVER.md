@@ -26,18 +26,29 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   sim, with 1.2.1's fresh-Pain cure, wins 0 of 64 attempts at 64, 8-16 at 80, 54-61 at 88 (Midgard, Hibernia) and
   56 at 96 (Albion); the 1.2 cure rule wins 0-1 of 64 at every size up to 128. Twice the guide's "four to five full
   groups" is 80, so 80 it is: the raid now starts at 100, where she loses 0-8 of 64. **Tests only** (#410).
-- **The Green Knight: 40 to 80.** 80 is twice the guide's 4-5 groups. With 1.2.1's assumed tree hit (8 a second) his
-  sim won 58 of 64 at 80; with the real one (below) it wins none at any size to 104 and 59 of 64 from 120 (the 1.2 rules
-  0), so the target lies past the limit and the raise to the limit stands, but at 80 the model never wins: his tactic
-  needs more work (#412). His trees stay capped at 70 a wave (the Albion dragon raid's size). **Tests only.**
+- **The Green Knight: back to 40, and a new tactic, tag and burn (#412; tests only).** The owner withdrew his raise to 80
+  (2026-11-22, "option 1"). His script grows a tree at every raider within 4,000 of him every 25-35 s; a tree takes one
+  raider near it, silences a caster or healer it hits, and turns to the most threat, half of every heal on its victim
+  included, counted less far from it (a third at 1,500). A new positional model (`UT_RaidSim122GreenKnight`, Python
+  mirror) gives the trees those rules. In it the 1.2 catalog and 1.2.1's stack and peel lose every attempt at every size
+  40-80. Tag and burn (`EpicEncounterTactics.GreenKnight.cs`):
+  - casters and archers without an area spell stand 4,600 from him, past the trees' reach ("gk-out");
+  - the healers stand together 850 from him away from his target, heal his target first under 98%, and leave a raider a
+    tree hits until it is under half ("gk-heal-spot"; `SignalPatient`, `BotBrain.CheckHeals`);
+  - the area casters stand 500 away with two melee of their party and burn only trees a fighter has tagged, and only
+    while their spell would not pull them ("gk-burn");
+  - the melee tag every tree near them, a healer's or caster's first, to 240 threat, go back to him, and finish the
+    burned ones on themselves under half ("gk-tag", "gk-peel", "gk-finish"); `EPIC_GK_TREES` now counts the held trees.
+  Wins of 32 at 80 a second on a tree, buffed / unbuffed raid: 17 / 0 at 40, 30 / 0 at 48, 32 / 0 at 56-64, 32 / 12 at
+  72, 32 / 23 at 80. The old rules: 0 of 32 at 40-80. His trees stay capped at 70 a wave; no boss changed. **Tests only.**
 - **Real boss stats in the raid sims** (`UT_RaidRealStats122`; docs/RAID-SIZES.md, "Real stats"). The sims' assumed hits
   are replaced by the public OpenDAoC database's templates, the scripts and the server's damage formulas (templates'
   STR / QUI / INT are auto-set to 30 + (level - 1) unless a script sets them; epic bosses deal 2.25 times). The Green
   Knight's trees hit 22-36 a second on mail and plate and 53-78 on cloth (assumed 5-15); Roesia's melee 200-289 a second
   and her damage shield 224-280 a swing (assumed 200 and 64); Marfoirwort swings every 2.71 s (assumed 3.0-4.5).
   Every 1.2.2 size holds: Summoner's Hall 80 (real stats: 0-15 of 64 at 80, 43-64 from 88-112; the old cure rule 0-5 at
-  80), Galladoria 112, Tuscaran Glacier 120 (their models use health and the PC ledgers, unchanged), the Green Knight 80
-  (above); kept Caer Sidi, Trollheim, the dragons, Darkness Falls (Legion still killed inside 20 minutes from 48 at the
+  80), Galladoria 112, Tuscaran Glacier 120 (their models use health and the PC ledgers, unchanged); the Green Knight
+  back to 40 (above); kept Caer Sidi, Trollheim, the dragons, Darkness Falls (Legion still killed inside 20 minutes from 48 at the
   real 6.2 a raider-second) and Marfoirwort (won at 40 at his real swing). Behemoth (#414): every swing kills one, 23 a
   minute; a raid would need about 440 bots in his hall at once, past the realm's 300: no bot raid. **Tests only.**
 - **Galladoria: 100 to 112.** From 14 parties 1.2.1's add-party share sends all 8 parties at Spindler Broodmother's
@@ -54,7 +65,7 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   80."), and a 1.2.1 record at a raised raid is read against the old size: a Summoner's Hall raid grown to 166% of 64
   (106 bots) carries on at 132.8% of 80, the same 106. **Tests only.**
 - **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
-  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
+  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's 80 takes 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
 **RvR**

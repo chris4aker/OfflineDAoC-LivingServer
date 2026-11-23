@@ -217,6 +217,10 @@ namespace DOL.GS
                     foreach (GameLiving m in healer.Group.GetMembersInTheGroup())
                         if (s.Boss.IsWithinRadius(m, s.Radius)) Consider(m, 100);
             }
+            // The Green Knight's target (he hits for 1,000-1,350 a swing; a healer he picks too), whatever party it is in: the
+            // raid's healers keep it up first (1.2.2, #412: EpicEncounterTactics.GreenKnight.cs). Region 1 only (his).
+            if (healer.CurrentRegionID == 1)
+                Consider(GreenKnightTankPatient(healer, now), GreenKnightTankHealBelow);
             // Legion's target, whatever party it is in: his tank healers keep it up first (EpicEncounterTactics.Legion.cs).
             if (healer.CurrentRegionID == AutonomousDarknessFallsPolicy.RegionId)
                 Consider(LegionTankPatient(healer, now), LegionTankHealBelow);
