@@ -487,10 +487,9 @@ namespace DOL.GS
             return false;
         }
 
-        /// <summary>A healer that heals from range: a healing class but not one of the melee hybrids (Paladin, Friar,
-        /// Warden fight in melee).</summary>
-        private static bool GreenKnightRangedHealer(int classId) => classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId) &&
-            (eCharacterClass)classId is not (eCharacterClass.Paladin or eCharacterClass.Friar or eCharacterClass.Warden);
+        /// <summary>A healer that heals from range: the raid rules' shared test (<see cref="IsRangedHealerClass"/>; the Paladin,
+        /// Friar and Warden fight in melee).</summary>
+        private static bool GreenKnightRangedHealer(int classId) => IsRangedHealerClass(classId);
 
         /// <summary>
         /// The raider a healer heals first in his fight (SignalPatient asks): his target, when the healer is one of the
