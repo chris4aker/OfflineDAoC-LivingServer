@@ -131,6 +131,28 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   ground of eight Hibernian zones: 62 arrived before, 72 after (the other 10 cycled, 6 of them at 384960,486688). No navmesh,
   seam file or road file changed. **Tests only** (`UT_LoughDergRidgeSeam421`).
 
+**Regression guards (what was seen working on 1.2 stays as it was)**
+- **Guards for 1.2-proven paths** (regression audit of `integration/1.2.2` at `0270e78c`, items 6-9). **Tests only.**
+  - *Lifts ride as in 1.2:* a lift leg (`Pathfinder.IsVerticalLink`: 300 or more up or down, at least twice the run) is
+    no longer a NavLinkLeg commit leg (`NavLinkLeg.IsLiftLeg`). Every stuck-prone link in Tur Suil (190), Iarnvidiur's
+    Lair (161), Aldland (56, Coliath) and Cruachan Gorge (211) is a lift, so those zones' legs behave as in 1.2 except
+    the stranded set-down. 546 of the table's 1,262 links are lifts; `navmesh-drops.json`'s `commit` and
+    `summarize_drops.py` follow (`UT_NavLinkLegs`).
+  - *Seam choice pinned (#421):* on the 1.2 download's region 200 seam lines
+    (`tools/navmesh/seams-region200-v036b.json.gz`), the crossings of the Cruachan Gorge column (Druim Ligen to Dun nGed,
+    seen single file on `aa537ce`) and of the walk to Druim Ligen from both sides of the 211/212 seam equal 1.2's
+    (`seam_route_sim.py --rule old`; `--rule new` picks the same) (`UT_SeamChoiceSince12`).
+  - *Death fall:* a dead bot's removal goes to the original client again when the bot really leaves (logout, removal
+    from the world, a move to another region), so no corpse of a gone bot stays; a move within the region (a release
+    nearby) is still held (`BotDeathAnimation.HoldsRemoval`, `GameBot.MovingWithinRegion`; `UT_BotDeathAnimation`).
+  - *Packet queue:* an add from inside the drain on the draining thread gives up at once, as in 1.2, instead of
+    spinning up to 1 s on the send step (`DrainArray.IsDrainingOnThisThread`; `UT_DrainArray`).
+  - Reviewed, already pinned, no change: the pocket-escape loop (#420; first two escapes as before, `UT_PocketEscapeLoop`),
+    the casting line-of-sight refusal (an accepted check waits for its answer as in 1.2, `UT_CastingLosCheckGap121`), the
+    hired companions' `LevelRule` and the one-time raise of 1.2 hires (raised once, handed-over gear kept, `/hire train`
+    numbers still parse: `UT_HiredCompanionJoinsAtPlayerLevel`, `UT_HireTrainCommand`). `bot_schedule_mode` off (the
+    owner's call, 2026-11-21) keeps the whole roster online: a load note for the overnight stall row, not a code guard.
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

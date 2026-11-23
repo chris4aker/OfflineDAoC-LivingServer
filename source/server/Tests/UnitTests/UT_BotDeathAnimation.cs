@@ -94,6 +94,42 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void ADeadBotThatReallyLeavesIsRemoved_AMoveWithinTheRegionStaysHeld()
+        {
+            // 1.2.2 regression guard (audit item 8): 1.2 always sent a leaving bot's removal. The fall's hold must not leave
+            // a corpse in the original client of a bot that logged out, was removed from the world or went to another region.
+            Assert.Multiple(() =>
+            {
+                Assert.That(BotDeathAnimation.HoldsRemoval(true, true, true, leavesWorld: false), Is.True,
+                    "a release within the region: the fading corpse stays, nothing at the death spot");
+                Assert.That(BotDeathAnimation.HoldsRemoval(true, true, true, leavesWorld: true), Is.False,
+                    "logout, removal from the world or a move to another region: removed, as in 1.2");
+                Assert.That(BotDeathAnimation.HoldsRemoval(true, true, false, leavesWorld: false), Is.False, "the new client: unchanged");
+                Assert.That(BotDeathAnimation.HoldsRemoval(false, true, true, leavesWorld: false), Is.False, "no fall shown: as before");
+                Assert.That(BotDeathAnimation.HoldsRemoval(true, false, true, leavesWorld: false), Is.False, "alive again: as before");
+                Assert.That(BotDeathAnimation.RemoveObject, Is.EqualTo("RemoveObject"));
+            });
+        }
+
+        [Test]
+        public void TheRemovalPacketAsksTheLeavingRule()
+        {
+            // PacketLib168.SendObjectRemove passes the RemoveObject name, which Blocks answers with HoldsRemoval.
+            string root = TestContext.CurrentContext.TestDirectory;
+            string file = null;
+            for (var at = new System.IO.DirectoryInfo(root); at != null && file == null; at = at.Parent)
+            {
+                string candidate = System.IO.Path.Combine(at.FullName, "GameServer", "packets", "Server", "PacketLib168.cs");
+                if (System.IO.File.Exists(candidate)) file = candidate;
+                candidate = System.IO.Path.Combine(at.FullName, "source", "server", "GameServer", "packets", "Server", "PacketLib168.cs");
+                if (file == null && System.IO.File.Exists(candidate)) file = candidate;
+            }
+            Assert.That(file, Is.Not.Null, "PacketLib168.cs not found");
+            string text = System.IO.File.ReadAllText(file);
+            Assert.That(text, Does.Contain("BotDeathAnimation.Blocks(m_gameClient, obj, BotDeathAnimation.RemoveObject)"));
+        }
+
+        [Test]
         public void WithTheSettingOffNothingChanges()
         {
             Assert.Multiple(() =>
