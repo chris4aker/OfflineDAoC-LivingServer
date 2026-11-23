@@ -3,12 +3,19 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using DOL.GS;
+using OfflineDaoc.Updates;
 
 namespace OfflineDaoc.Launcher;
 
 internal sealed partial class MainForm : Form
 {
-    internal const string DisplayVersion = "0.37";
+    // The version the launcher shows: the Living Server build ("Living Server 1.2.2"), never Offline DAoC's base
+    // release. The owner retired the 0.3x line (AGENTS.md, "One edition from now on", 2026-11-22), so the window no longer
+    // says "VERSION 0.37". It comes from LauncherBuild, which the csproj stamps from the server's ForkBuildInfo.BuildName
+    // (the same name the server logs as FORK_BUILD), so the label can't drift from the build that is installed. The base
+    // release the game must be (ForkBuildInfo.BaseRelease, BUILD-INFO.txt's BaseRelease) is still checked by the update
+    // code (Updates/PackageCheck.cs); it is just not shown as the product's version.
+    internal static string DisplayVersion => LivingServerVersion(LauncherBuild.Name);
     internal const int AutoRefreshMilliseconds = 5 * 60 * 1000;
     internal const int RvrSnapshotRefreshMilliseconds = 30 * 1000;
     internal const int LiveBotSnapshotMaxAgeMilliseconds = 20_000;
@@ -185,7 +192,7 @@ internal sealed partial class MainForm : Form
         }
         _logsDirectory = Path.Combine(_root, "logs");
 
-        Text = _newClient ? $"Offline DAoC {DisplayVersion}c — New client" : "Offline DAoC — Classic + Shrouded Isles";
+        Text = WindowTitle(_newClient);
         MinimumSize = new Size(960, 620);
         Size = new Size(1100, 700);
         StartPosition = FormStartPosition.CenterScreen;
@@ -411,7 +418,7 @@ internal sealed partial class MainForm : Form
         var versionLabel = new Label
         {
             AutoSize = true,
-            Text = _newClient ? $"VERSION {DisplayVersion}c" : VersionLabel(InstalledEditionHasCustomClass(_database)),
+            Text = VersionLabel(),
             Font = new Font("Georgia", 12f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
             Location = new Point(97, 79),
@@ -2314,10 +2321,21 @@ internal sealed partial class MainForm : Form
         }
     }
 
-    // "VERSION 0.35b" with the custom Sluaghbinder class (the default), "VERSION 0.35" in the
-    // edition without it, so the label always names the edition that is installed.
-    internal static string VersionLabel(bool customClass) =>
-        customClass ? $"VERSION {DisplayVersion}b" : $"VERSION {DisplayVersion}";
+    // "Living Server 1.2.2" from a build name ("1.2.2", "1.2.2-beta" reads "Living Server Beta 1.2.2"); just "Living Server"
+    // for a build without a readable name (a local build is still stamped from ForkBuildInfo, so this is a fallback only).
+    internal static string LivingServerVersion(string? buildName)
+    {
+        BuildVersion? build = BuildVersion.Parse(buildName);
+        return build != null ? "Living Server " + build.DisplayName : "Living Server";
+    }
+
+    // The label under the title: "LIVING SERVER 1.2.2" in every install. Up to 1.2.1 it said "VERSION 0.37" (or 0.37b /
+    // 0.37c, the edition), with the Living Server build beside it in the update strip; the 0.3x line is history now.
+    internal static string VersionLabel() => DisplayVersion.ToUpperInvariant();
+
+    // The window title names the Living Server build too; the new client's launcher (old 0.37c installs) says which client.
+    internal static string WindowTitle(bool newClient) =>
+        newClient ? $"Offline DAoC {DisplayVersion} — New client" : $"Offline DAoC {DisplayVersion} — Classic + Shrouded Isles";
 
     private static bool InstalledEditionHasCustomClass(string database)
     {

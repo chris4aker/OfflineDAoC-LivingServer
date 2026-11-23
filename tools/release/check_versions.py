@@ -15,8 +15,11 @@ What has to agree (audit 2026-11-03, section 8.6: main said Beta 1.1 after Beta 
   (LivingServer-Setup-<build>.exe, OfflineDAoC-LivingServer-<build>.zip) and its FORK_BUILD name;
 - ForkBuildInfo.BuildName: the released build, or one of the "(in development)" ones while the next release is being
   built ("X" or "X-beta" for "## X (in development)", only "X-beta" for "## Beta X (in development)");
-- MainForm.DisplayVersion: the launcher shows Offline DAoC's version there ("0.37"), so it must be one of
-  ForkBuildInfo.BaseRelease's releases; if it ever holds a Living Server version, it follows BuildName's rule.
+- MainForm.DisplayVersion: the version the launcher shows. Up to 1.2.1 it was pinned to Offline DAoC's base release
+  ("0.37"); the owner retired the 0.3x line (AGENTS.md, "One edition from now on", 2026-11-22), so from 1.2.2 on it is
+  the Living Server build, read from LauncherBuild.Name (stamped from ForkBuildInfo.BuildName). A pinned string
+  constant fails here: it would drift from the build. ForkBuildInfo.BaseRelease still names the game the build
+  installs on (BUILD-INFO.txt, the installer and the launcher's package check); it is just not the shown version.
 
 Standard library only; CI runs it on every push and pull request (.github/workflows/build-and-test.yml), and
 publish-release runs it with --tag before it publishes anything.
@@ -47,6 +50,7 @@ FORK_BUILD_NAME = re.compile(rf"FORK_BUILD name=({BUILD}){END}")
 BUILD_NAME = re.compile(r'const string BuildName = "([^"]+)"')
 BASE_RELEASE = re.compile(r'const string BaseRelease = "([^"]+)"')
 DISPLAY_VERSION = re.compile(r'const string DisplayVersion = "([^"]+)"')
+DISPLAY_FROM_BUILD = re.compile(r'string DisplayVersion\s*=>[^;]*\bLauncherBuild\.Name\b')
 
 
 def build_name(version, beta):
@@ -141,17 +145,15 @@ def check(root=ROOT, tag=None):
             problems.append(f"{FORK_BUILD_INFO}: BuildName is {name.group(1)}, but the release {tag} needs {build} "
                             "(its package folder, zip and BUILD-INFO.txt are named from it)")
 
-    base = BASE_RELEASE.search(fork)
-    bases = [b.strip() for b in base.group(1).split(",")] if base else []
-    display_version = DISPLAY_VERSION.search(form)
-    if display_version:
-        value = display_version.group(1)
-        if value.split(".")[0] not in ("", "0"):   # a Living Server version (1.x and later), not Offline DAoC's 0.x
-            if value not in allowed and value + "-beta" not in allowed:
-                problems.append(f"{MAIN_FORM}: DisplayVersion is {value}, expected {' or '.join(allowed)}")
-        elif value not in bases:
-            problems.append(f"{MAIN_FORM}: DisplayVersion is {value}, but ForkBuildInfo.BaseRelease is "
-                            f"{base.group(1) if base else '(missing)'}")
+    if not BASE_RELEASE.search(fork):
+        problems.append(f"{FORK_BUILD_INFO}: no BaseRelease (the Offline DAoC release the build installs on)")
+    pinned = DISPLAY_VERSION.search(form)
+    if pinned:
+        problems.append(f"{MAIN_FORM}: DisplayVersion is pinned to \"{pinned.group(1)}\"; the launcher shows the Living "
+                        "Server build, so it must come from LauncherBuild.Name (ForkBuildInfo.BuildName)")
+    elif not DISPLAY_FROM_BUILD.search(form):
+        problems.append(f"{MAIN_FORM}: DisplayVersion doesn't read LauncherBuild.Name, so the launcher's shown version "
+                        "can drift from ForkBuildInfo.BuildName")
     return problems
 
 

@@ -51,13 +51,36 @@ public sealed class ClaudeTakeoverEditionTests
         Assert.That(rolls.Distinct().Count(), Is.EqualTo(13), "every other Hibernian class still comes up");
     }
 
-    [TestCase(true, "VERSION 0.37b")]
-    [TestCase(false, "VERSION 0.37")]
-    public void VersionLabelNamesTheInstalledEdition(bool customClass, string expected)
+    [Test]
+    public void VersionLabelNamesTheLivingServerBuildFromForkBuildInfo()
     {
-        MethodInfo label = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!.GetMethod("VersionLabel", HiddenStatic)!;
-        Assert.That(label.Invoke(null, [customClass]), Is.EqualTo(expected));
+        // The 0.3x line is retired (AGENTS.md, "One edition from now on"): the label says "LIVING SERVER 1.2.2", read from
+        // the server's ForkBuildInfo.BuildName (the FORK_BUILD name), never a pinned "VERSION 0.37".
+        string source = File.ReadAllText(Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory,
+            "..", "..", "..", "..", "..", "server", "GameServer", "gameutils", "ForkBuildInfo.cs")));
+        string buildName = System.Text.RegularExpressions.Regex.Match(source, "BuildName = \"([^\"]+)\"").Groups[1].Value;
+        string expected = "LIVING SERVER " + OfflineDaoc.Updates.BuildVersion.Parse(buildName)!.DisplayName.ToUpperInvariant();
+        Type form = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
+        Assert.That(form.GetMethod("VersionLabel", HiddenStatic)!.Invoke(null, null), Is.EqualTo(expected));
+        Assert.That(expected, Does.Not.StartWith("VERSION"));
+        MethodInfo title = form.GetMethod("WindowTitle", HiddenStatic)!;
+        Assert.That(title.Invoke(null, [false]), Is.EqualTo("Offline DAoC Living Server " + BuildDisplay(buildName) + " — Classic + Shrouded Isles"));
+        Assert.That(title.Invoke(null, [true]), Is.EqualTo("Offline DAoC Living Server " + BuildDisplay(buildName) + " — New client"));
     }
+
+    [TestCase("1.2.2", "Living Server 1.2.2")]
+    [TestCase("v1.2", "Living Server 1.2")]
+    [TestCase("1.2.2-beta", "Living Server Beta 1.2.2")]
+    [TestCase("", "Living Server")]
+    [TestCase(null, "Living Server")]
+    [TestCase("0.37-se.1", "Living Server")]
+    public void LivingServerVersionReadsABuildName(string? buildName, string expected)
+    {
+        MethodInfo version = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!.GetMethod("LivingServerVersion", HiddenStatic)!;
+        Assert.That(version.Invoke(null, [buildName]), Is.EqualTo(expected));
+    }
+
+    private static string BuildDisplay(string buildName) => OfflineDaoc.Updates.BuildVersion.Parse(buildName)!.DisplayName;
 
     [TestCase(null, true)]
     [TestCase("True", true)]

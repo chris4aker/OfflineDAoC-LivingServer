@@ -18,7 +18,8 @@ Install [Offline DAoC](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0
 """
 CHANGELOG = "# Living Server changelog\n\n## Beta 1.1.1 — 2026-10-31\n\nFixes.\n\n## Beta 1.1 — 2026-10-29\n"
 FORK = 'public const string BuildName = "1.1.1-beta";\npublic const string BaseRelease = "0.37";\n'
-FORM = 'internal const string DisplayVersion = "0.37";\n'
+FORM = 'internal static string DisplayVersion => LivingServerVersion(LauncherBuild.Name);\n'
+PINNED_FORM = 'internal const string DisplayVersion = "0.37";\n'
 # 1.2 released as final (owner, 2026-11-19): tag v1.2, build 1.2, no "Beta".
 FINAL_README = f"""### Alive. **1.2 is out.**
 > **[Download Living Server 1.2]({REL}v1.2)**
@@ -152,18 +153,22 @@ class CheckVersions(unittest.TestCase):
         self.write(changelog=CHANGELOG.replace("## Beta 1.1.1 — 2026-10-31", "## Beta 1.1.1 (in development)"))
         self.assertTrue(self.problems())
 
-    def test_display_version_must_be_the_base_release(self):
-        self.write(form=FORM.replace("0.37", "0.36"))
-        self.assertTrue(any("DisplayVersion is 0.36" in p for p in self.problems()))
-        self.write(fork=FORK.replace('"0.37"', '"0.36,0.37"'))
+    def test_a_pinned_display_version_fails(self):
+        # Up to 1.2.1 the launcher showed "VERSION 0.37"; from 1.2.2 it shows the Living Server build.
+        self.write(form=PINNED_FORM)
+        self.assertTrue(any('DisplayVersion is pinned to "0.37"' in p for p in self.problems()))
+        self.write(form=PINNED_FORM.replace("0.37", "1.1.1"))
+        self.assertTrue(any('DisplayVersion is pinned to "1.1.1"' in p for p in self.problems()))
+
+    def test_display_version_must_read_the_launcher_build(self):
+        self.write(form='internal static string DisplayVersion => "Living Server";\n')
+        self.assertTrue(any("doesn't read LauncherBuild.Name" in p for p in self.problems()))
+        self.write(form=FORM)
         self.assertEqual(self.problems(), [])
 
-    def test_display_version_holding_a_living_server_version_follows_the_build(self):
-        self.write(form=FORM.replace("0.37", "1.1.1"))
-        self.assertEqual(self.problems(), [])
-        self.write(form=FORM.replace("0.37", "1.1"))
-        self.assertTrue(any("DisplayVersion is 1.1" in p for p in self.problems()))
-
+    def test_base_release_is_still_required(self):
+        self.write(fork=FORK.replace('public const string BaseRelease = "0.37";\n', ""))
+        self.assertTrue(any("no BaseRelease" in p for p in self.problems()))
 
 if __name__ == "__main__":
     unittest.main()
