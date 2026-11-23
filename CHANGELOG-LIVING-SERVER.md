@@ -60,6 +60,20 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   climb only change where it goes after the lip. Server log `DF_STAIR_CLIMB`. No navmesh change. **Tests only**
   (`UT_DarknessFallsStairClimb`; dfprobe `climb` on all nine drops).
 
+**Routes**
+- **The Lough Derg / Valley of Bri Leith seam loops (#421; 200:384960,486688 and 385088,483424).** On the installed
+  meshes Lough Derg has a ridge along its Connacht border (seam ground 6081, 1,379 polygons) that joins no other Lough
+  Derg ground: only the Valley's main ground (y 486,624-488,352), the Valley shelf (10136, y 483,424-486,496) and a
+  Connacht ledge (69404). The zone itinerary's "reaches the destination's main ground" preference looked at each
+  ground group's best crossing only; from the Valley toward Connacht both best picks were ridge crossings, so nothing
+  was left out and the bot stepped onto the ridge, which sent it straight back (and the shelf did the same toward
+  Mount Collory). Now no crossing, listed or sampled, onto ground that never reaches the destination's main ground is
+  taken while the border lists one that does; the last border (whose walk to the goal is proved itself) and goals on
+  other ground of their zone keep the old rule. `tools/navmesh/seam_route_sim.py` replays the itinerary on the 1.2
+  meshes: 15 of 28 trips from the four seam spots cycled before, none after; 72 trips between nine places on the main
+  ground of eight Hibernian zones: 62 arrived before, 72 after (the other 10 cycled, 6 of them at 384960,486688). No navmesh,
+  seam file or road file changed. **Tests only** (`UT_LoughDergRidgeSeam421`).
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

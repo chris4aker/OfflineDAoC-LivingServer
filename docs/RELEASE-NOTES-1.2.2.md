@@ -90,6 +90,12 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   they waited at the bottom, or wandered off into the level below when you stood near the arrival point at the top.
   The server log shows each climb as `DF_STAIR_CLIMB`.
 
+### Bots on the road
+
+- **No more pacing at the Lough Derg / Valley of Bri Leith border.** Hibernian bots walking from the Valley toward
+  Connacht, the Darkness Falls portal or Cruachan Gorge could step onto a ridge on the Lough Derg side that leads
+  nowhere, turn back, step on again and finally give up their trip. They now cross where the ground goes on.
+
 ## Known issues
 
 - **Bot raids still lose some fights (#407 to #415).** King Tuscar's own fight and Grand Summoner Govannon can still
