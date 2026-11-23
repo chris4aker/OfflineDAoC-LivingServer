@@ -462,6 +462,9 @@ public static class AutonomousChatQuestions
     private static readonly Regex LevelWords = new(
         @"\b(lvl|lvls|level|levels|level range|what lvl|for lvl|for level|open for|at \d{1,2}(ish)?|for a \d{1,2}|can a \d{1,2}|a \d{1,2} (solo|go|do|hunt)|\d{1,2}s)\b");
 
+    /// <summary>Whether a line asks about levels: "what lvl", "ok at 24", "can a 15 solo", "for 30s" (F1). Pure.</summary>
+    public static bool AsksLevels(string text) => !string.IsNullOrWhiteSpace(text) && LevelWords.IsMatch(Normalize(text));
+
     /// <summary>The place a line names (its longest alias, whole words), or null.</summary>
     public static AutonomousChatPlaces.Place PlaceNamed(string text, IEnumerable<AutonomousChatPlaces.Place> places)
     {
@@ -525,7 +528,7 @@ public static class AutonomousChatQuestions
                 return theirs + $"a bit high for {level}, mobs there are mostly {Range(low, high)}";
             if (level > high + 3)
                 return theirs + $"itll be mostly grey for you at {level}, its {Range(low, high)}";
-            return theirs + (random.Next(2) == 0 ? $"{level} is fine there, its mostly {Range(low, high)}" : $"should be ok, mobs are {Range(low, high)}");
+            return theirs + (random.Next(2) == 0 ? $"{level} is fine there, its mostly {Range(low, high)}" : $"fine at {level}, mobs are {Range(low, high)}");
         }
         return theirs + (random.Next(3) switch
         {

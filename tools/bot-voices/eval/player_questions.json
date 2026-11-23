@@ -9704,7 +9704,7 @@
     "re:\\b37\\+"
    ],
    "wrong_any": [
-    "re:\\b(is fine there|should be ok|yes|yep)\\b"
+    "re:\\b(is fine there|should be ok|fine at|yes|yep)\\b"
    ],
    "source": "places.json vale of balor 37-54"
   },
@@ -9801,7 +9801,7 @@
     "re:\\b50\\+"
    ],
    "wrong_any": [
-    "re:\\b(is fine there|should be ok|yes|yep)\\b"
+    "re:\\b(is fine there|should be ok|fine at|yes|yep)\\b"
    ],
    "source": "places.json caer sidi 75-79"
   },
@@ -9869,7 +9869,7 @@
     "re:\\b40\\+"
    ],
    "wrong_any": [
-    "re:\\b(is fine there|should be ok|yes|yep)\\b"
+    "re:\\b(is fine there|should be ok|fine at|yes|yep)\\b"
    ],
    "source": "places.json aldland 40-54"
   },

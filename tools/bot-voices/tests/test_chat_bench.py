@@ -180,3 +180,44 @@ class Bench(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class Ratchet(unittest.TestCase):
+    """The 1.2.2 ratchet (score_bench.py ratchet): the good share may only rise, no capped count may grow."""
+
+    BASE = dict(ok_share=0.80, counts={k: 5 for k in score_bench.CAPPED})
+
+    def now(self, share=0.80, **counts):
+        c = {k: 5 for k in score_bench.CAPPED}
+        c.update(counts)
+        return dict(total=100, ok=int(share * 100), ok_share=share, counts=c)
+
+    def test_holds_at_the_baseline(self):
+        self.assertEqual(score_bench.check_ratchet(self.now(), self.BASE), ([], []))
+
+    def test_fails_when_a_bad_category_grows(self):
+        problems, _ = score_bench.check_ratchet(self.now(WRONG=6), self.BASE)
+        self.assertTrue(any('WRONG' in p for p in problems))
+
+    def test_fails_when_the_good_share_falls(self):
+        problems, _ = score_bench.check_ratchet(self.now(share=0.79), self.BASE)
+        self.assertTrue(any('good share' in p for p in problems))
+
+    def test_reports_slack_to_tighten(self):
+        problems, slack = score_bench.check_ratchet(self.now(share=0.85, OFF_TOPIC=2), self.BASE)
+        self.assertEqual(problems, [])
+        self.assertEqual(len(slack), 2)
+
+    def test_counts_only_bad_silence(self):
+        out = dict(total=10, ok=6, silence_ok=2, categories={c: 0 for c in cs.CATEGORIES} | {'SILENT': 3, 'ANSWERED': 4},
+                   flags={f: 0 for f in cs.FLAGS}, by_intent={})
+        self.assertEqual(score_bench.ratchet_counts(out)['counts']['SILENT'], 1)
+
+    def test_baseline_and_holdout_exist(self):
+        base = json.loads((EVAL / 'bench_ratchet.json').read_text(encoding='utf-8'))
+        self.assertTrue(set(score_bench.CAPPED) <= set(base['counts']))
+        held = json.loads((EVAL / 'player_questions_holdout.json').read_text(encoding='utf-8'))['questions']
+        self.assertEqual(len(held), 60)
+        self.assertTrue(all(q['id'].startswith('h') and q['must_any'] for q in held))
+        bench_texts = {q['text'] for q in json.loads((EVAL / 'player_questions.json').read_text(encoding='utf-8'))['questions']}
+        self.assertFalse({q['text'] for q in held} & bench_texts, 'the holdout holds no bench question')

@@ -459,18 +459,27 @@ public static class AutonomousBotVoices
     public static bool TryGreetingReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
         bool relax = false, bool requireVoices = true)
     {
-        bool asked = AutonomousChatShortTalk.AsksHowAreYou(incoming);
-        // A holiday wish gets the holiday's own answer when there is one today (in-game check 2026-10-28: "happy halloween all!"
-        // drew two plain hellos).
-        if (AutonomousChatIntentModel.IsHolidayWish(incoming) && TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting),
-                slots: slots, relax: true, requireVoices: requireVoices,
-                filter: line => line.Needs.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal))))
-            return true;
-        if (asked && TryLine(bot, "reply", out result, answers: "ask_howareyou", slots: slots, relax: relax, requireVoices: requireVoices))
-            return true;
-        return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting), slots: slots, relax: relax,
-            requireVoices: requireVoices, filter: line => PlainGreetingFits(line, asked));
+        // The rules are AutonomousChatReplyPath.Greeting's (1.2.2, F0: the question bench runs the same function).
+        result = AutonomousChatReplyPath.Greeting(PickerFor(bot, slots, requireVoices), incoming, relax);
+        return result != null;
     }
+
+    /// <summary>TryLine for this bot as the reply path's corpus port (AutonomousChatReplyPath.LinePick).</summary>
+    public static AutonomousChatReplyPath.LinePick PickerFor(GameBot bot, IReadOnlyDictionary<string, string> slots = null, bool requireVoices = true) =>
+        (kind, intent, answers, flags, relax, filter) =>
+            TryLine(bot, kind, out VC.Picked picked, intent, answers, slots: slots, flags: flags, relax: relax, requireVoices: requireVoices, filter: filter)
+                ? picked
+                : null;
+
+    /// <summary>The live world's answer to a question shape (where the bot is, whether it is in the place asked, where the level hunts, the enemy), or null.</summary>
+    public static string LiveShapeAnswer(GameBot bot, GamePlayer asker, string shape, string incoming) => shape switch
+    {
+        "ask_whereyou" => AutonomousChatLiveAnswers.WhereIAm(bot, asker, Random.Shared),
+        "ask_inplace" => AutonomousChatLiveAnswers.InPlace(bot, AutonomousChatShortTalk.PlaceAsked(incoming), Random.Shared),
+        "ask_hunt" => AutonomousChatLiveAnswers.WhereToHunt(bot, asker, incoming, Random.Shared),
+        "ask_enemy" => AutonomousChatLiveAnswers.EnemySighting(bot, Random.Shared),
+        _ => null,
+    };
 
     /// <summary>
     /// Whether a greeting reply answers a plain hello: no holiday's own answer (chat 1.2, E4's CORPUS-B2-025: "hi" drew "happy
@@ -480,40 +489,18 @@ public static class AutonomousBotVoices
         line != null && (asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal)) &&
         !line.Needs.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal));
 
-    /// <summary>A reply for the kind of question a player asked ("anyone on?" -> "here"), before replies by topic.</summary>
+    /// <summary>A reply for the kind of question a player asked ("anyone on?" -> "here"), before replies by topic (AutonomousChatReplyPath.Shaped).</summary>
     public static bool TryShapedReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
         bool relax = false, bool requireVoices = true, GamePlayer asker = null)
     {
-        result = null;
-        string shape = AutonomousChatShortTalk.QuestionShape(incoming);
-        // "hows it going" may read as no intent at all: it is still a how-are-you (live test 2026-10-18: it drew "hm?").
-        if (shape == "ask_howareyou")
-            return TryGreetingReply(bot, incoming, out result, slots, relax, requireVoices);
-        // Answers from the live world (chat audit 2026-10-21): where the bot is, whether it is in the place asked about, where
-        // people of the level hunt now, where the enemy is.
-        string live = shape switch
+        var ports = new AutonomousChatReplyPath.Ports
         {
-            "ask_whereyou" => AutonomousChatLiveAnswers.WhereIAm(bot, asker, Random.Shared),
-            "ask_inplace" => AutonomousChatLiveAnswers.InPlace(bot, AutonomousChatShortTalk.PlaceAsked(incoming), Random.Shared),
-            "ask_hunt" => AutonomousChatLiveAnswers.WhereToHunt(bot, asker, incoming, Random.Shared),
-            "ask_enemy" => AutonomousChatLiveAnswers.EnemySighting(bot, Random.Shared),
-            _ => null,
+            Line = PickerFor(bot, slots, requireVoices),
+            Live = (shape, line) => LiveShapeAnswer(bot, asker, shape, line),
+            Style = text => StyleFor(bot, text),
         };
-        if (live != null)
-        {
-            result = new VC.Picked(StyleFor(bot, live), null, null);
-            return true;
-        }
-        if (shape is null or "ack" or "ask_whereyou" or "ask_inplace" or "ask_hunt" or "ask_enemy")
-            return false;
-        // "can you help me?" is answered "sure, whats up?", not a random tip (the audit's drew "bind at the nearest town").
-        if (shape == "ask_help")
-            return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Help), slots: slots, relax: relax, requireVoices: requireVoices,
-                filter: line => line.Text.TrimEnd().EndsWith('?') || line.Text.Contains("whats up", StringComparison.OrdinalIgnoreCase) ||
-                                line.Text.Contains("what do", StringComparison.OrdinalIgnoreCase));
-        string answers = shape == "ask_price" ? "trade" : shape;
-        return TryLine(bot, "reply", out result, answers: answers, slots: slots, relax: relax, requireVoices: requireVoices,
-            filter: line => ShapedFits(shape, incoming, line.Text));
+        result = AutonomousChatReplyPath.Shaped(ports, incoming, relax);
+        return result != null;
     }
 
     /// <summary>
