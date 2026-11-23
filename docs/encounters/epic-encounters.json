@@ -735,7 +735,7 @@
    "realm": "Midgard",
    "region": 160,
    "bossType": "KingTuscar",
-   "suggestedBots": 120,
+   "suggestedBots": 100,
    "finals": [
     "KingTuscar",
     "QueenKula"
@@ -748,7 +748,7 @@
    "realm": "Hibernia",
    "region": 191,
    "bossType": "Olcasgean",
-   "suggestedBots": 112,
+   "suggestedBots": 100,
    "finals": [
     "Olcasgean"
    ],
@@ -760,7 +760,7 @@
    "realm": "Albion",
    "region": 248,
    "bossType": "GrandSummonerGovannon",
-   "suggestedBots": 80,
+   "suggestedBots": 64,
    "finals": [
     "GrandSummonerGovannon"
    ],
@@ -772,7 +772,7 @@
    "realm": "Midgard",
    "region": 248,
    "bossType": "GrandSummonerGovannon",
-   "suggestedBots": 80,
+   "suggestedBots": 64,
    "finals": [
     "GrandSummonerGovannon"
    ],
@@ -784,7 +784,7 @@
    "realm": "Hibernia",
    "region": 248,
    "bossType": "GrandSummonerGovannon",
-   "suggestedBots": 80,
+   "suggestedBots": 64,
    "finals": [
     "GrandSummonerGovannon"
    ],

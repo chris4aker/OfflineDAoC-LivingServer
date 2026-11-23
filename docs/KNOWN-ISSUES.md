@@ -22,11 +22,8 @@ Bot raids fight the bosses by the bosses' own rules, and the bots don't win ever
 - **Not played in full yet:** at Legion the raid doesn't use his platform, the way down or his add waves.
   **Behemoth** is never fought by bots, and **Fomor City** and **Morgana** have no bot raid.
 - **Xanxicar's stomp** is learned over a realm's attempts, so early raids lose to it more often.
-- **Bigger raids need the bots.** 1.2.2's raid sizes only take effect when a realm has the free level 50s:
-  - 224 for Galladoria;
-  - 240 for Tuscaran Glacier;
-  - 160 for Summoner's Hall and the Green Knight.
-  - Any automatic raid needs 80 level-50 bots of the realm online.
+- **Raids need the bots.** A raid's full size is half the realm's free level 50s, up to its period size, and any
+  automatic raid needs 80 level-50 bots of the realm online.
 - **Too hard on your world?** Each restored boss rule is a server setting of its own and can be switched off on its
   own.
 - **Don't turn on `epic_earthmender_mutual_heal`:** with it on, the four Earthmenders heal each other and the bots
