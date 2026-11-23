@@ -573,6 +573,10 @@ namespace DOL.GS
                     }
                     if (droppedChase)
                         return true;
+                    // In a keep or tower lord's fight casters, archers and healers keep their formation spot behind the
+                    // melee (1.2.2, RvrLordFormation), frontier and battleground alike.
+                    if (bot.TargetObject is GuardLord fightLord && TakeLordFormation(bot, fightLord))
+                        return true;
                     // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
                         return true;

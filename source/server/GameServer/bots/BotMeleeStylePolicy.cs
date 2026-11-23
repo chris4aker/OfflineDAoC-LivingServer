@@ -157,7 +157,9 @@ namespace DOL.GS
             foreach (Style style in bot.Styles)
                 if (IsChainFollowUp(style) && style.Level <= bot.Level)
                     (openers ??= new HashSet<int>()).Add(style.OpeningRequirementValue);
-            bool tauntWanted = BotPartyRoles.IsTank(bot) && bot.Group?.MemberCount > 1;
+            // A tank holds a keep or tower lord's attention in front of the casters behind it, grouped or not (1.2.2).
+            bool tauntWanted = RvrLordFormation.TankTaunts(BotPartyRoles.IsTank(bot), bot.Group?.MemberCount ?? 0,
+                bot.TargetObject is DOL.GS.Keeps.GuardLord);
             var scored = new List<(Style, double)>();
             foreach (Style style in bot.Styles)
             {

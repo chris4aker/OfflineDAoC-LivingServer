@@ -47,6 +47,16 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
+**RvR**
+- **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
+  reach (1.2.1, #416: 350 in a keep, 250 in a tower) tanks and melee fight him at melee range; casters and archers stand
+  behind them on the raid's side (toward his keep's or tower's door), 230-300 from him in a keep and 160-205 in a tower,
+  on nine spots in two rows over a 120 / 90 degree arc; healers behind the casters, 305-345 / 210-245, still inside his
+  reach. Each spot is snapped to the navmesh on his floor with a straight floor line to him (narrower, then nearer the
+  centre line when the room refuses it; none: the old behaviour). A lone tank on a lord now taunts as a grouped one
+  does. Frontier sieges and battleground storms; autonomous gamebots only (companions keep their own paths). Lord radii
+  and stats unchanged. `RvrLordFormation`, log `RVR_LORD_FORMATION role= dist=`. **Tests only** (#416).
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
