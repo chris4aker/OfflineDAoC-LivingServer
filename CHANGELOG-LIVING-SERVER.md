@@ -26,10 +26,20 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   sim, with 1.2.1's fresh-Pain cure, wins 0 of 64 attempts at 64, 8-16 at 80, 54-61 at 88 (Midgard, Hibernia) and
   56 at 96 (Albion); the 1.2 cure rule wins 0-1 of 64 at every size up to 128. Twice the guide's "four to five full
   groups" is 80, so 80 it is: the raid now starts at 100, where she loses 0-8 of 64. **Tests only** (#410).
-- **The Green Knight: 40 to 80.** With 1.2.1's stack and peel his sim wins 58 of 64 at 80 (a tree hitting for 8 a
-  second, 80 a second from a raider on a tree), 4 at 72 and none at 40-64; the 1.2 rules win 0 of 576 at every size to
-  96. 80 is twice the guide's 4-5 groups. His trees stay capped at 70 a wave (the Albion dragon raid's size). If his
-  trees hit for 15 a second, 88-96 would be needed: the next log's `EPIC_GK_TREES` line tells. **Tests only** (#412).
+- **The Green Knight: 40 to 80.** 80 is twice the guide's 4-5 groups. With 1.2.1's assumed tree hit (8 a second) his
+  sim won 58 of 64 at 80; with the real one (below) it wins none at any size to 104 and 59 of 64 from 120 (the 1.2 rules
+  0), so the target lies past the limit and the raise to the limit stands, but at 80 the model never wins: his tactic
+  needs more work (#412). His trees stay capped at 70 a wave (the Albion dragon raid's size). **Tests only.**
+- **Real boss stats in the raid sims** (`UT_RaidRealStats122`; docs/RAID-SIZES.md, "Real stats"). The sims' assumed hits
+  are replaced by the public OpenDAoC database's templates, the scripts and the server's damage formulas (templates'
+  STR / QUI / INT are auto-set to 30 + (level - 1) unless a script sets them; epic bosses deal 2.25 times). The Green
+  Knight's trees hit 22-36 a second on mail and plate and 53-78 on cloth (assumed 5-15); Roesia's melee 200-289 a second
+  and her damage shield 224-280 a swing (assumed 200 and 64); Marfoirwort swings every 2.71 s (assumed 3.0-4.5).
+  Every 1.2.2 size holds: Summoner's Hall 80 (real stats: 0-15 of 64 at 80, 43-64 from 88-112; the old cure rule 0-5 at
+  80), Galladoria 112, Tuscaran Glacier 120 (their models use health and the PC ledgers, unchanged), the Green Knight 80
+  (above); kept Caer Sidi, Trollheim, the dragons, Darkness Falls (Legion still killed inside 20 minutes from 48 at the
+  real 6.2 a raider-second) and Marfoirwort (won at 40 at his real swing). Behemoth (#414): every swing kills one, 23 a
+  minute; a raid would need about 440 bots in his hall at once, past the realm's 300: no bot raid. **Tests only.**
 - **Galladoria: 100 to 112.** From 14 parties 1.2.1's add-party share sends all 8 parties at Spindler Broodmother's
   newborns, and 1.93 are left at her death, fewer than the 2.49 of the one PC kill (`ccba364`, 128 bots); at 13 parties
   3.41. The 1.2 share gets there only from 16 parties. Her mesmerize and burn are not modelled. **Tests only** (#408).

@@ -57,7 +57,7 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 | Raid | Was | Now | What it means |
 |---|---|---|---|
 | **Summoner's Hall** (all three realms) | 64 | **80** | Enough raiders to outlast Summoner Roesia's Pain with 1.2.1's cures. The guides say four to five groups, so 80 is as far as the raise goes; the raid now starts at 100. |
-| **The Green Knight** | 40 | **80** | Enough raiders for 1.2.1's stack and peel to hold against his trees. His trees still stop at 70 a wave. |
+| **The Green Knight** | 40 | **80** | Twice the guides' four to five groups, as far as the raise goes. His trees hit harder than first thought, so 80 alone may not be enough yet, and his fight is still being worked on. His trees still stop at 70 a wave. |
 | **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left when she dies. |
 | **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
 

@@ -104,16 +104,60 @@ raid sizes in whole parties. "1.2" is the control: the rules before the 1.2.1 ta
 
 | Raid (issue) | Sim | 1.2.1 tactic, by size | 1.2 rules (control) | No-zerg limit | Decision |
 |---|---|---|---|---|---|
-| Summoner's Hall: Summoner Roesia (#410) | `UT_RaidSim121SummonersGreenKnight`, 64 seeds | wins of 64 at 64 / 80 / 88 / 96 / 104: Midgard 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64 | 0-1 of 64 at every size to 128 | 80 | **64 → 80**, all three realms (the target, 88-96, is past the limit). The raid starts at 100, where she loses 0-8 of 64 |
-| Summoner's Hall: Grand Summoner Govannon | a cruder attrition model on three 80-bot play tests | demon phases won of 64 at 80 / 96 / 104 / 112: 0 / 30 / 60 / 64 (harsher case 0 / 10 / 37 / 57) | no 1.2.1 tactic for him | (same raid) | rides on Roesia's raise; not a reason of its own |
-| Green Knight (#412) | the same file, 64 seeds, 9 assumed cases | middle case (tree hit 8/s, 80 a raider on a tree): 0 at 40-64, 4 at 72, **58** at 80; all 9 cases: 84 / 1 / 142 / 247 of 576 at 40 / 64 / 72 / 80 | 0 of 576 at every size to 96 | 80 | **40 → 80**. At a tree hit of 15/s 88-96 would be needed; the next PC log (`EPIC_GK_TREES`) decides |
-| Marfoirwort (#412) | the same file | 64 of 64 at 40 in every case but one (60) | 1-6 of 64 at 40, 19-53 at 72-80 | 80 | **keep 40**: a larger raid would win by numbers alone |
+| Summoner's Hall: Summoner Roesia (#410) | `UT_RaidSim121SummonersGreenKnight`, 64 seeds; real stats `UT_RaidRealStats122` | 1.2.1 (assumed melee): wins of 64 at 64 / 80 / 88 / 96 / 104: Midgard 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64. **Real stats (1.2.2)**, 64 / 80 / 88 / 96 / 104 / 112: Midgard 0 / 0 / 0 / 0 / 8 / 42, Albion 0 / 15 / 43 / 58 / 64 / 64, Hibernia 0 / 7 / 29 / 46 / 63 / 64 | 1.2.1: 0-1 of 64 at every size to 128; real stats: 0-5 at 80, 13-27 at 88-96 (Albion, Hibernia) | 80 | **64 → 80 holds**, all three realms: the target (88-112) is past the limit, and at 80 the 1.2 rule still loses |
+| Summoner's Hall: Grand Summoner Govannon | a cruder attrition model on three 80-bot play tests | demon phases won of 64 at 80 / 96 / 104 / 112: 0 / 30 / 60 / 64 (harsher case 0 / 10 / 37 / 57) | no 1.2.1 tactic for him | (same raid) | rides on Roesia's raise; not a reason of its own. Real stats agree with its premise: his demon (STR 800) hits plate for 3,059 (the cap) every 3.6 s, one raider a swing whatever the raid's size |
+| Green Knight (#412) | the same file; real stats `UT_RaidRealStats122`, 64 seeds | 1.2.1 (assumed tree hit 5 / 8 / 15 a second): middle case 0 at 40-64, 4 at 72, 58 at 80. **Real stats (1.2.2)**: a tree hits 22-36 a second on mail and plate and 53-78 on cloth, he hits his target for 234-338: **0 of 64 at every size 40-104** in every case and rule; the stack and the peel win from 120 (low case 59 of 64 at 80 on a tree), 160 in the others | 0 of 64 at 40-120; from 160 the 1.2 catalog wins too | 80 | **40 → 80 stands by the letter of the rule** (the target, 120, lies past the limit: raised to the limit), but at 80 the model never wins: the tactic needs more work before the size helps (#412) |
+| Marfoirwort (#412) | the same file; real stats `UT_RaidRealStats122` | at his real swing (2.71 s, no miss; the 1.2.1 model tried 3.0-4.5 s at 85%): 64 of 64 at 40-80 at 200 and 400 a raider-minute (at 100: 0-36 at 40, 64 from 48) | 0 of 64 at 40-56, 0-10 at 64-80 | 80 | **keep 40**: it wins at 40 |
 | Galladoria: Spindler Broodmother (#408) | `UT_SpindlerBroodSim` (her newborns, not a whole fight) | 13 parties (100): 3.41 newborns alive at her death; **14 (112): 1.93**, all 8 add parties; the one PC kill (`ccba364`, 128) had 2.49 | from 16 parties (128) | 200 | **100 → 112** |
 | Tuscaran Glacier: Queen Kula (#409) | `UT_TuscaranTrollheimSim` (Kula's phase, a damage race) | Kula's phase: 23.3 min at 100, 21.6 at 108, **20.0 at 120**; the PC kill (`ccba364`, about 124) took 20.1 | 21.4-27.0 min at 120 | 200 | **100 → 120**. King Tuscar's own fight has no model; two losses to him on `ccba364` were at about 124 |
 | Caer Sidi: the Crypt Lord (#407) | `UT_CryptLordCourtSim` (his patrol and the pull) | 0% joins on a guarded pull at every size 100-200 | 68 / 21 / 32-37% joins at every size | 200 | **keep 100**: size is not the lever |
 | Trollheim: Nosdoden (#411) | `UT_TuscaranTrollheimSim` (the stall clock) | 0 of 200 time-outs at 64-128 | 36 of 200 at 64, 11 at 128 | 128 | **keep 64**: the fix needs no size (a raise would also lift his spirits' cap) |
 | Golestandt, Gjalpinulva, Cuuldurach (#415) | `UT_DragonThrowReturnWave415`, 300 seeds | won at 70: 84 / 93 / 89% | 24 / 57 / 30% at 70; 99-100% from 80 | 140 | **keep 70**: they win at 70, and from 80 the old rules win too |
-| Darkness Falls: Legion (#413) | `UT_LegionWounded413`, 300 seeds | 100% killed inside 20 min from 48 up | 84% at 64, 98% at 72 | 128 | **keep 64** |
+| Darkness Falls: Legion (#413) | `UT_LegionWounded413`, 300 seeds | 100% killed inside 20 min from 48 up, also at the real raid damage (6.2 a raider-second against his armour, the b1b6846 ledger scaled; the sim assumed 9) | 84% at 64, 98% at 72; at 6.2 a second 0% at 48-80 | 128 | **keep 64** |
+
+### Real stats (1.2.2)
+
+The 1.2.1 sims assumed the bosses' hits. These are the real ones: each boss's row in the public OpenDAoC database
+(`npctemplate`), its script, and the server's formulas (`UT_RaidRealStats122` writes them out and checks them). Two facts
+change most of the numbers: with `force_mob_autoset_stats` (default on; the database sets no server property) a
+template's strength, quickness and intelligence are replaced by 30 + (level - 1) unless the script sets them afterwards,
+and an epic boss's damage is 2.25 times a monster's (`GameEpicBoss.DamageFactor`). The target is a level 50 bot in
+full-quality armour: "high" without buffs or resists, "low" with a capped spec AF buff and 20% resists. Tests only.
+
+| Who (source) | Level, STR / QUI used | Swing | A landed hit on plate / chain / cloth | On plate a second (high / low) |
+|---|---|---|---|---|
+| Green Knight (`npctemplate` 60161621; `OFGreenKnight.cs`: two-hander) | 79, 108 / 108 (autoset; template 420 / 100) | 3.62 s | 1,223 / 1,353 / 2,998 | 338 / 234 |
+| his trees (`GKTrees`: 800 health, STR 150, QUI 80, level 47-49, no weapon) | 48, 150 / 80 | 2.88 s, 21% miss | 118 / 130 / 282 (its cap) | 32 / 22 (chain 36 / 25, cloth 78 / 53) |
+| Summoner Roesia (18804; two-hander) | 75, 104 / 104 | 3.65 s | 1,056 / 1,168 / 2,743 | 289 / 200 |
+| Grand Summoner Govannon (18801; two-hander) | 80, 109 / 109; demon STR 800 (script) | 3.61 s | 1,267; demon 3,059 (cap) | 351; demon 848 |
+| King Tuscar (60162909; two-hander) | 85, 114 / 114 | 3.57 s | 1,507 / 1,667 / 3,374 | 422 / 292 |
+| Queen Kula (60165083; one-hander) | 85, STR 350 with the King alive, 500 after (script) / 114 | 2.68 s | 1,733; 2,181 | 647; 815 |
+| Spindler Broodmother (60166449; no weapon) | 81, 110 / 110 | 2.70 s | 895 / 990 / 2,128 | 332 / 229 |
+| her newborns (`SBAdds`: 8,000 health, STR 250, QUI 80, level 56-59) | 56-59, 250 / 80 | 2.88 s, 0-9% miss | 218-249 / 242-276 / 355-384 | 68-81 / 47-56 |
+| Nosdoden (60164545; one- or two-hander by form) | 80, 109 / 109 | 2.71 / 3.61 s | 864 / 1,267 | 319 / 351 |
+| Legion (13333; script sets STR 200, QUI 100; no weapon) | 83, 200 / 100 | 2.76 s | 1,207 / 1,335 / 2,213 | 437 / 303 |
+| the dragons (60157497, 694189, 678903) | 80, 109 / 109 | 2.71 s | 600 (`RealmEventPolicy.DragonAttackDamageLimit`) | 222 |
+| Marfoirwort (60163696; no weapon) | 80, 109 / 109 | 2.71 s, no miss | (his leech: 450 body, 25% of hits) | - |
+| Behemoth (60158340; no weapon) | 99, 128 / 128 (template 1,400 / 200) | 2.59 s (2.16 with the template's QUI) | every swing kills (`OnAttackEnemy` → `Die`, hit or miss) | 23 raiders a minute (28) |
+
+Spells (NPC caster: damage x (1 + INT / 200), variance 0.6-1.0): Roesia's Pain 137-228 a tick before resists (the
+sim's 125, from b1b6846's first minute, means about a third resisted: the log stands); her damage shield 80 x the
+attacker's swing (280 a 3.5 s swing, the sim assumed 64); Govannon's Shroud 111-185 a 2 s tick; the Green Knight's Might
+of the Forest 250 (no variance, the sim's 200 after resists stands). Health, armour and resists were already read from
+the scripts and are unchanged. The raid's damage stays the PC ledgers' (b1b6846: 400 a raider-minute at Marfoirwort;
+e3b8238: 350-700 on a newborn); scaled to each boss's armour it gives the dragon sim's 4 a raider-second (kept) and 6.2
+on Legion (the sim had 9).
+
+Roesia with her real melee: the 1.2.1 heal (400) made a raid without cures fall in 0.7 minutes against b1b6846's 1.5, so
+the heal was recalibrated (730: 1.05 minutes on average, 0.8-1.6, her lowest 85% against the log's 76%; the closest fit
+the model gives). Healers cure Pain only one raider at a time in every realm: the database's Cure Poison spells (1371
+Rebirth, 3072 Healer and Shaman Mending, 4983 Druid and Bard Regrowth) are all single-target (`Realm`, radius 0).
+
+Behemoth (#414): 600,000 health, AF 550, 50% absorb, 40% / 70% resists. The raid's damage on him, the b1b6846 ledger
+scaled to his armour, is about 145 a raider-minute; losing 23 raiders a minute, a raid without resurrections deals
+145 x n^2 / 46 before the last falls, so it needs about 440 raiders (480 at the template's quickness), past the realm's
+300, all inside his hall at once, which only Legion's throw reaches (8-16 raiders every 40-65 s). No bot raid is
+possible within the raid rules; his exception (signed off 2026-11-15) stands.
 
 ### Starting sizes
 
