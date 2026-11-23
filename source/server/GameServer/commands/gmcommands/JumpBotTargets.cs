@@ -102,19 +102,54 @@ namespace DOL.GS.Commands
             };
         }
 
+        /// <summary>Why a bot can't be jumped: <see cref="MoveRefusal.None"/> when it can.</summary>
+        public enum MoveRefusal { None, NotInWorld, Dead }
+
+        /// <summary>Pure: a bot that left the world can't be moved; a dead one isn't either, as its corpse stays where it fell
+        /// (GameBot.RefuseCorpseMove: its release and return are planned from that spot, so moving the body would send the
+        /// released bot to a bind of the wrong region).</summary>
+        public static MoveRefusal Refusal(bool inWorld, bool alive) =>
+            !inWorld ? MoveRefusal.NotInWorld : !alive ? MoveRefusal.Dead : MoveRefusal.None;
+
+        public static MoveRefusal Refusal(GameBot bot) =>
+            Refusal(bot?.ObjectState == GameObject.eObjectState.Active, bot?.IsAlive == true);
+
+        /// <summary>Pure: what the GM is told when a jump of the bot named <paramref name="name"/> failed.</summary>
+        public static string FailureText(string name, MoveRefusal refusal) => refusal switch
+        {
+            MoveRefusal.Dead => $"{name} is dead, and a body stays where it fell: resurrect it there, or wait for it to release, then jump it.",
+            MoveRefusal.NotInWorld => $"{name} is not in the world any more.",
+            _ => $"{name} could not be moved there.",
+        };
+
+        /// <summary>What the GM is told when <see cref="TryMove"/> returned false for <paramref name="bot"/>.</summary>
+        public static string FailureText(GameBot bot) => FailureText(bot?.Name, Refusal(bot));
+
         /// <summary>
-        /// Moves a bot where a GM sends it. It drops what it was doing first (attack, path, follow, cast, stable ride),
-        /// so its brain plans again from the new place. An autonomous gamebot also records the move as progress, so its
-        /// stuck watchdog does not take the jump for a stall, and replots its route (the same steps the watchdog uses
-        /// when it puts a stuck gamebot back beside its player). A bot in a player's group follows on from there.
+        /// Moves a bot where a GM sends it, in its region or another. It drops what it was doing first (attack, path, follow,
+        /// cast, a stablemaster ride or one waiting to leave), so its brain plans again from the new place; leaving the
+        /// world for the move takes it off every monster's aggro list (GameNPC.RemoveFromWorld), so a fight it was in
+        /// doesn't follow it. An autonomous gamebot also forgets the trip it planned from the old spot (camp, patrol, town
+        /// teleporter, frontier porter, a stable ride it meant to take; its task stays), records the move as progress, so
+        /// its stuck watchdog does not take the jump for a stall, and replots its route (the same steps the watchdog uses
+        /// when it puts a stuck gamebot back beside its player). A bot in a player's group follows on from there. A dead
+        /// bot is refused before anything changes (<see cref="Refusal(bool, bool)"/>). Bots never ride boats (only players
+        /// board GameBoat), so there is no boat to leave.
         /// </summary>
         public static bool TryMove(GameBot bot, ushort region, int x, int y, int z, ushort heading, GamePlayer gm)
         {
-            if (bot == null || bot.ObjectState != GameObject.eObjectState.Active)
+            if (Refusal(bot) != MoveRefusal.None)
+            {
+                if (bot != null)
+                    Log.Warn($"GM_JUMP_BOT_REFUSED gm=\"{gm?.Name}\" bot=\"{bot.Name}\" kind={Kind(bot)} reason={Refusal(bot)} " +
+                             $"at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z}");
                 return false;
+            }
             int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
             ushort oldRegion = bot.CurrentRegionID;
-            if (bot.IsOnStableMasterRoute)
+            bool riding = bot.IsOnStableMasterRoute;
+            bool fighting = bot.InCombat;
+            if (riding)
                 bot.CompleteStableMasterRoute();
             bot.StopAttack();
             bot.StopFollowing();
@@ -128,6 +163,7 @@ namespace DOL.GS.Commands
             bot.ForcePathReplot();
             if (bot.IsAutonomousWorldBot)
             {
+                (bot.Brain as BotBrain)?.ForgetAutonomousTrip();
                 bot.TryConsumeAutonomousPathFailure(out _, out _);
                 AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Recovery);
                 bot.MarkAutonomousStateDirty();
@@ -135,7 +171,8 @@ namespace DOL.GS.Commands
             if (bot.IsPlayerLedGroup && bot.Brain is BotBrain followBrain)
                 followBrain.FSM.SetCurrentState(eFSMStateType.FOLLOW);
             Log.Warn($"GM_JUMP_BOT gm=\"{gm?.Name}\" bot=\"{bot.Name}\" kind={Kind(bot)} " +
-                     $"from={oldRegion}:{oldX},{oldY},{oldZ} to={region}:{x},{y},{z}");
+                     $"from={oldRegion}:{oldX},{oldY},{oldZ} to={region}:{x},{y},{z} " +
+                     $"region_change={oldRegion != region} was_riding={riding} was_fighting={fighting}");
             return true;
         }
 
