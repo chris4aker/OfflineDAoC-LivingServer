@@ -44,6 +44,23 @@ otherwise.
   - The chat bench asks seven town questions (`/group` and `/faction`), and its `/group` path now runs the knowledge
     lookup first, as the live path does. `UT_PartyWhere123`. **Tests only.**
 
+- **"where do I choose advanced class" gets an answer** (the owner's game on 1.2.2: a level 5 Albion caster asked it in
+  /faction and nobody answered). `AutonomousChatClassChoice`, from the server's class tree (classic and Shrouded Isles
+  classes only): at 5 the character picks its class from that class's trainer, in the capital; the asker's own base class
+  gives its options ("for elementalist thats wizard or theurgist"), a named class gets its trainer, a class of another base
+  or realm is said as such, and a promoted character is told it already chose. Before the lore and the guide in the
+  knowledge lookup. The bench asks seven class questions. **Tests only.**
+- **No "dunno" from a bot to another bot** (the owner's game: "puny skeletons drop anything good?" drew "dunno havent camped
+  them"). A field thread's answer that says it doesn't know ("dunno", "idk", "no idea", "never camped it") is left unsaid;
+  with nothing else to say the bot stays quiet (`AutonomousChatFieldTalk.IsNonAnswer`). **Tests only.**
+- **Group talk stays in the group** (the owner's game: "nobody has died yet, lets keep it that way" and "nice pulls everyone,
+  thats how it should be" in /faction, one answered "heh"). The /faction opener's filter now leaves out the group-talk
+  topic and any line for a bot in a group that speaks to its listeners ("sorry all, my bad")
+  (`AutonomousChatFiller.SaidToTheGroup`). They still go to /say for a bot group near a player. `UT_FactionChat123`.
+  **Tests only.**
+- Not changed: "www.g0ldbucket.c0m" is the gold spammer of Server life (`bot_living_characters`, on by default since 1.2):
+  a made-up site spelled with zeros, banned a few minutes later.
+
 **The server**
 - **No endurance regeneration at all** (a r/daoc report on 1.2.1, 0.37b: sitting alone in Camelot with Tireless and a
   Minstrel endurance song, endurance stayed flat; in 1.2 power did too, until the launcher's power rate rewrote that row).

@@ -928,6 +928,10 @@ public static class AutonomousChatFieldTalk
             else if (text.Contains('{'))
                 continue;
             text = Finish(text, random);
+            // 1.2.3 (the owner's game on 1.2.2: "puny skeletons drop anything good?" drew "dunno havent camped them"): a bot
+            // that doesn't know says nothing; a "dunno" never answers another bot.
+            if (IsNonAnswer(text))
+                continue;
             // Round 8: the answer gives what the question asks for.
             if (!Fits(text, asked))
                 continue;
@@ -950,8 +954,18 @@ public static class AutonomousChatFieldTalk
             memory?.Use(null, AnswerIdea(AutonomousChatFiller.Skeleton(rested)), now);
             return rested;
         }
-        return asked == null ? null : AnswerFor(asked, answerer, random) is { } plain ? Finish(plain, random) : null;
+        return asked == null ? null : AnswerFor(asked, answerer, random) is { } plain && !IsNonAnswer(plain) ? Finish(plain, random) : null;
     }
+
+    private static readonly System.Text.RegularExpressions.Regex NonAnswer = new(
+        @"^\W*(dunno|idk|no idea|not sure|no clue|hmm dunno|never (got|camped|did) it|havent (camped|been|seen))\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// Whether a bot's answer to another bot says it doesn't know ("dunno, havent camped them", "idk", "no idea"): such a line
+    /// is left unsaid (1.2.3; 1.2.2's F4 kept "dunno" from answering players in /faction). Pure.
+    /// </summary>
+    public static bool IsNonAnswer(string text) => !string.IsNullOrWhiteSpace(text) && NonAnswer.IsMatch(text);
 
     /// <summary>The idea an answer rests under (30-60 minutes, <see cref="Memory.IdeaRestMs"/>) once the evening has heard it.</summary>
     private static string AnswerIdea(string skeleton) => "answer:" + skeleton;
@@ -1979,14 +1993,14 @@ public static class AutonomousChatFieldTalk
         // An answer that asks back ("where at?") is answered by the asker, and that is the thread: no "ty" to a question.
         if (answer.TrimEnd().EndsWith('?'))
         {
-            if (AnswerFor(QuestionKind(answer), asker, random) is { } back)
+            if (AnswerFor(QuestionKind(answer), asker, random) is { } back && !IsNonAnswer(back))
                 steps.Add(new Step(0, Finish(back, random), AutonomousChatArbiter.DelayMs(answer, back, 40, at, random)));
             return steps;
         }
         // The follow-up's answer gives what it asks ("where at?" a place, never a level).
         string FreshFitting(string[] pool, Facts speaker, string kind)
         {
-            string[] fitting = pool.Where(text => Fits(Fill(text, speaker, random), kind)).ToArray();
+            string[] fitting = pool.Where(text => !IsNonAnswer(text) && Fits(Fill(text, speaker, random), kind)).ToArray();
             return fitting.Length == 0 ? null : Fresh(fitting, speaker);
         }
         // A line of three words or more is heard once an evening; with none fresh, the thread stops there.
@@ -2058,7 +2072,7 @@ public static class AutonomousChatFieldTalk
         }
         else if (!nothing && random.NextDouble() < LongThreadChance && said.Kind is not ("class" or "help") && RunsOnAbout(said) && More.TryGetValue(said.Kind, out var more) &&
             Fresh(more.Ask.Where(text => !AlreadyAnswered(text, answer)).ToArray(), asker) is { } ask &&
-            (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain ? Finish(plain, random) : null)) is { } reply)
+            (FreshFitting(more.Reply, answerer, QuestionKind(ask)) ?? (AnswerFor(QuestionKind(ask), answerer, random) is { } plain && !IsNonAnswer(plain) ? Finish(plain, random) : null)) is { } reply)
         {
             at = AutonomousChatArbiter.DelayMs(answer, ask, 40, at, random);
             steps.Add(new Step(0, ask, at));

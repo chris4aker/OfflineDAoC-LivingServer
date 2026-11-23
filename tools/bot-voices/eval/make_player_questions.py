@@ -545,6 +545,19 @@ def build():
               channel=channel, wrong=[r're:\b(not sure|dunno|no idea|idk)\b', 'stablemaster is your friend'],
               source="world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)")
 
+    # 17. Picking the class at level 5 (1.2.3, the owner's game: "where do I choose advanced class" in /faction at level 5 drew no
+    # answer). The base class's options and the capital's trainers (the server's class tree; AutonomousChatClassChoice).
+    no_dunno = [r're:\b(not sure|dunno|no idea|idk)\b']
+    choices = [('alb', 'Elementalist', 'where do I choose advanced class', ['wizard', 'theurgist']),
+               ('alb', 'Acolyte', 'how do i become a cleric?', ['cleric trainer']),
+               ('alb', 'Elementalist', 'where do i spec into theurgist', ['theurgist trainer']),
+               ('mid', 'Seer', 'how do i pick my class?', ['healer', 'shaman']),
+               ('mid', 'Viking', 'how do i become a thane', ['thane trainer']),
+               ('hib', 'Naturalist', 'when do i get my advanced class?', ['bard', 'druid', 'warden']),
+               ('hib', 'Guardian', 'how do i become a druid?', ['naturalist', 'cant'])]
+    for realm, cls, text, must in choices:
+        b.add(text, 'trainer', must, realm, cls=cls, level=5, wrong=no_dunno, source='AutonomousChatClassChoice: the class tree, at 5')
+
     return b.items
 
 

@@ -16150,6 +16150,123 @@
     "stablemaster is your friend"
    ],
    "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q461",
+   "text": "where do I choose advanced class",
+   "channel": "faction",
+   "realm": "alb",
+   "cls": "Elementalist",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "wizard",
+    "theurgist"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q462",
+   "text": "how do i become a cleric?",
+   "channel": "faction",
+   "realm": "alb",
+   "cls": "Acolyte",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "cleric trainer"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q463",
+   "text": "where do i spec into theurgist",
+   "channel": "faction",
+   "realm": "alb",
+   "cls": "Elementalist",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "theurgist trainer"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q464",
+   "text": "how do i pick my class?",
+   "channel": "faction",
+   "realm": "mid",
+   "cls": "Seer",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "healer",
+    "shaman"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q465",
+   "text": "how do i become a thane",
+   "channel": "faction",
+   "realm": "mid",
+   "cls": "Viking",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "thane trainer"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q466",
+   "text": "when do i get my advanced class?",
+   "channel": "faction",
+   "realm": "hib",
+   "cls": "Naturalist",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "bard",
+    "druid",
+    "warden"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
+  },
+  {
+   "id": "q467",
+   "text": "how do i become a druid?",
+   "channel": "faction",
+   "realm": "hib",
+   "cls": "Guardian",
+   "level": 5,
+   "intent": "trainer",
+   "must_any": [
+    "naturalist",
+    "cant"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b"
+   ],
+   "source": "AutonomousChatClassChoice: the class tree, at 5"
   }
  ]
 }

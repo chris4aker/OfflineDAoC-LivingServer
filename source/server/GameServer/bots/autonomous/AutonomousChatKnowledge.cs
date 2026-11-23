@@ -121,6 +121,14 @@ public static class AutonomousChatKnowledge
             return true;
         if (TryAnswerDragon(ports.Realm, query, out answer))
             return true;
+        // 1.2.3 (owner's game: "where do I choose advanced class" at level 5 drew no answer): the class choice at 5, from the
+        // trainer of the class wanted, in the capital.
+        if (AutonomousChatClassChoice.Answer(query, ports.Realm, ports.ClassName, ports.Level,
+                AutonomousBotVoices.CapitalOf(ports.Realm) ?? AutonomousChatFieldTalk.CapitalWord(ports.Realm), random) is { } choice)
+        {
+            answer = choice;
+            return true;
+        }
         // 1.2.3 (owner's game: "where is Humberton Castle" drew "stablemaster is your friend"): a town of the world is a fact,
         // before the lore and before the advice lines.
         if (ports.Town != null && LooksLikeLocationQuestion(query) && Got(ports.Town(query), out answer))
