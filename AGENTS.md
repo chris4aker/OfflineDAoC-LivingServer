@@ -96,10 +96,16 @@ In a playable folder:
   boss is in 1.2's scope (owner, 2026-11-14: the Darkness Falls raid AI, Legion, Behemoth and the other level 70+
   encounters included); describe a raid plan as working only once seen on the owner's PC.
   - A feature counts as working only once it has been seen working in one of the owner's PC logs
-    (owner, 2026-11-08). Until then the notes say "tests only". Unit tests, CI, simulations and test-world
-    bot runs are all tests.
+    (owner, 2026-11-08). Until then the internal docs and issues say "tests only". Unit tests, CI, simulations and
+    test-world bot runs are all tests.
   - Never give an earlier build's result as the result of the build being shipped. Say which build each
     result came from.
+  - **Release notes are for players** (owner, 2026-11-22: "Your 1.2.1 notes focus way too much on what's not tested on
+    the owner's PC. Don't do that again and stop referring to owner's PC."). Player-facing release notes
+    (`docs/RELEASE-NOTES-*.md` below the line) and the GitHub release page say what changed for players, grouped,
+    clearly and confidently, with known issues stated plainly. No testing-status framing ("tests only", "seen in
+    game", simulation or win-rate numbers) and no references to the owner's PC. That tracking stays in the internal
+    docs: OPEN-WORK, issue comments and review docs.
 - **Keep the old releases.** v0.3–v0.36c stay available as legacy releases, and their branches
   and tags are not rewritten.
 

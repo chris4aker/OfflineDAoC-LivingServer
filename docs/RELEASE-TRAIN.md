@@ -72,6 +72,9 @@ Changed 2026-11-14 (owner, later that night): **the True 1.65 edition gets 1.2 o
   (AGENTS.md). Automated tests and the rehearsal transcripts are reported as what they are.
 - One major system at a time in the overnight soak runs, so a lag or a regression can be attributed.
 - Release notes show the work and the research and never spoil the Easter eggs or the internal vocabulary.
+  - They say what changed for players, with no testing-status framing ("tests only", "seen in game") and no references
+    to the owner's PC (owner, 2026-11-22; AGENTS.md, "Be honest in reports"). What was seen in game is tracked here, in
+    OPEN-WORK and in the issues.
   - Teased features (owner, 2026-11-15): the storytellers, fireside tales, loremasters and the Epic Special Forces.
     The notes hint at them without explaining them or naming the eggs.
   - The era (owner, 2026-11-15): Trials of Atlantis and Catacombs appear only as rumours, from a lore perspective,

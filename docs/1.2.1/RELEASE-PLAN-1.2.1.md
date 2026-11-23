@@ -4,8 +4,9 @@ The owner can't run the PC checks this weekend: "I err on publishing everything 
 either open as unresolved issues or try to fix them as best as possible based on simulated testing." And: "Add the CI
 tests for death, and plan for a release with features marked as tests only."
 
-So 1.2.1 ships with every change that passes CI. A change that has not been seen on the owner's PC is listed as
-**tests only** in the release notes (AGENTS.md: a feature counts as working only once seen in the owner's PC logs).
+So 1.2.1 ships with every change that passes CI. Which changes have been seen in a played game is tracked in
+[../OPEN-WORK.md](../OPEN-WORK.md) and the issues (AGENTS.md: a feature counts as working only once seen in the owner's
+PC logs), not in the release notes.
 
 ## Steps
 
@@ -20,15 +21,15 @@ So 1.2.1 ships with every change that passes CI. A change that has not been seen
 3. **Raids (#407–#415).** Fix what the logs and simulations clearly show, each fix labelled tests only. The issues
    stay open until the raid is seen won on the owner's PC.
 4. **Loops (#420, #421) and #425.** Stay open, tests only.
-5. **Release notes** (`docs/RELEASE-NOTES-1.2.1.md`), in two lists:
-   - **Seen in game:** only what an owner's PC log has shown (from 1.2 or earlier, with the build named).
-   - **Tests only:** everything else, the death animation and rez included.
+5. **Release notes** (`docs/RELEASE-NOTES-1.2.1.md`) for players: what's new and fixed, grouped by area, with no
+   testing-status framing and no references to the owner's PC (owner, 2026-11-22; AGENTS.md, "Be honest in reports").
+   They replace the first draft's two lists ("Seen in game" / "Tests only").
 
-   The notes also give players the safety switches and the checks they can run:
+   The notes also give players the switch and the tools:
    - `bot_death_animation` off brings back the old behaviour;
    - `/lstest deathanim` plays a death, a raise and a release on demand;
-   - the log lines to send back: `BOT_DEATH_ANIM`, `HIRED_COMPANION_RAISED`, `RVR_LORD_STEP_IN`, `RVR_ROAM_CHASE`,
-     `RVR_FRONTIER_WAIT_LONG`, `PLAYER_CLICK_TARGET`, `LOOT_ITEMS_MISSING`.
+   - the log lines that show the new behaviour: `BOT_DEATH_ANIM`, `HIRED_COMPANION_RAISED`, `RVR_LORD_STEP_IN`,
+     `RVR_ROAM_CHASE`, `RVR_FRONTIER_WAIT_LONG`, `PLAYER_CLICK_TARGET`, `LOOT_ITEMS_MISSING`.
 6. **Install checks in CI:**
    - the `candidate-install` and `installer` workflows: an update over 1.2 and a new install;
    - `release.yml` as a dry run with tag `v1.2.1`.
