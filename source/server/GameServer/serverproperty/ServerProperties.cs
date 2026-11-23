@@ -880,13 +880,14 @@ namespace DOL.GS.ServerProperties
 		/// Health Regen Rate
 		/// </summary>
 		[ServerProperty("rates", "health_regen_amount_modifier", "Health regen amount modifier", 1.0)]
-		public static double HEALTH_REGEN_AMOUNT_MODIFIER;
+		public static double HEALTH_REGEN_AMOUNT_MODIFIER = 1.0;
 
 		/// <summary>
-		/// Health Regen Rate
+		/// Endurance regeneration multiplier (1.2.3: set in the launcher's Living Server tab, 1 to 10; from a r/daoc report of no
+		/// endurance regeneration at all). EnduranceRegenerationAmountCalculator multiplies the whole tick by it and rounds down.
 		/// </summary>
-		[ServerProperty("rates", "endurance_regen_amount_modifier", "Endurance regen amount modifier", 1.0)]
-		public static double ENDURANCE_REGEN_AMOUNT_MODIFIER;
+		[ServerProperty("rates", "endurance_regen_amount_modifier", "Endurance regeneration multiplier for real players and gamebots alike, Tireless and endurance songs included. 1 is the classic rate; a tick is rounded down, so below 1 a standing character regenerates nothing.", 1.0)]
+		public static double ENDURANCE_REGEN_AMOUNT_MODIFIER = 1.0;
 
 		/// <summary>
 		/// Health Regen Rate
@@ -897,7 +898,7 @@ namespace DOL.GS.ServerProperties
 		/// Worlds that still had the old untouched default (1) get 1.5 once (LivingServerSettingsUpgrade).
 		/// </summary>
 		[ServerProperty("rates", "mana_regen_amount_modifier", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground.", 1.5)]
-		public static double MANA_REGEN_AMOUNT_MODIFIER;
+		public static double MANA_REGEN_AMOUNT_MODIFIER = 1.5;
 
 		/// <summary>
 		/// The classic list-caster rule: half power regeneration below 50% power. Living Server 1.1.2: off by default, and it applies
@@ -3268,10 +3269,14 @@ namespace DOL.GS.ServerProperties
 				if (field.IsInitOnly && log.IsWarnEnabled)
 					log.WarnFormat("Property {0} is ReadOnly, Value won't be changed - {1} !", key, field.GetValue(null));
 				
-				//we do this because we need "1.0" to be considered double sometimes its "1,0" in other countries
-				CultureInfo myCIintl = new CultureInfo("en-US", false);
-				IFormatProvider provider = myCIintl.NumberFormat;
-				field.SetValue(null, Convert.ChangeType(prop.Value, attrib.DefaultValue.GetType(), provider));
+				// 1.2.3: en-US numbers as before, a comma decimal ("1,0") read as that number, and a value that can't be read
+				// at all (blank, "1.0x") uses the attribute's default instead of leaving the field at 0 / false
+				// (a r/daoc report: endurance_regen_amount_modifier unreadable gave no endurance regeneration at all).
+				object value = ServerPropertyValue.ReadOrDefault(prop.Value, attrib.DefaultValue, out bool fellBack);
+				if (fellBack && log.IsWarnEnabled)
+					log.Warn($"SERVER_PROPERTY_UNREADABLE key={key} value=\"{prop.Value}\": can't be read as {attrib.DefaultValue.GetType().Name}, " +
+					         $"using the default {Convert.ToString(attrib.DefaultValue, CultureInfo.InvariantCulture)}. Set it in the launcher or fix the ServerProperty row.");
+				field.SetValue(null, value);
 			}
 			catch (Exception e)
 			{

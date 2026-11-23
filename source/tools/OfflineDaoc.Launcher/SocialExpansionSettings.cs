@@ -72,6 +72,12 @@ public sealed record SocialExpansionSettings
     public double ManaRegenModifier { get; init; } = DefaultManaRegenModifier;
     /// <summary>The classic rule: list casters regenerate power at half speed below 50% power. Off by default since 1.1.2.</summary>
     public bool ManaHalvedBelowHalf { get; init; }
+    /// <summary>
+    /// Endurance regeneration multiplier for players and bots alike (1.2.3, from a r/daoc report; 1 is the classic rate).
+    /// It multiplies every tick, Tireless and endurance songs included, and the server rounds a tick down, so below 1 standing
+    /// regeneration would be nothing.
+    /// </summary>
+    public double EnduranceRegenModifier { get; init; } = DefaultEnduranceRegenModifier;
     /// <summary>Bot-led groups (Living Server 1.2): the leader of a gamebot party may invite you, and you follow (bot_group_invite_player). On by default.</summary>
     public bool BotGroupInvites { get; init; } = true;
     /// <summary>How many members you count as in the loot of a group with gamebots, whoever leads (bot_group_player_loot_weight, 1 to 8).</summary>
@@ -169,6 +175,8 @@ public sealed record SocialExpansionSettings
 
     public const double DefaultManaRegenModifier = 1.5, MinManaRegenModifier = 0.25, MaxManaRegenModifier = 10;
 
+    public const double DefaultEnduranceRegenModifier = 1, MinEnduranceRegenModifier = 1, MaxEnduranceRegenModifier = 10;
+
     /// <summary>
     /// The server's defaults. Since Living Server 1.2 (owner 2026-11-16: "all our living server features should be in by
     /// default if someone downloads our installer") every feature and Server life part is on, with the bot schedule off (owner 2026-11-21);
@@ -187,6 +195,7 @@ public sealed record SocialExpansionSettings
     {
         BotGuilds = true, GuildSocial = true, GuildRecruitPlayer = true, GuildClaims = true, GuildEconomy = true, GuildAlliances = true,
         PlayerGuildEconomy = true, ManaRegenModifier = DefaultManaRegenModifier, ManaHalvedBelowHalf = false,
+        EnduranceRegenModifier = DefaultEnduranceRegenModifier,
         Personalities = true, Voices = true, Debates = true,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
         ScheduleMode = "off", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingBuffBots = true, LivingDeeds = true,
@@ -268,8 +277,13 @@ public sealed record SocialExpansionSettings
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots, for example 1-19:1.5;20-34:2.5;35-50:6. Inside a listed range its rate replaces bot_xp_rate; other levels keep bot_xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate, as bot_xp_rate is. Empty (the default) or an invalid value keeps the flat bot_xp_rate. Companion bots and real players are not affected."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground."),
+        ("endurance_regen_amount_modifier", "rates", "Endurance regeneration multiplier for real players and gamebots alike, Tireless and endurance songs included. 1 is the classic rate; a tick is rounded down, so below 1 a standing character regenerates nothing."),
         ("mana_regen_amount_halved_below_50_percent", "rates", "Halve power regeneration below 50% power for list casters (the classic rule). Applies to real players and gamebots alike. Off by default in the Living Server; set in the launcher's Living Server tab."),
     ];
+
+    /// <summary>The server's description of endurance_regen_amount_modifier (ServerProperties.ENDURANCE_REGEN_AMOUNT_MODIFIER).</summary>
+    public const string EnduranceRegenDescription =
+        "Endurance regeneration multiplier for real players and gamebots alike, Tireless and endurance songs included. 1 is the classic rate; a tick is rounded down, so below 1 a standing character regenerates nothing.";
 
     /// <summary>The server's description of bot_voices_chat_rate (ServerProperties.BOT_VOICES_CHAT_RATE).</summary>
     public const string ChatRateDescription =
@@ -315,6 +329,7 @@ public sealed record SocialExpansionSettings
         ["bot_xp_rate_by_level"] = BotXpByLevel.Trim(),
         ["mana_regen_amount_modifier"] = ManaRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["mana_regen_amount_halved_below_50_percent"] = Bool(ManaHalvedBelowHalf),
+        ["endurance_regen_amount_modifier"] = EnduranceRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_death_animation"] = Bool(DeathFall),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
@@ -352,7 +367,8 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// Settings from stored values (missing keys keep the server default). A stored value the server can't read
-    /// shows what the server then uses (its fields stay at zero: False, 0), and a share above 1 shows as 100%;
+    /// shows what the server then uses (from 1.2.3 its default; before, its fields stayed at zero: False, 0), and a share
+    /// above 1 shows as 100%;
     /// each is reported in <paramref name="problems"/> and its key added to <paramref name="problemKeys"/>, so a
     /// save can repair exactly those rows.
     /// </summary>
@@ -369,16 +385,34 @@ public sealed record SocialExpansionSettings
         {
             if (!stored.TryGetValue(key, out string? text) || string.IsNullOrWhiteSpace(text)) return fallback;
             if (bool.TryParse(text.Trim(), out bool value)) return value;
-            Problem(key, $"{key} = \"{text}\" is not True or False, so the server reads it as False.");
-            return false;
+            Problem(key, $"{key} = \"{text}\" is not True or False, so the server uses its default ({Bool(fallback)}).");
+            return fallback;
+        }
+        // 1.2.3: endurance regeneration (a r/daoc report: none at all). An unreadable value is the server's default; a value
+        // below 1 is rounded down to nothing for a standing character, so the tab flags it.
+        double ReadRegenModifier(string key, string what, double current, double fallback, double min, double max)
+        {
+            if (!stored.TryGetValue(key, out string? text) || string.IsNullOrWhiteSpace(text)) return current;
+            if (!double.TryParse(text.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate) || double.IsNaN(rate))
+            {
+                Problem(key, $"{key} = \"{text}\" is not a number, so the server uses its default {fallback.ToString(CultureInfo.InvariantCulture)} (before 1.2.3: 0, no {what} regeneration).");
+                return fallback;
+            }
+            if (rate < min || rate > max)
+            {
+                Problem(key, $"{key} = \"{text}\" is outside {min.ToString(CultureInfo.InvariantCulture)} to {max.ToString(CultureInfo.InvariantCulture)}" +
+                             (rate < 1 ? $": below 1 a standing character regenerates no {what}." : "."));
+                return Math.Clamp(rate, min, max);
+            }
+            return Math.Round(rate, 2, MidpointRounding.AwayFromZero);
         }
         int share = d.GuildSharePercent;
         if (stored.TryGetValue("bot_guild_share", out string? shareText) && !string.IsNullOrWhiteSpace(shareText))
         {
             if (!double.TryParse(shareText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double fraction))
             {
-                Problem("bot_guild_share", $"bot_guild_share = \"{shareText}\" is not a number, so the server reads it as 0.");
-                share = 0;
+                Problem("bot_guild_share", $"bot_guild_share = \"{shareText}\" is not a number, so the server uses its default ({d.GuildSharePercent}%).");
+                share = d.GuildSharePercent;
             }
             else if (fraction < 0 || fraction > 1)
             {
@@ -393,8 +427,8 @@ public sealed record SocialExpansionSettings
         {
             if (!int.TryParse(levelText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int level))
             {
-                Problem("bot_guild_min_level", $"bot_guild_min_level = \"{levelText}\" is not a whole number, so the server reads it as 0.");
-                minLevel = 0;
+                Problem("bot_guild_min_level", $"bot_guild_min_level = \"{levelText}\" is not a whole number, so the server uses its default ({d.GuildMinLevel}).");
+                minLevel = d.GuildMinLevel;
             }
             else if (level < 0 || level > 50)
             {
@@ -409,8 +443,8 @@ public sealed record SocialExpansionSettings
         {
             if (!double.TryParse(manaText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate) || double.IsNaN(rate))
             {
-                Problem("mana_regen_amount_modifier", $"mana_regen_amount_modifier = \"{manaText}\" is not a number, so the server reads it as 0 (the slowest regeneration).");
-                manaRate = MinManaRegenModifier;
+                Problem("mana_regen_amount_modifier", $"mana_regen_amount_modifier = \"{manaText}\" is not a number, so the server uses its default {DefaultManaRegenModifier.ToString(CultureInfo.InvariantCulture)} (before 1.2.3: 0, no power regeneration).");
+                manaRate = DefaultManaRegenModifier;
             }
             else if (rate < MinManaRegenModifier || rate > MaxManaRegenModifier)
             {
@@ -420,13 +454,15 @@ public sealed record SocialExpansionSettings
             else
                 manaRate = Math.Round(rate, 2, MidpointRounding.AwayFromZero);
         }
+        double enduranceRate = ReadRegenModifier("endurance_regen_amount_modifier", "endurance", d.EnduranceRegenModifier,
+            DefaultEnduranceRegenModifier, MinEnduranceRegenModifier, MaxEnduranceRegenModifier);
         double chatRate = d.ChatRate;
         if (stored.TryGetValue("bot_voices_chat_rate", out string? rateText) && !string.IsNullOrWhiteSpace(rateText))
         {
             if (!double.TryParse(rateText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate))
             {
-                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is not a number, so the server reads it as 0 (bots only answer).");
-                chatRate = 0;
+                Problem("bot_voices_chat_rate", $"bot_voices_chat_rate = \"{rateText}\" is not a number, so the server uses its default ({d.ChatRate.ToString(CultureInfo.InvariantCulture)}).");
+                chatRate = d.ChatRate;
             }
             else if (rate < 0 || rate > 3)
             {
@@ -441,8 +477,8 @@ public sealed record SocialExpansionSettings
         {
             if (!int.TryParse(weightText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int weight))
             {
-                Problem("bot_group_player_loot_weight", $"bot_group_player_loot_weight = \"{weightText}\" is not a whole number, so the server reads it as 0 (counted as 1).");
-                lootWeight = MinPlayerLootWeight;
+                Problem("bot_group_player_loot_weight", $"bot_group_player_loot_weight = \"{weightText}\" is not a whole number, so the server uses its default ({d.PlayerLootWeight}).");
+                lootWeight = d.PlayerLootWeight;
             }
             else if (weight < MinPlayerLootWeight || weight > MaxPlayerLootWeight)
             {
@@ -566,8 +602,8 @@ public sealed record SocialExpansionSettings
         {
             if (!int.TryParse(buffText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int percent))
             {
-                Problem("bot_nolifer_buffbot_percent", $"bot_nolifer_buffbot_percent = \"{buffText}\" is not a whole number, so the server reads it as 0 (no buffbots).");
-                buffBotPercent = 0;
+                Problem("bot_nolifer_buffbot_percent", $"bot_nolifer_buffbot_percent = \"{buffText}\" is not a whole number, so the server uses its default ({d.BuffBotPercent}%).");
+                buffBotPercent = d.BuffBotPercent;
             }
             else if (percent is < 0 or > 100)
             {
@@ -627,6 +663,7 @@ public sealed record SocialExpansionSettings
             BotXpByLevel = stored.TryGetValue("bot_xp_rate_by_level", out string? bots) ? bots?.Trim() ?? "" : "",
             ManaRegenModifier = manaRate,
             ManaHalvedBelowHalf = ReadBool("mana_regen_amount_halved_below_50_percent", d.ManaHalvedBelowHalf),
+            EnduranceRegenModifier = enduranceRate,
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
@@ -711,6 +748,8 @@ public sealed record SocialExpansionSettings
             return $"Your loot share must be {MinPlayerLootWeight} to {MaxPlayerLootWeight} members.";
         if (double.IsNaN(ManaRegenModifier) || ManaRegenModifier < MinManaRegenModifier || ManaRegenModifier > MaxManaRegenModifier)
             return $"The power regeneration rate must be {MinManaRegenModifier.ToString(CultureInfo.InvariantCulture)} to {MaxManaRegenModifier.ToString(CultureInfo.InvariantCulture)}.";
+        if (double.IsNaN(EnduranceRegenModifier) || EnduranceRegenModifier < MinEnduranceRegenModifier || EnduranceRegenModifier > MaxEnduranceRegenModifier)
+            return $"The endurance regeneration rate must be {MinEnduranceRegenModifier.ToString(CultureInfo.InvariantCulture)} to {MaxEnduranceRegenModifier.ToString(CultureInfo.InvariantCulture)}.";
         if (double.IsNaN(CraftingPace) || CraftingPace < MinCraftingPace || CraftingPace > MaxCraftingPace || CraftingPace != Math.Floor(CraftingPace))
             return $"The crafting pace must be a whole number of points from {MinCraftingPace} to {MaxCraftingPace}.";
         if (!UpkeepModes.Contains(PlayerUpkeep)) return "Repair upkeep must be classic, light or free.";

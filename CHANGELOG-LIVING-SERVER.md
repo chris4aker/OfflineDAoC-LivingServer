@@ -14,6 +14,17 @@ Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-
 otherwise.
 
 **Chat**
+- **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
+  the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
+  tell read as a grinding remark (the word "camp"), no grinding reply fitted, and the short answer for a tell ended on a
+  bare laugh. Now, inside a tell exchange (the bot told the player something in the last few minutes, or it is in their
+  group), a place the player names ("im by X", "at X", "near X", "in X") or an "omw" gets an answer from
+  `AutonomousChatMeetup`: where the bot is and how to meet ("im still in avalon marsh, thats a ways from camp station. inv
+  me when ur closer"). A free gamebot doesn't cross zones for a player, so it never says it is coming; a bot in the
+  player's group follows its group and may ("k, coming to camp station"). The reply budget no longer lets a bare laugh
+  answer a line said to the bot that doesn't laugh itself, and the short answer for a tell ends on "ya", "k", "oh ok", "ah
+  ok" or "gotcha" instead of "heh" or "lol"; "im a cleric" and "im 5" get "nice" or "cool". `UT_TellMeetup123`. **Tests
+  only.**
 - **"Where is that?" in a bot-led group gets where it is** (the owner's game on 1.2.2, 2026-11-23: the leader's "welcome!
   meet up at Humberton Castle", the player's "where is that", a groupmate's "not sure tbh", then "where is Humberton
   Castle" and another's "Dumbledork, stablemaster is your friend, saves a lot of running"). Three causes:
@@ -32,6 +43,22 @@ otherwise.
   - The bot that named the place answers first (`AutonomousBotGroupChatter.AnswererFirst`).
   - The chat bench asks seven town questions (`/group` and `/faction`), and its `/group` path now runs the knowledge
     lookup first, as the live path does. `UT_PartyWhere123`. **Tests only.**
+
+**The server**
+- **No endurance regeneration at all** (a r/daoc report on 1.2.1, 0.37b: sitting alone in Camelot with Tireless and a
+  Minstrel endurance song, endurance stayed flat; in 1.2 power did too, until the launcher's power rate rewrote that row).
+  `ServerProperties.Load` read a value it couldn't parse by leaving the field at its C# default, 0 for
+  `ENDURANCE_REGEN_AMOUNT_MODIFIER` and `HEALTH_REGEN_AMOUNT_MODIFIER` (no initializer), and
+  `EnduranceRegenerationAmountCalculator` multiplies the whole tick, buffs and realm abilities included, by it. Now
+  (`ServerPropertyValue`): an unreadable value (blank, NULL, "1.0x") uses the attribute's default and logs
+  `SERVER_PROPERTY_UNREADABLE key= value=`; a comma decimal ("1,0", "0,5") is read as that number (en-US alone read
+  "1,0" as 10); every other value reads as before. The three regen multipliers start at 1, 1 and 1.5. Not confirmed on
+  the player's world: the row's value there is unknown, and no Living Server tool was found that writes a bad one
+  (every launcher, Setup and import writer uses invariant numbers). `UT_ServerPropertyValue123`. **Tests only.**
+- **Launcher:** an **Endurance rate** in the Living Server tab's regeneration card (1 to 10, 1 by default, the classic
+  rate; `release-server-settings.json` ships 1). An unreadable, 0 or below-1 row is reported and repaired by SAVE
+  SETTINGS (below 1 a standing character's rounded-down tick is nothing). The tab's notes for an unreadable number or
+  switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
 
 ## 1.2.2 — 2026-11-23
 
