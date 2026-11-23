@@ -372160,6 +372160,66 @@
   },
   {
    "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_who"
+   ],
+   "text": "some {enemy_mod} stealther, i think",
+   "id": "d05870fe7e53"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_who"
+   ],
+   "text": "a {class} i grouped with once",
+   "id": "e0fe8ed81732"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_who"
+   ],
+   "text": "a guy who camps {zone} a lot",
+   "id": "095d4a85fc68"
+  },
+  {
+   "kind": "reply",
    "topic": "rvr",
    "who": [],
    "realm": "*",
@@ -572397,6 +572457,26 @@
   {
    "kind": "reply",
    "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_know"
+   ],
+   "text": "was ours when i rode past earlier",
+   "id": "f7fb79d10deb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
    "who": [
     "Explorer"
    ],
@@ -593998,6 +594078,86 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "ask_on"
+   ],
+   "text": "yep, {level} {class} here, whats up?",
+   "id": "139f55bf096e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here, hunting in {zone} still",
+   "id": "7f2a78ba088e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "here, still a {level} {class}",
+   "id": "b43485e0fa89"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_on"
+   ],
+   "text": "on, at {level} now, whats up?",
+   "id": "53d77641a2a5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "ask_howareyou"
    ],
    "text": "good, xp is coming, you?",
@@ -594102,6 +594262,46 @@
    ],
    "text": "eh, could be worse",
    "id": "5bc321a1488c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "not bad, {level} and climbing, you?",
+   "id": "e83a90390bdf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_howareyou"
+   ],
+   "text": "decent, xp in {zone} is steady",
+   "id": "f382eb14f014"
   },
   {
    "kind": "reply",
@@ -594698,6 +594898,126 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
+    "ask_ready"
+   ],
+   "text": "ready whenever you pull",
+   "id": "a6fb044c602f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_ready"
+   ],
+   "text": "set, pull it",
+   "id": "b0e494e9061f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_ready"
+   ],
+   "text": "ready here",
+   "id": "e5d53afb7bf6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_ready"
+   ],
+   "text": "ready, pull",
+   "id": "99999dc9b16e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_ready"
+   ],
+   "text": "set here",
+   "id": "17706d49f477"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_ready"
+   ],
+   "text": "pull when ready",
+   "id": "39f59cbc7260"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
     "ask_who"
    ],
    "text": "not me",
@@ -594822,6 +595142,66 @@
    ],
    "text": "not yet here",
    "id": "63e61233b45a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_who"
+   ],
+   "text": "not me, check with the leader",
+   "id": "05fe5037d392"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_who"
+   ],
+   "text": "not this {class}",
+   "id": "0502cb315971"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_who"
+   ],
+   "text": "not me this time",
+   "id": "a119b001a026"
   },
   {
    "kind": "reply",
@@ -595062,6 +595442,66 @@
    ],
    "text": "the exchange would tell you",
    "id": "4a3f25e895c2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_price"
+   ],
+   "text": "the exchange in {capital} lists what they go for",
+   "id": "71ed6af252b9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_price"
+   ],
+   "text": "merchants give a few silver at least",
+   "id": "1ddcdb49c871"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_price"
+   ],
+   "text": "crafted ones sell for more than drops",
+   "id": "80070403145b"
   },
   {
    "kind": "reply",

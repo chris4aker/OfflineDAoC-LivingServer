@@ -131,6 +131,10 @@ yep, around
 here, killing stuff
 still on, {level} {class}
 around, whats up?
+yep, {level} {class} here, whats up?
+here, hunting in {zone} still
+here, still a {level} {class}
+on, at {level} now, whats up?
 
 # ---- ask_howareyou ----------------------------------------------------------------------------
 @kind reply
@@ -142,6 +146,8 @@ ok, bit tired
 pretty good ty, {zone} is treating me ok
 doing alright, you?
 eh, could be worse
+not bad, {level} and climbing, you?
+decent, xp in {zone} is steady
 
 # ---- player_goodnews --------------------------------------------------------------------------
 @kind reply
@@ -186,6 +192,12 @@ need a sec
 yep, set
 go ahead
 all set
+ready whenever you pull
+set, pull it
+ready here
+ready, pull
+set here
+pull when ready
 
 # ---- ask_who: "who is main assist?", "who has their first realm ability?", "who needs seals?" (CORPUS-C-004) ----
 @kind reply
@@ -198,6 +210,9 @@ me i think
 nope, not yet
 ask the others, not me
 not yet here
+not me, check with the leader
+not this {class}
+not me this time
 
 # ---- ask_price: a price check ("pc thrustbender mantle?"), never an answer to a sale (CORPUS-C-007) ----
 @kind reply
@@ -215,6 +230,9 @@ worth a few gold
 the quality sets most of the price
 cheap, people vendor those
 the exchange would tell you
+the exchange in {capital} lists what they go for
+merchants give a few silver at least
+crafted ones sell for more than drops
 
 # ---- ask_xp: "how close are you to a level?", by how far into the level the bot really is (CORPUS-C-011) ----
 @kind reply

@@ -52,9 +52,15 @@ SERIOUS_RE = re.compile(
 ASKS_AND_ANSWERS_RE = re.compile(r'^[^?]{2,60}\?\s+\S+\s+\S+\s+\S')
 
 
+ASKS_ONLY_RE = re.compile(
+    r"^\W*(whats|what's|what s|what is|who is|whos|who's|who holds|where is|wheres|where's|where s|is the|is it|how do|how is|why is)\b[^?]{0,48}\?\W*$",
+    re.IGNORECASE)
+
+
 def is_serious(text):
-    """A line no laugh is tacked onto: a "dunno", a warning, a death, or an answer that says the question back first."""
-    return bool(text) and bool(SERIOUS_RE.search(text) or ASKS_AND_ANSWERS_RE.search(text))
+    """A line no laugh is tacked onto: a "dunno", a warning, a death, an answer that says the question back first, or a
+    question that opens with a question word ("where's ur body?")."""
+    return bool(text) and bool(SERIOUS_RE.search(text) or ASKS_AND_ANSWERS_RE.search(text) or ASKS_ONLY_RE.search(text))
 
 
 def takes_emote(kind, text):

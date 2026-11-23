@@ -776,7 +776,12 @@ public sealed class AutonomousBotVoiceCorpus
     /// question back first ("ardee? thats in connacht"). Pure.
     /// </summary>
     public static bool IsSerious(string text) =>
-        !string.IsNullOrEmpty(text) && (SeriousWords.IsMatch(text) || AsksAndAnswers.IsMatch(text));
+        !string.IsNullOrEmpty(text) && (SeriousWords.IsMatch(text) || AsksAndAnswers.IsMatch(text) || AsksOnly.IsMatch(text));
+
+    // "where's ur body? :)": a laugh after a question that opens with a question word reads as the bot answering itself.
+    private static readonly Regex AsksOnly = new(
+        @"^\W*(whats|what's|what s|what is|who is|whos|who's|who holds|where is|wheres|where's|where s|is the|is it|how do|how is|why is)\b[^?]{0,48}\?\W*$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     /// <summary>
     /// "inc 8 mids at Caer Benowyc, healer, warrior, skald": three or more comma parts whose later parts are one or two words

@@ -117,6 +117,8 @@ His trees still stop at 70 a wave.
 
 ### Also in 1.2.2
 
+- **Smoother bot answers:** a bot no longer laughs after "dunno" or a warning, answers a lore question without asking
+  it back first, and a bot that writes neatly writes "Camelot" and "Tir na Nog" with their capitals.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
   first), and a gamebot you jump sets off again from where it lands.
