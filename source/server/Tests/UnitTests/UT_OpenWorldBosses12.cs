@@ -383,13 +383,20 @@ namespace DOL.UnitTests
             Assert.That(Decide(warrior, evern, live, Warrior).Action, Is.EqualTo(T.BotAction.None), "the melee stay on him");
         }
 
-        [Test]
-        public void TheGreenKnightsHealersStandTogetherHisCastersWithoutAreaSpellsStandOutAndHisMeleeTagTheTrees()
+        private static void MoveTo(GameNPC npc, Vector3 at)
         {
-            // 1.2.2 tag and burn (#412; tests only): the healers stand together 850 from him away from his target (clear of
-            // Might of the Forest's 500 around it); a caster or archer without an area spell stands 4,600 from him, opposite
-            // the healers, past the 4,000 his trees grow in; a melee raider hits a tree near it that no fighter holds yet
-            // (here the test trees have no aggro list: none is held), and stays on him with none near.
+            npc.X = (int)at.X; npc.Y = (int)at.Y;
+            npc.movementComponent.ForceUpdatePosition();
+        }
+
+        [Test]
+        public void EveryGreenKnightRaiderFightsFromWhereItReachesAndGetsNoNewAdviceOnceThere()
+        {
+            // 1.2.2 rework (#412; tests only; owner 2026-11-23: no benched roles). Spots along the line away from his tank:
+            // healers 650 (clear of Might of the Forest's 500 round his tank), casters and archers without an area spell 1,300
+            // (in spell and bow range). Once a raider stands at its spot the rule moves it no more (audit 2026-11-23). A Friar
+            // is a melee hybrid: it fights in melee, not from the heal spot.
+            T.ResetGreenKnightForTests();
             UseRegion(1);
             var gk = Npc<OFGreenKnight>(592359, 418245, 4988);
             var tank = Npc<Raider>(592500, 418245, 4988);
@@ -397,28 +404,40 @@ namespace DOL.UnitTests
             var tree = Npc<GKTrees>(591000, 418245, 4988);
             var healer = Npc<Raider>(592700, 418245, 4988);
             var caster = Npc<Raider>(591300, 418245, 4988);
-            var outside = Npc<Raider>(592359 + 4_400, 418245, 4988);
             var tagger = Npc<Raider>(591100, 418245, 4988);
             var striker = Npc<Raider>(592300, 418245, 4988);
-            var live = new List<GameNPC> { gk, tank, tree, healer, caster, outside, tagger, striker };
+            var friar = Npc<Raider>(592250, 418245, 4988);
+            var live = new List<GameNPC> { gk, tank, tree, healer, caster, tagger, striker, friar };
             var step = Decide(healer, gk, live, Cleric);
             Assert.That(step.Action, Is.EqualTo(T.BotAction.Reposition));
             Assert.That(step.Reason, Does.StartWith("gk-heal-spot"));
-            Assert.That(Flat(step.StandAt.Value, At(gk)), Is.EqualTo(T.GreenKnightHealDistance).Within(1));
-            Assert.That(Flat(step.StandAt.Value, At(tank)), Is.GreaterThan(500), "clear of Might of the Forest around his target");
-            Assert.That(step.StandAt.Value.X, Is.LessThan(gk.X), "on the side away from his target");
-            var away = Decide(caster, gk, live, Wizard, shoots: true);
-            Assert.That(away.Action, Is.EqualTo(T.BotAction.StandOff));
-            Assert.That(away.Reason, Does.StartWith("gk-out"));
-            Assert.That(Flat(away.StandAt.Value, At(gk)), Is.EqualTo(T.GreenKnightOutDistance).Within(1), "past the 4,000 his trees grow in");
-            Assert.That(away.StandAt.Value.X, Is.GreaterThan(gk.X), "opposite the healers");
-            var stays = Decide(outside, gk, live, Wizard, shoots: true);
-            Assert.That((stays.Action, stays.StandAt), Is.EqualTo((T.BotAction.StandOff, (Vector3?)null)), "already out: stays");
+            Assert.That(Flat(step.StandAt.Value, At(gk)), Is.EqualTo(T.GreenKnightHealDistance).Within(T.GreenKnightSlotRing + 1));
+            Assert.That(Flat(step.StandAt.Value, At(tank)), Is.GreaterThan(T.GreenKnightHeatRadius), "clear of Might of the Forest round his tank");
+            Assert.That(step.StandAt.Value.X, Is.LessThan(gk.X), "on the side away from his tank");
+            MoveTo(healer, step.StandAt.Value);
+            var there = Decide(healer, gk, live, Cleric);
+            Assert.That(there.Action, Is.Not.EqualTo(T.BotAction.Reposition), "at its slot: no new spot");
+            Assert.That(there.StandAt, Is.Null);
+            var walk = Decide(caster, gk, live, Wizard, shoots: true);
+            Assert.That(walk.Action, Is.EqualTo(T.BotAction.Reposition));
+            Assert.That(walk.Reason, Does.StartWith("gk-shot-spot"));
+            Assert.That(Flat(walk.StandAt.Value, At(gk)), Is.EqualTo(T.GreenKnightShootDistance).Within(T.GreenKnightSlotRing + 1));
+            Assert.That(Flat(walk.StandAt.Value, At(gk)), Is.LessThan(T.GreenKnightSpellReach), "in spell range of him");
+            MoveTo(caster, walk.StandAt.Value);
+            var shoots = Decide(caster, gk, live, Wizard, shoots: true);
+            Assert.That((shoots.Action, shoots.Target, shoots.StandAt), Is.EqualTo((T.BotAction.None, (GameNPC)gk, (Vector3?)null)),
+                "at its slot, no tagged tree: it fights him from there");
             var tag = Decide(tagger, gk, live, Warrior);
             Assert.That((tag.Action, tag.Target), Is.EqualTo((T.BotAction.Retarget, (GameNPC)tree)));
             Assert.That(tag.Reason, Does.StartWith("gk-tag"));
             var hit = Decide(striker, gk, live, Warrior);
             Assert.That((hit.Action, hit.Target), Is.EqualTo((T.BotAction.None, (GameNPC)gk)), "no tree within reach: on him");
+            var melee = Decide(friar, gk, live, (int)eCharacterClass.Friar);
+            Assert.That(melee.Reason ?? "", Does.Not.StartWith("gk-heal-spot"), "a Friar fights in melee");
+            Assert.That((melee.Action, melee.Target), Is.EqualTo((T.BotAction.None, (GameNPC)gk)));
+            // His tank moves a little: the spots stay.
+            tank.X += 150; tank.movementComponent.ForceUpdatePosition();
+            Assert.That(Decide(healer, gk, live, Cleric).StandAt, Is.Null, "the plan stays: still at its slot");
         }
 
         [Test]

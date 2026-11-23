@@ -729,7 +729,10 @@ namespace DOL.GS
         }
 
         /// <param name="Call">The party's call for this decision (a combat_calls.lines topic; dungeon rules), or null.</param>
-        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null);
+        /// <param name="PetOn">A stand-off that keeps the bot's pet fighting (the Green Knight's pet owners stand out of his
+        /// trees' reach, their pets in): the pet is sent at this instead of called off. Null: the pet is called off as usual.</param>
+        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null,
+            GameNPC PetOn = null);
 
         /// <summary>
         /// The tactic for one raider about to attack <paramref name="target"/>. <paramref name="partyIndex"/> spreads the
@@ -1715,7 +1718,9 @@ namespace DOL.GS
                     if (bot.FollowTarget == target) bot.StopFollowing();
                     (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = null;
-                    if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
+                    if (advice.PetOn is GameNPC petOn && Present(petOn) && bot.ControlledBrain?.Body is { IsAlive: true })
+                        bot.ControlledBrain.Attack(petOn);
+                    else if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
                     if (advice.Action == BotAction.LeadHome)
                         bot.PathTo(new Point3D(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z), bot.MaxSpeed);
                     else if (advice.StandAt is Vector3 at && !bot.IsWithinRadius(new Point3D((int)at.X, (int)at.Y, (int)at.Z), StandArrivalRadius))

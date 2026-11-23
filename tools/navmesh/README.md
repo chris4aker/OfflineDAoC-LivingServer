@@ -153,3 +153,16 @@ linked ground polygons (floors more than 64 apart at the same spot, with the dea
 
 `navmesh-drops.json` is the 2026-11-22 scan of the v0.36b navmeshes (the 1.2 set); `UT_NavLinkLegs` checks the mover's
 link rules against it.
+
+## The Green Knight's spots (1.2.2, #412, 2026-11-23)
+
+Mesh: `zone011.nav` (Forest Sauvage, region offset 69 x 51 x 8192), sha256
+`586e0368451829af43e0e0af433b702f36e5ebec85d6b964124c3c43dae9179f`, read only. His spawn (592990, 418687) and three of his four walk points (GkTeleport) are in zone 11;
+the fourth (593193, 416481) is in zone 14 (Pennine Mountains), not checked here.
+
+`gk_spot_check.py` runs `GreenKnightSpotCandidates`' turns (0, +-30, +-60, +-90 degrees) for each place, each of 8
+directions of his tank and each spot distance (healers 650, area casters 700, Theurgists 850, casters and archers 1,300).
+It uses `dfprobe batch` `snap` (a floor within 181) and `los` (the server's raycast from 60 above the floor to 60 above
+him). All 128 have a spot: 109 straight on the line, 19 after a turn. The misses straight on the line are a hill north-west of the second point
+(no line of sight) and the zone 14 border south of his spawn. The pet owners' 4,600 spots mostly lie in other zones,
+where the server snaps them on that zone's mesh. `dfprobe batch` gained `snap` and `los` for this.

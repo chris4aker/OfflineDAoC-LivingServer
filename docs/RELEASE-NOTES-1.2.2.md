@@ -28,8 +28,8 @@ Before publishing:
 > connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
 A small release for **1.2.1**: bigger bot raids at three encounters where 1.2.1's tactics work but the raid was too
-small to win: **Summoner's Hall, Galladoria and Tuscaran Glacier**. And a new plan for **the Green Knight**, who
-keeps his four to five groups. No boss was made weaker.
+small to win: **Summoner's Hall, Galladoria and Tuscaran Glacier**. And a new plan for **the Green Knight**, whose
+raid keeps its four to five groups but isn't expected to beat him yet. No boss was made weaker.
 
 Uthgard's drop tables and the next round of fixes come in **1.2.3**.
 
@@ -62,7 +62,8 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 | **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
 
 **Kept:**
-- **The Green Knight** stays at 40, the guides' four to five groups, and his raid fights him a new way (below).
+- **The Green Knight** stays at 40, the guides' four to five groups. His raid fights him a new way (below), but a raid
+  of 40 still isn't expected to win; about 56 well-buffed bots would be.
 - **Caer Sidi** stays at 100: the Crypt Lord problem is about timing the pull, not raid size.
 - **Trollheim** stays at 64: with the 1.2.1 fix the raid's timer no longer runs out, at any size.
 - **The three dragons** stay at 70: the raid already beats them at 70.
@@ -77,16 +78,18 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 ### The Green Knight: a new plan against his trees
 
 A tree grows at every raider near him, keeps growing every half minute, and stops a healer or caster it hits from
-casting. A heal on someone a tree is hitting draws the tree onto the healer. The bots now:
-- **send the casters and archers who can't hit a group of trees out of reach**, where no tree grows at them;
-- **keep the healers together, away from him and his strike around his target**. They heal his target first, and
-  leave someone a tree is hitting until they are under half;
-- **have the melee mark every tree near them**, a healer's or caster's tree first, then go back to him and finish the
-  trees on them once those are half dead;
-- **keep the casters with area spells close, guarded by two melee of their group**. They burn the marked trees, but
-  only while their spells won't draw the trees onto themselves.
+casting. A heal on someone a tree is hitting draws the tree onto the healer. Now every raider fights from where its
+spells, arrows and heals reach:
+- **The healers stand together away from him**, out of his strike around his tank and close enough for the melee to
+  pull trees off them. Four of them keep his target up first.
+- **The melee mark every tree near them**, healers' and casters' first, then go back to him.
+- **Area casters burn the marked trees**, guarded by a melee of their group. Other casters and archers shoot the marked
+  trees they can safely take, and him otherwise. Theurgists send their elementals at the trees on the healers and
+  casters.
+- **Necromancers, Cabalists and other pet owners stand back** where no tree grows at them, and send their pets in.
+- **When he walks off to heal, the raid holds its ground** and finishes the trees until he comes back.
 
-His trees still stop at 70 a wave.
+His trees still stop at 70 a wave. He is still the hardest fight for a raid of 40, and we're still working on him.
 
 ### Good to know
 
