@@ -116,7 +116,9 @@ His trees still stop at 70 a wave.
 ### Also in 1.2.2
 
 - **Straighter answers in /faction:** ask what level a place is, who holds Darkness Falls or how long the epic takes, and
-  the realm tells you; a question nobody can answer is left alone instead of drawing a "dunno".
+  the realm tells you; ask where to level and you hear a real zone for your level; ask where a class trains and you hear
+  the right trainer, or that it's another realm's class; a question nobody can answer is left alone instead of drawing a
+  "dunno".
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **A fallen bot that leaves is gone from your screen.** When a dead bot logs out or leaves for another region, its
   body no longer stays lying where it fell.

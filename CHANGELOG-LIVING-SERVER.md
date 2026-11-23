@@ -117,6 +117,18 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   questions are now 48 of 48. Silence where an answer was due rose from 67 to 92, since the dunnos became silence. CI now
   gates on `score_bench.py ratchet` (`bench_ratchet.json`: the good share may only rise, no bad category may grow). It also
   reports a 60-question holdout set written after these fixes (40 of 60 good). **Tests only.**
+- **Chat shapes (the audit's F3, F5, F7 first half, F11):** a where-to-level question is read as a pattern (`lvl`, `xp`,
+  `best xp for 21`, `where do 24s hunt`, `im 36, where should i go now`, a realm or a class in it) ahead of class talk, and
+  answered with a zone of the realm for the level from `places.json` when no bot camps there (`CatalogZone`, `HuntText`; a
+  solo question gets no group dungeon). Trainer answers say "your" only for the asker's own class, no longer "he trains ur
+  spells", and another realm's class as such ("thats a hib class"); "mercenaries", "armsmen", "heroes" are read as classes.
+  A known class's spec and weapon advice is its own lines only (no "whatever ur spec is"). "what are you up to?" said to a
+  bot is answered from its hunt, "got any pots?" from its backpack, and a short known fact (eight words or fewer) as the
+  first answer to a question types at 1.5x the bot's speed. Trainer answers name the capital as written ("Camelot"), and a
+  dungeon whose monsters are far from the level is left out of a where-to-level answer (`DungeonFits`). Bench on top of the
+  routing fixes: good answers from 314 to 359 of 453 (69.3% to 79.2%), wrong 9 to 0, off-topic 25 to 13, silence where an
+  answer was due 92 to 70, clunky 21 to 16; where to level 45 of 45, trainers 29 of 29; the holdout from 40 to 49 of 60.
+  `bench_ratchet.json` tightened to these counts. `UT_ChatShapes122`. **Tests only.**
 
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
