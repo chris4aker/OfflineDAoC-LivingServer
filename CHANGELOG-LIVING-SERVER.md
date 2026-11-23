@@ -76,6 +76,14 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
   in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
   report-only until the fixes land. **Tests only.**
+- **Chat shapes (the audit's F3, F5, F7 first half, F11):** a where-to-level question is read as a pattern (`lvl`, `xp`,
+  `best xp for 21`, `where do 24s hunt`, `im 36, where should i go now`, a realm or a class in it) ahead of class talk, and
+  answered with a zone of the realm for the level from `places.json` when no bot camps there (`CatalogZone`, `HuntText`; a
+  solo question gets no group dungeon). Trainer answers say "your" only for the asker's own class, no longer "he trains ur
+  spells", and another realm's class as such ("thats a hib class"); "mercenaries", "armsmen", "heroes" are read as classes.
+  A known class's spec and weapon advice is its own lines only (no "whatever ur spec is"). "what are you up to?" said to a
+  bot is answered from its hunt, "got any pots?" from its backpack, and a short known fact (eight words or fewer) as the
+  first answer to a question types at 1.5x the bot's speed. `UT_ChatShapes122`. **Tests only.**
 
 **Launcher, GM tools and tests**
 - **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window

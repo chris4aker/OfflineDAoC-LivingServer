@@ -24,13 +24,20 @@ public static class AutonomousChatLiveAnswers
         return fallback;
     }
 
-    /// <summary>"where is a good place to level at 24?": the zone where bots of that level are camping now, and a dungeon for it.</summary>
+    /// <summary>
+    /// "where is a good place to level at 24?": the zone where bots of that level are camping now, else a zone of the realm whose
+    /// monsters are of that level (places.json, from the world data), and a dungeon for it. 1.2.2 chat audit (C4, fix F3): a realm
+    /// named ("where do mids level at 20?") is answered for that realm from the place data, and a solo question ("where can a 15
+    /// minstrel solo?") gets a zone, not a group dungeon.
+    /// </summary>
     public static string WhereToHunt(GameBot bot, GamePlayer asker, string incoming, Random random)
     {
         if (bot == null)
             return null;
         int level = LevelAsked(incoming, asker?.Level ?? bot.Level);
-        string zone = AutonomousBotRegistry.Snapshot()
+        eRealm named = AutonomousChatShortTalk.RealmNamed(incoming);
+        eRealm realm = named is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia ? named : bot.Realm;
+        string camped = realm != bot.Realm ? null : AutonomousBotRegistry.Snapshot()
             .Where(other => other.Realm == bot.Realm && other.IsAlive && Math.Abs(other.Level - level) <= 2 &&
                             !string.IsNullOrEmpty(other.PersistentRecord?.CurrentCampId) && other.CurrentZone != null &&
                             !other.CurrentZone.IsRvR && other.CurrentRegion?.IsRvR != true &&
@@ -39,19 +46,55 @@ public static class AutonomousChatLiveAnswers
             .OrderByDescending(group => group.Count())
             .Select(group => group.Key)
             .FirstOrDefault();
-        string dungeon = level >= 7 ? AutonomousBotVoices.DungeonFor(bot.Realm, level) : null;
+        bool solo = AutonomousChatShortTalk.AsksSolo(incoming);
+        string zone = camped ?? CatalogZone(realm, level);
+        string dungeon = level >= 7 && !solo ? AutonomousBotVoices.DungeonFor(realm, level) : null;
+        return HuntText(realm, level, zone, dungeon, camped != null, random);
+    }
+
+    /// <summary>
+    /// The zone of a realm whose monsters are of a level (places.json "levels", the 20th-80th percentile of the world data's
+    /// monsters there): the one whose range is centred nearest the level, the narrower first. Null when none holds it. Pure.
+    /// </summary>
+    public static string CatalogZone(eRealm realm, int level, IEnumerable<AutonomousChatPlaces.Place> places = null)
+    {
+        string code = realm switch { eRealm.Albion => "alb", eRealm.Midgard => "mid", eRealm.Hibernia => "hib", _ => null };
+        if (code == null)
+            return null;
+        return (places ?? AutonomousChatPlaces.All)
+            .Where(p => p.Realm == code && p.Type == "zone" && p.Levels is { Length: 2 } l && level >= l[0] && level <= l[1])
+            .OrderBy(p => Math.Abs((p.Levels[0] + p.Levels[1]) / 2.0 - level)).ThenBy(p => p.Levels[1] - p.Levels[0])
+            .Select(p => p.Zones.FirstOrDefault() ?? p.Key).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// The where-to-level answer: <paramref name="zone"/> and <paramref name="dungeon"/> (either may be null), said as people camping
+    /// there now only when <paramref name="busy"/> (bots of the level are). A realm other than the asker's is a realm's own zones,
+    /// and below level 10 with nothing found, the realm's starter zones. Pure.
+    /// </summary>
+    public static string HuntText(eRealm realm, int level, string zone, string dungeon, bool busy, Random random)
+    {
         if (zone != null && dungeon != null && !zone.Contains(dungeon, StringComparison.OrdinalIgnoreCase))
-            return random.Next(3) switch
-            {
-                0 => $"for {level} try {zone}, lots of people camping there right now. or {dungeon} if you get a group",
-                1 => $"{zone} is busy with {level}s at the moment, {dungeon} is good too with a group",
-                _ => $"{dungeon} with a group, or {zone} solo, thats where the {level}s are",
-            };
+            return busy
+                ? random.Next(3) switch
+                {
+                    0 => $"for {level} try {zone}, lots of people camping there right now. or {dungeon} if you get a group",
+                    1 => $"{zone} is busy with {level}s at the moment, {dungeon} is good too with a group",
+                    _ => $"{dungeon} with a group, or {zone} solo, thats where the {level}s are",
+                }
+                : random.Next(3) switch
+                {
+                    0 => $"for {level} try {zone}, or {dungeon} if you get a group",
+                    1 => $"{zone} is about right at {level}, {dungeon} with a group",
+                    _ => $"{dungeon} with a group, or {zone} solo at {level}",
+                };
         if (zone != null)
-            return random.Next(2) == 0 ? $"{zone}, saw a bunch of {level}s camping there" : $"try {zone}, thats where the {level}s are right now";
+            return busy
+                ? random.Next(2) == 0 ? $"{zone}, saw a bunch of {level}s camping there" : $"try {zone}, thats where the {level}s are right now"
+                : random.Next(2) == 0 ? $"{zone}, the mobs there are about {level}" : $"try {zone}, about right for {level}";
         if (dungeon != null)
             return random.Next(2) == 0 ? $"{dungeon} is good around {level} if you can get a group" : $"{dungeon} for {level}, bring a group";
-        return StarterZones(bot.Realm, level, random);
+        return StarterZones(realm, level, random);
     }
 
     /// <summary>

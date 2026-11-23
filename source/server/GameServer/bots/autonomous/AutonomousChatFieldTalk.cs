@@ -2601,6 +2601,11 @@ public static class AutonomousChatFieldTalk
         foreach ((string cls, string[] words) in ClassWords)
             if (words.Append(cls).Where(word => !AmbiguousClassWords.Contains(word)).Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal) || t.Contains(" " + word + "s ", StringComparison.Ordinal)))
                 return char.ToUpperInvariant(cls[0]) + cls[1..];
+        // 1.2.2 chat audit (C7): "who trains mercenaries?", "armsmen", "heroes" (the plural forms) drew the asker's own class.
+        foreach ((string cls, string[] plurals) in ClassPlurals)
+            if (plurals.Append(cls.EndsWith('y') ? cls[..^1] + "ies" : cls + "es").Where(word => !AmbiguousClassWords.Contains(word))
+                .Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal)))
+                return char.ToUpperInvariant(cls[0]) + cls[1..].ToLowerInvariant();
         return null;
     }
 
@@ -2814,14 +2819,22 @@ public static class AutonomousChatFieldTalk
         ["valewalker"] = (["scythe and arboreal", "max scythe", "scythe, some parry"], ["a scythe", "scythe, always"]),
     };
 
-    /// <summary>Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.</summary>
+    /// <summary>Whether the class tips know a class (its own spec and weapon lines). Pure.</summary>
+    public static bool KnowsClass(string className) => ClassTips.ContainsKey(className?.Trim() ?? string.Empty);
+
+    /// <summary>
+    /// Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.
+    /// 1.2.2 chat audit (C5, fix F7): a known class's pool is its own lines only; "max ur main line first" appended to every
+    /// class drew "what spec for reaver?" "Max your main line first." one time in four.
+    /// </summary>
     public static string[] SpecAdvice(string className) =>
-        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.Append("max ur main line first").ToArray()
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.ToArray()
             : Pool("max ur main line first", "main line, rest wherever", "ask ur trainer, he shows the lines");
 
-    /// <summary>The weapon a class uses ("two thrust daggers" for an infiltrator). Pure.</summary>
+    /// <summary>The weapon a class uses ("two thrust daggers" for an infiltrator). Pure. A known class's own lines only (C5, fix F7:
+    /// "what weapon should a thane use?" drew "whatever ur spec is").</summary>
     public static string[] WeaponAdvice(string className) =>
-        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.Append("whatever ur spec is").ToArray()
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.ToArray()
             : Pool("whatever ur spec is", "best one that drops lol");
 
     /// <summary>Where a class trains: every class trainer of the realm stands in its capital. Pure.</summary>
