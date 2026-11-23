@@ -117,6 +117,9 @@ public static class AutonomousChatQuestions
         (new Regex(@"\b((ur|youre|you are|u r) on late|cant sleep)\b"), "late"),
         (new Regex(@"\b((you|u) coming to the raid|(you|u) in for the raid|coming to the raid)\b"), "raid"),
         (new Regex(@"\b(whats (ur|your) spec|how (are|r) (you|u) specced|(ur|your) spec|what spec (are|r) (you|u)|what (are|r) (you|u) specced|(you|u) (specd|specced|spec d) (for|in|into))\b"), "spec"),
+        // 1.2.2 chat audit (C9, fix F11): "what are you up to?" is what the bot is doing right now, from its own hunt ("the usual,
+        // killing stuff" came from a bot whose target and zone were known). "tonight", "later" ask its plans (below).
+        (new Regex(@"\b(what (are|r) (you|u) (up to|doing)|what (you|u) (up to|doing)|whatcha (up to|doing)|watcha (up to|doing)|wyd)\b(?! (tonight|later|tomorrow|this weekend|after))"), "doing"),
         (new Regex(@"\b((you|u) (going|goin|gonna go|heading|headed|coming) (to|out)\b(?! (sell|buy|make|be|need|pull|rez|heal|help|give|trade|craft)\b)|what (are |r )?(you|u) (doing|up to) (tonight|later|tomorrow)|(you|u) (doing|running) (rvr|df|emain|a raid)|(you|u) (going|goin) \w+ (later|tonight)|whatcha (up to|doing)|(you|u) (heading|headed|going|goin) (anywhere|somewhere)|(you|u) still (lvling|leveling|levelling|pve|rvr|grinding))"), "plans"),
         // 1.2: "what zone r u in", "which area are you", "u in emain?" (blind round 1: bots didn't know where they were). Last, so a
         // group, guild or busy question goes first; "u in X?" is answered only when X is a known place (AnswerSelf).
@@ -145,6 +148,8 @@ public static class AutonomousChatQuestions
                 // "hello, what are we hunting?" to a groupmate (Beta 1.1.2).
                 : Regex.IsMatch(t, @"\bwhat (are|r) we (hunting|killing|camping|farming|doing here)\b") ? "hunting"
                 : SelfQuestions.First(question => question.Kind == "gear").Pattern.IsMatch(t) ? "gear"
+                // "got any pots?" by tell or in the group (1.2.2 chat audit, fix F11: it drew "dunno sry").
+                : Regex.IsMatch(t, @"^((hey|hi|yo|so) )?(got|have|carrying|holding) (any |some )?(spare )?(pots|potions|heal pots|pow pots|power pots|end pots)\b") ? "pots"
                 : Regex.IsMatch(t, @"^((hey|hi|yo|so|oi) )?(what|wat) (class|race) (is that|is this|are those)\b") ? "class"
                 : null;
         if (WeaponAsked.IsMatch(t))
@@ -232,12 +237,13 @@ public static class AutonomousChatQuestions
                     ? random.Next(2) == 0 ? "yep, ill keep it up" : "yeah i have speed"
                     : random.Next(2) == 0 ? $"no speed sorry, {cls}" : "nope, no speed on me";
             case "pots":
+                // Its own backpack (FactsOf counts the potions there).
                 return bot.Potions switch
                 {
-                    0 => random.Next(2) == 0 ? "nope, out" : "none, sorry",
-                    1 => "just one",
-                    < 5 => "a couple",
-                    _ => "yeah a few",
+                    0 => random.Next(2) == 0 ? "nope, out of pots" : "none on me, sorry",
+                    1 => random.Next(2) == 0 ? "just the one" : "only one left",
+                    < 5 => random.Next(2) == 0 ? "a couple" : $"{bot.Potions} on me",
+                    _ => random.Next(2) == 0 ? "yeah a few" : $"yeah, {bot.Potions} on me",
                 };
             case "playing":
                 return (bot.Id % 4, bot.Type) switch
@@ -386,6 +392,21 @@ public static class AutonomousChatQuestions
                     ? random.Next(2) == 0 ? "yep" : $"yeah, {bot.Zone}"
                     : random.Next(2) == 0 ? $"nope, {bot.Zone}" : $"no, im in {bot.Zone}";
             }
+            case "doing":
+                // What it is doing now, from its own state; nothing known, the corpus answers (null).
+                if (string.IsNullOrEmpty(bot.Target))
+                    return null;
+                {
+                    string targets = AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant());
+                    string at = string.IsNullOrEmpty(bot.Zone) ? null : bot.Zone;
+                    // "lyonesse lurkers in Lyonesse": the zone's name keeps its capitals inside the monster's (C11).
+                    if (at != null)
+                        targets = Regex.Replace(targets, $@"\b{Regex.Escape(at.ToLowerInvariant())}\b", at);
+                    if (bot.GroupSize > 1)
+                        return at == null ? $"grouped, killing {targets}" : random.Next(2) == 0 ? $"grouped in {at}, on {targets}" : $"killing {targets} in {at} with a group";
+                    return at == null ? $"killing {targets}"
+                        : random.Next(3) switch { 0 => $"killing {targets} in {at}", 1 => $"{at}, on {targets} atm", _ => $"camping {targets} in {at}" };
+                }
             case "hunting":
                 if (!string.IsNullOrEmpty(bot.Target))
                     return string.IsNullOrEmpty(bot.Zone) ? AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())
@@ -461,6 +482,9 @@ public static class AutonomousChatQuestions
 
     private static readonly Regex LevelWords = new(
         @"\b(lvl|lvls|level|levels|level range|what lvl|for lvl|for level|open for|at \d{1,2}(ish)?|for a \d{1,2}|can a \d{1,2}|a \d{1,2} (solo|go|do|hunt)|\d{1,2}s)\b");
+
+    /// <summary>Whether a line asks about levels: "what lvl", "ok at 24", "can a 15 solo", "for 30s" (F1). Pure.</summary>
+    public static bool AsksLevels(string text) => !string.IsNullOrWhiteSpace(text) && LevelWords.IsMatch(Normalize(text));
 
     /// <summary>The place a line names (its longest alias, whole words), or null.</summary>
     public static AutonomousChatPlaces.Place PlaceNamed(string text, IEnumerable<AutonomousChatPlaces.Place> places)

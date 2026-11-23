@@ -195,7 +195,7 @@ namespace DOL.UnitTests
                     Assert.That(d.IsOpenWorld && !d.IsDungeon && !d.IsNeutral, Is.True, raid.Id);
                     Assert.That((d.Realm, d.Region, d.BossType, d.SuggestedBots), Is.EqualTo((raid.Realm, raid.Region, raid.BossType, raid.SuggestedBots)));
                     Assert.That(d.FinalTypes, Is.EqualTo(new[] { raid.BossType }), raid.Id);
-                    // 40-64, or a 1.2.2 raise within its no-zerg limit (none since the Green Knight's was withdrawn).
+                    // 40-64, or a raise within its no-zerg limit (none: 1.2.2's were withdrawn).
                     Assert.That(raid.SuggestedBots, Is.InRange(RealmRaidRecruitmentPolicy.MinimumScaledBots,
                         RaidPeriodSizes.Of(raid.Id) is { } raise ? RaidPeriodSizes.NoZergLimit(raise.SourceBots) : 64), raid.Id + ": the period size, never under 40");
                     Assert.That(RealmRaidMuster.Hubs.Any(h => h.Event == raid.Id && h.Region == raid.Region), Is.True, raid.Id + ": a hub in its region");

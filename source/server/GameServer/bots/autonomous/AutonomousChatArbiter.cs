@@ -72,6 +72,20 @@ public static class AutonomousChatArbiter
     };
 
     /// <summary>
+    /// A short fact the bot knows (1.2.2 chat audit, fix F11: "what lvl is vendo?" waited 15-25 s for "mostly 20-28"): an answer
+    /// from the bot's own state, the live world or the knowledge lookup, of at most eight words. A player types what they know
+    /// without stopping to think, so it goes at <see cref="QuickWpm"/>. Pure.
+    /// </summary>
+    public static bool IsQuickFact(string route, string reply) =>
+        !string.IsNullOrWhiteSpace(reply) && route != null &&
+        (route.StartsWith("fact", StringComparison.Ordinal) || route.StartsWith("live", StringComparison.Ordinal) ||
+         route.StartsWith("knowledge", StringComparison.Ordinal)) &&
+        reply.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length <= 8;
+
+    /// <summary>The typing speed of a quick fact: half again the bot's own. Pure.</summary>
+    public static int QuickWpm(int wpm) => Math.Clamp(wpm, 5, 200) * 3 / 2;
+
+    /// <summary>
     /// How long a reply takes to arrive: reading the line (about 20 ms a character, at most 4 s), a moment's thought
     /// (0.3-1.5 s) and typing it at <paramref name="wpm"/> words a minute (five characters a word), so "?" comes in about
     /// two seconds and a sentence in eight. <paramref name="after"/> is when the previous reply in this exchange was due:

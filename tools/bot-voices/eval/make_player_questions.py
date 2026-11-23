@@ -30,6 +30,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 PLACES = ROOT / 'source/server/GameServer/bots/autonomous/data/chat/places.json'
 OUT = HERE / 'player_questions.json'
+HOLDOUT = HERE / 'player_questions_holdout.json'
 
 REALMS = ('alb', 'mid', 'hib')
 REALM_NAME = {'alb': 'Albion', 'mid': 'Midgard', 'hib': 'Hibernia'}
@@ -561,6 +562,100 @@ def weapon_facts(cls):
     return words[cls]
 
 
+def build_holdout():
+    """The holdout set (60 questions): written after the 1.2.2 routing fixes (F0, F1, F4, F6, F7) and never used to tune them, so the
+    ratchet can tell fixes that generalise from fixes fitted to the bench. New phrasings of the same intents, facts from the same
+    data. Ids h001...; never edit a question to make it pass: add a new one."""
+    rnd = random.Random(20261123)
+    places = load_places()
+    b = Bench()
+    # Where to level: phrasings the bench doesn't use.
+    forms = ['where do people level around {lvl}?', '{lvl} {cls} looking for a spot to grind, ideas?', 'whats a good zone for {lvl}?']
+    for realm in REALMS:
+        for i, lvl in enumerate([8, 23, 38]):
+            cls = CLASSES[realm][(i * 4 + 1) % len(CLASSES[realm])]
+            good, bad = level_facts(places, realm, lvl)
+            b.add(forms[(i + REALMS.index(realm)) % 3].format(lvl=lvl, cls=cls.lower()), 'level_where', good, realm, cls, lvl, wrong=bad,
+                  source='places.json levels (+-4)')
+    # A place's levels.
+    level_q = ['what level mobs are in {p}?', 'is {p} too hard for a {lvl}?', '{p} good for {lvl}s?']
+    picks = [p for p in places if p.get('levels') and p['type'] in ('dungeon', 'zone') and p['realm'] in REALMS]
+    rnd.shuffle(picks)
+    for i, p in enumerate(picks[:9]):
+        low, high = p['levels']
+        lvl = max(2, min(50, rnd.choice([low, (low + high) // 2])))
+        must = [rf're:\b{min(low, 50)}\+' if high > 50 else rf're:\b{low}\b.{{0,12}}\b{high}\b']
+        b.add(level_q[i % 3].format(p=rnd.choice(names(p)), lvl=lvl), 'place_level', must, p['realm'], level=lvl,
+              source=f'places.json {p["key"]} {low}-{high}')
+    # Buying.
+    buys = [('where do i buy a new mace?', ['exchange', 'weaponcrafter', 'weaponsmith', 'merchant', 'smith']),
+            ('anyone know who sells arrows?', ['fletcher', 'arrow merchant', 'merchant', 'exchange']),
+            ('where can i get leather armor?', ['armorcrafter', 'armorsmith', 'tailor', 'exchange', 'merchant']),
+            ('who buys loot?', ['merchant', 'vendor', 'any merchant', 'exchange']),
+            ('where do i get better gear at 30?', ['exchange', 'crafter', 'drops', 'drop', 'sc', 'spellcraft', 'merchant']),
+            ('where can i buy a horse ticket?', ['stable master', 'stable', 'stablemaster'])]
+    for i, (text, must) in enumerate(buys):
+        b.add(text, 'buy_where', must, REALMS[i % 3], level=12 + i * 4, source='1.65 merchants; AutonomousChatKnowledge.TryAnswerBuyGear')
+    # Travel in the asker's own realm.
+    for realm in REALMS:
+        mine = [p for p in places if p.get('realm') == realm and p['type'] in ('dungeon', 'zone', 'town')]
+        rnd.shuffle(mine)
+        for i, p in enumerate(mine[:2]):
+            zones = [z for z in p.get('zones', []) if z.lower() != p['key']]
+            b.add(['which way to {p}?', 'how do i find {p}?'][i].format(p=rnd.choice(names(p))), 'travel', names(p) + zones + ['stable', 'horse', 'ticket', 'road'],
+                  realm, level=(p.get('levels') or [20])[0] or 20, wrong=[r're:\b(cant|can t|enemy|other realm|their side)\b'],
+                  source='places.json zones')
+    # Trainers.
+    for realm in REALMS:
+        for cls in (CLASSES[realm][0], CLASSES[realm][-1]):
+            wrong = [CAPITAL[r] for r in REALMS if r != realm]
+            if cls in MELEE:
+                wrong.append(r're:\bspells?\b')
+            b.add(f'where can i find the {cls.lower()} trainer?', 'trainer', [CAPITAL[realm], 'capital'], realm, cls, 10, wrong=wrong,
+                  source='every trainer in the capital')
+    # The epic and quests.
+    epic = [('at what level does the epic start?', 'epic', ['50', '45', 'trainer']),
+            ('can i solo my epic?', 'epic', ['group', 'grp', 'solo', r're:\b(no|nope|some|parts)\b']),
+            ('what do i get from the epic?', 'epic', ['armor', 'armour', 'weapon', 'gear', 'set']),
+            ('where do i turn in quests?', 'quest', ['journal', 'quest giver', 'gave it', 'whoever gave', 'npc'])]
+    for i, (text, intent, must) in enumerate(epic):
+        b.add(text, intent, must, REALMS[i % 3], level=46 if intent == 'epic' else 14, source='AutonomousChatKnowledge.TryAnswerCommon; 1.65 epics')
+    # Raids, the world, Darkness Falls.
+    for realm in REALMS:
+        name, zone = DRAGON[realm]
+        b.add(f'where does the {REALM_NAME[realm].lower()} dragon live?', 'raid', [name, zone], realm, level=45,
+              wrong=[DRAGON[r][0] for r in REALMS if r != realm], source='AutonomousChatKnowledge.TryAnswerDragon')
+        b.add('who owns darkness falls?', 'rvr_status', [r're:\b(hibs|hibernia|hib|ours|we have)\b'], realm, level=40,
+              wrong=[r're:\b(albs|albion|mids|midgard)\b'] if realm == 'hib' else None, source='stub world: Hibernia holds DF')
+        mine = [r for r in WORLD['relics'] if r['home'] == realm]
+        lost = [r for r in mine if r['owner'] != realm]
+        b.add('do we have all our relics?', 'rvr_status',
+              [r're:^(no|nope)\b|\b(lost|they have|the (albs|mids|hibs) have)\b'] if lost else [r're:\b(yes|yep|yeah|still have|home|ours|both)\b'],
+              realm, level=45, wrong=[r're:\b(yep|yes|still have|both of ours are home)\b'] if lost else [r're:\b(lost|they have)\b'], source='stub world relics')
+    # Terms.
+    terms = [('what does lfm mean?', ['looking for more', 'more']), ('what does afk mean?', ['away from keyboard', 'away']),
+             ('what does brb mean?', ['be right back'])]
+    for i, (text, must) in enumerate(terms):
+        b.add(text, 'terms', must, REALMS[i % 3], level=9 + i, source='chat terms of the era')
+    # Questions about grouping (F6) that are not group posts.
+    grouping = [('do i need a group for caer sidi?', 'raid', ['group', 'grp', 'raid', r're:\b(yes|yeah|yep|need|full)\b']),
+                ('what does a tank do in a group?', 'spec', ['aggro', 'taunt', 'guard', 'hold', 'pull', 'protect', 'tank']),
+                ('is it better to solo or group at 20?', 'level_where', ['group', 'grp', 'faster', 'xp', 'solo'])]
+    for i, (text, intent, must) in enumerate(grouping):
+        b.add(text, intent, must, REALMS[i % 3], level=20, source='1.65 grouping')
+    # Specs.
+    for realm in REALMS:
+        cls = CLASSES[realm][4]
+        b.add(f'whats the best spec for a {cls.lower()}?', 'spec', spec_facts(cls), realm, cls, 24, source='AutonomousChatFieldTalk.SpecAdvice')
+    # Small talk.
+    small = [('evening all', [GREETING], False), ('good night everyone', [FAREWELL], True)]
+    for i, (text, must, ok) in enumerate(small):
+        b.add(text, 'small_talk', must, REALMS[i % 3], level=20, silence_ok=ok, source='small talk')
+    for item in b.items:
+        item['id'] = 'h' + item['id'][1:]
+    return b.items
+
+
 def main():
     items = build()
     data = {
@@ -572,12 +667,20 @@ def main():
         'questions': items,
     }
     text = json.dumps(data, indent=1, ensure_ascii=False) + '\n'
+    held = build_holdout()
+    holdout = json.dumps({'note': 'The holdout set of the chat bench (make_player_questions.py build_holdout writes it; do not edit by hand): '
+                                  'written after the 1.2.2 routing fixes, never used to tune them. The bench answers it with the world '
+                                  'and responders of player_questions.json; score_bench.py ratchet reports it.',
+                          'questions': held}, indent=1, ensure_ascii=False) + '\n'
     if '--check' in sys.argv:
         if OUT.read_text(encoding='utf-8') != text:
             raise SystemExit('player_questions.json is out of date: run tools/bot-voices/eval/make_player_questions.py')
-        print(f'player_questions.json is up to date ({len(items)} questions)')
+        if not HOLDOUT.exists() or HOLDOUT.read_text(encoding='utf-8') != holdout:
+            raise SystemExit('player_questions_holdout.json is out of date: run tools/bot-voices/eval/make_player_questions.py')
+        print(f'player_questions.json is up to date ({len(items)} questions, {len(held)} held out)')
         return
     OUT.write_text(text, encoding='utf-8')
+    HOLDOUT.write_text(holdout, encoding='utf-8')
     counts = {}
     for item in items:
         counts[item['intent']] = counts.get(item['intent'], 0) + 1
