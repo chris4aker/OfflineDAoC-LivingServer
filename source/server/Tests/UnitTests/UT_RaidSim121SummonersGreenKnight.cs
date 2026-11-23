@@ -165,7 +165,11 @@ namespace DOL.UnitTests
             public double Minutes;
             public int Lowest = 100, Fallen, Cures, FirstMinutePain;
 
-            public static RoesiaFight Run(int seed, int n, CureRule rule, string realm, bool cures = true, int minutes = 15)
+            /// <param name="tankHit">Her melee on her target a half second (<see cref="TankHitPerHalfSecond"/>; 1.2.2: UT_RaidRealStats122).</param>
+            /// <param name="dsHit">Her damage shield on a melee raider's swing (<see cref="DsHit"/>; 1.2.2: UT_RaidRealStats122).</param>
+            /// <param name="heal">A healer's effective heal a cast (<see cref="Heal"/>; 1.2.2: recalibrated to b1b6846 with the real melee).</param>
+            public static RoesiaFight Run(int seed, int n, CureRule rule, string realm, bool cures = true, int minutes = 15,
+                int tankHit = TankHitPerHalfSecond, int dsHit = DsHit, int heal = Heal)
             {
                 Spell pain = RoesiaSpell("RoesiaDot"), hot = RoesiaSpell("RoesiaHOT");
                 int freq = pain.Frequency, dur = pain.Duration, recast = pain.RecastDelay, cast = pain.CastTime;
@@ -238,9 +242,9 @@ namespace DOL.UnitTests
                     }
                     if (now % 500 == 0)
                     {
-                        hp[tank] -= TankHitPerHalfSecond;
+                        hp[tank] -= tankHit;
                         for (int i = 0; i < n; i++)
-                            if (!dead[i] && role[i] is "tank" or "melee" && (now + i * 137L) % Swing < 500) hp[i] -= DsHit;
+                            if (!dead[i] && role[i] is "tank" or "melee" && (now + i * 137L) % Swing < 500) hp[i] -= dsHit;
                     }
                     for (int i = 0; i < n; i++)
                         if (!dead[i] && hp[i] <= 0)
@@ -257,7 +261,7 @@ namespace DOL.UnitTests
                             string kind = pending[h];
                             int t = pendingTarget[h];
                             pending[h] = null;
-                            if (kind == "heal") { if (!dead[t]) hp[t] = Math.Min(max[t], hp[t] + Heal); }
+                            if (kind == "heal") { if (!dead[t]) hp[t] = Math.Min(max[t], hp[t] + heal); }
                             else
                             {
                                 if (!dead[t]) painUntil[t] = 0;
@@ -447,7 +451,8 @@ namespace DOL.UnitTests
         /// others at range; after, his target at 185, the melee at LeechMeleeSpot (20 of slack either way), no pets (their
         /// share of the damage, 11 of 51, is taken off), everyone at range at LeechRangeSpot.
         /// </summary>
-        public static (bool Killed, double Minutes, int Lowest, double Inside) MarfoirwortFight(int seed, bool fix, double swing, double perMinute = 400)
+        public static (bool Killed, double Minutes, int Lowest, double Inside) MarfoirwortFight(int seed, bool fix, double swing, double perMinute = 400,
+            double land = 0.85)
         {
             var marf = (Marfoirwort)RuntimeHelpers.GetUninitializedObject(typeof(Marfoirwort));
             double leech = marf.MarfoirwortDD.Damage * (1 - 0.15);
@@ -460,7 +465,7 @@ namespace DOL.UnitTests
             {
                 t += swing;
                 hp -= dealt * swing / 60;
-                if (rng.Next() < 0.85 * 0.25)
+                if (rng.Next() < land * 0.25)
                 {
                     int k = LeechInside(rng, fix, radius);
                     inside += k;
@@ -626,10 +631,12 @@ namespace DOL.UnitTests
         /// parties' tanks stay on him in every rule.</para>
         /// </summary>
         public static (bool Won, double Minutes, int MaxTrees) GreenKnightFight(int seed, GkRule rule, int n, double dps, double treeHit,
-            int minutes = 45)
+            int minutes = 45, IReadOnlyDictionary<string, double> treeHitByRole = null, double tankDps = 150, int swingMs = 3_500)
         {
+            // 1.2.2 (real stats): treeHitByRole gives a tree's hit a second by its target's role, tankDps and swingMs his melee
+            // on his target and his swing (UT_RaidRealStats122). Left out, the 1.2.1 model: one tree hit for everyone, 150 and 3,500.
             const int step = 250;
-            const double onGk = 400.0 / 60_000, tankDps = 150, heat = 200, heatChance = 0.3, heal = 400, pbae = 276, tae = 134;
+            const double onGk = 400.0 / 60_000, heat = 200, heatChance = 0.3, heal = 400, pbae = 276, tae = 134;
             const double run = 250, treeRun = 225;
             string[] layout = ["tank", "melee", "melee", "melee", "caster", "caster", "healer", "healer"];
             var rng = new Rng(seed);
@@ -852,9 +859,9 @@ namespace DOL.UnitTests
                 trees.RemoveAll(t => t.Hp <= 0);
                 maxTrees = Math.Max(maxTrees, trees.Count);
                 foreach (var (v, ts) in hitting)
-                    if (!dead[v]) hp[v] -= treeHit * step / 1000 * ts.Count(t => t.Hp > 0);
+                    if (!dead[v]) hp[v] -= (treeHitByRole?[role[v]] ?? treeHit) * step / 1000 * ts.Count(t => t.Hp > 0);
                 hp[target] -= tankDps * step / 1000;
-                if (now % 3_500 < step && rng.Next() < heatChance)
+                if (now % swingMs < step && rng.Next() < heatChance)
                 {
                     int cl = where[target];
                     for (int i = 0; i < n; i++)

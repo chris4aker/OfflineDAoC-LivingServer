@@ -66,8 +66,8 @@ Bot raids fight the bosses by the bosses' own rules, and the bots don't win ever
   - Dead bots can't be clicked in the original client. Use `/target <name>`, or cast a resurrection with nothing
     selected: it goes to a dead bot nearby.
   - If clicking a living bot doesn't select it, `/target <name>` always works.
-- **Darkness Falls stairs:** the entrance stairs only work one way for bots. A companion following you back **up**
-  waits at the bottom. Use the exit portal below, or GM `/jump <name> to me`.
+- **Darkness Falls stairs:** companions follow you back up the entrance stairs one flight at a time. If one still
+  stays below, GM `/jump <name> to me`.
 - **GM `/jump` and dead bots:** a dead bot can't be jumped, because its body stays where it fell. Raise it there, or
   wait for it to release, then jump it.
 - **Hired companions:** the healer's [companions] and [hire] links only work with the healer targeted, but typed `/hire`

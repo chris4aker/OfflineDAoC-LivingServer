@@ -43,7 +43,9 @@ public static class RaidPeriodSizes
         // Summoner Roesia (#410), wins of 64 with the 1.2.1 fresh-Pain cure at 64 / 80 / 88 / 96 / 104: Midgard
         // 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64; the 1.2 cure rule 0-1 of 64
         // at every size to 128. The target lies past the limit (2 x 40 = 80): raised to the limit, so the raid starts at
-        // 100 (125%), where she wins 56-64 of 64.
+        // 100 (125%), where she wins 56-64 of 64. 1.2.2 real stats (her melee 200 a second on plate, her damage shield 224 a
+        // swing, the heal recalibrated to b1b6846; UT_RaidRealStats122): round 2 wins Albion 15, Hibernia 7, Midgard 0 of 64
+        // at 80 and 43-64 from 88-112, the 1.2 rule 0-5 of 64 at 80: still raised to the limit, 80.
         new("summoners-albion", 64, 40, 80, "Roesia: 8/64 at 80, 56/64 at 96 (1.2 rule 0/64); 0/64 at 64; four to five groups (Feb 2003)"),
         new("summoners-midgard", 64, 40, 80, "Roesia: 14/64 at 80, 61/64 at 88 (1.2 rule 0/64); 0/64 at 64; four to five groups (Feb 2003)"),
         new("summoners-hibernia", 64, 40, 80, "Roesia: 16/64 at 80, 54/64 at 88 (1.2 rule 0/64); 0/64 at 64; four to five groups (Feb 2003)"),
@@ -54,9 +56,12 @@ public static class RaidPeriodSizes
         // Queen Kula (#409): with no pet on the King her phase is as short as the ccba364 kill's (20.1 min) from 15
         // parties (20.0 min); the 1.2 rule takes 21.4-27.0 min there. King Tuscar's own fight has no model.
         new("epic-midgard", 100, 100, 120, "Kula: 20.0 min at 120, the ccba364 kill's 20.1 (1.2 rule 21.4-27.0); ~100 ppl (May 2003)"),
-        // The Green Knight (#412): the stack and the peel win 58/64 at 80 (tree hit 8/s, 80 a raider on a tree), 4/64 at
-        // 72, 0/64 at 40-64; the 1.2 catalog 0 of 576 at every size to 96. His trees stay capped at the dragon raid's 70.
-        new("openworld-albion-greenknight", 40, 40, 80, "Green Knight: 58/64 at 80 (1.2 catalog 0/64), 4/64 at 72; 4-5 groups (Feb 2003)"),
+        // The Green Knight (#412). 1.2.1's assumed tree hit (5-15 a second) gave 58/64 at 80. With the real numbers (1.2.2,
+        // UT_RaidRealStats122: a tree hits 22-36 a second on mail and plate, 53-78 on cloth; he hits his target for 234-338)
+        // the stack and the peel win 0/64 at every size to 104 and 59/64 from 120 (the 1.2 catalog 0/64 there): the target
+        // lies past the limit (2 x 40 = 80), so the raise to the limit stands, though at 80 the model never wins. His trees
+        // stay capped at the dragon raid's 70.
+        new("openworld-albion-greenknight", 40, 40, 80, "Green Knight (real stats): 0/64 at 40-104, 59/64 at 120 (1.2 catalog 0/64); past the limit; 4-5 groups (Feb 2003)"),
     ];
 
     public static Raise Of(string raidId) => raidId == null ? null : Raises.FirstOrDefault(r => r.RaidId == raidId);
