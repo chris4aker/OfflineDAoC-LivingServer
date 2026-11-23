@@ -24,6 +24,7 @@
 #             gamebot roster and changed settings are seeded (seed_progress.py); this Setup updates the game; everything
 #             seeded must be kept, also after the updated server's first start (smoke on the updated game)
 #   update12  (1.2.1) the same from Living Server 1.2's published Setup (-FromSetup LivingServer-Setup-1.2.exe)
+#   update121 (1.2.2) the same from Living Server 1.2.1's published Setup (-FromSetup LivingServer-Setup-1.2.1.exe)
 #
 # Every run except "newest" passes --no-update, so Setup installs the package it embeds and the checks below hold.
 param(
@@ -32,7 +33,7 @@ param(
     [string]$Work = 'C:\lstest',
     [string[]]$Scenario = @('fresh', 'update036'),
     [string]$Shots = '',
-    # update114 / update12: the earlier Living Server's published Setup exe (LivingServer-Setup-1.1.4-beta.exe, -1.2.exe)
+    # update114 / update12 / update121: the earlier Living Server's published Setup exe (LivingServer-Setup-1.1.4-beta.exe, -1.2.exe, -1.2.1.exe)
     [string]$FromSetup = '',
     # classoff: the built playtester (source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll)
     [string]$Playtester = ''
@@ -462,7 +463,7 @@ if ($Scenario -contains 'classoff') {
 }
 
 # An earlier Living Server's own published Setup (-FromSetup) installs a new game of that build, which is seeded, then
-# this Setup updates it and everything seeded must be kept (update114 from 1.2, update12 from 1.2.1).
+# this Setup updates it and everything seeded must be kept (update114 from 1.2, update12 from 1.2.1, update121 from 1.2.2).
 function Update-From([string]$label, [string]$fromBuild) {
     $game = Join-Path $root "playable-$label"
     $record = Join-Path $Work "$label-seed.json"
@@ -503,6 +504,11 @@ if ($Scenario -contains 'update114') {
 if ($Scenario -contains 'update12') {
     # 1.2.1: the same from Living Server 1.2 (LivingServer-Setup-1.2.exe, the v1.2 release).
     Update-From 'update12' '1.2'
+}
+
+if ($Scenario -contains 'update121') {
+    # 1.2.2: the same from Living Server 1.2.1 (LivingServer-Setup-1.2.1.exe, the v1.2.1 release).
+    Update-From 'update121' '1.2.1'
 }
 
 if ($Scenario -contains 'ui') {

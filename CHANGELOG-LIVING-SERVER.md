@@ -8,7 +8,7 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## 1.2.2 (in development)
+## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
 1.2.3). **Nothing here is seen in game yet: tests only.** The three raid-size raises first made here were withdrawn on

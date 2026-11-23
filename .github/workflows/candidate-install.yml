@@ -7,6 +7,7 @@
 #   update114  Living Server 1.1.4's published Setup installs a game, a character, a roster and changed settings are
 #              seeded, this Setup updates it, and everything seeded is checked kept, also after the server's first start.
 #   update12   the same from Living Server 1.2's published Setup (1.2.1: the update players on 1.2 make).
+#   update121  the same from Living Server 1.2.1's published Setup (1.2.2: the update players on 1.2.1 make).
 # These are TESTS: they never close a row of the gate, which needs the owner's PC (docs/INSTALL-CHECKS-1.2.md).
 name: candidate-install
 
@@ -118,7 +119,7 @@ jobs:
           if-no-files-found: warn
 
   # An earlier release's own published Setup installs a game, which is seeded, then this build's Setup updates it.
-  # update114 is the 1.2 gate's row 1 (from Beta 1.1.4); update12 is 1.2.1's (from 1.2, the release players have now).
+  # update114 is the 1.2 gate's row 1 (from Beta 1.1.4); update12 is 1.2.1's (from 1.2); update121 is 1.2.2's (from 1.2.1, the release players have now).
   update:
     needs: setup
     runs-on: windows-latest
@@ -133,6 +134,9 @@ jobs:
           - scenario: update12
             tag: v1.2
             exe: LivingServer-Setup-1.2.exe
+          - scenario: update121
+            tag: v1.2.1
+            exe: LivingServer-Setup-1.2.1.exe
     name: ${{ matrix.scenario }}
     steps:
       - uses: actions/checkout@v4
