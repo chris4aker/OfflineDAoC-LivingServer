@@ -47,7 +47,7 @@ def is_shouted(text):
 SERIOUS_RE = re.compile(
     r"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|"
     r"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|"
-    r"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|"
+    r"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|dying|death|deadly|dangerous|humbles|"
     r"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])", re.IGNORECASE)
 ASKS_AND_ANSWERS_RE = re.compile(r'^[^?]{2,60}\?\s+\S+\s+\S+\s+\S')
 
@@ -64,7 +64,9 @@ def is_serious(text):
 
 
 def takes_emote(kind, text):
-    return kind not in NO_EMOTE_KINDS and not is_functional(text) and not has_laugh(text) and not is_shouted(text) and not is_serious(text)
+    # 1.2.3: a question never ends on a tacked laugh ("camelot hills camp for 4? heh"); AutonomousBotVoiceCorpus.EndsAsQuestion.
+    return (kind not in NO_EMOTE_KINDS and not is_functional(text) and not has_laugh(text) and not is_shouted(text)
+            and not is_serious(text) and not (text or '').rstrip().endswith('?'))
 
 
 # ---- names (chat audit 1.2.2, C11, fix F10): AutonomousChatNames --------------------------------------------------------------

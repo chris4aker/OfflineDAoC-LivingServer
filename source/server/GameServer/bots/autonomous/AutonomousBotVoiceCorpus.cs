@@ -758,13 +758,20 @@ public sealed class AutonomousBotVoiceCorpus
     /// <summary>Whether a style or habit may add a laugh to a line of this kind (DESIGN-013; chat audit 1.2.2, F9: not to a
     /// serious line, <see cref="IsSerious"/>). Pure.</summary>
     public static bool TakesEmote(string kind, string text) =>
-        !(kind != null && NoEmoteKinds.Contains(kind)) && !IsFunctional(text) && !HasLaugh(text) && !IsShouted(text) && !IsSerious(text);
+        !(kind != null && NoEmoteKinds.Contains(kind)) && !IsFunctional(text) && !HasLaugh(text) && !IsShouted(text) && !IsSerious(text) &&
+        !EndsAsQuestion(text);
+
+    /// <summary>
+    /// 1.2.3 (the owner's game on 1.2.2: "camelot hills camp for 4? heh"): a question never ends on a tacked laugh or emote; it
+    /// reads as the bot laughing at its own question. Pure.
+    /// </summary>
+    public static bool EndsAsQuestion(string text) => !string.IsNullOrEmpty(text) && text.TrimEnd().EndsWith('?');
 
     // Chat audit 1.2.2 (C10, fix F9): "no clue, sry haha", "thats a full raid, dont go alone :)", "trust nothing you meet there heh".
     private static readonly Regex SeriousWords = new(
         @"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|" +
         @"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|" +
-        @"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|" +
+        @"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|dying|death|deadly|dangerous|humbles|" +
         @"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 

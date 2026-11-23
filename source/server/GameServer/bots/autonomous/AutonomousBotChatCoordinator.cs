@@ -807,6 +807,7 @@ public static partial class AutonomousBotChatCoordinator
         GameBot starter = speakers[0];
         string lastSaid = null;
         GameBot lastSpeaker = null;
+        long openedAt = GameLoop.GameLoopTime;
         string lane = faction ? AutonomousChatExchange.FactionKey(starter.Realm) : AutonomousChatExchange.SayKey(starter.CurrentRegionID);
         AutonomousChatExchange.Play("thread", exchange, lane, AutonomousChatExchange.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2),
             speakers, bot => Eligible(bot) && !bot.InCombat && !bot.IsCasting &&
@@ -816,6 +817,10 @@ public static partial class AutonomousBotChatCoordinator
             {
                 bool Send(string raw)
                 {
+                    // 1.2.3 (the owner's game on 1.2.2: "not atm sry" under a /trade post read as its answer): a short answer with
+                    // other lines between it and the question (any channel of the realm the player's window shows) names the asker.
+                    if (faction && bot != starter)
+                        raw = AutonomousChatFieldTalk.NamedWhenApart(raw, starter.Name, RealmLinesSince(starter.Realm, openedAt, bot, starter));
                     // 1.2 chat audit (DESIGN-043): a thread's line in its speaker's writing style, functional lines as typed.
                     string text = AutonomousBotVoices.StyleGenerated(bot, raw);
                     if (faction)
@@ -850,6 +855,18 @@ public static partial class AutonomousBotChatCoordinator
                 return true;
             }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say,
             standIns: answererStandIns is { Length: > 0 } ? [null, answererStandIns] : null);
+    }
+
+    /// <summary>
+    /// The lines said since <paramref name="at"/> in the realm's /faction, /trade and /lfg (one chat window), but the two
+    /// bots' own (1.2.3).
+    /// </summary>
+    private static int RealmLinesSince(eRealm realm, long at, GameBot a, GameBot b)
+    {
+        long[] except = [a?.DatabaseID ?? 0, b?.DatabaseID ?? 0];
+        return AutonomousChatThreads.Log.LinesSince(AutonomousChatThreads.Faction(realm), at, except) +
+               AutonomousChatThreads.Log.LinesSince("trade:" + realm, at, except) +
+               AutonomousChatThreads.Log.LinesSince("lfg:" + realm, at, except);
     }
 
     /// <summary>Whether a bot's /broadcast answer reaches a player and fits under its broadcast channel's ceiling (sweep 7c).</summary>
@@ -2616,7 +2633,7 @@ public static partial class AutonomousBotChatCoordinator
         if (!string.IsNullOrWhiteSpace(message) &&
             AutonomousChatExchange.SinkHold(source, AutonomousBotDebates.IsRunning(realm), FactionRoom(realm), now,
                 AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm), AutonomousBotDebates.LastSceneEnd(realm),
-                OpenerFitsFactionPace(realm, now)) is { } held)
+                OpenerFitsFactionPace(realm, now), AutonomousChatExchange.JustSpoke(AutonomousChatExchange.FactionKey(realm), speakerName, now)) is { } held)
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, held == "ceiling" ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
             LastHeld = held;

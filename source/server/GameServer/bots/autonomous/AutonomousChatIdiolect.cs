@@ -48,6 +48,7 @@ public static class AutonomousChatIdiolect
         // Beta 1.1.2, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
         if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
             !Contains(result, "haha") && !EndsWithSmiley(result) && result.Split(' ').Length >= 3 &&
+            !result.TrimEnd().EndsWith('?') && !AutonomousBotVoiceCorpus.IsSerious(result) &&
             AutonomousChatDebateSpeech.TailFits(result, maxWords))
             result = result.TrimEnd('.') + " lol";
         return result.Length <= AutonomousBotVoiceCorpus.MaxLength ? result : text;
