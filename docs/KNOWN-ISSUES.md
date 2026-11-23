@@ -105,6 +105,10 @@ Bot raids fight the bosses by the bosses' own rules, and the bots don't win ever
   server now and then clears them. The server's own memory stays flat.
 - **Harmless lines at startup:** one warning that counts the stock world's missing merchant item templates, and one
   `LOOT_ITEMS_MISSING` line per loot source. Neither affects play.
+- **No endurance (or health) regeneration at all, even sitting with Tireless or an endurance song:** the world's
+  `endurance_regen_amount_modifier` (or `health_regen_amount_modifier`) row holds a value the server can't read, and up to
+  1.2.2 that counts as 0. Fixed in **1.2.3**, which uses the default instead and puts an endurance rate in the launcher's
+  Living Server tab. Until then, set the row's Value to `1` with the server stopped.
 
 ## New client (0.37c)
 
