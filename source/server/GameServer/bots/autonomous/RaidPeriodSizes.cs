@@ -56,12 +56,9 @@ public static class RaidPeriodSizes
         // Queen Kula (#409): with no pet on the King her phase is as short as the ccba364 kill's (20.1 min) from 15
         // parties (20.0 min); the 1.2 rule takes 21.4-27.0 min there. King Tuscar's own fight has no model.
         new("epic-midgard", 100, 100, 120, "Kula: 20.0 min at 120, the ccba364 kill's 20.1 (1.2 rule 21.4-27.0); ~100 ppl (May 2003)"),
-        // The Green Knight (#412). 1.2.1's assumed tree hit (5-15 a second) gave 58/64 at 80. With the real numbers (1.2.2,
-        // UT_RaidRealStats122: a tree hits 22-36 a second on mail and plate, 53-78 on cloth; he hits his target for 234-338)
-        // the stack and the peel win 0/64 at every size to 104 and 59/64 from 120 (the 1.2 catalog 0/64 there): the target
-        // lies past the limit (2 x 40 = 80), so the raise to the limit stands, though at 80 the model never wins. His trees
-        // stay capped at the dragon raid's 70.
-        new("openworld-albion-greenknight", 40, 40, 80, "Green Knight (real stats): 0/64 at 40-104, 59/64 at 120 (1.2 catalog 0/64); past the limit; 4-5 groups (Feb 2003)"),
+        // The Green Knight (#412): no raise. 1.2.2 first raised him to 80 on the real stats; the owner withdrew it (2026-11-22,
+        // "option 1": back to his period 40, fix the tactics). His fight is the tactic's (EpicEncounterTactics.GreenKnight.cs,
+        // tag and burn; UT_RaidSim122GreenKnight), not the size's.
     ];
 
     public static Raise Of(string raidId) => raidId == null ? null : Raises.FirstOrDefault(r => r.RaidId == raidId);
