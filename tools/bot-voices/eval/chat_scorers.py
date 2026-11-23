@@ -192,6 +192,11 @@ def clunky_issues(text, proper=PROPER):
         if is_non_answer(body) or body.endswith('.') or re.search(r"\? \w", body) or \
                 re.search(r"\b(careful|dont go alone|wipe|wiped|die|dead|died|raid|cant go|careless|trust nothing)\b", body.lower()):
             issues.append(('tacked_laugh', tail.group(1)))
+    # A reply that opens with a question of its own and then answers it ("who is eraliwyr? the alchemist..." to "what lvl is
+    # spraggon den?"): a written Q-and-A line picked for another question.
+    own = re.match(r"^\W*((whats|what s|what is|who is|whos|who holds|where is|wheres|where s|is the|is it|how do|how is|why is)\b[^?]{0,48})\?\s+\S", low)
+    if own:
+        issues.append(('own_question', own.group(1).strip()))
     # A line that opens like a tidy sentence but leaves a name in lower case: two writing styles stitched together.
     if raw[:1].isupper():
         for name in proper:

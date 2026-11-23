@@ -95,6 +95,10 @@ class Clunky(unittest.TestCase):
         self.assertIn('tacked_laugh', self.codes('whats in the cursed forest? juggernaut and more :P'))
         self.assertNotIn('tacked_laugh', self.codes('try myrkwood, thats where the 20s are :)'))
 
+    def test_own_question(self):
+        self.assertIn('own_question', self.codes('who is eraliwyr? the alchemist for the plague'))
+        self.assertNotIn('own_question', self.codes('vendo? 20-28'))
+
     def test_case_mix(self):
         self.assertIn('case_mix', self.codes('The armsman trainer in camelot.'))
         self.assertNotIn('case_mix', self.codes('the armsman trainer in camelot'))

@@ -196,6 +196,7 @@ SAMPLES = {
     'classes': ('eldritches', 'thanes'), 'name_b': ('Eira', 'Brannoc'), 'name_a': ('Aeric', 'Brannoc'),
 }
 SLOT = re.compile(r'\{([a-z_]+)\}')
+RUNTIME_CODES = ('tacked_laugh', 'own_question', 'case_mix')
 ARTICLE = re.compile(r'\b([Aa]) ([A-Za-z0-9][\w\']*)')
 
 
@@ -265,6 +266,12 @@ def lines_report(args):
             nonanswer[kind].append((where, text))
             per_file[f]['non_answer'] += 1
         issues = [(c, d) for c, d in cs.clunky_issues(fix_articles(bare)) if c != 'unfilled_slot']
+        # A written line may laugh, open with its own question or keep a name lower case on purpose; those codes judge a reply
+        # stitched at run time (the bench), so here they are only counted.
+        for c, _ in issues:
+            if c in RUNTIME_CODES:
+                codes[c + ' (info)'] += 1
+        issues = [(c, d) for c, d in issues if c not in RUNTIME_CODES]
         if issues:
             clunky[kind].append((where, text, issues))
             per_file[f]['clunky'] += 1
@@ -275,7 +282,7 @@ def lines_report(args):
                 said = fix_articles(fill(text, which))
                 values = ' '.join(SAMPLES.get(n, ('x', 'x'))[which] for n in SLOT.findall(text)).lower()
                 # A slot said twice by design ("heals on {target}") is not a clause repeated by the stitching.
-                new = [(c, d) for c, d in cs.clunky_issues(said) if c not in before and not (c in ('repeated_clause', 'doubled_word') and
+                new = [(c, d) for c, d in cs.clunky_issues(said) if c not in before and c not in RUNTIME_CODES and not (c in ('repeated_clause', 'doubled_word') and
                                                                                           all(w in values for w in d.split()))]
                 if new:
                     filled[kind].append((where, text, said, new))
