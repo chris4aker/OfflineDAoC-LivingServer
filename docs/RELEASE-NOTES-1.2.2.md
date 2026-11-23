@@ -123,6 +123,8 @@ His trees still stop at 70 a wave. He is still the hardest fight for a raid of 4
   "dunno".
 - **Smoother bot answers:** a bot no longer laughs after "dunno" or a warning, answers a lore question without asking
   it back first, and a bot that writes neatly writes "Camelot" and "Tir na Nog" with their capitals.
+- **Bots know the realm better:** ask in /faction where to buy dyes or poison, how to reach the frontier or Darkness
+  Falls, who teaches a craft or how to fix your NPC faction, and a bot names who and where.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **A fallen bot that leaves is gone from your screen.** When a dead bot logs out or leaves for another region, its
   body no longer stays lying where it fell.

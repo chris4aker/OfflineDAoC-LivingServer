@@ -165,6 +165,7 @@ namespace DOL.GS.Tests
             Raids = () => Array.Empty<AutonomousRealmRaid.Summary>(),
             Trainer = query => Trainer(run, query),
             Location = query => Location(run, query),
+            DfOwner = run.World.DfOwner,
         };
 
         private static string Knowledge(Run run, string query) =>

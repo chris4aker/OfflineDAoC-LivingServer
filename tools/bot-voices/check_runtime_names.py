@@ -49,7 +49,7 @@ GAMESERVER = ROOT / 'source/server/GameServer'
 CODE_OWNERS = [
     ('E3', r'AutonomousBotVoiceCorpus|AutonomousBotVoices|AutonomousChatIdiolect'),
     ('E1', r'AutonomousChat(IntentModel|ShortTalk|Questions|Threads|ReplyFit|ReplyBudget|Context|Why)|AutonomousBotChatCoordinator'),
-    ('E2', r'AutonomousChat(FieldTalk|Market|Exchange|Engagement|Knowledge|Filler|DebateSpeech|LiveAnswers)|RealmEvent(Spoken|Notices)'),
+    ('E2', r'AutonomousChat(FieldTalk|Market|Exchange|Engagement|Knowledge|Guide|Filler|DebateSpeech|LiveAnswers)|RealmEvent(Spoken|Notices)'),
     ('E4', r'AutonomousBotStorylines|AutonomousPlayerDeeds|AutonomousChatNews|AutonomousRumours|AutonomousHolidays|AutonomousGoldSpammers|'
            r'AutonomousRoleplayers|AutonomousBeggars|AutonomousBotBonds|BotMilestones.*|AutonomousLivingServer\.Memory'),
     ('E5', r'AutonomousBotCombatCalls|AutonomousBotGroupChatter|AutonomousBotGuildSocial|AutonomousBotGuildChatLines|AutonomousBotGuilds|'
