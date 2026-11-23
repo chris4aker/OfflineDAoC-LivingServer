@@ -165,8 +165,15 @@ namespace DOL.GS
         }
 
         // #407 (tests only): after a tactic's hold lapses, a looser guard of the same rule (EpicEncounterTactics.LapsedPullWait)
-        // still holds the pull, for at most PullWaitLimitMilliseconds more; then the raid pulls as it would without the tactic.
+        // still holds the pull. 1.2.2 (raid tactic audit finding 11): it no longer lapses itself; past PullWaitLimitMilliseconds
+        // more it logs REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS (then every LapsedGuardHoldLogMilliseconds) and keeps holding
+        // until its window opens: the raid never pulls blind (the Crypt Lord's guard is open some seconds of every loop of his).
         private readonly Dictionary<GameNPC, long> _lapsedGuardSince = new();
+        private readonly Dictionary<GameNPC, long> _lapsedGuardHoldLog = new();
+        public const long LapsedGuardHoldLogMilliseconds = 10 * 60_000;
+
+        /// <summary>The lapsed guard still holds the pull (pure): it objects; its own time no longer matters (1.2.2).</summary>
+        public static bool LapsedGuardHolds(string guard) => guard != null;
 
         private string LapsedGuard(GameNPC npc, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
         {
@@ -188,16 +195,15 @@ namespace DOL.GS
                 log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARDED region={_region} target=\"{npc.Name}\" reason=\"{guard}\"");
                 return guard;
             }
-            if (since == long.MinValue || PullWaitExpired(since, now))
+            if (since != long.MinValue && PullWaitExpired(since, now) &&
+                (!_lapsedGuardHoldLog.TryGetValue(npc, out long logged) || now - logged >= LapsedGuardHoldLogMilliseconds))
             {
-                if (since != long.MinValue)
-                {
-                    _lapsedGuardSince[npc] = long.MinValue;
-                    log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARD_EXPIRED region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} reason=\"{guard}\"");
-                }
-                return null;
+                if (_lapsedGuardHoldLog.Count > 256) _lapsedGuardHoldLog.Clear();
+                _lapsedGuardHoldLog[npc] = now;
+                log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} " +
+                         $"reason=\"{guard}\" action=hold (no blind pull: the raid waits for the guard's window)");
             }
-            return guard;
+            return LapsedGuardHolds(guard) ? guard : null;
         }
 
         private long _nextCourtWindowLog;

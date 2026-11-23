@@ -1,9 +1,12 @@
+using System.Numerics;
+using System.Reflection;
 using DOL.GS.Commands;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests;
 
-/// <summary>#438 (1.2.1): GM "/jump &lt;bot&gt; to me" finds bots by name. Tests only.</summary>
+/// <summary>#438 (1.2.1): GM "/jump &lt;bot&gt; to me" finds bots by name. 1.2.2: a dead bot is refused with a reason, and a
+/// jumped gamebot forgets the trip it planned from the old spot. Tests only.</summary>
 [TestFixture]
 public class UT_JumpBotTargets
 {
@@ -78,6 +81,65 @@ public class UT_JumpBotTargets
                 "the report: \"/jump <bot> to me\" with no player of that name");
             Assert.That(JumpBotTargets.Choose(false, false, JumpBotTargets.NameMatch.Ambiguous), Is.EqualTo(0));
             Assert.That(JumpBotTargets.Choose(false, false, JumpBotTargets.NameMatch.None), Is.EqualTo(0));
+        });
+    }
+    [Test]
+    public void Refusal_ADeadBotOrOneOutOfTheWorldIsNotMoved()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(JumpBotTargets.Refusal(inWorld: true, alive: true), Is.EqualTo(JumpBotTargets.MoveRefusal.None));
+            Assert.That(JumpBotTargets.Refusal(inWorld: true, alive: false), Is.EqualTo(JumpBotTargets.MoveRefusal.Dead),
+                "a corpse stays where it fell (GameBot.RefuseCorpseMove)");
+            Assert.That(JumpBotTargets.Refusal(inWorld: false, alive: true), Is.EqualTo(JumpBotTargets.MoveRefusal.NotInWorld));
+            Assert.That(JumpBotTargets.Refusal(inWorld: false, alive: false), Is.EqualTo(JumpBotTargets.MoveRefusal.NotInWorld));
+            Assert.That(JumpBotTargets.Refusal((GameBot)null), Is.EqualTo(JumpBotTargets.MoveRefusal.NotInWorld));
+            Assert.That(JumpBotTargets.TryMove(null, 1, 0, 0, 0, 0, null), Is.False);
+        });
+    }
+
+    [Test]
+    public void FailureText_SaysWhyTheJumpFailed()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(JumpBotTargets.FailureText("Brannoc", JumpBotTargets.MoveRefusal.Dead),
+                Does.StartWith("Brannoc is dead").And.Contains("resurrect it there"));
+            Assert.That(JumpBotTargets.FailureText("Brannoc", JumpBotTargets.MoveRefusal.NotInWorld),
+                Is.EqualTo("Brannoc is not in the world any more."));
+            // The text the playtester's bot-jump scenario and the 1.2.1 command already used for any other failure.
+            Assert.That(JumpBotTargets.FailureText("Brannoc", JumpBotTargets.MoveRefusal.None),
+                Is.EqualTo("Brannoc could not be moved there."));
+        });
+    }
+
+    [Test]
+    public void AJumpedGamebotForgetsTheTripItPlannedFromTheOldSpot()
+    {
+        // The controller's in-flight trip (a camp, a patrol point, a stable ride it meant to take, its next plan time) was
+        // planned from where the bot stood; after a GM's /jump it plans again (AutonomousWorldBotController.ForgetTripAfterGmMove).
+        var controller = new AutonomousWorldBotController();
+        const BindingFlags hidden = BindingFlags.Instance | BindingFlags.NonPublic;
+        FieldInfo Field(string name) => typeof(AutonomousWorldBotController).GetField(name, hidden)
+            ?? throw new AssertionException("AutonomousWorldBotController has no field " + name);
+        Field("_patrolDestination").SetValue(controller, (Vector3?)new Vector3(100, 200, 300));
+        Field("_nextPlanTick").SetValue(controller, 123_456L);
+        Field("_campStartedTick").SetValue(controller, 42L);
+        Field("_nextPorterSearch").SetValue(controller, 99L);
+        Field("_keepTravelKey").SetValue(controller, "old-keep-route");
+
+        MethodInfo forget = typeof(AutonomousWorldBotController).GetMethod("ForgetTripAfterGmMove", hidden)!;
+        forget.Invoke(controller, [null]);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(Field("_patrolDestination").GetValue(controller), Is.Null);
+            Assert.That(Field("_nextPlanTick").GetValue(controller), Is.EqualTo(0L), "it plans again on its next turn");
+            Assert.That(Field("_campStartedTick").GetValue(controller), Is.EqualTo(0L));
+            Assert.That(Field("_nextPorterSearch").GetValue(controller), Is.EqualTo(0L));
+            Assert.That(Field("_keepTravelKey").GetValue(controller), Is.Null, "a keep route is planned again from the new spot");
+            Assert.That(Field("_camp").GetValue(controller), Is.Null);
+            Assert.That(Field("_pendingStableChoice").GetValue(controller), Is.Null);
         });
     }
 }

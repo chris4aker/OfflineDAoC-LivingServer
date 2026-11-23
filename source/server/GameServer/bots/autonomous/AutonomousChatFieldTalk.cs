@@ -2343,7 +2343,8 @@ public static class AutonomousChatFieldTalk
             "4 v 1, dead", "1 v 5 lol, dead", "train of reds", "mezzed and dead"];
         string[] at = ["", "", $" in {front}", $" in {front}", " at the milegate", " by the bridge", " outside the keep", " near the keep",
             " on the road", " by the portal keep", $" at the {front} milegate", " right outside the gate", " by the lake", " on the bridge"];
-        string[] tail = ["", "", "", " lol", " again", " ugh", ", ugh", " heh", ", never saw them", " zzz"];
+        // Chat audit 1.2.2 (F9): no laugh tacked onto a death ("1 v 5 lol, dead" keeps the one it was told with).
+        string[] tail = ["", "", "", " again", " ugh", ", ugh", ", never saw them", " zzz"];
         var options = new string[24];
         for (int i = 0; i < options.Length; i++)
             options[i] = how[random.Next(how.Length)] + at[random.Next(at.Length)] + tail[random.Next(tail.Length)];
@@ -2601,6 +2602,11 @@ public static class AutonomousChatFieldTalk
         foreach ((string cls, string[] words) in ClassWords)
             if (words.Append(cls).Where(word => !AmbiguousClassWords.Contains(word)).Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal) || t.Contains(" " + word + "s ", StringComparison.Ordinal)))
                 return char.ToUpperInvariant(cls[0]) + cls[1..];
+        // 1.2.2 chat audit (C7): "who trains mercenaries?", "armsmen", "heroes" (the plural forms) drew the asker's own class.
+        foreach ((string cls, string[] plurals) in ClassPlurals)
+            if (plurals.Append(cls.EndsWith('y') ? cls[..^1] + "ies" : cls + "es").Where(word => !AmbiguousClassWords.Contains(word))
+                .Any(word => t.Contains(" " + word + " ", StringComparison.Ordinal)))
+                return char.ToUpperInvariant(cls[0]) + cls[1..].ToLowerInvariant();
         return null;
     }
 
@@ -2814,6 +2820,9 @@ public static class AutonomousChatFieldTalk
         ["valewalker"] = (["scythe and arboreal", "max scythe", "scythe, some parry"], ["a scythe", "scythe, always"]),
     };
 
+    /// <summary>Whether the class tips know a class (its own spec and weapon lines). Pure.</summary>
+    public static bool KnowsClass(string className) => ClassTips.ContainsKey(className?.Trim() ?? string.Empty);
+
     /// <summary>Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.</summary>
     public static string[] SpecAdvice(string className) =>
         ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.Append("max ur main line first").ToArray()
@@ -2823,6 +2832,19 @@ public static class AutonomousChatFieldTalk
     public static string[] WeaponAdvice(string className) =>
         ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.Append("whatever ur spec is").ToArray()
             : Pool("whatever ur spec is", "best one that drops lol");
+
+    /// <summary>
+    /// The spec advice a player is given (1.2.2 chat audit, C5, fix F7): the class's own lines only, or none for a class the tips
+    /// don't know. "what spec for reaver?" drew "Max your main line first." one time in four from <see cref="SpecAdvice"/>, whose
+    /// general line stays for the bots' own class talk. Pure.
+    /// </summary>
+    public static string[] ClassSpecAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.ToArray() : [];
+
+    /// <summary>The weapon a player is told for a class: its own lines only, or none (C5, fix F7: "what weapon should a thane
+    /// use?" drew "whatever ur spec is"). Pure.</summary>
+    public static string[] ClassWeaponAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.ToArray() : [];
 
     /// <summary>Where a class trains: every class trainer of the realm stands in its capital. Pure.</summary>
     public static string[] TrainerAnswers(Facts f, Random random)

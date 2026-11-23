@@ -79,6 +79,22 @@ In a playable folder:
     classic quality and losses), the owner's epic encounter options and the bot schedule (`bot_schedule_mode` off: the
     whole roster online; owner, 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is
     off by default"). The Sluaghbinder edition switch stays edition-specific.
+- **Raid sizes: raise a size, never weaken a boss.** Owner, 2026-11-22: "If the mechanics and tactics are working but the
+  period raider size from logs isn't cutting it, and adding more bots without it becoming a Zerg wins, we should bump the
+  suggested raider and period size." A period size (`SuggestedBots`) is raised only by the rule in
+  [docs/RAID-SIZES.md](docs/RAID-SIZES.md) ("Raising a period size"): the tactic works in a sim, the smallest whole-party
+  size reaching about two wins in three (or the limit), at most twice the period source's figure and never past 300, and the rules from
+  before the tactic still lose at that size (`RaidPeriodSizes.Raises`).
+  - Since 2026-11-23 (owner: "Revert all three"; every 1.2.2 raise was withdrawn on audit), the evidence must also:
+    - use the game's loss condition, with real raider deaths;
+    - reproduce one PC kill and one PC loss at their logged sizes;
+    - check the no-zerg control at the 125% start and with the 24 Special Forces;
+    - split a shared raid row first;
+    - be pinned in a C# test (`RaidPeriodSizes.Raise.EvidenceTest`).
+  - The rule may improve. Owner, 2026-11-23: "if another better way of testing or rule setting is found or feasible,
+    suggest and push that too". When a better test or rule is found or becomes feasible (a closer model, a real PC run, a
+    sharper control), propose it to the owner and push it as a change to this rule. Don't set it aside because it isn't
+    the current rule.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**

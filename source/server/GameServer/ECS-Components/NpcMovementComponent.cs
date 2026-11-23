@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Numerics;
 using DOL.AI.Brain;
@@ -45,11 +46,26 @@ namespace DOL.GS
         private SeamContinuation _seamContinuation;
         private FallContinuation _fallContinuation;
         private static int _stairLandingLogs;
+        // 1.2.2 (#438 generalized, docs/NAVMESH-DROPS.md): the last path leg a bot walked outside Darkness Falls. A leg
+        // over an off-mesh link (ladder, climb, ledge drop, gap) has no polygon in its middle; Commit: the bot is walking
+        // a steep one and does not replot before its far end. Kept after a stop (Commit cleared) for the landing rule.
+        private PathLeg _pathLeg;
+        private static int _linkLandingLogs;
+        private sealed record PathLeg(Vector3 From, Vector3 To, ushort Region, bool Commit);
+        private ClimbContinuation _climbContinuation;
+        private static int _stairClimbLogs;
+        private Vector3 _stairClimbCheckedFinal;
+        private long _stairClimbCheckedUntil;
+        private bool _stairClimbCheckedResult;
         private long _petStuckSince;
         private Vector3 _petStuckAnchor;
         private enum FallStage { WalkOffLip, Descend }
         private sealed record FallContinuation(Vector3 Air, Vector3 Landing, Vector3 Final,
             ushort Region, Group Group, string Assignment, short Speed, FallStage Stage);
+        // #438 (1.2.2): a certified stair fall walked backwards, landing -> air (rise) -> lip (step on).
+        private enum ClimbStage { Rise, StepOn }
+        private sealed record ClimbContinuation(Vector3 Air, Vector3 Lip, Vector3 Final,
+            ushort Region, Group Group, string Assignment, short Speed, ClimbStage Stage);
         private sealed record SeamContinuation(Vector3 At, Vector3 Next, Vector3? Final,
             ushort Region, Group Group, string Assignment, bool Walk);
 
@@ -82,6 +98,105 @@ namespace DOL.GS
                 PathToInternal(fall.Final, fall.Speed);
             }
             return IsFlagSet(MovementState.WalkTo);
+        }
+
+        /// <summary>A stair climb is being walked: the mover is on its way to the air point or the lip. New orders then
+        /// only change where the bot goes once it stands on the lip (#438, 1.2.2).</summary>
+        private bool StairClimbUnderWay() =>
+            _climbContinuation is { } climb && IsMoving && IsFlagSet(MovementState.WalkTo) &&
+            Owner.CurrentRegionID == climb.Region &&
+            Vector3.DistanceSquared(_destination, climb.Stage == ClimbStage.Rise ? climb.Air : climb.Lip) <= 16 * 16;
+
+        private bool TryContinueStairClimb()
+        {
+            ClimbContinuation climb = _climbContinuation;
+            if (climb == null) return false;
+            Vector3 expected = climb.Stage == ClimbStage.Rise ? climb.Air : climb.Lip;
+            if (Owner is not GameBot bot ||
+                bot.CurrentRegionID != climb.Region || bot.Group != climb.Group ||
+                bot.PersistentRecord?.ObjectiveAssignmentId != climb.Assignment || !bot.IsAlive ||
+                bot.IsOnStableMasterRoute || Vector3.DistanceSquared(_ownerPosition, expected) > 16 * 16)
+            {
+                _climbContinuation = null;
+                return false;
+            }
+
+            if (climb.Stage == ClimbStage.Rise)
+            {
+                // Over the landing at lip height: step level onto the lip, the reverse of the walk off it.
+                _climbContinuation = climb with { Stage = ClimbStage.StepOn };
+                WalkToInternal(climb.Lip, climb.Speed);
+            }
+            else
+            {
+                _climbContinuation = null;
+                PathToInternal(climb.Final, climb.Speed);
+            }
+            return IsFlagSet(MovementState.WalkTo);
+        }
+
+        /// <summary>
+        /// #438 (1.2.2): Darkness Falls' entrance stairs are three one-way drops per realm in zone249.nav, so no path leads
+        /// up them. A bot whose path toward a destination at or above a drop's lip is partial (a companion following its
+        /// player up the stairs) walks to that drop's landing and climbs the certified fall backwards: it rises over the
+        /// landing to the fall's air point and steps onto the lip, then paths on (and climbs the next drop the same way).
+        /// Only where the navmesh agrees: the landing reachable from the bot and a complete path from the top of the
+        /// stairs to the destination. The links are the hash-guarded ones the falls use (none on another mesh).
+        /// </summary>
+        private bool TryClimbDarknessFallsStairs(Zone zone, Vector3 destination, short speed)
+        {
+            if (speed <= 0 || Owner is not GameBot bot || zone?.ID != AutonomousDarknessFallsPolicy.RegionId ||
+                !bot.IsAlive || bot.IsOnStableMasterRoute)
+                return false;
+            IReadOnlyList<AutonomousDarknessFallsNavigation.TraversalLink> links = bot.IsAutonomousWorldBot
+                ? AutonomousDarknessFallsNavigation.CertifiedFallLinks
+                : AutonomousDarknessFallsNavigation.InstalledFallLinks;
+            if (!AutonomousDarknessFallsNavigation.TryPlanStairClimb(_ownerPosition, destination, links,
+                    out AutonomousDarknessFallsNavigation.StairClimb climb))
+                return false;
+
+            bool atFoot = AutonomousDarknessFallsNavigation.IsAtStairFoot(_ownerPosition, climb);
+            long now = GameLoop.GameLoopTime;
+            // A follower re-plans every few hundred ms; the two navmesh checks are kept for two seconds per destination.
+            if (now >= _stairClimbCheckedUntil || Vector3.DistanceSquared(destination, _stairClimbCheckedFinal) > 64 * 64)
+            {
+                IPathfindingMgr nav = PathfindingProvider.Instance;
+                _stairClimbCheckedResult = StairPathComplete(nav, zone, climb.Top, destination) &&
+                    (atFoot || StairPathComplete(nav, zone, _ownerPosition, climb.Foot));
+                _stairClimbCheckedFinal = destination;
+                _stairClimbCheckedUntil = now + 2000;
+            }
+            if (!_stairClimbCheckedResult)
+                return false;
+
+            if (!atFoot)
+            {
+                // Walk to the landing first; every node reached re-plans toward the real destination (and climbs there).
+                PathToInternal(climb.Foot, speed, false);
+                _movementRequest.Set(MovementRequestType.Path, destination, speed);
+                return true;
+            }
+
+            _climbContinuation = new(climb.Air, climb.Lip, destination, bot.CurrentRegionID, bot.Group,
+                bot.PersistentRecord?.ObjectiveAssignmentId, speed, ClimbStage.Rise);
+            UnsetFlag(MovementState.Pathfinding);
+            WalkToInternal(climb.Air, speed);
+            if (Interlocked.Increment(ref _stairClimbLogs) <= 200)
+                BotPetStuckRecovery.Log.Info($"DF_STAIR_CLIMB bot=\"{bot.Name}\" " +
+                    $"kind={(bot.IsAutonomousWorldBot ? "gamebot" : "companion")} region={Owner.CurrentRegionID} " +
+                    $"from={(int) _ownerPosition.X},{(int) _ownerPosition.Y},{(int) _ownerPosition.Z} " +
+                    $"lip={(int) climb.Lip.X},{(int) climb.Lip.Y},{(int) climb.Lip.Z} steps={climb.Steps} " +
+                    $"to={(int) destination.X},{(int) destination.Y},{(int) destination.Z}");
+            return true;
+        }
+
+        private static bool StairPathComplete(IPathfindingMgr nav, Zone zone, Vector3 from, Vector3 to)
+        {
+            if (nav == null || zone == null) return false;
+            Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+            PathfindingResult result = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, nodes);
+            return result.Status == PathfindingStatus.PathFound && result.NodeCount > 0 && result.NodeCount <= nodes.Length &&
+                Vector3.Distance(nodes[result.NodeCount - 1].Position, to) <= 96;
         }
 
         public void PathAcrossValidatedSeam(Vector3 inside, Vector3 outside, Vector3? final, short speed)
@@ -284,6 +399,8 @@ namespace DOL.GS
         {
             _seamContinuation = null;
             _fallContinuation = null;
+            ReleasePathLegCommit();
+            _climbContinuation = null;
             _movementRequest.Set(MovementRequestType.Walk, destination, speed);
             SetFlag(MovementState.Request);
             AddToServiceObjectStore();
@@ -310,11 +427,67 @@ namespace DOL.GS
                     return;
                 }
             }
+            // #438 (1.2.2): the same for a stair climb under way, for every bot: it steps onto the lip, then goes on.
+            if (StairClimbUnderWay())
+            {
+                _climbContinuation = _climbContinuation with { Final = destination, Speed = speed > 0 ? speed : _climbContinuation.Speed };
+                return;
+            }
+            // 1.2.2 (#438 generalized): the same for any bot on a steep off-mesh link leg outside Darkness Falls (a
+            // ladder, a wall or tower climb, a ledge drop). Its new order becomes the path it takes from the leg's far end;
+            // replotting from inside the leg would start on no polygon and fail.
+            if (IsCommittedToPathLeg())
+            {
+                _seamContinuation = null;
+                _movementRequest.Set(MovementRequestType.Path, destination, speed);
+                return;
+            }
             _seamContinuation = null;
             _fallContinuation = null;
+            _climbContinuation = null;
             _movementRequest.Set(MovementRequestType.Path, destination, speed);
             SetFlag(MovementState.Request);
             AddToServiceObjectStore();
+        }
+
+        private bool IsCommittedToPathLeg() =>
+            _pathLeg is { Commit: true } leg && Owner is GameBot && Owner.CurrentRegionID == leg.Region &&
+            IsFlagSet(MovementState.WalkTo) && IsFlagSet(MovementState.Pathfinding) &&
+            Vector3.DistanceSquared(_destination, leg.To) <= 4 && NavLinkLeg.IsOnLeg(_ownerPosition, leg.From, leg.To);
+
+        private void ReleasePathLegCommit()
+        {
+            if (_pathLeg is { Commit: true } leg)
+                _pathLeg = leg with { Commit = false };
+        }
+
+        private void TrackPathLeg(Vector3 next)
+        {
+            ushort region = Owner.CurrentRegionID;
+            if (_pathLeg is { } leg && leg.Region == region && Vector3.DistanceSquared(leg.To, next) <= 4)
+            {
+                // The same leg re-issued (a stop and a new order with the same next node): commit again from where it began.
+                if (!leg.Commit && NavLinkLeg.IsCommitLeg(leg.From, leg.To))
+                    _pathLeg = leg with { Commit = true };
+                return;
+            }
+            _pathLeg = new(_ownerPosition, next, region, NavLinkLeg.IsCommitLeg(_ownerPosition, next));
+        }
+
+        /// <summary>The floor at the far end of the leg this bot was walking, when it is inside that leg and on no polygon
+        /// within the pick box (the #438 stuck condition). Outside Darkness Falls only.</summary>
+        private bool TryGetPathLegLanding(Zone zone, out Vector3 landing)
+        {
+            landing = default;
+            if (_pathLeg is not { } leg || leg.Region != Owner.CurrentRegionID ||
+                !NavLinkLeg.IsOnLeg(_ownerPosition, leg.From, leg.To))
+                return false;
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            if (nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
+            Vector3? here = nav.GetClosestPoint(zone, _ownerPosition, nav.DefaultFilters);
+            if (here.HasValue) return false;
+            return NavLinkLeg.TryResolveLanding(_ownerPosition, leg.From, leg.To, null,
+                nav.GetClosestPoint(zone, leg.To, nav.DefaultFilters), out landing);
         }
 
         public void ForcePathReplot()
@@ -347,6 +520,8 @@ namespace DOL.GS
         {
             _seamContinuation = null;
             _fallContinuation = null;
+            ReleasePathLegCommit();
+            _climbContinuation = null;
             _movementState = MovementState.None;
             StopFollowing();
             StopMovingOnPath();
@@ -363,6 +538,8 @@ namespace DOL.GS
 
             _seamContinuation = null;
             _fallContinuation = null;
+            if (!StairClimbUnderWay())
+                _climbContinuation = null;
 
             if (target != FollowTarget)
                 _nextFollowTick = 0;
@@ -582,6 +759,8 @@ namespace DOL.GS
         {
             _seamContinuation = null;
             _fallContinuation = null;
+            _pathLeg = null;
+            _climbContinuation = null;
             // Must be called every time the NPC is teleported or moved by other means than this component.
             _ownerPosition = new(Owner.RealX, Owner.RealY, Owner.RealZ);
             _positionForClient = _ownerPosition;
@@ -723,6 +902,12 @@ namespace DOL.GS
 
         private void PathToInternal(Vector3 destination, short speed, bool allowFloorRepair = true)
         {
+            // A follow check or a new order during a stair climb: finish the climb, then go there (#438, 1.2.2).
+            if (StairClimbUnderWay())
+            {
+                _climbContinuation = _climbContinuation with { Final = destination, Speed = speed > 0 ? speed : _climbContinuation.Speed };
+                return;
+            }
             if (!AutonomousRealmBoundary.Allows(Owner, destination))
             {
                 UpdateMovement(0);
@@ -739,7 +924,13 @@ namespace DOL.GS
                 return;
             }
 
-            if (_pathfinder.TryGetNextNode(zone, _ownerPosition, destination, out Vector3? _nextNode))
+            bool hasNextNode = _pathfinder.TryGetNextNode(zone, _ownerPosition, destination, out Vector3? _nextNode);
+            // #438 (1.2.2): no path leads up Darkness Falls' entrance stairs; a partial one toward a goal above them is
+            // replaced by the certified climb, before the bot walks a partial path into another level.
+            if (_pathfinder.PathfindingStatus is PathfindingStatus.PartialPathFound or PathfindingStatus.NoPathFound &&
+                TryClimbDarknessFallsStairs(zone, destination, speed))
+                return;
+            if (hasNextNode)
             {
                 ClearAutonomousPathFailure();
                 // #438 (1.2.1): every bot walks Darkness Falls' entrance stair drops as certified falls (off the lip,
@@ -760,6 +951,8 @@ namespace DOL.GS
                     WalkToInternal(air, speed);
                     return;
                 }
+                if (Owner is GameBot && NavLinkLeg.AppliesIn(zone.ID))
+                    TrackPathLeg(_nextNode.Value);
                 // Continue to the next node, even on partial paths.
                 _movementRequest.Set(MovementRequestType.Path, destination, speed);
                 SetFlag(MovementState.Pathfinding);
@@ -789,6 +982,25 @@ namespace DOL.GS
                             $"kind={(stairBot.IsAutonomousWorldBot ? "gamebot" : "companion")} region={Owner.CurrentRegionID} " +
                             $"from={(int) inDrop.X},{(int) inDrop.Y},{(int) inDrop.Z} " +
                             $"to={(int) stairLanding.X},{(int) stairLanding.Y},{(int) stairLanding.Z}");
+                    PathToInternal(destination, speed, false);
+                    break;
+                }
+                // 1.2.2 (#438 generalized, docs/NAVMESH-DROPS.md): the same anywhere else. A bot left inside an off-mesh link
+                // leg (a ladder, a climb, a ledge drop or a gap; stopped, or given a new order mid-leg) is on no polygon, so
+                // every path from there fails. It is set down on the floor at the leg's far end and paths on from there.
+                case PathfindingStatus.NoPathFound when allowFloorRepair && Owner is GameBot linkBot &&
+                    NavLinkLeg.AppliesIn(zone.ID) && TryGetPathLegLanding(zone, out Vector3 linkLanding):
+                {
+                    Vector3 inLeg = _ownerPosition;
+                    _pathLeg = null;
+                    _ownerPosition = linkLanding;
+                    UpdateMovement(0);
+                    _pathfinder.ForceReplot = true;
+                    if (Interlocked.Increment(ref _linkLandingLogs) <= 200)
+                        BotPetStuckRecovery.Log.Warn($"NAV_LINK_LANDING bot=\"{linkBot.Name}\" " +
+                            $"kind={(linkBot.IsAutonomousWorldBot ? "gamebot" : "companion")} region={Owner.CurrentRegionID} " +
+                            $"zone={zone.ID} from={(int) inLeg.X},{(int) inLeg.Y},{(int) inLeg.Z} " +
+                            $"to={(int) linkLanding.X},{(int) linkLanding.Y},{(int) linkLanding.Z}");
                     PathToInternal(destination, speed, false);
                     break;
                 }
@@ -959,6 +1171,10 @@ namespace DOL.GS
 
         private int FollowTick()
         {
+            // A stair climb under way is finished first: stopping it would leave the bot over the landing (#438, 1.2.2).
+            if (StairClimbUnderWay())
+                return Properties.GAMENPC_FOLLOWCHECK_TIME;
+
             // A bot's mobile song is a cast, but must not freeze its follow
             // route. Ordinary NPC casts and ranged attacks keep their stop rule.
             if (Owner.IsCasting && !BotSongTwistPolicy.HasMobileSongCast(Owner) ||
@@ -1100,6 +1316,10 @@ namespace DOL.GS
             // (a slot behind a closed keep door replanned every 400 ms during a siege, 2026-10-17).
             if (formation && leaderWalking && !IsMoving && !_pathfinder.HasRecentFailure(destination))
                 _pathfinder.ForceReplot = true;
+            // 1.2.2 (#438 generalized): a follower on a steep off-mesh link leg finishes it before it replots (the next
+            // check after its arrival paths on to where the leader is then).
+            if (IsCommittedToPathLeg())
+                return formation ? AutonomousGroupFormationFollow.FollowCheckMilliseconds : Properties.GAMENPC_FOLLOWCHECK_TIME;
             PathToInternal(destination, Math.Max((short) 20, speed));
             return formation ? AutonomousGroupFormationFollow.FollowCheckMilliseconds : Properties.GAMENPC_FOLLOWCHECK_TIME;
         }
@@ -1153,6 +1373,7 @@ namespace DOL.GS
         {
             if (!AllowPosition(_destination)) return;
             if (TryContinueCertifiedFall()) return;
+            if (TryContinueStairClimb()) return;
             if (_seamContinuation != null && Vector3.DistanceSquared(_ownerPosition, _seamContinuation.At) <= 16 * 16 &&
                 TryContinueValidatedSeam()) return;
             if (IsFlagSet(MovementState.Pathfinding))

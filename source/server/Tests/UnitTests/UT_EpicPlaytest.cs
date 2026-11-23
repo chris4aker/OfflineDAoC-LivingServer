@@ -23,6 +23,11 @@ namespace DOL.UnitTests
         public void SizeIsEraStartOrANumber(string word, int period, int expected) =>
             Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period), Is.EqualTo(expected));
 
+        // 1.2.2's "source" (the size before a raise) went with the raises, withdrawn 2026-11-23: no longer a size word.
+        [TestCase("source", 64, 0)]
+        public void SourceIsNoLongerASizeWord(string word, int period, int expected) =>
+            Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period), Is.EqualTo(expected));
+
         [TestCase(100, 80)]
         [TestCase(64, 52)]
         [TestCase(70, 56)]

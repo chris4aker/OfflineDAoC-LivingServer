@@ -290,6 +290,12 @@ namespace DOL.GS.PacketHandler
             if (queue.TryAdd(packet))
                 return;
 
+            // 1.2.2 regression guard: from inside the drain itself the queue can never become free. Give up at once, as 1.2
+            // did (the error is logged and the packet skipped), instead of holding this thread, the game loop's send step,
+            // for the whole wait.
+            if (queue.IsDrainingOnThisThread)
+                throw new InvalidOperationException($"Cannot add while {nameof(DrainArray<T>.DrainTo)} is in progress on this thread.");
+
             SpinWait spinner = new();
             long giveUpAt = Environment.TickCount64 + maxWaitMs;
 

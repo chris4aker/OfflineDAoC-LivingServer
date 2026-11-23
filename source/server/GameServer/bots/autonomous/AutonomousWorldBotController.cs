@@ -364,6 +364,33 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>
+        /// A GM's /jump put the bot somewhere else (JumpBotTargets.TryMove, #438 follow-up for 1.2.2): the trip it planned
+        /// from the old spot is not one it can go on with. It forgets the camp, patrol, town teleporter trip, frontier
+        /// porter request and a stable ride it meant to take, and plans again on its next turn; its task (objective
+        /// assignment) and group stay, as when an autonomous group disbands under it. Keep and RvR routes already re-plan
+        /// when the bot is far from where they were planned (KeepTravel), and a frontier porter in another region is
+        /// looked up again.
+        /// </summary>
+        internal void ForgetTripAfterGmMove(GameBot bot)
+        {
+            _camp = null;
+            _campStartedTick = 0;
+            _emptyCampSinceTick = 0;
+            _patrolDestination = null;
+            _pendingStableChoice = null;
+            ClearTownPort();
+            bot?.TempProperties.RemoveProperty(AutonomousFrontierTransport.RequestKey);
+            _frontierPorter = null;
+            _nextPorterSearch = 0;
+            _keepTravelPoints = null;
+            _keepTravelKey = null;
+            _keepPlanning = null;
+            _nextPlanTick = 0;
+            if (bot?.PersistentRecord != null)
+                bot.PersistentRecord.CurrentCampId = string.Empty;
+        }
+
         public bool Tick(BotBrain brain)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerTick); // AI_PROFILE: measures only
@@ -572,6 +599,10 @@ namespace DOL.GS
                         bot.ForcePathReplot();
                     }
                     if (droppedChase)
+                        return true;
+                    // In a keep or tower lord's fight casters, archers and healers keep their formation spot behind the
+                    // melee (1.2.2, RvrLordFormation), frontier and battleground alike.
+                    if (bot.TargetObject is GuardLord fightLord && TakeLordFormation(bot, fightLord))
                         return true;
                     // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))

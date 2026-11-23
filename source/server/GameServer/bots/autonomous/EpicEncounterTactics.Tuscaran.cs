@@ -53,10 +53,17 @@ namespace DOL.GS
                 Summary = "Twin heal: Kula first, only the King's target fights him; out of Kula's frost circle; casters clear of his hammers. " +
                           "No muster in her frost circle (it stood 288 from its middle, owner's PC 2026-11-16). While she lives no bot's " +
                           "pet touches him and no other bot's hit or area spell lands on him; once she is dead casters and healers " +
-                          "keep clear of his hammers in his own fight.",
+                          "keep clear of his hammers in his own fight. His target, a tank, holds him with its taunts (it must hit him to " +
+                          "hold him: the heals on it give its healers threat on him).",
                 MusterDangers = KulaFrostMusterDanger,
                 NoPets = TuscarNoPets,
                 MustNotHit = TuscarMustNotHit,
+                // 1.2.2 (raid tactic audit finding 9): his target must hit him to hold him (below); a tank uses its taunts.
+                Act = (bot, npc, _) =>
+                {
+                    if (TuscarTankTaunts(npc.TargetObject == bot, TwinHealGuardsKing(npc), IsTankLiving(bot)) && bot.Brain is DOL.AI.Brain.BotBrain brain)
+                        brain.TauntForEncounter(npc);
+                },
             },
             new("Kvasir", ["Kvasir"], c => KvasirScream(c) ?? KvasirColdCarrier(c))
             {
@@ -350,14 +357,14 @@ namespace DOL.GS
             if (c.Target == king && queen != null && EpicEncounterMechanics.AllowTuscarTwinHeal && king.TargetObject != c.Raider)
                 return new(BotAction.Retarget, queen, null, "twin heal: damage to the King heals Kula; only his target fights him", "epic_twin_heal");
             if (c.Target == queen && king?.TargetObject is GameLiving kingTarget && !SameParty(c.Raider, kingTarget) &&
-                SpreadSpot(c.At, PosOf(king), PosOf(kingTarget), TuscarHammerRadius, c.AtRange) is Vector3 clear)
+                SpreadSpot(c.At, PosOf(king), PosOf(kingTarget), TuscarHammerRadius, c.StandsBack) is Vector3 clear)
                 return new(BotAction.Reposition, queen, clear, $"clear of the King's hammers ({TuscarHammerRadius} around \"{kingTarget.Name}\")");
             // Living Server 1.2.1 (#409): once Kula is dead his styles bring Mjolnir's Fury (600) and Thor's Might (350) after
             // them, 500 around his target, as well as the block and parry casts (KingTuscar.OnAttackEnemy). Casters, archers and
             // healers outside his target's party keep clear of it; melee fight on (they can't clear it) and are healed.
             if (queen == null && c.Target == king && king.InCombat && king.TargetObject is GameLiving anchor &&
                 !SameParty(c.Raider, anchor) &&
-                SpreadSpot(c.At, PosOf(king), PosOf(anchor), TuscarHammerRadius, c.AtRange) is Vector3 away)
+                SpreadSpot(c.At, PosOf(king), PosOf(anchor), TuscarHammerRadius, c.StandsBack) is Vector3 away)
                 return new(BotAction.Reposition, king, away,
                     $"king alone: clear of his hammers ({TuscarHammerRadius} around \"{anchor.Name}\"), Kula is dead");
             return default;
@@ -384,6 +391,19 @@ namespace DOL.GS
         /// </summary>
         private static bool TuscarMustNotHit(GameBot bot, GameNPC npc) =>
             bot != null && TwinHealGuardsKing(npc) && npc.TargetObject != bot;
+
+        /// <summary>
+        /// His target, a tank, uses its taunts on him while Kula lives (pure; 1.2.2, raid tactic audit finding 9). Decided by
+        /// his script: every point his target deals him heals Kula too (KingTuscar.TakeDamage), but his target must still hit
+        /// him, because nothing else holds him. He fights whoever has the most threat on him (StandardMobBrain), and every heal
+        /// on his target adds half its size to its healer's threat on him (HealSpellHandler): a target that never hit him
+        /// would hand him to its own healers in a few heals, and he would walk through the raid after them (no bot but his
+        /// target may hit him, so nobody could take him back). The server has no taunt without a hit: a taunt spell
+        /// (Paladin chants) or a taunt style (every tank class) is the most threat a hit buys, so his tank uses those
+        /// (BotBrain.TauntForEncounter) and the rest of its hits are accepted: one tank's damage is a small share of the
+        /// raid's on Kula. Nobody else hits him.
+        /// </summary>
+        public static bool TuscarTankTaunts(bool isHisTarget, bool kulaLives, bool isTank) => isHisTarget && kulaLives && isTank;
 
         // ---- Icelord Kvasir ------------------------------------------------------------------------------------------
 

@@ -122,7 +122,8 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
     }
 
     /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it), made
-    /// whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72.</summary>
+    /// whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72. (1.2.2's
+    /// "source", the size before a raise, went with the raises, withdrawn 2026-11-23.)</summary>
     public static int SizeFor(string word, int periodSize)
     {
         int size;

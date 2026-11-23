@@ -8,6 +8,238 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.2 — 2026-11-23
+
+The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
+1.2.3). **Nothing here is seen in game yet: tests only.** The three raid-size raises first made here were withdrawn on
+audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
+
+**Bosses**
+- **Raid sizes: the 1.2.2 raises withdrawn; every raid at its period size** (owner, 2026-11-23: "Revert all three").
+  Summoner's Hall back to 64 (from 80, all three realms), Galladoria back to 100 (from 112), Tuscaran Glacier back to
+  100 (from 120); the Green Knight's raise to 80 had been withdrawn on 2026-11-22. An independent audit of the sims
+  behind them found none sound: Roesia's model loses at 80 (0-15 of 64 with real stats), gets worse with more curers and
+  turns on a hand-fitted heal, and its control wins at the 100 a raid starts at; Spindler's is a newborn count with no
+  win or loss, its target is the model's own value, and `1dc66b6` killed her at the period size with the old share;
+  Kula's model cannot lose, its "20.1 min" target is a model estimate, and the losses were at King Tuscar (about 124,
+  unmodelled). The tactic changes (the 60% add-party share at Spindler, the pet and area-spell guard at the King, the
+  fresh-Pain cure) stay. `RaidPeriodSizes.Raises` is empty; `/epictest start <raid> source` is gone with it.
+  [docs/RAID-SIZES.md](docs/RAID-SIZES.md), "Withdrawn on audit". **Tests only** (#408, #409, #410).
+- **The rule for raising a raid's size stays, with stricter evidence** (owner, 2026-11-22: "If the mechanics and
+  tactics are working but the period raider size from logs isn't cutting it, and adding more bots without it becoming a
+  Zerg wins, we should bump the suggested raider and period size"; tightened 2026-11-23). A period size goes up only
+  when the encounter's sim shows its tactic working but still losing at the period size, to the smallest whole-party
+  size winning about two in three, at most twice the period guide's own figure and never past 300. Its evidence now
+  needs: the game's loss condition (half the engaged raiders fallen, or a reset from 70% or lower) with real raider
+  deaths; at least one PC kill and one PC loss reproduced at their logged sizes; the no-zerg control losing at the real
+  start (125%) and with the 24 Special Forces, not only at 100%; a shared raid row split before one boss's evidence
+  raises a dungeon; and the evidence pinned in a C# test (`RaidPeriodSizes.Raise.EvidenceTest`, checked by
+  `UT_RaidPeriodSizes`). No boss is touched, and no flood guard moves. [docs/RAID-SIZES.md](docs/RAID-SIZES.md),
+  "Raising a period size". **Tests only.**
+- **The Green Knight: back to 40; tag and burn reworked so every raider fights (#412; tests only; not yet won at 40).**
+  The owner withdrew his raise to 80 (2026-11-22, "option 1"). The first 1.2.2 tactic sent the casters and archers
+  without an area spell 4,600 out, where nothing they cast reached him, and its model left his walks out (owner and
+  audits, 2026-11-23). Now every raider fights from where it reaches (`EpicEncounterTactics.GreenKnight.cs`):
+  - healers 650 from him away from his tank, in the melee's peel reach and clear of Might of the Forest; the four
+    nearest his target heal it first; a raider a tree hits waits for a heal until under 35% ("gk-heal-spot");
+  - area casters 700 out with one melee guard, burning tagged trees ("gk-burn"); casters and archers without an area
+    spell 1,300 out, shooting the tagged trees they won't pull, else him ("gk-shot"); Theurgists 850 out, their
+    elementals on the trees hitting healers and casters ("gk-summon");
+  - owners of lasting pets 4,600 out, where no tree grows at them, their pets on the trees, else him (a new `PetOn`
+    stand-off keeps the pet fighting; "gk-pet");
+  - the melee tag every tree, healers' first, and go back to him; Paladins, Friars and Wardens fight in melee;
+  - spots are laid out once along the line away from his tank, kept while he walks or fights a healer he picked,
+    snapped to the navmesh and checked for line of sight; once a raider is at its spot it gets no new spot;
+  - while he walks to one of his four points the raid holds its ground and keeps on the trees: he comes back to his tank.
+  Model (`UT_RaidSim122GreenKnight`, his walks, the bots' own buffs, loss = no raider left): wins of 32 at 40 / 48 / 56 /
+  80, buffed 0 / 5 / 26 / 32, unbuffed 0 / 0 / 1 / 28; the old rules 0 of 32 at every size to 104. Every raider
+  contributes. **Tests only.**
+- **Real boss stats in the raid sims** (`UT_RaidRealStats122`; docs/RAID-SIZES.md, "Real stats"). The sims' assumed hits
+  are replaced by the public OpenDAoC database's templates, the scripts and the server's damage formulas (templates'
+  STR / QUI / INT are auto-set to 30 + (level - 1) unless a script sets them; epic bosses deal 2.25 times). The Green
+  Knight's trees hit 22-36 a second on mail and plate and 53-78 on cloth (assumed 5-15); Roesia's melee 200-289 a second
+  and her damage shield 224-280 a swing (assumed 200 and 64); Marfoirwort swings every 2.71 s (assumed 3.0-4.5).
+  Roesia with real stats: 0-15 of 64 at 80, 43-64 from 88-112 (one reason the raise to 80 was withdrawn, above); the
+  Green Knight back to 40 (above); Caer Sidi, Trollheim, the dragons, Darkness Falls (in Legion's model, where he deals
+  no damage and the raid cannot wipe, still killed inside 20 minutes from 48 at the real 6.2 a raider-second) and
+  Marfoirwort (won at 40 at his real swing in a model with no raider deaths) kept. Behemoth (#414): every swing kills one, 23 a
+  minute; a raid would need about 440 bots in his hall at once, past the realm's 300: no bot raid. **Tests only.**
+- **Kept:** Caer Sidi 100 (the Crypt Lord's guarded pull holds at every size; size is not the lever), Trollheim 64
+  (the 1.2.1 stall clock restarts after a wipe; the sim's "no time-out at any size" is true by its construction, so
+  whether a retry fits inside the hour is untested), the three dragons 70, Darkness Falls 64 and Marfoirwort 40: no sim
+  gives grounds for a change. **Tests only** (#407, #411, #413, #415, #412).
+- **Records carry over in bots.** A raid's Herald record now says what its size is a percentage of ("Raid size: 125% of
+  64."), and the next raid reads it against the period size today, so a world that ran a 1.2.2 test build at a
+  withdrawn size carries on with the same number of bots: "125% of 80" at Summoner's Hall (100 bots) reads as 156.25% of
+  64. **Tests only.**
+  80."), and a 1.2.1 record at a raised raid is read against the old size: a Summoner's Hall raid grown to 166% of 64
+  (106 bots) carries on at 132.8% of 80, the same 106. **Tests only.**
+- **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
+  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's 80 takes 160.
+- **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
+- **Raid tactic audit fixes** (everything but the Green Knight; issues #407-#413, #416; **tests only**):
+  - **Marfoirwort:** he stands on his target (his follow distance, 131), so no spot in bot melee reach clears his
+    350 Life-leech; the 1.2.1 rule moved every melee raider every turn and they never swung. Now only his target fights
+    him in melee; the other melee shoot him from clear of the leech with their distance weapon or wait clear of it (no
+    new spot once there), and tanks go in only to take him back from a non-tank. Animist shrooms are planted clear of
+    the leech and fight him; other pets stay off. Sim: each raider counts only while in range; 16 of 16 kills, the
+    1.2.1 rule 0 of 16.
+  - **Paladin, Friar, Warden:** a melee-hybrid rule (`BotPartyRoles.IsMeleeHybridHealer`,
+    `EpicEncounterTactics.FightsFromRange`, `RuleContext.StandsBack`) for the new rules of unwon fights (Marfoirwort,
+    King Tuscar and Kula's spreads, Legion's ranged line, the Sacristan ambush, the Glacier Giant's healers). Won fights
+    keep v1.2's test (the dragons' stun and breath step-out, the catalog's spread and melee-behind, blast roles).
+  - **Legion:** a wounded raider steps out under 35% and comes back only at 60% (no 34-35% shuttle).
+  - **Summoner Roesia:** with its own party in danger a curer cures only its own party's fresh members, never another
+    party's. The 1.2.1 Pain rules (25% dotted danger, fresh override, 2.5 s) apply in Summoner's Hall only; every other
+    raid has v1.2's cure rule again.
+  - **King Tuscar:** his target must hit him to hold him (heals on it give its healers threat), so a tank uses its taunts.
+  - **Keep lords:** the battleground storm's lord reach is the frontier's (350 keep, 250 tower) for casters, archers and
+    healers; melee and tanks keep 1.2's 900 and keep the lord when no walk to him is found.
+  - **Crypt Lord:** the lapsed court guard covers the 35 s court fight and never lapses: after the hold it waits for
+    his next open window (`REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS`), never a blind pull.
+  - **Spindler:** archers with a short bow, crossbow or thrown weapon take a post on the 750 ring, in reach of her.
+  - **Dragons:** the dragon return wave no longer runs for open-world raids (it measured them to the realm's dragon lair).
+
+**Chat**
+- **The /faction answer audit** (owner, 2026-11-22: "smooth clunkiness, errors, or disjointed phrasing", "reduce or
+  eliminate general fluff and non answers"). A bench of 453 player questions (`tools/bot-voices/eval/player_questions.json`)
+  goes through the reply path in CI (`UT_ChatQuestionBench`) and is scored by `score_bench.py`: 60.5% good answers, 16%
+  silence, 15% off-topic, 6% "dunno", 1.5% wrong, 9.5% clunky. The root causes (lore answering level questions before
+  the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
+  in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
+  report-only until the fixes land. **Tests only.**
+- **/faction answers, the routing fixes (F0, F1, F4, F6, F7; #452, PR #456).** The reply path is now one set of pure functions,
+  `AutonomousChatReplyPath` and `AutonomousChatKnowledge.TryAnswer(KnowledgePorts)`. The server and the question bench both
+  call them, so the bench runs the server's own routing instead of a copy. The world's facts (a place's levels, Darkness
+  Falls, relics, keeps, the realm's dragon) now come before the lore, and lore never answers a level or ownership question.
+  /faction no longer gets a "dunno" rescue or the "not sure" set: silence instead, while a bot named or sent a tell may still
+  say it doesn't know. A question about grouping ("what does lfg mean?", "looking for a spot to grind") is answered as a
+  question, not with "nobody around your level". "Epic" counts as a raid word only for an epic fight. A named bot asked about
+  itself answers from its own facts, and no epic answer says "did mine". Bench results: good answers rose from 274 to 314 of
+  453 (60.5% to 69.3%). Non-answers fell from 27 to 3, off-topic from 67 to 25 and clunky from 43 to 21; place-level
+  questions are now 48 of 48. Silence where an answer was due rose from 67 to 92, since the dunnos became silence. CI now
+  gates on `score_bench.py ratchet` (`bench_ratchet.json`: the good share may only rise, no bad category may grow). It also
+  reports a 60-question holdout set written after these fixes (40 of 60 good). **Tests only.**
+- **Chat shapes (the audit's F3, F5, F7 first half, F11):** a where-to-level question is read as a pattern (`lvl`, `xp`,
+  `best xp for 21`, `where do 24s hunt`, `im 36, where should i go now`, a realm or a class in it) ahead of class talk, and
+  answered with a zone of the realm for the level from `places.json` when no bot camps there (`CatalogZone`, `HuntText`; a
+  solo question gets no group dungeon). Trainer answers say "your" only for the asker's own class, no longer "he trains ur
+  spells", and another realm's class as such ("thats a hib class"); "mercenaries", "armsmen", "heroes" are read as classes.
+  A known class's spec and weapon advice is its own lines only (no "whatever ur spec is"). "what are you up to?" said to a
+  bot is answered from its hunt, "got any pots?" from its backpack, and a short known fact (eight words or fewer) as the
+  first answer to a question types at 1.5x the bot's speed. Trainer answers name the capital as written ("Camelot"), and a
+  dungeon whose monsters are far from the level is left out of a where-to-level answer (`DungeonFits`). Bench on top of the
+  routing fixes: good answers from 314 to 359 of 453 (69.3% to 79.2%), wrong 9 to 0, off-topic 25 to 13, silence where an
+  answer was due 92 to 70, clunky 21 to 16; where to level 45 of 45, trainers 29 of 29; the holdout from 40 to 49 of 60.
+  `bench_ratchet.json` tightened to these counts. `UT_ChatShapes122`. **Tests only.**
+- **Chat polish: replies stitched together read as one line** (fixes F8-F10 of the audit). A lore line that opens with
+  its own question ("who is eraliwyr? ...") answers only that question, and without its opening (`LoreChat.FitAnswer`).
+  No laugh is tacked onto a "dunno", a warning, a death, a raid line or a lore line (`AutonomousBotVoiceCorpus.IsSerious`,
+  kind `lore`). A tidy writer capitalizes the world's names ("The armsman trainer in Camelot", `AutonomousChatNames`, ported
+  to `voice_style.py`). 99 fluff and non-answer reply lines were deleted, 38 rewritten and 26 written to carry a fact (`{zone}`,
+  `{level}`, `{class}`) or a real pointer (reply lines 1,239 to 1,166; fluff 65 to 0; non-answers 73 to 5, the short honest
+  "not sure" set kept for tells). A property test (`UT_ChatStitching`) runs every
+  stitched fragment through every style and the scorer's CLUNKY checks (`ChatClunky`, kept equal to `chat_scorers.py` by
+  `clunky_cases.json`). Bench on top of the routing and shapes fixes: good answers 359 to 361 of 453,
+  clunky 16 to 0, padded 8 to 4, non-answers 1 to 0, fluff 2 to 1, silence unchanged at 70; the holdout 49 to 50 of 60,
+  clunky 3 to 0. `bench_ratchet.json` tightened to these counts. **Tests only.**
+- **The knowledge holes (audit F2, C8):** bots now answer where the realm sells potions (nobody does: alchemists make
+  them), dyes, poison, spellcraft gems, crafting tools and materials, bags (there are none: the bank), where to sell loot
+  and where the Realm Exchange is; who sells horse tickets; how to get into Darkness Falls (each realm's home entrance and
+  who holds it), the frontier (the porter to the border keep and its medallion teleporter) and the battlegrounds (the
+  porter's bracket for the asker's level); what armour a class wears (the item generator's rule, with the level the
+  heavier kind starts) and its stats (the class script's); who teaches each craft in the capital, how crafting skill rises
+  (recipe colours), what alchemy needs, how spellcraft works; NPC factions as the server keeps them (kill their enemies,
+  the examine line, the realm's emissary); kill tasks (`/task` on a named guard, to 19); and "who sells X" from the world's
+  merchant lists, with prices. New `AutonomousChatGuide`; names and prices from `tools/lore/npc_roster.json` and the public
+  OpenDAoC database. `UT_ChatGuide`. Bench on top of the routing, shapes and polish fixes: good answers 361 to 409 of 453,
+  silence where an answer was due 70 to 22, clunky still 0; `bench_ratchet.json` tightened to these counts. **Tests only.**
+
+**RvR**
+- **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
+  reach (1.2.1, #416: 350 in a keep, 250 in a tower) tanks and melee fight him at melee range; casters and archers stand
+  behind them on the raid's side (toward his keep's or tower's door), 230-300 from him in a keep and 160-205 in a tower,
+  on nine spots in two rows over a 120 / 90 degree arc; healers behind the casters, 305-345 / 210-245, still inside his
+  reach. Each spot is snapped to the navmesh on his floor with a straight floor line to him (narrower, then nearer the
+  centre line when the room refuses it; none: the old behaviour). A lone tank on a lord now taunts as a grouped one
+  does. Frontier sieges and battleground storms; autonomous gamebots only (companions keep their own paths). Lord radii
+  and stats unchanged. `RvrLordFormation`, log `RVR_LORD_FORMATION role= dist=`. **Tests only** (#416).
+
+**Launcher, GM tools and tests**
+- **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window
+  title "Offline DAoC Living Server 1.2.2", both from `ForkBuildInfo.BuildName` (stamped into the launcher, the name the
+  server logs as `FORK_BUILD`), so they can't drift from the build. Up to 1.2.1 they said "VERSION 0.37" (0.37b, 0.37c):
+  the 0.3x line is retired (AGENTS.md, "One edition from now on"). The update strip's separate build label is gone.
+  `ForkBuildInfo.BaseRelease` (0.37) still names the game the build installs on; `check_versions.py` now fails a
+  pinned `DisplayVersion`. **Tests only.**
+- **GM `/jump` and dead or travelling bots (#438 follow-up).** A dead bot is refused before anything about it changes,
+  and the GM is told why (its body stays where it fell, `GameBot.RefuseCorpseMove`; 1.2.1 stripped its state, hit the
+  refusal with a stack-trace warning and said only "could not be moved there"); the log has `GM_JUMP_BOT_REFUSED
+  reason=Dead`. A jumped gamebot forgets the trip it planned from the old spot (camp, patrol, town teleporter, frontier
+  porter request, a stable ride it meant to take, its keep route) and plans again; its task and group stay.
+  `GM_JUMP_BOT` now logs `region_change=`, `was_riding=` and `was_fighting=`. Other regions, stablemaster rides and
+  fights were already right (the move leaves the world, which takes the bot off every monster's aggro list); bots
+  never ride boats. The playtester's `bot-jump` scenario also jumps a dead helper. **Tests only.**
+- **`UT_AiProfile.AScopeAllocatesNothing` no longer flakes.** It failed once in CI with 3,040 bytes (2026-11-22), a
+  one-off runtime allocation on the test thread. Each of seven samples now re-enables the profiler, settles the GC and
+  counts only if the profiler stayed on; the least must stay within 64 bytes (one allocation per scope would be 2.4 MB).
+  The measured lock has its own test, with its gate made outside the measurement.
+
+**Bots and companions**
+- **Up Darkness Falls' entrance stairs (#438).** zone249.nav has each realm's stairs as three one-way drops, so no path
+  leads up them (`tools/navmesh/dfprobe`). Leaving DF never needs them: every realm's exit (zone points 74, 70, 72) is on
+  its hall floor, a complete path from the hall and from the arrival point. But a companion following its player up got
+  a partial path: it stood at the foot, or, with the player near the arrival point, walked 103 (Albion) to 235 (Midgard)
+  nodes into another level, within the 3,000-unit recall range. A gamebot in a player's group stood (DF refuses it partial
+  paths). Now a bot whose path toward a goal at or above a drop's lip is partial walks to that drop's landing and climbs
+  the certified fall backwards (rise over the landing to the fall's air point, step onto the lip), one drop at a time,
+  only where the navmesh agrees (the landing reachable, a complete path from the top of the stairs to the goal) and with
+  the falls' hash-guarded links (companions: the installed mesh; gamebots: the full certificate). New orders during a
+  climb only change where it goes after the lip. Server log `DF_STAIR_CLIMB`. No navmesh change. **Tests only**
+  (`UT_DarknessFallsStairClimb`; dfprobe `climb` on all nine drops).
+- **Ladders, climbs and ledge drops everywhere (#438 generalized).** A scan of all 103 shipped navmeshes found 1,262
+  off-mesh link directions in 39 zones whose middle is on no polygon, the Darkness Falls stair stall: frontier towers,
+  Fomor, Delling Crater, Caillte Garran, Trollheim, Tuscaran Glacier, Galladoria, Caer Sidi, Iarnvidiur's Lair and more.
+  Outside Darkness Falls (unchanged) a bot on a steep link walks it to the end before it replots, and a bot left inside
+  one is set down on its far end (`NAV_LINK_LANDING`). [docs/NAVMESH-DROPS.md](docs/NAVMESH-DROPS.md),
+  `tools/navmesh/navscan.cpp`. **Tests only.**
+
+**Routes**
+- **The Lough Derg / Valley of Bri Leith seam loops (#421; 200:384960,486688 and 385088,483424).** On the installed
+  meshes Lough Derg has a ridge along its Connacht border (seam ground 6081, 1,379 polygons) that joins no other Lough
+  Derg ground: only the Valley's main ground (y 486,624-488,352), the Valley shelf (10136, y 483,424-486,496) and a
+  Connacht ledge (69404). The zone itinerary's "reaches the destination's main ground" preference looked at each
+  ground group's best crossing only; from the Valley toward Connacht both best picks were ridge crossings, so nothing
+  was left out and the bot stepped onto the ridge, which sent it straight back (and the shelf did the same toward
+  Mount Collory). Now no crossing, listed or sampled, onto ground that never reaches the destination's main ground is
+  taken while the border lists one that does; the last border (whose walk to the goal is proved itself) and goals on
+  other ground of their zone keep the old rule. `tools/navmesh/seam_route_sim.py` replays the itinerary on the 1.2
+  meshes: 15 of 28 trips from the four seam spots cycled before, none after; 72 trips between nine places on the main
+  ground of eight Hibernian zones: 62 arrived before, 72 after (the other 10 cycled, 6 of them at 384960,486688). No navmesh,
+  seam file or road file changed. **Tests only** (`UT_LoughDergRidgeSeam421`).
+
+**Regression guards (what was seen working on 1.2 stays as it was)**
+- **Guards for 1.2-proven paths** (regression audit of `integration/1.2.2` at `0270e78c`, items 6-9). **Tests only.**
+  - *Lifts ride as in 1.2:* a lift leg (`Pathfinder.IsVerticalLink`: 300 or more up or down, at least twice the run) is
+    no longer a NavLinkLeg commit leg (`NavLinkLeg.IsLiftLeg`). Every stuck-prone link in Tur Suil (190), Iarnvidiur's
+    Lair (161), Aldland (56, Coliath) and Cruachan Gorge (211) is a lift, so those zones' legs behave as in 1.2 except
+    the stranded set-down. 546 of the table's 1,262 links are lifts; `navmesh-drops.json`'s `commit` and
+    `summarize_drops.py` follow (`UT_NavLinkLegs`).
+  - *Seam choice pinned (#421):* on the 1.2 download's region 200 seam lines
+    (`tools/navmesh/seams-region200-v036b.json.gz`), the crossings of the Cruachan Gorge column (Druim Ligen to Dun nGed,
+    seen single file on `aa537ce`) and of the walk to Druim Ligen from both sides of the 211/212 seam equal 1.2's
+    (`seam_route_sim.py --rule old`; `--rule new` picks the same) (`UT_SeamChoiceSince12`).
+  - *Death fall:* a dead bot's removal goes to the original client again when the bot really leaves (logout, removal
+    from the world, a move to another region), so no corpse of a gone bot stays; a move within the region (a release
+    nearby) is still held (`BotDeathAnimation.HoldsRemoval`, `GameBot.MovingWithinRegion`; `UT_BotDeathAnimation`).
+  - *Packet queue:* an add from inside the drain on the draining thread gives up at once, as in 1.2, instead of
+    spinning up to 1 s on the send step (`DrainArray.IsDrainingOnThisThread`; `UT_DrainArray`).
+  - Reviewed, already pinned, no change: the pocket-escape loop (#420; first two escapes as before, `UT_PocketEscapeLoop`),
+    the casting line-of-sight refusal (an accepted check waits for its answer as in 1.2, `UT_CastingLosCheckGap121`), the
+    hired companions' `LevelRule` and the one-time raise of 1.2 hires (raised once, handed-over gear kept, `/hire train`
+    numbers still parse: `UT_HiredCompanionJoinsAtPlayerLevel`, `UT_HireTrainCommand`). `bot_schedule_mode` off (the
+    owner's call, 2026-11-21) keeps the whole roster online: a load note for the overnight stall row, not a code guard.
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

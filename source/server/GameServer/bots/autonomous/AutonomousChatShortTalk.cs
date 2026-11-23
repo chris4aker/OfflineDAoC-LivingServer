@@ -240,6 +240,11 @@ public static class AutonomousChatShortTalk
             return "ask_level";
         if (HasPhrase(words, "how close are you to", "how close r u to", "how close is everyone to", "how far to your next level"))
             return "ask_xp";
+        // 1.2.2 chat audit (C4, fix F3): where to level, read as a pattern ("good place to lvl at 18", "best xp for 21", "where do 24s
+        // hunt", "im 36, where should i go now", "where do i go after 33", "15->20?"), ahead of class talk ("any good spots for a 12
+        // paladin?" drew "Paladin chants carry a whole group.").
+        if (AsksWhereToLevel(text))
+            return "ask_hunt";
         // "where to next?" in a group: the next hunt, not directions (live test 2026-10-18).
         // 1.2 chat audit (DESIGN-005): "where we headed?", "where to?", "what next", "next camp?" were read as nothing, and in a
         // group fell to "dunno" (docs/PLAYED-CHECK-1.2.md: "where we headed?" drew no answer).
@@ -628,6 +633,79 @@ public static class AutonomousChatShortTalk
             "just got my", "finally made", "made rr", "hit rr", "finally rr", "got the drop", "finally dropped", "first epic",
             "had a baby", "had our baby", "got married", "got the job", "new job", "passed my", "made good", "made bank", "good inc today");
     }
+
+    private static readonly System.Text.RegularExpressions.Regex HuntWords = new(
+        @" (lvl|lvls|lvling|lvl ing|level|levels|leveling|levelling|xp|exp|xping|exping|hunt|hunting|solo|soloing|grind|grinding|camp|camps|camping) ",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    private static readonly System.Text.RegularExpressions.Regex HuntPlaceWords = new(@" (spot|spots|place|places|zone|zones|area|areas) ",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    private static readonly System.Text.RegularExpressions.Regex HuntAsks = new(
+        @" (where|wheres|best|good|any|anywhere|recommend|recommendations|suggest|suggestions|ideas) ", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    // "where should i go now", "where do i go after 33", "where to go at 20": with a level, the next hunt.
+    private static readonly System.Text.RegularExpressions.Regex HuntGo = new(
+        @" where (should|do|can|would|shall) (i|we|a|an|\d{1,2}s?) (\w+ )?(go|head|move) | where (to )?(go|head) (now|next|after|at|for) ",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    private static readonly System.Text.RegularExpressions.Regex HuntLevel = new(@" \d{1,2}s? ", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    // What a "best/good/where ... level" line is about when it isn't a hunt: crafting, trading, a trainer, a class or realm to
+    // pick, a group post, how leveling works.
+    private static readonly System.Text.RegularExpressions.Regex HuntNot = new(
+        @" (craft\w*|tradeskill\w*|spellcraft\w*|weaponcraft\w*|armorcraft\w*|tailor\w*|fletch\w*|alchemy|siegecraft\w*|trainer|trainers|train|buy|sell|selling|buying|merchant|vendor|bind|stable|horse|teleport|porter|class|classes|race|races|realm|realms|spec|specs|alt|alts|toon|char|character|weapon|armor|armour|lfg|lfm|lf|group|groups|grp|grps|luck|grats|gz|night|job|music|song|songs|tunes|how long|cap|ding|dinged|range) ",   // chat-check: input
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// A where-to-level question, read as a pattern (1.2.2 chat audit, C4, fix F3): a hunting word ("lvl", "level", "xp", "exp",
+    /// "hunt", "solo", "camp") or a place word with a level ("good spot for 24"), with an asking word ("where", "best", "good",
+    /// "any"); or "where should i go now" / "where do i go after 33" with a level. "best xp for 21?", "where do 24s hunt", "lvl
+    /// 18 where to xp?", "15->20?" ("15 20" once normalized) all count; "what lvl is gotar?", "where is the cleric trainer",
+    /// "best class to level", "good luck leveling", "lfg 24 any good xp" and "cleric or friar?" don't. Pure.
+    /// </summary>
+    public static bool AsksWhereToLevel(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || IsEitherOr(text))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        if (HuntNot.IsMatch(t))
+            return false;
+        // A question: a "?", a question opening, or a line that opens with an asking word ("best xp for 21", "good camp for 30").
+        string first = t.Trim().Split(' ')[0];
+        bool asking = text.Contains('?') || AutonomousChatQuestions.IsQuestion(text) ||
+                      first is "where" or "wheres" or "best" or "good" or "any" or "anyone" or "anybody" or "any1" or "lvl" or "level" or "im";
+        if (!asking)
+            return false;
+        // "is tomb of mithra any good for xp at 30ish?", "any good xp in vendo at 24?": a place's levels (AnswerPlaceLevel), unless
+        // the line asks where ("where in myrkwood do 20s hunt?").
+        if (!System.Text.RegularExpressions.Regex.IsMatch(t, " (where|wheres) ") &&
+            AutonomousChatQuestions.PlaceNamed(text, AutonomousChatPlaces.All) is { Type: not "capital" })
+            return false;
+        bool level = HuntLevel.IsMatch(t);
+        if (HuntGo.IsMatch(t))
+            return level;
+        if (!HuntAsks.IsMatch(t))
+            return false;
+        return HuntWords.IsMatch(t) || level && HuntPlaceWords.IsMatch(t) ||
+               // "where at 15->20?" ("15 20" once normalized): a level band.
+               System.Text.RegularExpressions.Regex.IsMatch(t, @" \d{1,2} (to )?\d{1,2} ") ||
+               // "good camp for 30?", "any good spots for 12?"
+               System.Text.RegularExpressions.Regex.IsMatch(t, @" (good|best) (camp|camps|spot|spots|place|places|zone|xp|exp) ");
+    }
+
+    /// <summary>The realm a line names as people or by name ("where do mids level at 20", "albion"), or None. "mid" alone is
+    /// left out ("mid 20s" is a level). Pure.</summary>
+    public static eRealm RealmNamed(string text)
+    {
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (albs|alb|albion|albions) "))
+            return eRealm.Albion;
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (mids|midgard|midgards) "))
+            return eRealm.Midgard;
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (hibs|hib|hibernia|hibernias) "))
+            return eRealm.Hibernia;
+        return eRealm.None;
+    }
+
+    /// <summary>A where-to-level question that asks for a solo spot ("where can a 15 minstrel solo?"). Pure.</summary>
+    public static bool AsksSolo(string text) =>
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(text) + " ", @" (solo|soloing|soloable|alone|by myself) ");
 
     /// <summary>"cleric or friar?", "polearm or two handed?": a question between two things. Not "is it just me or...",
     /// "or am i doing it wrong", "or what" (chat audit 2026-10-21: "is the enchanter pet worth it or just a buffbot?" drew

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using DOL.Database;
 
 namespace DOL.GS
 {
@@ -228,6 +229,46 @@ namespace DOL.GS
         /// <summary>The spread post a party takes (pure): its place in the raid's order over the posts.</summary>
         public static int SpreadPostIndex(int partyOrder, int posts) => posts <= 0 ? -1 : (int)((uint)Math.Max(0, partyOrder) % (uint)posts);
 
+        /// <summary>A distance weapon's reach (pure; AttackComponent.AttackRange's table, without arrows or height): longbow
+        /// 1,760, recurved 1,680, composite 1,600, a weighted throwing weapon 1,450, other thrown 1,160, short bow and
+        /// crossbow 1,200.</summary>
+        public static int DistanceWeaponReach(eObjectType type, string name = null) => type switch
+        {
+            eObjectType.Longbow => 1_760,
+            eObjectType.RecurvedBow => 1_680,
+            eObjectType.CompositeBow => 1_600,
+            eObjectType.Thrown => name?.ToLowerInvariant().Contains("weighted") == true ? 1_450 : 1_160,
+            _ => 1_200,
+        };
+
+        /// <summary>An archer's post lies at least this far inside its weapon's reach (the raiders around a post, her step).</summary>
+        public const int SpreadReachMargin = 150;
+
+        /// <summary>
+        /// The spread post a party's raider takes (pure; an index into <paramref name="posts"/>, -1: none): its party's place
+        /// over the posts, among those within <paramref name="reach"/> less <see cref="SpreadReachMargin"/> of her
+        /// (<paramref name="boss"/>). 1.2.2 (raid tactic audit finding 12): an archer with a short bow, a crossbow or a thrown
+        /// weapon (1,160-1,200) could not reach her from the 1,400 ring; it takes a post of the closer ring (750). Casters
+        /// (1,500), healers (2,000 to her melee) and the longer bows reach every post.
+        /// </summary>
+        public static int SpreadPostFor(Vector3 boss, IReadOnlyList<Vector3> posts, int partyOrder, float reach)
+        {
+            if (posts == null || posts.Count == 0) return -1;
+            int[] near = Enumerable.Range(0, posts.Count).Where(i => Flat(posts[i], boss) + SpreadReachMargin <= reach).ToArray();
+            if (near.Length == posts.Count) return SpreadPostIndex(partyOrder, posts.Count);
+            return near.Length == 0 ? -1 : near[SpreadPostIndex(partyOrder, near.Length)];
+        }
+
+        /// <summary>The reach a raider of the spread fights her from: a dedicated archer's distance weapon's, anyone else's
+        /// unlimited (its spells and heals reach every post).</summary>
+        private static float SpreadReachOf(GameBot bot)
+        {
+            if (bot?.CharacterClass == null || !BotRangedCombat.IsDedicatedArcher((eCharacterClass)bot.CharacterClass.ID))
+                return float.MaxValue;
+            DbInventoryItem bow = bot.Inventory?.GetItem(eInventorySlot.DistanceWeapon);
+            return bow == null ? float.MaxValue : DistanceWeaponReach((eObjectType)bow.Object_Type, bow.Name);
+        }
+
         /// <summary>A raider of the mesmerize spread (pure): it fights from range or heals, it is no add party's and it is not
         /// in the party she fights (that party stands with its tank).</summary>
         public static bool TakesSpreadPost(bool atRange, bool inAddParty, bool holdsBoss) => atRange && !inAddParty && !holdsBoss;
@@ -287,7 +328,7 @@ namespace DOL.GS
             if (!TakesSpreadPost(atRange, tactic.AddParties > 0 && IsAddParty(bot, tactic.AddParties, now, boss), Holds(bot, boss)))
                 return false;
             Vector3[] posts = SpreadPosts(boss, tactic, spacing, rings, now);
-            int index = SpreadPostIndex(EncounterMeleeStations.PartyOrder(bot.Group, now), posts.Length);
+            int index = SpreadPostFor(At(boss), posts, EncounterMeleeStations.PartyOrder(bot.Group, now), SpreadReachOf(bot));
             if (index < 0) return false;
             Vector3 post = posts[index];
             if (StepToPost(Flat(At(bot), post), bot.IsCasting, bot.IsMezzed || bot.IsStunned) == PostStep.CarryOn) return false;

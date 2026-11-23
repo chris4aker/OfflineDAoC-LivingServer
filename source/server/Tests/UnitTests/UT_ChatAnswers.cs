@@ -158,7 +158,7 @@ public class UT_ChatAnswers
             foreach (string cls in classes)
                 foreach (string answer in Field.TrainerAnswers(Facts(n++, realm, cls), random))
                     Assert.That(answer, Does.Contain(Field.CapitalWord(realm)), $"{cls}: {answer}");
-        Assert.That(AutonomousChatKnowledge.GenericTrainerAnswer(eRealm.Albion, "Paladin", new Random(1)), Does.Contain("paladin").And.Contain("camelot"));
+        Assert.That(AutonomousChatKnowledge.GenericTrainerAnswer(eRealm.Albion, "Paladin", new Random(1)), Does.Contain("paladin").And.Contain("camelot").IgnoreCase);
     }
 
     [TestCase("Infiltrator", "cs|critical|envenom|stealth|main line")]
@@ -228,7 +228,7 @@ public class UT_ChatAnswers
     {
         // No world loaded here: the capital, where every class trains.
         string answer = AutonomousChatKnowledge.TrainerAnswer(eRealm.Albion, (int)eCharacterClass.Paladin, null, new Random(2));
-        Assert.That(answer, Does.Contain("trainer").And.Contain("camelot"));
+        Assert.That(answer, Does.Contain("trainer").And.Contain("camelot").IgnoreCase);
         Assert.That(answer, Does.Not.Contain("no idea").And.Not.Contain("dunno"));
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 
 namespace DOL.GS;
 
@@ -126,7 +127,26 @@ public static class RealmEventRecordStore
     /// <summary>The end of a sized raid's details: the size it ran at, as a percentage of its period size (2026-11-05). The
     /// next raid at that encounter carries on from it; a row without it (every row before) is replayed as before.</summary>
     public const string RaidSizeMarker=" Raid size: ";
-    public static string WithRaidSize(string details,double? percent)=>percent is double p?$"{details}{RaidSizeMarker}{p.ToString("0.###",System.Globalization.CultureInfo.InvariantCulture)}%.":details;
+    public static string WithRaidSize(string details,double? percent)=>WithRaidSize(details,percent,0);
+    /// <summary>The end of a sized raid's details since 1.2.2: the size it ran at and the period size that percentage is of
+    /// (" Raid size: 125% of 80."), so a raid whose period size was raised later (docs/RAID-SIZES.md, "Raising a period size")
+    /// carries on from the same number of bots, not the same percentage. A row without it (every row before 1.2.2) is of the
+    /// period size the encounter had before its raise.</summary>
+    public const string RaidSizeOfMarker="% of ";
+    public static string WithRaidSize(string details,double? percent,int periodSize)=>percent is double p?$"{details}{RaidSizeMarker}{p.ToString("0.###",System.Globalization.CultureInfo.InvariantCulture)}"+(periodSize>0?$"{RaidSizeOfMarker}{periodSize}.":"%."):details;
+    /// <summary>The period size these details say their raid size is a percentage of (1.2.2 on), or null.</summary>
+    public static int? RaidSizeOfIn(string details)
+    {
+        int at=details?.LastIndexOf(RaidSizeMarker,StringComparison.Ordinal)??-1;
+        if(at<0)return null;
+        int start=at+RaidSizeMarker.Length;
+        while(start<details.Length&&(char.IsDigit(details[start])||details[start]=='.'))start++;
+        if(string.CompareOrdinal(details,start,RaidSizeOfMarker,0,RaidSizeOfMarker.Length)!=0)return null;
+        start+=RaidSizeOfMarker.Length;
+        int end=start;
+        while(end<details.Length&&char.IsDigit(details[end]))end++;
+        return end>start&&int.TryParse(details.AsSpan(start,end-start),out int size)&&size>0?size:null;
+    }
     /// <summary>The size these details say the raid ran at, or null.</summary>
     public static double? RaidSizeIn(string details)
     {
@@ -176,9 +196,13 @@ public static class RealmEventRecordStore
     /// <summary>An event's last <paramref name="limit"/> finished runs, oldest first: each outcome as the raid record reads it (<see cref="RecordOutcome"/>), how many Epic Special
     /// Forces joined it (<see cref="SpecialForcesIn"/>) and the size it ran at (<see cref="RaidSizeIn"/>);
     /// <paramref name="automaticOnly"/> leaves out forced raids.</summary>
-    public static List<(string Outcome,int SpecialForces,double? SizePercent)> Results(string path,string eventId,int limit,bool automaticOnly=false)
+    public static List<(string Outcome,int SpecialForces,double? SizePercent)> Results(string path,string eventId,int limit,bool automaticOnly=false)=>
+        SizedResults(path,eventId,limit,automaticOnly).Select(r=>(r.Outcome,r.SpecialForces,r.SizePercent)).ToList();
+    /// <summary>As <see cref="Results"/>, with the period size each row's raid size is a percentage of (<see cref="RaidSizeOfIn"/>;
+    /// null on rows from before 1.2.2).</summary>
+    public static List<(string Outcome,int SpecialForces,double? SizePercent,int? SizeOf)> SizedResults(string path,string eventId,int limit,bool automaticOnly=false)
     {
-        var results=new List<(string,int,double?)>();
+        var results=new List<(string,int,double?,int?)>();
         if(!File.Exists(path))return results;
         using var connection=Open(path,true);using var command=connection.CreateCommand();
         command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
@@ -186,7 +210,7 @@ public static class RealmEventRecordStore
         command.CommandText="SELECT Outcome,Details FROM Events WHERE EventId=@event AND EndedUtc<>''"+(automaticOnly?" AND substr(Details,1,length(@forced))<>@forced":"")+" ORDER BY StartedUtc DESC,Id DESC LIMIT @limit";
         command.Parameters.AddWithValue("@event",eventId);command.Parameters.AddWithValue("@limit",limit);command.Parameters.AddWithValue("@forced",ForcedRaidPrefix);
         using var reader=command.ExecuteReader();
-        while(reader.Read())results.Add((RecordOutcome(reader.GetString(0),reader.GetString(1)),SpecialForcesIn(reader.GetString(1)),RaidSizeIn(reader.GetString(1))));
+        while(reader.Read())results.Add((RecordOutcome(reader.GetString(0),reader.GetString(1)),SpecialForcesIn(reader.GetString(1)),RaidSizeIn(reader.GetString(1)),RaidSizeOfIn(reader.GetString(1))));
         results.Reverse();
         return results;
     }

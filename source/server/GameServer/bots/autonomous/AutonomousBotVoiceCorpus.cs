@@ -430,11 +430,13 @@ public sealed class AutonomousBotVoiceCorpus
                 Voice voice = VoiceFor(speaker.Id);
                 // 1.2 chat audit (DESIGN-015): the style and the typing habits work on the template with its slot values
                 // masked, so no typo or "teh" lands in a class, monster, item or place name ("wtb fine aloy great hammer").
-                text = Style(masked, voice, random, out correction, line.Kind);
+                // Chat audit 1.2.2 (F9): a lore line takes no laugh, whatever its kind.
+                string styleKind = line.Topic == "lore" ? "lore" : line.Kind;
+                text = Style(masked, voice, random, out correction, styleKind);
                 // Beta 1.1.2, the style layer: the bot's own typing habits on top of its writing style.
                 // In-character lines keep their diction.
                 text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random,
-                    terse: !TakesEmote(line.Kind, masked));
+                    terse: !TakesEmote(styleKind, masked));
                 text = Unmask(text, values);
             }
             // 1.2 chat audit (DESIGN-014): a line too long once filled is not cut in mid-word; the next candidate is tried.
@@ -722,6 +724,8 @@ public sealed class AutonomousBotVoiceCorpus
     public static readonly HashSet<string> NoEmoteKinds = new(StringComparer.Ordinal)
     {
         "spam", "alarm", "rez_ask", "death", "news", "combat", "roleplay", "beggar",
+        // Chat audit 1.2.2 (C10, fix F9): a lore line (an answer, a tale, a briefing) is told straight.
+        "lore",
     };
 
     /// <summary>
@@ -751,9 +755,33 @@ public sealed class AutonomousBotVoiceCorpus
         return letters >= 6 && upper >= letters * 0.6;
     }
 
-    /// <summary>Whether a style or habit may add a laugh to a line of this kind (DESIGN-013). Pure.</summary>
+    /// <summary>Whether a style or habit may add a laugh to a line of this kind (DESIGN-013; chat audit 1.2.2, F9: not to a
+    /// serious line, <see cref="IsSerious"/>). Pure.</summary>
     public static bool TakesEmote(string kind, string text) =>
-        !(kind != null && NoEmoteKinds.Contains(kind)) && !IsFunctional(text) && !HasLaugh(text) && !IsShouted(text);
+        !(kind != null && NoEmoteKinds.Contains(kind)) && !IsFunctional(text) && !HasLaugh(text) && !IsShouted(text) && !IsSerious(text);
+
+    // Chat audit 1.2.2 (C10, fix F9): "no clue, sry haha", "thats a full raid, dont go alone :)", "trust nothing you meet there heh".
+    private static readonly Regex SeriousWords = new(
+        @"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|" +
+        @"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|" +
+        @"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|" +
+        @"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    // "bog of cullen? take a horse from a stable master": a line that asks a question and answers it in three words or more.
+    private static readonly Regex AsksAndAnswers = new(@"^[^?]{2,60}\?\s+\S+\s+\S+\s+\S", RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// Chat audit 1.2.2 (C10, fix F9): a line no laugh is tacked onto: a "dunno", a warning, a death, or an answer that says the
+    /// question back first ("ardee? thats in connacht"). Pure.
+    /// </summary>
+    public static bool IsSerious(string text) =>
+        !string.IsNullOrEmpty(text) && (SeriousWords.IsMatch(text) || AsksAndAnswers.IsMatch(text) || AsksOnly.IsMatch(text));
+
+    // "where's ur body? :)": a laugh after a question that opens with a question word reads as the bot answering itself.
+    private static readonly Regex AsksOnly = new(
+        @"^\W*(whats|what's|what s|what is|who is|whos|who's|who holds|where is|wheres|where's|where s|is the|is it|how do|how is|why is)\b[^?]{0,48}\?\W*$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     /// <summary>
     /// "inc 8 mids at Caer Benowyc, healer, warrior, skald": three or more comma parts whose later parts are one or two words
@@ -821,9 +849,13 @@ public sealed class AutonomousBotVoiceCorpus
         }
         if (emote && voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance &&
             AutonomousChatDebateSpeech.TailFits(result, maxWords))
-            result += " " + voice.Emotes[random.Next(voice.Emotes.Length)];
+            // Chat audit 1.2.2: "good luck out there. :)" read as a laugh stuck on; a single stop goes before the emote.
+            result = (result.EndsWith('.') && !result.EndsWith("..") ? result[..^1] : result) + " " + voice.Emotes[random.Next(voice.Emotes.Length)];
         if (voice.Capitalize && result.Length > 0 && !chatToken)
             result = char.ToUpperInvariant(result[0]) + result[1..];
+        // Chat audit 1.2.2 (C11, fix F10): a writer who capitalizes capitalizes names too ("The trainer in Camelot").
+        if (voice.Capitalize && !chatToken)
+            result = AutonomousChatNames.Capitalize(result);
         if (voice.CapitalizeSentences && !chatToken)
             // A chat word starts no sentence with a capital ("...beg? nope", not "beg? Nope"; the builder's round trip found them).
             result = SentenceStart.Replace(result, m => ChatTokens.Contains(m.Groups[2].Value) && !SentenceWords.Contains(m.Groups[2].Value)

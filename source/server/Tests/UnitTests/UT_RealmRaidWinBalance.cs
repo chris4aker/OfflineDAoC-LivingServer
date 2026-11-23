@@ -44,7 +44,8 @@ namespace DOL.UnitTests
             });
         }
 
-        // The period sizes (docs/RAID-SIZES.md, 2026-11-04): the comfortable 2002-2004 raid, not the minimum.
+        // The period sizes (docs/RAID-SIZES.md, 2026-11-04): the comfortable 2002-2004 raid, not the minimum. 1.2.2's raises
+        // (Tuscaran Glacier 120, Galladoria 112, Summoner's Hall 80) were withdrawn on audit (owner, 2026-11-23).
         [TestCase("dragon-albion", 70)]
         [TestCase("dragon-midgard", 70)]
         [TestCase("dragon-hibernia", 70)]
@@ -52,6 +53,10 @@ namespace DOL.UnitTests
         [TestCase("epic-midgard", 100)]
         [TestCase("epic-hibernia", 100)]
         [TestCase("summoners-albion", 64)]
+        [TestCase("summoners-midgard", 64)]
+        [TestCase("summoners-hibernia", 64)]
+        [TestCase("darkness-albion", 64)]
+        [TestCase("darkness-midgard", 64)]
         [TestCase("darkness-hibernia", 64)]
         [TestCase("dungeon-albion-krondon", 64)]
         [TestCase("dungeon-albion-avalon", 64)]

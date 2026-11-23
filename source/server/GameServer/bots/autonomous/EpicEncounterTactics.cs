@@ -729,7 +729,10 @@ namespace DOL.GS
         }
 
         /// <param name="Call">The party's call for this decision (a combat_calls.lines topic; dungeon rules), or null.</param>
-        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null);
+        /// <param name="PetOn">A stand-off that keeps the bot's pet fighting (the Green Knight's pet owners stand out of his
+        /// trees' reach, their pets in): the pet is sent at this instead of called off. Null: the pet is called off as usual.</param>
+        public readonly record struct Advice(BotAction Action, GameNPC Target, Vector3? StandAt, string Reason, string Call = null,
+            GameNPC PetOn = null);
 
         /// <summary>
         /// The tactic for one raider about to attack <paramref name="target"/>. <paramref name="partyIndex"/> spreads the
@@ -811,6 +814,7 @@ namespace DOL.GS
                     return new(BotAction.Reposition, target, outOfCast,
                         $"cast: out of \"{st.StepOutOfCast}\" ({st.SpreadRadius} around \"{anchor.Name}\")");
                 }
+                // v1.2's test, kept: Black Lady (Marfach) and Lurfos Herald (Krondon) were won with it (1.2.2 regression audit).
                 bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
                 bool atRange = canShootFlyers || healer;
                 // The melee: fight him from behind, clear of the area hit around his target.
@@ -1636,6 +1640,7 @@ namespace DOL.GS
             LeadHomeRepath.Clear();
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
             ResetPartyPostsForTests();
+            ResetLegionWoundedForTests();
         }
 
         public static bool CanShootFlyers(GameBot bot)
@@ -1715,7 +1720,9 @@ namespace DOL.GS
                     if (bot.FollowTarget == target) bot.StopFollowing();
                     (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = null;
-                    if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
+                    if (advice.PetOn is GameNPC petOn && Present(petOn) && bot.ControlledBrain?.Body is { IsAlive: true })
+                        bot.ControlledBrain.Attack(petOn);
+                    else if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
                     if (advice.Action == BotAction.LeadHome)
                         bot.PathTo(new Point3D(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z), bot.MaxSpeed);
                     else if (advice.StandAt is Vector3 at && !bot.IsWithinRadius(new Point3D((int)at.X, (int)at.Y, (int)at.Z), StandArrivalRadius))

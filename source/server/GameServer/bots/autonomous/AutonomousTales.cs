@@ -1244,7 +1244,7 @@ public static class AutonomousTales
                 if (string.IsNullOrWhiteSpace(text))
                     continue;
                 var channel = mate != null ? AutonomousLivingServer.Channel.Group : AutonomousLivingServer.Channel.Say;
-                if (!AutonomousLivingServer.Speak(near, channel, AutonomousBotVoices.StyleFor(near, text)))
+                if (!AutonomousLivingServer.Speak(near, channel, AutonomousBotVoices.StyleFor(near, text, "lore")))
                     continue;
                 PlacedLast[id] = now;
                 lock (heard)

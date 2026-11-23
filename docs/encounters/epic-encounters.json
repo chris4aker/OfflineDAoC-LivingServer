@@ -691,7 +691,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 574
+   "line": 575
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +703,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 575
+   "line": 576
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +715,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 576
+   "line": 577
   },
   {
    "id": "epic-albion",
@@ -727,7 +727,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 577
+   "line": 578
   },
   {
    "id": "epic-midgard",
@@ -740,7 +740,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 578
+   "line": 579
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +752,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 579
+   "line": 580
   },
   {
    "id": "summoners-albion",
@@ -764,7 +764,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 580
+   "line": 581
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 581
+   "line": 582
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 582
+   "line": 583
   },
   {
    "id": "darkness-albion",
@@ -800,7 +800,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 583
+   "line": 584
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 584
+   "line": 585
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 585
+   "line": 586
   },
   {
    "id": "openworld-albion-greenknight",
@@ -836,7 +836,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 2953
+   "line": 2960
   },
   {
    "id": "openworld-albion-coliath",
@@ -848,7 +848,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 2955
+   "line": 2962
   },
   {
    "id": "openworld-albion-emthoro",
@@ -860,7 +860,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 2957
+   "line": 2964
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -872,7 +872,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 2960
+   "line": 2967
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -884,7 +884,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 2962
+   "line": 2969
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 2964
+   "line": 2971
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 2966
+   "line": 2973
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 2968
+   "line": 2975
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 2970
+   "line": 2977
   },
   {
    "id": "openworld-midgard-revenant",
@@ -944,7 +944,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 2972
+   "line": 2979
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -956,7 +956,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 2974
+   "line": 2981
   },
   {
    "id": "openworld-hibernia-evern",
@@ -968,7 +968,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 2977
+   "line": 2984
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -980,7 +980,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 2979
+   "line": 2986
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -992,7 +992,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 2981
+   "line": 2988
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 2983
+   "line": 2990
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 2985
+   "line": 2992
   }
  ],
  "neutralObjectives": {
@@ -28046,7 +28046,7 @@
      "GKTrees"
     ],
     "areaOnClump": true,
-    "summary": "Its realm raid since 1.2: openworld-albion-greenknight (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: 4-5 groups, about Grand Summoner difficulty (Albion epic raid guide, FreddysHouse 115688, Feb 2003)). His fight starts when eight raiders stand within 1,000 of him for 20 s (his script's raid challenge). Might of the Forest (250 heat, 500 around his target, on 30% of his hits): casters, archers and healers outside his target's party stand clear of 500 around it. Every 40-60 s he drops his aggro and goes for a healer: the raid's nearest tank taunts him back. His trees (one at every raider within 4,000 every 25-35 s, 800 health, yellow to a 50): the casters and archers kill them, area casters where most of them and he stand, while the melee stay on him; at each 10% he walks to one of four spots and heals 400 there, and the raid follows and keeps hitting him (a heal it can't stop: uninterruptible). 1.2.1 round 2 (#412, tests only; EpicEncounterTactics.GreenKnight): a tree that hits a caster or healer silences it and a shot pulls a tree onto the shooter, so the casters, archers and healers stand together 750 from him away from his target, every melee raider but his target peels the trees off the area casters, healers and other casters and then kills its own, and only area casters hit the trees. A model wins only past his flood guard (80+ raiders) with kind tree numbers; not fixed at his period size. Log: EPIC_GK_TREES.",
+    "summary": "Its realm raid since 1.2: openworld-albion-greenknight (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: 4-5 groups, about Grand Summoner difficulty (Albion epic raid guide, FreddysHouse 115688, Feb 2003)). His fight starts when eight raiders stand within 1,000 of him for 20 s (his script's raid challenge). Might of the Forest (250 heat, 500 around his target, on 30% of his hits): casters, archers and healers outside his target's party stand clear of 500 around it. Every 40-60 s he drops his aggro and goes for a healer: the raid's nearest tank taunts him back. His trees (one at every raider within 4,000 every 25-35 s, 800 health, yellow to a 50): the casters and archers kill them, area casters where most of them and he stand, while the melee stay on him; at each 10% he walks to one of four spots and heals 400 there, and the raid follows and keeps hitting him (a heal it can't stop: uninterruptible). 1.2.1 round 2 (#412, tests only; EpicEncounterTactics.GreenKnight): a tree that hits a caster or healer silences it and a shot pulls a tree onto the shooter, so the casters, archers and healers stand together 750 from him away from his target, every melee raider but his target peels the trees off the area casters, healers and other casters and then kills its own, and only area casters hit the trees. 1.2.2 tag and burn, reworked (#412, tests only; UT_RaidSim122GreenKnight): every raider fights from where it reaches - healers 650 from him away from his tank (the 4 nearest his target heal it first; a raider a tree hits only under 35%), area casters 700 with a melee guard burning tagged trees, other casters and archers 1,300 shooting the tagged trees they won't pull or him, Theurgists 850 with their elementals on the trees on soft raiders, owners of lasting pets 4,600 out with their pets in (no tree grows at a pet); the melee tag every tree and go back to him; spots laid out once, kept while he walks or fights a picked healer, snapped to the navmesh; the raid holds its ground while he walks. Model with his walks and the bots' own buffs: 0 of 32 at 40, 26 of 32 at 56 (buffed), 28 of 32 at 80 (unbuffed); the 1.2 and 1.2.1 rules 0 of 32 at every size to 104. Period size 40 (owner's choice); not yet won there. Log: EPIC_GK_TREES.",
     "since": "1.2"
    },
    "verified": true

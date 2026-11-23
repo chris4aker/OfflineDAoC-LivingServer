@@ -413,10 +413,12 @@ internal sealed class BotRez : Scenario
 internal sealed class BotJump : Scenario
 {
     public override string Id => "bot-jump";
-    public override string Title => "GM /jump <bot> to me moves a companion helper";
+    public override string Title => "GM /jump <bot> to me moves a companion helper, and refuses a dead one";
     public override string Checks => "A player spawns a companion helper (/spawn armsman). The GM, 900 units off, types /jump <helper> to me: " +
         "the server must answer \"<helper> jumps to you\", the GM must get the helper within 150 units of itself (a create or an " +
-        "update), and the server log must have a GM_JUMP_BOT line for it. Packets and log only.";
+        "update), and the server log must have a GM_JUMP_BOT line for it. Then the GM kills the helper (/lstest deathanim), walks " +
+        "off and jumps it again: the server must answer \"<helper> is dead\" (a body stays where it fell) and log GM_JUMP_BOT_REFUSED " +
+        "with reason=Dead. Packets and log only.";
 
     public override async Task RunAsync(ScenarioContext ctx)
     {
@@ -459,6 +461,31 @@ internal sealed class BotJump : Scenario
         });
         await DeadBots.LogStepAsync(ctx, "the server log records the GM's move of the helper",
             $"GM_JUMP_BOT gm=\"{gm.CharacterName}\" bot=\"{helper.Name}\"");
+
+        // 1.2.2: a dead bot is refused with the reason, and nothing about it changes (GameBot.RefuseCorpseMove).
+        var moved = await gm.SeeAsync(helper.Name, ctx.Options.NetTimeout, gm.Mark()) // the helper as the GM sees it now (the move made it anew)
+            ?? throw new PlaytestException($"the GM no longer sees {helper.Name}");
+        await DeadBots.KillAsync(ctx, gm, moved);
+        await ctx.Step("the GM walks 600 units off the body", async () =>
+        {
+            await gm.MoveToAsync(gm.X + 600, gm.Y, gm.Z);
+            await Task.Delay(1000);
+            return $"at {gm.X:0},{gm.Y:0}";
+        });
+        await ctx.Step($"/jump {helper.Name} to me while it is dead: refused, with the reason", async () =>
+        {
+            int mark = gm.Mark();
+            gm.Command($"/jump {helper.Name} to me");
+            var said = await gm.WaitForChatAsync(l => l.Text.Contains(" jumps to you", StringComparison.Ordinal) ||
+                l.Text.Contains(" is dead", StringComparison.Ordinal) ||
+                l.Text.Contains("is not in the game", StringComparison.OrdinalIgnoreCase) ||
+                l.Text.Contains("could not be moved", StringComparison.Ordinal), ctx.Options.NetTimeout, mark)
+                ?? throw new PlaytestException("no answer to /jump; the server said: " + DeadBots.SystemSince(gm, gm.Now - 5));
+            ScenarioContext.Check(said.Text.StartsWith(helper.Name + " is dead", StringComparison.Ordinal), said.Text);
+            return said.Text;
+        });
+        await DeadBots.LogStepAsync(ctx, "the server log records the refused jump of the dead helper",
+            $"GM_JUMP_BOT_REFUSED gm=\"{gm.CharacterName}\" bot=\"{helper.Name}\"", "reason=Dead");
     }
 
     private static bool Near(ScriptedPlayer gm, int x, int y) => Math.Sqrt(Math.Pow(x - gm.X, 2) + Math.Pow(y - gm.Y, 2)) <= 150;

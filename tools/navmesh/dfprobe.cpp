@@ -12,6 +12,9 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <deque>
+#include <array>
 
 static const float F = 1.0f / 32.0f;
 static void toDt(const float g[3], float d[3]) { d[0] = g[0] * F; d[1] = g[2] * F; d[2] = g[1] * F; }
@@ -98,6 +101,60 @@ static void offmesh(float x0, float y0, float x1, float y1) {
     printf("offmesh count in box: %d\n", count);
 }
 
+
+// Every polygon reachable from a start polygon over the mesh's links (directed: an off-mesh link is followed only
+// from its start), with the server's filter. Bounded at 4 million polygons.
+static std::unordered_set<dtPolyRef> flood(dtPolyRef start) {
+    std::unordered_set<dtPolyRef> seen; std::deque<dtPolyRef> open; dtQueryFilter f = filter();
+    if (!start) return seen; seen.insert(start); open.push_back(start);
+    while (!open.empty() && seen.size() < 4000000) {
+        dtPolyRef ref = open.front(); open.pop_front(); const dtMeshTile* tile = nullptr; const dtPoly* poly = nullptr;
+        if (dtStatusFailed(mesh->getTileAndPolyByRef(ref, &tile, &poly))) continue;
+        for (unsigned int i = poly->firstLink; i != DT_NULL_LINK; i = tile->links[i].next) {
+            dtPolyRef next = tile->links[i].ref; if (!next || seen.count(next)) continue;
+            const dtMeshTile* nt = nullptr; const dtPoly* np = nullptr;
+            if (dtStatusFailed(mesh->getTileAndPolyByRef(next, &nt, &np)) || !(np->flags & f.getIncludeFlags()) || (np->flags & f.getExcludeFlags())) continue;
+            seen.insert(next); open.push_back(next);
+        }
+    }
+    return seen;
+}
+
+static dtPolyRef pick(const float g[3]) {
+    float d[3]; toDt(g, d); dtPolyRef ref = 0; dtQueryFilter f = filter(); q->findNearestPoly(d, ext, &f, &ref, nullptr); return ref;
+}
+
+// The polygons under a column (x, y) within [zlo, zhi], with their floor heights.
+static std::vector<std::pair<dtPolyRef, float>> floors(float x, float y, float zlo, float zhi) {
+    std::vector<std::pair<dtPolyRef, float>> out;
+    float c[3] = {x * F, (zlo + zhi) * 0.5f * F, y * F}, he[3] = {4.0f * F, (zhi - zlo) * 0.5f * F, 4.0f * F};
+    dtPolyRef refs[64]; int n = 0; dtQueryFilter f = filter(); q->queryPolygons(c, he, &f, refs, &n, 64);
+    for (int i = 0; i < n; i++) { float h; float pt[3] = {x * F, c[1], y * F};
+        if (dtStatusSucceed(q->getPolyHeight(refs[i], pt, &h))) out.push_back({refs[i], h / F}); }
+    return out;
+}
+
+// The server's corridor check (AutonomousZoneItinerary.CalculateCompleteCorridorCore): up to 16 findPath +
+// findStraightPath segments, each partial one continued from its last node, complete when a segment ends within 48.
+static int corridor(const float a[3], const float b[3], bool print) {
+    float cur[3] = {a[0], a[1], a[2]}; std::vector<std::array<float, 3>> visited{{a[0], a[1], a[2]}};
+    for (int seg = 0; seg < 16; seg++) {
+        float s[3], e[3]; toDt(cur, s); toDt(b, e); dtQueryFilter f = filter();
+        dtPolyRef sr = 0, er = 0; q->findNearestPoly(s, ext, &f, &sr, nullptr); q->findNearestPoly(e, ext, &f, &er, nullptr);
+        if (!sr || !er) { if (print) printf("  segment %d: no start/end poly\n", seg); return -1; }
+        dtPolyRef polys[256]; int np = 0; q->findPath(sr, er, s, e, &f, polys, &np, 256);
+        float pts[512 * 3]; unsigned char sf[512]; dtPolyRef sp[512]; int n = 0;
+        q->findStraightPath(s, e, polys, np, pts, sf, sp, &n, 512, DT_STRAIGHTPATH_ALL_CROSSINGS);
+        if (n < 1) return -1; float last[3]; toGame(&pts[(n - 1) * 3], last);
+        float d2 = (last[0] - b[0]) * (last[0] - b[0]) + (last[1] - b[1]) * (last[1] - b[1]) + (last[2] - b[2]) * (last[2] - b[2]);
+        if (print) printf("  segment %d: %d polys, ends %.0f,%.0f,%.0f (%.0f from the goal)\n", seg, np, last[0], last[1], last[2], std::sqrt(d2));
+        if (d2 <= 48 * 48) return 0;
+        for (auto& v : visited) if ((v[0] - last[0]) * (v[0] - last[0]) + (v[1] - last[1]) * (v[1] - last[1]) + (v[2] - last[2]) * (v[2] - last[2]) < 1) return 1;
+        visited.push_back({last[0], last[1], last[2]}); memcpy(cur, last, sizeof cur);
+    }
+    return 1;
+}
+
 int main(int argc, char** argv) {
     if (argc < 3) { fprintf(stderr, "usage: dfprobe <zone.nav> <cmd> args...\n"); return 2; }
     if (!LoadNavMesh(argv[1], &mesh) || !CreateNavMeshQuery(mesh, &q)) { fprintf(stderr, "load failed\n"); return 1; }
@@ -127,6 +184,73 @@ int main(int argc, char** argv) {
         dead(air, land, "after: air->landing (drop)");
         int r = path(land, goal, false); printf("  from the landing on: %s\n", r == 0 ? "complete path" : r > 0 ? "PARTIAL" : "no poly");
     }
+    else if (cmd == "climb") {
+        // climb <landing xyz> <air xyz> <lip xyz> <goal xyz>: one certified fall walked backwards (#438, 1.2.2). The path
+        // the navmesh gives up from the landing (before), the rise over the landing and the step onto the lip (after),
+        // sampled every 2% (a bot stopped there: on a polygon, or inside the drop's landing repair), then the path on.
+        float land[3] = {v(3), v(4), v(5)}, air[3] = {v(6), v(7), v(8)}, lip[3] = {v(9), v(10), v(11)}, goal[3] = {v(12), v(13), v(14)};
+        auto dead = [&](const float* a, const float* b, const char* name) {
+            int n = 0; dtQueryFilter f = filter();
+            for (int i = 0; i <= 50; i++) { float g[3], d[3]; for (int k = 0; k < 3; k++) g[k] = a[k] + (b[k] - a[k]) * i / 50.0f;
+                toDt(g, d); dtPolyRef r = 0; q->findNearestPoly(d, ext, &f, &r, nullptr); if (!r) n++; }
+            printf("  %-28s %2d of 51 samples on no polygon\n", name, n); return n; };
+        printf("climb %.0f,%.0f,%.0f -> %.0f,%.0f,%.0f\n", land[0], land[1], land[2], lip[0], lip[1], lip[2]);
+        int before = path(land, goal, false); printf("  before: landing to goal: %s\n", before == 0 ? "complete path" : before > 0 ? "PARTIAL" : "no poly");
+        dead(land, air, "after: landing->air (rise)");
+        dead(air, lip, "after: air->lip (step on)");
+        int r = path(lip, goal, false); printf("  from the lip on: %s\n", r == 0 ? "complete path" : r > 0 ? "PARTIAL" : "no poly");
+    }
     else if (cmd == "offmesh") offmesh(v(3), v(4), v(5), v(6));
+    else if (cmd == "reach") {
+        // reach sx sy sz x y z [x y z ...]: which targets the start's polygon reaches over mesh links (directed).
+        float a[3] = {v(3), v(4), v(5)}; dtPolyRef sr = pick(a); auto set = flood(sr);
+        printf("reach from %.0f,%.0f,%.0f (poly %llu): %zu polygons\n", a[0], a[1], a[2], (unsigned long long)sr, set.size());
+        for (int i = 6; i + 2 < argc; i += 3) { float b[3] = {v(i), v(i + 1), v(i + 2)}; dtPolyRef r = pick(b);
+            printf("  %.0f,%.0f,%.0f poly %llu: %s\n", b[0], b[1], b[2], (unsigned long long)r, !r ? "NO POLY" : set.count(r) ? "reached" : "NOT reached"); }
+    }
+    else if (cmd == "corridor") { float a[3] = {v(3), v(4), v(5)}, b[3] = {v(6), v(7), v(8)}; int r = corridor(a, b, true);
+        printf("corridor %s\n", r == 0 ? "complete" : r > 0 ? "INCOMPLETE" : "no poly"); }
+    else if (cmd == "batch") {
+        // batch: one query per stdin line, for scripts (seam_route_sim.py), one answer line each:
+        //   from x y z        -> "from <poly> <polygons reached>"  (flood from the point's polygon; later lines test it)
+        //   at x y z          -> "at <poly> <1 reached | 0 not>"
+        //   floors x y zlo zhi -> "floors <z> <reached> ..." every floor under (x, y)
+        //   snap x y z        -> "snap <poly> x y z" the nearest polygon point within game 256 / 512
+        //   los x y z x y z   -> "los <clear> t"     the server's HasLineOfSight raycast
+        char line[512]; std::unordered_set<dtPolyRef> set;
+        while (fgets(line, sizeof line, stdin)) {
+            char c[16]; float x, y, z, w; int n = sscanf(line, "%15s %f %f %f %f", c, &x, &y, &z, &w);
+            if (n >= 4 && !strcmp(c, "from")) { float g[3] = {x, y, z}; dtPolyRef r = pick(g); set = flood(r); printf("from %llu %zu\n", (unsigned long long)r, set.size()); }
+            else if (n >= 4 && !strcmp(c, "at")) { float g[3] = {x, y, z}; dtPolyRef r = pick(g); printf("at %llu %d\n", (unsigned long long)r, r && set.count(r) ? 1 : 0); }
+            else if (n >= 4 && !strcmp(c, "snap")) {
+                // snap x y z -> "snap <poly> x y z": the nearest polygon point in a wide box (game 256, 256, 512),
+                // as the server's GetClosestPoint with a larger range
+                float g[3] = {x, y, z}, d[3], p[3], gp[3], wide[3] = {8.0f, 16.0f, 8.0f}; toDt(g, d); dtPolyRef r = 0; dtQueryFilter f = filter();
+                q->findNearestPoly(d, wide, &f, &r, p); toGame(p, gp);
+                printf("snap %llu %.0f %.0f %.0f\n", (unsigned long long)r, gp[0], gp[1], gp[2]);
+            }
+            else if (!strcmp(c, "los")) {
+                // los x y z x y z -> "los <0|1> t": the server's HasLineOfSight (DetourInterface.cpp: raycast from the
+                // start's polygon; clear when the ray reaches the end)
+                float a[3], b[3]; if (sscanf(line, "%*s %f %f %f %f %f %f", &a[0], &a[1], &a[2], &b[0], &b[1], &b[2]) != 6) { printf("?\n"); fflush(stdout); continue; }
+                float s0[3], e0[3]; toDt(a, s0); toDt(b, e0); dtQueryFilter f = filter(); dtPolyRef sr = 0;
+                q->findNearestPoly(s0, ext, &f, &sr, nullptr); dtRaycastHit hit{};
+                dtStatus st = sr ? q->raycast(sr, s0, e0, &f, 0, &hit, 0) : DT_FAILURE;
+                printf("los %d %.3f\n", dtStatusSucceed(st) && hit.t > 1.0f - 1e-4f ? 1 : 0, sr ? hit.t : -1.0f);
+            }
+            else if (n >= 5 && !strcmp(c, "floors")) { auto fl = floors(x, y, z, w); printf("floors"); for (auto& p : fl) printf(" %.1f %d", p.second, set.count(p.first) ? 1 : 0); printf("\n"); }
+            else printf("?\n");
+            fflush(stdout);
+        }
+    }
+    else if (cmd == "border") {
+        // border sx sy sz axis(x|y) border lo hi step zlo zhi: along a zone border, every floor 64 inside (the side
+        // the start is on) and whether the start reaches it over the mesh links.
+        float a[3] = {v(3), v(4), v(5)}; bool vx = argv[6][0] == 'x'; float bd = v(7), lo = v(8), hi = v(9), st = v(10), zlo = v(11), zhi = v(12);
+        float side = (vx ? a[0] : a[1]) < bd ? -64.0f : 64.0f; auto set = flood(pick(a));
+        printf("border %s=%.0f from %.0f,%.0f,%.0f (%zu polygons reached), samples at %s=%.0f\n", vx ? "x" : "y", bd, a[0], a[1], a[2], set.size(), vx ? "x" : "y", bd + side);
+        for (float t = lo; t <= hi; t += st) { float x = vx ? bd + side : t, y = vx ? t : bd + side; auto fl = floors(x, y, zlo, zhi);
+            printf("  %7.0f:", t); for (auto& p : fl) printf(" %.0f%s", p.second, set.count(p.first) ? "*" : ""); printf("\n"); }
+    }
     return 0;
 }
