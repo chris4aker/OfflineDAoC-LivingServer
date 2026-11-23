@@ -77,6 +77,16 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
   report-only until the fixes land. **Tests only.**
 
+**RvR**
+- **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
+  reach (1.2.1, #416: 350 in a keep, 250 in a tower) tanks and melee fight him at melee range; casters and archers stand
+  behind them on the raid's side (toward his keep's or tower's door), 230-300 from him in a keep and 160-205 in a tower,
+  on nine spots in two rows over a 120 / 90 degree arc; healers behind the casters, 305-345 / 210-245, still inside his
+  reach. Each spot is snapped to the navmesh on his floor with a straight floor line to him (narrower, then nearer the
+  centre line when the room refuses it; none: the old behaviour). A lone tank on a lord now taunts as a grouped one
+  does. Frontier sieges and battleground storms; autonomous gamebots only (companions keep their own paths). Lord radii
+  and stats unchanged. `RvrLordFormation`, log `RVR_LORD_FORMATION role= dist=`. **Tests only** (#416).
+
 **Launcher, GM tools and tests**
 - **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window
   title "Offline DAoC Living Server 1.2.2", both from `ForkBuildInfo.BuildName` (stamped into the launcher, the name the

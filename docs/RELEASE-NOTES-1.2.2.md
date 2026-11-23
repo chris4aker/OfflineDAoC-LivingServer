@@ -69,6 +69,11 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 - **Darkness Falls** stays at 64: Legion falls within 20 minutes at that size.
 - **Marfoirwort** stays at 40: the raid beats him at 40, and a bigger raid would win by numbers alone.
 
+### Keep lords
+
+- **Bots fight keep and tower lords in formation:** the tanks and melee in front, casters and archers behind them on
+  the side they came in from, spread out so one blast can't catch them all, and the healers at the back.
+
 ### The Green Knight: a new plan against his trees
 
 A tree grows at every raider near him, keeps growing every half minute, and stops a healer or caster it hits from
