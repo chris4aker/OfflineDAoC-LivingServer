@@ -397,8 +397,8 @@ public static class AutonomousChatGuide
                 "kill whoever they hate, a point a kill. takes a while");
         }
         if (faction && Has(t, @" (check|see|know|tell|find out) "))
-            return Pick(random, "target one of their npcs, the examine line says aggressive, hostile, neutral or friendly to you",
-                "click one of their npcs, it tells you if they look at you friendly or hostile");
+            return Pick(random, "target an npc of theirs, the examine line says aggressive, hostile, neutral or friendly to you",
+                "click an npc of theirs, it tells you if they look at you friendly or hostile");
         if (Has(t, @" (guards?|town|npcs?|mobs?|they) ") && Has(t, @" (attack|attacking|attacked|aggro|aggroing|hate|kos) ") && Has(t, @" (why|how come) "))
             return Pick(random, "if its a neutral camp thats faction, you killed their friends. our own guards never turn on you",
                 "faction, they attack on sight once you kill enough of their friends");
