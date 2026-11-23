@@ -225,6 +225,47 @@ namespace DOL.GS
             return temp;
         }
 
+        /// <summary>
+        /// Whether the owner keeps another helpful effect of the same kind and family once <paramref name="effect"/> is gone
+        /// (1.2.3): then its end is a quiet handover, not "returns to normal". Only helpful spell effects; debuffs and
+        /// abilities keep every message.
+        /// </summary>
+        public bool KeepsAnotherOfItsKind(ECSGameEffect effect)
+        {
+            if (effect is not ECSGameSpellEffect spellEffect || spellEffect.SpellHandler?.Spell is not { IsHelpful: true })
+                return false;
+
+            lock (_effectsLock)
+            {
+                if (!_effects.TryGetValue(effect.EffectType, out List<ECSGameEffect> effects))
+                    return false;
+
+                foreach (ECSGameEffect other in effects)
+                {
+                    if (other == effect || other.IsEnding || other.IsEnded || other is not ECSGameSpellEffect otherSpell)
+                        continue;
+
+                    if (otherSpell.SpellHandler?.Spell is not { IsHelpful: true })
+                        continue;
+
+                    bool concentration = otherSpell.IsConcentrationEffect();
+                    bool outOfRange = concentration && !EffectHelper.IsConcentrationEffectInRange(otherSpell.SpellHandler.Caster, effect.Owner, otherSpell.SpellHandler.Spell.SpellType);
+
+                    if (KeptHandover(otherSpell.IsDisabled, concentration, outOfRange, otherSpell.SpellHandler.HasConflictingEffectWith(spellEffect.SpellHandler)))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// The rule behind <see cref="KeepsAnotherOfItsKind"/> for one other effect: of the same family, and either on or one
+        /// that will be enabled (a disabled concentration buff out of its caster's range won't be). Pure.
+        /// </summary>
+        public static bool KeptHandover(bool otherDisabled, bool otherIsConcentration, bool concentrationOutOfRange, bool sameFamily) =>
+            sameFamily && (!otherDisabled || !otherIsConcentration || !concentrationOutOfRange);
+
         public ECSGameSpellEffect GetBestDisabledSpellEffect(eEffect effectType)
         {
             List<ECSGameSpellEffect> effects = GetSpellEffects(effectType);
@@ -474,6 +515,8 @@ namespace DOL.GS
             {
                 try
                 {
+                    // A disabled buff enabled again (the stronger one of its kind ended) is a quiet handover.
+                    effect.IsQuietHandover = effect.IsEnabling;
                     bool start = effect.FinalizeState(result);
 
                     component._pendingEffects.Enqueue(new(effect, static (effect, start) =>
@@ -872,6 +915,9 @@ namespace DOL.GS
             {
                 try
                 {
+                    // Disabled because a stronger one of its kind took over, or ending while another of its kind stays on.
+                    effect.IsQuietHandover = result is RemoveEffectResult.Disabled ||
+                        result is RemoveEffectResult.Removed && component.KeepsAnotherOfItsKind(effect);
                     bool stop = effect.FinalizeState(result);
                     if (effect is SpeedEnhancementECSEffect { IsSuperseded: true })
                         stop = false;
