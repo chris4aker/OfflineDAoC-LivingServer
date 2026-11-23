@@ -138,7 +138,8 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   (recipe colours), what alchemy needs, how spellcraft works; NPC factions as the server keeps them (kill their enemies,
   the examine line, the realm's emissary); kill tasks (`/task` on a named guard, to 19); and "who sells X" from the world's
   merchant lists, with prices. New `AutonomousChatGuide`; names and prices from `tools/lore/npc_roster.json` and the public
-  OpenDAoC database. `UT_ChatGuide`. **Tests only.**
+  OpenDAoC database. `UT_ChatGuide`. Bench on top of the routing and shapes fixes: good answers 359 to 407 of 453, silence
+  where an answer was due 70 to 22; `bench_ratchet.json` tightened. **Tests only.**
 
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
