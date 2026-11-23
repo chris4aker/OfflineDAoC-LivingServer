@@ -73,7 +73,8 @@ def bench(args):
     out['silence_ok'] = sum(1 for row in rows if row['cat'] == 'SILENT' and row['q'].get('silence_ok'))
     flags = collections.Counter(f for row in rows for f in row['flags'])
     out['flags'] = {f: flags.get(f, 0) for f in cs.FLAGS}
-    out['clunky_codes'] = dict(collections.Counter(code for row in rows for code, _ in row['issues']).most_common())
+    # Over the replies the scorer judged (a "[world: ...]" stub marker is no reply).
+    out['clunky_codes'] = dict(collections.Counter(code for row in rows if 'CLUNKY' in row['flags'] for code, _ in row['issues']).most_common())
     for key, field in (('by_intent', 'intent'), ('by_realm', 'realm'), ('by_channel', 'channel')):
         groups = collections.defaultdict(list)
         for row in rows:
@@ -99,7 +100,7 @@ def bench(args):
     for c in ('WRONG', 'NON_ANSWER', 'OFF_TOPIC', 'FLUFF', 'SILENT'):
         bad = [row for row in rows if row['cat'] == c and not row['ok']]
         out['worst'][c] = [example(row) for row in bad[:args.worst]]
-    clunky = sorted((row for row in rows if 'CLUNKY' in row['flags']), key=lambda row: -len(row['issues']))
+    clunky = [row for row in rows if 'CLUNKY' in row['flags']]
     out['worst']['CLUNKY'] = [example(row) for row in clunky[:args.worst]]
     out['rows'] = [dict(id=row['q']['id'], intent=row['q']['intent'], realm=row['q']['realm'], channel=row['q']['channel'],
                         text=row['q']['text'], reply=row['r'].get('reply'), route=row['r'].get('route'), cat=row['cat'],

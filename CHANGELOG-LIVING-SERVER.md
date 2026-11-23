@@ -47,6 +47,15 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
+**Chat**
+- **The /faction answer audit** (owner, 2026-11-22: "smooth clunkiness, errors, or disjointed phrasing", "reduce or
+  eliminate general fluff and non answers"). A bench of 453 player questions (`tools/bot-voices/eval/player_questions.json`)
+  goes through the reply path in CI (`UT_ChatQuestionBench`) and is scored by `score_bench.py`: 60.5% good answers, 16%
+  silence, 15% off-topic, 6% "dunno", 1.5% wrong, 9.5% clunky. The root causes (lore answering level questions before
+  the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
+  in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
+  report-only until the fixes land. **Tests only.**
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:
