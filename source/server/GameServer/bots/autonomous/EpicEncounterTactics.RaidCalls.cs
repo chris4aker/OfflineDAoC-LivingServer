@@ -314,6 +314,7 @@ namespace DOL.GS
         public static RaidDiscipline.Role RoleOf(GameBot bot)
         {
             int id = bot?.CharacterClass?.ID ?? 0;
+            // v1.2's roles, kept: the dragons' blast calls were won with them (1.2.2 regression audit, item 1).
             if (id > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)id)) return RaidDiscipline.Role.Healer;
             return CanShootFlyers(bot) ? RaidDiscipline.Role.Caster : RaidDiscipline.Role.Melee;
         }

@@ -272,6 +272,28 @@ namespace DOL.UnitTests
                 "only the listed mechanics around the boss move anyone");
         }
 
+        // 1.2.2 regression audit, item 1: Golestandt and Cuuldurach were won with v1.2's step-out, in which every healing class
+        // (the Paladin, Friar and Warden included) steps out of a stun or a breath around the dragon. The melee-hybrid rule of
+        // the 1.2.2 raid fixes (EpicEncounterTactics.FightsFromRange) must not reach it.
+        [TestCase(eCharacterClass.Paladin)]
+        [TestCase(eCharacterClass.Friar)]
+        [TestCase(eCharacterClass.Warden)]
+        [TestCase(eCharacterClass.Cleric)]
+        public void TheDragonsStunAndBreathStepOutIsV12sForEveryHealingClass(eCharacterClass cls)
+        {
+            var dragon = Npc<Dragon2>(0, 0, 0);
+            var raider = Npc<Raider>(1500, 0, 0);
+            foreach (string mechanic in new[] { EncounterSignals.Stun, EncounterSignals.Breath })
+            {
+                var signal = new EncounterSignal(dragon, mechanic, null, 2000, false, 0, 6000, 7500);
+                Vector3? to = EpicEncounterTactics.SignalStep(raider, new(1500, 0, 0), signal, false, (int)cls);
+                // v1.2: out along the line from him, to the radius plus the step-out.
+                Assert.That(to, Is.EqualTo(new Vector3(2000 + EpicEncounterTactics.SignalStepOut, 0, 0)), $"{cls}, {mechanic}");
+                Assert.That(EpicEncounterTactics.SignalStep(raider, new(1500, 0, 0), signal, false, (int)eCharacterClass.Hero), Is.Null,
+                    "melee stay, as in v1.2");
+            }
+        }
+
         [Test]
         public void HealersTakeAMarkedRaiderFirstUnlessALowerEmergencyWaits()
         {

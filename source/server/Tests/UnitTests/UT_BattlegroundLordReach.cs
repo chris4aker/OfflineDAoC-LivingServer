@@ -52,6 +52,47 @@ namespace DOL.UnitTests
         public void AFrontierAttackerStrikesALordOnlyFromWithinReach(bool keep, float distance, bool strikes) =>
             Assert.That(RvrLordReach.InReach(keep, distance), Is.EqualTo(strikes));
 
+        // 1.2.2 (raid tactic audit finding 10): one reach rule for the battleground storm and the frontier.
+        [TestCase(true, 340f, true)]
+        [TestCase(true, 360f, false)]
+        [TestCase(false, 340f, false)] // a tower's lord takes nothing from beyond 300: the storm walks on to 250
+        [TestCase(false, 240f, true)]
+        public void TheBattlegroundStormUsesTheTowersReachInATower(bool keep, float distance, bool strikes)
+        {
+            Assert.That(Rally.StrikesFromHere(true, distance, 0f, keep, standsBack: true), Is.EqualTo(strikes));
+            Assert.That(Rally.StrikesFromHere(true, distance, 0f, keep, standsBack: true), Is.EqualTo(RvrLordReach.InReach(keep, distance)),
+                "the same rule as the frontier's");
+        }
+
+        // 1.2.2 regression audit, item 3: melee and tanks keep v1.2's battleground strike radius (Caer Caledon, 43c43aa).
+        [TestCase(true, 700f, true)]
+        [TestCase(false, 700f, true)]
+        [TestCase(true, 950f, false)]
+        public void MeleeAndTanksKeepV12sStrikeRadius(bool keep, float distance, bool strikes)
+        {
+            Assert.That(Rally.StrikesFromHere(true, distance, 0f, keep, standsBack: false), Is.EqualTo(strikes));
+            Assert.That(Rally.StrikesFromHere(true, distance, 200f, keep, standsBack: false), Is.False, "a floor below: walks on up, as in v1.2");
+            Assert.That(Rally.LordStrikeReach(null, standsBack: false), Is.EqualTo(AutonomousWorldBotController.BattlegroundLordStrike));
+        }
+
+        [TestCase(RvrLordFormation.Role.Melee, true)]
+        [TestCase(RvrLordFormation.Role.Tank, true)]
+        [TestCase(RvrLordFormation.Role.Ranged, false)]
+        [TestCase(RvrLordFormation.Role.Healer, false)]
+        public void WithNoWalkToTheLordMeleeAndTanksKeepHim(RvrLordFormation.Role role, bool keeps) =>
+            // StepInOnLord: on a failed path a melee or tank bot keeps him as its target (BotBrain walks in to 280, as in
+            // 1.2); a caster, archer or healer drops him for another target.
+            Assert.That(RvrLordFormation.KeepsLordOnFailedWalk(role), Is.EqualTo(keeps));
+
+        [Test]
+        public void ALordWithNoKeepIsTreatedAsTheLordItselfIs()
+        {
+            // GuardLord.DamageRadius: a keep's 400 only when his component's keep is a GameKeep; anything else is a tower's.
+            Assert.That(Rally.IsKeepLord(null), Is.False);
+            Assert.That(Rally.LordDamageReachFor(null), Is.EqualTo(RvrLordReach.For(false)));
+            Assert.That(Rally.StrikesFromHere(true, 340f, 0f), Is.True, "the old call is a keep's");
+        }
+
         [Test]
         public void OtherTargetsKeepTheirReach()
         {

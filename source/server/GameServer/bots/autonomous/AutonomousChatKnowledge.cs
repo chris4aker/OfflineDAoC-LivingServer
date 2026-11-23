@@ -171,10 +171,12 @@ public static class AutonomousChatKnowledge
         bool Has(string pattern) => System.Text.RegularExpressions.Regex.IsMatch(t, pattern);
         string cls = AutonomousChatFieldTalk.ClassNamed(text) ?? askerClass;
         string[] pool = null;
+        // 1.2.2 chat audit (C5, fix F7): a spec or weapon answer only for a class the tips know; the general rule ("whatever ur
+        // spec is") answers nothing.
         if (Has(@" (what|which|wat) spec | (put|spend|spending) (my |ur |your )?(spec )?points | points in at | how (should|do) i spec "))
-            pool = AutonomousChatFieldTalk.SpecAdvice(cls);
+            pool = AutonomousChatFieldTalk.ClassSpecAdvice(cls);
         else if (Has(@" (what|which) (weapon|weap) "))
-            pool = AutonomousChatFieldTalk.WeaponAdvice(cls);
+            pool = AutonomousChatFieldTalk.ClassWeaponAdvice(cls);
         else if (Has(@" sc or drops | drops or sc | (worth|should i) (sc|spellcraft)"))
             pool = AutonomousChatFieldTalk.GearAdvice(AutonomousChatLiveAnswers.LevelAsked(text, askerLevel));
         else if (Has(@" (start|starting|get into|begin|learn) (to )?craft| how (do i|to|can i) craft| crafting (start|work) "))
@@ -466,16 +468,59 @@ public static class AutonomousChatKnowledge
         return GenericTrainerAnswer(realm, className ?? ((eCharacterClass)classId).ToString(), random);
     }
 
-    /// <summary>"your paladin trainer in camelot": every class trainer of a realm stands in its capital. Pure.</summary>
-    public static string GenericTrainerAnswer(eRealm realm, string className, Random random)
+    /// <summary>
+    /// "your paladin trainer is in camelot": every class trainer of a realm stands in its capital. 1.2.2 chat audit (C7, fix F5):
+    /// "your" only for the asker's own class (<paramref name="own"/>; "who trains minstrels?" from a sorcerer drew "your minstrel
+    /// trainer"), and no "he trains ur spells" (said to an armsman, who has none): the trainer is where the points are spent, true
+    /// of every class. Pure.
+    /// </summary>
+    public static string GenericTrainerAnswer(eRealm realm, string className, Random random, bool own = true)
     {
-        string cap = AutonomousChatFieldTalk.CapitalWord(realm), cls = string.IsNullOrWhiteSpace(className) ? "class" : className.Trim().ToLowerInvariant();
+        // The capital as its name is written ("Camelot", "Tir na Nog"): a voice that capitalizes the line keeps it whole (C11).
+        string cap = AutonomousBotVoices.CapitalOf(realm) ?? AutonomousChatFieldTalk.CapitalWord(realm);
+        string cls = string.IsNullOrWhiteSpace(className) ? "class" : className.Trim().ToLowerInvariant();
+        if (own)
+            return random.Next(3) switch
+            {
+                0 => $"your {cls} trainer is in {cap}",
+                1 => $"{cap}, ur {cls} trainer is there",
+                _ => $"ur {cls} trainer in {cap}, spend ur points there",
+            };
         return random.Next(3) switch
         {
-            0 => $"your {cls} trainer in {cap}",
-            1 => $"the {cls} trainer in {cap}, he trains ur spells",
-            _ => $"{cap}, ur {cls} trainer is there",
+            0 => $"the {cls} trainer is in {cap}",
+            1 => $"{cap}, the {cls} trainer is there",
+            _ => $"in {cap}, with the other class trainers",
         };
+    }
+
+    /// <summary>"where is the blademaster trainer?" in Albion: a class of another realm, said as such (C7, fix F5). Pure.</summary>
+    public static string OtherRealmClassAnswer(string className, eRealm home, Random random)
+    {
+        string cls = string.IsNullOrWhiteSpace(className) ? "that" : className.Trim().ToLowerInvariant();
+        string realm = AutonomousChatFieldTalk.RealmWord(GlobalConstants.RealmToName(home), modifier: true);
+        return random.Next(3) switch
+        {
+            0 => $"{cls} is a {realm} class, no trainer for it on our side",
+            1 => $"thats a {realm} class, cant train it here",
+            _ => $"{cls}? {realm} only, we dont have those",
+        };
+    }
+
+    /// <summary>
+    /// The trainer answer without the world's trainers (C7, fix F5): the class named (<paramref name="named"/>, else the asker's),
+    /// another realm's class said as such, else its capital, "your" only when it is the asker's own class. Null with no class. Pure.
+    /// </summary>
+    public static string TrainerAnswerFor(eRealm realm, string named, string askerClass, Random random)
+    {
+        string cls = string.IsNullOrWhiteSpace(named) ? askerClass : named;
+        if (string.IsNullOrWhiteSpace(cls))
+            return null;
+        eRealm home = AutonomousChatGear.RealmOf(cls);
+        if (home is (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia) && realm is (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia) && home != realm)
+            return OtherRealmClassAnswer(cls, home, random);
+        bool own = string.IsNullOrWhiteSpace(named) || string.Equals(named, askerClass, StringComparison.OrdinalIgnoreCase);
+        return GenericTrainerAnswer(realm, cls, random, own);
     }
 
     private static bool TryAnswerTrainer(eRealm realm, string query, int askerClassId, GamePlayer asker, out string answer)
@@ -491,17 +536,26 @@ public static class AutonomousChatKnowledge
                 break;
             }
         }
+        // "who trains mercenaries?", "where do bms train": the chat forms of a class (C7).
+        if (classId == 0 && AutonomousChatFieldTalk.ClassNamed(query) is { } chatName)
+            classId = AllClasses().FirstOrDefault(c => string.Equals(c?.Name, chatName, StringComparison.OrdinalIgnoreCase))?.ID ?? 0;
+        bool own = classId == 0 || classId == askerClassId;
         if (classId == 0)
             classId = askerClassId;
         if (classId == 0)
             return false;
-        var trainers = TrainersOf(realm, classId);
         string name = AllClasses().FirstOrDefault(c => c?.ID == classId)?.Name;
-        // 1.1.3: with no trainer in the world data, the capital, where every class of the asker's realm trains (not "no idea");
-        // only for the asker's own class, which surely trains there (an Albion "where's the druid trainer" stays unanswered).
-        if (trainers.Count == 0 && classId != askerClassId)
-            return false;
-        answer = trainers.Count == 0 ? GenericTrainerAnswer(realm, name, Random.Shared) : TrainerText(trainers, name, asker, Random.Shared);
+        // A class of another realm has no trainer the asker can reach: say so (C7: "where is the blademaster trainer?" in Albion
+        // drew "no clue, sry").
+        eRealm home = AutonomousChatGear.RealmOf(name);
+        if (!own && home is (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia) && home != realm)
+        {
+            answer = OtherRealmClassAnswer(name, home, Random.Shared);
+            return true;
+        }
+        var trainers = TrainersOf(realm, classId);
+        // 1.1.3: with no trainer in the world data, the capital, where every class of the realm trains (not "no idea").
+        answer = trainers.Count == 0 ? GenericTrainerAnswer(realm, name, Random.Shared, own) : TrainerText(trainers, name, asker, Random.Shared);
         return true;
     }
 

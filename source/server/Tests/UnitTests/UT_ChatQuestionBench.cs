@@ -22,9 +22,9 @@ namespace DOL.GS.Tests
     /// 1.2.2 (F0): no mirror. The routing is AutonomousChatReplyPath's and AutonomousChatKnowledge.TryAnswer(KnowledgePorts)'s, the
     /// functions the coordinator calls; only the ports (the responder, its corpus picks, the stub world) are the bench's.
     ///
-    /// Report-only (the owner's 1.2.2 ask, 2026-11-22: "reduce or eliminate general fluff and non answers"): it writes every
-    /// answer to CHAT_BENCH_OUT (else chat-bench/bench-replies.json in the test folder) and fails only when it can't answer.
-    /// tools/bot-voices/eval/score_bench.py scores the file in CI. After the fixes it becomes a ratchet.
+    /// It writes every answer to CHAT_BENCH_OUT (else chat-bench/bench-replies.json in the test folder), and the holdout set's to
+    /// CHAT_BENCH_HOLDOUT_OUT (bench-holdout.json); it fails only when it can't answer. tools/bot-voices/eval/score_bench.py ratchet
+    /// scores them in CI and fails the build when the good share falls or a bad category grows past bench_ratchet.json (1.2.2 fixes).
     /// </summary>
     [TestFixture]
     public class UT_ChatQuestionBench
@@ -43,22 +43,6 @@ namespace DOL.GS.Tests
         private static string CodeOf(eRealm realm) => realm switch
         {
             eRealm.Albion => "alb", eRealm.Midgard => "mid", eRealm.Hibernia => "hib", _ => "*",
-        };
-
-        // The classes of each realm (1.65), for a trainer question about another realm's class.
-        private static readonly Dictionary<string, eRealm> ClassRealm = new(StringComparer.OrdinalIgnoreCase)
-        {
-            ["Armsman"] = eRealm.Albion, ["Paladin"] = eRealm.Albion, ["Mercenary"] = eRealm.Albion, ["Reaver"] = eRealm.Albion,
-            ["Cleric"] = eRealm.Albion, ["Friar"] = eRealm.Albion, ["Minstrel"] = eRealm.Albion, ["Scout"] = eRealm.Albion,
-            ["Infiltrator"] = eRealm.Albion, ["Sorcerer"] = eRealm.Albion, ["Wizard"] = eRealm.Albion, ["Theurgist"] = eRealm.Albion,
-            ["Cabalist"] = eRealm.Albion, ["Necromancer"] = eRealm.Albion,
-            ["Warrior"] = eRealm.Midgard, ["Thane"] = eRealm.Midgard, ["Skald"] = eRealm.Midgard, ["Berserker"] = eRealm.Midgard,
-            ["Savage"] = eRealm.Midgard, ["Hunter"] = eRealm.Midgard, ["Shadowblade"] = eRealm.Midgard, ["Healer"] = eRealm.Midgard,
-            ["Shaman"] = eRealm.Midgard, ["Runemaster"] = eRealm.Midgard, ["Spiritmaster"] = eRealm.Midgard, ["Bonedancer"] = eRealm.Midgard,
-            ["Hero"] = eRealm.Hibernia, ["Champion"] = eRealm.Hibernia, ["Blademaster"] = eRealm.Hibernia, ["Ranger"] = eRealm.Hibernia,
-            ["Nightshade"] = eRealm.Hibernia, ["Druid"] = eRealm.Hibernia, ["Warden"] = eRealm.Hibernia, ["Bard"] = eRealm.Hibernia,
-            ["Eldritch"] = eRealm.Hibernia, ["Enchanter"] = eRealm.Hibernia, ["Mentalist"] = eRealm.Hibernia, ["Animist"] = eRealm.Hibernia,
-            ["Valewalker"] = eRealm.Hibernia,
         };
 
         private static readonly HashSet<string> Healers = new(StringComparer.OrdinalIgnoreCase) { "Cleric", "Friar", "Healer", "Shaman", "Druid", "Bard", "Warden" };
@@ -186,17 +170,16 @@ namespace DOL.GS.Tests
         private static string Knowledge(Run run, string query) =>
             AutonomousChatKnowledge.TryAnswer(KnowledgePortsOf(run), query, out string answer) ? answer : null;
 
-        /// <summary>TryAnswerTrainer: the class named, else the asker's; the live world names the trainer NPC (stub: the capital).</summary>
+        /// <summary>TryAnswerTrainer: the class named, else the asker's; another realm's class said as such; the live world names the
+        /// trainer NPC (stub: the capital).</summary>
         private static string Trainer(Run run, string query)
         {
             string named = AutonomousChatFieldTalk.ClassNamed(query);
             string cls = named ?? run.Q.Cls;
-            bool own = named == null || string.Equals(named, run.Q.Cls, StringComparison.OrdinalIgnoreCase);
-            // A class of another realm has no trainer the asker can reach: the live lookup finds none and answers nothing.
-            if (!own && ClassRealm.TryGetValue(cls, out eRealm home) && home != run.Realm)
-                return null;
-            run.Stub = true;
-            return AutonomousChatKnowledge.GenericTrainerAnswer(run.Realm, cls, run.Rng);
+            // Another realm's class is answered from the class table alone; the rest name the trainer NPC live (stubbed here).
+            eRealm home = AutonomousChatGear.RealmOf(cls);
+            run.Stub |= home == run.Realm || home == eRealm.None;
+            return AutonomousChatKnowledge.TrainerAnswerFor(run.Realm, named, run.Q.Cls, run.Rng);
         }
 
         private static string P(Random random, params string[] options) => options[random.Next(options.Length)];
@@ -225,27 +208,17 @@ namespace DOL.GS.Tests
                 : P(run.Rng, $"{name} is in {area}", $"{name}? thats in {area}", $"in {area}, follow the road", $"{area}, a horse gets you most of the way");
         }
 
-        /// <summary>AutonomousChatLiveAnswers.WhereToHunt with the camps stubbed: a catalog zone of the realm for the level.</summary>
+        /// <summary>AutonomousChatLiveAnswers.WhereToHunt with the camps stubbed: a catalog zone of the realm for the level stands for
+        /// the zone bots camp in (a realm named in the question has no camps, as live).</summary>
         private static string WhereToHunt(Run run, string incoming)
         {
             run.Stub = true;
             int level = AutonomousChatLiveAnswers.LevelAsked(incoming, run.Q.Level);
-            string code = CodeOf(run.Realm);
-            string zone = AutonomousChatPlaces.All.Where(p => p.Realm == code && p.Type == "zone" && p.Levels is { Length: 2 } l && level >= l[0] && level <= l[1])
-                .OrderBy(p => Math.Abs((p.Levels[0] + p.Levels[1]) / 2 - level)).Select(p => p.Zones.FirstOrDefault() ?? p.Key).FirstOrDefault();
-            string dungeon = level >= 7 ? AutonomousBotVoices.DungeonFor(run.Realm, level, run.Rng) : null;
-            if (zone != null && dungeon != null && !zone.Contains(dungeon, StringComparison.OrdinalIgnoreCase))
-                return run.Rng.Next(3) switch
-                {
-                    0 => $"for {level} try {zone}, lots of people camping there right now. or {dungeon} if you get a group",
-                    1 => $"{zone} is busy with {level}s at the moment, {dungeon} is good too with a group",
-                    _ => $"{dungeon} with a group, or {zone} solo, thats where the {level}s are",
-                };
-            if (zone != null)
-                return run.Rng.Next(2) == 0 ? $"{zone}, saw a bunch of {level}s camping there" : $"try {zone}, thats where the {level}s are right now";
-            if (dungeon != null)
-                return run.Rng.Next(2) == 0 ? $"{dungeon} is good around {level} if you can get a group" : $"{dungeon} for {level}, bring a group";
-            return AutonomousChatLiveAnswers.StarterZones(run.Realm, level, run.Rng);
+            eRealm named = AutonomousChatShortTalk.RealmNamed(incoming);
+            eRealm realm = named is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia ? named : run.Realm;
+            string zone = AutonomousChatLiveAnswers.CatalogZone(realm, level);
+            string dungeon = level >= 7 && !AutonomousChatShortTalk.AsksSolo(incoming) ? AutonomousBotVoices.DungeonFor(realm, level, run.Rng) : null;
+            return AutonomousChatLiveAnswers.HuntText(realm, level, zone, dungeon, realm == run.Realm, run.Rng);
         }
 
         /// <summary>
@@ -400,7 +373,13 @@ namespace DOL.GS.Tests
 
         private static Answer Done(Run run, string route, string text, int fit, string outcome, int answerers, bool stub = false, bool twice = false)
         {
-            int delay = text == null ? 0 : AutonomousChatArbiter.DelayMs(run.Q.Text, text, 40, 0, run.Rng);
+            // SchedulePlayerReplies' timing: a short known fact types faster (F11), and a line said to the bot or the first answer to
+            // a question in /faction comes within DirectTypingCapMs (PlayerAnswerDueMs).
+            bool question = AutonomousChatQuestions.IsQuestion(run.Q.Text);
+            bool directed = run.Q.Channel is "tell" or "group" || !string.IsNullOrEmpty(run.Q.To);
+            int wpm = question && AutonomousChatArbiter.IsQuickFact(route, text) ? AutonomousChatArbiter.QuickWpm(40) : 40;
+            int delay = text == null ? 0 : AutonomousBotChatCoordinator.PlayerAnswerDueMs(AutonomousChatArbiter.DelayMs(run.Q.Text, text, wpm, 0, run.Rng), 0,
+                directed, run.Q.Channel == "faction" && question);
             return new Answer(run.Q.Id, route, text, stub || run.Stub || text != null && text.StartsWith("[world", StringComparison.Ordinal), fit, outcome,
                 text == null ? 0 : answerers, delay, twice);
         }

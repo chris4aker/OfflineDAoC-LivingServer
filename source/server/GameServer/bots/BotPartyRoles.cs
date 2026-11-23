@@ -29,6 +29,21 @@ namespace DOL.GS
             eCharacterClass.Warden or eCharacterClass.Healer or eCharacterClass.Shaman or
             eCharacterClass.Paladin;
 
+        /// <summary>
+        /// A healing class that fights in melee and heals from there (Living Server 1.2.2, raid tactic audit finding 3): the
+        /// Paladin (a tank), the Friar (staff) and the Warden (blade and shield). A raid rule that places raiders must not send
+        /// them to the healers' or casters' spots: there they neither swing nor hold anything, and their melee chase walks them
+        /// back in, so the rule sends them out again every turn. They heal the ones near them in melee.
+        /// </summary>
+        public static bool IsMeleeHybridHealer(eCharacterClass characterClass) => characterClass is
+            eCharacterClass.Paladin or eCharacterClass.Friar or eCharacterClass.Warden;
+
+        /// <summary>A healing class that stands back and heals (Cleric, Druid, Healer, Shaman): <see cref="IsHealingClass"/>
+        /// less <see cref="IsMeleeHybridHealer"/>. The raid rules' "healer" for where a raider stands
+        /// (RvrLordFormation.RoleOf's healer band holds the same four, plus the Bard).</summary>
+        public static bool IsRangedHealer(eCharacterClass characterClass) =>
+            IsHealingClass(characterClass) && !IsMeleeHybridHealer(characterClass);
+
         public static bool CanFill(eCharacterClass characterClass, BotPveGroupRole role) => role switch
         {
             BotPveGroupRole.Tank => For(characterClass) == BotPartyRole.Tank,

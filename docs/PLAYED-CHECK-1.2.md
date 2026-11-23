@@ -261,21 +261,26 @@ build it was won on.
 
 | Raid | Won on | Changed since the win |
 |---|---|---|
-| Golestandt (Albion dragon) | test build 5 | Nothing known |
-| Krondon | `1dc66b6` | #239: the re-clear of respawning ogres after Drihten (the route, not a boss) |
-| Hall of the Corrupt | `1dc66b6` | #229: Aidon's lead-home. Aidon is fought again on the way into Albion's Summoner's Hall |
-| Coliath | `1dc66b6` | Nothing known |
-| Cuuldurach (Hibernia dragon) | test build 5 | Nothing known |
-| Marfach Caverns | test builds 2, 4 and 5 | Nothing known |
-| Gjalpinulva (Midgard dragon) | `88b6ab3` | Nothing |
-| Iarnvidiur's Lair | `88b6ab3` | Nothing |
-| Juggernaut | `88b6ab3` | Nothing |
-| Darkness Falls (Midgard) | `e3b8238` | The Darkness Falls raid AI work came after this win. It stays out of the sweep (owner decision 6 of 2026-11-17) |
-| Tur Suil | `ccba364` | Nothing known |
-| Avalon City | `ccba364` | Nothing known |
-| Crystal Cave (Xanxicar) | `ccba364` | Nothing known |
-| Mollunero | `ccba364` | Nothing known |
-| Evern | `ccba364` | Nothing known |
+| Golestandt (Albion dragon) | test build 5; `43c43aa` after one wipe | 1.2.1 #415: a raider thrown past 6,700 walks back alone (`EncounterDisplacementRecovery`) instead of being held at the ring for a return wave. 1.2.2: the hybrid-class stun/breath rule on `raid/1.2.2-tactics-fixes` (Paladin, Friar) is not merged; it would change this fight (audit item 1) |
+| Krondon | `1dc66b6`, `b1b6846` | #239 (the ogre re-clear after Drihten, the route). Shipped in 1.2 after `b1b6846`: sweeps 6b-6f, #361, the 1.2 cure rule #367, sweep 7c. 1.2.1 #410 cure round 2 (Ulor se Bysen's Lance Spirit DoT: cure before heal with 2+ fresh DoTs, 25% danger, 2.5 s). Pending 1.2.2 hybrid rule would touch Lurfos Herald's melee-behind. No nav links |
+| Hall of the Corrupt | `1dc66b6` | #229: Aidon's lead-home (Aidon is fought again on the way into Albion's Summoner's Hall). Nothing in 1.2.1 or 1.2.2 on its path |
+| Coliath | `1dc66b6`, `19e7037` | 1.2.2 NavLinkLeg in Aldland (2 lift directions): lifts are left out of the commit rule (regression guard), so only the stranded set-down is new. #415's open-world path is not hit (Coliath does not throw) |
+| Cuuldurach (Hibernia dragon) | test build 5; `43c43aa` | As Golestandt: 1.2.1 #415; the pending 1.2.2 hybrid rule (Warden) would change it |
+| Marfach Caverns | test builds 2, 4 and 5; `9a173f4` | Shipped in 1.2 after `9a173f4`: sweep 7c, #367. 1.2.1 #410 cure round 2 (Red Lady's Soul Drain). Pending 1.2.2 hybrid rule would touch the Black Lady's spread (Warden). No nav links |
+| Gjalpinulva (Midgard dragon) | `88b6ab3`, `9a173f4`, `c81eb5d`, `43c43aa` | 1.2.1 #415: one throw spot of five lands past 6,700 (that raider walks back alone). The hybrid rule does not apply (no Paladin, Friar or Warden in Midgard) |
+| Iarnvidiur's Lair | `88b6ab3` | Everything since 2026-11-16 that shipped in 1.2 (sweeps 6b-7c, #367). 1.2.1 #410 cure round 2 (Iarnvidiur's Plague). 1.2.2 NavLinkLeg (zone 161, 12 lift directions): lifts left out of the commit rule (regression guard), set-down only |
+| Juggernaut | `88b6ab3`, `9a173f4` | Shipped in 1.2 after `9a173f4`: sweep 7c, #367. #415's open-world path is not hit (no throw); 1.2.2 #421 seam rule on the way (route only) |
+| Darkness Falls (Midgard) | `e3b8238` | The Darkness Falls raid AI work came after this win (shipped in 1.2). 1.2.1 #413 Legion's wounded spot; 1.2.2 the DF stair climb (#438). It stays out of the sweep (owner decision 6 of 2026-11-17) |
+| Tur Suil | `ccba364` (#291), `b1b6846`, `9a173f4` | Shipped in 1.2 after `9a173f4`: sweep 7c, #367. 1.2.1 #411 stall clock (only more permissive; #291's trash-clear line intact). 1.2.2 NavLinkLeg (zone 190, 4 lift directions): lifts left out of the commit rule (regression guard), set-down only; #421 seam rule on the way |
+| Avalon City | `ccba364`, `b1b6846` | Shipped in 1.2 after `b1b6846`: sweeps 6b-6f, #361, #367, sweep 7c. Nothing in 1.2.1 or 1.2.2 on its path (no links, no DoT, no spread) |
+| Crystal Cave (Xanxicar) | `ccba364`, `b1b6846` | As Avalon City; the Xanxicar stomp fix (1.1.3) unchanged (Stomp is not a stun/breath signal) |
+| Mollunero | `ccba364` | #415's open-world path is not hit (no throw); 1.2.2 #421 seam rule on the Hibernian walk (route only) |
+| Evern | `ccba364`, `9a173f4` | As Mollunero; shipped in 1.2 after `9a173f4`: sweep 7c, #367 |
+
+Status 2026-11-23 (internal; from the regression audit of `integration/1.2.2` at `0270e78c`, read by code path, nothing
+run on the owner's PC): no 1.2.1 or 1.2.2 build has been played on the owner's PC, so none of these rows is a seen
+regression or a seen re-win. The 1.2.2 regression guards (`fix/1.2.2-regression-guards`) pin the lift legs, the seam
+choice on the Cruachan Gorge walk and the death-fall removal to 1.2's behaviour (tests only).
 
 With no standing win and not finished in sweep 3: Dodens Gruva (won on test build 5, lost on `1dc66b6`, not reached on
 `ccba364`) and Darkness Falls Hibernia (cut off on `ccba364`). Darkness Falls Albion lost on `ccba364`.

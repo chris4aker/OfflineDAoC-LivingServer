@@ -25,14 +25,23 @@ namespace DOL.GS
 
         /// <summary>A leg no walkable surface can make: it rises or drops at least the pick box's half height and at least
         /// as far as it runs (steeper than 45 degrees), over a short run. A bot walking one does not replot until it
-        /// reaches the far end; a new order only changes where it goes from there.</summary>
+        /// reaches the far end; a new order only changes where it goes from there. Lifts are left out
+        /// (<see cref="IsLiftLeg"/>): they ride exactly as in 1.2.</summary>
         public static bool IsCommitLeg(Vector3 from, Vector3 to)
         {
             if (!Finite(from) || !Finite(to)) return false;
             float rise = Math.Abs(to.Z - from.Z);
             float run = Vector2.Distance(new(from.X, from.Y), new(to.X, to.Y));
-            return run <= MaxRun && rise >= PickHalfHeight && rise >= run;
+            return run <= MaxRun && rise >= PickHalfHeight && rise >= run && !IsLiftLeg(from, to);
         }
+
+        /// <summary>1.2.2 regression guard: a lift leg (an off-mesh link <see cref="Pathfinder.IsVerticalLink"/> carries a bot
+        /// over in one step: 300 or more up or down and at least twice the run). The raid wins in Tur Suil, Iarnvidiur's
+        /// Lair and Aldland (Coliath) and the Cruachan Gorge siege column were seen with 1.2's lift ride and no commit rule;
+        /// every stuck-prone link in those zones is a lift, so their legs keep 1.2's behaviour (only the stranded set-down
+        /// of <see cref="TryResolveLanding"/> is new).</summary>
+        public static bool IsLiftLeg(Vector3 from, Vector3 to) =>
+            Finite(from) && Finite(to) && Pathfinder.IsVerticalLink(EDtPolyFlags.Jump, from, to);
 
         /// <summary>A bot at <paramref name="actor"/> is inside the leg <paramref name="from"/> to <paramref name="to"/>:
         /// within <see cref="LegWidth"/> (XY) of the segment, between its two heights (a little slack), and not already at

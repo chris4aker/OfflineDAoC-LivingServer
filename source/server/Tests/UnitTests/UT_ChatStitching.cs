@@ -315,6 +315,30 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void EveryWhereToLevelAndSpecAnswerReadsClean()
+        {
+            var said = new HashSet<string>();
+            string[] dungeons = { null, "Spindelhalla", "Tomb of Mithra", "Spraggon Den", "Vendo Caverns", "Keltoi Fogou" };
+            foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+                foreach (int level in new[] { 3, 8, 12, 18, 24, 33, 41, 48 })
+                    foreach (string dungeon in dungeons)
+                        foreach (bool busy in new[] { true, false })
+                            for (int seed = 0; seed < 3; seed++)
+                            {
+                                string zone = AutonomousChatLiveAnswers.CatalogZone(realm, level);
+                                foreach (string z in new[] { zone, null })
+                                    if (AutonomousChatLiveAnswers.HuntText(realm, level, z, dungeon, busy, new Random(seed)) is { } text)
+                                        said.Add(text);
+                            }
+            foreach (string cls in new[] { "armsman", "cleric", "wizard", "warrior", "healer", "runemaster", "hero", "druid", "enchanter", "ranger" })
+                for (int seed = 0; seed < 12; seed++)
+                    if (AutonomousChatReplyPath.SpecAnswer($"what spec for a {cls}?", "Cleric", new Random(seed)) is { } spec)
+                        said.Add(spec);
+            Assert.That(said.Count, Is.GreaterThan(50));
+            Clean(said.SelectMany(text => Styled(text, 1)), "where-to-level and spec answers");
+        }
+
+        [Test]
         public void EveryTrainerAnswerReadsClean()
         {
             var said = new HashSet<string>();

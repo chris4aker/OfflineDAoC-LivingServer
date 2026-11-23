@@ -83,6 +83,60 @@ namespace DOL.UnitTests
             });
         }
 
+        /// <summary>
+        /// 1.2.2 (raid tactic audit finding 7): one wounded melee raider over ten minutes, the rule's step-out test
+        /// (<see cref="T.LegionWoundedOut"/>) with and without its memory. Assumed: in melee it loses 2% a second (his hits and
+        /// blast on the melee), waiting at its spot (in its healers' reach) it gains 3% a second, nothing while it walks, and
+        /// a walk each way (about 1,500) takes 8 s. It counts as contributing only while it stands in melee and alive; walking and waiting
+        /// count as nothing. Reports its share of the time contributing and its walks.
+        /// </summary>
+        private static (double Contributing, int Walks) Shuttle(bool memory)
+        {
+            const int Walk = 8;
+            double hp = 34;
+            bool outside = false, wasOut = false;
+            int walking = 0, walks = 0, contributing = 0;
+            for (int t = 0; t < 600; t++)
+            {
+                if (walking > 0)
+                {
+                    walking--;
+                    continue;
+                }
+                bool wantsOut = T.LegionWoundedOut((int)hp, memory && wasOut);
+                wasOut = wantsOut;
+                if (wantsOut != outside)
+                {
+                    outside = wantsOut;
+                    walking = Walk;
+                    walks++;
+                    continue;
+                }
+                if (outside) hp = Math.Min(100, hp + 3);
+                else
+                {
+                    contributing++;
+                    hp -= 2;
+                }
+            }
+            return (contributing / 600.0, walks);
+        }
+
+        [Test]
+        public void TheWoundedNoLongerShuttleAtThirtyFive()
+        {
+            var old = Shuttle(memory: false);
+            var now = Shuttle(memory: true);
+            TestContext.Out.WriteLine($"one threshold: contributing {old.Contributing:P0} of the time, {old.Walks} walks; " +
+                                      $"return at {T.LegionWoundedReturnPercent}%: contributing {now.Contributing:P0}, {now.Walks} walks");
+            Assert.Multiple(() =>
+            {
+                Assert.That(now.Walks, Is.LessThan(old.Walks * 2 / 3), "fewer walks in and out");
+                Assert.That(now.Contributing, Is.GreaterThan(old.Contributing), "more time in melee");
+                Assert.That(T.LegionWoundedReturnPercent, Is.GreaterThan(T.LegionWoundedPercent + 20));
+            });
+        }
+
         private readonly record struct Outcome(double Killed20, double Minutes, double KillHeals);
 
         private static Outcome Many(bool fixedRule, int runs)

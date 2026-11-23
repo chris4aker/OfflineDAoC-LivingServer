@@ -54,20 +54,40 @@ Trollheim and Tur Suil 160; the others 96-120) and recruited up to 300, and the 
 Owner, 2026-11-22: "If the mechanics and tactics are working but the period raider size from logs isn't cutting it, and
 adding more bots without it becoming a Zerg wins, we should bump the suggested raider and period size."
 
-**The rule.** An encounter's period size (`SuggestedBots`) is raised when, and only when, all of these hold:
+**No encounter is raised.** 1.2.2 first raised Summoner's Hall 64 → 80, Galladoria 100 → 112 and Tuscaran Glacier
+100 → 120 on their sims. An independent audit of those sims (2026-11-23) found that none of them was sound evidence, and
+the owner withdrew all three (2026-11-23: "Revert all three"). The Green Knight's raise to 80 had been withdrawn the day
+before ("option 1"). Every encounter has its 2026-11-04 period size, and `RaidPeriodSizes.Raises` is empty. The rule
+stays, with stricter evidence (below). The withdrawn raises and the audit's reasons are under "Withdrawn on audit".
+
+**The rule.** An encounter's period size (`SuggestedBots`) may be raised when, and only when, all of these hold:
 1. **Its tactics work.** The encounter's simulation reproduces the failure seen in a PC log, and with the current
    tactic that failure is gone. A sim whose tactic still fails at every size is no reason to raise it: the tactic is
    fixed first.
 2. **It still loses at its period size and wins with more bots.** With the current tactic the sim misses the target
    at the period size and reaches it at a larger one. The target is the win balance's (`realm_raid_target_win_percent`,
-   67%: about two wins in three). Where the sim models one mechanism rather than a whole fight (Spindler's newborns,
-   Kula's phase), the target is that mechanism's measure in the one fight there that the PC log shows won.
+   67%: about two wins in three). A sim of one mechanism rather than a whole fight (a spawn timer, a damage race) is
+   not enough on its own: see the evidence rules.
 3. **It is not a zerg.** See below.
+4. **The evidence meets every one of these** (owner, 2026-11-23, after the audit):
+   - **a. The game's loss condition.** The sim loses the way the game counts a wipe
+     (`RealmRaidDungeonRoute.IsWipe`): half of the engaged raiders fallen, or the encounter reset after being taken to
+     70% or lower (`ResetWipeLowestPercent`). Raiders really die in it. A model that cannot lose (a spawn count, a phase
+     time) cannot show that a size loses.
+   - **b. It reproduces the PC.** At least one PC kill **and** one PC loss, each at the size its log shows, come out of
+     the sim as a win and a loss. A target taken from the model's own estimate of a PC fight is not a log figure.
+   - **c. The control at the real sizes.** The no-zerg control (the rules from before the tactic) is checked at the
+     size the game really starts the raid at (125% of the raised size, `RaidPeriodSizes.ControlStartPercent`) and at
+     that size plus the 24 Epic Special Forces (`AutonomousEpicSpecialForces.MaximumMembers`), not only at 100%. If the
+     control wins there, numbers alone win in the real game, and the size is kept.
+   - **d. One row, one encounter.** A raid row shared by several encounters (a whole dungeon) is split before one
+     boss's evidence raises it.
+   - **e. Pinned in C#.** The evidence is pinned in a C# test in the repo (`RaidPeriodSizes.Raise.EvidenceTest`,
+     checked by `UT_RaidPeriodSizes`), not only in Python outside it.
 
 It is raised to the **smallest whole-party size** (a multiple of 8) that reaches the target with the current tactic. If
-the target lies past the no-zerg limit, it is raised **to the limit** and no further. A raise is per raid row; a row
-shared by several encounters is split first. Only an encounter with a sim is raised: "keep" means no sim gave grounds
-to change it.
+the target lies past the no-zerg limit, it is raised **to the limit** and no further. A raise is per raid row. Only an
+encounter with a sim is raised: "keep" means no sim gave grounds to change it.
 
 **Not a zerg** means all of these:
 - **At most twice the period source's own figure:** the 2003-2004 guide's group count times 8, or the players it names
@@ -76,9 +96,9 @@ to change it.
   people, so 200. Twice is the win balance's own ceiling (200%, owner 2026-11-05), the room for "bots that play worse
   than 2003 players".
 - **Never above the realm's 300** (`RealmRaidRecruitmentPolicy.MaximumBots`).
-- **The extra bots win because of the tactic.** At the raised size the sim's control (the rules from before the tactic,
-  as shipped in 1.2) still loses: it wins under a third of its attempts, or misses the mechanism's target. If the old
-  rules win at that size too, numbers alone won, and the size is kept.
+- **The extra bots win because of the tactic.** At the raised size, at its 125% start and with the Special Forces, the
+  sim's control (the rules from before the tactic) still loses: it wins under a third of its attempts. If the old rules
+  win at those sizes too, numbers alone won, and the size is kept.
 - **The bosses are never touched.** A flood guard keeps the cap it had (`EncounterFloodGuard`): the Green Knight's trees
   stay capped at the Albion dragon raid's 70, and no guard reads a raised raid's size.
 
@@ -86,34 +106,48 @@ After a raise, win-rate sizing works from the new period size exactly as for eve
 Special Forces after a wipe.
 
 **Records carry over in bots, not percentages.** Since 1.2.2 a raid's Herald record says what its size is a percentage
-of ("Raid size: 125% of 80."). A row from before (no "of") at a raised encounter is a percentage of the old period
-size, so a world that had grown Summoner's Hall to 166% of 64 (106 bots) carries on at 132.8% of 80, the same 106 bots
-(`RaidPeriodSizes.Rebase`).
+of ("Raid size: 125% of 80."), and the next raid reads it against the period size today (`RaidPeriodSizes.Rebase`). A
+row a 1.2.2 test build wrote at a withdrawn raise ("125% of 80" at Summoner's Hall: 100 bots) reads as 156.25% of 64,
+the same 100 bots. A row with no "of" (every row before 1.2.2) is a percentage of the period size.
 
 **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size, so a raise only
-takes effect with twice the new size free: Galladoria 224 or more, Tuscaran Glacier 240, Summoner's Hall and the Green
-Knight 160. With fewer, the roster sets the size, as before.
+takes effect with twice the new size free. With fewer, the roster sets the size, as before; with "go with who came" and
+the under-strength rule, a bigger requirement can also mean more attempts that end as no result.
 
-**Tests only.** Every raise rests on a simulation, none on a PC log. `/epictest start <raid> source` replays a raised raid
-at its old period size; `era` runs the new one.
+### Withdrawn on audit (2026-11-23)
+
+The independent audit re-ran the sims (tests only, models, no PC result) and found these problems. The owner withdrew
+all three raises.
+
+| Raise | Withdrawn because |
+|---|---|
+| Summoner's Hall 64 → 80 (Summoner Roesia, #410) | At 80 the tactic wins 0 (Midgard), 7 (Hibernia) and 15 (Albion) of 64 with real stats: it does not work by its own model. More curers per party means fewer wins (the fresh-Pain cure starves heals). The heal was fitted by hand (400 → 730) to one log number; at 790 Albion wins 63 of 64 at 80, so a fitted knob decides the result. At the 100 a raid starts at, the 1.2 cure rule (the control) wins about 26-38 of 64 (Albion, Hibernia), so the extra bots would win by numbers. The same position as the Green Knight's withdrawn raise (losing at the limit). |
+| Galladoria 100 → 112 (Spindler Broodmother, #408) | The sim is a proxy (newborns alive at her death; no raider deaths, mesmerize, burn, win or loss), and the deciding gap (3.41 against 2.49) is under one newborn. The 2.49 "target" is the model's own value for `ccba364`, not a log figure. A PC log contradicts it: `1dc66b6` killed her in 12.7 minutes at the period size (13 parties) with the old 45% share, the model's "fail" case. The logged failure (`e3b8238`: up to 44 newborns, wipes at 15% and 22%) is far outside anything the model produces. At 350-425 damage a minute 14 parties fail too. The row covers the whole dungeon, raised on one boss. At the 125% start (16 parties) the old share already met the model's target. |
+| Tuscaran Glacier 100 → 120 (Queen Kula, #409) | The model (Kula's phase as a damage race) has no loss condition: no deaths, wipes, heals or enrage. The "20.1 min" target is the model's own estimate of `ccba364`, not a logged kill time. The raids lost at King Tuscar (twice on `ccba364`, at about 124 bots, above 120), and the King has no model. The row covers the whole dungeon, raised on Kula. At the 125% start (125, and 150 at the raised size) the old rule already meets the model's target. |
+
+What to measure before any of them is tried again: Spindler's `EPIC_RANGED_ADDS alive=` and her mesmerize counts in a
+PC sweep, then a model with deaths and her mesmerize; King Tuscar's hammers against the raid's heals; Roesia's cure
+against heal balance (the tactic first, not the size).
 
 ### 1.2.2: each encounter with a 1.2.1 sim
 
 Win rates are from Python ports of the 1.2.1 C# sims (each port reproduces the numbers its C# test pins), swept across
-raid sizes in whole parties. "1.2" is the control: the rules before the 1.2.1 tactic. Tests only.
+raid sizes in whole parties. "1.2" is the control: the rules before the 1.2.1 tactic. Tests only: model results, not
+game results. The three raises this table first supported were withdrawn on audit (above); their rows are kept as they
+were measured, with the decision column corrected.
 
 | Raid (issue) | Sim | 1.2.1 tactic, by size | 1.2 rules (control) | No-zerg limit | Decision |
 |---|---|---|---|---|---|
-| Summoner's Hall: Summoner Roesia (#410) | `UT_RaidSim121SummonersGreenKnight`, 64 seeds; real stats `UT_RaidRealStats122` | 1.2.1 (assumed melee): wins of 64 at 64 / 80 / 88 / 96 / 104: Midgard 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64. **Real stats (1.2.2)**, 64 / 80 / 88 / 96 / 104 / 112: Midgard 0 / 0 / 0 / 0 / 8 / 42, Albion 0 / 15 / 43 / 58 / 64 / 64, Hibernia 0 / 7 / 29 / 46 / 63 / 64 | 1.2.1: 0-1 of 64 at every size to 128; real stats: 0-5 at 80, 13-27 at 88-96 (Albion, Hibernia) | 80 | **64 → 80 holds**, all three realms: the target (88-112) is past the limit, and at 80 the 1.2 rule still loses |
-| Summoner's Hall: Grand Summoner Govannon | a cruder attrition model on three 80-bot play tests | demon phases won of 64 at 80 / 96 / 104 / 112: 0 / 30 / 60 / 64 (harsher case 0 / 10 / 37 / 57) | no 1.2.1 tactic for him | (same raid) | rides on Roesia's raise; not a reason of its own. Real stats agree with its premise: his demon (STR 800) hits plate for 3,059 (the cap) every 3.6 s, one raider a swing whatever the raid's size |
+| Summoner's Hall: Summoner Roesia (#410) | `UT_RaidSim121SummonersGreenKnight`, 64 seeds; real stats `UT_RaidRealStats122` | 1.2.1 (assumed melee): wins of 64 at 64 / 80 / 88 / 96 / 104: Midgard 0 / 14 / 61 / 64 / 64, Albion 0 / 8 / 34 / 56 / 61, Hibernia 0 / 16 / 54 / 61 / 64. **Real stats (1.2.2)**, 64 / 80 / 88 / 96 / 104 / 112: Midgard 0 / 0 / 0 / 0 / 8 / 42, Albion 0 / 15 / 43 / 58 / 64 / 64, Hibernia 0 / 7 / 29 / 46 / 63 / 64 | 1.2.1: 0-1 of 64 at every size to 128; real stats: 0-5 at 80, 13-27 at 88-96 (Albion, Hibernia) | 80 | ~~64 → 80~~ **withdrawn on audit 2026-11-23: stays 64**. The tactic loses at 80 (0-15 of 64), more curers win less, a fitted heal flips it, and the control wins about 26-38 of 64 at the 100 start |
+| Summoner's Hall: Grand Summoner Govannon | a cruder attrition model on three 80-bot play tests | demon phases won of 64 at 80 / 96 / 104 / 112: 0 / 30 / 60 / 64 (harsher case 0 / 10 / 37 / 57) | no 1.2.1 tactic for him | (same raid) | was riding on Roesia's raise (withdrawn); not a reason of its own. It was fitted to three 80-bot play tests run with `epic_govannon_full_heal` on (now off), and its no-ring control is assumed. Real stats agree with its premise: his demon (STR 800) hits plate for 3,059 (the cap) every 3.6 s, one raider a swing whatever the raid's size |
 | Green Knight (#412) | real stats `UT_RaidRealStats122`; **1.2.2 positional model `UT_RaidSim122GreenKnight`** (Python mirror, 32 seeds) | 1.2.1 model: 0 of 64 at every size 40-104. **Positional model, tag and burn** (wins of 32, 80 a second on a tree; buffed / unbuffed): 40: **17** / 0; 48: 30 / 0; 56: 32 / 0; 64: 32 / 0; 72: 32 / 12; 80: 32 / 23; 104: 32 / 32. At 50 a second on a tree it needs 104; at 120, 14 / 0 at 40 and 29 / 0 at 56 | the 1.2 catalog and 1.2.1 round 2: **0 of 32 at every size 40-80** in every case; round 2 wins only from 104 buffed (4-19 of 32) and at 120 | 80 | **raise withdrawn: 40** (owner, 2026-11-22, "option 1": his period size, and the tactic fixed). The model's buffed raid wins about half its attempts at 40 and nearly all from 48; an unbuffed raid needs 72-80 |
 | Marfoirwort (#412) | the same file; real stats `UT_RaidRealStats122` | at his real swing (2.71 s, no miss; the 1.2.1 model tried 3.0-4.5 s at 85%): 64 of 64 at 40-80 at 200 and 400 a raider-minute (at 100: 0-36 at 40, 64 from 48) | 0 of 64 at 40-56, 0-10 at 64-80 | 80 | **keep 40**: it wins at 40 |
-| Galladoria: Spindler Broodmother (#408) | `UT_SpindlerBroodSim` (her newborns, not a whole fight) | 13 parties (100): 3.41 newborns alive at her death; **14 (112): 1.93**, all 8 add parties; the one PC kill (`ccba364`, 128) had 2.49 | from 16 parties (128) | 200 | **100 → 112** |
-| Tuscaran Glacier: Queen Kula (#409) | `UT_TuscaranTrollheimSim` (Kula's phase, a damage race) | Kula's phase: 23.3 min at 100, 21.6 at 108, **20.0 at 120**; the PC kill (`ccba364`, about 124) took 20.1 | 21.4-27.0 min at 120 | 200 | **100 → 120**. King Tuscar's own fight has no model; two losses to him on `ccba364` were at about 124 |
+| Galladoria: Spindler Broodmother (#408) | `UT_SpindlerBroodSim` (her newborns, not a whole fight) | 13 parties (100): 3.41 newborns alive at her death; 14 (112): 1.93, all 8 add parties; the model's value for the `ccba364` kill (128) is 2.49 (no log measured it). Not in the original table: `1dc66b6` killed her at 13 parties with the 45% share, where the model gives 5.6 alive | from 16 parties (128) | 200 | ~~100 → 112~~ **withdrawn on audit 2026-11-23: stays 100**. A proxy with no win or loss; contradicted by `1dc66b6`; the deciding gap is under one newborn; the 125% start already met its target |
+| Tuscaran Glacier: Queen Kula (#409) | `UT_TuscaranTrollheimSim` (Kula's phase, a damage race) | Kula's phase: 23.3 min at 100, 21.6 at 108, 20.0 at 120; the model's estimate of the `ccba364` raid (about 124) at the least pet leak is 20.1 (no logged kill time exists) | 21.4-27.0 min at 120 | 200 | ~~100 → 120~~ **withdrawn on audit 2026-11-23: stays 100**. No loss condition; the target is a model estimate; the losses were at King Tuscar (about 124, above 120), who has no model |
 | Caer Sidi: the Crypt Lord (#407) | `UT_CryptLordCourtSim` (his patrol and the pull) | 0% joins on a guarded pull at every size 100-200 | 68 / 21 / 32-37% joins at every size | 200 | **keep 100**: size is not the lever |
-| Trollheim: Nosdoden (#411) | `UT_TuscaranTrollheimSim` (the stall clock) | 0 of 200 time-outs at 64-128 | 36 of 200 at 64, 11 at 128 | 128 | **keep 64**: the fix needs no size (a raise would also lift his spirits' cap) |
-| Golestandt, Gjalpinulva, Cuuldurach (#415) | `UT_DragonThrowReturnWave415`, 300 seeds | won at 70: 84 / 93 / 89% | 24 / 57 / 30% at 70; 99-100% from 80 | 140 | **keep 70**: they win at 70, and from 80 the old rules win too |
-| Darkness Falls: Legion (#413) | `UT_LegionWounded413`, 300 seeds | 100% killed inside 20 min from 48 up, also at the real raid damage (6.2 a raider-second against his armour, the b1b6846 ledger scaled; the sim assumed 9) | 84% at 64, 98% at 72; at 6.2 a second 0% at 48-80 | 128 | **keep 64** |
+| Trollheim: Nosdoden (#411) | `UT_TuscaranTrollheimSim` (the stall clock) | 0 of 200 time-outs at 64-128 (true by construction: the regroup is drawn from 45-59 minutes against the 60-minute clock, and attempt 2 is modelled as a win; a regroup 10% longer gives 68 of 200 with the fix) | 36 of 200 at 64, 11 at 128 | 128 | **keep 64**: no evidence about size either way (a raise would also lift his spirits' cap) |
+| Golestandt, Gjalpinulva, Cuuldurach (#415) | `UT_DragonThrowReturnWave415`, 300 seeds | won at 70: 84 / 93 / 89% | 24 / 57 / 30% at 70; 99-100% from 80 (in the model; `9a173f4` lost Golestandt with 91 engaged on the old code) | 140 | **keep 70**: nothing argues for a change |
+| Darkness Falls: Legion (#413) | `UT_LegionWounded413`, 300 seeds | 100% killed inside 20 min from 48 up (a model where Legion deals no damage and the raid cannot wipe), also at the real raid damage (6.2 a raider-second against his armour, the b1b6846 ledger scaled; the sim assumed 9) | 84% at 64, 98% at 72; at 6.2 a second 0% at 48-80 | 128 | **keep 64**: nothing shows a bigger raid is needed |
 
 ### Real stats (1.2.2)
 
@@ -145,7 +179,7 @@ sim's 125, from b1b6846's first minute, means about a third resisted: the log st
 attacker's swing (280 a 3.5 s swing, the sim assumed 64); Govannon's Shroud 111-185 a 2 s tick; the Green Knight's Might
 of the Forest 250 (no variance, the sim's 200 after resists stands). Health, armour and resists were already read from
 the scripts and are unchanged. The raid's damage stays the PC ledgers' (b1b6846: 400 a raider-minute at Marfoirwort;
-e3b8238: 350-700 on a newborn); scaled to each boss's armour it gives the dragon sim's 4 a raider-second (kept) and 6.2
+e3b8238: 350-700 on a newborn; `MarfoirwortFight`'s doc gives the 400 base as the Earthmenders' ledger lines, not Marfoirwort's: which fight it came from is unresolved); scaled to each boss's armour it gives the dragon sim's 4 a raider-second (kept) and 6.2
 on Legion (the sim had 9).
 
 Roesia with her real melee: the 1.2.1 heal (400) made a raid without cures fall in 0.7 minutes against b1b6846's 1.5, so
@@ -163,13 +197,10 @@ possible within the raid rules; his exception (signed off 2026-11-15) stands.
 
 | Raid | Period size | Starts at (125%) | Recruits up to | Can range (70-200%) | Recruits up to at 200% |
 |---|---|---|---|---|---|
-| Tuscaran Glacier (raised in 1.2.2) | 120 | 150 | 192 | 84-240 | 300 |
-| Galladoria (raised in 1.2.2) | 112 | 140 | 184 | 78-224 | 288 |
-| Caer Sidi | 100 | 125 | 160 | 70-200 | 256 |
+| Caer Sidi, Galladoria, Tuscaran Glacier | 100 | 125 | 160 | 70-200 | 256 |
 | Crystal Cave | 120 | 150 | 192 | 84-240 | 300 |
-| Summoner's Hall (raised in 1.2.2) | 80 | 100 | 136 | 56-160 | 208 |
 | Golestandt, Gjalpinulva, Cuuldurach | 70 | 88 | 112 | 49-140 | 176 |
-| Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair, Marfach Caverns | 64 | 80 | 104 | 45-128 | 160 |
+| Summoner's Hall, Darkness Falls, Krondon, Avalon City, Trollheim, Iarnvidiur's Lair, Marfach Caverns | 64 | 80 | 104 | 45-128 | 160 |
 | Hall of the Corrupt | 48 | 60 | 80 | 34-96 | 128 |
 | Dodens Gruva, Tur Suil | 40 | 50 | 72 | 28-80 | 112 |
 
@@ -184,9 +215,9 @@ Most of the evidence is from Freddyshouse, the European DAoC community forum, in
 | Cuuldurach (Hibernian dragon) | 200 | 70 | May 2003: "120 brave Hibernians", but "about 30 people attack at any one time" and "5fg attacking the dragon"; the rest held the four entrances against adds. | [How to kill Cuuldurach, May 2003](https://forums.freddyshouse.com/threads/how-to-kill-cuuldurach.124821/) |
 | Gjalpinulva (Midgard dragon) | 200 | 70 | Unverified. A Nov 2003 raid killed an unnamed female dragon ("She went down quick and in first try"), likely Gjalpinulva, with 3 groups and an exit-guard group (about 32). | [Lubricador's 3 FG Dragon Raid, Nov 2003](https://forums.freddyshouse.com/threads/lubricador%C2%B4s-3-fg-dragon-raid.159276/page-2) |
 | Caer Sidi (Apocalypse) | 200 | 100 | Feb 2003: "a minimum of about 100 people is required", "The lowest number I have killed Apocalypse with on a live server is 105". Jul 2003: "With 80-90 I believe Apocalypse is possible with good groups, but tough. 90-100, Apocalypse should be straight-forward", "Almost everytime 90+ ppl show up", one raid of 130. | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [Caer Sidi Raid, Jul 2003](https://forums.freddyshouse.com/threads/caer-sidi-raid-sunday-20th-july.135873/) |
-| Galladoria (Olcasgean) | 200 | 112 (100 until 1.2.2) | May 2003: killed by 140 after a 340-strong attempt failed; "I think it can be done with 100 ppl quite nicely". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/) |
-| Tuscaran Glacier (King Tuscar, Queen Kula) | 200 | 120 (100 until 1.2.2) | May 2003: "we zerged King Tuscar and Queen Kula about a week ago with ~100 ppl", "with 100+ people". Jul 2003 sign-up: "4FGs would be nice, 6 awesome". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/), [Tuscaren Glacier Raid, Jul 2003](https://forums.freddyshouse.com/threads/tuscaren-glacier-raid-tuesday-15-07-03.135818/) |
-| Summoner's Hall (Grand Summoner Govannon) | 200 | 80 (64 until 1.2.2) | Feb 2003: "approximately four to five full groups" (32-40). 64 because each realm's raid there also fights the other realms' raids on the way in; 80 (twice the five groups) since 1.2.2, for Summoner Roesia's Pain. | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
+| Galladoria (Olcasgean) | 200 | 100 (a 1.2.2 raise to 112 withdrawn) | May 2003: killed by 140 after a 340-strong attempt failed; "I think it can be done with 100 ppl quite nicely". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/) |
+| Tuscaran Glacier (King Tuscar, Queen Kula) | 200 | 100 (a 1.2.2 raise to 120 withdrawn) | May 2003: "we zerged King Tuscar and Queen Kula about a week ago with ~100 ppl", "with 100+ people". Jul 2003 sign-up: "4FGs would be nice, 6 awesome". | [Olcasgean has been defeated!, May 2003](https://forums.freddyshouse.com/threads/olcasgean-has-been-defeated.125921/), [Tuscaren Glacier Raid, Jul 2003](https://forums.freddyshouse.com/threads/tuscaren-glacier-raid-tuesday-15-07-03.135818/) |
+| Summoner's Hall (Grand Summoner Govannon) | 200 | 64 (a 1.2.2 raise to 80 withdrawn) | Feb 2003: "approximately four to five full groups" (32-40). 64 because each realm's raid there also fights the other realms' raids on the way in. | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
 | Darkness Falls (Legion) | 200 | 64 | Feb 2003: "as few as about three groups", "a group of about fifty players" has it easier. Feb 2004: "4 fg took him out", "3-5fg", "first time I think we were 100 or something". 64 for the same contest as Summoner's Hall. | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [Time to kill Legion?, Feb 2004](https://forums.freddyshouse.com/threads/time-to-kill-legion.4424/) |
 | Krondon (Orylle) | 160 | 64 | Feb 2003: Orylle and Orshom Brong need "at least 50 or more players". | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/) |
 | Crystal Cave (Xanxicar) | 120 | 120 | Feb 2003: "a raid of well over a hundred players". Jul 2005: "i seem him wipe 5 fg". | [Albion epic raid guide, Feb 2003](https://forums.freddyshouse.com/threads/to-anyone-planning-epic-raids-in-albion-spoilers.115688/), [Avalon city dragon raid, Jul 2005](https://forums.freddyshouse.com/threads/avalon-city-dragon-raid-crystal-caves.65679/) |
