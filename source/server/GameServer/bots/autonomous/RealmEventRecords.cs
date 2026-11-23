@@ -55,6 +55,12 @@ public static class RealmEventRecords
         try{return RealmEventRecordStore.Results(PathName,eventId,limit,automaticOnly);}
         catch(Exception){return new();}
     }
+    /// <summary>As <see cref="FinishedResults"/>, with the period size each run's raid size is a percentage of (1.2.2 on).</summary>
+    public static List<(string Outcome,int SpecialForces,double? SizePercent,int? SizeOf)> FinishedSizedResults(string eventId,int limit,bool automaticOnly=false)
+    {
+        try{return RealmEventRecordStore.SizedResults(PathName,eventId,limit,automaticOnly);}
+        catch(Exception){return new();}
+    }
     [GameServerStartedEvent]
     public static void Start(DOLEvent e,object sender,EventArgs args)
     {

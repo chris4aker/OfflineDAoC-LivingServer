@@ -565,9 +565,10 @@ namespace DOL.GS
 
         /// <summary>
         /// Every raid encounter. The last number is the raid's full size (an automatic raid's Required before win-rate
-        /// sizing moves it 70-150%): the comfortable size of a 2002-2004 raid there, from period forum threads
+        /// sizing moves it 70-200%): the comfortable size of a 2002-2004 raid there, from period forum threads
         /// (docs/RAID-SIZES.md, owner 2026-11-04). It was 200 for every dragon, epic and neutral raid. Forced raids
-        /// from the launcher still need 200.
+        /// from the launcher still need 200. Since 1.2.2 a size the simulations show too small for working tactics is
+        /// raised within the no-zerg limit (owner 2026-11-22; RaidPeriodSizes.Raises lists each raise and the size before it).
         /// </summary>
         public static readonly Definition[] Definitions =
         [
@@ -575,11 +576,11 @@ namespace DOL.GS
             new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 70),
             new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 70),
             new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 100),
-            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 100),
-            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 100),
-            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 64),
-            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 64),
-            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 64),
+            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 120),
+            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 112),
+            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 80),
+            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 80),
+            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 80),
             new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 64),
             new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 64),
             new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 64),
@@ -2650,7 +2651,7 @@ namespace DOL.GS
             string details = RealmEventRecordStore.WithWipes(raid.Forced ? RealmEventRecordStore.ForcedRaidPrefix + reason : reason, raid.Wipes);
             if (underStrength) details = RealmEventRecordStore.WithUnderStrength(details, raid.MostRecruited, raid.Required);
             RealmEventRecords.Finish(raid.Definition.Id, outcome, LoreChannels.LoreChronicle.WithRaidLeader(RealmEventRecordStore.WithRaidSize(RealmEventRecordStore.WithSpecialForces(
-                details, specialForcesJoined), sizePercent), raidLeader), raid.Support.Length);
+                details, specialForcesJoined), sizePercent, raid.Definition.SuggestedBots), raidLeader), raid.Support.Length);
             if (outcome == "Boss defeated") LastSuccessful[raid.Definition.Realm] = raid.Definition.Id;
             AutonomousEpicSpecialForces.RaidEnded(raid.Definition.Id,
                 RealmEventRecordStore.RecordOutcome(AutonomousEpicSpecialForces.RecordOutcome(outcome, raid.Wipes), underStrength),

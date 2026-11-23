@@ -8,6 +8,45 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.2 (in development)
+
+The raid-size release (owner, 2026-11-22: 1.2.2 is the raid sizes only; Uthgard's drop tables and the PC-check fixes
+come in 1.2.3). **Nothing here is seen in game yet: tests only.** Every size below rests on a simulation, not on a PC
+log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
+
+**Bosses**
+- **A rule for raising a raid's size** (owner, 2026-11-22: "If the mechanics and tactics are working but the period
+  raider size from logs isn't cutting it, and adding more bots without it becoming a Zerg wins, we should bump the
+  suggested raider and period size"). A period size goes up only when the encounter's sim shows its tactic working but
+  still losing at the period size, to the smallest whole-party size winning about two in three. It is not a zerg: at
+  most twice the period guide's own figure, never past 300, and the rules from before the tactic still lose at that
+  size. No boss is touched, and no flood guard moves. [docs/RAID-SIZES.md](docs/RAID-SIZES.md), "Raising a period
+  size"; `RaidPeriodSizes`. **Tests only.**
+- **Summoner's Hall: 64 to 80** (all three realms; Darkness Falls, Krondon and the others keep 64). Summoner Roesia's
+  sim, with 1.2.1's fresh-Pain cure, wins 0 of 64 attempts at 64, 8-16 at 80, 54-61 at 88 (Midgard, Hibernia) and
+  56 at 96 (Albion); the 1.2 cure rule wins 0-1 of 64 at every size up to 128. Twice the guide's "four to five full
+  groups" is 80, so 80 it is: the raid now starts at 100, where she loses 0-8 of 64. **Tests only** (#410).
+- **The Green Knight: 40 to 80.** With 1.2.1's stack and peel his sim wins 58 of 64 at 80 (a tree hitting for 8 a
+  second, 80 a second from a raider on a tree), 4 at 72 and none at 40-64; the 1.2 rules win 0 of 576 at every size to
+  96. 80 is twice the guide's 4-5 groups. His trees stay capped at 70 a wave (the Albion dragon raid's size). If his
+  trees hit for 15 a second, 88-96 would be needed: the next log's `EPIC_GK_TREES` line tells. **Tests only** (#412).
+- **Galladoria: 100 to 112.** From 14 parties 1.2.1's add-party share sends all 8 parties at Spindler Broodmother's
+  newborns, and 1.93 are left at her death, fewer than the 2.49 of the one PC kill (`ccba364`, 128 bots); at 13 parties
+  3.41. The 1.2 share gets there only from 16 parties. Her mesmerize and burn are not modelled. **Tests only** (#408).
+- **Tuscaran Glacier: 100 to 120.** With no pet on King Tuscar (1.2.1), Queen Kula's phase takes 20.0 minutes at 120,
+  as long as the one PC kill's (`ccba364`, 20.1); 23.3 at 100. The 1.2 rule takes 21.4-27.0 minutes at 120. The King's
+  own fight has no model. **Tests only** (#409).
+- **Kept:** Caer Sidi 100 (the Crypt Lord's guarded pull holds at every size; size is not the lever), Trollheim 64 (no
+  time-out at any size with the 1.2.1 stall clock), the three dragons 70 (84-93% won at 70; from 80 the old rules win
+  too), Darkness Falls 64 (Legion killed inside 20 minutes at every size from 48) and Marfoirwort 40 (won at 40; a
+  larger raid wins by numbers alone). **Tests only** (#407, #411, #413, #415, #412).
+- **Records carry over in bots.** A raid's Herald record now says what its size is a percentage of ("Raid size: 125% of
+  80."), and a 1.2.1 record at a raised raid is read against the old size: a Summoner's Hall raid grown to 166% of 64
+  (106 bots) carries on at 132.8% of 80, the same 106. **Tests only.**
+- **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
+  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
+- **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

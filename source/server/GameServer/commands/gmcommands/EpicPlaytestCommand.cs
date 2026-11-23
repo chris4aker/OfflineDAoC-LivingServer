@@ -16,7 +16,7 @@ namespace DOL.GS.Commands;
     ePrivLevel.GM,
     "Play test: open a realm raid of a chosen size on a chosen encounter",
     "/epictest list - every raid, its realm, period size and hub",
-    "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
+    "/epictest start <event> [size|era|start|source] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%, source = the period size before a 1.2.2 raise); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub",
     "/epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)",
     "/epictest front <event> - move the raid's living members inside its dungeon to the route's front (its next target, or the final encounter's trigger): skips the climb, for testing a final room",
     "/epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)",
@@ -88,7 +88,7 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
                 Sweep(client, args);
                 return;
             default:
-                Say(client, "/epictest list | start <event> [size|era|start] [focus=Name,Name] [nohub] [familiarity=0..1] [latecall=N|all] | status | stop <event> | familiarity <0..1|off> | latecall <N|all|off>");
+                Say(client, "/epictest list | start <event> [size|era|start|source] [focus=Name,Name] [nohub] [familiarity=0..1] [latecall=N|all] | status | stop <event> | familiarity <0..1|off> | latecall <N|all|off>");
                 return;
         }
     }
@@ -121,13 +121,15 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         return $"Raid familiarity forced to {f:0.00} (test only; /epictest familiarity off to undo).";
     }
 
-    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size) or "start" (125% of it), made
-    /// whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72.</summary>
-    public static int SizeFor(string word, int periodSize)
+    /// <summary>The roster size a start asks for (pure): a number, "era" (the period size), "start" (125% of it) or "source"
+    /// (<paramref name="sourceSize"/>: the period size before a 1.2.2 raise, RaidPeriodSizes; the period size when none),
+    /// made whole parties (eights, and a final four): the forced roster is built that way, so a dragon's 70 is 72.</summary>
+    public static int SizeFor(string word, int periodSize, int sourceSize = 0)
     {
         int size;
         if (string.IsNullOrEmpty(word) || word == "era") size = periodSize;
         else if (word == "start") size = (periodSize * 125 + 99) / 100;
+        else if (word == "source") size = sourceSize > 0 ? sourceSize : periodSize;
         else if (!int.TryParse(word, out size) || size < 8) return 0;
         size = Math.Min(size, RealmRaidRecruitmentPolicy.MaximumBots);
         return size % 8 is 0 or 4 ? size : (size + 7) / 8 * 8;
@@ -145,8 +147,8 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
             Say(client, SetFamiliarity(fam["familiarity=".Length..]));
         if (args.Skip(3).FirstOrDefault(a => a.StartsWith("latecall=", StringComparison.OrdinalIgnoreCase)) is string late)
             Say(client, SetLateCall(late["latecall=".Length..]));
-        int size = SizeFor(sizeWord?.ToLowerInvariant(), definition.SuggestedBots);
-        if (size <= 0) { Say(client, $"Size \"{sizeWord}\" is not a number of 8 or more, era or start."); return; }
+        int size = SizeFor(sizeWord?.ToLowerInvariant(), definition.SuggestedBots, RaidPeriodSizes.EraBots(definition.Id));
+        if (size <= 0) { Say(client, $"Size \"{sizeWord}\" is not a number of 8 or more, era, start or source."); return; }
         string[] focus = args.Skip(3).Where(a => a.StartsWith("focus=", StringComparison.OrdinalIgnoreCase))
             .SelectMany(a => a[6..].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToArray();
         bool moveToHub = !args.Contains("nohub");
@@ -263,7 +265,7 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
     }
 
     private static void DisplaySyntaxOf(GameClient client) =>
-        Say(client, "/epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging]");
+        Say(client, "/epictest start <event> [size|era|start|source] [focus=Name,Name] [nohub] [atstaging]");
 
     private static void Say(GameClient client, string message)
     {

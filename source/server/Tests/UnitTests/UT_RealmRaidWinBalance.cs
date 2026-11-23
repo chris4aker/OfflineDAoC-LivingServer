@@ -44,14 +44,19 @@ namespace DOL.UnitTests
             });
         }
 
-        // The period sizes (docs/RAID-SIZES.md, 2026-11-04): the comfortable 2002-2004 raid, not the minimum.
+        // The period sizes (docs/RAID-SIZES.md, 2026-11-04): the comfortable 2002-2004 raid, not the minimum. Raised in 1.2.2
+        // where a sim showed the tactics working and the size short, within the no-zerg limit (RaidPeriodSizes).
         [TestCase("dragon-albion", 70)]
         [TestCase("dragon-midgard", 70)]
         [TestCase("dragon-hibernia", 70)]
         [TestCase("epic-albion", 100)]
-        [TestCase("epic-midgard", 100)]
-        [TestCase("epic-hibernia", 100)]
-        [TestCase("summoners-albion", 64)]
+        [TestCase("epic-midgard", 120)]
+        [TestCase("epic-hibernia", 112)]
+        [TestCase("summoners-albion", 80)]
+        [TestCase("summoners-midgard", 80)]
+        [TestCase("summoners-hibernia", 80)]
+        [TestCase("darkness-albion", 64)]
+        [TestCase("darkness-midgard", 64)]
         [TestCase("darkness-hibernia", 64)]
         [TestCase("dungeon-albion-krondon", 64)]
         [TestCase("dungeon-albion-avalon", 64)]
