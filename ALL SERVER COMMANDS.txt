@@ -1283,7 +1283,7 @@ GM ONLY COMMANDS
 /epictest
   Play test: open a realm raid of a chosen size on a chosen encounter
   /epictest list - every raid, its realm, period size and hub
-  /epictest start <event> [size|era|start|source] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%, source = the period size before a 1.2.2 raise); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub
+  /epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub
   /epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)
   /epictest front <event> - move the raid's living members inside its dungeon to the route's front (its next target, or the final encounter's trigger): skips the climb, for testing a final room
   /epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)

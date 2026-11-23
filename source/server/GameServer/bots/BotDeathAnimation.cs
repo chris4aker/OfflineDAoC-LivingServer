@@ -46,6 +46,22 @@ namespace DOL.GS
         /// the fall was shown and the bot is still dead, and only for the original client.</summary>
         public static bool Holds(bool fallShown, bool botDead, bool originalClient) => fallShown && botDead && originalClient;
 
+        /// <summary>Pure (1.2.2 regression guard): the removal of a hidden bot is held back only while it stays in this
+        /// client's world. A dead bot that really leaves (<paramref name="leavesWorld"/>: logout or removal from the world, or
+        /// a move to another region) gets its removal through, so the original client is not left with a corpse of an object
+        /// that is gone; 1.2 sent that removal. A move within the region (a release to a bind point there) is still held: the
+        /// client keeps its fading corpse, and the raise creates the bot standing.</summary>
+        public static bool HoldsRemoval(bool fallShown, bool botDead, bool originalClient, bool leavesWorld) =>
+            Holds(fallShown, botDead, originalClient) && !leavesWorld;
+
+        /// <summary>The bot is being removed for good from where it was: no longer active (GameObject.RemoveFromWorld marks it
+        /// inactive before it sends the removals) and not in a move within its region (GameBot.MoveTo).</summary>
+        public static bool LeavesWorld(GameBot bot) =>
+            bot.ObjectState != GameObject.eObjectState.Active && !bot.MovingWithinRegion;
+
+        /// <summary>The packet name <see cref="Blocks"/> gets for a removal (PacketLib168.SendObjectRemove).</summary>
+        public const string RemoveObject = "RemoveObject";
+
         /// <summary>Pure: the bot's health went from none to some while hidden: the clients forget it, to create it again.</summary>
         public static bool EndsAtRaise(bool fallShown, bool wasDead, bool aliveNow) => fallShown && wasDead && aliveNow;
 
@@ -66,7 +82,9 @@ namespace DOL.GS
         {
             if (obj is not GameBot bot)
                 return false;
-            bool held = HidesFrom(bot, client);
+            bool held = packet == RemoveObject
+                ? client != null && HoldsRemoval(bot.DeathFallShown, bot.Health <= 0, client.IsOriginalGameClient, LeavesWorld(bot))
+                : HidesFrom(bot, client);
             if (_watch != null && (held || packet != WorldRefresh))
                 Trace(client, bot, packet, !held);
             return held;

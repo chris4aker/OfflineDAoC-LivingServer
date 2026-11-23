@@ -2949,7 +2949,9 @@ public static partial class AutonomousBotChatCoordinator
             planned++;
             int replyIndex = planned;
             int before = due;
-            due = voices ? AutonomousChatArbiter.DelayMs(message, response, Wpm(responder), due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
+            // 1.2.2 (F11): the first answer to a question that is a short known fact types faster.
+            int wpm = primary && question && AutonomousChatArbiter.IsQuickFact(choice.Route, response) ? AutonomousChatArbiter.QuickWpm(Wpm(responder)) : Wpm(responder);
+            due = voices ? AutonomousChatArbiter.DelayMs(message, response, wpm, due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
             // 1.2 chat audit (DESIGN-018): a line that names the bot is answered within 12 s, however slowly it types; so is the
             // first answer to a player's question in /faction (PC check 0730, build 5154cae: 33 s, typing alone).
             due = PlayerAnswerDueMs(due, before, directed, faction && primary && question);

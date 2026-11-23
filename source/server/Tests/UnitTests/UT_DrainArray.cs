@@ -170,6 +170,39 @@ namespace DOL.GS.Tests
             Assert.That(drained, Is.Empty);
         }
 
+        // 1.2.2 regression guard (audit item 9): an add from inside the drain, on the draining thread, gives up at once as in
+        // 1.2 (logged and skipped) instead of spinning out the whole wait on the send step.
+        [Test]
+        public void AnAddFromInsideTheDrain_GivesUpAtOnce_WithoutTheWait()
+        {
+            DrainArray<int> queue = new();
+            queue.Add(1);
+            Exception thrown = null;
+            bool? onThisThread = null;
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            queue.DrainTo(_ =>
+            {
+                onThisThread = queue.IsDrainingOnThisThread;
+                try
+                {
+                    DOL.GS.PacketHandler.PacketProcessor.AddWhenNotDraining(queue, 42, maxWaitMs: 5_000);
+                }
+                catch (Exception e)
+                {
+                    thrown = e;
+                }
+            });
+            clock.Stop();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(onThisThread, Is.True);
+                Assert.That(queue.IsDrainingOnThisThread, Is.False, "the drain has ended");
+                Assert.That(thrown, Is.InstanceOf<InvalidOperationException>());
+                Assert.That(clock.ElapsedMilliseconds, Is.LessThan(2_000), "no 5 s wait from inside the drain");
+            });
+        }
+
         /*[Test]
         public void DrainTo_DuringAdd_ShouldThrowInvalidOperationException()
         {

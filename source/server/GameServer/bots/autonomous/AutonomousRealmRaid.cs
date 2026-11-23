@@ -567,8 +567,8 @@ namespace DOL.GS
         /// Every raid encounter. The last number is the raid's full size (an automatic raid's Required before win-rate
         /// sizing moves it 70-200%): the comfortable size of a 2002-2004 raid there, from period forum threads
         /// (docs/RAID-SIZES.md, owner 2026-11-04). It was 200 for every dragon, epic and neutral raid. Forced raids
-        /// from the launcher still need 200. Since 1.2.2 a size the simulations show too small for working tactics is
-        /// raised within the no-zerg limit (owner 2026-11-22; RaidPeriodSizes.Raises lists each raise and the size before it).
+        /// from the launcher still need 200. A size may be raised only by the rule in docs/RAID-SIZES.md
+        /// (RaidPeriodSizes; owner 2026-11-22, tightened 2026-11-23); 1.2.2's raises were withdrawn, so none is raised.
         /// </summary>
         public static readonly Definition[] Definitions =
         [
@@ -576,11 +576,11 @@ namespace DOL.GS
             new("dragon-midgard", "Gjalpinulva", eRealm.Midgard, 100, "MidGjalpinulva", 70),
             new("dragon-hibernia", "Cuuldurach", eRealm.Hibernia, 200, "HibCuuldurach", 70),
             new("epic-albion", "Caer Sidi", eRealm.Albion, 60, "ApocInitializator", 100),
-            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 120),
-            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 112),
-            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 80),
-            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 80),
-            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 80),
+            new("epic-midgard", "Tuscaran Glacier", eRealm.Midgard, 160, "KingTuscar", 100),
+            new("epic-hibernia", "Galladoria", eRealm.Hibernia, 191, "Olcasgean", 100),
+            new("summoners-albion", "Summoner's Hall", eRealm.Albion, 248, "GrandSummonerGovannon", 64),
+            new("summoners-midgard", "Summoner's Hall", eRealm.Midgard, 248, "GrandSummonerGovannon", 64),
+            new("summoners-hibernia", "Summoner's Hall", eRealm.Hibernia, 248, "GrandSummonerGovannon", 64),
             new("darkness-albion", "Darkness Falls", eRealm.Albion, 249, "Legion", 64),
             new("darkness-midgard", "Darkness Falls", eRealm.Midgard, 249, "Legion", 64),
             new("darkness-hibernia", "Darkness Falls", eRealm.Hibernia, 249, "Legion", 64),
@@ -2064,12 +2064,18 @@ namespace DOL.GS
         /// </summary>
         private static void PulseDragonReturnWave(Raid raid, long now)
         {
-            if (!RealmRaidReturnWave.On || Regrouping(raid))
+            // 1.2.2 regression audit, item 5: an open-world raid's fight is not at its realm's dragon lair, so measured to that
+            // lair (DragonLairPlacement.Home) every raider seen by the #415 displacement rule would stay "on its way back" for
+            // good. v1.2 never held one there (nobody was ever within the line), so the wave is skipped for open-world raids.
+            if (!RealmRaidReturnWave.On || Regrouping(raid) || !RealmRaidReturnWave.DragonWaveApplies(raid.Definition.IsOpenWorld))
             {
                 raid.ReturnGathering = false;
                 raid.ReturningToDragon.Clear();
                 return;
             }
+            // Golestandt, Cuuldurach and Gjalpinulva were won before #415 (1.2.1) changed who is held here: thrown and
+            // resurrected raiders now walk back by themselves (ClassifyDragonRaider, RealmRaidReturnWave). These fights have
+            // changed since their wins (1.2.2 regression audit, item 4).
             Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
             int outside = 0, waiting = 0, fallen = 0, thrownFar = 0, backInFight = 0;
             foreach (GameBot b in raid.Support.OfType<GameBot>())

@@ -284,6 +284,10 @@ namespace DOL.GS
         public const int SpindlerNewbornHealth = 8_000;
         /// <summary>What one raider dealt a newborn in a minute (PC log e3b8238's EPIC_FIGHT_LEDGER: 350-700 per attacker,
         /// mesmerizes included), and how many of an add party's eight fight (its healers keep it up).</summary>
+        /// <para>1.2.2 (raid tactic audit finding 12): this rate counts the minutes an attacker stood mesmerized (the log's
+        /// samples had 23-78 of about 104 raiders mesmerized), so a raider's rate while free is higher, and the parties are
+        /// probably oversized. The ledger lines carry no mesmerized time per attacker, so the log does not give the free rate;
+        /// between 650 and 2,000 a raider-minute it would size 2-7 add parties instead of 8. Unchanged until a log carries it.</para>
         public const int SpindlerRaiderDamagePerMinute = 500, SpindlerFightersPerParty = 6;
         /// <summary>The add parties never take more than this share of the raid's parties. 1.2.1 (#408; tests only): 45% until
         /// then, which at the sweep's period size (100 raiders, 13 parties) gave 5 add parties, a kill rate of 15,000 of the

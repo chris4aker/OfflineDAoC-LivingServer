@@ -4,8 +4,8 @@ The text below the line is the draft of the GitHub release notes for 1.2.2, the 
 lists only what changed since 1.2.1; [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md) still describes the whole of Living
 Server. Publish it as Latest, not as a pre-release: the launcher's update check reads GitHub's latest release.
 
-1.2.2 is the raid sizes only (owner, 2026-11-22). Uthgard's drop tables and the next round of fixes come in **1.2.3**.
-The simulation tables behind each size are in [RAID-SIZES.md](RAID-SIZES.md); what has been seen in a played game is
+1.2.2 is the raids only (owner, 2026-11-22); its raid-size raises were withdrawn on audit (owner, 2026-11-23). Uthgard's drop tables and the next round of fixes come in **1.2.3**.
+The simulation tables, and why the raises were withdrawn, are in [RAID-SIZES.md](RAID-SIZES.md); what has been seen in a played game is
 tracked in [OPEN-WORK.md](OPEN-WORK.md) and the issues, not here.
 
 Before publishing:
@@ -27,9 +27,9 @@ Before publishing:
 > Living Server is an unofficial, free, non-commercial fan project. It is not affiliated with, endorsed by or
 > connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
-A small release for **1.2.1**: bigger bot raids at three encounters where 1.2.1's tactics work but the raid was too
-small to win: **Summoner's Hall, Galladoria and Tuscaran Glacier**. And a new plan for **the Green Knight**, who
-keeps his four to five groups. No boss was made weaker.
+A small release for **1.2.1**: a new plan for **the Green Knight** and his trees, keep and tower lords fought in
+formation, and fixes for companions and bots on the move. **Every bot raid stays at its period size**, the size the
+2003-2004 raid guides give. No boss was made weaker.
 
 Uthgard's drop tables and the next round of fixes come in **1.2.3**.
 
@@ -40,34 +40,26 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 
 ## What's new
 
-### Bigger raids where the tactic works, never a zerg
+### Raid sizes stay as they were
 
-- **When a raid gets bigger:** only where 1.2.1's tactic for the fight works and the raid still came up short at its
-  old size. It grows to the smallest size, in whole groups of 8, that wins most of the time.
-- **Never a zerg:**
-  - at most **twice** what the 2003-2004 raid guides say the fight took;
-  - never more than **300**;
-  - and at the new size the raid wins because of the tactic, not by numbers alone: the rules from before 1.2.1 still
-    lose there.
-- **No boss is touched.** The Green Knight's trees still stop at 70 a wave.
+- **Every bot raid keeps its period size**, the size the 2003-2004 raid guides give: Summoner's Hall 64, Galladoria
+  100, Tuscaran Glacier 100, the Green Knight 40, and every other raid as in 1.2.1.
 - **The raid still adjusts itself.** It starts at 125% of its size, gets smaller after wins and bigger after losses,
   as before.
+- **The bots keep fighting these raids the 1.2.1 way:**
+  - **Summoner's Hall:** the healers cure Summoner Roesia's fresh poison even while someone is hurt, the lowest-health
+    raider first.
+  - **Galladoria:** 7 of 13 parties go after Spindler Broodmother's newborns.
+  - **Tuscaran Glacier:** while Queen Kula lives, nothing but King Tuscar's own target hits him, no pets and no area
+    spells.
+  - **Caer Sidi:** the raid waits for the Crypt Lord's patrol to be clear before it pulls his court.
+  - **Trollheim:** a retry after a wipe at Nosdoden starts the raid's timer again.
+  - **The three dragons, Darkness Falls and Marfoirwort:** as in 1.2.1.
 
-### What changed per raid
+### Keep lords
 
-| Raid | Was | Now | What it means |
-|---|---|---|---|
-| **Summoner's Hall** (all three realms) | 64 | **80** | Enough raiders to outlast Summoner Roesia's Pain with 1.2.1's cures. The guides say four to five groups, so 80 is as far as the raise goes; the raid now starts at 100. |
-| **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left when she dies. |
-| **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
-
-**Kept:**
-- **The Green Knight** stays at 40, the guides' four to five groups, and his raid fights him a new way (below).
-- **Caer Sidi** stays at 100: the Crypt Lord problem is about timing the pull, not raid size.
-- **Trollheim** stays at 64: with the 1.2.1 fix the raid's timer no longer runs out, at any size.
-- **The three dragons** stay at 70: the raid already beats them at 70.
-- **Darkness Falls** stays at 64: Legion falls within 20 minutes at that size.
-- **Marfoirwort** stays at 40: the raid beats him at 40, and a bigger raid would win by numbers alone.
+- **Bots fight keep and tower lords in formation:** the tanks and melee in front, casters and archers behind them on
+  the side they came in from, spread out so one blast can't catch them all, and the healers at the back.
 
 ### The Green Knight: a new plan against his trees
 
@@ -85,15 +77,8 @@ His trees still stop at 70 a wave.
 
 ### Good to know
 
-- **Your raid history carries over in bots.** If your world had already grown Summoner's Hall to 106 bots after
-  losses, it carries on from 106, not from the same percentage of the new size.
-- **A bigger size needs the bots:**
-  - A raid's full size is half the realm's free level 50s, up to its new size.
-  - The new sizes take effect with at least 224 free level 50s for Galladoria, 240 for Tuscaran Glacier, and 160 for
-    Summoner's Hall.
-  - With fewer, nothing changes.
-- **GM tools:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
-  the old one.
+- **Your raid history carries over in bots.** Each raid's Herald record now says what its size is a share of, so the
+  next raid carries on with the same number of bots.
 - **In the log:** the server log's `REALM_RAID_SIZED` line shows each raid's size and why, `REALM_RAID_ENDED` shows how
   it went, and for the Green Knight the `EPIC_GK_TREES` lines follow his trees. If a raid looks wrong, open a
   [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with those lines and the `FORK_BUILD`
@@ -114,12 +99,31 @@ His trees still stop at 70 a wave.
   no longer stops halfway when you walk on: it finishes the climb and catches up. Darkness Falls' stairs were fixed in
   1.2.1; this does the same everywhere else. A bot put back on its feet at the top or bottom shows in the server log
   as `NAV_LINK_LANDING`.
+- **Lifts work as they did in 1.2.** Bots and companions ride the lifts of Tur Suil, Iarnvidiur's Lair and the rest
+  exactly as before.
+
+### Raid tactics
+
+- **Marfoirwort:** only his target fights him toe to toe. Everyone else stays out of his life-drain, and melee with a
+  bow, crossbow or throwing weapon shoot him from there. Animists plant their shrooms out of its reach.
+- **Paladins, Friars and Wardens** fight in melee in the new raid plans instead of walking back and forth to the healers.
+- **Legion:** a badly hurt raider who steps away comes back once healed, not straight back into his blast.
+- **Summoner Roesia:** healers cure their own group first while it is in trouble.
+- **King Tuscar:** his tank holds him with taunts while Queen Kula lives.
+- **The Crypt Lord:** the raid waits for his patrol to pass before pulling his court, however long that takes.
+- **Spindler Broodmother:** archers with shorter bows stand close enough to hit her.
 
 ### Also in 1.2.2
 
+- **Straighter answers in /faction:** ask what level a place is, who holds Darkness Falls or how long the epic takes, and
+  the realm tells you; ask where to level and you hear a real zone for your level; ask where a class trains and you hear
+  the right trainer, or that it's another realm's class; a question nobody can answer is left alone instead of drawing a
+  "dunno".
 - **Bots know the realm better:** ask in /faction where to buy dyes, how to get into Darkness Falls or how to fix your
   NPC faction, and a bot names who and where.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
+- **A fallen bot that leaves is gone from your screen.** When a dead bot logs out or leaves for another region, its
+  body no longer stays lying where it fell.
 - **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
   first), and a gamebot you jump sets off again from where it lands.
 

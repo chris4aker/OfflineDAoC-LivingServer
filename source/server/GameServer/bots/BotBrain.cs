@@ -3376,7 +3376,7 @@ namespace DOL.AI.Brain
                     Body.attackComponent?.AttackState == true,
                     Body.ActiveWeaponSlot,
                     currentBowTarget.IsAlive && currentBowTarget.ObjectState == GameObject.eObjectState.Active &&
-                    (currentBowTarget is not DOL.GS.Keeps.GuardLord || Body.IsWithinRadius(currentBowTarget, 280)),
+                    (currentBowTarget is not DOL.GS.Keeps.GuardLord bowLord || Body.IsWithinRadius(bowLord, LordHoldRadius(bowLord))),
                     Body.attackComponent != null &&
                     Body.IsWithinRadius(currentBowTarget, CapRangeForTarget(currentBowTarget, Body.attackComponent.AttackRange)),
                     directAttacker != null && Body.IsWithinRadius(directAttacker, Body.MeleeAttackRange + 200),
@@ -3432,8 +3432,10 @@ namespace DOL.AI.Brain
 
             if (Body.TargetObject != null)
             {
+                // Close on a keep or tower lord: melee and tanks to 280 (their chase does the rest), casters, archers and
+                // healers only into his reach, where they keep their formation spot behind the melee (1.2.2, RvrLordFormation).
                 if (BotBody.IsAutonomousWorldBot && Body.TargetObject is DOL.GS.Keeps.GuardLord lord &&
-                    !Body.IsWithinRadius(lord, 280))
+                    !Body.IsWithinRadius(lord, LordHoldRadius(lord)))
                 {
                     Body.StopAttack();
                     Body.PathTo(new Point3D(lord.X, lord.Y, lord.Z), Body.MaxSpeed);
@@ -5550,6 +5552,8 @@ namespace DOL.AI.Brain
             int numNeedHealing = 0;
             // Own-party members in reach under RaidCurePoison.DangerPercent (the raid cure waits for them).
             int partyInDanger = 0;
+            // The 1.2.1 Summoner Pain rules in Summoner's Hall only; v1.2's elsewhere (RaidCurePoison.PainRules).
+            bool painRules = RaidCurePoison.PainRules(Body.CurrentRegionID);
             Spell spellToCast = null;
             GameLiving spellTarget = null;
             bool startedCasting = false;
@@ -5567,7 +5571,7 @@ namespace DOL.AI.Brain
                     if (deficit > 0)
                     {
                         amountToHeal += deficit;
-                        if (RaidCurePoison.InDanger(member.HealthPercent, member.IsPoisoned)) partyInDanger++;
+                        if (RaidCurePoison.InDanger(member.HealthPercent, member.IsPoisoned, painRules)) partyInDanger++;
 
                         if (member.HealthPercent < 65)
                         {
@@ -5798,7 +5802,7 @@ namespace DOL.AI.Brain
 
             // 1.2 (sweep 7b): inside a raid's fight a damage over time on several raiders (Summoner Pain) is cured before the
             // turn's heal, unless a member of this bot's own party is in danger or a boss mechanic marks a patient (RaidCurePoison).
-            bool raidCureFirst = TryRaidCurePoison(partyInDanger, displacedPatient != null || markedPatient != null,
+            bool raidCureFirst = TryRaidCurePoison(partyInDanger, displacedPatient != null || markedPatient != null, painRules,
                 out Spell raidCure, out GameLiving raidCureTarget);
             if (raidCureFirst)
             {
@@ -5989,7 +5993,7 @@ namespace DOL.AI.Brain
                             raidCureFirst && spellToCast == raidCure && _raidCurePastDanger);
                     // The raid cure waits its delay whether the cure is instant or not: the next turns heal (sweep 7b).
                     if (raidCureFirst && spellToCast == raidCure)
-                        nextCureTime = GameLoop.GameLoopTime + RaidCurePoison.CureDelayMilliseconds;
+                        nextCureTime = GameLoop.GameLoopTime + RaidCurePoison.CureDelayFor(painRules);
                     if (spellToCast.IsInstantCast)
                     {
                         BotBody.TargetObject = oldTarget;
@@ -6012,7 +6016,7 @@ namespace DOL.AI.Brain
         /// This turn's raid cure (RaidCurePoison, sweep 7b): an autonomous raider of a realm raid with its class's cure poison
         /// (CurePoison or CurePoisonGroup) cures a damage over time that several raiders in its reach carry before it heals.
         /// </summary>
-        private bool TryRaidCurePoison(int partyInDanger, bool markedPatient, out Spell cure, out GameLiving target)
+        private bool TryRaidCurePoison(int partyInDanger, bool markedPatient, bool painRules, out Spell cure, out GameLiving target)
         {
             cure = null;
             target = null;
@@ -6024,6 +6028,8 @@ namespace DOL.AI.Brain
             // 1.2.1 (#410 round 2): a party member in danger no longer stops the scan; RaidCurePoison.Decide still cures only
             // the fresh ones then (two or more), and heals first otherwise.
             if (nextCureTime >= now || now < _nextRaidPoisonScan || markedPatient) return false;
+            // v1.2 outside Summoner's Hall: a party member in danger stops the raid cure (regression audit, item 2).
+            if (!painRules && partyInDanger > 0) return false;
             _nextRaidPoisonScan = now + RaidCurePoison.ScanMilliseconds;
             if (AutonomousRealmRaid.GetView(group) == null) return false;
             bool canSingle = CheckHealSpell(BotBody.CurePoison), canGroup = CheckHealSpell(BotBody.CurePoisonGroup);
@@ -6048,7 +6054,7 @@ namespace DOL.AI.Brain
             }
             long curer = Body.ObjectID;
             var (which, pick) = RaidCurePoison.Decide(true, true, canGroup, canSingle, dotted, partyInDanger, false, curer,
-                id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Poison, id, curer, now));
+                id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Poison, id, curer, now), painRules: painRules);
             if (which == RaidCurePoison.Cure.None || pick < 0) return false;
             // Sweep 7c (H-1): a single cure claims its raider for the cast, so the raid's other curers take someone else.
             if (which == RaidCurePoison.Cure.Single &&

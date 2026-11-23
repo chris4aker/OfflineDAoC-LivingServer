@@ -218,8 +218,18 @@ namespace DOL.UnitTests
             Assert.That(line?.Reason, Does.StartWith("legion-ranged"), "healers stand in the line (they count as at range)");
             Assert.That(Flat(line.Value.StandAt.Value, At(legion)), Is.InRange(T.LegionRangedMin, T.LegionRangedMax));
             Assert.That(Ask(melee, false), Is.Null, "melee fight him as usual");
+            // At the spot it was given, the line has nothing more to say (no Reposition every turn).
+            void Put(Bot b, float x, float y) { b.X = (int)x; b.Y = (int)y; b.movementComponent.ForceUpdatePosition(); }
+            Put(druid, line.Value.StandAt.Value.X, line.Value.StandAt.Value.Y);
+            Assert.That(Ask(druid, false), Is.Null, "at its spot: no new advice");
+            Put(druid, 45100, 50300);
             druid.Class = new ClassPaladin();
             Assert.That(Ask(druid, false), Is.Null, "a paladin heals but tanks: it stays in melee");
+            // 1.2.2 (audit finding 3): the friar and the warden heal from melee too; they are not sent to the ranged line.
+            druid.Class = new ClassFriar();
+            Assert.That(Ask(druid, false), Is.Null, "a friar fights in melee");
+            druid.Class = new ClassWarden();
+            Assert.That(Ask(druid, false), Is.Null, "a warden fights in melee");
             legion.Idle = true;
             Assert.That(Ask(tank, false), Is.Null, "out of combat the plan has no opinion");
         }

@@ -16,15 +16,16 @@ is reopened if the owner's log shows it again): #396, #397, #405, #406, #407, #4
 #417, #418, #420, #422, #423, #424, #438. Still open from 1.2.1: #410, #412, #414 (raids), #421 (a seam loop), #425
 (the PC check).
 
-**What comes next:** 1.2.2 is the raid sizes (#441) and small fixes ([1.2.2](#122-in-development)); Uthgard's drop
+**What comes next:** 1.2.2 is the raids (its size raises, #441, withdrawn on audit 2026-11-23) and small fixes ([1.2.2](#122-in-development)); Uthgard's drop
 tables and the fixes from the PC checks come in [1.2.3](#123); the language selector (#437) in [1.3](#13).
 
 ## 1.2.2 (in development)
 
-The raid-size release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raid sizes). **Tests only.**
+The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids). **Tests only.**
 
-- [#441](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/441) Raid sizes raised at Summoner's Hall, the Green Knight, Galladoria and Tuscaran Glacier, where
-  the 1.2.1 simulations show working tactics short of bots. **Merged; tests only.**
+- [#441](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/441) Raid sizes raised at Summoner's Hall, the Green Knight, Galladoria and Tuscaran Glacier.
+  **Withdrawn:** the Green Knight's on 2026-11-22, the other three on audit on 2026-11-23 (owner: "Revert all three";
+  [RAID-SIZES.md](RAID-SIZES.md), "Withdrawn on audit"). The raise rule stays, with stricter evidence.
 - The launcher shows the Living Server build ("LIVING SERVER 1.2.2", from `ForkBuildInfo.BuildName`) instead of the
   retired "VERSION 0.37". **Tests only.**
 - GM `/jump` refuses a dead bot and says why (its body stays where it fell); a jumped gamebot plans its trip again
@@ -60,7 +61,7 @@ Never weaken a boss. A raid plan counts as working only once it is won on the ow
 
 **Tests only.** The simulation-based fixes shipped in 1.2.1 (#431, #428, #430, #432), and six raid issues were closed
 on 2026-11-22 as done in 1.2.1; none of those raids has been won on the owner's PC yet, and an issue is reopened if
-its raid's log shows it lost again. #410, #412 and #414 stay open; 1.2.2 raises the raid sizes for #410 and #412 (#441).
+its raid's log shows it lost again. #410, #412 and #414 stay open; 1.2.2's size raises for #410 and #412 (#441) were withdrawn.
 
 - ~~[#407](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/407) Caer Sidi: the bot raid loses at the Crypt Lord~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
 - ~~[#408](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/408) Galladoria: the bot raid loses at Spindler Broodmother and never reaches Olcasgean~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
@@ -116,7 +117,7 @@ once a log shows it:
 12. **Linux (Ryan):** the launcher's tooltips and alt-tab under Wine (#393) and `linux/start-offline-daoc.sh` (#395), both merged to main.
 13. **Click-targeting a bot** ([#424](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/424)), original client, your own mouse (not a tool): left-click a living gamebot standing still near you, then a moving one, then a companion. Each click should select it and log `PLAYER_CLICK_TARGET ... kind=gamebot ... result=set alive=True`. No line at all: the client never sent the click (its picking); `result=no_object` or `out_of_range`: the server dropped it.
 14. **A party picks up one more** ([#423](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/423)): `BOT_LED_RECRUIT outcome=searching kind=open_seat` for parties that set off, then `outcome=recruited kind=open_seat` now and then; in /lfg a travelling party's "lf1m ..." and "ya, 1 spot" to "room?". Join one by /lfg or a tell while it travels.
-15. **Raids** (#407-#415): any raid won, with its log (each issue's raid); for 1.2.2, the raised sizes (#441).
+15. **Raids** (#407-#415): any raid won, with its log (each issue's raid); every raid at its period size (1.2.2's raises withdrawn).
 
 ## Evidence behind the player known-issues list
 
@@ -184,8 +185,8 @@ bots only, at the game's own raid size:
 **1.2.1:** the raid fixes in 1.2.1 come from these logs and from simulations, and are **tests only** until a raid is seen
 won on the owner's PC. #407, #408, #409, #411, #413 and #415 were closed on 2026-11-22 as done in 1.2.1 (reopened if a
 raid log shows them lost again); #410 (Summoner's Hall), #412 (the Green Knight, Marfoirwort) and #414 (Behemoth, Fomor
-City, Morgana) stay open. **1.2.2** raises the raid size at Summoner's Hall, the Green Knight, Galladoria and Tuscaran
-Glacier (#441): **tests only**. Elro the Ancient's third treant, which never came,
+City, Morgana) stay open. **1.2.2** raised the raid size at Summoner's Hall, the Green Knight, Galladoria and Tuscaran
+Glacier (#441); all four raises were withdrawn (2026-11-22 and, on audit, 2026-11-23). Elro the Ancient's third treant, which never came,
 now comes between three-tenths and a quarter of his strength left (**tests only**).
 
 Fixes made after the last raid builds the owner ran are **tests only**:

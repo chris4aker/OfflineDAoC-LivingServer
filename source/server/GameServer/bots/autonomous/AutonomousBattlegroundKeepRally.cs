@@ -609,7 +609,29 @@ public static class AutonomousBattlegroundKeepRally
     /// and d64d005 Hibernian bots died beside him at 4592 and on its flights at 4423-4524. Pure.
     /// </summary>
     public static bool StrikesFromHere(bool isLord, float toTarget, float heightGap) =>
-        heightGap <= StrikeFloorHeight && (!isLord || toTarget <= LordDamageReach);
+        StrikesFromHere(isLord, toTarget, heightGap, keep: true, standsBack: true);
+
+    /// <summary>
+    /// As above, for a caster, archer or healer (<paramref name="standsBack"/>) at a keep's lord or (<paramref name="keep"/>
+    /// false) a tower's: 1.2.2, raid tactic audit finding 10, one reach for the battleground storm and the frontier
+    /// (<see cref="RvrLordReach.For"/>: 350 in a keep, 250 in a tower; a tower's lord takes nothing from beyond 300). Melee
+    /// and tanks keep v1.2's strike radius (<see cref="AutonomousWorldBotController.BattlegroundLordStrike"/>, 900): they
+    /// close in by their own chase, and Caer Caledon was taken with it (43c43aa; 1.2.2 regression audit, item 3). Pure.
+    /// </summary>
+    public static bool StrikesFromHere(bool isLord, float toTarget, float heightGap, bool keep, bool standsBack) =>
+        heightGap <= StrikeFloorHeight &&
+        (!isLord || (standsBack ? RvrLordReach.InReach(keep, toTarget) : toTarget <= AutonomousWorldBotController.BattlegroundLordStrike));
+
+    /// <summary>The lord's strike reach for a bot of this role (pure): <see cref="LordDamageReachFor(GameKeepGuard)"/> for one
+    /// that stands back, v1.2's 900 for melee and tanks.</summary>
+    public static float LordStrikeReach(GameKeepGuard lord, bool standsBack) =>
+        standsBack ? LordDamageReachFor(lord) : AutonomousWorldBotController.BattlegroundLordStrike;
+
+    /// <summary>The lord's strike reach (<see cref="RvrLordReach.For"/>): a keep's or a tower's.</summary>
+    public static float LordDamageReachFor(GameKeepGuard lord) => RvrLordReach.For(IsKeepLord(lord));
+
+    /// <summary>The lord stands in a keep (not a tower): his damage radius is the keep's (Keeps.GuardLord.DamageRadiusFor).</summary>
+    public static bool IsKeepLord(GameKeepGuard lord) => lord?.Component?.Keep is GameKeep;
 
     /// <summary>
     /// #416: how near the lord a stormer strikes him from, melee, caster, archer or healer alike. A keep's lord takes no
@@ -619,7 +641,7 @@ public static class AutonomousBattlegroundKeepRally
     /// for nothing. Owner's PC, build 43c43aa (Caer Caledon): storms reached the lord (atLord 1-5 within 800) and he lost
     /// 1-3% (his lowest 97%). 50 inside his radius, for the bot's step and the 3D distance. A stormer beyond it walks on to him.
     /// </summary>
-    public const float LordDamageReach = Keeps.GuardLord.KeepDamageRadius - 50;
+    public const float LordDamageReach = Keeps.GuardLord.KeepDamageRadius - RvrLordReach.Margin;
 
     /// <summary>A gathering rally that drew fewer than <see cref="MinimumRally"/> for this long, with that many of the realm in
     /// the battleground, is re-placed (<see cref="IsBarren"/>).</summary>
@@ -1671,7 +1693,8 @@ public static class AutonomousBattlegroundKeepRally
         rally.AtLord = realmBots.Count(other => other.IsWithinRadius(lord, 800));
         rally.OnLordFloor = realmBots.Count(other => other.IsWithinRadius(lord, 800) && Math.Abs(other.Z - lord.Z) < 200);
         // #416: the ones near enough that their hits count (GuardLord.KeepDamageRadius); atLord counts out to 800.
-        rally.InLordReach = realmBots.Count(other => other.IsWithinRadius(lord, Keeps.GuardLord.KeepDamageRadius) &&
+        int lordRadius = Keeps.GuardLord.DamageRadiusFor(IsKeepLord(lord));
+        rally.InLordReach = realmBots.Count(other => other.IsWithinRadius(lord, lordRadius) &&
                                                      Math.Abs(other.Z - lord.Z) <= StrikeFloorHeight);
         if (rally.Storming) rally.PeakInLordReach = Math.Max(rally.PeakInLordReach, rally.InLordReach);
         rally.RalliedPlayers = PlayersAtRally(realm, bracket.RegionId, point);

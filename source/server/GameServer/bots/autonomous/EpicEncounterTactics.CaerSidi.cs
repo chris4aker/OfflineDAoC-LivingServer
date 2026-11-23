@@ -284,8 +284,7 @@ namespace DOL.GS
         private static Advice? SacristanAmbush(RuleContext c)
         {
             if (!EpicEncounterMechanics.AllowSacristanPatrol) return null;
-            bool atRange = c.CanShootFlyers || c.ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId);
-            return SacristanAdvice(At(c.Raider), c.Target, c.PartyIndex, atRange);
+            return SacristanAdvice(At(c.Raider), c.Target, c.PartyIndex, c.StandsBack);
         }
 
         public static Advice SacristanAdvice(Vector3 raider, GameNPC sacristan, int partyIndex, bool atRange) =>
@@ -737,9 +736,10 @@ namespace DOL.GS
         /// <summary>After the hold's lapse a court pull still waits until his patrol keeps this far from the court monster
         /// (his court link, <see cref="CryptLordCourtLink"/>, plus <see cref="CourtWalkMargin"/>)...</summary>
         public const int CourtLapsedClearance = CryptLordCourtLink + CourtWalkMargin;
-        /// <summary>...for the raid's walk to it plus this long: the pull, and the court monster's run after its target back
-        /// to the muster, where the raid holds (<see cref="CourtLeash"/>) and the fight is out of his link.</summary>
-        public const int CourtLapsedRunSeconds = 15;
+        /// <summary>...for the raid's walk to it plus this long: the court fight itself (<see cref="CourtPullHorizonSeconds"/>,
+        /// 35 s). 1.2.2 (raid tactic audit finding 11): it was 15 s (the pull and the court monster's run back to the muster),
+        /// which relied on the monster following the raid out of his link; a fight that stayed put was not covered.</summary>
+        public const int CourtLapsedRunSeconds = CourtPullHorizonSeconds;
 
         /// <summary>How long the raid takes to walk <paramref name="walk"/> at <see cref="RaidWalkSpeed"/> (pure).</summary>
         public static float CourtWalkSeconds(IReadOnlyList<Vector3> walk)
@@ -757,7 +757,9 @@ namespace DOL.GS
         /// Owner's PC, build b1b6846, 2026-11-18 (07:38-07:59): the re-clear held on a reckoned soul for the 20 minutes, the
         /// pull after the lapse took no account of him, he came in and the raid ended. The lapse is unchanged (the owner's
         /// call): what lapses is the strict window (1,200 for 35 s, 550 from the walk for its time plus 35 s), which for the
-        /// western forerunner is open about 7 s of his 131 s loop; this guard is open about 23 s of it there.
+        /// western forerunner is open about 7 s of his 131 s loop; this guard (over the 35 s court fight since 1.2.2) about 3 s
+        /// of it there, 47-74 s for the other court monsters of the logs. 1.2.2: it never lapses itself; the route holds
+        /// for its next window and never pulls blind (RealmRaidDungeonRoute.LapsedGuard).
         /// </summary>
         public static string CourtLapsedGuard(Vector3 lord, int next, Vector3 spot, IReadOnlyList<Vector3> walk)
         {

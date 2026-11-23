@@ -16,6 +16,11 @@ namespace DOL.GS
         public int _adding;
         public bool _draining;
         public bool _overflowed;
+        private int _drainingThread;
+
+        /// <summary>1.2.2: true when this thread is the one draining (an add from inside the drain can never succeed).</summary>
+        public bool IsDrainingOnThisThread =>
+            Volatile.Read(ref _draining) && Volatile.Read(ref _drainingThread) == Environment.CurrentManagedThreadId;
 
         public bool Any => Volatile.Read(ref _writeIndex) > 0; // Not accurate.
 
@@ -72,6 +77,7 @@ namespace DOL.GS
             if (Interlocked.Exchange(ref _draining, true) != false)
                 throw new InvalidOperationException($"Concurrent {nameof(DrainTo)} detected.");
 
+            Volatile.Write(ref _drainingThread, Environment.CurrentManagedThreadId);
             try
             {
                 if (Volatile.Read(ref _adding) > 0)
@@ -110,6 +116,7 @@ namespace DOL.GS
             }
             finally
             {
+                Volatile.Write(ref _drainingThread, 0);
                 Volatile.Write(ref _draining, false);
             }
         }
