@@ -167,6 +167,19 @@ jobs:
       # fixes it is a ratchet: the build fails when the good share falls or a bad category grows past bench_ratchet.json's caps.
       # The holdout set (player_questions_holdout.json, written after the fixes) is reported beside it. The written lines are
       # scanned for fluff and clunky patterns (report only).
+      # Realism audit 1.2.3 (report only, never merged): the fresh player lines through the same path, every row in the log.
+      - name: "Audit: fresh questions"
+        if: always()
+        shell: bash
+        run: |
+          fresh=$(find . -path '*chat-bench*' -name 'bench-fresh.json' | head -n 1 || true)
+          if [ -z "$fresh" ]; then echo "::warning title=Audit fresh questions::no bench-fresh.json found"; exit 0; fi
+          python - "$fresh" <<'PY'
+          import json, sys
+          for r in json.load(open(sys.argv[1], encoding='utf-8')):
+              print('AUDIT_FRESH_ROW ' + json.dumps(r, ensure_ascii=False))
+          PY
+
       - name: Chat question bench ratchet
         if: always()
         shell: bash
