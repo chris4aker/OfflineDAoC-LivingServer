@@ -80,10 +80,12 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   its own question ("who is eraliwyr? ...") answers only that question, and without its opening (`LoreChat.FitAnswer`).
   No laugh is tacked onto a "dunno", a warning, a death, a raid line or a lore line (`AutonomousBotVoiceCorpus.IsSerious`,
   kind `lore`). A tidy writer capitalizes the world's names ("The armsman trainer in Camelot", `AutonomousChatNames`, ported
-  to `voice_style.py`). 99 fluff and non-answer reply lines were deleted and 38 rewritten to carry a fact or a real pointer
-  (reply lines 1,239 to 1,144; fluff 65 to 0; non-answers 73 to 5). A property test (`UT_ChatStitching`) runs every
+  to `voice_style.py`). 99 fluff and non-answer reply lines were deleted, 38 rewritten and 26 written to carry a fact (`{zone}`,
+  `{level}`, `{class}`) or a real pointer (reply lines 1,239 to 1,166; fluff 65 to 0; non-answers 73 to 5, the short honest
+  "not sure" set kept for tells). A property test (`UT_ChatStitching`) runs every
   stitched fragment through every style and the scorer's CLUNKY checks (`ChatClunky`, kept equal to `chat_scorers.py` by
-  `clunky_cases.json`). Bench: BENCH_AFTER. **Tests only.**
+  `clunky_cases.json`). Bench, on top of fix A (#456): clunky 21 to 1, padded 8 to 4, good 314 to 316 of
+  453 (CI run 45159056540 against 45155216982); before fix A, clunky 43 to 1 (run 45156412912 against the audit's). **Tests only.**
 
 **Launcher, GM tools and tests**
 - **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window

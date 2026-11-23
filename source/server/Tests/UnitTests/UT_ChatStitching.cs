@@ -116,6 +116,7 @@ namespace DOL.GS.Tests
         [TestCase("died to the guards again")]
         [TestCase("prydwen is in albion, we cant go there")]
         [TestCase("bog of cullen? take a horse from a stable master")]
+        [TestCase("i dont craft, ask around")]
         public void ASeriousLineTakesNoLaugh(string line)
         {
             Assert.That(VC.IsSerious(line), Is.True);

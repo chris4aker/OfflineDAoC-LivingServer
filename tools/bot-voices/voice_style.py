@@ -45,7 +45,7 @@ def is_shouted(text):
 
 # Chat audit 1.2.2 (C10, fix F9): AutonomousBotVoiceCorpus.SeriousWords and AsksAndAnswers.
 SERIOUS_RE = re.compile(
-    r"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|"
+    r"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|"
     r"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|"
     r"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|"
     r"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])", re.IGNORECASE)

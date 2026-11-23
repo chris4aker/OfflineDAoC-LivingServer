@@ -762,7 +762,7 @@ public sealed class AutonomousBotVoiceCorpus
 
     // Chat audit 1.2.2 (C10, fix F9): "no clue, sry haha", "thats a full raid, dont go alone :)", "trust nothing you meet there heh".
     private static readonly Regex SeriousWords = new(
-        @"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|" +
+        @"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|" +
         @"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|" +
         @"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|" +
         @"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])",
