@@ -47,6 +47,26 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
+**Launcher, GM tools and tests**
+- **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window
+  title "Offline DAoC Living Server 1.2.2", both from `ForkBuildInfo.BuildName` (stamped into the launcher, the name the
+  server logs as `FORK_BUILD`), so they can't drift from the build. Up to 1.2.1 they said "VERSION 0.37" (0.37b, 0.37c):
+  the 0.3x line is retired (AGENTS.md, "One edition from now on"). The update strip's separate build label is gone.
+  `ForkBuildInfo.BaseRelease` (0.37) still names the game the build installs on; `check_versions.py` now fails a
+  pinned `DisplayVersion`. **Tests only.**
+- **GM `/jump` and dead or travelling bots (#438 follow-up).** A dead bot is refused before anything about it changes,
+  and the GM is told why (its body stays where it fell, `GameBot.RefuseCorpseMove`; 1.2.1 stripped its state, hit the
+  refusal with a stack-trace warning and said only "could not be moved there"); the log has `GM_JUMP_BOT_REFUSED
+  reason=Dead`. A jumped gamebot forgets the trip it planned from the old spot (camp, patrol, town teleporter, frontier
+  porter request, a stable ride it meant to take, its keep route) and plans again; its task and group stay.
+  `GM_JUMP_BOT` now logs `region_change=`, `was_riding=` and `was_fighting=`. Other regions, stablemaster rides and
+  fights were already right (the move leaves the world, which takes the bot off every monster's aggro list); bots
+  never ride boats. The playtester's `bot-jump` scenario also jumps a dead helper. **Tests only.**
+- **`UT_AiProfile.AScopeAllocatesNothing` no longer flakes.** It failed once in CI with 3,040 bytes (2026-11-22), a
+  one-off runtime allocation on the test thread. Each of seven samples now re-enables the profiler, settles the GC and
+  counts only if the profiler stayed on; the least must stay within 64 bytes (one allocation per scope would be 2.4 MB).
+  The measured lock has its own test, with its gate made outside the measurement.
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

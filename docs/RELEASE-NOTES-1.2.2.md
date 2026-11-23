@@ -98,6 +98,12 @@ size."
 - **GM test:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
   the old one.
 
+### Also in 1.2.2
+
+- **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
+- **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
+  first), and a gamebot you jump sets off again from where it lands.
+
 ### How this was tested
 
 - **Simulations:** Python ports of the 1.2.1 raid simulations. Each port gives exactly the numbers its C# test pins.
