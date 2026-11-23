@@ -2064,12 +2064,18 @@ namespace DOL.GS
         /// </summary>
         private static void PulseDragonReturnWave(Raid raid, long now)
         {
-            if (!RealmRaidReturnWave.On || Regrouping(raid))
+            // 1.2.2 regression audit, item 5: an open-world raid's fight is not at its realm's dragon lair, so measured to that
+            // lair (DragonLairPlacement.Home) every raider seen by the #415 displacement rule would stay "on its way back" for
+            // good. v1.2 never held one there (nobody was ever within the line), so the wave is skipped for open-world raids.
+            if (!RealmRaidReturnWave.On || Regrouping(raid) || !RealmRaidReturnWave.DragonWaveApplies(raid.Definition.IsOpenWorld))
             {
                 raid.ReturnGathering = false;
                 raid.ReturningToDragon.Clear();
                 return;
             }
+            // Golestandt, Cuuldurach and Gjalpinulva were won before #415 (1.2.1) changed who is held here: thrown and
+            // resurrected raiders now walk back by themselves (ClassifyDragonRaider, RealmRaidReturnWave). These fights have
+            // changed since their wins (1.2.2 regression audit, item 4).
             Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
             int outside = 0, waiting = 0, fallen = 0, thrownFar = 0, backInFight = 0;
             foreach (GameBot b in raid.Support.OfType<GameBot>())

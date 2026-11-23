@@ -162,15 +162,15 @@ namespace DOL.GS
             GameNPC[] souls = LiveRangedAdds(legion, c.Live);
             if (souls.Length > 0)
             {
-                if (!c.AtRange && IsLegionSoulParty(c.Raider, his, souls.Length, c.Now) && AddPartyTarget(souls) is { } soul)
+                if (!c.StandsBack && IsLegionSoulParty(c.Raider, his, souls.Length, c.Now) && AddPartyTarget(souls) is { } soul)
                     return new(BotAction.Retarget, soul, null,
                         $"legion-souls: soul party on {Array.IndexOf(souls, soul) + 1}/{souls.Length}" +
                         (soul.TargetObject is GameLiving on ? $" (on {on.Name})" : ""));
                 // Casters and archers: the catalog's ranged-add rule takes them onto the souls.
-                if (c.AtRange && !healer) return null;
+                if (c.StandsBack && !healer) return null;
             }
-            // (A paladin, friar or warden heals but fights in melee: AtRange is false for it, it stays on him.)
-            if (c.AtRange && !IsTankLiving(c.Raider) && LegionRangedAdvice(c.At, boss, LegionRaidSide, c.Raider.ObjectID) is Advice line)
+            // (A paladin, friar or warden heals but fights in melee: StandsBack is false for it, it stays on him.)
+            if (c.StandsBack && !IsTankLiving(c.Raider) && LegionRangedAdvice(c.At, boss, LegionRaidSide, c.Raider.ObjectID) is Advice line)
                 return line with { Target = legion };
             return null;
         }

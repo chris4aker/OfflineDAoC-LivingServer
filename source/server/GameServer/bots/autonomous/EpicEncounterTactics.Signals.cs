@@ -68,7 +68,10 @@ namespace DOL.GS
         private static bool RuleOn(string switchName, string boss) =>
             string.IsNullOrEmpty(switchName) || EpicEncounterMechanics.On(switchName, boss);
 
-        private static bool AtRange(bool canShootFlyers, int classId) => FightsFromRange(canShootFlyers, classId);
+        // The dragons' stun and breath step-out keeps the v1.2 test (healers step out too, the Paladin, Friar and Warden
+        // included): Golestandt and Cuuldurach were won with it (1.2.2 regression audit, item 1).
+        private static bool AtRange(bool canShootFlyers, int classId) =>
+            canShootFlyers || classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
 
         /// <summary>
         /// The one test every raid rule uses for where a raider stands (Living Server 1.2.2, raid tactic audit finding 3): it
@@ -77,7 +80,9 @@ namespace DOL.GS
         /// Warden heal but fight in melee (<see cref="BotPartyRoles.IsMeleeHybridHealer"/>): a rule that sent them to a heal
         /// spot or a ranged line moved them out every turn while their melee chase walked them back in, so they neither
         /// swung nor held. Rules that only choose a target (healers keep off the add parties) may still ask
-        /// <see cref="BotPartyRoles.IsHealingClass"/>: a melee hybrid heals its party too.
+        /// <see cref="BotPartyRoles.IsHealingClass"/>: a melee hybrid heals its party too. Used only by new rules of fights
+        /// not yet won (RuleContext.StandsBack); the rules of won fights keep v1.2's test (RuleContext.AtRange, the signal
+        /// step-out, the catalog's spread and melee-behind rule, the blast-reaction role: 1.2.2 regression audit, item 1).
         /// </summary>
         public static bool FightsFromRange(bool canShootFlyers, int classId) =>
             canShootFlyers || IsRangedHealerClass(classId);
@@ -159,7 +164,8 @@ namespace DOL.GS
         {
             if (AttackRuleFor(target) is not { } rule) return null;
             // A wounded raider stepping out of Legion's reach is not called back in (EpicEncounterTactics.DarknessFalls.cs).
-            if (target is DOL.GS.Scripts.Legion && LegionWoundedAdvice(at, raider.HealthPercent, target.TargetObject == raider, target) != null)
+            if (target is DOL.GS.Scripts.Legion && LegionWoundedAdvice(at, raider.HealthPercent, target.TargetObject == raider, target, raider.ObjectID,
+                    GameLoop.GameLoopTime) != null)
                 return null;
             Vector3 center = rule.FromSpawn ? new(target.SpawnPoint.X, target.SpawnPoint.Y, target.SpawnPoint.Z) : new(target.X, target.Y, target.Z);
             // A boss drawn away from its spawn is led home by the fight-at-home rule; melee beside it are not called back.

@@ -67,6 +67,28 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
 - **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's 80 takes 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
+- **Raid tactic audit fixes** (everything but the Green Knight; issues #407-#413, #416; **tests only**):
+  - **Marfoirwort:** he stands on his target (his follow distance, 131), so no spot in bot melee reach clears his
+    350 Life-leech; the 1.2.1 rule moved every melee raider every turn and they never swung. Now only his target fights
+    him in melee; the other melee shoot him from clear of the leech with their distance weapon or wait clear of it (no
+    new spot once there), and tanks go in only to take him back from a non-tank. Animist shrooms are planted clear of
+    the leech and fight him; other pets stay off. Sim: each raider counts only while in range; 16 of 16 kills, the
+    1.2.1 rule 0 of 16.
+  - **Paladin, Friar, Warden:** a melee-hybrid rule (`BotPartyRoles.IsMeleeHybridHealer`,
+    `EpicEncounterTactics.FightsFromRange`, `RuleContext.StandsBack`) for the new rules of unwon fights (Marfoirwort,
+    King Tuscar and Kula's spreads, Legion's ranged line, the Sacristan ambush, the Glacier Giant's healers). Won fights
+    keep v1.2's test (the dragons' stun and breath step-out, the catalog's spread and melee-behind, blast roles).
+  - **Legion:** a wounded raider steps out under 35% and comes back only at 60% (no 34-35% shuttle).
+  - **Summoner Roesia:** with its own party in danger a curer cures only its own party's fresh members, never another
+    party's. The 1.2.1 Pain rules (25% dotted danger, fresh override, 2.5 s) apply in Summoner's Hall only; every other
+    raid has v1.2's cure rule again.
+  - **King Tuscar:** his target must hit him to hold him (heals on it give its healers threat), so a tank uses its taunts.
+  - **Keep lords:** the battleground storm's lord reach is the frontier's (350 keep, 250 tower) for casters, archers and
+    healers; melee and tanks keep 1.2's 900 and keep the lord when no walk to him is found.
+  - **Crypt Lord:** the lapsed court guard covers the 35 s court fight and never lapses: after the hold it waits for
+    his next open window (`REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS`), never a blind pull.
+  - **Spindler:** archers with a short bow, crossbow or thrown weapon take a post on the 750 ring, in reach of her.
+  - **Dragons:** the dragon return wave no longer runs for open-world raids (it measured them to the realm's dragon lair).
 
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's

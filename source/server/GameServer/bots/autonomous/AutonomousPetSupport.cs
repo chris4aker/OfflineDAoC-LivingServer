@@ -2001,6 +2001,9 @@ public static class AutonomousPetSupport
             desired = target + Vector3.Normalize(backTowardOwner) * 110 + spread;
             if (Vector3.Distance(ownerPosition, desired) > range - 40)
                 desired = ownerPosition + Vector3.Normalize(desired - ownerPosition) * (range - 40);
+            // Marfoirwort's Life-leech hits everything within 350 of his target: a shroom planted there would heal him.
+            if (EpicEncounterTactics.ShroomSpotFor(combatTarget, desired, ownerPosition) is Vector3 clearOfLeech)
+                desired = clearOfLeech;
         }
         else
         {

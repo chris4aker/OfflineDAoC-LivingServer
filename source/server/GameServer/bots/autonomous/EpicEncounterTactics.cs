@@ -811,9 +811,9 @@ namespace DOL.GS
                     return new(BotAction.Reposition, target, outOfCast,
                         $"cast: out of \"{st.StepOutOfCast}\" ({st.SpreadRadius} around \"{anchor.Name}\")");
                 }
-                // Healers that stand back; the Paladin, Friar and Warden fight from behind him with the melee (FightsFromRange).
-                bool healer = IsRangedHealerClass(classId);
-                bool atRange = FightsFromRange(canShootFlyers, classId);
+                // v1.2's test, kept: Black Lady (Marfach) and Lurfos Herald (Krondon) were won with it (1.2.2 regression audit).
+                bool healer = classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
+                bool atRange = canShootFlyers || healer;
                 // The melee: fight him from behind, clear of the area hit around his target.
                 if (st.MeleeBehind && !atRange && MeleeBehindAdvice(raider, target, anchor, st.SpreadRadius, now) is Advice behind)
                     return behind;
@@ -1637,6 +1637,7 @@ namespace DOL.GS
             LeadHomeRepath.Clear();
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
             ResetPartyPostsForTests();
+            ResetLegionWoundedForTests();
         }
 
         public static bool CanShootFlyers(GameBot bot)
