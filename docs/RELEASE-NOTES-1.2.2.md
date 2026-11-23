@@ -100,6 +100,12 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   1.2.1; this does the same everywhere else. A bot put back on its feet at the top or bottom shows in the server log
   as `NAV_LINK_LANDING`.
 
+### Also in 1.2.2
+
+- **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
+- **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
+  first), and a gamebot you jump sets off again from where it lands.
+
 ## Known issues
 
 - **Bot raids still lose some fights (#407 to #415).** King Tuscar's own fight and Grand Summoner Govannon can still
