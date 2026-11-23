@@ -163,18 +163,23 @@ jobs:
           if-no-files-found: warn
 
       # 1.2.2 chat audit (docs/bot-voices/CHAT-AUDIT-1.2.2.md): the player questions of tools/bot-voices/eval/player_questions.json
-      # answered through the real reply path (UT_ChatQuestionBench) and scored (score_bench.py), and the written lines scanned
-      # for fluff and clunky patterns. Report only for now; it becomes a ratchet after the fixes.
-      - name: Score the chat question bench (report only)
+      # answered through the server's own reply path (UT_ChatQuestionBench runs AutonomousChatReplyPath) and scored. Since the 1.2.2
+      # fixes it is a ratchet: the build fails when the good share falls or a bad category grows past bench_ratchet.json's caps.
+      # The holdout set (player_questions_holdout.json, written after the fixes) is reported beside it. The written lines are
+      # scanned for fluff and clunky patterns (report only).
+      - name: Chat question bench ratchet
         if: always()
         shell: bash
         run: |
           replies=$(find . -path '*chat-bench*' -name 'bench-replies.json' | head -n 1 || true)
+          holdout=$(find . -path '*chat-bench*' -name 'bench-holdout.json' | head -n 1 || true)
           mkdir -p chat-bench
-          if [ -z "$replies" ]; then echo "::warning title=Chat question bench::no bench-replies.json found"; exit 0; fi
+          if [ -z "$replies" ]; then echo "::error title=Chat question bench::no bench-replies.json found"; exit 1; fi
           cp "$replies" chat-bench/
-          python tools/bot-voices/eval/score_bench.py bench "$replies" --github --json chat-bench/bench-score.json --md chat-bench/bench-score.md || echo "::warning title=Chat question bench::the scorer failed"
+          if [ -n "$holdout" ]; then cp "$holdout" chat-bench/; else echo "::warning title=Chat question bench::no bench-holdout.json found"; fi
+          python tools/bot-voices/eval/score_bench.py bench "$replies" --json chat-bench/bench-score.json --md chat-bench/bench-score.md > /dev/null || echo "::warning title=Chat question bench::the report failed"
           python tools/bot-voices/eval/score_bench.py lines --json chat-bench/lines-scan.json || echo "::warning title=Chat line scan::the scan failed"
+          python tools/bot-voices/eval/score_bench.py ratchet "$replies" ${holdout:+--holdout "$holdout"} --github --json chat-bench/ratchet.json
 
       - uses: actions/upload-artifact@v4
         if: always()

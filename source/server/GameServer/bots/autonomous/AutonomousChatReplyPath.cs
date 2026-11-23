@@ -84,7 +84,7 @@ public static class AutonomousChatReplyPath
         if (string.IsNullOrWhiteSpace(message) || !AutonomousChatQuestions.IsQuestion(message))
             return false;
         string t = " " + AutonomousChatQuestions.Normalize(message) + " ";
-        if (Regex.IsMatch(t, @" (anyone|any1|anybody|someone|some1|who wants|who s up|whos up|wanna|want to|need a|need an|lf\d|lfm|pst|room for|inv me|invite me) "))
+        if (Regex.IsMatch(t, @" (anyone|any1|anybody|who wants|who s up|whos up|wanna|want to|lf\d|lfm|pst|room for|inv me|invite me) "))
             return false;
         return Regex.IsMatch(t, @"^ (what|whats|wat|how|why|is (a|an|the)|are|do i|does|should i|can i|which|whats the) ") ||
                Regex.IsMatch(t, @" (mean|means|stand for|stands for) ");

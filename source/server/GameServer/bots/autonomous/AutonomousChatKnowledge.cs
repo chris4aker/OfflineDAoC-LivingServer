@@ -78,6 +78,21 @@ public static class AutonomousChatKnowledge
             return false;
         string query = message.Trim();
         Random random = ports.Random ?? Random.Shared;
+        Random outer = _draw;
+        _draw = random;
+        try
+        {
+            return TryAnswerInOrder(ports, query, random, out answer);
+        }
+        finally
+        {
+            _draw = outer;
+        }
+    }
+
+    private static bool TryAnswerInOrder(KnowledgePorts ports, string query, Random random, out string answer)
+    {
+        answer = string.Empty;
         static bool Got(string text, out string result)
         {
             result = text ?? string.Empty;
@@ -170,6 +185,10 @@ public static class AutonomousChatKnowledge
         else if (Has(@" (realm points|rps|rp) work | (get|earn|farm) (rps|realm points|rp) "))
             pool = ["kill enemy players in the frontier, taking keeps gives some too", "enemy kills in the frontier, and taking keeps",
                 "rvr kills, more if you group, keeps give a lot"];
+        else if (Has(@" epic ") && Has(@" (group|grp|solo|help|alone) "))
+            // "do i need a group for my epic?": the epic's last steps are group fights in every realm.
+            pool = ["the last steps yeah, get a group for those", "some parts you can solo, the end fights need a group",
+                "bring a group for the end of it, the rest is running around"];
         else if (Has(@" epic "))
             pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "did mine, long chain, bring a group"];
         if (pool == null || pool.Length == 0)
@@ -226,7 +245,7 @@ public static class AutonomousChatKnowledge
         bool cap = lower.Contains(" 50 ") || lower.Contains(" cap ") || lower.Contains(" max level ");
         if (!howLong || !cap)
             return false;
-        answer = Random.Shared.Next(3) switch
+        answer = Draw.Next(3) switch
         {
             0 => "couple weeks /played if you group a lot, way longer solo",
             1 => "took me about 15 days played. groups are faster, the 40s drag",
@@ -242,9 +261,23 @@ public static class AutonomousChatKnowledge
             return false;
         string lower = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
         bool asks = text.Contains('?') || lower.Contains(" any ") || lower.Contains(" when ") || lower.Contains(" is there ");
-        bool raid = lower.Contains(" raid ") || lower.Contains(" raids ") || lower.Contains(" dungeon run") || lower.Contains(" expedition ") ||
-                    lower.Contains(" epic ");
+        // 1.2.2 chat fixes (F7, the bench's C2): "epic" is a raid word only for an epic fight ("any epic raids?", "is the epic boss
+        // up?"), never for the epic quest or its armour ("how long is the epic?", "where do i get my epic armor?").
+        bool epicFight = lower.Contains(" epic ") && !EpicQuestTalk(lower) &&
+                         System.Text.RegularExpressions.Regex.IsMatch(lower, @" epic (boss|bosses|mob|mobs|encounter|encounters|fight|fights|kill|kills) ");
+        bool raid = lower.Contains(" raid ") || lower.Contains(" raids ") || lower.Contains(" dungeon run") || lower.Contains(" expedition ") || epicFight;
         return asks && raid;
+    }
+
+    /// <summary>
+    /// "my epic", "the epic quest", "epic armor", "epic weapon": the epic quest and what it gives, not a raid (F7). Takes the padded,
+    /// lower-case line. Pure.
+    /// </summary>
+    public static bool EpicQuestTalk(string padded)
+    {
+        string t = " " + (padded ?? string.Empty).Trim().ToLowerInvariant() + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (my|your|ur|the|an|our) epic( quest| armor| armour| weapon| chain| steps?)? | epic (quest|quests|armor|armour|weapon|weapons|chain|step|steps|gear|set) ");
     }
 
     /// <summary>
@@ -1073,7 +1106,12 @@ public static class AutonomousChatKnowledge
 
     private static readonly HashSet<string> AllClassNames = new(Enum.GetNames<eCharacterClass>(), StringComparer.OrdinalIgnoreCase);
 
-    private static string Pick(params string[] options) => options[Random.Shared.Next(options.Length)];
+    private static string Pick(params string[] options) => options[Draw.Next(options.Length)];
+
+    [ThreadStatic] private static Random _draw;
+
+    /// <summary>The draw of the pure answers that take no random of their own: the lookup's (ports.Random) while one runs, else Random.Shared.</summary>
+    private static Random Draw => _draw ?? Random.Shared;
 
     private static string TicketDestination(string name)
     {

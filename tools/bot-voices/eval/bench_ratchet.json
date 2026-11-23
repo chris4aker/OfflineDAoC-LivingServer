@@ -1,0 +1,18 @@
+{
+ "note": "The chat bench ratchet (score_bench.py ratchet): the good share may only rise and no capped count may grow. Tighten it with score_bench.py ratchet REPLIES --write after a fix; never loosen it to pass.",
+ "ok_share": 0.6049,
+ "ok": 274,
+ "total": 453,
+ "counts": {
+  "WRONG": 7,
+  "NON_ANSWER": 27,
+  "OFF_TOPIC": 67,
+  "FLUFF": 2,
+  "SILENT": 67,
+  "STUB": 9,
+  "CLUNKY": 43,
+  "ECHO": 0,
+  "PADDED": 4
+ },
+ "holdout": null
+}

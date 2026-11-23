@@ -70,18 +70,34 @@ namespace DOL.GS.Tests
             public AutonomousChatQuestions.WorldFacts World;
         }
 
-        internal static Bench Load()
+        private static string Resource(string file)
         {
             var assembly = typeof(UT_ChatQuestionBench).Assembly;
-            string name = assembly.GetManifestResourceNames().Single(n => n.EndsWith("player_questions.json", StringComparison.Ordinal));
+            string name = assembly.GetManifestResourceNames().Single(n => n.EndsWith("." + file, StringComparison.Ordinal));
             using Stream stream = assembly.GetManifestResourceStream(name);
             using var reader = new StreamReader(stream);
-            using JsonDocument doc = JsonDocument.Parse(reader.ReadToEnd());
+            return reader.ReadToEnd();
+        }
+
+        private static Question[] QuestionsOf(JsonElement root) =>
+            root.GetProperty("questions").EnumerateArray().Select(q => new Question(Str(q, "id"), Str(q, "text"), Str(q, "channel"),
+                RealmOf(Str(q, "realm")), Str(q, "cls"), q.GetProperty("level").GetInt32(), Str(q, "intent"), Str(q, "to"))).ToArray();
+
+        private static string Str(JsonElement e, string key) => e.TryGetProperty(key, out JsonElement v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
+
+        /// <summary>The bench; <paramref name="holdout"/>: its questions from player_questions_holdout.json (written after the 1.2.2 fixes).</summary>
+        internal static Bench Load(bool holdout = false)
+        {
+            using JsonDocument doc = JsonDocument.Parse(Resource("player_questions.json"));
             JsonElement root = doc.RootElement;
             var bench = new Bench();
-            static string Str(JsonElement e, string key) => e.TryGetProperty(key, out JsonElement v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
-            bench.Questions = root.GetProperty("questions").EnumerateArray().Select(q => new Question(Str(q, "id"), Str(q, "text"), Str(q, "channel"),
-                RealmOf(Str(q, "realm")), Str(q, "cls"), q.GetProperty("level").GetInt32(), Str(q, "intent"), Str(q, "to"))).ToArray();
+            if (holdout)
+            {
+                using JsonDocument held = JsonDocument.Parse(Resource("player_questions_holdout.json"));
+                bench.Questions = QuestionsOf(held.RootElement);
+            }
+            else
+                bench.Questions = QuestionsOf(root);
             foreach (JsonProperty r in root.GetProperty("responders").EnumerateObject())
                 bench.Responders[RealmOf(r.Name)] = new Responder(r.Value.GetProperty("id").GetInt64(), Str(r.Value, "name"), Str(r.Value, "cls"),
                     r.Value.GetProperty("level").GetInt32(), Str(r.Value, "zone"), Str(r.Value, "target"), Str(r.Value, "spec"));
@@ -414,15 +430,22 @@ namespace DOL.GS.Tests
         // ------------------------------------------------------------------------------------------------------------ tests
 
         [Test]
-        public void AnswersEveryQuestionAndWritesTheReport()
+        public void AnswersEveryQuestionAndWritesTheReport() =>
+            Write(Load(), 300, "CHAT_BENCH_OUT", "bench-replies.json");
+
+        /// <summary>The holdout set (60 questions written after the fixes, never used to tune them); score_bench.py ratchet reports it.</summary>
+        [Test]
+        public void AnswersTheHoldoutSetAndWritesItsReport() =>
+            Write(Load(holdout: true), 60, "CHAT_BENCH_HOLDOUT_OUT", "bench-holdout.json");
+
+        private static void Write(Bench bench, int atLeast, string variable, string file)
         {
-            Bench bench = Load();
-            Assert.That(bench.Questions.Length, Is.GreaterThanOrEqualTo(300), "the bench holds at least 300 player questions");
+            Assert.That(bench.Questions.Length, Is.GreaterThanOrEqualTo(atLeast), $"the set holds at least {atLeast} player questions");
             List<Answer> answers = AnswerAll(bench);
             Assert.That(answers.Select(a => a.Id), Is.EqualTo(bench.Questions.Select(q => q.Id)), "every question gets a route");
-            string path = Environment.GetEnvironmentVariable("CHAT_BENCH_OUT") is { Length: > 0 } output
+            string path = Environment.GetEnvironmentVariable(variable) is { Length: > 0 } output
                 ? output
-                : Path.Combine(TestContext.CurrentContext.WorkDirectory, "chat-bench", "bench-replies.json");
+                : Path.Combine(TestContext.CurrentContext.WorkDirectory, "chat-bench", file);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, JsonSerializer.Serialize(answers.Select(a => new
             {
@@ -430,7 +453,7 @@ namespace DOL.GS.Tests
                 twice = a.Twice,
             }), new JsonSerializerOptions { WriteIndented = true }));
             int answered = answers.Count(a => a.Reply != null);
-            TestContext.Progress.WriteLine($"CHAT_BENCH {answers.Count} questions, {answered} with a reply, written to {path}");
+            TestContext.Progress.WriteLine($"CHAT_BENCH {file}: {answers.Count} questions, {answered} with a reply, written to {path}");
         }
 
         [Test]
