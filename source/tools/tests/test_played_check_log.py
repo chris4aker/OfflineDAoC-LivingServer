@@ -474,6 +474,14 @@ class Rvr(unittest.TestCase):
                       self.regroup(self.named(self.stance_log()))["detail"])
         self.assertEqual(self.regroup(Log().start(at(0)))["status"], pcl.NOT_SEEN)
 
+    def test_the_share_is_read_with_its_fan_out(self):
+        # #419: 17.4% on 9a173f4 with (a), (b) and (c) at 0; sweep 6c read the rise as one hop reaching more groups
+        row = self.regroup(self.stance_log())
+        self.assertIn("fan-out: 2 relaying stance(s) reached 5 group(s) (2.50 each), 0.20 relayed regroup start(s) per "
+                      "group reached", row["detail"])
+        log = Log().start(at(0)).add(at(1), self.REGROUP.format(g=1, r="after the fight", to=0, relay="window"))
+        self.assertIn("fan-out: no relaying stance", self.regroup(log)["detail"])
+
     def test_a_relayed_stance_that_relays_again(self):
         log = self.stance_log()
         log.add(at(3), self.RETREAT.format(g=5, r="relayed retreat", to=2, relay="sent", relayed="True"))
@@ -1717,6 +1725,33 @@ class Sweep7c(unittest.TestCase):
                     log.add(at(minute, second), line, "WRN")
                 self.assertNotEqual(check(only(log.run()[1]), "empty_pull_teleport")["status"], pcl.CONTRADICTED)
         self.assertEqual(check(only(Log().start(at(0)).run()[1]), "empty_pull_teleport")["status"], pcl.NOT_SEEN)
+
+
+class FrontierPorterWait(unittest.TestCase):
+    """#418: RVR_FRONTIER_WAIT_LONG, a gamebot held at a frontier porter past five minutes."""
+    WAIT = ('RVR_FRONTIER_WAIT_LONG bot=Aelwyn id={id} level=50 realm=Hibernia phase={phase} waited=300s '
+            'at=200:421782,485582,1824 to=100:"Glenlock Faste" passage="Odin Hib" porter="Glasny" porterDist=310 '
+            'ticket={ticket} spotDist=12 notReady={why} party=8 notReadyMembers=none heldForWarband=0s ceremony=40s '
+            'objective=RvR grouped=yes')
+    DEPART = 'RVR_FRONTIER_DEPARTURE force=rvr-7 count=8 porter="Glasny" destination="Odin Hib" region=100'
+
+    def test_a_long_wait_contradicts_and_names_what_held_it(self):
+        log = Log().start(at(0))
+        log.add(at(5), self.DEPART)
+        log.add(at(10), self.WAIT.format(id=11, phase="waiting", ticket="no", why="declined:no-medallion-merchant-at:Glasny"), "WRN")
+        log.add(at(15), self.WAIT.format(id=11, phase="waiting", ticket="no", why="declined:no-medallion-merchant-at:Glasny"), "WRN")
+        log.add(at(16), self.WAIT.format(id=12, phase="boarding", ticket="yes", why="in-combat"), "WRN")
+        row = check(only(log.run()[1]), "porter_wait")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("3 wait(s) past 5 minutes by 2 bot(s)", row["detail"])
+        self.assertIn("waiting:declined:no-medallion-merchant-at:Glasny 2, boarding:in-combat 1", row["detail"])
+        self.assertIn("8 bots carried", row["detail"])
+
+    def test_departures_without_a_long_wait_are_seen(self):
+        log = Log().start(at(0))
+        log.add(at(5), self.DEPART)
+        self.assertEqual(check(only(log.run()[1]), "porter_wait")["status"], pcl.SEEN)
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "porter_wait")["status"], pcl.NOT_SEEN)
 
 
 if __name__ == "__main__":

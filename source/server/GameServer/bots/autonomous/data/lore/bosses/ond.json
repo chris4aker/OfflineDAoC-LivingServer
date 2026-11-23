@@ -43,7 +43,7 @@
     }
   ],
   "story": "At the very bottom of Spindelhalla two old things are said to sit, whom the svartalfar call by words that mean evil and dread, and the svartalfar do not explain the names. Ond is the one called evil. The thralls on the farm above say it is not a spider, and not a svartalf, and not dead, and that it was there before the hall of lamps was cut.\n\nThe svartalfar who cut the hall cut downward from the upper gallery to their works and from the works to the deep roads, and on the deepest road they came on a stone that was warm. The cutters' accounts, as the free svartalfar of Malmohus tell them, say the stone was the size of a house and had a face in it that was not carved. The foreman of the cutters struck it with his pick to see what it was made of, and it got up. It killed the foreman and three cutters, and then it sat down again in the same place, and the svartalfar went round it from then on and cut the road a little wider so as not to touch it. They named it for what it had done, and they cut no deeper on that road.\n\nIt is still there, the thralls say, and the deep has grown up around it the way a town grows round a well. The deeplurks feed near it. The cave trows and their sorcerers keep the passages by it. The lost dead of the hagbui, buried in the roads before the svartalfar came, wander past it and are not troubled. The arachites who rule the farm above do not go down to it; their prelates pray toward the floor, and the thralls say the prayers go to Ond and to the other one, and that when the prayers end the webs shake for a long time.\n\nOnd does not leave its place. It is quick to rise against anything that comes close, as it rose against the foreman, and slow to notice anything that does not; a stranger who keeps his distance on the deep road, the thralls' prayers say, passes it as the cutters did. Those who come close find the stone of the deep, very heavy and very old. The thralls scratch Ond's name on the silk-frames sometimes with a hook beside it, the svartalf mark for a thing that is waiting.",
-  "legend": "Ond is a level 53 elemental (the big rock-sheerie model) near the bottom of Spindelhalla's deep, surrounded by deeplurk feeders and dissemblers, cave trows, cave trow trollkarl, arachite huskers, lost hagbui and silksters. Its aggro range is short (200) and it has no faction, so it never calls anyone and won't notice you unless you get close, but the deep around it is crowded and most of that is aggressive. Clear a path, pull Ond with range to a cleared spot, and fight it there. No special abilities, not CC-immune. It's one of the two old things at the bottom the svartalfar call evil and dread; Fas is the other.",
+  "legend": "Ond is an elemental (a great rock-sheerie), a foe for the realm's best, a full band of them, near the bottom of Spindelhalla's deep, surrounded by deeplurk feeders and dissemblers, cave trows, cave trow trollkarl, arachite huskers, lost hagbui and silksters. It notices you only within about seven paces and answers to no one, so it never calls anyone and won't notice you unless you get close, but the deep around it is crowded and most of that attacks on sight. Clear a path, draw Ond with a bow or a spell to a cleared spot, and fight it there. No special tricks, and charms, trances and stuns hold it. It's one of the two old things at the bottom the svartalfar call evil and dread; Fas is the other.",
   "yells": {
     "aggro": [
       "(The great stone rises from the road.)",
@@ -81,9 +81,9 @@
   },
   "botLines": {
     "briefing": [
-      "ond is 53, short aggro range, no faction",
+      "ond only notices you up close, answers to nobody",
       "the deep round it is crowded, clear a path first",
-      "pull ond to a cleared spot",
+      "draw ond to a cleared spot",
       "no tricks, just a big rock"
     ],
     "aftermathWin": [
@@ -93,7 +93,7 @@
       "fas next"
     ],
     "aftermathLoss": [
-      "pulled a cave trow pack with it",
+      "drew a cave trow pack with it",
       "deeplurks swarmed us",
       "hagbui wandered in",
       "too crowded down there"

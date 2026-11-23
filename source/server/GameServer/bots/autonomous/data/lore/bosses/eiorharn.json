@@ -24,7 +24,7 @@
     }
   ],
   "story": "Eiorharn keeps the armguards. In the middle of Malmohus, on the way between the ruins of the grey stone and the dragon's hollow, the drakulv armguards stand in a ring with their named one among them, and the name is Eiorharn's: an oath-name, the beam-cutters of Svarhamr think, from the old word for an oath, given to the drakulv who swore the armguards to the hollow's door when the dragon first came to Malmohus. Each holder of the name swears it again.\n\nBrisa of Svarhamr says the armguards are the one company of drakulv that never stopped answering the dragon's runners when Gunnolf refused them, because their oath was not to the runners but to the door. They do not guard the hollow itself. They guard the way to it, and Eiorharn stands in the middle of them like the pin in a brooch. Take the pin out, the svartalfar say, and the brooch falls open; and then the next Eiorharn comes and swears it shut again.",
-  "legend": "Eiorharn is a level 47 named drakulv in mid Malmohus standing with four drakulv armguards (42-45). He's Pack Drakulv faction, and the armguards stand right round him, so plan for five. No spells. Pull them apart if you can, or bring enough to handle five. The ring stands on the road between the ruins and the dragon's hollow. The armguards are lower level than he is.",
+  "legend": "Eiorharn is a known drakulv, a foe for a hardened band of veterans, in mid Malmohus standing with four drakulv armguards, a little weaker than he is. He's of the drakulv pack, and the armguards stand right round him, so plan for five. No spells. Draw them apart if you can, or bring enough to handle five. The ring stands on the road between the ruins and the dragon's hollow. The armguards are weaker than he is.",
   "yells": {
     "aggro": [
       "(Eiorharn growls the armguards into their ring.)",
@@ -44,7 +44,7 @@
   },
   "botLines": {
     "briefing": [
-      "eiorharn is the 47 named drakulv in the middle of malmohus with four armguards",
+      "eiorharn is the hardened-band drakulv in the middle of malmohus with four armguards",
       "pack drakulv, expect the armguards"
     ],
     "aftermathWin": [

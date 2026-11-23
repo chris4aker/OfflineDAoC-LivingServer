@@ -38,7 +38,7 @@
     }
   ],
   "story": "Above Caer Erasleigh the Pennine tops rise bare and brown into the wind, and on the highest of them, where the heather is scorched in long strips as if something had lain there and turned over in its sleep, lives the drake the riders of Castle Sauvage call Draco Magnificens. The brown drakes of the tops are big enough, and the riders give them room. He is the size of a hall. The riders' corporals say he was there before the caers, and that the first garrison of Erasleigh built its towers facing the wrong way and had to turn them.\n\nWhat he is, the realm cannot agree. The frontier riders say he is the stone dragon's: a shard of the granite Bed of Dartmoor that took wing when the giants took legs, and flew north to the highest ground in Albion to wait. They point out that he has no mate and no clutch, that the other drakes of the tops keep their distance from him as the Stonecrush keep their distance from the Bed, and that the riders' grandmothers knew him by no other name than the dragon's son. The Camelot loremasters answer that a drake of the Pennines has nothing to do with a dragon of Dartmoor, that he has no granite in him and no fire, only size, and that he is the greatest of the brown drakes and nothing more; the riders, they say, want a grander story than a frontier beast. The drovers of the Cornish road, three hundred miles south, settle it their own way. On the nights the drake flies south, they say, she wakes.\n\nOn some things the riders and the loremasters agree. He has no breath and casts nothing; whatever he is, he fights with his weight, and he hits harder than anything his size has a right to. No charm of the Academy's has ever turned his mind, and no dazzling has ever blinded him. He is quick on the ground for so large a thing, and no rider has outrun him once he has risen. And he does not stay dead. Corporal Dilys's book records a company of Erasleigh that brought him down on the tops one autumn and rode down to the caer to drink to it, and saw his shadow cross the courtyard before the second cup. The riders say that is the proof he is the stone dragon's, because a stone is not killed by breaking; it settles. The loremasters say it is only that the tops never lack a greatest drake. Either way, the garrison of Erasleigh does not drink to him any more.",
-  "legend": "Draco Magnificens is a level 61 epic drake on the high tops above Caer Erasleigh in the Pennines: about 17,600 health, hits one and a half times harder than a normal mob his level, and cannot be confused or nearsighted (other crowd control is worth a try, untested). He has no breath and no spells in the data; it is a straight melee fight with a very big drake. He runs fast, so do not try to outrun him, and he notices you inside 500. Bring two or three groups of fifties with a solid tank and steady heals and he goes down. He comes back very fast (the world data says 80 seconds), so do not sit and drink on the tops after he drops. The great brown drakes nearby are mid fifties; clear them first. The old riders call him the stone dragon's son; nobody has proved it.",
+  "legend": "Draco Magnificens is a great drake on the high tops above Caer Erasleigh in the Pennines, a foe for several bands of the realm's best together: as much killing as nine raiders, he hits one and a half times harder than an ordinary beast of his strength, and cannot be confused or blinded at a distance (other charms that hold a foe may work; nobody has confirmed it). By every account he has no breath and no spells; it is a straight melee fight with a very big drake. He runs fast, so do not try to outrun him, and he notices you inside about seventeen paces. Bring two or three bands of the realm's best with a solid shield-bearer and steady heals and he goes down. He comes back very fast (about eighty seconds after he dies), so do not sit and drink on the tops after he falls. The great brown drakes nearby are each a foe for the realm's best, a full band of them; clear them first. The old riders call him the stone dragon's son; nobody has proved it.",
   "yells": {
     "aggro": [
       "The heather stirs. A head rises, then the rest.",
@@ -76,22 +76,22 @@
   },
   "botLines": {
     "briefing": [
-      "draco magnificens, 61 epic drake. 17k hp, hits 1.5x a normal mob, no breath, no spells",
-      "cant confuse or nearsight him. solid tank, steady heals, everyone else on damage",
-      "clear the brown drakes around his top first, theyre mid 50s",
-      "he respawns in about 80 sec. kill him and get off the tops"
+      "draco magnificens, great drake, job for several bands of our best. as much killing as 9 of us, hits half again harder than you'd think",
+      "cant confuse or blind him. solid shield-bearer, steady heals, everyone else hitting",
+      "clear the brown drakes around his top first, each a job for a full band of our best",
+      "he comes back in about 80 sec. kill him and get off the tops"
     ],
     "aftermathWin": [
       "the stone dragon's son, they say. not today",
-      "draco down. somebody screenshot the size of that thing",
+      "draco down. somebody paint the size of that thing",
       "clean kill, nobody outran anything",
       "off the tops before he comes back, go"
     ],
     "aftermathLoss": [
       "tried to outrun him. he is faster than he looks",
-      "the tank folded, he hits way harder than a 61",
+      "the shield-bearer folded, he hits way harder than he looks",
       "we sat on the tops after and he was back in a minute",
-      "pulled two brown drakes with him"
+      "drew two brown drakes with him"
     ],
     "rumour": [
       "[heard|someone said] draco magnificens is golestandt's son, a bit of her bed that grew wings",
@@ -104,7 +104,7 @@
     "keyword": "draco magnificens",
     "text": "The great drake of the Pennine tops above Caer Erasleigh, the size of a hall. The frontier riders say he is the stone dragon's son, a shard of the Bed that took wing; the Camelot loremasters say he is only the greatest of the brown drakes. He has no fire, only weight, and he does not stay dead long."
   },
-  "bookPage": "From the Rider's Book of the Tops, kept by Dilys, corporal of the frontier riders of Castle Sauvage. The garrison of Erasleigh brought the great drake down on the tops one autumn, and rode down to the caer to drink to it, and saw his shadow cross the courtyard before the second cup. My grandmother called him the dragon's son, a stone of the Bed in Dartmoor that grew wings. The loremasters in Camelot say he is a big drake and we want a better story. I have seen him once, lying on the heather like a fallen tower. He has no fire. He does not need any. I turned my horse.",
+  "bookPage": "Dilys, corporal of the frontier riders of Castle Sauvage, keeps the Rider's Book of the Tops. The garrison of Erasleigh brought the great drake down on the tops one autumn, and rode down to the caer to drink to it, and saw his shadow cross the courtyard before the second cup. My grandmother called him the dragon's son, a stone of the Bed in Dartmoor that grew wings. The loremasters in Camelot say he is a big drake and we want a better story. I have seen him once, lying on the heather like a fallen tower. He has no fire. He does not need any. I turned my horse.",
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} brought down Draco Magnificens on the Pennine tops in {minutes} minutes.",
     "loss": "Draco Magnificens kept the Pennine tops; {raidLeader}'s raid of {realm} came down without him."

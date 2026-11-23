@@ -21,7 +21,7 @@
       "source": "https://en.wikipedia.org/wiki/Fetch_(folklore)"
     },
     {
-      "text": "Zone 203 (region 200, x 221,184-286,720, y 417,792-483,328): 534 monsters. Tir Urphost (area at 248,267/437,989) is the village: Druid Tobryn, Sentinel Casidhe, Pethos, Maible, merchants and a stable; Brother Esras, Druid Harkin, Aengus Osrithe, Lomond, Doran and Dartan live along the cliffs. The Koalinth Caverns entrance is at 247,379/472,830.",
+      "text": "Zone 203 (region 200, x 221,184-286,720, y 417,792-483,328): 534 monsters. Tir Urphost (area at 248,267/437,989) is the village: Druid Tobryn, Sentinel Casidhe, Pethos, Maible, merchants and a stable; Esras the hermit, Druid Harkin, Aengus Osrithe, Lomond, Doran and Dartan live along the cliffs. The Koalinth Caverns entrance is at 247,379/472,830.",
       "provenance": "game",
       "source": "world data Area and ZonePoint tables; world data Mob table, region 200 (read 2026-11-06)"
     },
@@ -41,7 +41,7 @@
       "source": "DataQuest 'The Broken Seal', 'Cad Goddeau B', 'Search For The Missing Smith', 'Catch of the Day' (world data)"
     },
     {
-      "text": "Living Server lore: the cliff-fire and its ghost; the covered lamps of Tir Urphost; the quarrel between the fishers and the cliff dwellers; the winds of the cliff-top; the fogs and their fetches; the koalinth who came up the spring the isle rose; Brother Esras's book.",
+      "text": "Living Server lore: the cliff-fire and its ghost; the covered lamps of Tir Urphost; the quarrel between the fishers and the cliff dwellers; the winds of the cliff-top; the fogs and their fetches; the koalinth who came up the spring the isle rose; Esras the hermit's book (he was a bard of Tir Urphost before he went out to the cliffs; the game's NPC is titled Brother, dropped because Hibernia has no Church).",
       "provenance": "original",
       "source": "Living Server"
     },
@@ -51,8 +51,8 @@
       "source": "world data Mob table, region 200 (read 2026-11-06)"
     }
   ],
-  "story": "The Cliffs of Moher are the western edge of the realm, a wall of dark stone that falls straight into the sea, and the people who live along them live in two halves. On the top, in the wind, is Tir Urphost, a village of fishers and druids whose boats go down to the water by a path nobody else would use. At the bottom, on the narrow strand where the cliffs meet the sea, are the cliff dwellers, an older people with spears and hunting-packs who say the strand was theirs before any boat came, and who have never once been on good terms with the village above.\n\nThe quarrel is old and has a ghost in it. In the days before the koalinth and before the isle rose in the west, the cliffs had a watcher, a man of the cliff-dweller families called Tawi Shon, who kept a fire on the highest point so the boats coming home in the dark would know where the rocks were. He kept it forty winters. Then it went out one storm night and his sons' boat broke under him. The fishers say he fell asleep; the cliff dwellers say the fishers put it out themselves to wreck a Midgard trader, with his sons aboard. Either way he walked off the cliff in the morning, and walks there still with a lamp, and the boats that steer by it break. That is why every lamp on the cliff path of Tir Urphost is covered at night.\n\nThe cliff-top belongs to the wind. The gales come in off the sea in a mob, small wild airs that the village children chase and the village elders do not, and behind them the zephyrs and the zephyr wraiths and, on the hill south-east of the crazy lurikeen Doran's camp, a greater zephyr the village calls Sinech, whom the realm's young are sent to clear the lesser winds from. The fogs come in after the wind. Fog wraiths and mist wraiths walk in them, and fog phantoms, and in the fogs on the inland side the fetches stand: doubles of living people, the fishers say, and to meet your own is to know you will not see the year out. A smith from Mag Mell called Ceard was found wandering the beach past the fogs once, robbed and confused, and he has never said what he saw.\n\nThe sea brought the koalinth. They came up into the caves under the cliffs in the spring that Hy Brasil left the mist, the fishers of Tir Urphost say, the same spring the fishers saw the isle rise and the sea ran cold, and their caves open on the cliff-top now. Druid Tobryn of the village sends the young down after the stone and the fungus that keep his old seal. The koalinth slinkers walk the strand with the tidal sheeries, and a named tidal sheerie called Aessa keeps a necklace's secret. Further along the sea-shelf the Fanged Sinach hunts the shallows.\n\nInland the cliffs soften into heath and old grove. The grovewoods of the ancient grove stand there, and the siabra keep a camp among the moheran distorters where they once held a druid of the realm, Harkin, until the young came and freed him. Brother Esras keeps a hermitage on the southern cliffs. Aengus Osrithe and Lomond and Dartan have their own reasons for living out here and keep them.\n\nWhy does it matter? Because the Cliffs of Moher are where the realm first saw the west change. The fishers of Tir Urphost were the first Hibernians to see Hy Brasil rise out of the mist, and the first to meet what came up out of the sea after it. Every fisher on the cliffs keeps a covered lamp, a rope, and an opinion about whose fault the fire was, and Tawi Shon still swings his light on the highest point on storm nights.",
-  "legend": "Cliffs of Moher, the west coast of the old country, levels 15-55. Tir Urphost on the cliff-top is the village (Druid Tobryn's The Broken Seal for the Koalinth Caverns, whose entrance is on the cliffs). The cliff-top is 16-33: Gale (44 of them, Eoghan's Spell), rock and grass sheeries, fetch and bocan, fog and mist wraiths, zephyrs (Sinech, 35, The West Wind). The strand below is 34-44 and social: cliff dwellers, hunters, spearmen (Piaras and Lhia), cliff hangers, koalinth slinkers, tidal sheeries (Aessa for Catch of the Day). Named: Tawi Shon (55 ghost) on the highest point, Coimirceoir (43), Fanged Sinach (43) in the shallows, Brarn (40), the Grey Man (31). Mind the edge: falling off the Cliffs of Moher is its own fight. Village custom: keep your lamp covered on the cliff path at night, and never look a fetch in the face.",
+  "story": "The Cliffs of Moher are the western edge of the realm, a wall of dark stone that falls straight into the sea, and the people who live along them live in two halves. On the top, in the wind, is Tir Urphost, a village of fishers and druids whose boats go down to the water by a path nobody else would use. At the bottom, on the narrow strand where the cliffs meet the sea, are the cliff dwellers, an older people with spears and hunting-packs who say the strand was theirs before any boat came, and who have never once been on good terms with the village above.\n\nThe quarrel is old and has a ghost in it. In the days before the koalinth and before the isle rose in the west, the cliffs had a watcher, a man of the cliff-dweller families called Tawi Shon, who kept a fire on the highest point so the boats coming home in the dark would know where the rocks were. He kept it forty winters. Then it went out one storm night and his sons' boat broke under him. The fishers say he fell asleep; the cliff dwellers say the fishers put it out themselves to wreck a Midgard trader, with his sons aboard. Either way he walked off the cliff in the morning, and walks there still with a lamp, and the boats that steer by it break. That is why every lamp on the cliff path of Tir Urphost is covered at night.\n\nThe cliff-top belongs to the wind. The gales come in off the sea in a mob, small wild airs that the village children chase and the village elders do not, and behind them the zephyrs and the zephyr wraiths and, on the hill south-east of the crazy lurikeen Doran's camp, a greater zephyr the village calls Sinech, whom the realm's young are sent to clear the lesser winds from. The fogs come in after the wind. Fog wraiths and mist wraiths walk in them, and fog phantoms, and in the fogs on the inland side the fetches stand: doubles of living people, the fishers say, and to meet your own is to know you will not see the year out. A smith from Mag Mell called Ceard was found wandering the beach past the fogs once, robbed and confused, and he has never said what he saw.\n\nThe sea brought the koalinth. They came up into the caves under the cliffs in the spring that Hy Brasil left the mist, the fishers of Tir Urphost say, the same spring the fishers saw the isle rise and the sea ran cold, and their caves open on the cliff-top now. Druid Tobryn of the village sends the young down after the stone and the fungus that keep his old seal. The koalinth slinkers walk the strand with the tidal sheeries, and a named tidal sheerie called Aessa keeps a necklace's secret. Further along the sea-shelf the Fanged Sinach hunts the shallows.\n\nInland the cliffs soften into heath and old grove. The grovewoods of the ancient grove stand there, and the siabra keep a camp among the moheran distorters where they once held a druid of the realm, Harkin, until the young came and freed him. Esras, a bard of Tir Urphost who gave up the benches for the wind, keeps a hermitage on the southern cliffs. Aengus Osrithe and Lomond and Dartan have their own reasons for living out here and keep them.\n\nWhy does it matter? Because the Cliffs of Moher are where the realm first saw the west change. The fishers of Tir Urphost were the first Hibernians to see Hy Brasil rise out of the mist, and the first to meet what came up out of the sea after it. Every fisher on the cliffs keeps a covered lamp, a rope, and an opinion about whose fault the fire was, and Tawi Shon still swings his light on the highest point on storm nights.",
+  "legend": "Cliffs of Moher, the west coast of the old country, hunting for young adventurers up to the realm's best. Tir Urphost on the cliff-top is the village (Druid Tobryn's The Broken Seal for the Koalinth Caverns, whose entrance is on the cliffs). The cliff-top is for young adventurers and seasoned bands: Gale (44 of them, Eoghan's Spell), rock and grass sheeries, fetch and bocan, fog and mist wraiths, zephyrs (Sinech, a hardened band's foe, The West Wind). The strand below is for seasoned bands and hardened veterans, and its folk come to each other's call: cliff dwellers, hunters, spearmen (Piaras and Lhia), cliff hangers, koalinth slinkers, tidal sheeries (Aessa for Catch of the Day). Foes of name: Tawi Shon (a ghost, a foe for the realm's best) on the highest point, Coimirceoir and Fanged Sinach in the shallows (hardened veterans' foes both), Brarn (the same), the Grey Man (a seasoned band's foe). Mind the edge: falling off the Cliffs of Moher is its own fight. Village custom: keep your lamp covered on the cliff path at night, and never look a fetch in the face.",
   "atmosphere": {
     "firstEntry": [
       "The Cliffs of Moher. The realm ends here.",
@@ -170,7 +170,7 @@
         "z": 5290,
         "radius": 800,
         "lines": [
-          "Brother Esras's hermitage.",
+          "The hermitage of Esras, who listens to the wind.",
           "A man who chose the wind."
         ]
       },
@@ -245,15 +245,15 @@
       "druid tobryn sends the young into the koalinth caves for his broken seal",
       "the siabra on the cliffs held druid harkin once. [cad goddeau b|freed]",
       "ceard the smith wandered the beach past the fogs and never said what he saw",
-      "brother esras keeps a hermitage on the southern cliffs"
+      "esras the hermit keeps a hermitage on the southern cliffs"
     ],
     "rumour": [
       "[heard|someone said] a light was swinging on the cliffs last night. [tawi shon|dont steer by it]",
       "someone fell off the cliffs of moher [again|lol]. long way down",
       "[word is|heard] the cliff dwellers raided a tir urphost boat on the strand",
-      "the cliff dweller spearmen are 38-44 and social. [piaras and lhia|careful]",
-      "[heard|someone said] saw my own fetch in the fog. [logging off|lol]",
-      "the fanged sinach is out in the shallows at the bottom of the cliffs. [43|catch of the day]",
+      "the cliff dweller spearmen want veterans and come to each other's call. [piaras and lhia|careful]",
+      "[heard|someone said] saw my own fetch in the fog. [going home|lol]",
+      "the fanged sinach is out in the shallows at the bottom of the cliffs. [veterans' work|catch of the day]",
       "[word is|heard] the koalinth are coming up the cliff path at night now",
       "tie a rope on in the fog on the cliff top. [tir urphost custom|really]",
       "[heard|someone said] the grey man of moher is a cliff dweller. not the fog kind",
@@ -266,14 +266,14 @@
       "cliffs of moher is the west coast. tir urphost is the village. 15 to 55",
       "where is tir urphost? on the cliff top at the north of the cliffs of moher",
       "where is the koalinth caverns entrance? on the cliffs of moher, south of tir urphost",
-      "is the cliffs of moher hard? top is teens to 30s, the strand below is 34-44 and social",
+      "is the cliffs of moher hard? top is for the young and seasoned, the strand below wants seasoned or veterans and they help each other",
       "whats in the cliffs of moher? gales, wraiths, zephyrs, cliff dwellers, koalinth, tawi shon",
-      "where is tawi shon? on the highest point of the cliffs. 55 ghost. dont fall off",
-      "grey man is a 31 cliff dweller haunting south west of tir urphost. the anxious healer quest",
-      "chief whelihan is a 28 cliff dweller chief near the highest point, cliff dwellers round him",
-      "bran the giant is a 24 giant on the heath east of the cliffs. nuada's silver a. he is aggro, careful",
-      "gala is a 19 named gale on the gale heath, cliffs of moher, bigger than the rest",
-      "gales are the 16-20 wind things all over the moher cliff top, dozens of them. eoghan's spell wants vervain"
+      "where is tawi shon? on the highest point of the cliffs. a ghost for our best. dont fall off",
+      "grey man is a cliff dweller for a seasoned group, haunting south west of tir urphost. the anxious healer quest",
+      "chief whelihan is a cliff dweller chief for a seasoned group, near the highest point, cliff dwellers round him",
+      "bran the giant is a giant for a seasoned group on the heath east of the cliffs. nuada's silver a. he goes for you on sight, careful",
+      "gala is a gale of name on the gale heath, cliffs of moher, bigger than the rest, a fight for the young",
+      "gales are the wind things for the young all over the moher cliff top, dozens of them. eoghan's spell wants vervain"
     ]
   },
   "loremaster": {
@@ -286,7 +286,7 @@
       "fogs": "The fogs that follow the wind: fog wraiths, mist wraiths, fog phantoms, and the fetches, doubles of the living. To meet your own fetch is to know you will not see the year out.",
       "koalinth": "The sea-people who came up into the caves under the cliffs the spring Hy Brasil left the mist. Their caves open on the cliff-top. Druid Tobryn sends the young down for his broken seal.",
       "Harkin": "A druid of the realm the cliff siabra once held in their camp among the moheran distorters, until the young came for him. He writes to Tir Urphost now.",
-      "Esras": "Brother Esras, who keeps a hermitage on the southern cliffs and wrote down what the wind told him, which was mostly about the fishers.",
+      "Esras": "Esras the hermit, who left the bards' benches of Tir Urphost for a hermitage on the southern cliffs and wrote down what the wind told him, which was mostly about the fishers. He keeps one bard's habit still: he says a thing aloud three times before he writes it down.",
       "Grey Man": "Cinead the healer keeps the top of the guard post near Tir Urphost and has not slept well since the Grey Man came. He is a cliff dweller, by his shape, or was, and he haunts the slope south-west of the village, and the fishers who see him come home with the shakes. Cinead sends the young as far as Treibh Caillte, Bri Leith and Mount Collory for what is needed to face him. Lough Gur's grey man is a fog. This one is not.",
       "Chief Whelihan": "Chief Whelihan is the chief of the cliff dweller band that camps near the highest point, where Tawi Shon kept his fire, and he is one of the rowdy kind, big and loud and quick to quarrel. The cliff dwellers of the strand do not count him as theirs: his people came up off the strand to live on top, the fire quarrel says, and Whelihan has never forgiven Tir Urphost for covering its lamps.",
       "Bran the Giant": "Bran the Giant is a man, the cliff people say, who has grown, and he keeps the heath east of the cliffs with half of a map. The map shows where Nuada's silver wrist lies under the Silvermine, and Bran will send the young about the realm for sap and ale and a reading of it, and then, when they come back to him, he will try to kill them for it, because he wants the other half. Chief Proinnsias of Howth wants to hear where the wrist is. Mikka of Caille has the rest.",
@@ -295,12 +295,12 @@
     }
   },
   "book": {
-    "title": "Notes from a Hermitage on the Cliffs, by Brother Esras",
+    "title": "Notes from a Hermitage on the Cliffs, by Esras the Hermit",
     "pages": [
-      "I came out to the southern cliffs to be alone with the wind and discovered that the wind is never alone. It comes in off the sea in a mob, the gales, little wild airs that knock over anything left standing, and the zephyrs come behind them like older brothers, and behind the zephyrs the fog. I have been here eleven winters. I have learned to tell the winds apart. The village children say the greatest of them, on the hill to the south, is a woman named Sinech. I have not met her. I have heard her.",
+      "I came out to the southern cliffs to be alone with the wind and discovered that the wind is never alone. It comes in off the sea in a mob, the gales, little wild airs that knock over anything left standing, and the zephyrs come behind them like older brothers, and behind the zephyrs the fog. I have been here eleven winters. I have learned to tell the winds apart. The village children say the greatest of them, on the hill to the south, is a woman named Sinech. I have not met her, and I do not walk that way in a southerly. I have heard her.",
       "Tir Urphost covers its lamps. Strangers think it is thrift. It is the ghost. The cliffs had a watcher once who kept a fire on the highest point for the boats, and the fire went out, and his sons drowned, and he walked off in the morning. The fishers say he slept at his post. The strand people say the fishers wrecked a trader with his sons aboard. I have asked both, many times, and I believe neither, and I keep my own lamp covered when I walk to the village, because it costs nothing, and he is still up there.",
-      "The fog brings the fetches. They stand on the inland heath in the grey and look like people you know, and some of them look like you, and the fishers say that to meet your own is to know you will not see the year out. I met a woman's fetch on the path one morning and told her of it that evening, and she laughed, and she is still alive, so I do not know what the fishers know. I do know that I did not look the fetch in the face. Nobody here does.",
-      "The spring the isle came out of the mist in the west, the sea ran cold along these cliffs, and the koalinth came up into the caves below the village. The fishers saw the isle first; the druids of Tir Urphost say we were the first to see what the isle's rising did to the sea. Tobryn keeps an old seal against the caves and sends the young down to mend it. I pray for them, in the wind, which is the only place out here prayers go, and the wind, I have found, takes them somewhere."
+      "The fog brings the fetches. They stand on the inland heath in the grey and look like people you know, and some of them look like you, and the fishers say that to meet your own is to know you will not see the year out. I met a woman's fetch on the path one morning and told her of it that evening, and she laughed, and she is still alive, so I do not know what the fishers know. I do know that I did not look the fetch in the face. Nobody here does, and the children are taught to look at its feet.",
+      "The spring the isle came out of the mist in the west, the sea ran cold along these cliffs, and the koalinth came up into the caves below the village. The fishers saw the isle first; the druids of Tir Urphost say we were the first to see what the isle's rising did to the sea. The old men say the water there has not been warm since. Tobryn keeps an old seal against the caves and sends the young down to mend it. I pray for them, in the wind, which is the only place out here prayers go, and the wind, I have found, takes them somewhere."
     ]
   },
   "bosses": [
@@ -318,7 +318,7 @@
   "related": [
     {
       "id": "hibernia-wilds",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "koalinth-caverns",

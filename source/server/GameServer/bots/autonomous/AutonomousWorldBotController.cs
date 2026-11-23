@@ -185,6 +185,8 @@ namespace DOL.GS
         private Vector3 _lastTerminalRouteFailurePosition;
         private long _lastTerminalRouteFailureTick;
         private int _terminalRouteFailuresInPocket;
+        // 1.2.1 (#420, #421): identical pocket escapes for one goal (AutonomousRouteRecoveryPolicy.PocketEscapeRun)
+        private readonly AutonomousRouteRecoveryPolicy.PocketEscapeRun _pocketEscapeRun = new();
         // Route goal fixes (stefanrows): the latest IssuePath was a precise arrival; an off-mesh goal walked to its
         // floor; a goal with no usable floor (not tried again); a snapped goal that failed again; another mover's
         // failure set aside once; the floor step's budget and its miss memo.
@@ -2425,6 +2427,8 @@ namespace DOL.GS
                 bot.StopMovingOnPath();
                 SetRvrStatus(bot, "Waiting for a frontier teleporter", destination.MonsterName,
                     $"{destination.ZoneName} is reached by porter, not on foot through the frontier dungeons");
+                // Why TryFrontierTransport declined is in declined= of RVR_FRONTIER_WAIT_LONG (#418).
+                NoteFrontierWait(bot, "waiting", destination, null);
                 return true;
             }
             if (bot.CurrentRegionID != destination.RegionId)
@@ -5580,6 +5584,7 @@ namespace DOL.GS
             Vector3 escape;
             ushort escapeRegion;
             string escapeName;
+            bool shortHop = false;   // one of the three audited local escapes below (not a raid front or a capital)
             // 2026-10-16 (owner's session, Camelot Hills): Haroorwin failed the same route every 7 seconds for minutes,
             // each failure an 800-query, 2-9 second AI turn that froze the server (rubberbanding). Every escape was a short
             // hop beside the pocket and reset the failure count, so it never reached the real relocation. Repeated
@@ -5592,12 +5597,14 @@ namespace DOL.GS
             {
                 escapeRegion = bot.CurrentRegionID;
                 escapeName = _camp.ZoneName;
+                shortHop = true;
             }
             else if (localHopsLeft && AutonomousRouteHotspotRepair.TryGetImmediateEscape(
                     PathfindingProvider.Instance, bot.CurrentRegion, bot.CurrentRegionID, current, out escape))
             {
                 escapeRegion = bot.CurrentRegionID;
                 escapeName = bot.CurrentZone?.Description ?? $"region {escapeRegion}";
+                shortHop = true;
             }
             else if (localHopsLeft && _camp != null &&
                      AutonomousRouteHotspotRepair.TryResolveStarterDungeonRouteSurface(
@@ -5606,6 +5613,7 @@ namespace DOL.GS
             {
                 escapeRegion = bot.CurrentRegionID;
                 escapeName = bot.CurrentZone?.Description ?? $"region {escapeRegion}";
+                shortHop = true;
             }
             else if (_terminalRouteFailuresInPocket >= AutonomousRouteRecoveryPolicy.FailuresBeforeSafeRelocation &&
                      AutonomousRealmRaid.TryDungeonRegroupPoint(bot, out ushort raidRegion, out Vector3 raidFront) &&
@@ -5647,6 +5655,28 @@ namespace DOL.GS
                 escapeName = capital.Name;
             }
 
+            // 1.2.1 (#420, #421): a short hop that already failed to fix this goal twice will not fix it a third time
+            // (the hop lands where the same route fails again). Give the goal up instead: the callers' failure paths
+            // (camp route quarantine, AbandonCamp) then run, and the log line pins the spot for the owner's next run.
+            if (shortHop)
+            {
+                string loopGoal = AutonomousRouteRecoveryPolicy.PocketEscapeGoal(_camp?.Id, goal);
+                if (_pocketEscapeRun.WouldLoop(loopGoal, escape, now))
+                {
+                    Log.Warn($"AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={bot.CurrentZone?.ID ?? 0} " +
+                             $"from={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                             $"to={(int)escape.X},{(int)escape.Y},{(int)escape.Z} escapes={_pocketEscapeRun.Count} " +
+                             $"minutes={(now - _pocketEscapeRun.FirstTick) / 60_000.0:0.0} goalKey=\"{loopGoal}\" " +
+                             (goal is { } g ? $"goal={(int)g.X},{(int)g.Y},{(int)g.Z} " : string.Empty) +
+                             $"camp=\"{_camp?.Id}\" target=\"{_camp?.MonsterName}\" campAt={_camp?.X ?? 0},{_camp?.Y ?? 0},{_camp?.Z ?? 0} " +
+                             $"terminalFailures={_terminalRouteFailuresInPocket} activity=\"{bot.PersistentRecord?.Activity}\" " +
+                             "outcome=goal_given_up");
+                    _pocketEscapeRun.Clear();
+                    return false;
+                }
+            }
+
             ushort failedSourceRegion = bot.CurrentRegionID;
             ushort failedSourceZone = bot.CurrentZone?.ID ?? 0;
             ushort failedTargetRegion = _camp?.RegionId ?? 0;
@@ -5660,10 +5690,17 @@ namespace DOL.GS
 
             ClearZonePointQuarantine(bot, failedSourceRegion, failedSourceZone, failedTargetRegion);
 
+            int sameEscapes = shortHop
+                ? _pocketEscapeRun.Note(AutonomousRouteRecoveryPolicy.PocketEscapeGoal(_camp?.Id, goal), escape, now)
+                : 0;
+            if (!shortHop)
+                _pocketEscapeRun.Clear();
             Log.Warn($"AUTONOMOUS_ROUTE_POCKET_ESCAPE bot={bot.Name} id={bot.DatabaseID} " +
                      $"from={_lastTerminalRouteFailureRegion}:{(int)current.X},{(int)current.Y},{(int)current.Z} " +
                      $"to={escapeRegion}:{(int)escape.X},{(int)escape.Y},{(int)escape.Z} " +
-                     $"terminalFailures={_terminalRouteFailuresInPocket}");
+                     $"terminalFailures={_terminalRouteFailuresInPocket} sameEscapes={sameEscapes} " +
+                     $"camp=\"{_camp?.Id}\" target=\"{_camp?.MonsterName}\"" +
+                     (goal is { } aim ? $" goal={(int)aim.X},{(int)aim.Y},{(int)aim.Z}" : string.Empty));
             ResetRouteOrderState();
             // A short hop keeps the pocket's failure count (the bot comes back to the same spot); a real relocation clears it.
             if (!localHopsLeft || escapeRegion != failedSourceRegion ||

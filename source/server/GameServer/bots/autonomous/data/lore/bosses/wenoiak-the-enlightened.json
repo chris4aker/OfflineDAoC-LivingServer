@@ -24,10 +24,15 @@
       "text": "Weno'iak as the grain-reeve of the crossing, the list of libraries, the saved books in the observatory, the light of the college of stars turned round and the swum warsteeds are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (Magus Hedydd's note on the working taught to three masters reading together, and the burst as its gathered light without the gentle part) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
-  "story": "Weno'iak the Enlightened is lord of the wi'voron, the drakoran clan whose work is the joins between the others' work (reeves, acaters, sicklemen, lorimers, and the only drakoran cavalry), and from whom Albion learned most of what it knows of the drakoran. He was a young tally-reeve of the host's grain on the crossing who kept every hold's count in his head, and it was he who told Dura'ek how many days the host could last before it must take Avalon; Dura'ek burned the city on the night he named. He became lord of the wi'voron by being the one the other lords sent for when they could not agree.\n\nThe drau'gyn burned the libraries in the order of a list, and the wi'voron have never denied that their lord made it: Elowen's own list has the same order, the fishermen remember a young drakoran with a reeve's slate selling fish on the cloister steps that season, and Sefin of the Inconnu says whoever made it had read in every library. If so, he also kept back what was on it. Chancellor Rhydderch's commentaries, the star tables and a book of the old tongues are on the observatory shelves, and he reads them by lamplight and says the drakoran burned the wrong things.\n\nHis light is a working of the college of stars turned round: thin, cold Lights that strike one spirit at a time from further than a bow carries, and, when he is pressed, a burst every way that breaks the spirits of all who stand near him. The fishermen say 'stand off from the reeve-lord'; the readers add that a man who stands off had better not stand alone in plain view. Magus Hedydd thought he had learned only half the working.\n\nHis cuirassiers and warsteeds keep the yards. Once he wanted the city fed, then counted; now he reads the charters to learn who first laid stone on the Heart, and why.",
-  "legend": "His yards are full: about six cuirassiers, eight warsteeds and six reeves of his faction stand near him and come in with him, so plan it as one big pull. Spread out against his Annihilate, which hits everyone within 500 of him, and bring spirit resist. Off-tanks on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one target at a time; his Annihilate bursts around himself, so the casters stand well back from him.",
+  "story": "Weno'iak the Enlightened is lord of the wi'voron, the drakoran clan whose work is the joins between the others' work (reeves, acaters, sicklemen, lorimers, and the only drakoran cavalry), and from whom Albion learned most of what it knows of the drakoran. He was a young tally-reeve of the host's grain on the crossing who kept every hold's count in his head, and it was he who told Dura'ek how many days the host could last before it must take Avalon; Dura'ek burned the city on the night he named. He became lord of the wi'voron by being the one the other lords sent for when they could not agree.\n\nThe drau'gyn burned the libraries in the order of a list, and the wi'voron have never denied that their lord made it: Elowen's own list has the same order, the fishermen remember a young drakoran with a reeve's slate selling fish on the cloister steps that season, and Sefin of the Inconnu says whoever made it had read in every library. If so, he also kept back what was on it. Chancellor Rhydderch's commentaries, the star tables and a book of the old tongues are on the observatory shelves, and he reads them by lamplight and says the drakoran burned the wrong things. No company has ever found them there; the readers think he carries them off before anyone climbs to the observatory, and leaves ash behind.\n\nHis light is a working of the college of stars turned round: thin, cold Lights that strike one spirit at a time from further than a bow carries, and, when he is pressed, a burst every way that breaks the spirits of all who stand near him. The fishermen say 'stand off from the reeve-lord'; the readers add that a man who stands off had better not stand alone in plain view. Magus Hedydd thought he had learned only half the working.\n\nHis cuirassiers and warsteeds keep the yards. Once he wanted the city fed, then counted; now he reads the charters to learn who first laid stone on the Heart, and why.",
+  "legend": "His yards are full: Weno'iak, a foe for several bands of the realm's best together and as much killing as fifteen raiders, has about six cuirassiers, eight warsteeds and six reeves sworn to him standing near him, and they come in with him, so plan it as one big draw. Spread out against his Annihilate, a spirit burst worth nearly half a robed caster's strength on everyone within seventeen paces of him every twenty to twenty-five seconds, and bring wards against spirit. Second shields on the cavalry, and kill the warsteeds before their riders tire of walking.\n\nThe readers of Caer Gothwaite would pay a great deal for whatever books he has; Albion raiders have looked, and found only ash and a few torn pages in his observatory; the readers think he moves the books before any company climbs the yard stair, and burns a few loose pages in the brazier so the raiders stop looking. The warsteeds die faster than their riders; kill them first and the cuirassiers walk. His Lights land on one raider at a time, a spirit bolt worth a third of a robed caster's strength from as far as fifty paces; his Annihilate bursts around himself, so the casters stand well back from him.",
   "yells": {
     "aggro": [
       "Riders! Let them see the light!",
@@ -65,24 +70,24 @@
   },
   "botLines": {
     "briefing": [
-      "wenoiak has cuirassiers, warsteeds and reeves all round him. off tanks on cavalry",
-      "spread for his annihilate, spirit resist up",
-      "annihilate hits everyone within 500 of him. casters stay back, spirit resist up",
+      "wenoiak has cuirassiers, warsteeds and reeves all round him. second shields on cavalry",
+      "spread for his annihilate, spirit wards up",
+      "annihilate hits everyone within 17 paces of him. casters stay back, spirit wards up",
       "kill warsteeds first",
       "the whole yard comes, plan it"
     ],
     "aftermathWin": [
-      "whole yard in one pull. gg",
+      "whole yard in one go. good fight",
       "the enlightened one wasnt that bright",
       "the cavalry is unhorsed",
       "casters stayed out of annihilate the whole time"
     ],
     "aftermathLoss": [
-      "we stacked for annihilate. 450 to everyone",
-      "casters stood next to him for annihilate. 450 each",
+      "we bunched up for annihilate. nearly half of every caster gone at once",
+      "casters stood next to him for annihilate. nearly half of each of them gone",
       "the warsteeds trampled the casters",
-      "not enough off tanks",
-      "no spirit resist"
+      "not enough second shields",
+      "no spirit wards"
     ],
     "rumour": [
       "heard weno'iak reads the books the other drakoran burned",
@@ -96,6 +101,9 @@
     "text": "The Enlightened. His clan rides warsteeds, and he burns men with a light that is not fire."
   },
   "bookPage": "The riders took the stable-yards of the colleges and our observatory with them, and their lord, my fishermen say, sits in the observatory at night with a lamp. One of them swears he saw books on the table: our books, the ones we thought had burned. If that is so, he saved them on purpose. I do not know whether to be grateful or afraid. The fishermen say his light is not fire, that it breaks men from inside, and that he has learned it somewhere. I fear I know where. We taught one pupil too well already. I would not have us teach another.",
+  "bookPages": [
+    "The reeve-lord's light is ours, Magus Hedydd of the Academy wrote in her commonplace book: the college of stars' working for reading a far star by its own cold light, turned round to strike instead of read. The book teaches it to three masters reading together. Two gather the light and send it thin and far, to one point. The third gives it back gently to whoever stands at the reader's elbow, so that a pupil may see what the master sees. Alone, he has the first part exactly. The third he has not learned yet, and when he is pressed, out comes what the readers call his second working: the gathered light sent every way at once, with nothing to make it gentle. No master would teach the one part without the other. Elowen asked me tonight whose book he learned from. I told her that every book of ours he could have read is on his own shelves."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} unhorsed Weno'iak's cavalry and put out his light in {minutes} minutes.",
     "loss": "Weno'iak the Enlightened rode down {realm}'s raid in the colleges' yards; {raidLeader} lost them to the light."
@@ -130,7 +138,7 @@
     },
     {
       "title": "The Light from the Observatory",
-      "text": "His clan calls him the Enlightened, and his light is not the drau'gyn's fire. It is something he found in the readers' books.\n\nThe college of stars taught, among the things it did not teach to everyone, a working of light that its masters used to see by when they read the sky: a thin, cold light that touches one point at a great distance and shows what is there. The readers' books say it shows the spirit of a thing as well as its shape. Weno'iak learned it from the star tables in the observatory, the readers believe, and turned it round. His Lights come from across a room, from further than a bow carries, one at a time, cold and unhurried, and they strike at the spirit of whoever they touch and break it from inside. The Inconnu, who keep the spirit-speakers of the isles, say they have never been afraid of any drakoran working but this one.\n\nThe second working is worse, and closer. When Weno'iak is pressed, the light goes out of him all at once, every way, a burst that breaks the spirits of everyone who stands near him. The fishermen's saying, stand off from the reeve-lord, is about the burst; they say it about any powerful man, meaning that his anger falls on those at his elbow. The readers add the other half, which the fishermen leave out because it is not about anger: that the reeve-lord's light finds one man at a time at any distance, so a man who stands off had better not stand alone in plain view.\n\nMagus Hedydd of the Academy, who went to the readers to learn the dusk-reading after his own school failed him, thought Weno'iak had not finished learning the working. He wrote that the lord was teaching himself from books meant for three masters reading together, and that what he could do was half of what was written. The Camelot loremasters say that is why he is the most dangerous of the five. Not because he is the strongest. Because he is the one who is learning."
+      "text": "His clan calls him the Enlightened, and his light is not the drau'gyn's fire. It is something he found in the readers' books.\n\nThe college of stars taught, among the things it did not teach to everyone, a working of light that its masters used to see by when they read the sky: a thin, cold light that touches one point at a great distance and shows what is there. The readers' books say it shows the spirit of a thing as well as its shape. Weno'iak learned it from the star tables in the observatory, the readers believe, and turned it round. His Lights come from across a room, from further than a bow carries, one at a time, cold and unhurried, and they strike at the spirit of whoever they touch and break it from inside. The Inconnu, who keep the spirit-speakers of the isles, say they have never been afraid of any drakoran working but this one.\n\nThe second working is worse, and closer. When Weno'iak is pressed, the light goes out of him all at once, every way, a burst that breaks the spirits of everyone who stands near him. The fishermen's saying, stand off from the reeve-lord, is about the burst; they say it about any powerful man, meaning that his anger falls on those at his elbow. The readers add the other half, which the fishermen leave out because it is not about anger: that the reeve-lord's light finds one man at a time at any distance, so a man who stands off had better not stand alone in plain view.\n\nMagus Hedydd of the Academy, who went to the readers to learn the dusk-reading after her own school failed her, thought Weno'iak had not finished learning the working. She wrote that the lord was teaching himself from books meant for three masters reading together, and that what he could do was half of what was written. The Camelot loremasters say that is why he is the most dangerous of the five. Not because he is the strongest. Because he is the one who is learning."
     },
     {
       "title": "The Riders of the Yards",

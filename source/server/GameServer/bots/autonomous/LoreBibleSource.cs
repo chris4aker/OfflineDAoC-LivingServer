@@ -50,7 +50,7 @@ public sealed class LoreBibleSource : ILoreSource, ILoreHistorySource
     public static LoreLocation ToChannel(LoreBible.Location l) =>
         new(l.Id, l.Name, l.Realm, l.Regions.Select(r => (int)r).ToArray(), l.Summary, l.Story, l.Legend, ToChannel(l.Loremaster),
             l.Book == null ? null : new LoreBookText(l.Book.Title, l.Book.Pages), l.Bosses,
-            l.Areas.Select(a => new LoreArea(a.Name, a.X, a.Y, a.Z, a.Radius)).ToArray())
+            l.Areas.Select(a => new LoreArea(a.Name, a.X, a.Y, a.Z, a.Radius) { Region = a.Region }).ToArray())
         {
             RealmTakes = Takes(l.RealmTakes),
             Chapters = l.Chapters.Select(c => new LoreChapter(c.Title, c.Text)).ToArray(),

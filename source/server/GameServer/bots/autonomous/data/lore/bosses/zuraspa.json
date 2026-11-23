@@ -20,7 +20,7 @@
     }
   ],
   "story": "Zuraspa is the wall-steward of Krrzck, the mantid who decides, each morning, whether the town's shut gate stays shut. The answer has been the same every morning for as long as the Sylvan have kept count, with one exception: the morning Zuraspa let in Eimear, the outlander girl who had sat outside the wall for a season and a half. The other stewards have never asked why. Eimear has, and says Zuraspa told her only that a proper asking should be answered.\n\nZuraspa does not like the realm, and does not dislike it. The Necht scribes who have dealt with the town through Eimear say Zuraspa counts the Hibernian companies that walk past the wall toward the mouth of Galladoria, and that the count is kept on the inside of the gate, in scratches, beside a much older count that nobody has explained. It does not let anyone stand at the gate long.",
-  "legend": "Zuraspa (46) is a named Krrzck mantid inside the shut town of Krrzck in World's End (about 368k/261k). Krrzck mantids are not aggressive to everyone (aggro 99), but they are a faction and they defend each other. Killing Zuraspa brings the stewards (maor, 50) and citizens. Plain spawn, 2-minute respawn. Most groups leave the town alone. If you need anything from Krrzck, it goes through Eimear, not the gate.",
+  "legend": "Zuraspa, a foe for a hardened band of veterans, is a Krrzck mantid of name inside the shut town of Krrzck in World's End (about 368k/261k). Krrzck mantids do not attack everyone on sight, but they are sworn together and they defend each other. Killing Zuraspa brings the stewards (maor, each a foe for the realm's best) and citizens. Plain, no tricks; she returns two minutes after she falls. Most groups leave the town alone. If you need anything from Krrzck, it goes through Eimear, not the gate.",
   "yells": {
     "aggro": [
       "(the steward's forelegs lift)",
@@ -43,16 +43,16 @@
   },
   "botLines": {
     "briefing": [
-      "zuraspa is a 46 krrzck mantid inside the town",
+      "zuraspa is a krrzck mantid inside the town",
       "the stewards and citizens help each other. [careful|leave it]"
     ],
     "aftermathWin": [
       "zuraspa down. [the gate steward|grats]",
-      "only pulled one maor. [lucky|nice]"
+      "only drew one maor. [lucky|nice]"
     ],
     "aftermathLoss": [
       "the whole town came. [rip|lol]",
-      "maor are 50. [ouch|oops]"
+      "maor are tough. [ouch|oops]"
     ],
     "rumour": [
       "[heard|someone said] zuraspa let eimear in. nobody knows why",

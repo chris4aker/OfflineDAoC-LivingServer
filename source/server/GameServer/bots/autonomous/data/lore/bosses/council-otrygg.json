@@ -40,7 +40,7 @@
     },
     {
       "text": "Killing Council members lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/6030"
     },
     {
@@ -52,6 +52,11 @@
       "text": "Otrygg is from Old Norse otryggr, 'untrustworthy, faithless' (to verify). Hjalmar's wager in the kennels and the saying 'the pack is always full' are Living Server lore.",
       "provenance": "original",
       "source": "Old Norse, to verify"
+    },
+    {
+      "text": "The book pages after the first (Dellingstad's winter-reckoning of the fog with a face and the rooks' memory of Hjalmar's wager) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Otrygg's name means faithless, and the Council gave it to him as a joke he never forgave. In the first years, when everyone believed in the peace, he was the one councillor who would not. He voted with Birghir because the queen wanted it, but he said aloud that he did not trust peace to keep the door, and so the others called him faithless and the name stuck. He answered them by keeping something else to keep the door: a pack of beasts he called up out of the cold, eight of them, never more and never fewer.\n\nThe pack is always full. The young icelords tested it once, at midwinter, when Hjalmar wagered the Council he could empty Otrygg's kennels in a night. He fought there till dawn and killed beast after beast, and every time one fell another came up out of the dark at the back of the kennel, and at dawn there were eight. Otrygg came down in the morning and laughed and told him the beasts were not in the kennels; they were in him. The Ice Lords' houses never forgot the wager, and the side tunnels still say it: the pack is always full while the faithless one stands.\n\nIt was Otrygg who called the vote to cast out the sculptor who carved the sleeper's waking face, the only vote in a century Birghir did not call himself, and every rib rang once. The cast-out sculptors at Dellingstad say he did it because the carving frightened him more than anything else on the ribs had in a hundred years. When strangers come to the outer seats now, his pack comes off the floor round his seat all together, and refills as fast as it falls; and when Otrygg falls, every beast in the hall lies down at once, as if a hand had let go of a leash.",
@@ -73,7 +78,7 @@
       "text": "The door Otrygg did not trust was opened the winter Midgard climbed the crater road. He was not surprised. The sculptors say he was the only councillor who struck his rib twice for no in that last vote alongside Birghir and Guthlac, not because he wanted peace, but because by then, he said, it was too far gone for a march to mend.\n\nWhen strangers come to the outer seats now his pack comes up off the floor round his seat all together at the first blow, eight beasts of the cold at once, and the companies who have stood there say what Hjalmar found in the kennels: that they do not thin. Every beast that falls is replaced from the cold before it has finished falling, and the pack is full again, and the faithless one sits behind it and watches.\n\nThe beasts themselves are not much. The companies say a single one of them is a hound with a giant's shadow and very little bite, and that what makes the pack dangerous is that there are always eight and they never tire. The companies say the other thing too, which is the end of the saying: when Otrygg falls, every beast in the hall lies down at once, as if a hand had let go of a leash, and goes back into the cold it was shaped from.\n\nThe cast-out sculptors have a last word on him. They say the faithless one was right about the door, and that being right did him no more good than it did Birghir, who was right about the lid. On the ribs of Tuscaran, they say, being right has never once been enough."
     }
   ],
-  "legend": "Otrygg is a pet fight with a twist. The moment he's hit he summons eight pets, 10,000 health each, and while he's in combat he refills the pack straight back to eight every time one dies. So killing pets gains you nothing: they come back instantly. They hit weakly, though, and every one of them dies the moment Otrygg dies. The answer is to hold the pets off the healers (stuns, mez and area damage all work on them, and a couple of tanks can soak them) and put the whole raid's damage into Otrygg: 100,000 health, 40% melee and 70% magic resists, CC-immune. If he resets, the pets go with him. Good boots and a jewel drop off him.",
+  "legend": "Otrygg is a fight against his pack, with a twist. The moment he's hit he calls up eight of his pack, each taking as much killing as five raiders, and while he's fighting he refills the pack straight back to eight every time one dies. So killing them gains you nothing: they come back at once. They hit weakly, though, and every one of them dies the moment Otrygg dies. The answer is to hold the pack off the healers (stuns, trances and blasts that strike everyone near all work on them, and a couple of shield-bearers can soak them) and put the whole raid's damage into Otrygg: he takes as much killing as fifty raiders, four-tenths of every blow and seven-tenths of every spell are lost on him, and no charm or stun holds him. If he goes home whole, the pack goes with him. Good boots and a jewel come off him.",
   "yells": {
     "aggro": [
       "Faithless, they called me. Faithful hounds, I answer. Go!",
@@ -123,18 +128,18 @@
   },
   "botLines": {
     "briefing": [
-      "otrygg spawns 8 pets right away. [pbae team|aoe] on the pets, tanks hold otrygg",
-      "otrygg: dont chase him, let the pets come to the aoe",
-      "keep somebody on otrygg or he resets",
-      "aoe group stands between the pets and the healers on otrygg",
+      "otrygg calls eight pets right away. [blast team round themselves|blasts that hit everyone near] on the pets, shield-bearers hold otrygg",
+      "otrygg: dont chase him, let the pets come to the blasters",
+      "keep somebody on otrygg or he goes home whole",
+      "blast group stands between the pets and the healers on otrygg",
       "otrygg refills his pets to 8 instantly, dont bother killing them",
       "hold the pets, burn otrygg, they all die with him",
       "pets hit weak but never stop, keep them off the heals",
-      "pets arent cc immune, mez or stun them"
+      "trances and stuns hold the pets, entrance or stun them"
     ],
     "aftermathWin": [
-      "otrygg's pets got [melted|aoed] nice job",
-      "otrygg and the whole pack down. nice aoe",
+      "otrygg's pets got [melted|blasted flat] nice job",
+      "otrygg and the whole pack down. nice blasting",
       "the faithless one is dead",
       "otrygg's jewel dropped",
       "otrygg died and every pet just dropped",
@@ -144,8 +149,8 @@
     "aftermathLoss": [
       "the pets ran over the healers",
       "we chased otrygg into the pets",
-      "aoe group was too slow on the second wave",
-      "the second wave of pets caught us mid-aoe",
+      "blast group was too slow on the second wave",
+      "the second wave of pets caught us mid-blast",
       "we killed pets for ten minutes and there were still eight",
       "pets got to the healers"
     ],
@@ -163,7 +168,11 @@
     "keyword": "Otrygg",
     "text": "The faithless councillor of the outer seats, who never trusted the peace to keep the door. He keeps a pack of eight beasts called out of the cold, and the pack is always full while he stands: Hjalmar fought in his kennels all night and found eight at dawn. He called the vote that cast out the sculptor. When he falls, the pack lies down."
   },
-  "bookPage": "From the sculptor's account. You want to know about the faithless one. I will tell you what he did the night they cast me out. He called the vote; everyone knows that. What nobody knows is that he came down to the tunnel mouth after Hord had gone, alone, with his eight beasts round him, and stood there while I walked away down the crater road. He did not speak. When I looked back from the rim he was still there, and the beasts were sitting at his feet like hounds at a gate. I think he was keeping the door. I think he was keeping it against what I had carved, and against me, and that he was sorry.",
+  "bookPage": "You want to know about the faithless one, the sculptor's account begins. I will tell you what he did the night they cast me out. He called the vote; everyone knows that. What nobody knows is that he came down to the tunnel mouth after Hord had gone, alone, with his eight beasts round him, and stood there while I walked away down the crater road. He did not speak. When I looked back from the rim he was still there, and the beasts were sitting at his feet like hounds at a gate. I think he was keeping the door. I think he was keeping it against what I had carved, and against me, and that he was sorry.",
+  "bookPages": [
+    "From the winter-reckoning of Dellingstad, the thirtieth winter of the giants' council as the town counts it, set down by the reckoner of the fish-buyers' house. A fog stood at the top of the town all of one night, from the crater road to the drying racks, and did not move with the wind. The dogs would not bark at it. A fishwife going down to the boats before light said it was a cloud that had come down to look at the town, and that it had a face, long and narrow, like a young man's who has not slept. In the morning it was gone up the road. No one was harmed, and nothing was taken from the racks. The reckoner notes that the giants send ice in spring and have never before sent anything in winter, and that he does not know what was sent this time, or why.",
+    "The wager of the fiftieth winter, as the rooks who carried the elder out of the kennels remembered it for the cast-out sculptors. He went down after the feast with his blade and a torch, and we carried him up after dawn without the torch. We counted no bodies, because the beasts went back into the cold as they fell; we counted the notches on his blade instead, and they were sixty-one. The faithless one came down rested and stood at the kennel door and laughed, and told him he had been fighting in the wrong place. The elder paid the wager there and then: a cloak-pin of drake bone, the best he owned, and the Ice Lords' houses never let him forget it. The faithless one did not wear the pin. He put it on the floor of the kennel, for the pack to lie on."
+  ],
   "chronicle": {
     "win": "Council Otrygg and his pack fell to {raidLeader} of {realm} in {minutes} minutes.",
     "loss": "Council Otrygg's pack ran down {raidLeader}'s raid from {realm} after {minutes} minutes."

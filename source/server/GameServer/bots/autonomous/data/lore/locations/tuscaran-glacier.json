@@ -22,17 +22,17 @@
   "facts": [
     {
       "text": "Tuscaran Glacier is a level-50 Shrouded Isles dungeon entered from Delling Crater on the isle of Aegir; it became an Epic Zone in patch 1.101 (2010).",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=76"
     },
     {
       "text": "Its bestiary lists 51 creatures: the hrimthursa council and icelords, hrimthursa giants of many trades (sculptors, icesplitters, seers, throne guards), iceweavers, frostbound and icebound skeletons, griffons and Fornfrusenen.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
     },
     {
       "text": "Killing its giants lowers faction with the Hrimthursa and Glacier Harskaren and raises it with Klippa Vaktaren and Vind Ryttaren.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/6072"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "text": "Hrimthursa trades in the bestiary: berg, bladehand, depredator, dominator, grinder, harrower, icereaver, icespine, icesplitter, icetouch, rook, sculptor, seer, serac, throne guard, tormentor.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=76"
     },
     {
@@ -122,10 +122,10 @@
     },
     {
       "title": "The Lid",
-      "text": "The skalds of Jordheim say Tuscaran Glacier is the proof that winter has a queen, and that every warband that climbs it is telling winter that the queen can be killed. That is the realm's account, and it is the one sung at feasts.\n\nThe iarn dwarves of Faraheim have another. They have watched the crater longer than anyone but the Troll Fathers, and their slates describe the glacier not as a fortress but as a lid. Under the ice are the bones of a dragon, and the cold that comes off them is wrong, and it was wrong before any giant came. In the north wall is the long-frozen one, who was asleep before the cutting began. In the last cell is whatever the giants cut a row of cells to reach. Three things, the dwarves say, lie under Delling's ice, and the glacier has lain on them for longer than anyone has records, and the giants are only the latest to sit on top of it. The slates do not say who sat there before the giants. They say the Troll Fathers knew.\n\nThe cast-out sculptors have a third account, and it is the strangest. They say the Council's hundred years of peace were not cowardice, as the Icelords say, or folly, as Midgard says. The Council voted for peace because the Council knew what was under the lid, and a citadel at war is a citadel whose walls are shaken, whose ice cracks in the night faster than the weavers can mend it, whose giants march out and leave the deep places unwatched. Birghir, the sculptors say, was not keeping the giants safe from the island. He was keeping the lid still.\n\nIf that is true, then every warband that climbs the glacier is shaking the lid, and every icelord killed is a giant who will not be watching. The dwarves of Faraheim say the slates record the ice growing every year of Kula's reign, and growing faster since Midgard came; Dellingstad says the dawn comes later to the crater floor than it did in the grandfathers' time. Nobody in Midgard proposes to stop climbing. The skalds are probably right, the dwarves allow, that winter has a queen and the queen can be killed. They would only like the realm to think, before it kills the last giant in Delling Crater, about who will sit on the lid then."
+      "text": "Tuscaran Glacier is the proof that winter has a queen, the skalds of Jordheim say, and that every warband that climbs it is telling winter that the queen can be killed. That is the realm's account, and it is the one sung at feasts.\n\nThe iarn dwarves of Faraheim have another. They have watched the crater longer than anyone but the Troll Fathers, and their slates describe the glacier not as a fortress but as a lid. Under the ice are the bones of a dragon, and the cold that comes off them is wrong, and it was wrong before any giant came. In the north wall is the long-frozen one, who was asleep before the cutting began. In the last cell is whatever the giants cut a row of cells to reach. Three things, the dwarves say, lie under Delling's ice, and the glacier has lain on them for longer than anyone has records, and the giants are only the latest to sit on top of it. The slates do not say who sat there before the giants. They say the Troll Fathers knew.\n\nThe cast-out sculptors have a third account, and it is the strangest. They say the Council's hundred years of peace were not cowardice, as the Icelords say, or folly, as Midgard says. The Council voted for peace because the Council knew what was under the lid, and a citadel at war is a citadel whose walls are shaken, whose ice cracks in the night faster than the weavers can mend it, whose giants march out and leave the deep places unwatched. Birghir, the sculptors say, was not keeping the giants safe from the island. He was keeping the lid still.\n\nIf that is true, then every warband that climbs the glacier is shaking the lid, and every icelord killed is a giant who will not be watching. The dwarves of Faraheim say the slates record the ice growing every year of Kula's reign, and growing faster since Midgard came; Dellingstad says the dawn comes later to the crater floor than it did in the grandfathers' time. Nobody in Midgard proposes to stop climbing. The skalds are probably right, the dwarves allow, that winter has a queen and the queen can be killed. They would only like the realm to think, before it kills the last giant in Delling Crater, about who will sit on the lid then."
     }
   ],
-  "legend": "Midgard raid leaders call Tuscaran the long climb, and they plan it in pairs: Vagn with Nokkvi, Steinvor with Skuf, Birghir with Guthlac, Torst with Hurika, and the twins at the top. Hord heals himself, so keep the damage on. Ozur hates a crowd, so send only the tanks and a few melee. Otrygg is an add fight. Guthlac's ice spike has to die or everyone has to move. Fornfrusenen is the wall most raids hit, because nothing hurts him from more than a few steps away: casters heal and buff, melee does the work. Agmundr brings six giants, and more raids die to him than to the throne because they think the hard part is over. When the howl runs through the ice, one elder icelord has woken, and you never know which. When Kvasir dies, regroup, because the glacier heard it.\n\nSuperstitions: never shout in the north hall, or the sleeper learns your name. Knock on a council rib if you get the chance; the old hands swear bone rings different from ice. Nobody has ever found the Troll Father in Vifil's cells, and everybody looks. Nicknames: the long climb, the anvil (Tuscar), the wall (Fornfrusenen), the horn (Kvasir).",
+  "legend": "Midgard raid leaders call Tuscaran the long climb, and they plan it in pairs: Vagn with Nokkvi, Steinvor with Skuf, Birghir with Guthlac, Torst with Hurika, and the twins at the top. Hord heals himself, so keep the damage on. Ozur hates a crowd: with fifty or more of you in sight of him he hits hard, so send the shield-bearers and a few blades and keep the rest back out of his sight. Otrygg is a fight against his pack, which comes back as fast as it dies: hold it off the healers and kill him. Guthlac's ice spike has to die or everyone has to move. Fornfrusenen is the wall most raids hit, because nothing hurts him from more than a few steps away: casters heal and bless, blades do the work. Agmundr brings six giants, and more raids die to him than to the throne because they think the hard part is over. When the howl runs through the ice, one elder icelord has woken, and you never know which. When Kvasir dies, regroup if you like, because the glacier heard it, but nothing comes: the rumble is only noise.\n\nSuperstitions: never shout in the north hall, or the sleeper learns your name. Knock on a council rib if you get the chance; the old hands swear bone rings different from ice. Nobody has ever found the Troll Father in Vifil's cells, and everybody looks. Nicknames: the long climb, the anvil (Tuscar), the wall (Fornfrusenen), the horn (Kvasir).",
   "atmosphere": {
     "firstEntry": [
       "The glacier breathes. Somewhere below, a dragon is bones.",
@@ -292,7 +292,7 @@
       "the hrimthursa citadel sits on a dead dragon's bones. [nobody knows|nobody asks] what killed the dragon",
       "tuscaran has a council that wanted peace and icelords that wanted war. [guess who was right|the icelords won the argument when we showed up]",
       "the glacier's named for tuscar but [everyone|every skald] knows it's kula's throne",
-      "when icelord kvasir dies the [whole glacier|ice] rumbles and the giants start moving. [true story|ask anyone who's been]",
+      "when icelord kvasir dies the [whole glacier|ice] rumbles like the giants are moving. [nothing comes though|ask anyone who's been]",
       "theres a thing frozen in the wall up there called fornfrusenen. [it was there before the giants|older than kula]",
       "the elder council of the hrimthursa sits right on the dragon's ribs. strange seat for a council",
       "hord is the council's healer from back when they thought they'd never need one",
@@ -317,13 +317,13 @@
       "tuscaran glacier? hrimthursa frost giants. council, icelords, the jailer, and queen kula and king tuscar at the top",
       "the glacier is the big one on aegir, delling crater. bring a full raid, its a long climb",
       "its the rime giants' citadel. fornfrusenen is the wall most raids hit, melee only on him",
-      "is tuscaran hard? its the hardest thing midgard has after the dragon. 100 people and a plan for every pair",
+      "is tuscaran hard? its the hardest thing midgard has after the dragon. a hundred people and a plan for every pair",
       "where is the glacier? aegir, delling crater, at about 55k 9k. go by dellingstad",
-      "fornfrusenen is melee only, agmundr is six giants, ozur's disease hits everyone near the tank. the throne is the easy part, almost"
+      "fornfrusenen is melee only, agmundr is six giants, ozur's disease hits everyone near the shield-bearer. the throne is the easy part, almost"
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Tuscaran Glacier. A citadel of rime giants, raised by [Kula] on a dragon's [bones]. Two kinds of giant serve her: the [Council], who wanted peace, and the [Icelords], who wanted war. And there is [older ice] in there than either.\"",
+    "intro": "Loremaster Svanlaug says, \"Tuscaran Glacier. A citadel of rime giants, raised by [Kula] on a dragon's [bones]. Two kinds of giant serve her: the [Council], who wanted peace, and the [Icelords], who wanted war. And there is [older ice] in there than either.\"",
     "topics": {
       "Kula": "The coldest of Bergelmir's line. She built where no summer could reach and took the smith Tuscar for king, and kept the throne for herself.",
       "bones": "A dragon lies dead under the glacier, ribs wide as a fjord. Nobody living saw it die. The elders' seats are carved from its ribs. Some say it was kin to Gjalpinulva; I would not say it in Malmohus.",

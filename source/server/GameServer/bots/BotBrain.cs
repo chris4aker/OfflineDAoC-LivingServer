@@ -5563,7 +5563,7 @@ namespace DOL.AI.Brain
                     if (deficit > 0)
                     {
                         amountToHeal += deficit;
-                        if (member.HealthPercent < RaidCurePoison.DangerPercent) partyInDanger++;
+                        if (RaidCurePoison.InDanger(member.HealthPercent, member.IsPoisoned)) partyInDanger++;
 
                         if (member.HealthPercent < 65)
                         {
@@ -5960,16 +5960,18 @@ namespace DOL.AI.Brain
                 {
                     // Sweep 6f: a raid's cure poison casts are summed in the log (RAID_CURE_POISON, logging only).
                     if (spellToCast.SpellType == eSpellType.CurePoison && spellTarget != null)
-                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime);
+                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime, spellToCast == BotBody.CurePoisonGroup,
+                            raidCureFirst && spellToCast == raidCure && _raidCurePastDanger);
                     // The raid cure waits its delay whether the cure is instant or not: the next turns heal (sweep 7b).
                     if (raidCureFirst && spellToCast == raidCure)
-                        nextCureTime = GameLoop.GameLoopTime + CureDelay;
+                        nextCureTime = GameLoop.GameLoopTime + RaidCurePoison.CureDelayMilliseconds;
                     if (spellToCast.IsInstantCast)
                     {
                         BotBody.TargetObject = oldTarget;
                         startedCasting = false;
                     }
-                    else if (spellToCast.SpellType == eSpellType.CureDisease || spellToCast.SpellType == eSpellType.CurePoison)
+                    else if (!(raidCureFirst && spellToCast == raidCure) &&
+                             (spellToCast.SpellType == eSpellType.CureDisease || spellToCast.SpellType == eSpellType.CurePoison))
                         nextCureTime = GameLoop.GameLoopTime + CureDelay;
                 }
             }
@@ -5978,6 +5980,8 @@ namespace DOL.AI.Brain
         }
 
         private long _nextRaidPoisonScan;
+        /// <summary>This turn's raid cure was cast while a member of the curer's party was in danger (a fresh one, 1.2.1 #410).</summary>
+        private bool _raidCurePastDanger;
 
         /// <summary>
         /// This turn's raid cure (RaidCurePoison, sweep 7b): an autonomous raider of a realm raid with its class's cure poison
@@ -5987,11 +5991,14 @@ namespace DOL.AI.Brain
         {
             cure = null;
             target = null;
+            _raidCurePastDanger = false;
             Group group = Body.Group;
             if (!BotBody.IsAutonomousWorldBot || group == null || BotBody.CurePoison == null && BotBody.CurePoisonGroup == null)
                 return false;
             long now = GameLoop.GameLoopTime;
-            if (nextCureTime >= now || now < _nextRaidPoisonScan || partyInDanger > 0 || markedPatient) return false;
+            // 1.2.1 (#410 round 2): a party member in danger no longer stops the scan; RaidCurePoison.Decide still cures only
+            // the fresh ones then (two or more), and heals first otherwise.
+            if (nextCureTime >= now || now < _nextRaidPoisonScan || markedPatient) return false;
             _nextRaidPoisonScan = now + RaidCurePoison.ScanMilliseconds;
             if (AutonomousRealmRaid.GetView(group) == null) return false;
             bool canSingle = CheckHealSpell(BotBody.CurePoison), canGroup = CheckHealSpell(BotBody.CurePoisonGroup);
@@ -6010,7 +6017,9 @@ namespace DOL.AI.Brain
                 if (!groupReach && !(canSingle && Body.IsWithinRadius(member, singleRange))) continue;
                 living.Add(member);
                 // Own party: within the group cure's reach when the class has one (it cures only those), else any.
-                dotted.Add(new(member.ObjectID, canGroup ? groupReach : own, member.HealthPercent));
+                var (left, length) = RaidCurePoison.DotTime(member);
+                dotted.Add(new(member.ObjectID, canGroup ? groupReach : own, member.HealthPercent, member.Health,
+                    RaidCurePoison.IsFresh(left, length)));
             }
             long curer = Body.ObjectID;
             var (which, pick) = RaidCurePoison.Decide(true, true, canGroup, canSingle, dotted, partyInDanger, false, curer,
@@ -6021,6 +6030,7 @@ namespace DOL.AI.Brain
                 !RaidCureClaims.TryClaim(RaidCureClaims.Kind.Poison, dotted[pick].Id, curer, now, BotBody.CurePoison.CastTime))
                 return false;
             cure = which == RaidCurePoison.Cure.Group ? BotBody.CurePoisonGroup : BotBody.CurePoison;
+            _raidCurePastDanger = partyInDanger > 0;
             // The group cure takes the caster's party around it; aimed at itself it needs no walk.
             target = which == RaidCurePoison.Cure.Group ? Body : living[pick];
             return true;

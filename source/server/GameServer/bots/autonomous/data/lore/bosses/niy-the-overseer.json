@@ -20,7 +20,7 @@
     }
   ],
   "story": "If Guardian Hru keeps the mound's door, Niy keeps its servants. The overseer stands on the northern heights of the valley with the empyrean elders around it, and the Old Hermit says it counts: every guardian and watcher and wisp of the heights, every morning, and the count is always one less than it should be, and Niy has been looking for the missing one since the lord went in.\n\nThe Caille folk think the missing one is the lord himself, and that Niy counts him among his own servants because it was never told otherwise. The hermit thinks it is one of the empyrean orbs that drifted down into the lake country and never came back, and that Niy will keep counting until it does. When the realm's young come up onto the northern heights, Niy counts them too, and does not like the number. The hermit says that if the count ever comes out right, the mound's door will open.",
-  "legend": "Niy the Overseer (40) is a named empyrean on the northern heights of Bri Leith (about 445k/499k), among empyrean overseers (37-41) and elders (40-44). The elders are higher than Niy, so pull carefully. A group of 40ish. Plain spawn, 80-second respawn. Guardian Hru (40) is further south on the same heights. The northern heights are a good place to finish the empyrean camps for 40s.",
+  "legend": "Niy the Overseer, a foe for a hardened band of veterans, is an empyrean of name on the northern heights of Bri Leith (about 445k/499k), among empyrean overseers (about his equals) and elders (stronger, still hardened bands' foes). The elders are stronger than Niy, so draw carefully. A hardened band of veterans. Plain, no tricks; he returns eighty seconds after he falls. Guardian Hru, his equal, is further south on the same heights. The northern heights are a good place for hardened bands to finish the empyrean camps.",
   "yells": {
     "aggro": [
       "One more than there should be.",
@@ -43,16 +43,16 @@
   },
   "botLines": {
     "briefing": [
-      "niy the overseer is 40 on the north empyrean heights",
-      "elders around are 40-44, pull carefully"
+      "niy the overseer is on the north empyrean heights",
+      "elders around are tougher than him, draw carefully"
     ],
     "aftermathWin": [
       "niy down. [count's off now|lol]",
       "dodged the elders. [nice|grats]"
     ],
     "aftermathLoss": [
-      "elders joined. [rip|44s]",
-      "pulled the whole height. [oops|wipe]"
+      "elders joined. [rip|tough ones]",
+      "drew the whole height. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] niy counts the empyreans every morning and is always one short",

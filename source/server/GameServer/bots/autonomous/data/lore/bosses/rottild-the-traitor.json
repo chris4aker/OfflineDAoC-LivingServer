@@ -39,7 +39,7 @@
     }
   ],
   "story": "Everyone in Vanern agrees that Rottild is a traitor. That is the name she answers to, and she does not dispute it. What nobody agrees on is whom she betrayed, and the three accounts the swamp keeps do not fit together, which is why the ferrymen say all three are true.\n\nThe ferrymen's own account is the oldest. When the jarl of the hill went into his mound with his household, his wife was to go in beside him, as a jarl's wife did in those days. Rottild was the wife. She went as far as the door, and looked in, and ran. The household went in without her and the mound was closed, and she has lived on in the swamp ever since, neither alive enough to leave it nor dead enough to be let into the barrows, and the crier of the hagbui stands at the mound's door to this day waiting to call her name.\n\nThe jotuns of the yards tell it another way. Rottild, they say, came to them a long time ago and was taught the craft of the clay, and then went north and sold the yards' secrets to the outcasts, who use them to make goads for their orms. The yards have never forgiven her, and no clay jotun will stand within sight of her.\n\nAnd the deserters' version, which Jango tells if anyone asks, is that Rottild was the one who carried word of the deserters' road to the clan, and that every one of his men who drowned in the bog was drowned because she knew where they would cross.\n\nRottild herself, asked, says only: yes. She stands on the bank between the yards and the island and watches the seeress's high seat across the water, all day, and the ferrymen do not know why. Arnkel thinks that of everyone in Vanern, only Ydenia ever forgave her, and that Rottild is waiting to be asked to the island.",
-  "legend": "Rottild the Traitor stands alone on the bank between the clay yards and Ydenia's island in Vanern Swamp, level 55. She's a plain spawn: no adds, no special abilities, not CC-immune, and nothing else in the world data stands close enough to join, so a decent group can take her cleanly. Nobody's quest needs her, so people kill her for the fun of it or because she's in the way. Nobody remembers who she betrayed; the ferrymen say the jarl, the jotuns say the clay yards, and Jango says his deserters. Don't fight her too close to the island or you'll have Ydenia's sisters looking at you.",
+  "legend": "Rottild the Traitor stands alone on the bank between the clay yards and Ydenia's island in Vanern Swamp, a foe for the realm's best, a full band of them. She's a plain fighter: no helpers, no special tricks, charms, trances and stuns hold her, and nothing else here stands close enough to join, so a decent group can take her cleanly. Nobody's quest needs her, so people kill her for the fun of it or because she's in the way. Nobody remembers who she betrayed; the ferrymen say the jarl, the jotuns say the clay yards, and Jango says his deserters. Don't fight her too close to the island or you'll have Ydenia's sisters looking at you.",
   "yells": {
     "aggro": [
       "Yes. I did. Now go away.",
@@ -77,19 +77,19 @@
   },
   "botLines": {
     "briefing": [
-      "rottild is alone, plain mob, mez works",
+      "rottild is alone, plain fighter, trances work",
       "dont fight near the island, ydenias sisters are there",
       "nothing joins her",
-      "level 55, easy for a group"
+      "nothing special, easy for a group"
     ],
     "aftermathWin": [
       "rottild down. still dont know who she betrayed",
-      "easy one",
+      "easy one, the traitor stood alone",
       "she looked at the island when she died",
       "the crier at the mound can call her now"
     ],
     "aftermathLoss": [
-      "pulled the dark seithkona too",
+      "drew the dark seithkona too",
       "she hits harder than i thought",
       "too few",
       "wandered into the clay yards after"

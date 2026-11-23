@@ -30,7 +30,7 @@
     }
   ],
   "story": "When the dark cloud settled over the Grenlock crest and the sword, and harmless creatures began to turn on the clan's people and strange sicknesses took others, Anrid of Jordheim sent word to Danica of Mularn, and Danica sent the mystics into Vanern Swamp at night after two names: Freyana and Ljagnid. Ljagnid had kept a journal. Freyana had kept the clan's memory. Both of them had gone into the swamp to find out what had been done to the crest, and neither had come out.\n\nOnly Freyana is still there, and only by night. The ferrymen of Vanern say she walks among the mud frogs and the vipers on the western bank, a pale dead woman with her hands full of nothing, as if carrying a book that is no longer in them. They say she was a seeress of the Grenlock clan, and that she went to the dark seithkona of Ydenia's high seat to ask what they had done, and was answered. Ljagnid's journal is all that came back. The clan's people say her ghost fights to keep it, because the journal says what she found out, and she would rather nobody else knew it.",
-  "legend": "Freyana is a level 46 ghost in the west of Vanern Swamp who only appears at night (she's a NightSpawn: not shown at all by day). She's a step of Saving the Clan via Danica: recover the book, then bring Danica Ljagnid's journal (Ljagnid himself isn't in the world). No faction, no spells. Wait for night, then any group of the epic level takes her; the mud frogs and vipers nearby are easy.",
+  "legend": "Freyana is a ghost, a foe for a hardened band of veterans, in the west of Vanern Swamp who walks only at night (by day she is not there at all). She's a step of Saving the Clan via Danica: recover the book, then bring Danica Ljagnid's journal (Ljagnid himself isn't in the world). She answers to no one, no spells. Wait for night, then any group of the strength the great quest asks takes her; the mud frogs and vipers nearby are easy.",
   "yells": {
     "aggro": [
       "You come for the book. Everyone comes for the book.",
@@ -50,7 +50,7 @@
   },
   "botLines": {
     "briefing": [
-      "freyana is a night only ghost in west vanern, 46",
+      "freyana is a night only ghost in west vanern, a hardened band's fight",
       "saving the clan step, wait for dark or she isnt there"
     ],
     "aftermathWin": [

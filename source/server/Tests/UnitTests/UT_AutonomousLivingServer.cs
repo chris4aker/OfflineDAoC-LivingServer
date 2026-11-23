@@ -21,7 +21,9 @@ namespace DOL.GS.Tests
         {
             var fields = typeof(Properties).GetFields();
             // The talking update (Beta 1.1) turned on the chat-only parts: bot voices, bot memory and grats (below); 1.2
-            // (owner 2026-11-16: "all our living server features should be in by default") the rest, and the real-clock schedule.
+            // (owner 2026-11-16: "all our living server features should be in by default") the rest. The bot schedule is off
+            // by default since 1.2.1 (owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions
+            // is off by default"); it was clock in 1.2.
             foreach (string name in new[] { "BOT_VOICES_ENABLED", "BOT_LIVING_MEMORY", "BOT_LIVING_GRATS", "BOT_VOICES_TELLS" })
             {
                 var field = fields.Single(f => f.Name == name);
@@ -37,8 +39,8 @@ namespace DOL.GS.Tests
                 Assert.That(attribute.Category, Is.EqualTo("bots"), name);
             }
             var mode = (ServerPropertyAttribute)Attribute.GetCustomAttribute(fields.Single(f => f.Name == "BOT_SCHEDULE_MODE"), typeof(ServerPropertyAttribute));
-            Assert.That(mode.DefaultValue, Is.EqualTo("clock"));
-            Assert.That(Schedule.Parse((string)mode.DefaultValue), Is.EqualTo(Schedule.Mode.Clock));
+            Assert.That(mode.DefaultValue, Is.EqualTo("off"));
+            Assert.That(Schedule.Parse((string)mode.DefaultValue), Is.EqualTo(Schedule.Mode.Off));
         }
 
         [TestCase("off", Schedule.Mode.Off)]

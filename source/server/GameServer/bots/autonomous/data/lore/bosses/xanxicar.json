@@ -33,10 +33,15 @@
       "text": "Caradoc the surveyor, the Heart, the Quieting, Iorwerth the last master of stars, Sir Garan, Lady Branwen Hale, Father Odo and the champions' oath are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (Master Iorwerth's last entry in the book of the longest night and Father Odo's letter to Elowen) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Xanxicar is the two-headed dragon under Avalon, older than the oldest map of the isle, which marks him at its heart without a name. The Camelot loremasters count him among the old powers, like the stone dragon of Dartmoor; the Inconnu say Arawn will not go near him; the readers of Caer Gothwaite believe he is not the power under Avalon but its keeper, lying on something that matters more than he does. The cave is crystal that throws back every light a hundredfold.\n\nThe surveyor Caradoc laid the first college's stone on the warm ground of the Heart, and for three hundred years the college of stars sang the Quieting there on the longest night, a lullaby or a ward. Morgana, who had sung it as a pupil, burned that college first. On the third night of the burning Dura'ek went down the stair, and Xanxicar woke; the guards who went down after him came up as his household, the Xanxicarian sentries, elites and champions.\n\nDura'ek came up with the dragon's two breaths, so Xanxicar fights with his weight, rearing to stomp the ground, and the cobbles of Avalon crack above. His champions come to him one by one, by their oath that the line must never end. He lifts strangers into the cave's light and glares at others; the readers believe he is searching for Iorwerth, the last master who sang him asleep. Sir Garan lost five companies of forty at the cave's mouth. Lady Branwen Hale, who lost three at the mouth where Garan had lost two hundred and met his champions one after another, brought him down, and Father Odo saw the light that forms on the mound, like the light of the third night. Nobody has touched it, and Elowen has asked Camelot to learn the Quieting in case it is ever needed again.",
-  "legend": "Over a hundred, the old guides said; five groups wiped in one go, said another. He stomps at 80, 60, 40 and 20 percent: a hit on everything within 2,500 of him, one second after he bellows, so you cannot outrun it. Top everyone up before each fifth and heal hard right after. From half, champions keep coming; one party kills each away from the tank. Some swear the cave fills with lightning if you take too long.\n\nThe guards on the way in are worse than he is; send a scout, clear the patrols, and arrive with full mana. The old hands say he is the one dragon in Albion who respects a raid that keeps its distance, and kills one that does not.",
+  "legend": "Over a hundred, the old raiders' accounts said; five groups cut down to the last in one go, said another. Xanxicar is a foe for the realm's whole muster and takes as much killing as fifty raiders. He stomps as he falls to four-fifths of his strength, then three-fifths, two-fifths and one-fifth: a blow worth two and a half times a robed caster's whole strength before wards, on everything within about eighty paces of him. It lands about seven seconds after he bellows (a breath, then six seconds rearing up that nothing breaks), and the ring is too wide to run out of in that time, so do not try. Top everyone up before each fifth and heal hard right after. Every twenty to forty seconds he hurls a random raider within about eighty paces into the air, never the one he is fighting, companions and the realm's adventurers as well as you; and he names others for his glare, which lands five seconds later as a blast worth one and a half times a robed caster's strength on that one and everyone within fifteen paces, so step away from anyone he glares at and heal them. From half his strength, champions keep coming, one after another fifteen to twenty-five seconds apart, each a foe for several bands of the realm's best together and as hard to bring down as four raiders; one party kills each away from the shield-bearer who holds him. Some swear the cave fills with lightning if you take too long.\n\nThe guards on the way in are worse than he is; send a scout, clear the patrols, and arrive with your power full. The old hands say he is the one dragon in Albion who respects a raid that keeps its distance, and kills one that does not.",
   "yells": {
     "aggro": [
       "Two heads wake. Two hungers.",
@@ -50,10 +55,6 @@
       },
       {
         "trigger": "health<=50",
-        "text": "Champions! Your lord calls you!"
-      },
-      {
-        "trigger": "addsSpawn",
         "text": "Champions! Your lord calls you!"
       }
     ],
@@ -87,8 +88,8 @@
   },
   "botLines": {
     "briefing": [
-      "stomps at 80 60 40 20, hits everyone in 2500 a second after the bellow. top up before each",
-      "from 50% champions keep spawning. one party per champion, away from the tank",
+      "stomps at four fifths, three, two and one, hits everyone within 80 paces 7 sec after the bellow, cant outrun it. top up before each",
+      "from half champions keep coming. one party per champion, away from his shield-bearer",
       "this is a hundred man fight. the guards on the way in are the hard part",
       "scout the patrols before we move"
     ],
@@ -99,9 +100,9 @@
       "two heads, one kill"
     ],
     "aftermathLoss": [
-      "half the raid stood in the 40% stomp",
+      "half the raid stood inside the stomp at two fifths, not topped up",
       "the champions never stopped and we ran out of healers",
-      "the elites wiped us before we got there",
+      "the elites killed us all before we got there",
       "nobody scouted, patrol walked in"
     ],
     "rumour": [
@@ -116,6 +117,10 @@
     "text": "A dragon with two heads and a hide like frost on silver. When he wakes he rears and crushes all around him, again and again as he weakens. From half his strength his champions come to him, one after another. Keep away from his feet."
   },
   "bookPage": "He sleeps on a mound of stone that gives back light. When he wakes he rears up, both heads high, and brings his weight down on everything near him; the ground lurches, and those beneath him do not rise. He does this not once but as often as he is hurt, at every fifth part of his strength. At the half his champions begin to come, and they do not stop. When he dies, a light forms on the mound. A priest of Camelot who saw it wrote to me that it looked like the light we saw rise on the third night of the burning. No one has yet dared to touch it.",
+  "bookPages": [
+    "Master Iorwerth's hand writes the last entry in the college of stars' book of the longest night, saved in the ninth chest. The Quieting sung at the Heart, the fortieth time by me. Seven masters present. The stone warm to the hand, as every year; the ringing in the cellar quiet by the third verse, as every year; and under the stone, when we had done, a sound like a long breath let out. I am called to Caer Gothwaite on the readers' business before the spring and will be back before the next longest night. Let the youngest master learn the second verse in my absence, for he has it wrong and will not believe me. Below, in Elowen's hand: he was not back. The youngest master burned with the rest on the first night. The second verse is the one in which no two of our copies agree.",
+    "Father Odo of Camelot to Elowen of Caer Gothwaite, after the descent. Mistress, you asked me to write what I saw and not what I think, so I will try. When the dragon fell from his mound the earth moved once more under us and was still. Then a light began on the mound where he had lain, small as a candle at first, then larger, without heat and without any sound, in every colour the cave gives back. It was like the light your readers set down as rising on the third night of the burning; I have read their account a dozen times and I can put it no better. Lady Branwen forbade any of us to touch it. None of us wished to. I had your copy of the Quieting in my satchel the whole while and did not take it out. I return it with this letter, still folded as you gave it to me."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} went down under Avalon and brought Xanxicar off his mound in {minutes} minutes.",
     "loss": "Xanxicar's stomp broke {realm}'s raid in the Crystal Cave; {raidLeader} left the dragon on his mound of light."

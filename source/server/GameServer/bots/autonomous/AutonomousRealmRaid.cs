@@ -84,6 +84,8 @@ namespace DOL.GS
             /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
             public bool ReturnGathering;
             public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>When a dragon raid last logged REALM_RAID_RETURN_NOT_HELD (#415: at most once a minute).</summary>
+            public long ReturnNotHeldLogTick;
             /// <summary>The return wave walking in together now (RealmRaidReturnWave.WalkTogether), or null; how many have
             /// formed; its last headway (the stall clock's, RealmRaidReturnWave.Stalled); and the returners waiting outside.</summary>
             public ReturnWalk Walk;
@@ -108,6 +110,9 @@ namespace DOL.GS
             public long LastProgressTick;
             public int ProgressNamed, ProgressWipes, ProgressLowest = 101;
             public string ProgressTarget;
+            /// <summary>The stall rule's retry pulls seen so far, and whether a wipe re-arms the target's low (WatchStep, #411).</summary>
+            public int ProgressRetries;
+            public bool ProgressLowRearmed;
             public bool Forced;
             /// <summary>A play test's raid (/epictest): forced recruiting, but the automatic raid's clocks (late and short
             /// starts at the staging deadline, the stall rule in battle), so it ends the way a real raid does.</summary>
@@ -660,7 +665,10 @@ namespace DOL.GS
                         Log.Info($"REALM_RAID_STALLED event={raid.Definition.Id} minutes={(now - raid.LastProgressTick) / 60_000} " +
                                  $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest} " +
                                  $"headway_minutes={(raid.LastHeadwayTick > 0 ? (now - raid.LastHeadwayTick) / 60_000 : -1)} " +
-                                 $"wave={(raid.Walk != null ? $"{raid.Walk.Number}@{raid.Walk.Step + 1}/{raid.Walk.Steps.Length}" : "none")}");
+                                 $"wave={(raid.Walk != null ? $"{raid.Walk.Number}@{raid.Walk.Step + 1}/{raid.Walk.Steps.Length}" : "none")} " +
+                                 // #411: what the route was doing when the hour ran out (regrouping m/n, mustering, fighting).
+                                 $"retries={raid.ProgressRetries} living={raid.Support.Count(b => b.IsAlive)} of={raid.Support.Length} " +
+                                 $"status=\"{(raid.DungeonRoute != null ? ActiveRoute(raid).Status : "-")}\"");
                         End(raid, now, $"Stalled: no named or boss kill, no new low on its target, no wipe and no return-wave headway for {StallLimit(raid) / 60_000} minutes.");
                         continue;
                     }
@@ -1240,14 +1248,23 @@ namespace DOL.GS
             GameNPC target = raid.DungeonRoute != null ? ActiveRoute(raid).NamedTarget : raid.Boss?.IsAlive == true ? raid.Boss : null;
             string name = target?.Name;
             int health = target?.HealthPercent ?? 101;
-            if (RealmRaidRecruitmentPolicy.MadeProgress(raid.ProgressNamed, named, raid.ProgressWipes, wipes, raid.ProgressTarget, name,
-                    raid.ProgressLowest, health))
-                raid.LastProgressTick = now;
-            if (name != raid.ProgressTarget) raid.ProgressLowest = health;
-            else raid.ProgressLowest = Math.Min(raid.ProgressLowest, health);
-            raid.ProgressNamed = named;
-            raid.ProgressWipes = wipes;
-            raid.ProgressTarget = name;
+            int retries = raid.DungeonRoute?.RetriesBegun ?? 0;
+            var (next, progress, lowReset) = RealmRaidRecruitmentPolicy.WatchStep(
+                new RealmRaidRecruitmentPolicy.ProgressWatch(raid.ProgressNamed, raid.ProgressWipes, raid.ProgressRetries, raid.ProgressTarget,
+                    raid.ProgressLowest, raid.ProgressLowRearmed), named, wipes, retries, name, health);
+            if (progress) raid.LastProgressTick = now;
+            if (retries > raid.ProgressRetries)
+                Log.Info($"REALM_RAID_STALL_CLOCK event={raid.Definition.Id} why=retry target=\"{name}\" health={health} " +
+                         $"retries={retries} wipes={wipes} reason=\"the raid pulled again after a wipe: the stall clock restarts\"");
+            if (lowReset)
+                Log.Info($"REALM_RAID_STALL_CLOCK event={raid.Definition.Id} why=low_reset target=\"{name}\" health={health} " +
+                         $"previousLow={raid.ProgressLowest} wipes={wipes} reason=\"back at full after a wipe: the retry's own low counts\"");
+            raid.ProgressNamed = next.Named;
+            raid.ProgressWipes = next.Wipes;
+            raid.ProgressRetries = next.Retries;
+            raid.ProgressTarget = next.Target;
+            raid.ProgressLowest = next.Lowest;
+            raid.ProgressLowRearmed = next.LowRearmed;
             // The first-hour trash clear is progress (owner, 2026-11-16): the stall clock starts when it ends.
             if (raid.DungeonRoute?.ClearingTrash(now) == true) raid.LastProgressTick = now;
             // A return wave clearing its way back in is headway (owner, 2026-11-17): it restarts the clock, at most one limit
@@ -2053,17 +2070,23 @@ namespace DOL.GS
                 return;
             }
             Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
-            int outside = 0, waiting = 0, fallen = 0;
+            int outside = 0, waiting = 0, fallen = 0, thrownFar = 0, backInFight = 0;
             foreach (GameBot b in raid.Support.OfType<GameBot>())
             {
                 long id = b.DatabaseID;
                 bool inRegion = b.CurrentRegionID == raid.Definition.Region;
                 float lair = inRegion ? Vector2.Distance(new(b.X, b.Y), new(home.X, home.Y)) : float.MaxValue;
-                switch (RealmRaidReturnWave.ClassifyDragonRaider(b.IsAlive, raid.BeenInside.Contains(id),
-                            raid.ReturningToDragon.Contains(id), lair))
+                // #415: a raider the dragon threw walks back to its party by itself (EncounterDisplacementRecovery); it was
+                // never released, so it is not held for a return wave even when it landed past the 6,700 line.
+                bool displaced = EncounterDisplacementRecovery.IsRecovering(b) || EncounterDisplacementRecovery.WasDisplaced(b, now);
+                bool wasReturning = raid.ReturningToDragon.Contains(id);
+                switch (RealmRaidReturnWave.ClassifyDragonRaider(b.IsAlive, raid.BeenInside.Contains(id), wasReturning, lair, displaced))
                 {
                     case RealmRaidReturnWave.DragonRaider.WithTheRaid:
                         raid.BeenInside.Add(id);
+                        // Resurrected where it fell, or back in the fight: no longer on its way back (#415).
+                        if (wasReturning && raid.ReturningToDragon.Remove(id)) backInFight++;
+                        if (displaced && lair > RealmRaidReturnWave.DragonReturnDistance) thrownFar++;
                         break;
                     case RealmRaidReturnWave.DragonRaider.Fallen:
                         raid.ReturningToDragon.Add(id);
@@ -2075,6 +2098,12 @@ namespace DOL.GS
                         if (IsStaged(raid, b)) waiting++;
                         break;
                 }
+            }
+            if ((thrownFar > 0 || backInFight > 0) && now - raid.ReturnNotHeldLogTick >= 60_000)
+            {
+                raid.ReturnNotHeldLogTick = now;
+                Log.Info($"REALM_RAID_RETURN_NOT_HELD event={raid.Definition.Id} thrownFar={thrownFar} backInFight={backInFight} " +
+                         $"outside={outside} fallen={fallen} reason=\"thrown or resurrected raiders stay with the fight, not held for a return wave\"");
             }
             if (waiting == 0) raid.ReturnWaitingSince = 0;
             else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;

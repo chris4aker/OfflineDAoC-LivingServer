@@ -50,7 +50,7 @@
   },
   {
    "text": "Allakhazam's bestiary lists Duke Eligar among the dukes of Darkness Falls.",
-   "provenance": "mythic",
+   "provenance": "legend",
    "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
   },
   {
@@ -98,7 +98,7 @@
   }
  ],
  "story": "Duke Eligar is the champion of High Lord Baln's hall and looks like a high lord himself. In the Uncounted Age, when lords settled quarrels by champions, Baln always sent Eligar, and he won thirty-one fights. At the Feast of Thrones he stood ready to fight for Baln and nobody asked: the Master ate nineteen lords without offering any of them a champion. Eligar did not kneel when Baln knelt; the Chancellor noticed and wrote his line lower than his fame deserved.\n\nIn the Second Roll the court found it could not settle quarrels without losing the quarrellers, since a peer who kills or is beaten may be struck off. Eligar asked Adremal for a custom, and got the yield: a demon who yields has only knelt, and kneeling keeps it on the Roll. Eligar became the court's hired champion of the yield and never yielded. His great fight was against the first Chthonic Knight Gaapoler, Prince Abdin's champion, who yielded on one knee; the present Gaapoler wants a rematch.\n\nHis ambition is the fifth seat: a High Lord's line come empty, which by custom goes to the strongest duke. None of the four has fallen. He argued that High Lord Oro, appearing as three bodies, had fallen from his place; the Chancellor ruled the Roll counts names, and all three answer to Oro. He argued that High Lord Saeor, who heals on what he kills, was no longer what the Roll had written; the Chancellor said the Roll never said what a High Lord eats.\n\nSince the doors opened he has offered single combat to the captains of the realms, and no captain has ever accepted it on behalf of a company. Albion's old champions have gone down to accept, alone; Midgard's huscarls say they would; Hibernia's champions call it a trap for counting. He still carries the lance he grounded at the Feast.",
- "legend": "Eligar stands in the north-east of Baln's hall, toward the Field Marshal's end, and he is the biggest of the three dukes there (level 75, a high lord's model). No script. He yells a challenge for your leader to come forward alone; ignore it, nobody has ever soloed him. Pull him north-east, away from Baln and from Marquis Dortaleon on the east road, and keep the Marshal's group out of it. Some Albion players go down alone on purpose to answer his challenge and die, and call it the champion's walk. If your raid leader starts talking about the champion's walk, find a new raid leader.",
+ "legend": "Eligar stands in the north-east of Baln's hall, toward the Field Marshal's end, and he is the biggest of the three dukes there (a foe for a war party of any realm's champions, built like a high lord). No tricks. He yells a challenge for your leader to come forward alone; ignore it, nobody has ever killed him alone. Draw him north-east, away from Baln and from Marquis Dortaleon on the east road, and keep the Marshal's group out of it. Some Albion raiders go down alone on purpose to answer his challenge and die, and call it the champion's walk. If your raid leader starts talking about the champion's walk, find a new raid leader.",
  "yells": {
   "aggro": [
    "Your leader. Forward. Alone.",
@@ -137,22 +137,22 @@
  },
  "botLines": {
   "briefing": [
-   "eligar is north east of balns hall, high lord model, 75. [pull him ne|north east], away from dortaleon",
-   "he yells for the raid leader to come solo. [ignore it|nobody solos him]",
-   "keep the marshal's group out of the eligar fight. [watch the pull|careful]",
+   "eligar is north east of balns hall, built like a high lord. [draw him ne|north east], away from dortaleon",
+   "he yells for the raid leader to come alone. [ignore it|nobody goes at him alone]",
+   "keep the marshal's group out of the eligar fight. [watch the draw|careful]",
    "last duke in the hall. [then the marshal|then nebir and the lieutenants]"
   ],
   "aftermathWin": [
    "eligar down. [all three dukes of balns hall|the three of the south are done]",
    "champion's dead. [we came all together lol|so much for single combat]",
    "eligar done, [nebir next|marshal next]",
-   "duke eligar dead. [nobody did the champion's walk|good, no solo heroes]"
+   "duke eligar dead. [nobody did the champion's walk|good, no lone heroes]"
   ],
   "aftermathLoss": [
-   "eligar wiped us. [hits like a high lord|hes basically a high lord]",
+   "eligar killed us all. [hits like a high lord|hes basically a high lord]",
    "someone ran in alone for the challenge. [that went well|rip]",
-   "pulled dortaleon on eligar. [mess|never again]",
-   "eligar 1 us 0. [regroup|rez]"
+   "drew dortaleon on eligar. [mess|never again]",
+   "eligar one us nothing. [regroup|raise the fallen]"
   ],
   "rumour": [
    "[heard|word is] eligar challenges every raid leader to single combat. [nobody takes it|nobody's that dumb]",
@@ -165,9 +165,8 @@
   "keyword": "eligar",
   "text": "The champion of High Lord [Baln]'s hall, who invented the court's custom of the yield and has never yielded. He waits for a High Lord's seat to come empty and offers single combat to every raid leader who reaches him. The Chthonic Knight [Gaapoler] wants a rematch."
  },
- "bookPage": "From The Champion's Walk, a page kept by the Defenders' chapter in Camelot: Sir Leodan of Adribard's Retreat went down alone, in the second season after the door opened, to answer the demon duke's challenge, because a challenge offered is a challenge owed. We followed as far as the crossing and no further. He walked into the southern hall with his shield up and the duke saw him and grounded his lance and called out, in our own tongue, that here at last was courtesy. They fought from one bell to the next. We heard it the whole time.",
+ "bookPage": "Sir Leodan of Adribard's Retreat went down alone, in the second season after the door opened, to answer the demon duke's challenge, because a challenge offered is a challenge owed; The Champion's Walk, a page kept by the Defenders' chapter in Camelot, records it. We followed as far as the crossing and no further. He walked into the southern hall with his shield up and the duke saw him and grounded his lance and called out, in our own tongue, that here at last was courtesy. They fought from one bell to the next. We heard it the whole time.",
  "bookPages": [
-  "From The Champion's Walk, a page kept by the Defenders' chapter in Camelot: Sir Leodan of Adribard's Retreat went down alone, in the second season after the door opened, to answer the demon duke's challenge, because a challenge offered is a challenge owed. We followed as far as the crossing and no further. He walked into the southern hall with his shield up and the duke saw him and grounded his lance and called out, in our own tongue, that here at last was courtesy. They fought from one bell to the next. We heard it the whole time.",
   "The page goes on: We did not hear the end of it. A company of Hibernians came down the eastern stair in the middle of the second bell and through the hall, and when they had gone the duke was standing alone, and Sir Leodan was not standing. Later a captured imp told us that the duke had stopped fighting when the Hibernians came, and had stood over Sir Leodan's body to keep them off it, and had let them hit him. The imp did not know why. Sir Leodan's name is cut, they say, on the Chancellor's wall of the visitors, a little higher than the others."
  ],
  "chronicle": {

@@ -9,15 +9,25 @@
       "text": "Level 74, 30,000 health, in the Cursed Forest. It casts Elements Strike, 400 energy.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Hibernia Named Mobs/Classic Zones/WyvernicWraith.cs"
+    },
+    {
+      "text": "In Aislinge Óenguso, Aengus finds Caer Ibormeith, a swan in alternate years among 150 chained swan-maidens at Loch Bél Dracon; at Samhain he calls her, becomes a swan, and they fly to Brug na Bóinne singing a music that sleeps its hearers three days and nights.",
+      "provenance": "myth",
+      "source": "Aislinge Óenguso (The Dream of Aengus)"
+    },
+    {
+      "text": "Living Server lore: the falconers of Tir na Nog on calling a creature of the air by its right name, and the harper's hundred names at the wraith's circle.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "The courts kept wyverns as lords keep hawks, the Sylvan say, and flew them over the court wood on bargaining days to show off. When the wood went bad they died in their roosts, sickened by the same thing that turned the trees. One did not stay dead. The Wyvernic Wraith is the ghost of that wyvern, still circling the place where its masters fed it.\n\nIt strikes with a crackle of raw elements, the court magic it was fed on as a hatchling, and it does not seem to know that its masters are gone. It does not range far. It circles, and dives, and circles again. The Sylvan think it is waiting for someone to whistle it home, and that this is why it is so angry: nobody ever does.\n\nSome frontier scouts claim to have seen two wraiths circling on clear nights. The druids say there was only ever one wyvern that came back; the scouts say the druids were not there.",
-  "legend": "A straight fight with a sharp energy strike: energy resists help, healers watch whoever it picks. Kill it where it circles; it does not range far. Clear the walking trees around first, or they wander in while everyone is looking up. Energy resists; heal whoever it picks. Clear the walking trees around it first. Superstition: never whistle in the Cursed Forest; the wraith may think you are its master, and be disappointed. Nicknames: 'the hawk', 'old wing'. Superstition: never keep a hawk in Ardee. The wraith might hear it, and come to see who has replaced it. Nobody has ever kept a hawk since.",
+  "story": "The courts kept wyverns as lords keep hawks, the Sylvan say, and flew them over the court wood on bargaining days to show off. When the wood went bad they died in their roosts, sickened by the same thing that turned the trees. One did not stay dead. The Wyvernic Wraith is the ghost of that wyvern, still circling the place where its masters fed it.\n\nIt strikes with a crackle of raw elements, the court magic it was fed on as a hatchling, and it does not seem to know that its masters are gone. It does not range far. It circles, and dives, and circles again. The Sylvan think it is waiting for someone to whistle it home, and that this is why it is so angry: nobody ever does.\n\nSome frontier scouts claim to have seen two wraiths circling on clear nights. The druids say there was only ever one wyvern that came back; the scouts say the druids were not there.\n\nThe falconers of Tir na Nog say that in Hibernia's old tales a creature of the air comes home when it is called by its right name, and only then. Aengus the Mac Óc dreamed for a year of a girl he had never met, and sickened for her, and when she was found at last she was Caer Ibormeith, who spent every other year as a swan on the lake called the Dragon's Mouth, among a hundred and fifty others joined in pairs by silver chains. Aengus went down to the lake at Samhain and called her by her name. She came to him, and he became a swan beside her, and the two flew three times round the lake and away to the Brug on the Boyne, singing a music that put everyone who heard it to sleep for three days and three nights.\n\nIt is the ending the falconers want, when they tell it under the wraith's circle. The courts named their wyverns as lords name hawks and called them home by name, and nobody on this side of the Veil knows what the names were. So the wraith circles and dives and circles again, listening for a word nobody left behind. A harper of Tir na Nog once stood at the edge of its circle and tried a hundred of the old names, one after another, from dusk until the small hours. The wraith heard him out, and came down on him at the hundred and first.",
+  "legend": "A straight fight with a sharp energy strike: wards against energy help, healers watch whoever it picks. Kill it where it circles; it does not range far. Clear the walking trees around first, or they wander in while everyone is looking up. Wards against energy; heal whoever it picks. Clear the walking trees around it first. Superstition: never whistle in the Cursed Forest; the wraith may think you are its master, and be disappointed. Nicknames: 'the hawk', 'old wing'. Superstition: never keep a hawk in Ardee. The wraith might hear it, and come to see who has replaced it. Nobody has ever kept a hawk since.",
   "yells": {
     "aggro": [
       "A ghostly wyvern shrieks and dives.",
-      "A ghostly wyvern shrieks and dives.",
-      "Master? No. Prey."
+      "Master? No. Prey.",
+      "The wraith circles once, crackling, and comes down."
     ],
     "phases": [
       {
@@ -27,12 +37,12 @@
     ],
     "death": [
       "The wraith scatters on the wind.",
-      "The wraith scatters on the wind."
+      "The old roost is empty now. The wind is quiet."
     ],
     "slay": [
       "Prey.",
-      "Prey.",
-      "Dropped."
+      "Dropped.",
+      "Fed, as the masters fed the hatchling."
     ]
   },
   "atmosphere": {
@@ -50,21 +60,21 @@
   },
   "botLines": {
     "briefing": [
-      "wyvernic wraith hits with energy. [resists up|energy resist], heal whoever it targets",
-      "energy resists, [heal its target|watch who it picks]",
-      "clear the walking trees around first. [clean pull|look]",
-      "it dives at range, [casters watch|heal the targets]"
+      "wyvernic wraith hits with energy. [wards up|energy ward], heal whoever it picks",
+      "energy wards, [heal whoever its on|watch who it picks]",
+      "clear the walking trees around first. [clean draw|look]",
+      "it strikes from afar, [casters watch|heal whoever it picks]"
     ],
     "aftermathWin": [
       "wraith down. [it just blew away|gone like smoke]",
       "wraith blew away like smoke. [gone|nice]",
-      "energy resists did it. [grats|good]",
+      "energy wards did it. [grats|good]",
       "nobody whistled. [learning|ha]"
     ],
     "aftermathLoss": [
       "it picked the cleric twice and [nobody healed him|he dropped]",
       "it picked the cleric twice. [heal him|watch]",
-      "pulled a walking tree too. [clear first|ugh]",
+      "drew a walking tree too. [clear first|ugh]",
       "someone whistled. [why|always someone]"
     ],
     "rumour": [
@@ -78,7 +88,7 @@
     "keyword": "Wyvernic Wraith",
     "text": "The ghost of a court wyvern that died when the wood went bad. It still circles the place its masters fed it."
   },
-  "bookPage": "From Derbáil of Ardee's list: grandmother said the courts kept wyverns, as lords keep hawks, and flew them over the court wood when they met. When the wood went bad the wyverns died in their roosts. One came back as a ghost, still circling where it was fed. Never whistle in that forest, she said, because it will think you are its master and come down to you, and when it sees you are not, it will be very disappointed. A disappointed wyvern, grandmother said, is worse than an angry one, because an angry one at least expected you.",
+  "bookPage": "The courts kept wyverns, as lords keep hawks, and flew them over the court wood when they met, grandmother said, and Derbáil of Ardee's list keeps her word for it. When the wood went bad the wyverns died in their roosts. One came back as a ghost, still circling where it was fed. Never whistle in that forest, she said, because it will think you are its master and come down to you, and when it sees you are not, it will be very disappointed. A disappointed wyvern, grandmother said, is worse than an angry one, because an angry one at least expected you. A creature of the air comes home when it is called by its right name, she said, the way the old tales have it, and the courts took the wyvern's name away with them when they went.",
   "chronicle": {
     "win": "{realm} went into the Cursed Forest under {raidLeader} and put down Wyvernic Wraith in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Cursed Forest without Wyvernic Wraith's head after {minutes} minutes."

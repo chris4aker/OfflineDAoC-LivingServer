@@ -34,7 +34,7 @@
     }
   ],
   "story": "Every band of outlaws needs someone who remembers where things are, and for the Red Daggers it is Red Hagen. He keeps the map: not a map of Raumarik, which any trapper could draw, but the band's own, of every back road and blind pass between the Jamtland hills and the Raumarik heights, marked with which watch-post watches which path on which nights, and where the realm's war-bands lie up, and where the Albion men will be waiting to buy.\n\nHe is called Red for his beard, the skalds say, and the Daggers say for what he did at the ford the winter Hagall made him second, and neither will say more. He keeps apart from the band's hold. Hagall wants the map as far from the bounty hunters' fires as it can be and still be in Raumarik, and so Hagen lives in the east, alone, with a savage wyvern for a neighbour that he has an understanding with, and comes in to the hold only when the map needs new marks.\n\nLynnleigh heard of the map through a dagger. A warrior of Mularn brought her one of the band's red-hilted blades, and Elizabeth of Mularn knew the hand that had bound its hilt, and the trail led through the werewolf Geyra in Yggdra, who had been carrying the Daggers' messages for the Fenrir Pack, to Red Hagen. Take the map from Hagen, Lynnleigh says, and the Daggers are blind; take Hagall, and they are headless.\n\nHagen fights like a man who has been waiting for this. He has been. The Daggers have a saying about him, that he sleeps with one eye on the map and the other on the road, and the skalds add that he has never yet been surprised. He has a short blade and no mercy and no guile at all, and the map inside his coat, and he would rather burn it than give it up, if he had the time.",
-  "legend": "Red Hagen is a viking epic target (An End to the Daggers) in the east of Raumarik, level 53, alone except for a savage wyvern nearby, so kill or avoid the wyvern first. He's a plain spawn, no special abilities, not CC-immune, and nothing else joins him: one of the easier steps of the chain if your group is at level. You want the map he carries for Lynnleigh. The step before is the werewolf Geyra in Yggdra Forest; the step after is Hagall the Red Dagger and the Daggers' hold by the bounty hunters' fires. Hagen is the easy one; save your nerves for Hagall.",
+  "legend": "Red Hagen is a target of the vikings' great quest (An End to the Daggers) in the east of Raumarik, a foe for the realm's best, a full band of them, alone except for a savage wyvern nearby, so kill or avoid the wyvern first. He's a plain fighter, no special tricks, charms, trances and stuns hold him, and nothing else joins him: one of the easier steps of the chain if your group is of the strength it asks. You want the map he carries for Lynnleigh. The step before is the werewolf Geyra in Yggdra Forest; the step after is Hagall the Red Dagger and the Daggers' hold by the bounty hunters' fires. Hagen is the easy one; save your nerves for Hagall.",
   "yells": {
     "aggro": [
       "Lynnleigh's dog. I wondered when.",
@@ -73,7 +73,7 @@
   "botLines": {
     "briefing": [
       "deal with the savage wyvern first",
-      "hagen is alone, plain mob",
+      "hagen is alone, plain fighter",
       "loot the map for lynnleigh",
       "geyra in yggdra is the step before"
     ],
@@ -84,9 +84,9 @@
       "map shows every back road in jamtland"
     ],
     "aftermathLoss": [
-      "pulled the wyvern too",
+      "drew the wyvern too",
       "he hits fast",
-      "too few for a 53",
+      "too few for him",
       "forgot to loot the map, had to come back"
     ],
     "rumour": [

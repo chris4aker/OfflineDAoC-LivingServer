@@ -76,6 +76,14 @@ jobs:
           python tools/bot-voices/check_runtime_names.py
           python tools/bot-voices/debates_doc.py --check
           python -m unittest discover -s tools/bot-voices/tests -v
+          python -m unittest discover -s tools/lore/tests -v
+          # 1.2.1 lore checks beside the lint (which the tests above run): the repetition ratchet and the reachability caps
+          # fail, and so does the continuity ledger (docs/1.2.1/CONTINUITY.md; clean since 2026-11-22).
+          python tools/lore/lint_lore.py
+          python tools/lore/repetition.py --check
+          python tools/lore/reachability.py --check
+          python tools/lore/continuity.py --check
+          python tools/lore/depth_report.py --check
           python -m unittest discover -s tools/claude-version/tests -v
           python -m unittest discover -s tools/perf/tests -v
 

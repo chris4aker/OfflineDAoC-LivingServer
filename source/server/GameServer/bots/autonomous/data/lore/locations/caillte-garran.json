@@ -47,7 +47,7 @@
     }
   ],
   "story": "Caillte Garran means the lost grove, and the Sylvan of Droighaid say there are two reasons for the name, and that both are true. The first is old. Before the Fomorians came, the country west of Domnann was one grove, a great orchard of the Sylvan that ran from the forest's edge to the cliffs above the sea, and when the Fomorians came up out of their city under the shore they came up here first, at the top of their stair, and the orchard was where they cut the timber to shore their passages. The grove was lost to the stair. What is left is scrub and spore and broken trees, and the arbordons that walk among them carrying off whatever is not fastened down.\n\nThe second reason is recent, and Terod of Droighaid tells it to every company that will sit still. The farmers of the realm who came west with the first swords found seeds in Cothrom Gorge, in the rot, and brought them up to Droighaid to see what they were. They were cursed. The Sylvan destroyed what they could. One was lost. Kredril, who lives on Droighaid's outskirts and has studied it ever since, says it was carried off, by an arbordon or a bird or a careless hand, back down into the gorge, and that it grew there into a treant called Feairna-Athar, brutal and raging, that tortures whatever comes near it. The seed road runs from Terod's tree in Droighaid to Kredril, to Emolia at the town's bindstone, who sends travellers across to Jandros in the great trees of Aalid Feie, and from there down into the gorge. Every season someone walks it, and the treant comes back.\n\nDroighaid itself is the Sylvan's second town, built in the trees at the eastern end of the grove where the old orchard met the forest. It is quieter than the Grove of Domnann and busier with trade: Lilerbad keeps a merchant's counter there and more errands than any Sylvan alive, and Ivy Magennis mixes poisons, and the young of the realm come through it on the way west. The Sylvan of Droighaid are orchard people still. They grow what they can in the lee of their trees and they count what the arbordons take.\n\nWest of the town the Fomorians hold a settlement around a house at the top of their stair: bonic and tremulare, militar and radicant, geddon and trodach, the households' working people and their guards. Lilerbad sends the realm's young to clear it, and says it is about a tapestry, and will not say more. Beyond the settlement the stair goes down into the earth toward the city of Fomor, and the realm's customs begin at its top: a coin on the top step, blankets at dawn for anyone who climbs back up.\n\nIn the south-west the mantids keep their mud huts. They are not the Krrzck of the edge, the Sylvan say; they are the ones the Krrzck shut out, or who left, and they call themselves by a name no Hibernian mouth can say. Their surveyors and perusers walk the grove's edge measuring it, and their rebels, the Sylvan say, are rebels against something nobody has been told about. They are not friendly. The pollen spores drift between them and the settlement, and the green stranglers wait in the lower scrub by the rivers, where Goby and the river gobblers fish.\n\nWhy does it matter? Because Caillte Garran is the grove the isle lost first, and the seed it lost last, and both losses are still walking. The Sylvan of Droighaid say that when the seed road is walked often enough the treant will stay down, and that when the Fomorians are driven off the stair the orchard will grow back. They have been planting it a tree at a time, in the lee of Droighaid, since the realm came.",
-  "legend": "Caillte Garran is Hy Brasil's 18-42 zone west of Domnann. Droighaid in the east is the town (channeler, vault, merchants; Lilerbad's 14 item quests; Terod's The Lost Seed for 48-50, which sends you via Kredril, Emolia and Jandros in Aalid Feie to kill the treant Feairna-Athar in Cothrom Gorge). The Fomor entrance (the shore stair) is in the north-west. Camps: green stranglers and shrillers (12-24) near Droighaid, arbordons (24-31) north, the Fomorian settlement west of town (21-37, social; Missing Tapestry), pollen spores and botonid tubers (28-35), rabid bugbears and arbordon abductors (33-37), mantids of the mud huts in the south-west (35-42, aggressive). Goby (22) by the rivers. Realm custom: leave a coin on the top step of the Fomor stair, and never let an arbordon carry anything of yours off.",
+  "legend": "Caillte Garran is the land of Hy Brasil west of Domnann where the hunting runs from young adventurers not long blooded to hardened bands of veterans. Droighaid in the east is the town (channeler, vault, merchants; Lilerbad's fourteen item quests; Terod's The Lost Seed for hardened veterans on the edge of the realm's best, which sends you via Kredril, Emolia and Jandros in Aalid Feie to kill the treant Feairna-Athar in Cothrom Gorge). The Fomor entrance (the shore stair) is in the north-west. Camps: green stranglers and shrillers (young adventurers up to seasoned bands) near Droighaid, arbordons (seasoned bands) north, the Fomorian settlement west of town (seasoned bands up to hardened veterans, and they come to each other's call; Missing Tapestry), pollen spores and botonid tubers (seasoned bands), rabid bugbears and arbordon abductors (seasoned bands and hardened veterans), mantids of the mud huts in the south-west (hardened veterans, and they go for you on sight). Goby (a seasoned band's foe) by the rivers. Realm custom: leave a coin on the top step of the Fomor stair, and never let an arbordon carry anything of yours off.",
   "atmosphere": {
     "firstEntry": [
       "Caillte Garran. The lost grove.",
@@ -155,9 +155,9 @@
       "the fomor entrance is in caillte garran. the shore stair goes down from the north west",
       "the fomorians cut the old sylvan orchard to shore the passages under fomor",
       "farmers found cursed seeds in cothrom gorge. one got lost and grew into feairna-athar",
-      "terod in droighaid starts the lost seed. [48-50|kredril, emolia, jandros]",
+      "terod in droighaid starts the lost seed. [veterans near our best|kredril, emolia, jandros]",
       "droighaid is the sylvan's second town, in the trees at the east end of the grove",
-      "lilerbad in droighaid has more errands than any sylvan alive. [14|busy]",
+      "lilerbad in droighaid has more errands than any sylvan alive. [fourteen|busy]",
       "lilerbad wants the fomorian settlement west of droighaid cleared. something about a tapestry",
       "the mud hut mantids arent krrzck. [shut out or left|nobody says]",
       "the arbordons carry off anything not fastened down. [thieves|walking trees]",
@@ -173,17 +173,17 @@
       "[heard|someone said] the fomorian settlement sends people down the stair at night",
       "someone forgot the coin on the top step and [fomor went badly|coincidence]",
       "[word is|heard] a new tree took in the young orchard behind droighaid",
-      "goby fishes in the rivers with the gobblers. [22|named]",
+      "goby fishes in the rivers with the gobblers. [seasoned work|one of name]",
       "[heard|someone said] goby ate a kid's shoe off the droighaid river once"
     ],
     "tell": [
       "caillte garran is west of domnann. droighaid is the town. 18 to 42",
       "where is droighaid? east end of caillte garran, in the trees. channeler there",
       "where is the fomor entrance? north west of caillte garran, past the fomorian settlement",
-      "is caillte garran hard? mostly 20s-30s. mantids in the south west are 35-42 and aggressive",
+      "is caillte garran hard? mostly seasoned work. mantids in the south west want veterans and jump you",
       "whats in caillte garran? fomorians, arbordons, pollen spores, mantids, bugbears, the fomor stair",
-      "who gives the lost seed? terod in droighaid. 48-50, ends in cothrom gorge",
-      "goby is a 22 named lunger by the rivers in caillte garran, river gobblers with it. long respawn"
+      "who gives the lost seed? terod in droighaid. veterans near our best, ends in cothrom gorge",
+      "goby is a lunger of name by the rivers in caillte garran, seasoned work, river gobblers with it. slow to come back"
     ]
   },
   "loremaster": {
@@ -204,9 +204,9 @@
     "title": "The Seed Road, by Terod of Droighaid",
     "pages": [
       "My grandmother walked the orchard when it ran from Domnann's edge to the cliffs, and she said you could walk all day under fruit. The Fomorians came up their stair and cut it for the timber under their city, a tree at a time, the way they do everything, carefully. She lived to see the orchard turn to scrub and the arbordons walk where the trees had stood. When I was a boy I asked her why we called it the lost grove and not the stolen one. She said a thing is stolen when you know where it went.",
-      "When your realm came west, its farmers came with the swords, and some of them went down into Cothrom Gorge to see what grew there, and brought back seeds. They were cursed. We could feel it in the jars. We destroyed what we could, in the fire-keepers' fire, and one was lost before we reached it. Kredril has spent his life since then on the outskirts of town with his notes, and he says it went back down into the gorge, carried by something, and grew. It is a treant now. Its name is Feairna-Athar, and it is brutal.",
+      "When your realm came west, its farmers came with the swords, and some of them went down into Cothrom Gorge to see what grew there, and brought back seeds. They were cursed. We could feel it in the jars. We destroyed what we could, in the fire-keepers' fire, and one was lost before we reached it. Kredril has spent his life since then on the outskirts of town with his notes, and he says it went back down into the gorge, carried by something, and grew. The fire-keepers still keep the ashes of the others in a sealed jar. It is a treant now. Its name is Feairna-Athar, and it is brutal.",
       "So there is a seed road. It begins at my tree, because I tell the story. It goes to Kredril, who knows the treant. It goes to Emolia at the bindstone, who sends the walker across to Jandros in the great trees of Aalid Feie, who knows where the farmers found the seeds. And then it goes down, into the gorge, and the treant wakes when the walker comes near. Each time it is put down, the walker brings back a jewel of red light from where it fell. Each time, in a season or so, Kredril says it is back.",
-      "Behind the town we are planting the orchard again. One tree at a time, in the lee of the trees we live in, where the arbordons do not come. Lilerbad says it will take longer than the Fomorians took to cut it down, and she is right, and we are doing it anyway. When your companies come through on the way to the stair, I ask each of them to carry a little water to the young trees. Most of them do. I write their names on the bark, low down, where the arbordons do not look."
+      "Behind the town we are planting the orchard again. One tree at a time, in the lee of the trees we live in, where the arbordons do not come. Lilerbad says it will take longer than the Fomorians took to cut it down, and she is right, and we are doing it anyway. When your companies come through on the way to the stair, I ask each of them to carry a little water to the young trees. Most of them do, even the ones in a hurry. I write their names on the bark, low down, where the arbordons do not look."
     ]
   },
   "bosses": [],
@@ -218,7 +218,7 @@
   "related": [
     {
       "id": "hy-brasil",
-      "relation": "the region overview"
+      "relation": "the wider country it belongs to"
     },
     {
       "id": "fomor",

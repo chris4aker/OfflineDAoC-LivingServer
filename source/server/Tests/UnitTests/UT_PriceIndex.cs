@@ -154,9 +154,28 @@ namespace DOL.UnitTests
             index.NoteListed(loot);
             index.NoteListed(playerMade);
 
-            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=1"),
+            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=1 craftedListed20=1"),
                 "a gamebot's crafted listings, live and posted this hour; loot and players' listings are not counted");
-            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=0"), "the posts are an hour's");
+            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=0 craftedListed20=1"), "the posts are an hour's");
+        }
+
+        [Test]
+        public void TheHourlyLineTellsPracticeWorkFromSellableWork()
+        {
+            // Issue #422: the Exchange's upgrade buyers are level 20 and up; a level-8 practice piece is listed but not sellable work.
+            MarketPriceIndex index = MarketPriceIndex.Instance;
+            index.ResetForTests();
+            DbInventoryItem practice = Sword("Practice", 8), sellable = Sword("Sellable", 20);
+            foreach (DbInventoryItem listing in new[] { practice, sellable })
+            {
+                listing.OwnerLot = RealmExchangeBroker.MidgardOwnerLot;
+                listing.SellPrice = 500;
+                listing.OwnerID = "offlinebot:5";
+                listing.RealmExchangeListedUtc = DateTime.UtcNow.ToString("O");
+                listing.IsCrafted = true;
+            }
+            index.Market = () => [practice, sellable];
+            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=2 craftedPosted=0 craftedListed20=1"));
         }
 
         [Test]

@@ -226,7 +226,7 @@ namespace DOL.GS.PacketHandler
 
             try
             {
-                _tcpPacketQueue.Add(packet);
+                AddWhenNotDraining(_tcpPacketQueue, packet);
             }
             catch (Exception e)
             {
@@ -252,7 +252,7 @@ namespace DOL.GS.PacketHandler
             {
                 try
                 {
-                   _udpPacketQueue.Add(packet);
+                   AddWhenNotDraining(_udpPacketQueue, packet);
                 }
                 catch (Exception e)
                 {
@@ -264,13 +264,41 @@ namespace DOL.GS.PacketHandler
             {
                 try
                 {
-                    _udpToTcpPacketQueue.Add(packet);
+                    AddWhenNotDraining(_udpToTcpPacketQueue, packet);
                 }
                 catch (Exception e)
                 {
                     if (log.IsErrorEnabled)
                         log.Error($"{nameof(QueuePacket)} failed when adding to {nameof(_udpToTcpPacketQueue)}. Skipping this packet.", e);
                 }
+            }
+        }
+
+        /// <summary>The longest a packet waits for its queue's drain to end before it is given up (and logged), in ms.</summary>
+        public const int QUEUE_DRAIN_WAIT_MS = 1000;
+
+        /// <summary>
+        /// Queues a packet, waiting out a drain of its queue. The queues refuse an add while they are drained, and the
+        /// packet was then dropped with a "Cannot Add while DrainTo is in progress" error (owner's PC, build 1.2-43c43aa,
+        /// once). A drain runs in the client service's send step, in a login handler and on disposal; a packet is queued
+        /// from any thread that sends to the player, so the two can meet. A drain only copies the queued packets to the
+        /// send buffer and never queues one itself, so waiting for it is short and can't deadlock; the wait is bounded all
+        /// the same. Waiting, not setting the packet aside, keeps a sender's packets in order.
+        /// </summary>
+        public static void AddWhenNotDraining<T>(DrainArray<T> queue, T packet, int maxWaitMs = QUEUE_DRAIN_WAIT_MS)
+        {
+            if (queue.TryAdd(packet))
+                return;
+
+            SpinWait spinner = new();
+            long giveUpAt = Environment.TickCount64 + maxWaitMs;
+
+            while (!queue.TryAdd(packet))
+            {
+                if (Environment.TickCount64 >= giveUpAt)
+                    throw new InvalidOperationException($"The queue was still being drained after {maxWaitMs} ms.");
+
+                spinner.SpinOnce();
             }
         }
 

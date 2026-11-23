@@ -494,6 +494,50 @@ namespace DOL.UnitTests
             Assert.That(line.Level, Is.EqualTo(10));
         }
 
+        // ---- hired companions on arrival (1.2.1, owner 2026-11-21): trained in their build, as a player of their level
+
+        private static void TrainArrival(GameBot bot, HiredCompanions165.ArrivalKind kind, byte fromLevel, long fromExperience) =>
+            typeof(GameBot).GetMethod("TrainHiredCompanionArrival", Hidden)!.Invoke(bot,
+                [new HiredCompanions165.Arrival(kind, fromLevel, fromExperience, false)]);
+
+        [TestCaseSource(nameof(Classes))]
+        public void ANewHireJoinsTrainedWithAPlayersPoints(eCharacterClass cls, int multiplier)
+        {
+            foreach (int level in new[] { 5, 20, 40, 50 })
+            {
+                GameBot bot = Hired(cls, level, GamePlayer.GetExperienceAmountForLevel(level - 1));
+                GivePlan(bot);
+                TrainArrival(bot, HiredCompanions165.ArrivalKind.NewHire, 1, 0);
+                Assert.That(bot.GetBaseSpecLevel(Plans[cls][0].Line), Is.GreaterThan(1), $"x{multiplier / 10.0} level {level}: trained");
+                Assert.That(Leftover(bot), Is.EqualTo(bot.CompanionSpecPoints), "the player's count, as the spec window reads it");
+                AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, $"x{multiplier / 10.0} new hire level {level}");
+                // a second arrival of the same hire (its first summon saved, then never joined) never trains twice
+                TrainArrival(bot, HiredCompanions165.ArrivalKind.NewHire, 1, 0);
+                Assert.That(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, level, false, PlayerSpecPointOracle.Lines(bot)),
+                    Is.GreaterThanOrEqualTo(0), "never more trained than a player could be");
+            }
+        }
+
+        [TestCaseSource(nameof(Classes))]
+        public void ARaisedCompanionKeepsItsLinesAndSpendsOnlyWhatItGained(eCharacterClass cls, int multiplier)
+        {
+            // hired on 1.2 at 5, trained a little by its player at 12 with points left unspent, raised to its player's 40
+            GameBot bot = Hired(cls, 40, GamePlayer.GetExperienceAmountForLevel(39));
+            GivePlan(bot);
+            string first = Plans[cls][0].Line, second = Plans[cls][1].Line;
+            bot.GetSpecializationByName(first).Level = 6;
+            bot.GetSpecializationByName(second).Level = 3;
+            (string, int)[] trainedAt12 = [(first, 6), (second, 3)];
+            int unspentAt12 = Left(bot.CharacterClass, 12, trainedAt12);
+            Assert.That(unspentAt12, Is.Positive, "the case has points its player left unspent");
+            TrainArrival(bot, HiredCompanions165.ArrivalKind.Raise, 12, GamePlayer.GetExperienceAmountForLevel(11));
+            Assert.That(bot.GetBaseSpecLevel(first), Is.GreaterThan(6), "the gained points went into its build");
+            Assert.That(bot.GetBaseSpecLevel(second), Is.GreaterThanOrEqualTo(3), "no trained line is lowered");
+            Assert.That(bot.CompanionSpecPoints, Is.GreaterThanOrEqualTo(unspentAt12), "what its player left unspent stays unspent");
+            Assert.That(Leftover(bot), Is.EqualTo(bot.CompanionSpecPoints));
+            AssertAPlayersPoints(bot, bot.CompanionSpecPoints, 40, $"x{multiplier / 10.0} raised 12->40");
+        }
+
         // ---- /bot companions (BotManager / BotCommand) and /spawn helpers: made trained at their level
 
         [TestCaseSource(nameof(Classes))]

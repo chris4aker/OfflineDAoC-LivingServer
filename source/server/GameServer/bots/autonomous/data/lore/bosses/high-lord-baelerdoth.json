@@ -14,10 +14,15 @@
       "text": "The twelfth chair, the drawing-in, Duke Harboris drawn out to a ghost, the East Ward as Baelerdoth's idea, Dame Tegan Fras and Sir Cadell's hauberk are Living Server writing; the softened hauberks and the thirsty wounded lord are from the Darkness Falls file.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the Chancellor's second measuring, the Connacht satire) are Living Server writing.",
+      "provenance": "original",
+      "source": "Living Server (1.2.1 epic floors, #402)"
     }
   ],
   "story": "Eleven knelt at the Feast of Thrones, and High Lord Baelerdoth says there should have been a twelfth chair for the Blood, and that it was his. He knelt early, after Adremal, and was not made Blood; the Inquisitors say the Master likes his house square, the knights say he asked, the imps say he was too strong to be given more rank. The First Roll set him first among the High Lords, nearest to the Blood that is not Blood, and he keeps the coldest hall in the hollow as a prince would, with a chair the Chancellor has measured twice. The Church calls him the court's Lucifer.\n\nHis strength is a drawing-in, kept close about him while he is whole, as a miser keeps his purse inside his coat. Then he is hurt deep, and the coat comes open: near his end every wound he is given draws something out of the men around whoever he is fighting, into their armour first, rings softening and plates dulling from the first blow and staying so while the blows keep landing, so that a company that presses him slowly at the end pays for every moment. It passes off in time, but not while he is still being struck. Duke Harboris, a ghost, stood too close once in the long feuds and was drawn out to nothing but his place on the Roll; the rest of the cold hall keep a stride from whomever their master fights.\n\nThe East Ward between the three eastern halls was his idea, held by all three orders under his Duke Bimure, which made him keeper of the peace between them; Oro has never forgiven him. Hibernia, whose door is nearest, has the most songs.\n\nDame Tegan Fras of Camelot Hills fought him as any lord for most of a night, then had a horn blown when he weakened badly, and every man spent everything at once while her knights drew back a stride. The last of him went in less time than the office for the dead. Sir Cadell's softened hauberk is the armourers' pattern at Camelot.",
-  "legend": "High Lord Baelerdoth is level 80 with 100,000 health, CC immune, 40% melee / 70% other reduction, and a plain melee fight until he drops below 25%. From then on, every single hit he takes makes him cast Aura of Baelerdoth: -15 armour absorption for 20 seconds on whoever he is fighting and everyone within 350 of them. Every hit refreshes it, so the tank's armour stays melted for as long as you keep hitting him. Save everything for the last quarter and spend it in one burst, as Dame Tegan's horn did, so it is over quickly; melee step off the tank's side so the aura catches as few as possible (casters and archers at range are safe from it); healers top the tank hard through the burst. Do not slow down at 25%: slowing down only gives the aura more hits. Do not drop out of the fight or he resets full.",
+  "legend": "High Lord Baelerdoth is a foe for any realm's whole muster; he takes as much killing as fifty raiders, no charm or stun holds him, four-tenths of every weapon stroke and seven-tenths of everything else are lost on him, and he is a plain melee fight until he drops below a quarter of his strength. From then on, every single hit he takes makes him cast Aura of Baelerdoth: for 20 seconds, armour turns fifteen in a hundred less of each blow on whoever he is fighting and everyone within about a dozen paces of them. Every hit renews it, so his shield-bearer's armour stays melted for as long as you keep hitting him. Save everything for the last quarter and spend it in one burst, as Dame Tegan's horn did, so it is over quickly; melee step off the shield-bearer's side so the aura catches as few as possible (casters and archers standing well back are safe from it); healers top the shield-bearer hard through the burst. Do not slow down at the last quarter: slowing down only gives the aura more hits. Do not break off the fight or he is whole again.",
   "yells": {
     "aggro": [
       "A prince's title is a small thing. A prince's head, larger.",
@@ -55,21 +60,21 @@
   },
   "botLines": {
     "briefing": [
-      "baelerdoth is a plain fight till 25%. after that every hit on him strips 15 absorb off the tank and anyone within 350",
-      "save cooldowns and burn the last quarter in one go",
-      "melee step off the tank's side, ranged are safe from the aura",
-      "do not slow down at 25%, more hits means more aura"
+      "baelerdoth is plain till his last quarter. then every hit on him melts the armour of his shield-bearer and anyone a dozen paces round",
+      "save your big skills and burn the last quarter in one go",
+      "melee step off the shield-bearer's side, ranged are safe from the aura",
+      "do not slow down at the last quarter, more hits means more aura"
     ],
     "aftermathWin": [
       "last quarter in thirty seconds. thats how",
       "baelerdoth down",
-      "baelerdoth down, the tank still has armour, mostly",
+      "baelerdoth down, the shield-bearer still has armour, mostly",
       "great burst on the horn"
     ],
     "aftermathLoss": [
-      "we slowed down at 25% and he ate the tanks",
-      "we slowed down at 25% and the tank turned to paper",
-      "melee stacked on the tank and all got stripped",
+      "we slowed down at the last quarter and he ate the shield-bearers",
+      "we slowed down at the last quarter and the shield-bearer turned to paper",
+      "melee stacked on the shield-bearer and all got stripped",
       "nobody saved anything for the burst"
     ],
     "rumour": [
@@ -83,7 +88,11 @@
     "keyword": "baelerdoth",
     "text": "The first of the High Lords of [Darkness Falls], who says there should have been a twelfth chair for the Blood. His cold hall's strength is a drawing-in; near his end every wound draws the strength out of the armour of those round whoever he fights. Spend everything at once on the last of him. See [oro]."
   },
-  "bookPage": "From Brother Odran's Door-Book, the account of Dame Tegan Fras. We fought the high lord of the cold hall as any lord is fought for most of the night, and spent nothing we did not have to. I had read the armourers' notes: near his end every wound draws the strength out of the mail of those round the man he fights. So when he weakened badly I had the horn blown, and every man spent everything at once, and the knights about Sir Cadell drew back a stride. The last of him went in less time than the office for the dead. Cadell's hauberk came up soft as cloth.",
+  "bookPage": [
+    "Dame Tegan Fras gave her account to Brother Odran's Door-Book. We fought the high lord of the cold hall as any lord is fought for most of the night, and spent nothing we did not have to. I had read the armourers' notes: near his end every wound draws the strength out of the mail of those round the man he fights. So when he weakened badly I had the horn blown, and every man spent everything at once, and the knights about Sir Cadell drew back a stride. The last of him went in less time than the office for the dead. Cadell's hauberk came up soft as cloth.",
+    "Measured, the second time, in the Fourth Roll, by the Chancellor's own rod: the chair of High Lord Baelerdoth in the cold hall, one finger's breadth lower in the back than the least of the chairs of the Blood, as the First Roll requires. The high lord had complained that the chair was measured wrongly the first time. The Chancellor finds that it was measured rightly. The Chancellor finds also that the high lord has had a cushion made, of a frost-bear's pelt, which brings the seat to the height of a prince's. A cushion is not a chair. The Roll does not speak of cushions. It is so entered, and the Chancellor declines to measure the chair a third time while the high lord is sitting on it.",
+    "A poet of Connacht went down with a company out of the Hibernian door, which lies nearest the eastern halls, and stood at the edge of the cold hall and made a satire on its lord for his meanness: that he draws everything into himself and gives nothing out, not warmth nor light nor the strength of the mail on the men who stand about him, and that a hall whose lord keeps all for himself is cold, as a miser's house is cold. The satire raised no blister, for demons do not blister, but Duke Bimure of the East Ward laughed aloud at it and was put from his master's table for a Roll. Nine verses of that satire are known in Connacht. The tenth the poet would not give, saying it was owed to the high lord and he meant to deliver it in person."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} burned through High Lord Baelerdoth's last quarter in {minutes} minutes.",
     "loss": "High Lord Baelerdoth stripped {realm}'s raid bare at the end; {raidLeader} could not finish him."

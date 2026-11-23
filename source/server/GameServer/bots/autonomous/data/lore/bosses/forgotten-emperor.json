@@ -24,7 +24,7 @@
     }
   ],
   "story": "He was the emperor of the west, the man a legion raised up and marched away from Rome instead of toward it, to found a city at the edge of the world. He died before it was built, and the legion struck out his name, from its stones and its rolls and the coins it had struck for him, beating his face flat on every one, as Rome did to the memory of those it condemned. Why, nobody alive knows. The Book of Deeds of Seleucus calls him only 'the emperor I served'.\n\nThe legion buried him with every honour all the same, and he is still in the emperor's hall, crowned, with his staff of office, a few paces from the chair another man sits in. He is slow to rise against anyone who comes into the hall, slower than any other dead thing in Cardova, as if he were not sure whether he still had the right to give an order. Taras watches him. The Spirit of the Emperor talks round him.\n\nIohannes Aldar says he is the true emperor and Seleucus his usurper. The minstrels of Camelot agree, because it makes a better song. Grindan Halig says a name is struck out for a reason, and the realm should leave it struck. Master Vismer of Camelot has asked for his staff and has not said what for.",
-  "legend": "Forgotten Emperor, level 35, in the emperor's hall of Cardova. Low aggro level (51), so he often does not jump you when you walk in, but Seleucus, Taras and the praetorians are right there. Kill him for the Staff of Enlightenment (Arc of Ages, Master Vismer). Plain melee, about five minutes to respawn. People shout Roman names at him; nothing happens.",
+  "legend": "Forgotten Emperor, a foe for a hardened band of veterans, in the emperor's hall of Cardova. He is slow to take offence, so he often does not jump you when you walk in, but Seleucus, Taras and the praetorians are right there. Kill him for the Staff of Enlightenment (Arc of Ages, Master Vismer). Plain melee, back about five minutes after he falls. People shout Roman names at him; nothing happens.",
   "yells": {
     "aggro": [
       "The legion... still knows my face.",
@@ -48,7 +48,7 @@
   },
   "botLines": {
     "briefing": [
-      "forgotten emperor is in the emperors hall, low aggro but the room is full",
+      "forgotten emperor is in the emperors hall, slow to notice you but the room is full",
       "kill him for the staff of enlightenment, arc of ages from vismer"
     ],
     "aftermathWin": [

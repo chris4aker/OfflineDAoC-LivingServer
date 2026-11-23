@@ -19,10 +19,15 @@
       "text": "'Hungry as Ulor', the ealdor's book of three curses and its law, Wynflaed's answer, the young ogres' scattering game, Father Collen and Sir Rhydian of Caer Gothwaite are Living Server writing. Earlier lore gave the curses to Jehrog; the script gives them to Ulor.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The book pages after the first (the first leaf of the book of curses as Wenna read it) are Living Server writing.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Ulor was the youngest and smallest of his litter in the Undercroft, born hungry, and what he hungered for was to be taught. He sat a season at Drihten's feet making him repeat the words he had heard through the hall-folk's floor. The diggers had a saying for any youngster who wants too much: hungry as Ulor. His elder brother Jehrog carried him down the seams and has stood in front of him ever since. When Orylle gave the brothers the title bysen, the example, Ulor asked Wynflaed's ghost what an example must know. Everything the young will need, she said, and he went to the scriptorium that night.\n\nHe found the ealdor's book of curses: three words spoken slowly over a guest who broke guest-law. The first opened the man so nothing could guard him; the second laid sores on him that crept to whoever stood near; the third ate what the first had opened. Let the cursed stand alone, the first leaf says, and the words must be said whole, for a curse broken off in the middle is only noise. Ulor learned the words by shape from Drihten's painted copies. He says them every time anyone comes into the room of the example. He has never lifted his staff to anything but point it.\n\nJehrog stands in front, the arm of the pair; Ulor stands behind and follows a man the length of the room to finish a word. The young ogres play at the second word in the corridors, scattering from whoever is pointed at. Wynflaed has not spoken to Ulor since.\n\nFather Collen, exorcist of Caer Gothwaite, went down with Sir Rhydian's company on one condition: that every man who could not reach the ogre with a blade carried stones. The knights held Jehrog; the rest stood a long arm's length apart and threw whenever Ulor drew breath, breaking each word in the middle, and the priests drew the sores out with the hospice's cure for poison. Ulor died with his mouth open in the middle of the third word. Gothwaite's squires still carry Collen's stone.",
-  "legend": "Ulor is the caster brother: level 72 to 77, 30,000 health, CC immune, 20% melee / 30% other reduction, 3,800 tether, and he never melees. Pull either brother and the other joins. Ulor follows his target to casting range and chains three spells, all interruptible: Banish Immunities (-50 body resist for 8 seconds), Lance Spirit (a matter DoT, 83 every 4 seconds for 24 seconds, on everyone within 350 of his target) and Essence Devourer (400 body damage within 200 of his target, cast over and over). He does not drain or heal himself, whatever the old guides said. So: interrupt him constantly, with any hit, bolt or spell (he is CC immune but not interrupt immune); stand apart so his circles catch one person, not five; cure poison takes the sores off. Most raids kill Ulor first, because he does the damage, while the tanks hold Jehrog away from the casters. Jehrog does not get angrier when Ulor dies.",
+  "legend": "Ulor is the caster brother: a foe for a war party of the realm's champions, as much killing as fifteen raiders; nothing mesmerizes, holds or dazes him, blades lose a fifth against him and everything else three parts in ten, he follows no farther than about a hundred and twenty-five paces from his spot, and he never fights hand to hand. Draw either brother and the other joins. Ulor follows the one he fights until his spells can reach and casts three of them over and over, all of which can be broken: Banish Immunities (it leaves the target far more open to body harm for eight seconds), Lance Spirit (a lingering acid that eats at everyone within twelve paces of his target every four seconds for twenty-four seconds, half a robed caster's strength over its course) and Essence Devourer (a body blow worth two-fifths of a robed caster's strength on everyone within seven paces of his target, cast over and over). He does not drain or heal himself, whatever the old raiders' accounts said. So: break his casting constantly, with any hit, bolt or spell (nothing holds him, but his casting still breaks); stand apart so his circles catch one person, not five; cure poison takes the sores off. Most raids kill Ulor first, because he does the harm, while the shield-bearers hold Jehrog away from the casters. Jehrog does not get angrier when Ulor dies.",
   "yells": {
     "aggro": [
       "Brother! They come to learn by our example!",
@@ -55,22 +60,22 @@
   },
   "botLines": {
     "briefing": [
-      "ulor is the caster, jehrog the melee. pull one and you get both",
-      "interrupt ulor nonstop, every cast he finishes hurts. he is cc immune, not interrupt immune",
-      "spread a body length apart, his dot hits 350 round his target and his nuke 200",
-      "cure poison on the sores. kill ulor first, tanks hold jehrog off the casters"
+      "ulor is the caster, jehrog the melee. draw one and you get both",
+      "break ulor's casting nonstop, every spell he finishes hurts. nothing holds him but his casting still breaks",
+      "spread a body length apart, his acid hits 12 paces round his target and his big blast seven",
+      "cure poison on the sores. kill ulor first, shield-bearers hold jehrog off the casters"
     ],
     "aftermathWin": [
       "ulor never finished a cast. great interrupts",
       "both brothers down. bad example",
-      "spread was perfect, the dot only got one at a time",
+      "spread was perfect, the acid only got one at a time",
       "collen's stones, every time"
     ],
     "aftermathLoss": [
       "nobody interrupted ulor and he chain cast the whole time",
-      "we stood in a heap and his dot hit the whole group",
+      "we stood in a heap and his acid hit the whole group",
       "nobody cured the sores",
-      "we went jehrog first while ulor nuked us from the back"
+      "we went jehrog first while ulor blasted us from the back"
     ],
     "rumour": [
       "heard ulor learned the old hall's curses off ogre copies he cant read",
@@ -83,7 +88,10 @@
     "keyword": "bysen",
     "text": "The younger of the brothers called the Example in [Krondon], the hungry one, who learned the ealdor's three curses by shape: one opens a man, one lays creeping sores, one eats what is open. They must be said whole. Father Collen broke them with stones. See [jehrog] and [bysen]."
   },
-  "bookPage": "From the account of Father Collen, exorcist of Caer Gothwaite. The younger brother does not fight; he speaks. He has the old hall's book of curses by heart without knowing a letter of it, three words, slow, and they must be said whole. So we broke them. Every man who could not reach him with a blade threw something whenever he drew breath, and I walked behind them shouting the office so my own men would not listen to him. We stood apart, as his book says the cursed should. When he died his mouth was open in the middle of a word. I have never been so glad of an unfinished sentence.",
+  "bookPage": "The younger brother does not fight; he speaks, says the account of Father Collen, exorcist of Caer Gothwaite. He has the old hall's book of curses by heart without knowing a letter of it, three words, slow, and they must be said whole. So we broke them. Every man who could not reach him with a blade threw something whenever he drew breath, and I walked behind them shouting the office so my own men would not listen to him. We stood apart, as his book says the cursed should. When he died his mouth was open in the middle of a word. I have never been so glad of an unfinished sentence.",
+  "bookPages": [
+    "The first leaf of the ealdor's book of curses in the scriptorium of Krondon, as Wenna of Caer Gothwaite read it for Father Collen, who would not read it himself. This book is for the guest who breaks the guest-law at the high table, and for no other. Three words, said slowly, each in its turn. The first opens him. The second sets on him the sores that walk to whoever stands beside him; therefore let the cursed stand alone, and let no one of the hall go near him until the third is said. The third eats what the first has opened. Let the words be said whole, for a curse broken off in the middle is only noise. Wenna writes below: the words themselves I have not copied, and I will not. Father Collen asked me not to, and put a stone into my hand to carry down instead."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} broke the Example of Krondon, Ulor se Bysen, in {minutes} minutes.",
     "loss": "Ulor se Bysen and his brother made an example of {realm}'s raid under {raidLeader}."

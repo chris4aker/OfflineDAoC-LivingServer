@@ -28,8 +28,8 @@
       "source": "LORE"
     }
   ],
-  "story": "The forest poachers of Albion run a road of their own from the high woods of the Pennines south to the eastern landing of Tepok's Mine, and Delfina walks its northern end. She carries letters, and they are not hers: they are written in the fair folk's hand, and they go south to Overseer Tepok, and his answers come north again by the Glyne cousins and by her.\n\nShe has a poacher's skill at not being seen and a courier's habit of not reading what she carries, and both have kept her alive. The fair folk let her come and go at the edge of their woods, which they let almost no one of Albion do, and she waits there between rounds, alone, under the last trees, where the road goes down out of the tops. She does not quarrel with travellers. A courier who quarrels is a courier who is remembered.\n\nTwr ap Alsig of Barfog, who reads the letters for Captain Rhodri, says Delfina's name is in three of them, which means that whoever writes them trusts her, and that is the most dangerous thing in the whole bundle. Rhodri wants her stopped. He has said, more than once, that he would rather have her talk; the poachers say she never has.",
-  "legend": "Delfina, level 43, forest poachers, alone at the southern edge of the Pennine woods where the poachers' road goes down. Aggro level 51, so you can usually pick your moment. Plain melee in the data. She is the courier in Lord of Deceit (Magus Agyfen's version): kill her and loot the reports for Twr ap Alsig to translate. Respawn five minutes; the Glyne cousins in Tepok's Mine are her faction too.",
+  "story": "The forest poachers of Albion run a road of their own from the high woods of the Pennines south to the eastern landing of Tepok's Mine, and Delfina walks its northern end. She carries letters, and they are not hers: they are written in the fair folk's hand, and they go south to Overseer Tepok, and his answers come north again by the Glyne cousins and by her.\n\nShe has a poacher's skill at not being seen and a courier's habit of not reading what she carries, and both have kept her alive. The fair folk let her come and go at the edge of their woods, which they let almost no one of Albion do, and she waits there between rounds, alone, under the last trees, where the road goes down out of the tops. She does not quarrel with travellers. A courier who quarrels is a courier who is remembered.\n\nTwr ap Alsig of Barfog, who reads the letters for the captain of Snowdonia Fortress, says Delfina's name is in three of them, which means that whoever writes them trusts her, and that is the most dangerous thing in the whole bundle. The captain wants her stopped. He has said, more than once, that he would rather have her talk; the poachers say she never has.",
+  "legend": "Delfina, of the forest poachers and a foe for a hardened band of veterans, is alone at the southern edge of the Pennine woods where the poachers' road goes down. She is slow to take offence, so you can usually pick your moment. Plain melee, by every account. She is the courier in Lord of Deceit (Magus Agyfen's version): kill her and take the reports from her for Twr ap Alsig to translate. She returns five minutes after she falls; the Glyne cousins in Tepok's Mine are poachers sworn to the same band.",
   "yells": {
     "aggro": [
       "You were not on the road.",
@@ -53,7 +53,7 @@
   },
   "botLines": {
     "briefing": [
-      "delfina is alone at the south edge of the pennine woods, 43, low aggro",
+      "delfina is alone at the south edge of the pennine woods, veteran band job, slow to notice you",
       "kill her and get the reports for twr ap alsig"
     ],
     "aftermathWin": [

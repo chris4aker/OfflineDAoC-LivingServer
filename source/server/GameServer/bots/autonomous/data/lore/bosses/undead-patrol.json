@@ -30,7 +30,7 @@
     }
   ],
   "story": "Masrim of Fort Atla has heard of more sightings of the Albion undead, and the rogues of Midgard go looking for a patrol of them with a skull Gunnolf of Vindsaul Faste wants to see. They are told to look in Yggdra Forest. The patrol they find stands in Raumarik, by the river fork where the Hibernian Oona raises the dead she kills, among undead soldiers who are not Albion's at all.\n\nThe shadows of Loki's house have argued about it in Jordheim's tavern since. Some say the patrol walks between the frontier and the south, and was in Yggdra when Masrim heard of it and in Raumarik by the time anyone got there. Some say Masrim's word was wrong. The Galplen tellers say the patrol is Oona's, the first of the dead she raised, and that she sends it north to be seen so that Midgard will look for its enemies in the wrong forest. The skull goes to Gunnolf either way, and Gunnolf, looking at it, says it is a Midgard skull.",
-  "legend": "The Undead Patrol is a level 40 undead in Raumarik, not Yggdra as the rogue epic The War Continues says: it stands among undead soldiers (49-52) next to Oona (65), the Hibernian epic boss at the river fork. Pull it very carefully away from the soldiers and especially from Oona. Take the skull to Gunnolf in Vindsaul Faste. No spells on the patrol itself.",
+  "legend": "The Undead Patrol is an undead, a foe for a hardened band of veterans, in Raumarik, not Yggdra as the rogues' great quest The War Continues says: it stands among undead soldiers, each a foe for the realm's best, a full band of them, next to Oona, a foe for several bands of the realm's best together, the Hibernian foe of the great quest at the river fork. Draw it very carefully away from the soldiers and especially from Oona. Take the skull to Gunnolf in Vindsaul Faste. No spells on the patrol itself.",
   "yells": {
     "aggro": [
       "(The dead soldier raises a rusted blade.)",
@@ -51,11 +51,11 @@
   "botLines": {
     "briefing": [
       "the undead patrol for the war continues is in raumarik next to oona, not yggdra",
-      "pull it away from the 50ish soldiers and dont touch oona"
+      "draw it away from the soldiers, theyre far tougher, and dont touch oona"
     ],
     "aftermathWin": [
       "got the skull for gunnolf",
-      "nobody aggroed oona, nice"
+      "nobody woke oona, nice"
     ],
     "rumour": [
       "the galplen tellers say the patrol is oonas first dead, sent north to be seen",
@@ -64,7 +64,7 @@
   },
   "loremasterTopic": {
     "keyword": "Undead Patrol",
-    "text": "Dead soldiers in rank by the river fork in Raumarik beside the Hibernian Oona, whom the rogues are sent to find in Yggdra. Gunnolf of Vindsaul says its skull is a Midgard skull. See [epics]."
+    "text": "Dead soldiers in rank by the river fork in Raumarik beside the Hibernian Oona, whom the rogues are sent to find in Yggdra. Gunnolf of Vindsaul says its skull is a Midgard skull. See [great quests]."
   },
   "chronicle": {
     "win": "{raidLeader} of {realm} broke the Undead Patrol in Raumarik and took the skull in {minutes} minutes."

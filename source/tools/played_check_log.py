@@ -1482,6 +1482,9 @@ def _rvr_stance(sec, t, message, level, near):
                    for s, g, w in sec.recent_sends):
                 sec.ev["regroup.c_one_fight"].add(t, f"{message.rstrip()} [group {group} relayed at {stamp(first)[6:]}]")
     if reached:
+        # the fan-out of one hop (sweep 6c, #419): how many groups each relaying stance reached
+        sec.n["relay.sends"] += 1
+        sec.n["relay.delivered"] += num(f.get("relayedTo"))
         if relayed:
             started_by = sender
         elif regroup and reason == "retreat over" and sec.last_retreat.get(group) == "relayed retreat":
@@ -1510,6 +1513,29 @@ def _rvr_notice(sec, t, message, level, near):
             sec.lists["notice_delay"].append(num(f["delayMs"]))
     elif kind == "Player":
         sec.ev["notice.player"].add(t, message)
+
+
+@handles("RVR_FRONTIER_WAIT_LONG")
+def _rvr_frontier_wait(sec, t, message, level, near):
+    """#418: a gamebot held at a frontier porter past five minutes, with what held it (notReady=, notReadyMembers=)."""
+    f = kv(message)
+    sec.ev["RVR_FRONTIER_WAIT_LONG"].add(t, message)
+    sec.n[f"porter_wait.{f.get('phase', '?')}:{f.get('notReady', '?')}"] += 1
+    if f.get("id"):
+        sec.lists["porter_wait_bots"].append(f["id"])
+
+
+@handles("RVR_FRONTIER_DEPARTURE")
+def _rvr_frontier_departure(sec, t, message, level, near):
+    sec.ev["RVR_FRONTIER_DEPARTURE"].add(t, message)
+    sec.n["porter_departed"] += num(kv(message).get("count"), 1)
+
+
+def porter_wait_reasons(n: Counter, top: int = 4) -> str:
+    """The commonest phase:notReady pairs of RVR_FRONTIER_WAIT_LONG (pure)."""
+    pairs = sorted(((k[len("porter_wait."):], v) for k, v in n.items() if k.startswith("porter_wait.")),
+                   key=lambda kv_: (-kv_[1], kv_[0]))
+    return ", ".join(f"{k} {v}" for k, v in pairs[:top]) or "none"
 
 
 @handles("RVR_BOT_KILLED")
@@ -2315,6 +2341,17 @@ def rekill_rows(j: Judge, sec: Section, c):
               f"{kills} route kill(s), no named target killed {REKILL_LOOP + 1}+ times in a row; {passed} TRAIL_GATE_PASSED line(s)")
 
 
+def relay_fan_out(sends: float, delivered: float, relay_started: int) -> str:
+    """The share's two parts (sweep 6c, #419): groups reached per relaying stance, and relayed regroup starts per group
+    reached. A share that rises with the first while the second holds is one hop in denser warbands, not a relay passed
+    on or over-firing (that is what (a), (b) and (c) catch). Pure."""
+    if not sends:
+        return "fan-out: no relaying stance"
+    per_delivery = f"{relay_started / delivered:.2f}" if delivered else "-"
+    return (f"fan-out: {sends:.0f} relaying stance(s) reached {delivered:.0f} group(s) ({delivered / sends:.2f} each), "
+            f"{per_delivery} relayed regroup start(s) per group reached")
+
+
 def rvr(j: Judge, sec: Section, c):
     span = max((sec.run_end() - sec.run_start()).total_seconds(), 60.0) if sec.run_start() else 60.0
     starts, relay_started = c("RVR_REGROUP"), c("regroup.relay_started")
@@ -2333,7 +2370,8 @@ def rvr(j: Judge, sec: Section, c):
     detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
               f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:g}%); (a) relayed stance relayed again: "
               f"{counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, "
-              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}")
+              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}; "
+              f"{relay_fan_out(sec.n['relay.sends'], sec.n['relay.delivered'], relay_started)}")
     bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
     if over:
         bad.append(j.ev("regroup.relay_started"))
@@ -2380,6 +2418,15 @@ def rvr(j: Judge, sec: Section, c):
           SEEN if c("RVR_SIEGE_STARTED") and keep.count else NOT_SEEN, keep if keep.count else None,
           f"{c('RVR_SIEGE_STARTED')} sieges, {keep.count} keeps taken in the field, "
           f"{c('keep.taken.bg')} in battlegrounds")
+    waits = j.ev("RVR_FRONTIER_WAIT_LONG")
+    wait_detail = (f"{waits.count} wait(s) past 5 minutes by {len(set(sec.lists['porter_wait_bots']))} bot(s) "
+                   f"(phase:notReady {porter_wait_reasons(sec.n)}); {c('RVR_FRONTIER_DEPARTURE')} departures, "
+                   f"{sec.n['porter_departed']:.0f} bots carried")
+    j.add("rvr", "porter_wait", "No gamebot waits at a frontier porter past five minutes (RVR_FRONTIER_WAIT_LONG, #418)",
+          CONTRADICTED if waits.count else (SEEN if c("RVR_FRONTIER_DEPARTURE") else NOT_SEEN),
+          waits if waits.count else (j.ev("RVR_FRONTIER_DEPARTURE") if c("RVR_FRONTIER_DEPARTURE") else None),
+          wait_detail, must=False,
+          note="a build before #418's line logs no wait at all, so Seen there means only that bots departed")
     loaded = c("RVR_CHECKSPOT_LOADED") and c("RVR_CHECKSPOT_VALIDATED") and c("RVR_LANE_LOADED")
     j.add("rvr", "catalogs", "Catalogs load and validate (RVR_CHECKSPOT_LOADED / _VALIDATED, RVR_LANE_LOADED)",
           CONTRADICTED if c("catalog.bad") else (SEEN if loaded else NOT_SEEN),

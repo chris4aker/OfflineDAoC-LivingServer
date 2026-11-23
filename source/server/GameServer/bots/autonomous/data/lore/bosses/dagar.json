@@ -31,7 +31,7 @@
     },
     {
       "text": "Allakhazam calls him a plain melee mob with a lot of health; the Stoneheart quest sends players to kill him wearing the runed cloak of the trolls.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/quest/698"
     },
     {
@@ -45,12 +45,17 @@
       "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs"
     },
     {
-      "text": "Ottkel of Dyrfjall, Hallveig's sleep-song and the custom that the count is never left in one hand are Living Server lore.",
+      "text": "Ottkel of Dyrfjall, Oddbjorg's sleep-song and the custom that the count is never left in one hand are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs"
+    },
+    {
+      "text": "The book pages after the first (the runemaster's prentice's four-breath look at the count and what a guide of Dyrfjall is told before passing Dagar's hall) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "The morvalt keep no calendars, except Dagar. On the morning after the morvalt took Trollheim, a young warrior who had been among the first through the gates found the Fathers' own count of years cut into the wall of a hall in the upper city, a mark for every winter, running back further than the morvalt have words for. He did not understand it. He copied it anyway, one scratch for the morning he stood there, and he has scratched one every morning since. Days, his name means, in the borrowed tongue the morvalt use for titles.\n\nThe marks run round his hall three times and up onto the ceiling. Some are longer than others: those are the days the crazed shamans say bring the Mother of Modernagrav closer, and Remandun den Laerd, who reads the Fathers' carvings aloud to the war-chiefs, is said to be the one who told Dagar what the Fathers' count was for. Dagar is no priest. But he believes, and he counts, and the count must never be left in one hand, so his gruppchef and his two larlings are never far from him. Strike Dagar and the count-keepers come.\n\nStrangers come to his hall in the runed cloak of the trolls on the Stoneheart road, and he takes the cloak as an insult to the count. The first to come was Ottkel of Dyrfjall, a troll who walked in alone and was carried out by Hallveig, who was a girl then and had gone in after him; she sang the larlings to sleep with a Valkyn cradle-song while she dragged him out, and the old chief nodded off on his bench beside them. It is the only time a Valkyn has been seen to laugh in Trollheim.\n\nHe goes down, now and then, and his larlings keep the count while he is gone, and when he stands up in his hall again he checks their marks before anything else. The house-serpent Fostra Orm sleeps in the warm water by his hall, and he feeds it himself. Hallveig once asked a captured larling how many marks were left. He said: fewer.",
+  "story": "The morvalt keep no calendars, except Dagar. On the morning after the morvalt took Trollheim, a young warrior who had been among the first through the gates found the Fathers' own count of years cut into the wall of a hall in the upper city, a mark for every winter, running back further than the morvalt have words for. He did not understand it. He copied it anyway, one scratch for the morning he stood there, and he has scratched one every morning since. Days, his name means, in the borrowed tongue the morvalt use for titles.\n\nThe marks run round his hall three times and up onto the ceiling. Some are longer than others: those are the days the crazed shamans say bring the Mother of Modernagrav closer, and Remandun den Laerd, who reads the Fathers' carvings aloud to the war-chiefs, is said to be the one who told Dagar what the Fathers' count was for. Dagar is no priest. But he believes, and he counts, and the count must never be left in one hand, so his gruppchef and his two larlings are never far from him. Strike Dagar and the count-keepers come.\n\nStrangers come to his hall in the runed cloak of the trolls on the Stoneheart road, and he takes the cloak as an insult to the count. The first to come was Ottkel of Dyrfjall, a troll who walked in alone and was carried out by Oddbjorg, who was a girl then and had gone in after him; she sang the larlings to sleep with a Valkyn cradle-song while she dragged him out, and the old chief nodded off on his bench beside them. It is the only time a Valkyn has been seen to laugh in Trollheim.\n\nHe goes down, now and then, and his larlings keep the count while he is gone, and when he stands up in his hall again he checks their marks before anything else. The house-serpent Fostra Orm sleeps in the warm water by his hall, and he feeds it himself. Oddbjorg once asked a captured larling how many marks were left. He said: fewer.",
   "chapters": [
     {
       "title": "The Fathers' Count",
@@ -62,14 +67,14 @@
     },
     {
       "title": "Ottkel, and the Cradle-Song",
-      "text": "The trolls of Dyrfjall send walkers down the Stoneheart road in the runed cloaks the Fathers' children wear, and the road runs past Dagar's hall. The first troll to walk it in living memory was Ottkel of Dyrfjall, a big young troll who would not wait for a Valkyn guide and went in alone. He reached Dagar's hall, and Dagar saw the cloak and stood up from his bench.\n\nThe Valkyn say Dagar takes the cloak worse than anything a stranger could do. It is the cloak of the people whose count was on that wall before his; to him, a troll in a runed cloak in his hall is telling him that his count is borrowed, and that the days of the morvalt in Trollheim are numbered too. He went at Ottkel with the maul, and his count-keepers came round him, and Ottkel was on the floor of the hall before he had drawn his axe.\n\nHallveig was a girl then. She had followed Ottkel in, because she had been told to watch him, and she came to the door of the hall and saw him down and the larlings standing over him with their knives. She did the only thing she had. She sang them the cradle-song that Valkyn mothers sing, the one the Fathers gave the first mothers at the fires, and the larlings' knives came down, and their heads came down, and they slept where they stood. The gruppchef went next. Dagar, who had heard that song in a cradle long before he heard of the Mother, sat down on his own bench with the maul across his knees and nodded off with them.\n\nShe dragged Ottkel out by his cloak. The Valkyn at Dyrfjall laughed about it for a whole winter, which is the only time anyone remembers a Valkyn laughing about anything in Trollheim. Ottkel went back, years later, with a guide and a company and his cloak, and came home with a Troll's Fist. He gave Hallveig the first cup at the feast."
+      "text": "The trolls of Dyrfjall send walkers down the Stoneheart road in the runed cloaks the Fathers' children wear, and the road runs past Dagar's hall. The first troll to walk it in living memory was Ottkel of Dyrfjall, a big young troll who would not wait for a Valkyn guide and went in alone. He reached Dagar's hall, and Dagar saw the cloak and stood up from his bench.\n\nThe Valkyn say Dagar takes the cloak worse than anything a stranger could do. It is the cloak of the people whose count was on that wall before his; to him, a troll in a runed cloak in his hall is telling him that his count is borrowed, and that the days of the morvalt in Trollheim are numbered too. He went at Ottkel with the maul, and his count-keepers came round him, and Ottkel was on the floor of the hall before he had drawn his axe.\n\nOddbjorg was a girl then. She had followed Ottkel in, because she had been told to watch him, and she came to the door of the hall and saw him down and the larlings standing over him with their knives. She did the only thing she had. She sang them the cradle-song that Valkyn mothers sing, the one the Fathers gave the first mothers at the fires, and the larlings' knives came down, and their heads came down, and they slept where they stood. The gruppchef went next. Dagar, who had heard that song in a cradle long before he heard of the Mother, sat down on his own bench with the maul across his knees and nodded off with them.\n\nShe dragged Ottkel out by his cloak. The Valkyn at Dyrfjall laughed about it for a whole winter, which is the only time anyone remembers a Valkyn laughing about anything in Trollheim. Ottkel went back, years later, with a guide and a company and his cloak, and came home with a Troll's Fist. He gave Oddbjorg the first cup at the feast."
     },
     {
       "title": "Fewer",
-      "text": "Dagar has been killed many times since Ottkel, and every time he stands up again in his hall, and the first thing he does is look at the wall. His larlings keep the count while he is down. The Valkyn say a chief's hall with no chief in it is the only place in Trollheim where morvalt have been seen to be quiet, and that the larlings cut the marks very carefully in those days, as if he were watching. When he comes back, he checks every mark they made. Then he cuts the day's.\n\nHallveig took a larling alive once, on the way back up from the bridge, and kept him at Dyrfjall for a winter, and asked him what the count was for. He told her that when the marks came round to the floor again, the Mother would wake. She asked how many marks were left. He looked at her as if she were very stupid and said: fewer.\n\nJordheim takes the count seriously, because the Mother of Modernagrav is a thing Jordheim takes seriously. The runemasters have asked for a copy of the wall more than once; the companies who go past it have never managed to make one, because it is very long and Dagar does not like strangers looking. The skalds have a different view. They say Dagar is the only morvalt who has ever come to think of a tomorrow, and that he has spent it on the end of the world, and that this is the most morvalt thing about him.\n\nHe feeds the house-serpent Fostra Orm himself, in the warm water by his hall, every morning after the mark is cut. The larlings say it is the only creature in Trollheim he does not count as a day. Hallveig says it is the only one he does not count as a mark against him."
+      "text": "Dagar has been killed many times since Ottkel, and every time he stands up again in his hall, and the first thing he does is look at the wall. His larlings keep the count while he is down. The Valkyn say a chief's hall with no chief in it is the only place in Trollheim where morvalt have been seen to be quiet, and that the larlings cut the marks very carefully in those days, as if he were watching. When he comes back, he checks every mark they made. Then he cuts the day's.\n\nOddbjorg took a larling alive once, on the way back up from the bridge, and kept him at Dyrfjall for a winter, and asked him what the count was for. He told her that when the marks came round to the floor again, the Mother would wake. She asked how many marks were left. He looked at her as if she were very stupid and said: fewer.\n\nJordheim takes the count seriously, because the Mother of Modernagrav is a thing Jordheim takes seriously. The runemasters have asked for a copy of the wall more than once; the companies who go past it have never managed to make one, because it is very long and Dagar does not like strangers looking. The skalds have a different view. They say Dagar is the only morvalt who has ever come to think of a tomorrow, and that he has spent it on the end of the world, and that this is the most morvalt thing about him.\n\nHe feeds the house-serpent Fostra Orm himself, in the warm water by his hall, every morning after the mark is cut. The larlings say it is the only creature in Trollheim he does not count as a day. Oddbjorg says it is the only one he does not count as a mark against him."
     }
   ],
-  "legend": "Dagar is a plain melee fight: no spells, a two-handed maul, a long reach (about 350) and 8,000 health. The catch is his pack: the moment he's engaged his gruppchef and two morvalt larlings join in, so you are always fighting four. Unlike the big epic bosses he is NOT CC-immune, and neither is his pack: mez the larlings, stun or root the gruppchef, and grind Dagar with one tank, or mez Dagar himself while you clean up his count-keepers. The danger is the gruppchef reaching your healer. The Stoneheart quest has you kill him wearing the runed cloak of the trolls, so don't forget it or the step won't count; sometimes his placeholder holds the spot and you wait. Two groups is comfortable, and a good single group can do it with crowd control. His shimmering weapons are popular. Fostra Orm sleeps in the warm water nearby, so pull carefully.",
+  "legend": "Dagar is a plain melee fight: no spells, a two-handed maul, a long reach (about a dozen paces), and he takes as much killing as four raiders. The catch is his pack: the moment he's engaged his gruppchef and two morvalt larlings join in, so you are always fighting four. Unlike the great foes of the realm, charms, trances and stuns DO hold him, and his pack too: entrance the larlings, stun or pin the gruppchef to the ground, and grind Dagar with one shield-bearer, or entrance Dagar himself while you clean up his count-keepers. The danger is the gruppchef reaching your healer. The Stoneheart quest has you kill him wearing the runed cloak of the trolls, so don't forget it or the step won't count; sometimes a lesser morvalt holds his spot in his stead and you wait. Two groups is comfortable, and a good single group can do it with trances, stuns and holds. His shimmering weapons are popular. Fostra Orm sleeps in the warm water nearby, so draw carefully.",
   "yells": {
     "aggro": [
       "Another day. Another mark on the wall. You.",
@@ -115,13 +120,13 @@
   },
   "botLines": {
     "briefing": [
-      "dagar is a tank and spank with 3 adds. [wear the cloak|cloak on] if you're on stoneheart",
-      "pull dagar to the quiet corner and grind him",
+      "dagar is a plain slugfest with 3 of his pack. [wear the cloak|cloak on] if you're on stoneheart",
+      "draw dagar to the quiet corner and wear him down",
       "kill the gruppchef first",
-      "one tank on dagar, one on the gruppchef",
-      "dagar brings his gruppchef and 2 larlings the second you touch him",
-      "dagar isnt cc immune, mez the larlings, stun the gruppchef",
-      "one tank on dagar, keep the gruppchef off the healer",
+      "one shield-bearer on dagar, one on the gruppchef",
+      "dagar brings his gruppchef and two larlings the second you touch him",
+      "trances and stuns hold dagar, entrance the larlings, stun the gruppchef",
+      "one shield-bearer on dagar, keep the gruppchef off the healer",
       "cloak on for stoneheart or it doesnt count"
     ],
     "aftermathWin": [
@@ -130,15 +135,15 @@
       "dagar's count is over lol",
       "stoneheart step done finally",
       "count interrupted lol",
-      "mezzed the larlings and it was easy",
+      "entranced the larlings and it was easy",
       "shimmering axe!"
     ],
     "aftermathLoss": [
       "forgot the cloak. [again|ugh]",
-      "dagar plus the snake. [nope|bad pull]",
-      "the gruppchef held the tank while dagar ate the healer",
-      "he didnt spawn, his placeholder did. [wasted trip|ugh]",
-      "nobody mezzed the larlings",
+      "dagar plus the snake. [nope|bad draw]",
+      "the gruppchef held the shield-bearer while dagar ate the healer",
+      "he wasnt there, a lesser one stood in his place. [wasted trip|ugh]",
+      "nobody entranced the larlings",
       "gruppchef ran straight for the healer",
       "forgot the cloak again"
     ],
@@ -154,9 +159,13 @@
   },
   "loremasterTopic": {
     "keyword": "Dagar",
-    "text": "The [morvalt] who counts the days: he copied the Fathers' count of winters the morning after Trollheim fell and has cut a mark every morning since, a long one for each day the Mother comes closer. His count-keepers, a gruppchef and two larlings, come when he is touched. Hallveig once sang them all to sleep. He feeds [Fostra Orm] himself."
+    "text": "The [morvalt] who counts the days: he copied the Fathers' count of winters the morning after Trollheim fell and has cut a mark every morning since, a long one for each day the Mother comes closer. His count-keepers, a gruppchef and two larlings, come when he is touched. Oddbjorg once sang them all to sleep. He feeds [Fostra Orm] himself."
   },
-  "bookPage": "From the notes of Hallveig, the Valkyn guide, on the morvalt. My uncles who were not tamed have no word for tomorrow. They have a word for now, and a word for the time before, and a word for the time of the Mother, which is not tomorrow but something else. Dagar is the only one of them who counts. I asked a captured larling what the count was for. He said that when the marks reach the floor again, the Mother wakes. I asked how many marks were left. He looked at me as if I were very stupid and said: fewer.",
+  "bookPage": "My uncles who were not tamed have no word for tomorrow, Oddbjorg the Valkyn guide writes in her notes on the morvalt. They have a word for now, and a word for the time before, and a word for the time of the Mother, which is not tomorrow but something else. Dagar is the only one of them who counts. I asked a captured larling what the count was for. He said that when the marks reach the floor again, the Mother wakes. I asked how many marks were left. He looked at me as if I were very stupid and said: fewer.",
+  "bookPages": [
+    "From the notes of a runemaster's prentice of Jordheim, who stood at the door of Dagar's hall for as long as four breaths. This is not a copy of the count. Nobody has made one. It is what I could hold in my eyes of one length of the lowest row, by the door, and wrote down outside with my hands shaking. Thirty-one short marks, scratched rather than cut. Then the cutting changes: the marks after are cut deep and square, as a man cuts who has been told what he is counting toward. Seven short. One long mark. Nineteen short. Two long, close together, so close the knife had crossed between them. I could not see more. The chief stood up from his bench, and the guide pulled me back by the collar. My master says the change is where the Laerd read the Fathers' wall to him.",
+    "What a guide of Dyrfjall is told before taking a company past Dagar's hall for the first time. Do not wear the runed cloak to his door unless the cloak is the errand, for he takes it as a word against the count. Do not stand looking at the wall; he does not like strangers looking. Mind the three who keep the count with him, the spear and the two prentices, for they come to him before he has finished turning round. If the chief is down, do not go into the hall while the prentices are cutting the day's mark; they cut very carefully then, and they will not stop. And know this, though you will not need it: a girl of Dyrfjall once sang the whole hall to sleep with the cradle-song, and the chief slept too, on his bench, with the maul across his knees."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} ended Dagar's count in Trollheim in {minutes} minutes.",
     "loss": "Dagar scratched another mark: {raidLeader}'s raid from {realm} fell after {minutes} minutes."

@@ -18,8 +18,8 @@
       "source": "LORE"
     }
   ],
-  "story": "The lammia of Clifton are a cliff people, and they remember a country under the western sea that they say was theirs, and they do not like to be crowded. The thrawn ogres who came out of Krondon and over the water to the eastern edge of Gwyddneau have begun to crowd them.\n\nCnieda buys their heads. She sits among the armourers and weaponsmiths of the town and pays good Clifton coin for every thrawn ogre's head brought to her, and she does not say why, and the town does not ask. The stable-keeper Nimea says Cnieda is building a wall, one head at a time, along the eastern cliff path, so that the ogres who come after will see it and understand. The friars of Caer Diogel say she is counting, and that the lammia have a reckoning in mind that a few heads will not settle.\n\nShe is courteous to strangers who keep the town's peace, and patient; she will tell a young traveller to come back when they are stronger, and mean it kindly. She does not start quarrels. The lammia of Clifton say that is because she has never needed to.",
-  "legend": "Cnieda, level 46 lammia of Cryptos Mythicos, is a trader in Clifton: she buys thrawn ogre heads. Aggro level 0, she never attacks first. You only fight her if you attack her, and every lammia trader around her is the same faction, with Arvida next to her quick to draw. Clifton's welcome depends on how you treat its people. Better to sell her heads and leave her be.",
+  "story": "The lammia of Clifton are a cliff people, and they remember a country under the western sea that they say was theirs, and they do not like to be crowded. The thrawn ogres who came out of Krondon and over the water to the eastern edge of Gwyddneau have begun to crowd them.\n\nCnieda buys their heads. She sits among the armourers and weaponsmiths of the town and pays good Clifton coin for every thrawn ogre's head brought to her, and she does not say why, and the town does not ask. The stable-keeper Nimea says Cnieda is building a wall, one head at a time, along the eastern cliff path, so that the ogres who come after will see it and understand. She is counting, the friars of Caer Diogel hold, and the lammia have a reckoning in mind that a few heads will not settle.\n\nShe is courteous to strangers who keep the town's peace, and patient; she will tell a young traveller to come back when they are stronger, and mean it kindly. She does not start quarrels. The lammia of Clifton say that is because she has never needed to.",
+  "legend": "Cnieda, a lammia of Cryptos Mythicos and a foe for a hardened band of veterans, is a trader in Clifton: she buys thrawn ogre heads. She never starts a fight. You only fight her if you attack her, and every lammia trader around her answers to the same call, with Arvida next to her quick to draw. Clifton's welcome depends on how you treat its people. Better to sell her heads and leave her be.",
   "yells": {
     "aggro": [
       "You break the peace of Clifton.",
@@ -44,7 +44,7 @@
   "botLines": {
     "briefing": [
       "dont attack cnieda, she's a clifton trader, the whole town comes",
-      "if you must, she's 46 and arvida next to her helps"
+      "if you must, she's a job for a veteran band and arvida next to her helps"
     ],
     "aftermathWin": [
       "cnieda down. clifton is not going to like us now",
@@ -55,7 +55,7 @@
     ],
     "rumour": [
       "[heard|someone said] cnieda is building a wall of ogre heads on the east cliff",
-      "heard cnieda tells lowbies to come back when they're stronger and means it"
+      "heard cnieda tells the young to come back when they're stronger and means it"
     ]
   },
   "loremasterTopic": {

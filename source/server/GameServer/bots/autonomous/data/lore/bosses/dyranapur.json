@@ -29,7 +29,7 @@
     },
     {
       "text": "Allakhazam calls it a named skuggande that looks like a huge cicada, in the waterfall room; killing it lowers Svartalfar faction and raises Arachite, Svartalfar Outcasts and Varulv.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/4665"
     },
     {
@@ -46,6 +46,16 @@
       "text": "The dark-moon cup and her hunting of arachites, outcasts and varulv come from the iarnvidiurs-lair file (faction lore fixed in 7257a1de); the svartalf cup-bearer Ulla and the saying 'the queen drinks first' are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs"
+    },
+    {
+      "text": "Ulla's thirty-one dark moons, her looking back, her brother Kolr and the arachites' empty cup are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "The book pages after the first (the svartalfar's law of the dark-moon cup and the Remnants' cup-tally) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "The skuggande are the shadowing things of the old one's house, insects with wings like smoke and bodies of polished horn, big as dogs, and they are thickest in the waterfall room, where the spray throws back the light and the noise of the water covers the hum. Their queen is Dyranapur. The dwarves say she was the first of the swarm to drink from the fall, and that the water has been warm ever since because something of her is in it. She is like a cicada as large as a horse, and her mouth is a hollow spike.\n\nShe drinks everything. What she touches with the spike grows weaker while she grows stronger, a long draught at a time, and the sickness she leaves in the blood spreads to everyone close round the one she drank from and stays there a very long time, long after the hum has faded behind; the Remnants say a dwarf who has been in the waterfall room is sick for the rest of the day and half the night. Seven of the swarm hang round her at all times and come down off the walls when she is roused.\n\nThe svartalfar of Aegir keep a bargain with her. At every dark of the moon they set a cup of blood at the hollow above the house, and her swarm hunts their enemies for it, the arachites and the outcasts and the varulv. Ulla, the svartalf who carried the cup for longest, said the queen always drinks first and the swarm after, and the svartalfar say the same of anything that is shared with them: the queen drinks first. They do not love the companies of Midgard who come down to the waterfall room. When she falls the hum stops all over the room at once, and the water of the fall runs on warm.",
@@ -60,14 +70,18 @@
     },
     {
       "title": "The Dark-Moon Cup",
-      "text": "The svartalfar of Aegir keep a bargain with her, and have for longer than the Remnants' slates record. At every dark of the moon a svartalf comes to the hollow above the old one's house, alone, and sets down a cup of blood on the warning stone, and goes away. In the morning the cup is empty. For a month after, the swarm hunts the svartalfar's enemies under the Iarnwood: the arachites, the outcasts, the varulv. The dwarves are not on the list. They do not know why, and do not ask.\n\nUlla of the svartalfar carried the cup for longer than anyone, the Remnants say, forty winters, and she spoke to the dwarves of Faraheim once, near the end of her life, because she wanted someone outside her own people to know. She said the queen came up for the cup herself, every time, up through the roots to the hollow, and drank first, and the swarm after. She said it was always the same. The queen drinks first.\n\nThe svartalfar say it of anything that is shared with them, now, a feast or a profit or a trade: the queen drinks first. They mean it as a warning about the one doing the sharing.\n\nThey do not love the companies of Midgard who go down to the waterfall room and kill her. The dark-moon cup is set on the warning stone every month regardless, the dwarves say, and some months it is still full in the morning, and those are the months the arachites come out of the deep places further than they should."
+      "text": "The svartalfar of Aegir keep a bargain with her, and have for longer than the Remnants' slates record. At every dark of the moon a svartalf comes to the hollow above the old one's house, alone, and sets down a cup of blood on the warning stone, and goes away. In the morning the cup is empty. For a month after, the swarm hunts the svartalfar's enemies under the Iarnwood: the arachites, the outcasts, the varulv. The dwarves are not on the list. They do not know why, and do not ask.\n\nUlla of the svartalfar carried the cup for longer than anyone, the Remnants say. Their oldest slate gave it as forty winters, but the slate-keepers had counted the years she lived among her people after she gave it up; the svartalfar count her carrying at thirty-one dark moons, and no bearer before her or since has lasted so long. She spoke to the dwarves of Faraheim once, near the end of her life, because she wanted someone outside her own people to know. She said the queen came up for the cup herself, every time, up through the roots to the hollow, and drank first, and the swarm after. She said it was always the same. The queen drinks first.\n\nThe svartalfar say it of anything that is shared with them, now, a feast or a profit or a trade: the queen drinks first. They mean it as a warning about the one doing the sharing.\n\nThey do not love the companies of Midgard who go down to the waterfall room and kill her. The dark-moon cup is set on the warning stone every month regardless, the dwarves say, and some months it is still full in the morning, and those are the months the arachites come out of the deep places further than they should."
     },
     {
       "title": "The Warm Water",
       "text": "The companies of Midgard who come down the passage from the hollow reach the waterfall room first of all the old one's halls, and the Remnants who guide them stop at the mouth and tell them two things. Look at the walls before you look at the floor. And do not drink the water, whatever happens, because it is warm.\n\nWhen the queen falls, the companies say, the hum stops all over the room at once, and the noise of the fall comes back, louder, as if it had been holding its breath. Her daughters fall off the walls. The water of the fall goes on running warm, which the dwarves say proves something of her really is in it, and in a season there is a queen in the room again, drinking.\n\nThe svartalfar have their own account of where the next queen comes from. They say Dyranapur does not die. They say she goes down into the warm water of the fall and comes up again, as the water does, and that the cup they set on the warning stone in the months between is what brings her back. They say that is the real bargain, and that the arachites have always known it.\n\nThe Remnants say the svartalfar would say that. They also say they have never once seen the dark-moon cup full in the morning of the month the new queen comes back, and that they have stopped going up to the warning stone to look."
+    },
+    {
+      "title": "What Is Told of Ulla",
+      "text": "Ulla was a svartalf of Aegir, the daughter of Kjar, who carried the dark-moon cup before her. She was small even for her people and sharp in the tongue, and it is said that she was the only one of them the queen ever let stand close.\n\nShe carried the cup for thirty-one dark moons. At each of them she went up alone to the hollow above the old one's house with the cup in both hands, and set it on the warning stone, and waited until the hum came up through the rock. Then she went down without looking back. That was the law of the cup, and Ulla kept it.\n\nAt the thirty-second dark moon she did not come down. Her brother Kolr went up at dawn and found the cup on the stone, empty, and Ulla sitting beside it with her back against the rock. She was alive. She told him that she had looked back.\n\nKolr asked her what she had seen. Ulla said, \"The queen drinks first.\" Kolr asked her what else. Ulla said, \"That is all there is to see.\" She said nothing more of it, then or afterward.\n\nUlla did not carry the cup again. She lived a long time among the svartalfar and was thought wise, and when the young asked her about the queen she gave them the answer she had given her brother. The arachites sent to her once to ask what she had seen at the stone. She sent their messenger home with an empty cup.\n\nKolr carried the cup after her. It is told that he never once looked back, and that he lived to be old, which among those who carry the cup is not common.\n\nHere ends what is told of Ulla."
     }
   ],
-  "legend": "Dyranapur is a small-raid named in the waterfall room: a group of seven took her in 2003. She comes with seven skuggande the moment she's engaged, and the spray hides the bugs on the walls, so look before you pull. She drains her target for 250 every 10 to 15 seconds, so the tank needs steady heals, and almost half her hits leave Black Plague on everyone within 450 of her target: a disease that halves heals and lasts about FIFTY minutes. Cure it before you move on, especially if Iarnvidiur is next. 10,000 health, 20% melee and 30% magic resists, CC-immune. The Slender Skuggande Leg staff drops for spiritmasters, runemasters and bonedancers. Killing her costs you Svartalfar faction and buys you Arachite and Varulv faction.",
+  "legend": "Dyranapur is a beast of name for a small raid in the waterfall room: a group of seven took her in the early raids. She comes with seven skuggande the moment she's engaged, and the spray hides the bugs on the walls, so look before you draw. She drains her target of a quarter of a robed caster's strength every 10 to 15 seconds, so the shield-bearer who holds her needs steady heals, and almost half her hits leave Black Plague on everyone within fifteen paces of her target: a disease that halves heals and lasts about FIFTY minutes. Cure it before you move on, especially if Iarnvidiur is next. She takes as much killing as five raiders, a fifth of every blow and three-tenths of every spell are lost on her, and no charm or stun holds her; she is a foe for the realm's best, a full band of them, nearly one for several. The Slender Skuggande Leg staff comes off her for spiritmasters, runemasters and bonedancers. Killing her costs you standing with the Svartalfar and buys you standing with the Arachites and the Varulv.",
   "yells": {
     "aggro": [
       "(The hum under the waterfall rises to a shriek.)",
@@ -113,14 +127,14 @@
   },
   "botLines": {
     "briefing": [
-      "dyranapur in the waterfall room, 7 skuggande, cure plague",
-      "dyranapur drains her target, keep the tank topped",
+      "dyranapur in the waterfall room, seven skuggande, cure plague",
+      "dyranapur drains her target, keep the shield-bearer topped",
       "kill the skuggande first, then her",
       "cure plague after, it lasts an hour",
-      "dyranapur: 7 skuggande, look at the walls first",
-      "she drains her target, keep the tank topped",
-      "plague is 450 round her target and lasts 50 min, cure it before moving on",
-      "killing her costs svartalfar faction"
+      "dyranapur: seven skuggande, look at the walls first",
+      "she drains her target, keep her shield-bearer topped",
+      "plague is fifteen paces round her target and lasts 50 min, cure it before moving on",
+      "killing her costs your standing with the svartalfar"
     ],
     "aftermathWin": [
       "big bug down",
@@ -136,7 +150,7 @@
       "she drained the healer",
       "the swarm was too thick",
       "the spray hid half the swarm",
-      "pulled the walls by accident",
+      "drew the bugs off the walls by accident",
       "went to iarnvidiur with the plague still on"
     ],
     "rumour": [
@@ -154,6 +168,10 @@
     "text": "Queen of the skuggande swarm of the waterfall room, the first of them to drink from the fall. Her hollow spike drinks strength, and her sickness spreads round the one she drinks from and stays most of a day. The svartalfar set a cup of blood for her at every dark of the moon, and her swarm hunts their enemies. They say the queen drinks first."
   },
   "bookPage": "From Thorgrim of Faraheim's notes. I asked the dwarves why the spider-folk want the waterfall bug dead and the svartalfar want it kept. A dwarf laughed and said the spider-folk hate anything that drinks from their egg-sacs, and the svartalfar love anything the spider-folk hate. Then he said, more seriously, that the bug's hum is a song, and that the svartalf priests sing the same song on the night of the dark moon, when they set a cup of blood at the edge of the hollow for the queen of the spray. He said nobody knows which of them took it from the other.",
+  "bookPages": [
+    "The law of the dark-moon cup, as the svartalfar of Aegir keep it, said aloud by the one who carries it on the night before. The cup is carried by one, and that one goes alone. It is filled below, and not on the way. It is set on the warning stone and not beside it. The one who carries it waits until the hum comes up through the rock, and no longer. The one who carries it goes down without looking back. If the cup is full in the morning, no hand empties it but the queen's, and the one who carried it does not carry it again that winter. Whoever breaks the law of the cup answers for it to the queen and not to us. A svartalf trader let a dwarf of Faraheim copy this out for a knife, and asked that the copy say Ulla, daughter of Kjar, broke the fifth line once.",
+    "From the cup-tally of the Remnants, kept by the guides who went up to the hollow above the old one's house, and kept no longer. A full cup in the morning, the month after a company of Midgard killed the queen of the spray; that month the arachites came to the edge of the wood and took two of the camps' goats. A full cup again the next month, and the arachites came as far as the hollow. An empty cup the month after that, and the hum back in the waterfall room. A full cup in the spring after another company went down; a spider-line found strung across the path to the well. Here the tally stops. Under it is cut, in a hand the slate-keepers say was a guide's: we will not go up to the stone again, and whoever wants to know what is in the cup can go and look."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} silenced Dyranapur under the waterfall in {minutes} minutes.",
     "loss": "Dyranapur drank {raidLeader}'s party from {realm} dry after {minutes} minutes."

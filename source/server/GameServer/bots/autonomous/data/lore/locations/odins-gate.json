@@ -13,7 +13,7 @@
   "facts": [
     {
       "text": "Odin's Gate is a Midgard frontier zone; after New Frontiers it held Nottmoor and Bledmeer Faste.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=38"
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "text": "Odin's Gate borders Jamtland Mountains and Uppland; Midgard's frontier keeps of the old frontier stood along its passes.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=38"
     },
     {
@@ -67,6 +67,18 @@
           "The giant of ice stands watch. Do not go closer.",
           "A hill of blue ice with a face, waiting at no door.",
           "Scuffed snow far off marks where the thrown came down."
+        ]
+      },
+      {
+        "name": "the high snowfield",
+        "x": 642185,
+        "y": 620183,
+        "z": 0,
+        "radius": 2500,
+        "lines": [
+          "Deep drifts, and in them the shapes of men who landed.",
+          "The giant is a blue speck from here. It threw this far.",
+          "Broken crust, and a glove frozen into it, fingers up."
         ]
       }
     ]
@@ -106,7 +118,7 @@
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Odin's Gate. The gods built a [road] there once, they say, and set a [giant] at its foot.\"",
+    "intro": "Loremaster Svanlaug says, \"Odin's Gate. The gods built a [road] there once, they say, and set a [giant] at its foot.\"",
     "topics": {
       "road": "The road up out of Midgard to the gods' hall. When it was finished they folded it into the ice. Nobody has found it since. Everyone looks.",
       "giant": "The Glacier Giant. It belongs to no realm and throws all three with the same indifference. Stand back.",

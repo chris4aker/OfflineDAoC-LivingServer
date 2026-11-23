@@ -40,6 +40,11 @@
       "text": "The bridge as his courting gift and the suitors' herd come from the iarnvidiurs-lair file; the half he paid, Delegalt's stick and the dwarf reading of 'galt' (Swedish, a boar; to verify) are Living Server lore.",
       "provenance": "original",
       "source": "Swedish, to verify"
+    },
+    {
+      "text": "The book pages after the first (the suitors' slate and Eyvind Kolsson's words of the bridge) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Delegalt keeps the animus, the soulless giants of the old one's house, the way a herdsman keeps cattle. They were suitors once, a hundred giants of the Gripklosa and the high places of Aegir who came down under the iron trees in the age when the dwarf clans were young, each with a gift, each to win the old one from the others. The rot took their minds one by one, and they stand now in the long hall on the path to her door with their gifts mouldering at their feet, and Delegalt walks among them with a stick and a word for each and counts them every night. The count has not changed since the last suitor came.\n\nHe was the cleverest of them, and in his last winter with a whole mind he saw what the rot was doing and built her a bridge of Gripklosa iron across the black water, so that she could go to her pups dry-footed. It was the only gift of the hundred she ever used. In return, the dwarves say, she left him half of himself. They argue about which half. The Remnants say it was the half that remembers, and that he knows his name and his count and nothing else; the skalds say it was the half that could leave.\n\nHis stick carries the rot. The one he touches with it carries the old one's sickness a long while, longer than any other sickness in the house, and every remedy works at half its strength while it stays. And the herd is one body. If anyone lays a hand on the herdsman, every giant and every grymvarg in the hall moves at once, as the suitors once agreed on one thing only: that nobody else should touch what was theirs. When the herd moves, Delegalt laughs, in pieces, like a man who has forgotten how it goes.",
@@ -61,7 +66,7 @@
       "text": "Delegalt laughs when the herd moves. The dwarves who have heard it say it is the laugh of a man who has not laughed in a hundred years and has forgotten how it should sound, so that it comes out of him in pieces, a bark and then a silence and then another bark. The companies of Midgard who have gone through the herd's hall on the way to the old one's door say the same, and that it is the worst sound in the house, worse than Lydsyg's drone.\n\nEverything that has reached the old one's door has walked across his bridge. The dwarves of Faraheim say that is the price, and that Delegalt is the only one in the house who has paid for anything. The guides who went down with Ragnheid Grimsdottir's warband asked to be carried over the bridge on the way back, and were; the custom began with Torvald. The dwarves say it is so that no dwarf's foot ever owes Delegalt anything.\n\nWhen he falls, the companies say, the herd stops moving all at once, the way it started. The giants stand where they are with nothing in their eyes, and the grymvarg lie down between them, and the hall is quiet. In a season he is walking among them again with his stick, counting, and the count is the same.\n\nHrefna of Faraheim wrote that she once asked a narfi whether Delegalt would ever finish counting. It said he finished every night. It said the trouble was that he always got the same answer."
     }
   ],
-  "legend": "Delegalt is a room, not a mob: the moment he's engaged every one of his herd in the area comes with him, fifteen in all (three animus rondjur, five animus syndig, seven grymvarg). So clear the room from the edge first, pulling singles to a safe spot, and watch the grymvarg paths between the giants. Two groups died learning that in 2003. Once the room is clear he's an ordinary fight: 30,000 health, 20% melee and 30% magic resists, CC-immune, with a disease on his target that lasts about eleven minutes and halves heals, so cure the tank every time it lands. He's on the path to Iarnvidiur, so you go through him anyway. He drops a hostile giant's hand axe.",
+  "legend": "Delegalt is a room, not one beast: the moment he's engaged every one of his herd in the area comes with him, fifteen in all (three animus rondjur, five animus syndig, seven grymvarg). So clear the room from the edge first, drawing them one at a time to a safe spot, and watch the grymvarg paths between the giants. Two groups died learning that in the early raids. Once the room is clear he's an ordinary fight: he takes as much killing as fifteen raiders, a fifth of every blow and three-tenths of every spell are lost on him, and no charm or stun holds him, with a disease on his target that lasts about eleven minutes and halves heals, so cure his shield-bearer every time it lands. He's on the path to Iarnvidiur, so you go through him anyway. He carries a hostile giant's hand axe.",
   "yells": {
     "aggro": [
       "Up, my herd! Up, my hounds! We have visitors.",
@@ -110,28 +115,28 @@
     "briefing": [
       "delegalt room: clear all the animus and grymvarg first or it all comes",
       "clear delegalt's room from the edge, singles only",
-      "fifteen adds if you pull him with the room up. fifteen",
-      "pullers bring them to the safe spot one at a time",
+      "fifteen of his herd if you draw him with the room up. fifteen",
+      "drawers bring them to the safe spot one at a time",
       "delegalt brings all 15 of his herd, clear the room from the edge first",
       "disease on his target for 11 min, cure it",
-      "watch the grymvarg paths before each pull"
+      "watch the grymvarg paths before each draw"
     ],
     "aftermathWin": [
       "room cleared, delegalt down. that's how you do it",
       "room cleared clean, delegalt was easy after",
       "hostile giant hand axe dropped lol",
-      "fifteen singles pulled clean. puller of the week",
+      "fifteen singles drawn clean. best drawer of the week",
       "room cleared, delegalt alone, easy",
       "giants hand axe!",
       "the laugh stopped. good"
     ],
     "aftermathLoss": [
-      "someone pulled delegalt with the room up. [15 adds|whole room]",
-      "somebody aggroed delegalt early",
-      "a grymvarg pathed into the pull and the room came",
-      "the puller died and everything followed him back",
-      "pulled delegalt with the room up. fifteen adds",
-      "nobody cured the tank"
+      "someone drew delegalt with the room up. [15 of them|whole room]",
+      "somebody woke delegalt early",
+      "a grymvarg walked into the draw and the room came",
+      "the drawer died and everything followed him back",
+      "drew delegalt with the room up. fifteen of them",
+      "nobody cured the shield-bearer"
     ],
     "rumour": [
       "the animus in the lair were giants once, they say. iarnvidiur took their minds",
@@ -147,7 +152,11 @@
     "keyword": "Delegalt",
     "text": "The herdsman of the suitors' herd, the cleverest of the hundred giants who came courting [Iarnvidiur]. In his last winter with a whole mind he built the bridge over the black water, the only gift she used, and she left him half of himself. His stick carries the rot. Strike him and the whole herd moves as one body."
   },
-  "bookPage": "From Thorgrim of Faraheim's notes. The old dwarf said the giants came courting the old one in his grandfather's grandfather's day, one after another, with gifts: iron, gold, a whole mountain's worth of furs. She took the gifts and let them stay. He said the first winter they sang, and the second winter they sang less, and by the tenth they only stood in the hall. He said one of them, the clever one, noticed what was happening and bargained. He said nobody knows what he bargained, only that he can still talk and still cannot leave.",
+  "bookPage": "In Thorgrim of Faraheim's notes, the old dwarf said the giants came courting the old one in his grandfather's grandfather's day, one after another, with gifts: iron, gold, a whole mountain's worth of furs. She took the gifts and let them stay. He said the first winter they sang, and the second winter they sang less, and by the tenth they only stood in the hall. He said one of them, the clever one, noticed what was happening and bargained. He said nobody knows what he bargained, only that he can still talk and still cannot leave. I asked what he talks about. The old dwarf said: the others.",
+  "bookPages": [
+    "From the suitors' slate at Faraheim, the oldest in the slate-house, cut so small that it must be read with a lamp held close. In the first winter came a giant of the Gripklosa with iron. In the same winter came two brothers off the high places with gold, and they would not stand near each other. In the third winter came one with furs, a mountain's worth, and the furs rotted first. In the ninth came one with a forge on his back, and the old one did not look at it. So they came, winter after winter, and the slate gives their gifts and not their names, because the dwarves of that day never learned them. At the hundredth line it says: the forge has been lit. Under that, in a later hand: the bridge is built, and the one who built it is still counting.",
+    "The words of the bridge, as Eyvind Kolsson of the Remnants taught them to his daughter when she began to guide. On the way home the guide does not walk over Delegalt's bridge. He is carried, on a shield or on a back, and the one carrying him says at the near end: this foot is not yours, herdsman. The guide says nothing until the far end, and then he says: nor this one. The custom began with Torvald, and the slates do not say why. The guides who went down with Ragnheid Grimsdottir's warband kept it, and the men of Midgard who carried them laughed the first time. By the second crossing they had stopped laughing and asked to be taught the words. Eyvind's daughter carries guides over now. She says the giants in the hall turn their heads to listen, every time, and the herdsman never does."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Delegalt's herd on the road to Iarnvidiur in {minutes} minutes.",
     "loss": "Delegalt's herd trampled {raidLeader}'s raid from {realm} after {minutes} minutes."

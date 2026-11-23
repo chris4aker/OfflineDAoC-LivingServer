@@ -326,6 +326,8 @@ public sealed partial class AutonomousWorldBotController
     /// </summary>
     private bool StepInOnSentinel(BotBrain brain, GameBot bot, GameLiving target)
     {
+        if (target is GuardLord lord)
+            return StepInOnLord(brain, bot, lord);
         if (target is not GuardFighterRK sentinel || !sentinel.IsAlive || bot.IsWithinRadius(sentinel, SentinelStrikeRange) ||
             bot.IsStunned || bot.IsMezzed)
             return false;
@@ -338,6 +340,39 @@ public sealed partial class AutonomousWorldBotController
             return false;
         }
         SetRvrStatus(bot, "Closing on sentinel", sentinel.Name, "Sentinels take no damage from beyond 800");
+        return true;
+    }
+
+    /// <summary>
+    /// A keep's lord takes no damage from beyond 400, a tower's from beyond 300 (GuardLord.TakeDamage). A bot targeting one
+    /// from farther closes in to <see cref="RvrLordReach"/> first (350 / 250) instead of casting and shooting for nothing;
+    /// with no walk to him, it gives him up for another target. Frontier sieges and battlegrounds alike (#416 follow-up).
+    /// True while closing in.
+    /// </summary>
+    private bool StepInOnLord(BotBrain brain, GameBot bot, GuardLord lord)
+    {
+        if (!lord.IsAlive || lord.CurrentRegionID != bot.CurrentRegionID || bot.IsStunned || bot.IsMezzed)
+            return false;
+        bool keep = lord.Component?.Keep is GameKeep;
+        float reach = RvrLordReach.For(keep);
+        if (bot.IsWithinRadius(lord, (int)reach))
+            return false;
+        if (bot.IsCasting) bot.StopCurrentSpellcast();
+        if (bot.IsAttacking) bot.StopAttack();
+        bool walking = IssuePath(bot, new(lord.X, lord.Y, lord.Z), retargetWhileMoving: true);
+        long now = GameLoop.GameLoopTime;
+        if (RvrLogBudget.Take("RVR_LORD_STEP_IN", now, 30))
+            Log.Info($"RVR_LORD_STEP_IN bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
+                     $"class={bot.CharacterClass?.Name ?? "-"} ranged={AutonomousRvrDefense.IsRangedDefender(bot)} lord=\"{lord.Name}\" " +
+                     $"keep=\"{lord.Component?.Keep?.Name ?? "-"}\" kind={(keep ? "keep" : "tower")} distance={(int)bot.GetDistanceTo(lord)} " +
+                     $"height={(int)Math.Abs(bot.Z - lord.Z)} reach={(int)reach} walk={(walking ? "path" : "none")} region={bot.CurrentRegionID}");
+        if (!walking)
+        {
+            brain.RemoveFromAggroList(lord);
+            if (bot.TargetObject == lord) bot.TargetObject = null;
+            return false;
+        }
+        SetRvrStatus(bot, "Closing on the keep lord", lord.Name, $"The lord takes no damage from beyond {GuardLord.DamageRadiusFor(keep)}");
         return true;
     }
 

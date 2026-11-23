@@ -189,6 +189,25 @@ public class UT_LoreChannelBooks
         Assert.That(LoreBookDrops.Near(lore, 999, 0, 0, 0), Is.Null);
     }
 
+    [Test]
+    public void AnAreaWithNoHeightDropsItsBookAtAnyHeight()
+    {
+        // 1.2.1 (REVIEW-DEPTH.md owner question 2): z 0 is any height for book drops too, as LoreEntryRules.InArea reads it,
+        // and an area of another region never counts.
+        var lore = new LoreLibrary(
+        [
+            LoreChannelFixtures.Place("isle", "Isle", "Albion", 51, "The isle.", [], [], "Of the Isle",
+                [new LoreArea("fort", 520000, 510000, 4500, 800)]),
+            LoreChannelFixtures.Place("wall", "Wall", "Albion", 51, "The wall.", [], [], "Of the Wall",
+                [new LoreArea("earth wall", 536500, 511000, 0, 1000), new LoreArea("far shore", 100000, 100000, 0, 1000) { Region = 52 }]),
+        ], []);
+        Assert.That(LoreBookDrops.Near(lore, 51, 536800, 511200, 4500)?.Id, Is.EqualTo("wall"), "z 0: any height");
+        Assert.That(LoreBookDrops.Near(lore, 51, 537500, 512000, -300)?.Id, Is.EqualTo("wall"), "within twice the radius, under ground");
+        Assert.That(LoreBookDrops.Near(lore, 51, 520100, 510100, 4400)?.Id, Is.EqualTo("isle"), "a given height still counts");
+        Assert.That(LoreBookDrops.Near(lore, 51, 520100, 510100, 9000), Is.Null, "too far above a given height");
+        Assert.That(LoreBookDrops.Near(lore, 51, 100000, 100000, 0), Is.Null, "an area of region 52 does not drop in region 51");
+    }
+
     [TestCase(0, false, 0, 0, true)]
     [TestCase(-3, false, 0, 0, false)]  // grey: no book
     [TestCase(0, true, 0, 0, false)]    // already has a copy

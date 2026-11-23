@@ -36,7 +36,7 @@
     },
     {
       "text": "Allakhazam lists Hati as humanoid, level 65; he drops a moonstone-studded axe.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/4672"
     },
     {
@@ -53,9 +53,19 @@
       "text": "In the Prose Edda (Gylfaginning) Hati Hrodvitnisson chases the moon and Skoll the sun (to verify the details). The Remnants' lullaby-stone and the sleeping dwarf Brokk are Living Server lore.",
       "provenance": "myth",
       "source": "Snorri, Gylfaginning (public domain), to verify"
+    },
+    {
+      "text": "The book pages after the first (the shelf-cutting under the lullaby-stone with Brokk son of Grani and Bafur son of Alf, and the longest-night song with the dwarves' second half) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "Sven of Jordheim sings Hati's verse and puts only the dead in his songs, so Brokk, who lived, is not in it: Living Server writing (NPC pass, HEROES decision 11).",
+      "provenance": "original",
+      "source": "Living Server; Sven, skald trainer of Jordheim, in tools/lore/npc_roster.json (Allakhazam's skald class page and the OpenDAoC database; era probable)"
     }
   ],
-  "story": "In the old songs Hati is the wolf who runs after the moon, as Skoll runs after the sun, and one day he will catch it and the nights will be dark for good. Snorri calls him the son of Hrodvitnir, which is another name for Fenrir. Whether the Hati of the old one's lair is that wolf or a pup of Iarnvidiur's first litter who was given the name and grew into it, nobody in Midgard can say. The iarn dwarves say it does not matter: a name is a thing you live up to.\n\nHe has lived up to it. He walks on two legs now, more often than not, and he lies before the old one's door with Skoll like a hound before a hall, a long stride from his brother. He howls at a moon no one else can see. The howl is the moon's own quiet, the Remnants of Faraheim say, and it puts to sleep everything within a long spear-cast of him, beast or dwarf or stranger, as the moon puts a farm to sleep; and it comes again and again, a little apart, for as long as he is awake. A sleeper stays asleep until something wakes him, and the thing that usually wakes him is Hati's teeth.\n\nThe dwarf Brokk of the Remnants slept at the door for half a winter's day, the dwarves say, and woke when a friend kicked him, and lived. The dwarves keep a lullaby-stone in the slate-house at Faraheim, a smooth black pebble that Brokk carried out of the lair, and they say it is the only thing the moon-chaser ever let go of. The skalds of Jordheim say that if Hati ever catches the moon the howl will not stop, and that the whole of Aegir will sleep.",
+  "story": "In the old songs Hati is the wolf who runs after the moon, as Skoll runs after the sun, and one day he will catch it and the nights will be dark for good. Snorri calls him the son of Hrodvitnir, which is another name for Fenrir. Whether the Hati of the old one's lair is that wolf or a pup of Iarnvidiur's first litter who was given the name and grew into it, nobody in Midgard can say. The iarn dwarves say it does not matter: a name is a thing you live up to.\n\nHe has lived up to it. He walks on two legs now, more often than not, and he lies before the old one's door with Skoll like a hound before a hall, a long stride from his brother. He howls at a moon no one else can see. The howl is the moon's own quiet, the Remnants of Faraheim say, and it puts to sleep everything within a long spear-cast of him, beast or dwarf or stranger, as the moon puts a farm to sleep; and it comes again and again, a little apart, for as long as he is awake. A sleeper stays asleep until something wakes him, and the thing that usually wakes him is Hati's teeth.\n\nThe dwarf Brokk of the Remnants slept at the door for half a winter's day, the dwarves say, and woke when a friend kicked him, and lived. The dwarves keep a lullaby-stone in the slate-house at Faraheim, a smooth black pebble that Brokk carried out of the lair, and they say it is the only thing the moon-chaser ever let go of. Sven of Jordheim sings that if Hati ever catches the moon the howl will not stop, and that the whole of Aegir will sleep. Brokk is not in the verse; the skald puts only the dead in his songs.",
   "chapters": [
     {
       "title": "The Moon-Chaser",
@@ -71,10 +81,10 @@
     },
     {
       "title": "If He Catches the Moon",
-      "text": "He lies at the old one's door with his brother, a long stride apart, the two of them like hounds before a hall. The door behind them is the only iron tree that was ever cut, the one that broke the first clan's hammer, and the companies of Midgard who come to it come to the moon-chaser first.\n\nThe skalds of Jordheim say that if Hati ever catches the moon, the howl will not stop. The quiet will go out from him and not come back, and every farm and hall on Aegir will sleep, and the sleepers will not wake, because there will be nothing left awake to wake them. They sing it at the end of the year, when the nights are longest, and then the children of Jordheim are sent to bed.\n\nThe iarn dwarves say the skalds have the song the wrong way round. They say Hati does not want the moon at all. He wants the quiet that comes with it, the hush of a moonlit night when nothing moves, and that he has made it his whole life at the old one's door because it is the only thing he ever wanted. They say a wolf that puts everything to sleep is only a wolf that wants to be left alone.\n\nWhen he falls, the companies say, the howl stops in the middle, and every sleeper in the ring wakes at once, and the moon-chaser lies on his side by the black water like a pup asleep."
+      "text": "He lies at the old one's door with his brother, a long stride apart, the two of them like hounds before a hall. The door behind them is the only iron tree that was ever cut, the one that broke the first clan's hammer, and the companies of Midgard who come to it come to the moon-chaser first.\n\nIf Hati ever catches the moon, the skalds of Jordheim say, the howl will not stop. The quiet will go out from him and not come back, and every farm and hall on Aegir will sleep, and the sleepers will not wake, because there will be nothing left awake to wake them. They sing it at the end of the year, when the nights are longest, and then the children of Jordheim are sent to bed.\n\nThe iarn dwarves say the skalds have the song the wrong way round. They say Hati does not want the moon at all. He wants the quiet that comes with it, the hush of a moonlit night when nothing moves, and that he has made it his whole life at the old one's door because it is the only thing he ever wanted. They say a wolf that puts everything to sleep is only a wolf that wants to be left alone.\n\nWhen he falls, the companies say, the howl stops in the middle, and every sleeper in the ring wakes at once, and the moon-chaser lies on his side by the black water like a pup asleep."
     }
   ],
-  "legend": "Hati lies at Iarnvidiur's door, about 1,600 from Skoll, so you can usually take them one at a time. His mez is the whole fight: every 30 seconds or so he mezzes everyone within 450 of HIMSELF for up to 29 seconds. So only the tank (and whoever has to be close) stands in that ring; casters and healers stay well outside it, and have cure-mez or a minstrel ready for the melee. Damage breaks mez, so a mezzed tank wakes up when Hati bites him; his bite (260 on a third of his hits) only lands on his target. He has 30,000 health, 20% melee and 30% magic resists, and is CC-immune. Fight him at the door, never inside the old one's room. His moonstone axe is a nice drop.",
+  "legend": "Hati lies at Iarnvidiur's door, about fifty paces from Skoll, so you can usually take them one at a time. His trance is the whole fight: every 30 seconds or so he entrances everyone within fifteen paces of HIMSELF for up to 29 seconds. So only his shield-bearer (and whoever has to be close) stands in that ring; casters and healers stay well outside it, and have a cure for trances or a minstrel ready for the melee. A blow breaks the trance, so an entranced shield-bearer wakes up when Hati bites him; his bite (about a quarter of a robed caster's strength, on one hit in three) only lands on his target. He takes as much killing as fifteen raiders, a fifth of every blow and three-tenths of every spell are lost on him, no charm or stun holds him, and he is a foe for several bands of the realm's best together. Fight him at the door, never inside the old one's room. His moonstone axe is a nice prize.",
   "yells": {
     "aggro": [
       "(A long, silver howl rises.)",
@@ -85,10 +95,6 @@
     "phases": [
       {
         "trigger": "health<=50",
-        "text": "(Hati howls at a moon no one else can see.)"
-      },
-      {
-        "trigger": "health<=25",
         "text": "(Hati howls at a moon no one else can see.)"
       }
     ],
@@ -124,30 +130,30 @@
   },
   "botLines": {
     "briefing": [
-      "hati mezzes a big circle for 30 sec. [cure mez ready|minstrels on it]",
-      "hati and skoll as a pair, one tank each",
-      "minstrels on cure mez for hati",
-      "hati mezzes everything within 450 of himself every 30s. only the tank in that ring",
-      "casters and heals stay out past 450 on hati",
-      "cure mez on the melee, hati's bite wakes the tank anyway",
-      "hati and skoll are 1600 apart, take them one at a time"
+      "hati entrances a big circle for 30 sec. [trance cure ready|minstrels on it]",
+      "hati and skoll as a pair, one shield-bearer each",
+      "minstrels on trance cures for hati",
+      "hati entrances everything within fifteen paces of himself every 30 sec. only his shield-bearer in that ring",
+      "casters and heals stay out past fifteen paces on hati",
+      "cure the trance on the melee, hati's bite wakes the shield-bearer anyway",
+      "hati and skoll are about fifty paces apart, take them one at a time"
     ],
     "aftermathWin": [
       "hati down, the moon is safe lol",
       "moonstone axe dropped [grats|gz]",
       "both door wolves down, the old one is next",
       "the moon is safe tonight lol",
-      "nobody inside the ring but the tank. easy",
+      "nobody inside the ring but the shield-bearer. easy",
       "moonstone axe!",
       "the howl stopped mid note. creepy"
     ],
     "aftermathLoss": [
-      "hati mezzed everyone and skoll ate us",
+      "hati entranced everyone and skoll ate us",
       "slept everyone, skoll cleaned up",
-      "no cure mez, no chance",
+      "no trance cures, no chance",
       "we opened the door with hati still up. bad idea",
       "healers stood in hatis ring and slept through it",
-      "pulled skoll too and had two wolves"
+      "drew skoll too and had two wolves"
     ],
     "rumour": [
       "hati and skoll chase the sun and moon in the old songs. here they sit at a door",
@@ -163,7 +169,11 @@
     "keyword": "Hati",
     "text": "The moon-chaser of the old songs, or a pup of [Iarnvidiur]'s first litter who lived up to the name. He lies at her door with [Skoll]. His howl is the moon's quiet, and it puts to sleep everything near him; the Remnants go to the door in pairs, sworn to wake each other. The lullaby-stone at Faraheim was under his paw."
   },
-  "bookPage": "From Thorgrim of Faraheim's notes. An iarn dwarf hunter told me she once fell asleep under Hati's howl and lived, because her husband carried her out. She said the dream was a white light low on the edge of the world, and that she was running after it on four legs, and that she was happier than she had ever been. When she woke she wept, because she was a dwarf again. She said she understands now why the wolves are not in a hurry. She said the running is the point. She said she goes to the edge of the wood some nights to listen.",
+  "bookPage": "An iarn dwarf hunter told me, writes Thorgrim of Faraheim in his notes, that she once fell asleep under Hati's howl and lived, because her husband carried her out. She said the dream was a white light low on the edge of the world, and that she was running after it on four legs, and that she was happier than she had ever been. When she woke she wept, because she was a dwarf again. She said she understands now why the wolves are not in a hurry. She said the running is the point. She said she goes to the edge of the wood some nights to listen.",
+  "bookPages": [
+    "Cut on the shelf under the lullaby-stone in the slate-house at Faraheim. Brokk, the son of Grani, of the Remnants, carried this stone up out of the old one's house in his fist. He slept at her door for half a winter's day with the moon-chaser lying by him, and Bafur, the son of Alf, went back down alone for his body and kicked him awake. Brokk said the stone had been under the wolf's paw. He would not say what he dreamed. Bafur said Brokk smiled in his sleep, which he had never done awake. The children of the Remnants may hold the stone on the longest night of the year and on no other, and they are to give it back. One child in Brokk's lifetime would not give it back, and Brokk took it from her himself, gently, and did not smile.",
+    "Sung in Jordheim on the longest night of the year, before the children are sent to bed:\n\nTwo grey runners on the roof of the world,\none at the sun's heel, one at the moon's.\nThe moon runs white; the wolf runs quiet.\nBar the door. Bank the fire. Sleep while you may.\n\nThe iarn dwarves of Faraheim sing a second half that Jordheim does not:\n\nThe wolf does not want her. He wants the hush.\nLeave him the hush and he lies down.\n\nThe skalds of Jordheim say the dwarves made the second half up. The dwarves say Jordheim stopped singing it in the winter the children began to ask what the wolf would do once he had the moon, and nobody in the hall could think of an answer that would let them sleep."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} slew Hati the moon-chaser at Iarnvidiur's door in {minutes} minutes.",
     "loss": "Hati's howl put {raidLeader}'s party from {realm} to sleep for good after {minutes} minutes."

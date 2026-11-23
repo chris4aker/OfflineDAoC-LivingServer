@@ -44,13 +44,18 @@
  ],
  "facts": [
   {
+    "text": "NPC pass (HEROES.md decision 11): Sister Elaydith's runner is named Siencyn of Camelot, as in malroch-the-cook; Brother Tudno (once written Aldric) was renamed away from a gamebot first name. Living Server writing.",
+    "provenance": "original",
+    "source": "Living Server (CAST-NEUTRAL.md: Sister Elaydith's runner)"
+  },
+  {
    "text": "Gatekeeper Dommel is level 65 (Allakhazam lists 58) and stands at the crossing near the Albion entrance's way down, with three Chthonic Knights, three Inquisitors and three Mutilators of level 60.",
    "provenance": "game",
    "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
   },
   {
    "text": "Allakhazam's bestiary lists Gatekeeper Dommel among the court's officials.",
-   "provenance": "mythic",
+   "provenance": "legend",
    "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
   },
   {
@@ -93,7 +98,7 @@
   }
  ],
  "story": "Every road in the hollow meets at one crossing, below the hall the Albion door opens into, and in the Uncounted Age a demon called Dommel sat down in the middle of it and charged a toll. He was too weak to hold a throne and did not want one. Demons who would not pay found every road out of the crossing very long. He skipped the Feast of Thrones and charged the thirty lords on their way past; eleven, he says, paid on the way back. Adremal, unwilling to argue with the demon who held every road to the Master's door, wrote him onto the First Roll as Gatekeeper and made the toll law.\n\nIn the Fourth Roll the feud of the Blade and the Hook came to the crossing: Prince Abdin's knights and Prince Asmoien's Mutilators met there because there was nowhere else to meet. Neither side paid, so Dommel closed every road at once and let them fight until too few of either were left to matter. Field Marshal Nebir then proposed the watch that has kept the Gate since: the three orders together in equal number, so that none can hold it alone. The first nine were Knights Exte, Ibeko and Obarus, Inquisitors Irawn, Lokis and Medebo, and Mutilators Axtanax, Okabi and Zurabo; every nine since has taken their names.\n\nWhen the doors opened, the Albion stair came down beside the crossing. Dommel let the first company through and has let the realms through since; the dead they leave at the Gate are their toll. Albion's knights call him a gate-ward who forgot whose gate it was; Midgard's huscarls, the troll at the bridge; Hibernia's druids, an otherworld doorkeeper gone bad.\n\nAbove the Gate, Director Kobil raises Prince Abdin's Army of Shadows, which has never paid and cannot be counted. Dommel has said it will find the roads very long when it tries to march, and he lets the realms through to break it.",
- "legend": "Dommel holds the crossing below the Albion hall with his nine: three Chthonic Knights, three Inquisitors and three Mutilators, all level 60, standing close together. Pull carefully, because the watch comes in threes and the Gatekeeper (65) joins anything near him. Take the watch apart from the edges and leave Dommel for last, alone. He has no script. For Albion this is the first named fight of every trip down; for Midgard and Hibernia it is the crossing you pass on the way to the princes. Players say a raid always loses someone at the Gate, and call it paying the toll. Pay it with a rez, not a release.",
+ "legend": "Dommel holds the crossing below the Albion hall with his nine: three Chthonic Knights, three Inquisitors and three Mutilators, each a foe for several bands of any realm's best together, standing close together. Draw carefully, because the watch comes in threes and the Gatekeeper, a little stronger than his nine, joins anything near him. Take the watch apart from the edges and leave Dommel for last, alone. He has no tricks. For Albion this is the first fight against the court's known ones on every trip down; for Midgard and Hibernia it is the crossing you pass on the way to the princes. Raiders say a raid always loses someone at the Gate, and call it paying the toll. Pay it by raising the fallen, not by letting your spirit go back to your bindstone.",
  "yells": {
   "aggro": [
    "Toll. You will pay it going in.",
@@ -140,22 +145,22 @@
  },
  "botLines": {
   "briefing": [
-   "gate first. dommel plus nine, three of each order. [pull from the edges|edges in], dommel last",
-   "the gate watch are 60s, dommel 65. [easy if we pull right|easy unless we pull it all]",
+   "gate first. dommel plus nine, three of each order. [draw from the edges|edges in], dommel last",
+   "the gate watch are tough, dommel a bit tougher. [easy if we draw right|easy unless we draw it all]",
    "dont fight in the middle of the crossing, [everything joins|the watch links]",
-   "someone always dies at the gate. [rez, dont release|dont release, we rez]"
+   "someone always dies at the gate. [wait to be raised, dont go back to your bindstone|stay put, we raise you]"
   ],
   "aftermathWin": [
    "gate clear. [toll paid|we paid the toll]",
    "dommel down. [on to the princes|roads are open]",
-   "gatekeeper and his nine dead. [nice pulls|clean]",
-   "gate done, nobody released. [good|thats how you do it]"
+   "gatekeeper and his nine dead. [nice draws|clean]",
+   "gate done, nobody went back to the bindstone. [good|thats how you do it]"
   ],
   "aftermathLoss": [
-   "pulled the whole gate. [ten nameds lol|nine plus dommel, gg]",
-   "wiped at the gate, [rough start|not a good sign]",
-   "the toll was the whole raid that time. [regroup at the stair|rez up]",
-   "too many adds at the crossing. [one at a time next time|slower pulls]"
+   "drew the whole gate. [all ten at once lol|nine plus dommel, that was that]",
+   "all of us down at the gate, [rough start|not a good sign]",
+   "the toll was the whole raid that time. [regroup at the stair|raise the fallen]",
+   "too many at once at the crossing. [one at a time next time|slower draws]"
   ],
   "rumour": [
    "[heard|word is] dommel closed every road out of the crossing once and let two demon orders kill each other",
@@ -168,9 +173,8 @@
   "keyword": "dommel",
   "text": "The Gatekeeper of the crossing where every road in the hollow meets, below the Albion hall. He charges a toll; the raids pay it in their dead. In the Fourth Roll he closed the crossing on the warring [chthonic knights] and [mutilators], and since then three of each order, with three [inquisitors], keep the Gate together."
  },
- "bookPage": "From the account of Sister Elaydith's runner, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Aldric there. Afterwards the tenth let us pass and said that we had paid.",
+ "bookPage": "Sister Elaydith's runner, Siencyn of Camelot, went down the Albion stair to fetch a ladle and lived, and gave this account: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Tudno there. Afterwards the tenth let us pass and said that we had paid.",
  "bookPages": [
-  "From the account of Sister Elaydith's runner, who went down the Albion stair to fetch a ladle and lived: At the bottom of the stair the tunnel opens into a crossing, and every road in that place runs out of it, north and west and east and south. A ring of demons stood there, knight beside flayer beside questioner, and they did not look at each other, and in the middle of them sat one more who did not move at all. When we came down, the one in the middle looked up and said a word I did not know, and the ring came for us. We lost Brother Aldric there. Afterwards the tenth let us pass and said that we had paid.",
   "The runner went on: On the way back we came through the crossing again with the ladle, fewer than we had been, and the one in the middle did not even stand. I asked the knight beside me why, and he said the Gatekeeper had been paid going in. I thought that was the end of it. But when we reached the stair I looked back, and the roads out of the crossing behind us were longer than they had been, much longer, and I could see the watch standing at the far end of every one of them."
  ],
  "chronicle": {

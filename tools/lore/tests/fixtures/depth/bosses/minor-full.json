@@ -1,0 +1,56 @@
+{
+ "id": "minor-full",
+ "name": "M",
+ "realm": "Albion",
+ "tier": "minor",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "facts": [
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  }
+ ],
+ "yells": {
+  "aggro": [
+   "a",
+   "a"
+  ],
+  "death": [
+   "d"
+  ],
+  "slay": [
+   "s"
+  ]
+ },
+ "atmosphere": {
+  "lairEntry": [
+   "l"
+  ]
+ },
+ "botLines": {
+  "briefing": [
+   "x",
+   "x"
+  ],
+  "aftermathWin": [
+   "x",
+   "x"
+  ],
+  "rumour": [
+   "x",
+   "x"
+  ]
+ },
+ "loremasterTopic": {
+  "keyword": "k",
+  "text": "t"
+ },
+ "chronicle": {
+  "win": "w"
+ }
+}

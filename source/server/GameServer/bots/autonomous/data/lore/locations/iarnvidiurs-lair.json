@@ -22,12 +22,12 @@
   "facts": [
     {
       "text": "Iarnvidiur's Lair is a level 45-50 Shrouded Isles dungeon in Iarnwood Forest on Aegir, at 28k, 39k.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=93"
     },
     {
       "text": "Its bestiary lists 21 creatures: animus giants (rondjur, syndig), egilvarg and grymvarg wolves, syver of every age, skuggande, fjarskafinn, narfi and the nameds.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=93"
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "text": "Killing Dyranapur raises faction with the Arachite, the Svartalfar Outcasts and the Varulv, and lowers it with the Svartalfar.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/4665"
     },
     {
@@ -111,7 +111,7 @@
       "text": "The peoples of Aegir have never agreed on what the old one's house is for, and each of their names for it is an argument. The iarn dwarves call it the kennel. To them it is a place where a mother keeps her dogs: Stanga at one passage, Hurjavelen wherever he likes, the cruel wolves among the herd, Hati and Skoll at her door, the two-headed ones running to her like dogs to a hearth. Everything else in it, the swarm, the fish, the narfi, the giants, lives there on sufferance, the way rats live in a kennel and are tolerated for keeping down the fleas.\n\nThe skalds of Jordheim call it a nursery. In the song the old one of the Iron Wood breeds Fenrir's kin for the end of the world, and the skalds say every room of her house is part of the breeding: the syver are the pups' first prey, the herd their first quarry too big to bring down, the lake their first sight of a thing that does not fear them, the bridge the place they are put back when they wander. When the wolves run at the end of the world, the skalds say, they will have been raised in this house.\n\nThe narfi call it nothing, but when Thorgrim of Faraheim asked the one narfi who spoke to him what the house was, it said: where she lies sick. The narfi hold that the old one is as sick as her wood, that the rot came into her as it came into the trees, and that she went down under the roots to lie in the dark as sick animals do. Everything in the kennel that hurts the living, the plague in every bite, the drone, the dreaming spores, is in the narfi telling only her fever leaking into the house.\n\nMidgard came to the house with the Valkyn, when the realm crossed to Aegir to take the island back from the morvalt, and the Remnants of Faraheim were the ones who told the realm where the door was. Vemund's thirty went down first and came back without her; Ragnheid's warband went down later with Torvald's grandsons and killed her, and she came back, as the dwarves said she would. The Remnants count the realm among their friends now, as they count their friends: by the clans' foes that have been killed.\n\nThe dwarves keep one fact about the Iarnwood that nobody else seems to have noticed. In all the slates since the first clan came, the wood has not grown by a single tree, nor lost one. Tuscaran Glacier creeps down Delling's walls every year; the rot in the iron trees never moves an inch. The dwarves of Faraheim do not find that comforting. A thing that does not grow, they say, is not dying either. It is waiting, and it knows what for."
     }
   ],
-  "legend": "Bring cure disease or don't go. Every named in the lair carries Black Plague, and so does she. Clear Delegalt's room before you touch him, or fifteen come at once. Count the fish at Mahattava: twenty-eight. Kill Hati and Skoll before you open her door. From half health she throws people into the water under the bridge; climb the pillars, mind the red cons down there, and come back. Thirty players couldn't outdamage her healing in 2004, so bring the full raid. A named in the lair wiped four groups in May 2003 before they came back with four groups and won. Superstitions: the iarn dwarves don't say her name after dark, and you shouldn't either. Some grandmothers say she is the dragon's mother, and that the drakulv and the two-headed wolves are cousins. Nicknames: the old one, the kennel, the plague den.",
+  "legend": "Bring cure disease or don't go. Every one of the foes of name in this lair carries Black Plague, and so does she. Clear Delegalt's room before you touch him, or fifteen come at once. Count the fish at Mahattava: twenty-eight. Kill Hati and Skoll before you open her door. From half her strength she throws people into the water under the bridge; climb the pillars, mind the things down there that are far stronger than you, and come back. Thirty raiders couldn't outdamage her healing, years after the first raids, so bring the full raid. One of the lair's foes of name killed four groups one spring before they came back with four groups and won. Superstitions: the iarn dwarves don't say her name after dark, and you shouldn't either. Some grandmothers say she is the dragon's mother, and that the drakulv and the two-headed wolves are cousins. Nicknames: the old one, the kennel, the plague den.",
   "atmosphere": {
     "firstEntry": [
       "The iron trees are sick at the root. So is the air.",
@@ -243,7 +243,7 @@
     "rumour": [
       "[my gran said|heard] iarnvidiur is gjalpinulva's mother. [look at the wolves|the family look is there]",
       "the iarn dwarves dont say her name after dark. [neither do i now|fair]",
-      "she ports you into the water under the bridge. [climb the pillars|thats where the reds are]",
+      "she throws you into the water under the bridge. [climb the pillars|thats where the reds are]",
       "when a dwarf child goes missing in the iarnwood they say the old one wanted another pup",
       "hati and skoll carry the names of the wolves that chase the moon and sun. [never caught anything|no luck so far]",
       "[heard|they say] skoll's sunstone collar was stolen from the sky. thats why aegir's winters are long",
@@ -253,19 +253,19 @@
     "tell": [
       "iarnvidiur's lair is under the iarnwood on aegir. wolves, plague, giants, fish. iarnvidiur herself at the end",
       "its a plague den. bring cure disease. hati and skoll at the door, then the old giantess",
-      "the lair? 64 people for the end, cures for everyone, and dont pull delegalt with his room up",
-      "is the lair hard? the trash is fine with cures, iarnvidiur needs a raid. 30 wasnt enough back in the day",
+      "the lair? sixty-four people for the end, cures for everyone, and dont draw delegalt with his room up",
+      "is the lair hard? the trash is fine with cures, iarnvidiur needs a raid. thirty wasnt enough back in the day",
       "where is iarnvidiur's lair? iarnwood on aegir, about 28k 39k",
       "whats in the lair? wolves, syver, animus giants, mushrooms, bugs, fish, and the old giantess at the end"
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Under the Iarnwood an old woman breeds [wolves], as the [old song] says. The iarn dwarves call her the old one. We call her [Iarnvidiur]. Take cures. Everything down there is sick.\"",
+    "intro": "Loremaster Svanlaug says, \"Under the Iarnwood an old woman breeds [wolves], as the [old song] says. The iarn dwarves call her the old one. We call her [Iarnvidiur]. Take cures. Everything down there is sick.\"",
     "topics": {
       "old song": "The seeress's song: east in the Iron Wood the old one sits and breeds Fenrir's kin, and one of them will swallow the sun. On Aegir the iron trees are real, and so is she.",
       "wolves": "Her brood. The two-headed ones, the dead guard Stanga, the thief Hurjavelen, and at her door Hati and Skoll, the moon-chaser and sun-chaser.",
       "Iarnvidiur": "The woman of the Iarnwood. Her plague closes her wounds faster than most raids open them, and when you become a nuisance she sets you elsewhere. Some grandmothers say she is Gjalpinulva's mother. I say only that the [wolves] look alike.",
-      "the plague": "The black rot of the iron trees. Every named in the lair carries it, and the old one most of all. It closes her wounds and halves your heals. The dwarves will not even burn the trees, because the smoke carries it.",
+      "the plague": "The black rot of the iron trees. Every one of the foes of name in this lair carries it, and the old one most of all. It closes her wounds and halves your heals. The dwarves will not even burn the trees, because the smoke carries it.",
       "the Remnants": "The last free iarn dwarf clans, in Faraheim with their griffons. They fight the Servants of Iarnvidiur and lose children to them.",
       "the herd": "The animus, giants who came to court the old one long ago and stayed too long in her rot. [Delegalt] herds them like cattle.",
       "the lake": "The fjarskafinn and their mighty one, [Mahattava], were in the lake before the old one came. They keep to their water and she to hers.",
@@ -275,7 +275,7 @@
   "book": {
     "title": "The Old One of the Iarnwood, by Thorgrim of Faraheim",
     "pages": [
-      "The iarn dwarves of the Remnants have a word for the black rot in the iron trees, and it is the same word as her name. They do not cut those trees. They do not burn them either, because the smoke carries the sickness. They walk around them, and their children learn to walk around them before they learn to walk straight. When a child is taken in the night, the camp does not say that wolves took it. The camp says the old one wanted another pup, and then the camp is very quiet.",
+      "The iarn dwarves of the Remnants have a word for the black rot in the iron trees, and it is the same word as her name. They do not cut those trees. They do not burn them either, because the smoke carries the sickness. They walk around them, and their children learn to walk around them before they learn to walk straight. On a shelf in the oldest house of the camp stands the lamp Hjalti Lampbearer carried down into her hollow, blackened on the inside, and no one has lit it since he died. When a child is taken in the night, the camp does not say that wolves took it. The camp says the old one wanted another pup, and then the camp is very quiet.",
       "I asked an old dwarf why they did not leave Aegir. He said his clan was here before the morvalt and before the trolls' fathers' fathers, and that the old one was here before his clan, and that leaving would only change which of them was the guest. Then he showed me a dagger-shaped scar on his arm and said a wolf with a stolen blade in its mouth had given it to him, and that the wolf's mother had watched and let it happen, the way a mother watches a pup learn. He was not angry. He said it was her wood.",
       "Tarek's people took me as far as the hollow but would not go to the stone. I went alone and found it by the shape: a hump under the roots with the iron bark closed over the top of it like a lip, and below the lip, cut deep, the dwarf word. I did not read it aloud. When I came back to the camp an old woman asked me whether I had read it. I said I had looked at it. She said that was the same thing to the old one, and gave me a cup of something bitter, and told me to drink it every morning until the moon was new. I did. My fingernails stayed the colour they were. I have never been so glad of anything.",
       "He told me the lair's rooms the way a farmer tells his fields. The waterfall room, where the shadowing bugs hum and the big one drinks. The lake under the single fall, where the fish are older than she is and will not bow. The herd's hall, where the giants who came courting stand with nothing in their eyes. The passage of the dead wolf, and past it the old syver who grew too big to be hunted. The bridge over the black water. And the door, with the two wolves lying at it like hounds at a hall. He said: no dwarf goes past the bridge. Then he said: no dwarf comes back past the bridge.",

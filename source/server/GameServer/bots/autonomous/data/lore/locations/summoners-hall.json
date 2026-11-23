@@ -22,12 +22,12 @@
   "facts": [
     {
       "text": "Allakhazam's zone page calls Summoner's Hall the place 'where the zones connect across the 3 realms', for levels 35-50: neutral mobs, aggro deep wolves, sidhe magickers, three summoners needing three or four groups each, and the Grand Summoner in what in Darkness Falls is Legion's room.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=74"
     },
     {
       "text": "Its bestiary lists sidhe magickers and coimirceoir, black and grey nobles, Ard Tiarna Kieren, deep wolves, disemboweled undead, gore dappled zombies, a spirit master, the Shade of Aelfgar, the three summoners and the Grand Summoner.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=74"
     },
     {
@@ -37,12 +37,12 @@
     },
     {
       "text": "Allakhazam's Aidon the Archwizard page says he guards the way down to the hall and lists him there; this world's data puts Aidon in Hall of the Corrupt (region 277), which Living Server follows: he guards the Albion approach, not the hall.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/3783"
     },
     {
       "text": "Marfach Caverns was Hibernia's old frontier dungeon (entered from Breifine, removed by New Frontiers); that it also leads to the hall is assumed by symmetry (to verify).",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=70"
     },
     {
@@ -112,7 +112,7 @@
       "text": "The hall asks nothing of the realms above but their dead, and it takes them whether they are given or not. Every grave on the old frontiers is a little closer to it than it was. The druids say the keeners of Breifine sing the dead on with more care than they used to, and the dead of Hibernia's west lie quieter for it. Camelot's priests bury the Pennine dead face down, so that if they rise they walk away from the road. Midgard's steadings go up Jarnhaug every year and read the names of the last shift at the shaft, so that Aros does not have to say them alone.\n\nEach death of the Grand Summoner buys a season of quiet. The picks in Dodens Gruva stop, Glenlock's hill-watch marks the night on the post, and for a while the calling is not heard on the old frontiers. Then it starts again, because the pattern of the deep room holds the summoner's place for him, and he comes back to it. The realms disagree about whether going down is worth it. Camelot says the cellar must be cleaned however often it fills. The druids say every season the dead lie quiet is a season their keeners can rest. The skalds of Jordheim say a realm that stops going down is a realm that has started listening.\n\nThe magicker who was Govannon's student has the last word in most accounts of the hall, because she is the only one who has seen it from both sides. She told a scholar of Midgard that the hall was built to carry every voice to every ear, and that it is doing exactly what it was built for; the fault is in the voice. She said the summoner's work, whatever it is, will be finished on the day all three stairs are walked at once, up instead of down, by the dead of all three realms together, and the hall is emptied into the world above.\n\nShe also said something the scholar did not understand until he had been back up his own stair for a year. She said the stewards still sweep the guest-shelves because the old law has a second half that nobody has needed for an age. A guest who comes down a stair and lays down his weapons on the shelf is under the hall's protection, against every steward and every other guest, until he leaves by his own stair. Nobody has laid anything down there since the summoner came. The stewards, she said, are waiting to see who will be first, and whether the hall still remembers how to keep its word."
     }
   ],
-  "legend": "Summoner's Hall is where the three realms' old frontier dungeons come out: albs through the Hall of the Corrupt past Aidon, mids down Dodens Gruva past the puppy, hibs out of Marfach. Everything down there is neutral until you hit it, and then the whole Lords of the Undead lot hates you, so don't touch what you don't have to. The deep wolves are the exception; they come at you. Each of the three summoners is its own fight and an old frontier group of three or four groups apiece: Cunovinda throws someone up to the ledges when she's hit and bolts them on the way, so be ready to climb back down; Lossren floods the room with tortured souls, a ghoul comes crawling after you kill enough of them and pops for a thousand in a big ring, and pets do almost nothing to him; Roesia's Summoner Pain is spirit damage in a huge ring around one person, her damage shield burns melee, and under 25% she heals, so save the burst. All four of them shrug off most magic and can't be hurt past their tethers, so fight them in their rooms. Clear the three, rest, then Govannon. Old raiders say he's no harder than Legion, only longer. Superstition: never lay your weapon on the shelf at the foot of a stair, or the stewards will think you're staying.",
+  "legend": "Summoner's Hall is where the three realms' old frontier dungeons come out: albs through the Hall of the Corrupt past Aidon, mids down Dodens Gruva past the puppy, hibs out of Marfach. Everything down there is neutral until you hit it, and then the whole Lords of the Undead lot hates you, so don't touch what you don't have to. The deep wolves are the exception; they come at you. Each of the three summoners is its own fight and an old frontier group of three or four groups apiece: Cunovinda throws someone up to the ledges when she's hit and bolts them on the way, so be ready to climb back down; Lossren floods the room with tortured souls, a ghoul comes crawling after you kill enough of them and bursts for a robed caster's whole strength in a big ring, and pets do almost nothing to him; Roesia's Summoner Pain is spirit damage in a huge ring around one person, her damage shield burns melee, and under a quarter of her strength she heals, so save the burst. All four of them shrug off most magic and can't be hurt past their tethers, so fight them in their rooms. Clear the three, rest, then Govannon. Old raiders say he's no harder than Legion, only longer. Superstition: never lay your weapon on the shelf at the foot of a stair, or the stewards will think you're staying.",
   "atmosphere": {
     "firstEntry": [
       "Three stairs end on one floor. Something is calling.",
@@ -177,7 +177,7 @@
       "the summoner's hall is under all three old frontiers. every realm's frontier dungeon has a stair down to it",
       "three summoners and the grand summoner, and they call the dead from all three realms [at once|all the time]",
       "the rooms down there are laid out like legion's in df. [someone copied|same builder maybe]",
-      "the mobs in summoner's hall are lords of the undead faction. neutral till you hit one",
+      "the dead in summoner's hall are sworn to the lords of the undead. neutral till you hit one",
       "the summoner's hall was a sidhe meeting place once. each people came down its own stair",
       "theres stone shelves at the foot of every stair in sh. guests left their weapons there",
       "the hall carries voices. thats why the calling speaks three languages at once",
@@ -211,18 +211,18 @@
       "where is summoner's hall? under the old frontiers. we go down dodens gruva, past the puppy",
       "is summoner's hall hard? three summoners and govannon, and the albs and hibs on the stairs",
       "whats in sh? sidhe stewards, the lords of the undead, deep wolves, three summoners and the grand summoner",
-      "is sh neutral? the mobs are, until you hit one. then the whole hall hates you",
+      "is sh neutral? the dead there are, until you hit one. then the whole hall hates you",
       "how many for sh? three or four groups per summoner, the whole realm for govannon",
       "who rules sh? grand summoner govannon, in a room shaped like legion's"
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
+    "intro": "Loremaster Svanlaug says, \"Summoner's Hall. Under the old frontiers, three [stairs] end on one floor. It was a [meeting place] once. The [summoners] call the dead there now, and the [Grand Summoner] makes bargains with what answers.\"",
     "topics": {
       "stairs": "Each realm's old frontier dungeon digs down to the same hall: Albion's Hall of the Corrupt, Midgard's Dodens Gruva, Hibernia's Marfach Caverns. Each realm's raid comes down its own stair and meets the others below.",
       "summoners": "Cunovinda the white hound, who puts you on the ledges; Lossren the gatherer, who keeps the dead in pieces; Roesia, who makes sure the price hurts.",
       "Grand Summoner": "Govannon, named for a smith of the old tales. He wears a sidhe's face until half his strength is gone, then the demon steps out, whole again. Stop his sacrifice reaching his feet.",
-      "meeting place": "The druids say the sidhe built it so the peoples of the three lands could talk without crossing each other's borders. Each came down its own stair and left its weapons on the [shelves]. The [stewards] kept one law.",
+      "meeting place": "The sidhe built it, the druids say, so the peoples of the three lands could talk without crossing each other's borders. Each came down its own stair and left its weapons on the [shelves]. The [stewards] kept one law.",
       "shelves": "Waist-high stone shelves at the foot of every stair, swept every day. Guests laid their weapons there. Nobody has since the summoner came; the [stewards] are waiting to see who will be first.",
       "stewards": "The sidhe of the hall: protectors, magickers, the grey and black nobles, and a high lord, [Kieren]. Their law: no guest is an enemy until he strikes, and then he is the enemy of the whole hall.",
       "Kieren": "Ard Tiarna Kieren, high lord of the hall's sidhe. He walks among the [stewards] and has never lifted a hand for the summoner or against him. The druids call his silence a price still being paid.",
@@ -241,7 +241,7 @@
       "Of the white hound's chamber. I went in behind a company of Glenlock and stood by the door, which is a skald's place. The chamber is all ledges, rising out of sight. Cunovinda never let them close with her for long. Every time a blade bit, someone was gone, snatched up into the dark of the ledges with a crack of cold after him, and we would hear him a while later, swearing and climbing. The company's captain said it was like fighting a cat that throws your friends onto the roof. They killed her in the end. The ones she had sent up came down to find it over, and were not sorry.",
       "Of the gatherer. Lossren stands in a crowd of his own making. The souls came out of him in a host, more than I could count, and when the company had cut down the last of them another host came, and the faces in it were faces. I saw a man of Midgard in mail I knew from the songs. When enough had fallen, something swollen dragged itself out of the heap toward one of us, and the captain shouted, and the man it wanted ran, and it burst where he had been. The company's wolf-handler had sent her beasts against the summoner; she called them back, because they did nothing to him at all.",
       "Of the keeper of pain. In Roesia's chamber the air hurts to breathe, and it hurt worse when the company drew together. Her pain fell on one man at the back, a runecarver who had not come near her, and spread from him across half the room, so that a dozen of us cried out at once. A ward of fire stood round her that burned every hand that struck her. When she was nearly done she stopped and knit herself together, and the captain swore, and the company spent everything it had left in a breath. She did not get up. The air went on aching for a long time after.",
-      "A sidhe magicker of the hall, who for reasons of her own spoke to me, said the summoners were there before the demons, and the demons were there before the summoners called them, and that neither would say which came first. She said the rooms were laid out like Legion's because the Grand Summoner had been to Legion's court and admired it. She said he admires anything that holds a great many souls. Then she asked my name, and I told her a false one, and she smiled as if that had been the right answer.",
+      "A sidhe magicker of the hall, who for reasons of her own spoke to me, said the summoners were there before the demons, and the demons were there before the summoners called them, and that neither would say which came first. She said the rooms were laid out like Legion's because the Grand Summoner had been to Legion's court and admired it. She said he admires anything that holds a great many souls. I learned only on my third descent that she had been his student once, and that she is the only one in the hall who has seen it from both sides. Then she asked my name, and I told her a false one, and she smiled as if that had been the right answer.",
       "Of the question. On my third descent I found the magicker again, and she asked me what she had asked before: what I had come to lay down. I had nothing to say. She told me then about the second half of the stewards' law, that a guest who lays down his weapons on the shelf is under the hall's protection until he leaves by his own stair, and that nobody has laid anything down since the summoner came. I went back to the foot of our stair and looked at the shelf for a long time, with my axe in my hand. Then I went up. I am still not sure it was the wrong answer."
     ]
   },
@@ -296,7 +296,7 @@
         ]
       },
       "loremaster": {
-        "intro": "Loremaster Sigrun says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
+        "intro": "Loremaster Svanlaug says, \"It is what Ormarr's miners broke into: a floor older than the hill, and [voices] calling in three tongues. [Aros] held his dead back from it. Someone should finish what he started.\"",
         "topics": {
           "voices": "The summoners call the dead of every realm. Ours heard them through the floor of Dodens Gruva.",
           "Aros": "The spiritmaster of Dodens Gruva, who bound the dead miners to the mine rather than let the calling have them.",
@@ -306,7 +306,7 @@
     },
     "hibernia": {
       "story": "To Hibernia the hall is a shame. Its stewards are sidhe, the Good Folk of the hollow hills, its coimirceoir and magickers and the grey and black nobles of its court, and even a high lord, Ard Tiarna Kieren, walks there; and they serve the summoners as if they had forgotten whose they are. The druids of Tir na Nog tell the hall's beginning as Hibernia's own story: the sidhe built it as a meeting place under the borders, before the realms had names, and kept it through the long empty age with no guests, sweeping the shelves at the stair-feet every day. When the summoner walked onto the floor wearing the face of one of the Good Folk, the stewards knelt to the face before they looked at the eyes. The druids take that as an insult worse than any war.\n\nHibernia's road down, the druids say, runs under Breifine, through Marfach Caverns. The chieftain Caimheul was carried there with his household, and the three Ladies who were hired to keen him on into the dark heard something answer from below and took the grief it offered them. They sing the dead back now, and keep Marfach's road for the voice that bought them. Hibernia's account of the first death of the Grand Summoner belongs to Sinech ni Riain of Ardee, the ranger whose company first broke the Black Lady and went on down the road, and found the stewards of the hall willing, for once, to stand aside; Kieren watched the summoner die and did not lift a hand to save him. The druids say that is the true reason the sidhe still serve him. They waited too long, and when he came back, they were afraid.\n\nHibernia's companies go down to take the Good Folk back from him, or failing that to shame them. The druids among them leave a sprig of yew on the shelf at the foot of the western stair for the stewards, and take it back up again if it has not been moved. It never has.",
-      "legend": "Hibs say: out of Marfach, past the Ladies, down the old road. Don't trust the sidhe in the hall, they've forgotten us, but don't hit them either unless you mean to fight the whole hall. The Grand Summoner wears one of their faces; when he drops it at half, that's when you know what he is. Leave the yew on the shelf going in. Mez won't hold any of the four masters, so save it for what they bring, and watch for the albs on the floor.",
+      "legend": "Hibs say: out of Marfach, past the Ladies, down the old road. Don't trust the sidhe in the hall, they've forgotten us, but don't hit them either unless you mean to fight the whole hall. The Grand Summoner wears one of their faces; when he drops it at half, that's when you know what he is. Leave the yew on the shelf going in. Trances won't hold any of the four masters, so save it for what they bring, and watch for the albs on the floor.",
       "botLines": {
         "lore": [
           "the sidhe in the summoner's hall serve the summoners. [the druids are ashamed|its a disgrace]",

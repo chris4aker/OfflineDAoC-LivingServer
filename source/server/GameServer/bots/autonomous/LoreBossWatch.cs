@@ -236,8 +236,9 @@ public static class LoreBossWatch
         LoreBible.Boss boss = BossOf(npc);
         if (boss == null || !Fights.TryAdd(npc, new Watched { Boss = boss }))
             return;
-        if (!ScriptSpeaksOn(boss.ClassKey, "aggro") && boss.AggroYells.Length > 0)
-            Yell(npc, Fights[npc], boss.AggroYells, GameLoop.GameLoopTime, force: true, trigger: "aggro");
+        string[] aggro = boss.AggroFor(npc.Name);
+        if (!ScriptSpeaksOn(boss.ClassKey, "aggro") && aggro.Length > 0)
+            Yell(npc, Fights[npc], aggro, GameLoop.GameLoopTime, force: true, trigger: "aggro");
     }
 
     /// <summary>Whether an attack on this NPC starts a watched fight: a living, active NPC (not a bot) not watched yet.</summary>
@@ -259,7 +260,7 @@ public static class LoreBossWatch
                     return;
                 Fights.TryRemove(npc, out Watched watched);
                 // A "death" phase is one more way to die: its yell joins the death yells, its atmosphere line goes to the zone.
-                string[] deathYells = boss.DeathYells.Concat(PhaseTexts(boss.PhaseYells, LoreFightRules.Kind.Death)).ToArray();
+                string[] deathYells = boss.DeathFor(npc.Name).Concat(PhaseTexts(boss.PhaseYells, LoreFightRules.Kind.Death)).ToArray();
                 if (!ScriptSpeaksOn(boss.ClassKey, "death") && deathYells.Length > 0)
                     Yell(npc, watched ?? new Watched { Boss = boss }, deathYells, GameLoop.GameLoopTime, force: true, trigger: "death");
                 foreach (string line in PhaseTexts(boss.AtmospherePhases, LoreFightRules.Kind.Death).Take(1))
@@ -270,7 +271,7 @@ public static class LoreBossWatch
             {
                 long now = GameLoop.GameLoopTime;
                 // A "playerDeath" phase is one more slay yell; its atmosphere line goes to the zone once a fight.
-                string[] slay = watched.Boss.SlayYells.Concat(PhaseTexts(watched.Boss.PhaseYells, LoreFightRules.Kind.PlayerDeath)).ToArray();
+                string[] slay = watched.Boss.SlayFor(bossNpc.Name).Concat(PhaseTexts(watched.Boss.PhaseYells, LoreFightRules.Kind.PlayerDeath)).ToArray();
                 if (!ScriptSpeaksOn(watched.Boss.ClassKey, "slay") && slay.Length > 0 && now - watched.LastSlay >= SlayGapMs)
                 {
                     watched.LastSlay = now;

@@ -38,7 +38,9 @@ ITEM_ID = "ls-update-check-item"
 SETTINGS = {
     "bot_voices_chat_rate": "0.7",
     "bot_guild_share": "33",
-    "bot_schedule_mode": "clock",
+    # "session": since 1.2.1 off is both the default and the suggested mode (owner 2026-11-21), and clock is 1.2.1's old
+    # default, which the settings upgrade moves to off on a row the server wrote as clock. No upgrade line touches session.
+    "bot_schedule_mode": "session",
     "xp_rate_by_level": "1-50:2",
     "bot_living_firsts": "True",
     "bot_raid_invite_player": "False",

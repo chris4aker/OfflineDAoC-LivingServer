@@ -19,10 +19,20 @@
       "text": "Bot chat: 'norsob the annihilator lives in tur suil. with a name like that, i am not asking questions'.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "Living Server lore: the place-lore of Coill Bheag, the little wood (the hazel stand, the three scouts, the heap of leaves) and Fearghal of Connacht's words to the captain of the Connacht barracks.",
+      "provenance": "original",
+      "source": "Living Server"
+    },
+    {
+      "text": "The contention of Norsob and Sargan for the eleven bound Sylvan (told as a contention for the champion's portion; the boasts; the wall; the five who came home to Domnann) on Norsob's chapter is Living Server lore written in Hibernia's tale voice.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Balor keeps two warlords, and Norsob is the one he sends when there is nothing to be kept. Annihilator is not a boast; it is a job. The Sylvan remember the village. It stood at the edge of the Vale, and it sheltered three Sylvan scouts who had spied on the tower, and when Balor heard of it he sent Norsob. There is a clearing there now, with nothing in it, not even ash. That is what annihilator means in Tur Suil.\n\nHe is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: no chasing, no ground given, and beyond the hall's edge nothing reaches him. His skin turns part of every blow, spells worse than steel. He despises Sargan, who conquers instead of destroying, who keeps banners and prisoners and taxes, and who named the soldiers on the stair; Sargan despises him back, and each thinks the other's work untidy. Balor keeps them in separate halls because the one time they shared a room a wall came down. When one of them dies, the other is said to laugh.\n\nNorsob, a Fomorian giant who crossed with the eye, holds the west hall and leaves nothing behind him: the village of Coill Bheag is a bare clearing. He and Sargan hate each other; Fearghal of Connacht's band woke both at once, and four came home.",
-  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because outside his tether he cannot be hurt and walks home. One good tank and steady heals, and do not wake Sargan's hall at the same time. One tank, steady heals, everyone else on him. Never pull the far west hall at the same time. The Balorians say he fights harder once Sargan is dead; nothing anyone has seen bears it out. Superstition: lay a leaf in his hall when he falls, for the village at the edge of the Vale. The Sylvan raiders always do, and they do not explain.",
+  "story": "Balor keeps two warlords, and Norsob is the one he sends when there is nothing to be kept. Annihilator is not a boast; it is a job. The Sylvan remember the village. It stood at the edge of the Vale, and it sheltered three Sylvan scouts who had spied on the tower, and when Balor heard of it he sent Norsob. There is a clearing there now, with nothing in it, not even ash. That is what annihilator means in Tur Suil.\n\nHe is a giant among Fomorians, slow to anger and slower to stop, and he holds the west hall as he would hold a battlefield: no chasing, no ground given, and beyond the hall's edge nothing reaches him. His skin turns part of every blow, spells worse than steel. He despises Sargan, who conquers instead of destroying, who keeps banners and prisoners and taxes, and who named the soldiers on the stair; Sargan despises him back, and each thinks the other's work untidy. Balor keeps them in separate halls because the one time they shared a room a wall came down. When one of them dies, the other is said to laugh.\n\nThe village was Coill Bheag, the little wood. The Sylvan lay a leaf for it in his hall each time he falls, and Fearghal of Connacht laid the first one himself. Fearghal's band woke the far west hall by a scout's mistake, and Sargan, who did not join the giant, drove them toward him until they were ground between the two; when Sargan fell first, late in the night, Norsob roared with laughter and fought on harder, and was still laughing when he died. The Connacht barracks keep a saying from that night: one warlord to a night, and the far hall left alone. The druids of Tir na Nog say he is the eye's own temper given a body, and the Sylvan dislike them for it.\n\nNorsob, a Fomorian giant who crossed with the eye, holds the west hall and leaves nothing behind him: the village of Coill Bheag is a bare clearing. He and Sargan hate each other; Fearghal of Connacht's band woke both at once, and four came home.",
+  "legend": "A big straight fight: he shrugs off some melee and he hits hard. Fight him in his hall, because drawn out of it he cannot be hurt and walks home. One good shield-bearer and steady heals, and do not wake Sargan's hall at the same time. One shield-bearer, steady heals, everyone else on him. Never draw the far west hall at the same time. The Balorians say he fights harder once Sargan is dead; nothing anyone has seen bears it out. Superstition: lay a leaf in his hall when he falls, for the village at the edge of the Vale. The Sylvan raiders always do, and they do not explain.",
   "yells": {
     "aggro": [
       "Nothing will be left. Not even the name.",
@@ -64,26 +74,26 @@
   },
   "botLines": {
     "briefing": [
-      "norsob is a tank and spank but he hits like a cart. [fight him in his hall|dont drag him], hes immune outside it",
-      "norsob is immune outside his hall, [fight him there|no pulling]",
-      "one tank, steady heals, [everyone on him|simple fight]",
-      "never pull sargan's hall at the same time. [one warlord at a time|seriously]"
+      "norsob is just hold and hit but he hits like a cart. [fight him in his hall|dont drag him], hes untouchable outside it",
+      "norsob is untouchable outside his hall, [fight him there|no drawing him out]",
+      "one shield, steady heals, [everyone on him|simple fight]",
+      "never draw sargan's hall at the same time. [one warlord at a time|seriously]"
     ],
     "aftermathWin": [
       "norsob down. [with a name like that|annihilated the annihilator]",
       "norsob down, the sylvan will be glad. [the village|for the scouts]",
       "annihilated the annihilator. [someone had to say it|ok fine]",
-      "no adds from the far hall this time. [clean|good pull]"
+      "nobody from the far hall this time. [clean|good draw]"
     ],
     "aftermathLoss": [
-      "pulled norsob and sargan's hall at once. [never again|one warlord at a time]",
-      "pulled both warlords and [they did not fight each other|both fought us]",
-      "the tank fell over and nobody [picked him up|caught it]",
-      "tried to drag him out and he [was immune|reset]"
+      "drew norsob and sargan's hall at once. [never again|one warlord at a time]",
+      "drew both warlords and [they did not fight each other|both fought us]",
+      "the shield fell over and nobody [picked him up|caught it]",
+      "tried to drag him out and he [was untouchable|went home]"
     ],
     "rumour": [
       "[heard|someone said] norsob burned a sylvan village in the vale for hiding scouts",
-      "[heard|someone said] norsob wiped a sylvan village off the vale for sheltering scouts",
+      "[heard|someone said] norsob burned a sylvan village off the vale for sheltering scouts",
       "[word is|heard] the one time norsob and sargan shared a room a wall came down",
       "norsob laughs when sargan dies, they say. [nice coworkers|charming]"
     ]
@@ -93,6 +103,10 @@
     "text": "One of Balor's two warlords, the one sent when nothing is to be left. He holds the west hall and nothing reaches him beyond it."
   },
   "bookPage": "Muirgen writes: I went to the clearing. It is at the edge of the Vale of Balor, a round open place in the wood with nothing in it, no ash, no stones, not even the marks of walls. The Sylvan say a village stood there and sheltered three scouts who had spied on the tower, and that Balor sent Norsob. I asked how a village could leave no ash. The Sylvan warden with me said that is the difference between Norsob and fire. Fire leaves something. We stood there a long time. When we left, the warden picked a leaf and laid it in the middle of the clearing, as the Sylvan do for their dead, and I did the same.",
+  "bookPages": [
+    "Coill Bheag, the little wood, had its name from a stand of hazel at the edge of the Vale of Balor, where the Sylvan built a village small enough to be named for the trees around it. Three scouts of Domnann who had spied on the tower came down from the crag and were taken in there, and fed, and hidden. The eye's servants heard of it. The king sent the giant of the west hall, whose work is to leave nothing, and he left nothing: no hazel, no hearth, no ash. From the hazel the place was named, and the name outlived the place. A round clearing is there now, as bare as the giant left it but for a heap of leaves in the middle that grows every season: the first two laid by Muirgen and the warden who walked there with her, and every one since by someone who came home from his hall.",
+    "Entered in the roll of the Connacht barracks beside the names of that night's dead, as Fearghal spoke it to the captain of the barracks when he came down from the west halls. I meant to take one warlord. My scout went one door too far and woke the other, and I thought they would fall on each other, and they did not. The conqueror kept his distance and drove us on to the giant, and we were ground between them like grain. The conqueror fell first. The giant laughed at it, and fought harder after, and he was still laughing at the end. Four of us came home. I have a spear-head from that night and I will not say whose soldier carried it. Write this down for the barracks: one warlord to a night, and the far hall left alone."
+  ],
   "chronicle": {
     "win": "{realm} climbed Tur Suil under {raidLeader} and brought down Norsob the Annihilator in {minutes} minutes.",
     "loss": "{realm}'s raid under {raidLeader} fell in Tur Suil to Norsob the Annihilator after {minutes} minutes."
@@ -124,6 +138,10 @@
     {
       "title": "Fearghal's Mistake",
       "text": "Fearghal of Connacht led a band of the second company to climb Tur Suil into the west halls and woke Norsob, and while the band was busy with the giant, one of its scouts strayed into the far west hall and woke Sargan. Fearghal said afterward that he had hoped the two would fall on each other. They did not. Norsob held his hall as he always does, and Sargan, the conqueror, kept his distance and drove the band toward the giant, and the band was ground between them.\n\nWhen Sargan fell first, late in the night, Norsob roared with laughter, and the Balorians say he fought on with a fury nobody had seen in him before, to prove that the destroyer had always been the better warlord; Fearghal's survivors said they were too tired to tell the difference. When the last of Fearghal's band finally brought Norsob down, he was still laughing. The Connacht barracks took a saying from it: one warlord to a night, and the far hall left alone. Four of Fearghal's band came home, and Fearghal never climbed the tower again. He kept a Balorian spear-head on his hearth in Connacht, and would never say which warlord's soldier had carried it.\n\nThe Sylvan who go up with the realm's companies do one thing in Norsob's hall that the Hibernians have learned to wait for. When he falls, the Sylvan lay a single leaf in the middle of his hall, as they lay one on their own dead, for Coill Bheag. The Hibernians wait for it. Fearghal himself laid the first one."
+    },
+    {
+      "title": "The Contention in the Unset Hall",
+      "text": "The Balorians tell the story of the wall as the old tales tell a contention for the champion's portion: two great ones, one prize, and each boasts in turn of what he has done until the boasting is worse than the fighting would have been. Muirgen had it from a Sylvan who had it from a Balorian prisoner, and she wrote that it is the only Fomorian tale she heard that the Fomorians tell against their own.\n\nIt was in the tower's first years, before the halls were set, and a war-band of Sylvan stood bound in a room of the west side, eleven of them, taken on the edge of the Vale. Sargan said they should be kept. Norsob said they should be ended. Neither would give way, and the king was looking out of his window and would not be asked, so they contended for the band as champions contend for the portion, by boasting.\n\nSargan spoke first, because he always does.\n\n\"I took the islands of the north and kept them. I took their banners and hung them, and their corn and ate it, and the names of their dead, which my soldiers will carry. A thing kept is a thing that goes on paying. Eleven kept will cut stone for the stair until the stair is done.\"\n\nNorsob said:\n\n\"I was sent to the islands you did not keep. You will find nothing there to hang. Eleven ended will cut no stone, and spy on no tower, and go home to no village to say what they saw.\"\n\nSargan said:\n\n\"A warlord who leaves nothing has nothing. When the king looks out of his window over Hy Brasil, he will want to see it full and paying, and full of my banners.\"\n\nNorsob said:\n\n\"When the king looks out of his window he will want to see it as he saw the green glen, and I am the only one in this tower who can give it to him.\"\n\nThen they stopped speaking in turns. The Balorians say the third boast of each was not words. The wall between that room and the next was the first stone the masons of the west side had finished, and it came down between the two of them; the Balorians do not agree which of them threw the other into it, and say that is why the tale is told at all.\n\nHere the Balorians end it. The king, hearing the wall, set the two warlords in separate halls as far apart as the crag allowed, and they have not spoken since.\n\nThe Sylvan end it a line later. While the stone was still falling and the two warlords were still shouting, the eleven went out through the hole in the wall, bound as they were, down the half-cut stair and into the dark of the Vale; and five of them came down to Domnann. The Sylvan remember it as the first time the quarrel of the tower saved anyone. Their wardens say it has been saving people since, every time the two will not fight as one, and that the realm owes the five and the wall as much as it owes any company.\n\nThe Balorians keep the custom that came of it: no soldier leans on the wall between the two halls. The Sylvan keep theirs. Each time the realm's people bring Norsob down, someone lays the leaf for Coill Bheag in the middle of his hall, as Fearghal did; and when the company passes the place on the west side where the first wall stood, a Sylvan of the company, if one has come, touches the stones of the new one and says five names."
     },
     {
       "title": "Leave Nothing",

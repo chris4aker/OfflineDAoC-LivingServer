@@ -11,7 +11,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
     },
     {
-      "text": "Every think (500 ms) Oro and each clone take 5% of maximum mana from every GamePlayer within 350.",
+      "text": "Every think (500 ms) Oro and each clone take 5% of maximum mana from every raider within 350 (EncounterTargets.InRadius: players and bots).",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs"
     },
@@ -24,10 +24,15 @@
       "text": "Real-world myth, not game canon: the Ars Goetia lists Orobas, a prince of hell who gives true answers; Oro may read as that name, to verify.",
       "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/Orobas"
+    },
+    {
+      "text": "The book pages after the first (the lamp-bearer's testimony, the riddle at Jordheim) are Living Server writing.",
+      "provenance": "original",
+      "source": "Living Server (1.2.1 epic floors, #402)"
     }
   ],
-  "story": "High Lord Oro has been three since the Third Roll. His lamp-bearer, walking before him into his own hall with a lamp of green fire, turned to light his master's way and saw three high lords, alike in every particular; he dropped the lamp, and one of the three handed it back and said in Oro's voice: walk on. The Inquisitors say Oro cut himself into three as a cautious man cuts a purse; the Chthonic Knights say a lord with two more of himself has the only friends in the hollow; the imps say he can stand in only one and watch the others. Adremal wrote one line and one name, and under it: the lesser two are furniture.\n\nThere is no way to tell the three apart by looking, and when one is troubled all three come. But the lesser two are only held up by the one, and when the true Oro falls they fall with him like a chair with its legs kicked out. Nor are they the same under the skin: the furniture is hard to cut and easy to burn, while the true Oro, like the lords of the court, is cut by steel and soaks up sorcery. The Midgard riddle runs: three lords in a hall; two are chairs; strike the one that sits.\n\nEach of the three drinks the spirit of whatever stands close to it: a mage within arm's reach feels his strength for spells run out like water from a cracked jug, and stand off, it stops. It did not happen to everyone, and Brother Odran could not make his reports agree; the Inquisitors say it drinks only one who came of his own will. Oro's own dukes keep to the far side of his hall.\n\nSir Rhisiart of Caer Ulfwych let his mages plan it. They stood off beyond the thirst and threw fire at each of the three while the knights held them; two burned and one did not, and every blade went on that one. When the true Oro fell the furniture went down mid-stroke, and the lamp-bearer set his lamp beside one of the three.",
-  "legend": "High Lord Oro is three mobs with the same name and look, and no tell. The real one has 100,000 health with 40% melee / 70% other reduction, CC immune. The two clones have 30,000 each but take 45% less from melee and soak half of it with 50% absorb, while spells only lose 35%. Pull one and you get all three. Kill the real one and both clones die on the spot, so you never need to kill the clones. Find him the way Sir Rhisiart's mages did: throw a spell at each, and the one your spells barely scratch is the real Oro; put all melee on him and off-tank the clones. Every half second each of the three drains 5% of max mana from every raider within 350, bots too, so the casters must stay out of 350 of all three (that is 10% mana a second); bots are not drained. Do not drop out of the fight.",
+  "story": "High Lord Oro has been three since the Third Roll. His lamp-bearer, walking before him into his own hall with a lamp of green fire, turned to light his master's way and saw three high lords, alike in every particular; he dropped the lamp, and one of the three handed it back and said in Oro's voice: walk on. The Inquisitors say Oro cut himself into three as a cautious man cuts a purse; the Chthonic Knights say a lord with two more of himself has the only friends in the hollow; the imps say he can stand in only one and watch the others. Adremal wrote one line and one name, and under it: the lesser two are furniture.\n\nThere is no way to tell the three apart by looking, and when one is troubled all three come. But the lesser two are only held up by the one, and when the true Oro falls they fall with him like a chair with its legs kicked out. Nor are they the same under the skin: the furniture is hard to cut and easy to burn, while the true Oro, like the lords of the court, is cut by steel and soaks up sorcery. The Midgard riddle runs: three lords in a hall; two are chairs; strike the one that sits.\n\nEach of the three drinks the spirit of whatever stands close to it: a mage within arm's reach feels his strength for spells run out like water from a cracked jug, and stand off, it stops. It did not happen to everyone, and the warden who kept the Door-Book could not make his reports agree; the Inquisitors say it drinks only one who came of his own will. Oro's own dukes keep to the far side of his hall.\n\nSir Rhisiart of Caer Ulfwych let his mages plan it. They stood off beyond the thirst and threw fire at each of the three while the knights held them; two burned and one did not, and every blade went on that one. When the true Oro fell the furniture went down mid-stroke, and the lamp-bearer set his lamp beside one of the three.",
+  "legend": "High Lord Oro is three demons with the same name and look, and no tell. The real one takes as much killing as fifty raiders; four-tenths of every weapon stroke and seven-tenths of everything else are lost on him, and no charm or stun holds him. The two copies take as much killing as fifteen raiders each, but the copies turn nine-twentieths of every weapon stroke and their armour swallows half of what is left, while spells lose only seven-twentieths on them. Draw one and you get all three. Kill the real one and both copies die on the spot, so you never need to kill the copies. Find him the way Sir Rhisiart's mages did: throw a spell at each, and the one your spells barely scratch is the real Oro; put all melee on him and give the copies to other shield-bearers. Every half second each of the three drains a twentieth of all the mana of every raider within about a dozen paces, companions and the realm's adventurers too, so the casters must stay more than a dozen paces from all three (that is a tenth of your mana a second); companions are drained as well as you. Do not break off the fight.",
   "yells": {
     "aggro": [
       "We welcome you. All three of us.",
@@ -66,20 +71,20 @@
   },
   "botLines": {
     "briefing": [
-      "three oros, no tell. the real one has 100k, the clones 30k. kill the real one and the clones drop",
+      "three oros, no tell. the real one takes fifty raiders of killing, the copies fifteen each. kill the real one and the copies drop",
       "spell each one. the one your spells barely scratch is the real oro, melee him",
-      "clones take half from melee, off tank them",
-      "casters stay 350 away from all three, they drain 5% mana every half second. bots arent drained"
+      "copies shrug off half of every blade, give them to other shield-bearers",
+      "casters stay a dozen paces from all three, they drain a twentieth of your mana every half second. companions get drained too"
     ],
     "aftermathWin": [
       "all three oros down",
-      "clones first worked. as usual",
-      "real one dropped and the clones went down mid swing. nice",
+      "copies first worked. as usual",
+      "real one dropped and the copies went down mid swing. nice",
       "the mages found him first try"
     ],
     "aftermathLoss": [
       "we split on all three and nobody died",
-      "we burned 60k of clones for nothing",
+      "we burned thirty raiders' worth of copies for nothing",
       "i stood next to one and had no mana in ten seconds",
       "melee spent an hour on a clone"
     ],
@@ -94,7 +99,11 @@
     "keyword": "oro",
     "text": "The high lord of [Darkness Falls] who has been three since the Third Roll; the Chancellor calls the lesser two furniture. No eye can tell them apart, but the lesser two are hard to cut and easy to burn, and fall when the true one falls. Each drinks a caster's strength if he stands close. Strike the one that sits."
   },
-  "bookPage": "From Brother Odran's Door-Book, the account of the mages of Sir Rhisiart of Caer Ulfwych. There are three of him, and no man can tell them apart by looking. We stood a long way off, beyond the thirst that drinks a caster's strength, and threw fire at each of the three in turn while the knights held them. Two burned. One did not. We called it out and Sir Rhisiart put every blade on that one, and it took the night. When he fell, the other two stopped in the middle of their strokes and went down like chairs. A small demon with a green lamp set it by one of them.",
+  "bookPage": [
+    "There are three of him, and no man can tell them apart by looking, the mages of Sir Rhisiart of Caer Ulfwych wrote in their account in the Door-Book of the castle ruins. We stood a long way off, beyond the thirst that drinks a caster's strength, and threw fire at each of the three in turn while the knights held them. Two burned. One did not. We called it out and Sir Rhisiart put every blade on that one, and it took the night. When he fell, the other two stopped in the middle of their strokes and went down like chairs. A small demon with a green lamp set it by one of them.",
+    "Set down before the Inquisitors of the north in the Third Roll, the testimony of the lamp-bearer of High Lord Oro's hall, who has no name of his own and asks for none: I went before my lord into his hall with the green lamp, as I go every night. I turned to light his way. There were three of him. I knew him in every one of them, the set of the horns, the way he holds his left hand. I let the lamp fall. One of the three stooped and gave it back to me and said, in my lord's voice, walk on. I asked the Inquisitors which of them had given it. They wrote my question down and did not answer it. I walk before all three of them now. The lamp lights them alike.",
+    "In the king's hall at Jordheim, on the last night of a Yule, the men played at riddles, and a man of Gotar who had been down into the eastern halls of the hollow gave this one, and no one there could read it. Three lords in a hall, alike as three hailstones. Two of them are chairs. Strike the one that sits. The king's skald said that it was no riddle but a counsel. The man of Gotar said that it was both, and that he had paid for the answer with two men of his band, who struck at the wrong lord first and found him hard to cut and easy to burn, and stood too close while they learned it. He took the ring that was the prize, and gave it to the widow of one of the two. Nothing more is told of him."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} broke High Lord Oro's two other selves and then the high lord in {minutes} minutes.",
     "loss": "Three High Lords Oro held their hall against {realm}'s raid; {raidLeader} chose wrongly."
@@ -126,7 +135,7 @@
     },
     {
       "title": "The Thirst at His Elbow",
-      "text": "Each of the three drinks from whatever stands close to it, and what it drinks is not blood.\n\nThe casters of all three realms know Oro's hall as the hall where the spirit goes out of a man. A mage who comes within arm's reach of any of the three, the true one or the furniture, feels the strength for his spells leave him as water leaves a cracked jug, steadily, fast, in a few heartbeats; the priests say it is like praying into a wind that blows the words back down the throat. Stand off, and it stops. The court says it is the price Oro paid for cutting himself in three: each part is hungry for what the whole once had, and takes it from anything that comes near.\n\nThe Albion priests who went down with the first companies took a long time to believe it, because it did not happen to everyone. Brother Odran's Door-Book has a page on it, collected from three seasons of reports, and Odran could not make it come out. Some of those who stood close to the high lord felt nothing; others were emptied in a breath. He wrote that the thirst seemed to know whom it wanted, and that he did not care to guess on what grounds. The Inquisitors say the thirst drinks only the spirit of one who came of his own will. Odran wrote that down too, and then crossed it out, and then wrote it in again.\n\nThe servants of Oro's hall keep well clear of their master. Duke Sallis, who stands at his right hand on the Roll, stands at the far side of the hall in fact. Earl Mercur keeps his accounts at a table by the door. Marquis Sabonach, who is newest, once stood close to the high lord to whisper something, the imps say, and has never told anyone what it was, and has not stood close since."
+      "text": "Each of the three drinks from whatever stands close to it, and what it drinks is not blood.\n\nThe casters of all three realms know Oro's hall as the hall where the spirit goes out of a man. A mage who comes within arm's reach of any of the three, the true one or the furniture, feels the strength for his spells leave him as water leaves a cracked jug, steadily, fast, in a few heartbeats; the priests say it is like praying into a wind that blows the words back down the throat. Stand off, and it stops. The court says it is the price Oro paid for cutting himself in three: each part is hungry for what the whole once had, and takes it from anything that comes near.\n\nThe Albion priests who went down with the first companies took a long time to believe it, because it did not happen to everyone. The Door-Book has a page on it, collected from three seasons of reports, and the warden could not make it come out. Some of those who stood close to the high lord felt nothing; others were emptied in a breath. He wrote that the thirst seemed to know whom it wanted, and that he did not care to guess on what grounds. The Inquisitors say the thirst drinks only the spirit of one who came of his own will. He wrote that down too, and then crossed it out, and then wrote it in again.\n\nThe servants of Oro's hall keep well clear of their master. Duke Sallis, who stands at his right hand on the Roll, stands at the far side of the hall in fact. Earl Mercur keeps his accounts at a table by the door. Marquis Sabonach, who is newest, once stood close to the high lord to whisper something, the imps say, and has never told anyone what it was, and has not stood close since."
     },
     {
       "title": "The One That Sits",

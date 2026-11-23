@@ -43,7 +43,7 @@
     }
   ],
   "story": "The morvalt dead do not go to the mound. The mound at Trollheim's root is the Fathers', and the Nedat carried only the Fathers' dead down the stair, and when the morvalt came there was nobody left to carry anyone. The morvalt who die in Trollheim stay where they die, the Valkyn say, unless something calls them. Far in the north-west of the lower halls something does.\n\nThe shades there are old. The morvalt call them the ancient shadows, and the Valkyn say they are the dead of the first rush, the morvalt who died at the gates and in the upper city in the days the city fell, who found that the mound would not have them and wandered down through the lower halls looking for somewhere that would. They gathered in a hall far from the Rift and far from the mound, and they have been there since, and over them stands a shade that is older than they are, and that the morvalt name Sallours.\n\nNobody knows what Sallours was. The morvalt say it was a shaman of the first fires who died before the morvalt ever came to Aegir and came with them anyway. The trolls of Dyrfjall say it is not morvalt at all, but something of the Fathers' dead that the mound turned away, and that the ancient shadows gathered round it because it was the only thing in the lower halls that knew how to be dead. The Valkyn will not say what they think. They say Sallours does not come for the living, and that it watches them as the dead watch a road, and that the shadows around it do not share its patience.\n\nOttkel of Dyrfjall, the first cloak-walker, is said to have gone into that hall once, wearing his runed cloak, and to have walked out again untouched, and to have said afterwards that the old shade had asked him, without words, whether the mound was open again. He told it no. The Valkyn say Sallours is waiting for the Fathers to come home and carry the dead down properly, and that when they do, it will be first in line.",
-  "legend": "Sallours is a level 62 shade far in the north-west of Trollheim's lower halls, with fourteen ancient shades (morvalt fornskugga, 55) around it. Sallours itself is PASSIVE and has no faction; the fornskugga are aggressive and Morvalt Samhalle, so pulling one can bring others. Clear the shades in small pulls, then Sallours is a straightforward kill: no special abilities, not CC-immune, no quest. It's a long walk from anything else, out past the Rift side of the city. Go in with a puller who can single out one shade at a time, and rest between pulls: the shades hit hard for 55s and there's no rush.",
+  "legend": "Sallours is a shade, a foe for several bands of the realm's best together, far in the north-west of Trollheim's lower halls, with fourteen ancient shades (morvalt fornskugga, each a foe for the realm's best, a full band of them) around it. Sallours itself never strikes first and answers to no one; the fornskugga attack on sight and are of the Morvalt Samhalle, so drawing one can bring others. Clear the shades a few at a time, then Sallours is a straightforward kill: no special tricks, charms, trances and stuns hold it, no quest. It's a long walk from anything else, out past the Rift side of the city. Go in with a drawer who can single out one shade at a time, and rest between draws: the shades hit hard for their kind and there's no rush.",
   "yells": {
     "aggro": [
       "Is the mound open?",
@@ -81,19 +81,19 @@
   },
   "botLines": {
     "briefing": [
-      "sallours is passive, the 14 fornskugga round it are not",
-      "small pulls on the shades, they bring friends",
-      "62, no tricks",
+      "sallours is passive, the fourteen fornskugga round it are not",
+      "small draws on the shades, they bring friends",
+      "a several-bands fight, no tricks",
       "long walk, far northwest past the rift side"
     ],
     "aftermathWin": [
       "sallours down, shades cleared",
-      "slow pulls paid off",
+      "slow draws paid off",
       "easy at the end",
       "long way for that"
     ],
     "aftermathLoss": [
-      "pulled five shades at once",
+      "drew five shades at once",
       "they bring each other",
       "got lost on the way",
       "the shades hit harder than they look"
@@ -109,7 +109,7 @@
     "keyword": "Sallours",
     "text": "An old shade far in the lower halls, among the ancient shadows of the morvalt dead the [mound] would not take. It asked Ottkel the cloak-walker whether the mound was open again. See [Troll Fathers]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: kobolds bury their dead in small places, close, where they can be visited, and I have always been glad of it. In Trollheim I understood why. The Valkyn guide pointed down a long hall toward the north-west and said that the morvalt dead were down there, all the ones from the first days, waiting with an old shade for someone to carry them. I said: can't the morvalt carry them? She said they were never shown how, and the ones who knew are gone. She said it as if it were her own fault.",
+  "bookPage": "Kobolds bury their dead in small places, close, where they can be visited, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and I have always been glad of it. In Trollheim I understood why. The Valkyn guide pointed down a long hall toward the north-west and said that the morvalt dead were down there, all the ones from the first days, waiting with an old shade for someone to carry them. I said: can't the morvalt carry them? She said they were never shown how, and the ones who knew are gone. She said it as if it were her own fault.",
   "chronicle": {
     "win": "{raidLeader} of {realm} laid Sallours to rest in Trollheim's lower halls in {minutes} minutes.",
     "loss": "Sallours and the ancient shadows kept {raidLeader}'s party from {realm} after {minutes} minutes."

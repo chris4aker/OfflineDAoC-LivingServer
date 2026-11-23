@@ -19,7 +19,7 @@
     }
   ],
   "story": "Grunge is a boar the size of a cart who roots in the middle valley of Snowdonia, and the cooks of Snowdonia Fortress have been promising the garrison his hams for three winters running. The garrison has stopped believing them.\n\nHe was a boar of the ordinary kind once, the shepherds say, a sow's runt that would not stop eating, and the valley gave him everything he asked of it: acorns, roots, a shepherd's whole store of turnips, a shepherd. He grew, and kept growing, and his temper grew with him, and by the time he was large enough to notice he was not afraid of anything in the valley he had stopped being able to remember a time he had been. He wallows in a black pool of his own making in the middle of the valley, and the reek of it can be smelled from the road.\n\nThe cyclopes leave him alone. The scrags leave him alone. Shaman Saelonna, reading to the dead not far away, has never once looked up when he passes. The cooks keep a pot of salt ready by the fortress kitchen door, and say it is only a matter of time. The garrison says it is a matter of a great deal of time, and a better company than the last three.",
-  "legend": "Grunge, level 36 boar, very big, in the middle valley of Snowdonia. Alone, plain melee, no spells, aggressive. A group in the mid thirties kills him; he hits harder than a normal boar his level looks. Respawn ten minutes. The fortress cooks would like the hams, but there is no quest for them. Fight him away from the middle valley cyclopes.",
+  "legend": "Grunge, a boar and a foe for a hardened band of veterans, very big, in the middle valley of Snowdonia. Alone, plain melee, no spells, attacks on sight. A hardened band of veterans kills him; he hits harder than an ordinary boar of his strength looks. He returns ten minutes after he falls. The fortress cooks would like the hams, but there is no quest for them. Fight him away from the middle valley cyclopes.",
   "yells": {
     "aggro": [
       "The wallow is mine.",
@@ -43,8 +43,8 @@
   },
   "botLines": {
     "briefing": [
-      "grunge, 36 boar in the middle valley, alone, hits hard for his level",
-      "plain melee, mid thirties group kills grunge"
+      "grunge, boar in the middle valley, veteran band job, alone, hits hard for what he looks",
+      "plain melee, a band just hardened kills grunge"
     ],
     "aftermathWin": [
       "grunge down. somebody tell the fortress cooks",

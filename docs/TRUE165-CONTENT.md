@@ -40,6 +40,11 @@ A dry run of True 1.65's files against an empty world (so every row counts as mi
 templates, 1,533 items, the convoy route and 10 quests. Against 1.2's real reference world it will add fewer; that run
 hasn't been made, because the reference world isn't in this repository.
 
+Uthgard's period drop tables for the monsters the world already has but has no loot for are a separate tool,
+`uthgard_drops_content.py` ([UTHGARD-DROPS.md](UTHGARD-DROPS.md)), run inside `build_release_037.py --uthgard-drops`.
+It runs before this tool, so it never touches the monsters this tool adds. This tool's `drops` set still gives those
+monsters True 1.65's drops.
+
 ## To ship it (not done)
 
 The owner decided on 2026-11-14 that this content and the Prima corrections go into the next base-game world update,

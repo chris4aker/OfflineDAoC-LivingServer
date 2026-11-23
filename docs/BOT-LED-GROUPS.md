@@ -356,3 +356,29 @@ written but not spoken, with the parts behind them. Automated tests only (`UT_Bo
 doesn't wear); recruiting into bot-only parties; the "release, we'll wait" line and the far-side zone-line hold (B1's
 list). The recruit's journey, the ask in `/lfg` and the break need the owner's played check: one party losing its
 healer, one bag-full break, and listening for one pull call per pull.
+
+## One more on the way (1.2.1, #423)
+
+Issue #423: a bot party never took a new member once it set off, so its "lfm" was a last call while it formed. Real
+2003 groups picked people up on the way. Automated tests only (`UT_BotLedReplacementAndBreaks`, region "One more on the
+way"); **nothing has been played in game**.
+
+- **Who:** every coordinated PvE party, bot-only or hosting the player, that is choosing a camp, travelling or grinding,
+  with a seat free (`AutonomousPartyReplacement.OpenSeatWanted`). Not a raid's party, not RvR, not while meeting up (the
+  meetup recruits its own way), regrouping after a wipe or ending.
+- **When:** the first look 2 minutes after the party sets off (`OpenSeatFirstMs`), then 10 minutes after each search ends
+  (`OpenSeatEveryMs`), found or not. A search lasts the replacement's 5 minutes.
+- **Whom:** the role the party lacks, by the existing role rules: a healer when it has none, else a tank, else damage
+  (`OpenSeatRole`; the hosted player's role counts). The recruit is found and taken exactly as B4's replacement:
+  a free gamebot of the realm waiting for a group, of the role, within 5 levels (or both 50), at most 8 minutes away,
+  through the duty lease (`FindRecruit`, `TakeRecruit`). One member per search.
+- **A player:** while a search runs the leader's /lfg post says there is a seat (`RecruitingPost` returns a one-seat post
+  for the searched role), so "room?" gets "ya, 1 spot" and a player who asks (`/lfg`, a tell like "inv?") gets the invite
+  box by B1's rules (a party past its meetup could already invite the player; only the chat said "full").
+- **Chat:** the leader's /lfg ask once per search (`lead_lf_more`, else the corpus's `lfm`, under the channel budget);
+  "got someone coming, hang tight" in /group when a recruit accepts and the player is in the party. A search that finds
+  nobody ends quietly (no "no luck" line) and never holds or ends the party.
+- **A member leaving** during a look for one more: the replacement for that member takes over (B4's rules).
+- **Log:** `BOT_LED_RECRUIT outcome=searching kind=open_seat ...`, then `outcome=recruited kind=open_seat` or
+  `outcome=gave_up kind=open_seat reason=carry_on`. B4's lines now carry `kind=replacement`.
+- **No switch:** it is part of the existing party behaviour, as B4's replacement is.

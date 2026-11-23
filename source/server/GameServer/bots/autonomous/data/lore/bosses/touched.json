@@ -20,7 +20,7 @@
     }
   ],
   "story": "The hills of the dark fool are full of the touched, and the touched are named for the first of them. He has no other name any more. The Basar folk say he was a man of the realm who went up into the north-eastern hills before anyone knew what lived there, and came down, and stood in Basar's square laughing until the townsfolk led him back up the hill because they could not bear it. He has been there since, on the northernmost hill, and the touched who came after him walk the slopes below as if he were their chief.\n\nHe is the one the realm's young hear about first in Connacht, because every grandmother in Ardee uses him as a warning: do not go north of Basar after dark, or you will be like Touched. The children think it is a joke. The grandmothers do not laugh when they say it.",
-  "legend": "Touched (39) is on the northernmost Amadan hill in north-east Connacht (about 345k/424k), near the Voices of the Azure country to the west and Druim Ligen to the north. Amadan touched (29-35) around him are social. A group of high 30s handles him. Plain spawn, 80-second respawn. Amadan Dubh (42) is south of him; do not chain. Pull from the bottom of the hill, one at a time.",
+  "legend": "Touched, a foe for a hardened band of veterans, is on the northernmost Amadan hill in north-east Connacht (about 345k/424k), near the Voices of the Azure country to the west and Druim Ligen to the north. Amadan touched around him (a seasoned band's foes) come to his aid. A hardened band, newly blooded, handles him. Plain, no tricks; he returns eighty seconds after he falls. Amadan Dubh, a little stronger, is south of him; do not chain. Draw from the bottom of the hill, one at a time.",
   "yells": {
     "aggro": [
       "(he laughs, and does not stop)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "touched is 39 on the north amadan hill",
+      "touched is on the north amadan hill",
       "the touched around him are social, clear first"
     ],
     "aftermathWin": [
@@ -51,8 +51,8 @@
       "the laughing stopped. [creepy|finally]"
     ],
     "aftermathLoss": [
-      "pulled all the touched. [rip|lol]",
-      "chained the dubh. [oops|wipe]"
+      "drew all the touched. [rip|lol]",
+      "chained the dubh. [oops|all dead]"
     ],
     "rumour": [
       "[heard|someone said] touched was the first the dark fool got. the rest are named after him",

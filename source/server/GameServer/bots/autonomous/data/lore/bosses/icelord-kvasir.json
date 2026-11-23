@@ -36,7 +36,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
     {
-      "text": "In the original, cold damage healed him; the Offline DAoC build turns that off for bot raids.",
+      "text": "In the original, cold damage healed him; the Offline DAoC build turned that off for bot raids, and since 1.2 it is on again (no bot casts cold at him).",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },
@@ -51,12 +51,22 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
     {
-      "text": "The original cold-heal (cold damage healed him a fifth) is OFF in Living Server (EpicEncounterMechanics.AllowKvasirColdHeal). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a raider, bot or player, passes it, then removes itself; nothing else spawns.",
+      "text": "The original cold-heal (each cold hit heals him a fifth of his maximum health and does no damage) is ON since 1.2 (EpicEncounterMechanics.AllowKvasirColdHeal, server property epic_kvasir_cold_heal, default true); no bot casts cold at him (EpicEncounterTactics.ForbidsSpell). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a raider, bot or player, passes it, then removes itself; nothing else spawns.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
+    },
+    {
+      "text": "The book pages after the first (the skalds' song of the horn and the runemasters' book of the western tunnels) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server lore, epic book pages (issue #402)"
+    },
+    {
+      "text": "Sven of Jordheim is the skald who sings the song of the horn at the ale-bench, and once sang it to a jarl: Living Server writing (NPC pass).",
+      "provenance": "original",
+      "source": "Living Server; Sven, skald trainer of Jordheim, in tools/lore/npc_roster.json (Allakhazam's skald class page and the OpenDAoC database; era probable)"
     }
   ],
-  "story": "The icelords give their sons names from the old songs, and Kvasir's father chose the wisest: Kvasir, made by the gods and the vanir from their spittle as a token of peace, whose blood became the mead of poetry. The name did not take. Kvasir grew up loud and broad and quick to anger, and the Council called him a brute. The other icelords called him something more useful: the horn.\n\nWhen the morvalt first came over the crater rim it was Kvasir who saw them, and screamed. The scream went through the ice so that the whole citadel heard it, and the sculptors say every giant near him stood stock still for a long breath, held by it as a hound is held by its master's voice, until a blow or a shout broke the hold. Then they took up arms. Kula gave him the western tunnels after that, with two of the icetouch to stand beside him, and he has screamed at every stranger since. The ice rings a breath before he does, and it holds those near the one he is glaring at; those standing well away from that one hear it and are not held.\n\nIn the early years the frost loved him. Cold laid on Kvasir closed his wounds instead of opening them, the icelords said, and the runemasters of Jordheim who first met him in the tunnels came home saying ice was useless against the horn. It did not last. The winter after Midgard's first company reached the western tunnels the frost stopped mending him, and the seers say the glacier took its favour back to spend on holding the lid still. The old belief is still told at Dellingstad.\n\nWhen he dies a rumble runs through the whole glacier, a sound like every giant in Tuscaran on the move, and icicles fall from the ceilings. Nobody comes. The citadel has heard the horn's last note too many times now, the sculptors say, and the giants no longer answer it. Kvasir still promises that his kind will avenge him.",
+  "story": "The icelords give their sons names from the old songs, and Kvasir's father chose the wisest: Kvasir, made by the gods and the vanir from their spittle as a token of peace, whose blood became the mead of poetry. The name did not take. Kvasir grew up loud and broad and quick to anger, and the Council called him a brute. The other icelords called him something more useful: the horn.\n\nWhen the morvalt first came over the crater rim it was Kvasir who saw them, and screamed. The scream went through the ice so that the whole citadel heard it, and the sculptors say every giant near him stood stock still for a long breath, held by it as a hound is held by its master's voice, until a blow or a shout broke the hold. Then they took up arms. Kula gave him the western tunnels after that, with two of the icetouch to stand beside him, and he has screamed at every stranger since. The ice rings a breath before he does, and it holds those near the one he is glaring at; those standing well away from that one hear it and are not held.\n\nIn the early years the frost loved him. Cold laid on Kvasir closed his wounds instead of opening them, the icelords said, and the runemasters of Jordheim who first met him in the tunnels came home saying ice was useless against the horn. It did not last. The winter after Midgard's first company reached the western tunnels the frost stopped mending him, and the seers say the glacier took its favour back to spend on holding the lid still. The old belief is still told at Dellingstad, and it has outlived its correction: some seasons later the favour came back. Frost mends the horn again, a fifth of his whole strength at every touch, and Midgard's runemasters have learned once more to leave their ice at home.\n\nWhen he dies a rumble runs through the whole glacier, a sound like every giant in Tuscaran on the move, and icicles fall from the ceilings. Nobody comes. The citadel has heard the horn's last note too many times now, the sculptors say, and the giants no longer answer it. Kvasir still promises that his kind will avenge him.",
   "chapters": [
     {
       "title": "The Wisest Name",
@@ -68,14 +78,14 @@
     },
     {
       "title": "The Frost That Mended Him",
-      "text": "In the early years the frost loved the horn. That is how the icelords put it, and the sculptors do not argue. Cold laid on Kvasir closed his wounds instead of opening them; ice thrown at him slid into him the way water slides into snow, and he grew stronger for it. The seers said the glacier was fond of its horn and fed him.\n\nThe first runemasters of Jordheim who reached the western tunnels came home and said so. They had thrown their ice at him, because ice is what a runemaster of Jordheim throws, and he had laughed and thanked them by name for mending him. The skalds made a joke of it. For a generation Midgard's companies went up the crater road with their runemasters told to leave the frost at home.\n\nIt did not last. In the winter after Midgard's first company came through the western tunnels and down to the thrones, the frost stopped mending him. The companies of that season found their ice biting him like anyone else, and came home puzzled, and the old runemasters who had been laughed at for a generation went up the road to see for themselves and came back satisfied. The seers of Tuscaran say the glacier took its favour back. Something under the ice, they say, needs the cold more than the horn does now, and the glacier is spending all it has on holding the lid still.\n\nThe old belief is still told at Dellingstad's fires, and old runemasters still warn the young ones not to waste frost on Kvasir. The young ones do it anyway, and the companies who come home say that these days it is only a story about the way the glacier used to be."
+      "text": "In the early years the frost loved the horn. That is how the icelords put it, and the sculptors do not argue. Cold laid on Kvasir closed his wounds instead of opening them; ice thrown at him slid into him the way water slides into snow, and he grew stronger for it. The seers said the glacier was fond of its horn and fed him.\n\nThe first runemasters of Jordheim who reached the western tunnels came home and said so. They had thrown their ice at him, because ice is what a runemaster of Jordheim throws, and he had laughed and thanked them by name for mending him. The skalds made a joke of it. For a generation Midgard's companies went up the crater road with their runemasters told to leave the frost at home.\n\nIt did not last. In the winter after Midgard's first company came through the western tunnels and down to the thrones, the frost stopped mending him. The companies of that season found their ice biting him like anyone else, and came home puzzled, and the old runemasters who had been laughed at for a generation went up the road to see for themselves and came back satisfied. The seers of Tuscaran say the glacier took its favour back. Something under the ice, they say, needs the cold more than the horn does now, and the glacier is spending all it has on holding the lid still.\n\nThe old belief is still told at Dellingstad's fires, and old runemasters still warn the young ones not to waste frost on Kvasir. The young ones do it anyway, and the companies who come home say that these days it is only a story about the way the glacier used to be.\n\nThey do not say it now. Some seasons later the companies began to come home with the old complaint: their frost slid into the horn and closed his wounds, a fifth of his strength at a stroke, and he laughed and thanked the runemasters by name, as he had in the first years. The seers say whatever lies under the ice has had its fill of the cold, or has stopped needing it, and the glacier has given its horn his favour back. The old runemasters went up the crater road to see, and came back saying nothing, which the young ones took for an apology. Midgard's companies leave the frost at home again."
     },
     {
       "title": "The Last Note",
       "text": "Kvasir has been killed many times since the thrones were first reached, and every time he dies the same way. He mocks his killers first, and asks whether they would not rather have chosen a safer road; then he screams one last time; and then a rumble runs through the whole glacier, a low sound that grows and grows like every giant in Tuscaran on the move at once. Icicles break off the ceilings and shatter. Small cracks open in the tunnel walls.\n\nThe Valkyn scout who lay in a crack in Delling's rim heard it the first time, from outside, and thought the crater was falling in. The company inside, a warband of Jordheim, waited a whole night in the western tunnels with their backs to the wall, because they were sure the citadel was coming for them. Nothing came. They walked out the next evening, puzzled and alive, and told the scout so.\n\nNothing has come since. The sculptors at Dellingstad's fires say the citadel has heard the horn's last note too often to answer it. The first time, every giant in the glacier took up arms; the tenth, they looked up from their work; now the rumble goes through the ice and the splitters go on splitting and the rooks go on carrying, and only the icicles fall. The horn does not know. He dies promising that his kind will avenge him, that the strangers will not make it out alive, and the ice carries his promise to every hall, and every hall lets it pass.\n\nThe skalds of Jordheim made a song of it, which they sing at the expense of anyone who shouts too much: the horn of Tuscaran, whom the whole glacier hears and nobody answers. Suttung, the sculptors say, laughed at the song the only time he heard it."
     }
   ],
-  "legend": "Kvasir, the horn. 100,000 health, CC-immune, and his two icetouch join the moment he's touched. His big move is the scream: every 45 to 60 seconds you get the scream message, and two seconds later everyone within 800 of his TARGET is mesmerized for up to a minute. So spread the raid well away from the tank, keep the healers out past 800, and have cure-mez or purge ready for anyone caught. Damage breaks mez, so don't let the add AoE wake people at the wrong moment. Now and then he also roots everyone within 1,000 of his target. The old raiders swore frost healed him and fought him with fire only; in Living Server that is switched off, and cold hits him like anything else. When he dies the whole glacier rumbles like an army on the move. It's only noise: nothing comes. Don't drag him off his spot.",
+  "legend": "Kvasir, the horn. He takes as much killing as fifty raiders, no charm or stun holds him, he is a foe for a war party of the realm's champions, and his two icetouch join the moment he's touched. His big move is the scream: every 45 to 60 seconds you get the scream message, and two seconds later everyone within about twenty-five paces of his TARGET is put into a trance for up to a minute. So spread the raid well away from his shield-bearer, keep the healers out past twenty-five paces, and have a trance cure or a purge ready for anyone caught. A blow breaks the trance, so don't let a blast meant for his icetouch wake people at the wrong moment. Now and then he also pins to the ground everyone within about thirty-five paces of his target. The old raiders swore frost healed him and fought him with fire only, and the tale at Dellingstad says the glacier took that favour back; whatever it took, it has given again. Cold does him no harm at all now: every touch of it gives him back a fifth of his whole strength, so leave the frost at home and fight him with anything else. When he dies the whole glacier rumbles like an army on the move. It's only noise: nothing comes. Don't drag him off his spot.",
   "yells": {
     "aggro": [
       "Do you not wish you had chosen a safer road today?",
@@ -126,47 +136,51 @@
   },
   "botLines": {
     "briefing": [
-      "kvasir screams, then mezzes everyone within 800 of the tank. [spread|stagger in]",
+      "kvasir screams, then entrances everyone within twenty-five paces of his shield-bearer. [spread|stagger in]",
       "when kvasir dies the glacier rumbles. [its only noise|dont panic, nothing comes]",
       "kvasir's two icetouch come with him",
       "when kvasir dies theres a big rumble. its only noise, nothing comes. dont panic",
-      "kvasir mezzes everyone within 800 of the tank every 45-60s. spread, heals out past 800",
-      "cure mez ready on kvasir, dont aoe near the mezzed",
-      "cold does hurt kvasir here, the cold heal is off",
+      "kvasir entrances everyone near his shield-bearer every 45-60 sec. spread, healers out past twenty-five paces",
+      "trance cures ready on kvasir, dont blast near the entranced",
+      "no frost on kvasir, cold heals him a fifth every time",
       "kvasir's death rumble is just noise. nothing comes"
     ],
     "aftermathWin": [
       "kvasir down. hear that rumble? [just noise|its only the ice]",
-      "the horn is broken. [gg|nice]",
+      "the horn is broken. [well fought|nice]",
       "kvasir down and nothing came after the rumble. [told you|its just noise]",
       "the glacier rumbled when he died. [goosebumps|awesome]",
       "rumble rumble. nothing came. [told you|lol]",
       "the horn is silent",
-      "runemasters threw ice all fight and it worked"
+      "runemasters kept their ice at home all fight and it worked"
     ],
     "aftermathLoss": [
-      "kvasir's mez caught both healer groups. [rip|gg]",
-      "panicked at the rumble after kvasir and pulled the next room",
-      "his scream mezzed the healers and that was it",
-      "half the melee were within 800 of the tank when the mez hit",
-      "healers stood within 800 of the tank and got mezzed",
-      "someone aoed the mezzed group awake at the wrong time"
+      "kvasir's trance caught both healer groups. [rip|that was that]",
+      "panicked at the rumble after kvasir and drew the next room",
+      "his scream entranced the healers and that was it",
+      "half the melee were right by the shield-bearer when the trance hit",
+      "healers stood too near the shield-bearer and got entranced",
+      "someone blasted the entranced group awake at the wrong time"
     ],
     "rumour": [
       "the old songs had a wise man called kvasir. the icelord is not that",
       "kvasir's father named him after the wisest being in the old songs. it didnt take",
-      "[old raiders say|some say] frost used to heal kvasir. dunno if its true anymore",
+      "[old raiders say|some say] frost stopped healing kvasir once. it heals him now",
       "when kvasir died last time the whole of dellingstad heard it, they say",
-      "in the old days frost healed kvasir. not any more",
+      "frost healed kvasir in the old days and it does again",
       "the giants dont come when kvasir dies any more. heard it too often",
       "the icelords call kvasir the horn"
     ]
   },
   "loremasterTopic": {
     "keyword": "Kvasir",
-    "text": "Named for the wisest being of the old songs, and wise in nothing. He is the glacier's horn: when he screams, those near the one he glares at stand held. Once the frost mended him; it stopped the winter after Midgard first reached the thrones. When he dies the ice rumbles through every hall, and nobody answers it any more. His brother icelord is [Agmundr]."
+    "text": "Named for the wisest being of the old songs, and wise in nothing. He is the glacier's horn: when he screams, those near the one he glares at stand held. Once the frost mended him; it stopped the winter after Midgard first reached the thrones, and some seasons later the favour came back, so frost mends him again. When he dies the ice rumbles through every hall, and nobody answers it any more. His brother icelord is [Agmundr]."
   },
-  "bookPage": "From the scout's tally kept at Delling's rim. I was asleep in my crack when the sound came: a scream from inside the ice, very far off, and then the whole crater shook like a drum. Rocks fell from the rim. In the morning a Valkyn came by and told me a warband of Jordheim had killed the icelord they call Kvasir, the horn, and that the scream was his last and the shaking was the glacier passing it on. He said the warband had waited all night in the tunnels with their backs to the wall, for every giant in the place to come looking for them, and that none had. I asked why. He said perhaps the giants had heard that horn before.",
+  "bookPage": "I was asleep in my crack when the sound came, says the scout's tally kept at Delling's rim: a scream from inside the ice, very far off, and then the whole crater shook like a drum. Rocks fell from the rim. In the morning a Valkyn came by and told me a warband of Jordheim had killed the icelord they call Kvasir, the horn, and that the scream was his last and the shaking was the glacier passing it on. He said the warband had waited all night in the tunnels with their backs to the wall, for every giant in the place to come looking for them, and that none had. I asked why. He said perhaps the giants had heard that horn before.",
+  "bookPages": [
+    "The song of the horn, as Sven of Jordheim sings it at the expense of anyone who shouts too much at the ale-bench. It is short, and that is the point of it.\n\nOne horn in the ice, and the ice rings with it;\nthe glacier listens, the glacier lets it pass.\nHe calls his kin up, and his kin keep cutting;\nthe icicles answer him, and nothing else.\n\nHe sings it to a man who has told the same tale three times, and the man is meant to laugh. He sang it once to a jarl, and the jarl laughed, and gave him a ring for it, and told the tale a fourth time. The cast-out sculptors at Dellingstad heard it from a trader and told the trader that the elder Suttung laughed at it the only time he heard it, which the sculptors said they had never once seen him do at anything that was not cruel.",
+    "From the book of the western tunnels kept by the runemasters of Jordheim, in the hand of the oldest of them. In my first season on the crater road we were told to leave the frost at home, because the horn drank it like a calf at the teat and grew. The winter after our first company reached the thrones the frost stopped mending him, and we took it up the road again and were glad of it. In this last season it mends him again. I went up to see. A young runemaster threw ice at him because I had told her she might, and he laughed and thanked her by name, as he thanked me in my first season, and he was a fifth whole again where she struck. I have told the young ones to leave the frost at home. They looked at me as if I had apologised. I suppose I had."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} silenced Icelord Kvasir in {minutes} minutes, and the glacier shook.",
     "loss": "Icelord Kvasir's scream scattered {raidLeader}'s raid from {realm} after {minutes} minutes."

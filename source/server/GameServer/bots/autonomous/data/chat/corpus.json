@@ -431930,9 +431930,9 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "the old guides said the marsh ran right up to the edges of avalon city. i walked every inch of it and never saw a wall",
+   "text": "the old raiders said the marsh ran right up to the edges of avalon city. i walked every inch of it and never saw a wall",
    "about": true,
-   "id": "9150e3706dc7"
+   "id": "837b1eee50c3"
   },
   {
    "kind": "ambient",
@@ -527852,8 +527852,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "some people think rare drops come right after a server reset. i think they just remember the good nights",
-   "id": "02f828e979d6"
+   "text": "some people think rare drops come right after a storm. i think they just remember the good nights",
+   "id": "f169ff0aa1c8"
   },
   {
    "kind": "ambient",
@@ -529400,8 +529400,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "i remember a gm night where the whole town turned out for a poetry contest. weirdest evening in years",
-   "id": "2c49ce7ba22a"
+   "text": "i remember a herald's night where the whole town turned out for a poetry contest. weirdest evening in years",
+   "id": "efebfaef2815"
   },
   {
    "kind": "ambient",
@@ -529420,8 +529420,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "heard a gm once held a funeral for a player right out in the frontier. i like to think nobody attacked",
-   "id": "094c1fb60d74"
+   "text": "heard a herald once held a funeral for a fallen friend right out in the frontier. i like to think nobody attacked",
+   "id": "5f68974b1afb"
   },
   {
    "kind": "ambient",
@@ -529440,8 +529440,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "every realm has a legend about one player who held a bridge alone. i believe all of them",
-   "id": "3a3c8b904307"
+   "text": "every realm has a legend about one soldier who held a bridge alone. i believe all of them",
+   "id": "bbf1590cd9eb"
   },
   {
    "kind": "ambient",
@@ -529646,8 +529646,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "i swear i once saw a gm stroll through a town in a funny hat. nobody believes me",
-   "id": "1f9b296e6da0"
+   "text": "i swear i once saw the king's herald stroll through a town in a funny hat. nobody believes me",
+   "id": "70e0b8ce916b"
   },
   {
    "kind": "ambient",
@@ -529666,9 +529666,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "rumour is a gm sometimes rides the roads in disguise. be polite to strangers, just in case",
-   "family": "d0051cc816",
-   "id": "0c75431367d7"
+   "text": "rumour is a herald sometimes rides the roads in disguise. be polite to strangers, just in case",
+   "family": "cc98124698",
+   "id": "24a87497b21d"
   },
   {
    "kind": "ambient",
@@ -529687,9 +529687,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "rumour is a gm sometimes rides the roads disguised as a nobody. be polite to strangers, just in case",
-   "family": "d0051cc816",
-   "id": "e9c1afa4942e"
+   "text": "rumour is a herald sometimes rides the roads disguised as a nobody. be polite to strangers, just in case",
+   "family": "cc98124698",
+   "id": "e10a37b0ffe5"
   },
   {
    "kind": "ambient",
@@ -529708,9 +529708,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "they say a gm sometimes rides the roads in disguise. be polite to strangers, just in case",
-   "family": "d0051cc816",
-   "id": "9d36256684e5"
+   "text": "they say a herald sometimes rides the roads in disguise. be polite to strangers, just in case",
+   "family": "cc98124698",
+   "id": "e57ef5144cc2"
   },
   {
    "kind": "ambient",
@@ -529729,9 +529729,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "they say a gm sometimes rides the roads disguised as a nobody. be polite to strangers, just in case",
-   "family": "d0051cc816",
-   "id": "ea6bb50f17a4"
+   "text": "they say a herald sometimes rides the roads disguised as a nobody. be polite to strangers, just in case",
+   "family": "cc98124698",
+   "id": "e1d802867915"
   },
   {
    "kind": "ambient",
@@ -529852,8 +529852,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "the devs promised more relics years ago. still six on the pedestals",
-   "id": "e79ea3522e0a"
+   "text": "the heralds promised more relics years ago. still six on the pedestals",
+   "id": "e4fa83050142"
   },
   {
    "kind": "ambient",
@@ -529954,8 +529954,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "every patch someone swears new relics are coming. every patch, nothing",
-   "id": "58fe9f7c0301"
+   "text": "every season someone swears new relics are coming. every season, nothing",
+   "id": "bca6774ffe2e"
   },
   {
    "kind": "ambient",
@@ -530086,8 +530086,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "the oldest lesson in the game: if it has a name, it has a grudge",
-   "id": "72d38f3223c5"
+   "text": "the oldest lesson in the realms: if it has a name, it has a grudge",
+   "id": "5c2026ea94c9"
   },
   {
    "kind": "ambient",
@@ -722388,19 +722388,19 @@
     },
     {
      "role": "B",
-     "text": "then why did the old guides say avalon marsh runs right to the edges of avalon city. edges. you dont have edges across a sea",
+     "text": "then why did the old raiders say avalon marsh runs right to the edges of avalon city. edges. you dont have edges across a sea",
      "variants": [
-      "then why did the old guides say avalon marsh runs right to the edges of avalon city. edges. you dont have edges across a sea",
-      "the first guides said the marsh ran to the edges of avalon city. a city on another island has no edges in our marsh"
+      "then why did the old raiders say avalon marsh runs right to the edges of avalon city. edges. you dont have edges across a sea",
+      "the first raiders said the marsh ran to the edges of avalon city. a city on another island has no edges in our marsh"
      ],
      "optional": false
     },
     {
      "role": "E",
-     "text": "the old guides also said the merchants were honest",
+     "text": "the old raiders also said the merchants were honest",
      "variants": [
-      "the old guides also said the merchants were honest",
-      "the old guides also said my class was fun to solo"
+      "the old raiders also said the merchants were honest",
+      "the old raiders also said my class was fun to solo"
      ],
      "optional": false
     },
@@ -722992,10 +722992,10 @@
     },
     {
      "role": "B",
-     "text": "or a short fuse. they even lengthened the lightning timer in a patch. nobody makes a sacred ward easier",
+     "text": "or a short fuse. the lightning even got slower one season. nobody makes a sacred ward easier",
      "variants": [
-      "or a short fuse. they even lengthened the lightning timer in a patch. nobody makes a sacred ward easier",
-      "the timer got longer in a patch because raids kept wiping. thats tuning, not a sacred seal"
+      "or a short fuse. the lightning even got slower one season. nobody makes a sacred ward easier",
+      "the timer got longer one season because raids kept wiping. thats tuning, not a sacred seal"
      ],
      "optional": false
     },
@@ -723360,9 +723360,9 @@
     },
     {
      "role": "B",
-     "text": "two breaths. a patch put a heat debuff on her breath so the next one hurts more, i think. a later patch softened one of them",
+     "text": "two breaths. the first leaves a heat debuff on you so the next one hurts more, i think. one of them got softer a while back",
      "variants": [
-      "two breaths. a patch put a heat debuff on her breath so the next one hurts more, i think. a later patch softened one of them",
+      "two breaths. the first leaves a heat debuff on you so the next one hurts more, i think. one of them got softer a while back",
       "she breathes twice and the first strips your heat resist, as i understand it. one breath got toned down later, still hurts"
      ],
      "optional": false
@@ -724283,10 +724283,10 @@
     },
     {
      "role": "C",
-     "text": "he cons purple to every one of us. a patch made him as tough as midgard's glacier giant. that's not a dare, it's a warning",
+     "text": "he cons purple to every one of us. one season he turned as tough as midgard's glacier giant. that's not a dare, it's a warning",
      "variants": [
-      "he cons purple to every one of us. a patch made him as tough as midgard's glacier giant. that's not a dare, it's a warning",
-      "they toughened him in a patch to glacier giant strength. he's not a dare, he's a wall"
+      "he cons purple to every one of us. one season he turned as tough as midgard's glacier giant. that's not a dare, it's a warning",
+      "he toughened one season to glacier giant strength. he's not a dare, he's a wall"
      ],
      "optional": false
     },
@@ -727851,9 +727851,9 @@
     },
     {
      "role": "B",
-     "text": "nuts is a drop. and the loot on myrddraxis was changed in the autumn patch, so the old stories may be out of date",
+     "text": "nuts is a drop. and the loot on myrddraxis changed last autumn, so the old stories may be out of date",
      "variants": [
-      "nuts is a drop. and the loot on myrddraxis was changed in the autumn patch, so the old stories may be out of date",
+      "nuts is a drop. and the loot on myrddraxis changed last autumn, so the old stories may be out of date",
       "everyone laughs about the nuts, but the myrddraxis loot was redone last autumn. the scale may be new"
      ],
      "optional": false
@@ -731302,7 +731302,7 @@
      "text": "i've watched valkyn guards in gripklosa and munin sound die at their posts against morvalt raiders. never seen one leave a gate open",
      "variants": [
       "i've watched valkyn guards in gripklosa and munin sound die at their posts against morvalt raiders. never seen one leave a gate open",
-      "valkyn guards hold the line on aegir. they die where they're posted. more than some players do"
+      "valkyn guards hold the line on aegir. they die where they're posted. more than some of us do"
      ],
      "optional": false
     },
@@ -731654,9 +731654,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing",
+     "text": "{q} what's the oldest thing in midgard? not the oldest of us, the oldest thing",
      "variants": [
-      "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing",
+      "{q} what's the oldest thing in midgard? not the oldest of us, the oldest thing",
       "{q} tavern argument: who or what was in midgard first?"
      ],
      "optional": false
@@ -733379,9 +733379,9 @@
     },
     {
      "role": "D",
-     "text": "so he's like a bin for players legion is done with",
+     "text": "so he's like a bin for the dead legion is done with",
      "variants": [
-      "so he's like a bin for players legion is done with",
+      "so he's like a bin for the dead legion is done with",
       "so legion throws you away and behemoth is the bin"
      ],
      "optional": false
@@ -733409,7 +733409,7 @@
      "text": "so maybe none of us can kill him because none of us made him",
      "variants": [
       "so maybe none of us can kill him because none of us made him",
-      "which would mean the game is telling us straight: this one is not for you"
+      "which would mean the world is telling us straight: this one is not for you"
      ],
      "optional": false
     },
@@ -733740,7 +733740,7 @@
      "text": "at least whoever it is treats all three realms fairly. thats more than the frontier does",
      "variants": [
       "at least whoever it is treats all three realms fairly. thats more than the frontier does",
-      "the third power is the only fair player in this war"
+      "the third power is the only fair hand in this war"
      ],
      "optional": false
     },
@@ -733819,9 +733819,9 @@
     },
     {
      "role": "B",
-     "text": "they all came the same winter, the first winter of the war. one patch, three dragons. none of them is older",
+     "text": "they all came the same winter, the first winter of the war. one season, three dragons. none of them is older",
      "variants": [
-      "they all came the same winter, the first winter of the war. one patch, three dragons. none of them is older",
+      "they all came the same winter, the first winter of the war. one season, three dragons. none of them is older",
       "same winter, same week. the three of them turned up together. old is a funny word for that"
      ],
      "optional": false
@@ -733970,7 +733970,7 @@
      "text": "you're all arguing about stories. stone, wolf, light. which one breathes hardest, thats what i care about",
      "variants": [
       "you're all arguing about stories. stone, wolf, light. which one breathes hardest, thats what i care about",
-      "lovely tales. i care which one has the worst breath, and that changes every patch"
+      "lovely tales. i care which one has the worst breath, and that changes every season"
      ],
      "optional": false
     },
@@ -733985,10 +733985,10 @@
     },
     {
      "role": "B",
-     "text": "there you go. even the dragons get patched. nothing is old in this world",
+     "text": "there you go. even the dragons change. nothing is old in this world",
      "variants": [
-      "there you go. even the dragons get patched. nothing is old in this world",
-      "see, they patch dragons. you dont patch something ten thousand years old"
+      "there you go. even the dragons change. nothing is old in this world",
+      "see, the dragons change. you dont change something ten thousand years old"
      ],
      "optional": false
     },
@@ -734365,9 +734365,9 @@
     },
     {
      "role": "C",
-     "text": "purple means the game stopped counting. it's the same colour for a duke in df and for behemoth",
+     "text": "purple means the con stopped counting. it's the same colour for a duke in df and for behemoth",
      "variants": [
-      "purple means the game stopped counting. it's the same colour for a duke in df and for behemoth",
+      "purple means the con stopped counting. it's the same colour for a duke in df and for behemoth",
       "after purple there's nothing. a duke in df and behemoth con the same, and one is twenty four levels higher"
      ],
      "optional": false
@@ -734521,10 +734521,10 @@
     },
     {
      "role": "D",
-     "text": "they drop respec stones. fifty a kill, every dragon, since the winter patch. thats what the raids are really for",
+     "text": "they drop respec stones. fifty a kill, every dragon, since last winter. thats what the raids are really for",
      "variants": [
-      "they drop respec stones. fifty a kill, every dragon, since the winter patch. thats what the raids are really for",
-      "since the winter patch every dragon leaves fifty luminescent respec stones. thats why the raids fill up now"
+      "they drop respec stones. fifty a kill, every dragon, since last winter. thats what the raids are really for",
+      "since last winter every dragon leaves fifty luminescent respec stones. thats why the raids fill up now"
      ],
      "optional": false
     },
@@ -734560,7 +734560,7 @@
      "text": "tell that to the people who made a mess of their spec at forty-five. they'd wait a week",
      "variants": [
       "tell that to the people who made a mess of their spec at forty-five. they'd wait a week",
-      "wait until a patch changes your class and your spec is worthless. you'll be in line for the dragon too"
+      "wait until the trainers change how your class works and your spec is worthless. you'll be in line for the dragon too"
      ],
      "optional": false
     },
@@ -734618,7 +734618,7 @@
      "text": "the breath. each one has two, and they lowered one of each a while back. still wipes half a raid if you stand wrong",
      "variants": [
       "the breath. each one has two, and they lowered one of each a while back. still wipes half a raid if you stand wrong",
-      "two breaths each. they softened one of them in a patch, the other still melts anyone outside the healers' reach"
+      "two breaths each. one of them softened a while back, the other still melts anyone outside the healers' reach"
      ],
      "optional": false
     },
@@ -734776,10 +734776,10 @@
     },
     {
      "role": "C",
-     "text": "those came with a patch. the heralds called them long forgotten islands. forgotten isnt hidden, its added",
+     "text": "those came all at once one season. the heralds called them long forgotten islands. forgotten isnt hidden, its added",
      "variants": [
-      "those came with a patch. the heralds called them long forgotten islands. forgotten isnt hidden, its added",
-      "a patch put them there. the herald said long forgotten. thats a polite word for new"
+      "those came all at once one season. the heralds called them long forgotten islands. forgotten isnt hidden, its added",
+      "one season they were just there. the herald said long forgotten. thats a polite word for new"
      ],
      "optional": false
     },
@@ -734977,10 +734977,10 @@
     },
     {
      "role": "B",
-     "text": "the patch that brought relics said more would come. that was before the first keep fell. still six",
+     "text": "the heralds who brought word of the relics said more would come. that was before the first keep fell. still six",
      "variants": [
-      "the patch that brought relics said more would come. that was before the first keep fell. still six",
-      "when relics came in, the notes said there'd be more in time. years later, six. two each"
+      "the heralds who brought word of the relics said more would come. that was before the first keep fell. still six",
+      "when relics came in, the heralds said there'd be more in time. years later, six. two each"
      ],
      "optional": false
     },
@@ -735094,9 +735094,9 @@
     },
     {
      "role": "B",
-     "text": "or the patch got busy and they made islands instead",
+     "text": "or whoever shapes the world got busy and made islands instead",
      "variants": [
-      "or the patch got busy and they made islands instead",
+      "or whoever shapes the world got busy and made islands instead",
       "or the plan changed. we got islands and dragons instead of relics"
      ],
      "optional": false
@@ -735268,10 +735268,10 @@
     },
     {
      "role": "C",
-     "text": "they came with a patch. a patch is not a hidden door, its a builder with a hammer",
+     "text": "they came all at once one season. a new season is not a hidden door, its a builder with a hammer",
      "variants": [
-      "they came with a patch. a patch is not a hidden door, its a builder with a hammer",
-      "patches add things. that isnt discovery, thats a delivery"
+      "they came all at once one season. a new season is not a hidden door, its a builder with a hammer",
+      "each new season adds things. that isnt discovery, thats a delivery"
      ],
      "optional": false
     },
@@ -735295,10 +735295,10 @@
     },
     {
      "role": "C",
-     "text": "and every one of those came with patch notes. hidden things dont come with patch notes",
+     "text": "and every one of those came with a herald crying it. hidden things dont come with heralds",
      "variants": [
-      "and every one of those came with patch notes. hidden things dont come with patch notes",
-      "right, and every one came with a herald post. nobody stumbled into anything"
+      "and every one of those came with a herald crying it. hidden things dont come with heralds",
+      "right, and every one came with a herald's cry. nobody stumbled into anything"
      ],
      "optional": false
     },
@@ -735748,9 +735748,9 @@
     },
     {
      "role": "D",
-     "text": "and when its ours its the best xp in the game. demons all the way down, every level from the twenties to fifty",
+     "text": "and when its ours its the best xp in the realms. demons all the way down, every level from the twenties to fifty",
      "variants": [
-      "and when its ours its the best xp in the game. demons all the way down, every level from the twenties to fifty",
+      "and when its ours its the best xp in the realms. demons all the way down, every level from the twenties to fifty",
       "as a leveler i love it when its ours. the levels go from about twenty to the dukes, all in one place"
      ],
      "optional": false
@@ -735802,9 +735802,9 @@
     },
     {
      "role": "B",
-     "text": "the imps have the best deal in the game. they win whichever realm holds the door",
+     "text": "the imps have the best deal in the hollow. they win whichever realm holds the door",
      "variants": [
-      "the imps have the best deal in the game. they win whichever realm holds the door",
+      "the imps have the best deal in the hollow. they win whichever realm holds the door",
       "the only people who never lose in df are the imps"
      ],
      "optional": false
@@ -735958,10 +735958,10 @@
     },
     {
      "role": "C",
-     "text": "the maps were wrong. half the first guides were written from beta notes and wishful thinking",
+     "text": "the maps were wrong. half the first maps were drawn from rumour and wishful thinking",
      "variants": [
-      "the maps were wrong. half the first guides were written from beta notes and wishful thinking",
-      "the mapmakers guessed. a lot of the first guides came from people who'd never left town"
+      "the maps were wrong. half the first maps were drawn from rumour and wishful thinking",
+      "the mapmakers guessed. a lot of the first maps came from people who'd never left town"
      ],
      "optional": false
     },
@@ -735979,7 +735979,7 @@
      "text": "every realm has one. the first albion guides had their marsh running right to the edges of a city of mages nobody could find",
      "variants": [
       "every realm has one. the first albion guides had their marsh running right to the edges of a city of mages nobody could find",
-      "in albion the first guides said their marsh ran to the edges of a lost city. edges. you dont have edges on something that isnt there"
+      "in albion the first raiders said their marsh ran to the edges of a lost city. edges. you dont have edges on something that isnt there"
      ],
      "optional": false
     },
@@ -736003,10 +736003,10 @@
     },
     {
      "role": "C",
-     "text": "and every one of those came true later, with a patch. the map was a promise, not a secret",
+     "text": "and every one of those came true later, one season at a time. the map was a promise, not a secret",
      "variants": [
-      "and every one of those came true later, with a patch. the map was a promise, not a secret",
-      "and every one of those turned up with a patch. thats not a hidden world, thats a map of next year"
+      "and every one of those came true later, one season at a time. the map was a promise, not a secret",
+      "and every one of those turned up a season later. thats not a hidden world, thats a map of next year"
      ],
      "optional": false
     },
@@ -736541,7 +736541,7 @@
      "text": "when relics first went on the pedestals, the word from on high was that more would come. that was the first autumn of the war",
      "variants": [
       "when relics first went on the pedestals, the word from on high was that more would come. that was the first autumn of the war",
-      "right at the start, when the six relics were set up, the devs wrote that more were coming. they never did"
+      "right at the start, when the six relics were set up, the heralds cried that more were coming. they never did"
      ],
      "optional": false
     },
@@ -759739,9 +759739,9 @@
     },
     {
      "role": "B",
-     "text": "dame ysolde of caer gothwaite took eighty up there. seventy one came home. first time anyone brought him down",
+     "text": "dame ysolde of caer gothwaite took eighty up there. sixty seven came home. first time anyone brought him down",
      "variants": [
-      "dame ysolde of caer gothwaite took eighty up there. seventy one came home. first time anyone brought him down"
+      "dame ysolde of caer gothwaite took eighty up there. sixty seven came home. first time anyone brought him down"
      ],
      "optional": false
     },
@@ -769206,9 +769206,9 @@
     },
     {
      "role": "C",
-     "text": "the fomorians left her twice the catch they left balere, fiachra of howth wrote",
+     "text": "the fomorians left her twice the catch they left balere, flann of howth wrote",
      "variants": [
-      "the fomorians left her twice the catch they left balere, fiachra of howth wrote",
+      "the fomorians left her twice the catch they left balere, flann of howth wrote",
       "i will never fish that shore again"
      ],
      "optional": false

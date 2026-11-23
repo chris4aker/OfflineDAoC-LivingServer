@@ -1,0 +1,35 @@
+{
+ "id": "minor-thin",
+ "name": "M",
+ "realm": "Midgard",
+ "tier": "MINOR",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "facts": [
+  {
+   "text": "a fact",
+   "provenance": "original"
+  }
+ ],
+ "yells": {
+  "aggro": [
+   "a"
+  ],
+  "death": [],
+  "slay": []
+ },
+ "atmosphere": {},
+ "botLines": {
+  "briefing": [
+   "x"
+  ],
+  "aftermathWin": [
+   "x",
+   "x"
+  ],
+  "rumour": []
+ },
+ "chronicle": {
+  "loss": "l"
+ }
+}

@@ -20,7 +20,7 @@
     }
   ],
   "story": "Morven was a Fomorian lord of the hills before there were keeps on them, the Breifine keeners say, one of the few of his people who did not go west after Mag Tuired. He stayed in the eastern hills with his household and kept them by the old law of the land, the law of the stronger, and the hill-chieftains of Caimheul's day paid him a tribute of cattle to leave their valleys alone.\n\nWhen the realm built its keeps on the frontier, Morven did not leave. His house still stands on the eastern edge of Breifine, and he is in it, enormous and old, and he has named three heirs to his claim on the hills: Ronat east of Dun Lamfhota, Uileog in Cruachan's floor, and Raemon at the cyclops ruin. Cathbad of Howth says the claim will only die when the line does, and sends the realm's young after all three. Morven himself, the keeners say, sits in his house and waits to see which of them comes back.",
-  "legend": "Morven (46) is a huge Fomorian on the eastern edge of Breifine (about 442k/386k). His three heirs are the targets of Morven's Return (Cathbad of Howth): Ronat (47, Cruachan Gorge, east of Dun Lamfhota), Uileog (40, Cruachan) and Raemon (45, Breifine). Morven himself is not a quest step but is a big Fomorian with a 5-minute respawn. Breifine is frontier, so watch for enemy realms. A group of mid 40s.",
+  "legend": "Morven, a foe for a hardened band of veterans, is a huge Fomorian on the eastern edge of Breifine (about 442k/386k). Morven's Return (Cathbad of Howth) sends you after his three heirs, all hardened bands' foes: Ronat (a shade stronger than he is, Cruachan Gorge, east of Dun Lamfhota), Uileog (the weakest, Cruachan) and Raemon (Breifine). Morven himself is not a step of the errand but is a big Fomorian who returns five minutes after he falls. Breifine is frontier, so watch for enemy realms. A hardened band of veterans.",
   "yells": {
     "aggro": [
       "These hills paid me tribute.",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "morven is a 46 fomorian lord on the east edge of breifine",
+      "morven is a big fomorian lord on the east edge of breifine",
       "his heirs are morven's return. he isnt a step"
     ],
     "aftermathWin": [
@@ -52,7 +52,7 @@
     ],
     "aftermathLoss": [
       "enemy realm came by. [frontier|rip]",
-      "he hits like a 50. [ouch|oops]"
+      "he hits way harder than he looks. [ouch|oops]"
     ],
     "rumour": [
       "[heard|someone said] the hill chieftains paid morven cattle to leave their valleys alone",

@@ -32,7 +32,7 @@
     }
   ],
   "story": "Trahern is the younger of the two giants of the old suit, and the farther from the Bed, and he has never once admitted it. The drovers say that is the whole of him. Borimo holds that standing nearest the dragon is a giant's worth; Trahern holds that Borimo is a liar, that the Roman who measured them was a fool, and that the warm ground is nearer him by a way of reckoning that only granite understands.\n\nHis reckoning, as the Hext drovers tell it, goes like this. The Bed is not a place but a warmth, and the warmth moves in the ground the way water moves under ice; on some nights it runs south and west under the moor, toward Trahern, and on those nights he is the nearer, and Borimo is only rock. The drovers have stood on the moor on such nights and say the ground under Trahern is no warmer than anywhere else. They do not tell him so.\n\nWhen the Roman surveyor of the old province cut the measure on a boundary stone, the stone was found broken the next spring and the pieces lay nearer Trahern. Since then Trahern has stood with his back half turned to his rival, facing the drove road, and the drovers think he watches it to see whether anyone else will come to measure. Anyone who walks close enough to be taken for a surveyor finds out. He comes at a traveller on foot as fast as a giant can come, and the drovers who have seen it say he swings as if he meant to break the measure off the man.\n\nHe fights alone. Borimo has never crossed to help him and he has never asked; the drovers say each of them would rather be broken than owe the other a step. He is broken often enough, and stands again before a drover could finish a pipe, and the Hexts say that is the one point on which the two giants agree: whichever of them is broken, the moor sets him up again, so that the suit can go on.",
-  "legend": "Trahern is a level 51 named granite giant in the middle of Dartmoor, about 7,000 north of Borimo. Despite the old Dartmoor notes, he is aggressive (aggro 200 from the template, range 500), so do not walk up to him; riding past is fine. Nothing of his faction stands within 1,200 and Borimo never joins, so it is one giant: no spells or styles in the data, a melee fight a strong duo or a small group of fifties wins. He is the weakest of the named giants, a good first one. Keep clear of the Bed to the south-east and of the Stonecrush terraces to the west on the way. He respawns in about 80 seconds.",
+  "legend": "Trahern is a great granite giant in the middle of Dartmoor, a foe for the realm's best, a full band of them, more than two hundred paces north of Borimo. Despite the old Dartmoor notes, he attacks on sight, turning on anyone within about seventeen paces, so do not walk up to him; riding past is fine. Nothing of his kin stands within forty paces and Borimo never joins, so it is one giant: no spells or styles by every account, a melee fight a strong pair or a small group of the realm's best wins. He is the weakest of the great giants, a good first one. Keep clear of the Bed to the south-east and of the Stonecrush terraces to the west on the way. He rises again about eighty seconds after he falls.",
   "yells": {
     "aggro": [
       "Another surveyor.",
@@ -70,10 +70,10 @@
   },
   "botLines": {
     "briefing": [
-      "trahern, 51 named giant mid-moor dartmoor, 7k north of borimo. he aggros, ignore the old notes",
+      "trahern, big giant mid-moor dartmoor, over two hundred paces north of borimo. he attacks on sight, ignore the old notes",
       "alone, borimo never comes. no spells, melee giant",
-      "easiest named giant on the moor. duo of 50s or a small group",
-      "stay clear of the bed se and the stonecrush west. 80 sec respawn"
+      "easiest of the big giants on the moor. two of our best or a small group",
+      "stay clear of the bed se and the stonecrush west. back 80 sec after he dies"
     ],
     "aftermathWin": [
       "trahern down. borimo didnt even look",
@@ -82,9 +82,9 @@
       "80 sec, move it"
     ],
     "aftermathLoss": [
-      "walked up to say hi. he aggros",
+      "walked up to say hi. he doesnt do hi",
       "wandered west into the stonecrush terraces after",
-      "solo at 47, he's 51",
+      "went alone a few steps short of our best, he was a very hard fight",
       "back up before we'd sat down"
     ],
     "rumour": [
@@ -98,7 +98,7 @@
     "keyword": "trahern",
     "text": "The younger of the two quarrelling giants in the middle of [dartmoor], the farther from the Bed, who will not admit it: he says the dragon's warmth moves under the moor and on some nights runs toward him. He broke the Roman's measuring stone, stands with his back half turned to [borimo], and comes at any walker who might be a surveyor. Neither giant will help the other."
   },
-  "bookPage": "From the scorched journal of Hywel of Caerwent, scribe to Sir Arward, a leaf that survived. Second day. We passed two giants in the middle of the moor, a mile apart, one looking toward the warm ground in the south and the other looking at us. The drover with us said the second one was Trahern and that we should keep to the horses, and Sir Brychan laughed and got down to look at him, and Trahern came at him across the heather faster than I have seen a stone move. Sir Brychan was back in the saddle before I could write it. The other giant never turned its head. The drover said it never does, for that one.",
+  "bookPage": "Second day, on a leaf that survived of the scorched journal of Hywel of Caerwent, scribe to Sir Arward. We passed two giants in the middle of the moor, a mile apart, one looking toward the warm ground in the south and the other looking at us. The drover with us said the second one was Trahern and that we should keep to the horses, and Sir Brychan laughed and got down to look at him, and Trahern came at him across the heather faster than I have seen a stone move. Sir Brychan was back in the saddle before I could write it. The other giant never turned its head. The drover said it never does, for that one.",
   "chronicle": {
     "win": "{realm}'s company under {raidLeader} broke Trahern in the middle of the moor in {minutes} minutes.",
     "loss": "Trahern broke the measure, and {raidLeader}'s company of {realm} with it."

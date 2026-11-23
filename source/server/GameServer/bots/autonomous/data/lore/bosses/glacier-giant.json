@@ -36,7 +36,7 @@
     }
   ],
   "story": "Odin's Gate has a giant and a glacier and no gate. The giant has stood there longer than the frontier keeps, a hill of blue ice with a face, and it does not walk the land as other giants do. It stands. The skalds argue what for. Some say it is a guard left by the gods at the foot of the road to Asgard, and that the gate it guards is folded into the ice behind it like a letter. Some say it is only a giant who found a good spot. It belongs to no realm. Albion and Hibernia have their old frontier giants too, a green knight and an ancient tree, and like them this one tolerates no one close.\n\nIt picks them up and throws them. Not across a room: across the land, high and far, so that the thrown come down among the ledges or the keeps or the snowfields a long walk away. The warders of the frontier keep a book of where they land. The giant does not throw the one in front of it; it reaches past that one for someone further back, the warders say, as a man at a door reaches past a beggar for the one who is trying to slip in behind him. And when it is nearly broken it stops throwing altogether, and stands, and takes what comes, as if it had decided that the door was no longer worth keeping.\n\nThen it goes back to standing. The grandmothers of Jamtland say the gate opens once in a lifetime, on the longest night, and that you will know it by the giant kneeling. Nobody alive has seen it kneel. The oldest warder on the frontier, asked, stopped laughing in the middle and looked at the glacier for a while.",
-  "legend": "The Glacier Giant throws people far, high and often, and it throws bots and players alike, so anyone who is not its target can fly. It never throws its current target, though: if you're tanking it, you stay put. It won't pick the same person again for 45 seconds, and once it's down to about 15% it stops throwing altogether, so the last stretch is a straight fight. The throw drops you at one of six spots a long way off and well up in the air, so fall damage and the run back are the real cost. It has 100,000 health, 40% melee and 70% magic resists and is CC-immune, and it resets if it's out of combat for 30 seconds, so the raid has to keep it busy while the thrown run back. A group and a half has done it in five minutes. Killing it does not take the fire out of the dragon.",
+  "legend": "The Glacier Giant throws people far, high and often, and it throws companions, the realm's adventurers and you alike, so anyone who is not its target can fly. It never throws its current target, though: if you're the shield-bearer holding it, you stay put. It won't pick the same person again for 45 seconds, and once it's down to about three-twentieths of its strength it stops throwing altogether, so the last stretch is a straight fight. The throw drops you at one of six spots a long way off and well up in the air, so the fall and the run back are the real cost. It takes as much killing as fifty raiders, four-tenths of every blow and seven-tenths of every spell are lost on it, no charm or stun holds it, and it is a foe for a war party of the realm's champions. It goes home whole if it's left alone for 30 seconds, so the raid has to keep it busy while the thrown run back. A group and a half has done it in five minutes. Killing it does not take the fire out of the dragon.",
   "yells": {
     "aggro": [
       "(The glacier groans like a breaking sea.)",
@@ -74,11 +74,11 @@
   },
   "botLines": {
     "briefing": [
-      "glacier giant throws people far. run back fast, it resets after 30 sec",
-      "glacier giant throws anyone but its target, bots too",
-      "tank it yourself and you wont fly",
-      "it stops throwing under 15%, then its a straight fight",
-      "keep someone on it, it resets after 30 sec idle"
+      "glacier giant throws people far. run back fast, its whole again after 30 sec alone",
+      "glacier giant throws anyone but its target, companions too",
+      "hold it yourself and you wont fly",
+      "it stops throwing when its nearly done, then its a straight fight",
+      "keep someone on it, leave it alone 30 sec and its whole again"
     ],
     "aftermathWin": [
       "glacier giant down! [anyone land near uppland?|i flew twice]",
@@ -87,13 +87,13 @@
       "giant down. still no gate"
     ],
     "aftermathLoss": [
-      "too many people got thrown and it reset",
-      "you got thrown three times and it reset while you ran",
-      "nobody stayed on it and it reset",
+      "too many people got thrown and it went home whole",
+      "you got thrown three times and it healed up while you ran",
+      "nobody stayed on it and it was whole again",
       "fell off a ledge after the throw lol"
     ],
     "rumour": [
-      "[the glacier giant|that giant at odins gate] [throws|tossed] [people|a runemaster] [halfway|clear] [to uppland|across the zone]",
+      "[the glacier giant|that giant at odins gate] [throws|tossed] [people|a runemaster] [halfway|clear] [to uppland|across the country]",
       "some say the glacier giant isnt guarding the frontier, hes guarding a door",
       "the warders keep a book of where everyone lands",
       "it never throws the one in front of it, the warders say",

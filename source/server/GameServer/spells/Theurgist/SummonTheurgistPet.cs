@@ -64,7 +64,7 @@ namespace DOL.GS.Spells
 		/// </summary>
 		public override bool CheckBeginCast(GameLiving selectedTarget)
 		{
-			if (!PetLimitAllowsAnother(Caster.PetCount, ServerProperties.Properties.THEURGIST_PET_CAP))
+			if (PetCapApplies(Caster) && !PetLimitAllowsAnother(Caster.PetCount, ServerProperties.Properties.THEURGIST_PET_CAP))
 			{
 				MessageToCaster("You have too many controlled creatures!", eChatType.CT_SpellResisted);
 				return false;
@@ -72,6 +72,12 @@ namespace DOL.GS.Spells
 
 			return base.CheckBeginCast(selectedTarget);
 		}
+
+		/// <summary>
+		/// Owner 2026-11-21: the Theurgist and Animist pet caps hold for bots only. A real player is never capped; a
+		/// companion or gamebot (GameBot, a GameNPC) keeps the configured limit. Pure.
+		/// </summary>
+		public static bool PetCapApplies(GameLiving caster) => caster is not GamePlayer;
 
 		public static bool PetLimitAllowsAnother(int currentCount, int configuredCap)
 		{

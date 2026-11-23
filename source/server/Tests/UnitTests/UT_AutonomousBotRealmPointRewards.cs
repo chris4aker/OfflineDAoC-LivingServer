@@ -132,4 +132,53 @@ public class UT_AutonomousBotRealmPointRewards
         Assert.That(AutonomousBotRealmPointRewards.IsEligibleVictim(companion), Is.False);
         Assert.That(AutonomousBotRealmPointRewards.IsEligibleVictim(pet), Is.False);
     }
+
+    // Issue #396 "No xp for kills in Thid": a gamebot kill paid realm points only. It now pays what a player
+    // kill pays (AbstractServerRules.AwardPlayerOnPlayerKill).
+    [Test]
+    public void GamebotIsWorthAPlayersExperienceAndBountyPoints()
+    {
+        Assert.That(AutonomousBotRealmPointRewards.GetPlayerEquivalentExperienceValue(1000), Is.EqualTo(4000),
+            "GamePlayer.ExperienceValue is four times the monster value of its level");
+        Assert.That(AutonomousBotRealmPointRewards.GetPlayerEquivalentExperienceValue(-5), Is.EqualTo(0));
+        Assert.That(AutonomousBotRealmPointRewards.GetPlayerEquivalentBountyPointValue(24), Is.EqualTo(15));
+        Assert.That(AutonomousBotRealmPointRewards.GetPlayerEquivalentBountyPointValue(50), Is.EqualTo(31));
+    }
+
+    [Test]
+    public void SoloKillOfAnEvenLevelGamebotPaysExperience()
+    {
+        // Thidranki: a level 24 player alone kills a level 24 gamebot. Both are worth the same, the cap is 125%.
+        long value = AutonomousBotRealmPointRewards.GetPlayerEquivalentExperienceValue(10_000);
+        long share = AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(value, value, 1, 125);
+        Assert.That(share, Is.EqualTo(40_000));
+        Assert.That(share, Is.GreaterThan(0), "a hundred kills in Thidranki must not pay nothing");
+    }
+
+    [Test]
+    public void ExperienceShareIsSplitAndCappedLikeAPlayerKill()
+    {
+        Assert.That(AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(40_000, 40_000, 2, 125),
+            Is.EqualTo(20_000), "two contributors split the victim's value");
+        Assert.That(AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(400_000, 40_000, 1, 125),
+            Is.EqualTo(50_000), "capped at XP_PVP_Cap_Percent of the killer's own value");
+        Assert.That(AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(0, 40_000, 1, 125), Is.EqualTo(0));
+        Assert.That(AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(40_000, 0, 1, 125), Is.EqualTo(0));
+        Assert.That(AutonomousBotRealmPointRewards.CalculateCappedExperienceShare(40_000, 40_000, 0, 125), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void BountyPointsFollowThePlayerKillRuleAndTheBattlegroundSwitch()
+    {
+        Assert.That(AutonomousBotRealmPointRewards.CalculateBountyPointReward(31, 31, 1, 1.0, false, false),
+            Is.EqualTo(31));
+        Assert.That(AutonomousBotRealmPointRewards.CalculateBountyPointReward(31, 31, 2, 0.5, false, false),
+            Is.EqualTo(7), "split between two, then half the damage");
+        Assert.That(AutonomousBotRealmPointRewards.CalculateBountyPointReward(31, 4, 1, 1.0, false, false),
+            Is.EqualTo(8), "capped at twice the killer's own value");
+        Assert.That(AutonomousBotRealmPointRewards.CalculateBountyPointReward(15, 15, 1, 1.0, true, false),
+            Is.EqualTo(0), "allow_bps_in_bgs is off: no bounty points in a battleground, as for a player kill");
+        Assert.That(AutonomousBotRealmPointRewards.CalculateBountyPointReward(15, 15, 1, 1.0, true, true),
+            Is.EqualTo(15));
+    }
 }

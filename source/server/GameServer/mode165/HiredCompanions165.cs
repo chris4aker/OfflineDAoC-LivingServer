@@ -39,12 +39,18 @@ namespace DOL.GS
         [DataElement(AllowDbNull = false)] public int Height { get; set; }
         /// <summary>The player's choices for this companion (CompanionOptions165): charm, pet, sub-pets, songs.</summary>
         [DataElement(AllowDbNull = false)] public string Options { get; set; } = string.Empty;
+        /// <summary>Living Server 1.2.1 (owner 2026-11-21), which level rule this companion is under: 0 = hired on 1.2 at
+        /// level 5 (raised once to its player's level at its next summon), 1 = hired on 1.2.1 at its player's level and not
+        /// yet trained, 2 = done, 3 = done but its basic gear is tried again at the next summon (no merchant found that time;
+        /// <see cref="HiredCompanions165.PlanArrival"/>). Rows from before the column read 0.</summary>
+        [DataElement(AllowDbNull = false)] public int LevelRule { get; set; }
     }
 
     /// <summary>
     /// Hired companions (True 1.65, owner 2026-10-30, plan sections 17, 17a, 17g, 17h, 24). True 1.65 replaced /spawn and
-    /// /raid with them; Living Server keeps /spawn and /raid and adds these beside them. Each is a real persistent gamebot record (level, XP, specs, inventory, coin), hired at level 5 with a
-    /// training weapon and nothing else, that joins its owner's group as a player-led gamebot (BotGroupInvite) and levels
+    /// /raid with them; Living Server keeps /spawn and /raid and adds these beside them. Each is a real persistent gamebot record (level, XP, specs, inventory, coin), hired at its
+    /// player's level (1.2.1, owner 2026-11-21; 1.2: level 5 with a training weapon), its spec points spent in its build and,
+    /// above level 5, in plain merchant gear for its level, that joins its owner's group as a player-led gamebot (BotGroupInvite) and levels
     /// only by fighting beside the owner. The population controller never logs them in on its own.
     /// - Slots open at levels 5, 10, 15, 20, 30, 40 and 45 (7 companions: a full group of 8 at 45).
     /// - The first is free; each later one costs coin (CostCopper), so nobody is locked out.
@@ -185,6 +191,114 @@ namespace DOL.GS
 
         // ---- hiring
 
+        // ---- the level a companion joins at (Living Server 1.2.1, owner 2026-11-21)
+
+        /// <summary><see cref="OfflineHiredCompanionRecord.LevelRule"/>: hired on 1.2 at level 5, to be raised once.</summary>
+        public const int LevelRuleRaisePending = 0;
+        /// <summary>Hired on 1.2.1 at its player's level, to be trained (and geared) on its first arrival.</summary>
+        public const int LevelRuleNewHire = 1;
+        /// <summary>Trained or raised: it levels beside its player from here on.</summary>
+        public const int LevelRuleDone = 2;
+        /// <summary>Trained or raised, but its basic gear could not be looked up (no merchant of its realm loaded, or an
+        /// error): the gear alone is tried again at its next summon.</summary>
+        public const int LevelRuleGearPending = 3;
+
+        public enum ArrivalKind { None, NewHire, Raise, Gear }
+
+        /// <summary>The level rule a companion is left under after an arrival that joined: done, unless its gear was due and
+        /// could not be looked up (then only the gear is tried again). Pure.</summary>
+        public static int RuleAfterArrival(bool basicGearDue, bool gearRetry) =>
+            basicGearDue && gearRetry ? LevelRuleGearPending : LevelRuleDone;
+
+        /// <summary>The weapon slots a training weapon can sit in.</summary>
+        public static readonly eInventorySlot[] TrainingWeaponSlots =
+            [eInventorySlot.RightHandWeapon, eInventorySlot.TwoHandWeapon, eInventorySlot.LeftHandWeapon];
+
+        /// <summary>
+        /// The training weapon (owner 2026-11-21: it counts as an empty slot for the basic gear). Pure. It is the only item
+        /// GameBot makes itself (GameBot.TryCreateConfiguredStarterWeapon: a GeneratedUniqueItem saved as a unique item,
+        /// Creator "GameBot"), so a weapon the player handed over - merchant, crafted (Creator: the crafter), loot or quest
+        /// (an ItemTemplate row, or a unique item with another creator) - never is, however low its level.
+        /// </summary>
+        public static bool IsTrainingWeapon(DbInventoryItem item) =>
+            item != null && string.Equals(item.Creator, nameof(GameBot), StringComparison.Ordinal) &&
+            !string.IsNullOrWhiteSpace(item.UTemplate_Id) && string.IsNullOrWhiteSpace(item.ITemplate_Id);
+
+        /// <summary>What the GameBot constructor does for one hired companion's arrival (GameBot.TrainHiredCompanionArrival
+        /// and its gear), and what it reports back for the HIRED_COMPANION_TRAINED / _RAISED line.</summary>
+        public sealed class Arrival
+        {
+            public Arrival(ArrivalKind kind, byte fromLevel, long fromExperience, bool basicGear)
+            {
+                Kind = kind;
+                FromLevel = fromLevel;
+                FromExperience = fromExperience;
+                BasicGear = basicGear;
+            }
+
+            public ArrivalKind Kind { get; }
+            public byte FromLevel { get; }
+            public long FromExperience { get; }
+            public bool BasicGear { get; }
+            public int Spent { get; set; }
+            public int Unspent { get; set; }
+            public string Specs { get; set; } = string.Empty;
+            public string Gear { get; set; } = "none";
+            /// <summary>The gear could not be looked up this time (no merchant of its realm, or an error): try again.</summary>
+            public bool GearRetry { get; set; }
+            /// <summary>The training weapons replaced by a merchant weapon ("RightHand", ...), for the log line.</summary>
+            public string TrainingWeapon { get; set; } = "none";
+        }
+
+        private static readonly ConcurrentDictionary<long, Arrival> Arrivals = new();
+
+        /// <summary>The arrival planned for this companion by the summon now being built (once; null for any other load).</summary>
+        internal static Arrival TakeArrival(long botId) => Arrivals.TryRemove(botId, out Arrival arrival) ? arrival : null;
+
+        /// <summary>The level a new hire joins at: its player's level, never below 5 (the first slot) or above 50. Pure.</summary>
+        public static int StartingLevel(int playerLevel) => Math.Clamp(playerLevel, 5, 50);
+
+        /// <summary>
+        /// What a summon does for this companion's level, once. Pure.
+        /// <para>A 1.2.1 hire (<see cref="LevelRuleNewHire"/>) is trained at the level it was hired at. A companion hired on
+        /// 1.2 (<see cref="LevelRuleRaisePending"/>) below its player's level is raised to it (never above 50); one at or
+        /// above it is left as it is. Done (<see cref="LevelRuleDone"/>): nothing, ever again.</para>
+        /// </summary>
+        public static (ArrivalKind Kind, int Level) PlanArrival(int levelRule, int companionLevel, int playerLevel)
+        {
+            if (levelRule == LevelRuleGearPending)
+                return (GetsBasicGear(companionLevel) ? ArrivalKind.Gear : ArrivalKind.None, companionLevel);
+            if (levelRule >= LevelRuleDone)
+                return (ArrivalKind.None, companionLevel);
+            if (levelRule == LevelRuleNewHire)
+                return (ArrivalKind.NewHire, Math.Clamp(companionLevel, 5, 50));
+            return playerLevel > companionLevel
+                ? (ArrivalKind.Raise, Math.Min(playerLevel, 50))
+                : (ArrivalKind.None, companionLevel);
+        }
+
+        /// <summary>A companion that joins (or is raised) above level 5 gets plain merchant gear for its level in its empty
+        /// slots; at 5 it keeps the training weapon alone, as before. Pure.</summary>
+        public static bool GetsBasicGear(int level) => level > 5;
+
+        /// <summary>
+        /// The spec points a raised companion gained: what a player of its class has to spend at <paramref name="toLevel"/>
+        /// less what it had at <paramref name="fromLevel"/>, with the same lines (an autotrain line's new free levels count
+        /// as gained). The points its player left unspent stay unspent. Pure.
+        /// </summary>
+        public static int RaisedSpecBudget(int multiplier, int fromLevel, bool fromSecondStage, int toLevel,
+            IReadOnlyCollection<(int Level, bool AutoTrain)> lines)
+        {
+            if (toLevel <= fromLevel)
+                return 0;
+            lines ??= [];
+            int before = Math.Max(0, GameBot.PlayerSpecPointTotal(multiplier, fromLevel, fromSecondStage) -
+                                     lines.Sum(l => GameBot.LineCost(l.Level, fromLevel, l.AutoTrain)));
+            int after = Math.Max(0, GameBot.PlayerSpecPointTotal(multiplier, toLevel, false) -
+                                    lines.Sum(l => GameBot.LineCost(l.Level, toLevel, l.AutoTrain)));
+            return Math.Max(0, after - before);
+        }
+
         /// <summary>Hires the designed companion. Returns the problem, or null when hired (it joins the owner at once).</summary>
         public static string Hire(GamePlayer player, Hire165.Design d)
         {
@@ -218,6 +332,7 @@ namespace DOL.GS
 
             string now = DateTime.UtcNow.ToString("O");
             ICharacterClass cls = ScriptMgr.FindCharacterClass((int)d.Class);
+            int level = StartingLevel(player.Level);   // the player's level (1.2.1; trained and geared at its first summon)
             var record = new OfflineWorldBotRecord
             {
                 Name = name,
@@ -227,8 +342,8 @@ namespace DOL.GS
                 RaceId = (int)d.Race,
                 RaceName = d.Race.ToString(),
                 Gender = (int)d.Gender,
-                Level = 5,
-                Experience = GamePlayer.GetExperienceAmountForLevel(4),
+                Level = level,
+                Experience = GamePlayer.GetExperienceAmountForLevel(level - 1),   // the start of that level
                 RegionId = player.CurrentRegionID, X = player.X, Y = player.Y, Z = player.Z,
                 ZoneId = player.CurrentZone?.ID ?? 0, ZoneName = player.CurrentZone?.Description ?? string.Empty,
                 BindRegionId = player.CurrentRegionID, BindX = player.X, BindY = player.Y, BindZ = player.Z,
@@ -245,10 +360,12 @@ namespace DOL.GS
                 BotId = record.BotId, OwnerCharacterID = player.InternalID, OwnerName = player.Name, Row = row,
                 WithOwner = true, PaidCopper = cost, HiredUtc = now,
                 LookModel = Hire165.Model(d), HairColour = d.HairColour, Height = Math.Clamp(d.Height, 1, 3),
+                LevelRule = LevelRuleNewHire,
             };
             GameServer.Database.AddObject(hired);
             Hired[record.BotId] = hired;
-            Log.Info($"HIRED_COMPANION owner=\"{player.Name}\" bot={record.BotId} \"{name}\" {record.RaceName} {record.ClassName} cost={cost}");
+            Log.Info($"HIRED_COMPANION owner=\"{player.Name}\" bot={record.BotId} \"{name}\" {record.RaceName} {record.ClassName} " +
+                     $"level={level} cost={cost}");
             Summon(player, row, firstTime: true);
             return null;
         }
@@ -281,27 +398,52 @@ namespace DOL.GS
             RetireStaleCopies(player, hired.BotId);
             if (player.Group != null && player.Group.MemberCount >= 8)
                 return "Your group is full.";
+            // 1.2.1 (owner 2026-11-21): a new hire is trained (and geared above level 5) on its first arrival; a companion
+            // hired on 1.2 at level 5 is raised once to its player's level. The GameBot constructor does the training and
+            // the gear (TakeArrival), before its training weapon, as for a gamebot that arrives trained.
+            (ArrivalKind kind, int arrivalLevel) = PlanArrival(hired.LevelRule, record.Level, player.Level);
+            Arrival arrival = null;
+            if (kind != ArrivalKind.None)
+            {
+                arrival = new Arrival(kind, (byte)Math.Clamp(record.Level, 1, 50), record.Experience, GetsBasicGear(arrivalLevel));
+            }
+            if (kind is ArrivalKind.NewHire or ArrivalKind.Raise)
+            {
+                record.Level = arrivalLevel;
+                record.Experience = GamePlayer.GetExperienceAmountForLevel(arrivalLevel - 1);   // the start of that level
+                record.Dirty = true;
+            }
             try
             {
                 string ownerId = AutonomousBotEconomy.GetOwnerId(record.BotId);
                 var items = new BotInventory(ownerId).SelectPersonalItems(ownerId);
                 (int sx, int sy, int sz) = ArrivalSpot(player);
-                var bot = new GameBot(record, items)
+                GameBot bot;
+                try
                 {
-                    CurrentRegionID = player.CurrentRegionID,
-                    X = sx,
-                    Y = sy,
-                    Z = sz,
-                    Heading = player.Heading,
-                };
+                    if (arrival != null)
+                        Arrivals[record.BotId] = arrival;
+                    bot = new GameBot(record, items)
+                    {
+                        CurrentRegionID = player.CurrentRegionID,
+                        X = sx,
+                        Y = sy,
+                        Z = sz,
+                        Heading = player.Heading,
+                    };
+                }
+                finally
+                {
+                    Arrivals.TryRemove(record.BotId, out _);
+                }
                 bot.SetLookModel((ushort)hired.LookModel);
                 // (True 1.65's /hood for companions is not ported: Living Server has no hood state on a bot.)
                 bot.Size = GameBot.SizeForHeight(hired.Height);   // its chosen height, as a player of that height (owner 2026-10-31)
                 bot.SynchronizePositionForLoginValidation();
                 // a revive (its body had faded) brings it back whole, like a raise of a body still lying there
-                if (firstTime || revived)
+                if (firstTime || revived || arrival != null)
                 {
-                    // its level 2-5 points stay unspent: the player places them in the spec screen (owner rule)
+                    // hired or raised: its points were spent in its build (1.2.1); the free respec lets the player redo it
                     bot.Health = bot.MaxHealth;
                     bot.Mana = bot.MaxMana;
                     bot.Endurance = bot.MaxEndurance;
@@ -315,6 +457,25 @@ namespace DOL.GS
                 bot.MarkAutonomousStateDirty();
                 Live[record.BotId] = bot;
                 hired.WithOwner = true;
+                if (hired.LevelRule != LevelRuleDone)
+                {
+                    // once only: from here on it levels beside its player as before
+                    string tag = kind switch
+                    {
+                        ArrivalKind.Raise => "HIRED_COMPANION_RAISED",
+                        ArrivalKind.Gear => "HIRED_COMPANION_GEAR_RETRIED",
+                        _ => "HIRED_COMPANION_TRAINED",
+                    };
+                    if (arrival != null)
+                        Log.Info($"{tag} owner=\"{player.Name}\" bot={record.BotId} \"{record.Name}\" {record.ClassName} level={arrival.FromLevel}->{bot.Level} " +
+                                 $"player_level={player.Level} spent={arrival.Spent} unspent={arrival.Unspent} specs=\"{arrival.Specs}\" " +
+                                 $"gear=\"{arrival.Gear}\" training_weapon_replaced=\"{arrival.TrainingWeapon}\" " +
+                                 $"gear_retry={(arrival.BasicGear && arrival.GearRetry ? "next-summon" : "no")}");
+                    if (kind == ArrivalKind.Raise)
+                        player.Out.SendMessage($"{record.Name} has caught up with you: level {bot.Level}, trained in their build " +
+                                               "(respec is free), with basic gear in any empty slot.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    hired.LevelRule = arrival == null ? LevelRuleDone : RuleAfterArrival(arrival.BasicGear, arrival.GearRetry);
+                }
                 Save(hired);
                 BotGroupInvite.TryInvite(player, bot);
                 // the owner's PC log proves the summon (hire, revive, login or the roster's button) and the group join

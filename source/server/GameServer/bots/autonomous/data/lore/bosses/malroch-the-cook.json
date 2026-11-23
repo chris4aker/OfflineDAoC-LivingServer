@@ -40,6 +40,11 @@
  ],
  "facts": [
   {
+    "text": "NPC pass (HEROES.md decision 11): Sister Elaydith's runner is named Siencyn, as in gatekeeper-dommel. Living Server writing.",
+    "provenance": "original",
+    "source": "Living Server (CAST-NEUTRAL.md: Sister Elaydith's runner)"
+  },
+  {
    "text": "Malroch the Cook is a level 43 plain GameNPC of the Demon Lords faction in the north of Darkness Falls, about 1,760 units from Inquisitor Haap and 1,770 from Earl Mermer, respawning in 180 seconds.",
    "provenance": "game",
    "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
@@ -56,7 +61,7 @@
   },
   {
    "text": "Prima's map key lists 'Malrock the Cook' in the north, near the Inquisitors.",
-   "provenance": "mythic",
+   "provenance": "legend",
    "source": "Prima Official eGuide, Dark Age of Camelot Revised and Expanded (Prima Games), 'Realm vs. Realm: Darkness Falls Dungeon' map key"
   },
   {
@@ -71,7 +76,7 @@
   }
  ],
  "story": "Malroch the Cook keeps the kitchen of the north, between Prince Ba'alorien's hall and the cloisters of the Inquisition, and he has fed the questioners and their prince since the First Roll. A kitchen in the court is a strange office, since demons eat what they kill, and Malroch has always said his trade is not feeding but improving: taking what a demon would eat anyway and making it do something on the way down.\n\nThe Black Plague was his finest dish. The court wanted a sickness to send up into the realms after the doors opened, one that would keep the capitals busy with their own beds, and the Archivist found the old recipe in the records and Malroch cooked it. He tried it first on somebody who could not complain to a prince: Marquis Dortaleon, in the Sixth Roll, who began to rot and did not stop. The Inquisitor Haap examined the Cook over it and reports that he answered every question with a recipe. He keeps a stoppered jar of the first batch in his kitchen, which the court says is both the sickness at its strongest and the only thing that will undo it.\n\nAlbion's clerics traced the plague down to him, and Albion killed him for it, and the court has done something for Malroch it has done for nobody else: it mourned. The Master promised every demon of the hollow a reward for the head of the mortal who did it. The kitchen is still warm. Somebody has gone on cooking.",
- "legend": "Malroch is the Albion target of the Black Plague quest: Sister Elaydith sends you down, and you kill him in his kitchen in the north, between Prince Ba'alorien's hall and the Inquisitors, for the stoppered potion. Level 43, a plain NPC, alone in his room, so a small group does it. He comes back in about three minutes. Inquisitor Haap and Earl Mermer are close, so do not wander into the cloister after. Kill him and every demon in Darkness Falls wants your head, or so Mystemas says.",
+ "legend": "Malroch is the Albion target of the Black Plague quest: Sister Elaydith sends you down, and you kill him in his kitchen in the north, between Prince Ba'alorien's hall and the Inquisitors, for the stoppered potion. A foe for a hardened band of veterans, a plain known demon of the place, alone in his room, so a small group does it. He rises again in about three minutes. Inquisitor Haap and Earl Mermer are close, so do not wander into the cloister after. Kill him and every demon in Darkness Falls wants your head, or so Mystemas says.",
  "yells": {
   "aggro": [
    "Out of my kitchen!",
@@ -98,7 +103,7 @@
  "botLines": {
   "briefing": [
    "malroch is in the kitchen in the north, near the cloister. [albion plague quest|black plague]",
-   "43, normal npc, small group is fine. [grab the potion|dont forget the potion]"
+   "hes nothing special, small group is fine. [grab the potion|dont forget the potion]"
   ],
   "aftermathWin": [
    "malroch down. [potion got|got the stoppered potion]",
@@ -106,7 +111,7 @@
   ],
   "aftermathLoss": [
    "malroch got us. [embarrassing|how]",
-   "pulled the cloister after malroch. [wrong door|wipe]"
+   "drew the cloister after malroch. [wrong door|everyone down]"
   ],
   "rumour": [
    "[heard|word is] malroch the cook made the black plague",
@@ -117,7 +122,7 @@
   "keyword": "malroch",
   "text": "Malroch the Cook, who keeps the kitchen between Prince [Ba'alorien]'s hall and the cloisters. He cooked the Black Plague from the Archivist's recipe, tried it on Marquis [Dortaleon], and keeps a stoppered jar of the first batch. Albion killed him for it, and the court mourned."
  },
- "bookPage": "From the daybook of Sister Elaydith's runner, Camelot: The kitchen was warm, the only warm room we found below. There were pots on every fire and nobody stirring them, and a smell I knew from the sickrooms at home. The cook was a squat thing in an apron of hide, and he looked up at us as a cook looks up at boys come to steal tarts. When he fell he held out a stoppered jar and told us to choke on it. We did not. Sister Elaydith says it was the cure. I have not been able to eat a stew since.",
+ "bookPage": "The kitchen was warm, the only warm room we found below, by the daybook of Siencyn, Sister Elaydith's runner, at Camelot. There were pots on every fire and nobody stirring them, and a smell I knew from the sickrooms at home. The cook was a squat thing in an apron of hide, and he looked up at us as a cook looks up at boys come to steal tarts. When he fell he held out a stoppered jar and told us to choke on it. We did not. Sister Elaydith says it was the cure. I have not been able to eat a stew since.",
  "chronicle": {
   "win": "{realm}'s company under {raidLeader} put out the fires of Malroch's kitchen in {minutes} minutes."
  }

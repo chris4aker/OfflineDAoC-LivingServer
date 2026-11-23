@@ -28,7 +28,8 @@ namespace DOL.GS.Commands;
     "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
     "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)",
     "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)",
-    "/lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls")]
+    "/lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls",
+    "/lstest deathanim [raise | release | rez | off] - the death fall in the original client (target a bot): kills it (or shows the fall again on a dead one) and lists every packet about it to your client for 2 minutes; raise brings it back as a rez does, at your side; release sends it to its bind; rez casts a resurrection as a player's cast goes (with nothing dead selected the server picks the corpse)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -163,10 +164,114 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             case "lore":
                 Say(client, LoreAtmosphere.TestHere(gm));
                 return;
+            case "deathanim":
+                DeathAnimation(client, gm, arg);
+                return;
             default:
                 DisplaySyntax(client);
                 return;
         }
+    }
+
+    /// <summary>/lstest deathanim (1.2.1, BotDeathAnimation): the owner checks the fall, the raise and the release on his PC
+    /// in one session. GM only (the command's level); a test command, nothing a player can run.</summary>
+    private static void DeathAnimation(GameClient client, GamePlayer gm, string arg)
+    {
+        Say(client, $"Death fall (bot_death_animation): {OnOff(BotDeathAnimation.On)}. Your client: " +
+            (client.IsOriginalGameClient ? "the original game client" : "not known to be the original (the new client, or no build read): it gets nothing new") +
+            $" (handshake build {(client.HandshakeBuildRead ? "0x" + client.HandshakeBuild.ToString("X4") : "not read")}).");
+        if (arg == "off")
+        {
+            BotDeathAnimation.StopWatch();
+            Say(client, "Packet list stopped.");
+            return;
+        }
+        if (arg == "rez")
+        {
+            Rez(client, gm);
+            return;
+        }
+        // The original client lets go of a dead bot's selection, so raise and release go to the one being watched.
+        GameBot bot = gm.TargetObject as GameBot ?? BotDeathAnimation.Watched;
+        if (bot == null || bot.ObjectState != GameObject.eObjectState.Active || bot.CurrentRegion != gm.CurrentRegion)
+        {
+            Say(client, "Target a bot (companion, hired companion or gamebot) near you.");
+            return;
+        }
+        BotDeathAnimation.StartWatch(client, bot);
+        string who = $"{bot.Name} (object {bot.ObjectID})";
+        switch (arg)
+        {
+            case "raise":
+                if (bot.IsAlive)
+                {
+                    Say(client, $"{who} is alive. /lstest deathanim kills it first.");
+                    return;
+                }
+                // As a Resurrect spell does (ResurrectSpellHandler.ResurrectLiving): health, then the move to the caster.
+                Say(client, $"Raising {who} at your side, as a rez does. Look where it fell: no body should stay there, and it should stand next to you.");
+                bot.Health = bot.MaxHealth;
+                bot.Mana = bot.MaxMana;
+                bot.Endurance = bot.MaxEndurance;
+                bot.MoveTo(gm.CurrentRegionID, gm.X, gm.Y, gm.Z, gm.Heading);
+                bot.OnResurrectedBy(gm);
+                return;
+            case "release":
+                if (bot.IsAlive)
+                {
+                    Say(client, $"{who} is alive. /lstest deathanim kills it first.");
+                    return;
+                }
+                Say(client, $"Releasing {who}: nothing should be sent for the spot where it fell, and it should appear standing at its bind (no second body).");
+                if (!bot.ReleaseNow())
+                    Say(client, "The release did not happen now (no destination yet); its own timer tries again.");
+                return;
+            case "":
+                if (bot.IsAlive)
+                {
+                    Say(client, $"Killing {who}. In the original client it should fall and lie as a monster's corpse does. Every packet about it to your client follows (2 minutes, /lstest deathanim off stops it).");
+                    bot.Health = 0;
+                    bot.Die(null);
+                }
+                else
+                {
+                    // Dead already (perhaps with the setting off at its death): the death's own step again.
+                    Say(client, $"{who} is dead: showing its fall again to the original clients near it. Packets follow.");
+                    BotDeathAnimation.OnDied(bot);
+                }
+                Say(client, "Then: /lstest deathanim raise (as a rez) or /lstest deathanim release (to its bind).");
+                return;
+            default:
+                Say(client, "/lstest deathanim [raise | release | rez | off]");
+                return;
+        }
+    }
+
+    /// <summary>/lstest deathanim rez (1.2.1, BotCorpseTargeting): the GM casts a resurrection the way a player's cast goes
+    /// (GamePlayer.CastSpell, CastingComponent, SpellHandler.CheckBeginCast) with whatever the GM has selected, so with nothing
+    /// dead selected the server picks the corpse: the bot named with /target, else a groupmate, else the nearest. The spell is
+    /// built here, as Perfect Recovery's is, so a GM of any class can check it (the playtester's bot-rez scenario).</summary>
+    private static void Rez(GameClient client, GamePlayer gm)
+    {
+        DOL.Database.DbSpell rez = new()
+        {
+            Name = "Living Server test resurrection",
+            ClientEffect = 7019,
+            Target = eSpellTarget.CORPSE.ToString(),
+            Type = eSpellType.Resurrect.ToString(),
+            Range = 1500,
+            CastTime = 0,
+            RecastDelay = 0,
+            Power = 0,
+            ResurrectHealth = 100,
+            ResurrectMana = 100,
+        };
+        GameLiving selected = gm.TargetObject as GameLiving;
+        Say(client, selected != null && !selected.IsAlive
+            ? $"Casting a resurrection on your dead target {selected.Name}."
+            : "Casting a resurrection with nothing dead selected: the server picks the corpse.");
+        if (!gm.CastSpell(new Spell(rez, gm.Level), GlobalSpellsLines.RealmSpellsSpellLine))
+            Say(client, "The cast was refused.");
     }
 
     private static void Scene(GameClient client, eRealm realm, string topic, string what)
@@ -283,7 +388,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
         $"  voices {OnOff(AutonomousBotVoices.Enabled)}, debates {OnOff(AutonomousBotDebates.Enabled)}, tells {OnOff(Properties.BOT_VOICES_TELLS)}, memory {OnOff(AutonomousLivingServer.MemoryOn)}",
         $"  deeds {OnOff(Properties.BOT_LIVING_DEEDS)}, storylines {OnOff(Properties.BOT_LIVING_STORYLINES)}, spammers and roleplayers {OnOff(Properties.BOT_LIVING_CHARACTERS)}, rumours {OnOff(Properties.BOT_LIVING_RUMOURS)}",
         $"  tales {OnOff(Properties.BOT_LIVING_TALES)}, tale raids {OnOff(Properties.BOT_LIVING_TALE_RAIDS)}, beggars {OnOff(Properties.BOT_LIVING_BEGGARS)}, bonds {OnOff(Properties.BOT_GROUP_BONDS)}",
-        $"  atmosphere lines {OnOff(Properties.LIVING_ATMOSPHERE_LINES)}, cosmetics {OnOff(Properties.BOT_COSMETICS)}",
+        $"  atmosphere lines {OnOff(Properties.LIVING_ATMOSPHERE_LINES)}, cosmetics {OnOff(Properties.BOT_COSMETICS)}, death fall {OnOff(BotDeathAnimation.On)}",
         $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), " +
         $"leeroy {OnOff(AutonomousRaidLeeroy.On)}{(AutonomousRaidLeeroy.ChargeNowArmed ? " (a \"now\" is armed)" : "")}",
         BotPeopleTest.ListLine(BotPeopleSwitches.Current),

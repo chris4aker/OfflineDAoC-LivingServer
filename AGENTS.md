@@ -1,24 +1,24 @@
 # Offline DAoC — instructions for AI assistants and developers
 
-Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). This file is also loaded by
+Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
 Claude Code as `CLAUDE.md`.
 
 ## What this is
 
-Offline DAoC is a single-player DAoC server (OpenDAoC fork, .NET 10, SQLite) with autonomous
-gamebots, companion bots and a Windows launcher. The current release is **0.37**, the first one
-shipped as an **update** to the 0.36 base (0.36 / 0.36b / 0.36c stay the full downloads). It comes in
-three editions:
-- **0.37b:** the custom Hibernian Sluaghbinder class is on.
-- **0.37:** the class is off. The server setting `classes / enable_sluaghbinder` is `False`, and
-  the client is the 0.37b `game.dll` without its two Sluaghbinder patches.
-- **0.37c:** the 0.37b or 0.37 game plus the **new client** (Godot 4, C#) in `new-client\`. Its launcher
-  runs that game's own server, so both clients share one account, bot roster and world. On a 0.37
-  game the launcher starts it with `--custom-class=off` and it offers the classic classes only.
+Offline DAoC Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
+gamebots, companion bots and a Windows launcher. It is its own repository, owned by the project owner, not a fork.
+Releases are numbered **1.x** (1.2 is out, 1.2.1 is next) and ship one edition: the classic classes on the
+**original game client** (`LivingServer-Setup-<version>.exe` and `OfflineDAoC-LivingServer-<version>.zip`).
 
-From 0.37 on a version is a game patch (both editions) plus a new-client patch, built by
-`source/tools/make_patch.py` against `source/tools/release-baselines/0.36/` and applied by
-`source/tools/OfflineDaoc.Patcher` (see [release-baselines/README.md](source/tools/release-baselines/README.md)).
+**One edition from now on** (owner, 2026-11-22: "I will support players who already installed the B and C with basic
+fixes but I don't want to manage the custom class or incomplete Godot transfer. Everything new moves on as its own
+original client version, and I'm about to leave the .37 in the past"):
+- **New work targets the original client only.** No new features for the custom Sluaghbinder class (the old "b"
+  edition) or the new Godot client (the old "c" edition), and no new work that needs either.
+- **Existing b and c installs get basic fixes only:** crashes, data safety and anything that would break their
+  saves. Their code stays in the repository so those players keep working; don't delete it, don't extend it.
+- **The 0.3x line is history.** 0.37 / 0.37b / 0.37c and earlier stay available as legacy releases (see "Keep the old
+  releases"), and their pipelines (`*_037.py`, `make_patch.py`, `release-baselines/`) are kept for reference.
 
 ## Layout
 
@@ -76,8 +76,9 @@ In a playable folder:
     only where the row still holds the untouched old default.
   - Only these stay off: diagnostics and verbose log switches, test-only switches, anything this file forbids
     shipping, anything that changes the gameplay rules above, the classic rule options (power halving, secondary caps,
-    classic quality and losses) and the owner's epic encounter options. The Sluaghbinder edition switch stays
-    edition-specific.
+    classic quality and losses), the owner's epic encounter options and the bot schedule (`bot_schedule_mode` off: the
+    whole roster online; owner, 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is
+    off by default"). The Sluaghbinder edition switch stays edition-specific.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**
@@ -118,6 +119,19 @@ In a playable folder:
 - **Item model chain:** `objects.csv` model ID → `items.csv` row → `items/<nif>`.
   - Shields that carry an emblem take their base texture from a `pskins.csv` override.
   - `tools/pet-art/nif4_geom.py` reads the old 4.x item NIFs that pyffi can't.
+- **Lore (1.2.1 on):** before editing anything under `source/server/GameServer/bots/autonomous/data/lore/`, read
+  [docs/1.2.1/HEROES.md](docs/1.2.1/HEROES.md) and [docs/1.2.1/HANDOFF.md](docs/1.2.1/HANDOFF.md). The owner's rules
+  (2026-11-20):
+  - Never trim lore; elaborate it.
+  - Each realm's heroes are its real folklore legends, told about as legends, never present-day characters or bots.
+  - Arthur rides with his named knights in legend-age stories, and Midgard and Hibernia do the same with their own
+    legend companies.
+  - DAoC server names don't matter.
+  - Present-day friars and captains may keep a name where it adds gravity, and the 12-mention cap still holds.
+  - `tools/lore/lint_lore.py` and `tools/lore/name_counts.py` enforce the mechanical rules in CI.
+  - No game terms and no real companies in any player-visible lore, fight advice included (owner, 2026-11-21;
+    `tools/lore/fourth_wall.py`, strict in CI). Without dotnet, run `python3 tools/lore/schema_mirror.py` for the C# schema
+    checks (`UT_LoreBible`).
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
   catalog rules (no blank lines, terminators, Expansion Only, ID order), confirmed and unconfirmed

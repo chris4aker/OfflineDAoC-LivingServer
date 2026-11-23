@@ -19,7 +19,7 @@
     }
   ],
   "story": "When the Seelie and Unseelie courts bargained in the Cursed Forest, they bargained in horses as well as in everything else, because a court's horses are its pride, and when the bargain broke the horses were part of what broke. The Seelie took theirs home across the Veil. The Unseelie left three behind in the wood, the bards of Lough Gur say, as a debt they did not mean to pay, and two of them are the supernatural stallions that still run the forest's glades. The third is Shadowgnash.\n\nHe is black, and not the black of a horse's coat but the black of the space under a door, and he does not cast a shadow of his own. The forest folk say that is because he eats them. His name in the wood's speech is the shadow-biter, and the people who live on the forest's edge have watched him at dusk, when the shadows are longest, put his head down to the ground and tear at the long shadow of a tree as a horse tears grass, and the tree's shadow is shorter afterwards. He has done it to men. The Cursed Forest has a handful of people who walk about the edge villages without shadows, and the edge folk will not stand near them, and they do not talk about how it happened.\n\nThe Juggernaut is the debt of the broken bargain with legs, the druids of Lough Gur say; Shadowgnash is a debt with teeth. He belongs to the Unseelie still, and he is waiting for them to come back for him, and in the meantime he grazes. The edge villagers keep a custom that every Hibernian who goes into the Cursed Forest is told about: walk with the sun behind you, so that your shadow goes ahead where you can see it. If it gets shorter, run.",
-  "legend": "Shadowgnash is a level 58 black stallion in the Cursed Forest (about 481k/501k) with a 10-minute respawn. Plain mob, no script: a straight melee fight for a strong 50s group. The two supernatural stallions (48-52) share his model and run the same woods, so do not confuse them or chain them. The Cursed Forest is full of big named (Juggernaut, Green Maw, Giant Caithor, the Faerie Queen's court), so check your path. Edge-village superstition: walk with the sun behind you and watch your shadow. With the long respawn, a group that wipes should not expect a quick second try on the same visit.",
+  "legend": "Shadowgnash is a black stallion, a foe for the realm's best, a full band of them, in the Cursed Forest (about 481k/501k), who returns ten minutes after he falls. A plain beast, no tricks: a straight melee fight for a strong band of the realm's best. The two supernatural stallions (from hardened bands' foes to the realm's best's) look just like him and run the same woods, so do not confuse them or chain them. The Cursed Forest is full of big foes of name (Juggernaut, Green Maw, Giant Caithor, the Faerie Queen's court), so check your path. Edge-village superstition: walk with the sun behind you and watch your shadow. Since he is long in coming back, a band that falls should not expect a quick second try on the same visit.",
   "yells": {
     "aggro": [
       "(a black stallion with no shadow lowers its head)",
@@ -57,22 +57,22 @@
   },
   "botLines": {
     "briefing": [
-      "shadowgnash is a 58 black stallion in the cursed forest. [plain mob|no script]",
-      "10 min respawn. [one shot|get it right]",
-      "dont chain the supernatural stallions. [same model|48-52]",
-      "check your path, cursed forest is full of big named"
+      "shadowgnash is a big black stallion in the cursed forest. [plain fight|no tricks]",
+      "back 10 min after he drops. [one shot|get it right]",
+      "dont chain the supernatural stallions. [they look the same|weaker but they join]",
+      "check your path, cursed forest is full of big foes of name"
     ],
     "aftermathWin": [
       "shadowgnash down. [the shadow biter|got him]",
-      "didnt pull the stallions. [clean|nice]",
+      "didnt draw the stallions. [clean|nice]",
       "my shadow is still the right length lol",
       "one debt paid"
     ],
     "aftermathLoss": [
-      "pulled a stallion too. [ugh|oops]",
+      "drew a stallion too. [ugh|oops]",
       "wandered into green maw's patch. [no|run]",
-      "group too low for 58",
-      "tank got bitten. [ouch|heavy]"
+      "group too green for shadowgnash",
+      "shield got bitten. [ouch|heavy]"
     ],
     "rumour": [
       "[heard|someone said] shadowgnash eats shadows. [theres people on the forest edge without one|creepy]",

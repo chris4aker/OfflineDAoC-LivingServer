@@ -56,7 +56,7 @@
     }
   ],
   "story": "Gunnolf is the battle-wolf, and the oldest story about him is the one Svarhamr's beam tells. In the first winters of her court, a single armguard ran from the dragon's hollow and came back before the hour was out with the whole western camp behind him, and Gunnolf of the drakulv at its head. Afterwards Gunnolf told her that his people would come to her hollow when she called them herself, and not when a runner did. She has never once called them herself.\n\nThe svartalfar say the hollow answered the refusal the only way a court can answer a captain it cannot spare. It did not take his name away; a name is given with work, and Gunnolf had not stopped working. It gave the name again. A second drakulv in the east was made Gunnolf, with armguards of his own and the western lookout to be his eyes, to keep a holding that would come when a runner came. Since that winter there have been two Gunnolfs in Malmohus: one the hollow made and one who made himself, and the drakulv of the old west, who tell the difference with their teeth, never confuse them.\n\nThe Gunnolf of the west keeps his fires near the western altars, among the flies, with the old west around him. He dislikes the firstborn. The svartalfar say Yar's camps in the south-west are Yar's and not the court's, and that Gunnolf, whose holding is the court's and nobody else's, finds that harder to forgive than any runner. The Gunnolf of the east keeps his armguards near the eastern Arnulv and answers whatever the hollow sends. Midgard's scouts say he is the more dangerous of the two, because he is the one who comes when called; the old west says he is not dangerous at all, only obedient, which in the drakulv growl is a different word.\n\nIn Vindsaul Faste, far to the north, there is a shadowblade trainer of the same name who has nothing to do with any of this, and who is tired of being asked.",
-  "legend": "Two drakulv Gunnolfs are up in Malmohus, both 50: the west one near swarms of flies close to Ljornrn's altars, the east one with a couple of drakulv armguards about 1,500 from the eastern Arnulv. Plain drakulv, no abilities, not CC-immune, Pack Drakulv so whatever's next to them comes. The east one is the one with friends. They are NOT the Gunnolf of the hunter epic The War Continues: that Gunnolf is the Shadowblade trainer in Vindsaul Faste, West Svealand. Don't go to Malmohus looking for him. The western one is the easier kill, but check for Ljornrn's snarlers first.",
+  "legend": "Two drakulv Gunnolfs stand in Malmohus at once, both a foe for the realm's best, a full band of them: the west one near swarms of flies close to Ljornrn's altars, the east one with a couple of drakulv armguards fifty paces from the eastern Arnulv. Plain drakulv, no tricks, charms, trances and stuns hold them, and they're of the drakulv pack, so whatever's next to them comes. The east one is the one with friends. They are NOT the Gunnolf of the hunters' great quest The War Continues: that Gunnolf is the Shadowblade trainer in Vindsaul Faste, West Svealand. Don't go to Malmohus looking for him. The western one is the easier kill, but check for Ljornrn's snarlers first.",
   "yells": {
     "aggro": [
       "Did the hollow send you? I do not answer what the hollow sends.",
@@ -94,19 +94,19 @@
   },
   "botLines": {
     "briefing": [
-      "two gunnolfs, both 50, one west by the altars one east with armguards",
+      "two gunnolfs, both a fight for the realm's best, one west by the altars one east with armguards",
       "east one brings his armguards",
-      "plain drakulv, mez works",
-      "these are not the hunter epic gunnolf, thats the shadowblade trainer in vindsaul faste"
+      "plain drakulv, trances work",
+      "these are not the gunnolf of the hunters' quest, thats the shadowblade trainer in vindsaul faste"
     ],
     "aftermathWin": [
       "gunnolf down, the old west one",
       "the east one brought two armguards, fine",
-      "easy 50",
+      "easy one",
       "svarhamr will cut that"
     ],
     "aftermathLoss": [
-      "thought this was the epic gunnolf, wrong zone entirely",
+      "thought this was the quest gunnolf, wrong country entirely",
       "the east armguards came",
       "dragged it into ljornrns altars",
       "arnulv joined too"
@@ -122,7 +122,7 @@
     "keyword": "Gunnolf",
     "text": "The battle-wolf of the old west, who refused the hollow's runners; the hollow gave his name again to an eastern captain who would answer. He dislikes [Yar]. The runner [Steinolf] came of it. See [the names]."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Gunnolf's is the first name on the beam that is not Yar's or the dragon's own, and it is the only name with a second line beside it that starts later. My teacher's teacher cut the first line when the western camps came running behind one armguard. The second line starts on the winter of the refusal. She put no crack sign at the start of it, as she did for the eagle-wolf, and I asked her why. She said: because it is not a crack. It is a copy, and the drakulv of the old west will tell you so.",
+  "bookPage": "Gunnolf's is the first name on the beam that is not Yar's or the dragon's own, by the readings of Brisa the beam-cutter of Svarhamr, and it is the only name with a second line beside it that starts later. My teacher's teacher cut the first line when the western camps came running behind one armguard. The second line starts on the winter of the refusal. She put no crack sign at the start of it, as she did for the eagle-wolf, and I asked her why. She said: because it is not a crack. It is a copy, and the drakulv of the old west will tell you so.",
   "chronicle": {
     "win": "{raidLeader} of {realm} cut down a Gunnolf in Malmohus in {minutes} minutes. The old west still answers no runner.",
     "loss": "Gunnolf's camp held off {raidLeader}'s party from {realm} for {minutes} minutes."

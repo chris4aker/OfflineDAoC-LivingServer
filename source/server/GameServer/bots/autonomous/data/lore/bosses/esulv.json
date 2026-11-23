@@ -21,10 +21,15 @@
       "text": "Esulv as the ash-wolf of the western camps is Living Server lore; the name's meaning is to verify.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_midgard.lines"
+    },
+    {
+      "text": "Brisa's beam of the fires and the night of the storm are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Esulv is the ash-wolf. The beam-cutters of Svarhamr read the name as ash and wolf, after the grey of the western camps where the drakulv burn what they do not eat, and the drakulv who holds it keeps those fires. He stands alone on the west side of the ruins, away from the patrols, and the smoke of the camps goes past him to the north, toward Skona, where the werewolves can smell it.\n\nBrisa of Svarhamr says the western fires were lit after the werewolves' king refused the dragon, so that the varulv would know every night that the drakulv were still there. Esulv keeps them lit. He does not hunt with the others. He feeds the fires, and he fights all who come to put them out, which is to say all who come. The svartalfar cut his name on the beam with a mark beside it that means smoke.",
-  "legend": "Esulv is a level 47 named drakulv alone in west Malmohus, near the western camps. Pack Drakulv faction, but nothing of his pack stands right next to him, so he's usually a clean pull. No spells. Good warm-up named for a group heading deeper into Malmohus. The western camps behind him are full of drakulv, so don't chase him into the smoke. Respawn is the usual named timer.",
+  "story": "Esulv is the ash-wolf. The beam-cutters of Svarhamr read the name as ash and wolf, after the grey of the western camps where the drakulv burn what they do not eat, and the drakulv who holds it keeps those fires. He stands alone on the west side of the ruins, away from the patrols, and the smoke of the camps goes past him to the north, toward Skona, where the werewolves can smell it.\n\nBrisa of Svarhamr says the western fires were lit after the werewolves' king refused the dragon, so that the varulv would know every night that the drakulv were still there. Esulv keeps them lit. He does not hunt with the others. He feeds the fires, and he fights all who come to put them out, which is to say all who come. The svartalfar cut his name on the beam with a mark beside it that means smoke.\n\nBrisa keeps a count of the fires on a beam of her own, a notch for each night they burn, and the beam is full. Only once, she says, did the western fires go out. A storm came over Malmohus out of the north with rain enough to drown the ruins, and the camps went dark one after another, and in the morning the beam-cutters went up on the west wall to look. Esulv was going from fire to fire in the wet with a burning brand in his jaws, and the hair along his back was singed to the skin, and by noon every fire was lit again. The svartalfar recut the smoke mark beside his name that day, deeper.",
+  "legend": "Esulv is a known drakulv, a foe for a hardened band of veterans, alone in west Malmohus, near the western camps. He's of the drakulv pack, but nothing of his pack stands right next to him, so he's usually a clean draw. No spells. A good first fight for a group heading deeper into Malmohus. The western camps behind him are full of drakulv, so don't chase him into the smoke. He rises again after the usual wait for his kind.",
   "yells": {
     "aggro": [
       "(Smoke and teeth.)",
@@ -44,8 +49,8 @@
   },
   "botLines": {
     "briefing": [
-      "esulv is the 47 named drakulv alone in west malmohus",
-      "clean pull, no camp next to him"
+      "esulv is the hardened-band drakulv alone in west malmohus",
+      "clean draw, no camp next to him"
     ],
     "aftermathWin": [
       "esulv down",

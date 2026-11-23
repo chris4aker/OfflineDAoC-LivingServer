@@ -1,0 +1,18 @@
+{
+ "id": "albion",
+ "realm": "Albion",
+ "eras": [
+  {
+   "id": "a"
+  },
+  {
+   "id": "b"
+  },
+  "not an object"
+ ],
+ "factions": [
+  {
+   "id": "f"
+  }
+ ]
+}

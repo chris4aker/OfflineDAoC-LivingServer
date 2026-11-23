@@ -17,10 +17,20 @@
       "text": "In the Ulster Cycle Ailbe is the great hound of Mac Dathó, whom the kings of Ulster and Connacht fought over at his feast.",
       "provenance": "myth",
       "source": "https://en.wikipedia.org/wiki/Sc%C3%A9la_Mucce_Meic_Dath%C3%B3"
+    },
+    {
+      "text": "In Scéla Mucce Meic Dathó (The Tale of Mac Dathó's Pig) Mac Dathó promises his hound Ailbe to both Ulster and Connacht and invites both to one feast; Cet mac Mágach claims the carving of the pig by shaming the Ulstermen until Conall Cernach arrives, and when Cet says his brother Anlúan would match him, Conall throws Anlúan's head at him. Conall gives the Connachtmen only the forelegs (the two forequarters), fighting breaks out, the hound is loosed, chooses Ulster, seizes the pole of Ailill and Medb's chariot, and is killed by their charioteer Fer Loga on the plain named Mag nAilbe after it; its head stays on the pole until it falls at the ford afterwards named for the hound's head.",
+      "provenance": "myth",
+      "source": "Scéla Mucce Meic Dathó (Ulster Cycle, public domain)"
+    },
+    {
+      "text": "Living Server lore: the lake harpers of Lough Gur singing the feast-tale whole.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Ailbe is the largest of the deamhan hounds of Lough Gur's southern hills, and the lake folk named it after the hound of the old feast-tale, the one the kings of two provinces wanted so badly that their men fought over it across the hall and the hound chose a side and was killed on the road home. The lake folk say this Ailbe also chose a side. It runs with the deamhan of the air in the hills above the queen's door, and hunts whatever comes up from the lake.\n\nThe harpers of Innis Carthaig say it hunts for the queen who weeps by the door, the Melancholic Fairy Queen, and that it brings her what it catches, and that she does not want it. The hunters of the lake say it is only a hound. Both agree it is the reason no one walks the southern hills alone after dark.",
-  "legend": "Ailbe (38) is a big named deamhan hound in the southern hills of Lough Gur (about 326k/738k), among deamhan aeir (34-38) and deamhan hounds (41-45). The hounds around it are higher level than Ailbe, so watch the pull. A group of 40ish. Plain spawn, 10-minute respawn. Come in from the north, away from the queen's door, so the melancholic fairies (45-50) of the south-west hills stay out of it. Not part of any quest; it is just a big dog with a long respawn.",
+  "story": "Ailbe is the largest of the deamhan hounds of Lough Gur's southern hills, and the lake folk named it after the hound of the old feast-tale, the one the kings of two provinces wanted so badly that their men fought over it across the hall and the hound chose a side and was killed on the road home.\n\nThe lake harpers still sing that feast-tale whole. The hound belonged to Mac Dathó of Leinster and guarded his whole province, and when the king of Ulster and the king and queen of Connacht both sent to ask for it, he promised it to each of them and asked both to the same feast. The pig he killed for them had been fattened seven years, and the champions of the two provinces quarrelled over the carving of it with boasts. Cet mac Mágach of Connacht shamed every Ulsterman who stood up to claim the knife, one after another, until Conall Cernach came in at the door. Cet gave way to him, and said only that his brother Anlúan would have stood against him if he were in the house. The Ulsterman answered that Anlúan was in the house, took Anlúan's head from his belt and threw it against Cet's chest. He carved, and gave Connacht the forelegs, and the hall broke into blows that spilled out of the doors. Mac Dathó let the hound loose to see whose it would be. It chose Ulster and ran down the Connacht chariots on the road west, until it had the pole of the king and queen's own chariot in its jaws, and their charioteer struck its body away from its head on the plain that has been called the plain of Ailbe ever since. The head hung on to the pole as far as a ford further west, where it fell at last, and the ford was named for the hound's head.\n\nThe lake folk say this Ailbe also chose a side. It runs with the deamhan of the air in the hills above the queen's door, and hunts whatever comes up from the lake.\n\nThe harpers of Innis Carthaig say it hunts for the queen who weeps by the door, the Melancholic Fairy Queen, and that it brings her what it catches, and that she does not want it. The hunters of the lake say it is only a hound. Both agree it is the reason no one walks the southern hills alone after dark.",
+  "legend": "Ailbe, a foe for a hardened band of veterans, is a big deamhan hound of some renown in the southern hills of Lough Gur (about 326k/738k), among deamhan aeir (a seasoned band's foes, some as strong as Ailbe) and deamhan hounds (stronger than Ailbe, still a hardened band's foes). The hounds around it are stronger than Ailbe, so watch what you draw. A hardened band of veterans is enough. A plain beast; it returns ten minutes after it falls. Come in from the north, away from the queen's door, so the melancholic fairies of the south-west hills (a hardened band's foes, the worst of them for the realm's best) stay out of it. Not part of any quest; it is just a big dog that is a long time coming back.",
   "yells": {
     "aggro": [
       "(a great hound bays in the southern hills)",
@@ -43,15 +53,15 @@
   },
   "botLines": {
     "briefing": [
-      "ailbe is a 38 deamhan hound in the south hills",
-      "the deamhan hounds around are 41-45, careful"
+      "ailbe is a big deamhan hound in the south hills, a hardened band can take him",
+      "the deamhan hounds around are tougher than he is, careful"
     ],
     "aftermathWin": [
       "ailbe down. [big dog|grats]",
       "no hounds joined. [lucky|nice]"
     ],
     "aftermathLoss": [
-      "hounds piled in. [41-45|rip]",
+      "hounds piled in. [tougher than him|rip]",
       "got chased off the hill. [lol|ouch]"
     ],
     "rumour": [
@@ -61,7 +71,7 @@
   },
   "loremasterTopic": {
     "keyword": "Ailbe",
-    "text": "The great deamhan hound of Lough Gur's southern hills, named for the hound of the old feast-tale. The harpers say it hunts for the weeping queen, who does not want what it brings."
+    "text": "The great deamhan hound of Lough Gur's southern hills, named for the hound of the old feast-tale: Mac Dathó's hound, which chose Ulster the night Conall Cernach carved the pig, and died on the plain that keeps its name. The harpers say it hunts for the weeping queen, who does not want what it brings."
   },
   "bookPage": "",
   "chronicle": {

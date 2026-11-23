@@ -55,7 +55,7 @@
   },
   {
    "text": "Allakhazam's bestiary lists Duke Zepor among the dukes of Darkness Falls.",
-   "provenance": "mythic",
+   "provenance": "legend",
    "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
   },
   {
@@ -103,7 +103,7 @@
   }
  ],
  "story": "Duke Zepor is the only duke who began as a Chthonic Knight, and he still wears the knights' shape. He was sworn among the first in Prince Abdin's chapter house, to the deep earth, to hold what is taken whole and to go down rather than give ground, and he made his name by never giving any. In the Second Roll the order sent him east to the first garrison of the East Ward, where High Lord Saeor, who grows fat on the strength of whatever he kills, noticed him. Saeor sent for him three times; the third time, in the Sixth Roll, he went.\n\nNobody knows what Saeor offered. The knights say strength, the Mutilators say a seat, the Inquisitors who examined him will not say. A knight who kneels to anyone but his prince has broken his oath, and Abdin demanded he be struck off. Adremal ruled that leaving a prince's order for a high lord is rising above one's place, not falling, and cut him a new line as Duke of Saeor's household: the only line ever cut by promoting a demon so the court would not kill it. Abdin has not walked down the approach since.\n\nThe knights call him the Oathbreaker and send a champion east every Roll to fight him to the yield. Eleven have come, none has yielded, and neither has he, so all eleven went down. The East Ward's knights will not stand near Saeor's door, and Bimure has had to move their posts.\n\nHe serves at Saeor's table, cutting down what comes into the hall where his lord can reach it, with Earl Oraxus and Marquis Almen. Albion's knights look at him as at a hanged deserter; Midgard's huscarls think less of Saeor for taking him; Hibernia's champions call him a broken geis and try to make him give ground.",
- "legend": "Zepor stands in front of High Lord Saeor's hall at the far east, with Earl Oraxus and Marquis Almen close by. He is the lowest duke at 64 and uses a Chthonic Knight's body, so do not let the 'duke' scare you. No script. The danger is Saeor: the high lord heals by the full health of every player he kills, so nobody may die to him, and you want Zepor, Oraxus and Almen dead and out of the way before anyone goes near him, and then the whole raid on Saeor at once. For Hibernia this is near your stair, so it is often an early stop. People call Zepor the Oathbreaker and say the knights in the East Ward will not stand near him. The East Ward's camps stand further west; leave them for later and do not drag Zepor into them.",
+ "legend": "Zepor stands in front of High Lord Saeor's hall at the far east, with Earl Oraxus and Marquis Almen close by. He is the weakest duke, a foe for several bands of any realm's best together, and wears a Chthonic Knight's body, so do not let the 'duke' scare you. No tricks. The danger is Saeor: the high lord heals by the whole strength of everyone he kills, so nobody may die to him, and you want Zepor, Oraxus and Almen dead and out of the way before anyone goes near him, and then the whole raid on Saeor at once. For Hibernia this is near your stair, so it is often an early stop. People call Zepor the Oathbreaker and say the knights in the East Ward will not stand near him. The East Ward's camps stand further west; leave them for later and do not drag Zepor into them.",
  "yells": {
   "aggro": [
    "Not one step. I have not given one since the First Roll.",
@@ -143,7 +143,7 @@
  "botLines": {
   "briefing": [
    "zepor, oraxus, almen first. [then saeor|saeor last] and the whole raid on him",
-   "zepor is 64 in a knight body. [easy duke|softest duke], no tricks",
+   "zepor is the weakest duke, in a knight body. [easy duke|softest duke], no tricks",
    "keep zepor away from saeor, [saeor heals off every kill|nobody dies to saeor]",
    "hibs, this ones near our stair. [quick one|early stop]"
   ],
@@ -155,9 +155,9 @@
   ],
   "aftermathLoss": [
    "saeor came in with zepor. [healed off our dead|people died and he healed]",
-   "dragged zepor into the east ward camps, [wipe|bad pull]",
-   "the oathbreaker got us. [regroup|rez]",
-   "too close to saeor. [pull zepor out next time|pull him back]"
+   "dragged zepor into the east ward camps, [everyone down|bad draw]",
+   "the oathbreaker got us. [regroup|raise the fallen]",
+   "too close to saeor. [draw zepor out next time|draw him back]"
   ],
   "rumour": [
    "[heard|word is] zepor was a chthonic knight who broke his oath and became a duke",
@@ -172,7 +172,6 @@
  },
  "bookPage": "From The Chapter Roll of the Deep Earth, as a Midgard prisoner heard the knights recite it in their house: They say the names of their champions who went east, one each Roll since the sixth, standing in a ring with their swords point down in the floor. They say each name and then the same words after it: he did not give ground. Eleven names, eleven times. Then they say a twelfth name, and after it they say nothing. I asked the officer among them, the one who belongs to the Marshal, whose name that was. He said it was the Oathbreaker's.",
  "bookPages": [
-  "From The Chapter Roll of the Deep Earth, as a Midgard prisoner heard the knights recite it in their house: They say the names of their champions who went east, one each Roll since the sixth, standing in a ring with their swords point down in the floor. They say each name and then the same words after it: he did not give ground. Eleven names, eleven times. Then they say a twelfth name, and after it they say nothing. I asked the officer among them, the one who belongs to the Marshal, whose name that was. He said it was the Oathbreaker's.",
   "The prisoner went on: The officer told me more than he meant to, because he was bored, I think, and I was in a cage and of no account. He said the twelfth name is said because the Oathbreaker was sworn in this house, and the oath to the deep earth cannot be unsworn, only broken. He said the knights believe the Oathbreaker keeps the half of his oath he did not break, which is not giving ground, and that this is why none of their champions can make him yield. He said he had written to his Marshal that the feud would end only when the deep earth itself decided who was right."
  ],
  "chronicle": {

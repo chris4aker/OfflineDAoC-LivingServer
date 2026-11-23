@@ -1,0 +1,83 @@
+{
+ "id": "no-book",
+ "name": "No Book",
+ "realm": "Hibernia",
+ "story": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "legend": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word",
+ "facts": [
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  },
+  {
+   "text": "a fact",
+   "provenance": "original"
+  }
+ ],
+ "atmosphere": {
+  "firstEntry": [
+   "l",
+   "l",
+   "l",
+   "l"
+  ],
+  "areas": [
+   {},
+   {}
+  ]
+ },
+ "botLines": {
+  "lore": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "rumour": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ],
+  "tell": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ "loremaster": "not an object",
+ "era": "e",
+ "factions": [
+  "f"
+ ]
+}

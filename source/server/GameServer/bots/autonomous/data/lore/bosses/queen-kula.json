@@ -68,7 +68,7 @@
     },
     {
       "text": "Allakhazam lists her at level 85 in Tuscaren Glacier; her drops are Ice Queen crowns.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/6074"
     },
     {
@@ -95,6 +95,11 @@
       "text": "The original script's twin heal (damage to one twin heals the other) and Kula's frozen circle are both on for Living Server's bot raids since 1.2.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The book pages after the first (the end of the song of Bergljot's hundred, Thurid's telling and Dellingstad's stones at the south lip) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server lore, epic book pages (issue #402)"
     }
   ],
   "story": "Queen Kula is the youngest and coldest of Bergelmir's line, the skalds say, the rime-giant who stayed in the north when her brothers went south. The accounts of why differ: Jordheim says she wanted endless winter, the cast-out hrimthursa sculptors say she was left behind, and the iarn dwarves say she was sent. She found a dragon dead in the ice of Delling Crater, so vast that nothing could thaw it, and raised Tuscaran's citadel on its bones with her icesplitters and sculptors, cutting around the sleeper Fornfrusenen in the north wall. When a dead king's army came up from the south to take the bones, she stilled it with a touch and a breath of sleep, as she stilled the first enemies who reached her thrones, and gave it orders; Issorden keeps them.\n\nThe smith Tuscar came courting with an axe and she married him, and the two of them are bound so closely that a wound to one closes the other's. She made the Council to talk and the Icelords to fight, gave Vifil his keys, Hakr his iceweavers and Agmundr his seer, and ruled by one law: only the merciless live through a winter. Supplicants were dragged across the throne room to her feet, and so were the first enemies who reached her, until she tired of the gesture. And she kept in reserve a cold older than the gods, which the giants mockingly named Thor's Might; a little of it answers every wound, and when she is truly angry, or alone on the thrones, it answers often.\n\nWhen the morvalt rose and Midgard came to Aegir with the Valkyn, the realm climbed the glacier tunnel by tunnel. The first warband to reach the thrones, under Eyvind Hrafnsson, was told to its face that her guardians were useless, and lost. A hundred under Bergljot Steinsdottir of Bjarken won, and the queen's crown of ice hangs unmelted at Bjarken. She wants a winter over all Aegir; the dwarves say the glacier has grown in every year of her reign. When she dies, the throne room cracks, and the skalds say the ice remembers her name.",
@@ -125,14 +130,14 @@
     },
     {
       "title": "The Long Climb",
-      "text": "The next army was Midgard's. A Troll Father walked into Jordheim with the news that the morvalt had overrun Aegir, and Midgard sailed with the Valkyn to take the island back, and the warbands who came across Delling Crater looking for the morvalt found the glacier, and the giants in it, and decided to climb. The Klippa Vaktaren and the Vind Ryttaren of the island, the cliff-wardens and wind-riders, rewarded every giant killed, and the realm took the climb tunnel by tunnel.\n\nThe first warband to reach the thrones was led by Eyvind Hrafnsson, a skald-trained thane of Aegirhamn, with sixty behind him. They had come through the Council, and Fornfrusenen, and Agmundr's watch, and most of them were tired and some of them were already dead and carried. Kula looked at them from her throne and grinned, and told them what she thought of her own Hrimthursa guardians for letting them pass: useless and arrogant, every one. Then she told them what she had been wanting to teach someone for a long time: that the merciless who are not afraid of death will survive in this brutal world, and that she was merciless, and not afraid of death. She has not changed a word of it since. Eyvind's warband did not survive her. Its youngest skald, Ingunn, lay under her captain's shield until the thrones were quiet, and carried the words home.\n\nThe warbands that followed came bigger. In the second spring after Eyvind's death Jordheim sent a hundred, under Bergljot Steinsdottir of Bjarken, who had sat with Ingunn for a winter and knew every word the queen would say before she said it. What Bergljot did at the thrones she never told, and her skald sang only the end of it: the king fell first, and the queen, with her husband dead at her feet, rose up at her fullest as the giants had always said she would, and fell all the same. The warband came out of the glacier carrying a crown of ice, and did not speak for a long time, and Bergljot hung the crown in the hall at Bjarken, where it has not melted."
+      "text": "The next army was Midgard's. A Troll Father walked into Jordheim with the news that the morvalt had overrun Aegir, and Midgard sailed with the Valkyn to take the island back, and the warbands who came across Delling Crater looking for the morvalt found the glacier, and the giants in it, and decided to climb. The Klippa Vaktaren and the Vind Ryttaren of the island, the cliff-wardens and wind-riders, rewarded every giant killed, and the realm took the climb tunnel by tunnel.\n\nThe first warband to reach the thrones was led by Eyvind Hrafnsson, a skald-trained thane of Aegirhamn, with sixty behind him. They had come through the Council, and Fornfrusenen, and Agmundr's watch, and most of them were tired and some of them were already dead and carried. Kula looked at them from her throne and grinned, and told them what she thought of her own Hrimthursa guardians for letting them pass: useless and arrogant, every one. Then she told them what she had been wanting to teach someone for a long time: that the merciless who are not afraid of death will survive in this brutal world, and that she was merciless, and not afraid of death. She has not changed a word of it since. Eyvind's warband did not survive her. Its youngest skald, Thurid, lay under her captain's shield until the thrones were quiet, and carried the words home.\n\nThe warbands that followed came bigger. In the second spring after Eyvind's death Jordheim sent a hundred, under Bergljot Steinsdottir of Bjarken, who had sat with Thurid for a winter and knew every word the queen would say before she said it. What Bergljot did at the thrones she never told, and her skald sang only the end of it: the king fell first, and the queen, with her husband dead at her feet, rose up at her fullest as the giants had always said she would, and fell all the same. The warband came out of the glacier carrying a crown of ice, and did not speak for a long time, and Bergljot hung the crown in the hall at Bjarken, where it has not melted."
     },
     {
       "title": "The Winter She Wants",
       "text": "Kula has never hidden what she wants. She wants the world before the gods: white, still and endless. She cannot have all of it, so she takes what she can. The iarn dwarves of Faraheim, who have kept records on slates for longer than the giants have been on Aegir, say that Tuscaran Glacier has grown in every year of her reign, a little at a time, down the crater walls and out across the floor, and that Dellingstad has moved its outermost houses twice. They say the cold off the dragon's bones has spread into the Gripklosa Mountains, and that the snow on the high passes no longer melts in summer.\n\nThe three accounts of her coming give three ends to her story. The skalds of Jordheim say that if she is not stopped, the glacier will cover Aegir, and then the sea ice between Aegir and Midgard, and that one winter the people of Jordheim will look north and see it coming. The cast-out sculptors say she will never stop, because the brothers who left her behind are dead and she has nothing left to want but the cold. The iarn dwarves say the only question is what she is sitting on, and for whom, and whether it is waking.\n\nThe sculptors also tell one more thing, which none of the others tell. When she is killed, they say, the throne room cracks from end to end, the only crack in Tuscaran that the iceweavers cannot close by morning, and through it, for a moment, the cold of the dragon's bones breathes up into the hall. Then she is on her throne again, in a season or less, because the glacier will not let the queen of winter stay dead. The skalds who sing her end the song the same way: when she dies, the ice will remember her name. Then they look at the door, as if the ice might be listening."
     }
   ],
-  "legend": "The twins come together: touch one and the other is on you, so fight them both at the thrones and never drag them out, because past their spot they take no damage and walk home whole. Every raid leader kills Kula first, because a wound to either closes the other's, and leaves Tuscar to his own tank; the moment she is under half, Kula hits harder and her Thor's Might comes far more often. It is a single energy bolt on whoever she is hitting, from anywhere in the room, and it comes off the blows she takes, so the main tank eats it and the healers stay on him. She still pulls people to the throne, into the circle of frost before it, and whoever stands in the circle is rooted or put to sleep: step out and fight her from outside it. They also say she has never once looked at the King while fighting, and that if you watch closely when he dies, she smiles.",
+  "legend": "The twins come together: touch one and the other is on you, so fight them both at the thrones and never drag them out, because past their spot they take no damage and walk home whole. Every raid leader kills Kula first, because a wound to either closes the other's, and leaves Tuscar to his own shield-bearer; the moment she is under half her strength, Kula hits harder and her Thor's Might comes far more often. It is a single energy bolt on whoever she is hitting, from anywhere in the room, and it comes off the blows she takes, so the main shield-bearer eats it and the healers stay on him. She still drags people to the throne, into the circle of frost before it, and whoever stands in the circle is pinned to the ground or put to sleep: step out and fight her from outside it. They also say she has never once looked at the King while fighting, and that if you watch closely when he dies, she smiles.",
   "yells": {
     "aggro": [
       "You walked past my guardians. They will answer for that. You will answer to me.",
@@ -188,27 +193,27 @@
   },
   "botLines": {
     "briefing": [
-      "kula and tuscar come together, fight them at the thrones. everyone on kula, only his tank on tuscar. [healers|clerics] stay on the mts",
-      "once kula is under half or tuscar is dead her thors might comes way more often. its a bolt on whoever she is hitting, [heal her mt|keep her mt topped]",
-      "dont drag the twins out of the throne room. past their spot they take no damage and reset",
+      "kula and tuscar come together, fight at the thrones. everyone on kula, only his shield-bearer on tuscar. [healers|clerics] on the shield-bearers",
+      "once kula is under half or tuscar is dead her thors might comes way more often, a bolt on whoever she hits. [heal her shield-bearer|keep him topped]",
+      "dont drag the twins out of the throne room. past their spot they take no damage and go home whole",
       "kula hits harder when tuscar drops. [save the big heals|healers be ready] for that"
     ],
     "aftermathWin": [
       "kula down!! [first time|finally] i saw that throne empty",
-      "gg. the ice queen is dead. somebody grab a screenshot of that crown",
+      "well fought. the ice queen is dead. somebody sketch that crown for the hall",
       "kula's crown dropped. [who needs it|somebody roll]",
       "the throne room cracked when she died. [did you hear it|creepy]"
     ],
     "aftermathLoss": [
-      "kula at half just kept bolting her mt. we need more heals on him",
-      "[wiped|we wiped] at the thrones. tuscar went down and she just went nuts",
-      "we dragged them out of the throne room and they reset. [stay put|never again]",
-      "everyone stacked on tuscar's tank and the hammers did the rest",
+      "kula at half just kept bolting her shield-bearer. we need more heals on him",
+      "[all dead|we all died] at the thrones. tuscar went down and she just went nuts",
+      "we dragged them out of the throne room and they went home whole. [stay put|never again]",
+      "everyone stacked on tuscar's shield-bearer and the hammers did the rest",
       "kula at half with tuscar dead is just too much damage for our healers"
     ],
     "rumour": [
       "[they say|heard] kula built that whole citadel on a dragon's ribs. [nice seat|cold seat]",
-      "kula calls her own giants useless to your face. [imagine working for her|harsh boss]",
+      "kula calls her own giants useless to your face. [imagine working for her|harsh mistress]",
       "kula froze a whole army of skeletons and made them guards. [issorden|thats the east hall]",
       "they say kula smiled when tuscar died. [nice wife|ice queen indeed]"
     ]
@@ -218,6 +223,11 @@
     "text": "The coldest of Bergelmir's line, the skalds say. She built on a dead dragon so no summer could reach her, took [Tuscar] for husband and kept the throne. Her law is that only the merciless survive. Do not expect her to mourn him if he falls first; expect her to fight harder."
   },
   "bookPage": "From 'The Song of the Coldest Daughter', as a skald of Jordheim sings it, set down by Brother Arnulf. Bergelmir rode out the flood of Ymir's blood in a hollow tree, and his children were many, and they were cold. The eldest went south and were burned. The middle ones went east and were drowned. The youngest, Kula, stayed where the ice was, and walked north until she found a death so large that nothing would ever thaw it, and sat down on it. A smith came to her with an axe. She took the axe. A war came to her with an army of bone. She took the army. The skald says one day someone will come to her with nothing, and she will not know what to take.",
+  "bookPages": [
+    "The end of the song of Bergljot's hundred, which her skald sang in the hall at Bjarken and never sang the beginning of. Bergljot Steinsdottir, daughter of Stein of Bjarken, went up with a hundred in the second spring after Eyvind fell. What was done at the thrones is not in the song.\n\nThe smith fell first on the floor of the ribs;\nhis queen stood up at her whole strength.\nShe was merciless, and not afraid;\nshe fell all the same.\n\nThe warband came down the crater road carrying a crown of ice and did not speak until Dellingstad. At Dellingstad Bergljot asked for ale, and drank it, and said that Thurid had been right in every word, and that she had been glad of every word. Then she went to sleep for a day and a night.",
+    "Thurid, the youngest skald of Eyvind's warband, gave this telling, and it was set down at Aegirhamn: I lay under my captain's shield. She had put me there herself and lain on it. I saw the floor and the edge of the frozen circle and the queen's feet, and I heard everything. She grinned at us before she spoke. I could hear it in her voice. She told us her own giants were useless and arrogant for letting us pass, and she sounded pleased to say it. Then she told us that the merciless who are not afraid of death will live in this world, and that she was merciless, and not afraid. Then she dragged our people across the floor to her, one at a time. I heard each one go. When it was quiet I got up. My captain did not.",
+    "The stones of the south lip of Delling Crater, as the people of the outermost house of Dellingstad tell them to anyone who asks why the house has been moved. The stone the first fishers set at the foot of the glacier, to mark where the ice ended, is under the ice now, a man's height deep. The second stone is under it also. The third stands where this house stood when the grandmothers were girls; the house was moved, and moved again, and the people in it say they will not move it a third time. On the high passes of the Gripklosa the snow that fell in the winter the third stone was set did not go in the summer. A fourth stone has been cut and lies by the door, and nobody in the town has been willing to carry it up to the crater and say where it ought to stand."
+  ],
   "chronicle": {
     "win": "{realm} broke the thrones of Tuscaran Glacier: {raidLeader}'s raid slew Queen Kula and King Tuscar in {minutes} minutes.",
     "loss": "Queen Kula still sits her throne. {raidLeader}'s raid from {realm} froze at her feet after {minutes} minutes."

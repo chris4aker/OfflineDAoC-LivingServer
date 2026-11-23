@@ -32,6 +32,9 @@ server source) must be in progress-policy.json and is checked empty in both edit
 so is the hired companions' table (offline_hired_companions, read from mode165/HiredCompanions165.cs). So must every
 "Bots as people" table (BotPeopleTables.All, read from bots/autonomous/BotPeopleTables.cs): they name the developer's
 bots (their skill, the places they know, their milestones, the raid mechanics they have seen).
+With --uthgard-drops, Uthgard's period drop tables (owner 2026-11-21) are added for the monsters the clean world has
+no loot for (uthgard_drops_content.py; its report is written beside the build report), before the 0.37 edition's
+database is copied, so both editions carry them. Without it the build says so and adds none.
 Every Living Server switch ships at its release value (release-server-settings.json: every feature on, owner 2026-11-16;
 diagnostics, the classic crafting rules and the epic encounter options off), written as both Value and DefaultValue so a
 later changed default still reaches the row, and checked in both editions' worlds.
@@ -324,6 +327,27 @@ def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
             "enable_sluaghbinder": con.execute("SELECT Value FROM ServerProperty WHERE `Key`='enable_sluaghbinder'").fetchone()[0]}
 
 
+def add_uthgard_drops(database: Path, pipeline_data, old_db, out: Path):
+    """Uthgard's period drops for the monsters the clean world has no loot for (uthgard_drops_content.py). It runs
+    before the 0.37 edition's database is copied from this one, so both editions' worlds carry the same rows, and
+    make_patch.py's world update takes them to existing worlds."""
+    if pipeline_data is None:
+        print("Uthgard drops: NOT added (no --uthgard-drops; docs/UTHGARD-DROPS.md)", flush=True)
+        return None
+    print("Adding Uthgard's period drops...", flush=True)
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))   # python -I leaves the script's folder off the path
+    import uthgard_drops_content as udc
+    try:
+        report = udc.run(pipeline_data, database, old_db, apply=True)
+    except udc.Refused as error:
+        raise SystemExit(f"Uthgard drops refused: {error}")
+    (out.parent / f"{out.name}-uthgard-drops-report.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
+    print(udc.summary(report), flush=True)
+    return {"counts": report["counts"], "warnings": report["warnings"], "refused": len(report["refused"]),
+            "item_names_missing": len(report["items_missing"])}
+
+
 def check_world_data(database: Path, repo: Path) -> dict:
     """The raid and quest data fixes made outside the C# code ship with the world."""
     con = sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)
@@ -444,6 +468,11 @@ def main():
     parser.add_argument("--repo", type=Path, required=True)
     parser.add_argument("--edition-game-dll", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    # Uthgard's period drop tables (owner 2026-11-21), from the new client's pipeline data (only on the owner's PC)
+    parser.add_argument("--uthgard-drops", type=Path,
+                        help="the new client's pipeline/data folder: adds Uthgard's drops to the release world "
+                             "(uthgard_drops_content.py --apply; docs/UTHGARD-DROPS.md)")
+    parser.add_argument("--uthgard-old-db", type=Path, help="the new client's old DB, for drop items the world lacks")
     args = parser.parse_args()
     snapshot, repo, out = args.snapshot.resolve(), args.repo.resolve(), args.out.resolve()
     if out.exists():
@@ -482,6 +511,7 @@ def main():
         world["bot_people_tables"] = verify_tables_empty(con, bot_people)
         world["server_settings"] = ship_server_settings(con, server_settings)
         world["server_settings_check"] = verify_server_settings(con, server_settings)
+    world["uthgard_drops"] = add_uthgard_drops(database, args.uthgard_drops, args.uthgard_old_db, out)
     world_data = check_world_data(database, repo)
 
     set_auto_account_creation(runtime / "server/config/serverconfig.xml")

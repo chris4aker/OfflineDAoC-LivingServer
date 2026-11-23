@@ -125,6 +125,19 @@ public sealed partial class AutonomousWorldBotController
         RvrPartyKind kind = AutonomousBotGroupCoordinator.RvrPartyKindOf(bot);
         if (kind == RvrPartyKind.Warband || bot.Group != null && _groupDirective?.Leader != bot)
             return null;
+        // #417: an eight goes after the live enemy force the planner found near it (its circuit waits); before, the
+        // circuit replaced every such hunt and the eights walked past the fights.
+        if (kind == RvrPartyKind.Eight && _rvrIntent == AutonomousRvrEventLayer.Intent.HuntEnemy &&
+            chosen?.Id.StartsWith("rvr-enemy-", StringComparison.Ordinal) == true &&
+            RvrRoamCircuits.EightFollowsHunt(chosen.RegionId == bot.CurrentRegionID, Vector2.Distance(new(bot.X, bot.Y), new(chosen.X, chosen.Y))))
+        {
+            long at = GameLoop.GameLoopTime;
+            if (RvrLogBudget.Take("RVR_ROAM_CHASE", at, 60))
+                Log.Info($"RVR_ROAM_CHASE group={RvrWalkerId(bot)} realm={GlobalConstants.RealmToName(bot.Realm)} target={chosen.Id} " +
+                         $"name=\"{chosen.MonsterName}\" distance={(int)Vector2.Distance(new(bot.X, bot.Y), new(chosen.X, chosen.Y))} " +
+                         $"limit={(int)RvrRoamCircuits.ChaseRadius} region={bot.CurrentRegionID}");
+            return null;
+        }
         RvrCheckSpotCatalog catalog = RvrCheckSpots.Catalog;
         if (catalog == null)
             return null;
@@ -184,6 +197,15 @@ public sealed partial class AutonomousWorldBotController
         RvrRoamCircuit circuit = RvrRoamCircuits.Pick(weighted, Random.Shared.NextDouble());
         if (circuit == null)
             return null;
+        // #417: which circuit, and how many enemy RvR bots it and the others had at the last sample.
+        if (RvrLogBudget.Take("RVR_ROAM_CIRCUIT", now, 60))
+        {
+            int enemies = RvrRoamCircuits.CircuitRoamers(circuit, catalog, Prey, reserve);
+            int best = circuits.Max(c => RvrRoamCircuits.CircuitRoamers(c, catalog, Prey, reserve));
+            Log.Info($"RVR_ROAM_CIRCUIT group={RvrWalkerId(bot)} realm={GlobalConstants.RealmToName(bot.Realm)} circuit={circuit.Id} " +
+                     $"region={circuit.Region} enemiesNear={enemies} bestEnemiesNear={best} circuits={circuits.Length} reserve={reserve} " +
+                     $"sampleAgeSeconds={(now - RvrRoamPrey.SampledAt) / 1000}");
+        }
         box.Tier = RvrFightBoards.DefaultSkillTier(bot);
         box.Walker = RvrWalkerId(bot);
         box.Stealther = false;

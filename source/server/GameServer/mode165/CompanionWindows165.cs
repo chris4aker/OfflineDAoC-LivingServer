@@ -216,7 +216,7 @@ namespace DOL.GS
                 "move" => MoveOwn(player, bot, Arg(3), args.Length > 4 ? args[4] : null),
                 "stats" => null,
                 "repair" => AskRepair(player, [bot]),
-                "train" => Train(bot, Arg(3)),
+                "train" => Train(bot, Arg(3), Arg(4)),
                 "buyra" => BuyRealmAbility(bot, hired, Arg(3)),
                 "respec" => Respec(bot),
                 _ => null,
@@ -729,10 +729,23 @@ namespace DOL.GS
         private static List<(Skill Skill, int Level)> VisibleUnlocks(GameBot bot, Specialization spec)
         {
             List<(Skill Skill, int Level)> all = Unlocks(bot, spec);
-            int firstUntrained = all.FindIndex(e => e.Level > spec.Level);
-            int start = firstUntrained < 0 ? all.Count - NativeMaxItems : firstUntrained - 1;
-            start = Math.Clamp(start, 0, Math.Max(0, all.Count - NativeMaxItems));
-            return all.Skip(start).Take(NativeMaxItems).ToList();
+            return all.Skip(FirstVisibleUnlock(all.Select(e => e.Level).ToList(), spec.Level, NativeMaxItems)).Take(NativeMaxItems).ToList();
+        }
+
+        /// <summary>
+        /// Pure: where a line's list starts in the native window, given the spec level each unlock needs (ascending): at the
+        /// last one trained, so the next one to train is always the second row; with everything trained, the last
+        /// <paramref name="max"/>. Issue #397: the start was pulled back to fill all <paramref name="max"/> rows, which
+        /// put the unlocks still to train at the bottom of the list, below the window's edge, where they can't be clicked.
+        /// </summary>
+        public static int FirstVisibleUnlock(IReadOnlyList<int> levels, int specLevel, int max)
+        {
+            if (levels == null)
+                return 0;
+            for (int i = 0; i < levels.Count; i++)
+                if (levels[i] > specLevel)
+                    return Math.Max(0, i - 1);
+            return Math.Max(0, levels.Count - max);
         }
 
         /// <summary>What a line gives up to level 50, by the spec level each needs (styles, spells, abilities): the original
@@ -900,10 +913,22 @@ namespace DOL.GS
         public static List<Specialization> Lines(GameBot bot) =>
             bot.GetSpecList().Where(s => s.Trainable).OrderBy(s => s.Name, StringComparer.Ordinal).ToList();
 
-        private static string Train(GameBot bot, int line)
+        /// <summary>Raises a line by one level, or (toLevel from 1: "/hire train n line level", issue #397) up to that
+        /// level as far as the points and the companion's level allow. Returns the problem, or null.</summary>
+        private static string Train(GameBot bot, int line, int toLevel = -1)
         {
             List<Specialization> lines = Lines(bot);
-            return line < 0 || line >= lines.Count ? "Choose a spec line." : bot.CompanionTrain(lines[line]);
+            if (line < 0 || line >= lines.Count)
+                return "Choose a spec line.";
+            Specialization spec = lines[line];
+            if (toLevel < 1)
+                return bot.CompanionTrain(spec);
+            if (toLevel <= spec.Level)
+                return $"{spec.Name} is already {spec.Level}.";
+            string problem = null;
+            while (spec.Level < toLevel && problem == null)
+                problem = bot.CompanionTrain(spec);
+            return problem;
         }
 
         private static string Respec(GameBot bot)

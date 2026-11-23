@@ -24,7 +24,7 @@
     }
   ],
   "story": "Vixitr keeps the temple door. Where the arachite prelates pray toward the deep, at the bottom of the spiders' hall, the arachites set a doorkeeper of their own kind, and the doorkeeper is Vixitr, an arachite of the vakt who was raised to the prelates' door for listening too well. The thralls' frames say Vixitr is the one arachite who has heard what the prelates pray to answer, and that it made the doorkeeper patient.\n\nThe prelates kneel behind the door, the vakt and the grymherre stand before it, and Vixitr stands in it. Nothing goes into the temple that Vixitr has not weighed. The frames call the doorkeeper 'the scale'; Odell's copy has a note in the margin that a scale weighs both sides, and that the thralls should remember it. The fell cats that prowl that hall belong to no one. Vixitr lets them pass. Strangers, never. The temple has never once been entered by a stranger Vixitr let in.",
-  "legend": "Vixitr is a level 41 arachite (Arachite faction) at the temple in Spindelhalla, among arachite prelates (39-43), vakt, a grymherre, fell cats and ekyps gunstlings (45-47). She's on Arachite faction with the prelates all round her. It's a crowded room; clear the edges first and pull Vixitr out of the doorway. Fell cats wander that hall too, and the ekyps gunstlings hit hard for their level.",
+  "legend": "Vixitr is an arachite, a foe for a hardened band of veterans, at the temple in Spindelhalla, among arachite prelates of much her strength, vakt, a grymherre, fell cats and ekyps gunstlings, somewhat stronger. She's sworn to the Arachites with the prelates all round her. It's a crowded room; clear the edges first and draw Vixitr out of the doorway. Fell cats wander that hall too, and the ekyps gunstlings hit hard for their strength.",
   "yells": {
     "aggro": [
       "(The doorkeeper weighs you, and finds you wanting.)",
@@ -44,8 +44,8 @@
   },
   "botLines": {
     "briefing": [
-      "vixitr is the 41 arachite doorkeeper at the spindelhalla temple",
-      "arachite faction, the prelates and vakt will help"
+      "vixitr is the hardened-band arachite doorkeeper at the spindelhalla temple",
+      "arachites, the prelates and vakt will help"
     ],
     "aftermathWin": [
       "vixitr down",

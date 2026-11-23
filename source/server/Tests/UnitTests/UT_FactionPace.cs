@@ -69,6 +69,65 @@ public class UT_FactionPace
         Assert.That(Ex.SinkHold(player, false, false, now, now - 20_000, never, openerFitsPace: false), Is.Null, "a line to the player goes");
     }
 
+    /// <summary>
+    /// 1.2.1 (owner's PC, build 43c43aa: 4.9 a minute on average, 13 of 39 minutes under 5, some at 2): a quiet minute after a busy
+    /// one. The ambient gate reads its floor over two minutes and the ambient lines only, so eleven ambient lines (a tale) then two
+    /// in the last minute still read 5.5 a minute, at the floor, and a held opener's gap kept the channel waiting. The floor is now
+    /// also read as the listener hears it, every line of the last minute; the pace still keeps the minute at 7 at most. Tests only.
+    /// </summary>
+    [Test]
+    public void AQuietMinuteAfterABusyOneIsFilledToTheFloorNeverPastSeven()
+    {
+        var band = Budget.Band(Settings, Budget.Channel.Faction, 800, 21, false, 2.0);
+        Assert.That(band.Floor, Is.EqualTo(5.0).Within(1e-9), "a full realm's floor is the owner's 5");
+        Assert.That(Budget.UnderPaceFloor(4, band.Floor), Is.True);
+        Assert.That(Budget.UnderPaceFloor(5, band.Floor), Is.False);
+        Assert.That(Budget.UnderPaceFloor(0, 0), Is.False, "rate 0: bots only answer");
+        Assert.That(Budget.UnderPaceFloor(3, Budget.Band(Settings, Budget.Channel.Faction, 800, 21, false, 1.0).Floor), Is.False,
+            "a calmer \"How much bots talk\" keeps its lower floor");
+
+        // Pure: under the listener's floor the gap isn't waited for, but the ceiling and "no target" still hold.
+        Assert.That(Budget.Decide(5.5, band, 10_000, 99_000), Is.EqualTo(Budget.Verdict.HoldGap));
+        Assert.That(Budget.Decide(5.5, band, 10_000, 99_000, underPaceFloor: true), Is.EqualTo(Budget.Verdict.SpeakUnderFloor));
+        Assert.That(Budget.Decide(band.Ceiling, band, 10_000, 99_000, underPaceFloor: true), Is.EqualTo(Budget.Verdict.HoldCeiling));
+        Assert.That(Budget.Decide(0, (0, 0, 0), 10_000, 0, underPaceFloor: true), Is.EqualTo(Budget.Verdict.HoldGap));
+
+        // The meter: a busy minute (eleven ambient lines, 5 s apart), then a quiet one with two of them in its last 60 s.
+        var meter = new Budget.ChannelMeter();
+        const long key = 1, start = 1_000_000;
+        for (int i = 0; i <= 10; i++)
+            meter.Count(Budget.Channel.Faction, key, start + i * 5_000L);
+        long now = start + 100_000;
+        int heard = meter.LinesIn(Budget.Channel.Faction, key, now, Budget.PaceWindowMs);
+        Assert.That(heard, Is.EqualTo(2), "the quiet minute");
+        Assert.That(meter.AmbientPerMinute(Budget.Channel.Faction, key, now, band.Target), Is.GreaterThanOrEqualTo(band.Floor),
+            "43c43aa: the two-minute ambient count still read at the floor");
+        var random = new Random(7);
+        // An opener's turn: the gate says yes and draws the next gap, but the line is held at the sink and never said.
+        Assert.That(meter.TryStart(Budget.Channel.Faction, key, now, band, random), Is.EqualTo(Budget.Verdict.Speak));
+        long later = now + 3_500;
+        Assert.That(meter.TryStart(Budget.Channel.Faction, key, later, band, random), Is.EqualTo(Budget.Verdict.HoldGap),
+            "43c43aa: the quiet minute waited out the gap of a line nobody heard");
+        bool under = Budget.UnderPaceFloor(meter.LinesIn(Budget.Channel.Faction, key, later, Budget.PaceWindowMs), band.Floor);
+        Assert.That(under, Is.True);
+        Assert.That(meter.TryStart(Budget.Channel.Faction, key, later, band, random, under), Is.EqualTo(Budget.Verdict.SpeakUnderFloor),
+            "now: under the listener's floor the next bot with a line speaks");
+
+        // Filling the quiet minute stops at the floor, and the pace keeps it under 7: a forced opener still needs room for
+        // itself, its answer and every exchange running.
+        long at = later;
+        while (Budget.UnderPaceFloor(meter.LinesIn(Budget.Channel.Faction, key, at, Budget.PaceWindowMs), band.Floor))
+        {
+            Assert.That(Budget.OpenerFitsPace(meter.LinesIn(Budget.Channel.Faction, key, at, Budget.PaceWindowMs), 0, Budget.FactionPace(Settings, 2.0).Max),
+                Is.True, "an opener under the floor fits the pace");
+            meter.Count(Budget.Channel.Faction, key, at);
+            at += Budget.ChannelMeter.MinSpacingMs;
+        }
+        Assert.That(meter.LinesIn(Budget.Channel.Faction, key, at, Budget.PaceWindowMs), Is.EqualTo(5), "filled to the floor, not past it");
+        Assert.That(Budget.UnderPaceFloor(4, band.Floor) && !Budget.OpenerFitsPace(4, 2, 7.0), Is.True,
+            "under the floor, an opener with two exchanges running still waits: the minute would pass 7");
+    }
+
     [Test]
     public void ASceneIsSlowedToThePaceNeverCut()
     {
@@ -229,7 +288,9 @@ public class UT_FactionPace
             }
             if ((now - start) % 1_000 != 0 || scene != null)
                 continue;
-            Budget.Verdict verdict = meter.TryStart(Budget.Channel.Faction, key, now, band, random);
+            // 1.2.1: under the listener's floor (every line of the last minute) the gap isn't waited for, as on the server.
+            bool underPace = paced && Budget.UnderPaceFloor(meter.LinesIn(Budget.Channel.Faction, key, now, Budget.PaceWindowMs), band.Floor);
+            Budget.Verdict verdict = meter.TryStart(Budget.Channel.Faction, key, now, band, random, underPace);
             if (verdict is not (Budget.Verdict.Speak or Budget.Verdict.SpeakUnderFloor))
                 continue;
             bool fitsPace = !paced || Budget.OpenerFitsPace(meter.LinesIn(Budget.Channel.Faction, key, now, Budget.PaceWindowMs), answers.Count, pace.Max);

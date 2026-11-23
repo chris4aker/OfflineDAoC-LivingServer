@@ -59,7 +59,7 @@
   },
   {
    "text": "Allakhazam's bestiary lists Grand Chancellor Adremal at level 79 among the Darkness Falls court.",
-   "provenance": "mythic",
+   "provenance": "legend",
    "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
   },
   {
@@ -102,7 +102,7 @@
   }
  ],
  "story": "Grand Chancellor Adremal is the demon who invented the court. In the Uncounted Age he was the only lord of the hollow who could read the scratches the first lords had cut in the walls, and he kept those walls as his hoard: the long gallery on the south side that the court now calls the approach. At the Feast of Thrones he watched Legion eat the first of the thirty lords and understood what he was seeing. When nineteen voices spoke from one throat he knelt first and offered three terms: that Legion be Master forever, that the Master eat only those who fall from their place, and that the places be written down and Adremal keep the writing.\n\nHe cut the First Roll of Precedence into his own wall. A demon struck off has its line chiselled out, and the whole Roll is cut again beside the old one, so the approach is lined with ten Rolls now. He made enemies at once: Princes Abdin and Asmoien each claimed to have knelt second, and Adremal wrote them on the same line, which began the feud of their orders, the Blade and the Hook.\n\nHe also made striking-off a procedure. The Inquisitors examine, the Chancellor alone pronounces, the Mutilators unmake and the Master eats. His most famous ruling was on Mystemas in the Ninth Roll: a demon who had acted on the Master's plan too early had leapt above his place rather than fallen from it, so he could not be eaten, only moved to the bottom of the Roll and made small enough to fit.\n\nOn the Tenth Roll he wrote that the court opened the three doors on purpose. He records the princes' wagers on the frontier, strikes the pattern of the seals, and seals Ambassador Mannam's letters to Albion. He has begun a Roll of the Visitors for the mortal companies, every line cut already struck, and he has written that whoever kills the Master will find he cannot be killed all at once. Earl Vone, his clerk, carries the chisel.",
- "legend": "Adremal sits on the approach to Legion's lair, below the Chamberlain, with Earl Vone a little further up the slope. He is level 79 with no script: no adds, no trick, just a demon lord's health and damage, and the knights and Mutilators of Legion's Own stand close enough to join if you fight in the open. Pull Vone first and on its own, then the Chancellor, then whatever is left on the approach, and only then the Chamberlain. Players say the walls of the approach are covered in writing, and that if you read your own guild's name on one you will not come back up. The old hands say he always looks up at a raid before he aggros, as if he is counting you.",
+ "legend": "Adremal sits on the approach to Legion's lair, below the Chamberlain, with Earl Vone a little further up the slope. He is a foe for a war party of any realm's champions with no tricks: no servants, no trick, just a demon lord's strength and damage, and the knights and Mutilators of Legion's Own stand close enough to join if you fight in the open. Draw Vone first and on its own, then the Chancellor, then whatever is left on the approach, and only then the Chamberlain. Raiders say the walls of the approach are covered in writing, and that if you read your own guild's name on one you will not come back up. The old hands say he always looks up at a raid before he turns on it, as if he is counting you.",
  "yells": {
   "aggro": [
    "Rank and seat. You have neither. Noted.",
@@ -149,10 +149,10 @@
  },
  "botLines": {
   "briefing": [
-   "chancellor next. pull vone first and alone, then adremal. dont fight in the middle of legions own",
-   "adremal is 79, no tricks, just [big|huge] health. tanks rotate, keep the healers fed",
-   "the approach is packed. one pull at a time or [we wipe|we eat the whole slope]",
-   "dont read the walls, [just kill|just pull]. we are on the clock"
+   "chancellor next. draw vone first and alone, then adremal. dont fight in the middle of legions own",
+   "adremal has no tricks, he just [takes forever|never seems to wear down]. shield-bearers rotate, keep the healers fed",
+   "the approach is packed. one draw at a time or [we all die|we eat the whole slope]",
+   "dont read the walls, [just kill|just draw]. we are on the clock"
   ],
   "aftermathWin": [
    "chancellor down. [nobody writes us down today|struck him off]",
@@ -161,9 +161,9 @@
    "chancellor down, approach is clear to the doorman"
   ],
   "aftermathLoss": [
-   "adremal wiped us. [we pulled half the approach|too many adds on the slope]",
+   "adremal killed us all. [we drew half the approach|too many of legions own on the slope]",
    "got written on the wall. [lol|not funny]. regroup up top",
-   "the chancellor wont go down, [too much health for us|need another group]",
+   "the chancellor wont go down, [too much for us|need another group]",
    "we went for adremal with vone still up. [mistake|never again]"
   ],
   "rumour": [
@@ -179,7 +179,6 @@
  },
  "bookPage": "From a rubbing of the approach walls, taken by a Hibernian bard who did not stay to finish: Ten walls stand side by side along the slope, each cut with lines, each line a rank, a seat and a master. On the oldest the lines are worn nearly smooth. On the newest the stone is still pale. Where a line has been struck there is a gouge, and beside it, on the next wall along, the same Roll is cut again with the gap closed. I counted three gouges on the ninth wall and found the third had been cut, not to remove a name, but to move one, from high on the wall to the very bottom. The new line was very small.",
  "bookPages": [
-  "From a rubbing of the approach walls, taken by a Hibernian bard who did not stay to finish: Ten walls stand side by side along the slope, each cut with lines, each line a rank, a seat and a master. On the oldest the lines are worn nearly smooth. On the newest the stone is still pale. Where a line has been struck there is a gouge, and beside it, on the next wall along, the same Roll is cut again with the gap closed. I counted three gouges on the ninth wall and found the third had been cut, not to remove a name, but to move one, from high on the wall to the very bottom. The new line was very small.",
   "The bard went on: Below the tenth wall a new one has been started, and its lines are different. They carry no names and no seats, only a realm and a number, and every one of them is already gouged through, as if it had been cut struck. Albion, sixteen. Hibernia, twenty-four. Midgard, thirty-one. I understood what I was reading when I found my own realm's line for the night I came down, with the number of us in it, and the gouge already made. I counted us on the way out. The number on the wall was larger."
  ],
  "chronicle": {

@@ -27,7 +27,7 @@
     },
     {
       "text": "Modernagrav's zone text says the morvalt crossed to the island following rumours of the Mother and found a huge half-buried ancient skeleton with a large undead presence guarding it.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/zones.html?czone=116"
     },
     {
@@ -47,7 +47,7 @@
     }
   ],
   "story": "The morvalt say she was there when they came through the wall. The dwarves at the post, who watched them come, say that is true: the first thing the morvalt saw beyond the gap was a mammoth taller than a longhouse, walking a path she had already worn knee-deep round the bones. Nobody knows how long she had been walking it. The path is older than the dig. The dwarves think it may be older than the rockwall.\n\nShe is a beast of the old ice, the great shaggy cows that walked the north before the giants came down from the mountains, and she should be long dead. Perhaps she is. The dead of the vigil are beasts too, mammoths among them, rotting on their feet; Mortufoghus is not rotting, but she is not young either, and the frost in her hide never melts. The morvalt believe she is the Mother's guardian, or the Mother's own spirit walking, or the Mother herself in a shape their eyes can bear. They argue about it at their fires. Midgard's scholars note, carefully, that the oldest tale of all begins with a cow in the ice, licking the first of everything out of the rime.\n\nWhat is certain is that she guards the bones as a cow guards a calf. She walks between the dig and the vigil, and she lets the morvalt dig only so close. When anything comes at her she answers with her whole weight. The one in front of her she tramples and batters until it cannot stand, and the blows of her tusks leave it dazed and unable to lift a hand. The cold rolls off her in a great breath across everyone crowding near the one she is fighting. And the others, the ones who hang about at the edge thinking themselves out of it, she reaches past the front of the crowd and flings: high, and a long way, so that they come down among the spoil heaps winded and bruised. She has never flung the one she was fighting. The morvalt have noticed, and the bravest of them stand in front of her on purpose, because to be flung is an honour and to be trampled is a death, and they have not yet decided which the Mother prefers.\n\nOrri of Hagall watched her throw a digger over two spoil heaps and saw the digger get up and go back to his spade. He wrote that the morvalt seemed to think it an honour. He also wrote that the mammoth did not look at the digger once he was down, and went back to her path, and that when the vigil's dead turned their heads, she turned hers with them.",
-  "legend": "Mortufoghus is the mammoth on Modernagrav, level 77 and 40,000 health, and she's far tougher than her level says; three groups couldn't get her to half once. Every 25-35 seconds she throws a random raider who is NOT her target to somewhere within 1,500 of her, for a fifth of their health as fall damage. Bots fly as well as players, so anyone she is not hitting can be the one flying. She stuns whoever she's hitting (35% a swing, 6 seconds), so have two tanks ready to trade. Dark Pact is a 250 cold blast with a 1,000 radius round her target every 15-25 seconds: spread out from the tank and keep heals rolling. CC-immune, 20% melee and 30% magic resist. She resets full if you all leave. Eleven people did it in 45 minutes once. Don't fight her near the vigil.",
+  "legend": "Mortufoghus is the mammoth on Modernagrav, a foe for a war party of the realm's champions; she takes as much killing as twenty raiders, and she's far tougher than that sounds: three groups couldn't get her to half once. Every 25-35 seconds she throws a random raider who is NOT her target to somewhere within fifty paces of her, and the fall takes a fifth of their strength. Companions and the realm's adventurers fly as well as you, so anyone she is not hitting can be the one flying. She stuns whoever she's hitting (on seven swings in twenty, for 6 seconds), so have two shield-bearers ready to trade. Dark Pact is a cold blast worth a quarter of a robed caster's strength on everyone within about thirty-five paces of her target every 15-25 seconds: spread out from her shield-bearer and keep heals rolling. No charm or stun holds her, and a fifth of every blow and three-tenths of every spell are lost on her. She is whole again if you all leave. Eleven people did it in 45 minutes once. Don't fight her near the vigil.",
   "yells": {
     "aggro": [
       "(A trumpeting roar rolls across the island.)",
@@ -93,24 +93,24 @@
   },
   "botLines": {
     "briefing": [
-      "mortufoghus: tanks trade aggro, she stuns the one holding her and throws people",
+      "mortufoghus: shield-bearers trade her between them, she stuns the one holding her and throws people",
       "stay away from the cliffs",
-      "she throws anyone who isnt her target every 25-35 sec, bots too",
-      "two tanks, she stuns whoever shes hitting",
-      "spread out from the tank, dark pact is 1000 radius round her target",
-      "shes cc immune and has 40k hp. this takes a while"
+      "she throws anyone who isnt her target every 25-35 sec, companions too",
+      "two shield-bearers, she stuns whoever shes hitting",
+      "spread out from the shield-bearer, dark pact hits about thirty-five paces round her target",
+      "nothing holds her and she takes forever to wear down. this takes a while"
     ],
     "aftermathWin": [
       "the mammoth is down. [45 minutes|took forever] but down",
       "nobody got thrown off a cliff this time",
-      "tank swap worked, she never got two stuns on one guy",
+      "shield-bearer swap worked, she never got two stuns on one guy",
       "she knelt by the bones when she died"
     ],
     "aftermathLoss": [
       "got thrown off a cliff. [lol|ow]",
-      "everyone stacked on the tank and dark pact ate us",
-      "both tanks stunned at once",
-      "she reset while we ran back"
+      "everyone stacked on the shield-bearer and dark pact ate us",
+      "both shield-bearers stunned at once",
+      "she was whole again while we ran back"
     ],
     "rumour": [
       "mortufoghus on modernagrav might be part of the mother, [some|people] [say|guess]. [i want|id want] proof",
@@ -124,7 +124,7 @@
     "keyword": "Mortufoghus",
     "text": "A mammoth of the old ice who circles the morvalt's dig on Modernagrav as if the bones were her calf. The morvalt think she is the Mother's guardian. The oldest tale begins with a cow licking giants out of the ice."
   },
-  "bookPage": "From the slates of Orri of Hagall: the mammoth's path is worn knee-deep and it goes all the way round the bones, and I followed it for a while, at a distance, in her tracks. The tracks are all hers. No calf has ever walked it beside her, and nothing else walks in it; even the morvalt step over. At one place the path bends inward, close to the ribs, and there the ground is pressed flat and wide, as if she lies down there. I think she lies down there at night. I think she puts her head against the bones. I did not wait to see.",
+  "bookPage": "The mammoth's path is worn knee-deep, the slates of Orri of Hagall say, and it goes all the way round the bones, and I followed it for a while, at a distance, in her tracks. The tracks are all hers. No calf has ever walked it beside her, and nothing else walks in it; even the morvalt step over. At one place the path bends inward, close to the ribs, and there the ground is pressed flat and wide, as if she lies down there. I think she lies down there at night. I think she puts her head against the bones. I did not wait to see.",
   "chronicle": {
     "win": "{raidLeader} of {realm} laid Mortufoghus down beside the bones of Modernagrav in {minutes} minutes.",
     "loss": "Mortufoghus scattered {raidLeader}'s party from {realm} across Modernagrav after {minutes} minutes."

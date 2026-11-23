@@ -39,6 +39,11 @@
       "text": "Ozur's scratches, the dwarf spy's single jailer and the hosts of the old wars are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
+    },
+    {
+      "text": "The book pages after the first (Leif Asgautsson's account of the one jailer and the runemasters' board asking for a copy of the measurer's wall) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Ozur was the Council's measurer. Whenever the Icelords came to the ribs demanding war, Ozur asked the same questions: how many enemies, how strong, how near. Then he answered each threat in proportion. Three drakulv at the rim deserved three giants; the Faraheim spy deserved a single jailer; a war-band deserved a war-band. He was never accused of cruelty or of weakness, and Kula, who despised both, liked him for it. Every threat he measured is a scratch on the wall behind his seat, and there are a great many scratches.\n\nHe measured strangers the same way when they came. The cast-out sculptors say that in the years when the realms sent hosts up the crater road, great companies by the hundred, Ozur answered the many by spending himself, swinging harder than he could bear and growing thin-skinned with it; that is how the old songs remember him. Those hosts do not come any more. The strangers who reach the outer seats now come few, and to the few Ozur answers by holding still and hardening, so that his hide is thicker against a handful than it ever was against a host.\n\nHe carries a sickness too, the measurer's sickness, the sculptors call it: when he has looked at the one in front of him long enough, a rot settles on that one and on everyone standing close by, and stays a long while, and every remedy works at half its strength while it stays. The scratches behind his seat stopped the winter Midgard came. The sculptors say he could not decide how to measure it. He was a jailer's son, from the cells at the bottom of the citadel, and he still carries his father's knife, the one that cut every scratch on the wall. The sculptors say the knife is in his belt, waiting for the scratch he never finished.",
@@ -53,14 +58,14 @@
     },
     {
       "title": "The Many and the Few",
-      "text": "He measured strangers the way he measured everything, and the cast-out sculptors say the measuring is in his body now as it was always in his head.\n\nIn the years when the realms first sent their hosts up the crater road, great companies of a hundred and more, Ozur answered the many as he had always answered: in proportion. Against a host he spent himself. The old songs of those years remember a councillor who swung harder the more of them there were, harder than a giant can bear, and grew thin-skinned with it, so that the host that crowded him found him striking terribly and bleeding easily at once. That is the Ozur of the old songs, and the companies of Midgard still sing them.\n\nThe hosts do not come any more. The strangers who reach the outer seats now come in companies of a few, and the sculptors say Ozur has measured them too, and answered the few as he answers small threats. He holds still and hardens. He does not swing harder at a handful; he does not need to. His hide is thicker against a few than it ever was against a host, and the companies who come to him expecting the councillor of the old songs find a different one.\n\nThe sculptors say this is not a change in Ozur. It is the same measure. It is only that the companies have changed, and the measurer has not. The cast-out sculptors at Dellingstad find it funny, and say so to Midgard's companies, who do not."
+      "text": "He measured strangers the way he measured everything, and the cast-out sculptors say the measuring is in his body now as it was always in his head.\n\nIn the years when the realms first sent their hosts up the crater road, great companies of a hundred and more, Ozur answered the many as he had always answered: in proportion. Against a host he spent himself. The old songs of those years remember a councillor who swung harder the more of them there were, harder than a giant can bear, and grew thin-skinned with it, so that the host that crowded him found him striking terribly and bleeding easily at once. That is the Ozur of the old songs, and the companies of Midgard still sing them.\n\nThe hosts do not come any more. The strangers who reach the outer seats now come in companies of a few, and the sculptors say Ozur has measured them too, and answered the few as he answers small threats. He holds still and hardens. He does not swing harder at a handful; he does not need to. His hide is thicker against a few than it ever was against a host, and the companies who come to him expecting the councillor of the old songs find a different one.\n\nThis is not a change in Ozur, the sculptors say. It is the same measure. It is only that the companies have changed, and the measurer has not. The cast-out sculptors at Dellingstad find it funny, and say so to Midgard's companies, who do not."
     },
     {
       "title": "The Measurer's Sickness",
       "text": "He carries a sickness, and the sculptors say he has always carried it, as his father did: the rot of the cells at the bottom of the citadel, where the prisoners lay and the jailers lived among them. The jailers do not die of it. They give it.\n\nWhen Ozur has looked at the one in front of him long enough to take his measure, the rot settles on that one and on everyone standing close round him, a grey sickness that stays a long while and makes every remedy work at half its strength while it stays. Then the councillor looks away, and some time later looks again, and the rot settles again. The splitters who went to Hord with it in the old days called it the measurer's sickness, and said Hord could ease it but not stop it, and that the giants who stood away from the one Ozur was measuring did not catch it.\n\nHe stands in the outer hall now near Hord's heaped seat, the companies say, between the two of them the whole of the Council's idea of itself: the one who measured threats and the one who mended what the threats did. The sculptors say that is why the strangers should not fight them together.\n\nWhen Ozur dies, the companies say, he looks at the wall behind his seat, at the scratch he never finished, as if he had just decided how long it should be. The sculptors say nobody has ever stayed to see whether he cuts it, and that the knife is still in his belt."
     }
   ],
-  "legend": "Ozur's famous 'he hits harder the more people are on him' counts everyone, bots included: at 50 or more he gets stronger, at 100 or more stronger but softer. Bots count, so in Living Server a full bot raid can set it off; with fewer than 50 of you around, he gets +20% to every resist instead. So the old 'polite pull' still matters: under 50 he is tough, over 50 he hits hard. 100,000 health, CC-immune. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within 400 of his target for two minutes and halves their heals, so keep the healers and casters away from the tank and cure disease on whoever is near him. He's next to Hord, so pull them separately. His skull ring drops.",
+  "legend": "Ozur's famous 'he hits harder the more people are on him' counts everyone, companions and the realm's adventurers included: at fifty or more he gets stronger, at a hundred or more stronger but softer. Companions count, so a full raid of companions can set it off; with fewer than fifty of you around, he turns a fifth more of every blow and spell instead. So the old 'polite draw' still matters: under fifty he is tough, over fifty he hits hard. He takes as much killing as fifty raiders, and no charm or stun holds him. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within about thirteen paces of his target for two minutes and halves their heals, so keep the healers and casters away from the shield-bearer who holds him and cure disease on whoever is near him. He's next to Hord, so draw them separately. His skull ring comes off him.",
   "yells": {
     "aggro": [
       "How many of you? Let me count before I answer.",
@@ -110,17 +115,17 @@
   },
   "botLines": {
     "briefing": [
-      "ozur counts everyone, bots too. under 50 of us he has +20% resists. cure his disease",
-      "pull ozur and hord separately",
-      "cure disease on ozur, it hits everyone near the tank",
+      "ozur counts everyone, companions too. under 50 of us he turns a fifth more of everything. cure his disease",
+      "draw ozur and hord separately",
+      "cure disease on ozur, it hits everyone near his shield-bearer",
       "ozur: cure the disease, thats the whole fight",
-      "ozurs crowd thing counts bots too, keep it under 50. he just has +20% resists",
-      "ozurs disease is 400 round the tank, every 60s. heals off the tank, cure disease"
+      "ozurs crowd thing counts companions too, keep it under fifty. he just turns a fifth more of everything",
+      "ozurs disease hits a dozen paces round his shield-bearer, every 60 sec. healers off the shield-bearer, cure disease"
     ],
     "aftermathWin": [
       "cured the disease on ozur every time, easy",
       "ozur down, cures were on point",
-      "ozur had +20% resists and we still did it",
+      "ozur turned a fifth more of everything and we still did it",
       "ozur's skull ring dropped",
       "measured lol",
       "cured the disease every time, easy",
@@ -129,15 +134,15 @@
     "aftermathLoss": [
       "nobody cured ozurs disease and the heals did half",
       "fifteen people ran in on ozur and he hit for double",
-      "somebody pulled hord with ozur",
+      "somebody drew hord with ozur",
       "he counted us and hit like a landslide",
-      "healers stood next to the tank and all got diseased",
-      "pulled ozur with hord again"
+      "healers stood next to the shield-bearer and all got diseased",
+      "drew ozur with hord again"
     ],
     "rumour": [
       "ozur counts you, they say. bring a crowd and he gets mean",
       "every scratch on ozur's wall is a threat he measured. theres a lot of scratches",
-      "ozur hits harder the more people are there. offline thats never [lol|so just cure]",
+      "ozur hits harder the more people are there. with just us thats never [lol|so just cure]",
       "ozur measures every threat and answers in kind. [fair giant|fairest giant up there]",
       "ozur scratched every threat he ever measured on his wall. the last scratch isnt finished",
       "the old songs say ozur gets angrier the more of you there are. a few of you just make him tougher",
@@ -148,7 +153,11 @@
     "keyword": "Ozur",
     "text": "The measurer of the outer seats, a jailer's son who answered every threat in proportion and scratched each one on the wall behind his seat. Against the hosts of the old wars he swung harder and grew thin-skinned; against the few who come now he hardens. He carries the rot of the cells, and the scratch for Midgard was never finished. He sits near [Hord]."
   },
-  "bookPage": "From the sculptor's account. Ozur's wall, he said, is the only honest history Tuscaran has. Every scratch is a threat, and every threat was answered with exactly what it deserved: three giants for three drakulv, one jailer for one spy. He did it for a century and nobody thanked him. Then your people came up the road, and he sat in front of the wall all night with his father's knife and could not decide how long to make the line. I asked why. The sculptor said: because you keep coming back. A threat that comes back cannot be measured once. He said Ozur knew that, and it was the first thing in his life he did not know what to do with.",
+  "bookPage": "Ozur's wall, the sculptor said in his account, is the only honest history Tuscaran has. Every scratch is a threat, and every threat was answered with exactly what it deserved: three giants for three drakulv, one jailer for one spy. He did it for a century and nobody thanked him. Then your people came up the road, and he sat in front of the wall all night with his father's knife and could not decide how long to make the line. I asked why. The sculptor said: because you keep coming back. A threat that comes back cannot be measured once. He said Ozur knew that, and it was the first thing in his life he did not know what to do with.",
+  "bookPages": [
+    "Leif Asgautsson of the Remnants, who went up the crater wall in the sixtieth winter of the giants' council to see what the giants were cutting, as he told it at his hearth in Faraheim. I was found on the second night by one giant, alone, a jailer by his keys. I asked him where the others were. He said I did not need others: one spy, one jailer. He tied my hands with a cord and walked me down through the tunnels to an icelord of the old houses, and gave me to him like a parcel, and went home to his supper. I asked the icelord why they had sent only the one. He said the measurer had measured me, and that I should be glad of the measure, because it was a small one. I came home to Faraheim in the spring. I have not been back up the wall, and nobody has asked me to.",
+    "A letter from the runemasters of Jordheim to the cast-out sculptors at Dellingstad, asking for a copy of the measurer's wall, cut on a board and sent by a trader, with the answer cut on the back of the same board and sent home. We ask for the scratches behind the outer seat, each with its length and its place, so that the realm may know the island's troubles in the giants' century of peace. We will pay in salt. The answer: You may have it for nothing, and it will be worth what you pay. The scratches mean what he says they mean, and he has not said. Measure one yourself and you will have the length of a line in the ice. The board came home to Jordheim and hangs in the runemasters' house, and they have not asked again."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} took Council Ozur's measure in {minutes} minutes.",
     "loss": "Council Ozur weighed {raidLeader}'s raid from {realm} and found it wanting after {minutes} minutes."

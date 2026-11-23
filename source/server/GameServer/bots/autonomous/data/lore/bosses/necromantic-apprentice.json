@@ -24,7 +24,7 @@
     }
   ],
   "story": "Beath the necromancer keeps a bank across the wooden bridge with Bayn, and an apprentice, and the apprentice carries a rod. The Priest of Arawn at Fort Gwyntell says the rod is the reason the households of the dales are still in their houses: the drakoran necromancers found the colleges' tenants dead in their homes after the first summers of the war and tried to raise them, and could not, and tried instead to hold them where they were, and that they could do. The rod holds them. The apprentice does not understand it.\n\nThe apprentice was given it because a necromancer does not carry his own anchor; if the anchor is struck, the one who holds it suffers, and Beath would rather that were someone young. The apprentice practises with it on the households, morning and evening, calling them by the names in Gracien Adamson's register, which the drakoran stole a copy of, and the households answer, and do not come.\n\nAvice Swett, who keeps bees by the fort road and is dead, wants the rod. She says that if it is broken the households will be able to choose whether to stay. She does not say which she would choose.",
-  "legend": "Necromantic Apprentice, level 46 Drakoran Legion, across the wooden bridge from Fort Gwyntell, with guardsmen (52) and archiators (53) close by: you will fight guards too, so bring a group in the high forties and pull carefully. Plain melee, no spells in the data. Kill him for his rod of necromancy for Zombies, Ghosts, and Necromancers (Avice Swett). Beath and Bayn are close; do not pull them by accident.",
+  "legend": "Necromantic Apprentice, of the Drakoran Legion and a foe for a hardened band of veterans, across the wooden bridge from Fort Gwyntell, with guardsmen and archiators, each a foe for the realm's best, close by: you will fight guards too, so bring a band on the last steps below the realm's best and draw carefully. Plain melee, no spells by every account. Kill him for his rod of necromancy for Zombies, Ghosts, and Necromancers (Avice Swett). Beath and Bayn are close; do not draw them by accident.",
   "yells": {
     "aggro": [
       "The rod is mine to carry!",
@@ -49,14 +49,14 @@
   "botLines": {
     "briefing": [
       "the apprentice is across the wooden bridge, guardsmen and archiators round him",
-      "kill him and loot the rod for avice swett"
+      "kill him and take the rod off him for avice swett"
     ],
     "aftermathWin": [
       "got the rod. back to avice",
-      "apprentice down without pulling beath, nice"
+      "apprentice down without waking beath, nice"
     ],
     "aftermathLoss": [
-      "pulled beath with the apprentice"
+      "drew beath with the apprentice"
     ],
     "rumour": [
       "[heard|someone said] the apprentice's rod is what keeps the dales families in their houses",

@@ -11,11 +11,11 @@
    "events": [
     {
      "text": "Darkness Falls is a vast underground kingdom under all three realms, dominated by the arch-demon Legion.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
     },
     {
-     "text": "The court says the hollow was always its own; the Church says the host was cast down; the skalds say it climbed up from under the roots of the world; the druids say the otherworld tore the wrong way. Living Server gives all four and settles none.",
+     "text": "The court says the hollow was always its own; the Church says the host was cast down; the skalds say it climbed up from under the roots of the world; the druids say the otherworld tore the wrong way. The loremasters give all four and settle none.",
      "provenance": "original",
      "source": "Living Server"
     },
@@ -85,13 +85,13 @@
    "summary": "Adremal's bargain needed writing down, because a promise that only demons remember is no promise at all, so he wrote the First Roll of Precedence and the Master made him Grand Chancellor for it. Every demon of rank has a line on the Roll, with its title, its seat and its master. To fall from your line is to fall to the Master, so the court has kept count of time by the Rolls ever since: a new Roll is written whenever a demon of rank is struck off, and the court speaks of 'the Ninth Roll' as the realms speak of a king's reign. The First Roll set the court in the shape it keeps today. Above all, the Master. Beside his throne, the Grand Chancellor, who speaks for him, and the Queen, whose name was Lilith. Below them the Blood, each given a quarter of the hollow: Prince Abdin the north-west, Prince Ba'alorien the north, Prince Asmoien the west and the Princess Nahemah the far west. Below the Blood the four High Lords, Baelerdoth, Baln, Oro and Saeor, given the halls of the east and south. Then the great offices: the Field Marshal Nebir over the host, mustered in Baln's hall; the Gatekeeper Dommel over the crossing where every road meets; the Archivist Borath over the records. Then the peers, dukes over marquises over earls, each sworn to a prince or a high lord. Then the three orders. The Chthonic Knights, sworn to Prince Abdin, swore their oaths to the deep earth itself and became the court's soldiery. The Inquisitors, housed in Ba'alorien's north, were given the work of examining the dead and deciding which souls were the Master's portion. The Mutilators, Asmoien's, were given the work of unmaking whatever the Inquisitors condemned. Last of all came the imps, who were written onto the Roll at the very bottom so that every other demon would have something to stand on.",
    "events": [
     {
-     "text": "Mythic described the demons as keeping a strict hierarchy based on power; the strongest hold titles and underlings, and the Picullus imps, the weakest, survive by hiding and stealing.",
-     "provenance": "mythic",
-     "source": "https://www.gamebanshee.com/3d68"
+     "text": "The oldest accounts describe the demons as keeping a strict hierarchy based on power; the strongest hold titles and underlings, and the Picullus imps, the weakest, survive by hiding and stealing.",
+     "provenance": "legend",
+     "source": "https://www.gamebanshee.com/3d68 (Mythic's description)"
     },
     {
      "text": "The bestiary lists princes, high lords, a Grand Chancellor, a Field Marshal, a Chamberlain, a Gatekeeper, an Ambassador, a Director, an Archivist, dukes, marquises, earls, lieutenants, Inquisitors, Mutilators, Chthonic Knights and Lilith the Demon Queen.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
     },
     {
@@ -148,24 +148,24 @@
    "summary": "A court that may not eat its own must find other ways to hate, and the court below found many. The longest feud is between the Blade and the Hook: Prince Abdin's Chthonic Knights and Prince Asmoien's Mutilators. The knights hold that a soul should be taken whole and kept; the Mutilators hold that nothing is improved by being left whole. In the Fourth Roll the two orders met in the crossing that Dommel keeps, and the Gatekeeper, who has never cared who wins anything, closed every road out of it until both sides were too few to matter; the Gate watch has been made of all three orders ever since, so that none can hold it alone. In the Fifth Roll Marquis Chaosmar was found in two halls at once, in Baln's and at the Master's door. Neither would admit to being the copy, and the Chancellor, unable to strike off a demon who had not fallen, wrote both onto the Roll. In the Sixth Roll Marquis Dortaleon died in the east, of what nobody will say, and kept his seat, since nothing in the bargain requires a marquis to be alive. In the Seventh the Queen's chair emptied. The court says only that Lilith is away. The Chamberlain, who kept her door, has kept her chair since, and will not let even the Chancellor sit in it. In the Eighth Roll Duke Harboris came back from somewhere as a ghost, and was allowed to keep his duchy on the same ground as Dortaleon. In the Ninth a great demon of the Master's army acted on a plan of its own before the Master had finished deciding on the same plan, and was not eaten but made smaller, into an imp, so that it would spend forever being stood on. Its name is Mystemas. The Roll it sits on now is the Tenth.",
    "events": [
     {
-     "text": "Two spawns of Marquis Chaosmar stand in Darkness Falls, one in High Lord Baln's hall and one near Legion's lair.",
+     "text": "Marquis Chaosmar stands twice over in Darkness Falls, one in High Lord Baln's hall and one near Legion's lair.",
      "provenance": "game",
      "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
     },
     {
-     "text": "Allakhazam's bestiary types Marquis Dortaleon as undead, unlike the other marquises.",
-     "provenance": "mythic",
-     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+     "text": "The old bestiaries count Marquis Dortaleon among the undead, unlike the other marquises.",
+     "provenance": "legend",
+     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62 (Allakhazam's bestiary)"
     },
     {
-     "text": "Duke Harboris spawns with the ghost flag; the other dukes do not.",
+     "text": "Duke Harboris walks as a ghost; the other dukes do not.",
      "provenance": "game",
      "source": "world data: Mob table, region 249 (0.37b runtime database, world tables only)"
     },
     {
-     "text": "Lilith the Demon Queen is in Mythic's bestiary; Offline DAoC's world spawns no Lilith.",
-     "provenance": "mythic",
-     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62"
+     "text": "Lilith the Demon Queen is named in the oldest bestiaries; no one in the realms has seen her in the hollow.",
+     "provenance": "legend",
+     "source": "https://camelot.allakhazam.com/db/search.html?cmzone=62 (Mythic's bestiary; Offline DAoC spawns no Lilith)"
     },
     {
      "text": "The imp Mystemas says he was once one of the strongest demons in the Master's army, turned into an imp for something he had nothing to do with, because the Master already had a plan.",
@@ -206,7 +206,7 @@
    "events": [
     {
      "text": "Only the realm holding more frontier keeps than the other two can open its Darkness Falls portal. Entrances are in Camelot Hills, the Vale of Mularn and Connacht.",
-     "provenance": "mythic",
+     "provenance": "legend",
      "source": "https://camelot.allakhazam.com/zones.html?czone=62"
     },
     {
@@ -235,9 +235,9 @@
      "source": "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Classification_of_demons"
     },
     {
-     "text": "Darkness Falls opened in patch 1.49 (April 2002); access by keep control caused fights between realms.",
+     "text": "Darkness Falls opened in the first spring of the realm war; access by keep control caused fights between realms.",
      "provenance": "legend",
-     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md (patch 1.49, April 2002)"
     },
     {
      "text": "The Chancellor's Tenth Roll says the court opened the three doors on purpose, to feed on the war.",
@@ -263,7 +263,7 @@
    "summary": "After Camlann the three realms went to war over the frontier, and in the first years each buried more of its young than it could raise. Then each realm found the way open into four small walled countries off the frontier: Thidranki first, the farm of Thidrand; then the dark wood of Murdaigean and the old wild of Caledonia; and last, for the youngest of all, the drowned shore of Abermenai. The way into a field opens only for soldiers of one seasoning, and whoever falls inside wakes at their own realm's portal keep. Albion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel; Midgard, that they are hazelled ground where a man fights only his match; Hibernia, that they lie under a geis, the other half of Macha's curse. Each realm raised its own portal keeps, in the same week by every realm's own rolls, and in every field they stand in the same three places. The keeps at the fields' hearts were held by renegades when the realms came, under chieftains who take the keeps' names. In the second winter all three realms marched on Thidranki Faste in the same week without knowing the others were coming, and its renegades went out by the back gate in the snow; the Faste has belonged to whoever took it last ever since.",
    "events": [
     {
-     "text": "The four period battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon); level is the only limit.",
+     "text": "The four period battlegrounds are Abermenai (the young not yet seasoned, Dun Abermenai), Thidranki (bands new to their seasoning, Thidranki Faste), Murdaigean (seasoned bands well along, Dun Murdaigean) and Caledonia (the most seasoned, on the edge of hardened veterans, Caer Caledon); seasoning is the only limit.",
      "provenance": "game",
      "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
     },
@@ -273,19 +273,19 @@
      "source": "world data: Keep table, regions 250-253"
     },
     {
-     "text": "The central keeps start neutral in the release world.",
+     "text": "The central keeps start neutral when the world is new, held by no realm.",
      "provenance": "game",
      "source": "source/tools/release-world-defaults.json"
     },
     {
-     "text": "Abermenai came with patch 1.62 (June 2003); Thidranki, Murdaigean and Caledonia were the classic battlegrounds.",
+     "text": "Abermenai was opened to the young long after the others; Thidranki, Murdaigean and Caledonia were the first proving fields.",
      "provenance": "legend",
-     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
+     "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md (patch 1.62, June 2003)"
     },
     {
-     "text": "The renegades who hold the central keeps are deserters and exiles of all three realms; the charge, the hazels and the geis are Living Server lore.",
+     "text": "The renegades who hold the central keeps are deserters and exiles of all three realms; the charge, the hazels and the geis are the realms' own telling.",
      "provenance": "original",
-     "source": "Living Server"
+     "source": "Living Server (Living Server lore)"
     }
    ],
    "places": [
@@ -304,19 +304,19 @@
    "summary": "Now the realms go down in force when their doors open, and each capital keeps its own count of which realm brought down which lord of the court first. The court has noticed. Prince Abdin has his Director, Kobil, raising an Army of Shadows in the chambers above the Gate, and the realms' orders have begun to send their best down to break it before it is finished. Mystemas, standing on the bottom line of the Tenth Roll, has started sending mortals after the demons who shamed him, Princess Nahemah and Ambassador Mannam first, and claims to be doing the realms a kindness. The Chancellor has written that whoever kills the Master will find the Master is not one demon and cannot all be killed at once. The Chamberlain keeps the Queen's chair. In the four fields the recruits of all three realms fight the renegades and each other, and the ones who live grow up and go to the frontier, and from the frontier, when their door opens, they come down to the court. The court is aware that it is in this way the last field of all.",
    "events": [
     {
-     "text": "In 'Breaking the Blade', Mystemas sends players to kill Director Kobil and then Prince Abdin to break the prince's plans; Hibernia's giver calls it the fight against the Army of Shadows; Midgard's version ends with Legion.",
+     "text": "In 'Breaking the Blade', Mystemas sends the realm's champions to kill Director Kobil and then Prince Abdin to break the prince's plans; Hibernia's giver calls it the fight against the Army of Shadows; Midgard's version ends with Legion.",
      "provenance": "game",
      "source": "world data: DataQuest table"
     },
     {
-     "text": "Raids, the realms' first kills and the Herald's record are Living Server features.",
+     "text": "In the present age the realms send their raids into the hollow, and the Herald keeps the record of their first kills.",
      "provenance": "game",
-     "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+     "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs (Living Server features)"
     },
     {
-     "text": "Darkness Falls' named demons and Legion have scripted mechanics of their own, and since Living Server 1.2 the realms' raids fight them with raid plans of their own.",
+     "text": "Darkness Falls' named demons and Legion each fight in their own fashion, and in this age the realms' raids go against them with battle plans of their own.",
      "provenance": "game",
-     "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/EpicEncounterTactics.DarknessFalls.cs"
+     "source": "docs/encounters/epic-encounters.json; source/server/GameServer/bots/autonomous/EpicEncounterTactics.DarknessFalls.cs (scripted mechanics; raid plans since Living Server 1.2)"
     },
     {
      "text": "The court's present Roll is the Tenth.",

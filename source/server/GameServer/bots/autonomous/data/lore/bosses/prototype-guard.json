@@ -19,7 +19,7 @@
     }
   ],
   "story": "Master Meical of the school of making died in the burning, and a drakoran answers to his name over the door of the hall now, and drives the servants he left. Most of those servants were finished. The Prototype Guard was not.\n\nIt was the old master's last piece, the readers of Caer Gothwaite say, a guard for the colleges' gates that would never sleep and never take a bribe and never let the wrong person in, and he never decided who the wrong person was. It stood half-made in the workshop when the burning came. The drakoran cabalist found it there and finished it the drakoran way, quickly, with pieces taken from the sentries and the scorchers, and set it below the hall to keep the slope.\n\nIt still does not know who the wrong person is. It treats everyone as the wrong person. The scorchers and the sentry stand near it as apprentices stand near a master, and Adelon on the hill outside the fort says the cabalist means to make more of it, which is the reason Adelon watches.",
-  "legend": "Prototype Guard, level 49 construct below Meical's hall of making, with two scorchers (44) and a sentry mark II close by. No faction of its own, but the constructs near it are aggressive: pull the scorchers off first. Plain melee, no spells, hard-hitting for its level. Respawn 80 seconds. Mind the hall's other servants and Cabalist Meical up the slope.",
+  "legend": "Prototype Guard, a construct below Meical's hall of making and a foe for a hardened band of veterans at the top of that tier, with two scorchers, lesser foes of the same tier, and a sentry mark II close by. Nothing is sworn to it, but the constructs near it attack on sight: draw the scorchers off first. Plain melee, no spells, hard-hitting for what it is. It rises again eighty seconds after it falls. Mind the hall's other servants and Cabalist Meical up the slope.",
   "yells": {
     "aggro": [
       "Halt. You are the wrong person.",
@@ -43,8 +43,8 @@
   },
   "botLines": {
     "briefing": [
-      "prototype guard below meical's hall, two scorchers next to it, pull them first",
-      "49 construct, hits hard, plain melee"
+      "prototype guard below meical's hall, two scorchers next to it, draw them first",
+      "construct, veteran band job at the top end, hits hard, plain melee"
     ],
     "aftermathWin": [
       "prototype guard down. one less of meical's toys",

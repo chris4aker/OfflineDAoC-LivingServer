@@ -29,7 +29,7 @@
     }
   ],
   "story": "Te'Bui keeps spirits. She is a svartalf of the working floor of Spindelhalla, small and unremarkable among the arbetare, and in a crystal she wears she holds what is not hers: the spirit of Lene, wife of Lord Lauur of Gotar, who walks the small hours above ground asking for her; and the spirit of a priest of Thraxia's, the arachite priestess of Gotar's skull post. Both were brought down to her. The svartalfar of Myrkwood and the werewolves of Varulvhamn trade in such things, and Te'Bui is where the trade ends.\n\nTe'Delna of the Myrkwood svartalfar is her kin, Myrkwood says, and sends her the spirits to keep, because nobody looks for a spirit among the thralls. Odell of Svarhamr found her name on a frame in the hand of one of the thralls she works beside, with a prayer under it: that those who come for the spirits will take her too, because she can hear them at night. She fights for the crystal anyway.",
-  "legend": "Te'Bui is a level 35 svartalf among the workers and thralls in Spindelhalla, close to Smarta. She has the white spirit crystal for Lord Lauur's Wife and possesses the priest's spirit for Thraxia's Dilemma, so both quest lines end here. No faction on her, but Smarta's workers stand all round, so expect company. No spells. Two quests, one kill: do both at once if you have them.",
+  "legend": "Te'Bui is a svartalf, a foe for a hardened band of veterans, among the workers and thralls in Spindelhalla, close to Smarta. She has the white spirit crystal for Lord Lauur's Wife and possesses the priest's spirit for Thraxia's Dilemma, so both quest lines end here. She answers to no one, but Smarta's workers stand all round, so expect company. No spells. Two quests, one kill: do both at once if you have them.",
   "yells": {
     "aggro": [
       "The spirits are mine to keep. Go.",
@@ -49,7 +49,7 @@
   },
   "botLines": {
     "briefing": [
-      "te'bui is the 35 svartalf with the spirit crystal in spindelhalla",
+      "te'bui is the hardened-band svartalf with the spirit crystal in spindelhalla",
       "both lord lauurs wife and thraxias dilemma end at her"
     ],
     "aftermathWin": [

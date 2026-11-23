@@ -16,6 +16,15 @@ on:
       - "source/tools/OfflineDaoc.Playtester.Tests/**"
       - "source/tools/make_test_world.py"
       - "source/server/GameServer/packets/Client/168/CharacterCreateRequestHandler.cs"
+      - "source/server/GameServer/bots/BotDeathAnimation.cs"
+      - "source/server/GameServer/bots/BotCorpseTargeting.cs"
+      - "source/server/GameServer/commands/gmcommands/LivingServerTestCommand.cs"
+      - "source/server/GameServer/commands/playercommands/target.cs"
+      - "source/server/GameServer/commands/gmcommands/jump.cs"
+      - "source/server/GameServer/commands/gmcommands/JumpBotTargets.cs"
+      - "source/server/GameServer/packets/Client/168/PlayerTargetHandler.cs"
+      - "source/server/GameServer/mode165/**"
+      - "source/server/GameServer/bots/autonomous/AutonomousBotRealmPointRewards.cs"
       - "source/tools/tests/**"
       - ".github/workflows/playtester.yml"
 
@@ -48,6 +57,8 @@ jobs:
         run: |
           python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
           python3 source/tools/make_test_world.py minimal --class-off --out "$RUNNER_TEMP/minimal-classoff.db"
+          python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal-death.db"
+          python3 source/tools/make_test_world.py minimal --companions --out "$RUNNER_TEMP/minimal-companions.db"
 
       - name: Run the scenarios
         run: |
@@ -69,10 +80,45 @@ jobs:
           grep -h "FORK_BUILD name=" "$RUNNER_TEMP"/playtest-classoff/server-console-*.log | head -n 1 | grep -q "sluaghbinder=off" \
             || { echo "::error::the class-off server's FORK_BUILD line does not say sluaghbinder=off"; exit 1; }
 
+      # 1.2.1 bot death and rez (BotDeathAnimation, BotCorpseTargeting), on a world of its own: a GM logged in as the
+      # original client (handshake build 0x2A07) and players as either client watch a /spawn companion helper die, lie
+      # dead and be raised (/lstest deathanim, /lstest deathanim rez). Tests only: the packets, not what game.dll draws.
+      - name: Run the bot death and rez scenarios
+        if: always()
+        run: |
+          set -o pipefail
+          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+            --world "$RUNNER_TEMP/minimal-death.db" --server-dir source/server/Release \
+            --scenarios bot-death,bot-corpse-target,bot-rez,bot-jump --out "$RUNNER_TEMP/playtest-death" | tee "$RUNNER_TEMP/death.txt"
+          logs=("$RUNNER_TEMP"/playtest-death/server-console-*.log)
+          grep -hq "CLIENT_HANDSHAKE .*build=0x2A07 client=original" "${logs[@]}" \
+            || { echo "::error::no CLIENT_HANDSHAKE line took the scripted game.dll build as the original client"; exit 1; }
+          grep -hq "CLIENT_HANDSHAKE .*build=0x0000 client=new-or-unknown" "${logs[@]}" \
+            || { echo "::error::no CLIENT_HANDSHAKE line took build 0 as the new client"; exit 1; }
+          grep -hq "BOT_DEATH_ANIM fall bot=.* original_clients=[1-9]" "${logs[@]}" \
+            || { echo "::error::no BOT_DEATH_ANIM fall line with an original client"; exit 1; }
+          grep -hq "BOT_DEATH_ANIM raised bot=.* original_clients=[1-9]" "${logs[@]}" \
+            || { echo "::error::no BOT_DEATH_ANIM raised line with an original client"; exit 1; }
+          grep -h "BOT_DEATH_ANIM \|CLIENT_HANDSHAKE" "${logs[@]}" | head -n 40 || true
+
+      # 1.2.1 companions and rewards, on a world with an Armsman's lines and a merchant list (make_test_world.py --companions):
+      # a click on a living bot (#424, PLAYER_CLICK_TARGET), /hire train by line name and the hired companion's level, gear
+      # retry and training-weapon swap (#397, HIRED_COMPANION_TRAINED / _GEAR_RETRIED), and an enemy record-backed bot's kill
+      # paying experience and bounty points once (#396, RVR_BOT_KILLED). Tests only: packets and log lines.
+      - name: Run the companion and reward scenarios
+        if: always()
+        run: |
+          set -o pipefail
+          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+            --world "$RUNNER_TEMP/minimal-companions.db" --server-dir source/server/Release \
+            --scenarios bot-click-target,hire-train,gamebot-kill-xp --out "$RUNNER_TEMP/playtest-companions" | tee "$RUNNER_TEMP/companions.txt"
+          logs=("$RUNNER_TEMP"/playtest-companions/server-console-*.log)
+          grep -h "PLAYER_CLICK_TARGET\|HIRED_COMPANION\|RVR_BOT_KILLED\|HIRE_WORD_165" "${logs[@]}" | head -n 60 || true
+
       - name: Put the outcome on the run page
         if: always()
         run: |
-          for r in playtest playtest-classoff; do
+          for r in playtest playtest-classoff playtest-death playtest-companions; do
             if [ -f "$RUNNER_TEMP/$r/report.md" ]; then
               echo "### $r" >> "$GITHUB_STEP_SUMMARY"
               sed -n '1,/^## /p' "$RUNNER_TEMP/$r/report.md" | head -n -1 >> "$GITHUB_STEP_SUMMARY"
@@ -88,4 +134,8 @@ jobs:
             ${{ runner.temp }}/playtest/server-console-*.log
             ${{ runner.temp }}/playtest-classoff/report.*
             ${{ runner.temp }}/playtest-classoff/server-console-*.log
+            ${{ runner.temp }}/playtest-death/report.*
+            ${{ runner.temp }}/playtest-death/server-console-*.log
+            ${{ runner.temp }}/playtest-companions/report.*
+            ${{ runner.temp }}/playtest-companions/server-console-*.log
           if-no-files-found: warn

@@ -24,7 +24,7 @@
     }
   ],
   "story": "Tusker is a boar of the south-western beeches of Cornwall as big as a hay-cart, and the ground under the beeches where he roots is turned as if a plough had been through it. The hunters of Cornwall Station named him for his tusks, which are as long as a man's forearm and yellow with age, and they have never agreed on anything else about him: how old he is, what he eats besides beech-mast, or whether the giant rooters of the woods are his children.\n\nThe Cornish say the great boars are the oldest beasts of the west. In their songs a boar runs ahead of the king's hunt across the whole of the land and cannot be caught, and leaves the valleys behind him where his tusks went through the hills. The drovers do not say Tusker is that boar. They do not say he is not.\n\nHe has never charged a herd or a man who left him to his rooting, and the Hexts drive their cattle within a spear's throw of him every season. The hunters who did not leave him alone have a saying: Tusker turns the ground for the beeches, and for anyone who interrupts him.",
-  "legend": "Tusker is a giant boar in the south-western beeches of Cornwall, level 45. He never aggros, so you can walk past him. If you want him, he is a plain melee mob with no spells, a solid fight at 45: bring a group in the mid forties with a tank who can hold him. The giant rooters around him are easy but do aggro, so clear them. He comes back fast (the data says 80 seconds).",
+  "legend": "Tusker is a giant boar in the south-western beeches of Cornwall, a foe for a hardened band of veterans. He never takes notice of anyone, so you can walk past him. If you want him, he is a plain melee beast with no spells, a solid fight: bring a hardened band of veterans with a shield-bearer who can hold him. The giant rooters around him are easy but do attack on sight, so clear them. He comes back fast (about eighty seconds, by the raiders' count).",
   "yells": {
     "aggro": [
       "Tusker looks up from the mast. He is not pleased.",
@@ -47,15 +47,15 @@
   },
   "botLines": {
     "briefing": [
-      "tusker, sw beeches, level 45 boar. wont aggro, hits hard, plain melee",
-      "clear the rooters first, they do aggro"
+      "tusker, sw beeches, big boar, veteran band job. wont attack, hits hard, plain melee",
+      "clear the rooters first, they do attack"
     ],
     "aftermathWin": [
       "tusker down. look at those tusks",
       "the hexts will drive past an empty patch of beech now. for a minute"
     ],
     "aftermathLoss": [
-      "tank couldnt hold him, we were too low for a 45"
+      "shield-bearer couldnt hold him, we were too green for him"
     ],
     "rumour": [
       "[heard|someone said] the giant rooters are tusker's kids",

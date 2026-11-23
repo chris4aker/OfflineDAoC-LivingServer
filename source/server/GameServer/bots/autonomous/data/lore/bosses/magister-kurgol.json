@@ -33,12 +33,12 @@
     },
     {
       "text": "Trollheim's bestiary names Magister Kurgol.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=67"
     }
   ],
   "story": "Magister Kurgol keeps the largest of the Fathers' workshops, high in the upper city above the hall of counsel, and he has found out how to light its old forge. That alone makes him the most important morvalt in Trollheim in the eyes of the Valkyn, who say that for a morvalt to light a Fathers' forge is like a wolf learning to open a door: a thing that cannot be unlearned, and that changes what the wolf is.\n\nThe magisters are the morvalt's keepers of the Fathers' work, the ones who use the Fathers' tools without understanding most of them. Kurgol understands more than most. He watched the forge for a season, the Valkyn say, before he touched it, the way the Fathers' own children watched at the fires before they were given the first word, and when he lit it he lit it right. The apprentices who work under him are the only morvalt in the city who are taught anything, and the soldiers who stand about his workshop are there to keep everyone else out, Dagar's people and the butchers and the drunken watch alike.\n\nWhat he makes is a question the trolls of Dyrfjall would like answered. The Fathers' forge made the weapons on the walls, and sealed the word of warding into them. Kurgol's weapons, the Valkyn say, come out of the same fire and carry no word at all, and the chaos warriors who walk the galleries below the workshop carry them. Master Smed, who keeps the lesser forge in the west of the city among the butchers, says Kurgol's blades are pretty and soft; Kurgol says nothing about Smed at all, which in the morvalt's way is worse.\n\nHe does not care for strangers in his workshop and comes at them quickly, without calling anyone; the soldiers about the forge come of their own accord when they see it. The Valkyn guides do not take anyone up there. They say that if Kurgol ever finds the word the Fathers sealed into the old weapons, the city will defend itself for the morvalt, and that will be the end of the trolls' hope of coming home.",
-  "legend": "Magister Kurgol is a level 65 morvalt up high in Trollheim's upper city, in the big workshop above the hall of counsel. Aggressive at short range (200) but no faction, so he doesn't call friends; the soldiers, apprentices and bowman around his workshop (50-54) are aggressive on their own, though, so clear them first. Elite warriors and chaos warriors (57-62) stand further off: don't drag the fight toward them. No special abilities, not CC-immune. No quest needs him. He's up a level of galleries above the bar, so come at him from the workshop stair rather than through the drunken watch. Pull the soldiers to the stair one at a time.",
+  "legend": "Magister Kurgol is a morvalt, a foe for several bands of the realm's best together, up high in Trollheim's upper city, in the big workshop above the hall of counsel. He attacks anyone who comes within about seven paces but answers to no one, so he doesn't call friends; the soldiers, apprentices and bowman around his workshop, each a foe for the realm's best, attack on sight on their own, though, so clear them first. Elite warriors and chaos warriors, a good deal stronger, stand further off: don't drag the fight toward them. No special tricks, and charms, trances and stuns hold him. No quest needs him. He's up a floor of galleries above the bar, so come at him from the workshop stair rather than through the drunken watch. Draw the soldiers to the stair one at a time.",
   "yells": {
     "aggro": [
       "Out of my workshop!",
@@ -76,15 +76,15 @@
   },
   "botLines": {
     "briefing": [
-      "kurgol is up in the workshop above the bar, 65",
-      "no faction but his soldiers are aggro, clear them",
+      "kurgol is up in the workshop above the bar, a several-bands fight",
+      "he answers to nobody but his soldiers attack on sight, clear them",
       "dont drift toward the chaos warriors",
-      "no tricks, mez works"
+      "no tricks, trances work"
     ],
     "aftermathWin": [
       "kurgol down, forge is out for now",
       "cleared the soldiers first, fine",
-      "nice pull",
+      "nice draw",
       "the forge is still warm"
     ],
     "aftermathLoss": [
@@ -104,7 +104,7 @@
     "keyword": "Magister Kurgol",
     "text": "The morvalt who learned to light the Fathers' great forge in the upper city. His blades carry no word of warding, unlike [the weapons]. Rival of [Master Smed]."
   },
-  "bookPage": "From what Ivrik the kobold lamp-carrier of Bjarken told the skalds: you can feel Kurgol's forge from the hall of counsel, a warmth in the floor, and the Valkyn guide stopped and put her hand flat on the stone. She said her grandmother had felt the same warmth when the Fathers worked there, and that it was the only thing in the city that felt the same as it used to. She said she hated that most of all. Then she said she did not, and took her hand away, and we went on. The floor stayed warm a long way.",
+  "bookPage": "A warmth in the floor: you can feel Kurgol's forge from the hall of counsel, Ivrik the kobold lamp-carrier of Bjarken told the skalds, and the Valkyn guide stopped and put her hand flat on the stone. She said her grandmother had felt the same warmth when the Fathers worked there, and that it was the only thing in the city that felt the same as it used to. She said she hated that most of all. Then she said she did not, and took her hand away, and wiped it on her coat, and we went on. The floor stayed warm a long way.",
   "chronicle": {
     "win": "{raidLeader} of {realm} put out Magister Kurgol's forge in Trollheim in {minutes} minutes.",
     "loss": "Magister Kurgol tested his blades on {raidLeader}'s party from {realm} for {minutes} minutes."

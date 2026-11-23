@@ -54,6 +54,11 @@
       "text": "She takes 40% less melee damage and 70% less magic damage, cannot be crowd-controlled, and heals to full after 30 seconds out of combat.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs"
+    },
+    {
+      "text": "The book pages after the first (the place-lore of the Room of High Seats, the squire's letter) are Living Server writing.",
+      "provenance": "original",
+      "source": "Living Server (1.2.1 epic floors, #402)"
     }
   ],
   "story": "Cunovinda is the first of the Grand Summoner's three students, and the hall's stewards say still the best. Her name is old, white hound in a tongue older than Camelot, and every realm argues over it: Camelot's scholars say she was a Briton of the hills before Arthur, the druids that her name was common in the west before the sea came between the peoples, the skalds that a name is only a collar and says nothing of the dog. The hall's sidhe say she came down the calling's road as one of the dead and was the first to arrive who could hear what the voice was saying, and that Govannon took her as a student that same night.\n\nHe taught her one thing above all: a summoner who must trade blows has already lost the argument. She has never traded one. Her chamber is the hall's old room of high seats, ledges rising out of sight where the lesser guests of the meeting place once sat to listen, and when she is struck she sends someone up there, with a crack of cold behind them, and goes on with her work while they find their way down. She is never quite where an enemy expects her, and nothing that holds a man still has ever held her.\n\nThe companies of all three realms tell of her as the hardest of the three, and say it with respect. Albion's account is of knights who spent more of the day climbing than fighting; Hibernia's of a ranger who spent the whole of it on the ledges and watched the killing from above; Midgard's of a Glenlock captain who compared her to a cat that throws your friends onto the roof. What she wants, the magicker says, is to hear her master say she has surpassed him. He never has. She is the only one of the three who knows he never will, and goes on trying.",
@@ -75,7 +80,7 @@
       "text": "Each of the three students wants something from the Grand Summoner, the magicker says, and Cunovinda's want is the plainest. She wants him to say she has surpassed him. He never has. He has never said it to any of them, and the magicker thinks he never will, because a maker who tells his apprentice she is finished has no more use for her. Lossren does not care. Roesia pretends not to. Cunovinda is the only one of the three who knows he never will, and goes on trying anyway, the way a hound goes on bringing back the stick.\n\nWhen she dies, the companies say, she speaks to him and not to them: she tells him his best student was not enough. Then she is back in her room of high seats in a season or less, because the pattern of the hall holds her place as it holds his, and the first thing she does, the stewards say, is go to the foot of the deep room's stair and wait to see if he will come out and say something. He never does.\n\nThe three realms say different things about her end. Camelot's priests pray that the white hound will be let off her leash. The druids say she chose her master and must keep him. The skalds of Jordheim say she is the most dangerous thing in the hall, because she is the only one in it who is still trying to get better, and nothing that is still trying ever stays beaten for long."
     }
   ],
-  "legend": "Cunovinda's the hardest of the three summoners, most old hands say. Every time she takes a hit there's a chance she bolts someone with cold and throws them up to the ledges at the top of her room, and she does it again every ten seconds or so while you keep hitting her. If it's you, climb down and come straight back; the stewards won't help. She shrugs off most magic, takes less from melee than you'd like, and nothing mezzes, roots or stuns her. Don't drag her off her spot: past her tether she can't be hurt. Leave her alone for half a minute and she's back to full. One skilled full group can do her, the old hands say, but three or four groups do it faster, and the healers should be ready to catch whoever comes down hurt.",
+  "legend": "Cunovinda's the hardest of the three summoners, most old hands say; a foe for a war party of any realm's champions. Every time she takes a hit there's a chance she bolts someone with cold and throws them up to the ledges at the top of her room, and she does it again every ten seconds or so while you keep hitting her. If it's you, climb down and come straight back; the stewards won't help. She shrugs off most magic, takes less from melee than you'd like, and no trance, pinning or stun holds her. Don't drag her off her spot: drawn too far from it she can't be hurt. Leave her alone for half a minute and she's whole again. One skilled full group can do her, the old hands say, but three or four groups do it faster, and the healers should be ready to catch whoever comes down hurt.",
   "yells": {
     "aggro": [
       "Up you go, little hound. Look down on your friends.",
@@ -118,9 +123,9 @@
   "botLines": {
     "briefing": [
       "cunovinda throws people up to the ledges. if you go up, climb down and come back",
-      "dont pull her off her spot, tether immune",
-      "cunovinda shrugs off magic and nothing cc's her. melee and patience",
-      "if she throws you up to the ledges climb down fast, she'll do it again every 10s or so",
+      "dont draw her off her spot, nothing hurts her once shes too far from it",
+      "cunovinda shrugs off magic and nothing holds her. melee and patience",
+      "if she throws you up to the ledges climb down fast, she'll do it again every 10 sec or so",
       "dont stop hitting cunovinda for half a minute or she's back to full"
     ],
     "aftermathWin": [
@@ -132,7 +137,7 @@
     "aftermathLoss": [
       "whoever she threw up to the ledges was too slow coming back",
       "she wore us down while someone was stuck up on the ledges",
-      "we pulled her past her tether and she went immune",
+      "we drew her too far off her spot and nothing hurt her",
       "we let her sit for half a minute and she was full again"
     ],
     "rumour": [
@@ -146,7 +151,11 @@
     "keyword": "Cunovinda",
     "text": "The white hound, the Grand Summoner's first and best student. She does not trade blows; she puts you somewhere else, high on the ledges of her chamber."
   },
-  "bookPage": "From Vigfus Hallason's notes, a page he left out of his book. I asked the magicker why Cunovinda sends people up to the ledges instead of killing them. She said the white hound was taught never to trade blows, and that sending a man away is not a blow. I said it was close enough to one for the man. She laughed and said that was what Govannon had told Cunovinda too, the only time he ever corrected her, and that Cunovinda had answered him that a hound does not bite, it scatters the pack. Then she said he never corrected her again. I think that is the saddest thing I heard in the hall.",
+  "bookPage": [
+    "From Vigfus Hallason's notes, a page he left out of his book. I asked the magicker why Cunovinda sends people up to the ledges instead of killing them. She said the white hound was taught never to trade blows, and that sending a man away is not a blow. I said it was close enough to one for the man. She laughed and said that was what Govannon had told Cunovinda too, the only time he ever corrected her, and that Cunovinda had answered him that a hound does not bite, it scatters the pack. Then she said he never corrected her again. I think that is the saddest thing I heard in the hall.",
+    "The Room of High Seats under the borders, whence is it named? Not hard. When the sidhe built the meeting place they cut ledges up the walls of one room, rising out of sight, so that the lesser guests could sit above and listen while the greater spoke below, and no one need stand. Now the white hound keeps it, and the guests she seats there do not choose to sit. Dubhessa, a ranger of Connacht, went down the stair of Marfach with a company and was sent up to the highest ledge at the first blow, and she spent the whole of that day seeking the way down and never found it. She watched the killing from above and saw the summoner fall, and at the end the sidhe protectors brought her down, and told her she was the first guest in an age to stay the full sitting.",
+    "A letter of a squire of Caer Ulfwych to his mother, carried up the stair of the Hall of the Corrupt: We have killed the first of the three summoners, the one they call the white hound, and I am not hurt. I did not strike her once. Three times she sent me up the high seats with a crack of cold behind me, and three times I climbed down, and by the third I knew the way and came down quicker than Sir Cadwgan, who is heavier. Most of the day was climbing. When she fell I was on a ledge again, and I saw her look towards the door of the deepest room, as if she waited to be told she had done well. No one came out. Tell Father I have not lost the knife."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Summoner Cunovinda in {minutes} minutes.",
     "loss": "Summoner Cunovinda scattered {raidLeader}'s raid from {realm} across her ledges for {minutes} minutes."

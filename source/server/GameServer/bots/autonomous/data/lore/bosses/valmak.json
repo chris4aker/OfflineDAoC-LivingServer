@@ -26,7 +26,7 @@
     }
   ],
   "story": "The terror birds of Faraheim stand taller than a troll at the shoulder and do not fly; they never needed to. They graze among the deer of the middle country, quite still for hours, and the deer do not run from them, which the dwarves find more unsettling than anything else about them. Every so often, the deer are fewer.\n\nValmak is the one the others wait for. The skogsra call the terror birds the Waiting Terror, because they wait, and because when they stop waiting it is too sudden to be anything but terror. Valmak is the oldest and largest of them, and the others turn their heads when he moves, the way a flock turns to its leader. He sees further than the others. A hunter who thinks he is at a safe distance from Valmak is usually wrong by a good stretch.\n\nWhen he strikes, he cries. The cry is not loud as cries go, but it carries the way a hawk's shadow carries over a field, and everything near the creature he struck stops where it stands and stares, and stays so for a long minute, unable to move or think, while he deals with the one he chose. It is the same stillness that comes on a hare when the hawk's shadow passes, the dwarves say: older than any spell. The cry does not come with every blow, and it does not come twice in quick succession; it is a thing he spends, and he spends it well. Those who keep their distance from the one he is striking stay free to act.\n\nNo snare has held him and no charm has dulled him. The Remnants hunt the lesser terror birds from griffon-back, swooping, and never Valmak. They have a saying for a danger best not looked at closely: do not walk up to look at the big bird.",
-  "legend": "Valmak is the big terror bird in the middle of Faraheim, level 64, 30,000 health. He sees you further off than most (aggro range 800), so open on your terms. The danger is his mez: on about a third of his hits he mezzes his target and everyone within 450 of it for 72 seconds, once a minute at most. Whole groups die here because they stacked on the tank. Spread out, keep only the tank in close, and have purge or a minstrel ready. That's his only trick; otherwise he just hits. CC-immune, reach 350, resets full if you leave. Killing him costs Waiting Terror faction, which almost nobody cares about. Don't walk up to look at the big bird.",
+  "legend": "Valmak is the big terror bird in the middle of Faraheim, a foe for several bands of the realm's best together; he takes as much killing as fifteen raiders. He sees you further off than most (about twenty-five paces), so open on your terms. The danger is his trance: on about a third of his hits he entrances his target and everyone within fifteen paces of it for 72 seconds, once a minute at most. Whole groups die here because they stacked on the shield-bearer. Spread out, keep only the shield-bearer in close, and have a purge or a minstrel ready. That's his only trick; otherwise he just hits. No charm or stun holds him, he reaches a dozen paces, and he is whole again if you leave. Killing him costs you standing with the Waiting Terror, which almost nobody cares about. Don't walk up to look at the big bird.",
   "yells": {
     "aggro": [
       "(A shrieking cry splits the air.)",
@@ -64,23 +64,23 @@
   },
   "botLines": {
     "briefing": [
-      "valmak: big aggro range, 72 sec aoe mez round whoever he hits. spread out, purge ready",
-      "his mez hits everyone within 450 of his target for 72 sec. spread out",
-      "only the tank in close",
+      "valmak: sees you from far off, 72 sec trance on everyone round whoever he hits. spread out, purge ready",
+      "his trance takes everyone within fifteen paces of his target for 72 sec. spread out",
+      "only the shield-bearer in close",
       "purge ready, once a minute at most",
-      "aggro range is big, pull from far"
+      "he sees you from far off, draw him from far"
     ],
     "aftermathWin": [
-      "killed the big bird. [finally|gg]",
-      "spread out and only the tank got mezzed",
+      "killed the big bird. [finally|well fought]",
+      "spread out and only the shield-bearer got entranced",
       "the other birds just watched",
       "the deer didnt even look up when it died"
     ],
     "aftermathLoss": [
-      "mezzed for a minute and woke up dead",
-      "everyone stacked on the tank",
+      "entranced for a minute and woke up dead",
+      "everyone stacked on the shield-bearer",
       "walked too close to look",
-      "purge was on cooldown"
+      "my purge wasnt ready again yet"
     ],
     "rumour": [
       "dont walk close to look at the big bird in faraheim. [it sees you first|trust me]",
@@ -93,7 +93,7 @@
     "keyword": "Valmak",
     "text": "The terror bird the others wait for. When he cries, everything near him stops and stares for a long minute, and he uses that minute well."
   },
-  "bookPage": "From A Map That Lies, by Gunnvor of Jordheim: the deer graze right up to the great birds' feet, and the birds do not look at them, and the deer do not look up. I watched for a whole afternoon. Once, the largest bird struck, too fast to see, and cried, and four deer near the one it struck stood stock still with their heads up, not running, not grazing, for as long as it would take a skald to sing a short song. The rest of the herd, further off, ran. By the time the four could move again, there were three.",
+  "bookPage": "The deer graze right up to the great birds' feet, Gunnvor of Jordheim writes in A Map That Lies, and the birds do not look at them, and the deer do not look up. I watched for a whole afternoon. Once, the largest bird struck, too fast to see, and cried, and four deer near the one it struck stood stock still with their heads up, not running, not grazing, for as long as it would take a skald to sing a short song. The rest of the herd, further off, ran. By the time the four could move again, there were three.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Valmak the terror bird in {minutes} minutes.",
     "loss": "Valmak's cry held {raidLeader}'s party from {realm} still for {minutes} minutes, and that was enough."

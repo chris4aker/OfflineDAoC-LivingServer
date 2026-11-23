@@ -53,6 +53,11 @@
       "text": "The seer Vaka, her two castings and Bergljot's company at the western watch are Living Server lore.",
       "provenance": "original",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs"
+    },
+    {
+      "text": "The book pages after the first (the icelord's message home with Leif Asgautsson and the varulv blood-price on the depredator, with Grar) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server lore, epic book pages (issue #402)"
     }
   ],
   "story": "Agmundr believes in seers. Most icelords keep a seer for the look of it and listen to her when the news is good; Agmundr has listened to his always. Her name is Vaka, and for fifty years she has read the runes on the ice of the western watch and told him who would come up the western road. She told him when the drakulv would come and when the Faraheim spy would come, and both came, and Agmundr was waiting.\n\nHe keeps a household rather than a guard: a depredator, two icespines, two of the icetouch and Vaka herself, giants who have served the western watch with him so long that they do not need calling. They are spread through the halls of the watch about their own work, and at his first roar they leave it and come at a run, from wherever they are, faster than giants have any right to run. The Valkyn scout watched them do it once and wrote that Agmundr's household was the only thing in Tuscaran that moved like a wolf pack.\n\nThe season Bergljot Steinsdottir's hundred came up the crater road, Vaka cast the runes and read them: strangers on the western road; few; tired; no threat. Agmundr believed her and sent for no one. When the strangers came he told them so, without embarrassment, and then his household came at a run. Bergljot's company got past him. Vaka cut a second line under the first afterwards, deeper: the runes do not lie, but they do not say when.\n\nHe fights the way a watch-captain fights, steadily, at the one in front of him, and now and then the cold of the watch comes down in a wide ring round the one he strikes. He still believes his seer. He still tells strangers he asked for no help. His household still comes anyway.",
@@ -74,7 +79,7 @@
       "text": "Vaka's casting is still on the ice of the western watch. The runemasters of Jordheim who have read it say it is an ordinary seer's casting in the giants' own marks: strangers on the western road; few; tired; no threat. Below it, cut deeper and in a different hand, the same seer has added a line after the fact. The runes do not lie, it says, but they do not say when.\n\nThe runemasters argue about what she meant. One account is that she meant the threat had not come yet: that Bergljot's hundred were indeed no threat to the western watch, and that the threat was something else, still coming. The cast-out sculptors prefer a simpler reading. They say Vaka meant that strangers are few and tired when they arrive and many and rested when they leave, because they come back, and back, and the runes cannot see that far.\n\nAgmundr has never read the second line, the sculptors say. He still believes his seer. He still greets every stranger at the head of the western road with the same courtesy, and tells them that he has asked for no help because they are no threat. His household still comes running anyway. The Valkyn guides say that is the whole of Agmundr: an honest giant who has never once been told the truth by the one he trusts.\n\nHe dies saying the strangers came a long way only to meet a terrible death. The companies who have heard it say he sounds puzzled, as if he were reading it off the ice."
     }
   ],
-  "legend": "Agmundr is a pack pull, and it's worse than it looks: the moment he's engaged, his six hrimthursa (a depredator, two icespines, two icetouch and one more) come from wherever they are in the area and run at your raid at speed 300 with no tether, so they arrive fast and won't reset if you back off. Clear the halls of the western watch first if you can, or plan the pack before you touch him: crowd control isn't wasted on the household, and keep the icetouch off the healers. Agmundr himself has 100,000 health and is CC-immune, and on some of his attacks he drops a 650 cold blast in a 500 radius round his target, so nobody but the tank stands near the tank. His boast that he asked for no reinforcements is a lie: they always come. Rest and rebuff before the pull; raids arrive tired from Fornfrusenen, and more of them die here than at the throne.",
+  "legend": "Agmundr is a whole household to draw at once, and it's worse than it looks: the moment he's engaged, his six hrimthursa (a depredator, two icespines, two icetouch and one more) come from wherever they are in the area and run at your raid faster than a man can run, and they never turn home, so they arrive fast and won't go back if you back off. Clear the halls of the western watch first if you can, or plan the household before you touch him: trances, stuns and holds aren't wasted on the household, and keep the icetouch off the healers. Agmundr takes as much killing as fifty raiders, no charm or stun holds him, and he is a foe for a war party of the realm's champions; on some of his attacks he drops a cold blast worth two-thirds of a robed caster's strength on everyone within about seventeen paces of his target, so nobody but his shield-bearer stands near his shield-bearer. His boast that he asked for no reinforcements is a lie: they always come. Rest and renew the blessings before you draw him; raids arrive tired from Fornfrusenen, and more of them die here than at the throne.",
   "yells": {
     "aggro": [
       "My seer told me you would come. She said you were no threat.",
@@ -124,13 +129,13 @@
   },
   "botLines": {
     "briefing": [
-      "agmundr comes with six giants. [cc|mez] the seer, kill the icetouch first",
+      "agmundr comes with six giants. [stun|entrance] the seer, kill the icetouch first",
       "spread for agmundr's blast, its a big circle",
       "rest up before agmundr, we come off fornfrusenen tired",
-      "tank the depredator and icespines away from the healers",
-      "agmundrs whole household runs in from the area the second you touch him, fast and no tether",
+      "hold the depredator and icespines away from the healers",
+      "agmundrs whole household runs in from the area the second you touch him, fast, and they never turn home",
       "clear the western watch before agmundr if you can",
-      "his cold blast is 500 round the tank, everyone else off the tank",
+      "his cold blast hits everyone near his shield-bearer, everyone else off the shield-bearer",
       "he says he asked for no reinforcements. he lies, they always come"
     ],
     "aftermathWin": [
@@ -143,12 +148,12 @@
       "past agmundr, kula next"
     ],
     "aftermathLoss": [
-      "wiped at agmundr again. the adds were too much",
+      "all of us down at agmundr again. the household was too much",
       "agmundr again. [every time|this guy]",
       "the icetouch got to the healers",
       "the blast hit everyone because we stacked",
-      "the household ran in faster than we could cc",
-      "backed off to reset and the adds just followed us"
+      "the household ran in faster than we could stun or entrance them",
+      "backed off to make him go home and the household just followed us"
     ],
     "rumour": [
       "heard agmundr didnt even call for backup because his seer said we're harmless. [rude|fair enough]",
@@ -165,6 +170,10 @@
     "text": "The icelord of the western watch, who has trusted his seer Vaka for fifty years. She read 'few, tired, no threat' the season Bergljot's hundred came, and he asked for no help; his household came running from every hall anyway, as it always does. Under her runes she cut: the runes do not lie, but they do not say when. His brother icelord is [Kvasir]."
   },
   "bookPage": "Runes found on the ice at the western watch, read by a runemaster of Jordheim who asked not to be named. They are a seer's casting, in the giants' own marks, and they say: strangers on the western road; few; tired; no threat. Below them, cut deeper and in a different hand, the same seer has added a line after the fact: the runes do not lie, but they do not say when. The runemaster said that is the most honest thing he has ever read from a seer. He said he would not want to have been the one who had to tell Agmundr.",
+  "bookPages": [
+    "The message the icelord of the western watch sent home with Leif Asgautsson of the Remnants, the spy of the sixtieth winter, as Leif said it over to the slate-keepers of Faraheim with his beard still frozen to his chest. My seer cast for you before you set out. She told me which night you would climb the wall, and that you would come alone, and that you would be cold and frightened and no threat, and you were all three. Tell the ones who sent you that she cast for them as well, after she had done with you, and would not tell me what she read, except that it was not about the watch. I send you home because she asked it. The slate-keepers asked Leif to say it again, to be sure of it, and he said it the same way every time until the ice in his beard had run off onto the floor.",
+    "The blood-price the varulv of the Iarnwood laid on the depredator of the western watch, as a svartalf trader heard it howled at the edge of the wood and carried it to Dellingstad. For Grar, for his sister, and for the young one who had no name yet, killed on the outer ice by a giant's bare hands: those hands, both of them, to be taken by the pack. The pack went up onto the outer ice in the spring to take them, and found the depredator alone at the meltwater pools, and stood off to wait for him to tire. Then the icelord at the head of the road roared, and the depredator turned and ran to it, and every giant of that watch ran with him, and the pack went home with nothing. The price stands. The trader says the varulv mean to take it on a day the icelord does not roar."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} proved Agmundr's seer wrong in {minutes} minutes.",
     "loss": "Agmundr's seer was right about {realm} today: {raidLeader}'s raid fell after {minutes} minutes."

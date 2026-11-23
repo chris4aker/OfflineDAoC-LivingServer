@@ -20,7 +20,7 @@
     }
   ],
   "story": "Rioldna is a banshee of the Cullen bog, one of Queen Cliodna's kin, and she keens on the path north-west of Alainn Bin where it turns toward the higher ground. The bog folk say she keens for one family only, an old family of the Cullen country that died out generations ago, and that she has not noticed. She keens for them every night anyway, for every death in a house that has stood empty since before Alainn Bin had a name.\n\nBrigit of the palace sends the moonstone-seekers to her before the Faerie Queen, and has never said why. Robena the harper of Tir na Nog thinks the dead family was the one that cut the moonstone for the courts' bargain in the Cursed Forest, and that Rioldna is keening for the bargain itself. Chieftess Dana of Alainn Bin says the keen is the most beautiful thing in the bog and that nobody should listen to the end of it.",
-  "legend": "Rioldna (47) is a banshee on the path north-west of Alainn Bin in the Bog of Cullen (about 396k/765k). She is a step of The Moonstone Twin (Brigit), before the Faerie Queen in the Cursed Forest. A group of mid to high 40s. 5-minute respawn. Black wraiths and badh are nearby on the eastern pools. Bog custom: do not let her keen finish.",
+  "legend": "Rioldna, a foe for a hardened band of veterans, is a banshee on the path north-west of Alainn Bin in the Bog of Cullen (about 396k/765k). She is a step of The Moonstone Twin (Brigit), before the Faerie Queen in the Cursed Forest. A hardened band of veterans. She returns five minutes after she falls. Black wraiths and badh are nearby on the eastern pools. Bog custom: do not let her keen finish.",
   "yells": {
     "aggro": [
       "(the keen rises, high and terrible)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "rioldna is a 47 banshee north west of alainn bin",
+      "rioldna is a banshee north west of alainn bin",
       "moonstone twin step before the faerie queen"
     ],
     "aftermathWin": [

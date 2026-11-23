@@ -1,34 +1,51 @@
-# Living Server 1.2: known issues and what's not tested yet
+# Living Server 1.2.1: known issues and what's not tested yet
 
-For players. What to expect, what hasn't been seen working yet, and known problems. What's in 1.2 and what has been
-seen working is in [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md); every change, with its numbers, is in
+For players. What to expect, what hasn't been seen working yet, and known problems. What changed in 1.2.1 is in
+[RELEASE-NOTES-1.2.1.md](RELEASE-NOTES-1.2.1.md); all of Living Server and what has been seen working is in
+[RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md); every change, with its numbers, is in
 [CHANGELOG-LIVING-SERVER.md](../CHANGELOG-LIVING-SERVER.md).
 
 A feature counts as working only once it has been seen working on the owner's PC. Until then it says **tests only**.
 Each result names the build it came from. None of them is from the release build (its commit is in BUILD-INFO.txt and
-the server log's FORK_BUILD line), which is cut when 1.2 is published. The last builds checked on the owner's PC are
-`c81eb5d` and `43c43aa`; the automated results are in the release notes.
+the server log's FORK_BUILD line). The last builds checked on the owner's PC are 1.2's `c81eb5d`, `43c43aa` and
+`aa537ce`. **Nothing that is new in 1.2.1 has been seen on the owner's PC yet: every 1.2.1 change is tests only.** The
+automated results are in the release notes.
 
-## Fix list for 1.2.1
+**1.2.1 safety switch:** if dead bots look wrong in the original client, turn off **Bots fall when they die**
+(`bot_death_animation`) in the Living Server tab; everything about dead bots is then as it was in 1.2.
 
-Seen on the owner's PC or in its log, and left for 1.2.1 (owner, 2026-11-19: publish unless there are major bugs, crashes
-or instability, and add the rest to the 1.2.1 list):
+Everything still to do, with a GitHub issue each, is in [OPEN-WORK.md](OPEN-WORK.md).
+
+## 1.2's fix list, and where 1.2.1 leaves it
+
+Seen on the owner's PC or in its log on 1.2 builds, and left for 1.2.1 (owner, 2026-11-19: publish unless there are
+major bugs, crashes or instability, and add the rest to the 1.2.1 list). Each 1.2.1 change below is **tests only**.
 
 - **/faction pace:** about 5 lines a minute on average, but quiet minutes drop to 2 (`43c43aa`: 4.9 a minute, 13 of 39
-  minutes under 5).
+  minutes under 5). 1.2.1 fills quiet minutes back to about 5, under the same cap of 7: **tests only**.
 - **Route loops at region 200 seams:** the Cruachan Gorge / Breifine seam that sent 75 Hibernian bots home on
-  `43c43aa` is fixed in 1.2 (**tests only**). The other seam loops of that log (Lough Derg / Bri Leith) are not changed
-  and can still loop.
+  `43c43aa` is fixed in 1.2 (**tests only**; seen walked single file on `aa537ce`). The other seam loops of that log
+  (Lough Derg / Bri Leith, #421) and the Connacht hunting-camp rescues (#420) are not changed in 1.2.1 and can still
+  loop.
 - **A bot removed from the world by a casting crash** (`43c43aa`, one bot). Fixed in 1.2 with a null guard: **tests
   only**. On the list in case it comes back.
-- **A gap in the casting line-of-sight check** (`CastingComponent`, `LosChecker.Out` can be null) behind that crash; the
-  guard covers the crash, not the gap.
-- **Caer Caledon's guards can't be picked with /target** by players (checked as a GM only).
+- **A gap in the casting line-of-sight check** (`CastingComponent`, `LosChecker.Out` can be null) behind that crash.
+  1.2.1 treats a client it can't ask as no check: **tests only**.
+- **Caer Caledon's guards can't be picked with /target** by players (checked as a GM only). 1.2.1's `/target` finds a
+  nearby NPC for players too: **tests only**.
 - **Click-targeting a bot** didn't work for the test helper on `c81eb5d` (`/target` works). Unconfirmed: it may be the
-  test tool, not the game.
+  test tool, not the game. The server has no rule that refuses a click on a living bot: no bot is flagged
+  untargetable or peaceful, only stealth hides one, and the one unusual bit, "has owner" (a bot's brain is a controlled
+  brain, as a pet's is), is the one pets carry, and pets can be clicked; 1.2.1 logs each click on a bot (`PLAYER_CLICK_TARGET`), so one played click settles it.
 - **Old merchant item templates missing at startup:** about 760 error lines at every start from the stock world data. No
-  effect seen in play.
-- **A "DrainTo in progress" error from QueuePacket**, seen once (`43c43aa`), with no effect seen.
+  effect seen in play. 1.2.1 makes them one warning with a count (and missing loot items one `LOOT_ITEMS_MISSING` line
+  per source).
+- **A "DrainTo in progress" error from QueuePacket**, seen once (`43c43aa`), with no effect seen. In 1.2.1 the packet
+  waits instead: **tests only**.
+- **Also from `aa537ce`, changed in 1.2.1 (tests only):** a Midgard keep defence that marched with 0 bots now stands
+  down; 11 Midgard bots that logged in beside an enemy keep now log in at their capital; a GM's `/jump` into an enemy
+  keep stays there; Albion bots with no route out of Castle Sauvage restart from the border keep's muster; the
+  launcher's chat caption reads "HOW MUCH BOTS TALK".
 - **Epic raids:** still being tuned (below).
 
 ## Epic raids: still being tuned
@@ -53,6 +70,10 @@ bots only, at the game's own raid size:
   **Morgana** have no raid.
 - **Xanxicar's stomp:** a realm learns him over its attempts. Still being tuned.
 
+**1.2.1:** the raid issues #407 to #415 stay open. The raid fixes in 1.2.1 come from these logs and from simulations,
+and are **tests only** until a raid is seen won on the owner's PC. Elro the Ancient's third treant, which never came,
+now comes between three-tenths and a quarter of his strength left (**tests only**).
+
 Fixes made after the last raid builds the owner ran are **tests only**:
 - **Summoner Roesia:** the split camps for her Summoner Pain made the raid worse and are removed. Raid healers now cure
   Summoner Pain before a top-up heal when it is on two or more raiders and nobody in their party is in danger. On
@@ -73,12 +94,20 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
 ## RvR and battlegrounds
 
-- **Battleground keeps rarely change hands.** Bots storm the keep lord again and again and mostly fail. The first
-  capture was Caer Caledon, taken by Albion on `43c43aa` after its keep levels were repaired (guards 39, lord 46).
-- **Open-field regroups pass between groups more than planned** in dense warbands: 17.4% of regroups on `9a173f4`
-  against a 15% bar. None was passed on a second time.
-- **Roaming eight-man groups** rarely find a fight and move on (under investigation).
-- **Some gamebots wait a long time at frontier teleporters** before the server moves them on.
+- **Battleground keeps rarely change hands (#416).** Bots storm the keep lord again and again and mostly fail. The first
+  capture was Caer Caledon, taken by Albion on `43c43aa` after its keep levels were repaired (guards 39, lord 46). The
+  cause found: stormers struck the lord from up to 900 away, but he takes no damage from beyond 400. In 1.2.1 they
+  walk to within 350 first, on the frontier too (`RVR_LORD_STEP_IN`): **tests only**.
+- **Open-field regroups pass between groups more often in dense warbands**: 17.4% of regroups on `9a173f4` were
+  started by another group's call. None was passed on a second time and none echoed back. The owner raised the bar to
+  20% on 2026-11-19, so this passes; the log checker now also prints how many groups each call reached, to tell
+  denser warbands from a call that over-fires (#419, closed).
+- **Roaming eight-man groups** rarely find a fight and move on (#417). In 1.2.1 their patrols favour where enemy RvR
+  bots are, and they chase the planner's hunts (`RVR_ROAM_CHASE`): **tests only**.
+- **Some gamebots wait a long time at frontier teleporters** before the server moves them on (#418). In 1.2.1 they go to
+  a porter that sells their medallion, and a wait past 5 minutes is logged (`RVR_FRONTIER_WAIT_LONG`): **tests only**.
+- **Enemy gamebot kills gave no experience** (#396, Thidranki). In 1.2.1 they pay what a player kill pays: **tests
+  only**.
 
 ## Chat
 
@@ -94,17 +123,29 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 - **Replies still guess from your words.** A bot doesn't know what you are doing beyond what you type. A bot that
   remembers you may ask your level right after you said it. Chat has been tested one line at a time more than as long
   conversations.
-- **Bot parties never take a new member once they set off**, so an "lfm" from a bot party is a last call while it forms.
+- **Bot parties take new members on the way only now and then** (1.2.1, #423, tests only): a party that set off with a seat free
+  looks for one more for five minutes, two minutes after it leaves and then every ten. Between those looks its "lfm" has stopped, and
+  it takes one member at a time.
 
 ## Bots that play with you, and companions
 
 - **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The
   break at the end of a session ends the party.
 - **A bot that offers to group may walk on before you meet**; if it's too far by the time you invite, it says where it is.
-- **Hired companions:** joining your fight on a grey monster failed on `b1b6846` and is fixed: **tests only**. The healer's
+- **Hired companions:** joining your fight on a grey monster failed on `b1b6846` and is fixed: **tests only**. In 1.2.1
+  they join at your level, trained and in merchant gear, and companions hired on 1.2 catch up once
+  (`HIRED_COMPANION_RAISED`); `/hire train` takes line names (#397): **tests only**. The healer's
   [companions] and [hire] links work only with the healer targeted; typed `/hire` words always work. The gear window's
   title reads "House Vault 0" (it reuses the house vault window).
-- **Bots don't fall when they die.** The original client plays the lying-dead pose only for players.
+- **Bots don't fall when they die** in the original client (1.2). From 1.2.1 they fall and lie like a monster's corpse,
+  and a resurrection cast with nothing selected reaches a dead bot nearby. CI's playtester checks the packets
+  (`b644529a`), not what the client draws: **tests only** (#425). Switch it off with **Bots fall when they die**. Dead
+  bots still can't be clicked in the original client; `/target <name>` or a rez with nothing selected works.
+- **Darkness Falls stairs (#438):** companions stuck on a step of the entrance stairs is fixed in 1.2.1: **tests only**.
+  The stairs are one-way in the navigation mesh: a companion following you back **up** them has no path and waits at
+  the bottom. Use the exit portal below, or GM `/jump <name> to me`.
+- **Clicking a living bot** may not select it in the original client (#424, unconfirmed); 1.2.1 logs each click
+  (`PLAYER_CLICK_TARGET`).
 
 ## Bots as people and 2003 builds
 
@@ -117,16 +158,22 @@ era-built world yet. Whether the original client shows a sitting bot is still to
 
 - **Crafting as a player** hasn't been seen yet, and needs the original client.
 - **Trading with a crafter bot:** tried on `b1b6846`; a reply was cut mid-word, a different piece was offered, and the
-  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet.
+  agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet. Since then (issue #422): a made commission was
+  never handed over or announced, because the hand-over ran only at the very edges of the crafter's break, where it saw no
+  break; the crafter now hands it over, or says where to collect it, while its break lasts. A stock trade window that could
+  not open now says why and keeps the deal. **Tests only.**
 - **Craft orders** often lapsed on `19e7037` (156 made, 163 expired). Orders now go only to crafters who stay online and
   are withdrawn from busy ones; on `c81eb5d` 44 were made and 1 expired (server log).
-- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces.
+- **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces. `ECON_INDEX` now also
+  carries `craftedListed20` (crafted bot listings of level 20 and up, what the Exchange's upgrade buyers can use).
 - **The launcher's crafter card and economy page** haven't been checked on the owner's PC.
 
 ## Lore
 
 The loremasters' dialogs, the lore books, the Bestiary page and the Herald's chronicle are **tests only**. The `/lore`
-window, boss yells, atmosphere lines and first-kill lines were seen on `1dc66b6`.
+window, boss yells, atmosphere lines and first-kill lines were seen on `1dc66b6`. The 1.2.1 lore (every epic boss's
+book, the major bosses and places at full depth, fight advice and place lore without game terms) is checked by CI's
+lore rules and independent reviews, and has not been read in game: **tests only**.
 
 ## Play with friends (experimental)
 
@@ -137,7 +184,9 @@ window, boss yells, atmosphere lines and first-kill lines were seen on `1dc66b6`
 ## Launcher, install and updates
 
 - **Updating a 1.1.4 game through Setup, a new install from Setup, and a 0.37 (class-off) world** haven't been run on the
-  owner's PC for 1.2. CI runs them: **tests only**.
+  owner's PC for 1.2. CI runs them: **tests only**. The same goes for **updating 1.2 to 1.2.1** from the launcher.
+- **The bot schedule is off by default from 1.2.1:** the whole roster is online. A world that ran 1.2 with the untouched
+  real-clock default moves to off once; a schedule you chose is kept.
 - **Updating a 0.36, 0.36b or 0.36c game** through Setup is **tests only** for 1.2. On 0.36 with the Social Expansion,
   run `PREPARE-FOR-UPDATE.cmd` from the package first.
 - **The online count on the main screen** stuck at "5 online" for half an hour on `5154cae`. Fixed: seen updating from 5

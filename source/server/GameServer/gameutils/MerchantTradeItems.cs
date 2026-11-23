@@ -192,8 +192,81 @@ namespace DOL.GS
 			return layout;
 		}
 
-		/// <summary>Lists already reported as tidied or missing items, so each says so once per server run.</summary>
+		/// <summary>Lists already reported as tidied, so each says so once per server run.</summary>
 		private static readonly ConcurrentDictionary<string, byte> Reported = new(StringComparer.OrdinalIgnoreCase);
+
+		/// <summary>
+		/// Merchant rows whose item template is not in the world data. The stock world has about 760 of them, and each was an
+		/// error line at every start ("Item template with ID = ... not found for merchant item list ..."; KNOWN-ISSUES 1.2).
+		/// Nothing is wrong with the server: the row is skipped and the merchant sells the rest. 1.2.1: every row is still
+		/// named once per run, at debug level, and the rows found together are counted in one warning with a few examples.
+		/// No data is changed.
+		/// </summary>
+		public sealed class MissingTemplateLog
+		{
+			/// <summary>How many rows a summary names.</summary>
+			public const int Examples = 5;
+			/// <summary>Rows found while lists are read lazily are summed up once the oldest has waited this long.</summary>
+			public const int QuietMilliseconds = 5 * 60_000;
+
+			private readonly Lock _gate = new();
+			private readonly HashSet<string> _seen = new(StringComparer.OrdinalIgnoreCase);
+			private readonly HashSet<string> _pendingLists = new(StringComparer.OrdinalIgnoreCase);
+			private readonly List<string> _examples = new();
+			private int _pending;
+			private long _firstPendingAt;
+
+			/// <summary>Every missing row seen this run.</summary>
+			public int Total { get { lock (_gate) return _seen.Count; } }
+
+			/// <summary>Notes a missing row. True the first time it is seen this run (the caller names it at debug level).</summary>
+			public bool Add(string listId, string templateId, long now)
+			{
+				lock (_gate)
+				{
+					if (!_seen.Add(listId + "|" + templateId))
+						return false;
+					if (_pending++ == 0)
+						_firstPendingAt = now;
+					_pendingLists.Add(listId ?? string.Empty);
+					if (_examples.Count < Examples)
+						_examples.Add(listId + ":" + templateId);
+					return true;
+				}
+			}
+
+			/// <summary>
+			/// The warning for the rows noted since the last one, or null: nothing is waiting, or (unless forced) the oldest
+			/// has not waited <see cref="QuietMilliseconds"/> yet. The rows it covers are not counted again.
+			/// </summary>
+			public string Summary(long now, bool force)
+			{
+				lock (_gate)
+				{
+					if (_pending == 0 || !force && now - _firstPendingAt < QuietMilliseconds)
+						return null;
+					string examples = string.Join(", ", _examples);
+					string line = $"MERCHANT_ITEMS_MISSING rows={_pending} lists={_pendingLists.Count} this_run={_seen.Count} " +
+						$"examples=[{examples}] note=\"world data: these merchant rows name item templates that do not exist; " +
+						"the rows are skipped and nothing else is affected; every row is listed at debug level\"";
+					_pending = 0;
+					_pendingLists.Clear();
+					_examples.Clear();
+					return line;
+				}
+			}
+		}
+
+		/// <summary>This run's missing merchant item templates.</summary>
+		public static MissingTemplateLog MissingTemplates { get; } = new();
+
+		/// <summary>Writes the warning for the missing templates found so far, if any (after a walk over the world's merchants).</summary>
+		public static void ReportMissingTemplates(bool force = true)
+		{
+			string line = MissingTemplates.Summary(GameLoop.GameLoopTime, force);
+			if (line != null && log.IsWarnEnabled)
+				log.Warn(line);
+		}
 
 		/// <summary>The database rows of this list laid out (<see cref="Layout"/>), cached for five minutes.</summary>
 		private Dictionary<int, DbItemTemplate> DatabaseLayout()
@@ -214,8 +287,8 @@ namespace DOL.GS
 						{
 							template = GameServer.Database.FindObjectByKey<DbItemTemplate>(merchantItem.ItemTemplateID);
 							templates[merchantItem.ItemTemplateID] = template;
-							if (template == null && Reported.TryAdd(m_itemsListID + "|missing|" + merchantItem.ItemTemplateID, 0))
-								log.ErrorFormat("Item template with ID = '{0}' not found for merchant item list '{1}'", merchantItem.ItemTemplateID, ItemsListID);
+							if (template == null && MissingTemplates.Add(m_itemsListID, merchantItem.ItemTemplateID, now) && log.IsDebugEnabled)
+								log.DebugFormat("Item template with ID = '{0}' not found for merchant item list '{1}'", merchantItem.ItemTemplateID, ItemsListID);
 						}
 						if (template != null)
 							rows.Add(new MerchantRow(merchantItem.PageNumber, merchantItem.SlotPosition, merchantItem.ItemTemplateID, merchantItem.ObjectId));
@@ -226,6 +299,8 @@ namespace DOL.GS
 					// Was "two merchant items on same page/slot" at error level for every slot on every page view (2,000+ a day).
 					if (copies + moved + dropped > 0 && Reported.TryAdd(m_itemsListID, 0))
 						log.InfoFormat("MERCHANT_LIST_TIDIED list={0} copies_dropped={1} moved_to_free_slots={2} no_room={3}", m_itemsListID, copies, moved, dropped);
+					// Lists are read when first asked for: rows found outside a walk of the world are summed up once they have waited.
+					ReportMissingTemplates(force: false);
 				}
 				_databaseLayout = layout;
 				_databaseLayoutExpiresTick = now + DatabaseItemsCacheLifetimeMilliseconds;

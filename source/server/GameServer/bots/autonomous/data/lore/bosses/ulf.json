@@ -53,7 +53,7 @@
     }
   ],
   "story": "Ulf's name is the plainest in Malmohus, and the svartalfar say that is the point of it. Every other drakulv name is a wolf and something: a bear-wolf, a spear-wolf, a stone-wolf. Ulf is only wolf. The beam-cutters of Svarhamr say it was the first name the hollow ever gave that was not Yar's, in the first winter of the court, when there were still so few drakulv that one word was enough, and that the drakulv who holds it now has held it longer than any captain living.\n\nHe keeps none of the camps. He stands in the south-east, alone except for the mara, on a patch of ground the other drakulv walk round. The mara are the reason. The enraged mara of Malmohus ride the dreams of anyone who sleeps in the ruins, and the drakulv, who are her people and should not fear her country's dreams, sleep in their camps with their backs to the walls and do not go near the patch where the mara gather. Ulf sleeps among them. The svartalfar have watched him do it, on a still night, curled like a hound in the snow with the mara standing round him, and have never seen one touch him.\n\nThe grandmothers of Gotar, who say the mara are the dreams of the ruins' builders asleep under the grey stone, say that Ulf is the only one of the dragon's people the builders' dreams have made peace with, because he was here before the court was a court, when the drakulv were a few hungry things in the snow and the builders had not yet decided to mind them. The Seithkona Circle's seeresses say something darker: that Ulf has no dreams of his own any more, and the mara can find nothing in him to ride.\n\nThe younger Kleng stands near Ulf's patch, and Brisa the beam-cutter thinks it is deliberate: the keepers of the court send their heirs to stand near the oldest of them, as a smith's apprentice is set to watch the oldest hand at the forge.",
-  "legend": "Ulf is a level 52 drakulv in south-east Malmohus, alone except for three enraged mara standing nearby, with the southern Kleng a thousand units off. He's the easiest named drakulv in the south: no special abilities, not CC-immune, but he's Pack Drakulv so he can bring Kleng if Kleng is in range when you hit him. The mara are the real nuisance, level 50, so pull Ulf away from them. Don't confuse him with Ulf the enchanter elsewhere in Midgard, or the Dodens Gruva miner in the old stories. He also hits back like any 52 drakulv, so a duo of 50s is fine.",
+  "legend": "Ulf is a drakulv, a foe for the realm's best, a full band of them, in south-east Malmohus, alone except for three enraged mara standing nearby, with the southern Kleng about thirty-five paces off. He's the easiest known drakulv in the south: no special tricks, charms, trances and stuns hold him, but he's of the drakulv pack so he can bring Kleng if Kleng is near enough when you hit him. The mara are the real nuisance, a match for the realm's best, so draw Ulf away from them. Don't confuse him with Ulf the enchanter elsewhere in Midgard, or the Dodens Gruva miner in the old stories. He also hits back like any drakulv of his strength, so two of the realm's best are enough.",
   "yells": {
     "aggro": [
       "Wolf. Only wolf. That is enough.",
@@ -91,22 +91,22 @@
   },
   "botLines": {
     "briefing": [
-      "ulf is 52, easy, but the mara are right there",
-      "pull him off the mara before you fight",
+      "ulf is easy for the realm's best, but the mara are right there",
+      "draw him off the mara before you fight",
       "he can bring kleng if kleng is close",
-      "no tricks, mez works"
+      "no tricks, trances work on him and the mara"
     ],
     "aftermathWin": [
       "ulf down, oldest drakulv in the south",
       "kept the mara out of it",
-      "easy one",
+      "easy one once the mara stayed out of it",
       "plain wolf, plain kill"
     ],
     "aftermathLoss": [
       "fought on the mara patch, bad idea",
       "kleng came over",
       "the mara joined and it fell apart",
-      "pulled too close"
+      "drew him too close"
     ],
     "rumour": [
       "ulf sleeps among the mara and they never touch him",
@@ -119,7 +119,7 @@
     "keyword": "Ulf",
     "text": "The oldest of the [drakulv] after [Yar], with the plainest name: only wolf. He sleeps among the mara of [the ruins], which no other drakulv will do. [Kleng] stands near him. See [the names]."
   },
-  "bookPage": "From the readings of Brisa the beam-cutter of Svarhamr: Ulf's line is the shortest on the beam that is still open. A cut, very old, made by a hand that was not my teacher's or her teacher's, and three dots, and nothing for longer than I have been alive. I went out once on a still night to look at him. He was asleep in the snow among the mara like a dog among sheep. One of them bent over him and straightened again, as if it had looked into an empty house. I came home and did not sleep that night either, but for my own reasons.",
+  "bookPage": "Ulf's line is the shortest on the beam that is still open, by the reading of Brisa the beam-cutter of Svarhamr. A cut, very old, made by a hand that was not my teacher's or her teacher's, and three dots, and nothing for longer than I have been alive. I went out once on a still night to look at him. He was asleep in the snow among the mara like a dog among sheep. One of them bent over him and straightened again, as if it had looked into an empty house. I came home and did not sleep that night either, but for my own reasons.",
   "chronicle": {
     "win": "{raidLeader} of {realm} killed Ulf, the oldest drakulv of Malmohus, in {minutes} minutes.",
     "loss": "Ulf drove {raidLeader}'s party from {realm} off the mara's ground after {minutes} minutes."

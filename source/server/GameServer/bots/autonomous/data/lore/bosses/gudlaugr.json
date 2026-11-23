@@ -36,13 +36,18 @@
     },
     {
       "text": "Allakhazam says he lies close to the entrance to Summoner's Hall and looks like a small puppy until aggroed, when he grows to about the height of a troll.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/mob/6433"
     },
     {
       "text": "Gudlaugr (Gudlaugr) is an Old Norse personal name (to verify).",
       "provenance": "original",
       "source": "Old Norse name, to verify"
+    },
+    {
+      "text": "The book pages after the first (Ulf Half-hand's side of the tally slate and Glenlock's standing word about the pup on the stair) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Gudlaugr was the jarl's hound, the smallest grey pup of the last litter Ormarr's bitch whelped by the hearth of his hall inside the mine. The jarl's son, Ulf Half-hand, chose him and gave him a great man's name out of the old songs as a joke, and the jarl laughed and let it stand. When Ulf went down on the last shift the pup followed him, though the foreman said no, and sat by the face chewing a bone and watching the dark at the end of the northern gallery, and before the picks broke through he began to whine at it, and then stopped whining and only listened.\n\nWhen the shift died and walked toward the voices, the pup walked with them, because that is what a dog does, and Aros read his name with the rest and bound him with the shift. He lies now at the head of the stair that goes down out of the mine into the Summoner's Hall, small and white with cold, as if waiting for Ulf to come back up it, and he has been listening to the voice below for longer than anything else in the mine.\n\nThe voice has made something of him. The moment steel is drawn near him he grows into it, a demon wolf the height of a troll, and the first time he ever changed he stood up whole, every old wound gone. His bite holds a man back and keeps him bleeding. When it is over he is a pup again and goes back to waiting; when he dies he whimpers once like a puppy, and the dead in the mine stop digging, as if someone had called a dog's name. The companies who go down to the hall pass him last, and come back up past him, and the frontier says never to pet him, for luck or for pity.",
@@ -64,7 +69,7 @@
       "text": "The companies that go down to the Summoner's Hall from Midgard all pass him, because his stair is Midgard's only way down, and they all pass him again on the way back up. He is the last thing in the mine before the hall and the first thing after it. Glenlock's captains call him the doorstep. The companies who have killed him say the killing is the worst part of going down: when he dies he whimpers once, like a puppy, and then he is small again, and still.\n\nThe steadings say that when he dies the dead in the mine all stop digging for a moment, as if someone had called a dog's name, and that Hamar at the face lifts his head. Then the picks start again. In a season or less the pup is back at the head of the stair, because the binding holds him as it holds the rest of the shift.\n\nThe frontier has one superstition about him above all the others: never pet him. Some say it is for luck, and some say it is because the wolf comes up out of the pup the moment a hand comes near, and some say it is because nobody who has petted him has ever wanted to go on down the stair after. Ashild of Glenlock, who keeps the tally at the keep, says the real reason is simpler. A dog waiting for his boy, she wrote, should be left to wait. Ulf is at the face with the rest of the shift, a lamp-boy still, and the steadings say he has never once come to the head of the stair."
     }
   ],
-  "legend": "Don't trust the puppy. Gudlaugr turns into a demon wolf the instant he's engaged, and the first time he ever changes he heals to full, so there's no point burning him as a pup: hold the burst until he's the wolf. Every hit of his bite slows and bleeds whoever he's on, so bring snare-break and bandages, and keep the tank in front. He lies by the stair to Summoner's Hall: if you're going down, he is your last test in the mine, and he's waiting on the way back up too. His glacial emerald ring is a good drop. Some people feel bad about this one. Clear the area first, rest, then wake him. Some say pet him first, for luck. Don't.",
+  "legend": "Don't trust the puppy. Gudlaugr turns into a demon wolf the instant he's engaged, and the first time he ever changes he heals to full, so there's no point burning him as a pup: hold the burst until he's the wolf. Every hit of his bite slows and bleeds whoever he's on, so bring something to shake off a slowing and bandages, and keep his shield-bearer in front. He lies by the stair to Summoner's Hall: if you're going down, he is your last test in the mine, and he's waiting on the way back up too. His glacial emerald ring is a good prize. Some people feel bad about this one. Clear the area first, rest, then wake him. Some say pet him first, for luck. Don't.",
   "yells": {
     "aggro": [
       "(The pup lifts its head. Its eyes are wrong.)",
@@ -107,7 +112,7 @@
   "botLines": {
     "briefing": [
       "gudlaugr looks like a puppy. he isnt. he heals to full when he changes, hold burst till then",
-      "snare break and bandages on gudlaugr",
+      "something to shake off the slow and bandages on gudlaugr",
       "hes the last thing before the hall stair",
       "burst after he changes"
     ],
@@ -120,7 +125,7 @@
     "aftermathLoss": [
       "blew everything before he changed. dumb",
       "he changed and healed to full and we had already burned our big stuff",
-      "the bleed and snare got the mt",
+      "the bleed and the slow got the main shield-bearer",
       "blew everything on the puppy and had nothing for the wolf"
     ],
     "rumour": [
@@ -135,6 +140,10 @@
     "text": "The jarl's hound, too young to be left behind, who followed the shift down. He waits by the stair to the hall below, a pup until roused."
   },
   "bookPage": "From the second slate, in the hand of a hewer of the last shift. The jarl's boy Ulf brought the pup down with him on the last shift, though the foreman said no. The pup sat by the face while we worked and chewed a bone and watched the dark at the end of the tunnel where the seam was. Before we broke through he started to whine at it. Then he stopped whining and just looked. Ulf said he was only a pup and pups are afraid of the dark. The pup was not afraid. The pup was listening. I think he still is. I think he is waiting for Ulf.",
+  "bookPages": [
+    "From the second side of the tally slate, in the hand of Ulf Half-hand, the jarl's son, cut while the cold came up through the seam. They are calling me. Not Half-hand. My name, the one my mother gave me, that nobody uses. I do not know how they know it. The others have put their picks down. Hamar is still swinging. Laugr is pressed against my leg and he is not shaking, and I am. He is looking at the hole the way he looks at the northern gallery, and he does not whine any more. If I go down, someone keep the dog. If I do not come back up, tell my father the pup was not afraid. Tell him I named him too big and he grew into it. The slate ends there, with a mark that may be the start of another word, or may be a slip of the knife.",
+    "Standing word of Glenlock's captains to every company going down past the doorstep, read out at the keep before the march. The pup at the head of the stair is the jarl's hound and was a boy's dog. Do not draw steel within sight of him unless you mean to draw it on him, for he grows into steel as a fire grows into wind. Do not speak to him. Do not say the boy's name where he can hear it, nor his own. Do not pet him, for luck or for pity or for any reason a man thinks of on a cold stair. If he lies still when you come back up, he has let you pass. Go past him quietly, and the last one up the stair does not look back."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} laid the jarl's hound Gudlaugr to rest in {minutes} minutes.",
     "loss": "Gudlaugr the demon wolf ran down {raidLeader}'s party from {realm} after {minutes} minutes."

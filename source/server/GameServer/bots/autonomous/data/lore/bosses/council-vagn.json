@@ -49,6 +49,11 @@
       "text": "Vagn is Old Norse vagn, 'wagon, cart'; Nokkvi is nokkvi, 'boat, ship' (to verify). The saying about the stick and the word is Living Server lore.",
       "provenance": "original",
       "source": "Old Norse, to verify"
+    },
+    {
+      "text": "The book pages after the first (the salt-traders' reckoning of Orri the blue man and the sentence the wagon never finished) are Living Server writing for the epic floors (#402).",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
   "story": "Vagn and Nokkvi are named for a wagon and a boat, because in the Council's early days they carried everything between them: the votes, the gossip, the grudges, the queen's wishes down to the outer seats and the outer seats' complaints back up to the ribs. A wagon on the ice and a boat on the water, the joke went; between them nothing in Tuscaran went undelivered. They sit side by side in the outer council hall still, their seats worn alike, and where one is roused the other is already rising.\n\nVagn is the talker. He has opinions about everything and shares them, and in a century of councils nobody ever talked him down. Words slid off him; spells too, the seers found, when a young seer once tried to charm him quiet and the charm ran off him like water off a greased hull. What stopped him was simpler. Hjalmar, losing an argument to him on the ribs, struck him across the mouth in the middle of a sentence, and Vagn stopped, astonished, and never finished it. The councillors knew from that day that Vagn could be silenced, but only by a blow, and only while he was still drawing breath to speak.\n\nHis temper comes down as frost on the one in front of him, slowly, at the end of a long breath, the way his speeches did. The giants have a joke about the pair that the outer seats still tell, and Midgard's companies have carried it home without always seeing the point: you stop a wagon with a stick in its wheel, and you sink a boat with a word in its hull. Vagn is the wagon. He dies, the companies say, in the middle of a sentence, and nobody has ever heard the end of one.",
@@ -70,7 +75,7 @@
       "text": "When Midgard came up the crater road and the Council voted for the second time to march, the wagon and the boat did what they had always done. They carried the vote to the outer seats, and then they sat down side by side in the outer council hall and waited, because nobody had told them to do anything else.\n\nThe companies of Midgard who reach the outer hall find them there. They cannot be fought one at a time. When anything rouses Vagn, Nokkvi is already rising, and when anything rouses Nokkvi, Vagn is already talking. The old songs of the companies say that the survivor of the pair grieves for the other and fights the harder for it; the cast-out sculptors at Dellingstad say that is a story the companies tell to make the second one seem worth the trouble, and that the two of them fight exactly as hard apart as together.\n\nThe outer seats have a joke about the pair, very old, from the years when they carried the votes. You stop a wagon with a stick in its wheel, the giants say, and you sink a boat with a word in its hull. The companies who have heard it repeated by the cast-out sculptors have carried it home to Midgard, and not all of them have seen the point of it.\n\nVagn dies talking, the companies say. He is always in the middle of a sentence, and nobody has ever heard the end of one."
     }
   ],
-  "legend": "Vagn and Nokkvi always come together, and the trick is that they are opposites. Vagn resists 90% of magic but only 20% of melee: put your melee on Vagn and don't waste nukes on him. Nokkvi is the reverse (90% melee, 20% magic): your casters should be on Nokkvi. Vagn's Frost Shock is a 3-second, 600 cold cast on his target every 10 to 15 seconds and it CAN be interrupted, so keep hitting him while he casts. Both have 100,000 health, are CC-immune and reset if dragged past their tether or left 30 seconds out of combat. The old story that the survivor grieves and hits harder isn't in the script: kill them in whichever order suits your raid. Boots, staffs and a mantle drop.",
+  "legend": "Vagn and Nokkvi always come together, and the trick is that they are opposites. Nine-tenths of every spell is lost on Vagn, but only a fifth of every weapon stroke: put your melee on Vagn and don't waste blasting spells on him. Nokkvi is the reverse (nine-tenths of blows lost, a fifth of spells): your casters should be on Nokkvi. Vagn's Frost Shock is a three-second cast of cold worth three-fifths of a robed caster's strength on his target every 10 to 15 seconds and it CAN be interrupted, so keep hitting him while he casts. Each takes as much killing as fifty raiders; no charm or stun holds either, and they are whole again if dragged too far from their seats or left alone for 30 seconds. The old story that the survivor grieves and hits harder isn't true here: kill them in whichever order suits your raid. Boots, staffs and a mantle come off them.",
   "yells": {
     "aggro": [
       "Nokkvi, they have come to the Council uninvited.",
@@ -120,14 +125,14 @@
   },
   "botLines": {
     "briefing": [
-      "vagn and nokkvi, pair pull. one group holds vagn away, [rest|everyone else] on nokkvi",
+      "vagn and nokkvi, they come as a pair. one group holds vagn away, [rest|everyone else] on nokkvi",
       "vagn: melee him, he shrugs off magic. interrupt the frost shock",
-      "vagn and nokkvi reset if dragged or left alone 30 sec",
+      "vagn and nokkvi go home whole if dragged or left alone 30 sec",
       "one group on vagn, rest on nokkvi",
-      "vagn: 90% magic resist, 20% melee. melee on vagn",
+      "vagn: spells do a tenth, blades most of it. melee on vagn",
       "vagns frost shock is interruptible, keep hitting him while he casts",
-      "vagn and nokkvi are opposites. melee vagn, nuke nokkvi",
-      "they reset if dragged or left alone 30 sec"
+      "vagn and nokkvi are opposites. melee vagn, blast nokkvi",
+      "drag them or leave them 30 sec and theyre whole again"
     ],
     "aftermathWin": [
       "wagon and boat both sunk lol",
@@ -139,11 +144,11 @@
       "vagn never finished a sentence again"
     ],
     "aftermathLoss": [
-      "vagn's frost shock kept landing on the tank and nobody interrupted it",
+      "vagn's frost shock kept landing on the shield-bearer and nobody interrupted it",
       "vagn's frost shocks chewed through the casters",
-      "the kiting group lost vagn and he came back to the raid",
+      "the group leading vagn about lost him and he came back to the raid",
       "nokkvi died, vagn went mad and hit for double",
-      "casters nuked vagn for nothing, 90% magic resist",
+      "casters blasted vagn for nothing, spells barely touch him",
       "nobody interrupted the frost shock"
     ],
     "rumour": [
@@ -160,7 +165,11 @@
     "keyword": "Vagn",
     "text": "The wagon of the outer seats, who with [Nokkvi] carried the [Council]'s votes for a century. Nobody ever talked him down, and the seers' charms slid off him; only a blow stopped him, while he was drawing breath to speak, as Hjalmar found. The giants say you stop a wagon with a stick in its wheel."
   },
-  "bookPage": "From the sculptor's account of the Council. Vagn spoke on every question. On the morvalt: a nuisance. On the dwarves: a smaller nuisance. On the Icelords: a large nuisance with good manners when it suits them. On the queen's husband: nothing, while the king was in earshot, and a great deal otherwise. Nokkvi spoke on no question at all. When the vote was called, Vagn raised his hand, and Nokkvi raised his, and that was two votes for whatever Vagn had said. The sculptor said he carved them together, as one block, and that it was the only carving of his the Council ever liked.",
+  "bookPage": "Vagn spoke on every question, by the sculptor's account of the Council. On the morvalt: a nuisance. On the dwarves: a smaller nuisance. On the Icelords: a large nuisance with good manners when it suits them. On the queen's husband: nothing, while the king was in earshot, and a great deal otherwise. Nokkvi spoke on no question at all. When the vote was called, Vagn raised his hand, and Nokkvi raised his, and that was two votes for whatever Vagn had said. The sculptor said he carved them together, as one block, and that it was the only carving of his the Council ever liked.",
+  "bookPages": [
+    "From the reckoning of the salt-traders of Dellingstad, the year of the blue man. Orri the salt-trader went up the crater road to the outer seats to complain of the price of the giants' spring ice, for which the town pays in salt and the salt had gone dear. He spoke to the councillor who talks, and the councillor talked back, and Orri spoke again, and for too long. The councillor drew a long breath and the frost came down on Orri where he stood. He was brought down the road in a cart by two rooks, alive and blue to the ears, and set down at the foot of it. The traders' house agreed that night that no trader is to complain at the outer seats again, and that complaints are to be left at the foot of the road with the salt. None has been answered.",
+    "The sentence the wagon never finished, as near as the outer seats remember it. They argue over the words still, but not over where it stopped. And as for the Ice Lords' houses, which have done nothing in sixty winters but ask for war and eat the Council's seal, I will say only this, and the queen may hear it, and the elders' hall may hear it, and the one standing in front of me may hear it best of all, that on the day they are given their war, they will find, as a wagon finds on thin ice, that the road does not hold the weight of a . . . There the elder's hand came across his mouth. The outer seats have tried every winter since to finish it for him. The boat, who was sitting beside him, is said to know the end, and has never said it."
+  ],
   "chronicle": {
     "win": "{raidLeader} of {realm} unseated Councils Vagn and Nokkvi in {minutes} minutes.",
     "loss": "Councils Vagn and Nokkvi turned back {raidLeader}'s raid from {realm} after {minutes} minutes."

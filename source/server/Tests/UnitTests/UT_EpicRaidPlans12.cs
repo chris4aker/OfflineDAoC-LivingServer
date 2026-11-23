@@ -662,9 +662,10 @@ namespace DOL.UnitTests
         [Test]
         public void HerAddPartiesFollowHerSpawnRateAndKeepHerDruidsAndWardensOut()
         {
-            Assert.That(T.SpindlerAddPartyCount(14), Is.EqualTo(6), "PC log e3b8238's raid: 8 wanted, 45% of 14 at most");
+            Assert.That(T.SpindlerAddPartyCount(14), Is.EqualTo(8), "PC log e3b8238's raid: 8 wanted, 60% of 14 at most (#408)");
+            Assert.That(T.SpindlerAddPartyCount(13), Is.EqualTo(7), "the sweep's 100 raiders: 60% of 13");
             Assert.That(T.SpindlerAddPartyCount(20), Is.EqualTo(8));
-            Assert.That(T.SpindlerAddPartyCount(4), Is.EqualTo(1));
+            Assert.That(T.SpindlerAddPartyCount(4), Is.EqualTo(2));
             Assert.That(T.SpindlerAddPartyCount(1), Is.EqualTo(0));
             Assert.That(T.SpindlerAddPartyCount(14), Is.GreaterThan(T.AddPartyCount(14, 3)), "more than the 1.2 rule's two");
             bool[] healers = [true, true, true, true, true];

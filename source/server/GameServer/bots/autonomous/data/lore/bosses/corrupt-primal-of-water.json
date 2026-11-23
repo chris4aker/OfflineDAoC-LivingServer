@@ -19,9 +19,14 @@
       "text": "It sends a target to one of two fixed spots by the falls.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
+    },
+    {
+      "text": "The place-lore of Tobar na Craoibhe on the Primal of Water's second book page, and the story summary's retelling of Cass's words and Tobar Lisín, are Living Server lore.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "Every spring of Hy Brasil once ran to the sea. Now the rivers bend toward the hollow, and the water that reaches it stays. The Root made a guardian of it, the Primal of Water, and the guardian remembers it was a spring: it fights like a flood, it once carried people where they did not mean to go, and when it is badly hurt it does what water does.\n\nIt goes home. It slides back to its pool at the foot of the bridge, and while it is going nothing can hurt it, any more than a sword can hurt a river. In the pool it drinks, and comes back stronger, and fights again. It does this once. The Sylvan say a spring can forgive itself only so many times. When it dies the waters of the hollow run clear for a moment, and the Conservator's pool, far off in the galleries, dims, as if something had been taken from its hoard.\n\nThe Sylvan named the isle's springs like children; when the rivers bent, the Root gathered what was left into this guardian. Cass of the Domnann wardens worked out its one forgiveness for Orlaith's company, and each time it is freed one of Domnann's dry springs runs for an hour.",
+  "story": "Every spring of Hy Brasil once ran to the sea. Now the rivers bend toward the hollow, and the water that reaches it stays. The Root made a guardian of it, the Primal of Water, and the guardian remembers it was a spring: it fights like a flood, it once carried people where they did not mean to go, and when it is badly hurt it does what water does.\n\nIt goes home. It slides back to its pool at the foot of the bridge, and while it is going nothing can hurt it, any more than a sword can hurt a river. In the pool it drinks, and comes back stronger, and fights again. It does this once. The Sylvan say a spring can forgive itself only so many times. When it dies the waters of the hollow run clear for a moment, and the Conservator's pool, far off in the galleries, dims, as if something had been taken from its hoard.\n\nThe springs of Domnann still have names, Tobar Lisín below the fire-keeper's house and Tobar na Craoibhe under the great ash among a dozen others, for the Sylvan named them as they name children. The three hundred and forty poured everything they had into the retreating water and had nothing left when it came back. Cass, the warden who had guided them, thought it through on the long walk home and told Orlaith before the second going-down that it forgives itself once, and her company stood at the pool's edge with their swords down until the river came back to them; the children of Domnann still shout his words at play, sword down, wait for the river. Tobar Lisín, dry since the fire-keeper's grandmother's time, ran clear and cold for an hour the morning the news of Orlaith's company came, and now the children of the fire-keepers' families sit up beside a cup at each dry spring on the nights the realm goes down.\n\nThe Sylvan named the isle's springs like children; when the rivers bent, the Root gathered what was left into this guardian. Cass of the Domnann wardens worked out its one forgiveness for Orlaith's company, and each time it is freed one of Domnann's dry springs runs for an hour.",
   "legend": "Burn it to thirty, then stop: it runs to its pool and nothing hurts it there. Wait at the edge, let it heal, and kill it when it comes back. It only does it once. Watch for being swept to the far side of the falls. The trap is mana. A raid that keeps casting while it walks to the pool spends everything on nothing, and has nothing left when it comes back. Call the pause loudly, hold, and burst it on its return. The old hands' word for it is simple: patience. Water forgives itself once; a raid gets no second chance if it wastes its mana.",
   "yells": {
     "aggro": [
@@ -64,21 +69,21 @@
   },
   "botLines": {
     "briefing": [
-      "water primal runs to its pool at thirty. [stop hitting|hold your damage] till it comes back, its immune in there",
+      "water primal runs to its pool at three-tenths. [stop hitting|hold your damage] till it comes back, nothing touches it in there",
       "water primal: when it walks to its pool call hold. [nobody casts|stop everything] till it comes back",
       "dont chase the water primal to its pool, it cant be hurt while it walks. [let it go|wait at the edge]",
       "burst it the moment it comes out of the pool. [everything|all in]"
     ],
     "aftermathWin": [
       "water down, [and nobody wasted their mana on the pool|good discipline]",
-      "held at thirty like pros, burst it on the way back. [clean|lovely]",
+      "held at three-tenths like pros, burst it on the way back. [clean|lovely]",
       "the conservator's pool dimmed when the water died, someone saw it from the gallery. [creepy|cool]",
       "water down, nobody wasted a spell on the pool. [discipline|nice]"
     ],
     "aftermathLoss": [
-      "half the raid burned mana into the pool while it was immune. [again|every time]",
-      "kept casting into the pool and [had no mana when it came back|went oom]",
-      "half the casters nuked it on the walk to the pool and [were empty when it came back|had nothing left]",
+      "half the raid burned mana into the pool while it was untouchable. [again|every time]",
+      "kept casting into the pool and [had no mana when it came back|ran dry]",
+      "half the casters bolted it on the walk to the pool and [were empty when it came back|had nothing left]",
       "it came back healed and we [had nothing|were empty]"
     ],
     "rumour": [
@@ -93,6 +98,9 @@
     "text": "The springs of the isle, turned to his use. Wounded, it slips back into its pool where nothing can follow, heals, and returns, but only once."
   },
   "bookPage": "A Sylvan water-song, as Aodhan heard it in Domnann: Spring, little spring, run to the sea; the sea is your mother, she waits for thee. They sang it to me with long faces and explained that the springs no longer run to the sea but down, into the hollow, and that the guardian at the bridge is all of them together, turned. I asked how Orlaith's company had freed it. A Sylvan warden said: they wounded it, and it went home to the pool to forgive itself, and they waited at the edge with their swords down, and when it came back they finished it. Water is patient, he said, and so must anyone be who stands against it. That is the whole of the song.",
+  "bookPages": [
+    "From the roll of Domnann's springs, which the fire-keepers recite as other families recite their dead. Tobar na Craoibhe, the spring of the branch: it rose among the roots of the great ash on the hill above Domnann, and the ash put down one limb so low over the water that the Sylvan said the tree was drinking. Seven generations of fire-keepers' children were washed in it at their naming. When the rivers bent it failed, the last spring of that hill to go, and the ash let its low limb fall the same winter, into the dry basin where the water had stood. The limb lies there still, grey and smooth, and nobody moves it. Lisín saw the spring run once as a girl, for the length of a single song. She told Aodhan she sang the same song there afterwards, as slowly as she could, and that it did not run again."
+  ],
   "chronicle": {
     "win": "{realm} cut through Galladoria to the Corrupt Primal of Water; {raidLeader}'s raid finished it in {minutes} minutes.",
     "loss": "{realm} went down into Galladoria under {raidLeader} and broke on the Corrupt Primal of Water after {minutes} minutes."

@@ -20,7 +20,7 @@
     }
   ],
   "story": "Amadan is the fool's fool. The Ardee folk say he was a shepherd of the north-east who went up to the high hill to find a lost ewe and met the dark fool coming down, and was touched, and did not go mad the way the others did. He went the other way: he began to copy his master. He keeps the next hill south now, with a bundle of grass in his own hand, and goes about at the turn of the year touching whatever he meets with it, and nothing happens.\n\nThe touched laugh at him. That is the only time anyone in the Amadan's hills is heard laughing at something, the Ardee folk say, and it is not kind laughter. Amadan does not seem to notice. He has taken his master's name, or half of it, and he answers to nothing else, and the shepherds of Basar have stopped telling their children his real one in case it is catching.",
-  "legend": "Amadan (39) is on the hill just south of Amadan Dubh's in north-east Connacht (about 347k/435k). Not part of the Touch of Amadan Duhb quest, but close enough to chain with Amadan Dubh (42) or Touched (39), so pull carefully. Amadan touched (29-35) and pookhas fill the slopes. A group of high 30s is fine. Plain spawn, 80-second respawn. Pull from the bottom of the hill, one at a time.",
+  "legend": "Amadan, a foe for a hardened band of veterans, is on the hill just south of Amadan Dubh's in north-east Connacht (about 347k/435k). Not part of the Touch of Amadan Duhb quest, but close enough to chain with Amadan Dubh, a little stronger, or Touched, his equal, so draw carefully. Amadan touched (a seasoned band's foes) and pookhas fill the slopes. A hardened band, newly blooded, is fine. Plain, no tricks; he returns eighty seconds after he falls. Draw from the bottom of the hill, one at a time.",
   "yells": {
     "aggro": [
       "A touch! A touch, like the master!",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "amadan is 39 on the hill south of amadan dubh",
+      "amadan is on the hill south of amadan dubh, little weaker than him",
       "easy to chain with the dubh or touched, careful"
     ],
     "aftermathWin": [

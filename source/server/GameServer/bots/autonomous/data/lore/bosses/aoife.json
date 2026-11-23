@@ -19,8 +19,8 @@
       "source": "DataQuest 'The West Wind' (world data, read 2026-11-06)"
     }
   ],
-  "story": "The winds of the Cliffs of Moher come in a mob, and the village children of Tir Urphost say the mob has a mother. She is the greater zephyr on the hill south-east of the crazy lurikeen Doran's camp, and the children named her Aoife, after a woman of the old tales who could not keep still. She comes only when the lesser airs around her hill are cleared away, as if she were the wind that is left when the small winds are spent.\n\nDoran the lurikeen says she carried someone off once, a traveller he was meant to meet, and set him down at home on the far side of the realm, which is why the realm's young who come looking for that traveller are told, when they have cleared her hill, that the person they seek has gone home. Brother Esras in his hermitage says he has never met her, but he has heard her, and that she sounds like someone saying a name over and over, and that the name is not hers.",
-  "legend": "Aoife (35) is a greater zephyr on the hill south-east of Doran in the Cliffs of Moher (about 267k/457k). She only appears once you clear the zephyrs on her hill. The West Wind (Bairfhionn in Tir na Nog, via Tiarnan, Guard Dooley and Doran) needs her killed. A group of mid 30s. Plain spawn, 80-second respawn. Be ready when she appears; she comes in fast once the small winds are gone.",
+  "story": "The winds of the Cliffs of Moher come in a mob, and the village children of Tir Urphost say the mob has a mother. She is the greater zephyr on the hill south-east of the crazy lurikeen Doran's camp, and the children named her Aoife, after a woman of the old tales who could not keep still. She comes only when the lesser airs around her hill are cleared away, as if she were the wind that is left when the small winds are spent.\n\nDoran the lurikeen says she carried someone off once, a traveller he was meant to meet, and set him down at home on the far side of the realm, which is why the realm's young who come looking for that traveller are told, when they have cleared her hill, that the person they seek has gone home. Esras the hermit, who listens to the wind for a living, says he has never met her, but he has heard her, and that she sounds like someone saying a name over and over, and that the name is not hers.",
+  "legend": "Aoife, a foe for a hardened band of veterans, is a greater zephyr on the hill south-east of Doran in the Cliffs of Moher (about 267k/457k). She only appears once you clear the zephyrs on her hill. The West Wind (Bairfhionn in Tir na Nog, via Tiarnan, Guard Dooley and Doran) needs her killed. A hardened band, newly blooded, is enough. Plain, no tricks; she returns eighty seconds after she falls. Be ready when she appears; she comes in fast once the small winds are gone.",
   "yells": {
     "aggro": [
       "(a great wind gathers on the hill)",
@@ -43,7 +43,7 @@
   },
   "botLines": {
     "briefing": [
-      "aoife is a 35 greater zephyr on the hill south east of doran",
+      "aoife is a greater zephyr on the hill south east of doran",
       "clear the zephyrs on the hill and she appears. the west wind"
     ],
     "aftermathWin": [

@@ -32,7 +32,9 @@ class LivingServerOnByDefaultText(unittest.TestCase):
                     "bot_living_memory", "bot_living_grats", "bot_living_firsts", "bot_living_nemesis", "bot_living_breaks",
                     "bot_living_body_language"):
             self.assertEqual(SETTINGS[key], "True", key)
-        self.assertEqual(SETTINGS["bot_schedule_mode"], "clock")
+        # The bot schedule is off by default since 1.2.1 (owner 2026-11-21), and the package README says so.
+        self.assertEqual(SETTINGS["bot_schedule_mode"], "off")
+        self.assertNotIn("bot schedules,", PACKAGE_README.read_text(encoding="utf-8"))
 
     def test_no_text_says_the_features_start_off(self):
         for path in (INSTALL, PACKAGE_README, TAB):
@@ -55,6 +57,13 @@ class LivingServerOnByDefaultText(unittest.TestCase):
 
     def test_the_tab_says_they_are_on(self):
         self.assertIn("Everything here is on by default", TAB.read_text(encoding="utf-8"))
+
+    def test_the_chat_rate_caption_matches_its_name_and_the_docs(self):
+        # 1.2.1 fix list: the caption read "HOW MUCH THEY TALK" while the accessible name and the docs say "How much bots talk".
+        text = TAB.read_text(encoding="utf-8")
+        self.assertIn('ChatRateInput("How much bots talk")', text)
+        self.assertIn('Caption("HOW MUCH BOTS TALK")', text)
+        self.assertNotIn("THEY TALK", text)
 
 
 if __name__ == "__main__":

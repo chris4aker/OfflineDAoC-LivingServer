@@ -29,7 +29,7 @@
     }
   ],
   "story": "Cargila is a timber cat who lives by the mouth of Varulvhamn, and Geiri of Nalliten swears she has nine thousand lives. The werewolves say it is fewer, but not by much. She was a cat of the varulv's own hunting grounds once, the story goes, the favourite of a werewolf lord who wore a pair of boots that let him walk on the trees' own breath; when the lord died in the haven below, Cargila took the boots' luck for herself, as cats do, and has not stayed dead since.\n\nThe hunters of Nalliten have killed her more times than they can count and she is always back by the haven's mouth among the willow-ras, washing her face. Geiri sends the young to find the secret. The ones who come back say it is the boots, and Geiri says it is not boots, it is a cat, and the boots are only how she keeps the secret. The varulv at the haven's mouth step round her.",
-  "legend": "Cargila is a level 40 timber cat near the Varulvhamn entrance in Skona, among the ra of willow (31-34), for Geiri's Cargila's Blessing in Nalliten (the 'magical boots'). No faction, no spells, a plain hard-hitting cat. Watch the willow-ras round her and the werewolf traffic at the haven's mouth. She comes back quickly, which is the joke: nine thousand lives. Go at night or day, she's always there washing her face.",
+  "legend": "Cargila is a timber cat, a foe for a hardened band of veterans, near the Varulvhamn entrance in Skona, among the ra of willow, each a foe for a seasoned band, for Geiri's Cargila's Blessing in Nalliten (the 'magical boots'). She answers to no one, has no spells, a plain hard-hitting cat. Watch the willow-ras round her and the werewolf traffic at the haven's mouth. She rises again quickly, which is the joke: nine thousand lives. Go at night or day, she's always there washing her face.",
   "yells": {
     "aggro": [
       "(A long hiss.)",
@@ -49,7 +49,7 @@
   },
   "botLines": {
     "briefing": [
-      "cargila is the 40 timber cat by the varulvhamn entrance",
+      "cargila is the hardened-band timber cat by the varulvhamn entrance",
       "willow ras near her, clear them"
     ],
     "aftermathWin": [

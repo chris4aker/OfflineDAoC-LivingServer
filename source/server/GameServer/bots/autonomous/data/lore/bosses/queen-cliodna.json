@@ -19,10 +19,25 @@
       "text": "Bot chat: her birds sing people to sleep; keep your distance.",
       "provenance": "original",
       "source": "source/server/GameServer/bots/autonomous/data/chat/lore_hibernia.lines"
+    },
+    {
+      "text": "In the Dindshenchas, Clíodhna of the Land of Promise elopes with Ciabhán to Glandore and is drowned by a wave while he hunts; Tonn Chlíodhna is one of the three great waves of Ireland.",
+      "provenance": "myth",
+      "source": "The Metrical Dindshenchas, 'Tonn Chlíodhna'"
+    },
+    {
+      "text": "Clíodhna's three birds, which eat the apples of an otherworld tree and whose song puts the sick to sleep and heals them, are not in the Dindshenchas; they come from the later tales, among them the Adventure of Tadg son of Cian in the Book of Lismore.",
+      "provenance": "myth",
+      "source": "Echtra Thaidg mheic Céin (Book of Lismore; O'Grady, Silva Gadelica, 1892); https://en.wikipedia.org/wiki/Cl%C3%ADodhna"
+    },
+    {
+      "text": "Living Server lore: the Cullen women's belief that Cliodna keeps to water because water took her, and that the milk on the path is for the queen she was.",
+      "provenance": "original",
+      "source": "Living Server"
     }
   ],
-  "story": "The old songs remember Cliodna as a queen of the Tuatha and the sídhe, the most beautiful woman ever seen in Ireland, with three bright birds whose singing healed the sick and sent them to sleep. The Cliodna of the Bog of Cullen remembers the songs and keeps the half she liked. Her court among the pools is empty; no courtier has been seen there in an age. But she holds court anyway, with her own voice for company.\n\nThose who come too close stand stunned in the reeds, unable to lift a hand, while the cold of her court settles over them and a Dark Blast falls on whoever she favours. She does not stray beyond the pools. The Cullen folk leave a little milk on the bog path on her feast night and do not say for whom. Badb shares the bog with her, and the two are not friends; the old women of Cullen say the crow and the queen have been at odds since Mag Tuired, over which of them the bog belongs to.",
-  "legend": "She stuns, so bring purges and keep a second tank ready to pick her up. Her dark blast is cold over whoever she targets: heal through it. Fight her near her pools; she walks home if drawn too far. Bring friends: her court may be empty, but she is not alone in the bog. Superstition: never let a song in the Bog of Cullen finish; walk faster and hum something of your own. Leave milk on the path on her feast night. Nobody remembers which night that is, so the Cullen folk leave it every night. Nickname: 'the reed queen'.",
+  "story": "The old songs remember Cliodna as a queen of the Tuatha and the sídhe, the most beautiful woman ever seen in Ireland, with three bright birds whose singing healed the sick and sent them to sleep. The Cliodna of the Bog of Cullen remembers the songs and keeps the half she liked. Her court among the pools is empty; no courtier has been seen there in an age. But she holds court anyway, with her own voice for company.\n\nThose who come too close stand stunned in the reeds, unable to lift a hand, while the cold of her court settles over them and a Dark Blast falls on whoever she favours. She does not stray beyond the pools. The Cullen folk leave a little milk on the bog path on her feast night and do not say for whom. Badb shares the bog with her, and the two are not friends; the old women of Cullen say the crow and the queen have been at odds since Mag Tuired, over which of them the bog belongs to.\n\nThe Cullen folk are not sure she belongs in a bog at all, and the lore of places agrees with them. Clíodhna came out of the Land of Promise for love of a mortal, Ciabhán of the curling locks, and crossed the sea with him in his boat to the harbour of Glandore. He went inland to hunt and left her sleeping on the strand, and a great wave came in out of the sea and took her back. The wave is still named for her, one of the three great waves of the land. In the later tales her birds sat in an apple tree of the otherworld and ate its fruit, and sang so that the sick slept and woke whole.\n\nThe Cliodna of the Bog of Cullen is a queen who was taken by water once and has kept to water since, the Cullen women think, though the water she keeps to is a bog's and not the sea's. The pools of Cullen are the nearest thing the realm has to the strand where she slept. Her court is gone and her lover long dead, and her birds have not been seen in living memory; what is left of the song is the sleep, without the healing. The women who leave the milk on the path leave it for the queen who came over the sea for love, not for the one in the reeds.",
+  "legend": "Her song leaves people senseless, so bring purges and keep a second shield-bearer ready to pick her up. She is a foe for a war party of the realm's champions. Her dark blast is cold over whoever she turns on: heal through it. Fight her near her pools; she walks home if drawn too far. Bring friends: her court may be empty, but she is not alone in the bog. Superstition: never let a song in the Bog of Cullen finish; walk faster and hum something of your own. Leave milk on the path on her feast night. Nobody remembers which night that is, so the Cullen folk leave it every night. Nickname: 'the reed queen'.",
   "yells": {
     "aggro": [
       "You come to my court without a gift?",
@@ -60,21 +75,21 @@
   },
   "botLines": {
     "briefing": [
-      "cliodna stuns. [purges ready|second tank ready] and heal through the cold blast",
-      "clerics, purge stuns on whoever she sings at. [fast|right away]",
+      "cliodna sings you senseless. [purges ready|second shield ready] and heal through the cold blast",
+      "clerics, purge the daze on whoever she sings at. [fast|right away]",
       "fight her by her pools, she walks home if dragged",
-      "second tank ready for when the first is stunned. [always|have one]"
+      "second shield ready for when the first is dazed. [always|have one]"
     ],
     "aftermathWin": [
       "cliodna down. [i swear i heard birds when she died|somebody leave milk on the path tonight]",
       "the bog went silent. [even the frogs|no birds]",
-      "stuns purged, queen down. [proud|grats]",
+      "dazes purged, queen down. [proud|grats]",
       "leave milk on the path tonight. [old cullen custom|do it]"
     ],
     "aftermathLoss": [
-      "stunned the main tank and [nobody picked her up|she ran through the healers]",
-      "main tank stunned, nobody picked her up. [second tank|ugh]",
-      "dragged her out of the pools and [she reset|went home]",
+      "dazed the main shield and [nobody picked her up|she ran through the healers]",
+      "main shield dazed, nobody picked her up. [second shield|ugh]",
+      "dragged her out of the pools and [she went home whole|went home]",
       "her song finished. [walk faster|bad sign]"
     ],
     "rumour": [
@@ -88,7 +103,7 @@
     "keyword": "Cliodna",
     "text": "A queen of the sídhe in the Bog of Cullen. Her song brings sleep, but not the healing kind any more. Bring purges."
   },
-  "bookPage": "From Derbáil of Ardee's list: walk faster on the Cullen road and hum something of your own. Grandmother said the queen of the bog was the most beautiful woman ever seen in this country, once, and that her three bright birds sang the sick to sleep and woke them well. She sings still, among the reeds, to a court that is not there. If you let her song finish, grandmother said, you sleep, and you do not wake well. The realm's clerics say she stuns. Grandmother said that is a cleric's word for it, and that clerics never listen to the end of anything.",
+  "bookPage": "Walk faster on the Cullen road and hum something of your own: Derbáil of Ardee's list gives no other counsel for it. Grandmother said the queen of the bog was the most beautiful woman ever seen in this country, once, and that her three bright birds sang the sick to sleep and woke them well. She sings still, among the reeds, to a court that is not there. If you let her song finish, grandmother said, you sleep, and you do not wake well. The realm's clerics say she dazes. Grandmother said that is a cleric's word for it, and that clerics never listen to the end of anything.",
   "chronicle": {
     "win": "{realm} went into the Bog of Cullen under {raidLeader} and put down Queen Cliodna in {minutes} minutes.",
     "loss": "{realm}'s band under {raidLeader} came back from the Bog of Cullen without Queen Cliodna's head after {minutes} minutes."

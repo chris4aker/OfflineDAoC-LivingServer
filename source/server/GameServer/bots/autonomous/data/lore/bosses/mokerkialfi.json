@@ -48,7 +48,7 @@
     }
   ],
   "story": "When Hrungnir the stone-headed giant boasted in Asgard and Thor challenged him to a duel at the border of the giants' country, the giants were afraid that Hrungnir would lose, and so they built him a second. They dug clay and made a man of it, nine leagues high and three broad under the arms, and when they came to give it a heart they found that no giant's heart was big enough to fill it, and they took a mare's instead. They called it Mokkurkalfi. The skalds of Jordheim, who tell the tale every winter, end it the same way: when the clay giant saw Thor coming over the field, it was so frightened that it wet the ground beneath it, and Thor's servant Thjalfi brought it down without a struggle, and it fell with a great noise and was not heard of again.\n\nThe skalds are wrong about the last part, the Seithkona Circle says. It fell; it did not die, because it had never been alive in the way a giant is alive, only made, and a thing that is made does not die when it falls. It lay where it fell for a long age. Then, by the Circle's account, the giants who had made it came in the night and carried it away, ashamed, as far from the field as they could, and set it down on the eastern heights of a ravine at the edge of Midgard, and left it. The heap of grey clay on the heights above Skona is Mokerkialfi, as the folk of the ravine say the name, and it breathes, and when it thunders over Skona the heap shakes.\n\nIt is not a coward any more, or not only. Something that has been frightened for that long, the werewolves say, stops being frightened of anything but the one thing, and the one thing has never come back. It rises against anything that comes up onto the heights, slowly, with the mare's heart hammering, and fights like the giant it was built to be, alone, because it has never had anyone to call. The jotuns of Vanern come sometimes in the night, the Circle says, to stand at the foot of the heights and look at it. They are the clay-builders, the ones who made Mokkurvalve to better it with a jotun's heart, and whose foreman Valthjof thinks a man's heart might be the right size. They never go up. They go home and try again.\n\nGudny of the Circle wrote that the saddest thing about the clay giant is that it still listens for the hammer. On still nights the werewolves hear it, up on the heights, turning its great head toward the north and the sky, waiting for Thor.",
-  "legend": "Mokerkialfi is a level 56 giant lying alone on the eastern heights of Skona Ravine, the clay giant from the old Hrungnir story. Nothing else stands near it and its template has no faction, so it's a clean one-on-one fight with a big giant: no adds, no abilities, not CC-immune. It's aggressive at 500, so you'll know when you've come up onto the heights. A group at 50 handles it fine; a strong duo with crowd control can do it carefully. No quest needs it. The werewolves say it shakes when it thunders. If you're doing the clay jotuns of Vanern, this is the one they're all trying to better.",
+  "legend": "Mokerkialfi is a giant, a foe for the realm's best, a full band of them, lying alone on the eastern heights of Skona Ravine, the clay giant from the old Hrungnir story. Nothing else stands near it and it answers to no one, so it's a clean one-on-one fight with a big giant: no helpers, no tricks, and charms, trances and stuns hold it. It notices you from about seventeen paces, so you'll know when you've come up onto the heights. A band of the realm's best handles it fine; a strong pair with trances, stuns and holds can do it carefully. No quest needs it. The werewolves say it shakes when it thunders. If you're doing the clay jotuns of Vanern, this is the one they're all trying to better.",
   "yells": {
     "aggro": [
       "Not Thor. Not Thor. Not... Thor?",
@@ -87,10 +87,10 @@
   },
   "botLines": {
     "briefing": [
-      "mokerkialfi is a 56 giant alone on the east heights",
-      "no adds, no faction, no tricks, just big",
-      "aggro at 500, you'll know when",
-      "group at 50 is fine"
+      "mokerkialfi is a giant alone on the east heights, a fight for the realm's best",
+      "no helpers, answers to nobody, no tricks, just big",
+      "it notices you from a fair way off, you'll know when",
+      "a band of the realm's best is fine"
     ],
     "aftermathWin": [
       "clay giant down",
@@ -100,9 +100,9 @@
     ],
     "aftermathLoss": [
       "hits like a mountain",
-      "duo wasnt enough",
+      "two wasnt enough",
       "pet died first and it rolled us",
-      "should have brought cc"
+      "should have brought stuns and trances"
     ],
     "rumour": [
       "mokerkialfi is the clay giant with the mares heart from the hrungnir tale",
@@ -115,7 +115,7 @@
     "keyword": "Mokerkialfi",
     "text": "The clay giant of the oldest tale, built with a mare's heart to stand with Hrungnir, who lost his nerve before Thor and fell. The [Seithkona Circle] says he lies on Skona's eastern heights, breathing, listening north for the hammer."
   },
-  "bookPage": "From What the Circle Sees, by Gudny of the Seithkona Circle: I climbed the eastern heights once, against the Circle's advice, to see the clay giant close. It was asleep, if that is the word, a hill of grey clay with a shape in it like a man lying on his side with his knees drawn up. I stood a long time. Then a storm came over the ravine from the north, and at the first thunder the whole hill shuddered and drew its knees up tighter. I came down quickly, but not for fear of it. I did not want it to know it had been seen afraid.",
+  "bookPage": "I climbed the eastern heights once, against the Circle's advice, Gudny of the Seithkona Circle writes in What the Circle Sees, to see the clay giant close. It was asleep, if that is the word, a hill of grey clay with a shape in it like a man lying on his side with his knees drawn up. I stood a long time. Then a storm came over the ravine from the north, and at the first thunder the whole hill shuddered and drew its knees up tighter. I came down quickly, but not for fear of it. I did not want it to know it had been seen afraid.",
   "chronicle": {
     "win": "{raidLeader} of {realm} brought down Mokerkialfi, the clay giant, on Skona's heights in {minutes} minutes.",
     "loss": "Mokerkialfi stood against {raidLeader}'s party from {realm} on Skona's heights for {minutes} minutes."

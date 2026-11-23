@@ -161,7 +161,43 @@ namespace DOL.GS
                 _pullWaitSince[npc] = long.MinValue;
                 log.Info($"REALM_EXPEDITION_PULL_WAIT_EXPIRED region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} reason=\"{why}\"");
             }
-            return null;
+            return LapsedGuard(npc, live, now, walk);
+        }
+
+        // #407 (tests only): after a tactic's hold lapses, a looser guard of the same rule (EpicEncounterTactics.LapsedPullWait)
+        // still holds the pull, for at most PullWaitLimitMilliseconds more; then the raid pulls as it would without the tactic.
+        private readonly Dictionary<GameNPC, long> _lapsedGuardSince = new();
+
+        private string LapsedGuard(GameNPC npc, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
+        {
+            string guard = EpicEncounterTactics.LapsedPullWait(npc, live, now, walk);
+            bool had = _lapsedGuardSince.TryGetValue(npc, out long since);
+            if (guard == null)
+            {
+                if (had && since != long.MinValue)
+                {
+                    log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARD_CLEAR region={_region} target=\"{npc.Name}\" seconds={(now - since) / 1_000}");
+                    _lapsedGuardSince.Remove(npc);
+                }
+                return null;
+            }
+            if (!had)
+            {
+                if (_lapsedGuardSince.Count > 256) _lapsedGuardSince.Clear();
+                _lapsedGuardSince[npc] = now;
+                log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARDED region={_region} target=\"{npc.Name}\" reason=\"{guard}\"");
+                return guard;
+            }
+            if (since == long.MinValue || PullWaitExpired(since, now))
+            {
+                if (since != long.MinValue)
+                {
+                    _lapsedGuardSince[npc] = long.MinValue;
+                    log.Info($"REALM_EXPEDITION_PULL_WAIT_GUARD_EXPIRED region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} reason=\"{guard}\"");
+                }
+                return null;
+            }
+            return guard;
         }
 
         private long _nextCourtWindowLog;
@@ -702,9 +738,20 @@ namespace DOL.GS
             _targetProgressTick = now;
         }
 
+        /// <summary>Pulls of an encounter after a counted wipe (the raid's retry; once per wipe): the raid's stall rule counts
+        /// each as progress (RealmRaidRecruitmentPolicy.WatchStep, #411).</summary>
+        public int RetriesBegun { get; private set; }
+        // A counted wipe arms the next pull as a retry.
+        private bool _retryArmed;
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
             _skirmishHeld = false;
+            if (_retryArmed)
+            {
+                _retryArmed = false;
+                RetriesBegun++;
+            }
             _musterEngaged = true;
             _musterEngagedTick = now;
             _engaged.Clear();
@@ -777,6 +824,7 @@ namespace DOL.GS
                 return true;
             }
             _regrouping = true;
+            _retryArmed = true;
             _regroupSince = _musterSince = now;
             _targetProgressTick = now;
             return true;
@@ -2733,6 +2781,7 @@ namespace DOL.GS
                 return;
             }
             _regrouping = true;
+            _retryArmed = true;
             _regroupSince = _musterSince = now;
             _targetProgressTick = now;
         }

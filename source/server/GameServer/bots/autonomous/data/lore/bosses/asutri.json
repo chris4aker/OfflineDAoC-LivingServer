@@ -38,7 +38,7 @@
     }
   ],
   "story": "Alivor keeps the post's watch on the road toward the bones. Asutri keeps it at the post itself, by the griffon and the stablemaster, and the dwarves say she is the one who decides who flies.\n\nShe came to the post from the slate-house in Faraheim, where she was a slate-keeper's apprentice, after the winter Midgard's explorers first came through the gap with the dwarves' own. She brought a slate with her that she has kept adding to ever since, and it is not a slate of names. It is a chart. Mortufoghus, the mammoth of the old ice, walks between the dig and the bones round and round, as if the bones were her calf and every digger a wolf, and Asutri has charted the round: where it bends, how near it comes to the dig, how it widens when the calling at the dig goes on too long. The dwarves at the post say her chart is the reason the post has never once been surprised.\n\nShe also keeps the other reckoning, the one the slate-house keeps of every stranger who has done the Remnants good or harm. A stranger who comes to the post and is known for good is given the griffon. A stranger who is not known, or known for harm, is turned back, and if he will not turn, the post turns him. Asutri does not argue with strangers. She says arguing is for the slate-house, and the post is not the slate-house; the post is where the slate-house's arguments end.\n\nOrri of Hagall wrote that Asutri once refused the griffon to a Midgard jarl's son who had come to see the bones, and that the jarl's son drew his sword on her, and that Hermione the stablemaster, who does not fight, put herself between them and said the griffon would not carry a man who had drawn on the post in any case, so there was no point. The jarl's son walked back to the gap. Asutri marked his name on the other slate, the one that does not forget.",
-  "legend": "Asutri is a level 50 iarn dwarf at the Remnants' post in south-western Modernagrav, near Hermione the stablemaster and the griffon. Remnants faction and aggressive, like Alivor: low Remnants standing means she attacks on sight, and dwarves nearby can join. No special abilities, not CC-immune. Killing her shifts your faction standing the usual way, and she stands right by the post's flight master, so a lot of people simply leave her alone and raise Remnants faction instead. Alivor stands about 4,100 away on the road toward the bones. If you need the griffon later, don't kill the post's dwarves now.",
+  "legend": "Asutri is an iarn dwarf, a foe for the realm's best, a full band of them, at the Remnants' post in south-western Modernagrav, near Hermione the stablemaster and the griffon. Sworn to the Remnants and quick to attack, like Alivor: low standing with the Remnants means she attacks on sight, and dwarves nearby can join. No special tricks, and charms, trances and stuns hold her. Killing her shifts your standing with the Remnants the usual way, and she stands right by the post's flight master, so a lot of people simply leave her alone and raise their standing with the Remnants instead. Alivor stands nearly a hundred and forty paces away on the road toward the bones. If you need the griffon later, don't kill the post's dwarves now.",
   "yells": {
     "aggro": [
       "Not known to the slate-house. Not welcome.",
@@ -76,13 +76,13 @@
   },
   "botLines": {
     "briefing": [
-      "asutri is remnants, aggro if your faction is low",
-      "shes right by the griffon post, think about faction",
-      "50, easy, no tricks",
-      "alivor is 4000 off, they dont pull together"
+      "asutri is remnants, she attacks on sight if your standing is low",
+      "shes right by the griffon post, think about your standing",
+      "easy for the realm's best, no tricks",
+      "alivor is way down the road, they dont come together"
     ],
     "aftermathWin": [
-      "asutri down, faction hit though",
+      "asutri down, our standing took a hit though",
       "easy",
       "hermione didnt flinch",
       "the post is unguarded"
@@ -104,7 +104,7 @@
     "keyword": "Asutri",
     "text": "The dwarf who keeps the Remnants' [post] itself and decides who flies. She has charted [Mortufoghus]'s round for years. Hermione the stablemaster once stood between her and a jarl's son. See [Alivor]."
   },
-  "bookPage": "From the slates of Orri of Hagall: Asutri showed me her chart once, by the griffon's pen. The mammoth's round is a loop drawn on the slate over and over, a hundred loops, each scratched a little differently, so that the whole slate is grey with them. In the middle is a mark for the bones. She pointed to where the loops pulled toward the dig and said: there, that is when they call too long. Then she pointed to one loop that went wide, out past the dig, almost to the post, and said nothing, and put the slate away.",
+  "bookPage": "Asutri showed me her chart once, by the griffon's pen, and Orri of Hagall kept the day on his slates. The mammoth's round is a loop drawn on the slate over and over, a hundred loops, each scratched a little differently, so that the whole slate is grey with them. In the middle is a mark for the bones. She pointed to where the loops pulled toward the dig and said: there, that is when they call too long. Then she pointed to one loop that went wide, out past the dig, almost to the post, and said nothing, and put the slate away.",
   "chronicle": {
     "win": "{raidLeader} of {realm} broke Asutri's post in Modernagrav in {minutes} minutes.",
     "loss": "Asutri turned {raidLeader}'s party from {realm} back from the post after {minutes} minutes."

@@ -34,7 +34,7 @@
     }
   ],
   "story": "Every child of Dellingstad is taught the crossbow, Kolfinna the miner wrote to her daughter, and every child is taught it in Zargin's yard. The weaponmaster keeps it at the edge of the town, a square of trodden ash with golems of straw and clay standing in it for the young ones to strike, and he has kept it for longer than most of the town's fortifiers have been alive.\n\nHe is not of the town by birth, the soothsayers say, which is why he has no place in its councils and wants none. He came over the rim as a young man, from somewhere the town does not discuss, with a blade and a crossbow and no people, and asked to be let in. Dellingstad lets no stranger in until he has proved a friend, and Zargin proved it, the story goes, by standing in front of the gate for a season and shooting every morvalt that came over the south-western wall, until the fortifiers grew tired of watching him do their work and opened the gate. They never made him one of the town's own. They gave him the children instead.\n\nHe teaches them the way the town fights: from the wall, at range, without hurry, and never by letting a stranger close. The students in his yard are the town's young, and they are quick to come at anyone who walks in among them, because that is the first thing he teaches. Zargin himself comes at strangers the same way he came at the morvalt, alone, because he has never had anyone of his own to call and has never asked the town for help. The students come anyway. The soothsayers say that is the only proof the weaponmaster has ever needed that the town took him in after all.\n\nThe golems of straw and clay in his yard are struck so often that the miners of the south-west wall make him new ones every month. Kolfinna wrote that her daughter's first golem is still standing in the yard, with one bolt in the middle of its chest, because Zargin will not let it be replaced. He says a teacher should remember what a good shot looks like.",
-  "legend": "Weaponmaster Zargin is a level 54 Dellingstad NPC in his training yard at the edge of town, with five Zargin's students (45-49) and five dummy golems around him. Like the rest of Dellingstad he's aggressive to you until your People of Dellingstad faction is good. Zargin has no faction himself (no bring-a-friend), but his students do and they're aggressive and right there, and the town's crossbowmen and fortifiers aren't far. No abilities, not CC-immune. Killing Dellingstad folk shifts your faction the usual way, so if you want the town's quests (Mammoth Hunt's whisker goes to Vorkald here), leave the yard alone.",
+  "legend": "Weaponmaster Zargin is a man of Dellingstad, a foe for the realm's best, a full band of them, in his training yard at the edge of town, with five Zargin's students, each a foe for a hardened band of veterans, and five dummy golems around him. Like the rest of Dellingstad he attacks you on sight until your standing with the People of Dellingstad is good. Zargin answers to no one himself (he calls no friends), but his students do, and they attack on sight and are right there, and the town's crossbowmen and fortifiers aren't far. No tricks, and charms, trances and stuns hold him. Killing Dellingstad folk shifts your standing the usual way, so if you want the town's quests (Mammoth Hunt's whisker goes to Vorkald here), leave the yard alone.",
   "yells": {
     "aggro": [
       "Stranger in the yard! Students, show me!",
@@ -72,14 +72,14 @@
   },
   "botLines": {
     "briefing": [
-      "zargin is 54 in dellingstads training yard",
-      "students are aggro and dellingstad faction, they come",
-      "killing town folk hurts your dellingstad faction",
+      "zargin is a fight for the realm's best in dellingstads training yard",
+      "students attack on sight and are dellingstad's, they come",
+      "killing town folk hurts your standing with dellingstad",
       "no tricks on zargin"
     ],
     "aftermathWin": [
       "zargin down, the students too",
-      "faction hit for sure",
+      "our standing took a hit for sure",
       "easy-ish",
       "fortifiers didnt notice"
     ],
@@ -87,7 +87,7 @@
       "the crossbowmen joined from the wall",
       "students swarmed",
       "too close to town",
-      "pulled the fortifiers"
+      "drew the fortifiers"
     ],
     "rumour": [
       "zargin stood a season at dellingstads gate shooting morvalt before they let him in",

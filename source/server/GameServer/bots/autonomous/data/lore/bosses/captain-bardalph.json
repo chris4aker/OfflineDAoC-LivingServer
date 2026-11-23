@@ -24,10 +24,15 @@
       "text": "Bardalph's Swanton Keep origin, the twenty-second mark, the three questions, her letter to the Constable through her brother Gwion of Prydwen Keep and the dagger kept at Swanton are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "The added book pages (the castellan of Swanton's letter and the clerks' description of the outer gate's post-stone) are Living Server writing for issue #402, drawn from events the chapters already tell.",
+      "provenance": "original",
+      "source": "LORE"
     }
   ],
   "story": "Captain Bardalph was the gate-warden's daughter of Swanton Keep in the Black Mountains, sent north with a short letter from her castellan: quick, rude, always right, and welcome back when the Pennines had finished with her. In Lord Gildas's second year she cut the twenty-second mark on the outer gate's post-stone, the post that met everything first and had lost a keeper a year, and no one ever cut another. For eighteen years she asked every stranger the Swanton gatehouse's three questions (who sent you, what do you carry, who will answer for you), which the dalesmen of Long Dale still call Bardalph's questions.\n\nShe was the only officer never marked in Atwell's practice yard. She fought with a thrusting blade and a dagger and no shield, went where the blow was not and put the point in when a man had swung himself out, and she called a wandering eye back to her blade with a feint and a word; the sergeants said 'as easy as hitting Bardalph' of any work that will not be hurried.\n\nWhen she was overruled at table over the wizard, she would not go behind Gildas with his clerk, and sent a sealed letter by Hob the carrier to her brother Gwion at Prydwen Keep, who carried it to the Constable. It asked for a second wizard to watch the first, or a priest. It lies at the bottom of the drawer of Aidon's letters in Camelot, opened only after Sir Hamon's riders came home.\n\nOn the last night she said that she had told them so, the last words written by a living hand in the hall. She keeps her stone below Captain Heathyr's door, the patient one, whose cuts run on after the blow like all the captains'. The Midgard war-bands call her the gate-wife. Swanton still keeps her dagger on the peg by the gate, and takes it down for a night whenever word comes that she has fallen.",
-  "legend": "Bardalph is a ghost captain, level 65, 30,000 health, with a thrusting blade and a dagger. She evades about half of all melee swings, so her fight runs long: keep the melee on her anyway and let the casters carry it, because magic is not evaded. Her taunt style drags the tank's attention back to her, which is fine; it is the off-tanks who drift. About one hit in three she bleeds the target, 65 body every three seconds for thirty seconds, like every captain; cure poison clears it. She cannot be mezzed or stunned. Her tether is 1,500: drawn further she takes no damage and heals to full, and half a minute without a fight puts her back to full too. Captain Heathyr's door is only about 870 away, so fight Bardalph on her own stone and do not drift up toward the door. The bards' joke at the muster: answer her three questions. She does not ask them.",
+  "legend": "Bardalph is a ghost captain, a foe for several bands of the realm's best together and as much killing as fifteen raiders, with a thrusting blade and a dagger. She slips aside from about half of all melee swings, so her fight runs long: keep the melee on her anyway and let the casters carry it, because a spell cannot be dodged. Her taunting style drags the shield-bearer's attention back to her, which is fine; it is the second shields who drift. About one hit in three she bleeds the target, a body wound every three seconds for thirty seconds, like every captain; cure poison clears it. She cannot be mesmerized or dazed. She will follow you only about fifty paces from her stone: drawn further nothing harms her and she heals whole, and half a minute without a fight makes her whole too. Captain Heathyr's door is under thirty paces away, so fight Bardalph on her own stone and do not drift up toward the door. The bards' joke at the muster: answer her three questions. She does not ask them.",
   "yells": {
     "aggro": [
       "Who sent you? What do you carry?",
@@ -61,23 +66,23 @@
   },
   "botLines": {
     "briefing": [
-      "bardalph evades half the melee swings. casters carry this one",
+      "bardalph dodges half the melee swings. casters carry this one",
       "she bleeds like the other captains, cure poison clears it",
-      "tether 1500, fight her on her stone, off it shes immune and heals full",
+      "she follows 50 paces at most, fight her on her stone, off it nothing hurts her and she heals whole",
       "heathyr's door is close, dont drift up toward it",
-      "cc immune, dont bother mezzing"
+      "nothing holds her, dont bother mesmerizing"
     ],
     "aftermathWin": [
       "bardalph down. the gate-wife is quiet",
-      "captain bardalph down, took forever with her evades",
+      "captain bardalph down, took forever with her dodging",
       "outer gate clear",
       "she told us so. didnt help her"
     ],
     "aftermathLoss": [
-      "someone dragged her off her post again. immune out there",
+      "someone dragged her off her post again. untouchable out there",
       "drifted up to heathyr's door and got both",
       "the melee whiffed all fight and the heals ran out",
-      "the tank ran dry on the bleeds"
+      "the shield-bearer ran dry on the bleeds"
     ],
     "rumour": [
       "heard bardalph warned them about the wizard and nobody listened",
@@ -91,6 +96,10 @@
     "text": "Captain Bardalph was the gate-warden's daughter of [Swanton Keep], keeper of the outer gate of the Pennine watch for eighteen years, and the only officer [Atwell] never marked in the practice yard. She warned against the [wizard] at table and by letter to the Constable, through her brother Gwion at [Prydwen Keep]. Ask the dalesmen about [Bardalph's questions]."
   },
   "bookPage": "To my brother Gwion, sergeant, at Prydwen Keep. Carry this to the Constable yourself and tell him it comes from the outer gate. The wizard has asked my lord to double the watch because he expects visitors. A gate does not ask for visitors. A gate asks who sent them, and what they carry, and who will answer for them, and the wizard has answered none of the three. My lord trusts him because the realm sent him. I do not ask the Constable to overrule my lord. I ask him to send a second wizard to watch the first, or if he has none to spare, a priest. Tell our father the gate is held. Do not tell him I am frightened, because I am not, yet. Bardalph.",
+  "bookPages": [
+    "The castellan of Swanton Keep to the Constable at Camelot, recommending the bearer, the gate-warden's daughter, for the Pennine watch; kept among the watch's papers because it is short: My lord. She is quick. She is rude. She is always right. You will find the third the hardest of the three to forgive. She asks every stranger at a gate who sent him, what he carries and who will answer for him, and she has asked it of an abbot, who complained to me, and of me, and I answered. Put her where the road meets you first. When the Pennines have finished with her, Swanton will be glad to have her back, and her dagger will be on its peg by the gate until she comes for it. The castellan of Swanton, under the gatehouse seal.",
+    "The post-stone at the outer gate of the Pennine watch, as the Camelot clerks describe it in their rolls: a grey block at the height of a man's chest, set into the wall where the road comes up out of the dark, with twenty-two marks cut into its face. The first twenty-one are crowded, one under another, at the rate of about one a year in the early days of the watch, a wolf's head, a wheel, a pair of crossed keys and the rest, each the mark of a keeper who died at the gate, or was carried south, or asked to be relieved. The twenty-second is a small spear-head cut very deep, in Lord Gildas's second year, and after it the stone is bare. The clerks note that the mason who dressed the stone left room for forty, and that the dalesmen say the room will not be needed."
+  ],
   "chronicle": {
     "win": "{realm}'s raid under {raidLeader} released Captain Bardalph from the Pennine watch in {minutes} minutes.",
     "loss": "Captain Bardalph held the post against {realm}'s raid; {raidLeader} fell back."

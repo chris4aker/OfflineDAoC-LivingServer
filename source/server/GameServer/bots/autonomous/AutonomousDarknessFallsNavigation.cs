@@ -466,6 +466,77 @@ public static class AutonomousDarknessFallsNavigation
             out air, out landing);
     }
 
+    // #438 (1.2.1): the three entrance stair drops of each realm are geometry of the installed mesh, not of the goal
+    // audit. Companions use them whenever the installed zone249.nav is the certified one, even when the database part
+    // of the certificate (the goal pool) is closed. tools/navmesh/README.md has the probe that measured them.
+    private static readonly Lazy<TraversalLink[]> MeshFallLinks = new(LoadMeshFallLinks, true);
+
+    private static TraversalLink[] LoadMeshFallLinks()
+    {
+        try
+        {
+            if (GameServer.Instance == null) return null;
+            Assembly assembly = typeof(AutonomousDarknessFallsNavigation).Assembly;
+            string name = assembly.GetManifestResourceNames().SingleOrDefault(resource =>
+                resource.EndsWith(ResourceSuffix, StringComparison.Ordinal));
+            if (name == null) return null;
+            using Stream stream = assembly.GetManifestResourceStream(name);
+            Certificate certificate = JsonSerializer.Deserialize<Certificate>(stream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            TraversalLink[] falls = certificate?.TraversalLinks?
+                .Where(link => link?.Kind == "Fall" && ValidTraversalLink(link)).ToArray();
+            if (falls is not { Length: > 0 } || string.IsNullOrWhiteSpace(certificate.NavSha256)) return null;
+            string path = Path.GetFullPath(Path.Combine("navmesh", "zone249.nav"));
+            if (!File.Exists(path)) path = Path.GetFullPath(Path.Combine("pathing", "zone249.nav"));
+            if (!File.Exists(path)) return null;
+            using Stream nav = File.OpenRead(path);
+            return string.Equals(Convert.ToHexString(SHA256.HashData(nav)), certificate.NavSha256,
+                StringComparison.OrdinalIgnoreCase) ? falls : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>The certified stair falls of the installed mesh: the full certificate's when it is open, else the
+    /// mesh-only set (#438). Null when the installed mesh is not the certified one.</summary>
+    public static IReadOnlyList<TraversalLink> InstalledFallLinks =>
+        IsReady ? CertificateData.Value.TraversalLinks : (GameServer.Instance != null ? MeshFallLinks.Value : null);
+
+    /// <summary>A companion or other player-led bot at the lip of a certified stair drop (#438).</summary>
+    public static bool TryGetStairFall(Vector3 actor, Vector3 nextNode, out Vector3 air, out Vector3 landing) =>
+        TryResolveFall(actor, nextNode, InstalledFallLinks, out air, out landing);
+
+    /// <summary>A bot left inside a certified stair drop (between the upper landing and the lower one), where the navmesh
+    /// has no polygon within the server's pick box (game 32, 32, 64): its landing. #438, the probe in tools/navmesh found
+    /// these dead windows on all nine entrance drops (up to a fifth of the second drop of each realm).</summary>
+    public static bool TryGetStairFallLanding(Vector3 actor, out Vector3 landing) =>
+        TryResolveFallLanding(actor, InstalledFallLinks, out landing);
+
+    /// <summary>Pure: the landing of the certified fall whose drop column holds <paramref name="actor"/>: within 40 units
+    /// (XY) of the lip-to-landing segment, below the lip and above the landing. The landing is the lower floor itself.</summary>
+    public static bool TryResolveFallLanding(Vector3 actor, IReadOnlyList<TraversalLink> links, out Vector3 landing)
+    {
+        landing = default;
+        if (links == null || !float.IsFinite(actor.X) || !float.IsFinite(actor.Y) || !float.IsFinite(actor.Z)) return false;
+        foreach (TraversalLink link in links)
+        {
+            if (link?.Kind != "Fall" || !ValidTraversalLink(link)) continue;
+            Vector3 start = new(link.Start[0], link.Start[1], link.Start[2]);
+            Vector3 end = new(link.End[0], link.End[1], link.End[2]);
+            // Strictly inside the drop: a bot standing on either landing is not "in" it.
+            if (actor.Z >= start.Z - 24 || actor.Z <= end.Z + 24) continue;
+            Vector2 a = new(start.X, start.Y), b = new(end.X, end.Y), p = new(actor.X, actor.Y);
+            Vector2 ab = b - a;
+            float t = ab.LengthSquared() < 1e-3f ? 0 : Math.Clamp(Vector2.Dot(p - a, ab) / ab.LengthSquared(), 0, 1);
+            if (Vector2.Distance(p, a + ab * t) > 40) continue;
+            landing = end;
+            return true;
+        }
+        return false;
+    }
+
     public static bool TryResolveFall(Vector3 actor, Vector3 nextNode, IReadOnlyList<TraversalLink> links,
         out Vector3 air, out Vector3 landing)
     {

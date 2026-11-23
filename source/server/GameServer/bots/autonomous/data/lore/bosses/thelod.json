@@ -30,7 +30,7 @@
     }
   ],
   "story": "Thelod keeps a priest. When the werewolves and the arachites made their bargain in the west of Skona, something had to be given to hold it, and what was given was a priest of Thraxia's, the arachite priestess of Gotar's skull post. The priest's spirit went to Te'Bui in Spindelhalla, to be kept among the thralls where nobody looks. The priest's body came to Varulvhamn, to Thelod.\n\nThelod keeps him in the upper halls among the quixots and the young wolves, and feeds him, and talks to him, the court says, about things a werewolf should not want to know: what the arachites pray to, what answers. Ritter despises him for it. Thelod does not care. The young Fressen sends after the priest have to take the spirit from Te'Bui and then the body from Thelod, and Thelod fights for his priest like a hound for a bone, because he is not finished with his questions.",
-  "legend": "Thelod is a level 36 Varulv werewolf in Varulvhamn's upper halls among wolfaur quixots, pragmatics and scruffs, near Ritter; the last kill of Thraxia's Dilemma (after Te'Bui in Spindelhalla) to free the priest. Varulv faction, so the halls around him join. Ritter stands close by, so you may end up fighting both. Free the priest and Thraxia's Dilemma is done; go back to Thraxia by day.",
+  "legend": "Thelod is a Varulv werewolf, a foe for a hardened band of veterans, in Varulvhamn's upper halls among wolfaur quixots, pragmatics and scruffs, near Ritter; the last kill of Thraxia's Dilemma (after Te'Bui in Spindelhalla) to free the priest. He's Varulv, so the halls around him join. Ritter stands close by, so you may end up fighting both. Free the priest and Thraxia's Dilemma is done; go back to Thraxia by day.",
   "yells": {
     "aggro": [
       "The priest is mine. His answers are mine.",
@@ -50,8 +50,8 @@
   },
   "botLines": {
     "briefing": [
-      "thelod is the 36 werewolf in the upper halls, last kill of thraxias dilemma",
-      "varulv faction, the halls join"
+      "thelod is the hardened-band werewolf in the upper halls, last kill of thraxias dilemma",
+      "varulv, the halls join"
     ],
     "aftermathWin": [
       "thelod down, priest is free",

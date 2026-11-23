@@ -26,10 +26,15 @@
       "text": "Tepok's hour at the door, his copying of the reeve's remarks and his letters to the Pennines are Living Server writing.",
       "provenance": "original",
       "source": "LORE"
+    },
+    {
+      "text": "Captain Rhodri of Snowdonia Fortress, who takes the Lord of Deceit papers, is a real 1.65 NPC; his shelf kept for the seer's journal is Living Server writing.",
+      "provenance": "original",
+      "source": "tools/lore/npc_roster.json: Captain Rhodri, Snowdonia Fortress (see CAST-ALBION.md; era probable)"
     }
   ],
-  "story": "Before the goblins took the mine, a goblin in a good coat came down the mountain one morning and stood at its door for an hour with his hands behind his back, watching the townsfolk's baskets go by, like a man looking over a property he means to buy. The miners laughed at him. Ithel the reeve did not, and wrote it down. That was Tepok.\n\nWhen the mine was his he did not tear up the reeve's tally. He kept it, in the reeve's own columns, and for a whole season he copied the reeve's remarks into the last column word for word, as a boy copies his letters, until he understood what a tally was for. Then he wrote his own. He has kept it ever since: loads up, hands below, hands above, the pens, the halls, the dwarves' bargain, and the bars that go out by the poachers' landing.\n\nHe keeps his office near the mouth and not in the deeps, with his whip at his elbow and a lion at his feet, because an overseer who cannot see the door cannot count what goes through it. The Goblin Lord on the mountain thinks himself a king. Tepok calls him the doorman. Captain Rhodri, who has opened the overseer's sack, says Tepok is the only goblin in the mountains who writes letters, and that the letters are answered.",
-  "legend": "Overseer Tepok is level 36 to 43 depending on the spawn, near the entrance of Tepok's Mine (turn east from the door), with the goblin whip and a cave lion close by: they are his help, take them first or take them together. Plain melee, no spells. Goblins of the same faction nearby can join. Kill him for Lord of Deceit from Captain Rhodri and loot his sack. He comes back in about three minutes.",
+  "story": "Before the goblins took the mine, a goblin in a good coat came down the mountain one morning and stood at its door for an hour with his hands behind his back, watching the townsfolk's baskets go by, like a man looking over a property he means to buy. The miners laughed at him. Ithel the reeve did not, and wrote it down. That was Tepok.\n\nWhen the mine was his he did not tear up the reeve's tally. He kept it, in the reeve's own columns, and for a whole season he copied the reeve's remarks into the last column word for word, as a boy copies his letters, until he understood what a tally was for. Then he wrote his own. He has kept it ever since: loads up, hands below, hands above, the pens, the halls, the dwarves' bargain, and the bars that go out by the poachers' landing.\n\nHe keeps his office near the mouth and not in the deeps, with his whip at his elbow and a lion at his feet, because an overseer who cannot see the door cannot count what goes through it. The Goblin Lord on the mountain thinks himself a king. Tepok calls him the doorman. The captain of Snowdonia Fortress, who has opened the overseer's sack, says Tepok is the only goblin in the mountains who writes letters, and that the letters are answered.",
+  "legend": "Overseer Tepok is a foe for a hardened band of veterans, the strongest of him near the top of that tier, near the entrance of Tepok's Mine (turn east from the door), with the goblin whip and a cave lion close by: they are his help, take them first or take them together. Plain melee, no spells. Goblins of the same tribe nearby can join. Kill him for Lord of Deceit from Captain Rhodri and take his sack. He comes back about three minutes after he falls.",
   "yells": {
     "aggro": [
       "Who sent you? Write it down. No, I will.",
@@ -53,9 +58,9 @@
   },
   "botLines": {
     "briefing": [
-      "tepok, 36 to 43, east of the tepoks entrance. his whip and a lion stand with him",
-      "kill tepok and loot the sack for lord of deceit, rhodri wants it",
-      "keep the goblins behind him off us, same faction, they come"
+      "tepok, veteran band job, east of the tepoks entrance. his whip and a lion stand with him",
+      "kill tepok and take the sack off him for lord of deceit, rhodri wants it",
+      "keep the goblins behind him off us, same tribe, they come"
     ],
     "aftermathWin": [
       "tepok down. grab the sack before someone else does",
@@ -73,7 +78,7 @@
   },
   "loremasterTopic": {
     "keyword": "tepok",
-    "text": "Overseer [Tepok] of [tepoks mine] keeps the mine's tally in the townsfolk's reeve's own columns, and an office by the door so that he can see what comes in. His [sack] carries letters to and from the Pennines; Captain Rhodri of the Snowdonia border keep wants it opened."
+    "text": "Overseer [Tepok] of [tepoks mine] keeps the mine's tally in the townsfolk's reeve's own columns, and an office by the door so that he can see what comes in. His [sack] carries letters to and from the Pennines; Captain Rhodri of Snowdonia Fortress wants it opened."
   },
   "bookPage": "",
   "chronicle": {

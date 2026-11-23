@@ -972,7 +972,24 @@ public static partial class AutonomousRvrEventLayer
         RealmEventNotices.Queue(active.TargetId, active.DefenderRealm, $"The defense rally marches to relieve {Place(active.Target.Name)}!",
             SiegeNewsTopic(false, active.BattleStarted), RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
-        if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_MARCH target={active.TargetId} mustered={DefenseMusterAttendance(active, nowTick)} reason=\"{reason}\"");
+        // assigned= is every defender of the event: after the battle has begun they go straight in, so mustered=0 there is
+        // not an empty march (aa537ce, 16:38:53: "marched with 0" could not tell the two apart).
+        if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_MARCH target={active.TargetId} mustered={DefenseMusterAttendance(active, nowTick)} " +
+            $"assigned={active.Defenders.Values.Sum()} battle={active.BattleStarted} reason=\"{reason}\"");
+    }
+
+    public enum DefenseMusterDeadlineOutcome { March, Extend, StandDown }
+
+    /// <summary>
+    /// What a defense muster does at its deadline: stand down when no defense force is assigned any more (no march with
+    /// nobody), wait once more (4 minutes) when a bot siege's muster is under half its cap, else march.
+    /// </summary>
+    public static DefenseMusterDeadlineOutcome DefenseMusterDeadline(int assignedDefenders, int gathered, int cap,
+        bool playerDefense, bool extended)
+    {
+        if (assignedDefenders <= 0) return DefenseMusterDeadlineOutcome.StandDown;
+        if (!playerDefense && !extended && gathered < cap / 2) return DefenseMusterDeadlineOutcome.Extend;
+        return DefenseMusterDeadlineOutcome.March;
     }
 
     private static int MusterAttendance(ActiveEvent active, long nowTick) => active.Mustered.Values
@@ -1682,7 +1699,23 @@ public static partial class AutonomousRvrEventLayer
             // Run 25: a 3-minute player-defense muster marched with 1 of 175 (the rest were still walking in from 60k
             // away). A player's attack now musters until 80% have gathered or ten minutes pass (owner: a huge force
             // matters more than speed); there is no further extension.
-            if (!active.DefenseReaction && !active.DefenseMusterExtended && active.DefenseMustered.Count < DefenderCapFor(active) / 2)
+            var outcome = DefenseMusterDeadline(active.Defenders.Values.Sum(), active.DefenseMustered.Count, DefenderCapFor(active),
+                active.DefenseReaction, active.DefenseMusterExtended);
+            if (outcome == DefenseMusterDeadlineOutcome.StandDown)
+            {
+                // Owner's PC, 2026-11-19 (build 1.2-aa537ce, 16:38:53): Midgard's defence of Dun nGed "marched" with 0 bots.
+                // Every defense force that joined the muster had left it (re-planned, disbanded) before its deadline. A march
+                // order with no defender behind it is not given: the muster stands down, and the next defense force to join
+                // starts a fresh one (BeginDefenseMuster runs when no muster is on).
+                active.DefenseMustering = false;
+                active.DefenseMusterExtended = false;
+                active.DefenseMustered.Clear();
+                var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
+                if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_MUSTER_EMPTY target={active.TargetId} defenders={GlobalConstants.RealmToName(active.DefenderRealm)} " +
+                    "reason=\"no defense force assigned at the muster deadline; standing down until one joins\"");
+                continue;
+            }
+            if (outcome == DefenseMusterDeadlineOutcome.Extend)
             {
                 active.DefenseMusterExtended = true;
                 active.DefenseMusterDeadlineTick = nowTick + DefenseMusterExtensionMilliseconds;

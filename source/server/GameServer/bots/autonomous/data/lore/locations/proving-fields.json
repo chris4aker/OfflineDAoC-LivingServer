@@ -33,6 +33,11 @@
  "summary": "The four small walled countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, where the three realms send their young to fight the young.",
  "facts": [
   {
+    "text": "NPC pass (HEROES.md decision 11): The rune-cutter is Steinthor (once written Arngrim, which is a gamebot name and the berserks' father in history/midgard) and the harper is Ligach (once written Fionnait, a gamebot name). Living Server writing.",
+    "provenance": "original",
+    "source": "Living Server (HEROES.md decision 11)"
+  },
+  {
    "text": "The four battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon), regions 253 to 250; level is the only limit in Offline DAoC.",
    "provenance": "game",
    "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
@@ -63,7 +68,7 @@
    "source": "https://deremilitari.org/2014/06/discretion-and-deceit-a-re-examination-of-a-military-stratagem-in-egils-saga/"
   },
   {
-   "text": "In the Ulster cycle Macha's curse weakens the men of Ulster in their hour of need but not the boys; in the Tain thrice fifty youths of Emain go to help Cu Chulainn and none survives.",
+   "text": "In the Ulster cycle Macha's curse weakens the men of Ulster in their hour of need but not the boys; in the Tain thrice fifty youths of Emain go to help Cú Chulainn and none survives.",
    "provenance": "myth",
    "source": "https://mythopedia.com/library/tain-bo-cuailnge-dunn-1914/12e-the-slaughter-of-the-boy-troop/"
   },
@@ -71,40 +76,116 @@
    "text": "The charge after Camlann, the hazelled fields, the geis on the fields, the masters at the gate, the gate book and the three measurers are Living Server lore.",
    "provenance": "original",
    "source": "Living Server"
+  },
+  {
+   "text": "In Egils saga (chapters 52-55) King Athelstan offers to 'enhazel' a field on Vin-heath by Vin-wood; hazel poles mark the ground, and once a king has enhazelled a field it is shameful to harry before the battle is ended. Egil's brother Thorolf falls in the battle that follows, and Egil buries him on the field with his weapons and raiment (chapter 55).",
+   "provenance": "myth",
+   "source": "https://wikisaga.hi.is/index.php/Egla,_52; https://www.voluspa.org/egil55.htm"
+  },
+  {
+   "text": "In Hervarar saga Hervor, daughter of Heidrek, falls fighting the Huns' first coming; Gizur bids the Huns to battle on Dun-heath and in the Dylgja vales beneath the Jassar fells and calls on Odin to let his spear fly over them; Angantyr kills his half-brother Hlöd in the battle (Hlöðskviða, stanzas 26-32).",
+   "provenance": "myth",
+   "source": "https://www.voluspa.org/hlodskvida26-32.htm; https://en.wikipedia.org/wiki/Gizur"
+  },
+  {
+   "text": "The three realms' stories told side by side as the grounds of their readings are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
   }
  ],
- "story": "After Camlann, when the three realms first went to war over the frontier, the young went out first and came home last, and in those years every realm buried more of its squires and recruits than it could raise. Then the fields were found, and each realm tells the finding its own way.\n\nWhat the three accounts agree on is short. There are four small countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, each shut in by hills and water, with no road into any of them. A realm's teleporters can send a soldier there, but the way opens only for soldiers of one seasoning. It does not count years. It counts the war a soldier has in them, and on the day a soldier outgrows a field it puts them out and will not take them back. Whoever falls inside a field wakes at their own realm's portal keep, cold and whole. At the heart of each field a keep was standing before any realm came, named in one realm's tongue, and each is held by renegades, grown soldiers of all three realms whom the fields let in for reasons nobody agrees on.\n\nAlbion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel. Midgard holds that they are hazelled ground, marked out under the old law by which a man fights only his match. Hibernia holds that they lie under a geis, the other half of the curse Macha laid on the men of the kingdom.\n\nEach realm says it raised its own portal keep in every field. None of them can say why the portal keeps stand in the same three places in all four fields, to the stride, as if one surveyor had walked them all.",
- "legend": "The battlegrounds are the four small RvR zones between level 15 and 35: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29 and Caledonia 30-35. Any realm teleporter sends you to the one that matches your level and no other, and once you out-level it you cannot go back. Die there and you release to your own portal keep, a short run from the fighting. Each has three portal keeps whose level 255 guards kill any enemy in reach, and a central keep held by renegades (Thidranki's by whoever took it last). Everyone remembers their first one, and everyone complains about twinks.",
+ "story": "After Camlann, when the three realms first went to war over the frontier, the young went out first and came home last, and in those years every realm buried more of its squires and recruits than it could raise. Then the fields were found, and each realm tells the finding its own way.\n\nWhat the three accounts agree on is short. There are four small countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, each shut in by hills and water, with no road into any of them. A realm's porters can send a soldier there, but the way opens only for soldiers of one seasoning. It does not count years. It counts the war a soldier has in them, and on the day a soldier outgrows a field it puts them out and will not take them back. Whoever falls inside a field wakes at their own realm's portal keep, cold and whole. At the heart of each field a keep was standing before any realm came, named in one realm's tongue, and each is held by renegades, grown soldiers of all three realms whom the fields let in for reasons nobody agrees on.\n\nAlbion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel. Midgard holds that they are hazelled ground, marked out under the old law by which a man fights only his match. Hibernia holds that they lie under a geis, the other half of the curse Macha laid on the men of the kingdom.\n\nEach realm's reading has a story under it, and the young of each realm hear theirs before they reach the gate. Albion's is Camlann. The two hosts had come to terms, and the king and his son met between their lines to swear them, with the word given that a drawn sword would begin the battle. An adder came out of the heath and stung a knight on the foot, and he drew to kill it, and both hosts saw the blade and came on. By nightfall the young of Albion lay on that down for their elders' quarrel, and when the clerks found the sheet in the rolls, they knew which quarrel it meant.\n\nMidgard's is older law, and its sagas keep two fields of it. When the English king met Olaf's host at Vinheath, as the saga of Egil tells it, he had the field enhazelled first, poles set up round the level heath between the river and the wood, and once the hazels stood it was shameful to harry the country until the battle was fought. Egil and his brother Thorolf fought there for the English king, and Thorolf fell on that heath, and Egil buried him beside it. The Hervarar saga is older still. When the Huns came over the Gothic border, Hervor, Heidrek's daughter, granddaughter of the Hervor who woke the dead, held a fort against their first coming and fell there. Then Gizur rode to the Huns' camp and named the ground, Dunheath and the Dylgja vales under the Jassar fells, and called on Odin to send his spear over their heads as he bade it. Hervor's brother Angantyr met the Huns on the named ground on the named day, and killed his own half-brother Hlöd there.\n\nHibernia's is the boys of Emain. When the four provinces came against Ulster and Macha's curse lay on every grown man of the kingdom, it passed over the boys, and thrice fifty of them went south to stand beside the one young champion who was holding the fords alone. They came against the host three times over, and not one of them came home.\n\nEach realm says it raised its own portal keep in every field. None of them can say why the portal keeps stand in the same three places in all four fields, to the stride, as if one surveyor had walked them all.",
+ "legend": "The battlegrounds are the four small lands of the realm war for the young, from their last years before seasoning to the edge of hardened veterans: Abermenai for the young not yet seasoned, Thidranki for bands new to their seasoning, Murdaigean for seasoned bands well along, and Caledonia for the most seasoned, on the edge of veterans. Any of the realm's porters sends you to the one that matches your seasoning and no other, and once you outgrow it you cannot go back. Die there and you wake at your own portal keep, a short run from the fighting. Each has three portal keeps whose guards are beyond any muster and kill any enemy in reach, and a central keep held by renegades (Thidranki's by whoever took it last). Everyone remembers their first one, and everyone complains about the ones kitted out far beyond their seasons. The renegade keeps get harder field by field: in Abermenai guards each a seasoned band's foe and a chieftain near the top of that strength; in Murdaigean guards at a seasoned band's hardest and a chieftain for hardened veterans; in Caledonia guards for hardened veterans and a chieftess well up among them; while Thidranki's keep has no renegades at all.",
  "atmosphere": {
   "firstEntry": [
-   "Four small fields, and the young of three realms."
+   "Four small fields, and the young of three realms.",
+   "The fields count the war in you, not your years.",
+   "Three realms' young, and one keep in the middle.",
+   "Hazel, charge or geis: every realm has its reason."
+  ],
+  "areas": [
+   {
+    "name": "the Albion road in Thidranki",
+    "region": 252,
+    "x": 35195,
+    "y": 45316,
+    "z": 0,
+    "radius": 1500,
+    "lines": [
+     "The same strides from gate to keep as in every field.",
+     "A mason's chalk mark on a stone, half rubbed away.",
+     "The road runs as straight as if someone measured it."
+    ]
+   },
+   {
+    "name": "the Hibernian road in Murdaigean",
+    "region": 251,
+    "x": 25725,
+    "y": 28264,
+    "z": 0,
+    "radius": 1500,
+    "lines": [
+     "Halfway from the gate to the keep, to the stride.",
+     "Ogham on a marker stone, too worn to read.",
+     "The way back to the gate is the same in every field."
+    ]
+   }
   ]
  },
  "botLines": {
   "lore": [
    "albs say the bgs are from camlann, mids say its hazel law, hibs say its a geis. [nobody agrees|go figure]",
-   "the portal keeps are in the exact same spots in all four bgs. [nobody knows why|weird if you think about it]"
+   "the portal keeps are in the exact same spots in all four bgs. [nobody knows why|weird if you think about it]",
+   "the bgs count the war in you, not your years. outgrow one and it [puts you out|wont take you back]",
+   "albs say the fields keep a charge laid after camlann, that the young never get spent in their elders' quarrel again",
+   "camlann started at a parley. an adder bit a knight, he drew on it, and both hosts saw the blade",
+   "mids say the bgs are hazelled ground, like vinheath in egil's saga. you only fight your match",
+   "hibs say the fields lie under a geis, the other half of macha's curse, the one that passed over the boys of emain",
+   "thrice fifty boys of emain went south to stand by the one holding the fords. none came home. hibs tell it at the bg gates",
+   "an alb mason walked all four bgs. same strides from gate to keep in every one, [to his foot|within a foot]",
+   "every realm cuts its gate runes on the same stone in every bg. fourth course up, left side. nobody chose it",
+   "all three realms say they raised their bg portal keeps the same week. none of them ever asked the others",
+   "the renegades in the bg keeps are grown soldiers. the fields let them in and [nobody knows why|nobody agrees why]"
   ],
   "rumour": [
-   "[heard|someone said] the masters at the bg portal keeps never go one step past the gate"
+   "[heard|someone said] the masters at the bg portal keeps never go one step past the gate",
+   "[heard|someone said] the bg portal keeps were standing before any realm built them and the realms just moved in",
+   "heard one surveyor walked all four bgs before the realms came. nobody knows whose he was",
+   "[heard|word is] if you could stay in a bg past your seasoning youd see the field change round you",
+   "someone said the gate stones in the bgs are warm on the fourth course. [all of them|in every field]",
+   "heard a mid skald say egil buried his brother beside the first hazelled field and the bgs remember it",
+   "[heard|someone said] the renegade chieftains were young in the bgs once and never left",
+   "heard the masters at the bg gates [have never been beaten|cant be beaten]. nobody tested it twice"
   ],
   "tell": [
-   "the battlegrounds? four little rvr zones, 15 to 35. abermenai, thid, murd, cale. a teleporter sends you to yours",
-   "bgs are where you learn rvr before the frontier. die there and you wake at your own pk"
+   "the battlegrounds? four little realm war fields, young to nearly hardened. abermenai, thid, murd, cale. the porters send you to yours",
+   "bgs are where you learn the realm war before the frontier. die there and you wake at your own pk",
+   "which bg do i go to? the porters only send you to the one for your seasoning. abermenai first, then thid, murd, cale",
+   "what happens if i die in a bg? you wake at your own portal keep, a short run from the fighting",
+   "are the bg portal keeps safe? yes, the guards there kill any enemy in reach. everything between them isnt",
+   "who holds the bg keeps? renegades in abermenai, murd and cale, harder each field. thid faste is whoever took it last"
   ]
  },
  "loremaster": {
-  "intro": "The proving fields are four: Abermenai, Thidranki, Murdaigean and Caledonia. Ask me why they take [only the young], what becomes of [the fallen] there, who the [masters at the gate] are, and who holds the keeps in the middle, the [renegade chieftains].",
+  "intro": "The proving fields are four: Abermenai, Thidranki, Murdaigean and Caledonia. Ask me why they take [only the young], what becomes of [the fallen] there, who the [masters at the gate] are, and who holds the keeps in the middle, the [renegade chieftains]. Each realm reads the fields its own way: as Albion's [charge], as Midgard's [hazel] and its [named ground], or as Hibernia's [geis]. And ask me of the [three measurers].",
   "topics": {
-   "renegade chieftains": "The keep at the heart of every field was held by renegades when the realms first came, and the renegades are there still: soldiers of all three realms who put off their banners and their names together. Their chieftain takes the keep's name, because it is the only one the field will give him. Why the fields let grown renegades in when they keep grown soldiers out, each realm answers in its own way. Albion's clerks say the charge binds the soldiers of a realm, and a renegade has none. Midgard says an outlaw stands outside every law, the hazel's with the rest. Hibernia says the geis was laid for the young of the realms and does not see a renegade at all, which may be why they stay. Thidranki's were put out of the Faste in the Faste Winter, and the Faste has had no lord since."
+   "renegade chieftains": "The keep at the heart of every field was held by renegades when the realms first came, and the renegades are there still: soldiers of all three realms who put off their banners and their names together. Their chieftain takes the keep's name, because it is the only one the field will give him. Why the fields let grown renegades in when they keep grown soldiers out, each realm answers in its own way. Albion's clerks say the charge binds the soldiers of a realm, and a renegade has none. Midgard says an outlaw stands outside every law, the hazel's with the rest. Hibernia says the geis was laid for the young of the realms and does not see a renegade at all, which may be why they stay. Thidranki's were put out of the Faste in the Faste Winter, and the Faste has had no lord since.",
+   "only the young": "The way into a field opens only for soldiers of one seasoning. It counts the war a soldier has in them and not their years, and on the day a soldier outgrows a field it puts them out and will not take them back. Albion calls it a [charge], Midgard the [hazel], Hibernia a [geis].",
+   "the fallen": "Whoever falls inside a field wakes at their own realm's portal keep, cold and whole. Albion's chaplain at Abermenai wrote down the first words of each who woke at his gate; most of them asked whether the day was won.",
+   "masters at the gate": "Each portal keep is held by the oldest soldiers a realm keeps under arms, the only grown ones the fields will suffer: a Knight Commander, a Master Wizard and a Bowman Commander for Albion; a Master of Runes with huscarls and archers for Midgard; a Master Eldritch, a Master Ranger and a Master Guardian for Hibernia. They keep the gate and go no further.",
+   "charge": "A single sheet found in the Academy's rolls after Camlann, in a clerk's hand and under no seal, laying it on the realm that its young should never again be spent in their elders' quarrel. Camlann began when an adder stung a knight at the parley and he drew his sword to kill it.",
+   "hazel": "In the old law of Midgard, a king who meant to fight set hazel poles round the ground, and once the hazels stood it was shameful to harry the country before the battle was fought. Egil's saga tells it of Vinheath, where Egil's brother Thorolf fell. Midgard holds the fields are hazelled, and that inside the hazels a man fights his match. See [named ground].",
+   "named ground": "In the Hervarar saga, after Hervor, Heidrek's daughter, fell holding a fort against the Huns, Gizur rode to their camp and named the ground of battle, Dunheath under the Jassar fells, and called on Odin to send his spear over them. Her brother Angantyr met them there on the named day. See [hazel].",
+   "geis": "Macha's curse weakened the grown men of Ulster in their hour of need and passed over the boys, and thrice fifty boys of Emain went out to help the one champion holding the fords, and none came home. Hibernia's filidh say the fields lie under the other half of that curse.",
+   "three measurers": "A mason of Albion, a rune-cutter of Midgard and a harper of Hibernia each measured the fields for their own realm. The mason found the portal keeps the same strides from the centre in all four fields; the rune-cutter found every realm's way cut on the same stone of the gate; the harper found all three realms raised their keeps in the same week."
   }
  },
  "book": {
   "title": "The Three Measurers, three accounts of the fields copied into one book",
   "pages": [
    "Hywel, master mason of Caerwent, to the Academy. You asked me to walk the four fields from Albion's gate and set down the measure of each, and I have done it. From the gate of our portal keep to the gate of the keep in the middle is the same number of strides in Abermenai as in Caledonia, and the same in Thidranki and Murdaigean, within the length of my foot. I thought at first that our masons had worked to one drawing. Then I stood on our wall and took the bearings of the other realms' keeps, and they also stand in the same places in every field. I have no drawing that explains that, and I would ask the Academy not to send me again to look for one.",
-   "Arngrim the rune-cutter, as he told it to the jarl's steward. I cut the runes on the way at our gate in all four fields, as my master did before me. The jarl wanted to know whether the Albions and the Hibernians cut the same runes on theirs, so in the summer of the truce I crossed the hazel line under a white shield and looked. They do not. Each realm keeps its own way in its own fashion, the Albions with wizards' letters and the Hibernians with ogham. But every way is cut on the same stone of the same course of the gate, the fourth from the ground, on the left as you come in. Nobody in any of the three realms could tell me who chose it.",
-   "Fionnait the harper, for the filidh of Tir na Nog. The rolls of all three realms name the summer their portal keeps were raised, and I have read all three, which took some arranging. All three name the same summer, and the same week of it. Three realms raised twelve keeps in one week, in four countries none of them could walk to, and each believes it did so alone. I used to think that was the strangest thing about the fields. Now I think the strangest thing is that in all the years since, none of the three has ever thought to ask the others."
+   "Steinthor the rune-cutter, as he told it to the jarl's steward. I cut the runes on the way at our gate in all four fields, as my master did before me. The jarl wanted to know whether the Albions and the Hibernians cut the same runes on theirs, so in the summer of the truce I crossed the hazel line under a white shield and looked. They do not. Each realm keeps its own way in its own fashion, the Albions with wizards' letters and the Hibernians with ogham. But every way is cut on the same stone of the same course of the gate, the fourth from the ground, on the left as you come in. Nobody in any of the three realms could tell me who chose it.",
+   "Ligach the harper, for the filidh of Tir na Nog. The rolls of all three realms name the summer their portal keeps were raised, and I have read all three, which took some arranging. All three name the same summer, and the same week of it. Three realms raised twelve keeps in one week, in four countries none of them could walk to, and each believes it did so alone. I used to think that was the strangest thing about the fields. Now I think the strangest thing is that in all the years since, none of the three has ever thought to ask the others.",
+   "The copyist's note, at the end of the book. I am a clerk of the Academy, and I copied these three accounts into one book because the masters asked me to, and they asked me to because the three had come to them by three roads in the same season and nobody could decide which shelf they belonged on. I have walked none of the fields. I am too old for any of them, and I was too old before they were found. But I have read the mason's strides against the rune-cutter's stone and the harper's week, and I have drawn all three on one sheet, and the sheet is very neat. I have put it away in the press with the book. The masters have not asked to see it."
   ]
  },
  "bosses": [],

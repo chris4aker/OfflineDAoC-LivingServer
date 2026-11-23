@@ -19,7 +19,7 @@
   "facts": [
     {
       "text": "Allakhazam's Vanern Swamp bestiary lists Mokkurvalve, Ulfketill and Ydenia of the Seithkona among its 50 creatures.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=34"
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "text": "The Healer and Shaman epic sends players against Ulfketill and the jotuns of Vanern.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/quest/720"
     },
     {
@@ -181,7 +181,7 @@
   "botLines": {
     "lore": [
       "the vanern jotuns build clay giants. ever since the old tale with hrungnir",
-      "ulfketill is a vanern jotun who works for loki. seers hunt him for their epic",
+      "ulfketill is a vanern jotun who works for loki. seers hunt him for their great quest",
       "ydenia on the island in vanern is a seithkona gone bad. [she throws you in|dont let her pick you]",
       "vanern used to be a lake. [the ferrymen say|my gran says] the jarl on the hill is older than the swamp",
       "hagbui means mound dweller. the whole household is still up there, herald and all",
@@ -217,7 +217,7 @@
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Vanern was a lake once, and a jarl's [hagbui] still sit on its hill. The [jotuns] there build in clay, and have been trying to get it right since the old tale. On an island a [seeress] keeps her own high seat.\"",
+    "intro": "Loremaster Svanlaug says, \"Vanern was a lake once, and a jarl's [hagbui] still sit on its hill. The [jotuns] there build in clay, and have been trying to get it right since the old tale. On an island a [seeress] keeps her own high seat.\"",
     "topics": {
       "jotuns": "Poor cousins of the mountain giants, with only mud to work. [Ulfketill], the wolf-kettle, serves Loki's mischief. Their clay giant [Mokkurvalve] comes apart as he moves. The ones that come out wrong walk the [broken bank]; the hard ones keep to the [outcasts]' ground.",
       "seeress": "[Ydenia] of the Seithkona. She sang her own death and refused it. The bog took her body; she kept her [high seat]. The [Seithkona Circle] does not say her name.",
@@ -235,12 +235,12 @@
   "book": {
     "title": "The Ferryman's Count",
     "pages": [
-      "I am Arnkel. I have poled the black water of Vanern for forty winters, and my father before me, and his before him. We keep a count, we ferrymen, on a stick in the boathouse: a notch for every traveller the swamp takes. My grandfather said the count would go down one day, when the jotuns got it right. It has not gone down. I am writing this because my hands are too stiff for the pole and the boy who has it now does not listen. Here is what is out there, so that somebody knows.",
-      "The hill in the corner was a jarl's mound when Vanern was a lake. My grandfather's grandfather saw the lake. The jarl went in with all his household, thanes and runemasters, his crier, his ale-boys, his smiths, and when the water went to mud they did not come out. Their forge burns still. The water that runs down from the barrows is warm in winter. I do not pole that way. The crier stands at the door of the mound as if he is waiting to call somebody's name, and I do not want it to be mine.",
-      "The jotuns told me, through a kobold who lived with them, that their grandfathers' grandfathers built the clay giant that stood with Hrungnir. It had a mare's heart, because no giant's heart was big enough, and when it saw Thor it lost its nerve and Thor's servant cut it down. The jotuns do not tell that part. The kobold did. They have built in clay ever since to prove the first one was a mistake. The ones that come out wrong they will not break. They let them walk. The west bank is full of them, limping.",
-      "The biggest of their failures I have seen only twice in forty winters, which is twice more than most. They call him Mokkurvalve. He is the height of a mast and he sheds as he walks: a lump of him falls into the reeds, and lies a while, and gets up on its own and follows him. The kobold said that if he is ever broken right through, every lump of him will get up at once and look for the one who did it. The kobold did not seem to think this was a reason not to try.",
+      "I am Arnkel. I have poled the black water of Vanern for forty winters, and my father before me, and his before him. We keep a count, we ferrymen, on a stick in the boathouse: a notch for every traveller the swamp takes. The stick is as long as my arm now and black with handling. My grandfather said the count would go down one day, when the jotuns got it right. It has not gone down. I am writing this because my hands are too stiff for the pole and the boy who has it now does not listen. Here is what is out there, so that somebody knows.",
+      "The hill in the corner was a jarl's mound when Vanern was a lake. My grandfather's grandfather saw the lake. The jarl went in with all his household, thanes and runemasters, his crier, his ale-boys, his smiths, and when the water went to mud they did not come out. Their forge burns still. On a damp night you can see its red on the underside of the mist, low over the barrows. The water that runs down from the barrows is warm in winter. I do not pole that way. The crier stands at the door of the mound as if he is waiting to call somebody's name, and I do not want it to be mine.",
+      "The jotuns told me, through a kobold who lived with them, that their grandfathers' grandfathers built the clay giant that stood with Hrungnir. It had a mare's heart, because no giant's heart was big enough, and when it saw Thor it lost its nerve and Thor's servant cut it down. The jotuns do not tell that part. The kobold did. He told it in a whisper, with his back to the clay huts. They have built in clay ever since to prove the first one was a mistake. The ones that come out wrong they will not break. They let them walk. The west bank is full of them, limping.",
+      "The biggest of their failures I have seen only twice in forty winters, which is twice more than most. They call him Mokkurvalve. The first time I saw him I took him for a hill that had decided to walk. He is the height of a mast and he sheds as he walks: a lump of him falls into the reeds, and lies a while, and gets up on its own and follows him. The kobold said that if he is ever broken right through, every lump of him will get up at once and look for the one who did it. The kobold did not seem to think this was a reason not to try.",
       "The island in the eastern water I take people to, when they ask, and I do not wait. There is a high seat on it, and the woman on the seat has no shadow. She was a seeress of the Circle in Skona. My mother saw her come, alive, and saw her sing all one night, and saw the bog take her at dawn, and the next night she was singing again. She does not like visitors. She throws them in the water, and the water round that island is cold as nothing else in Vanern is cold. I have fished out eleven. I have notched four.",
-      "I asked Ulfketill's kobold once why the wolf-kettle makes his clay guards only in the quiet, never when he is roused. He said a pot made in anger cracks in the firing, everyone knows that. He said Ulfketill makes three, and keeps three, and when one breaks in a quarrel he will not make another until the quarrel is over and he has had his supper. Then the kobold went quiet, because he had said more than a kobold should. I put it in the count anyway. I have put everything in the count. Somebody should know."
+      "I asked Ulfketill's kobold once why the wolf-kettle makes his clay guards only in the quiet, never when he is roused. He said a pot made in anger cracks in the firing, everyone knows that. He said it the way a child says the sky is up, as if I were a fool for asking. He said Ulfketill makes three, and keeps three, and when one breaks in a quarrel he will not make another until the quarrel is over and he has had his supper. Then the kobold went quiet, because he had said more than a kobold should. I put it in the count anyway. I have put everything in the count. Somebody should know."
     ]
   },
   "bosses": [

@@ -19,7 +19,7 @@
     }
   ],
   "story": "Allta Fearann, the wild land, is the high country north of Vigilant Rock where the forest gives out into scrub and stone and the wind never stops. The mantids hold the ground, and the sky belongs to the things that nest on the crags: skimmers and mantas that ride the updraughts, the fearann wyverns of the northern cliffs, the long-legged waterstrider birds of the high pools. The Sylvan of Necht keep a custom for travellers going north: name the four great ones of the wild land before you go, so that they know you know them. Windskimmer, Goldenleaf, Razorbeak, and the bird the Sylvan call by a name they say came over the sea with the mist.\n\nRazorbeak is the third, and the one the Sylvan of Necht are most careful to name properly. She is the eldest of the fearann wyverns, the lean grey wyverns of the north-eastern cliffs, and she is larger than any of them by half again. The wyvern ancients of the cliffs, who are old enough, are her children; the hatchlings in the cliff nests are their children. She has nested on the same ledge over the northern sea for as long as the Sylvan have records of the north, and her beak, which the Sylvan say is the colour of a new blade, has a notch in it that every Necht child can draw.\n\nThe notch is the oldest story of the wild land. A Sylvan of Necht, the story says, in the first generations, climbed the north-eastern cliffs to take a wyvern egg, because a wyvern raised from the egg would carry a rider; and Razorbeak came back to the ledge as he reached the nest, and he struck at her with a bronze knife and broke a piece off her beak, and she let him go. Nobody knows why. The Sylvan who tell it say she let him go because he had faced her and not run. The mantids, who also tell it, say she let him go because the piece of beak was worth more to her than he was, and she went back for it later.\n\nWhichever is true, the Sylvan of Necht swear their oldest oath on the notch, the one a Necht warden takes on the day she is named: may I face what I must, as the egg-thief faced the mother. Hibernian companies who go north after Razorbeak are told the story at Necht before they leave. The ones who come back say they understood it better on the ledge.",
-  "legend": "Razorbeak is a level 55 fearann wyvern of great size (163) on the north-eastern cliffs of Allta Fearann (about 400k/170k). Plain mob, no script, 80-second respawn. The wyvern ancients and hatchlings (45-50) nest along the same cliffs, so clear the ledges as you go or they will join in. A 50s group with a solid tank handles her. The Necht wardens swear their oldest oath on the notch in her beak: may I face what I must. She drops off her ledge to meet you, so pull from below the cliff, not along it, and keep healers off the narrow ledges where a fall would hurt. Count her as one of the four great ones of the wild land.",
+  "legend": "Razorbeak is a fearann wyvern, a foe for the realm's best, a full band of them, of great size, well over half again the size of her kind, on the north-eastern cliffs of Allta Fearann (about 400k/170k). A plain beast, no tricks; she returns eighty seconds after she falls. The wyvern ancients and hatchlings (hardened bands' foes, the eldest for the realm's best) nest along the same cliffs, so clear the ledges as you go or they will join in. A band of the realm's best with a solid shield-bearer handles her. The Necht wardens swear their oldest oath on the notch in her beak: may I face what I must. She drops off her ledge to meet you, so draw her from below the cliff, not along it, and keep healers off the narrow ledges where a fall would hurt. Count her as one of the four great ones of the wild land.",
   "yells": {
     "aggro": [
       "(a shriek like a blade drawn across stone)",
@@ -57,10 +57,10 @@
   },
   "botLines": {
     "briefing": [
-      "razorbeak is a 55 wyvern on the north east cliffs of allta fearann. [plain mob|no script]",
-      "clear the wyvern ancients and hatchlings on the ledges. [45-50|they join]",
-      "50s group with a solid tank",
-      "80 sec respawn. [move off after|dont rest]"
+      "razorbeak is a big wyvern on the north east cliffs of allta fearann. [plain fight|no tricks]",
+      "clear the wyvern ancients and hatchlings on the ledges. [theyre tough too|they join]",
+      "band of our best with a solid shield",
+      "back 80 sec after she drops. [move off after|dont rest]"
     ],
     "aftermathWin": [
       "razorbeak down. [the mother of the cliffs|got her]",
@@ -69,10 +69,10 @@
       "we faced what we must lol"
     ],
     "aftermathLoss": [
-      "pulled the whole cliff of wyverns. [too many|oops]",
+      "drew the whole cliff of wyverns. [too many|oops]",
       "fell off a ledge. [ouch|lol]",
-      "tank couldnt hold her",
-      "group too low. [55 big wyvern|need more]"
+      "shield couldnt hold her",
+      "group too green. [big wyvern|need more]"
     ],
     "rumour": [
       "[heard|someone said] the notch in razorbeak's beak is from a necht egg-thief's knife",
@@ -85,7 +85,7 @@
     "keyword": "Razorbeak",
     "text": "The mother-wyvern of the north-eastern cliffs of [Allta Fearann], third of the four great ones. The notch in her beak is the oldest story of the wild land; Necht's wardens swear their oath on it."
   },
-  "bookPage": "From Coll of the Domnann guides: the third great one is Razorbeak, eldest of the fearann wyverns, on her ledge over the northern sea. Every Necht child can draw the notch in her beak. In the first generations a Sylvan climbed the cliffs for a wyvern egg, and she came back as he reached the nest, and he struck at her with a bronze knife and broke a piece from her beak, and she let him go. We say because he faced her. The mantids say she went back for the piece. Necht's wardens swear on the notch: may I face what I must.",
+  "bookPage": "The third great one, Coll of the Domnann guides says, is Razorbeak, eldest of the fearann wyverns, on her ledge over the northern sea. Every Necht child can draw the notch in her beak. In the first generations a Sylvan climbed the cliffs for a wyvern egg, and she came back as he reached the nest, and he struck at her with a bronze knife and broke a piece from her beak, and she let him go. We say because he faced her. The mantids say she went back for the piece. Necht's wardens swear on the notch: may I face what I must.",
   "chronicle": {
     "win": "{realm}'s band under {raidLeader} brought down Razorbeak in Allta Fearann in {minutes} minutes.",
     "loss": "Razorbeak turned back {realm}'s band under {raidLeader} in Allta Fearann after {minutes} minutes."

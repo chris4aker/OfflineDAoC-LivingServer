@@ -111,6 +111,36 @@ namespace DOL.GS.Tests
             Assert.That(LoreEntryRules.LocationAt(bible, 1, 0), Is.Null);
         }
 
+        // An overview that lists no regions (its areas name them), one that loses every zone of its region to zone files,
+        // a zone file, and a plain region file that wins its region.
+        private const string Isles = "{\"id\":\"isles\",\"name\":\"Isles\",\"realm\":\"Neutral\",\"regions\":[],\"atmosphere\":{\"firstEntry\":[\"Three isles.\"]," +
+            "\"areas\":[{\"name\":\"shore\",\"region\":151,\"x\":1000,\"y\":1000,\"z\":0,\"radius\":800,\"lines\":[\"Salt.\"]}]}}";
+        private const string AlbIsles = "{\"id\":\"alb-isles\",\"name\":\"Alb Isles\",\"realm\":\"Albion\",\"regions\":[51],\"atmosphere\":{\"firstEntry\":[\"Avalon.\"]}}";
+        private const string Glass = "{\"id\":\"glass\",\"name\":\"Glass\",\"realm\":\"Albion\",\"regions\":[51],\"zones\":[51,52],\"atmosphere\":{\"firstEntry\":[\"Glass.\"]}}";
+        private const string Krondon = "{\"id\":\"krondon\",\"name\":\"Krondon\",\"realm\":\"Albion\",\"regions\":[61],\"atmosphere\":{\"firstEntry\":[\"Hall.\"]}}";
+
+        [Test]
+        public void OverviewsNoZoneNamesGetTheirFirstEntryOnWalkingIntoTheRegion()
+        {
+            LoreBible bible = Bible(("locations/isles.json", Isles), ("locations/alb-isles.json", AlbIsles), ("locations/glass.json", Glass),
+                ("locations/krondon.json", Krondon));
+            var zones = new Dictionary<ushort, ushort[]> { [51] = [51, 52], [61] = [61], [151] = [151, 152] };
+            IReadOnlyCollection<ushort> ZonesOf(ushort region) => zones.TryGetValue(region, out ushort[] z) ? z : [];
+            Assert.That(LoreEntryRules.OverviewsAt(bible, 51, ZonesOf).Select(l => l.Id), Is.EqualTo(new[] { "alb-isles" }),
+                "every zone of region 51 is the zone file's");
+            Assert.That(LoreEntryRules.OverviewsAt(bible, 151, ZonesOf).Select(l => l.Id), Is.EqualTo(new[] { "isles" }), "covered by its area");
+            Assert.That(LoreEntryRules.OverviewsAt(bible, 61, ZonesOf), Is.Empty, "Krondon wins its own region");
+            Assert.That(LoreEntryRules.RegionsCovered(bible.Locations.Single(l => l.Id == "isles")), Is.EqualTo(new ushort[] { 151 }));
+
+            zones[51] = [51, 52, 53];
+            Assert.That(LoreEntryRules.OverviewsAt(bible, 51, ZonesOf), Is.Empty, "zone 53 is the overview's own: it shows there already");
+            zones.Remove(51);
+            Assert.That(LoreEntryRules.OverviewsAt(bible, 51, ZonesOf), Is.Empty, "zones not known: it may win one");
+            // The day rule is the first entry's, keyed by region: once a day, on walking in or logging in.
+            Assert.That(LoreEntryRules.EntryDue(null, "151", null, "2026-11-22"), Is.True);
+            Assert.That(LoreEntryRules.EntryDue("151", "151", null, "2026-11-22"), Is.False);
+        }
+
         [Test]
         public void FirstEntryIsOncePerDayOnWalkingIn()
         {

@@ -28,7 +28,7 @@
     },
     {
       "text": "Its bestiary lists Basilius, Hoden, Mortufoghus, decaying mammoths, howlers, morvalt of many titles, sjoalf waverunners and spectral beasts.",
-      "provenance": "mythic",
+      "provenance": "legend",
       "source": "https://camelot.allakhazam.com/db/search.html?cmzone=116"
     },
     {
@@ -195,7 +195,7 @@
     "rumour": [
       "the crazed morvalt believe that when the mother wakes, trollheim wont be the only thing that falls",
       "[i'm going out to|someone should] pace the ribs on modernagrav. more than a longhouse and you owe me an ale",
-      "the remnants dwarves at the modernagrav post are hostile if your faction is low",
+      "the remnants dwarves at the modernagrav post are hostile if your standing is low",
       "theres a pack of living howlers in the far northeast of modernagrav, the grey one is rolf",
       "[heard|someone said] orri of hagall paced the ribs and never told anyone the count",
       "the morvalt say when the mother wakes trollheim wont be the only thing that falls",
@@ -208,16 +208,16 @@
     ],
     "tell": [
       "modernagrav is the new island east of faraheim. morvalt dig, undead, and mortufoghus the mammoth",
-      "get iarn dwarf faction and minerva flies you over to modernagrav",
+      "get standing with the iarn dwarves and minerva flies you over to modernagrav",
       "modernagrav? bones, morvalt and a giant mammoth. bring a group for mortufoghus",
-      "modernagrav nameds: basilius and hoden northeast, grul mgnuk at the dig, alivor and asutri at the dwarf post, rolf the howler",
+      "modernagrav's foes of name: basilius and hoden northeast, grul mgnuk at the dig, alivor and asutri at the dwarf post, rolf the howler",
       "is modernagrav hard? the vigil in the middle is all linked. go as a group",
       "the morvalt dig is north west, basilius is far north east",
       "you can walk in through the gap in faraheims eastern rockwall too"
     ]
   },
   "loremaster": {
-    "intro": "Loremaster Sigrun says, \"Modernagrav. The [morvalt] broke a [rockwall] to find their Mother and found [bones]. A mammoth walks around them, and the [vigil] of the dead stands round them both.\"",
+    "intro": "Loremaster Svanlaug says, \"Modernagrav. The [morvalt] broke a [rockwall] to find their Mother and found [bones]. A mammoth walks around them, and the [vigil] of the dead stands round them both.\"",
     "topics": {
       "morvalt": "The untamed savages of Aegir. Their shamans say the Mother lies on the island and will wake. [Basilius] runs the [dig].",
       "bones": "A skeleton longer than a longhouse, older than the Troll Fathers. The [vigil] of dead beasts stands round it. The oldest tale begins with a cow in the ice; [Mortufoghus] walks round the bones as if they were her calf.",
@@ -237,9 +237,9 @@
       "I am Orri of Hagall, slate-writer of the Remnants, and I crossed through the gap on the third morning with nine others, because the Chief said someone of ours must see it before the morvalt told us what it was. For as long as Hagall has stood the eastern rockwall was the end of Faraheim. Our oldest slates call the land beyond the place one does not dig. The morvalt shamans danced along the wall one night and the warriors went at it with picks and fire, and in the morning there was a gap. We came behind them carefully.",
       "The bones lie in the middle of the island. I will not write what they look like, because every dwarf who reads this will think he knows what they are, and I do not. I will write this: the dead stand round them. Mammoths with their hides hanging off. Hounds. Great cats you can see the far hills through. They face inward, all of them, and they do not turn their heads to look at you until you are close, and then all of them do. We did not go close twice. Two of the ten would not go near them at all after the first day.",
       "The morvalt dig on the north side of the bones, as near as the vigil will let them, which is not very near. They have callers who chant into the earth at night, and searchers who go out by day, and watchers on the spoil heaps, and some who do nothing but mix pastes in bowls and paint them on the poles. Their king keeps away, in a hall at the far corner of the island, with a few who are very large. The diggers seem afraid of him. They seem more afraid of one of his companions, whom they will not look at.",
-      "Between the dig and the bones there is a mammoth. She is the size of the Chief's hall and she walks round and round, on a path she has worn knee-deep, and when a morvalt digger comes too near the bones she lowers her head. When anything at all comes at her she flings it. I saw her take a morvalt from the edge of a crowd, not the one in front of her, and throw him over two spoil heaps, and he got up, limping, and went back to digging. They seem to think it is an honour.",
-      "On the fifth day I paced the ribs. I went at noon, when the vigil was stillest, from the skull to as far as the tail went, along the edge where the dead did not quite reach. I wrote the count on a slate. Then I read it, and broke the slate, and I will not give the count to anyone. I will say only that I did not reach the end before the ground began to hum under my boots, and that I turned round, and that the dead had all turned with me.",
-      "We have set up a post on the south-west shore with a griffon, and Minerva flies over any friend the Chief trusts, and nobody else. I have asked that we begin to pile cut stone by the gap. Not to close it; the morvalt would only break it again. Only to have the stone there, cut and ready, on the day it is needed. The Chief asked what day that would be. I said the day the bones stand up. She did not laugh. She signed the order for the stone, and sent the first sledge herself."
+      "Between the dig and the bones there is a mammoth. She is the size of the Chief's hall and she walks round and round, on a path she has worn knee-deep, her great feet setting down in the same prints each time round, and when a morvalt digger comes too near the bones she lowers her head. When anything at all comes at her she flings it. I saw her take a morvalt from the edge of a crowd, not the one in front of her, and throw him over two spoil heaps, and he got up, limping, and went back to digging. They seem to think it is an honour.",
+      "On the fifth day I paced the ribs. I went at noon, when the vigil was stillest, from the skull to as far as the tail went, along the edge where the dead did not quite reach. I wrote the count on a slate. My hand was so cold that the scratches wandered, and I had to go over the last of them twice. Then I read it, and broke the slate, and I will not give the count to anyone. I will say only that I did not reach the end before the ground began to hum under my boots, and that I turned round, and that the dead had all turned with me.",
+      "We have set up a post on the south-west shore with a griffon, and Minerva flies over any friend the Chief trusts, and nobody else. I have asked that we begin to pile cut stone by the gap. Not to close it; the morvalt would only break it again. They broke the last wall the dwarves set there in a single night, and threw its stones into the sea one by one. Only to have the stone there, cut and ready, on the day it is needed. The Chief asked what day that would be. I said the day the bones stand up. She did not laugh. She signed the order for the stone, and sent the first sledge herself."
     ]
   },
   "bosses": [

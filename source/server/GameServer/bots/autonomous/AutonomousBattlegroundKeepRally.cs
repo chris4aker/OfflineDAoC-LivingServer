@@ -609,7 +609,17 @@ public static class AutonomousBattlegroundKeepRally
     /// and d64d005 Hibernian bots died beside him at 4592 and on its flights at 4423-4524. Pure.
     /// </summary>
     public static bool StrikesFromHere(bool isLord, float toTarget, float heightGap) =>
-        heightGap <= StrikeFloorHeight && (!isLord || toTarget <= AutonomousWorldBotController.BattlegroundLordStrike);
+        heightGap <= StrikeFloorHeight && (!isLord || toTarget <= LordDamageReach);
+
+    /// <summary>
+    /// #416: how near the lord a stormer strikes him from, melee, caster, archer or healer alike. A keep's lord takes no
+    /// damage from an attacker (or its pet) farther than <see cref="Keeps.GuardLord.KeepDamageRadius"/> (400; GuardLord.TakeDamage,
+    /// "immune to damage from this range"), but stormers struck him from up to 900
+    /// (<see cref="AutonomousWorldBotController.BattlegroundLordStrike"/>), so casters and archers on his floor cast and shot
+    /// for nothing. Owner's PC, build 43c43aa (Caer Caledon): storms reached the lord (atLord 1-5 within 800) and he lost
+    /// 1-3% (his lowest 97%). 50 inside his radius, for the bot's step and the 3D distance. A stormer beyond it walks on to him.
+    /// </summary>
+    public const float LordDamageReach = Keeps.GuardLord.KeepDamageRadius - 50;
 
     /// <summary>A gathering rally that drew fewer than <see cref="MinimumRally"/> for this long, with that many of the realm in
     /// the battleground, is re-placed (<see cref="IsBarren"/>).</summary>
@@ -980,7 +990,7 @@ public static class AutonomousBattlegroundKeepRally
         public Vector3? Point;
         public bool Storming;
         public long GatherSince, AttemptSince, LastProgress, NextCount, LastAsked, NextStatusLog;
-        public int Rallied, RalliedPlayers, Needed, Modelled, Inside, Engaged, LowestPercent, OnLordFloor, AtLord;
+        public int Rallied, RalliedPlayers, Needed, Modelled, Inside, Engaged, LowestPercent, OnLordFloor, AtLord, InLordReach, PeakInLordReach;
         /// <summary>The rally point's distance to the nearest guard post (<see cref="RallyGuardClearance"/>).</summary>
         public float GuardClear;
         /// <summary>The rally point's bearing off the breach's outward side (<see cref="RallyBearings"/>).</summary>
@@ -1457,6 +1467,7 @@ public static class AutonomousBattlegroundKeepRally
         rally.Climb = default;
         rally.Climbs.Clear();
         rally.FootPeak = 0;
+        rally.PeakInLordReach = 0;
         rally.FloorArrivals.Clear();
         rally.OnFloorSeen.Clear();
         rally.Fallen.Clear();
@@ -1646,7 +1657,7 @@ public static class AutonomousBattlegroundKeepRally
                          $"{SummariseFallen(rally.Fallen)} passedGate={rally.PassedGate.Count} " +
                          $"bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
                          $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
-                         $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
+                         $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} peakInLordReach={rally.PeakInLordReach} " +
                          // How together they reached her floor (95af6fd: one or two at a time, 30-60 s in).
                          $"{SummariseArrivals(rally.FloorArrivals, rally.Climbs, rally.FootPeak)} " +
                          // How much of the realm went, what the storm killed and how the clear of the gate went.
@@ -1659,6 +1670,10 @@ public static class AutonomousBattlegroundKeepRally
         // BG_KEEP_STATUS's own measures (attackersAtLord, attackersOnLordFloor), for this realm.
         rally.AtLord = realmBots.Count(other => other.IsWithinRadius(lord, 800));
         rally.OnLordFloor = realmBots.Count(other => other.IsWithinRadius(lord, 800) && Math.Abs(other.Z - lord.Z) < 200);
+        // #416: the ones near enough that their hits count (GuardLord.KeepDamageRadius); atLord counts out to 800.
+        rally.InLordReach = realmBots.Count(other => other.IsWithinRadius(lord, Keeps.GuardLord.KeepDamageRadius) &&
+                                                     Math.Abs(other.Z - lord.Z) <= StrikeFloorHeight);
+        if (rally.Storming) rally.PeakInLordReach = Math.Max(rally.PeakInLordReach, rally.InLordReach);
         rally.RalliedPlayers = PlayersAtRally(realm, bracket.RegionId, point);
         rally.Rallied = RallyStrength(rallied.Length, rally.RalliedPlayers);
         if (!rally.Storming) rally.PeakRallied = Math.Max(rally.PeakRallied, rally.Rallied);
@@ -1688,7 +1703,7 @@ public static class AutonomousBattlegroundKeepRally
                      $"waitedSeconds={(rally.Storming ? 0 : (now - rally.GatherSince) / 1000)} " +
                      $"otherStorming={OtherRealmStorming(bracket.RegionId, realm, keep.Realm, now)} " +
                      $"committed={rally.Committed.Count} engaged={rally.Engaged} onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
-                     $"passedGate={rally.PassedGate.Count} bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
+                     $"inLordReach={rally.InLordReach} passedGate={rally.PassedGate.Count} bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
                      $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
                      $"peakRallied={rally.PeakRallied} plan={(rally.Joint ? "pair" : "alone")} " +
                      $"readySeconds={(rally.ReadySince == 0 ? -1 : (now - rally.ReadySince) / 1000)} floorArrivals={rally.FloorArrivals.Count} " +
