@@ -9506,7 +9506,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b53\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "source": "places.json avalon city 53-61"
   },
@@ -9519,7 +9519,7 @@
    "level": 37,
    "intent": "place_level",
    "must_any": [
-    "re:\\b43\\b.{0,12}43\\+"
+    "re:\\b43\\+"
    ],
    "source": "places.json malmohus 43-55"
   },
@@ -9545,7 +9545,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b35\\b.{0,12}35\\+"
+    "re:\\b35\\+"
    ],
    "source": "places.json delling crater 35-51"
   },
@@ -9558,7 +9558,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b45\\b.{0,12}45\\+"
+    "re:\\b45\\+"
    ],
    "source": "places.json sheeroe hills 45-57"
   },
@@ -9636,7 +9636,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b51\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "source": "places.json cursed forest 51-56"
   },
@@ -9649,7 +9649,7 @@
    "level": 37,
    "intent": "place_level",
    "must_any": [
-    "re:\\b37\\b.{0,12}37\\+"
+    "re:\\b37\\+"
    ],
    "source": "places.json dales of devwy 37-51"
   },
@@ -9662,7 +9662,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b48\\b.{0,12}48\\+"
+    "re:\\b48\\+"
    ],
    "source": "places.json iarnvidiur's lair 48-61"
   },
@@ -9675,7 +9675,7 @@
    "level": 46,
    "intent": "place_level",
    "must_any": [
-    "re:\\b52\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "source": "places.json trollheim 52-58"
   },
@@ -9701,7 +9701,7 @@
    "level": 31,
    "intent": "place_level",
    "must_any": [
-    "re:\\b37\\b.{0,12}37\\+"
+    "re:\\b37\\+"
    ],
    "wrong_any": [
     "re:\\b(is fine there|should be ok|yes|yep)\\b"
@@ -9733,7 +9733,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b45\\b.{0,12}45\\+"
+    "re:\\b45\\+"
    ],
    "source": "places.json world's end 45-56"
   },
@@ -9798,7 +9798,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b75\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "wrong_any": [
     "re:\\b(is fine there|should be ok|yes|yep)\\b"
@@ -9814,7 +9814,7 @@
    "level": 36,
    "intent": "place_level",
    "must_any": [
-    "re:\\b42\\b.{0,12}42\\+"
+    "re:\\b42\\+"
    ],
    "source": "places.json modernagrav 42-56"
   },
@@ -9853,7 +9853,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b75\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "source": "places.json galladoria 75-79"
   },
@@ -9866,7 +9866,7 @@
    "level": 34,
    "intent": "place_level",
    "must_any": [
-    "re:\\b40\\b.{0,12}40\\+"
+    "re:\\b40\\+"
    ],
    "wrong_any": [
     "re:\\b(is fine there|should be ok|yes|yep)\\b"
@@ -9934,7 +9934,7 @@
    "level": 45,
    "intent": "place_level",
    "must_any": [
-    "re:\\b45\\b.{0,12}45\\+"
+    "re:\\b45\\+"
    ],
    "source": "places.json iarnwood 45-59"
   },
@@ -9960,7 +9960,7 @@
    "level": 50,
    "intent": "place_level",
    "must_any": [
-    "re:\\b50\\b.{0,12}50\\+"
+    "re:\\b50\\+"
    ],
    "source": "places.json gwyddneau 50-59"
   },
@@ -11378,13 +11378,14 @@
    ],
    "wrong_any": [
     "jordheim",
-    "tir na nog"
+    "tir na nog",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
   {
    "id": "q166",
-   "text": "who trains mercenarys?",
+   "text": "who trains mercenaries?",
    "channel": "faction",
    "realm": "alb",
    "cls": "Friar",
@@ -11413,7 +11414,9 @@
    ],
    "wrong_any": [
     "jordheim",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) mercenary trainer",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11483,7 +11486,8 @@
    ],
    "wrong_any": [
     "jordheim",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) minstrel trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11518,7 +11522,8 @@
    ],
    "wrong_any": [
     "jordheim",
-    "tir na nog"
+    "tir na nog",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11553,7 +11558,8 @@
    ],
    "wrong_any": [
     "jordheim",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) wizard trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11668,7 +11674,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "tir na nog"
+    "tir na nog",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11704,7 +11711,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) skald trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11740,7 +11748,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "tir na nog"
+    "tir na nog",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11776,7 +11785,9 @@
    ],
    "wrong_any": [
     "camelot",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) shadowblade trainer",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11848,7 +11859,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "tir na nog"
+    "tir na nog",
+    "re:\\b(your|ur) spiritmaster trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11927,7 +11939,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "jordheim"
+    "jordheim",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -11962,7 +11975,9 @@
    ],
    "wrong_any": [
     "camelot",
-    "jordheim"
+    "jordheim",
+    "re:\\b(your|ur) blademaster trainer",
+    "re:\\bspells?\\b"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -12032,7 +12047,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "jordheim"
+    "jordheim",
+    "re:\\b(your|ur) warden trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -12102,7 +12118,8 @@
    ],
    "wrong_any": [
     "camelot",
-    "jordheim"
+    "jordheim",
+    "re:\\b(your|ur) mentalist trainer"
    ],
    "source": "AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)"
   },
@@ -14512,7 +14529,8 @@
    "intent": "bot_plans",
    "must_any": [
     "lyonesse lurker",
-    "lurker"
+    "lurker",
+    "lyonesse"
    ],
    "to": "Aldwyn",
    "source": "the responder stub (RESPONDERS)"
@@ -14736,7 +14754,8 @@
    "intent": "bot_plans",
    "must_any": [
     "large frost giant",
-    "giant"
+    "giant",
+    "myrkwood"
    ],
    "to": "Brannoc",
    "source": "the responder stub (RESPONDERS)"
@@ -14960,7 +14979,8 @@
    "intent": "bot_plans",
    "must_any": [
     "moher ghoul",
-    "ghoul"
+    "ghoul",
+    "cliffs"
    ],
    "to": "Siobhan",
    "source": "the responder stub (RESPONDERS)"
@@ -15146,7 +15166,7 @@
    "intent": "small_talk",
    "must_any": [
     "re:\\b(hi|hey|heya|hello|hail|evening|evenin|morning|mornin|yo|sup|greetings|howdy|hiya|o/|well met|welcome)\\b",
-    "re:\\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse)\\b",
+    "re:\\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse|cant complain|xp)\\b",
     "re:\\b(not much|nm|nothing|leveling|camping|grinding)\\b"
    ],
    "source": "small talk"
@@ -15160,7 +15180,7 @@
    "level": 31,
    "intent": "small_talk",
    "must_any": [
-    "re:\\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse)\\b"
+    "re:\\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse|cant complain|xp)\\b"
    ],
    "source": "small talk"
   },
@@ -15186,7 +15206,7 @@
    "level": 45,
    "intent": "small_talk",
    "must_any": [
-    "re:\\b(night|gn|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\\b"
+    "re:\\b(night|gn|gnight|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\\b"
    ],
    "silence_ok": true,
    "source": "small talk"
@@ -15200,7 +15220,7 @@
    "level": 12,
    "intent": "small_talk",
    "must_any": [
-    "re:\\b(night|gn|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\\b"
+    "re:\\b(night|gn|gnight|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\\b"
    ],
    "silence_ok": true,
    "source": "small talk"

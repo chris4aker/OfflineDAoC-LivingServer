@@ -40,7 +40,8 @@ def matches(fact, text):
     f = norm(fact)
     if not f:
         return False
-    return re.search(r'(?<![a-z0-9])' + re.escape(f) + r'(?![a-z0-9])', norm(text)) is not None
+    # "friar" holds "friars", "lurker" holds "lurkers".
+    return re.search(r'(?<![a-z0-9])' + re.escape(f) + r'(s|es)?(?![a-z0-9])', norm(text)) is not None
 
 
 def any_match(facts, text):
@@ -128,7 +129,13 @@ def takes_an(word):
     return False
 
 
-def clunky_issues(text):
+# Proper names a tidy writer capitalizes; in a line that opens with a capital they read as a slip ("The trainer in camelot").
+PROPER = ('camelot', 'jordheim', 'tir na nog', 'albion', 'midgard', 'hibernia', 'cotswold', 'mularn', 'mag mell', 'avalon', 'emain macha',
+          'darkness falls', 'legion', 'myrkwood', 'lyonesse')
+_LAUGH_TAIL = re.compile(r"\s(lol|haha+|heh|hehe|lmao|rofl|:p|:d|xd|:\)|;\))\W*$", re.IGNORECASE)
+
+
+def clunky_issues(text, proper=PROPER):
     """What reads as stitched together in a line: a list of (code, detail). Empty when it reads clean."""
     issues = []
     if not text:
@@ -178,6 +185,19 @@ def clunky_issues(text):
     tense = re.search(r"\b(did|didnt|does|doesnt|will|wont|cant|can)( (you|u|i|he|she|they|we|it))? (went|was|came|saw|took|gave|ate)\b", low)
     if tense:
         issues.append(('tense', tense.group(0)))
+    # A laugh stuck on a line that has nothing funny in it: a "dunno", or a long serious answer ("check before you ride out lol").
+    tail = _LAUGH_TAIL.search(raw)
+    if tail:
+        body = raw[:tail.start()].strip()
+        if is_non_answer(body) or body.endswith('.') or re.search(r"\? \w", body) or \
+                re.search(r"\b(careful|dont go alone|wipe|wiped|die|dead|died|raid|cant go|careless|trust nothing)\b", body.lower()):
+            issues.append(('tacked_laugh', tail.group(1)))
+    # A line that opens like a tidy sentence but leaves a name in lower case: two writing styles stitched together.
+    if raw[:1].isupper():
+        for name in proper:
+            if re.search(r'(?<![A-Za-z])' + re.escape(name) + r'(?![a-z])', raw):
+                issues.append(('case_mix', name))
+                break
     return issues
 
 

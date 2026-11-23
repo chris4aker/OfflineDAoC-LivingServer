@@ -89,6 +89,17 @@ class Clunky(unittest.TestCase):
     def test_repeated_clause(self):
         self.assertIn('repeated_clause', self.codes('bring a group for it, its fine, bring a group for it'))
 
+    def test_tacked_laugh(self):
+        self.assertIn('tacked_laugh', self.codes('no clue, sry haha'))
+        self.assertIn('tacked_laugh', self.codes('thats a full raid, dont go alone :)'))
+        self.assertIn('tacked_laugh', self.codes('whats in the cursed forest? juggernaut and more :P'))
+        self.assertNotIn('tacked_laugh', self.codes('try myrkwood, thats where the 20s are :)'))
+
+    def test_case_mix(self):
+        self.assertIn('case_mix', self.codes('The armsman trainer in camelot.'))
+        self.assertNotIn('case_mix', self.codes('the armsman trainer in camelot'))
+        self.assertNotIn('case_mix', self.codes('The armsman trainer in Camelot.'))
+
     def test_contradiction_and_tense(self):
         self.assertIn('contradicts_itself', self.codes('yes, its open. no, its not'))
         self.assertIn('tense', self.codes('did you went there'))

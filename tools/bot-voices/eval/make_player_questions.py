@@ -73,10 +73,12 @@ RESPONDERS = {
     'hib': {'id': 703, 'name': 'Siobhan', 'cls': 'Druid', 'level': 31, 'zone': 'Cliffs of Moher', 'target': 'Moher Ghoul', 'spec': '34 nurture, 26 regrowth'},
 }
 
+# Classes with no spells to train (1.65): their trainer trains styles and specs.
+MELEE = {'Armsman', 'Mercenary', 'Scout', 'Infiltrator', 'Warrior', 'Berserker', 'Savage', 'Shadowblade', 'Hero', 'Blademaster'}
 GREETING = r're:\b(hi|hey|heya|hello|hail|evening|evenin|morning|mornin|yo|sup|greetings|howdy|hiya|o/|well met|welcome)\b'
-HOWAREYOU = r're:\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse)\b'
+HOWAREYOU = r're:\b(good|fine|great|not bad|tired|slow|ok|okay|alright|well|grinding|busy|meh|decent|could be worse|cant complain|xp)\b'
 THANKS = r're:\b(np|yw|welcome|anytime|no problem|no prob|sure thing|glad)\b'
-FAREWELL = r're:\b(night|gn|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\b'
+FAREWELL = r're:\b(night|gn|gnight|nite|later|l8r|cya|bye|sleep well|take care|see ya|see you|o/)\b'
 
 
 def load_places():
@@ -179,8 +181,8 @@ def build():
         lvl = max(2, min(50, lvl))
         alias = rnd.choice(names(p))
         text = form.format(p=alias, lvl=lvl)
-        hi = f'{min(low, 50)}\\+' if high > 50 else f'\\b{high}\\b'
-        must = [rf're:\b{low}\b.{{0,12}}{hi}']
+        # AutonomousChatQuestions.Range: "low-high", or "low+" (low at most 50) when the top is past 50.
+        must = [rf're:\b{min(low, 50)}\+' if high > 50 else rf're:\b{low}\b.{{0,12}}\b{high}\b']
         wrong = None
         if '{lvl}' in form:
             if lvl < low - 2:
@@ -262,13 +264,20 @@ def build():
             if i % 2:
                 continue
             asker = CLASSES[realm][(i + 3) % len(CLASSES[realm])] if i % 4 else cls
-            form = ['where is the {c} trainer?', 'where do i train as a {c}?', 'who trains {c}s?', 'wheres my trainer?'][i % 4]
-            text = form.format(c=cls.lower())
+            form = ['where is the {c} trainer?', 'where do i train as a {c}?', 'who trains {p}?', 'wheres my trainer?'][i % 4]
+            plural = cls.lower()[:-1] + 'ies' if cls.endswith('y') else cls.lower() + 's'
+            text = form.format(c=cls.lower(), p=plural)
             if form.startswith('wheres my'):
                 asker = cls
             towns = [p['key'] for p in places if p.get('realm') == realm and p['type'] in ('town', 'capital')]
+            wrong = [CAPITAL[r] for r in REALMS if r != realm]
+            if asker != cls:
+                # Another class's trainer is not "your" trainer.
+                wrong.append(rf're:\b(your|ur) {cls.lower()} trainer')
+            if cls in MELEE:
+                wrong.append(r're:\bspells?\b')
             b.add(text, 'trainer', [CAPITAL[realm], 'capital'] + towns, realm, asker, 5 + i * 3,
-                  wrong=[CAPITAL[r] for r in REALMS if r != realm], source='AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)')
+                  wrong=wrong, source='AutonomousChatKnowledge.GenericTrainerAnswer (every trainer in the capital)')
         foreign = CLASSES[[r for r in REALMS if r != realm][1]][2]
         b.add(f'where is the {foreign.lower()} trainer?', 'trainer',
               [r're:\b(not ours|their|theirs|other realm|cant|can t|albion|midgard|hibernia|alb|mid|hib|enemy)\b'], realm,
@@ -438,7 +447,7 @@ def build():
         ('what class are you?', lambda r: [r['cls'].lower()]),
         ('where are you?', lambda r: [r['zone'].split()[0].lower(), r['zone'].lower()]),
         ('whats your spec?', lambda r: [r['spec'].split(',')[0].split()[1], r['spec'].split(',')[0].split()[0]]),
-        ('what are you hunting?', lambda r: [r['target'].lower(), r['target'].split()[-1].lower()]),
+        ('what are you hunting?', lambda r: [r['target'].lower(), r['target'].split()[-1].lower(), r['zone'].split()[0].lower()]),
         ('you in a group?', lambda r: ['solo', 'soloing', r're:\b(no|nope|nah)\b']),
         ('what are you doing tonight?', lambda r: [r're:\b(level|leveling|lvling|rvr|camp|camping|hunt|hunting|craft|crafting|quest|grind|grinding|xp|exp)\b', r['zone'].split()[0].lower()]),
         ('you going to rvr later?', lambda r: [r're:\b(yes|yeah|yep|no|nope|maybe|prob|probably|not yet|too low|after|level|leveling)\b']),
