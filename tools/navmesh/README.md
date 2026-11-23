@@ -62,3 +62,18 @@ and a bot left inside a drop anyway is set down on that drop's landing (`DF_STAI
 `fall` with the shipped links shows the walk off the lip on a polygon at every sample and a complete path from every
 landing. The drop itself still has no polygon in its middle, which is why the fall is not replotted and why the landing
 rule exists. Tests only.
+
+## Every zone: navscan (1.2.2, docs/NAVMESH-DROPS.md)
+
+`navscan.cpp` (same build line, `navscan` for the output) prints one JSON line per off-mesh connection direction (dead
+samples on the straight lip-to-landing line and on the walk-off-then-descend shape, whether both ends are linked,
+whether a path between the ends crosses it, path length with and without Jump links) and per sheer step between two
+linked ground polygons (floors more than 64 apart at the same spot, with the dead samples between them).
+
+| Script | What it does |
+|---|---|
+| `scan_all_zones.py --navscan navscan --out scan.jsonl --dir <navmesh folder>` | Scans every `zoneNNN.nav` (or `--zip-entries entries.json` to pull them from the v0.36b download with HTTP ranges; `--delete` removes each after its scan) |
+| `summarize_drops.py scan.jsonl --table navmesh-drops.json --sites sites.json` | Writes the committed table (each zone's sha256 and every stuck-prone link) and the site clusters |
+
+`navmesh-drops.json` is the 2026-11-22 scan of the v0.36b navmeshes (the 1.2 set); `UT_NavLinkLegs` checks the mover's
+link rules against it.

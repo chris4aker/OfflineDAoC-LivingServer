@@ -47,6 +47,14 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
+**Bots and companions**
+- **Ladders, climbs and ledge drops everywhere (#438 generalized).** A scan of all 103 shipped navmeshes found 1,262
+  off-mesh link directions in 39 zones whose middle is on no polygon, the Darkness Falls stair stall: frontier towers,
+  Fomor, Delling Crater, Caillte Garran, Trollheim, Tuscaran Glacier, Galladoria, Caer Sidi, Iarnvidiur's Lair and more.
+  Outside Darkness Falls (unchanged) a bot on a steep link walks it to the end before it replots, and a bot left inside
+  one is set down on its far end (`NAV_LINK_LANDING`). [docs/NAVMESH-DROPS.md](docs/NAVMESH-DROPS.md),
+  `tools/navmesh/navscan.cpp`. **Tests only.**
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

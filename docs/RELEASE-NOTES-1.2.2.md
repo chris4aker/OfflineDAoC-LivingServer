@@ -95,6 +95,9 @@ size."
   - The new sizes take effect with at least 224 free level 50s for Galladoria, 240 for Tuscaran Glacier, and 160 for
     Summoner's Hall and the Green Knight.
   - With fewer, nothing changes.
+- **Companions on ladders and ledges.** A companion or bot climbing a ladder, a tower or a ledge, or jumping down one,
+  no longer stops halfway when you walk on: it finishes the climb and catches up. Darkness Falls' stairs were fixed in
+  1.2.1; this does the same everywhere else.
 - **GM test:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
   the old one.
 
