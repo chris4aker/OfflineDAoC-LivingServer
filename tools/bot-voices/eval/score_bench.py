@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""The 1.2.2 chat audit's reports (docs/bot-voices/CHAT-AUDIT-1.2.2.md). Report-only for now: they never fail a build.
+"""The 1.2.2 chat audit's reports (docs/bot-voices/CHAT-AUDIT-1.2.2.md): bench and lines report; ratchet is the CI gate.
 
   score_bench.py bench REPLIES.json [--questions player_questions.json] [--json OUT] [--md OUT] [--github] [--worst N]
       Scores the answers UT_ChatQuestionBench wrote (one per question, through the real reply path) with chat_scorers.score:
       totals by category, by intent, by realm and by channel; the flags; the reply routes behind each bad category; the
       /faction flow (how many bots answer, how soon, echoes and twice-said replies); and the worst examples.
+
+  score_bench.py ratchet REPLIES.json [--holdout HOLDOUT_REPLIES.json] [--baseline bench_ratchet.json] [--write] [--github]
+      The CI gate (1.2.2 fixes): fails when the good share falls below bench_ratchet.json's floor or a capped category (wrong,
+      non-answer, off-topic, fluff, silence where an answer was due, stub, clunky, echo, padded) grows past its cap; reports the
+      holdout set (player_questions_holdout.json) beside it. --write sets the baseline from these replies.
 
   score_bench.py lines [--json OUT] [--worst N]
       Scans every written line (data/chat/*.lines through build_corpus.parse_file, scene beats included) for fluff and
@@ -51,10 +56,11 @@ def route_family(route):
     return r or '(none)'
 
 
-def bench(args):
-    data = json.loads(Path(args.questions).read_text(encoding='utf-8'))
+def score(questions_path, replies_path, worst=30):
+    """Scores a bench replies file against its questions: the totals, groups, flow, worst examples and rows (pure)."""
+    data = json.loads(Path(questions_path).read_text(encoding='utf-8'))
     questions = {q['id']: q for q in data['questions']}
-    replies = json.loads(Path(args.replies).read_text(encoding='utf-8'))
+    replies = json.loads(Path(replies_path).read_text(encoding='utf-8'))
     rows = []
     for r in replies:
         q = questions.get(r['id'])
@@ -99,12 +105,18 @@ def bench(args):
     )
     for c in ('WRONG', 'NON_ANSWER', 'OFF_TOPIC', 'FLUFF', 'SILENT'):
         bad = [row for row in rows if row['cat'] == c and not row['ok']]
-        out['worst'][c] = [example(row) for row in bad[:args.worst]]
+        out['worst'][c] = [example(row) for row in bad[:worst]]
     clunky = [row for row in rows if 'CLUNKY' in row['flags']]
-    out['worst']['CLUNKY'] = [example(row) for row in clunky[:args.worst]]
+    out['worst']['CLUNKY'] = [example(row) for row in clunky[:worst]]
     out['rows'] = [dict(id=row['q']['id'], intent=row['q']['intent'], realm=row['q']['realm'], channel=row['q']['channel'],
                         text=row['q']['text'], reply=row['r'].get('reply'), route=row['r'].get('route'), cat=row['cat'],
                         flags=row['flags'], why=row['why'], stub=row['r'].get('stub', False)) for row in rows]
+    return out
+
+
+def bench(args):
+    out = score(args.questions, args.replies, args.worst)
+    total = out['total']
     if args.json:
         Path(args.json).write_text(json.dumps(out, indent=1, ensure_ascii=False) + '\n', encoding='utf-8')
     text = render(out)
@@ -313,6 +325,84 @@ def lines_report(args):
             print('  ' + e)
     return 0
 
+RATCHET = HERE / 'bench_ratchet.json'
+HOLDOUT = HERE / 'player_questions_holdout.json'
+# The categories and flags the ratchet caps: none may grow. SILENT counts only silence where an answer was due.
+CAPPED = ('WRONG', 'NON_ANSWER', 'OFF_TOPIC', 'FLUFF', 'SILENT', 'STUB', 'CLUNKY', 'ECHO', 'PADDED')
+
+
+def ratchet_counts(out):
+    """What the ratchet holds of a scored bench: the good count and share, and each capped category (bad silence only)."""
+    c = dict(out['categories'])
+    c['SILENT'] = c.get('SILENT', 0) - out['silence_ok']
+    c.update(out['flags'])
+    return dict(total=out['total'], ok=out['ok'], ok_share=round(out['ok'] / out['total'], 4) if out['total'] else 0.0,
+                counts={k: c.get(k, 0) for k in CAPPED},
+                by_intent={g: dict(n=v['n'], ok=v['ok']) for g, v in out['by_intent'].items()})
+
+
+def check_ratchet(now, base):
+    """The ratchet's verdict (pure): the problems (a capped count above its cap, the good share below its floor) and the slack
+    (where the bench is now better than the baseline, so the baseline may be tightened with --write)."""
+    problems, slack = [], []
+    if now['ok_share'] + 1e-9 < base['ok_share']:
+        problems.append(f"good share {now['ok_share']:.1%} fell below the floor {base['ok_share']:.1%} ({now['ok']} of {now['total']})")
+    elif now['ok_share'] > base['ok_share'] + 1e-9:
+        slack.append(f"good share {now['ok_share']:.1%} (floor {base['ok_share']:.1%})")
+    for k in CAPPED:
+        cap, n = base['counts'].get(k, 0), now['counts'].get(k, 0)
+        if n > cap:
+            problems.append(f'{k} {n} is over its cap {cap}')
+        elif n < cap:
+            slack.append(f'{k} {n} (cap {cap})')
+    return problems, slack
+
+
+def ratchet(args):
+    out = score(args.questions, args.replies, args.worst)
+    now = ratchet_counts(out)
+    print(render(out))
+    held = None
+    if args.holdout and Path(args.holdout).exists():
+        hout = score(args.holdout_questions, args.holdout, args.worst)
+        held = ratchet_counts(hout)
+        print('## Holdout set (written after the fixes, never used to tune them; reported, not capped)\n')
+        print(render(hout))
+        print('CHAT_HOLDOUT_ROWS_BEGIN')
+        for row in hout['rows']:
+            print('CHAT_HOLDOUT_ROW ' + json.dumps(row, ensure_ascii=False))
+        print('CHAT_HOLDOUT_ROWS_END')
+    print('CHAT_BENCH_ROWS_BEGIN')
+    for row in out['rows']:
+        print('CHAT_BENCH_ROW ' + json.dumps(row, ensure_ascii=False))
+    print('CHAT_BENCH_ROWS_END')
+    if args.json:
+        Path(args.json).write_text(json.dumps(dict(bench=now, holdout=held), indent=1) + '\n', encoding='utf-8')
+    if args.write:
+        base = dict(note='The chat bench ratchet (score_bench.py ratchet): the good share may only rise and no capped count may grow. '
+                         'Tighten it with score_bench.py ratchet REPLIES --write after a fix; never loosen it to pass.',
+                    ok_share=now['ok_share'], ok=now['ok'], total=now['total'], counts=now['counts'],
+                    holdout=None if held is None else dict(ok=held['ok'], total=held['total'], ok_share=held['ok_share'], counts=held['counts']))
+        Path(args.baseline).write_text(json.dumps(base, indent=1) + '\n', encoding='utf-8')
+        print(f'wrote {args.baseline}')
+        return 0
+    base = json.loads(Path(args.baseline).read_text(encoding='utf-8'))
+    problems, slack = check_ratchet(now, base)
+    line = (f"{now['total']} questions, good {now['ok']} ({now['ok_share']:.1%}); " +
+            ', '.join(f'{k} {v}' for k, v in now['counts'].items()) +
+            ('' if held is None else f"; holdout good {held['ok']} of {held['total']} ({held['ok_share']:.1%})"))
+    if args.github:
+        print(f'::notice title=Chat question bench ratchet::{line}')
+        for p in problems:
+            print(f'::error title=Chat question bench ratchet::{p}')
+        if slack and not problems:
+            print('::notice title=Chat question bench ratchet::better than the baseline (' + '; '.join(slack) +
+                  '): tighten tools/bot-voices/eval/bench_ratchet.json with score_bench.py ratchet --write')
+    print(line)
+    for p in problems:
+        print('RATCHET FAIL: ' + p)
+    return 1 if problems else 0
+
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split('\n')[0])
@@ -324,11 +414,21 @@ def main(argv=None):
     b.add_argument('--md')
     b.add_argument('--github', action='store_true')
     b.add_argument('--worst', type=int, default=30)
+    r = sub.add_parser('ratchet')
+    r.add_argument('replies')
+    r.add_argument('--questions', default=str(QUESTIONS))
+    r.add_argument('--holdout', help="the holdout set's replies (bench-holdout.json)")
+    r.add_argument('--holdout-questions', default=str(HOLDOUT))
+    r.add_argument('--baseline', default=str(RATCHET))
+    r.add_argument('--json')
+    r.add_argument('--write', action='store_true', help='write the baseline from these replies (after a fix only)')
+    r.add_argument('--github', action='store_true')
+    r.add_argument('--worst', type=int, default=30)
     li = sub.add_parser('lines')
     li.add_argument('--json')
     li.add_argument('--worst', type=int, default=30)
     args = p.parse_args(argv)
-    return bench(args) if args.cmd == 'bench' else lines_report(args)
+    return bench(args) if args.cmd == 'bench' else ratchet(args) if args.cmd == 'ratchet' else lines_report(args)
 
 
 if __name__ == '__main__':

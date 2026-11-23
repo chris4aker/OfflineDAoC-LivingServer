@@ -19,7 +19,8 @@ namespace DOL.GS.Tests
     /// "responders" and "world"); trainer and location answers name the catalog place (data/chat/places.json) where the live
     /// lookup would name an NPC or a zone of the world data; where-to-hunt takes a catalog zone of the level for the zone bots
     /// camp in; enemy sightings, how-far and join replies are "[world: ...]" markers. Every stubbed answer says so (stub).
-    /// Mirrors the coordinator; keep the two in step, as ChatAuditRoute does.
+    /// 1.2.2 (F0): no mirror. The routing is AutonomousChatReplyPath's and AutonomousChatKnowledge.TryAnswer(KnowledgePorts)'s, the
+    /// functions the coordinator calls; only the ports (the responder, its corpus picks, the stub world) are the bench's.
     ///
     /// Report-only (the owner's 1.2.2 ask, 2026-11-22: "reduce or eliminate general fluff and non answers"): it writes every
     /// answer to CHAT_BENCH_OUT (else chat-bench/bench-replies.json in the test folder) and fails only when it can't answer.
@@ -69,18 +70,34 @@ namespace DOL.GS.Tests
             public AutonomousChatQuestions.WorldFacts World;
         }
 
-        internal static Bench Load()
+        private static string Resource(string file)
         {
             var assembly = typeof(UT_ChatQuestionBench).Assembly;
-            string name = assembly.GetManifestResourceNames().Single(n => n.EndsWith("player_questions.json", StringComparison.Ordinal));
+            string name = assembly.GetManifestResourceNames().Single(n => n.EndsWith("." + file, StringComparison.Ordinal));
             using Stream stream = assembly.GetManifestResourceStream(name);
             using var reader = new StreamReader(stream);
-            using JsonDocument doc = JsonDocument.Parse(reader.ReadToEnd());
+            return reader.ReadToEnd();
+        }
+
+        private static Question[] QuestionsOf(JsonElement root) =>
+            root.GetProperty("questions").EnumerateArray().Select(q => new Question(Str(q, "id"), Str(q, "text"), Str(q, "channel"),
+                RealmOf(Str(q, "realm")), Str(q, "cls"), q.GetProperty("level").GetInt32(), Str(q, "intent"), Str(q, "to"))).ToArray();
+
+        private static string Str(JsonElement e, string key) => e.TryGetProperty(key, out JsonElement v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
+
+        /// <summary>The bench; <paramref name="holdout"/>: its questions from player_questions_holdout.json (written after the 1.2.2 fixes).</summary>
+        internal static Bench Load(bool holdout = false)
+        {
+            using JsonDocument doc = JsonDocument.Parse(Resource("player_questions.json"));
             JsonElement root = doc.RootElement;
             var bench = new Bench();
-            static string Str(JsonElement e, string key) => e.TryGetProperty(key, out JsonElement v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
-            bench.Questions = root.GetProperty("questions").EnumerateArray().Select(q => new Question(Str(q, "id"), Str(q, "text"), Str(q, "channel"),
-                RealmOf(Str(q, "realm")), Str(q, "cls"), q.GetProperty("level").GetInt32(), Str(q, "intent"), Str(q, "to"))).ToArray();
+            if (holdout)
+            {
+                using JsonDocument held = JsonDocument.Parse(Resource("player_questions_holdout.json"));
+                bench.Questions = QuestionsOf(held.RootElement);
+            }
+            else
+                bench.Questions = QuestionsOf(root);
             foreach (JsonProperty r in root.GetProperty("responders").EnumerateObject())
                 bench.Responders[RealmOf(r.Name)] = new Responder(r.Value.GetProperty("id").GetInt64(), Str(r.Value, "name"), Str(r.Value, "cls"),
                     r.Value.GetProperty("level").GetInt32(), Str(r.Value, "zone"), Str(r.Value, "target"), Str(r.Value, "spec"));
@@ -117,7 +134,9 @@ namespace DOL.GS.Tests
                 new HashSet<string>(new[] { "solo", "outdoors", "evening" }.Concat(AutonomousChatPlaces.KeysAt(run.Me.Zone).Select(k => "at:" + k)),
                     StringComparer.Ordinal));
 
-        private static string Pick(Run run, string intent = null, string answers = null, Func<VC.Line, bool> filter = null, long? id = null)
+        /// <summary>The corpus port: AutonomousBotVoices.TryLine's request, with the bench's speaker, slots and clock.</summary>
+        private static VC.Picked Pick(Run run, string kind, string intent, string answers, IEnumerable<string> flags, bool relax, Func<VC.Line, bool> filter,
+            long? id = null)
         {
             run.Now = run.Now.AddMinutes(1);
             var slots = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -125,62 +144,48 @@ namespace DOL.GS.Tests
                 ["player"] = "Wynn", ["me"] = run.Me.Name, ["class"] = run.Me.Cls.ToLowerInvariant(), ["level"] = run.Me.Level.ToString(),
                 ["realm"] = GlobalConstants.RealmToName(run.Realm), ["zone"] = run.Me.Zone,
             };
+            VC.Speaker speaker = SpeakerOf(run, id ?? run.Me.Id);
+            if (flags != null)
+                speaker = speaker with { Flags = new HashSet<string>(speaker.Flags.Concat(flags), StringComparer.Ordinal) };
             AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
-            bool picked = run.Corpus.TryPick(new VC.Request("reply", SpeakerOf(run, id ?? run.Me.Id), slots, run.Recent, run.Now, run.Rng)
+            // As TryLine: no musings or repeated filler in a reply, and no "omw" (the bench has no promise gate, so it never comes).
+            bool picked = run.Corpus.TryPick(new VC.Request(kind, speaker, slots, run.Recent, run.Now, run.Rng)
             {
-                Intent = intent, Answers = answers, Filter = line => AutonomousChatFiller.ReplyAllowed(line, scope) && (filter == null || filter(line)),
-                RelaxTo = TimeSpan.FromMinutes(40), LocalHour = 20,
+                Intent = intent, Answers = answers,
+                Filter = line => AutonomousChatFiller.ReplyAllowed(line, scope) && AutonomousBotVoices.PromiseAllowed(line) && (filter == null || filter(line)),
+                RelaxTo = relax ? AutonomousBotVoices.ShortReplyRest : VC.RecentLines.Relaxed, LocalHour = 20,
             }, out VC.Picked chosen);
             if (picked && scope != null && AutonomousChatFiller.IsGeneric(chosen.Text))
                 AutonomousChatFiller.NoteGeneric(scope.ChannelKey, scope.Now);
-            return picked ? chosen.Text : null;
+            return picked ? chosen : null;
         }
 
         private static string Style(Run run, string text) =>
-            text == null ? null : AutonomousBotVoices.StyleText(run.Corpus.VoiceFor(run.Me.Id), run.Me.Id, text, run.Rng);
+            text == null || text.StartsWith("[world", StringComparison.Ordinal) ? text
+                : AutonomousBotVoices.StyleText(run.Corpus.VoiceFor(run.Me.Id), run.Me.Id, text, run.Rng);
 
-        private static bool Short(string message, eAutonomousChatIntent intent) =>
-            !message.Contains('?') && intent is eAutonomousChatIntent.Thanks or eAutonomousChatIntent.Congrats or eAutonomousChatIntent.Ding or
-                eAutonomousChatIntent.Laugh or eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or eAutonomousChatIntent.Greeting or
-                eAutonomousChatIntent.Farewell or eAutonomousChatIntent.BotCheck;
-
-        /// <summary>AutonomousChatKnowledge.TryAnswer without the world: its pure steps in order, the world steps stubbed.</summary>
-        private static string Knowledge(Run run, string query)
+        /// <summary>The knowledge lookup's world steps on the stub world (AutonomousChatKnowledge.TryAnswer runs the order).</summary>
+        private static AutonomousChatKnowledge.KnowledgePorts KnowledgePortsOf(Run run) => new()
         {
-            if (AutonomousChatKnowledge.TryExplainTerm(query, out string answer))
-                return answer;
-            if (AutonomousChatKnowledge.AsksHowFar(query) && AutonomousChatQuestions.PlaceNamed(query, AutonomousChatPlaces.All) != null)
+            Realm = run.Realm, Level = run.Q.Level, ClassName = run.Q.Cls, Random = run.Rng, Corpus = run.Corpus, Bible = LoreBible.Current,
+            HowFar = query =>
             {
+                if (AutonomousChatQuestions.PlaceNamed(query, AutonomousChatPlaces.All) == null)
+                    return null;
                 run.Stub = true;
                 return "[world: how far, from where the player stands]";
-            }
-            if (LoreLegends.TryAnswer(run.Corpus, query, run.Realm, run.Rng, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.TryAnswerTicketsInGeneral(query, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.TryAnswerDragon(run.Realm, query, out answer))
-                return answer;
-            if (AutonomousChatGuide.TryAnswer(query, run.Realm, run.Q.Cls, run.Q.Level, run.World.DfOwner, false, run.Rng, out answer))
-                return answer;
-            if (LoreChat.TryAnswer(LoreBible.Current, run.Corpus.Lines, query, run.Rng, out answer, run.Realm))
-                return answer;
-            if (AutonomousChatKnowledge.TryAnswerTimeToCap(query, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.AsksAboutRealmRaid(query) &&
-                AutonomousChatKnowledge.TryAnswerRealmRaid(GlobalConstants.RealmToName(run.Realm), run.Q.Level, Array.Empty<AutonomousRealmRaid.Summary>(), out answer))
-                return answer;
-            if (AutonomousChatKnowledge.LooksLikeTrainerQuestion(query) && Trainer(run, query) is { } trainer)
-                return trainer;
-            if (AutonomousChatKnowledge.TryAnswerHowTo(query, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.TryAnswerCommon(query, run.Realm, run.Q.Cls, run.Q.Level, run.Rng, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.TryAnswerBuyGear(run.Realm, query, out answer))
-                return answer;
-            if (AutonomousChatKnowledge.LooksLikeLocationQuestion(query) && Location(run, query) is { } where)
-                return where;
-            return null;
-        }
+            },
+            World = query => AutonomousChatQuestions.AnswerWorld(query, run.Realm, run.World, run.Rng),
+            // The stable routes and the asker's spell lines are world data the bench doesn't load.
+            Stable = null, Spell = null,
+            Raids = () => Array.Empty<AutonomousRealmRaid.Summary>(),
+            Trainer = query => Trainer(run, query),
+            Location = query => Location(run, query),
+            DfOwner = run.World.DfOwner,
+        };
+
+        private static string Knowledge(Run run, string query) =>
+            AutonomousChatKnowledge.TryAnswer(KnowledgePortsOf(run), query, out string answer) ? answer : null;
 
         /// <summary>TryAnswerTrainer: the class named, else the asker's; the live world names the trainer NPC (stub: the capital).</summary>
         private static string Trainer(Run run, string query)
@@ -244,284 +249,154 @@ namespace DOL.GS.Tests
             return AutonomousChatLiveAnswers.StarterZones(run.Realm, level, run.Rng);
         }
 
-        private static readonly eAutonomousChatIntent[] NotUnsure =
-        [
-            eAutonomousChatIntent.Greeting, eAutonomousChatIntent.Thanks, eAutonomousChatIntent.Rez, eAutonomousChatIntent.Alarm,
-            eAutonomousChatIntent.Grouping, eAutonomousChatIntent.BotCheck, eAutonomousChatIntent.Abuse, eAutonomousChatIntent.Farewell,
-            eAutonomousChatIntent.Ding, eAutonomousChatIntent.Congrats, eAutonomousChatIntent.Back, eAutonomousChatIntent.Away,
-            eAutonomousChatIntent.Roleplay,
-        ];
-
-        /// <summary>VoicedChoiceCore without a live bot: (route, text).</summary>
-        private static (string Route, string Text) Voiced(Run run, string incoming, bool addressed, string channel)
+        /// <summary>
+        /// The reply path's ports for the bench's responder (F0): AutonomousChatReplyPath runs the rules, these give it the stub
+        /// world. AnswerQuestion (the bot's own facts by name, else the world's), the situation, the corpus, the style, the moment.
+        /// No memory of the player, no conversation (each question opens a fresh channel), no promise gate (it never comes).
+        /// </summary>
+        private static AutonomousChatReplyPath.Ports PortsOf(Run run)
         {
-            eAutonomousChatIntent value = AutonomousChatIntentModel.Predict(incoming);
-            string intent = AutonomousBotVoices.IntentName(value);
-            // AutonomousChatLiveAnswers.AnswerQuestion
-            if (value is not (eAutonomousChatIntent.BotCheck or eAutonomousChatIntent.Abuse))
+            bool heals = Healers.Contains(run.Me.Cls);
+            return new AutonomousChatReplyPath.Ports
             {
-                string self = addressed ? AutonomousChatQuestions.SelfQuestion(incoming) : null;
-                string known = self != null ? AutonomousChatQuestions.AnswerSelf(self, incoming, run.Facts, run.Rng)
-                    : AutonomousChatQuestions.AnswerWorld(incoming, run.Realm, run.World, run.Rng);
-                if (known != null)
-                    return ("fact " + (addressed ? self ?? "world" : "world"), Style(run, known));
-            }
-            string shape = AutonomousChatShortTalk.QuestionShape(incoming);
-            var facts = new AutonomousChatContext.Facts(run.Me.Name, "Wynn", channel, channel is "say" or "group", Healers.Contains(run.Me.Cls), false,
-                run.Me.Level, null, AutonomousBotVoices.CapitalOf(run.Realm));
-            if (AutonomousChatContext.Reply(incoming, value, shape, facts, run.Rng) is { } situation)
-                return (situation.Route, Style(run, situation.Text));
-            if (shape == "player_order" && AutonomousChatQuestions.CantDo(incoming, run.Facts) is { } cant)
-                return ("fact cant", Style(run, cant));
-            // TryShapedReply
-            if (shape == "ask_howareyou")
-            {
-                string hello = Pick(run, intent: "greeting", filter: l => AutonomousChatShortTalk.AsksHowAreYou(incoming) || !l.Answers.Contains("ask_howareyou"));
-                if (hello != null)
-                    return ("shape ask_howareyou", hello);
-            }
-            else if (shape is "ask_whereyou" or "ask_hunt" or "ask_enemy")
-            {
-                string live = shape switch
+                Random = run.Rng, Voices = true, Memory = false, BotId = run.Me.Id, ClassName = run.Me.Cls, Level = run.Me.Level,
+                Fact = (incoming, addressed) =>
+                {
+                    eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(incoming);
+                    if (intent is eAutonomousChatIntent.BotCheck or eAutonomousChatIntent.Abuse)
+                        return null;
+                    string self = addressed ? AutonomousChatQuestions.SelfQuestion(incoming) : null;
+                    string known = self != null ? AutonomousChatQuestions.AnswerSelf(self, incoming, run.Facts, run.Rng)
+                        : AutonomousChatQuestions.AnswerWorld(incoming, run.Realm, run.World, run.Rng);
+                    return Style(run, known);
+                },
+                Context = (channel, _) => new AutonomousChatContext.Facts(run.Me.Name, "Wynn", channel ?? "faction", channel is "say" or "group", heals, false,
+                    run.Me.Level, null, AutonomousBotVoices.CapitalOf(run.Realm)),
+                WillComeRez = () => false,
+                Facts = () => run.Facts,
+                Live = (shape, incoming) => shape switch
                 {
                     "ask_whereyou" => AutonomousBotChatCoordinator.WhereText(run.Me.Zone, false, run.Me.Level, run.Me.Cls, run.Rng),
                     "ask_hunt" => WhereToHunt(run, incoming),
+                    "ask_enemy" => Stubbed(run, "[world: enemy sightings from the realm's news board]"),
+                    // "anyone in camelot?": the bench's responder is in its own zone only.
                     _ => null,
-                };
-                if (shape == "ask_enemy")
-                {
-                    run.Stub = true;
-                    return ("live ask_enemy", "[world: enemy sightings from the realm's news board]");
-                }
-                if (live != null)
-                    return ("live " + shape, Style(run, live));
-            }
-            else if (shape == "ask_help")
-            {
-                string help = Pick(run, intent: "help", filter: l => l.Text.TrimEnd().EndsWith('?') || l.Text.Contains("whats up", StringComparison.OrdinalIgnoreCase) ||
-                                                                l.Text.Contains("what do", StringComparison.OrdinalIgnoreCase));
-                if (help != null)
-                    return ("shape ask_help", help);
-            }
-            else if (shape is not (null or "ack" or "ask_inplace"))
-            {
-                string answers = shape == "ask_price" ? "trade" : shape;
-                string shaped = Pick(run, answers: answers, filter: l => AutonomousBotVoices.ShapedFits(shape, incoming, l.Text));
-                if (shaped != null)
-                    return ("shape " + shape, shaped);
-            }
-            if (shape is "ack" or "ask_inplace")
-                return ("none " + (shape == "ack" ? "ack" : "not_there"), null);
-            if (AutonomousChatShortTalk.IsFollowUp(incoming))
-                return ("none followup", null);
-            if (AutonomousChatQuestions.IsFactual(incoming) && !NotUnsure.Contains(value))
-            {
-                if (run.Rng.NextDouble() < 0.5 && Pick(run, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard")) is { } honest)
-                    return ("not sure", honest);
-                return ("none factual", null);
-            }
-            if (value == eAutonomousChatIntent.Unknown)
-            {
-                if (incoming.Contains('?') && Pick(run, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard")) is { } unsure)
-                    return ("not sure", unsure);
-                return ("none unknown", null);
-            }
-            if (value == eAutonomousChatIntent.Roleplay)
-            {
-                string act = AutonomousChatShortTalk.RoleplayAct(incoming);
-                return ("intent roleplay", Pick(run, answers: "player_rp_" + act) ?? Pick(run, answers: "player_rp_emote") ?? "*nods*");
-            }
-            if (value == eAutonomousChatIntent.ClassTalk)
-            {
-                if (AutonomousChatShortTalk.AsksSpec(incoming))
-                {
-                    string cls = AutonomousChatFieldTalk.ClassNamed(incoming) ?? run.Me.Cls;
-                    string[] pool = AutonomousChatFieldTalk.SpecAdvice(cls.ToLowerInvariant());
-                    if (pool.Length > 0)
-                        return ("knowledge spec", Style(run, pool[run.Rng.Next(pool.Length)]));
-                }
-                string[] asked = AutonomousChatShortTalk.ClassWordsIn(incoming);
-                if (asked.Length > 0 && Pick(run, intent: intent, filter: l => AutonomousChatShortTalk.ClassWordsIn(l.Text)
-                        .Any(w => asked.Any(a => AutonomousChatShortTalk.SameClassWord(w, a)))) is { } about)
-                    return ("intent classtalk asked", about);
-                if (Pick(run, intent: intent, filter: l => !AutonomousChatShortTalk.NamesAClass(l.Text)) is { } general)
-                    return ("intent classtalk", general);
-            }
-            else if (value == eAutonomousChatIntent.Greeting)
-            {
-                if (Pick(run, intent: "greeting", filter: l => AutonomousChatShortTalk.AsksHowAreYou(incoming) || !l.Answers.Contains("ask_howareyou")) is { } hello)
-                    return ("intent greeting", hello);
-            }
-            string topicIntent = value is eAutonomousChatIntent.Dungeon or eAutonomousChatIntent.RvR && !AutonomousChatQuestions.IsQuestion(incoming) &&
-                                 !AutonomousBotChatCoordinator.PlansSomething(incoming)
-                ? AutonomousBotVoices.IntentName(eAutonomousChatIntent.Banter)
-                : intent;
-            if (value is not (eAutonomousChatIntent.ClassTalk or eAutonomousChatIntent.Greeting) &&
-                Pick(run, intent: topicIntent, filter: l => AutonomousChatShortTalk.ReplyFits(incoming, l.Text) && AutonomousChatShortTalk.TradeReplyFits(incoming, l.Text) &&
-                    !(value is eAutonomousChatIntent.Banter or eAutonomousChatIntent.Dungeon or eAutonomousChatIntent.RvR &&
-                      System.Text.RegularExpressions.Regex.IsMatch(l.Text, @"sure (u|you) did|bet (u|you) cant|bet you can't|pics or|show off",
-                          System.Text.RegularExpressions.RegexOptions.IgnoreCase))) is { } voiced)
-                return ("intent " + topicIntent, voiced);
-            if (incoming.Contains('?') && value is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Thanks or
-                    eAutonomousChatIntent.Back or eAutonomousChatIntent.Away or eAutonomousChatIntent.Laugh or eAutonomousChatIntent.Roleplay) &&
-                Pick(run, answers: "ask", filter: l => !l.Text.Contains("trainer") && !l.Text.Contains("guard")) is { } notSure)
-                return ("intent " + intent + " -> not sure", notSure);
-            return ("none " + intent, null);
+                },
+                Line = (kind, intent, answers, flags, relax, filter) => Pick(run, kind, intent, answers, flags, relax, filter),
+                Style = text => Style(run, text),
+                Moment = (message, channel, addressed) => new AutonomousChatReplyBudget.Moment(message, channel, addressed,
+                    AutonomousChatIntentModel.Predict(message), run.Me.Cls, heals, heals, false, null, addressed ? run.Facts : null),
+                Untrue = text => AutonomousChatQuestions.ContradictsSelf(text, run.Facts),
+            };
         }
 
-        /// <summary>Budgeted without a live bot: (route, text, fit, outcome).</summary>
-        private static (string Route, string Text, int Fit, string Outcome) Budgeted(Run run, string route, string text, string message, bool addressed, string channel)
+        private static string Stubbed(Run run, string text)
         {
-            if (AutonomousChatScreen.IsSpam(message))
-                return ("silent (none spam)", null, 0, "silent");
-            bool heals = Healers.Contains(run.Me.Cls);
-            if (AutonomousChatReplyBudget.CreditFor(message) != null && AutonomousChatReplyBudget.ClaimsCredit(message, text, heals, heals))
-                (route, text) = ("none credit", null);
-            if (text != null && AutonomousChatQuestions.ContradictsSelf(text, run.Facts))
-                (route, text) = ("none contradicts (" + route + ")", null);
-            else if (text != null && AutonomousChatReplyFit.Of(route, message) < AutonomousChatReplyFit.Known && AutonomousChatReplyFit.WrongSituation(message, text))
-                (route, text) = ("none situation (" + route + ")", null);
-            int fit = AutonomousChatReplyFit.Of(route, message);
-            if (string.IsNullOrWhiteSpace(text) || AutonomousChatReplyBudget.IsBrushOff(text))
-                fit = Math.Min(fit, AutonomousChatReplyFit.Weak);
-            var outcome = AutonomousChatReplyBudget.Decide(fit, addressed, AutonomousChatBudget.MinReplyFit);
-            if (outcome == AutonomousChatReplyBudget.Outcome.Answer)
-                return (route, text, fit, "answer");
-            if (route is "none ack" or "none spam" or "none other")
-                return ("silent (" + route + ")", null, fit, "silent");
-            var moment = new AutonomousChatReplyBudget.Moment(message, channel, addressed, AutonomousChatIntentModel.Predict(message), run.Me.Cls, heals, heals,
-                false, null, run.Facts);
-            if (outcome == AutonomousChatReplyBudget.Outcome.Ack)
-                return AutonomousChatReplyBudget.ToContent(moment, run.Rng) is { } content
-                    ? ("short (" + route + ")", Style(run, content), fit, "short")
-                    : ("ack (" + route + ")", AutonomousChatReplyBudget.Ack(run.Me.Id, false, run.Rng), fit, "ack");
-            return AutonomousChatReplyBudget.Rescue(moment, route, run.Rng) is { } rescue
-                ? ("rescue (" + route + ")", Style(run, rescue), fit, "rescue")
-                : ("silent (" + route + ")", null, fit, "silent");
+            run.Stub = true;
+            return text;
         }
 
-        /// <summary>One question through the path its channel takes.</summary>
+        private static AutonomousBotChatCoordinator.ReplyChoice VoicedOf(Run run, AutonomousChatReplyPath.Ports ports, string message, bool addressed, string channel) =>
+            AutonomousChatReplyPath.Voiced(ports, message, () => null, null, addressed, channel, relax: true);
+
+        /// <summary>One question through the path its channel takes: the server's own functions, the stub world in the ports.</summary>
         private static Answer AnswerOne(Run run)
         {
             Question q = run.Q;
             string channel = q.Channel;
             bool faction = channel == "faction";
-            bool tell = channel == "tell";
-            bool group = channel == "group";
             string message = q.Text.Trim();
             bool named = !string.IsNullOrEmpty(q.To) && (channel is "faction" or "say") &&
                          AutonomousChatThreads.WithoutName(message, q.To) is { Length: > 0 } unnamed && unnamed != message;
             if (named)
                 message = AutonomousChatThreads.WithoutName(message, q.To);
-            bool directed = named || tell || group;
-            if (AutonomousChatScreen.IsSpam(message))
-                return Done(run, "none spam", null, 0, "silent", 0);
             eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
             string shape = AutonomousChatShortTalk.QuestionShape(message);
             using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(message, (faction ? "faction:" : channel + ":") + run.Realm,
                 (long)(run.Now - new DateTime(2026, 11, 22, 20, 0, 0, DateTimeKind.Utc)).TotalMilliseconds);
-            string route, text;
-            bool budgeted = true;
-            // TellReply's own checks first; /group and a named line go to VoicedChoice (addressed), after the knowledge lookup.
-            if (tell && AutonomousBotChatCoordinator.SaysInvited(message))
-                (route, text, budgeted) = ("tell invited", "[world: got the invite or not]", false);
-            else if (tell && AutonomousBotChatCoordinator.AsksToJoinGroup(message))
-                (route, text, budgeted) = ("join", AutonomousBotChatCoordinator.LevelGapReply(run.Me.Level, q.Level, run.Rng) ?? "[world: join reply]", false);
-            else if (tell && AutonomousBotChatCoordinator.AsksWhereYouAre(message))
-                (route, text, budgeted) = ("live where", Style(run, AutonomousBotChatCoordinator.WhereText(run.Me.Zone, false, run.Me.Level, run.Me.Cls, run.Rng)), false);
+            AutonomousChatReplyPath.Ports ports = PortsOf(run);
+            AutonomousBotChatCoordinator.ReplyChoice choice;
+            int count = 1;
+            AutonomousChatReplyPath.LineIn line = null;
+            if (channel == "tell")
+            {
+                // TellReply (its threads need a conversation: each question is the first line), then the budget.
+                choice = AutonomousChatReplyPath.Tell(ports, message, intent,
+                    invited: () => Stubbed(run, "[world: got the invite or not]"),
+                    join: () => AutonomousBotChatCoordinator.LevelGapReply(run.Me.Level, q.Level, run.Rng) ?? Stubbed(run, "[world: join reply]"),
+                    where: () => AutonomousBotChatCoordinator.WhereText(run.Me.Zone, false, run.Me.Level, run.Me.Cls, run.Rng),
+                    friend: null,
+                    knowledge: () => Knowledge(run, message),
+                    voiced: () => VoicedOf(run, ports, message, true, "tell"));
+                choice = AutonomousChatReplyPath.Budget(ports, choice, message, true, "tell");
+            }
+            else if (channel == "group")
+                // ReplyChoiceToPlayer: the voiced reply to a groupmate, then the budget (a line that names nobody isn't addressed).
+                choice = AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, false, "group");
             else
             {
-                bool shortTalk = Short(message, intent);
+                // SchedulePlayerReplies: the knowledge lookup, the help call, the plan, the bot's first answer.
                 bool helpCall = AutonomousBotChatCoordinator.IsHelpCall(message, shape);
-                string knowledge = null;
-                if (tell)
+                string knowledge = !AutonomousChatReplyPath.IsShortTalk(message, intent) && !helpCall ? Knowledge(run, message) : null;
+                bool directed = named;
+                // "anyone in camelot?" is answered by bots that are there: the bench's responder is in its own zone only.
+                if (shape == "ask_inplace" && knowledge == null)
+                    return Done(run, "none not_there (no bot is there)", null, 0, "silent", 0);
+                // "gz Aldric": the bench's responder didn't just level.
+                bool heard = !(directed && intent == eAutonomousChatIntent.Congrats);
+                line = new AutonomousChatReplyPath.LineIn(message, faction, directed, true, intent, shape, helpCall, knowledge, q.Level);
+                AutonomousChatReplyPath.LinePlan plan = AutonomousChatReplyPath.Plan(line, waitForBusyNamed: () => false,
+                    anyFits: (level, _) => Math.Abs(run.Me.Level - level) <= 6, anyEligible: heard, random: run.Rng);
+                switch (plan.Step)
                 {
-                    // TellReply: the bot's own facts, then the knowledge lookup.
-                    (string factRoute, string fact) = FactFirst(run, message);
-                    if (fact != null)
-                        (route, text) = (factRoute, fact);
-                    else if (!shortTalk && Knowledge(run, message) is { } k)
-                        (route, text) = ("knowledge", Style(run, k));
-                    else
-                        (route, text) = Voiced(run, message, true, "tell");
-                }
-                else
-                {
-                    knowledge = !shortTalk && !helpCall && !group ? Knowledge(run, message) : null;
-                    if (shape == "ack")
-                        return Done(run, "none ack", null, 0, "silent", 0);
-                    if (shape == "ask_inplace" && knowledge == null)
-                        return Done(run, "none not_there (no bot is there)", null, 0, "silent", 0);
-                    if (!directed && shape is "player_wb" or "player_order")
-                        return Done(run, "none undirected", null, 0, "silent", 0);
-                    if (!directed && AutonomousChatScreen.OtherAddressee(message, null) is not null)
-                        return Done(run, "none other", null, 0, "silent", 0);
-                    if (AutonomousBotChatCoordinator.AsksToJoinGroup(message) && (directed || !faction && !AutonomousBotChatCoordinator.BroadcastsLfg(message)))
-                        return Done(run, "join", AutonomousBotChatCoordinator.LevelGapReply(run.Me.Level, q.Level, run.Rng) ?? "[world: join reply]",
+                    case AutonomousChatReplyPath.Step.Silent:
+                        return Done(run, plan.Route, null, 0, "silent", 0);
+                    case AutonomousChatReplyPath.Step.Join:
+                        return Done(run, "join", Style(run, AutonomousBotChatCoordinator.LevelGapReply(run.Me.Level, q.Level, run.Rng) ?? "[world: join reply]"),
                             AutonomousChatReplyFit.Known, "answer", 1, stub: true);
-                    if (!directed && intent == eAutonomousChatIntent.Grouping)
-                    {
-                        int level = AutonomousChatLiveAnswers.LevelAsked(message, q.Level);
-                        if (Math.Abs(run.Me.Level - level) > 6)
-                            return run.Rng.NextDouble() < AutonomousBotChatCoordinator.NoneNearLevelReplyChance
-                                ? Done(run, "live none_near_level", Style(run, AutonomousBotChatCoordinator.NoneNearLevelReply(level,
-                                    AutonomousChatShortTalk.NeededRole(message), run.Rng)), AutonomousChatReplyFit.Known, "answer", 1)
-                                : Done(run, "none no bot near the level", null, 0, "silent", 0);
-                    }
-                    else if (intent == eAutonomousChatIntent.Congrats)
-                        return Done(run, "none gz (only a bot that just levelled)", null, 0, "silent", 0);
-                    else if (intent == eAutonomousChatIntent.Thanks && faction)
-                        return Done(run, "none ty (groupmates only)", null, 0, "silent", 0);
-                    if (helpCall)
-                    {
-                        (string come, string instead) = AutonomousBotChatCoordinator.HelpRequestLines(AutonomousChatQuestions.PlaceNamed(message, AutonomousChatPlaces.All)?.Key, run.Rng);
-                        (route, text, budgeted) = ("context help", Style(run, instead), false);
-                        _ = come;
-                    }
-                    else if (knowledge != null)
-                        (route, text, budgeted) = ("knowledge", Style(run, knowledge), false);
-                    else
-                        (route, text) = Voiced(run, message, directed || !faction, channel);
                 }
+                if (!heard)
+                    return Done(run, "none gz (only a bot that just levelled)", null, 0, "silent", 0);
+                if (plan.Grouping && plan.NoneNearLevel == null && Math.Abs(run.Me.Level - plan.GroupLevel) > 6)
+                    return Done(run, "none no bot near the level", null, 0, "silent", 0);
+                if (plan.JustLevelled)
+                    return Done(run, "none gz (only a bot that just levelled)", null, 0, "silent", 0);
+                if (plan.Groupmates)
+                    return Done(run, "none ty (groupmates only)", null, 0, "silent", 0);
+                // Five bots of the realm hear a /faction line.
+                count = AutonomousChatReplyPath.ReplyCount(line, plan, directed ? 1 : 5, false, run.Rng);
+                if (count == 0)
+                    return Done(run, "none " + AutonomousBotVoices.IntentName(intent) + " (draws no answer here)", null, 0, "silent", 0);
+                choice = AutonomousChatReplyPath.Choose(ports, line, plan, channel,
+                    help: () => AutonomousBotChatCoordinator.HelpRequestLines(AutonomousChatQuestions.PlaceNamed(message, AutonomousChatPlaces.All)?.Key, run.Rng).Instead,
+                    voiced: addressed => VoicedOf(run, ports, message, addressed, channel));
             }
+            string route = choice.Route, text = choice.Text;
             int fit = AutonomousChatReplyFit.Of(route, message);
-            string outcome = text == null ? "silent" : "answer";
-            if (budgeted)
-                (route, text, fit, outcome) = Budgeted(run, route, text, message, tell || named, channel);
-            // How many bots answer (SchedulePlayerReplies' count and the arbiter's plan), with five bots of the realm to hear it.
+            string outcome = text == null ? "silent"
+                : route.StartsWith("rescue (", StringComparison.Ordinal) ? "rescue"
+                : route.StartsWith("short (", StringComparison.Ordinal) ? "short"
+                : route.StartsWith("ack (", StringComparison.Ordinal) ? "ack"
+                : "answer";
+            // How many bots answer (the arbiter's plan on SchedulePlayerReplies' count), with five bots of the realm to hear it.
             int answerers = 0;
             bool twice = false;
             if (text != null)
             {
-                if (directed)
+                if (line == null || line.Directed)
                     answerers = 1;
                 else
                 {
-                    int count = route == "knowledge" ? 1 : AutonomousBotChatCoordinator.PlayerReplyCount(intent, faction, false, 5, run.Rng);
-                    if (shape is "ask_hunt" or "ask_enemy" or "ask_price" or "player_offer" or "player_wait" || AutonomousChatQuestions.IsFactual(message))
-                        count = Math.Min(count, 1);
                     var plan = AutonomousChatArbiter.Arrange(count, AutonomousChatReplyBudget.IsAlarm(message, intent) ? eAutonomousChatIntent.Alarm : intent, route,
                         false, AutonomousChatQuestions.IsQuestion(message), 5, AutonomousChatBudget.Current.PileOnCap, run.Rng);
                     answerers = Math.Max(1, plan.Total);
                     // A social pile-on draws its own line: the same words twice in a row read as an echo.
                     if (plan.Social > 0 && route.StartsWith("intent ", StringComparison.Ordinal))
-                        twice = Pick(run, intent: AutonomousBotVoices.IntentName(intent), id: run.Me.Id + 1) is { } second &&
-                                string.Equals(second.Trim(), text.Trim(), StringComparison.OrdinalIgnoreCase);
+                        twice = Pick(run, "reply", AutonomousBotVoices.IntentName(intent), null, null, true, null, id: run.Me.Id + 1) is { } second &&
+                                string.Equals(second.Text.Trim(), text.Trim(), StringComparison.OrdinalIgnoreCase);
                 }
             }
             return Done(run, route, text, fit, outcome, answerers, twice: twice);
-        }
-
-        /// <summary>AutonomousChatLiveAnswers.AnswerQuestion(addressed: true), as TellReply asks it before the knowledge lookup.</summary>
-        private static (string Route, string Text) FactFirst(Run run, string message)
-        {
-            eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
-            if (intent is eAutonomousChatIntent.BotCheck or eAutonomousChatIntent.Abuse)
-                return (null, null);
-            string self = AutonomousChatQuestions.SelfQuestion(message);
-            string known = self != null ? AutonomousChatQuestions.AnswerSelf(self, message, run.Facts, run.Rng)
-                : AutonomousChatQuestions.AnswerWorld(message, run.Realm, run.World, run.Rng);
-            return known == null ? (null, null) : ("fact " + (self ?? "world"), Style(run, known));
         }
 
         private static Answer Done(Run run, string route, string text, int fit, string outcome, int answerers, bool stub = false, bool twice = false)
@@ -556,15 +431,22 @@ namespace DOL.GS.Tests
         // ------------------------------------------------------------------------------------------------------------ tests
 
         [Test]
-        public void AnswersEveryQuestionAndWritesTheReport()
+        public void AnswersEveryQuestionAndWritesTheReport() =>
+            Write(Load(), 300, "CHAT_BENCH_OUT", "bench-replies.json");
+
+        /// <summary>The holdout set (60 questions written after the fixes, never used to tune them); score_bench.py ratchet reports it.</summary>
+        [Test]
+        public void AnswersTheHoldoutSetAndWritesItsReport() =>
+            Write(Load(holdout: true), 60, "CHAT_BENCH_HOLDOUT_OUT", "bench-holdout.json");
+
+        private static void Write(Bench bench, int atLeast, string variable, string file)
         {
-            Bench bench = Load();
-            Assert.That(bench.Questions.Length, Is.GreaterThanOrEqualTo(300), "the bench holds at least 300 player questions");
+            Assert.That(bench.Questions.Length, Is.GreaterThanOrEqualTo(atLeast), $"the set holds at least {atLeast} player questions");
             List<Answer> answers = AnswerAll(bench);
             Assert.That(answers.Select(a => a.Id), Is.EqualTo(bench.Questions.Select(q => q.Id)), "every question gets a route");
-            string path = Environment.GetEnvironmentVariable("CHAT_BENCH_OUT") is { Length: > 0 } output
+            string path = Environment.GetEnvironmentVariable(variable) is { Length: > 0 } output
                 ? output
-                : Path.Combine(TestContext.CurrentContext.WorkDirectory, "chat-bench", "bench-replies.json");
+                : Path.Combine(TestContext.CurrentContext.WorkDirectory, "chat-bench", file);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, JsonSerializer.Serialize(answers.Select(a => new
             {
@@ -572,7 +454,7 @@ namespace DOL.GS.Tests
                 twice = a.Twice,
             }), new JsonSerializerOptions { WriteIndented = true }));
             int answered = answers.Count(a => a.Reply != null);
-            TestContext.Progress.WriteLine($"CHAT_BENCH {answers.Count} questions, {answered} with a reply, written to {path}");
+            TestContext.Progress.WriteLine($"CHAT_BENCH {file}: {answers.Count} questions, {answered} with a reply, written to {path}");
         }
 
         [Test]

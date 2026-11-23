@@ -24,50 +24,155 @@ public static class AutonomousChatKnowledge
         answer = string.Empty;
         if (player == null || string.IsNullOrWhiteSpace(message))
             return false;
+        return TryAnswer(PortsFor(player), message, out answer);
+    }
 
+    /// <summary>
+    /// The world steps of the knowledge lookup (1.2.2 chat fixes, F0): the server fills them from the live world
+    /// (<see cref="PortsFor"/>), the question bench (UT_ChatQuestionBench) from its stub world, so both run the same lookup in the
+    /// same order (<see cref="TryAnswer(KnowledgePorts, string, out string)"/>). A step left null answers nothing.
+    /// </summary>
+    public sealed class KnowledgePorts
+    {
+        public eRealm Realm { get; init; }
+        public int Level { get; init; }
+        public string ClassName { get; init; }
+        public Random Random { get; init; } = Random.Shared;
+        public AutonomousBotVoiceCorpus Corpus { get; init; }
+        public LoreBible Bible { get; init; }
+        /// <summary>"is keltoi fogou far?": how far, from where the asker stands.</summary>
+        public Func<string, string> HowFar { get; init; }
+        /// <summary>The world's own facts: a place's levels, who holds Darkness Falls, the relics and keeps (AnswerWorld).</summary>
+        public Func<string, string> World { get; init; }
+        public Func<string, string> Stable { get; init; }
+        public Func<IEnumerable<AutonomousRealmRaid.Summary>> Raids { get; init; }
+        public Func<string, string> Spell { get; init; }
+        public Func<string, string> Trainer { get; init; }
+        public Func<string, string> Location { get; init; }
+        /// <summary>Who holds Darkness Falls now, and whether every realm may enter (AutonomousChatGuide's way in).</summary>
+        public eRealm DfOwner { get; init; }
+        public bool DfOpenToAll { get; init; }
+        /// <summary>The world's NPC factions (AutonomousChatGuide.LiveFactions); null: the guide's own table.</summary>
+        public Func<IReadOnlyList<(string Name, string[] Aliases, string[] RaisedBy)>> Factions { get; init; }
+        /// <summary>"who sells feathers?" from the world's merchant lists.</summary>
+        public Func<string, string> WhoSells { get; init; }
+    }
+
+    /// <summary>The live world's knowledge steps for a player's question.</summary>
+    public static KnowledgePorts PortsFor(GamePlayer player) => new()
+    {
+        Realm = player.Realm, Level = player.Level, ClassName = player.CharacterClass?.Name, Random = Random.Shared,
+        Corpus = AutonomousBotVoices.Corpus, Bible = LoreBible.Current,
+        HowFar = query => TryAnswerHowFar(player, query, out string far) ? far : null,
+        World = query => AutonomousChatQuestions.AnswerWorld(query, player.Realm, AutonomousChatLiveAnswers.WorldFor(player.Realm), Random.Shared),
+        Stable = query => TryAnswerStable(player.Realm, query, out string stable) ? stable : null,
+        Raids = () => AutonomousRealmRaid.Snapshot(),
+        Spell = query => TryAnswerSpell(player, query, out string spell) ? spell : null,
+        Trainer = query => TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out string trainer) ? trainer : null,
+        Location = query => TryAnswerLocation(player.Realm, query, out string where) ? where : null,
+        DfOwner = DOL.GS.ServerRules.DFEnterJumpPoint.DarknessFallOwner, DfOpenToAll = ServerProperties.Properties.ALLOW_ALL_REALMS_DF,
+        Factions = AutonomousChatGuide.LiveFactions,
+        WhoSells = query => AutonomousChatGuide.TryAnswerWhoSells(player, query, out string seller) ? seller : null,
+    };
+
+    /// <summary>
+    /// The knowledge lookup, in order (pure but for the ports). 1.2.2 chat fixes (F1): the world's own facts (a place's
+    /// levels, Darkness Falls, the relics, the keeps, the realm's dragon) come before the lore, and the lore never answers a
+    /// question about levels or about who holds something (the bench: "what lvl is gotar?" drew "vidalf is west among the imps",
+    /// 32 of 48 place-level questions a lore line). Lore still answers "whats in krondon?", "who is the storm keeper?".
+    /// </summary>
+    public static bool TryAnswer(KnowledgePorts ports, string message, out string answer)
+    {
+        answer = string.Empty;
+        if (ports == null || string.IsNullOrWhiteSpace(message))
+            return false;
         string query = message.Trim();
+        Random random = ports.Random ?? Random.Shared;
+        Random outer = _draw;
+        _draw = random;
+        try
+        {
+            return TryAnswerInOrder(ports, query, random, out answer);
+        }
+        finally
+        {
+            _draw = outer;
+        }
+    }
+
+    private static bool TryAnswerInOrder(KnowledgePorts ports, string query, Random random, out string answer)
+    {
+        answer = string.Empty;
+        static bool Got(string text, out string result)
+        {
+            result = text ?? string.Empty;
+            return !string.IsNullOrEmpty(text);
+        }
         if (TryExplainTerm(query, out answer))
             return true;
         // PC check 2026-11-19 (build 5154cae): "is it far?" about Keltoi Fogou drew the place's description; it is a travel question.
-        if (TryAnswerHowFar(player, query, out answer))
+        if (ports.HowFar != null && AsksHowFar(query) && Got(ports.HowFar(query), out answer))
             return true;
+        // F1: what the world says before what the lore says.
+        if (ports.World != null && Got(ports.World(query), out answer))
+            return true;
+        if (TryAnswerDragon(ports.Realm, query, out answer))
+            return true;
+        bool lore = LoreMayAnswer(query);
         // 1.2 (owner, 2026-11-15): "what is atlantis?", "is there anything under camelot?" are answered as rumours only.
-        if (AutonomousBotVoices.Corpus != null && LoreLegends.TryAnswer(AutonomousBotVoices.Corpus, query, player.Realm, Random.Shared, out answer))
+        if (lore && ports.Corpus != null && LoreLegends.TryAnswer(ports.Corpus, query, ports.Realm, random, out answer))
             return true;
-        if (LooksLikeStableQuestion(query) && TryAnswerStable(player.Realm, query, out answer))
+        if (ports.Stable != null && LooksLikeStableQuestion(query) && Got(ports.Stable(query), out answer))
             return true;
         if (TryAnswerTicketsInGeneral(query, out answer))
             return true;
-        if (TryAnswerDragon(player.Realm, query, out answer))
-            return true;
         // 1.2.2 chat audit F2 (C8): buying, the way into Darkness Falls, the frontier and the battlegrounds, armour, stats,
         // crafting, factions and tasks, before the lore (a fact before a story).
-        if (AutonomousChatGuide.TryAnswer(query, player.Realm, player.CharacterClass?.Name, player.Level,
-                DOL.GS.ServerRules.DFEnterJumpPoint.DarknessFallOwner, ServerProperties.Properties.ALLOW_ALL_REALMS_DF, Random.Shared,
-                out answer, AutonomousChatGuide.LiveFactions()))
+        if (AutonomousChatGuide.TryAnswer(query, ports.Realm, ports.ClassName, ports.Level, ports.DfOwner, ports.DfOpenToAll, random,
+                out answer, ports.Factions?.Invoke()))
             return true;
         // Living Server 1.2: "whats in krondon?", "who is the storm keeper?" from the lore bible (docs/LORE.md).
-        if (LoreChat.TryAnswer(query, out answer, player.Realm))
+        if (lore && LoreChat.TryAnswer(ports.Bible, ports.Corpus?.Lines, query, random, out answer, ports.Realm))
             return true;
         if (TryAnswerTimeToCap(query, out answer))
             return true;
         if (AsksAboutRealmRaid(query) &&
-            TryAnswerRealmRaid(GlobalConstants.RealmToName(player.Realm), player.Level, AutonomousRealmRaid.Snapshot(), out answer))
+            TryAnswerRealmRaid(GlobalConstants.RealmToName(ports.Realm), ports.Level, ports.Raids?.Invoke() ?? [], out answer))
             return true;
-        if (LooksLikeSpellQuestion(query) && TryAnswerSpell(player, query, out answer))
+        if (ports.Spell != null && LooksLikeSpellQuestion(query) && Got(ports.Spell(query), out answer))
             return true;
-        if (LooksLikeTrainerQuestion(query) && TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out answer))
+        if (ports.Trainer != null && LooksLikeTrainerQuestion(query) && Got(ports.Trainer(query), out answer))
             return true;
         if (TryAnswerHowTo(query, out answer))
             return true;
-        if (TryAnswerCommon(query, player.Realm, player.CharacterClass?.Name, player.Level, Random.Shared, out answer))
+        if (TryAnswerCommon(query, ports.Realm, ports.ClassName, ports.Level, random, out answer))
             return true;
-        if (TryAnswerBuyGear(player.Realm, query, out answer))
+        if (TryAnswerBuyGear(ports.Realm, query, out answer))
             return true;
         // 1.2.2 chat audit F2: "who sells feathers?" from the world's merchant lists.
-        if (AutonomousChatGuide.TryAnswerWhoSells(player, query, out answer))
+        if (ports.WhoSells != null && Got(ports.WhoSells(query), out answer))
             return true;
-        return LooksLikeLocationQuestion(query) && TryAnswerLocation(player.Realm, query, out answer);
+        if (ports.Location != null && LooksLikeLocationQuestion(query) && Got(ports.Location(query), out answer))
+            return true;
+        answer = string.Empty;
+        return false;
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex OwnershipWords = new(
+        @"\b(who (has|owns|got|has got|took)|ours|theirs|our relics?|do we (still )?(have|own|hold)|(did|have) we (lose|lost|take|took)|still (have|own|hold))\b");
+
+    /// <summary>
+    /// Whether a lore line may answer a question (F1): not one about levels ("what lvl is gotar?", "is vendo ok at 24?", "can a
+    /// 50 solo in sheeroe hills?") or about who holds a place, which the lore never says (the fourth-wall rule keeps levels out
+    /// of it, and who holds a keep is the world's). Pure.
+    /// </summary>
+    public static bool LoreMayAnswer(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string t = AutonomousChatQuestions.Normalize(text);
+        return !AutonomousChatQuestions.AsksLevels(t) && !OwnershipWords.IsMatch(t) &&
+               !System.Text.RegularExpressions.Regex.IsMatch(" " + t + " ", @" (solo|soloable|xp|exp|hunt|level|lvl) ");
     }
 
     /// <summary>
@@ -98,6 +203,10 @@ public static class AutonomousChatKnowledge
         else if (Has(@" (realm points|rps|rp) work | (get|earn|farm) (rps|realm points|rp) "))
             pool = ["kill enemy players in the frontier, taking keeps gives some too", "enemy kills in the frontier, and taking keeps",
                 "rvr kills, more if you group, keeps give a lot"];
+        else if (Has(@" epic ") && Has(@" (group|grp|solo|help|alone) "))
+            // "do i need a group for my epic?": the epic's last steps are group fights in every realm.
+            pool = ["the last steps yeah, get a group for those", "some parts you can solo, the end fights need a group",
+                "bring a group for the end of it, the rest is running around"];
         else if (Has(@" epic "))
             pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "did mine, long chain, bring a group"];
         if (pool == null || pool.Length == 0)
@@ -154,7 +263,7 @@ public static class AutonomousChatKnowledge
         bool cap = lower.Contains(" 50 ") || lower.Contains(" cap ") || lower.Contains(" max level ");
         if (!howLong || !cap)
             return false;
-        answer = Random.Shared.Next(3) switch
+        answer = Draw.Next(3) switch
         {
             0 => "couple weeks /played if you group a lot, way longer solo",
             1 => "took me about 15 days played. groups are faster, the 40s drag",
@@ -170,9 +279,23 @@ public static class AutonomousChatKnowledge
             return false;
         string lower = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
         bool asks = text.Contains('?') || lower.Contains(" any ") || lower.Contains(" when ") || lower.Contains(" is there ");
-        bool raid = lower.Contains(" raid ") || lower.Contains(" raids ") || lower.Contains(" dungeon run") || lower.Contains(" expedition ") ||
-                    lower.Contains(" epic ");
+        // 1.2.2 chat fixes (F7, the bench's C2): "epic" is a raid word only for an epic fight ("any epic raids?", "is the epic boss
+        // up?"), never for the epic quest or its armour ("how long is the epic?", "where do i get my epic armor?").
+        bool epicFight = lower.Contains(" epic ") && !EpicQuestTalk(lower) &&
+                         System.Text.RegularExpressions.Regex.IsMatch(lower, @" epic (boss|bosses|mob|mobs|encounter|encounters|fight|fights|kill|kills) ");
+        bool raid = lower.Contains(" raid ") || lower.Contains(" raids ") || lower.Contains(" dungeon run") || lower.Contains(" expedition ") || epicFight;
         return asks && raid;
+    }
+
+    /// <summary>
+    /// "my epic", "the epic quest", "epic armor", "epic weapon": the epic quest and what it gives, not a raid (F7). Takes the padded,
+    /// lower-case line. Pure.
+    /// </summary>
+    public static bool EpicQuestTalk(string padded)
+    {
+        string t = " " + (padded ?? string.Empty).Trim().ToLowerInvariant() + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (my|your|ur|the|an|our) epic( quest| armor| armour| weapon| chain| steps?)? | epic (quest|quests|armor|armour|weapon|weapons|chain|step|steps|gear|set) ");
     }
 
     /// <summary>
@@ -1005,7 +1128,12 @@ public static class AutonomousChatKnowledge
 
     private static readonly HashSet<string> AllClassNames = new(Enum.GetNames<eCharacterClass>(), StringComparer.OrdinalIgnoreCase);
 
-    private static string Pick(params string[] options) => options[Random.Shared.Next(options.Length)];
+    private static string Pick(params string[] options) => options[Draw.Next(options.Length)];
+
+    [ThreadStatic] private static Random _draw;
+
+    /// <summary>The draw of the pure answers that take no random of their own: the lookup's (ports.Random) while one runs, else Random.Shared.</summary>
+    private static Random Draw => _draw ?? Random.Shared;
 
     private static string TicketDestination(string name)
     {

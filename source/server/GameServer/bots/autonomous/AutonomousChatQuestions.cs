@@ -462,6 +462,9 @@ public static class AutonomousChatQuestions
     private static readonly Regex LevelWords = new(
         @"\b(lvl|lvls|level|levels|level range|what lvl|for lvl|for level|open for|at \d{1,2}(ish)?|for a \d{1,2}|can a \d{1,2}|a \d{1,2} (solo|go|do|hunt)|\d{1,2}s)\b");
 
+    /// <summary>Whether a line asks about levels: "what lvl", "ok at 24", "can a 15 solo", "for 30s" (F1). Pure.</summary>
+    public static bool AsksLevels(string text) => !string.IsNullOrWhiteSpace(text) && LevelWords.IsMatch(Normalize(text));
+
     /// <summary>The place a line names (its longest alias, whole words), or null.</summary>
     public static AutonomousChatPlaces.Place PlaceNamed(string text, IEnumerable<AutonomousChatPlaces.Place> places)
     {

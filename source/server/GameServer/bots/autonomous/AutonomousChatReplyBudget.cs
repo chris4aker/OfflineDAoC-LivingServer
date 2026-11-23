@@ -308,6 +308,13 @@ public static class AutonomousChatReplyBudget
     };
 
     /// <summary>
+    /// Whether a question nobody could answer may draw a "dunno" in the channel: in a group or a guild one groupmate saying so
+    /// is natural; in /faction a "dunno" from the realm is a non-answer, and silence is better (1.2.2 chat fixes, F4; owner
+    /// 2026-11-22: "reduce or eliminate general fluff and non answers"; the bench: 20 of its 27 non-answers). Pure.
+    /// </summary>
+    public static bool RescuesWithDunno(string channel) => channel is not ("faction" or null);
+
+    /// <summary>
     /// What a weak reply to a line not said to the bot becomes (blind round 2: silence went from 38% to 64% of turns, and most
     /// of what was lost was short banter): a short reaction for a social line, at a rate by channel; a "dunno" from one bot for
     /// a question in a group or guild; otherwise nothing. Null means silence. Pure.
@@ -340,7 +347,9 @@ public static class AutonomousChatReplyBudget
         if (question && moment.Intent is not (eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Trading or eAutonomousChatIntent.Away or
                 eAutonomousChatIntent.Back or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
                 eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm))
-            return random.NextDouble() < DunnoShare(moment.Channel) ? Pick(random, "dunno", "no idea", "not sure tbh", "idk sry", "no clue, sry", "hmm dunno") : null;
+            return RescuesWithDunno(moment.Channel) && random.NextDouble() < DunnoShare(moment.Channel)
+                ? Pick(random, "dunno", "no idea", "not sure tbh", "idk sry", "no clue, sry", "hmm dunno")
+                : null;
         if (question)
             return null;
         if (moment.Intent == eAutonomousChatIntent.Unknown && route is "none unknown" &&
