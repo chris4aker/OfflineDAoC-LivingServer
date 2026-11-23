@@ -108,6 +108,11 @@ size."
   raid history carries over.
 - **None of these results is from a played raid.**
 
+### Companions on the Darkness Falls stairs
+
+- **Your companions follow you back up the entrance stairs of Darkness Falls.** Before, they waited at the bottom, or
+  wandered off into the level below when you stood near the entrance at the top.
+
 ---
 
 ## 3. What to send back

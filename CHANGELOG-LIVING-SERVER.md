@@ -47,6 +47,19 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
+**Bots and companions**
+- **Up Darkness Falls' entrance stairs (#438).** zone249.nav has each realm's stairs as three one-way drops, so no path
+  leads up them (`tools/navmesh/dfprobe`). Leaving DF never needs them: every realm's exit (zone points 74, 70, 72) is on
+  its hall floor, a complete path from the hall and from the arrival point. But a companion following its player up got
+  a partial path: it stood at the foot, or, with the player near the arrival point, walked 103 (Albion) to 235 (Midgard)
+  nodes into another level, within the 3,000-unit recall range. A gamebot in a player's group stood (DF refuses it partial
+  paths). Now a bot whose path toward a goal at or above a drop's lip is partial walks to that drop's landing and climbs
+  the certified fall backwards (rise over the landing to the fall's air point, step onto the lip), one drop at a time,
+  only where the navmesh agrees (the landing reachable, a complete path from the top of the stairs to the goal) and with
+  the falls' hash-guarded links (companions: the installed mesh; gamebots: the full certificate). New orders during a
+  climb only change where it goes after the lip. Server log `DF_STAIR_CLIMB`. No navmesh change. **Tests only**
+  (`UT_DarknessFallsStairClimb`; dfprobe `climb` on all nine drops).
+
 ## 1.2.1 — 2026-11-22
 
 Fixes and lore after the 1.2 release (2026-11-21). **Nothing here is seen in game yet: tests only** (owner, 2026-11-22:

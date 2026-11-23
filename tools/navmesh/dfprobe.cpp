@@ -127,6 +127,22 @@ int main(int argc, char** argv) {
         dead(air, land, "after: air->landing (drop)");
         int r = path(land, goal, false); printf("  from the landing on: %s\n", r == 0 ? "complete path" : r > 0 ? "PARTIAL" : "no poly");
     }
+    else if (cmd == "climb") {
+        // climb <landing xyz> <air xyz> <lip xyz> <goal xyz>: one certified fall walked backwards (#438, 1.2.2). The path
+        // the navmesh gives up from the landing (before), the rise over the landing and the step onto the lip (after),
+        // sampled every 2% (a bot stopped there: on a polygon, or inside the drop's landing repair), then the path on.
+        float land[3] = {v(3), v(4), v(5)}, air[3] = {v(6), v(7), v(8)}, lip[3] = {v(9), v(10), v(11)}, goal[3] = {v(12), v(13), v(14)};
+        auto dead = [&](const float* a, const float* b, const char* name) {
+            int n = 0; dtQueryFilter f = filter();
+            for (int i = 0; i <= 50; i++) { float g[3], d[3]; for (int k = 0; k < 3; k++) g[k] = a[k] + (b[k] - a[k]) * i / 50.0f;
+                toDt(g, d); dtPolyRef r = 0; q->findNearestPoly(d, ext, &f, &r, nullptr); if (!r) n++; }
+            printf("  %-28s %2d of 51 samples on no polygon\n", name, n); return n; };
+        printf("climb %.0f,%.0f,%.0f -> %.0f,%.0f,%.0f\n", land[0], land[1], land[2], lip[0], lip[1], lip[2]);
+        int before = path(land, goal, false); printf("  before: landing to goal: %s\n", before == 0 ? "complete path" : before > 0 ? "PARTIAL" : "no poly");
+        dead(land, air, "after: landing->air (rise)");
+        dead(air, lip, "after: air->lip (step on)");
+        int r = path(lip, goal, false); printf("  from the lip on: %s\n", r == 0 ? "complete path" : r > 0 ? "PARTIAL" : "no poly");
+    }
     else if (cmd == "offmesh") offmesh(v(3), v(4), v(5), v(6));
     return 0;
 }

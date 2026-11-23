@@ -142,8 +142,10 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
   (`b644529a`), not what the client draws: **tests only** (#425). Switch it off with **Bots fall when they die**. Dead
   bots still can't be clicked in the original client; `/target <name>` or a rez with nothing selected works.
 - **Darkness Falls stairs (#438):** companions stuck on a step of the entrance stairs is fixed in 1.2.1: **tests only**.
-  The stairs are one-way in the navigation mesh: a companion following you back **up** them has no path and waits at
-  the bottom. Use the exit portal below, or GM `/jump <name> to me`.
+  The stairs are one-way in the navigation mesh. Leaving DF doesn't need them (each realm's exit is on the hall floor,
+  below the stairs). From 1.2.2 a bot following you back **up** them climbs the drops one at a time (`DF_STAIR_CLIMB`
+  in the server log); before, it waited at the bottom or, with you near the arrival point, wandered into the level
+  below. **Tests only**: not yet seen on a PC. If a companion still stays below, GM `/jump <name> to me`.
 - **Clicking a living bot** may not select it in the original client (#424, unconfirmed); 1.2.1 logs each click
   (`PLAYER_CLICK_TARGET`).
 
