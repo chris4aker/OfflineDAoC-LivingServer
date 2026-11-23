@@ -201,10 +201,10 @@ namespace DOL.GS.Tests
         [TestCase("what lvl is spraggon den?", "who is eraliwyr? the alchemist for viraniels plague. deep in the den, near spriggit", null)]
         [TestCase("is vendo caverns ok at 24?", "where is grjotgard? in the bear cave", null)]
         [TestCase("what lvl is iarnvidiurs lair?", "is the lair hard? the trash is fine with cures, iarnvidiur needs a raid",
-            "the trash is fine with cures, iarnvidiur needs a raid")]
-        [TestCase("whats in the cursed forest?", "whats in the cursed forest? juggernaut, the blight, cailean", "juggernaut, the blight, cailean")]
+            "the lair? the trash is fine with cures, iarnvidiur needs a raid")]
+        [TestCase("whats in the cursed forest?", "whats in the cursed forest? juggernaut, the blight, cailean", "the cursed forest? juggernaut, the blight, cailean")]
         [TestCase("whats in the isle of glass?", "whats there? caer gothwaite, gothwaite harbor", "caer gothwaite, gothwaite harbor")]
-        [TestCase("who holds abermenai?", "who holds abermenai? renegades, under the chieftain abermenai", "renegades, under the chieftain abermenai")]
+        [TestCase("who holds abermenai?", "who holds abermenai? renegades, under the chieftain abermenai", "abermenai? renegades, under the chieftain abermenai")]
         [TestCase("what lvl for abermenai?", "who holds abermenai? renegades, under the chieftain abermenai", null)]
         [TestCase("spindelhalla what lvl?", "spindelhalla? spider dungeon. good hunting, watch the webs", "spindelhalla? spider dungeon. good hunting, watch the webs")]
         [TestCase("where is spindelhalla?", "spindelhalla? spider dungeon. good hunting, watch the webs", null)]

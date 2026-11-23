@@ -216,7 +216,28 @@ public static class LoreChat
         if (opens == null)
             return asked is Ask.What or Ask.Hard or Ask.General ? line : null;
         bool same = opens == asked || opens == Ask.What && asked == Ask.General;
-        return same ? rest : null;
+        return same ? Echoed(opening, rest) : null;
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex AskHead = new(
+        @"^(whats in|what's in|whats on|what's on|whats at|what is in|what is|whats|what's|who is|whos|who's|who holds|where is|where's|wheres|" +
+        @"where are|how seasoned for|can a raid do|how do i get to|is|are)\s+", System.Text.RegularExpressions.RegexOptions.CultureInvariant |
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    private static readonly System.Text.RegularExpressions.Regex AskTail = new(@"\s+(hard|safe|dangerous|big)$",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// The answer of a line that asked its own question, said the way a player answers in chat: the subject said back first
+    /// ("whats in the cursed forest? juggernaut..." -> "the cursed forest? juggernaut..."), or the answer alone when the
+    /// opening names nothing ("whats there?") or more than three words. Pure.
+    /// </summary>
+    public static string Echoed(string opening, string rest)
+    {
+        string subject = AskTail.Replace(AskHead.Replace((opening ?? string.Empty).Trim(), string.Empty), string.Empty).Trim();
+        int words = subject.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        if (subject == opening?.Trim() || words == 0 || words > 3 || subject is "there" or "it" or "that" or "this")
+            return rest;
+        return subject + "? " + rest;
     }
 
     // The lore lines said lately (as answers and tales), so the style adds no laugh to them (C10, fix F9).
