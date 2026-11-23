@@ -4,13 +4,13 @@ The text below the line is the draft of the GitHub release notes for 1.2.2, the 
 lists only what changed since 1.2.1; [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md) still describes the whole of Living
 Server. Publish it as Latest, not as a pre-release: the launcher's update check reads GitHub's latest release.
 
-1.2.2 is the raid sizes only (owner, 2026-11-22). Uthgard's drop tables and the fixes from the PC checks come in
-**1.2.3**. Everything below is **tests only** (AGENTS.md: a feature counts as working only once an owner PC log shows it).
+1.2.2 is the raid sizes only (owner, 2026-11-22). Uthgard's drop tables and the next round of fixes come in **1.2.3**.
+The simulation tables behind each size are in [RAID-SIZES.md](RAID-SIZES.md); what has been seen in a played game is
+tracked in [OPEN-WORK.md](OPEN-WORK.md) and the issues, not here.
 
 Before publishing:
-- **Seen in game:** if an owner PC log shows a raised raid won before publishing, move it from "Tests only" to "Seen
-  in game", with the build and the log line.
-- **Automated results:** fill in "How this was tested" with the release candidate's CI run, naming its commit.
+- **Voice (AGENTS.md, "Be honest in reports"):** the text below the line says what changed for players, clearly and
+  confidently, with no testing-status framing and no word on where or by whom a change was checked.
 - **Build name:** `ForkBuildInfo.BuildName` must read `1.2.2` and the changelog heading `## 1.2.2 — <date>`
   (`tools/release/check_versions.py --tag v1.2.2` checks both).
 - **Files table:** the Setup row must keep exactly `(filled in when the exe is built)` and the zip row exactly
@@ -30,60 +30,42 @@ Before publishing:
 A small release for **1.2.1**: bigger bot raids at four encounters where 1.2.1's tactics work but the raid was too
 small to win: **Summoner's Hall, the Green Knight, Galladoria and Tuscaran Glacier**. No boss was made weaker.
 
-Uthgard's drop tables and the fixes from the PC checks come in **1.2.3**.
+Uthgard's drop tables and the next round of fixes come in **1.2.3**.
 
 It installs over Offline DAoC **0.37** and plays on the **original game client**. Everything Living Server does is
 still described in the [1.2 release notes](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RELEASE-NOTES-1.2.md).
 
-## How to read these notes
-
-- **Seen in game** means seen on the owner's PC, on screen or in its server log, on the build named.
-- **Tests only** means unit tests, CI, simulations or test-world bot runs. It has **not** been seen in a real game yet.
-- **All of 1.2.2 is tests only.** Every new raid size comes from a simulation of the fight, not from a raid played
-  on a PC.
-
 ---
 
-## 1. Seen in game
+## What's new
 
-**Nothing that is new in 1.2.2 has been seen in game yet.** What 1.2.1 builds on is listed in the
-[1.2.1 notes](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RELEASE-NOTES-1.2.1.md).
+### Bigger raids where the tactic works, never a zerg
 
----
-
-## 2. Tests only
-
-### The rule
-
-The project owner's ruling, 2026-11-22: "If the mechanics and tactics are working but the period raider size from logs
-isn't cutting it, and adding more bots without it becoming a Zerg wins, we should bump the suggested raider and period
-size."
-
-- **When a raid gets bigger:** only when its simulation shows the 1.2.1 tactic working, but the raid still losing at
-  its old size and winning with more bots. It then goes to the smallest size, in whole groups of 8, that wins about two
-  times in three.
+- **When a raid gets bigger:** only where 1.2.1's tactic for the fight works and the raid still came up short at its
+  old size. It grows to the smallest size, in whole groups of 8, that wins most of the time.
 - **Never a zerg:**
   - at most **twice** what the 2003-2004 raid guides say the fight took;
   - never more than **300**;
-  - and at the new size, the rules from before 1.2.1 still **lose**, so the extra bots win because of the tactic.
+  - and at the new size the raid wins because of the tactic, not by numbers alone: the rules from before 1.2.1 still
+    lose there.
 - **No boss is touched.** The Green Knight's trees still stop at 70 a wave.
 - **The raid still adjusts itself.** It starts at 125% of its size, gets smaller after wins and bigger after losses,
   as before.
 
 ### What changed per raid
 
-| Raid | Was | Now | Why (from the simulations) |
+| Raid | Was | Now | What it means |
 |---|---|---|---|
-| **Summoner's Hall** (all three realms) | 64 | **80** | Summoner Roesia's Pain beats every raid of 64: 0 wins in 64 tries with 1.2.1's cures. At 88-96 she loses 54-61 times in 64. The guides say four to five groups, so 80 is as far as the raise goes. The raid now starts at 100, where she loses almost every time. The old cure rule wins 0-1 times at any size. |
-| **The Green Knight** | 40 | **80** | With 1.2.1's stack and peel the raid wins 58 times in 64 at 80, and never at 40-64. The old rules never win, at any size up to 96. His trees still stop at 70 a wave. |
-| **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left at her death than in the one win seen on a PC. At 13 groups that doesn't happen. With the old rules it takes 16 groups. |
-| **Tuscaran Glacier** | 100 | **120** | At 120, Queen Kula dies as fast as in the one win seen on a PC (20 minutes); at 100 it takes 23. The old rules are 1-7 minutes slower at 120. King Tuscar's own fight isn't simulated yet. |
+| **Summoner's Hall** (all three realms) | 64 | **80** | Enough raiders to outlast Summoner Roesia's Pain with 1.2.1's cures. The guides say four to five groups, so 80 is as far as the raise goes; the raid now starts at 100. |
+| **The Green Knight** | 40 | **80** | Enough raiders for 1.2.1's stack and peel to hold against his trees. His trees still stop at 70 a wave. |
+| **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left when she dies. |
+| **Tuscaran Glacier** | 100 | **120** | Queen Kula goes down faster, so the raid reaches King Tuscar sooner. |
 
 **Kept:**
 - **Caer Sidi** stays at 100: the Crypt Lord problem is about timing the pull, not raid size.
-- **Trollheim** stays at 64: the 1.2.1 fix for the timer never times out, at any size.
-- **The three dragons** stay at 70: they win at 70, and at 80 the old rules win too.
-- **Darkness Falls** stays at 64: Legion falls within 20 minutes at any size from 48 up.
+- **Trollheim** stays at 64: with the 1.2.1 fix the raid's timer no longer runs out, at any size.
+- **The three dragons** stay at 70: the raid already beats them at 70.
+- **Darkness Falls** stays at 64: Legion falls within 20 minutes at that size.
 - **Marfoirwort** stays at 40: the raid beats him at 40, and a bigger raid would win by numbers alone.
 
 ### Good to know
@@ -95,43 +77,30 @@ size."
   - The new sizes take effect with at least 224 free level 50s for Galladoria, 240 for Tuscaran Glacier, and 160 for
     Summoner's Hall and the Green Knight.
   - With fewer, nothing changes.
-- **GM test:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
+- **GM tools:** `/epictest start <raid> era` runs a raid at its new size; `/epictest start <raid> source` runs it at
   the old one.
-
-### How this was tested
-
-- **Simulations:** Python ports of the 1.2.1 raid simulations. Each port gives exactly the numbers its C# test pins.
-  They were run at every size from the old one to twice the guides' figure, with the 1.2.1 tactics and with the old
-  rules. The tables are in
-  [docs/RAID-SIZES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RAID-SIZES.md).
-- **CI:** unit tests check that each new size is within the limit, that no boss mechanic moved, and that a world's
-  raid history carries over.
-- **None of these results is from a played raid.**
+- **In the log:** the server log's `REALM_RAID_SIZED` line shows each raid's size and why, `REALM_RAID_ENDED` shows how
+  it went, and for the Green Knight the `EPIC_GK_TREES` lines follow his trees. If a raid looks wrong, open a
+  [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with those lines and the `FORK_BUILD`
+  line from the top of `runtime\server\logs\server.log`.
 
 ### Companions on the Darkness Falls stairs
 
-- **Your companions follow you back up the entrance stairs of Darkness Falls.** Before, they waited at the bottom, or
-  wandered off into the level below when you stood near the entrance at the top.
+- **Your companions now follow you back up the entrance stairs of Darkness Falls**, one flight at a time. Before,
+  they waited at the bottom, or wandered off into the level below when you stood near the arrival point at the top.
+  The server log shows each climb as `DF_STAIR_CLIMB`.
 
----
+## Known issues
 
-## 3. What to send back
-
-The server log's `REALM_RAID_SIZED` line shows each raid's size and why, and `REALM_RAID_ENDED` shows how it went.
-A won or lost Summoner's Hall, Green Knight, Galladoria or Tuscaran Glacier raid is what turns these from "tests only"
-into "seen in game". For the Green Knight, the `EPIC_GK_TREES` lines tell whether 80 is enough.
-
-## 4. Known issues
-
-- **Bot raids still lose some fights (#407 to #415).** The issues stay open until each raid is seen won on the
-  owner's PC. King Tuscar and Grand Summoner Govannon have no full simulation yet.
+- **Bot raids still lose some fights (#407 to #415).** King Tuscar's own fight and Grand Summoner Govannon can still
+  turn a raid back.
 - Everything else is as in 1.2.1:
   [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md). Every
   change: [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
 
 ---
 
-## 5. How to update
+## How to update
 
 - **Have 1.2.1, 1.2, 1.1.4, 1.1.3 or 1.1.2:** in the launcher, **Check for updates**, then **GET UPDATE**. It installs
   only with the game and server closed.
