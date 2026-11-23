@@ -222,7 +222,7 @@ namespace DOL.UnitTests
             var won = new Dictionary<(string, int, Sim.CureRule), int>();
             foreach (string realm in new[] { "midgard", "albion", "hibernia" })
                 foreach (int n in sizes)
-                    foreach (Sim.CureRule rule in new[] { Sim.CureRule.Sweep7b, Sim.CureRule.Round2 })
+                    foreach (Sim.CureRule rule in new[] { Sim.CureRule.Sweep7b, Sim.CureRule.Round2, Sim.CureRule.Round3 })
                         won[(realm, n, rule)] = Enumerable.Range(0, 16).Count(s => Sim.RoesiaFight.Run(s, n, rule, realm,
                             tankHit: RoesiaTankHitLow, dsHit: RoesiaDsHitLow, heal: RoesiaHealReal).Won);
             string mirror = string.Join("; ", new[] { "midgard", "albion", "hibernia" }.SelectMany(realm => sizes.Select(n =>
@@ -232,6 +232,15 @@ namespace DOL.UnitTests
                 "midgard 64: 0 0; midgard 80: 0 0; midgard 96: 0 0; midgard 112: 1 8; " +
                 "albion 64: 0 0; albion 80: 0 5; albion 96: 9 14; albion 112: 10 16; " +
                 "hibernia 64: 0 0; hibernia 80: 0 1; hibernia 96: 10 12; hibernia 112: 7 16"));
+            // 1.2.2 (raid tactic audit finding 8): its own party's danger first, never another party's cure while its own is
+            // in danger. Python mirror, 16 seeds: better than round 2 at 80 in Albion (5 -> 15) and Hibernia (1 -> 14).
+            string round3 = string.Join("; ", new[] { "midgard", "albion", "hibernia" }.SelectMany(realm => sizes.Select(n =>
+                $"{realm} {n}: {won[(realm, n, Sim.CureRule.Round3)]}")));
+            TestContext.WriteLine("round 3: " + round3);
+            Assert.That(round3, Is.EqualTo(
+                "midgard 64: 0; midgard 80: 0; midgard 96: 1; midgard 112: 12; " +
+                "albion 64: 0; albion 80: 15; albion 96: 16; albion 112: 16; " +
+                "hibernia 64: 0; hibernia 80: 14; hibernia 96: 16; hibernia 112: 16"));
         }
 
         [Test]

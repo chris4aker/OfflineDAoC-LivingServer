@@ -22,7 +22,7 @@ namespace DOL.GS
             },
             new("Legion", ["Legion"], LegionWounded)
             {
-                Summary = "A wounded raider (under 35%) who isn't his target steps out of his 1,400 reach until it is healed " +
+                Summary = "A wounded raider (under 35%) who isn't his target steps out of his 1,400 reach until it is healed to 60% " +
                           "(each raider he kills heals him 2.5%); no bot casts a bladeturn within 2,500 of him while he fights " +
                           "(he eats the bubble of his target, and five of them set off his 1,000-radius soul blast).",
             },
@@ -32,6 +32,13 @@ namespace DOL.GS
 
         /// <summary>A raider under this health who isn't Legion's target steps out of his reach.</summary>
         public const int LegionWoundedPercent = 35;
+        /// <summary>A raider that stepped out comes back only once healed to this (1.2.2, raid tactic audit finding 7: with
+        /// one threshold both ways a raider healed to 35% walked straight back into his blast, was at 34% again and stepped
+        /// out again, about 1,500 each way, dealing nothing).</summary>
+        public const int LegionWoundedReturnPercent = 60;
+        /// <summary>A raider's "stepped out" mark is forgotten when the rule has not asked about it for this long (a new
+        /// fight starts clean).</summary>
+        public const long LegionWoundedMemoryMilliseconds = 60_000;
         /// <summary>Where it waits: past his close range (1,400, Legion.TakeDamage) and his blast (1,000 around his target).</summary>
         public const int LegionWoundedStandOff = 1_700;
         /// <summary>No bot casts a bladeturn within this of a fighting Legion.</summary>
@@ -39,7 +46,36 @@ namespace DOL.GS
         public const ushort DarknessFallsRegion = 249;
 
         private static Advice? LegionWounded(RuleContext c) =>
-            LegionWoundedAdvice(c.At, c.Raider.HealthPercent, c.Target.TargetObject == c.Raider, c.Target, c.Raider.ObjectID);
+            LegionWoundedAdvice(c.At, c.Raider.HealthPercent, c.Target.TargetObject == c.Raider, c.Target, c.Raider.ObjectID, c.Now);
+
+        /// <summary>The wounded raider is (still) out (pure): under <see cref="LegionWoundedPercent"/>, or out already and not
+        /// yet healed to <see cref="LegionWoundedReturnPercent"/>.</summary>
+        public static bool LegionWoundedOut(int healthPercent, bool wasOut) =>
+            healthPercent < LegionWoundedPercent || wasOut && healthPercent < LegionWoundedReturnPercent;
+
+        private static readonly Dictionary<long, long> LegionSteppedOut = new();
+
+        /// <summary>Whether raider <paramref name="id"/> stays out now, from its health and its mark (kept per raider id).</summary>
+        private static bool LegionWoundedOutNow(long id, int healthPercent, bool isHisTarget, long now)
+        {
+            lock (LegionSteppedOut)
+            {
+                bool wasOut = LegionSteppedOut.TryGetValue(id, out long seen) && now - seen <= LegionWoundedMemoryMilliseconds;
+                bool isOut = !isHisTarget && LegionWoundedOut(healthPercent, wasOut);
+                if (isOut)
+                {
+                    if (LegionSteppedOut.Count > 1_024) LegionSteppedOut.Clear();
+                    LegionSteppedOut[id] = now;
+                }
+                else LegionSteppedOut.Remove(id);
+                return isOut;
+            }
+        }
+
+        public static void ResetLegionWoundedForTests()
+        {
+            lock (LegionSteppedOut) LegionSteppedOut.Clear();
+        }
 
         /// <summary>
         /// Legion heals 2.5% of his health by each raider he kills (EnemyKilled; flood guard Legion.KillHeal) and his adds and
@@ -64,10 +100,21 @@ namespace DOL.GS
         /// <summary>The wounded spots spread across the corridor, this far apart.</summary>
         public const int LegionWoundedSlotSpacing = 150;
 
-        /// <summary>As above, with the raider's id spreading the wounded across the corridor.</summary>
-        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion, long id)
+        /// <summary>As above, with the raider's id spreading the wounded across the corridor (no memory: one threshold).</summary>
+        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion, long id) =>
+            isHisTarget || healthPercent >= LegionWoundedPercent ? (Advice?)null : LegionWoundedStep(raider, legion, id);
+
+        /// <summary>As above, with hysteresis (1.2.2): a raider that stepped out under <see cref="LegionWoundedPercent"/> stays
+        /// out until healed to <see cref="LegionWoundedReturnPercent"/>, remembered by its id (<paramref name="id"/> 0: no
+        /// memory).</summary>
+        public static Advice? LegionWoundedAdvice(Vector3 raider, int healthPercent, bool isHisTarget, GameNPC legion, long id, long now)
         {
-            if (isHisTarget || healthPercent >= LegionWoundedPercent) return null;
+            if (id == 0) return LegionWoundedAdvice(raider, healthPercent, isHisTarget, legion, id);
+            return LegionWoundedOutNow(id, healthPercent, isHisTarget, now) ? LegionWoundedStep(raider, legion, id) : (Advice?)null;
+        }
+
+        private static Advice LegionWoundedStep(Vector3 raider, GameNPC legion, long id)
+        {
             Vector3 boss = At(legion);
             Vector3 spot = LegionWoundedSpot(boss, LegionRaidSide, id, raider.Z);
             if (Flat(raider, boss) >= LegionWoundedStandOff - 100 && Flat(raider, spot) <= LegionWoundedSpotTolerance)

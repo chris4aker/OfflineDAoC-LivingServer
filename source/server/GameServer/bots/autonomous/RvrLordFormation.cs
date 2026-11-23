@@ -60,6 +60,11 @@ public static class RvrLordFormation
     /// <summary>Whether the role stands back on a formation spot (casters, archers, healers) rather than in melee.</summary>
     public static bool StandsBack(Role role) => role is Role.Ranged or Role.Healer;
 
+    /// <summary>A bot of this role keeps the lord as its target when no walk to him is found (pure): melee and tanks (BotBrain
+    /// then paths in to its hold radius, 280, as in 1.2); a caster, archer or healer gives him up (1.2.2 regression audit,
+    /// item 3).</summary>
+    public static bool KeepsLordOnFailedWalk(Role role) => !StandsBack(role);
+
     /// <summary>
     /// The band (distance from the lord) the role stands in: casters and archers 230-300 in a keep, 160-205 in a tower;
     /// healers behind them, 305-345 / 210-245. Every band lies inside <see cref="RvrLordReach.For"/> (350 / 250), so each

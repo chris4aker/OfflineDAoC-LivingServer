@@ -713,6 +713,43 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void AWoundedRaiderComesBackOnlyOnceHealedToSixtyNotAtThirtyFive()
+        {
+            // 1.2.2, raid tactic audit finding 7: one threshold both ways made it shuttle 1,500 each way at 34-35%.
+            UseRegion(249, (0, 0));
+            EpicEncounterTactics.ResetLegionWoundedForTests();
+            var legion = Npc<TestLegion>(20_000, 20_000, 1_000);
+            Vector3 near = new(20_500, 20_000, 1_000);
+            const long Id = 4_242;
+            long now = 10_000;
+            EpicEncounterTactics.Advice? Ask(Vector3 at, int hp, bool his = false) => EpicEncounterTactics.LegionWoundedAdvice(at, hp, his, legion, Id, now += 1_000);
+            Assert.That(Ask(near, 40), Is.Null, "not out yet at 40");
+            EpicEncounterTactics.Advice? stepOut = Ask(near, 34);
+            Assert.That(stepOut?.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
+            Vector3 spot = stepOut.Value.StandAt.Value;
+            // At its spot, healed through 35 to 59: it stays, and the rule gives no new spot (done).
+            foreach (int hp in new[] { 34, 35, 45, 59 })
+            {
+                EpicEncounterTactics.Advice? wait = Ask(spot, hp);
+                Assert.That(wait?.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), $"{hp}%: still out");
+                Assert.That(wait.Value.StandAt, Is.Null, $"{hp}%: at its spot, no new spot");
+            }
+            Assert.That(Ask(spot, 60), Is.Null, "healed to 60: back in");
+            Assert.That(Ask(near, 50), Is.Null, "back in, it stays in above 35");
+            Assert.That(Ask(near, 34)?.Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "and steps out again under 35");
+            Assert.That(Ask(near, 20, his: true), Is.Null, "his target holds him");
+            Assert.That(Ask(near, 50), Is.Null, "being his target cleared the mark");
+            Assert.That(EpicEncounterTactics.LegionWoundedOut(34, false), Is.True);
+            Assert.That(EpicEncounterTactics.LegionWoundedOut(35, false), Is.False);
+            Assert.That(EpicEncounterTactics.LegionWoundedOut(59, true), Is.True);
+            Assert.That(EpicEncounterTactics.LegionWoundedOut(60, true), Is.False);
+            // The mark is forgotten after a minute unasked.
+            Ask(near, 30);
+            now += EpicEncounterTactics.LegionWoundedMemoryMilliseconds + 1;
+            Assert.That(Ask(near, 50), Is.Null, "a minute later: a new fight");
+        }
+
+        [Test]
         public void NoBotCastsABladeturnNearAFightingLegion()
         {
             UseRegion(249, (0, 0));
