@@ -60,10 +60,10 @@ public class UT_ChatGuide
     [Test]
     public void The_capital_merchants_are_the_realms_own()
     {
-        Assert.That(Ask("where can i buy poison?", eRealm.Hibernia, seed: 2), Does.Contain("tir na nog").Or.Contain("Nona"));
+        Assert.That(Ask("where can i buy poison?", eRealm.Hibernia, seed: 2), Does.Contain("Tir na Nog").Or.Contain("Nona"));
         Assert.That(Ask("where can i buy poison?", eRealm.Midgard, seed: 0), Does.Contain("Ander"));
         foreach (int seed in Enumerable.Range(0, 8))
-            Assert.That(Ask("where do i buy bags?", eRealm.Albion, seed: seed), Does.Not.Contain("jordheim").And.Not.Contain("tir na nog"));
+            Assert.That(Ask("where do i buy bags?", eRealm.Albion, seed: seed), Does.Not.Contain("Jordheim").And.Not.Contain("Tir na Nog"));
     }
 
     [Test]
@@ -101,7 +101,8 @@ public class UT_ChatGuide
     [TestCase(eRealm.Hibernia, "Channeler Glasny", "druim ligen")]
     public void The_frontier_and_the_battlegrounds_go_through_the_realms_porter(eRealm realm, string porter, string keep)
     {
-        AllSeeds("how do i get to the frontier?", realm, answer => Assert.That(answer, Does.Contain(keep)));
+        AllSeeds("how do i get to the frontier?", realm, answer => Assert.That(answer, Does.Contain(keep).And.Contain("keep").And.Contain("port")));
+        AllSeeds("how do i get to the battlegrounds?", realm, answer => Assert.That(answer, Does.Contain("porter")), level: 30);
         AllSeeds("how do i get to the battlegrounds?", realm, answer => Assert.That(answer, Does.Contain(porter.ToLowerInvariant())), level: 22);
         AllSeeds("how do i get to the battlegrounds?", realm, answer => Assert.That(answer, Does.Contain("thidranki")), level: 22);
         AllSeeds("how do i get to the bg?", realm, answer => Assert.That(answer, Does.Contain("15 to 35")), level: 44);
@@ -179,16 +180,16 @@ public class UT_ChatGuide
         AllSeeds("how do i raise my faction with the svartalfs?", eRealm.Midgard, answer => Assert.That(answer, Does.Contain("drakulv")));
         AllSeeds("how do i fix bad faction?", eRealm.Albion, answer => Assert.That(answer, Does.Contain("kill")));
         AllSeeds("how do i get the sylvan to like me?", eRealm.Hibernia, answer => Assert.That(answer, Does.Contain("kill")));
-        AllSeeds("how do i check my faction?", eRealm.Albion, answer => Assert.That(answer, Does.Contain("friendly")));
+        AllSeeds("how do i check my faction?", eRealm.Albion, answer => Assert.That(answer, Does.Contain("npc").And.Contain("friendly")));
         AllSeeds("why are the guards attacking me?", eRealm.Hibernia, answer => Assert.That(answer, Does.Contain("faction")));
         AllSeeds("why wont the merchant talk to me?", eRealm.Albion, answer => Assert.That(answer, Does.Contain("faction")));
-        AllSeeds("does killing dwarves hurt my faction?", eRealm.Midgard, answer => Assert.That(answer, Does.Contain("friends")));
+        AllSeeds("does killing dwarves hurt my faction?", eRealm.Midgard, answer => Assert.That(answer, Does.Contain("friends").And.Match(@"\b(no|yeah)\b")));
         AllSeeds("can i get kos with a town?", eRealm.Midgard, answer => Assert.That(answer, Does.Contain("neutral")));
         AllSeeds("what faction are the trolls in?", eRealm.Midgard, answer => Assert.That(answer, Does.Contain("faction")));
         AllSeeds("whats faction for?", eRealm.Hibernia, answer => Assert.That(answer, Does.Contain("npc")));
         // The realm's emissary (FactionEmissaryRuntime) when the general answer names one.
         string emissary = Enumerable.Range(0, 12).Select(seed => Ask("how do i fix bad faction?", eRealm.Hibernia, seed: seed)).First(a => a.Contains("Kzzirrak"));
-        Assert.That(emissary, Does.Contain("necht"));
+        Assert.That(emissary, Does.Contain("Necht"));
     }
 
     [Test]

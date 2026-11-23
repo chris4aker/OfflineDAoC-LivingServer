@@ -871,7 +871,8 @@ public static class AutonomousChatKnowledge
         // 1.2.2 chat audit (C8): "who sells horse tickets?" and "how do i get a horse?" went unanswered.
         bool aboutTickets = t.Contains("ticket") || t.Contains("horse route") || t.Contains("stable") ||
                             System.Text.RegularExpressions.Regex.IsMatch(t, @"\b(get|buy|rent|ride|find) (a |an )?horses?\b");
-        bool asks = t.Contains("where") || t.Contains("buy") || t.Contains("get") || t.Contains("how") || t.Contains("sell");
+        bool asks = t.Contains("where") || t.Contains("buy") || t.Contains("get") || t.Contains("how") ||
+                    System.Text.RegularExpressions.Regex.IsMatch(t, @"\b(who|anyone|any1) sells?\b");
         if (!aboutTickets || !asks)
             return false;
         answer = Pick("any stable master sells them, most towns have one. /stables lists the routes",

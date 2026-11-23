@@ -31,18 +31,18 @@ public static class AutonomousChatGuide
 
     public static readonly IReadOnlyDictionary<eRealm, Realm> Realms = new Dictionary<eRealm, Realm>
     {
-        [eRealm.Albion] = new("camelot", "Master Visur", "castle sauvage", "camelot hills", "Lord Urqhart", "Judan Hammerfel",
+        [eRealm.Albion] = new("Camelot", "Master Visur", "Castle Sauvage", "Camelot Hills", "Lord Urqhart", "Judan Hammerfel",
             "Dyemaster Edare", "Dyemaster Lendand", "Dyemaster Mara", "Velmis", "Marna", "Godfreid", "Godfreid", "Hector Darian",
             "Hephas Elgen", "Loraine Elgen", "Arliss Eadig", "Acey Dalston", "Adelaide Dinsmore", "Clayton Gage",
-            "Ysslith", "the lammia", "caer diogel"),
-        [eRealm.Midgard] = new("jordheim", "Stor Gothi Annark", "svasud faste", "vale of mularn", "Jarl Yuliwyf", "Morlin Caan",
+            "Ysslith", "the lammia", "Caer Diogel"),
+        [eRealm.Midgard] = new("Jordheim", "Stor Gothi Annark", "Svasud Faste", "Vale of Mularn", "Jarl Yuliwyf", "Morlin Caan",
             "Hyndla Gunderson", "Ozur", "Solveig", "Ander", "Om", "Holsvi Hallgrim", "Freydis", "Ottar",
             "Aase", "Gest", "Eskil", "Gils", "Armod Dag", "Hradi Thorleif",
-            "Hrodvar Deepvow", "the remnants", "hagall"),
-        [eRealm.Hibernia] = new("tir na nog", "Channeler Glasny", "druim ligen", "connacht", "Bhreagar Hylvian", "Banon",
+            "Hrodvar Deepvow", "the remnants", "Hagall"),
+        [eRealm.Hibernia] = new("Tir na Nog", "Channeler Glasny", "Druim Ligen", "Connacht", "Bhreagar Hylvian", "Banon",
             "Dierdra", "Jeanna", "Cristolia", "Nona", "Cedric", "Darcy", "Darcy", "Baran",
             "Hendrika", "Dunstan", "Armin", "Arziqua", "Aslander", "Shannen",
-            "Kzzirrak", "the krrzck hive", "necht"),
+            "Kzzirrak", "the krrzck hive", "Necht"),
     };
 
     /// <summary>
@@ -129,7 +129,7 @@ public static class AutonomousChatGuide
             return Pick(random, $"hand it to a smith, theres {r.Smith} in {cap}. or a crafter with the skill",
                 $"any smith fixes it for coin, {r.Smith} in {cap}", "smith in town repairs it, or an armorcrafter");
         // The exchange of the capital asked about; another realm's has nothing for us.
-        bool otherCapital = Realms.Values.Any(other => other.Capital != cap && t.Contains(" " + other.Capital + " ", StringComparison.Ordinal));
+        bool otherCapital = Realms.Values.Any(other => other.Capital != cap && t.Contains(" " + other.Capital.ToLowerInvariant() + " ", StringComparison.Ordinal));
         if (Has(t, @" (realm exchange|the exchange|exchange) ") && Has(t, @" (where|wheres|how do i get|how to get|find) ") && !otherCapital)
             return Pick(random, $"in {cap}, type /tc and it ports you right to it", $"/tc takes you straight to the exchange in {cap}",
                 $"the broker in {cap}, /tc gets you there");
@@ -145,7 +145,7 @@ public static class AutonomousChatGuide
                 $"{r.ClothDye} in {cap} does cloth dye, {r.Enamel} the enamel for chain and plate");
         if (Has(t, @" (poisons?|venoms?|envenom) "))
             return Pick(random, $"poison merchant in {cap}, {r.Poison}. only the assassin classes can use them",
-                $"{r.Poison} in {cap} sells them, cheap ones a few copper, the good ones near a gold",
+                $"{r.Poison} in {cap} sells poison, cheap ones a few copper, the good ones near a gold",
                 $"{cap}, theres a poison merchant, {r.Poison}");
         if (Has(t, @" (gems?|sc gems?|spellcraft gems?) "))
             return Pick(random, $"spellcrafters make them. the gem bases are at {r.Gems} in {cap}",
@@ -153,10 +153,10 @@ public static class AutonomousChatGuide
                 $"crafted by spellcrafters. check the exchange in {cap} too");
         if (Has(t, @" (tools?|kits?|sewing kit|planing tool|smiths hammer) "))
             return Pick(random, $"merchant in {cap}, {r.Tools} has the kits. about 30s, a sewing kit is 2s",
-                $"{r.Tools} in {cap} sells the craft kits and hammers", $"the craft supply merchant in {cap}, {r.Tools}");
+                $"{r.Tools}, a merchant in {cap}, sells the craft kits and hammers", $"the craft supply merchant in {cap}, {r.Tools}");
         if (Has(t, @" (materials?|mats|supplies|metal bars|bars|thread|boards|leather squares?|cloth squares?) "))
             return Pick(random, $"supply merchants in {cap}, {r.Materials} or {r.Tools} have bars, boards, leather and cloth",
-                $"{r.Tools} in {cap} sells the basic mats", $"craft merchants in {cap}, {r.Materials} has the metal and wood");
+                $"{r.Tools}, the supply merchant in {cap}, sells the basic mats", $"craft merchants in {cap}, {r.Materials} has the metal and wood");
         if (Has(t, @" (bags?|backpacks?|sacks?|pouch|pouches) "))
             return Pick(random, $"no bags in this game lol. bank the rest with {r.Vault} in {cap}",
                 $"there are no bags, the bank in {cap} holds your overflow", "no such thing here, use the bank in town");
@@ -199,18 +199,18 @@ public static class AutonomousChatGuide
         {
             string bracket = level switch
             {
-                >= 15 and <= 19 => "abermenai", >= 20 and <= 24 => "thidranki", >= 25 and <= 29 => "murdaigean",
-                >= 30 and <= 35 => "caledonia", _ => null,
+                >= 15 and <= 19 => "Abermenai", >= 20 and <= 24 => "Thidranki", >= 25 and <= 29 => "Murdaigean",
+                >= 30 and <= 35 => "Caledonia", _ => null,
             };
             string tail = bracket != null ? $", at your level its {bracket}" : ", 15 to 35 only";
-            return Pick(random, $"talk to {r.Porter} in {r.Capital} and say battlegrounds{tail}",
+            return Pick(random, $"talk to the porter, {r.Porter} in {r.Capital}, and say battlegrounds{tail}",
                 $"any porter, {r.Porter} in {r.Capital}, say battlegrounds{tail}",
-                $"{r.Porter} sends you, click him and pick battlegrounds{tail}");
+                $"the porter sends you, click {r.Porter} and pick battlegrounds{tail}");
         }
         if (Has(t, @" (frontier|frontiers|rvr|the front) ") && !Has(t, @" (rps?|realm points?|realm rank|rr\d*|kills?) "))
             return Pick(random, $"port to {r.BorderKeep} with {r.Porter}, buy a frontier medallion there and the teleporter sends you to a keep",
                 $"{r.Porter} in {r.Capital} to {r.BorderKeep}, then a medallion and the keep teleporter",
-                $"{r.BorderKeep} is the way out, {r.Porter} gets you there");
+                $"{r.Porter} ports you to {r.BorderKeep}, the border keep. thats the way out");
         return null;
     }
 
@@ -397,8 +397,8 @@ public static class AutonomousChatGuide
                 "kill whoever they hate, a point a kill. takes a while");
         }
         if (faction && Has(t, @" (check|see|know|tell|find out) "))
-            return Pick(random, "target one and look at the examine line, it says aggressive, hostile, neutral or friendly to you",
-                "click them, it tells you if they look at you friendly or hostile");
+            return Pick(random, "target one of their npcs, the examine line says aggressive, hostile, neutral or friendly to you",
+                "click one of their npcs, it tells you if they look at you friendly or hostile");
         if (Has(t, @" (guards?|town|npcs?|mobs?|they) ") && Has(t, @" (attack|attacking|attacked|aggro|aggroing|hate|kos) ") && Has(t, @" (why|how come) "))
             return Pick(random, "if its a neutral camp thats faction, you killed their friends. our own guards never turn on you",
                 "faction, they attack on sight once you kill enough of their friends");
@@ -406,7 +406,7 @@ public static class AutonomousChatGuide
             return Pick(random, "bad faction, they give you a dirty look when it drops. kill their enemies to fix it",
                 "faction, theyre hostile to you. kill whoever they hate for a while");
         if (Has(t, @" (kill|killing|kills) ") && (faction || Has(t, @" (hurt|lower|ruin|bad) ")))
-            return Pick(random, "it angers their friends, not them. their enemies like you more for it",
+            return Pick(random, "not with them, no. it angers their friends, and their enemies like you more for it",
                 "yeah, with whoever is friends with them");
         if (faction && Has(t, @" (what is|whats|what s|what are|for|how does|how do|work|works|mean) "))
             return Pick(random, "npc camps outside the realm remember what you kill. too low and they attack, high enough and they trade",
