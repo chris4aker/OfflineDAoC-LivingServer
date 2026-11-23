@@ -125,7 +125,9 @@ run time: the rules read the bot's own path, so they cover any link of whatever 
 
 1. **No replot on a steep link.** The mover remembers the leg it is walking (from where it was to the next path node).
    A leg that rises or falls at least 64 (the pick box's half height) and at least as far as it runs, over a run of at
-   most 320, is a link leg (`NavLinkLeg.IsCommitLeg`; no walkable slope makes one). While a bot walks one, a new path
+   most 320, is a link leg (`NavLinkLeg.IsCommitLeg`; no walkable slope makes one). Lifts (`NavLinkLeg.IsLiftLeg`, the
+   legs `Pathfinder.IsVerticalLink` rides) are left out, so they ride exactly as in 1.2: every stuck-prone link in Tur
+   Suil, Iarnvidiur's Lair, Aldland and Cruachan Gorge, where raids and the siege column were seen on 1.2, is a lift. While a bot walks one, a new path
    order (`PathTo`) only changes where it goes from the far end, and a follower's check waits for its arrival. A direct
    walk order or a stop ends this at once.
 2. **Set down on the far end.** If a bot's path fails (`NoPathFound`) while it is inside its last leg (within 40 of it,
@@ -134,8 +136,8 @@ run time: the rules read the bot's own path, so they cover any link of whatever 
    200 lines at most). This covers the shallow gaps and ice steps too, and any leg left by a stop or a new order.
 
 `UT_NavLinkLegs` checks the rules against the scan's table: every stuck-prone link outside DF (1,232 with a dead window
-away from its end) is set down on its end from the middle of its dead window, every link the table marks steep is a
-commit leg (and nothing else is), ordinary walking legs are not, and the scan's DF mesh is the certified one.
+away from its end) is set down on its end from the middle of its dead window, every link the table marks steep and not a
+lift is a commit leg (and nothing else is; the table's `commit` field already leaves the 546 lifts out), ordinary walking legs are not, and the scan's DF mesh is the certified one.
 
 ## Not covered
 

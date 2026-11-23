@@ -3431,6 +3431,21 @@ namespace DOL.GS
         {
             if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
                 return false;
+            // 1.2.2: a move within the region removes the bot from the world and adds it again; a dead bot's removal is
+            // still held back from the original clients then (BotDeathAnimation.LeavesWorld).
+            bool withinRegion = regionID == CurrentRegionID;
+            if (withinRegion) _movingWithinRegion++;
+            try { return MoveToWithPet(regionID, x, y, z, heading); }
+            finally { if (withinRegion) _movingWithinRegion--; }
+        }
+
+        private int _movingWithinRegion;
+
+        /// <summary>1.2.2: the bot is in a <see cref="MoveTo"/> within its region (removed and added again, not leaving).</summary>
+        public bool MovingWithinRegion => _movingWithinRegion > 0;
+
+        private bool MoveToWithPet(ushort regionID, int x, int y, int z, ushort heading)
+        {
             SetSeatedForClients(false);     // never arrives seated
             // Owner 2026-10-07: travelling the old frontiers, the pets of the player's /spawn and /raid companions died
             // on every move (the move removes the bot from the world, which released its pet) and their pet classes kept

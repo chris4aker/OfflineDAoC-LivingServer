@@ -907,8 +907,9 @@ namespace DOL.GS.PacketHandler
 
 		public virtual void SendObjectRemove(GameObject obj)
 		{
-			// 1.2.1: a dead bot whose fall this (original) client was shown is already gone from it (BotDeathAnimation).
-			if (BotDeathAnimation.Blocks(m_gameClient, obj, "RemoveObject"))
+			// 1.2.1: a dead bot whose fall this (original) client was shown is already gone from it (BotDeathAnimation);
+			// 1.2.2: unless the bot really leaves (logout, removal from the world, another region): then it is removed.
+			if (BotDeathAnimation.Blocks(m_gameClient, obj, BotDeathAnimation.RemoveObject))
 				return;
 
 			int oType = 0;
