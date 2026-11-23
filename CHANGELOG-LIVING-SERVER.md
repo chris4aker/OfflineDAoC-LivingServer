@@ -105,6 +105,18 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
   in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
   report-only until the fixes land. **Tests only.**
+- **/faction answers, the routing fixes (F0, F1, F4, F6, F7; #452, PR #456).** The reply path is now one set of pure functions,
+  `AutonomousChatReplyPath` and `AutonomousChatKnowledge.TryAnswer(KnowledgePorts)`. The server and the question bench both
+  call them, so the bench runs the server's own routing instead of a copy. The world's facts (a place's levels, Darkness
+  Falls, relics, keeps, the realm's dragon) now come before the lore, and lore never answers a level or ownership question.
+  /faction no longer gets a "dunno" rescue or the "not sure" set: silence instead, while a bot named or sent a tell may still
+  say it doesn't know. A question about grouping ("what does lfg mean?", "looking for a spot to grind") is answered as a
+  question, not with "nobody around your level". "Epic" counts as a raid word only for an epic fight. A named bot asked about
+  itself answers from its own facts, and no epic answer says "did mine". Bench results: good answers rose from 274 to 314 of
+  453 (60.5% to 69.3%). Non-answers fell from 27 to 3, off-topic from 67 to 25 and clunky from 43 to 21; place-level
+  questions are now 48 of 48. Silence where an answer was due rose from 67 to 92, since the dunnos became silence. CI now
+  gates on `score_bench.py ratchet` (`bench_ratchet.json`: the good share may only rise, no bad category may grow). It also
+  reports a 60-question holdout set written after these fixes (40 of 60 good). **Tests only.**
 
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
