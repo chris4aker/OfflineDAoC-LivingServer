@@ -75,7 +75,7 @@ size."
 | Raid | Was | Now | Why (from the simulations) |
 |---|---|---|---|
 | **Summoner's Hall** (all three realms) | 64 | **80** | Summoner Roesia's Pain beats every raid of 64: 0 wins in 64 tries with 1.2.1's cures. At 88-96 she loses 54-61 times in 64. The guides say four to five groups, so 80 is as far as the raise goes. The raid now starts at 100, where she loses almost every time. The old cure rule wins 0-1 times at any size. |
-| **The Green Knight** | 40 | **80** | With 1.2.1's stack and peel the raid wins 58 times in 64 at 80, and never at 40-64. The old rules never win, at any size up to 96. His trees still stop at 70 a wave. |
+| **The Green Knight** | 40 | **80** | Twice the guides' 4-5 groups, as far as the raise goes. Measured against his trees' real hits (22-78 a second each), the raid still needs more than 80 to beat him, and his tactics get more work. His trees still stop at 70 a wave. |
 | **Galladoria** | 100 | **112** | At 14 groups, all 8 add groups go after Spindler Broodmother's newborns, and fewer are left at her death than in the one win seen on a PC. At 13 groups that doesn't happen. With the old rules it takes 16 groups. |
 | **Tuscaran Glacier** | 100 | **120** | At 120, Queen Kula dies as fast as in the one win seen on a PC (20 minutes); at 100 it takes 23. The old rules are 1-7 minutes slower at 120. King Tuscar's own fight isn't simulated yet. |
 
