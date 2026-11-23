@@ -324,14 +324,13 @@ send me a tell
 means send them a private message, /send name
 pst = send a tell
 @answers ask_camps
-ask around, someone always knows a spot
 look for monsters that con blue or yellow and settle in
 follow other people, wherever they hunt is a camp
 the roads out of town lead to most of them, just explore a bit
 @answers ask_campshare
 ask first, most people will share
 not without asking, thats rude
-ask in /say, if they say no find another spot
+check in /say first, if they say no find another spot
 fine if you ask and dont steal their pulls
 @answers ask_bags
 sell the junk to any merchant, keep only upgrades
@@ -349,7 +348,7 @@ lfg means looking for group, lfm means looking for more
 it means looking for group, say it with your level and class
 looking for group. if someone says it, they want a group
 @answers ask_guild
-ask someone with a guild tag, an officer can invite you
+find someone with a guild tag, an officer can invite you
 watch faction, guilds recruit there all the time
 find a guild you like and send them a tell
 an officer types /gc invite and you accept, easy

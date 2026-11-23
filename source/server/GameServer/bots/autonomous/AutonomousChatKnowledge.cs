@@ -49,6 +49,13 @@ public static class AutonomousChatKnowledge
         public Func<string, string> Spell { get; init; }
         public Func<string, string> Trainer { get; init; }
         public Func<string, string> Location { get; init; }
+        /// <summary>Who holds Darkness Falls now, and whether every realm may enter (AutonomousChatGuide's way in).</summary>
+        public eRealm DfOwner { get; init; }
+        public bool DfOpenToAll { get; init; }
+        /// <summary>The world's NPC factions (AutonomousChatGuide.LiveFactions); null: the guide's own table.</summary>
+        public Func<IReadOnlyList<(string Name, string[] Aliases, string[] RaisedBy)>> Factions { get; init; }
+        /// <summary>"who sells feathers?" from the world's merchant lists.</summary>
+        public Func<string, string> WhoSells { get; init; }
     }
 
     /// <summary>The live world's knowledge steps for a player's question.</summary>
@@ -63,6 +70,9 @@ public static class AutonomousChatKnowledge
         Spell = query => TryAnswerSpell(player, query, out string spell) ? spell : null,
         Trainer = query => TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out string trainer) ? trainer : null,
         Location = query => TryAnswerLocation(player.Realm, query, out string where) ? where : null,
+        DfOwner = DOL.GS.ServerRules.DFEnterJumpPoint.DarknessFallOwner, DfOpenToAll = ServerProperties.Properties.ALLOW_ALL_REALMS_DF,
+        Factions = AutonomousChatGuide.LiveFactions,
+        WhoSells = query => AutonomousChatGuide.TryAnswerWhoSells(player, query, out string seller) ? seller : null,
     };
 
     /// <summary>
@@ -116,6 +126,11 @@ public static class AutonomousChatKnowledge
             return true;
         if (TryAnswerTicketsInGeneral(query, out answer))
             return true;
+        // 1.2.2 chat audit F2 (C8): buying, the way into Darkness Falls, the frontier and the battlegrounds, armour, stats,
+        // crafting, factions and tasks, before the lore (a fact before a story).
+        if (AutonomousChatGuide.TryAnswer(query, ports.Realm, ports.ClassName, ports.Level, ports.DfOwner, ports.DfOpenToAll, random,
+                out answer, ports.Factions?.Invoke()))
+            return true;
         // Living Server 1.2: "whats in krondon?", "who is the storm keeper?" from the lore bible (docs/LORE.md).
         if (lore && LoreChat.TryAnswer(ports.Bible, ports.Corpus?.Lines, query, random, out answer, ports.Realm))
             return true;
@@ -133,6 +148,9 @@ public static class AutonomousChatKnowledge
         if (TryAnswerCommon(query, ports.Realm, ports.ClassName, ports.Level, random, out answer))
             return true;
         if (TryAnswerBuyGear(ports.Realm, query, out answer))
+            return true;
+        // 1.2.2 chat audit F2: "who sells feathers?" from the world's merchant lists.
+        if (ports.WhoSells != null && Got(ports.WhoSells(query), out answer))
             return true;
         if (ports.Location != null && LooksLikeLocationQuestion(query) && Got(ports.Location(query), out answer))
             return true;
@@ -1032,8 +1050,11 @@ public static class AutonomousChatKnowledge
     {
         answer = string.Empty;
         string t = (text ?? string.Empty).ToLowerInvariant();
-        bool aboutTickets = t.Contains("ticket") || t.Contains("horse route") || t.Contains("stable");
-        bool asks = t.Contains("where") || t.Contains("buy") || t.Contains("get") || t.Contains("how");
+        // 1.2.2 chat audit (C8): "who sells horse tickets?" and "how do i get a horse?" went unanswered.
+        bool aboutTickets = t.Contains("ticket") || t.Contains("horse route") || t.Contains("stable") ||
+                            System.Text.RegularExpressions.Regex.IsMatch(t, @"\b(get|buy|rent|ride|find) (a |an )?horses?\b");
+        bool asks = t.Contains("where") || t.Contains("buy") || t.Contains("get") || t.Contains("how") ||
+                    System.Text.RegularExpressions.Regex.IsMatch(t, @"\b(who|anyone|any1) sells?\b");
         if (!aboutTickets || !asks)
             return false;
         answer = Pick("any stable master sells them, most towns have one. /stables lists the routes",
@@ -1064,7 +1085,8 @@ public static class AutonomousChatKnowledge
             : HasAnyPhrase(t, " robe ", " cloth ", " leather ", " vest ") ? "tailor"
             : HasAnyPhrase(t, " armor ", " armour ", " chain ", " plate ", " scale ", " helm ", " boots ", " gloves ", " legs ", " sleeves ", " chest ", " shield ")
                 ? "armorcrafter" : null;
-        bool jewelry = HasAnyPhrase(t, " ring ", " necklace ", " bracer ", " belt ", " cloak ", " jewel ", " jewelry ");
+        bool jewelry = HasAnyPhrase(t, " ring ", " necklace ", " bracer ", " belt ", " cloak ", " jewel ", " jewelry ", " rings ", " necklaces ",
+            " bracers ", " belts ", " cloaks ", " jewels ");
         if (crafter == null && !jewelry && !HasAnyPhrase(t, " gear ", " stuff ", " items ", " equipment "))
             return false;
         string capital = realm switch { eRealm.Midgard => "jordheim", eRealm.Hibernia => "tir na nog", _ => "camelot" };

@@ -132,6 +132,28 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   routing fixes: good answers from 314 to 359 of 453 (69.3% to 79.2%), wrong 9 to 0, off-topic 25 to 13, silence where an
   answer was due 92 to 70, clunky 21 to 16; where to level 45 of 45, trainers 29 of 29; the holdout from 40 to 49 of 60.
   `bench_ratchet.json` tightened to these counts. `UT_ChatShapes122`. **Tests only.**
+- **Chat polish: replies stitched together read as one line** (fixes F8-F10 of the audit). A lore line that opens with
+  its own question ("who is eraliwyr? ...") answers only that question, and without its opening (`LoreChat.FitAnswer`).
+  No laugh is tacked onto a "dunno", a warning, a death, a raid line or a lore line (`AutonomousBotVoiceCorpus.IsSerious`,
+  kind `lore`). A tidy writer capitalizes the world's names ("The armsman trainer in Camelot", `AutonomousChatNames`, ported
+  to `voice_style.py`). 99 fluff and non-answer reply lines were deleted, 38 rewritten and 26 written to carry a fact (`{zone}`,
+  `{level}`, `{class}`) or a real pointer (reply lines 1,239 to 1,166; fluff 65 to 0; non-answers 73 to 5, the short honest
+  "not sure" set kept for tells). A property test (`UT_ChatStitching`) runs every
+  stitched fragment through every style and the scorer's CLUNKY checks (`ChatClunky`, kept equal to `chat_scorers.py` by
+  `clunky_cases.json`). Bench on top of the routing and shapes fixes: good answers 359 to 361 of 453,
+  clunky 16 to 0, padded 8 to 4, non-answers 1 to 0, fluff 2 to 1, silence unchanged at 70; the holdout 49 to 50 of 60,
+  clunky 3 to 0. `bench_ratchet.json` tightened to these counts. **Tests only.**
+- **The knowledge holes (audit F2, C8):** bots now answer where the realm sells potions (nobody does: alchemists make
+  them), dyes, poison, spellcraft gems, crafting tools and materials, bags (there are none: the bank), where to sell loot
+  and where the Realm Exchange is; who sells horse tickets; how to get into Darkness Falls (each realm's home entrance and
+  who holds it), the frontier (the porter to the border keep and its medallion teleporter) and the battlegrounds (the
+  porter's bracket for the asker's level); what armour a class wears (the item generator's rule, with the level the
+  heavier kind starts) and its stats (the class script's); who teaches each craft in the capital, how crafting skill rises
+  (recipe colours), what alchemy needs, how spellcraft works; NPC factions as the server keeps them (kill their enemies,
+  the examine line, the realm's emissary); kill tasks (`/task` on a named guard, to 19); and "who sells X" from the world's
+  merchant lists, with prices. New `AutonomousChatGuide`; names and prices from `tools/lore/npc_roster.json` and the public
+  OpenDAoC database. `UT_ChatGuide`. Bench on top of the routing, shapes and polish fixes: good answers 361 to 409 of 453,
+  silence where an answer was due 70 to 22, clunky still 0; `bench_ratchet.json` tightened to these counts. **Tests only.**
 
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's

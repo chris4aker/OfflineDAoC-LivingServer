@@ -549,7 +549,7 @@ public static class AutonomousChatQuestions
                 return theirs + $"a bit high for {level}, mobs there are mostly {Range(low, high)}";
             if (level > high + 3)
                 return theirs + $"itll be mostly grey for you at {level}, its {Range(low, high)}";
-            return theirs + (random.Next(2) == 0 ? $"{level} is fine there, its mostly {Range(low, high)}" : $"should be ok, mobs are {Range(low, high)}");
+            return theirs + (random.Next(2) == 0 ? $"{level} is fine there, its mostly {Range(low, high)}" : $"fine at {level}, mobs are {Range(low, high)}");
         }
         return theirs + (random.Next(3) switch
         {
