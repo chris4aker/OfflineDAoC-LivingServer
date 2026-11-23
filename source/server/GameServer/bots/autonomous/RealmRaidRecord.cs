@@ -104,8 +104,9 @@ public static class RealmRaidRecord
 
     /// <summary>
     /// A ledger's rows as results, each raid size carried over to the encounter's period size today
-    /// (<see cref="RaidPeriodSizes.Rebase"/>): a row of 166% of 64 at an encounter now sized 80 reads as 132.8%, the same
-    /// 106 bots. A row that does not say what its size is of (every row before 1.2.2) is of the period size before the raise.
+    /// (<see cref="RaidPeriodSizes.Rebase"/>): a row of 125% of 80 (a 1.2.2 test build's withdrawn raise) at an encounter now
+    /// sized 64 reads as 156.25%, the same 100 bots. A row that does not say what its size is of (every row before 1.2.2) is
+    /// of the period size before any raise.
     /// </summary>
     public static List<RaidResult> FromLedger(string raidId, IEnumerable<(string Outcome, int SpecialForces, double? SizePercent, int? SizeOf)> rowsOldestFirst) =>
         CountedResults((rowsOldestFirst ?? []).Select(row => new RaidResult(row.Outcome, row.SpecialForces > 0,

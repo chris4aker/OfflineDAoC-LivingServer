@@ -23,21 +23,10 @@ namespace DOL.UnitTests
         public void SizeIsEraStartOrANumber(string word, int period, int expected) =>
             Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period), Is.EqualTo(expected));
 
-        [TestCase("source", 80, 64, 64)]
-        [TestCase("source", 80, 40, 40)]
-        [TestCase("source", 100, 0, 100)]
-        [TestCase("start", 80, 64, 100)]
-        [TestCase("era", 112, 100, 112)]
-        public void SourceReplaysARaisedRaidAtItsSizeBeforeTheRaise(string word, int period, int source, int expected) =>
-            Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period, source), Is.EqualTo(expected));
-
-        [Test]
-        public void SourceIsThePeriodSizeBeforeTheRaise()
-        {
-            Assert.That(RaidPeriodSizes.EraBots("summoners-midgard"), Is.EqualTo(64));
-            Assert.That(RaidPeriodSizes.EraBots("openworld-albion-greenknight"), Is.EqualTo(40));
-            Assert.That(RaidPeriodSizes.EraBots("darkness-midgard"), Is.EqualTo(64), "not raised: its period size");
-        }
+        // 1.2.2's "source" (the size before a raise) went with the raises, withdrawn 2026-11-23: no longer a size word.
+        [TestCase("source", 64, 0)]
+        public void SourceIsNoLongerASizeWord(string word, int period, int expected) =>
+            Assert.That(EpicPlaytestCommandHandler.SizeFor(word, period), Is.EqualTo(expected));
 
         [TestCase(100, 80)]
         [TestCase(64, 52)]

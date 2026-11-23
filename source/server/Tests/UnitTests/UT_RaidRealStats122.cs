@@ -204,7 +204,7 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void WithHerRealMeleeRoesiasRaiseToTheLimitHolds()
+        public void WithHerRealMeleeRoesiasModelGridIsPinned()
         {
             // The calibration first: without cures the raid still falls (b1b6846: about 1.5 minutes, her lowest 76%).
             var none = Enumerable.Range(0, 16).Select(s => Sim.RoesiaFight.Run(s, 77, Sim.CureRule.Sweep7b, "midgard", cures: false,
@@ -217,7 +217,9 @@ namespace DOL.UnitTests
                 Assert.That(none.Average(x => x.FirstMinutePain), Is.InRange(105_000, 165_000));
             });
             // Python mirror, 16 seeds (sweep 7b, round 2). 64 seeds (docs/RAID-SIZES.md): round 2 at 80 wins Albion 15,
-            // Hibernia 7, Midgard 0 of 64; the 1.2 rule 0-5 of 64 there: raised to the limit (80) holds.
+            // Hibernia 7, Midgard 0 of 64. 1.2.2's raise to 80 rested on this and was withdrawn on audit (owner, 2026-11-23):
+            // the tactic loses at 80 in every realm, more curers win less, and the control wins at the 100 a raid starts at.
+            // Summoner's Hall stays at 64; this pins the model, not a size.
             int[] sizes = [64, 80, 96, 112];
             var won = new Dictionary<(string, int, Sim.CureRule), int>();
             foreach (string realm in new[] { "midgard", "albion", "hibernia" })
