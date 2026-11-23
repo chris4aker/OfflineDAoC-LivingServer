@@ -3,8 +3,8 @@ using OfflineDaoc.Updates;
 namespace OfflineDaoc.Launcher;
 
 // Living Server updates in the launcher's window (the work itself is in Updates/LauncherUpdater.cs):
-// - beside the version, the Living Server build, a "Check for updates" link, the "Check automatically" setting and
-//   a line for news (a newer build and the first line of its release notes, the download, the last update's result);
+// - beside the version label (which names the Living Server build), a "Check for updates" link, the "Check
+//   automatically" setting and a line for news (a newer build and the first line of its release notes, the download, the last update's result);
 // - when a newer build is out, START SERVER reads GET UPDATE until the player decides: Install, Later or Skip this
 //   version;
 // - Install only with the server, the game and any other launcher closed; the launcher then hands over to the
@@ -24,13 +24,6 @@ internal sealed partial class MainForm
         BackColor = Color.Transparent,
         Margin = Padding.Empty,
         Padding = Padding.Empty,
-    };
-    private readonly Label _updateBuild = new()
-    {
-        AutoSize = true,
-        ForeColor = Color.FromArgb(196, 145, 70),
-        Font = new Font("Georgia", 8.5f, FontStyle.Bold),
-        Margin = new Padding(0, 2, 8, 0),
     };
     private readonly LinkLabel _checkUpdatesLink = new()
     {
@@ -69,8 +62,9 @@ internal sealed partial class MainForm
     {
         if (LauncherBuild.Version == null)
             return; // a build without a Living Server name has nothing to compare
-        _updateBuild.Text = "LIVING SERVER " + LauncherBuild.Version.DisplayName.ToUpperInvariant();
-        _updateStrip.Controls.AddRange([_updateBuild, _checkUpdatesLink, _autoUpdateCheck, _updateProgress]);
+        // The version label itself names the build now ("LIVING SERVER 1.2.2", MainForm.VersionLabel), so the strip holds
+        // only the update controls.
+        _updateStrip.Controls.AddRange([_checkUpdatesLink, _autoUpdateCheck, _updateProgress]);
         titlePanel.Controls.Add(_updateStrip);
         titlePanel.Controls.Add(_updateStatus);
         titlePanel.Layout += (_, _) =>

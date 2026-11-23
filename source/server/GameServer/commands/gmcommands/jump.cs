@@ -304,7 +304,7 @@ namespace DOL.GS.Commands
 					if (targetPlayer == null && JumpBotTargets.FindPlayerOrBot(client.Player, args[1], out _) is GameBot xyzBot)
 					{
 						if (!JumpBotTargets.TryMove(xyzBot, xyzBot.CurrentRegionID, Convert.ToInt32(args[3]), Convert.ToInt32(args[4]), Convert.ToInt32(args[5]), xyzBot.Heading, client.Player))
-							client.Out.SendMessage($"{xyzBot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+							client.Out.SendMessage(JumpBotTargets.FailureText(xyzBot), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						return;
 					}
 					if (targetPlayer == null)
@@ -324,7 +324,7 @@ namespace DOL.GS.Commands
 					if (targetPlayer == null && JumpBotTargets.FindPlayerOrBot(client.Player, args[1], out _) is GameBot regionBot)
 					{
 						if (!JumpBotTargets.TryMove(regionBot, Convert.ToUInt16(args[6]), Convert.ToInt32(args[3]), Convert.ToInt32(args[4]), Convert.ToInt32(args[5]), regionBot.Heading, client.Player))
-							client.Out.SendMessage($"{regionBot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+							client.Out.SendMessage(JumpBotTargets.FailureText(regionBot), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						return;
 					}
 					if (targetPlayer == null)
@@ -380,7 +380,7 @@ namespace DOL.GS.Commands
 						if (JumpBotTargets.TryMove(bot, destination.CurrentRegionID, destination.X, destination.Y, destination.Z, destination.Heading, client.Player))
 							client.Out.SendMessage($"{bot.Name} jumps to {(destination == client.Player ? "you" : destination.Name)} in {destination.CurrentRegion?.Description}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						else
-							client.Out.SendMessage($"{bot.Name} could not be moved there.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+							client.Out.SendMessage(JumpBotTargets.FailureText(bot), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						return;
 					}
 

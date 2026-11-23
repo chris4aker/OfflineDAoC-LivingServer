@@ -537,6 +537,80 @@ public static class AutonomousDarknessFallsNavigation
         return false;
     }
 
+    /// <summary>The full certificate's links, for autonomous gamebots (null while the certificate is closed): a gamebot
+    /// takes a stair fall only with the full certificate (<see cref="TryGetCertifiedFall"/>), and climbs the same way.</summary>
+    public static IReadOnlyList<TraversalLink> CertifiedFallLinks => IsReady ? CertificateData.Value.TraversalLinks : null;
+
+    /// <summary>One step up Darkness Falls' entrance stairs (#438, 1.2.2): a certified fall walked backwards. The bot walks
+    /// to the fall's landing (<see cref="Foot"/>), rises over it to the air point at lip height (<see cref="Air"/>, the
+    /// collision-checked column the fall comes down) and steps onto the lip (<see cref="Lip"/>). <see cref="Top"/> is the
+    /// highest lip of the chain of drops above, the point whose path to the destination must be complete.</summary>
+    public readonly record struct StairClimb(Vector3 Foot, Vector3 Air, Vector3 Lip, Vector3 Top, int Steps);
+
+    /// <summary>How far (XY) from a drop's landing a bot on that floor still plans the climb: the hall floor of each realm
+    /// is flat to the exit, and a partial path toward the top of the stairs led 100-250 polygons into other levels.</summary>
+    public const float StairClimbReach = 1500f;
+    private const float StairFloorTolerance = 32f;
+    private const float StairChainReach = 640f;
+
+    /// <summary>Pure (#438, 1.2.2): the next step up the stairs for a bot at <paramref name="actor"/> heading for a
+    /// <paramref name="destination"/> at or above a drop's lip. The navmesh has the drops one way only (each a one-way
+    /// off-mesh link), so the path up is partial: it ends at the foot of the stairs, or, for a goal near the arrival
+    /// point, 100-250 polygons away on another level. The caller still checks the navmesh: the foot reachable from the
+    /// bot, and <see cref="StairClimb.Top"/> reaching the destination.</summary>
+    public static bool TryPlanStairClimb(Vector3 actor, Vector3 destination, IReadOnlyList<TraversalLink> links,
+        out StairClimb climb)
+    {
+        climb = default;
+        if (links == null || !Finite(actor) || !Finite(destination)) return false;
+        TraversalLink first = null;
+        float best = float.PositiveInfinity;
+        foreach (TraversalLink link in links)
+        {
+            if (link?.Kind != "Fall" || !ValidTraversalLink(link)) continue;
+            Vector3 start = Point(link.Start), end = Point(link.End);
+            // The bot stands on this drop's lower floor and the destination is at or above its lip.
+            if (Math.Abs(actor.Z - end.Z) > StairFloorTolerance || destination.Z < start.Z - StairFloorTolerance) continue;
+            float distance = Vector2.Distance(new(actor.X, actor.Y), new(end.X, end.Y));
+            if (distance > StairClimbReach || distance >= best) continue;
+            best = distance;
+            first = link;
+        }
+        if (first == null) return false;
+
+        Vector3 top = Point(first.Start);
+        int steps = 1;
+        for (int guard = 0; guard < 8; guard++)
+        {
+            TraversalLink next = null;
+            foreach (TraversalLink link in links)
+            {
+                if (link?.Kind != "Fall" || !ValidTraversalLink(link)) continue;
+                Vector3 start = Point(link.Start), end = Point(link.End);
+                if (Math.Abs(end.Z - top.Z) <= StairFloorTolerance && start.Z > top.Z + 64 &&
+                    Vector2.Distance(new(end.X, end.Y), new(top.X, top.Y)) <= StairChainReach)
+                {
+                    next = link;
+                    break;
+                }
+            }
+            if (next == null) break;
+            top = Point(next.Start);
+            steps++;
+        }
+        climb = new(Point(first.End), Point(first.Air), Point(first.Start), top, steps);
+        return true;
+    }
+
+    /// <summary>Pure: the bot stands at the foot of the climb (the fall's landing), ready to rise.</summary>
+    public static bool IsAtStairFoot(Vector3 actor, StairClimb climb) =>
+        Vector2.Distance(new(actor.X, actor.Y), new(climb.Foot.X, climb.Foot.Y)) <= 24 &&
+        Math.Abs(actor.Z - climb.Foot.Z) <= StairFloorTolerance;
+
+    private static Vector3 Point(float[] value) => new(value[0], value[1], value[2]);
+
+    private static bool Finite(Vector3 value) => float.IsFinite(value.X) && float.IsFinite(value.Y) && float.IsFinite(value.Z);
+
     public static bool TryResolveFall(Vector3 actor, Vector3 nextNode, IReadOnlyList<TraversalLink> links,
         out Vector3 air, out Vector3 landing)
     {

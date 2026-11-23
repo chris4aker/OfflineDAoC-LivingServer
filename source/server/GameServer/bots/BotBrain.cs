@@ -692,6 +692,10 @@ namespace DOL.AI.Brain
         private DbInventoryItem _pendingExchangeItem;
         private int _pendingExchangePrice;
         private AutonomousWorldBotController _autonomousWorldController;
+
+        /// <summary>A GM's /jump moved this gamebot: the trip its controller planned from the old spot is dropped
+        /// (<see cref="AutonomousWorldBotController.ForgetTripAfterGmMove"/>). Nothing when it has no controller yet.</summary>
+        internal void ForgetAutonomousTrip() => _autonomousWorldController?.ForgetTripAfterGmMove(BotBody);
         private long _nextFidelityCheckTick;
         private long _nextNaturalMobWakeTick;
         private eAutonomousFidelity _cachedFidelity = eAutonomousFidelity.Efficient;

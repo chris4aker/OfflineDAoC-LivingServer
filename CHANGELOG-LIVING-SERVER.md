@@ -67,6 +67,45 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   does. Frontier sieges and battleground storms; autonomous gamebots only (companions keep their own paths). Lord radii
   and stats unchanged. `RvrLordFormation`, log `RVR_LORD_FORMATION role= dist=`. **Tests only** (#416).
 
+**Launcher, GM tools and tests**
+- **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window
+  title "Offline DAoC Living Server 1.2.2", both from `ForkBuildInfo.BuildName` (stamped into the launcher, the name the
+  server logs as `FORK_BUILD`), so they can't drift from the build. Up to 1.2.1 they said "VERSION 0.37" (0.37b, 0.37c):
+  the 0.3x line is retired (AGENTS.md, "One edition from now on"). The update strip's separate build label is gone.
+  `ForkBuildInfo.BaseRelease` (0.37) still names the game the build installs on; `check_versions.py` now fails a
+  pinned `DisplayVersion`. **Tests only.**
+- **GM `/jump` and dead or travelling bots (#438 follow-up).** A dead bot is refused before anything about it changes,
+  and the GM is told why (its body stays where it fell, `GameBot.RefuseCorpseMove`; 1.2.1 stripped its state, hit the
+  refusal with a stack-trace warning and said only "could not be moved there"); the log has `GM_JUMP_BOT_REFUSED
+  reason=Dead`. A jumped gamebot forgets the trip it planned from the old spot (camp, patrol, town teleporter, frontier
+  porter request, a stable ride it meant to take, its keep route) and plans again; its task and group stay.
+  `GM_JUMP_BOT` now logs `region_change=`, `was_riding=` and `was_fighting=`. Other regions, stablemaster rides and
+  fights were already right (the move leaves the world, which takes the bot off every monster's aggro list); bots
+  never ride boats. The playtester's `bot-jump` scenario also jumps a dead helper. **Tests only.**
+- **`UT_AiProfile.AScopeAllocatesNothing` no longer flakes.** It failed once in CI with 3,040 bytes (2026-11-22), a
+  one-off runtime allocation on the test thread. Each of seven samples now re-enables the profiler, settles the GC and
+  counts only if the profiler stayed on; the least must stay within 64 bytes (one allocation per scope would be 2.4 MB).
+  The measured lock has its own test, with its gate made outside the measurement.
+
+**Bots and companions**
+- **Up Darkness Falls' entrance stairs (#438).** zone249.nav has each realm's stairs as three one-way drops, so no path
+  leads up them (`tools/navmesh/dfprobe`). Leaving DF never needs them: every realm's exit (zone points 74, 70, 72) is on
+  its hall floor, a complete path from the hall and from the arrival point. But a companion following its player up got
+  a partial path: it stood at the foot, or, with the player near the arrival point, walked 103 (Albion) to 235 (Midgard)
+  nodes into another level, within the 3,000-unit recall range. A gamebot in a player's group stood (DF refuses it partial
+  paths). Now a bot whose path toward a goal at or above a drop's lip is partial walks to that drop's landing and climbs
+  the certified fall backwards (rise over the landing to the fall's air point, step onto the lip), one drop at a time,
+  only where the navmesh agrees (the landing reachable, a complete path from the top of the stairs to the goal) and with
+  the falls' hash-guarded links (companions: the installed mesh; gamebots: the full certificate). New orders during a
+  climb only change where it goes after the lip. Server log `DF_STAIR_CLIMB`. No navmesh change. **Tests only**
+  (`UT_DarknessFallsStairClimb`; dfprobe `climb` on all nine drops).
+- **Ladders, climbs and ledge drops everywhere (#438 generalized).** A scan of all 103 shipped navmeshes found 1,262
+  off-mesh link directions in 39 zones whose middle is on no polygon, the Darkness Falls stair stall: frontier towers,
+  Fomor, Delling Crater, Caillte Garran, Trollheim, Tuscaran Glacier, Galladoria, Caer Sidi, Iarnvidiur's Lair and more.
+  Outside Darkness Falls (unchanged) a bot on a steep link walks it to the end before it replots, and a bot left inside
+  one is set down on its far end (`NAV_LINK_LANDING`). [docs/NAVMESH-DROPS.md](docs/NAVMESH-DROPS.md),
+  `tools/navmesh/navscan.cpp`. **Tests only.**
+
 **Routes**
 - **The Lough Derg / Valley of Bri Leith seam loops (#421; 200:384960,486688 and 385088,483424).** On the installed
   meshes Lough Derg has a ridge along its Connacht border (seam ground 6081, 1,379 polygons) that joins no other Lough

@@ -28,6 +28,7 @@ g++ -O2 -std=c++17 -DDT_POLYREF64 -I$D/Include tools/navmesh/dfprobe.cpp $D/Sour
 | `dfprobe zone.nav walk x y z x y z step` | `moveAlongSurface` in steps of `step` units, and where it is blocked |
 | `dfprobe zone.nav offmesh x0 y0 x1 y1` | The off-mesh links in a box |
 | `dfprobe zone.nav fall lip(xyz) air(xyz) landing(xyz) goal(xyz)` | A certified stair drop: the samples on no polygon for the old diagonal slide and for the walk-off-the-lip + drop, then the path on from the landing |
+| `dfprobe zone.nav climb landing(xyz) air(xyz) lip(xyz) goal(xyz)` | A certified drop walked backwards: the path up from the landing (before), the samples on no polygon for the rise and the step onto the lip, then the path on from the lip |
 | `dfprobe zone.nav reach x y z x y z [x y z ...]` | Whether each target's polygon is reached from the start's over the mesh links (a flood with the server's filter; off-mesh links one way) |
 | `dfprobe zone.nav corridor x y z x y z` | The server's corridor check (`CalculateCompleteCorridorCore`): up to 16 path segments, each partial one continued |
 | `dfprobe zone.nav border x y z axis border lo hi step zlo zhi` | axis x or y: every floor 64 inside a zone border, starred where the start reaches it |
@@ -73,6 +74,32 @@ and a bot left inside a drop anyway is set down on that drop's landing (`DF_STAI
 landing. The drop itself still has no polygon in its middle, which is why the fall is not replotted and why the landing
 rule exists. Tests only.
 
+## The way up (1.2.2, 2026-11-22)
+
+Same mesh. **Leaving DF does not need the stairs:** each realm's exit zone point is on its hall floor, below them, and
+the paths there are complete from the hall floor and from the arrival point (Albion `path 34400 27990 22386 36118 30504
+22381` 32 nodes, `path 31211 27924 22893 36118 30504 22381` 55; Midgard to 11920,18671,22380: 16 and 35; Hibernia to
+41722,36569,20333: 18 and 52).
+
+**Going up there is no path**, and the partial one depends on where the goal is:
+
+| From the hall floor to | Albion | Midgard | Hibernia |
+|---|---|---|---|
+| the top of the stairs | 4 nodes, ends at the foot | 5 nodes, the foot | 4 nodes, the foot |
+| the arrival point | 103 nodes, ends at 30395,27411,20180 (2,700 below it) | 235 nodes, ends at 18315,21055,21543 | 31 nodes, ends at 42945,40751,20701 |
+
+A companion follows a partial path ("Continue to the next node, even on partial paths"), so with its player near the
+arrival point it walked into another level and stayed there: the end is within the 3,000-unit recall range of the
+arrival for Albion and Midgard. A companion with a formation order (its player walking) and an autonomous gamebot (DF
+refuses it partial paths) stood at the foot instead.
+
+`climb` with each drop's landing, air point and lip (the certificate's `directedFalls`) toward the realm's arrival:
+before, the path from every landing is partial; the rise has the fall's own dead window (Albion 4, 10, 0 of 51; Midgard
+4, 11, 0; Hibernia 4, 10, 0), which the 1.2.1 landing repair covers; the step onto the lip is on a polygon at every
+sample; from the top lip the path to the arrival is complete in all three realms, and from each lower lip the next
+drop's landing is a complete walk (3-5 nodes). The server climbs this chain (`TryPlanStairClimb`, `DF_STAIR_CLIMB`).
+Tests only.
+
 ## Lough Derg / Valley of Bri Leith seam (issue #421, 2026-11-22)
 
 Meshes: `zone200.nav` sha256 `5919e10e04ec50234f842b197ab6a67b1043a50475f14ca7ae1cd34436e45fcc`, `zone206.nav`
@@ -111,3 +138,18 @@ proved there) and not for a goal whose road anchor is on other ground.
 
 Valley main to the DF portal, after: 385088,488544 > 384960,488544 (Lough Derg main), then 350240,483392 >
 350240,483264 into Connacht, which reaches the portal. Tests only.
+
+## Every zone: navscan (1.2.2, docs/NAVMESH-DROPS.md)
+
+`navscan.cpp` (same build line, `navscan` for the output) prints one JSON line per off-mesh connection direction (dead
+samples on the straight lip-to-landing line and on the walk-off-then-descend shape, whether both ends are linked,
+whether a path between the ends crosses it, path length with and without Jump links) and per sheer step between two
+linked ground polygons (floors more than 64 apart at the same spot, with the dead samples between them).
+
+| Script | What it does |
+|---|---|
+| `scan_all_zones.py --navscan navscan --out scan.jsonl --dir <navmesh folder>` | Scans every `zoneNNN.nav` (or `--zip-entries entries.json` to pull them from the v0.36b download with HTTP ranges; `--delete` removes each after its scan) |
+| `summarize_drops.py scan.jsonl --table navmesh-drops.json --sites sites.json` | Writes the committed table (each zone's sha256 and every stuck-prone link) and the site clusters |
+
+`navmesh-drops.json` is the 2026-11-22 scan of the v0.36b navmeshes (the 1.2 set); `UT_NavLinkLegs` checks the mover's
+link rules against it.

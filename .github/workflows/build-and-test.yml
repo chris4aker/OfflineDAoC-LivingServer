@@ -12,8 +12,9 @@ permissions:
   contents: read
 
 jobs:
-  # README.md, ForkBuildInfo.BuildName, MainForm.DisplayVersion and the newest released changelog heading must name the
-  # same release (audit 2026-11-03 §8.6; main said Beta 1.1 after 1.1.1 was out). Also the release scripts' own tests.
+  # README.md, ForkBuildInfo.BuildName and the newest released changelog heading must name the same release (audit
+  # 2026-11-03 §8.6; main said Beta 1.1 after 1.1.1 was out), and MainForm.DisplayVersion must read that build
+  # (LauncherBuild.Name), never a pinned version. Also the release scripts' own tests.
   versions:
     runs-on: ubuntu-latest
     timeout-minutes: 5
