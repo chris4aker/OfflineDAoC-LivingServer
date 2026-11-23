@@ -2768,7 +2768,9 @@ public static partial class AutonomousBotChatCoordinator
         // someone to come and help is answered on the help path (HelpRequestReply: the promise gate, or an honest no), never by
         // a lore or place answer.
         bool helpCall = voices && IsHelpCall(message, shape);
-        if (helpCall)
+        // 1.2.2 (AutonomousChatReplyPath.KnowledgeFirst): a call for help, or a question to the bot named about itself, isn't
+        // answered by the knowledge lookup.
+        if (voices && !AutonomousChatReplyPath.KnowledgeFirst(message, intent, helpCall, directed))
         {
             hasKnowledge = false;
             knowledge = null;
