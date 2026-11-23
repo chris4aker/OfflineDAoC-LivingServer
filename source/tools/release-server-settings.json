@@ -85,6 +85,7 @@
   "crafting_skill_rate": "1",
   "econ_trade_lines": "False",
   "economy_ledger_enabled": "True",
+  "endurance_regen_amount_modifier": "1",
   "epic_armor_counts_bots": "True",
   "epic_aroon_damage_order": "True",
   "epic_beatha_heals_xaga": "True",
