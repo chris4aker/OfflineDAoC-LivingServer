@@ -47,8 +47,8 @@ namespace DOL.GS
         public static readonly OpenWorldRaid[] Raids =
         [
             // Albion
-            new("openworld-albion-greenknight", "Green Knight", eRealm.Albion, 1, "OFGreenKnight", 40, null,
-                "about Grand Summoner difficulty, 4-5 groups (Albion epic raid guide, FreddysHouse 115688, Feb 2003)"),
+            new("openworld-albion-greenknight", "Green Knight", eRealm.Albion, 1, "OFGreenKnight", 80, null,
+                "about Grand Summoner difficulty, 4-5 groups (Albion epic raid guide, FreddysHouse 115688, Feb 2003); 40 until 1.2.2, raised to 80 (RaidPeriodSizes)"),
             new("openworld-albion-coliath", "Coliath", eRealm.Albion, 51, "Colialt", 64, null,
                 "about Legion difficulty (Albion epic raid guide, Feb 2003); sized as Legion (64)"),
             new("openworld-albion-emthoro", "Spirit of Lord Emthoro", eRealm.Albion, 51, "SpiritOfLordEmthoro", 40, null,

@@ -79,6 +79,12 @@ In a playable folder:
     classic quality and losses), the owner's epic encounter options and the bot schedule (`bot_schedule_mode` off: the
     whole roster online; owner, 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is
     off by default"). The Sluaghbinder edition switch stays edition-specific.
+- **Raid sizes: raise a size, never weaken a boss.** Owner, 2026-11-22: "If the mechanics and tactics are working but the
+  period raider size from logs isn't cutting it, and adding more bots without it becoming a Zerg wins, we should bump the
+  suggested raider and period size." A period size (`SuggestedBots`) is raised only by the rule in
+  [docs/RAID-SIZES.md](docs/RAID-SIZES.md) ("Raising a period size"): the tactic works in a sim, the smallest whole-party
+  size reaching about two wins in three (or the limit), at most twice the period source's figure and never past 300, and the rules from
+  before the tactic still lose at that size (`RaidPeriodSizes.Raises`).
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**

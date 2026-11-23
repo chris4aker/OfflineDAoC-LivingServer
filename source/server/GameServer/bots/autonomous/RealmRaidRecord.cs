@@ -102,6 +102,15 @@ public static class RealmRaidRecord
     public static List<RaidResult> FromLedger(IEnumerable<(string Outcome, int SpecialForces, double? SizePercent)> rowsOldestFirst) =>
         CountedResults((rowsOldestFirst ?? []).Select(row => new RaidResult(row.Outcome, row.SpecialForces > 0, row.SizePercent)));
 
+    /// <summary>
+    /// A ledger's rows as results, each raid size carried over to the encounter's period size today
+    /// (<see cref="RaidPeriodSizes.Rebase"/>): a row of 166% of 64 at an encounter now sized 80 reads as 132.8%, the same
+    /// 106 bots. A row that does not say what its size is of (every row before 1.2.2) is of the period size before the raise.
+    /// </summary>
+    public static List<RaidResult> FromLedger(string raidId, IEnumerable<(string Outcome, int SpecialForces, double? SizePercent, int? SizeOf)> rowsOldestFirst) =>
+        CountedResults((rowsOldestFirst ?? []).Select(row => new RaidResult(row.Outcome, row.SpecialForces > 0,
+            RaidPeriodSizes.Rebase(raidId, row.SizePercent, row.SizeOf))));
+
     /// <summary>Starts loading the record from the ledger, once, off the game loop.</summary>
     public static void EnsureLoading()
     {
@@ -111,7 +120,7 @@ public static class RealmRaidRecord
         {
             var loaded = new Dictionary<string, List<RaidResult>>(StringComparer.Ordinal);
             foreach (string id in ids)
-                loaded[id] = FromLedger(RealmEventRecords.FinishedResults(id, LedgerRows, automaticOnly: true));
+                loaded[id] = FromLedger(id, RealmEventRecords.FinishedSizedResults(id, LedgerRows, automaticOnly: true));
             lock (Sync)
             {
                 foreach (var (id, result) in EndedBeforeLoad) Append(loaded, id, result);

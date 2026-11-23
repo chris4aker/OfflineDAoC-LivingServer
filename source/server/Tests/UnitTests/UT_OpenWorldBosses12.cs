@@ -195,7 +195,9 @@ namespace DOL.UnitTests
                     Assert.That(d.IsOpenWorld && !d.IsDungeon && !d.IsNeutral, Is.True, raid.Id);
                     Assert.That((d.Realm, d.Region, d.BossType, d.SuggestedBots), Is.EqualTo((raid.Realm, raid.Region, raid.BossType, raid.SuggestedBots)));
                     Assert.That(d.FinalTypes, Is.EqualTo(new[] { raid.BossType }), raid.Id);
-                    Assert.That(raid.SuggestedBots, Is.InRange(RealmRaidRecruitmentPolicy.MinimumScaledBots, 64), raid.Id + ": the period size, never under 40");
+                    // 40-64, or a 1.2.2 raise within its no-zerg limit (the Green Knight: 80).
+                    Assert.That(raid.SuggestedBots, Is.InRange(RealmRaidRecruitmentPolicy.MinimumScaledBots,
+                        RaidPeriodSizes.Of(raid.Id) is { } raise ? RaidPeriodSizes.NoZergLimit(raise.SourceBots) : 64), raid.Id + ": the period size, never under 40");
                     Assert.That(RealmRaidMuster.Hubs.Any(h => h.Event == raid.Id && h.Region == raid.Region), Is.True, raid.Id + ": a hub in its region");
                     Assert.That(T.For(raid.BossType), Is.Not.Null, raid.Id + ": its plan");
                     Assert.That(raid.Evidence, Is.Not.Empty, raid.Id);
@@ -208,6 +210,8 @@ namespace DOL.UnitTests
                 "Morgana is no raid boss of the period; Fomor City has no path in on its navmesh");
             Assert.That(OW.Of("openworld-midgard-glaciergiant").SuggestedBots, Is.EqualTo(48), "5-6 groups (FreddysHouse, Dec 2003)");
             Assert.That(OW.Of("openworld-albion-coliath").SuggestedBots, Is.EqualTo(64), "Legion's size: about Legion difficulty");
+            Assert.That(OW.Of("openworld-albion-greenknight").SuggestedBots, Is.EqualTo(80), "raised in 1.2.2: 2 x 4-5 groups");
+            Assert.That(OW.Of("openworld-hibernia-marfoirwort").SuggestedBots, Is.EqualTo(40), "kept: 1.2.1 wins at 40 in its sim");
         }
 
         // ---- the schedule ------------------------------------------------------------------------------------------------
