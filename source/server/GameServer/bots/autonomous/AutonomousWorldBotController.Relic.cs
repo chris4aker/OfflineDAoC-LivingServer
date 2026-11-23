@@ -369,6 +369,9 @@ public sealed partial class AutonomousWorldBotController
                      $"height={(int)Math.Abs(bot.Z - lord.Z)} reach={(int)reach} walk={(walking ? "path" : "none")} region={bot.CurrentRegionID}");
         if (!walking)
         {
+            // 1.2.2 regression audit, item 3: melee and tanks keep him (keeps changed hands with 1.2's BotBrain walk-in to
+            // its hold radius, ccba364 and 19e7037); only a caster, archer or healer gives him up for another target.
+            if (RvrLordFormation.KeepsLordOnFailedWalk(LordFormationRole(bot))) return false;
             brain.RemoveFromAggroList(lord);
             if (bot.TargetObject == lord) bot.TargetObject = null;
             return false;

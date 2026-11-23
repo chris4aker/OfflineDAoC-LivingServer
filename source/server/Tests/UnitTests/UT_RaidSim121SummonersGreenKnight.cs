@@ -15,7 +15,7 @@ namespace DOL.UnitTests
     /// 1.2.1 raid simulation pass (owner 2026-11-22: "Do the simulation"), issues #410 (Summoner Roesia, Grand Summoner
     /// Govannon) and #412 (the Green Knight, Marfoirwort). Deterministic models of the fights, built on the bosses' own
     /// numbers (read from their scripts here) and the bots' own decision functions (RaidCurePoison.Decide, InDanger and
-    /// IsFresh, EpicEncounterTactics.LeechMeleeSpot, LeechRangeSpot, SpreadSpot, GreenKnightMeleeTree and
+    /// IsFresh, EpicEncounterTactics.LeechMeleeRoleFor, LeechMeleeAdvice, LeechRangeSpot, SpreadSpot, GreenKnightMeleeTree and
     /// GreenKnightPeelTree), calibrated where the owner's PC logs give a number. Everything else is an assumption, named where
     /// it is used. Tests only: nothing here has been seen in a PC log. Each model uses its own seeded generator
     /// (<see cref="Rng"/>) so the numbers in the PR and the issues are the numbers these tests compute (a Python mirror of
@@ -130,9 +130,24 @@ namespace DOL.UnitTests
             // Without health points (older callers) the order is the percentage, as before.
             var old = dotted.Select(d => d with { Health = 0 }).ToList();
             Assert.That(RaidCurePoison.Choose(old, 9), Is.EqualTo(2));
+            // 1.2.2 (audit finding 8): its party in danger, only another party's raiders fresh: it heals (1.2.1 cured them).
+            var othersFresh = new List<RaidCurePoison.Dotted>
+            {
+                new(1, true, 60, 960, false), new(4, false, 30, 420, true), new(5, false, 35, 500, true),
+            };
+            Assert.That(RaidCurePoison.Decide(true, true, false, true, othersFresh, 1, false, 9), Is.EqualTo((RaidCurePoison.Cure.None, -1)));
+            Assert.That(RaidCurePoison.Decide(true, true, false, true, othersFresh, 1, false, 9, ownPartyFirst: false).Cure,
+                Is.EqualTo(RaidCurePoison.Cure.Single), "the 1.2.1 rule sent it to another party");
+            // A dotted member of its own party under a quarter: the heal first, whatever else is fresh.
+            var ownLow = dotted.Append(new(6, true, 20, 300, false)).ToList();
+            Assert.That(RaidCurePoison.Decide(true, true, false, true, ownLow, 1, false, 9), Is.EqualTo((RaidCurePoison.Cure.None, -1)));
+            // Nobody in danger: as before, another party's raider may be cured.
+            Assert.That(RaidCurePoison.Decide(true, true, false, true, othersFresh, 0, false, 9).Cure, Is.EqualTo(RaidCurePoison.Cure.Single));
         }
 
-        public enum CureRule { Sweep7b, Round1, Round2 }
+        /// <summary>Round3: 1.2.2 (raid tactic audit finding 8), its own party's danger first (RaidCurePoison.Decide's
+        /// ownPartyFirst).</summary>
+        public enum CureRule { Sweep7b, Round1, Round2, Round3 }
 
         /// <summary>
         /// One attempt at Summoner Roesia, the raid fighting within 900 of her spawn (b1b6846's rule, back since sweep 7b).
@@ -164,6 +179,10 @@ namespace DOL.UnitTests
             public bool Won;
             public double Minutes;
             public int Lowest = 100, Fallen, Cures, FirstMinutePain;
+            /// <summary>Raiders contributing (1.2.2, the audit's process check): the living, on average over the fight (her
+            /// damage is dealt by the living only; nothing in this fight silences or moves a raider out of range).</summary>
+            public double Contributing;
+            private long _aliveSum, _steps;
 
             /// <param name="tankHit">Her melee on her target a half second (<see cref="TankHitPerHalfSecond"/>; 1.2.2: UT_RaidRealStats122).</param>
             /// <param name="dsHit">Her damage shield on a melee raider's swing (<see cref="DsHit"/>; 1.2.2: UT_RaidRealStats122).</param>
@@ -279,7 +298,7 @@ namespace DOL.UnitTests
                                 bool dotted = painUntil[m] > now;
                                 if (rule == CureRule.Sweep7b ? pct < RaidCurePoison.DangerPercent : RaidCurePoison.InDanger(pct, dotted)) danger++;
                             }
-                            bool round2 = rule == CureRule.Round2;
+                            bool round2 = rule is CureRule.Round2 or CureRule.Round3;
                             var dottedList = new List<RaidCurePoison.Dotted>();
                             for (int m = 0; m < n; m++)
                             {
@@ -289,7 +308,7 @@ namespace DOL.UnitTests
                             }
                             var claimed = new HashSet<long>(healers.Where(x => pending[x] == "single").Select(x => (long)pendingTarget[x]));
                             var (cure, pick) = RaidCurePoison.Decide(true, now >= nextCure[h], false, true, dottedList, danger, false, h,
-                                id => claimed.Contains(id));
+                                id => claimed.Contains(id), ownPartyFirst: rule == CureRule.Round3);
                             if (cure != RaidCurePoison.Cure.None && pick >= 0)
                             {
                                 pending[h] = "single";
@@ -319,6 +338,9 @@ namespace DOL.UnitTests
                         }
                     }
                     boss -= DealtPerRaiderMs * (n - f.Fallen) * Step;
+                    f._aliveSum += n - f.Fallen;
+                    f._steps++;
+                    f.Contributing = f._aliveSum / (double)f._steps;
                     f.Lowest = Math.Min(f.Lowest, Math.Max(0, (int)Math.Floor(boss * 100 / bossMax)));
                     f.Minutes = now / 60_000.0;
                     if (boss <= 0) { f.Won = true; return f; }
@@ -336,7 +358,8 @@ namespace DOL.UnitTests
         private static string Show(string what, RoesiaFight[] r) =>
             $"{what}: won {r.Count(x => x.Won)}/{r.Length}, minutes {r.Min(x => x.Minutes):0.0}-{r.Max(x => x.Minutes):0.0} " +
             $"(mean {r.Average(x => x.Minutes):0.0}), her lowest {r.Min(x => x.Lowest)}-{r.Max(x => x.Lowest)}%, " +
-            $"first-minute Pain {r.Min(x => x.FirstMinutePain):N0}-{r.Max(x => x.FirstMinutePain):N0}";
+            $"first-minute Pain {r.Min(x => x.FirstMinutePain):N0}-{r.Max(x => x.FirstMinutePain):N0}, " +
+            $"raiders contributing {r.Average(x => x.Contributing):0.0}";
 
         [Test]
         public void WithoutCuresTheModelLosesAsB1b6846Did()
@@ -390,6 +413,14 @@ namespace DOL.UnitTests
                 "midgard 64: 0 0 0; midgard 80: 0 2 1; midgard 93: 0 6 13; midgard 106: 0 9 16; midgard 128: 0 15 16; " +
                 "albion 64: 0 0 0; albion 80: 0 1 2; albion 93: 0 0 7; albion 106: 0 0 15; albion 128: 0 4 16; " +
                 "hibernia 64: 0 0 0; hibernia 80: 0 0 3; hibernia 93: 0 0 13; hibernia 106: 0 2 16; hibernia 128: 0 4 16"));
+            // 1.2.2 (audit finding 8), its own party's danger first: the Python mirror (16 seeds).
+            string round3 = string.Join("; ", new[] { "midgard", "albion", "hibernia" }.SelectMany(realm => RoesiaSizes.Select(n =>
+                $"{realm} {n}: {won[(realm, n, CureRule.Round3)]}")));
+            TestContext.WriteLine("round 3: " + round3);
+            Assert.That(round3, Is.EqualTo(
+                "midgard 64: 0; midgard 80: 7; midgard 93: 14; midgard 106: 16; midgard 128: 16; " +
+                "albion 64: 0; albion 80: 7; albion 93: 13; albion 106: 15; albion 128: 16; " +
+                "hibernia 64: 0; hibernia 80: 10; hibernia 93: 14; hibernia 106: 15; hibernia 128: 16"));
         }
 
         // =============================================================================================================
@@ -407,76 +438,155 @@ namespace DOL.UnitTests
             Assert.That(T.For("Marfoirwort").SpreadRadius, Is.EqualTo(leech.Radius), "the catalog's spread is unchanged");
         }
 
-        [Test]
-        public void TheMeleeBehindHimStandClearOfTheLeechAroundHisTarget()
+        /// <summary>His target stands where he follows it to (GameNPC.StickMinimumRange: 350 x 0.375 = 131), whatever it is
+        /// told: a follow only closes.</summary>
+        private static float MarfoirwortCloseIn() =>
+            ((Marfoirwort)RuntimeHelpers.GetUninitializedObject(typeof(Marfoirwort))).StickMinimumRange;
+
+        /// <summary>The 1.2.1 melee spot (removed in 1.2.2, kept here to show why it failed): behind him at
+        /// clamp(370 - anchorToBoss, 185, 195), given whenever the raider stood within 360 of his target.</summary>
+        private static Vector3? Leech121MeleeSpot(Vector3 raider, Vector3 boss, Vector3 anchor)
         {
-            Vector3 boss = new(0, 0, 0);
-            // His target at the 185 it holds: a melee raider anywhere within reach of him is sent behind him, 370-380 from it.
-            Vector3 anchor = new(T.BehindDistance, 0, 0);
+            if (Vector2.Distance(new(raider.X, raider.Y), new(anchor.X, anchor.Y)) > T.LeechRadius + T.LeechMargin) return null;
+            float d = Vector2.Distance(new(anchor.X, anchor.Y), new(boss.X, boss.Y));
+            return EncounterMeleeStations.BehindSpot(boss, anchor, Math.Clamp(T.LeechRadius + 20 - d, T.BehindDistance, T.BehindReach), raider.Z);
+        }
+
+        [Test]
+        public void HisTargetStandsAt131SoNoMeleeSpotInReachClearsTheLeech()
+        {
+            float closeIn = MarfoirwortCloseIn();
+            Assert.That(closeIn, Is.EqualTo(131), "350 x 0.375");
+            Assert.That(closeIn + T.LeechBotMeleeReach, Is.LessThan(T.LeechRadius), "every point in bot reach of him is inside");
+            Assert.That(T.LeechClearMeleePossible(closeIn), Is.False);
+            Assert.That(T.LeechClearMeleePossible(T.BehindDistance), Is.True, "only while his target stands 185 or more from him");
+            // The 1.2.1 rule (audit finding 2): its spot lay 326 from his target, inside, so it was given again every turn.
+            Vector3 boss = Vector3.Zero, anchor = new(closeIn, 0, 0);
+            Vector3 spot = Leech121MeleeSpot(new(-150, 0, 0), boss, anchor).Value;
+            Assert.That(Vector2.Distance(new(spot.X, spot.Y), new(anchor.X, anchor.Y)), Is.LessThan(T.LeechRadius));
+            Assert.That(Leech121MeleeSpot(spot, boss, anchor), Is.Not.Null, "1.2.1: a new Reposition at its own spot, every turn");
+        }
+
+        [TestCase(T.LeechMeleeRole.Wait)]
+        [TestCase(T.LeechMeleeRole.Shoot)]
+        public void AtHisCloseInTheMeleeStepClearAndThenTheRuleIsDone(T.LeechMeleeRole role)
+        {
+            Vector3 boss = Vector3.Zero, anchor = new(MarfoirwortCloseIn(), 0, 0);
+            Assert.That(T.LeechMeleeRoleFor(MarfoirwortCloseIn(), false, true, role == T.LeechMeleeRole.Shoot), Is.EqualTo(role));
             for (int deg = 0; deg < 360; deg += 15)
             {
                 double a = deg * Math.PI / 180;
                 Vector3 at = new((float)(190 * Math.Cos(a)), (float)(190 * Math.Sin(a)), 0);
-                if (T.LeechMeleeSpot(at, boss, anchor) is Vector3 spot)
+                T.Advice first = T.LeechMeleeAdvice(at, boss, anchor, role, null, "tank").Value;
+                Assert.That(first.StandAt, Is.Not.Null, $"{deg} deg: inside, so it steps out");
+                Vector3 to = first.StandAt.Value;
+                Assert.That(T.ClearOfLeech(to, anchor), Is.True, $"{deg} deg");
+                // Twice at the spot: no new spot, ever (the audit's process check).
+                for (int turn = 0; turn < 2; turn++)
                 {
-                    Assert.That(Vector2.Distance(new(spot.X, spot.Y), new(anchor.X, anchor.Y)), Is.GreaterThan(T.LeechRadius + 15), $"from {deg} deg");
-                    Assert.That(Vector2.Distance(new(spot.X, spot.Y), Vector2.Zero), Is.LessThanOrEqualTo(T.BehindReach), "within bot melee reach");
+                    T.Advice? again = T.LeechMeleeAdvice(to, boss, anchor, role, null, "tank");
+                    Assert.That(again?.StandAt, Is.Null, $"{deg} deg, turn {turn}: done");
+                    Assert.That(again?.Action, Is.EqualTo(role == T.LeechMeleeRole.Shoot ? T.BotAction.None : T.BotAction.StandOff));
                 }
             }
-            // At 150 (his own close-in, before the hold) the spot behind him reaches only 345: the hold is what clears it.
-            Assert.That(150 + T.LeechBehindFor(150), Is.LessThan(T.LeechRadius));
-            Assert.That(T.LeechMeleeSpot(new(-400, 0, 0), boss, anchor), Is.Null, "already clear");
-            Assert.That(T.LeechRangeSpot(new(300, 0, 0), boss, anchor), Is.Not.Null, "at range: out of it");
+        }
+
+        [Test]
+        public void TanksTakeHimBackFromANonTankAndSwingWhenASpotClears()
+        {
+            float closeIn = MarfoirwortCloseIn();
+            Assert.That(T.LeechMeleeRoleFor(closeIn, isTank: true, anchorIsTank: false, ownsDistanceWeapon: true), Is.EqualTo(T.LeechMeleeRole.Swing));
+            Assert.That(T.LeechMeleeRoleFor(closeIn, isTank: true, anchorIsTank: true, ownsDistanceWeapon: false), Is.EqualTo(T.LeechMeleeRole.Wait));
+            Vector3 boss = Vector3.Zero, near = new(closeIn, 0, 0);
+            Assert.That(T.LeechMeleeAdvice(new(-150, 0, 0), boss, near, T.LeechMeleeRole.Swing, null, "healer"),
+                Is.EqualTo(new T.Advice(T.BotAction.None, null, null, null)), "a tank taking him back fights where it stands");
+            // He walks after a target 250 away: a spot behind him clears the leech; the melee go there, and then it is done.
+            Vector3 far = new(250, 0, 0);
+            Assert.That(T.LeechMeleeRoleFor(250, false, true, false), Is.EqualTo(T.LeechMeleeRole.Swing));
+            T.Advice behind = T.LeechMeleeAdvice(new(0, 150, 0), boss, far, T.LeechMeleeRole.Swing, null, "tank").Value;
+            Vector3 s = behind.StandAt.Value;
+            Assert.That(Vector2.Distance(new(s.X, s.Y), Vector2.Zero), Is.LessThanOrEqualTo(T.LeechBotMeleeReach));
+            Assert.That(T.ClearOfLeech(s, far), Is.True);
+            Assert.That(T.LeechMeleeAdvice(s, boss, far, T.LeechMeleeRole.Swing, null, "tank"),
+                Is.EqualTo(new T.Advice(T.BotAction.None, null, null, null)), "at its spot: done (final, no spot)");
+            Assert.That(T.LeechRangeSpot(new(300, 0, 0), boss, near), Is.Not.Null, "at range: out of it");
+            Vector3 clear = T.LeechRangeSpot(new(300, 0, 0), boss, near).Value;
+            Assert.That(T.LeechRangeSpot(clear, boss, near), Is.Null, "at range, at its spot: done");
             Assert.That(T.LeechExposure(new(0, 0, 0), new[] { (new Vector3(100, 0, 0), false), (new Vector3(0, 340, 0), true),
                 (new Vector3(400, 0, 0), false) }), Is.EqualTo((1, 1)));
         }
 
         [Test]
-        public void HisRuleKeepsEveryBotsPetOffHim()
+        public void HisRuleKeepsEveryBotsPetOffHimButShroomsPlantedClearOfTheLeech()
         {
             T.DungeonRule rule = T.AllDungeonRules.Single(r => r.Encounter == "MarfoirwortLeech");
             Assert.That(rule.Targets, Is.EqualTo(new[] { nameof(Marfoirwort) }));
             Assert.That(rule.NoPets?.Invoke(null), Is.True);
+            Assert.That(rule.PetMayHit, Is.Not.Null, "an Animist's shroom clear of the leech may hit him");
+            Assert.That(rule.PetMayHit(null, null), Is.False);
+            Assert.That(rule.FightsAtRange, Is.Not.Null);
             Assert.That(rule.Summary, Is.Not.Empty);
+            // The shroom spot: one planted at his feet moves out toward the Animist, clear of the leech; one clear stays.
+            Vector3 anchor = new(131, 0, 0), owner = new(-900, 0, 0);
+            Vector3 moved = T.LeechShroomSpot(new(-100, 0, 0), owner, anchor).Value;
+            Assert.That(T.ClearOfLeech(moved, anchor), Is.True);
+            Assert.That(Vector2.Distance(new(moved.X, moved.Y), new(owner.X, owner.Y)), Is.LessThan(900), "still between them");
+            Assert.That(T.LeechShroomSpot(moved, owner, anchor), Is.Null, "clear: kept");
         }
 
+        public enum LeechRules { Catalog12, Rule121, Rule122 }
+
         /// <summary>
-        /// Marfoirwort against a 40-raider Hibernia raid (the period size). His side, from his script: a Life-leech on 85% x 25%
-        /// of his swings (85% a hit: assumed), 450 body (his spell, read here) less 15% resists (assumed) to everyone within
-        /// 350 of his target, healing him by all of it; 40,000 health. Swing intervals of 3.0-4.5 s are tried (his template's
-        /// speed is not in the repository). The raid: 400 damage a raider a minute (the owner's PC ledger on build b1b6846,
-        /// 47 EPIC_FIGHT_LEDGER lines at the Earthmenders, pets counted in), 13 melee, 11 pets (druids, enchanters, animists),
-        /// 3 at range in his target's party and 23 at range in the others. Positions are drawn again for each leech: before,
-        /// the melee 110-200 from him all round, the pets 90-170, his target 140 from him, the catalog's SpreadSpot for the
-        /// others at range; after, his target at 185, the melee at LeechMeleeSpot (20 of slack either way), no pets (their
-        /// share of the damage, 11 of 51, is taken off), everyone at range at LeechRangeSpot.
+        /// Marfoirwort against a 40-raider Hibernia raid (the period size). His side, from his script: a Life-leech on
+        /// <paramref name="land"/> x 25% of his swings, 450 body (his spell, read here) less 15% resists (assumed) to everyone
+        /// within 350 of his target, healing him by all of it; 40,000 health. The raid: <paramref name="perMinute"/> damage a
+        /// raider (or pet) a minute (the owner's PC ledger on build b1b6846, 47 EPIC_FIGHT_LEDGER lines at the Earthmenders,
+        /// pets counted in: 51 shares for 40 raiders), 13 melee besides his target (3 of them tanks), 11 pets (druids,
+        /// enchanters, animists), 3 at range in his target's party and 23 in the others.
+        /// <para>1.2.2 (audit): a raider or pet counts only while it is in range of him (melee within bot reach and not
+        /// moved this turn; at range within 1,500), alive and not silenced (nothing silences or kills a raider in this model:
+        /// assumed, the healers stand clear of the leech), and the fight reports how many contribute. His target stands at his
+        /// real close-in (131). <see cref="LeechRules.Catalog12"/>: the melee 110-200 from him all round and the pets 90-170
+        /// fight; the catalog's SpreadSpot for the others at range. <see cref="LeechRules.Rule121"/>: the 1.2.1 melee spot
+        /// (moved every turn: never swinging), no pets, LeechRangeSpot. <see cref="LeechRules.Rule122"/>: the real
+        /// LeechMeleeRoleFor / LeechMeleeAdvice, <paramref name="shooters"/> melee with a distance weapon (shooting for
+        /// <paramref name="shotShare"/> of a share: assumed), no pets, LeechRangeSpot. Positions are drawn again for each
+        /// leech.</para>
         /// </summary>
-        public static (bool Killed, double Minutes, int Lowest, double Inside) MarfoirwortFight(int seed, bool fix, double swing, double perMinute = 400,
-            double land = 0.85)
+        public static (bool Killed, double Minutes, int Lowest, double Inside, double Contributing) MarfoirwortFight(int seed, LeechRules rules,
+            double swing, double perMinute = 400, double land = 0.85, int shooters = 0, double shotShare = 0.5)
         {
             var marf = (Marfoirwort)RuntimeHelpers.GetUninitializedObject(typeof(Marfoirwort));
             double leech = marf.MarfoirwortDD.Damage * (1 - 0.15);
             int radius = marf.MarfoirwortDD.Radius, max = marf.MaxHealth;
             var rng = new Rng(seed);
-            double hp = max, t = 0, dealt = perMinute * 40 * (fix ? 40.0 / 51 : 1);
+            double hp = max, t = 0, share = perMinute * 40 / 51;
             int lowest = 100;
-            long inside = 0, leeches = 0;
+            long leeches = 0, draws = 0;
+            double inside = 0, contributing = 0;
             while (t < 30 * 60)
             {
                 t += swing;
-                hp -= dealt * swing / 60;
+                var (k, working) = LeechDraw(rng, rules, radius, shooters, shotShare);
+                contributing += working;
+                draws++;
+                hp -= working * share * swing / 60;
                 if (rng.Next() < land * 0.25)
                 {
-                    int k = LeechInside(rng, fix, radius);
                     inside += k;
                     leeches++;
                     hp = Math.Min(max, hp + k * leech);
                 }
-                lowest = Math.Min(lowest, (int)Math.Floor(hp * 100 / max));
-                if (hp <= 0) return (true, t / 60, 0, inside / (double)Math.Max(1, leeches));
+                lowest = Math.Min(lowest, (int)Math.Floor(Math.Max(0, hp) * 100 / max));
+                if (hp <= 0) return (true, t / 60, 0, inside / Math.Max(1, leeches), contributing / draws);
             }
-            return (false, t / 60, lowest, inside / (double)Math.Max(1, leeches));
+            return (false, t / 60, lowest, inside / Math.Max(1, leeches), contributing / draws);
         }
+
+        // Backwards-compatible: true = the shipped rule (1.2.2), false = the 1.2 catalog.
+        public static (bool Killed, double Minutes, int Lowest, double Inside, double Contributing) MarfoirwortFight(int seed, bool fix,
+            double swing, double perMinute = 400, double land = 0.85) =>
+            MarfoirwortFight(seed, fix ? LeechRules.Rule122 : LeechRules.Catalog12, swing, perMinute, land);
 
         private static Vector3 Around(Rng rng, double lo, double hi)
         {
@@ -484,59 +594,97 @@ namespace DOL.UnitTests
             return new((float)(d * Math.Cos(a)), (float)(d * Math.Sin(a)), 0);
         }
 
-        /// <summary>Raiders and pets one leech lands on, his target included.</summary>
-        private static int LeechInside(Rng rng, bool fix, int radius)
+        /// <summary>One draw of the raid's positions: the raiders and pets a leech lands on (his target included) and the
+        /// shares of damage dealt (his target's included).</summary>
+        private static (int Inside, double Working) LeechDraw(Rng rng, LeechRules rules, int radius, int shooters, double shotShare)
         {
-            Vector3 boss = Vector3.Zero, anchor = new(fix ? T.BehindDistance : 140, 0, 0);
+            Vector3 boss = Vector3.Zero, anchor = new(MarfoirwortCloseIn(), 0, 0);
             int n = 1;
-            void Count(Vector3 p)
-            {
-                if (Vector2.Distance(new(p.X, p.Y), new(anchor.X, anchor.Y)) <= radius) n++;
-            }
+            double working = 1;
+            static float D(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
+            bool In(Vector3 p) => D(p, anchor) <= radius;
             for (int i = 0; i < 13; i++)
             {
                 Vector3 p = Around(rng, 110, 200);
-                if (fix && T.LeechMeleeSpot(p, boss, anchor) is Vector3 s)
-                    p = new(s.X + (float)(rng.Next() * 40 - 20), s.Y + (float)(rng.Next() * 40 - 20), 0);
-                Count(p);
+                switch (rules)
+                {
+                    case LeechRules.Catalog12:
+                        working += 1;
+                        break;
+                    case LeechRules.Rule121:
+                        // Given its spot every turn (it lies inside): it walks and never swings.
+                        if (Leech121MeleeSpot(p, boss, anchor) is Vector3 s121) p = s121;
+                        break;
+                    default:
+                        var role = T.LeechMeleeRoleFor(D(anchor, boss), isTank: i < 3, anchorIsTank: true, ownsDistanceWeapon: i >= 13 - shooters);
+                        T.Advice? a = T.LeechMeleeAdvice(p, boss, anchor, role, null, "tank");
+                        if (a?.StandAt is Vector3 s) p = s;
+                        T.Advice? now = T.LeechMeleeAdvice(p, boss, anchor, role, null, "tank");
+                        bool moving = now?.StandAt != null;
+                        if (!moving && role == T.LeechMeleeRole.Swing && D(p, boss) <= T.LeechBotMeleeReach) working += 1;
+                        else if (!moving && role == T.LeechMeleeRole.Shoot && D(p, boss) <= 1_200) working += shotShare;
+                        break;
+                }
+                if (In(p)) n++;
             }
             for (int i = 0; i < 11; i++)
             {
                 Vector3 p = Around(rng, 90, 170);
-                if (!fix) Count(p);
+                if (rules != LeechRules.Catalog12) continue;
+                working += 1;
+                if (In(p)) n++;
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 26; i++)
             {
-                Vector3 p = Around(rng, 300, 1200);
-                if (fix && T.LeechRangeSpot(p, boss, anchor) is Vector3 s) p = s;
-                Count(p);
+                Vector3 p = Around(rng, 300, i < 3 ? 1200 : 1500);
+                Vector3? s = rules == LeechRules.Catalog12 ? T.SpreadSpot(p, boss, anchor, radius, true) : T.LeechRangeSpot(p, boss, anchor);
+                p = s ?? p;
+                if (D(p, boss) <= 1_500) working += 1;
+                if (In(p)) n++;
             }
-            for (int i = 0; i < 23; i++)
-            {
-                Vector3 p = Around(rng, 300, 1500);
-                Vector3? s = fix ? T.LeechRangeSpot(p, boss, anchor) : T.SpreadSpot(p, boss, anchor, radius, true);
-                Count(s ?? p);
-            }
-            return n;
+            return (n, working);
         }
 
         [Test]
-        public void TheMeleeAndPetsAtHisTargetHeldHimAndTheFixKillsHim()
+        public void TheMeleeAndPetsAtHisTargetHeldHimThe121RuleStillLostAndThe122RuleKillsHim()
         {
             foreach (double perMinute in new[] { 400.0, 200.0 })
                 foreach (double swing in new[] { 3.0, 3.5, 4.0, 4.5 })
                 {
-                    var old = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, false, swing, perMinute)).ToArray();
-                    var fix = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, true, swing, perMinute)).ToArray();
-                    TestContext.WriteLine($"damage {perMinute}/raider-minute, swing {swing:0.0} s: before {old.Count(x => x.Killed)}/16 killed in 30 min " +
-                                          $"(leech lands on {old.Average(x => x.Inside):0.0}); fix {fix.Count(x => x.Killed)}/16, " +
-                                          $"{fix.Min(x => x.Minutes):0.0}-{fix.Max(x => x.Minutes):0.0} min (leech lands on {fix.Average(x => x.Inside):0.00})");
+                    var old = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, LeechRules.Catalog12, swing, perMinute)).ToArray();
+                    var r121 = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, LeechRules.Rule121, swing, perMinute)).ToArray();
+                    var fix = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, LeechRules.Rule122, swing, perMinute)).ToArray();
+                    TestContext.WriteLine($"damage {perMinute}/raider-minute, swing {swing:0.0} s: 1.2 {old.Count(x => x.Killed)}/16 " +
+                                          $"(leech on {old.Average(x => x.Inside):0.0}, contributing {old.Average(x => x.Contributing):0.0}); " +
+                                          $"1.2.1 {r121.Count(x => x.Killed)}/16 (on {r121.Average(x => x.Inside):0.0}, contributing {r121.Average(x => x.Contributing):0.0}); " +
+                                          $"1.2.2 {fix.Count(x => x.Killed)}/16, {fix.Min(x => x.Minutes):0.0}-{fix.Max(x => x.Minutes):0.0} min " +
+                                          $"(on {fix.Average(x => x.Inside):0.00}, contributing {fix.Average(x => x.Contributing):0.0})");
                     Assert.That(old.Count(x => x.Killed), Is.LessThanOrEqualTo(3), "ccba364: held at 79% and above, no damage for five minutes");
                     Assert.That(old.Average(x => x.Inside), Is.GreaterThan(15));
+                    Assert.That(r121.Count(x => x.Killed), Is.EqualTo(0), "1.2.1 (audit finding 2): the melee stood in the leech and never swung");
+                    Assert.That(r121.Average(x => x.Inside), Is.GreaterThan(13));
                     Assert.That(fix.Count(x => x.Killed), Is.EqualTo(16));
-                    Assert.That(fix.Max(x => x.Minutes), Is.LessThan(perMinute >= 400 ? 6.0 : 12.0));
-                    Assert.That(fix.Average(x => x.Inside), Is.LessThan(2.0), "his target, and now and then one more");
+                    Assert.That(fix.Max(x => x.Minutes), Is.LessThan(perMinute >= 400 ? 9.0 : 25.0));
+                    Assert.That(fix.Average(x => x.Inside), Is.LessThan(1.01), "his target only");
+                    Assert.That(fix.Average(x => x.Contributing), Is.EqualTo(27).Within(0.01), "his target and the 26 at range; the melee wait");
                 }
+        }
+
+        [Test]
+        public void MeleeWithADistanceWeaponAddTheirShotsAndAMeleeSwingWouldHealHimMore()
+        {
+            double swing = 2.706;
+            var none = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, LeechRules.Rule122, swing, 400, 1.0)).ToArray();
+            var six = Enumerable.Range(0, 16).Select(s => MarfoirwortFight(s, LeechRules.Rule122, swing, 400, 1.0, shooters: 6)).ToArray();
+            TestContext.WriteLine($"no shooters: {none.Average(x => x.Minutes):0.0} min, contributing {none.Average(x => x.Contributing):0.0}; " +
+                                  $"six: {six.Average(x => x.Minutes):0.0} min, contributing {six.Average(x => x.Contributing):0.0}");
+            Assert.That(six.Average(x => x.Contributing), Is.EqualTo(30).Within(0.01), "six shooters at half a share");
+            Assert.That(six.Average(x => x.Minutes), Is.LessThan(none.Average(x => x.Minutes)));
+            // Why the others wait: one more raider in the leech heals him far more than its share of damage.
+            var marf = (Marfoirwort)RuntimeHelpers.GetUninitializedObject(typeof(Marfoirwort));
+            double healPerSecond = marf.MarfoirwortDD.Damage * 0.85 * 0.25 / swing, sharePerSecond = 400.0 * 40 / 51 / 60;
+            Assert.That(healPerSecond, Is.EqualTo(35.3).Within(0.1));
+            Assert.That(healPerSecond, Is.GreaterThan(5 * sharePerSecond), "a melee raider inside heals him five times what it deals");
         }
 
 

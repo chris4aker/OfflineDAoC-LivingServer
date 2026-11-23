@@ -123,6 +123,17 @@ His trees still stop at 70 a wave. He is still the hardest fight for a raid of 4
   1.2.1; this does the same everywhere else. A bot put back on its feet at the top or bottom shows in the server log
   as `NAV_LINK_LANDING`.
 
+### Raid tactics
+
+- **Marfoirwort:** only his target fights him toe to toe. Everyone else stays out of his life-drain, and melee with a
+  bow, crossbow or throwing weapon shoot him from there. Animists plant their shrooms out of its reach.
+- **Paladins, Friars and Wardens** fight in melee in the new raid plans instead of walking back and forth to the healers.
+- **Legion:** a badly hurt raider who steps away comes back once healed, not straight back into his blast.
+- **Summoner Roesia:** healers cure their own group first while it is in trouble.
+- **King Tuscar:** his tank holds him with taunts while Queen Kula lives.
+- **The Crypt Lord:** the raid waits for his patrol to pass before pulling his court, however long that takes.
+- **Spindler Broodmother:** archers with shorter bows stand close enough to hit her.
+
 ### Also in 1.2.2
 
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".

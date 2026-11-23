@@ -41,8 +41,14 @@ namespace DOL.GS
             public Vector3 At => new(Raider.X, Raider.Y, Raider.Z);
             /// <summary>The raider is the one the target fights, or in its party.</summary>
             public bool Holds => EpicEncounterTactics.Holds(Raider, Target);
-            /// <summary>The raider fights from range (caster, archer) or heals.</summary>
+            /// <summary>The raider fights from range (caster, archer) or heals: the v1.2 test, kept for every rule of a fight the
+            /// owner has seen won (1.2.2 regression audit, item 1). New rules of unwon fights ask <see cref="StandsBack"/>.</summary>
             public bool AtRange => CanShootFlyers || ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)ClassId);
+            /// <summary>The raider fights from range: a caster, an archer or a healer that stands back
+            /// (<see cref="EpicEncounterTactics.FightsFromRange"/>; the Paladin, Friar and Warden fight in melee and heal from
+            /// there). 1.2.2, raid tactic audit finding 3: Marfoirwort, King Tuscar and Queen Kula's spreads, Legion's ranged
+            /// line, the Skeletal Sacristan's ambush, the Glacier Giant's healers, the Green Knight.</summary>
+            public bool StandsBack => FightsFromRange(CanShootFlyers, ClassId);
             /// <summary>The living NPC of this class near the target (the target itself when it is one), or null.</summary>
             public GameNPC Find(string type) => FindNear(Target, Live, type);
             /// <summary>Every living NPC of this class near the target, nearest the raider first.</summary>
@@ -92,6 +98,9 @@ namespace DOL.GS
             /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
             /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
             public Func<GameNPC, bool> NoPets { get; init; }
+            /// <summary>While <see cref="NoPets"/> holds, this pet (first) may still fight the target (second): Marfoirwort's
+            /// rule lets an Animist's shroom planted clear of his Life-leech hit him (1.2.2, audit finding 13). Null: none.</summary>
+            public Func<GameNPC, GameNPC, bool> PetMayHit { get; init; }
             /// <summary>While true the raid leaves this monster alive (Summoner Lossren's kept soul: her next wave of tortured
             /// souls comes only once none of hers lives). No bot hits it, area spells included (as <see cref="MustNotHit"/>),
             /// no bot's pet takes it (as <see cref="NoPets"/>), the catalog's ranged-add and clump lists skip it, and a bot
@@ -406,7 +415,7 @@ namespace DOL.GS
                 if (rule.NoPets == null) continue;
                 try
                 {
-                    if (rule.NoPets(npc)) return true;
+                    if (rule.NoPets(npc) && rule.PetMayHit?.Invoke(pet, npc) != true) return true;
                 }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pet rule {rule.Encounter} failed: {ex.Message}"); }
             }

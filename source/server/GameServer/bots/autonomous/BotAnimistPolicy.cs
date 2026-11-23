@@ -540,7 +540,8 @@ namespace DOL.GS
             if (entry.Spell == null || castTarget == null)
                 return false;
             if (groundSpot is Vector3 spot)
-                AutonomousPetSupport.SetAnimistGroundTarget(bot, spot);
+                AutonomousPetSupport.SetAnimistGroundTarget(bot, EpicEncounterTactics.ShroomSpotFor(target, spot,
+                    new Vector3(bot.X, bot.Y, bot.Z)) ?? spot);
             else if (mainNearFight)
                 AutonomousPetSupport.PrepareAnimistGroundTarget(bot, target, entry.Spell);
             GameObject previous = bot.TargetObject;
