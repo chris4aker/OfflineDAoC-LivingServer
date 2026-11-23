@@ -79,10 +79,13 @@ public sealed class LauncherPresentationTests
     }
 
     [Test]
-    public void VersionIsManuallyPinnedAndRefreshRunsEveryFiveMinutes()
+    public void VersionFollowsTheBuildAndRefreshRunsEveryFiveMinutes()
     {
         Type mainFormType = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
-        Assert.That(mainFormType.GetField("DisplayVersion", HiddenStatic)!.GetRawConstantValue(), Is.EqualTo("0.37"));
+        // The launcher shows the Living Server build (ForkBuildInfo.BuildName via LauncherBuild), not Offline DAoC's 0.37.
+        Assert.That(mainFormType.GetField("DisplayVersion", HiddenStatic), Is.Null, "no pinned version constant any more");
+        Assert.That(mainFormType.GetProperty("DisplayVersion", HiddenStatic)!.GetValue(null),
+            Is.EqualTo("Living Server " + OfflineDaoc.Updates.LauncherBuild.Version!.DisplayName));
         Assert.That(mainFormType.GetField("AutoRefreshMilliseconds", HiddenStatic)!.GetRawConstantValue(), Is.EqualTo(300_000));
         Assert.That(mainFormType.GetField("RvrSnapshotRefreshMilliseconds", HiddenStatic)!.GetRawConstantValue(), Is.EqualTo(30_000));
         Assert.That(mainFormType.GetField("ServerReadinessPollMilliseconds", HiddenStatic)!.GetRawConstantValue(), Is.EqualTo(500));
@@ -183,8 +186,11 @@ public sealed class LauncherPresentationTests
         using var form = (Form)Activator.CreateInstance(mainFormType)!;
         IReadOnlyList<Control> controls = Descendants(form).ToList();
 
-            Assert.That(controls.OfType<Label>().Any(label => label.Text.Contains("VERSION 0.37b", StringComparison.Ordinal)), Is.True);
-            Label version = controls.OfType<Label>().Single(label => label.Text == "VERSION 0.37b");
+        string versionText = "LIVING SERVER " + OfflineDaoc.Updates.LauncherBuild.Version!.DisplayName.ToUpperInvariant();
+        Assert.That(controls.OfType<Label>().Any(label => label.Text.StartsWith("VERSION 0.", StringComparison.Ordinal)), Is.False,
+            "the retired 0.3x version is no longer shown");
+        Label version = controls.OfType<Label>().Single(label => label.Text == versionText);
+        Assert.That(form.Text, Does.Contain("Living Server " + OfflineDaoc.Updates.LauncherBuild.Version!.DisplayName));
         Assert.That(version.Font.Bold, Is.True);
         Assert.That(version.Font.Size, Is.GreaterThanOrEqualTo(12));
         Assert.That(controls.OfType<Label>().Any(label => label.Text.Contains("1× PROGRESSION", StringComparison.Ordinal)), Is.False);

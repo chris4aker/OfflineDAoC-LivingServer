@@ -661,15 +661,56 @@ namespace DOL.GS.Tests
             Assert.That(off, Is.LessThan(20));
         }
 
+        // The bytes this thread allocates while running work, as the least of several samples. Each sample turns the
+        // profiler on again, settles the GC first and counts only when the profiler stayed on throughout, so a one-off
+        // allocation by the runtime on this thread (CI failed once with 3,040 bytes in a 271 ms run, 2026-11-22: not the
+        // scopes, which would allocate megabytes over 100,000 calls) cannot fail the test. An allocation in the code
+        // under test happens in every sample, so the least of them still shows it.
+        private static long LeastAllocatedBy(Action work, int samples = 7)
+        {
+            long least = long.MaxValue;
+            for (int sample = 0; sample < samples; sample++)
+            {
+                AiProfile.Enabled = true;
+                work(); // warm-up: JIT, tiering, on-stack replacement and the thread's slot
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                long before = GC.GetAllocatedBytesForCurrentThread();
+                work();
+                long allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+                if (AiProfile.Enabled)
+                    least = Math.Min(least, allocated);
+            }
+            Assert.That(least, Is.Not.EqualTo(long.MaxValue), "the profiler was switched off during every sample");
+            return least;
+        }
+
         [Test]
         public void AScopeAllocatesNothing()
         {
             Scopes(10); // the thread's slot is made on its first scope
-            long before = GC.GetAllocatedBytesForCurrentThread();
-            Scopes(100_000);
-            using (AiProfile.Lock(new object(), AiSystem.LockRaid)) { }
-            long allocated = GC.GetAllocatedBytesForCurrentThread() - before;
-            Assert.That(allocated, Is.LessThanOrEqualTo(64), "only the test's own lock object");
+            Action scopes = () => Scopes(100_000);
+            long allocated = LeastAllocatedBy(scopes);
+            TestContext.Out.WriteLine($"AI_PROFILE: {allocated} bytes allocated by 100,000 scopes (least of the samples)");
+            // One allocation per scope would be at least 2.4 MB here; the bound only leaves room for the runtime.
+            Assert.That(allocated, Is.LessThanOrEqualTo(64), "a scope must not allocate");
+        }
+
+        [Test]
+        public void AMeasuredLockAllocatesNothing()
+        {
+            // Up to 1.2.1 this was part of AScopeAllocatesNothing, with a new lock object inside the measurement. The
+            // gate is made before it now, so the bound is for the lock itself: a thousand uncontended enters and exits.
+            object gate = new object();
+            Action locks = () =>
+            {
+                for (int i = 0; i < 1000; i++)
+                    using (AiProfile.Lock(gate, AiSystem.LockRaid)) { }
+            };
+            long allocated = LeastAllocatedBy(locks);
+            TestContext.Out.WriteLine($"AI_PROFILE: {allocated} bytes allocated by 1,000 measured locks (least of the samples)");
+            Assert.That(allocated, Is.LessThanOrEqualTo(64), "a measured lock must not allocate");
         }
     }
 }

@@ -692,6 +692,10 @@ namespace DOL.AI.Brain
         private DbInventoryItem _pendingExchangeItem;
         private int _pendingExchangePrice;
         private AutonomousWorldBotController _autonomousWorldController;
+
+        /// <summary>A GM's /jump moved this gamebot: the trip its controller planned from the old spot is dropped
+        /// (<see cref="AutonomousWorldBotController.ForgetTripAfterGmMove"/>). Nothing when it has no controller yet.</summary>
+        internal void ForgetAutonomousTrip() => _autonomousWorldController?.ForgetTripAfterGmMove(BotBody);
         private long _nextFidelityCheckTick;
         private long _nextNaturalMobWakeTick;
         private eAutonomousFidelity _cachedFidelity = eAutonomousFidelity.Efficient;
@@ -5769,6 +5773,27 @@ namespace DOL.AI.Brain
                 amountToHeal = Math.Max(amountToHeal, markedPatient.MaxHealth - markedPatient.Health);
                 numNeedHealing = Math.Max(1, numNeedHealing);
                 if (markedPatient.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+            }
+
+            // 1.2.2 (#412): in the Green Knight's fight half a heal on a raider his tree hits is threat on that tree, and pulls it
+            // onto the healer, who is then silenced: such a raider waits until under half while another is healed (or none).
+            if (spellTarget != null && displacedPatient == null && spellTarget != Body &&
+                EpicEncounterTactics.GreenKnightHoldsHeal(BotBody, spellTarget))
+            {
+                GameLiving other = EpicEncounterTactics.GreenKnightOtherPatient(BotBody, spellTarget, InSupportReach);
+                if (other != null)
+                {
+                    spellTarget = other;
+                    amountToHeal = Math.Max(amountToHeal, other.MaxHealth - other.Health);
+                    numNeedHealing = Math.Max(1, numNeedHealing);
+                    if (other.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+                }
+                else
+                {
+                    spellTarget = null;
+                    numNeedHealing = 0;
+                    numEmergency = 0;
+                }
             }
 
             // 1.2 (sweep 7b): inside a raid's fight a damage over time on several raiders (Summoner Pain) is cured before the

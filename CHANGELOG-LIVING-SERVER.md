@@ -26,10 +26,31 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   sim, with 1.2.1's fresh-Pain cure, wins 0 of 64 attempts at 64, 8-16 at 80, 54-61 at 88 (Midgard, Hibernia) and
   56 at 96 (Albion); the 1.2 cure rule wins 0-1 of 64 at every size up to 128. Twice the guide's "four to five full
   groups" is 80, so 80 it is: the raid now starts at 100, where she loses 0-8 of 64. **Tests only** (#410).
-- **The Green Knight: 40 to 80.** With 1.2.1's stack and peel his sim wins 58 of 64 at 80 (a tree hitting for 8 a
-  second, 80 a second from a raider on a tree), 4 at 72 and none at 40-64; the 1.2 rules win 0 of 576 at every size to
-  96. 80 is twice the guide's 4-5 groups. His trees stay capped at 70 a wave (the Albion dragon raid's size). If his
-  trees hit for 15 a second, 88-96 would be needed: the next log's `EPIC_GK_TREES` line tells. **Tests only** (#412).
+- **The Green Knight: back to 40, and a new tactic, tag and burn (#412; tests only).** The owner withdrew his raise to 80
+  (2026-11-22, "option 1"). His script grows a tree at every raider within 4,000 of him every 25-35 s; a tree takes one
+  raider near it, silences a caster or healer it hits, and turns to the most threat, half of every heal on its victim
+  included, counted less far from it (a third at 1,500). A new positional model (`UT_RaidSim122GreenKnight`, Python
+  mirror) gives the trees those rules. In it the 1.2 catalog and 1.2.1's stack and peel lose every attempt at every size
+  40-80. Tag and burn (`EpicEncounterTactics.GreenKnight.cs`):
+  - casters and archers without an area spell stand 4,600 from him, past the trees' reach ("gk-out");
+  - the healers stand together 850 from him away from his target, heal his target first under 98%, and leave a raider a
+    tree hits until it is under half ("gk-heal-spot"; `SignalPatient`, `BotBrain.CheckHeals`);
+  - the area casters stand 500 away with two melee of their party and burn only trees a fighter has tagged, and only
+    while their spell would not pull them ("gk-burn");
+  - the melee tag every tree near them, a healer's or caster's first, to 240 threat, go back to him, and finish the
+    burned ones on themselves under half ("gk-tag", "gk-peel", "gk-finish"); `EPIC_GK_TREES` now counts the held trees.
+  Wins of 32 at 80 a second on a tree, buffed / unbuffed raid: 17 / 0 at 40, 30 / 0 at 48, 32 / 0 at 56-64, 32 / 12 at
+  72, 32 / 23 at 80. The old rules: 0 of 32 at 40-80. His trees stay capped at 70 a wave; no boss changed. **Tests only.**
+- **Real boss stats in the raid sims** (`UT_RaidRealStats122`; docs/RAID-SIZES.md, "Real stats"). The sims' assumed hits
+  are replaced by the public OpenDAoC database's templates, the scripts and the server's damage formulas (templates'
+  STR / QUI / INT are auto-set to 30 + (level - 1) unless a script sets them; epic bosses deal 2.25 times). The Green
+  Knight's trees hit 22-36 a second on mail and plate and 53-78 on cloth (assumed 5-15); Roesia's melee 200-289 a second
+  and her damage shield 224-280 a swing (assumed 200 and 64); Marfoirwort swings every 2.71 s (assumed 3.0-4.5).
+  Every 1.2.2 size holds: Summoner's Hall 80 (real stats: 0-15 of 64 at 80, 43-64 from 88-112; the old cure rule 0-5 at
+  80), Galladoria 112, Tuscaran Glacier 120 (their models use health and the PC ledgers, unchanged); the Green Knight
+  back to 40 (above); kept Caer Sidi, Trollheim, the dragons, Darkness Falls (Legion still killed inside 20 minutes from 48 at the
+  real 6.2 a raider-second) and Marfoirwort (won at 40 at his real swing). Behemoth (#414): every swing kills one, 23 a
+  minute; a raid would need about 440 bots in his hall at once, past the realm's 300: no bot raid. **Tests only.**
 - **Galladoria: 100 to 112.** From 14 parties 1.2.1's add-party share sends all 8 parties at Spindler Broodmother's
   newborns, and 1.93 are left at her death, fewer than the 2.49 of the one PC kill (`ccba364`, 128 bots); at 13 parties
   3.41. The 1.2 share gets there only from 16 parties. Her mesmerize and burn are not modelled. **Tests only** (#408).
@@ -44,7 +65,7 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   80."), and a 1.2.1 record at a raised raid is read against the old size: a Summoner's Hall raid grown to 166% of 64
   (106 bots) carries on at 132.8% of 80, the same 106. **Tests only.**
 - **A raise needs the roster.** The full size is half the realm's free level 50s, up to the period size: Galladoria's
-  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's and the Green Knight's 80 take 160.
+  112 takes 224 free level 50s, Tuscaran Glacier's 120 takes 240, Summoner's Hall's 80 takes 160.
 - **GM:** `/epictest start <raid> source` runs a raised raid at its size before the raise; `era` runs the new size.
 
 **Chat**
@@ -55,6 +76,59 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
   in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
   report-only until the fixes land. **Tests only.**
+
+**Launcher, GM tools and tests**
+- **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window
+  title "Offline DAoC Living Server 1.2.2", both from `ForkBuildInfo.BuildName` (stamped into the launcher, the name the
+  server logs as `FORK_BUILD`), so they can't drift from the build. Up to 1.2.1 they said "VERSION 0.37" (0.37b, 0.37c):
+  the 0.3x line is retired (AGENTS.md, "One edition from now on"). The update strip's separate build label is gone.
+  `ForkBuildInfo.BaseRelease` (0.37) still names the game the build installs on; `check_versions.py` now fails a
+  pinned `DisplayVersion`. **Tests only.**
+- **GM `/jump` and dead or travelling bots (#438 follow-up).** A dead bot is refused before anything about it changes,
+  and the GM is told why (its body stays where it fell, `GameBot.RefuseCorpseMove`; 1.2.1 stripped its state, hit the
+  refusal with a stack-trace warning and said only "could not be moved there"); the log has `GM_JUMP_BOT_REFUSED
+  reason=Dead`. A jumped gamebot forgets the trip it planned from the old spot (camp, patrol, town teleporter, frontier
+  porter request, a stable ride it meant to take, its keep route) and plans again; its task and group stay.
+  `GM_JUMP_BOT` now logs `region_change=`, `was_riding=` and `was_fighting=`. Other regions, stablemaster rides and
+  fights were already right (the move leaves the world, which takes the bot off every monster's aggro list); bots
+  never ride boats. The playtester's `bot-jump` scenario also jumps a dead helper. **Tests only.**
+- **`UT_AiProfile.AScopeAllocatesNothing` no longer flakes.** It failed once in CI with 3,040 bytes (2026-11-22), a
+  one-off runtime allocation on the test thread. Each of seven samples now re-enables the profiler, settles the GC and
+  counts only if the profiler stayed on; the least must stay within 64 bytes (one allocation per scope would be 2.4 MB).
+  The measured lock has its own test, with its gate made outside the measurement.
+
+**Bots and companions**
+- **Up Darkness Falls' entrance stairs (#438).** zone249.nav has each realm's stairs as three one-way drops, so no path
+  leads up them (`tools/navmesh/dfprobe`). Leaving DF never needs them: every realm's exit (zone points 74, 70, 72) is on
+  its hall floor, a complete path from the hall and from the arrival point. But a companion following its player up got
+  a partial path: it stood at the foot, or, with the player near the arrival point, walked 103 (Albion) to 235 (Midgard)
+  nodes into another level, within the 3,000-unit recall range. A gamebot in a player's group stood (DF refuses it partial
+  paths). Now a bot whose path toward a goal at or above a drop's lip is partial walks to that drop's landing and climbs
+  the certified fall backwards (rise over the landing to the fall's air point, step onto the lip), one drop at a time,
+  only where the navmesh agrees (the landing reachable, a complete path from the top of the stairs to the goal) and with
+  the falls' hash-guarded links (companions: the installed mesh; gamebots: the full certificate). New orders during a
+  climb only change where it goes after the lip. Server log `DF_STAIR_CLIMB`. No navmesh change. **Tests only**
+  (`UT_DarknessFallsStairClimb`; dfprobe `climb` on all nine drops).
+- **Ladders, climbs and ledge drops everywhere (#438 generalized).** A scan of all 103 shipped navmeshes found 1,262
+  off-mesh link directions in 39 zones whose middle is on no polygon, the Darkness Falls stair stall: frontier towers,
+  Fomor, Delling Crater, Caillte Garran, Trollheim, Tuscaran Glacier, Galladoria, Caer Sidi, Iarnvidiur's Lair and more.
+  Outside Darkness Falls (unchanged) a bot on a steep link walks it to the end before it replots, and a bot left inside
+  one is set down on its far end (`NAV_LINK_LANDING`). [docs/NAVMESH-DROPS.md](docs/NAVMESH-DROPS.md),
+  `tools/navmesh/navscan.cpp`. **Tests only.**
+
+**Routes**
+- **The Lough Derg / Valley of Bri Leith seam loops (#421; 200:384960,486688 and 385088,483424).** On the installed
+  meshes Lough Derg has a ridge along its Connacht border (seam ground 6081, 1,379 polygons) that joins no other Lough
+  Derg ground: only the Valley's main ground (y 486,624-488,352), the Valley shelf (10136, y 483,424-486,496) and a
+  Connacht ledge (69404). The zone itinerary's "reaches the destination's main ground" preference looked at each
+  ground group's best crossing only; from the Valley toward Connacht both best picks were ridge crossings, so nothing
+  was left out and the bot stepped onto the ridge, which sent it straight back (and the shelf did the same toward
+  Mount Collory). Now no crossing, listed or sampled, onto ground that never reaches the destination's main ground is
+  taken while the border lists one that does; the last border (whose walk to the goal is proved itself) and goals on
+  other ground of their zone keep the old rule. `tools/navmesh/seam_route_sim.py` replays the itinerary on the 1.2
+  meshes: 15 of 28 trips from the four seam spots cycled before, none after; 72 trips between nine places on the main
+  ground of eight Hibernian zones: 62 arrived before, 72 after (the other 10 cycled, 6 of them at 384960,486688). No navmesh,
+  seam file or road file changed. **Tests only** (`UT_LoughDergRidgeSeam421`).
 
 ## 1.2.1 — 2026-11-22
 
