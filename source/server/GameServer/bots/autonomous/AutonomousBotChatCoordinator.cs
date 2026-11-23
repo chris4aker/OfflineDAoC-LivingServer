@@ -1584,7 +1584,9 @@ public static partial class AutonomousBotChatCoordinator
         if (word == "where")
             // Beta 1.1.2: "where?" after a line that named a place asks where that place is (blind round 1: "where?" after "try the
             // bone camp in Muspelheim" drew where the bot stood).
-            return AutonomousBotVoices.StyleFor(bot, AutonomousChatThreads.WhereIsIt(last?.Text, AutonomousBotVoices.CapitalOf(bot.Realm), Random.Shared) ??
+            // 1.2.3: a town the line named ("meet up at Humberton Castle") is answered from the world, the way from the asker.
+            return AutonomousBotVoices.StyleFor(bot, (AutonomousChatKnowledge.TryAnswerTownNamedIn(player, last?.Text, out string town) ? town : null) ??
+                                                     AutonomousChatThreads.WhereIsIt(last?.Text, AutonomousBotVoices.CapitalOf(bot.Realm), Random.Shared) ??
                                                      AutonomousChatLiveAnswers.WhereIAm(bot, player, Random.Shared));
         string family = last?.Family;
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player?.Name };

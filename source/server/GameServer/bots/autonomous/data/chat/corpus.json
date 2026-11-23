@@ -530677,44 +530677,6 @@
    "needs": [
     "knows_player"
    ],
-   "intent": "travel",
-   "mood": "",
-   "weight": 1.0,
-   "text": "{player}, stablemaster is your friend, saves a lot of running",
-   "id": "fa2bde308cd0"
-  },
-  {
-   "kind": "reply",
-   "topic": "player",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "travel",
-   "mood": "",
-   "weight": 1.0,
-   "text": "not sure {player}, someone else might know",
-   "id": "7dd0864beb53"
-  },
-  {
-   "kind": "reply",
-   "topic": "player",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
    "intent": "help",
    "mood": "",
    "weight": 1.0,

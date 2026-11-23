@@ -49,6 +49,8 @@ public static class AutonomousChatKnowledge
         public Func<string, string> Spell { get; init; }
         public Func<string, string> Trainer { get; init; }
         public Func<string, string> Location { get; init; }
+        /// <summary>"where is Humberton Castle?": a named town of the world (its zone, and the way from the asker).</summary>
+        public Func<string, string> Town { get; init; }
         /// <summary>Who holds Darkness Falls now, and whether every realm may enter (AutonomousChatGuide's way in).</summary>
         public eRealm DfOwner { get; init; }
         public bool DfOpenToAll { get; init; }
@@ -70,6 +72,7 @@ public static class AutonomousChatKnowledge
         Spell = query => TryAnswerSpell(player, query, out string spell) ? spell : null,
         Trainer = query => TryAnswerTrainer(player.Realm, query, player.CharacterClass?.ID ?? 0, player, out string trainer) ? trainer : null,
         Location = query => TryAnswerLocation(player.Realm, query, out string where) ? where : null,
+        Town = query => TryAnswerTown(player, query, out string town) ? town : null,
         DfOwner = DOL.GS.ServerRules.DFEnterJumpPoint.DarknessFallOwner, DfOpenToAll = ServerProperties.Properties.ALLOW_ALL_REALMS_DF,
         Factions = AutonomousChatGuide.LiveFactions,
         WhoSells = query => AutonomousChatGuide.TryAnswerWhoSells(player, query, out string seller) ? seller : null,
@@ -117,6 +120,10 @@ public static class AutonomousChatKnowledge
         if (ports.World != null && Got(ports.World(query), out answer))
             return true;
         if (TryAnswerDragon(ports.Realm, query, out answer))
+            return true;
+        // 1.2.3 (owner's game: "where is Humberton Castle" drew "stablemaster is your friend"): a town of the world is a fact,
+        // before the lore and before the advice lines.
+        if (ports.Town != null && LooksLikeLocationQuestion(query) && Got(ports.Town(query), out answer))
             return true;
         bool lore = LoreMayAnswer(query);
         // 1.2 (owner, 2026-11-15): "what is atlantis?", "is there anything under camelot?" are answered as rumours only.
@@ -969,6 +976,166 @@ public static class AutonomousChatKnowledge
         bool horse = StableRoutes(realm).Any(route => string.Equals(route.EndpointArea, area, StringComparison.OrdinalIgnoreCase) ||
                                                      string.Equals(route.Destination, area, StringComparison.OrdinalIgnoreCase));
         answer = HowFarLine(place.Name, area, FarOf(alreadyThere, distance), horse, place.IsDungeon, Random.Shared);
+        return true;
+    }
+
+    /// <summary>A named town of the world (a circle area: Humberton Castle, Campacorentin Station, Mularn), where it stands.</summary>
+    public sealed record NamedTown(string Name, string Zone, ushort RegionId, int X, int Y);
+
+    private static NamedTown[] _towns;
+
+    /// <summary>
+    /// Whether an area record names a town a player would ask the way to: a named circle of town size (the meetup towns' own
+    /// rule, AutonomousTownIdleRouting), not a bind area, a safe zone, a GM spot or a lower-case leftover ("thehiddenlair"). Pure.
+    /// </summary>
+    public static bool IsTownArea(string description, string classType, int radius) =>
+        !string.IsNullOrWhiteSpace(description) && description.Trim().Length >= 4 && char.IsUpper(description.Trim()[0]) &&
+        (classType ?? string.Empty).EndsWith("Circle", StringComparison.Ordinal) && radius is >= 500 and <= 6_000 &&
+        !description.Contains("bind", StringComparison.OrdinalIgnoreCase);
+
+    private static NamedTown[] GetTowns()
+    {
+        if (_towns != null)
+            return _towns;
+        lock (IndexSync)
+        {
+            if (_towns != null)
+                return _towns;
+            var towns = new List<NamedTown>();
+            try
+            {
+                foreach (DbArea area in DOLDB<DbArea>.SelectAllObjects())
+                {
+                    if (area == null || !IsTownArea(area.Description, area.ClassType, area.Radius))
+                        continue;
+                    string zone = WorldMgr.GetRegion(area.Region)?.GetZone(area.X, area.Y)?.Description;
+                    if (!string.IsNullOrWhiteSpace(zone))
+                        towns.Add(new NamedTown(area.Description.Trim(), zone.Trim(), area.Region, area.X, area.Y));
+                }
+            }
+            catch (Exception)
+            {
+                // No world loaded (a unit test): no towns, and the next call tries again.
+                return [];
+            }
+            _towns = towns.ToArray();
+            return _towns;
+        }
+    }
+
+    /// <summary>The town a line names, the longest name first ("where is humberton castle" -> Humberton Castle), or null. Pure.</summary>
+    public static NamedTown TownNamed(string text, IEnumerable<NamedTown> towns)
+    {
+        if (string.IsNullOrWhiteSpace(text) || towns == null)
+            return null;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        return towns.Where(town => town != null && !string.IsNullOrWhiteSpace(town.Name))
+            .OrderByDescending(town => town.Name.Length)
+            .FirstOrDefault(town => t.Contains(" " + AutonomousChatQuestions.Normalize(town.Name) + " ", StringComparison.Ordinal));
+    }
+
+    private static readonly HashSet<string> WhereWords = new(StringComparer.Ordinal)
+    {
+        "where", "wheres", "is", "s", "that", "the", "how", "do", "does", "i", "we", "get", "go", "to", "which", "way", "find",
+        "located", "can", "could", "u", "you", "tell", "me", "far", "again", "ok", "k", "so", "hmm", "um", "and", "exactly", "at",
+        "whats", "what", "its", "it", "pls", "plz", "please", "anyone", "know", "ne1", "sorry", "sry",
+    };
+
+    /// <summary>
+    /// Whether a line only asks the way to the town it names ("where is Humberton Castle", "how do i get to mularn?"), so a
+    /// question that merely mentions a town ("where can i buy dyes in mularn", "whats a good camp near ludlow") keeps its own
+    /// answer. Pure.
+    /// </summary>
+    public static bool AsksOnlyWhereTownIs(string text, string town)
+    {
+        if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(town))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        string n = " " + AutonomousChatQuestions.Normalize(town) + " ";
+        int at = t.IndexOf(n, StringComparison.Ordinal);
+        if (at < 0)
+            return false;
+        string rest = t.Remove(at, n.Length).Insert(at, " ");
+        string[] words = rest.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return words.Length > 0 && words.All(WhereWords.Contains) && words.Any(word => word is "where" or "wheres" or "way" or "find" or "located" or "get");
+    }
+
+    /// <summary>The compass way from one spot to another (the world's x runs east, its y south), or null when they are close. Pure.</summary>
+    public static string Compass(double dx, double dy)
+    {
+        if (Math.Sqrt(dx * dx + dy * dy) < 1_500)
+            return null;
+        double degrees = Math.Atan2(-dy, dx) * 180 / Math.PI;
+        int sector = (int)Math.Round(((degrees % 360) + 360) % 360 / 45.0) % 8;
+        return sector switch
+        {
+            0 => "east", 1 => "northeast", 2 => "north", 3 => "northwest", 4 => "west", 5 => "southwest", 6 => "south", _ => "southeast",
+        };
+    }
+
+    /// <summary>
+    /// The answer to "where is Humberton Castle?" (1.2.3, owner's game: a groupmate said "not sure tbh" and another "stablemaster
+    /// is your friend"): the zone it is in, and from the asker the way and roughly how far; a horse only when a stable route of
+    /// the asker's realm ends in that zone. 2003 typing, true for the town. Pure but for the draw.
+    /// </summary>
+    public static string TownWhereLine(string town, string zone, string way, Far far, bool sameZone, bool horse, Random random)
+    {
+        random ??= Random.Shared;
+        string n = (town ?? "it").Trim();
+        string z = string.IsNullOrWhiteSpace(zone) ? null : zone.Trim();
+        string[] lines;
+        if (far == Far.Here || far == Far.Close && sameZone)
+            lines = way == null
+                ? [$"{n}? ur right by it", $"ur basically there, {n} is right here"]
+                : [$"{n} is just {way} of u, not far", $"head {way}, {n} is right there", $"{n}? little bit {way} of u"];
+        else if (sameZone)
+            lines = way == null ? [$"{n} is here in {z}", $"{n}? its in {z}, same zone as u"]
+                : [$"{n} is in {z} too, head {way}", $"{n}? same zone, its {way} of u", $"head {way}, {n} is in this zone"];
+        else
+        {
+            string horseTail = horse && far is Far.Trip or Far.LongWay or Far.Unknown ? ", a stable master can get u close" : "";
+            lines = way == null
+                ? [$"{n} is in {z}{horseTail}", $"{n}? thats in {z}{horseTail}"]
+                : far is Far.Trip or Far.LongWay
+                    ? [$"{n} is in {z}, way {way} of u{horseTail}", $"{n}? out in {z}, {way} of here{horseTail}"]
+                    : [$"{n} is in {z}, {way} of u", $"{n}? in {z}, head {way}", $"head {way} into {z}, {n} is there"];
+        }
+        return lines[random.Next(lines.Length)];
+    }
+
+    /// <summary>
+    /// "where?" after a line that names a town of the world ("meet up at Humberton Castle"): where that town is, from the asker
+    /// (1.2.3). False when the line names none.
+    /// </summary>
+    public static bool TryAnswerTownNamedIn(GamePlayer player, string line, out string answer)
+    {
+        answer = string.Empty;
+        if (player == null || string.IsNullOrWhiteSpace(line))
+            return false;
+        eRealm realm = player.Realm;
+        return TownNamed(line, GetTowns().Where(town => RegionIsAccessible(realm, town.RegionId))) is { } found &&
+               TryAnswerTown(player, "where is " + found.Name, out answer);
+    }
+
+    /// <summary>The live answer to a question naming a town of the world (<see cref="TownWhereLine"/>).</summary>
+    private static bool TryAnswerTown(GamePlayer player, string query, out string answer)
+    {
+        answer = string.Empty;
+        if (player == null || string.IsNullOrWhiteSpace(query))
+            return false;
+        eRealm realm = player.Realm;
+        if (TownNamed(query, GetTowns().Where(town => RegionIsAccessible(realm, town.RegionId))) is not { } found ||
+            !AsksOnlyWhereTownIs(query, found.Name))
+            return false;
+        bool sameRegion = player.CurrentRegionID == found.RegionId;
+        double dx = found.X - player.X, dy = found.Y - player.Y;
+        double? distance = sameRegion ? Math.Sqrt(dx * dx + dy * dy) : null;
+        string way = sameRegion ? Compass(dx, dy) : null;
+        bool sameZone = string.Equals(player.CurrentZone?.Description, found.Zone, StringComparison.OrdinalIgnoreCase);
+        Far far = distance is { } d && d < 3_000 ? Far.Here : FarOf(false, distance);
+        bool horse = StableRoutes(realm).Any(route => string.Equals(route.EndpointArea, found.Zone, StringComparison.OrdinalIgnoreCase) ||
+                                                     string.Equals(route.Destination, found.Name, StringComparison.OrdinalIgnoreCase));
+        answer = TownWhereLine(found.Name, found.Zone, way, far, sameZone, horse, Random.Shared);
         return true;
     }
 

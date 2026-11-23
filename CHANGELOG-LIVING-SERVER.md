@@ -8,6 +8,31 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.3 (in development)
+
+Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
+otherwise.
+
+**Chat**
+- **"Where is that?" in a bot-led group gets where it is** (the owner's game on 1.2.2, 2026-11-23: the leader's "welcome!
+  meet up at Humberton Castle", the player's "where is that", a groupmate's "not sure tbh", then "where is Humberton
+  Castle" and another's "Dumbledork, stablemaster is your friend, saves a lot of running"). Three causes:
+  - The leader's welcome went out through `Speak` and was never noted in the group's conversation, so "where is that" had
+    nothing to complete. Now the place in a leader's welcome, meet-up reminder or raid welcome is the place in play
+    (`ChatConversations.NotePlace`), the leader has the floor, and "where is that" completes to "where is Humberton Castle".
+  - The knowledge lookup's places come from zones, NPCs and mobs, not towns, so Humberton Castle was unknown. A town of
+    the world (a named circle of town size in the Area table: Humberton Castle, Cotswold Village, Haggerfel, Ardee...) is
+    now answered from the world, before the lore and the advice lines (`AutonomousChatKnowledge.TryAnswerTown`): its zone,
+    and from the asker the way and roughly how far ("Humberton Castle is in Black Mtns. South, head west"); a stable master
+    only when a route of the asker's realm ends there. Only a line that just asks the way counts ("where can i buy dyes in
+    mularn" keeps its own answer). "where?" after a bot's line that names a town answers the same.
+  - The group's "dunno" rescue answered a question of where; it never does now, in any channel
+    (`AutonomousChatReplyBudget.RescuesWithDunno(channel, message)`). The remembered travel lines "stablemaster is your
+    friend" and "not sure {player}, someone else might know" are gone: advice in place of an answer.
+  - The bot that named the place answers first (`AutonomousBotGroupChatter.AnswererFirst`).
+  - The chat bench asks seven town questions (`/group` and `/faction`), and its `/group` path now runs the knowledge
+    lookup first, as the live path does. `UT_PartyWhere123`. **Tests only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in

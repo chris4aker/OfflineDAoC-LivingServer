@@ -52,6 +52,8 @@ namespace DOL.GS.Tests
             public Question[] Questions;
             public Dictionary<eRealm, Responder> Responders = new();
             public AutonomousChatQuestions.WorldFacts World;
+            /// <summary>Towns of the world (1.2.3: the live lookup reads them from the Area table), with their realm.</summary>
+            public (AutonomousChatKnowledge.NamedTown Town, eRealm Realm)[] Towns = [];
         }
 
         private static string Resource(string file)
@@ -90,6 +92,9 @@ namespace DOL.GS.Tests
                 .Select(r => (Str(r, "name"), RealmOf(Str(r, "owner")), RealmOf(Str(r, "home")), true)).ToList();
             var keeps = world.GetProperty("keeps").EnumerateArray().Select(k => (Str(k, "name"), RealmOf(Str(k, "owner")))).ToList();
             bench.World = new AutonomousChatQuestions.WorldFacts(RealmOf(Str(world, "df_owner")), relics, keeps, AutonomousChatPlaces.All);
+            if (world.TryGetProperty("towns", out JsonElement towns))
+                bench.Towns = towns.EnumerateArray()
+                    .Select(t => (new AutonomousChatKnowledge.NamedTown(Str(t, "name"), Str(t, "zone"), 0, 0, 0), RealmOf(Str(t, "realm")))).ToArray();
             return bench;
         }
 
@@ -110,6 +115,7 @@ namespace DOL.GS.Tests
             public VC.RecentLines Recent;
             public DateTime Now;
             public AutonomousChatQuestions.WorldFacts World;
+            public (AutonomousChatKnowledge.NamedTown Town, eRealm Realm)[] Towns = [];
             public bool Stub;
         }
 
@@ -165,8 +171,21 @@ namespace DOL.GS.Tests
             Raids = () => Array.Empty<AutonomousRealmRaid.Summary>(),
             Trainer = query => Trainer(run, query),
             Location = query => Location(run, query),
+            Town = query => Town(run, query),
             DfOwner = run.World.DfOwner,
         };
+
+        /// <summary>
+        /// TryAnswerTown on the stub towns: the town's zone; the live lookup adds the way and how far from where the player stands,
+        /// which the bench doesn't know (so it answers as from another zone, the way unknown).
+        /// </summary>
+        private static string Town(Run run, string query)
+        {
+            AutonomousChatKnowledge.NamedTown town = AutonomousChatKnowledge.TownNamed(query,
+                run.Towns.Where(t => t.Realm == run.Realm).Select(t => t.Town));
+            return town == null || !AutonomousChatKnowledge.AsksOnlyWhereTownIs(query, town.Name) ? null
+                : AutonomousChatKnowledge.TownWhereLine(town.Name, town.Zone, null, AutonomousChatKnowledge.Far.Unknown, false, false, run.Rng);
+        }
 
         private static string Knowledge(Run run, string query) =>
             AutonomousChatKnowledge.TryAnswer(KnowledgePortsOf(run), query, out string answer) ? answer : null;
@@ -304,8 +323,13 @@ namespace DOL.GS.Tests
                 choice = AutonomousChatReplyPath.Budget(ports, choice, message, true, "tell");
             }
             else if (channel == "group")
-                // ReplyChoiceToPlayer: the voiced reply to a groupmate, then the budget (a line that names nobody isn't addressed).
-                choice = AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, false, "group");
+            {
+                // OnPlayerGroupChat: the knowledge lookup first (1.2.3: as the live path does; "where is Humberton Castle" in a
+                // bot-led group), else ReplyChoiceToPlayer's voiced reply, then the budget (a line that names nobody isn't addressed).
+                string known = Knowledge(run, message);
+                choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
+                    : AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, false, "group");
+            }
             else
             {
                 // SchedulePlayerReplies: the knowledge lookup, the help call, the plan, the bot's first answer.
@@ -399,7 +423,7 @@ namespace DOL.GS.Tests
                 var run = new Run
                 {
                     Q = q, Me = me, Facts = FactsOf(me, q.Realm), Realm = q.Realm, Rng = new Random(seed), Corpus = corpus, Recent = recent,
-                    Now = now, World = bench.World,
+                    Now = now, World = bench.World, Towns = bench.Towns,
                 };
                 now = now.AddMinutes(3);
                 answers.Add(AnswerOne(run));

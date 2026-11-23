@@ -1043,9 +1043,25 @@ public static partial class BotLedGroups
             if (what == Lead.AfkLetGo)
                 AutonomousLivingServer.Tell(leader, player, text);
             else
+            {
                 AutonomousLivingServer.Speak(leader, AutonomousLivingServer.Channel.Group, text);
+                // 1.2.3 (owner's game: "welcome! meet up at Humberton Castle", "where is that", "not sure tbh"): the place the
+                // leader names is the place in play in the group's conversation, so "where is that" means it, and the leader
+                // has the floor to answer it.
+                if (NamesAPlace(what) && !string.IsNullOrWhiteSpace(place) && player.Group != null)
+                {
+                    string key = AutonomousChatThreads.GroupChannel(player.Group);
+                    long now = GameLoop.GameLoopTime;
+                    ChatConversations.Live.NoteBot(player.Name, leader.DatabaseID, leader.Name, key, text, now);
+                    ChatConversations.Live.NotePlace(player.Name, key, place, now);
+                }
+            }
         });
     }
+
+    /// <summary>The leader's lines that name where to meet or where the group is ({place}). Pure.</summary>
+    public static bool NamesAPlace(Lead what) =>
+        what is Lead.Welcome or Lead.WelcomeOnTheWay or Lead.MeetupReminder or Lead.RaidWelcome;
 
     #endregion
 

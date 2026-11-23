@@ -315,6 +315,14 @@ public static class AutonomousChatReplyBudget
     public static bool RescuesWithDunno(string channel) => channel is not ("faction" or null);
 
     /// <summary>
+    /// <see cref="RescuesWithDunno(string)"/> for this line: a question of where a place is never draws a "dunno" in any
+    /// channel (1.2.3, owner's game: the leader said "meet up at Humberton Castle", the player asked "where is that" and a
+    /// groupmate said "not sure tbh"). The world's places are answered from the world, or nobody speaks. Pure.
+    /// </summary>
+    public static bool RescuesWithDunno(string channel, string message) =>
+        RescuesWithDunno(channel) && !AutonomousChatKnowledge.LooksLikeLocationQuestion(message ?? string.Empty);
+
+    /// <summary>
     /// What a weak reply to a line not said to the bot becomes (blind round 2: silence went from 38% to 64% of turns, and most
     /// of what was lost was short banter): a short reaction for a social line, at a rate by channel; a "dunno" from one bot for
     /// a question in a group or guild; otherwise nothing. Null means silence. Pure.
@@ -347,7 +355,7 @@ public static class AutonomousChatReplyBudget
         if (question && moment.Intent is not (eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Trading or eAutonomousChatIntent.Away or
                 eAutonomousChatIntent.Back or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
                 eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm))
-            return RescuesWithDunno(moment.Channel) && random.NextDouble() < DunnoShare(moment.Channel)
+            return RescuesWithDunno(moment.Channel, message) && random.NextDouble() < DunnoShare(moment.Channel)
                 ? Pick(random, "dunno", "no idea", "not sure tbh", "idk sry", "no clue, sry", "hmm dunno")
                 : null;
         if (question)

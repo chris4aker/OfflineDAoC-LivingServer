@@ -66,6 +66,15 @@ WORLD = {
                {'name': "Hibernia's Relic of Nuada", 'owner': 'hib', 'home': 'hib'}],
     'keeps': [{'name': 'Bledmeer Faste', 'owner': 'mid'}, {'name': 'Caer Benowyc', 'owner': 'alb'}, {'name': 'Dun Crauchon', 'owner': 'hib'},
               {'name': 'Nottmoor Faste', 'owner': 'alb'}, {'name': 'Caer Erasleigh', 'owner': 'alb'}, {'name': 'Dun Crimthainn', 'owner': 'hib'}],
+    # 1.2.3: towns of the world (area circles; the zone each stands in, from the world database's Area and Zones tables), which the
+    # chat's places catalog doesn't hold: "where is Humberton Castle" in a bot-led group drew "not sure tbh".
+    'towns': [{'name': 'Humberton Castle', 'zone': 'Black Mtns. South', 'realm': 'alb'},
+              {'name': 'Cotswold Village', 'zone': 'Camelot Hills', 'realm': 'alb'},
+              {'name': 'Ludlow Village', 'zone': 'Black Mtns. South', 'realm': 'alb'},
+              {'name': 'Haggerfel', 'zone': 'Vale of Mularn', 'realm': 'mid'},
+              {'name': 'Fort Atla', 'zone': 'Gotar', 'realm': 'mid'},
+              {'name': 'Ardee', 'zone': 'Connacht', 'realm': 'hib'},
+              {'name': 'Tir na mBeo', 'zone': 'Lough Derg', 'realm': 'hib'}],
 }
 # The bot that answers in each realm (stub facts; UT_ChatQuestionBench builds its BotFacts from these).
 RESPONDERS = {
@@ -524,6 +533,17 @@ def build():
                 ('hib', 'is eldritch better than enchanter?', ['eldritch', 'enchanter', 'pet', 'light', 'void'])]
     for realm, text, must in opinions:
         b.add(text, 'spec', must, realm, level=5, source='class talk: names the class or its tools')
+
+    # 16. Where a town is (1.2.3, the owner's game: in a bot-led group "where is Humberton Castle" drew "not sure tbh" and
+    # "stablemaster is your friend"). Asked in /group, as there, and in /faction; answered with the town's zone.
+    town_q = [('where is {t}', 'group'), ('how do i get to {t}?', 'group'), ('wheres {t}?', 'faction')]
+    for i, town in enumerate(WORLD['towns']):
+        zone = town['zone'].lower()
+        must = [zone, zone.replace('mtns.', 'mountains'), zone.replace('mtns.', 'mtns')]
+        text, channel = town_q[i % len(town_q)]
+        b.add(text.format(t=town['name'].lower() if i % 2 else town['name']), 'travel', sorted(set(must)), town['realm'], level=5,
+              channel=channel, wrong=[r're:\b(not sure|dunno|no idea|idk)\b', 'stablemaster is your friend'],
+              source="world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)")
 
     return b.items
 

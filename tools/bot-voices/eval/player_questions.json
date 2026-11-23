@@ -59,6 +59,43 @@
     "name": "Dun Crimthainn",
     "owner": "hib"
    }
+  ],
+  "towns": [
+   {
+    "name": "Humberton Castle",
+    "zone": "Black Mtns. South",
+    "realm": "alb"
+   },
+   {
+    "name": "Cotswold Village",
+    "zone": "Camelot Hills",
+    "realm": "alb"
+   },
+   {
+    "name": "Ludlow Village",
+    "zone": "Black Mtns. South",
+    "realm": "alb"
+   },
+   {
+    "name": "Haggerfel",
+    "zone": "Vale of Mularn",
+    "realm": "mid"
+   },
+   {
+    "name": "Fort Atla",
+    "zone": "Gotar",
+    "realm": "mid"
+   },
+   {
+    "name": "Ardee",
+    "zone": "Connacht",
+    "realm": "hib"
+   },
+   {
+    "name": "Tir na mBeo",
+    "zone": "Lough Derg",
+    "realm": "hib"
+   }
   ]
  },
  "responders": {
@@ -15990,6 +16027,129 @@
     "void"
    ],
    "source": "class talk: names the class or its tools"
+  },
+  {
+   "id": "q454",
+   "text": "where is Humberton Castle",
+   "channel": "group",
+   "realm": "alb",
+   "cls": "Wizard",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "black mountains south",
+    "black mtns south",
+    "black mtns. south"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q455",
+   "text": "how do i get to cotswold village?",
+   "channel": "group",
+   "realm": "alb",
+   "cls": "Wizard",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "camelot hills"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q456",
+   "text": "wheres Ludlow Village?",
+   "channel": "faction",
+   "realm": "alb",
+   "cls": "Wizard",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "black mountains south",
+    "black mtns south",
+    "black mtns. south"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q457",
+   "text": "where is haggerfel",
+   "channel": "group",
+   "realm": "mid",
+   "cls": "Healer",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "vale of mularn"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q458",
+   "text": "how do i get to Fort Atla?",
+   "channel": "group",
+   "realm": "mid",
+   "cls": "Healer",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "gotar"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q459",
+   "text": "wheres ardee?",
+   "channel": "faction",
+   "realm": "hib",
+   "cls": "Ranger",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "connacht"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
+  },
+  {
+   "id": "q460",
+   "text": "where is Tir na mBeo",
+   "channel": "group",
+   "realm": "hib",
+   "cls": "Ranger",
+   "level": 5,
+   "intent": "travel",
+   "must_any": [
+    "lough derg"
+   ],
+   "wrong_any": [
+    "re:\\b(not sure|dunno|no idea|idk)\\b",
+    "stablemaster is your friend"
+   ],
+   "source": "world Area table: the town's zone (AutonomousChatKnowledge.TryAnswerTown)"
   }
  ]
 }
