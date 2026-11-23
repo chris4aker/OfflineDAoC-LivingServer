@@ -624,7 +624,7 @@ namespace DOL.GS
             bool walking = GreenKnightWalks(gk);
             GreenKnightPlan plan = GreenKnightPlanFor(gk);
             var cls = (eCharacterClass)Math.Max(0, c.ClassId);
-            if (GreenKnightRangedHealer(c.ClassId))
+            if (c.StandsBack && !c.CanShootFlyers)
             {
                 // Healers: together at their spot, each on its slot; nothing new once there (they heal as usual).
                 Vector3 slot = GreenKnightSlot(GreenKnightSpot(gk, plan, GreenKnightHealDistance), raider.ObjectID);
