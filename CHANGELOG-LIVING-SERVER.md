@@ -8,6 +8,24 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.3 (in development)
+
+Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
+otherwise.
+
+**Chat**
+- **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
+  the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
+  tell read as a grinding remark (the word "camp"), no grinding reply fitted, and the short answer for a tell ended on a
+  bare laugh. Now, inside a tell exchange (the bot told the player something in the last few minutes, or it is in their
+  group), a place the player names ("im by X", "at X", "near X", "in X") or an "omw" gets an answer from
+  `AutonomousChatMeetup`: where the bot is and how to meet ("im still in avalon marsh, thats a ways from camp station. inv
+  me when ur closer"). A free gamebot doesn't cross zones for a player, so it never says it is coming; a bot in the
+  player's group follows its group and may ("k, coming to camp station"). The reply budget no longer lets a bare laugh
+  answer a line said to the bot that doesn't laugh itself, and the short answer for a tell ends on "ya", "k", "oh ok", "ah
+  ok" or "gotcha" instead of "heh" or "lol"; "im a cleric" and "im 5" get "nice" or "cool". `UT_TellMeetup123`. **Tests
+  only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
