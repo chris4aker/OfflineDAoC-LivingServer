@@ -187,7 +187,7 @@ def build():
         wrong = None
         if '{lvl}' in form:
             if lvl < low - 2:
-                wrong = [r're:\b(is fine there|should be ok|yes|yep)\b']
+                wrong = [r're:\b(is fine there|should be ok|fine at|yes|yep)\b']
             elif lvl > high + 3:
                 wrong = [r're:\b(a bit high|too high)\b']
         b.add(text, 'place_level', must, realm, level=lvl, wrong=wrong, source=f'places.json {p["key"]} {low}-{high}')

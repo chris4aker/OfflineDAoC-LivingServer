@@ -121,6 +121,8 @@ His trees still stop at 70 a wave. He is still the hardest fight for a raid of 4
   the realm tells you; ask where to level and you hear a real zone for your level; ask where a class trains and you hear
   the right trainer, or that it's another realm's class; a question nobody can answer is left alone instead of drawing a
   "dunno".
+- **Smoother bot answers:** a bot no longer laughs after "dunno" or a warning, answers a lore question without asking
+  it back first, and a bot that writes neatly writes "Camelot" and "Tir na Nog" with their capitals.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **A fallen bot that leaves is gone from your screen.** When a dead bot logs out or leaves for another region, its
   body no longer stays lying where it fell.
